@@ -30,11 +30,11 @@ after the he installed Zikula. The configuration can be changed using the follow
 ```php
 $configDumper = $this->get('zikula.dynamic_config_dumper');
 $configDumper->setConfiguration('jms_i18n_routing',
-    array(
+    [
         'default_locale' => $defaultLocale,
         'locales'        => $installedLanguages,
         'strategy'       => $isRequiredLangParameter ? 'prefix' : 'prefix_except_default'
-    )
+    ]
 );
 ```
 This will update the configuration file. Note that the configuration becomes active as of **the next page load**.

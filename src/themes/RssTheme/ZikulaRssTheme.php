@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of the Zikula package.
+ *
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Zikula\RssTheme;
 
@@ -17,8 +25,8 @@ class ZikulaRssTheme extends AbstractCoreTheme
     public function generateThemedResponse($realm, Response $response, $moduleName = null)
     {
         $newResponse = new Response();
-        $newResponse->headers->add(array("Content-type" => "application/rss+xml"));
+        $newResponse->headers->add(['Content-type' => 'application/rss+xml']);
 
-        return $this->getContainer()->get('templating')->renderResponse('ZikulaAtomTheme::master.html.twig', array('maincontent' => $response->getContent()), $newResponse);
+        return $this->getContainer()->get('templating')->renderResponse('ZikulaAtomTheme::master.html.twig', ['maincontent' => $response->getContent()], $newResponse);
     }
 }

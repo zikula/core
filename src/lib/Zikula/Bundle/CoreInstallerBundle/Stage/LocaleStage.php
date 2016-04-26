@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2014 - Zikula CoreInstaller bundle.
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage;
@@ -34,10 +30,12 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
      * @var ContainerInterface
      */
     private $container;
+
     /**
      * @var array
      */
     private $installedLanguages;
+
     /**
      * @var string
      */
@@ -72,23 +70,23 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
 
     public function getTemplateName()
     {
-        return "ZikulaCoreInstallerBundle:Install:locale.html.twig";
+        return 'ZikulaCoreInstallerBundle:Install:locale.html.twig';
     }
 
     public function isNecessary()
     {
         if (count($this->installedLanguages) == 1) {
-            $this->writeParams(array('locale' => $this->matchedLocale));
+            $this->writeParams(['locale' => $this->matchedLocale]);
 
             return false;
-        } else {
-            return true;
         }
+
+        return true;
     }
 
     public function getTemplateParams()
     {
-        return array();
+        return [];
     }
 
     public function handleFormResult(FormInterface $form)
@@ -97,7 +95,7 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
         $this->writeParams($data);
     }
 
-    private function writeParams($data = array())
+    private function writeParams($data = [])
     {
         $params = array_merge($this->yamlManager->getParameters(), $data);
         try {

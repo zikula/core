@@ -24,7 +24,7 @@ other entities if you want to filter on their data.
 Second load FilterUtil and create a new instance by:
 
     [php]
-    $pluginManager = new PluginManager(new Config($queryBuilder), $plugins = array(), $restrictions = array());
+    $pluginManager = new PluginManager(new Config($queryBuilder), $plugins = [], $restrictions = []);
     $filterUtil = new FilterUtil($pluginManager, $request = null, $filterKey = 'filter');
     
 1. **filterKey**: The name of the filter variable in the URL. Default: “filter”

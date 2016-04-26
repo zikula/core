@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- * @subpackage Template_Plugins
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -36,15 +31,15 @@
 function smarty_function_html_select_languages($params, Zikula_View $view)
 {
     if (!isset($params['name']) || empty($params['name'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('html_select_languages', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['html_select_languages', 'name']));
 
         return false;
     }
 
     require_once $view->_get_plugin_filepath('function', 'html_options');
 
-    $params['output'] = array();
-    $params['values'] = array();
+    $params['output'] = [];
+    $params['values'] = [];
     if (isset($params['all']) && $params['all']) {
         $params['values'][] = '';
         $params['output'][] = DataUtil::formatForDisplay(__('All'));

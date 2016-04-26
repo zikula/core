@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- * @subpackage Template_Plugins
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -90,7 +85,7 @@ function smarty_function_pagerabc($params, Zikula_View $view)
         $params['class_numon'] = ' ';
     }
 
-    $pager = array();
+    $pager = [];
 
     if (!empty($params['names'])) {
         if (!is_array($params['names'])) {
@@ -115,9 +110,9 @@ function smarty_function_pagerabc($params, Zikula_View $view)
         // predefined abc
         if (strtolower($params['skin']) == 'hu') {
             // Hungarian
-            $pager['names']  = $pager['values'] = array('A', '?', 'B', 'C', 'D', 'E', '?', 'F', 'G', 'H', 'I', '?', 'J', 'K', 'L', 'M', 'N', 'O', '?', '?', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', '?', '?', 'U', 'V', 'W', 'X', 'Y', 'Z');
-            //$params['names']  = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U'    ,'V','W','X','Y','Z');
-            //$params['values'] = array('A,?','B','C','D','E,?','F','G','H','I,?','J','K','L','M','N','O,?,?,O','P','Q','R','S','T','U,?,?,U','V','W','X','Y','Z');
+            $pager['names']  = $pager['values'] = ['A', '?', 'B', 'C', 'D', 'E', '?', 'F', 'G', 'H', 'I', '?', 'J', 'K', 'L', 'M', 'N', 'O', '?', '?', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', '?', '?', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+            //$params['names']  = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U'    ,'V','W','X','Y','Z'];
+            //$params['values'] = ['A,?','B','C','D','E,?','F','G','H','I,?','J','K','L','M','N','O,?,?,O','P','Q','R','S','T','U,?,?,U','V','W','X','Y','Z'];
         } else {
             $alphabet = (defined('_ALPHABET')) ? constant('_ALPHABET') : 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z';
             $pager['names'] = $pager['values'] = explode(',', $alphabet);
@@ -153,9 +148,9 @@ function smarty_function_pagerabc($params, Zikula_View $view)
         return $view->getContainer()->get('router')->generate($pager['route'], $pager['args']);
     };
 
-    $allVars = array_merge($view->getRequest()->request->all(), $view->getRequest()->query->all(), $view->getRequest()->attributes->get('_route_params', array()));
+    $allVars = array_merge($view->getRequest()->request->all(), $view->getRequest()->query->all(), $view->getRequest()->attributes->get('_route_params', []));
 
-    $pager['args'] = array();
+    $pager['args'] = [];
     if (empty($pager['module']) && empty($pager['route'])) {
         $pager['module'] = System::getVar('startpage');
         $starttype = System::getVar('starttype');

@@ -53,12 +53,12 @@ function ZikulaRoutesModule_operation_update(&$entity, $params)
         $result = true;
     
         $logger = $serviceManager->get('logger');
-        $logger->notice('{app}: User {user} updated an entity.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname')));
+        $logger->notice('{app}: User {user} updated an entity.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname')]);
     } catch (\Exception $e) {
         throw new \RuntimeException($e->getMessage());
     
         $logger = $serviceManager->get('logger');
-        $logger->error('{app}: User {user} tried to update an entity, but failed.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname')));
+        $logger->error('{app}: User {user} tried to update an entity, but failed.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname')]);
     }
 
     // return result of this operation

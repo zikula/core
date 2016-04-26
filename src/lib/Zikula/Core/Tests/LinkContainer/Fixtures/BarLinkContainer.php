@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of the Zikula package.
+ *
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Zikula\Core\Tests\LinkContainer\Fixtures;
 
@@ -20,7 +28,7 @@ class BarLinkContainer implements LinkContainerInterface
             return $this->$method();
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -34,7 +42,8 @@ class BarLinkContainer implements LinkContainerInterface
         $links[] = [
             'url' => '/bar/admin',
             'text' => 'Bar Admin',
-            'icon' => 'plus'];
+            'icon' => 'plus'
+        ];
 
         return $links;
     }
@@ -50,11 +59,13 @@ class BarLinkContainer implements LinkContainerInterface
         $links[] = [
             'url' => '/bar',
             'text' => 'Bar',
-            'icon' => 'check'];
+            'icon' => 'check'
+        ];
         $links[] = [
             'url' => '/bar2',
             'text' => 'Bar 2',
-            'icon' => 'check'];
+            'icon' => 'check'
+        ];
 
         return $links;
     }
@@ -70,7 +81,8 @@ class BarLinkContainer implements LinkContainerInterface
         $links[] = [
             'url' => '/bar/account',
             'text' => 'Bar Account',
-            'icon' => 'check'];
+            'icon' => 'check'
+        ];
 
         return $links;
     }

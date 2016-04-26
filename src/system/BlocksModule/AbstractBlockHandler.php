@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2015 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\BlocksModule;
@@ -138,7 +135,7 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface, ContainerA
      * @param array $parameters An array of parameters to pass to the view
      * @return string The rendered view
      */
-    public function renderView($view, array $parameters = array())
+    public function renderView($view, array $parameters = [])
     {
         if ($this->container->has('templating')) {
             return $this->container->get('templating')->render($view, $parameters);

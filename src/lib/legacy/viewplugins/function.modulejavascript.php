@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- * @subpackage Template_Plugins
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -59,7 +54,7 @@ function smarty_function_modulejavascript($params, Zikula_View $view)
 {
     // check if script is set (mandatory)
     if (!isset($params['script'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modulejavascript', 'script')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['modulejavascript', 'script']));
 
         return false;
     }
@@ -68,7 +63,7 @@ function smarty_function_modulejavascript($params, Zikula_View $view)
     if (!isset($params['modname'])) {
         if (isset($params['modonly'])) {
             // error - we want $modonly only with $modname
-            $view->trigger_error(__f('Error! in %1$s: parameter \'%2$s\' only supported together with \'%3$s\' set.', array('modulejavascript', 'modonly', 'modname')));
+            $view->trigger_error(__f('Error! in %1$s: parameter \'%2$s\' only supported together with \'%3$s\' set.', ['modulejavascript', 'modonly', 'modname']));
 
             return;
         }
@@ -83,25 +78,25 @@ function smarty_function_modulejavascript($params, Zikula_View $view)
 
     // if modname is empty, we will search the main javascript folder
     if ($params['modname'] == '') {
-        $searchpaths = array('javascript', 'javascript/ajax');
+        $searchpaths = ['javascript', 'javascript/ajax'];
     } else {
         // theme directory
         $theme         = DataUtil::formatForOS(UserUtil::getTheme());
         $osmodname     = DataUtil::formatForOS($params['modname']);
         $themepath     = "themes/$theme/Resources/public/js/$osmodname";
-        $themepathOld     = "themes/$theme/javascript/$osmodname";
+        $themepathOld  = "themes/$theme/javascript/$osmodname";
 
         // module directory
         $modinfo       = ModUtil::getInfoFromName($params['modname']);
         $osmoddir      = DataUtil::formatForOS($modinfo['directory']);
         $modpath       = "modules/$osmoddir/Resources/public/js";
         $syspath       = "system/$osmoddir/Resources/public/js";
-        $modpathOld       = "modules/$osmoddir/javascript";
-        $syspathOld       = "system/$osmoddir/javascript";
-        $modpathOld2      = "modules/$osmoddir/pnjavascript";
-        $syspathOld2      = "system/$osmoddir/pnjavascript";
+        $modpathOld    = "modules/$osmoddir/javascript";
+        $syspathOld    = "system/$osmoddir/javascript";
+        $modpathOld2   = "modules/$osmoddir/pnjavascript";
+        $syspathOld2   = "system/$osmoddir/pnjavascript";
 
-        $searchpaths = array($themepath, $themepathOld, $modpath, $syspath, $modpathOld, $syspathOld, $modpathOld2, $syspathOld2);
+        $searchpaths = [$themepath, $themepathOld, $modpath, $syspath, $modpathOld, $syspathOld, $modpathOld2, $syspathOld2];
     }
     $osscript = DataUtil::formatForOS($params['script']);
 
@@ -121,10 +116,11 @@ function smarty_function_modulejavascript($params, Zikula_View $view)
     $onload = (isset($params['onload'])) ? 'onLoad="' . $params['onload'] . '"' : '';
 
     if (isset($params['assign'])) {
-        $return = array();
-        $return['scriptfile'] = $scriptsrc;
-        $return['tag']        = $tag;
-        $return['onload']     = $onload;
+        $return = [
+            'scriptfile' => $scriptsrc,
+            'tag'        => $tag,
+            'onload'     => $onload
+        ];
         $view->assign($params['assign'], $return);
     } else {
         return $tag;

@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- * @subpackage Template_Plugins
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -42,12 +37,12 @@ function smarty_function_assignedcategorieslist($params, Zikula_View $view)
 {
     if (isset($params['doctrine2']) && (bool)$params['doctrine2'] == true) {
         if (!isset($params['categories'])) {
-            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('assignedcategorieslist', 'categories')));
+            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['assignedcategorieslist', 'categories']));
 
             return false;
         }
     } elseif (!isset($params['item'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('assignedcategorieslist', 'item')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['assignedcategorieslist', 'item']));
 
         return false;
     }
@@ -83,12 +78,11 @@ function smarty_function_assignedcategorieslist($params, Zikula_View $view)
             $result .= '<li>' . DataUtil::formatForDisplay(__('No assigned categories.')) . '</li>';
         }
     } else {
+        $categories = [];
         if (isset($params['item']['Categories']) && !empty($params['item']['Categories'])) {
             $categories = $params['item']['Categories'];
         } elseif (isset($params['item']['__CATEGORIES__']) && !empty($params['item']['__CATEGORIES__'])) {
             $categories = $params['item']['__CATEGORIES__'];
-        } else {
-            $categories = array();
         }
 
         if (!empty($categories)) {

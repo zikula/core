@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2015 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPv3 (or at your option any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
@@ -51,9 +47,9 @@ class CoreExtension extends \Twig_Extension
 
     public function getTokenParsers()
     {
-        return array(
-            new Twig\TokenParser\SwitchTokenParser(),
-        );
+        return [
+            new Twig\TokenParser\SwitchTokenParser()
+        ];
     }
 
     /**
@@ -63,14 +59,14 @@ class CoreExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
+        return [
             new \Twig_SimpleFunction('button', [$this, 'button']),
             new \Twig_SimpleFunction('img', [$this, 'img']),
             new \Twig_SimpleFunction('icon', [$this, 'icon']),
             new \Twig_SimpleFunction('lang', [$this, 'lang']),
             new \Twig_SimpleFunction('langdirection', [$this, 'langDirection']),
             new \Twig_SimpleFunction('zasset', [$this, 'getAssetPath']),
-            new \Twig_SimpleFunction('showflashes', [$this, 'showFlashes'], array('is_safe' => array('html'))),
+            new \Twig_SimpleFunction('showflashes', [$this, 'showFlashes'], ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('array_unset', [$this, 'arrayUnset']),
             new \Twig_SimpleFunction('pageSetVar', [$this, 'pageSetVar']),
             new \Twig_SimpleFunction('pageAddVar', [$this, 'pageAddVar']),
@@ -82,17 +78,17 @@ class CoreExtension extends \Twig_Extension
             new \Twig_SimpleFunction('defaultPath', [new DefaultPathSimpleFunction($this), 'getDefaultPath']),
             new \Twig_SimpleFunction('modAvailable', [$this, 'modAvailable']),
             new \Twig_SimpleFunction('callFunc', [$this, 'callFunc'])
-        );
+        ];
     }
 
     public function getFilters()
     {
-        return array(
+        return [
             new \Twig_SimpleFilter('languageName', [$this, 'languageName']),
-            new \Twig_SimpleFilter('safeHtml', [$this, 'safeHtml'], array('is_safe' => array('html'))),
+            new \Twig_SimpleFilter('safeHtml', [$this, 'safeHtml'], ['is_safe' => ['html']]),
             new \Twig_SimpleFilter('yesNo', [$this, 'yesNo']),
-            new \Twig_SimpleFilter('php', [$this, 'applyPhp']),
-        );
+            new \Twig_SimpleFilter('php', [$this, 'applyPhp'])
+        ];
     }
 
     public function getAssetPath($path)
@@ -147,18 +143,18 @@ class CoreExtension extends \Twig_Extension
      * @param array $params
      * @return string
      */
-    public function showFlashes(array $params = array())
+    public function showFlashes(array $params = [])
     {
         $result = '';
-        $total_messages = array();
-        $messageTypeMap = array(
+        $total_messages = [];
+        $messageTypeMap = [
             \Zikula_Session::MESSAGE_ERROR => 'danger',
             \Zikula_Session::MESSAGE_WARNING => 'warning',
             \Zikula_Session::MESSAGE_STATUS => 'success',
             'danger' => 'danger',
             'success' => 'success',
             'info' => 'info'
-        );
+        ];
 
         foreach ($messageTypeMap as $messageType => $bootstrapClass) {
             $messages = $this->container->get('session')->getFlashBag()->get($messageType);
@@ -360,7 +356,7 @@ class CoreExtension extends \Twig_Extension
             throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
-        $metaTags = $this->container->hasParameter('zikula_view.metatags') ? $this->container->getParameter('zikula_view.metatags') : array();
+        $metaTags = $this->container->hasParameter('zikula_view.metatags') ? $this->container->getParameter('zikula_view.metatags') : [];
         $metaTags[$name] = \DataUtil::formatForDisplay($value);
         $this->container->setParameter('zikula_view.metatags', $metaTags);
     }

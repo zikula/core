@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of the Zikula package.
+ *
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Zikula\Core;
 
@@ -16,6 +24,7 @@ abstract class AbstractBundle extends Bundle
     const STATE_MISSING = 6;
 
     protected $state;
+
     protected $booted = false;
 
     private $basePath;
@@ -27,7 +36,7 @@ abstract class AbstractBundle extends Bundle
 
     public function setState($state)
     {
-        if (!in_array($state, array(self::STATE_ACTIVE, self::STATE_DISABLED, self::STATE_MISSING))) {
+        if (!in_array($state, [self::STATE_ACTIVE, self::STATE_DISABLED, self::STATE_MISSING])) {
             throw new \InvalidArgumentException(sprintf('Invalid state %s', $state));
         }
 

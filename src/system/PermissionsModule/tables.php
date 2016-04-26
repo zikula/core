@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2002 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -23,7 +20,7 @@
 function ZikulaPermissionsModule_tables()
 {
     // Initialise table array
-    $dbtable = array();
+    $dbtable = [];
 
     // Get the name for the Permissions item table.
     $group_perms = 'group_perms';
@@ -32,24 +29,28 @@ function ZikulaPermissionsModule_tables()
     $dbtable['group_perms'] = $group_perms;
 
     // Set the column names.
-    $dbtable['group_perms_column'] = array('pid'       => 'pid',
-                                            'gid'       => 'gid',
-                                            'sequence'  => 'sequence',
-                                            'realm'     => 'realm',
-                                            'component' => 'component',
-                                            'instance'  => 'instance',
-                                            'level'     => 'level',
-                                            'bond'      => 'bond');
+    $dbtable['group_perms_column'] = [
+        'pid'       => 'pid',
+        'gid'       => 'gid',
+        'sequence'  => 'sequence',
+        'realm'     => 'realm',
+        'component' => 'component',
+        'instance'  => 'instance',
+        'level'     => 'level',
+        'bond'      => 'bond'
+    ];
 
     // column definitions
-    $dbtable['group_perms_column_def'] = array('pid'       => "I AUTO PRIMARY",
-                                               'gid'       => "I NOTNULL DEFAULT 0",
-                                               'sequence'  => "I NOTNULL DEFAULT 0",
-                                               'realm'     => "I NOTNULL DEFAULT 0",
-                                               'component' => "C(255) NOTNULL DEFAULT ''",
-                                               'instance'  => "C(255) NOTNULL DEFAULT ''",
-                                               'level'     => "I NOTNULL DEFAULT 0",
-                                               'bond'      => "I NOTNULL DEFAULT 0");
+    $dbtable['group_perms_column_def'] = [
+        'pid'       => "I AUTO PRIMARY",
+        'gid'       => "I NOTNULL DEFAULT 0",
+        'sequence'  => "I NOTNULL DEFAULT 0",
+        'realm'     => "I NOTNULL DEFAULT 0",
+        'component' => "C(255) NOTNULL DEFAULT ''",
+        'instance'  => "C(255) NOTNULL DEFAULT ''",
+        'level'     => "I NOTNULL DEFAULT 0",
+        'bond'      => "I NOTNULL DEFAULT 0"
+    ];
 
     // Return the table information
     return $dbtable;

@@ -1,17 +1,13 @@
 <?php
 /**
- * Copyright 2010 Zikula Foundation.
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Zikula_Controller
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
+
 use Zikula\Core\Exception\FatalErrorException;
 
 /**
@@ -30,7 +26,7 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
      */
     protected function supportsAuthenticationMethod($methodName)
     {
-        return ModUtil::apiFunc($this->name, 'Authentication', 'supportsAuthenticationMethod', array('method' => $methodName), 'Zikula_Api_AbstractAuthentication');
+        return ModUtil::apiFunc($this->name, 'Authentication', 'supportsAuthenticationMethod', ['method' => $methodName], 'Zikula_Api_AbstractAuthentication');
     }
 
     /**
@@ -44,12 +40,12 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
      */
     protected function authenticationMethodIsEnabled($methodName)
     {
-        return ModUtil::apiFunc($this->name, 'Authentication', 'isEnabledForAuthentication', array('method' => $methodName), 'Zikula_Api_AbstractAuthentication');
+        return ModUtil::apiFunc($this->name, 'Authentication', 'isEnabledForAuthentication', ['method' => $methodName], 'Zikula_Api_AbstractAuthentication');
     }
 
     protected function getAuthenticationMethod($methodName)
     {
-        return ModUtil::apiFunc($this->name, 'Authentication', 'getAuthenticationMethod', array('method' => $methodName), 'Zikula_Api_AbstractAuthentication');
+        return ModUtil::apiFunc($this->name, 'Authentication', 'getAuthenticationMethod', ['method' => $methodName], 'Zikula_Api_AbstractAuthentication');
     }
 
     /**
@@ -116,20 +112,20 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
         }
 
         if (!isset($args['form_type']) || !is_string($args['form_type'])) {
-            throw new \InvalidArgumentException($this->__f('An invalid form type (\'%1$s\') was received.', array(
-                    isset($args['form_type']) ? $args['form_type'] : 'NULL'))
+            throw new \InvalidArgumentException($this->__f('An invalid form type (\'%1$s\') was received.', [
+                    isset($args['form_type']) ? $args['form_type'] : 'NULL'])
             );
         }
 
         if (!isset($args['form_action']) || !is_string($args['form_action'])) {
-            throw new \InvalidArgumentException($this->__f('An invalid form action (\'%1$s\') was received.', array(
-                    isset($args['form_action']) ? $args['form_action'] : 'NULL'))
+            throw new \InvalidArgumentException($this->__f('An invalid form action (\'%1$s\') was received.', [
+                    isset($args['form_action']) ? $args['form_action'] : 'NULL'])
             );
         }
 
         if (!isset($args['method']) || !is_string($args['method']) || !$this->supportsAuthenticationMethod($args['method'])) {
-            throw new \InvalidArgumentException($this->__f('Error: An invalid method (\'%1$s\') was received.', array(
-                    isset($args['method']) ? $args['method'] : 'NULL'))
+            throw new \InvalidArgumentException($this->__f('Error: An invalid method (\'%1$s\') was received.', [
+                    isset($args['method']) ? $args['method'] : 'NULL'])
             );
         }
         // End parameter extraction and error checking
@@ -140,11 +136,11 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
             $icon = $authenticationMethod->getIcon();
             $isFontAwesomeIcon = $authenticationMethod->isFontAwesomeIcon();
 
-            $templateVars = array(
-                'authentication_method'   => array(
+            $templateVars = [
+                'authentication_method'   => [
                     'modname'   => $this->name,
                     'method'    => $args['method'],
-                ),
+                ],
                 'is_selected'             => isset($args['is_selected']) && $args['is_selected'],
                 'form_type'               => $args['form_type'],
                 'form_action'             => $args['form_action'],
@@ -152,7 +148,7 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
                 'icon'                    => $icon,
                 'isFontAwesomeIcon'       => $isFontAwesomeIcon,
                 'skipLoginFormFieldsPage' => $authenticationMethod->getSkipLoginFormFieldsPage() && $args['form_type'] === 'registration'
-            );
+            ];
 
             $view = new Zikula_View($this->serviceManager, 'ZikulaUsersModule', Zikula_View::CACHE_ENABLED);
             $view->assign($templateVars);
@@ -161,7 +157,7 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
             if (!$view->template_exists($templateName)) {
                 $templateName = "Authentication/AuthenticationMethodSelector/Base/Base.tpl";
                 if (!$view->template_exists($templateName)) {
-                    throw new FatalErrorException($this->__f('A form fields template was not found for the %1$s method using form type \'%2$s\'.', array($args['method'], $args['form_type'])));
+                    throw new FatalErrorException($this->__f('A form fields template was not found for the %1$s method using form type \'%2$s\'.', [$args['method'], $args['form_type']]));
                 }
             }
 

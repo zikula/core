@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2011 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- * @subpackage Template_Plugins
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -54,12 +49,12 @@ function smarty_block_pageaddvarblock($params, $content, Zikula_View $view)
         $varname = isset($params['name']) ? $params['name'] : 'header';
 
         if (System::isLegacyMode() && ($varname == 'rawtext')) {
-            LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', array('rawtext', 'header')), E_USER_DEPRECATED);
+            LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', ['rawtext', 'header']), E_USER_DEPRECATED);
             $varname = 'header';
         }
 
         if (($varname != 'header') && ($varname != 'footer')) {
-            throw new Zikula_Exception_Fatal(__f('Invalid page variable name: \'%1$s\'.', array($varname)));
+            throw new Zikula_Exception_Fatal(__f('Invalid page variable name: \'%1$s\'.', [$varname]));
         }
 
         PageUtil::addVar($varname, $content);

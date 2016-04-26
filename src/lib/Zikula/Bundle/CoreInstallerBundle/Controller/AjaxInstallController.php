@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2014 - Zikula CoreInstaller bundle.
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Bundle\CoreInstallerBundle\Controller;
@@ -39,7 +35,8 @@ class AjaxInstallController extends AbstractController
      * @var YamlDumper
      */
     private $yamlManager;
-    private $systemModules = array(
+
+    private $systemModules = [
         'ZikulaExtensionsModule',
         'ZikulaSettingsModule',
         'ZikulaThemeModule',
@@ -53,7 +50,7 @@ class AjaxInstallController extends AbstractController
         'ZikulaMailerModule',
         'ZikulaSearchModule',
         'ZikulaRoutesModule',
-    );
+    ];
 
     public function __construct(ContainerInterface $container)
     {
@@ -66,7 +63,7 @@ class AjaxInstallController extends AbstractController
         $stage = $request->request->get('stage');
         $status = $this->executeStage($stage);
 
-        return new JsonResponse(array('status' => $status));
+        return new JsonResponse(['status' => $status]);
     }
 
     public function commandLineAction($stage)
@@ -140,7 +137,7 @@ class AjaxInstallController extends AbstractController
         $helper = new CoreBundleBootstrapHelper($boot->getConnection($kernel));
         $helper->createSchema();
         $helper->load();
-        $bundles = array();
+        $bundles = [];
         // this neatly autoloads
         $boot->getPersistedBundles($kernel, $bundles);
 
@@ -166,7 +163,7 @@ class AjaxInstallController extends AbstractController
         // @todo remove legacy support when refactoring is complete.
         $reflectionInstaller = new \ReflectionClass($className);
         if ($reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
-            $installer = $reflectionInstaller->newInstanceArgs(array($this->container, $module));
+            $installer = $reflectionInstaller->newInstanceArgs([$this->container, $module]);
         } elseif ($reflectionInstaller->isSubclassOf('\Zikula\Core\ExtensionInstallerInterface')) {
             $installer = $reflectionInstaller->newInstance();
             $installer->setBundle($module);
@@ -204,7 +201,8 @@ class AjaxInstallController extends AbstractController
     private function categorizeModules()
     {
         reset($this->systemModules);
-        $systemModulesCategories = array('ZikulaExtensionsModule' => __('System'),
+        $systemModulesCategories = [
+            'ZikulaExtensionsModule' => __('System'),
             'ZikulaPermissionsModule' => __('Users'),
             'ZikulaGroupsModule' => __('Users'),
             'ZikulaBlocksModule' => __('Layout'),
@@ -216,7 +214,8 @@ class AjaxInstallController extends AbstractController
             'ZikulaSearchModule' => __('Content'),
             'ZikulaAdminModule' => __('System'),
             'ZikulaSettingsModule' => __('System'),
-            'ZikulaRoutesModule' => __('System'), );
+            'ZikulaRoutesModule' => __('System')
+        ];
 
         $modulesCategories = $this->container->get('doctrine.orm.entity_manager')
             ->getRepository('ZikulaAdminModule:AdminCategoryEntity')->getIndexedCollection('name');
@@ -285,14 +284,14 @@ class AjaxInstallController extends AbstractController
         $params = $this->decodeParameters($this->yamlManager->getParameters());
 
         // login as admin using provided credentials
-        $authenticationInfo = array(
+        $authenticationInfo = [
             'login_id'  => $params['username'],
             'pass'      => $params['password']
-        );
-        $authenticationMethod = array(
+        ];
+        $authenticationMethod = [
             'modname'   => 'ZikulaUsersModule',
             'method'    => 'uname',
-        );
+        ];
         $loggedIn = \UserUtil::loginUsing($authenticationMethod, $authenticationInfo);
 
         return (bool) $loggedIn;
@@ -385,10 +384,10 @@ class AjaxInstallController extends AbstractController
     private function protectFiles()
     {
         // protect config.php and parameters.yml files
-        foreach (array(
-                     realpath($this->container->get('kernel')->getRootDir() . '/../config/config.php'),
-                     realpath($this->container->get('kernel')->getRootDir() . '/../app/config/parameters.yml')
-                 ) as $file) {
+        foreach ([
+            realpath($this->container->get('kernel')->getRootDir() . '/../config/config.php'),
+            realpath($this->container->get('kernel')->getRootDir() . '/../app/config/parameters.yml')
+        ] as $file) {
             @chmod($file, 0400);
             if (!is_readable($file)) {
                 @chmod($file, 0440);

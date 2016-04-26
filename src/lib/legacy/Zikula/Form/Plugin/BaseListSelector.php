@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_Form
- * @subpackage Zikula_Form_AbstractPlugin
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -111,13 +106,15 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
      * The list of selectable items.
      *
      * This is an array of arrays like this:
-     * array( array('text' => 'A', 'value' => '1'),
-     * array('text' => 'B', 'value' => '2'),
-     * array('text' => 'C', 'value' => '3') )
+     * [
+     *     ['text' => 'A', 'value' => '1'],
+     *     ['text' => 'B', 'value' => '2'],
+     *     ['text' => 'C', 'value' => '3']
+     * ]
      *
      * @var array
      */
-    public $items = array();
+    public $items = [];
 
     /**
      * HTML input name for this plugin. Defaults to the ID of the plugin.
@@ -231,7 +228,7 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
                 $data[$this->dataField] = $this->getSelectedValue();
             } else {
                 if (!array_key_exists($this->group, $data)) {
-                    $data[$this->group] = array();
+                    $data[$this->group] = [];
                 }
                 $data[$this->group][$this->dataField] = $this->getSelectedValue();
             }
@@ -316,10 +313,10 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
      */
     public function addItem($text, $value)
     {
-        $item = array(
+        $item = [
             'text' => $text,
             'value' => $value
-        );
+        ];
 
         $this->items[] = $item;
     }

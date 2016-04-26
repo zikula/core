@@ -1,23 +1,20 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\ThemeModule\Block;
 
+use BlockUtil;
+use DataUtil;
+use ModUtil;
 use SecurityUtil;
 use System;
-use ModUtil;
-use DataUtil;
-use BlockUtil;
 use UserUtil;
 use ThemeUtil;
 use Zikula_View;
@@ -52,15 +49,17 @@ class ThemeswitcherBlock extends \Zikula_Controller_AbstractBlock
             $requirement_message = '';
         }
 
-        return array('module'       => 'ZikulaThemeModule',
-                     'text_type'         => $this->__('Theme switcher'),
-                     'text_type_long'    => $this->__('Theme switcher'),
-                     'allow_multiple'    => true,
-                     'form_content'      => false,
-                     'form_refresh'      => false,
-                     'show_preview'      => true,
-                     'admin_tableless'   => true,
-                     'requirement'       => $requirement_message);
+        return [
+            'module'       => 'ZikulaThemeModule',
+            'text_type'         => $this->__('Theme switcher'),
+            'text_type_long'    => $this->__('Theme switcher'),
+            'allow_multiple'    => true,
+            'form_content'      => false,
+            'form_refresh'      => false,
+            'show_preview'      => true,
+            'admin_tableless'   => true,
+            'requirement'       => $requirement_message
+        ];
     }
 
     /**
@@ -111,7 +110,7 @@ class ThemeswitcherBlock extends \Zikula_Controller_AbstractBlock
         // get all themes in our environment
         $themes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_USER);
 
-        $previewthemes = array();
+        $previewthemes = [];
         $currentthemepic = null;
         foreach ($themes as $themeinfo) {
             $themename = $themeinfo['name'];

@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\SecurityCenterModule;
@@ -25,14 +22,17 @@ class SecurityCenterModuleVersion extends \Zikula_AbstractVersion
      */
     public function getMetaData()
     {
-        $meta = array();
-        $meta['displayname']    = $this->__('Security Center');
-        $meta['description']    = $this->__('Manage site security and settings.');
-        //! module name that appears in URL
-        $meta['url']            = $this->__('securitycenter');
-        $meta['version']        = '1.4.4';
-        $meta['core_min'] = '1.4.0';
-        $meta['securityschema'] = array('ZikulaSecurityCenterModule::' => '::');
+        $meta = [
+            'displayname' => $this->__('Security Center'),
+            'description' => $this->__('Manage site security and settings.'),
+            //! module name that appears in URL
+            'url' => $this->__('securitycenter'),
+            'version' => '1.4.4',
+            'core_min' => '1.4.0',
+            'securityschema' => [
+                'ZikulaSecurityCenterModule::' => '::'
+            ]
+        ];
 
         return $meta;
     }

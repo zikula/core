@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright 2010 Zikula Foundation.
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Routing
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -32,7 +27,7 @@ class Zikula_Routing_UrlRouter
      */
     public function __construct()
     {
-        $this->routes = array();
+        $this->routes = [];
     }
 
     /**
@@ -43,7 +38,7 @@ class Zikula_Routing_UrlRouter
      *
      * @return mixed string With created url or false on error.
      */
-    public function generate($name = '', array $params = array())
+    public function generate($name = '', array $params = [])
     {
         // reference to the route used for url creation
         $route = null;

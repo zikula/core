@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of the Zikula package.
+ *
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Zikula\Bundle\CoreBundle\Bundle;
 
@@ -14,7 +22,7 @@ class Bootstrap
     /**
      * @var array the active/inactive state of each extension
      */
-    private $extensionStateMap = array();
+    private $extensionStateMap = [];
 
     public function getConnection($kernel)
     {
@@ -93,24 +101,24 @@ class Bootstrap
             $sql = "SELECT m.name, m.state, m.id FROM modules as m";
             $rows = $conn->executeQuery($sql);
             foreach ($rows as $row) {
-                $this->extensionStateMap[$row['name']] = array(
+                $this->extensionStateMap[$row['name']] = [
                     'state' => (int)$row['state'],
                     'id'    => (int)$row['id'],
-                );
+                ];
             }
             $sql = "SELECT t.name, t.state, t.id FROM themes as t";
             $rows = $conn->executeQuery($sql);
             foreach ($rows as $row) {
-                $this->extensionStateMap[$row['name']] = array(
+                $this->extensionStateMap[$row['name']] = [
                     'state' => (int)$row['state'],
                     'id'    => (int)$row['id'],
-                );
+                ];
             }
 
             if (isset($this->extensionStateMap[$extensionName])) {
                 $state = $this->extensionStateMap[$extensionName];
             } else {
-                $state =  array('state' => ($type == 'T') ?  \ThemeUtil::STATE_INACTIVE : \ModUtil::STATE_UNINITIALISED);
+                $state = ['state' => ($type == 'T') ?  \ThemeUtil::STATE_INACTIVE : \ModUtil::STATE_UNINITIALISED];
             }
         }
 

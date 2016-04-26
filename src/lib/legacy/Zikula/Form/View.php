@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_Form
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -172,11 +168,11 @@ class Zikula_Form_View extends Zikula_View
         // custom Form setup
         $this->idCount = 1;
         $this->errorMsgSet = false;
-        $this->plugins = array();
-        $this->blockStack = array();
+        $this->plugins = [];
+        $this->blockStack = [];
         $this->redirected = false;
 
-        $this->validators = array();
+        $this->validators = [];
         $this->validationChecked = false;
         $this->_isValid = null;
 
@@ -683,7 +679,7 @@ class Zikula_Form_View extends Zikula_View
     public function setState($region, $varName, &$varValue)
     {
         if (!isset($this->state[$region])) {
-            $this->state[$region] = array();
+            $this->state[$region] = [];
         }
 
         $this->state[$region][$varName] = &$varValue;
@@ -722,7 +718,7 @@ class Zikula_Form_View extends Zikula_View
      *
      * @return false
      */
-    public function setPluginErrorMsg($id, $msg, $newvalues = array())
+    public function setPluginErrorMsg($id, $msg, $newvalues = [])
     {
         $plugin = $this->getPluginById($id);
         $plugin->setError($msg);
@@ -771,7 +767,7 @@ class Zikula_Form_View extends Zikula_View
     {
         if ($this->errorMsgSet) {
             include_once 'lib/legacy/viewplugins/insert.getstatusmsg.php';
-            $args = array();
+            $args = [];
 
             return smarty_insert_getstatusmsg($args, $this);
         } else {
@@ -870,7 +866,7 @@ class Zikula_Form_View extends Zikula_View
      *
      * function raisePostBackEvent(Zikula_Form_View $view, $eventArgument)
      * {
-     *   $args = array('commandName' => $eventArgument, 'commandArgument' => null);
+     *   $args = ['commandName' => $eventArgument, 'commandArgument' => null];
      *   $view->raiseEvent($this->onCommand == null ? 'handleCommand' : $this->onCommand, $args);
      * }
      * </code>
@@ -921,7 +917,7 @@ class Zikula_Form_View extends Zikula_View
      */
     public function initializeIncludes()
     {
-        $this->includes = array();
+        $this->includes = [];
     }
 
     /**
@@ -991,7 +987,7 @@ class Zikula_Form_View extends Zikula_View
      */
     public function initializeStateData()
     {
-        $this->data = array();
+        $this->data = [];
     }
 
     /**
@@ -1061,7 +1057,7 @@ class Zikula_Form_View extends Zikula_View
      */
     public function initializeState()
     {
-        $this->state = array();
+        $this->state = [];
     }
 
     /**
@@ -1099,7 +1095,7 @@ class Zikula_Form_View extends Zikula_View
      */
     public function getPluginState_rec($plugins)
     {
-        $state = array();
+        $state = [];
 
         $lim = count($plugins);
         for ($i = 0; $i < $lim; ++$i) {
@@ -1112,12 +1108,12 @@ class Zikula_Form_View extends Zikula_View
 
             $varInfo = get_class_vars(get_class($plugin));
 
-            $pluginState = array();
+            $pluginState = [];
             foreach ($varInfo as $name => $value) {
                 $pluginState[] = $plugin->$name;
             }
 
-            $state[] = array(get_class($plugin), $pluginState, $this->getPluginState_rec($subPlugins));
+            $state[] = [get_class($plugin), $pluginState, $this->getPluginState_rec($subPlugins)];
 
             $plugin->plugins = &$subPlugins;
         }
@@ -1180,14 +1176,14 @@ class Zikula_Form_View extends Zikula_View
      */
     public function &decodePluginState_rec(&$state)
     {
-        $plugins = array();
+        $plugins = [];
 
         foreach ($state as $pluginInfo) {
             $pluginType = $pluginInfo[0];
             $pluginState = $pluginInfo[1];
             $subState = $pluginInfo[2];
 
-            $dummy = array();
+            $dummy = [];
             $plugin = new $pluginType($this, $dummy);
 
             $vars = array_keys(get_class_vars(get_class($plugin)));
@@ -1348,9 +1344,11 @@ class Zikula_Form_View extends Zikula_View
      * For instance the data:
      *
      * <code>
-     * array('title'    => 'The posted title',
-     *       'text'     => 'The posted text',
-     *       'servings' => 4)
+     * [
+     *     'title'    => 'The posted title',
+     *     'text'     => 'The posted text',
+     *     'servings' => 4
+     * ]
      * </code>
      *
      * Most input plugins supports grouping of posted data. These inputs allows you to
@@ -1366,16 +1364,18 @@ class Zikula_Form_View extends Zikula_View
      * The above example would give the data set:
      *
      * <code>
-     * array('A' => array('title'    => 'The posted title',
-     *                    'text'     => 'The posted text'),
-     *       'servings' => 4)
+     * [
+     *     'A' => ['title'    => 'The posted title',
+     *             'text'     => 'The posted text'],
+     *     'servings' => 4
+     * ]
      * </code>
      *
      * @return mixed
      */
     public function getValues()
     {
-        $result = array();
+        $result = [];
 
         $this->getValues_rec($this->plugins, $result);
 

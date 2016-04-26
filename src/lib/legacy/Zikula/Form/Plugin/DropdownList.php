@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_Form
- * @subpackage Zikula_Form_AbstractPlugin
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -26,15 +21,17 @@
  * <code>
  * class mymodule_user_testHandler extends Zikula_Form_Handler
  * {
- * function initialize(Zikula_Form_View $view)
- * {
- * $items = array( array('text' => 'A', 'value' => '1'),
- * array('text' => 'B', 'value' => '2'),
- * array('text' => 'C', 'value' => '3') );
+ *     function initialize(Zikula_Form_View $view)
+ *     {
+ *         $items = [
+ *             ['text' => 'A', 'value' => '1'],
+ *             ['text' => 'B', 'value' => '2'],
+ *             ['text' => 'C', 'value' => '3']
+ *         ];
  *
- * $view->assign('items', $items); // Supply items
- * $view->assign('mylist', 2);     // Supply selected value
- * }
+ *         $view->assign('items', $items); // Supply items
+ *         $view->assign('mylist', 2);     // Supply selected value
+ *     }
  * }
  * </code>
  * Or you can set them indirectly using the plugin's databased features:
@@ -45,15 +42,17 @@
  * <code>
  * class mymodule_user_testHandler extends Zikula_Form_Handler
  * {
- * function initialize(Zikula_Form_View $view)
- * {
- * $items = array( array('text' => 'A', 'value' => '1'),
- * array('text' => 'B', 'value' => '2'),
- * array('text' => 'C', 'value' => '3') );
+ *     function initialize(Zikula_Form_View $view)
+ *     {
+ *         $items = [
+ *             ['text' => 'A', 'value' => '1'],
+ *             ['text' => 'B', 'value' => '2'],
+ *             ['text' => 'C', 'value' => '3']
+ *         ];
  *
- * $view->assign('mylistItems', $items);  // Supply items
- * $view->assign('mylist', 2);            // Supply selected value
- * }
+ *         $view->assign('mylistItems', $items);  // Supply items
+ *         $view->assign('mylist', 2);            // Supply selected value
+ *     }
  * }
  * </code>
  *
@@ -66,15 +65,17 @@
  * <code>
  * class mymodule_user_testHandler extends Zikula_Form_Handler
  * {
- * function initialize(Zikula_Form_View $view)
- * {
- * $items = array( array('text' => 'A', 'value' => '1', 'optgroup' => 'AAA'),
- * array('text' => 'B', 'value' => '2', 'optgroup' => 'BBB'),
- * array('text' => 'C', 'value' => '3', 'optgroup' => 'CCC') );
+ *     function initialize(Zikula_Form_View $view)
+ *     {
+ *         $items = [
+ *             ['text' => 'A', 'value' => '1', 'optgroup' => 'AAA'],
+ *             ['text' => 'B', 'value' => '2', 'optgroup' => 'BBB'],
+ *             ['text' => 'C', 'value' => '3', 'optgroup' => 'CCC']
+ *         ];
  *
- * $view->assign('mylistItems', $items);  // Supply items
- * $view->assign('mylist', 2);            // Supply selected value
- * }
+ *         $view->assign('mylistItems', $items);  // Supply items
+ *         $view->assign('mylist', 2);            // Supply selected value
+ *     }
  * }
  * </code>
  *
@@ -325,10 +326,10 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
      */
     public function raisePostBackEvent(Zikula_Form_View $view, $eventArgument)
     {
-        $args = array(
+        $args = [
             'commandName' => null,
             'commandArgument' => null
-        );
+        ];
         if (!empty($this->onSelectedIndexChanged)) {
             $view->raiseEvent($this->onSelectedIndexChanged, $args);
         }
@@ -346,7 +347,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
         // Do not read new value if readonly (evil submiter might have forged it)
         if (!$this->readOnly) {
             $value = $this->request->request->get($this->inputName, null);
-            $value = ($value == null) ? array() : (array)$value;
+            $value = (null == $value) ? [] : (array)$value;
 
             for ($i = 0, $count = count($value); $i < $count; ++$i) {
                 if (get_magic_quotes_gpc()) {

@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\CategoriesModule\Controller;
@@ -61,7 +58,7 @@ class UserController extends \Zikula_AbstractController
 
         $allowed = $this->getVar('allowusercatedit', 0);
         if ($allowed) {
-            return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_user_edituser', array(), RouterInterface::ABSOLUTE_URL));
+            return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_user_edituser', [], RouterInterface::ABSOLUTE_URL));
         } else {
             $request->getSession()->getFlashBag()->add('error', $this->__("Sorry! User-owned category editing has not been enabled. This feature can be enabled by the site administrator."));
 
@@ -80,7 +77,7 @@ class UserController extends \Zikula_AbstractController
      */
     public function mainAction()
     {
-        return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_index', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_index', [], RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -98,7 +95,7 @@ class UserController extends \Zikula_AbstractController
     {
         $docroot = $request->get('dr', 0);
         $cid = $request->get('cid', 0);
-        $url = $this->get('router')->generate('zikulacategoriesmodule_user_edit', array('dr' => $docroot), RouterInterface::ABSOLUTE_URL);
+        $url = $this->get('router')->generate('zikulacategoriesmodule_user_edit', ['dr' => $docroot], RouterInterface::ABSOLUTE_URL);
 
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::category', "ID::$docroot", ACCESS_EDIT)) {
             throw new AccessDeniedException();
@@ -110,7 +107,7 @@ class UserController extends \Zikula_AbstractController
             SessionUtil::setVar('categories_referer', $referer);
         }
 
-        $editCat = array();
+        $editCat = [];
 
         if (!$docroot) {
             $request->getSession()->getFlashBag()->add('error', $this->__("Error! The URL contains an invalid 'document root' parameter."));
@@ -158,7 +155,7 @@ class UserController extends \Zikula_AbstractController
             $editCat = CategoryUtil::getCategoryByID($cid);
             if ($editCat['is_locked']) {
                 //! %1$s is the id, %2$s is the name
-                $request->getSession()->getFlashBag()->add('error', $this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($cid, $editCat['name'])), null, $url);
+                $request->getSession()->getFlashBag()->add('error', $this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', [$cid, $editCat['name']]), null, $url);
 
                 return $this->response($this->view->fetch('User/editcategories.tpl'));
             }
@@ -175,14 +172,14 @@ class UserController extends \Zikula_AbstractController
             return $this->response($this->view->fetch('User/editcategories.tpl'));
         }
         if ($editCat && !CategoryUtil::isDirectSubCategory($rootCat, $editCat)) {
-            $request->getSession()->getFlashBag()->add('error', $this->__f('Error! The specified category is not a child of the document root (%1$s; %2$s).', array($docroot, $cid)), null, $url);
+            $request->getSession()->getFlashBag()->add('error', $this->__f('Error! The specified category is not a child of the document root (%1$s; %2$s).', [$docroot, $cid]), null, $url);
 
             return $this->response($this->view->fetch('User/editcategories.tpl'));
         }
 
         $allCats = CategoryUtil::getSubCategoriesForCategory($rootCat, false, false, false, true, true);
 
-        $attributes = isset($editCat['__ATTRIBUTES__']) ? $editCat['__ATTRIBUTES__'] : array();
+        $attributes = isset($editCat['__ATTRIBUTES__']) ? $editCat['__ATTRIBUTES__'] : [];
 
         $languages = ZLanguage::getInstalledLanguages();
 
@@ -267,15 +264,15 @@ class UserController extends \Zikula_AbstractController
                 return $this->response($this->view->fetch('User/editcategories.tpl'));
             }
 
-            $cat = array(
+            $cat = [
                 'id' => '',
                 'parent' => $this->entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $userRootCat['id']),
                 'name' => $userCatName,
-                'display_name' => array(ZLanguage::getLanguageCode() => $userCatName),
-                'display_desc' => array(ZLanguage::getLanguageCode() => ''),
+                'display_name' => [ZLanguage::getLanguageCode() => $userCatName],
+                'display_desc' => [ZLanguage::getLanguageCode() => ''],
                 'path' => $thisUserRootCatPath,
                 'status' => 'A'
-            );
+            ];
 
             $obj = new \Zikula\CategoriesModule\Entity\CategoryEntity();
             $obj->merge($cat);
@@ -292,17 +289,17 @@ class UserController extends \Zikula_AbstractController
             $autoCreateDefaultUserCat = $this->getVar('autocreateuserdefaultcat', 0);
             if ($autoCreateDefaultUserCat) {
                 $userdefaultcatname = $this->getVar('userdefaultcatname', $this->__('Default'));
-                $cat = array(
+                $cat = [
                     'id' => '',
                     'parent' => $this->entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $dr),
                     'is_leaf' => 1,
                     'name' => $userdefaultcatname,
                     'sort_value' => 0,
-                    'display_name' => array(ZLanguage::getLanguageCode() => $userdefaultcatname),
-                    'display_desc' => array(ZLanguage::getLanguageCode() => ''),
+                    'display_name' => [ZLanguage::getLanguageCode() => $userdefaultcatname],
+                    'display_desc' => [ZLanguage::getLanguageCode() => ''],
                     'path' => $thisUserRootCatPath . '/' . $userdefaultcatname,
                     'status' => 'A'
-                );
+                ];
 
                 $obj2 = new \Zikula\CategoriesModule\Entity\CategoryEntity();
                 $obj2->merge($cat);
@@ -318,7 +315,7 @@ class UserController extends \Zikula_AbstractController
             $dr = $thisUserRootCat['id'];
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_user_edit', array('dr' => $dr), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_user_edit', ['dr' => $dr], RouterInterface::ABSOLUTE_URL));
     }
 
     /**

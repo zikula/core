@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package DBObject
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -292,7 +288,7 @@ class DBObjectArray
     {
         $item = ObjectUtil::createEmptyObject($this->_objType);
         if ($item) {
-            $data = array();
+            $data = [];
             for ($i = 0; $i < $num; $i++) {
                 $data[] = $item;
             }
@@ -334,11 +330,11 @@ class DBObjectArray
      * issues when accessing filter fields which may not be set + do additional processing as necessary.
      * Default implementation which can be overridden by subclasses.
      *
-     * @param array $filter An array containing the set filter values (optional) (default=array()).
+     * @param array $filter An array containing the set filter values (optional) (default=[]).
      *
      * @return array The processed filter array.
      */
-    public function genFilterPreProcess($filter = array())
+    public function genFilterPreProcess($filter = [])
     {
         return $filter;
     }
@@ -348,11 +344,11 @@ class DBObjectArray
      *
      * Generate a filter for the array view. Default implementation which can be overridden by subclasses.
      *
-     * @param array $filter An array containing the set filter values (optional) (default=array()).
+     * @param array $filter An array containing the set filter values (optional) (default=[]).
      *
      * @return string The generated filter (where-clause) string.
      */
-    public function genFilter($filter = array())
+    public function genFilter($filter = [])
     {
         $filter = $this->genFilterPreProcess($filter);
 
@@ -465,7 +461,7 @@ class DBObjectArray
      *
      * @return array The requested object/value.
      */
-    public function getDataFromInput($key = null, $default = null, $source = 'REQUEST', $filter = null, array $args = array())
+    public function getDataFromInput($key = null, $default = null, $source = 'REQUEST', $filter = null, array $args = [])
     {
         if (!$key) {
             $key = $this->_objPath;
@@ -1053,7 +1049,7 @@ class DBObjectArray
             $objArray = $this->_objData;
         }
 
-        $arrayHash = array();
+        $arrayHash = [];
         foreach ($objArray as $obj) {
             if (!$includeStandardFields) {
                 ObjectUtil::removeStandardFieldsFromObject($obj);

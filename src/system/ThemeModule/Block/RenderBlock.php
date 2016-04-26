@@ -1,22 +1,19 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\ThemeModule\Block;
 
-use Zikula_View;
-use SecurityUtil;
 use BlockUtil;
 use ModUtil;
+use SecurityUtil;
+use Zikula_View;
 
 /**
  * @deprecated at Core-2.0 - This block will not be converted to Twig nor be available in Core-2.0
@@ -72,13 +69,15 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
      */
     public function info()
     {
-        return array('module'         => 'ZikulaThemeModule',
-                     'text_type'      => $this->__('Rendering engine'),
-                     'text_type_long' => $this->__('Custom rendering engine block'),
-                     'allow_multiple' => true,
-                     'form_content'   => false,
-                     'form_refresh'   => false,
-                     'show_preview'   => true);
+        return [
+            'module'         => 'ZikulaThemeModule',
+            'text_type'      => $this->__('Rendering engine'),
+            'text_type_long' => $this->__('Custom rendering engine block'),
+            'allow_multiple' => true,
+            'form_content'   => false,
+            'form_refresh'   => false,
+            'show_preview'   => true
+        ];
     }
 
     /**
@@ -125,7 +124,7 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
         // checks the existance of the template
         if (!$this->view->template_exists($vars['template'])) {
             if ($showerror) {
-                throw new \RuntimeException($this->__f('The specified template for the render block doesn\'t exists for the \'%1$s\' module. Block ID: %2$s', array($vars['module'], $blockinfo['bid'])));
+                throw new \RuntimeException($this->__f('The specified template for the render block doesn\'t exists for the \'%1$s\' module. Block ID: %2$s', [$vars['module'], $blockinfo['bid']]));
             }
 
             return;
@@ -173,7 +172,7 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
 
         // validate the current data
         $valid = false;
-        $warnings = array();
+        $warnings = [];
         if (isset($vars['module']) && $vars['module']) {
             if (ModUtil::available($vars['module'])) {
                 if (isset($vars['template']) && $vars['template']) {

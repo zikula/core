@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2015 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Response
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Core\LinkContainer;
@@ -26,7 +21,7 @@ class LinkContainerCollector
     public function __construct(EventDispatcherInterface $dispatcher)
     {
         $this->eventDispatcher = $dispatcher;
-        $this->linkContainers = array();
+        $this->linkContainers = [];
     }
 
     public function addContainer(LinkContainerInterface $linkContainer)
@@ -36,11 +31,11 @@ class LinkContainerCollector
 
     public function getLinks($containerName, $type = LinkContainerInterface::TYPE_ADMIN)
     {
-        $links = array();
+        $links = [];
         if ($this->hasContainer($containerName)) {
             $links = $this->linkContainers[$containerName]->getLinks($type);
             // fire event here to add more links like hooks, moduleServices, etc
-            $event = new GenericEvent($containerName, array('type' => $type), $links);
+            $event = new GenericEvent($containerName, ['type' => $type], $links);
             $links = $this->eventDispatcher->dispatch(LinkContainerInterface::EVENT_NAME, $event)->getData();
         }
 

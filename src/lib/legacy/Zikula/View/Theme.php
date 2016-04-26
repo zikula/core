@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 use Symfony\Component\HttpFoundation\Response;
@@ -146,7 +142,7 @@ class Zikula_View_Theme extends Zikula_View
      *
      * @var array
      */
-    protected $_overrideMap = array();
+    protected $_overrideMap = [];
 
     /**
      * Constructor.
@@ -161,7 +157,7 @@ class Zikula_View_Theme extends Zikula_View
         // prevents any case mismatch
         $themeName = $this->themeinfo['name'];
 
-        foreach (array('name', 'directory', 'version', 'state', 'xhtml') as $key) {
+        foreach (['name', 'directory', 'version', 'state', 'xhtml'] as $key) {
             $this->$key = $this->themeinfo[$key];
         }
 
@@ -332,7 +328,7 @@ class Zikula_View_Theme extends Zikula_View
             $maincontent = '<div id="z-maincontent" class="'.($this->homepage ? 'z-homepage ' : '').'z-module-'.DataUtil::formatForDisplay(strtolower($this->toplevelmodule)).' '.$this->type.' '.$this->func.'">'.$maincontent.'</div>';
         }
 
-        $event = new \Zikula\Core\Event\GenericEvent($this, array(), $maincontent);
+        $event = new \Zikula\Core\Event\GenericEvent($this, [], $maincontent);
         $maincontent = $this->eventManager->dispatch('theme.prefetch', $event)->getData();
 
         $this->cache_id = md5($this->cache_id.'|'.$maincontent);
@@ -343,7 +339,7 @@ class Zikula_View_Theme extends Zikula_View
         // render the page using the correct template
         $output = $this->fetch($this->themeconfig['page'], $this->cache_id);
 
-        $event = new \Zikula\Core\Event\GenericEvent($this, array(), $output);
+        $event = new \Zikula\Core\Event\GenericEvent($this, [], $output);
         $content = $this->eventManager->dispatch('theme.postfetch', $event)->getData();
 
         $response->setContent($content);
@@ -384,7 +380,7 @@ class Zikula_View_Theme extends Zikula_View
 
         // HACK: Save/restore output filters - we don't want to output-filter blocks
         $outputfilters = $this->_plugins['outputfilter'];
-        $this->_plugins['outputfilter'] = array();
+        $this->_plugins['outputfilter'] = [];
         // HACK: Save/restore cache settings
         $caching = $this->caching;
         $this->caching = Zikula_View::CACHE_DISABLED;
@@ -462,11 +458,11 @@ class Zikula_View_Theme extends Zikula_View
 
         // The rest of this code is scheduled for removal from 1.5.0 - drak
 
-        $paths = array();
+        $paths = [];
         if ($theme) {
-            $paths[] = $theme->getPath().'/Resources/views';
-            $paths[] = $theme->getPath().'/Resources/views/modules';
-            $paths[] = $theme->getPath().'/Resources/views/blocks';
+            $paths[] = $theme->getPath() . '/Resources/views';
+            $paths[] = $theme->getPath() . '/Resources/views/modules';
+            $paths[] = $theme->getPath() . '/Resources/views/blocks';
         } else {
             $paths[] = "themes/$themeDir/templates";
             $paths[] = "themes/$themeDir/templates/modules";
@@ -530,7 +526,7 @@ class Zikula_View_Theme extends Zikula_View
     {
         if ($cache_ids) {
             if (!is_array($cache_ids)) {
-                $cache_ids = array($cache_ids);
+                $cache_ids = [$cache_ids];
             }
             if (!$themes) {
                 $themes = ThemeUtil::getAllThemes();
@@ -672,7 +668,7 @@ class Zikula_View_Theme extends Zikula_View
              ->assign('scriptpath', $this->scriptpath);
 
         // load the theme variables
-        $variables = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getvariables', array('theme' => $this->name));
+        $variables = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getvariables', ['theme' => $this->name]);
         if (!empty($variables['variables'])) {
             $this->assign($variables['variables']);
         }
@@ -728,7 +724,7 @@ class Zikula_View_Theme extends Zikula_View
     {
         if (!$this->themeconfig) {
             // load the page configurations
-            $pageconfigurations = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpageconfigurations', array('theme' => $this->name));
+            $pageconfigurations = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpageconfigurations', ['theme' => $this->name]);
             $methodAnnotationValue = ServiceUtil::get('zikula_core.common.theme_engine')->getAnnotationValue(); // Core-2.0 FC
 
             // identify and load the correct module configuration
@@ -781,17 +777,17 @@ class Zikula_View_Theme extends Zikula_View
             }
 
             // load the page configuration
-            $this->themeconfig = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpageconfiguration', array('theme' => $this->name, 'filename' => $file));
+            $this->themeconfig = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpageconfiguration', ['theme' => $this->name, 'filename' => $file]);
 
             // check if we've not got a valid theme configation
             if (!$this->themeconfig['page']) {
                 $file = 'master.ini';
-                $this->themeconfig = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpageconfiguration', array('theme' => $this->name, 'filename' => $file));
+                $this->themeconfig = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpageconfiguration', ['theme' => $this->name, 'filename' => $file]);
             }
         }
 
         if (empty($this->themeconfig['page'])) {
-            throw new Exception(__f("Empty 'page' specified in your theme page configuration on file %s.", array($file)));
+            throw new Exception(__f("Empty 'page' specified in your theme page configuration on file %s.", [$file]));
         }
 
         // register any filters
@@ -829,7 +825,7 @@ class Zikula_View_Theme extends Zikula_View
 
         // load the palette if set
         if (!empty($this->themeconfig['palette'])) {
-            $palette = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpalette', array('theme' => $this->name, 'palette' => $this->themeconfig['palette']));
+            $palette = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpalette', ['theme' => $this->name, 'palette' => $this->themeconfig['palette']]);
             $this->assign('palette', $palette);
         }
 
@@ -864,7 +860,7 @@ class Zikula_View_Theme extends Zikula_View
     {
         $cache_dir = $this->cache_dir;
 
-        $cached_files = FileUtil::getFiles($cache_dir, true, false, array('php'), null, false);
+        $cached_files = FileUtil::getFiles($cache_dir, true, false, ['php'], null, false);
 
         foreach ($cached_files as $cf) {
             unlink(realpath($cf));

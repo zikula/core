@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package I18n
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 if (!defined('LC_MESSAGES')) {
@@ -26,8 +22,8 @@ if (!defined('LC_MESSAGES')) {
  * Note params must passed either as
  * __('beer') or as $beer where $beer = __('beer') somewhere before the call
  * __f('I want some %s with my meal', __('beer'));
- * __f('Give me %s with my %s', array(__('some sausages'), __('beer'));
- * __f('%1$s buy me %2$s', array('Drak', __('a beer'));
+ * __f('Give me %s with my %s', [__('some sausages'), __('beer')]);
+ * __f('%1$s buy me %2$s', ['Drak', __('a beer')]);
  *
  * @param string $msgid  The message.
  * @param mixed  $params Format parameters or attay of parameters.
@@ -38,8 +34,8 @@ if (!defined('LC_MESSAGES')) {
  */
 function __f($msgid, $params, $domain = null)
 {
-    $msgstr = (isset($domain) ? _dgettext($domain, $msgid) : _gettext($msgid));
-    $params = (is_array($params) ? $params : array($params));
+    $msgstr = isset($domain) ? _dgettext($domain, $msgid) : _gettext($msgid);
+    $params = is_array($params) ? $params : [$params];
 
     return vsprintf($msgstr, $params);
 }
@@ -67,8 +63,8 @@ function __f($msgid, $params, $domain = null)
  */
 function _fn($sin, $plu, $n, $params, $domain = null)
 {
-    $msgstr = (isset($domain) ? _dngettext($domain, $sin, $plu, (int)$n) : _ngettext($sin, $plu, (int)$n));
-    $params = (is_array($params) ? $params : array($params));
+    $msgstr = isset($domain) ? _dngettext($domain, $sin, $plu, (int)$n) : _ngettext($sin, $plu, (int)$n);
+    $params = is_array($params) ? $params : [$params];
 
     return vsprintf($msgstr, $params);
 }

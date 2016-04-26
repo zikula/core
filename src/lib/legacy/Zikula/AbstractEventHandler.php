@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright 2009 Zikula Foundation.
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Zikula_Core
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -22,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * of eventname => handlerMethod like the following.  (Can contain multiple
  * index pairs).
  *
- * protected $eventNames = array('name' => 'handlerMethod')
+ * protected $eventNames = ['name' => 'handlerMethod']
  *
  * The handler methods must be implemented as followes:
  *
@@ -37,7 +32,7 @@ abstract class Zikula_AbstractEventHandler
      *
      * @var array
      */
-    protected $eventNames = array();
+    protected $eventNames = [];
 
     /**
      * EventManager instance.
@@ -116,7 +111,11 @@ abstract class Zikula_AbstractEventHandler
             throw new InvalidArgumentException(sprintf('Method %1$s does not exist in this EventHandler class %2$s', $method, get_class($this)));
         }
 
-        $this->eventNames[] = array('name' => $name, 'method' => $method, 'weight' => $weight);
+        $this->eventNames[] = [
+            'name' => $name,
+            'method' => $method,
+            'weight' => $weight
+        ];
     }
 
     /**
@@ -167,7 +166,7 @@ abstract class Zikula_AbstractEventHandler
     public function attach()
     {
         foreach ($this->eventNames as $callable) {
-            $this->eventManager->addListener($callable['name'], array($this, $callable['method']), 0 - (int)$callable['weight']);
+            $this->eventManager->addListener($callable['name'], [$this, $callable['method']], 0 - (int)$callable['weight']);
         }
     }
 
@@ -179,7 +178,7 @@ abstract class Zikula_AbstractEventHandler
     public function detach()
     {
         foreach ($this->eventNames as $callable) {
-            $this->eventManager->removeListener($callable['name'], array($this, $callable['method']));
+            $this->eventManager->removeListener($callable['name'], [$this, $callable['method']]);
         }
     }
 

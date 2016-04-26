@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright 2010 Zikula Foundation.
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Zikula_Doctrine
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -33,7 +28,7 @@ class Zikula_Doctrine_Template_Listener_Attributable extends Zikula_Doctrine_Tem
         $tableName = $this->getTableNameFromEvent($event);
         $idColumn = $this->getIdColumnFromEvent($event);
 
-        $dataForObjectUtil = array();
+        $dataForObjectUtil = [];
         $dataForObjectUtil[$idColumn] = $data[$idColumn];
 
         ObjectUtil::expandObjectWithAttributes($dataForObjectUtil, $tableName, $idColumn);
@@ -60,7 +55,7 @@ class Zikula_Doctrine_Template_Listener_Attributable extends Zikula_Doctrine_Tem
         $tableName = $this->getTableNameFromEvent($event);
         $idColumn = $this->getIdColumnFromEvent($event);
 
-        $dataForObjectUtil = array();
+        $dataForObjectUtil = [];
         $dataForObjectUtil[$idColumn] = $data[$idColumn];
         $dataForObjectUtil['__ATTRIBUTES__'] = $data['__ATTRIBUTES__'];
 
@@ -88,7 +83,7 @@ class Zikula_Doctrine_Template_Listener_Attributable extends Zikula_Doctrine_Tem
         $tableName = $this->getTableNameFromEvent($event);
         $idColumn = $this->getIdColumnFromEvent($event);
 
-        $dataForObjectUtil = array();
+        $dataForObjectUtil = [];
         $dataForObjectUtil[$idColumn] = $data[$idColumn];
         $dataForObjectUtil['__ATTRIBUTES__'] = $data['__ATTRIBUTES__'];
 
@@ -116,7 +111,7 @@ class Zikula_Doctrine_Template_Listener_Attributable extends Zikula_Doctrine_Tem
         $tableName = $this->getTableNameFromEvent($event);
         $idColumn = $this->getIdColumnFromEvent($event);
 
-        $dataForObjectUtil = array();
+        $dataForObjectUtil = [];
         $dataForObjectUtil[$idColumn] = $data[$idColumn];
 
         ObjectUtil::deleteObjectAttributes($dataForObjectUtil, $tableName, $idColumn);

@@ -1,16 +1,13 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Util
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
+
 /**
  * DataUtil is the class used to manage datas and variables.
  */
@@ -62,7 +59,7 @@ class DataUtil
      */
     public static function decodeNVP($nvpstr, $separator = '&', $urldecode = true)
     {
-        $assoc = array();
+        $assoc = [];
         $items = explode($separator, $nvpstr);
         foreach ($items as $item) {
             $fields = explode('=', $item);
@@ -228,7 +225,7 @@ class DataUtil
             $event = new \Zikula\Core\Event\GenericEvent();
         }
         if (!isset($allowedtags)) {
-            $allowedHTML = array();
+            $allowedHTML = [];
             $allowableHTML = System::getVar('AllowableHTML');
             if (is_array($allowableHTML)) {
                 foreach ($allowableHTML as $k => $v) {
@@ -304,8 +301,8 @@ class DataUtil
             return;
         }
 
-        //return '<' . strtr($m[1], array('&gt;' => '>', '&lt;' => '<', '&quot;' => '"', '&amp;' => '&')) . '>';
-        return '<' . strtr($m[1], array('&gt;' => '>', '&lt;' => '<', '&quot;' => '"')) . '>';
+        //return '<' . strtr($m[1], ['&gt;' => '>', '&lt;' => '<', '&quot;' => '"', '&amp;' => '&']) . '>';
+        return '<' . strtr($m[1], ['&gt;' => '>', '&lt;' => '<', '&quot;' => '"']) . '>';
     }
 
     /**
@@ -357,13 +354,13 @@ class DataUtil
 
         static $cached;
         if (null === $cached) {
-            $cached = array(0, 1);
+            $cached = [0, 1];
         }
         if (isset($cached[(int)$absolute][$var])) {
             return $cached[(int)$absolute][$var];
         }
         $orgVar = $var;
-        $clean_array = array();
+        $clean_array = [];
         //Check if it is a windows absolute path beginning with "c:" or similar
         $windowsAbsolutePath = preg_match("#^[A-Za-z]:#", $var);
         //Check if it is a linux absolute path beginning "/"
@@ -483,7 +480,7 @@ class DataUtil
      */
     public static function hash($string, $type = 'sha1')
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('DataUtil::hash()', 'hash()')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', ['DataUtil::hash()', 'hash()']), E_USER_DEPRECATED);
 
         return hash(strtolower($type), $string);
     }
@@ -592,7 +589,7 @@ class DataUtil
     public static function convertToUTF8($input = '')
     {
         if (is_array($input)) {
-            $return = array();
+            $return = [];
             foreach ($input as $key => $value) {
                 $return[$key] = self::convertToUTF8($value);
             }
@@ -621,7 +618,7 @@ class DataUtil
     public static function convertFromUTF8($input = '')
     {
         if (is_array($input)) {
-            $return = array();
+            $return = [];
             foreach ($input as $key => $value) {
                 $return[$key] = self::convertFromUTF8($value);
             }
@@ -709,7 +706,7 @@ class DataUtil
      */
     public static function parseIniFile($iniFile, $process_sections = true)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('DataUtil::parseIniFile()', 'parse_ini_file()')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', ['DataUtil::parseIniFile()', 'parse_ini_file()']), E_USER_DEPRECATED);
 
         return parse_ini_file($iniFile, $process_sections);
     }

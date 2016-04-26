@@ -73,13 +73,13 @@ class RouteController extends BaseRouteController
         // Always force to see all entries to make sortable working.
         $request->query->set('all', 1);
 
-        $groupMessages = array(
+        $groupMessages = [
             RouteEntity::POSITION_FIXED_TOP => $this->__('Routes fixed to the top of the list:'),
             RouteEntity::POSITION_MIDDLE => $this->__('Normal routes:'),
             RouteEntity::POSITION_FIXED_BOTTOM => $this->__('Routes fixed to the bottom of the list:'),
-        );
+        ];
         $this->view->assign('groupMessages', $groupMessages);
-        $this->view->assign('sortableGroups', array(RouteEntity::POSITION_MIDDLE));
+        $this->view->assign('sortableGroups', [RouteEntity::POSITION_MIDDLE]);
 
         $configDumper = $this->get('zikula.dynamic_config_dumper');
         $configuration = $configDumper->getConfigurationForHtml('jms_i18n_routing');
@@ -194,7 +194,7 @@ class RouteController extends BaseRouteController
             $request->getSession()->getFlashBag()->add('error', $this->__f('Error! There was an error dumping exposed JS Routes: %s', $result));
         }
 
-        $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_route_view', array('lct' => 'admin'), UrlGeneratorInterface::ABSOLUTE_URL);
+        $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_route_view', ['lct' => 'admin'], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return new RedirectResponse($redirectUrl);
     }
@@ -223,7 +223,7 @@ class RouteController extends BaseRouteController
         ModUtil::apiFunc('ZikulaRoutesModule', 'admin', 'reloadMultilingualRoutingSettings');
 
         $request->getSession()->getFlashBag()->add('status', $this->__('Done! Routing settings renewed.'));
-        $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_route_view', array('lct' => 'admin'));
+        $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_route_view', ['lct' => 'admin']);
 
         return new RedirectResponse(\System::normalizeUrl($redirectUrl));
     }
@@ -258,7 +258,7 @@ class RouteController extends BaseRouteController
         } else {
             $request->getSession()->getFlashBag()->add('error', $this->__f('Error! There was an error dumping exposed JS Routes: %s', $result));
         }
-        $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_route_view', array('lct' => 'admin'));
+        $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_route_view', ['lct' => 'admin']);
 
         return new RedirectResponse(\System::normalizeUrl($redirectUrl));
     }

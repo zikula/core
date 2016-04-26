@@ -151,7 +151,7 @@ class ViewHelper
     protected function determineExtension(Zikula_View $view, $type, $func, Request $request)
     {
         $templateExtension = 'tpl';
-        if (!in_array($func, array('view', 'display'))) {
+        if (!in_array($func, ['view', 'display'])) {
             return $templateExtension;
         }
     
@@ -174,19 +174,19 @@ class ViewHelper
      */
     public function availableExtensions($type, $func)
     {
-        $extensions = array();
+        $extensions = [];
         $hasAdminAccess = SecurityUtil::checkPermission('ZikulaRoutesModule:' . ucfirst($type) . ':', '::', ACCESS_ADMIN);
         if ($func == 'view') {
             if ($hasAdminAccess) {
-                $extensions = array('kml');
+                $extensions = ['kml'];
             } else {
-                $extensions = array();
+                $extensions = [];
             }
         } elseif ($func == 'display') {
             if ($hasAdminAccess) {
-                $extensions = array('kml', 'ics');
+                $extensions = ['kml', 'ics'];
             } else {
-                $extensions = array('ics');
+                $extensions = ['ics'];
             }
         }
     

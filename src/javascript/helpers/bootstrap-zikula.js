@@ -1,14 +1,5 @@
-/**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
- *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
- *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
- */
+// Copyright Zikula Foundation, licensed MIT.
+
 ( function($) {
 
     // use bootstrap noConflict. See http://getbootstrap.com/javascript/#js-noconflict
@@ -29,7 +20,7 @@
         var text  = $this.data('text') || '';
         
         if ($("#confimationModal").length === 0) {
-            var Modal = '<div class="modal fade" id="confimationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">'+title+'</h4></div><div class="modal-body">'+text+'</div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">'+Zikula.__('No')+'</button><button id="confirmationOkButton" type="button" class="btn btn-primary" data-dismiss="modal">'+Zikula.__('Yes')+'</button></div></div></div></div>';
+            var Modal = '<div class="modal fade" id="confimationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">'+title+'</h4></div><div class="modal-body">' + text + '</div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">' + Zikula.__('No') + '</button><button id="confirmationOkButton" type="button" class="btn btn-primary" data-dismiss="modal">' + Zikula.__('Yes') + '</button></div></div></div></div>';
             $(document.body).append(Modal);
             $(document).on('click', '#confirmationOkButton', function (e) {
                 window.location = $this.attr('href');
@@ -53,7 +44,7 @@
             return $(e).is(':checked') ? '1' : '0';
         } else if ($(e).is(':radio')) {
             var name = $(e).attr('name');
-            return $('input[name="'+name+'"]:checked').val();
+            return $('input[name="' + name + '"]:checked').val();
         } else {
             return $(e).val();
         }
@@ -85,16 +76,15 @@
             containerValues = containerValues.split(',');
             var inputName = containerElement.data('switch');
             var inputElement = $('[name="'+inputName+'"]');
-        
-        
+
             var inputValue = getValueOfElement(inputElement);
-            if($.inArray(inputValue, containerValues) === -1) {
+            if ($.inArray(inputValue, containerValues) === -1) {
                 containerElement.hide();
             }
-        
+
             inputElement.change(function() {
                 inputValue = getValueOfElement(inputElement); 
-                if($.inArray(inputValue, containerValues) === -1) {
+                if ($.inArray(inputValue, containerValues) === -1) {
                     containerElement.slideUp();
                 } else {
                     containerElement.slideDown();
@@ -110,6 +100,4 @@
             $(this).tooltip({placement: placement, animation: false});
         });
     });
-
-
 })(jQuery);

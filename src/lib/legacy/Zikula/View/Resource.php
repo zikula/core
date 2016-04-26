@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -24,7 +20,7 @@ class Zikula_View_Resource
      *
      * @var array
      */
-    public static $cache = array();
+    public static $cache = [];
 
     /**
      * Dynamic loader of plugins under cache.
@@ -103,7 +99,7 @@ class Zikula_View_Resource
         }
 
         return LogUtil::registerError(__f('Error! The template [%1$s] is not available in the [%2$s] module.',
-                                      array($resource, $view->toplevelmodule)));
+                                      [$resource, $view->toplevelmodule]));
     }
 
     /**
@@ -193,7 +189,7 @@ class Zikula_View_Resource
 
         if (!self::$cache['insert'][$name]) {
             return LogUtil::registerError(__f('Error! The insert [%1$s] is not available in the [%2$s] module.',
-                                          array($insert, $view->toplevelmodule)));
+                                          [$insert, $view->toplevelmodule]));
         }
 
         return true;
@@ -214,9 +210,9 @@ class Zikula_View_Resource
     public static function register($view, $type, $name, $delayed_load = true, $cacheable = true, $cache_attrs = null)
     {
         if ($delayed_load || self::load($view, $type, $name)) {
-            $callable = ($type != 'insert') ? array(self::getInstance(), "load_{$type}_{$name}") : "smarty_{$type}_{$name}";
+            $callable = ($type != 'insert') ? [self::getInstance(), "load_{$type}_{$name}"] : "smarty_{$type}_{$name}";
 
-            $view->_plugins[$type][$name] = array($callable, null, null, $delayed_load, $cacheable, $cache_attrs);
+            $view->_plugins[$type][$name] = [$callable, null, null, $delayed_load, $cacheable, $cache_attrs];
 
             return true;
         }
@@ -248,7 +244,7 @@ class Zikula_View_Resource
                 include_once $filepath;
 
                 if (!function_exists("smarty_{$type}_{$name}")) {
-                    $view->_trigger_fatal_error(__f('[View %1$s] \'%2$s\' is not implemented', array($type, $name)), null, null, __FILE__, __LINE__);
+                    $view->_trigger_fatal_error(__f('[View %1$s] \'%2$s\' is not implemented', [$type, $name]), null, null, __FILE__, __LINE__);
 
                     return false;
                 }

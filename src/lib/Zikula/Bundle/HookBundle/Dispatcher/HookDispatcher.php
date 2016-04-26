@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright 2010 Zikula Foundation
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage HookDispatcher
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Bundle\HookBundle\Dispatcher;
@@ -302,14 +297,14 @@ class HookDispatcher implements HookDispatcherInterface
     {
         $handlers = $this->storage->getRuntimeHandlers();
         foreach ($handlers as $handler) {
-            $callable = array($handler['classname'], $handler['method']);
+            $callable = [$handler['classname'], $handler['method']];
             if (is_callable($callable)) {
                 // some classes may not always be callable, for example, when upgrading.
                 if ($handler['serviceid']) {
                     $callable = $this->factory->buildService($handler['serviceid'], $handler['classname'], $handler['method']);
                     //                $this->dispatcher->addListenerService($handler['eventname'], $callable);
                     $o = $this->dispatcher->getContainer()->get($callable[0]);
-                    $this->dispatcher->addListener($handler['eventname'], array($o, $handler['method']));
+                    $this->dispatcher->addListener($handler['eventname'], [$o, $handler['method']]);
                 } else {
                     try {
                         $this->dispatcher->addListener($handler['eventname'], $callable);

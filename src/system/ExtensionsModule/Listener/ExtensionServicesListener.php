@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright 2016 Zikula Foundation
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\ExtensionsModule\Listener;
@@ -29,6 +25,7 @@ class ExtensionServicesListener implements EventSubscriberInterface
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
+
     private $router;
 
     /**
@@ -68,17 +65,18 @@ class ExtensionServicesListener implements EventSubscriberInterface
         }
 
         // notify EVENT here to gather any system service links
-        $args = array('modname' => $event->getArgument('modname'));
+        $args = ['modname' => $event->getArgument('modname')];
         $localevent = new \Zikula\Core\Event\GenericEvent($event->getSubject(), $args);
         $this->eventDispatcher->dispatch('module_dispatch.service_links', $localevent);
         $sublinks = $localevent->getData();
 
         if (!empty($sublinks)) {
-            $event->data[] = array(
-                'url' => $this->router->generate('zikulaextensionsmodule_services_moduleservices', array('moduleName' => $event['modname'])),
+            $event->data[] = [
+                'url' => $this->router->generate('zikulaextensionsmodule_services_moduleservices', ['moduleName' => $event['modname']]),
                 'text' => __('Services'),
                 'icon' => 'cogs',
-                'links' => $sublinks);
+                'links' => $sublinks
+            ];
         }
     }
 
@@ -92,7 +90,7 @@ class ExtensionServicesListener implements EventSubscriberInterface
     public function linkCollectorResponder(GenericEvent $event)
     {
         $event->setArgument('modname', $event->getSubject());
-        $event->setArgument('modfunc', array(1 => 'getLinks'));
+        $event->setArgument('modfunc', [1 => 'getLinks']);
         $event->setArgument('api', true);
         $this->addServiceLink($event);
     }

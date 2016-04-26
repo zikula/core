@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2010 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Response
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Core\Response\Ajax;
@@ -27,7 +22,7 @@ class AjaxResponse extends AbstractBaseResponse
      * @param mixed $message Response status/error message, may be string or array.
      * @param array $options Options.
      */
-    public function __construct($payload, $message = null, array $options = array())
+    public function __construct($payload, $message = null, array $options = [])
     {
         $this->payload = $payload;
         $this->messages = (array)$message;

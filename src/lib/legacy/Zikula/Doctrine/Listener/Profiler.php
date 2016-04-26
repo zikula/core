@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright 2010 Zikula Foundation.
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Zikula_Doctrine
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -46,8 +41,10 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     public function postQuery(Doctrine_Event $event)
     {
         $event->end();
-        $zevent = new \Zikula\Core\Event\GenericEvent(null, array('time'  => $event->getElapsedSecs(),
-                                                         'query' => $event->getQuery()));
+        $zevent = new \Zikula\Core\Event\GenericEvent(null, [
+            'time'  => $event->getElapsedSecs(),
+            'query' => $event->getQuery()
+        ]);
         EventUtil::dispatch('log.sql', $zevent);
     }
 
@@ -73,8 +70,10 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     public function postExec(Doctrine_Event $event)
     {
         $event->end();
-        $zevent = new \Zikula\Core\Event\GenericEvent(null, array('time'  => $event->getElapsedSecs(),
-                                                         'query' => $event->getQuery()));
+        $zevent = new \Zikula\Core\Event\GenericEvent(null, [
+            'time'  => $event->getElapsedSecs(),
+            'query' => $event->getQuery()
+        ]);
         EventUtil::dispatch('log.sql', $zevent);
     }
 
@@ -100,8 +99,10 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     public function postStmtExecute(Doctrine_Event $event)
     {
         $event->end();
-        $zevent = new \Zikula\Core\Event\GenericEvent(null, array('time'  => $event->getElapsedSecs(),
-                                                         'query' => $event->getQuery()));
+        $zevent = new \Zikula\Core\Event\GenericEvent(null, [
+            'time'  => $event->getElapsedSecs(),
+            'query' => $event->getQuery()
+        ]);
         EventUtil::dispatch('log.sql', $zevent);
     }
 

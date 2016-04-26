@@ -33,15 +33,15 @@ function smarty_modifier_zikularoutesmodulePathToString($path, \Zikula\RoutesMod
     $path = preg_replace_callback('#{(.*?)}#', function ($matches) use ($container, $defaults, $requirements, $dom) {
         $title = "";
         if (isset($defaults[$matches[1]])) {
-            $title .= __f('Default: %s', array(\DataUtil::formatForDisplay($defaults[$matches[1]])), $dom);
+            $title .= __f('Default: %s', [\DataUtil::formatForDisplay($defaults[$matches[1]])], $dom);
         }
         if (isset($requirements[$matches[1]])) {
-            if ($title != "") {
-                $title .= " | ";
+            if ($title != '') {
+                $title .= ' | ';
             }
-            $title .= __f('Requirement: %s', array(\DataUtil::formatForDisplay($requirements[$matches[1]])), $dom);
+            $title .= __f('Requirement: %s', [\DataUtil::formatForDisplay($requirements[$matches[1]])], $dom);
         }
-        if ($title == "") {
+        if ($title == '') {
             return $matches[0];
         }
 

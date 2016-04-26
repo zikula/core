@@ -1,16 +1,13 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Util
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
+
 /**
  * constants for this class
  */
@@ -410,7 +407,7 @@ class DateUtil
         $m = intval($s / 60);
         $s -= $m * 60;
 
-        return array('d' => $d, 'h' => $h, 'm' => $m, 's' => $s);
+        return ['d' => $d, 'h' => $h, 'm' => $m, 's' => $s];
     }
 
     /**
@@ -510,7 +507,7 @@ class DateUtil
             return 0;
         }
 
-        $days = array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+        $days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
         $d = $days[$month - 1];
 
@@ -542,7 +539,7 @@ class DateUtil
     {
         $nDays = self::getDaysInMonth($month, $year);
 
-        $weekdays = array();
+        $weekdays = [];
         for ($i = 1; $i <= $nDays; $i++) {
             $time = mktime(12, 0, 0, $month, $i, $year);
             $tDate = getdate($time);
@@ -562,7 +559,7 @@ class DateUtil
      */
     public static function getMonthDates($month, $year)
     {
-        $dates = array();
+        $dates = [];
         $days = self::getDaysInMonth($month, $year);
 
         for ($i = 1; $i <= $days; $i++) {
@@ -721,44 +718,46 @@ class DateUtil
      */
     public static function getTimezones()
     {
-        return array('-12' => __('(GMT -12:00 hours) Baker Island'),
-                '-11' => __('(GMT -11:00 hours) Midway Island, Samoa'),
-                '-10' => __('(GMT -10:00 hours) Hawaii'),
-                '-9.5' => __('(GMT -9:30 hours) French Polynesia'),
-                '-9' => __('(GMT -9:00 hours) Alaska'),
-                '-8' => __('(GMT -8:00 hours) Pacific Time (US & Canada)'),
-                '-7' => __('(GMT -7:00 hours) Mountain Time (US & Canada)'),
-                '-6' => __('(GMT -6:00 hours) Central Time (US & Canada), Mexico City'),
-                '-5' => __('(GMT -5:00 hours) Eastern Time (US & Canada), Bogota, Lima, Quito'),
-                '-4' => __('(GMT -4:00 hours) Atlantic Time (Canada), Caracas, La Paz'),
-                '-3.5' => __('(GMT -3:30 hours) Newfoundland'),
-                '-3' => __('(GMT -3:00 hours) Brazil, Buenos Aires, Georgetown'),
-                '-2' => __('(GMT -2:00 hours) Mid-Atlantic'),
-                '-1' => __('(GMT -1:00 hours) Azores, Cape Verde Islands'),
-                '0' => __('(GMT) Western Europe Time, London, Lisbon, Casablanca, Monrovia'),
-                '1' => __('(GMT +1:00 hours) CET (Central Europe Time), Brussels, Copenhagen, Madrid, Paris'),
-                '2' => __('(GMT +2:00 hours) EET (Eastern Europe Time), Kaliningrad, South Africa'),
-                '3' => __('(GMT +3:00 hours) Baghdad, Kuwait, Riyadh, Moscow, St. Petersburg'),
-                '3.5' => __('(GMT +3:30 hours) Tehran'),
-                '4' => __('(GMT +4:00 hours) Abu Dhabi, Muscat, Baku, Tbilisi'),
-                '4.5' => __('(GMT +4:30 hours) Kabul'),
-                '5' => __('(GMT +5:00 hours) Ekaterinburg, Islamabad, Karachi, Tashkent'),
-                '5.5' => __('(GMT +5:30 hours) Bombay, Calcutta, Madras, New Delhi'),
-                '5.75' => __('(GMT +5:45 hours) Kathmandu'),
-                '6' => __('(GMT +6:00 hours) Almaty, Dhaka, Colombo'),
-                '6.5' => __('(GMT +6:30 hours) Cocos Islands, Myanmar'),
-                '7' => __('(GMT +7:00 hours) Bangkok, Hanoi, Jakarta'),
-                '8' => __('(GMT +8:00 hours) Beijing, Perth, Singapore, Hong Kong, Chongqing, Urumqi, Taipei'),
-                '9' => __('(GMT +9:00 hours) Tokyo, Seoul, Osaka, Sapporo, Yakutsk'),
-                '9.5' => __('(GMT +9:30 hours) Adelaide, Darwin'),
-                '10' => __('(GMT +10:00 hours) EAST (East Australian Standard)'),
-                '10.5' => __('(GMT +10:30 hours) Lord Howe Island (NSW, Australia)'),
-                '11' => __('(GMT +11:00 hours) Magadan, Solomon Islands, New Caledonia'),
-                '11.5' => __('(GMT +11:30 hours) Norfolk Island'),
-                '12' => __('(GMT +12:00 hours) Auckland, Wellington, Fiji, Kamchatka, Marshall Island'),
-                '12.75' => __('(GMT +12:45 hours) Chatham Islands'),
-                '13' => __('(GMT +13:00 hours Tonga, Kiribati (Phoenix Islands)'),
-                '14' => __('(GMT +14:00 hours) Kiribati (Line Islands)'));
+        return [
+            '-12' => __('(GMT -12:00 hours) Baker Island'),
+            '-11' => __('(GMT -11:00 hours) Midway Island, Samoa'),
+            '-10' => __('(GMT -10:00 hours) Hawaii'),
+            '-9.5' => __('(GMT -9:30 hours) French Polynesia'),
+            '-9' => __('(GMT -9:00 hours) Alaska'),
+            '-8' => __('(GMT -8:00 hours) Pacific Time (US & Canada)'),
+            '-7' => __('(GMT -7:00 hours) Mountain Time (US & Canada)'),
+            '-6' => __('(GMT -6:00 hours) Central Time (US & Canada), Mexico City'),
+            '-5' => __('(GMT -5:00 hours) Eastern Time (US & Canada), Bogota, Lima, Quito'),
+            '-4' => __('(GMT -4:00 hours) Atlantic Time (Canada), Caracas, La Paz'),
+            '-3.5' => __('(GMT -3:30 hours) Newfoundland'),
+            '-3' => __('(GMT -3:00 hours) Brazil, Buenos Aires, Georgetown'),
+            '-2' => __('(GMT -2:00 hours) Mid-Atlantic'),
+            '-1' => __('(GMT -1:00 hours) Azores, Cape Verde Islands'),
+            '0' => __('(GMT) Western Europe Time, London, Lisbon, Casablanca, Monrovia'),
+            '1' => __('(GMT +1:00 hours) CET (Central Europe Time), Brussels, Copenhagen, Madrid, Paris'),
+            '2' => __('(GMT +2:00 hours) EET (Eastern Europe Time), Kaliningrad, South Africa'),
+            '3' => __('(GMT +3:00 hours) Baghdad, Kuwait, Riyadh, Moscow, St. Petersburg'),
+            '3.5' => __('(GMT +3:30 hours) Tehran'),
+            '4' => __('(GMT +4:00 hours) Abu Dhabi, Muscat, Baku, Tbilisi'),
+            '4.5' => __('(GMT +4:30 hours) Kabul'),
+            '5' => __('(GMT +5:00 hours) Ekaterinburg, Islamabad, Karachi, Tashkent'),
+            '5.5' => __('(GMT +5:30 hours) Bombay, Calcutta, Madras, New Delhi'),
+            '5.75' => __('(GMT +5:45 hours) Kathmandu'),
+            '6' => __('(GMT +6:00 hours) Almaty, Dhaka, Colombo'),
+            '6.5' => __('(GMT +6:30 hours) Cocos Islands, Myanmar'),
+            '7' => __('(GMT +7:00 hours) Bangkok, Hanoi, Jakarta'),
+            '8' => __('(GMT +8:00 hours) Beijing, Perth, Singapore, Hong Kong, Chongqing, Urumqi, Taipei'),
+            '9' => __('(GMT +9:00 hours) Tokyo, Seoul, Osaka, Sapporo, Yakutsk'),
+            '9.5' => __('(GMT +9:30 hours) Adelaide, Darwin'),
+            '10' => __('(GMT +10:00 hours) EAST (East Australian Standard)'),
+            '10.5' => __('(GMT +10:30 hours) Lord Howe Island (NSW, Australia)'),
+            '11' => __('(GMT +11:00 hours) Magadan, Solomon Islands, New Caledonia'),
+            '11.5' => __('(GMT +11:30 hours) Norfolk Island'),
+            '12' => __('(GMT +12:00 hours) Auckland, Wellington, Fiji, Kamchatka, Marshall Island'),
+            '12.75' => __('(GMT +12:45 hours) Chatham Islands'),
+            '13' => __('(GMT +13:00 hours Tonga, Kiribati (Phoenix Islands)'),
+            '14' => __('(GMT +14:00 hours) Kiribati (Line Islands)')
+        ];
     }
 
     /**
@@ -890,21 +889,23 @@ class DateUtil
             // construct separator regex
             $separator = preg_quote($matches[2]);
 
-            $dateMap = array('d' => array('regex' => '(\d{2})', 'type' => 'day'),
-                    'e' => array('regex' => '(\d{1,2})', 'type' => 'day'),
-                    'm' => array('regex' => '(\d{2})', 'type' => 'month'),
-                    'y' => array('regex' => '(\d{2})', 'type' => 'year'),
-                    'Y' => array('regex' => '(\d{4})', 'type' => 'year'),
-                    'g' => array('regex' => '(\d{2})', 'type' => 'year'),
-                    'G' => array('regex' => '(\d{4})', 'type' => 'year'),
-                    'H' => array('regex' => '(\d{2})', 'type' => 'hour'),
-                    'I' => array('regex' => '(\d{2})', 'type' => 'hour'),
-                    'l' => array('regex' => '(\d{1,2})', 'type' => 'hour'),
-                    'M' => array('regex' => '(\d{2})', 'type' => 'minute'),
-                    'S' => array('regex' => '(\d{2})', 'type' => 'second'));
+            $dateMap = [
+                'd' => ['regex' => '(\d{2})', 'type' => 'day'],
+                'e' => ['regex' => '(\d{1,2})', 'type' => 'day'],
+                'm' => ['regex' => '(\d{2})', 'type' => 'month'],
+                'y' => ['regex' => '(\d{2})', 'type' => 'year'],
+                'Y' => ['regex' => '(\d{4})', 'type' => 'year'],
+                'g' => ['regex' => '(\d{2})', 'type' => 'year'],
+                'G' => ['regex' => '(\d{4})', 'type' => 'year'],
+                'H' => ['regex' => '(\d{2})', 'type' => 'hour'],
+                'I' => ['regex' => '(\d{2})', 'type' => 'hour'],
+                'l' => ['regex' => '(\d{1,2})', 'type' => 'hour'],
+                'M' => ['regex' => '(\d{2})', 'type' => 'minute'],
+                'S' => ['regex' => '(\d{2})', 'type' => 'second']
+            ];
 
             // define elements
-            $format = array();
+            $format = [];
             $format[] = $matches[1]; // position 1
             $format[] = $matches[3]; // position 2
             $format[] = $matches[5]; // position 3
@@ -924,7 +925,11 @@ class DateUtil
 
             // map elements
             foreach ($format as $key) {
-                $meaning[] = array('key' => $key, 'type' => $dateMap[$key]['type'], 'regex' => $dateMap[$key]['regex']);
+                $meaning[] = [
+                    'key' => $key,
+                    'type' => $dateMap[$key]['type'],
+                    'regex' => $dateMap[$key]['regex']
+                ];
             }
 
             // build regex
@@ -945,7 +950,11 @@ class DateUtil
             }
 
             // build and return array
-            return array('regex' => $regex, 'matches' => $positionMatch, 'type' => $type);
+            return [
+                'regex' => $regex,
+                'matches' => $positionMatch,
+                'type' => $type
+            ];
         }
 
         // TODO A throw exception here in 1.3.0 - drak

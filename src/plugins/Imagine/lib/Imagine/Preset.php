@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2012 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version.
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 class SystemPlugin_Imagine_Preset extends ArrayObject
@@ -105,18 +102,18 @@ class SystemPlugin_Imagine_Preset extends ArrayObject
      */
     private function getEmptyPreset()
     {
-        return array(
+        return [
             'width' => 100,
             'height' => 100,
             'mode' => 'inset',
             'extension' => null,
-            'options' => array(
+            'options' => [
                 'jpeg_quality' => 75,
                 'png_compression_level' => 7
-            ),
+            ],
             '__module' => null,
             '__imagine' => null,
             '__transformation' => null
-        );
+        ];
     }
 }

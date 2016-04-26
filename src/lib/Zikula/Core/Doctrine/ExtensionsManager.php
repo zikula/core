@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright 2011 Zikula Foundation
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license MIT
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Core\Doctrine;
@@ -43,7 +40,7 @@ class ExtensionsManager
             return $this->listeners[$type];
         }
 
-        if (in_array($type, array('blameable', 'loggable'))) {
+        if (in_array($type, ['blameable', 'loggable'])) {
             $this->listeners[$type] = $this->serviceManager->get('stof_doctrine_extensions.listener.' . $type);
 
             return $this->listeners[$type];

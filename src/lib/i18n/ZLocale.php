@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package I18n
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -30,14 +26,14 @@ class ZLocale implements ArrayAccess
      *
      * @var array
      */
-    private $errors = array();
+    private $errors = [];
 
     /**
      * Locale data.
      *
      * @var array
      */
-    private $localeData = array(
+    private $localeData = [
         'language_direction' => 'ltr',
         'decimal_point' => '.',
         'thousands_sep' => ',',
@@ -57,8 +53,9 @@ class ZLocale implements ArrayAccess
         'n_sign_posn' => '2',
         'firstweekday' => '0',
         'timeformat' => '24',
-        'grouping' => array(),
-        'mon_grouping' => array());
+        'grouping' => [],
+        'mon_grouping' => []
+    ];
 
     /**
      * Constructor.
@@ -110,21 +107,17 @@ class ZLocale implements ArrayAccess
     private function validateLocale($file)
     {
         if (count($this->localeData) == 0) {
-            $this->registerError(__f('Error! The locale file %s contains invalid data.', array($file)));
+            $this->registerError(__f('Error! The locale file %s contains invalid data.', [$file]));
 
             return;
         }
-        $validationArray = array('language_direction' => '#^(ltr|rtl)$#');
+        $validationArray = ['language_direction' => '#^(ltr|rtl)$#'];
         foreach ($validationArray as $key => $validation) {
             if (!isset($this->localeData[$key])) {
-                $this->registerError(__f('Error! %1$s is missing in %2$s.', array(
-                    $key,
-                    $file)));
+                $this->registerError(__f('Error! %1$s is missing in %2$s.', [$key, $file]));
             } else {
                 if (!preg_match($validation, $this->localeData[$key])) {
-                    $this->registerError(__f('Error! There is an invalid value for %1$s in %2$s.', array(
-                        $key,
-                        $file)));
+                    $this->registerError(__f('Error! There is an invalid value for %1$s in %2$s.', [$key, $file]));
                 }
             }
         }

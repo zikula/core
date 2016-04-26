@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Util
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -39,11 +35,11 @@ class HtmlUtil
         $html = '';
 
         if (!$htmlname) {
-            throw new \Exception(__f('%1$s: Missing %2$s.', array('HtmlUtil::buildCalendarInputBox', 'htmlname')));
+            throw new \Exception(__f('%1$s: Missing %2$s.', ['HtmlUtil::buildCalendarInputBox', 'htmlname']));
         }
 
         if (!$dateFormat) {
-            throw new \Exception(__f('%1$s: Missing %2$s.', array('HtmlUtil::buildCalendarInputBox', 'dateFormat')));
+            throw new \Exception(__f('%1$s: Missing %2$s.', ['HtmlUtil::buildCalendarInputBox', 'dateFormat']));
         }
 
         $fieldKey = $htmlname;
@@ -83,7 +79,7 @@ class HtmlUtil
      * Return the HTML for a generic selector.
      *
      * @param string  $name          The name of the generated selector (default='countries') (optional).
-     * @param array   $data          The data to build the selector from (default='array()') (optional).
+     * @param array   $data          The data to build the selector from (default='[]') (optional).
      * @param string  $selectedValue The value which is currently selected (default='') (optional).
      * @param string  $defaultValue  The default value to select (default='') (optional).
      * @param string  $defaultText   The text for the default value (default='') (optional).
@@ -99,10 +95,10 @@ class HtmlUtil
      *
      * @return The generated HTML for the selector.
      */
-    public static function getSelector_Generic($name = 'genericSelector', $data = array(), $selectedValue = null, $defaultValue = null, $defaultText = null, $allValue = null, $allText = null, $submit = false, $disabled = false, $multipleSize = 1, $id = null, $class = null, $required = false, $title = null)
+    public static function getSelector_Generic($name = 'genericSelector', $data = [], $selectedValue = null, $defaultValue = null, $defaultText = null, $allValue = null, $allText = null, $submit = false, $disabled = false, $multipleSize = 1, $id = null, $class = null, $required = false, $title = null)
     {
         if (!$name) {
-            return LogUtil::registerError(__f('Invalid %1$s [%2$s] passed to %3$s.', array('name', $name, 'HtmlUtil::getSelector_Generic')));
+            return LogUtil::registerError(__f('Invalid %1$s [%2$s] passed to %3$s.', ['name', $name, 'HtmlUtil::getSelector_Generic']));
         }
 
         $id = (is_null($id)) ? strtr($name, '[]', '__') : $id;
@@ -162,19 +158,19 @@ class HtmlUtil
     public static function getSelector_ObjectArray($modname, $objectType, $name, $field = '', $displayField = 'name', $where = '', $sort = '', $selectedValue = '', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $displayField2 = null, $submit = true, $disabled = false, $fieldSeparator = ', ', $multipleSize = 1)
     {
         if (!$modname) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('modname', 'HtmlUtil::getSelector_ObjectArray')));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['modname', 'HtmlUtil::getSelector_ObjectArray']));
         }
 
         if (!$objectType) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('objectType', 'HtmlUtil::getSelector_ObjectArray')));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['objectType', 'HtmlUtil::getSelector_ObjectArray']));
         }
 
         if (!ModUtil::dbInfoLoad($modname)) {
-            return __f('Unavailable/Invalid %1$s [%2$s] passed to %3$s.', array('modulename', $modname, 'HtmlUtil::getSelector_ObjectArray'));
+            return __f('Unavailable/Invalid %1$s [%2$s] passed to %3$s.', ['modulename', $modname, 'HtmlUtil::getSelector_ObjectArray']);
         }
 
         if (!SecurityUtil::checkPermission("$objectType::", '::', ACCESS_OVERVIEW)) {
-            return __f('Security check failed for %1$s [%2$s] passed to %3$s.', array('modulename', $modname, 'HtmlUtil::getSelector_ObjectArray'));
+            return __f('Security check failed for %1$s [%2$s] passed to %3$s.', ['modulename', $modname, 'HtmlUtil::getSelector_ObjectArray']);
         }
 
         $cacheKey = md5("$modname|$objectType|$where|$sort");
@@ -192,7 +188,7 @@ class HtmlUtil
             }
         }
 
-        $data2 = array();
+        $data2 = [];
         foreach ($dataArray as $object) {
             $val = $object[$field];
             $disp = $object[$displayField];
@@ -231,15 +227,15 @@ class HtmlUtil
     public static function getSelector_EntityArray($modname, $entity, $name, $field = '', $displayField = 'name', $where = '', $sort = '', $selectedValue = '', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $displayField2 = null, $submit = true, $disabled = false, $fieldSeparator = ', ', $multipleSize = 1)
     {
         if (!$modname) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('modname', 'HtmlUtil::getSelector_EntityArray')));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['modname', 'HtmlUtil::getSelector_EntityArray']));
         }
 
         if ((!$entity) || (!class_exists($entity))) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('entity', 'HtmlUtil::getSelector_EntityArray')));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['entity', 'HtmlUtil::getSelector_EntityArray']));
         }
 
         if (!SecurityUtil::checkPermission("$entity::", '::', ACCESS_OVERVIEW)) {
-            return __f('Security check failed for %1$s [%2$s] passed to %3$s.', array('modulename', $modname, 'HtmlUtil::getSelector_EntityArray'));
+            return __f('Security check failed for %1$s [%2$s] passed to %3$s.', ['modulename', $modname, 'HtmlUtil::getSelector_EntityArray']);
         }
 
         /** @var $em \Doctrine\ORM\EntityManager */
@@ -249,7 +245,7 @@ class HtmlUtil
         $dataArray = $qb->getQuery()->getResult(); // array of Entities
         // @todo does not accommodate $sort or $where
 
-        $data2 = array();
+        $data2 = [];
         foreach ($dataArray as $object) {
             $val = $object[$field]; // relies on entityAccess
             $disp = $object[$displayField];
@@ -288,11 +284,11 @@ class HtmlUtil
     public static function getSelector_FieldArray($modname, $tablekey, $name, $field = 'id', $where = '', $sort = '', $selectedValue = '', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $assocKey = '', $distinct = false, $submit = true, $disabled = false, $truncate = 0, $multipleSize = 1)
     {
         if (!$tablekey) {
-            throw new \Exception(__f('Invalid %1$s [%2$s] passed to %3$s.', array('tablekey', $modname, 'HtmlUtil::getSelector_FieldArray')));
+            throw new \Exception(__f('Invalid %1$s [%2$s] passed to %3$s.', ['tablekey', $modname, 'HtmlUtil::getSelector_FieldArray']));
         }
 
         if (!$name) {
-            throw new \Exception(__f('Invalid %1$s [%2$s] passed to %3$s.', array('name', $name, 'HtmlUtil::getSelector_FieldArray')));
+            throw new \Exception(__f('Invalid %1$s [%2$s] passed to %3$s.', ['name', $name, 'HtmlUtil::getSelector_FieldArray']));
         }
 
         if ($modname) {
@@ -300,7 +296,7 @@ class HtmlUtil
         }
 
         $fa = DBUtil::selectFieldArray($tablekey, $field, $where, $sort, $distinct, $assocKey);
-        $data = array();
+        $data = [];
         foreach ($fa as $k => $v) {
             if ($v) {
                 if ($truncate > 0 && strlen($v) > $truncate) {
@@ -340,17 +336,17 @@ class HtmlUtil
      * Return the HTML code for the values in a given category.
      *
      * @param string  $categoryPath The identifying category path.
-     * @param array   $values       The values used to populate the defautl states (optional) (default=array()).
+     * @param array   $values       The values used to populate the defautl states (optional) (default=[]).
      * @param string  $namePrefix   The path/object prefix to apply to the field name (optional) (default='').
      * @param string  $excludeList  A (string) list of IDs to exclude (optional) (default=null).
      * @param boolean $disabled     Whether or not the checkboxes are to be disabled (optional) (default=false).
      *
      * @return The resulting dropdown data.
      */
-    public static function getCheckboxes_CategoryField($categoryPath, $values = array(), $namePrefix = '', $excludeList = null, $disabled = false)
+    public static function getCheckboxes_CategoryField($categoryPath, $values = [], $namePrefix = '', $excludeList = null, $disabled = false)
     {
         if (!$categoryPath) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('category', 'HtmlUtil::getCheckboxes_CategoryField')));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['category', 'HtmlUtil::getCheckboxes_CategoryField']));
         }
 
         if (!$lang) {
@@ -402,12 +398,12 @@ class HtmlUtil
     public static function getSelector_ModuleTables($modname, $name, $selectedValue = '', $defaultValue = 0, $defaultText = '', $submit = false, $remove = '', $disabled = false, $nStripChars = 0, $multipleSize = 1)
     {
         if (!$modname) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('modname', 'HtmlUtil::getSelector_ModuleTables')));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['modname', 'HtmlUtil::getSelector_ModuleTables']));
         }
 
         // old style 'tables.php' modules (Core 1.2.x--)
         $tables = ModUtil::dbInfoLoad($modname, '', true);
-        $data = array();
+        $data = [];
         if (is_array($tables) && $tables) {
             foreach ($tables as $k => $v) {
                 if (strpos($k, '_column') === false && strpos($k, '_db_extra_enable') === false && strpos($k, '_primary_key_column') === false) {
@@ -443,7 +439,7 @@ class HtmlUtil
         // Doctrine 1 models (Core 1.3.0 - 1.3.5)
         DoctrineUtil::loadModels($modname);
         $records = Doctrine::getLoadedModels();
-        $data = array();
+        $data = [];
         foreach ($records as $recordClass) {
             // remove records from other modules
             if (substr($recordClass, 0, strlen($modname)) != $modname) {
@@ -475,7 +471,7 @@ class HtmlUtil
             // this check just confirming a Core-2.0 spec bundle - remove in 2.0.0
             $capabilities = $module->getMetaData()->getCapabilities();
             if (isset($capabilities['categorizable'])) {
-                $data = array();
+                $data = [];
                 $keys = array_keys($capabilities['categorizable']);
                 $entityList = is_int($keys[0]) ? $capabilities['categorizable'] : $capabilities['categorizable'][$keys[0]];
                 foreach ($entityList as $fullyQualifiedEntityName) {
@@ -493,12 +489,12 @@ class HtmlUtil
         $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         $osdir   = DataUtil::formatForOS($modinfo['directory']);
-        $entityDirs = array(
+        $entityDirs = [
             "$modpath/$osdir/Entity/", // Core 1.4.0++
             "$modpath/$osdir/lib/$osdir/Entity/", // Core 1.3.5--
-        );
+        ];
 
-        $entities = array();
+        $entities = [];
         foreach ($entityDirs as $entityDir) {
             if (file_exists($entityDir)) {
                 $files = scandir($entityDir);
@@ -510,11 +506,11 @@ class HtmlUtil
             }
         }
 
-        $data = array();
+        $data = [];
         foreach ($entities as $entity) {
-            $possibleClassNames = array(
+            $possibleClassNames = [
                 $modname . '_Entity_' . substr($entity, 0, strlen($entity) - 4), // Core 1.3.5--
-            );
+            ];
             if ($module) {
                 $possibleClassNames[] = $module->getNamespace() . '\\Entity\\' . substr($entity, 0, strlen($entity) - 4); // Core 1.4.0++
             }
@@ -558,15 +554,15 @@ class HtmlUtil
     public static function getSelector_TableFields($modname, $tablename, $name, $selectedValue = '', $defaultValue = 0, $defaultText = '', $submit = false, $showSystemColumns = false, $disabled = false, $multipleSize = 1)
     {
         if (!$modname) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('modname', 'HtmlUtil::getSelector_TableFields')));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['modname', 'HtmlUtil::getSelector_TableFields']));
         }
 
         if (!$tablename) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('tablename', 'HtmlUtil::getSelector_TableFields')));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['tablename', 'HtmlUtil::getSelector_TableFields']));
         }
 
         if (!$name) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('name', 'HtmlUtil::getSelector_TableFields')));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['name', 'HtmlUtil::getSelector_TableFields']));
         }
 
         $tables = ModUtil::dbInfoLoad($modname, '', true);
@@ -574,15 +570,15 @@ class HtmlUtil
         $cols = $tables[$colkey];
 
         if (!$cols) {
-            throw new \Exception(__f('Invalid %1$s [%2$s] in %3$s.', array('column key', $colkey, 'HtmlUtil::getSelector_TableFields')));
+            throw new \Exception(__f('Invalid %1$s [%2$s] in %3$s.', ['column key', $colkey, 'HtmlUtil::getSelector_TableFields']));
         }
 
         if (!$showSystemColumns) {
-            $filtercols = array();
+            $filtercols = [];
             ObjectUtil::addStandardFieldsToTableDefinition($filtercols, '');
         }
 
-        $data = array();
+        $data = [];
         foreach ($cols as $k => $v) {
             if ($showSystemColumns) {
                 $data[$v] = $k;
@@ -610,9 +606,7 @@ class HtmlUtil
             $name = 'permission';
         }
 
-        $vals = array();
-        $vals[0] = __('No');
-        $vals[1] = __('Yes');
+        $vals = [__('No'), __('Yes')];
 
         return self::getSelector_Generic($name, $vals);
     }
@@ -626,9 +620,7 @@ class HtmlUtil
      */
     public static function getSelectorValue_YesNo($val)
     {
-        $vals = array();
-        $vals[0] = __('No');
-        $vals[1] = __('Yes');
+        $vals = [__('No'), __('Yes')];
 
         return $vals[$val];
     }
@@ -642,11 +634,11 @@ class HtmlUtil
      */
     public static function getSelectorData_Language($includeAll = true)
     {
-        $langlist = array();
-        $dropdown = array();
+        $langlist = [];
+        $dropdown = [];
 
         if ($includeAll) {
-            $dropdown[] = array('id' => '', 'name' => __('All'));
+            $dropdown[] = ['id' => '', 'name' => __('All')];
         }
 
         $langlist = ZLanguage::getInstalledLanguageNames();
@@ -654,7 +646,7 @@ class HtmlUtil
         asort($langlist);
 
         foreach ($langlist as $k => $v) {
-            $dropdown[] = array('id' => $k, 'name' => $v);
+            $dropdown[] = ['id' => $k, 'name' => $v];
         }
 
         return $dropdown;
@@ -669,7 +661,7 @@ class HtmlUtil
      */
     public static function getSelectorValue_Permission($value)
     {
-        $perms = array();
+        $perms = [];
         $perms[_Z_PERMISSION_BASIC_PRIVATE] = __('Private');
         $perms[_Z_PERMISSION_BASIC_GROUP] = __('Group');
         $perms[_Z_PERMISSION_BASIC_USER] = __('User');
@@ -692,7 +684,7 @@ class HtmlUtil
             $name = 'permission';
         }
 
-        $perms = array();
+        $perms = [];
         $perms[_Z_PERMISSION_BASIC_PRIVATE] = __('Private');
         $perms[_Z_PERMISSION_BASIC_GROUP] = __('Group');
         $perms[_Z_PERMISSION_BASIC_USER] = __('User');
@@ -711,7 +703,7 @@ class HtmlUtil
      */
     public static function getSelector_PermissionLevel($name = 'permission', $selectedValue = '0')
     {
-        $perms = array();
+        $perms = [];
         $perms[_Z_PERMISSION_LEVEL_NONE] = __('No access');
         $perms[_Z_PERMISSION_LEVEL_READ] = __('Read access');
         $perms[_Z_PERMISSION_LEVEL_WRITE] = __('Write access');
@@ -737,8 +729,8 @@ class HtmlUtil
      */
     public static function getSelector_Group($name = 'groupid', $selectedValue = 0, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $excludeList = '', $submit = false, $disabled = false, $multipleSize = 1)
     {
-        $data = array();
-        $grouplist = UserUtil::getGroups(array(), array('name' => 'ASC'));
+        $data = [];
+        $grouplist = UserUtil::getGroups([], ['name' => 'ASC']);
         foreach ($grouplist as $k => $v) {
             $id = $v['gid'];
             $disp = $v['name'];
@@ -782,7 +774,7 @@ class HtmlUtil
             }
         }
 
-        $data = array();
+        $data = [];
         $userlist = UserUtil::getUsers($where, 'ORDER BY uname');
         foreach ($userlist as $k => $v) {
             $data[$k] = $v['uname'];
@@ -809,7 +801,7 @@ class HtmlUtil
      */
     public static function getSelector_Module($name = 'moduleName', $selectedValue = 0, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $submit = false, $disabled = false, $multipleSize = 1, $field = 'name')
     {
-        $data = array();
+        $data = [];
         $modules = ModUtil::getModulesByState(3, 'displayname');
         foreach ($modules as $module) {
             $value = $module[$field];
@@ -837,7 +829,7 @@ class HtmlUtil
             $name = 'day';
         }
 
-        $data = array();
+        $data = [];
         for ($i = 1; $i < 32; $i++) {
             $val = sprintf("%02d", $i);
             $data[$val] = $val;
@@ -863,7 +855,7 @@ class HtmlUtil
             $name = 'hour';
         }
 
-        $data = array();
+        $data = [];
         for ($i = 0; $i < 24; $i++) {
             $val = sprintf("%02d", $i);
             $data[$val] = $val;
@@ -889,7 +881,7 @@ class HtmlUtil
             $name = 'minute';
         }
 
-        $data = array();
+        $data = [];
         for ($i = 0; $i < 60; $i += 5) {
             $val = sprintf('%02d', $i);
             $data[$val] = $val;
@@ -960,7 +952,7 @@ class HtmlUtil
             $name = 'year';
         }
 
-        $data = array();
+        $data = [];
         for ($i = $first; $i < $last; $i++) {
             $data[$i] = $i;
         }

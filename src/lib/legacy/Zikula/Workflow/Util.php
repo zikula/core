@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -35,7 +31,7 @@ class Zikula_Workflow_Util
         static $workflows;
 
         if (!isset($workflows)) {
-            $workflows = array();
+            $workflows = [];
         }
 
         // if no module specified, default to calling module
@@ -51,14 +47,14 @@ class Zikula_Workflow_Util
         // Get module info
         $modinfo = ModUtil::getInfoFromName($module);
         if (!$modinfo) {
-            throw new \Exception(__f('%1$s: The specified module [%2$s] does not exist.', array('Zikula_Workflow_Util', $module)));
+            throw new \Exception(__f('%1$s: The specified module [%2$s] does not exist.', ['Zikula_Workflow_Util', $module]));
         }
 
         $path = self::_findpath("$schema.xml", $module);
         if ($path) {
             $workflowXML = file_get_contents($path);
         } else {
-            throw new \Exception(__f('%1$s: Unable to find the workflow file [%2$s].', array('Zikula_Workflow_Util', $path)));
+            throw new \Exception(__f('%1$s: Unable to find the workflow file [%2$s].', ['Zikula_Workflow_Util', $path]));
         }
 
         // instanciate Workflow Parser
@@ -95,7 +91,7 @@ class Zikula_Workflow_Util
         // Get module info
         $modinfo = ModUtil::getInfoFromName($module);
         if (!$modinfo) {
-            throw new \Exception(__f('%1$s: The specified module [%2$s] does not exist.', array('Zikula_Workflow_Util', $module)));
+            throw new \Exception(__f('%1$s: The specified module [%2$s] does not exist.', ['Zikula_Workflow_Util', $module]));
         }
 
         $moduledir = $modinfo['directory'];
@@ -113,7 +109,7 @@ class Zikula_Workflow_Util
 
         // ensure module is active
         if (!$modinfo['state'] == 3) {
-            throw new \Exception(__f('%1$s: The module [%2$s] is not active.', array('Zikula_Workflow_Util', $module)));
+            throw new \Exception(__f('%1$s: The module [%2$s] is not active.', ['Zikula_Workflow_Util', $module]));
         }
 
         $themedir = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
@@ -149,15 +145,15 @@ class Zikula_Workflow_Util
     public static function executeAction($schema, &$obj, $actionID, $table = null, $module = null, $idcolumn = 'id')
     {
         if (!isset($obj)) {
-            throw new \Exception(__f('%1$s: %2$s not set.', array('Zikula_Workflow_Util', 'obj')));
+            throw new \Exception(__f('%1$s: %2$s not set.', ['Zikula_Workflow_Util', 'obj']));
         }
 
         if (!is_array($obj) && !is_object($obj)) {
-            throw new \Exception(__f('%1$s: %2$s must be an array or an object.', array('Zikula_Workflow_Util', 'obj')));
+            throw new \Exception(__f('%1$s: %2$s must be an array or an object.', ['Zikula_Workflow_Util', 'obj']));
         }
 
         if (empty($schema)) {
-            throw new \Exception(__f('%1$s: %2$s needs to be named', array('Zikula_Workflow_Util', 'schema')));
+            throw new \Exception(__f('%1$s: %2$s needs to be named', ['Zikula_Workflow_Util', 'schema']));
         }
 
         if (is_null($module)) {
@@ -241,7 +237,7 @@ class Zikula_Workflow_Util
      *
      * @return mixed Array $action.id => $action or bool false.
      */
-    public static function getActionsByState($schemaName, $module = null, $state = 'initial', $obj = array())
+    public static function getActionsByState($schemaName, $module = null, $state = 'initial', $obj = [])
     {
         if (!isset($module)) {
             $module = ModUtil::getName();
@@ -254,7 +250,7 @@ class Zikula_Workflow_Util
         }
 
         $actions = $schema['actions'][$state];
-        $allowedActions = array();
+        $allowedActions = [];
         foreach ($actions as $action) {
             if (self::permissionCheck($module, $schemaName, $obj, $action['permission'], $action['id'])) {
                 $allowedActions[$action['id']] = $action;
@@ -276,7 +272,7 @@ class Zikula_Workflow_Util
      *
      * @return mixed Array $action.id => $action.title or bool false.
      */
-    public static function getActionTitlesByState($schemaName, $module = null, $state = 'initial', $obj = array())
+    public static function getActionTitlesByState($schemaName, $module = null, $state = 'initial', $obj = [])
     {
         $allowedActions = self::getActionsByState($schemaName, $module, $state, $obj);
 
@@ -302,7 +298,7 @@ class Zikula_Workflow_Util
      * @deprecated 1.3.0
      * @return mixed Array or bool false.
      */
-    public static function getActionsByStateArray($schemaName, $module = null, $state = 'initial', $obj = array())
+    public static function getActionsByStateArray($schemaName, $module = null, $state = 'initial', $obj = [])
     {
         return self::getActionsByState($schemaName, $module, $state, $obj);
     }
@@ -320,11 +316,11 @@ class Zikula_Workflow_Util
     public static function getActionsForObject(&$obj, $dbTable, $idcolumn = 'id', $module = null)
     {
         if (!is_array($obj) && !is_object($obj)) {
-            throw new \Exception(__f('%1$s: %2$s is not an array nor an object.', array('Zikula_Workflow_Util::getActionsForObject', 'object')));
+            throw new \Exception(__f('%1$s: %2$s is not an array nor an object.', ['Zikula_Workflow_Util::getActionsForObject', 'object']));
         }
 
         if (!isset($dbTable)) {
-            throw new \Exception(__f('%1$s: %2$s is specified.', array('Zikula_Workflow_Util::getActionsForObject', 'dbTable')));
+            throw new \Exception(__f('%1$s: %2$s is specified.', ['Zikula_Workflow_Util::getActionsForObject', 'dbTable']));
         }
 
         if (empty($module)) {
@@ -361,11 +357,11 @@ class Zikula_Workflow_Util
         }
 
         if (!isset($obj) || (!is_array($obj) && !is_object($obj))) {
-            throw new \Exception(__f('%1$s: %2$s is not an array nor an object.', array('Zikula_Workflow_Util::getWorkflowForObject', 'object')));
+            throw new \Exception(__f('%1$s: %2$s is not an array nor an object.', ['Zikula_Workflow_Util::getWorkflowForObject', 'object']));
         }
 
         if (!isset($dbTable)) {
-            throw new \Exception(__f('%1$s: %2$s is not specified.', array('Zikula_Workflow_Util::getWorkflowForObject', 'dbTable')));
+            throw new \Exception(__f('%1$s: %2$s is not specified.', ['Zikula_Workflow_Util::getWorkflowForObject', 'dbTable']));
         }
 
         $workflow = false;
@@ -402,10 +398,12 @@ class Zikula_Workflow_Util
         }
 
         if (!$workflow) {
-            $workflow = array('state'        => 'initial',
-                              'obj_table'    => $dbTable,
-                              'obj_idcolumn' => $idcolumn,
-                              'obj_id'       => $obj[$idcolumn]);
+            $workflow = [
+                'state'        => 'initial',
+                'obj_table'    => $dbTable,
+                'obj_idcolumn' => $idcolumn,
+                'obj_id'       => $obj[$idcolumn]
+            ];
         }
 
         // attach workflow to object
@@ -456,7 +454,7 @@ class Zikula_Workflow_Util
      *
      * @return boolean
      */
-    public static function permissionCheck($module, $schema, $obj = array(), $permLevel = 'overview', $actionId = null)
+    public static function permissionCheck($module, $schema, $obj = [], $permLevel = 'overview', $actionId = null)
     {
         // translate permission to something meaningful
         $permLevel = self::translatePermission($permLevel);

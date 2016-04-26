@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright 2016 Zikula Foundation
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Bundle\HookBundle\Listener;
@@ -77,11 +73,11 @@ class HooksListener implements EventSubscriberInterface
             return;
         }
 
-        $event->data[] = array(
-            'url' => $this->router->generate('zikula_hook_hook_edit', array('moduleName' => $event['modname'])),
+        $event->data[] = [
+            'url' => $this->router->generate('zikula_hook_hook_edit', ['moduleName' => $event['modname']]),
             'text' => __('Hooks'),
             'icon' => 'paperclip'
-        );
+        ];
     }
 
     /**
@@ -94,7 +90,7 @@ class HooksListener implements EventSubscriberInterface
     public function linkCollectorResponder(GenericEvent $event)
     {
         $event->setArgument('modname', $event->getSubject());
-        $event->setArgument('modfunc', array(1 => 'getLinks'));
+        $event->setArgument('modfunc', [1 => 'getLinks']);
         $event->setArgument('api', true);
         $this->addHooksLink($event);
     }

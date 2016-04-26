@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Util
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -58,11 +54,11 @@ class CategoryUtil
             $cat = new \Zikula\CategoriesModule\Entity\CategoryEntity();
             $em = ServiceUtil::get('doctrine.entitymanager');
             $em->persist($cat);
-            $data = array();
+            $data = [];
             $data['parent'] = $em->getReference('ZikulaCategoriesModule:CategoryEntity', $rootCat['id']);
             $data['name'] = $name;
-            $data['display_name'] = array($lang => $displayname);
-            $data['display_desc'] = array($lang => $description);
+            $data['display_name'] = [$lang => $displayname];
+            $data['display_desc'] = [$lang => $description];
             if ($value) {
                 $data['value'] = $value;
             }
@@ -107,7 +103,7 @@ class CategoryUtil
         $category = $em->find('ZikulaCategoriesModule:CategoryEntity', $cid);
 
         if (!isset($category)) {
-            return array();
+            return [];
         }
 
         // convert to array
@@ -118,7 +114,7 @@ class CategoryUtil
         $cat['parent_id'] = (null === $cat['parent']) ? null : $category['parent']->getId();
 
         // get attributes
-        $cat['__ATTRIBUTES__'] = array();
+        $cat['__ATTRIBUTES__'] = [];
         foreach ($cat['attributes'] as $attribute) {
             $cat['__ATTRIBUTES__'][$attribute['name']] = $attribute['value'];
         }
@@ -147,7 +143,7 @@ class CategoryUtil
         }
 
         if (!empty($columnArray)) {
-            $columns = array();
+            $columns = [];
             foreach ($columnArray as $column) {
                 $columns[] = 'c.' . $column;
             }
@@ -162,7 +158,7 @@ class CategoryUtil
         $query = $em->createQuery($dql);
         $categories = $query->getResult();
 
-        $cats = array();
+        $cats = [];
         foreach ($categories as $category) {
             $cat = $category->toArray();
 
@@ -193,7 +189,7 @@ class CategoryUtil
         if (!is_array($apath)) {
             $where = "c.$field = '" . DataUtil::formatForStore($apath) . "'";
         } else {
-            $where = array();
+            $where = [];
             foreach ($apath as $path) {
                 $where[] = "c.$field = '" . DataUtil::formatForStore($path) . "'";
             }
@@ -221,14 +217,14 @@ class CategoryUtil
             return false;
         }
 
-        $where = array();
+        $where = [];
         foreach ($registry as $property => $catID) {
             $where[] = "c.id = '" . DataUtil::formatForStore($catID) . "'";
         }
         $where = implode(' OR ', $where);
         $cats = self::getCategories($where, '', 'id');
 
-        $result = array();
+        $result = [];
         if ($cats !== false) {
             foreach ($registry as $property => $catID) {
                 if (isset($cats[$catID])) {
@@ -295,7 +291,7 @@ class CategoryUtil
         $em = \ServiceUtil::get('doctrine.entitymanager');
         $cat = $em->find('ZikulaCategoriesModule:CategoryEntity', $id);
 
-        $cats = array();
+        $cats = [];
         if (!$cat) {
             return $cats;
         }
@@ -449,7 +445,7 @@ class CategoryUtil
             return false;
         }
 
-        $cats = array();
+        $cats = [];
         $ipath = $category['ipath'];
         if ($recurse) {
             $ipathExcl = ($excludeCat ? $excludeCat['ipath'] : '');
@@ -694,7 +690,7 @@ class CategoryUtil
             return false;
         }
 
-        $currentPaths = array();
+        $currentPaths = [];
         foreach ($newParentCats as $p) {
             $currentPaths[] = $p['path_relative'];
         }
@@ -742,7 +738,7 @@ class CategoryUtil
 
         $em = ServiceUtil::get('doctrine.entitymanager');
 
-        $oldToNewID = array();
+        $oldToNewID = [];
         $oldToNewID[$cats[0]['parent']['id']] = $em->getReference('ZikulaCategoriesModule:CategoryEntity', $newParent['id']);
 
         // since array_shift() resets numeric array indexes, we remove the leading element like this
@@ -903,9 +899,9 @@ class CategoryUtil
      *
      * @return string generated tree JS text.
      */
-    public static function getCategoryTreeJS($cats, $doReplaceRootCat = true, $sortable = false, array $options = array())
+    public static function getCategoryTreeJS($cats, $doReplaceRootCat = true, $sortable = false, array $options = [])
     {
-        $leafNodes = array();
+        $leafNodes = [];
         foreach ($cats as $i => $c) {
             if ($doReplaceRootCat && $c['id'] == 1 && $c['name'] == '__SYSTEM__') {
                 $c['name'] = __('Root category');
@@ -920,7 +916,7 @@ class CategoryUtil
         $tree->setOption('id', 'categoriesTree');
         $tree->setOption('sortable', $sortable);
         // disable drag and drop for root category
-        $tree->setOption('disabled', array(1));
+        $tree->setOption('disabled', [1]);
         $tree->setOption('disabledForDrop', $leafNodes);
         if (!empty($options)) {
             $tree->setOptionArray($options);
@@ -940,9 +936,9 @@ class CategoryUtil
      *
      * @return string generated tree JS text.
      */
-    public static function getCategoryTreeJqueryJS($cats, $doReplaceRootCat = true, $sortable = false, array $options = array())
+    public static function getCategoryTreeJqueryJS($cats, $doReplaceRootCat = true, $sortable = false, array $options = [])
     {
-        $leafNodes = array();
+        $leafNodes = [];
         foreach ($cats as $i => $c) {
             if ($doReplaceRootCat && $c['id'] == 1 && $c['name'] == '__SYSTEM__') {
                 $c['name'] = __('Root category');
@@ -957,7 +953,7 @@ class CategoryUtil
         $tree->setOption('id', 'categoriesTree');
         $tree->setOption('sortable', $sortable);
         // disable drag and drop for root category
-        $tree->setOption('disabled', array(1));
+        $tree->setOption('disabled', [1]);
         $tree->setOption('disabledForDrop', $leafNodes);
         if (!empty($options)) {
             $tree->setOptionArray($options);
@@ -977,23 +973,23 @@ class CategoryUtil
     {
         $lang = ZLanguage::getLanguageCode();
 
-        return array(
+        return [
             'id' => 'node_' . $category->getId(),
             'text' => $category->getDisplay_name($lang),
             'icon' => $category->getIs_leaf() ? false : 'fa fa-folder',
-            'state' => array(
+            'state' => [
                 'open' => false,
                 'disabled' => false,
-                'selected' => false,
-            ),
+                'selected' => false
+            ],
             'children' => self::getJsTreeNodeFromCategoryArray($category->getChildren()),
-            'li_attr' => array(
-                'class' => $category->getStatus() == 'I' ? 'z-tree-unactive' : '',
-            ),
-            'a_attr' => array(
+            'li_attr' => [
+                'class' => $category->getStatus() == 'I' ? 'z-tree-unactive' : ''
+            ],
+            'a_attr' => [
                 'title' => self::createTitleAttribute($category->toArray(), $category->getDisplay_name($lang), $lang)
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -1004,7 +1000,7 @@ class CategoryUtil
      */
     public static function getJsTreeNodeFromCategoryArray($categories)
     {
-        $result = array();
+        $result = [];
         foreach ($categories as $category) {
             $result[] = self::getJsTreeNodeFromCategory($category);
         }
@@ -1022,9 +1018,10 @@ class CategoryUtil
     public static function getCategoryTreeJSNode($category)
     {
         $lang = ZLanguage::getLanguageCode();
-        $params = array();
-        $params['mode'] = 'edit';
-        $params['cid'] = $category['id'];
+        $params = [
+            'mode' => 'edit',
+            'cid' => $category['id']
+        ];
         $url = ModUtil::url('ZikulaCategoriesModule', 'admin', 'edit', $params);
 
         $request = ServiceUtil::get('request');
@@ -1043,7 +1040,7 @@ class CategoryUtil
         $category['active'] = $category['status'] == 'A' ? true : false;
         $category['href'] = $url;
         $category['title'] = self::createTitleAttribute($category, $displayName, $lang);
-        $category['class'] = array();
+        $category['class'] = [];
         if ($category['is_locked']) {
             $category['class'][] = 'locked';
         }
@@ -1074,7 +1071,7 @@ class CategoryUtil
      */
     private static function createTitleAttribute($category, $displayName, $lang)
     {
-        $title = array();
+        $title = [];
         $title[] = __('ID') . ": " . $category['id'];
         $title[] = __('Name') . ": " . DataUtil::formatForDisplay($category['name']);
         $title[] = __('Display name') . ": " . $displayName;
@@ -1109,7 +1106,7 @@ class CategoryUtil
         $pathlist = explode('/', $currentpath);
         $root = $pathlist[0];
         if (!array_key_exists($root, $tree)) {
-            $tree[$root] = array();
+            $tree[$root] = [];
         }
         if (count($pathlist) == 1) {
             $tree[$root]['_/_'] = $entry;
@@ -1132,7 +1129,7 @@ class CategoryUtil
     public static function _tree_sort($tree, &$cats)
     {
         global $_catSortField;
-        $sorted = array();
+        $sorted = [];
         foreach ($tree as $k => $v) {
             if ($k == '_/_') {
                 $cats[] = $v;
@@ -1149,7 +1146,7 @@ class CategoryUtil
             }
         }
 
-        uasort($sorted, array('self', '_tree_sort_cmp'));
+        uasort($sorted, ['self', '_tree_sort_cmp']);
 
         foreach ($sorted as $k => $v) {
             self::_tree_sort($tree[$k], $cats);
@@ -1201,15 +1198,15 @@ class CategoryUtil
             $sortField = $_catSortField;
         }
 
-        $tree = array();
+        $tree = [];
         foreach ($cats as $c) {
             self::_tree_insert($tree, $c);
         }
-        $new_cats = array();
+        $new_cats = [];
         self::_tree_sort($tree[1], $new_cats);
 
         if ($assocKey) {
-            $new_cats_assoc = array();
+            $new_cats_assoc = [];
             foreach ($new_cats as $c) {
                 if (isset($c[$assocKey])) {
                     $new_cats_assoc[$c[$assocKey]] = $c;
@@ -1232,7 +1229,7 @@ class CategoryUtil
     public static function getCategoryTreeStructure($cats)
     {
         $menuString = '';
-        $params = array();
+        $params = [];
         $params['mode'] = 'edit';
 
         //$cats = self::sortCategories($cats, 'sort_value');
@@ -1297,8 +1294,9 @@ class CategoryUtil
             $name .= '[]';
         }
         if (!is_array($selectedValue)) {
-            $selectedValue = array(
-                (string)$selectedValue);
+            $selectedValue = [
+                (string)$selectedValue
+            ];
         }
 
         $id = strtr($name, '[]', '__');
@@ -1322,14 +1320,14 @@ class CategoryUtil
 
         $count = 0;
         if (!isset($cats) || empty($cats)) {
-            $cats = array();
+            $cats = [];
         }
 
         foreach ($cats as $cat) {
             if ($fieldIsAttribute) {
-                $sel = (in_array((string)$cat['__ATTRIBUTES__'][$field], $selectedValue) ? ' selected="selected"' : '');
+                $sel = in_array((string)$cat['__ATTRIBUTES__'][$field], $selectedValue) ? ' selected="selected"' : '';
             } else {
-                $sel = (in_array((string)$cat[$field], $selectedValue) ? ' selected="selected"' : '');
+                $sel = in_array((string)$cat[$field], $selectedValue) ? ' selected="selected"' : '';
             }
             if ($displayPath) {
                 if ($fieldIsAttribute) {
@@ -1558,7 +1556,7 @@ class CategoryUtil
             return false;
         }
 
-        $paths = array();
+        $paths = [];
 
         foreach ($cats as $k => $v) {
             $path = $v[$field];

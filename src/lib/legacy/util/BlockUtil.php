@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Util
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 use Zikula\BlocksModule\BlockHandlerInterface;
@@ -31,8 +27,8 @@ class BlockUtil
      */
     public static function displayPosition($side, $echo = true, $implode = true)
     {
-        static $blockplacements = array();
-        static $positions = array();
+        static $blockplacements = [];
+        static $positions = [];
         static $modname;
         static $currentlang;
         static $func;
@@ -67,11 +63,11 @@ class BlockUtil
             $type = FormUtil::getPassedValue('type', 'user', 'GETPOST');
         }
         if (!isset($customargs)) {
-            $customargs = array();
-            $filtervars = array('module', 'name', 'type', 'func', 'theme', 'csrftoken');
+            $customargs = [];
+            $filtervars = ['module', 'name', 'type', 'func', 'theme', 'csrftoken'];
             foreach ($_GET as $var => $value) {
                 if (is_array($value)) {
-                    $arguments = explode('&', urldecode(http_build_query(array($var => $value))));
+                    $arguments = explode('&', urldecode(http_build_query([$var => $value])));
                     foreach ($arguments as $argument) {
                         $args = explode('=', $argument);
                         if (!in_array($args[0], $filtervars)) {
@@ -94,7 +90,7 @@ class BlockUtil
             $currentlang = ZLanguage::getLanguageCode();
         }
         // loop around the blocks and display only the ones we need
-        $blockoutput = array();
+        $blockoutput = [];
         foreach ($blockplacements as $blockplacement) {
             // don't display a block if it's not in this block position
             if ($blockplacement['pid'] != $positions[$side]['pid']) {
@@ -177,12 +173,12 @@ class BlockUtil
      * @param null $blockEntity
      * @return mixed Blockinfo array or null.
      */
-    public static function show($modname, $blockname, $blockinfo = array(), $blockEntity = null)
+    public static function show($modname, $blockname, $blockinfo = [], $blockEntity = null)
     {
         global $blocks_modules;
         $content = '';
         $blockInstance = self::load($modname, $blockname);
-        $displayfunc = array($blockInstance, 'display');
+        $displayfunc = [$blockInstance, 'display'];
         $blockEntity = isset($blockEntity) ? $blockEntity : ServiceUtil::get('doctrine.entitymanager')->find('Zikula\BlocksModule\Entity\BlockEntity', $blockinfo['bid']);
         $instanceArgs = ($blockInstance instanceof BlockHandlerInterface) ? $blockEntity->getContent() : $blockinfo;
         if (is_callable($displayfunc)) {
@@ -245,24 +241,14 @@ class BlockUtil
             if ($checkUserBlock) {
                 if (!empty($blockinfo['title'])) {
                     $blockinfo['minbox'] = '<a href="'.DataUtil::formatForDisplay(
-                            ModUtil::url(
-                                'ZikulaBlocksModule',
-                                'user',
-                                'changestatus',
-                                array('bid' => $blockinfo['bid'])
-                            )
+                            ModUtil::url('ZikulaBlocksModule', 'user', 'changestatus', ['bid' => $blockinfo['bid']])
                         ).'">'.$upb.'</a>';
                 }
             } else {
                 $blockinfo['content'] = '';
                 if (!empty($blockinfo['title'])) {
                     $blockinfo['minbox'] = '<a href="'.DataUtil::formatForDisplay(
-                            ModUtil::url(
-                                'ZikulaBlocksModule',
-                                'user',
-                                'changestatus',
-                                array('bid' => $blockinfo['bid'])
-                            )
+                            ModUtil::url('ZikulaBlocksModule', 'user', 'changestatus', ['bid' => $blockinfo['bid']])
                         ).'">'.$downb.'</a>';
                 }
             }
@@ -333,7 +319,7 @@ class BlockUtil
         }
         $result = $blockInstance;
         if ($blockInstance instanceof Zikula_Controller_AbstractBlock) {
-            $blocks_modules[$block] = call_user_func(array($blockInstance, 'info'));
+            $blocks_modules[$block] = call_user_func([$blockInstance, 'info']);
         }
         // set the module and keys for the new block
         $blocks_modules[$block]['bkey'] = $block;
@@ -341,12 +327,12 @@ class BlockUtil
         $blocks_modules[$block]['mid'] = ModUtil::getIdFromName($modname);
         // merge the blockinfo in the global list of blocks
         if (!isset($GLOBALS['blocks_modules'])) {
-            $GLOBALS['blocks_modules'] = array();
+            $GLOBALS['blocks_modules'] = [];
         }
         $GLOBALS['blocks_modules'][$blocks_modules[$block]['mid']][$block] = $blocks_modules[$block];
         // Initialise block if required (new-style)
         if ($blockInstance instanceof Zikula_Controller_AbstractBlock) {
-            call_user_func(array($blockInstance, 'init'));
+            call_user_func([$blockInstance, 'init']);
         }
         // add stylesheet to the page vars, this makes manual loading obsolete
         PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet($modname));
@@ -408,7 +394,7 @@ class BlockUtil
             $uid = UserUtil::getVar('uid');
             $sm = ServiceUtil::getManager();
             $entityManager = $sm->get('doctrine.entitymanager');
-            $item = $entityManager->getRepository('ZikulaBlocksModule:UserBlockEntity')->findOneBy(array('uid' => $uid, 'bid' => $blockinfo['bid']));
+            $item = $entityManager->getRepository('ZikulaBlocksModule:UserBlockEntity')->findOneBy(['uid' => $uid, 'bid' => $blockinfo['bid']]);
             if (!$item) {
                 $item = new \Zikula\BlocksModule\Entity\UserBlockEntity();
                 $item['uid'] = (int) $uid;
@@ -444,9 +430,9 @@ class BlockUtil
      */
     public static function getBlockInfo($value, $assocKey = 'bid')
     {
-        static $blockinfo = array();
+        static $blockinfo = [];
         if (!isset($blockinfo[$assocKey]) || empty($blockinfo[$assocKey])) {
-            $blockinfo[$assocKey] = array();
+            $blockinfo[$assocKey] = [];
             $blocks = self::getBlocksInfo();
             /** @var \Zikula\BlocksModule\Entity\BlockEntity $block */
             foreach ($blocks as $block) {

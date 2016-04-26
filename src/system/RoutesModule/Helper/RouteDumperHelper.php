@@ -44,11 +44,11 @@ class RouteDumperHelper
     public function dumpJsRoutes($lang = null)
     {
         // determine list of supported languages
-        $langs = array();
+        $langs = [];
         $installedLanguages = \ZLanguage::getInstalledLanguages();
         if (isset($lang) && in_array($lang, $installedLanguages)) {
             // use provided lang if available
-            $langs = array($lang);
+            $langs = [$lang];
         } else {
             $multilingual = (bool)\System::getVar('multilingual', 0);
             if ($multilingual) {
@@ -56,7 +56,7 @@ class RouteDumperHelper
                 $langs = $installedLanguages;
             } else {
                 // get only the default locale
-                $langs = array(\System::getVar('language_i18n', 'en')); //$this->container->getParameter('locale');
+                $langs = [\System::getVar('language_i18n', 'en')]; //$this->container->getParameter('locale');
             }
         }
 
@@ -68,14 +68,14 @@ class RouteDumperHelper
             try {
                 unlink($targetPath);
             } catch (\Exception $e) {
-                $errors .= __f("Error: Could not delete '%s' because %s", array($targetPath, $e->getMessage()));
+                $errors .= __f("Error: Could not delete '%s' because %s", [$targetPath, $e->getMessage()]);
             }
         }
 
         foreach ($langs as $lang) {
             $command = new DumpCommand();
             $command->setContainer($this->container);
-            $input = new ArrayInput(array('--locale' => $lang . I18nLoader::ROUTING_PREFIX));
+            $input = new ArrayInput(['--locale' => $lang . I18nLoader::ROUTING_PREFIX]);
             $output = new NullOutput();
             try {
                 $command->run($input, $output);

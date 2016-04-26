@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- * @subpackage Template_Plugins
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -65,8 +60,8 @@ function smarty_function_html_select_modules($params, Zikula_View $view)
     }
 
     // process our list of modules for input to the html_options plugin
-    $moduleslist = array();
-    $installerArray = array('ZikulaBlocksModule', 'ZikulaErrorsModule', 'ZikulaPermissionsModule', 'ZikulaCategoriesModule', 'ZikulaGroupsModule', 'ZikulaThemeModule', 'ZikulaUsersModule', 'ZikulaSearchModule');
+    $moduleslist = [];
+    $installerArray = ['ZikulaBlocksModule', 'ZikulaErrorsModule', 'ZikulaPermissionsModule', 'ZikulaCategoriesModule', 'ZikulaGroupsModule', 'ZikulaThemeModule', 'ZikulaUsersModule', 'ZikulaSearchModule'];
     if (!empty($modules)) {
         foreach ($modules as $module) {
             if (!(System::isInstalling() && in_array($module['name'], $installerArray))) {
@@ -77,11 +72,12 @@ function smarty_function_html_select_modules($params, Zikula_View $view)
     natcasesort($moduleslist);
 
     // get the formatted list
-    $output = smarty_function_html_options(array('options'   => $moduleslist,
-                                                 'selected'  => isset($params['selected']) ? $params['selected'] : null,
-                                                 'name'      => isset($params['name'])     ? $params['name']     : null,
-                                                 'id'        => isset($params['id'])       ? $params['id']       : null),
-                                                 $view);
+    $output = smarty_function_html_options([
+        'options'   => $moduleslist,
+        'selected'  => isset($params['selected']) ? $params['selected'] : null,
+        'name'      => isset($params['name'])     ? $params['name']     : null,
+        'id'        => isset($params['id'])       ? $params['id']       : null
+    ], $view);
     if (isset($params['assign']) && !empty($params['assign'])) {
         $view->assign($params['assign'], $output);
     } else {

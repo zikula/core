@@ -1,4 +1,5 @@
-// Copyright 2012 Zikula Foundation, licensed LGPLv3 or any later version.
+// Copyright Zikula Foundation, licensed MIT.
+
 /**
  * @fileOverview Zikula Core helper
  * @requires jQuery, underscore, Modernizr, lang.js, class.js

@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- * @subpackage Template_Plugins
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -78,7 +73,7 @@ function smarty_function_selector_category($params, Zikula_View $view)
 
     static $catCache;
     if (!$catCache) {
-        $catCache = array();
+        $catCache = [];
     }
 
     $cacheKey = "$category[id]||$recurse|$relative|$includeRoot|$includeLeaf|$all|||$attributes|$sortField";
@@ -92,7 +87,7 @@ function smarty_function_selector_category($params, Zikula_View $view)
                                                   );
 
     if ($editLink && !empty($category) && SecurityUtil::checkPermission('ZikulaCategoriesModule::', "$category[id]::", ACCESS_EDIT)) {
-        $url = DataUtil::formatForDisplay(ModUtil::url('ZikulaCategoriesModule', 'user', 'edit', array('dr' => $category['id'])));
+        $url = DataUtil::formatForDisplay(ModUtil::url('ZikulaCategoriesModule', 'user', 'edit', ['dr' => $category['id']]));
         $html .= "&nbsp;&nbsp;<a href=\"$url\"><img src=\"".System::getBaseUrl()."images/icons/extrasmall/xedit.png\" title=\"" . __('Edit sub-category') . '" alt="' . __('Edit sub-category') . '" /></a>';
     }
 

@@ -1,15 +1,11 @@
 <?php
-
 /**
- * Copyright Zikula Foundation 2014 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Bundle\CoreBundle\EventListener;
@@ -157,10 +153,10 @@ class RouterListener implements EventSubscriberInterface
             }
 
             if (null !== $this->logger) {
-                $this->logger->info(sprintf('Matched route "%s".', isset($parameters['_route']) ? $parameters['_route'] : 'n/a'), array(
+                $this->logger->info(sprintf('Matched route "%s".', isset($parameters['_route']) ? $parameters['_route'] : 'n/a'), [
                     'route_parameters' => $parameters,
                     'request_uri' => $request->getUri(),
-                ));
+                ]);
             }
 
             $request->attributes->add($parameters);
@@ -180,9 +176,9 @@ class RouterListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(
-            KernelEvents::REQUEST => array(array('onKernelRequest', 32)),
-            KernelEvents::FINISH_REQUEST => array(array('onKernelFinishRequest', 0)),
-        );
+        return [
+            KernelEvents::REQUEST => [['onKernelRequest', 32]],
+            KernelEvents::FINISH_REQUEST => [['onKernelFinishRequest', 0]]
+        ];
     }
 }

@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2015 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Component\SortableColumns;
@@ -32,46 +29,54 @@ class SortableColumns
      * @var RouterInterface
      */
     private $router;
+
     /**
      * The route name string to generate urls for column headers
      * @var string
      */
     private $routeName;
+
     /**
      * A collection of Columns to manage
      * @var ArrayCollection
      */
     private $columnCollection;
+
     /**
      * The default column (if unset, the first column add is used)
      * @var Column
      */
     private $defaultColumn;
+
     /**
      * The column used to sort the data
      * @var Column
      */
     private $sortColumn;
+
     /**
      * The direction to sorted (constant from Column class)
      * @var string
      */
     private $sortDirection = Column::DIRECTION_ASCENDING;
+
     /**
      * The name of the html field that holds the selected orderBy field (default: `sort-field`)
      * @var string
      */
     private $sortFieldName;
+
     /**
      * The name of the html field that holds the selected orderBy direction (default: `sort-direction`)
      * @var string
      */
     private $directionFieldName;
+
     /**
      * Additional url parameters that must be included in the generated urls
      * @var array
      */
-    private $additionalUrlParameters = array();
+    private $additionalUrlParameters = [];
 
     public function __construct(RouterInterface $router, $routeName, $sortFieldName = 'sort-field', $directionFieldName = 'sort-direction')
     {
@@ -96,15 +101,15 @@ class SortableColumns
      */
     public function generateSortableColumns()
     {
-        $resultArray = array();
+        $resultArray = [];
         /** @var Column $column */
         foreach ($this->columnCollection as $column) {
             $this->additionalUrlParameters[$this->directionFieldName] = $column->isSortColumn() ? $column->getReverseSortDirection() : $column->getCurrentSortDirection();
             $this->additionalUrlParameters[$this->sortFieldName] = $column->getName();
-            $resultArray[$column->getName()] = array(
+            $resultArray[$column->getName()] = [
                 'url' => $this->router->generate($this->routeName, $this->additionalUrlParameters),
                 'class' => $column->getCssClassString(),
-            );
+            ];
         }
 
         return $resultArray;
@@ -213,7 +218,7 @@ class SortableColumns
      */
     private function setSortDirection($sortDirection)
     {
-        if (in_array($sortDirection, array(Column::DIRECTION_ASCENDING, Column::DIRECTION_DESCENDING))) {
+        if (in_array($sortDirection, [Column::DIRECTION_ASCENDING, Column::DIRECTION_DESCENDING])) {
             $this->sortDirection = $sortDirection;
         }
     }
@@ -225,9 +230,9 @@ class SortableColumns
     {
         if (!empty($this->defaultColumn)) {
             return $this->defaultColumn;
-        } else {
-            return $this->columnCollection->first();
         }
+
+        return $this->columnCollection->first();
     }
 
     /**
@@ -249,7 +254,7 @@ class SortableColumns
     /**
      * @param array $additionalUrlParameters
      */
-    public function setAdditionalUrlParameters(array $additionalUrlParameters = array())
+    public function setAdditionalUrlParameters(array $additionalUrlParameters = [])
     {
         $this->additionalUrlParameters = $additionalUrlParameters;
     }

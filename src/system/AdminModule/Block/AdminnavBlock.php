@@ -66,7 +66,7 @@ class AdminnavBlock extends AbstractBlockHandler
                 }
             }
             $adminCategories[] = [
-                'url' => $this->get('router')->generate('zikulaadminmodule_admin_adminpanel', array('cid' => $item['cid'])),
+                'url' => $this->get('router')->generate('zikulaadminmodule_admin_adminpanel', ['cid' => $item['cid']]),
                 'title' => $item['name'],
                 'modules' => $adminLinks
             ];

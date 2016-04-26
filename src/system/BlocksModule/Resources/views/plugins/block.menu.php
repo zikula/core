@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -25,12 +22,12 @@
 function smarty_block_menu($params, $content, $smarty, &$repeat)
 {
     if (!isset($params['from'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_menu', 'from')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['smarty_block_menu', 'from']));
 
         return false;
     }
     if (!isset($params['item'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_menu', 'item')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['smarty_block_menu', 'item']));
 
         return false;
     }
@@ -42,7 +39,7 @@ function smarty_block_menu($params, $content, $smarty, &$repeat)
         }
     }
     if (is_null($content)) {
-        $smarty->_tag_stack[$menuTagStackKey][1]['_content'] = array();
+        $smarty->_tag_stack[$menuTagStackKey][1]['_content'] = [];
     }
 
     $from = $params['from'];
@@ -67,13 +64,13 @@ function smarty_block_menu($params, $content, $smarty, &$repeat)
     }
 
     if (isset($params['name'])) {
-        $menuProps = array(
+        $menuProps = [
             'index' => $index,
             'iteration' => $index + 1,
             'total' => $total,
             'first' => (bool)is_null($content),
             'last' =>  $index + 1 >= $total
-        );
+        ];
     }
 
     if ($repeat || (empty($from) && is_null($content))) {
@@ -123,8 +120,8 @@ function _smarty_block_menu_parsemenu($params)
         $reflang = key($tmp);
     }
 
-    $tree = array();
-    $map  = array();
+    $tree = [];
+    $map  = [];
 
     foreach ($params['from'] as $i => $item) {
         if (isset($reflang)) {
@@ -137,9 +134,12 @@ function _smarty_block_menu_parsemenu($params)
             $item['id'] = 'dummy_'.$i;
         }
 
-        $_node = array('item' => $item, 'nodes' => array());
+        $_node = [
+            'item' => $item,
+            'nodes' => []
+        ];
 
-        if (!isset($item['parentid']) || $item['parentid'] === null) {
+        if (!isset($item['parentid']) || null === $item['parentid']) {
             $tree[$item['id']] = $_node;
             $path = null;
         } else {
@@ -147,7 +147,7 @@ function _smarty_block_menu_parsemenu($params)
             $path[] = $item['parentid'];
             $handle = &$tree;
             while (list($key, $value) = each($path)) {
-                if ($value === null) {
+                if (null === $value) {
                     continue;
                 }
                 $handle = &$handle[$value]['nodes'];

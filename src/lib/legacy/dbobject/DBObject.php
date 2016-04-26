@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package DBObject
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -353,7 +349,7 @@ class DBObject
     public function select($key, $field = '', $where = '')
     {
         if (!$this->_objType) {
-            return array();
+            return [];
         }
 
         if (!$field) {
@@ -361,7 +357,7 @@ class DBObject
         }
 
         if ((!$key || !$field) && !$where) {
-            return array();
+            return [];
         }
 
         // use explicit where clause
@@ -378,7 +374,7 @@ class DBObject
                 if (isset($objArray[0])) {
                     $this->_objData = $objArray[0];
                 } else {
-                    $this->_objData = array();
+                    $this->_objData = [];
                 }
             }
 
@@ -423,7 +419,7 @@ class DBObject
      *
      * @return mixed The requested object/value.
      */
-    public function getDataFromInput($key = null, $default = null, $source = 'REQUEST', $filter = null, array $args = array())
+    public function getDataFromInput($key = null, $default = null, $source = 'REQUEST', $filter = null, array $args = [])
     {
         if (!$key) {
             $key = $this->_objPath;

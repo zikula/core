@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\GroupsModule\Controller;
@@ -43,7 +40,7 @@ class UserController extends \Zikula_AbstractController
     public function indexAction()
     {
         // Security check will be done in view()
-        return new RedirectResponse($this->get('router')->generate('zikulagroupsmodule_user_view', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulagroupsmodule_user_view', [], RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -74,9 +71,10 @@ class UserController extends \Zikula_AbstractController
         }
 
         // get groups (not core, only private and public ones)
-        $groups = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getallgroups',
-                array('startnum' => $startnum,
-                      'numitems' => $itemsperpage));
+        $groups = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getallgroups', [
+            'startnum' => $startnum,
+            'numitems' => $itemsperpage
+        ]);
 
         $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
@@ -90,7 +88,7 @@ class UserController extends \Zikula_AbstractController
             return new Response($this->view->fetch('User/view.tpl'));
         }
 
-        $groupitems = array();
+        $groupitems = [];
 
         $groupsCommon = new CommonHelper();
         $typelabel = $groupsCommon->gtypeLabels();
@@ -114,10 +112,11 @@ class UserController extends \Zikula_AbstractController
         }
 
         $this->view->assign('nogroups', false)
-                   ->assign('items', $groupitems);
-
-        $this->view->assign('pager', array('numitems'     => ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'countitems'),
-                                           'itemsperpage' => $itemsperpage));
+                   ->assign('items', $groupitems)
+                   ->assign('pager', [
+                        'numitems'     => ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'countitems'),
+                        'itemsperpage' => $itemsperpage
+                    ]);
 
         return new Response($this->view->fetch('User/view.tpl'));
     }
@@ -156,7 +155,7 @@ class UserController extends \Zikula_AbstractController
         $uid = UserUtil::getVar('uid');
 
         // Check if the group exists
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid));
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', ['gid' => $gid]);
 
         if (!$group) {
             throw new NotFoundHttpException($this->__('Error! That group does not exist.'));
@@ -164,32 +163,32 @@ class UserController extends \Zikula_AbstractController
 
         // And lastly, we must check if he didn't rewrote the url,
         // that is he applying to an open group and that the group is open
-        // $isopen = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getginfo', array('gid' => $gid));
+        // $isopen = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getginfo', ['gid' => $gid]);
         if ($action == 'subscribe') {
-            if (ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember', array('gid' => $gid, 'uid' => $uid))) {
+            if (ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember', ['gid' => $gid, 'uid' => $uid])) {
                 $request->getSession()->getFlashBag()->add('error', $this->__('Error! You are already a member of this group.'));
 
-                return new RedirectResponse($this->get('router')->generate('zikulagroupsmodule_user_view', array(), RouterInterface::ABSOLUTE_URL));
+                return new RedirectResponse($this->get('router')->generate('zikulagroupsmodule_user_view', [], RouterInterface::ABSOLUTE_URL));
             }
 
             if ($group['gtype'] == CommonHelper::GTYPE_CORE) {
                 $request->getSession()->getFlashBag()->add('error', $this->__('Sorry! You cannot apply for membership of that group.'));
 
-                return new RedirectResponse($this->get('router')->generate('zikulagroupsmodule_user_view', array(), RouterInterface::ABSOLUTE_URL));
+                return new RedirectResponse($this->get('router')->generate('zikulagroupsmodule_user_view', [], RouterInterface::ABSOLUTE_URL));
             }
 
             if ($group['nbumax'] != 0) {
                 if (($group['nbumax'] - $group['nbuser']) <= 0) {
                     $request->getSession()->getFlashBag()->add('error', $this->__('Sorry! That group has reached full membership.'));
 
-                    return new RedirectResponse($this->get('router')->generate('zikulagroupsmodule_user_view', array(), RouterInterface::ABSOLUTE_URL));
+                    return new RedirectResponse($this->get('router')->generate('zikulagroupsmodule_user_view', [], RouterInterface::ABSOLUTE_URL));
                 }
             }
 
             if ($group['state'] == CommonHelper::STATE_CLOSED) {
                 $request->getSession()->getFlashBag()->add('error', $this->__('Sorry! That group is closed.'));
 
-                return new RedirectResponse($this->get('router')->generate('zikulagroupsmodule_user_view', array(), RouterInterface::ABSOLUTE_URL));
+                return new RedirectResponse($this->get('router')->generate('zikulagroupsmodule_user_view', [], RouterInterface::ABSOLUTE_URL));
             }
         }
 
@@ -232,7 +231,7 @@ class UserController extends \Zikula_AbstractController
         if (empty($tag)) {
             $request->getSession()->getFlashBag()->add('error', $this->__('Error! You must click on the checkbox to confirm your action.'));
 
-            return new RedirectResponse($this->get('router')->generate('zikulagroupsmodule_user_view', array(), RouterInterface::ABSOLUTE_URL));
+            return new RedirectResponse($this->get('router')->generate('zikulagroupsmodule_user_view', [], RouterInterface::ABSOLUTE_URL));
         }
 
         $applytext = '';
@@ -240,11 +239,12 @@ class UserController extends \Zikula_AbstractController
             $applytext = $request->request->get('applytext', null);
         }
 
-        $result = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'userupdate',
-                array('gid'       => $gid,
-                      'action'    => $action,
-                      'gtype'     => $gtype,
-                      'applytext' => $applytext));
+        $result = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'userupdate', [
+            'gid'       => $gid,
+            'action'    => $action,
+            'gtype'     => $gtype,
+            'applytext' => $applytext
+        ]);
 
         if ($result == true) {
             $request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved the action.'));
@@ -252,7 +252,7 @@ class UserController extends \Zikula_AbstractController
 
         $this->view->clear_cache('User/memberslist.tpl');
 
-        return new RedirectResponse($this->get('router')->generate('zikulagroupsmodule_user_view', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulagroupsmodule_user_view', [], RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -281,9 +281,11 @@ class UserController extends \Zikula_AbstractController
             throw new AccessDeniedException();
         }
 
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid,
-                'numitems' => $itemsperpage,
-                'startnum' => $startnum));
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', [
+            'gid' => $gid,
+            'numitems' => $itemsperpage,
+            'startnum' => $startnum
+        ]);
 
         if (!$group) {
             return DataUtil::formatForDisplay($this->__('Error! Could not load data.'));
@@ -305,7 +307,7 @@ class UserController extends \Zikula_AbstractController
         if ($group['members']) {
             $onlines = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'whosonline');
 
-            $members = array();
+            $members = [];
             foreach ($group['members'] as $userid) {
                 $userinfo = UserUtil::getVars($userid['uid']);
 
@@ -323,7 +325,7 @@ class UserController extends \Zikula_AbstractController
 
             // test of sorting data
             if (!empty($members)) {
-                $sortAarr = array();
+                $sortAarr = [];
                 foreach ($members as $res) {
                     $sortAarr[] = strtolower($res['uname']);
                 }
@@ -335,13 +337,15 @@ class UserController extends \Zikula_AbstractController
         }
 
         if (UserUtil::isLoggedIn()) {
-            $this->view->assign('ismember', ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember', array('gid' => $gid, 'uid' => $uid)));
+            $this->view->assign('ismember', ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember', ['gid' => $gid, 'uid' => $uid]));
         } else {
             $this->view->assign('ismember', false);
         }
 
-        $this->view->assign('pager', array('numitems'     => ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'countgroupmembers', array('gid' => $gid)),
-                                           'itemsperpage' => $itemsperpage));
+        $this->view->assign('pager', [
+            'numitems'     => ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'countgroupmembers', ['gid' => $gid]),
+            'itemsperpage' => $itemsperpage
+        ]);
 
         return new Response($this->view->fetch('User/memberslist.tpl'));
     }

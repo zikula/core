@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -161,7 +157,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * @var array
      */
-    protected $templateCache = array();
+    protected $templateCache = [];
 
     /**
      * Constructor.
@@ -246,7 +242,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         }
 
         // add standard plugin search path
-        $this->plugins_dir = array();
+        $this->plugins_dir = [];
         $this->addPluginDir('config/plugins'); // Official override
         $this->addPluginDir('lib/legacy/viewplugins'); // Core plugins
         $this->addPluginDir(isset($themeBundle) ? $themeBundle->getRelativePath() . '/plugins' : "themes/$theme/plugins"); // Theme plugins
@@ -267,7 +263,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $this->addPluginDir($themePluginsPath);
 
         //---- Cache handling -------------------------------------------------
-        if ($caching && in_array((int)$caching, array(0, 1, 2))) {
+        if ($caching && in_array((int)$caching, [0, 1, 2])) {
             $this->caching = (int)$caching;
         } else {
             $this->caching = (int)ModUtil::getVar('ZikulaThemeModule', 'render_cache');
@@ -289,11 +285,11 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         // register resource type 'z' this defines the way templates are searched
         // during {include file='my_template.tpl'} this enables us to store selected module
         // templates in the theme while others can be kept in the module itself.
-        $this->register_resource('z', array('Zikula_View_Resource',
-                                            'z_get_template',
-                                            'z_get_timestamp',
-                                            'z_get_secure',
-                                            'z_get_trusted'));
+        $this->register_resource('z', ['Zikula_View_Resource',
+                                       'z_get_template',
+                                       'z_get_timestamp',
+                                       'z_get_secure',
+                                       'z_get_trusted']);
 
         // set 'z' as default resource type
         $this->default_resource_type = 'z';
@@ -304,7 +300,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         }
 
         // register the 'nocache' block to allow dynamic zones caching templates
-        $this->register_block('nocache', array('Zikula_View_Resource', 'block_nocache'), false);
+        $this->register_block('nocache', ['Zikula_View_Resource', 'block_nocache'], false);
 
         // For ajax requests we use the short urls filter to 'fix' relative paths
         if (($this->serviceManager->get('zikula')->getStage() & Zikula_Core::STAGE_AJAX) && System::getVar('shorturls')) {
@@ -410,7 +406,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         // metadata for SEO
         if (!$this->serviceManager->hasParameter('zikula_view.metatags')) {
-            $this->serviceManager->setParameter('zikula_view.metatags', new ArrayObject(array()));
+            $this->serviceManager->setParameter('zikula_view.metatags', new ArrayObject([]));
         }
 
         parent::assign('metatags', $this->serviceManager->getParameter('zikula_view.metatags'));
@@ -479,7 +475,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             // load the usemodules configuration if exists
             $modpath = ($view->module[$module]['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
             $usepath = "$modpath/" . $view->module[$module]['directory'] . '/templates/config';
-            $usemod_confs = array();
+            $usemod_confs = [];
             $usemod_confs[] = "$usepath/usemodules.txt";
             // load the config file
             foreach ($usemod_confs as $usemod_conf) {
@@ -544,63 +540,63 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         //// blocks
         // checkgroup
-        Zikula_View_Resource::register($this, 'block', 'checkgroup', $delayed_load, $cacheable, array('gid'));
+        Zikula_View_Resource::register($this, 'block', 'checkgroup', $delayed_load, $cacheable, ['gid']);
         // checkpermissionblock
-        Zikula_View_Resource::register($this, 'block', 'checkpermissionblock', $delayed_load, $cacheable, array('component', 'instance'));
+        Zikula_View_Resource::register($this, 'block', 'checkpermissionblock', $delayed_load, $cacheable, ['component', 'instance']);
         // pageaddvarblock
-        Zikula_View_Resource::register($this, 'block', 'pageaddvarblock', $delayed_load, $cacheable, array('name'));
+        Zikula_View_Resource::register($this, 'block', 'pageaddvarblock', $delayed_load, $cacheable, ['name']);
 
         //// plugins
         // ajaxheader
-        Zikula_View_Resource::register($this, 'function', 'ajaxheader', $delayed_load, $cacheable, array('modname', 'filename', 'noscriptaculous', 'validation', 'lightbox', 'imageviewer', 'assign'));
+        Zikula_View_Resource::register($this, 'function', 'ajaxheader', $delayed_load, $cacheable, ['modname', 'filename', 'noscriptaculous', 'validation', 'lightbox', 'imageviewer', 'assign']);
         // assign_cache
-        Zikula_View_Resource::register($this, 'function', 'assign_cache', $delayed_load, $cacheable, array('var', 'value'));
+        Zikula_View_Resource::register($this, 'function', 'assign_cache', $delayed_load, $cacheable, ['var', 'value']);
         // checkpermission
-        Zikula_View_Resource::register($this, 'function', 'checkpermission', $delayed_load, $cacheable, array('component', 'instance', 'level', 'assign'));
+        Zikula_View_Resource::register($this, 'function', 'checkpermission', $delayed_load, $cacheable, ['component', 'instance', 'level', 'assign']);
         // formutil_getfieldmarker
-        Zikula_View_Resource::register($this, 'function', 'formutil_getfieldmarker', $delayed_load, $cacheable, array('objectType', 'validation', 'field', 'assign'));
+        Zikula_View_Resource::register($this, 'function', 'formutil_getfieldmarker', $delayed_load, $cacheable, ['objectType', 'validation', 'field', 'assign']);
         // formutil_getpassedvalue
-        Zikula_View_Resource::register($this, 'function', 'formutil_getpassedvalue', $delayed_load, $cacheable, array('assign', 'html', 'key', 'name', 'default', 'source', 'noprocess'));
+        Zikula_View_Resource::register($this, 'function', 'formutil_getpassedvalue', $delayed_load, $cacheable, ['assign', 'html', 'key', 'name', 'default', 'source', 'noprocess']);
         // formutil_getvalidationerror
-        Zikula_View_Resource::register($this, 'function', 'formutil_getvalidationerror', $delayed_load, $cacheable, array('objectType', 'field', 'assign'));
+        Zikula_View_Resource::register($this, 'function', 'formutil_getvalidationerror', $delayed_load, $cacheable, ['objectType', 'field', 'assign']);
         // notifydisplayhooks
-        Zikula_View_Resource::register($this, 'function', 'notifydisplayhooks', $delayed_load, $cacheable, array('eventname', 'id', 'urlobject', 'assign'));
+        Zikula_View_Resource::register($this, 'function', 'notifydisplayhooks', $delayed_load, $cacheable, ['eventname', 'id', 'urlobject', 'assign']);
         // notifyevent
-        Zikula_View_Resource::register($this, 'function', 'notifyevent', $delayed_load, $cacheable, array('eventname', 'eventsubject', 'eventdata', 'assign'));
+        Zikula_View_Resource::register($this, 'function', 'notifyevent', $delayed_load, $cacheable, ['eventname', 'eventsubject', 'eventdata', 'assign']);
         // pageaddvar
-        Zikula_View_Resource::register($this, 'function', 'pageaddvar', $delayed_load, $cacheable, array('name', 'value'));
+        Zikula_View_Resource::register($this, 'function', 'pageaddvar', $delayed_load, $cacheable, ['name', 'value']);
         // pagegetvar
-        Zikula_View_Resource::register($this, 'function', 'pagegetvar', $delayed_load, $cacheable, array('name', 'html', 'assign'));
+        Zikula_View_Resource::register($this, 'function', 'pagegetvar', $delayed_load, $cacheable, ['name', 'html', 'assign']);
         // pager
-        Zikula_View_Resource::register($this, 'function', 'pager', $delayed_load, $cacheable, array('modname', 'type', 'func', 'rowcount', 'limit', 'posvar', 'owner', 'template', 'includeStylesheet', 'anchorText', 'maxpages', 'display', 'class', 'processDetailLinks', 'processUrls', 'optimize'));
+        Zikula_View_Resource::register($this, 'function', 'pager', $delayed_load, $cacheable, ['modname', 'type', 'func', 'rowcount', 'limit', 'posvar', 'owner', 'template', 'includeStylesheet', 'anchorText', 'maxpages', 'display', 'class', 'processDetailLinks', 'processUrls', 'optimize']);
         // pageregistervar
-        Zikula_View_Resource::register($this, 'function', 'pageregistervar', $delayed_load, $cacheable, array('name'));
+        Zikula_View_Resource::register($this, 'function', 'pageregistervar', $delayed_load, $cacheable, ['name']);
         // pagesetvar
-        Zikula_View_Resource::register($this, 'function', 'pagesetvar', $delayed_load, $cacheable, array('name', 'value'));
+        Zikula_View_Resource::register($this, 'function', 'pagesetvar', $delayed_load, $cacheable, ['name', 'value']);
         // servergetvar
-        Zikula_View_Resource::register($this, 'function', 'servergetvar', $delayed_load, $cacheable, array('name', 'default', 'assign'));
+        Zikula_View_Resource::register($this, 'function', 'servergetvar', $delayed_load, $cacheable, ['name', 'default', 'assign']);
         // sessiondelvar
-        Zikula_View_Resource::register($this, 'function', 'sessiondelvar', $delayed_load, $cacheable, array('name', 'path', 'assign'));
+        Zikula_View_Resource::register($this, 'function', 'sessiondelvar', $delayed_load, $cacheable, ['name', 'path', 'assign']);
         // sessiongetvar
-        Zikula_View_Resource::register($this, 'function', 'sessiongetvar', $delayed_load, $cacheable, array('name', 'assign', 'default', 'path'));
+        Zikula_View_Resource::register($this, 'function', 'sessiongetvar', $delayed_load, $cacheable, ['name', 'assign', 'default', 'path']);
         // sessionsetvar
-        Zikula_View_Resource::register($this, 'function', 'sessionsetvar', $delayed_load, $cacheable, array('name', 'value', 'path', 'assign'));
+        Zikula_View_Resource::register($this, 'function', 'sessionsetvar', $delayed_load, $cacheable, ['name', 'value', 'path', 'assign']);
         // setmetatag
-        Zikula_View_Resource::register($this, 'function', 'setmetatag', $delayed_load, $cacheable, array('name', 'value'));
+        Zikula_View_Resource::register($this, 'function', 'setmetatag', $delayed_load, $cacheable, ['name', 'value']);
         // themegetvar
-        Zikula_View_Resource::register($this, 'function', 'themegetvar', $delayed_load, $cacheable, array('name', 'default', 'assign'));
+        Zikula_View_Resource::register($this, 'function', 'themegetvar', $delayed_load, $cacheable, ['name', 'default', 'assign']);
         // themesetvar
-        Zikula_View_Resource::register($this, 'function', 'themesetvar', $delayed_load, $cacheable, array('name', 'value'));
+        Zikula_View_Resource::register($this, 'function', 'themesetvar', $delayed_load, $cacheable, ['name', 'value']);
         // user
         Zikula_View_Resource::register($this, 'function', 'user', $delayed_load, $cacheable);
         // useravatar - without uid caching
         Zikula_View_Resource::register($this, 'function', 'useravatar', $delayed_load, $cacheable);
         // usergetvar
-        Zikula_View_Resource::register($this, 'function', 'usergetvar', $delayed_load, $cacheable, array('assign', 'default', 'name', 'uid'));
+        Zikula_View_Resource::register($this, 'function', 'usergetvar', $delayed_load, $cacheable, ['assign', 'default', 'name', 'uid']);
         // userlinks
-        Zikula_View_Resource::register($this, 'function', 'userlinks', $delayed_load, $cacheable, array('start', 'end', 'seperator'));
+        Zikula_View_Resource::register($this, 'function', 'userlinks', $delayed_load, $cacheable, ['start', 'end', 'seperator']);
         // userloggedin
-        Zikula_View_Resource::register($this, 'function', 'userloggedin', $delayed_load, $cacheable, array('assign'));
+        Zikula_View_Resource::register($this, 'function', 'userloggedin', $delayed_load, $cacheable, ['assign']);
         // userwelcome
         Zikula_View_Resource::register($this, 'function', 'userwelcome', $delayed_load, $cacheable);
         // zdebug
@@ -686,21 +682,22 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             // same as the top level mods. This limits the places to look for
             // templates.
             if ($module == $modname) {
-                $search_path = array(
-                        "themes/$os_theme/templates/modules/$os_module", // themepath
-                        "config/templates/$os_module", //global path
-                        $relativepath,
-                        "$os_dir/$os_module/templates", // modpath
-                );
+                $search_path = [
+                    "themes/$os_theme/templates/modules/$os_module", // themepath
+                    "config/templates/$os_module", //global path
+                    $relativepath,
+                    "$os_dir/$os_module/templates" // modpath
+                ];
             } else {
-                $search_path = array("themes/$os_theme/templates/modules/$os_module/$os_modname", // themehookpath
-                        "themes/$os_theme/templates/modules/$os_module", // themepath
-                        "config/templates/$os_module/$os_modname", //globalhookpath
-                        "config/templates/$os_module", //global path
-                        $relativepath,
-                        "$os_dir/$os_module/templates/$os_modname", //modhookpath
-                        "$os_dir/$os_module/templates", // modpath
-                );
+                $search_path = [
+                    "themes/$os_theme/templates/modules/$os_module/$os_modname", // themehookpath
+                    "themes/$os_theme/templates/modules/$os_module", // themepath
+                    "config/templates/$os_module/$os_modname", //globalhookpath
+                    "config/templates/$os_module", //global path
+                    $relativepath,
+                    "$os_dir/$os_module/templates/$os_modname", //modhookpath
+                    "$os_dir/$os_module/templates" // modpath
+                ];
             }
 
             foreach ($search_path as $path) {
@@ -732,7 +729,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     public function add_core_data()
     {
         if (!isset($this->serviceManager['zikula_view.coredata'])) {
-            $this->serviceManager['zikula_view.coredata'] = new ArrayObject(array());
+            $this->serviceManager['zikula_view.coredata'] = new ArrayObject([]);
         }
 
         $core = $this->serviceManager['zikula_view.coredata'];
@@ -818,7 +815,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             $output = "\n<!--[if !IE]> Start " . $this->template_dir . "/$template <![endif]-->\n" . $output . "\n<!-- End " . $this->template_dir . "/$template -->\n";
         }
 
-        $event = new \Zikula\Core\Event\GenericEvent($this, array('template' => $template), $output);
+        $event = new \Zikula\Core\Event\GenericEvent($this, ['template' => $template], $output);
 
         return $this->eventManager->dispatch('view.postfetch', $event)->getData();
     }
@@ -878,7 +875,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     protected function _filter_auto_id(&$id)
     {
         // convert some chars used as separators
-        $id = str_replace(array(':', '=', ','), '_', $id);
+        $id = str_replace([':', '=', ','], '_', $id);
         // convert the "Smarty cache groups" | to paths
         $id = str_replace('|', '/', $id);
         // and remove anything outside the acceptable range
@@ -1187,7 +1184,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         if ($push) {
             array_push($this->plugins_dir, $dir);
         } else {
-            $this->plugins_dir = array_merge(array($dir), $this->plugins_dir);
+            $this->plugins_dir = array_merge([$dir], $this->plugins_dir);
         }
 
         return $this;
@@ -1237,7 +1234,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      */
     public static function getTemplateOverride($template)
     {
-        $event = new \Zikula\Core\Event\GenericEvent(null, array(), $template);
+        $event = new \Zikula\Core\Event\GenericEvent(null, [], $template);
         EventUtil::getManager()->dispatch('zikula_view.template_override', $event);
 
         if ($event->isPropagationStopped()) {
@@ -2362,7 +2359,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * Set a list of the modifiers to apply to all template variables.
      *
      * Put each modifier in a separate array element in the order you want
-     * them applied. example: <code>array('escape:"htmlall"');</code>
+     * them applied. example: <code>['escape:"htmlall"'];</code>
      *
      * @param array $default_modifiers An array of default modifiers.
      *
@@ -2866,7 +2863,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      */
     public function _fetch($resource_name, $cache_id = null, $compile_id = null, $display = false)
     {
-        static $_cache_info = array();
+        static $_cache_info = [];
 
         $_smarty_old_error_level = $this->debugging ? error_reporting() : error_reporting(isset($this->error_reporting)
                ? $this->error_reporting : error_reporting() & ~E_NOTICE);
@@ -2894,12 +2891,14 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         if ($this->debugging) {
             // capture time for debugging info
-            $_params = array();
+            $_params = [];
             require_once SMARTY_CORE_DIR . 'core.get_microtime.php';
             $_debug_start_time = smarty_core_get_microtime($_params, $this);
-            $this->_smarty_debug_info[] = array('type'      => 'template',
-                                                'filename'  => $resource_name,
-                                                'depth'     => 0);
+            $this->_smarty_debug_info[] = [
+                'type'      => 'template',
+                'filename'  => $resource_name,
+                'depth'     => 0
+            ];
             $_included_tpls_idx = count($this->_smarty_debug_info) - 1;
         }
 
@@ -2913,27 +2912,27 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         if ($this->caching) {
             // save old cache_info, initialize cache_info
             array_push($_cache_info, $this->_cache_info);
-            $this->_cache_info = array();
-            $_params = array(
+            $this->_cache_info = [];
+            $_params = [
                 'tpl_file' => $resource_name,
                 'cache_id' => $cache_id,
                 'compile_id' => $compile_id,
                 'results' => null
-            );
+            ];
             require_once SMARTY_CORE_DIR . 'core.read_cache_file.php';
             if (smarty_core_read_cache_file($_params, $this)) {
                 $_smarty_results = $_params['results'];
                 if (!empty($this->_cache_info['insert_tags'])) {
-                    $_params = array('plugins' => $this->_cache_info['insert_tags']);
+                    $_params = ['plugins' => $this->_cache_info['insert_tags']];
                     require_once SMARTY_CORE_DIR . 'core.load_plugins.php';
                     smarty_core_load_plugins($_params, $this);
-                    $_params = array('results' => $_smarty_results);
+                    $_params = ['results' => $_smarty_results];
                     // ZIKULA OVERRIDE
                     require_once 'lib/legacy/viewplugins/zikula.process_cached_inserts.php';
                     $_smarty_results = smarty_core_process_cached_inserts($_params, $this);
                 }
                 if (!empty($this->_cache_info['cache_serials'])) {
-                    $_params = array('results' => $_smarty_results);
+                    $_params = ['results' => $_smarty_results];
                     require_once SMARTY_CORE_DIR . 'core.process_compiled_include.php';
                     $_smarty_results = smarty_core_process_compiled_include($_params, $this);
                 }
@@ -2941,7 +2940,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
                 if ($display) {
                     if ($this->debugging) {
                         // capture time for debugging info
-                        $_params = array();
+                        $_params = [];
                         require_once SMARTY_CORE_DIR . 'core.get_microtime.php';
                         $this->_smarty_debug_info[$_included_tpls_idx]['exec_time'] = smarty_core_get_microtime($_params, $this) - $_debug_start_time;
                         require_once SMARTY_CORE_DIR . 'core.display_debug_console.php';
@@ -3014,15 +3013,17 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             ob_end_clean();
 
             foreach ((array)$this->_plugins['outputfilter'] as $_output_filter) {
-                $_smarty_results = call_user_func_array($_output_filter[0], array($_smarty_results, &$this));
+                $_smarty_results = call_user_func_array($_output_filter[0], [$_smarty_results, &$this]);
             }
         }
 
         if ($this->caching) {
-            $_params = array('tpl_file' => $resource_name,
-                        'cache_id' => $cache_id,
-                        'compile_id' => $compile_id,
-                        'results' => $_smarty_results);
+            $_params = [
+                'tpl_file' => $resource_name,
+                'cache_id' => $cache_id,
+                'compile_id' => $compile_id,
+                'results' => $_smarty_results
+            ];
             require_once SMARTY_CORE_DIR . 'core.write_cache_file.php';
             smarty_core_write_cache_file($_params, $this);
             // ZIKULA OVERRIDE
@@ -3044,7 +3045,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             }
             if ($this->debugging) {
                 // capture time for debugging info
-                $_params = array();
+                $_params = [];
                 require_once SMARTY_CORE_DIR . 'core.get_microtime.php';
                 $this->_smarty_debug_info[$_included_tpls_idx]['exec_time'] = (smarty_core_get_microtime($_params, $this) - $_debug_start_time);
                 require_once SMARTY_CORE_DIR . 'core.display_debug_console.php';
@@ -3053,11 +3054,11 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             error_reporting($_smarty_old_error_level);
 
             return;
-        } else {
-            error_reporting($_smarty_old_error_level);
-            if (isset($_smarty_results)) {
-                return $_smarty_results;
-            }
+        }
+
+        error_reporting($_smarty_old_error_level);
+        if (isset($_smarty_results)) {
+            return $_smarty_results;
         }
     }
 }

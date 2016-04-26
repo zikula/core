@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_Form
- * @subpackage Template_Plugins
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -29,9 +24,11 @@
  * {
  *   function initialize($view)
  *   {
- *       $items = array( array('text' => 'A', 'value' => '1'),
- *                       array('text' => 'B', 'value' => '2'),
- *                       array('text' => 'C', 'value' => '3') );
+ *       $items = [
+ *           ['text' => 'A', 'value' => '1'],
+ *           ['text' => 'B', 'value' => '2'],
+ *           ['text' => 'C', 'value' => '3']
+ *       ];
  *
  *       $view->assign('items', $items); // Supply items
  *       $view->assign('mylist', 2);     // Supply selected value
@@ -48,9 +45,11 @@
  * {
  *   function initialize($view)
  *   {
- *       $items = array( array('text' => 'A', 'value' => '1'),
- *                       array('text' => 'B', 'value' => '2'),
- *                       array('text' => 'C', 'value' => '3') );
+ *       $items = [
+ *           ['text' => 'A', 'value' => '1'],
+ *           ['text' => 'B', 'value' => '2'],
+ *           ['text' => 'C', 'value' => '3']
+ *       ];
  *
  *       $view->assign('mylistItems', $items);  // Supply items
  *       $view->assign('mylist', 2);            // Supply selected value
@@ -63,9 +62,9 @@
  * get a dataset like this:
  *
  * <code>
- *   array('xxx' => 'valueXX',
- *         'checkboxes' => array('15','17','22','34'),
- *         'yyy' => 'valueYYY')
+ *   ['xxx' => 'valueXX',
+ *    'checkboxes' => ['15','17','22','34'],
+ *    'yyy' => 'valueYYY']
  * </code>
  *
  * @param array            $params Parameters passed in the block tag.

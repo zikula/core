@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of the Zikula package.
+ *
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Zikula\Core\Doctrine\StandardFields\Mapping\Driver;
 
@@ -24,9 +32,9 @@ class Annotation implements AnnotationDriverInterface
      *
      * @var array
      */
-    private $validTypes = array(
+    private $validTypes = [
         'integer'
-    );
+    ];
 
     /**
      * Annotation reader instance
@@ -80,18 +88,18 @@ class Annotation implements AnnotationDriverInterface
                 if ($timestampable->type != 'userid') {
                     throw new InvalidMappingException("Field - [{$field}] StandardFields annotation attribute 'type' is not 'userid' in class - {$meta->name}");
                 }
-                if (!in_array($timestampable->on, array('update', 'create', 'change'))) {
+                if (!in_array($timestampable->on, ['update', 'create', 'change'])) {
                     throw new InvalidMappingException("Field - [{$field}] trigger 'on' is not one of [update, create, change] in class - {$meta->name}");
                 }
                 if ($timestampable->on == 'change') {
                     if (!isset($timestampable->field) || !isset($timestampable->value)) {
                         throw new InvalidMappingException("Missing parameters on property - {$field}, field and value must be set on [change] trigger in class - {$meta->name}");
                     }
-                    $field = array(
+                    $field = [
                         'field'        => $field,
                         'trackedField' => $timestampable->field,
                         'value'        => $timestampable->value
-                    );
+                    ];
                 }
                 // properties are unique and mapper checks that, no risk here
                 $config[$timestampable->on][] = $field;

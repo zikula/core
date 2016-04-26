@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\BlocksModule\Block;
@@ -45,14 +42,16 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
      */
     public function info()
     {
-        return array('module'          => $this->name,
-                     'text_type'       => $this->__('Menu'),
-                     'text_type_long'  => $this->__('Menu block'),
-                     'allow_multiple'  => true,
-                     'form_content'    => false,
-                     'form_refresh'    => false,
-                     'show_preview'    => true,
-                     'admin_tableless' => true);
+        return [
+            'module'          => $this->name,
+            'text_type'       => $this->__('Menu'),
+            'text_type_long'  => $this->__('Menu block'),
+            'allow_multiple'  => true,
+            'form_content'    => false,
+            'form_refresh'    => false,
+            'show_preview'    => true,
+            'admin_tableless' => true
+        ];
     }
 
     /**
@@ -100,7 +99,7 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
         }
 
         // Content
-        $menuitems = array();
+        $menuitems = [];
         if (!empty($vars['content'])) {
             $contentlines = explode('LINESPLIT', $vars['content']);
             foreach ($contentlines as $contentline) {
@@ -190,7 +189,7 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
                     // default values
                     $type = 'user';
                     $func = 'index';
-                    $params = array();
+                    $params = [];
 
                     // url[2] can be a function or function&param=value
                     if (isset($url[2]) && !empty($url[2])) {
@@ -218,10 +217,12 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
             }
         }
 
-        $item = array('MENUITEMTITLE'    => $title,
-                      'MENUITEMURL'      => $url,
-                      'MENUITEMCOMMENT'  => DataUtil::formatForDisplay($comment),
-                      'MENUITEMSELECTED' => $itemselected);
+        $item = [
+            'MENUITEMTITLE'    => $title,
+            'MENUITEMURL'      => $url,
+            'MENUITEMCOMMENT'  => DataUtil::formatForDisplay($comment),
+            'MENUITEMSELECTED' => $itemselected
+        ];
 
         return $item;
     }
@@ -263,7 +264,7 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
         // assign the vars
         $this->view->assign($vars);
 
-        $menuitems = array();
+        $menuitems = [];
         if (!empty($vars['content'])) {
             $contentlines = explode('LINESPLIT', $vars['content']);
             foreach ($contentlines as $contentline) {
@@ -306,7 +307,7 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
         }
 
         // User links
-        $content = array();
+        $content = [];
         $c = 1;
 
         $linkname   = $this->request->request->get('linkname');

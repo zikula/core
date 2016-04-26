@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of the Zikula package.
+ *
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Zikula\ThemeModule\Engine;
 
@@ -31,7 +39,7 @@ class AssetBag implements \IteratorAggregate, \Countable
      * $assets = [value => weight, value => weight, value => weight]
      * @var array
      */
-    private $assets = array();
+    private $assets = [];
 
     public function __construct()
     {
@@ -65,7 +73,7 @@ class AssetBag implements \IteratorAggregate, \Countable
 
     public function clear()
     {
-        $this->assets = array();
+        $this->assets = [];
     }
 
     public function all()

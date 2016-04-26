@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Zikula_Doctrine
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -21,20 +16,20 @@
  * <li>load all values of an column (with unique result using DISTINCT)
  * <code>
  * $array = Doctrine_Query::create()
- *              ->select("DISTINCT myColumn")
- *              ->from("MyTable")
- *              ->execute(array(), DoctrineUtil::HYDRATE_SINGLE_SCALAR_ARRAY)
- * // $array is array(0 => "myColumn value 1", 1 => "myColumn value 2")
+ *              ->select('DISTINCT myColumn')
+ *              ->from('MyTable')
+ *              ->execute([], DoctrineUtil::HYDRATE_SINGLE_SCALAR_ARRAY)
+ * // $array is [0 => 'myColumn value 1', 1 => 'myColumn value 2']
  * </code>
  * </li>
  *
  * <li>use an column as array key
  * <code>
  * $array = Doctrine_Query::create()
- *              ->select("myKeyColumn, myColumn")
- *              ->from("MyTable INDEXBY myKeyColumn")
- *              ->execute(array(), DoctrineUtil::HYDRATE_SINGLE_SCALAR_ARRAY)
- * // $array is array("key1" => "myColumn value 1", "key2" => "myColumn value 2")
+ *              ->select('myKeyColumn, myColumn')
+ *              ->from('MyTable INDEXBY myKeyColumn')
+ *              ->execute([], DoctrineUtil::HYDRATE_SINGLE_SCALAR_ARRAY)
+ * // $array is ['key1' => 'myColumn value 1', 'key2' => 'myColumn value 2']
  * </code>
  * </li>
  * </ul>
@@ -62,7 +57,7 @@ class Zikula_Doctrine_Hydrator_SingleScalarArray extends Doctrine_Hydrator_Abstr
 
         // load rows from db
         $resultRows = $stmt->fetchAll(Doctrine::FETCH_ASSOC);
-        $fieldArray = array();
+        $fieldArray = [];
 
         if ($isAssoc) {
             $assocColumnName = $rootTablePrefix . '__' . $rootComponent['map'];

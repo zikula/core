@@ -9,7 +9,7 @@ This class is used to send a mail using SwiftMailer configured with settings fro
 
 The class makes the following methods available:
 
-    - sendMessage(Swift_Message $message, $subject, $body, $altBody, $html, array $headers = array(), array $attachments = array(), array $stringAttachments = array(), array $embeddedImages = array())
+    - sendMessage(Swift_Message $message, $subject, $body, $altBody, $html, array $headers = [], array $attachments = [], array $stringAttachments = [], array $embeddedImages = [])
 
 It is assumed that basic parameters for sender and recipient(s) have already been set.
 

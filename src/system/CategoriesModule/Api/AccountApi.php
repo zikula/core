@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\CategoriesModule\Api;
@@ -29,20 +26,21 @@ class AccountApi extends \Zikula_AbstractApi
      */
     public function getall()
     {
-        $items = array();
+        $items = [];
 
         // Create an array of links to return
         if (SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT) && $this->getVar('allowusercatedit')) {
             $referer = System::serverGetVar('HTTP_REFERER');
-            if (strpos($referer, 'module=ZikulaCategoriesModule') === false) {
+            if (false === strpos($referer, 'module=ZikulaCategoriesModule')) {
                 //$this->request->getSession()->set('categories_referer', $referer);
                 SessionUtil::setVar('categories_referer', $referer);
             }
-            $items['0'] = array(
+            $items[] = [
                 'url' => $this->get('router')->generate('zikulacategoriesmodule_user_edituser'),
                 'module' => 'ZikulaCategoriesModule',
                 'title' => $this->__('Categories manager'),
-                'icon' => 'admin.png');
+                'icon' => 'admin.png'
+            ];
         }
 
         // Return the items

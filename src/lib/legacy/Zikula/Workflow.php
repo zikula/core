@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -100,12 +96,14 @@ class Zikula_Workflow
     {
         $idcolumn = $obj['__WORKFLOW__']['obj_idcolumn'];
 
-        $insertObj = array('obj_table'    => $obj['__WORKFLOW__']['obj_table'],
-                           'obj_idcolumn' => $obj['__WORKFLOW__']['obj_idcolumn'],
-                           'obj_id'       => $obj[$idcolumn],
-                           'module'       => $this->getModule(),
-                           'schemaname'   => $this->id,
-                           'state'        => $stateID);
+        $insertObj = [
+            'obj_table'    => $obj['__WORKFLOW__']['obj_table'],
+            'obj_idcolumn' => $obj['__WORKFLOW__']['obj_idcolumn'],
+            'obj_id'       => $obj[$idcolumn],
+            'module'       => $this->getModule(),
+            'schemaname'   => $this->id,
+            'state'        => $stateID
+        ];
 
         $entity = new Zikula\Core\Doctrine\Entity\WorkflowEntity();
         $entity->setObjTable($insertObj['obj_table']);
@@ -183,7 +181,7 @@ class Zikula_Workflow
 
         // check the action exists for given state
         if (!isset($this->actionMap[$stateID][$actionID])) {
-            throw new \Exception(__f('Action: %1$s not available in this State: %2$s', array($actionID, $stateID)));
+            throw new \Exception(__f('Action: %1$s not available in this State: %2$s', [$actionID, $stateID]));
         }
 
         $action = $this->actionMap[$stateID][$actionID];
@@ -200,7 +198,7 @@ class Zikula_Workflow
         $nextState = (isset($action['nextState']) ? $action['nextState'] : $stateID);
 
         // process the action operations
-        $result = array();
+        $result = [];
         foreach ($action['operations'] as $operation) {
             // execute the operation
             $result[$operation['name']] = $this->executeOperation($operation, $obj, $nextState);
@@ -277,7 +275,7 @@ class Zikula_Workflow
         $states = array_keys($this->stateMap);
         // checks for an invalid next state value
         if (!in_array($params['nextstate'], $states)) {
-            LogUtil::addErrorPopup(__f('Invalid next-state value [%1$s] retrieved by the \'%2$s\' operation for the workflow \'%3$s\' [\'%4$s\'].', array($nextState, $operation, $this->getID(), $this->getModule())));
+            LogUtil::addErrorPopup(__f('Invalid next-state value [%1$s] retrieved by the \'%2$s\' operation for the workflow \'%3$s\' [\'%4$s\'].', [$nextState, $operation, $this->getID(), $this->getModule()]));
         } else {
             $nextState = $params['nextstate'];
         }

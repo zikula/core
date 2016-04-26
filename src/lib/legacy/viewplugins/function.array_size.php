@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- * @subpackage Template_Plugins
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -25,25 +20,25 @@
  *
  * Examples:
  *
- *  Returns the value 3, if the template variable $myarray is an array containing
+ *  Returns the value 3, if the template variable $myArray is an array containing
  *  three elements:
  *
- *  <samp>{array_size array=$myarray}</samp>
+ *  <samp>{array_size array=$myArray}</samp>
  *
- *  Assigns the value 3 to the template variable $mycount, if the template
- *  variable $myarray is an array containing three elements:
+ *  Assigns the value 3 to the template variable $myCount, if the template
+ *  variable $myArray is an array containing three elements:
  *
- *  <samp>{array_size array=$myarray assign='mycount'}</samp>
+ *  <samp>{array_size array=$myArray assign='myCount'}</samp>
  *
- *  Returns the value 0, if the template variable $myvar is not an array, or
- *  if $myvar is an empty array:
+ *  Returns the value 0, if the template variable $myVar is not an array, or
+ *  if $myVar is an empty array:
  *
- *  <samp>{array_size array=$myvar}</samp>
+ *  <samp>{array_size array=$myVar}</samp>
  *
- *  Assigns the value 0 to the template variable $mycount, if the template
- *  variable $myvar is not an array or is an empty array:
+ *  Assigns the value 0 to the template variable $myCount, if the template
+ *  variable $myVar is not an array or is an empty array:
  *
- *  <samp>{array_size array=$myvar assign='mycount'}</samp>
+ *  <samp>{array_size array=$myVar assign='myCount'}</samp>
  *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the {@link Zikula_View} object.

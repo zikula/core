@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -60,7 +57,7 @@ function smarty_function_menutree($params, $smarty)
     $bootstrap          = !empty($params['bootstrap']) ? true : false;
     if ($extended) {
         $ext_tmp = explode(',', $extendedOpt);
-        $ext = array();
+        $ext = [];
         $ext['first']       = !empty($ext_tmp[0]) ? $ext_tmp[0] : 'first';
         $ext['last']        = !empty($ext_tmp[1]) ? $ext_tmp[1] : 'last';
         $ext['single']      = !empty($ext_tmp[2]) ? $ext_tmp[2] : 'single';
@@ -151,7 +148,7 @@ function _htmlListExt($tree, $treeNodePrefix, $treeClassPrefix, $ext, $depth, $t
     $size = count($tree);
     $i = 1;
     foreach ($tree as $tab) {
-        $classes = array();
+        $classes = [];
         if (!$bootstrap) {
             $classes[] = $size == 1 ? $ext['single'] : '';
             $classes[] = ($i == 1 && $size > 1) ? $ext['first'] : '';

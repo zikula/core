@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Zikula_Doctrine
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -29,7 +24,7 @@ class Zikula_Doctrine_Model_Registry extends Doctrine_Record
     {
         $this->setTableName('categories_registry');
 
-        $this->hasColumn('id as id', 'integer', 4, array('primary' => true, 'autoincrement' => true));
+        $this->hasColumn('id as id', 'integer', 4, ['primary' => true, 'autoincrement' => true]);
         $this->hasColumn('modname as module', 'string', 255);
         $this->hasColumn('tablename as table', 'string', 255);
         $this->hasColumn('property as property', 'string', 255);

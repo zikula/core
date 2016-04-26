@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright 2010 Zikula Foundation
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Zikula_Core
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -35,7 +30,7 @@ class Zikula_KernelClassLoader
      *
      * @var array
      */
-    protected $namespaces = array();
+    protected $namespaces = [];
 
     /**
      * Register namespace on stack.
@@ -54,7 +49,10 @@ class Zikula_KernelClassLoader
             throw new LogicException(sprintf('%s is already registered with this autoloader', $namespace));
         }
 
-        $this->namespaces[$namespace] = array('path' => str_replace('/', DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $path)), 'separator' => $separator);
+        $this->namespaces[$namespace] = [
+            'path' => str_replace('/', DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $path)),
+            'separator' => $separator
+        ];
 
         // Reverse sort keys, allows location of subnamespaces in different paths
         krsort($this->namespaces);
@@ -100,7 +98,7 @@ class Zikula_KernelClassLoader
     public function spl_autoload_register()
     {
         if (!$this->registered) {
-            spl_autoload_register(array($this, 'autoload'));
+            spl_autoload_register([$this, 'autoload']);
             $this->registered = true;
         } else {
             throw new LogicException('Already registered on SPL autoloader stack');
@@ -117,7 +115,7 @@ class Zikula_KernelClassLoader
     public function spl_autoload_unregister()
     {
         if ($this->registered) {
-            spl_autoload_unregister(array($this, 'autoload'));
+            spl_autoload_unregister([$this, 'autoload']);
             $this->registered = false;
         } else {
             throw new LogicException('Not registered on SPL autoloader stack');

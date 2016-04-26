@@ -26,14 +26,14 @@ class UserRegistrationListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            'module.users.ui.registration.started'   => array('started', 5),
-            'module.users.ui.registration.succeeded' => array('succeeded', 5),
-            'module.users.ui.registration.failed'    => array('failed', 5),
-            'user.registration.create'               => array('create', 5),
-            'user.registration.update'               => array('update', 5),
-            'user.registration.delete'               => array('delete', 5)
-        );
+        return [
+            'module.users.ui.registration.started'   => ['started', 5],
+            'module.users.ui.registration.succeeded' => ['succeeded', 5],
+            'module.users.ui.registration.failed'    => ['failed', 5],
+            'user.registration.create'               => ['create', 5],
+            'user.registration.update'               => ['update', 5],
+            'user.registration.delete'               => ['delete', 5]
+        ];
     }
     
     /**

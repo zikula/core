@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_Form
- * @subpackage Zikula_Form_AbstractPlugin
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -259,7 +254,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
 
         if (array_key_exists('maxLength', $params)) {
             $this->maxLength = $params['maxLength'];
-        } elseif ($this->maxLength == null && !in_array(strtolower($this->textMode), array('multiline', 'hidden'))) {
+        } elseif ($this->maxLength == null && !in_array(strtolower($this->textMode), ['multiline', 'hidden'])) {
             $view->formDie("Missing maxLength value in textInput plugin '$this->id'.");
         }
         if (array_key_exists('minLength', $params)) {
@@ -363,7 +358,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
                 break;
 
             default:
-                $result = __f('Unknown value [%1$s] for \'%2$s\'.', array($this->textMode, 'textMode'));
+                $result = __f('Unknown value [%1$s] for \'%2$s\'.', [$this->textMode, 'textMode']);
         }
 
         return $result;
@@ -490,7 +485,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
                 $data[$this->dataField] = $value;
             } else {
                 if (!array_key_exists($this->group, $data)) {
-                    $data[$this->group] = array();
+                    $data[$this->group] = [];
                 }
                 $data[$this->group][$this->dataField] = $value;
             }

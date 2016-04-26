@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of the Zikula package.
+ *
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Zikula\ThemeModule\Engine;
 
@@ -16,9 +24,13 @@ use Zikula\ThemeModule\Engine\Asset\ResolverInterface;
 class Filter
 {
     private $headers;
+
     private $footers;
+
     private $jsResolver;
+
     private $cssResolver;
+
     private $scriptPosition;
 
     public function __construct(AssetBag $headers, AssetBag $footers, ResolverInterface $js, ResolverInterface $css, $scriptPosition)
@@ -28,7 +40,7 @@ class Filter
         $this->jsResolver = $js;
         $this->cssResolver = $css;
         // @todo default to 'head' for BC in Core 1.x but default to 'foot' in Core-2.0
-        $this->scriptPosition = isset($scriptPosition) && in_array($scriptPosition, array('head', 'foot')) ? $scriptPosition : 'head';
+        $this->scriptPosition = isset($scriptPosition) && in_array($scriptPosition, ['head', 'foot']) ? $scriptPosition : 'head';
     }
 
     /**
@@ -40,7 +52,7 @@ class Filter
      * @param array $css
      * @return string
      */
-    public function filter($source, $js = array(), $css = array())
+    public function filter($source, $js = [], $css = [])
     {
         if (!empty($css)) {
             $this->cssResolver->getBag()->add($css);

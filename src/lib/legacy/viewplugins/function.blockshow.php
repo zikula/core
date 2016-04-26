@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -38,25 +34,25 @@ function smarty_function_blockshow($params, Zikula_View $view)
     $assign    = isset($params['assign'])    ? $params['assign']    : null;
 
     if (!$module) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('blockshow', 'module')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['blockshow', 'module']));
 
         return;
     }
 
     if (!$blockname) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('blockshow', 'blockname')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['blockshow', 'blockname']));
 
         return;
     }
 
     if (!$block) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('blockshow', 'id/info')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['blockshow', 'block']));
 
         return;
     }
 
     if (!$position) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('blockshow', 'position')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['blockshow', 'position']));
 
         return;
     }

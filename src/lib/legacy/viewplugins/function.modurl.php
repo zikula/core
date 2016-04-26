@@ -1,17 +1,13 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- * @subpackage Template_Plugins
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
+
 /**
  * Zikula_View function to create a zikula.orgpatible URL for a specific module function.
  *
@@ -59,9 +55,9 @@ function smarty_function_modurl($params, Zikula_View $view)
     } else {
         if (System::isLegacyMode()) {
             $func = 'index';
-            LogUtil::log(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', array('func', $view->template)), E_USER_DEPRECATED);
+            LogUtil::log(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', ['func', $view->template]), E_USER_DEPRECATED);
         } else {
-            $view->trigger_error(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', array('func', $view->template)));
+            $view->trigger_error(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', ['func', $view->template]));
 
             return false;
         }
@@ -72,9 +68,9 @@ function smarty_function_modurl($params, Zikula_View $view)
     } else {
         if (System::isLegacyMode()) {
             $type = 'user';
-            LogUtil::log(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', array('type', $view->template)), E_USER_DEPRECATED);
+            LogUtil::log(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', ['type', $view->template]), E_USER_DEPRECATED);
         } else {
-            $view->trigger_error(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', array('type', $view->template)));
+            $view->trigger_error(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', ['type', $view->template]));
 
             return false;
         }
@@ -97,7 +93,7 @@ function smarty_function_modurl($params, Zikula_View $view)
     unset($params['forcelongurl']);
 
     if (!$modname) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modurl', 'modname')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['modurl', 'modname']));
 
         return false;
     }

@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Util
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -27,7 +23,10 @@ class PluginUtil
      *
      * @var constant
      */
-    protected static $defaultState = array('state' => self::NOTINSTALLED, 'version' => 0);
+    protected static $defaultState = [
+        'state' => self::NOTINSTALLED,
+        'version' => 0
+    ];
 
     /**
      * Get plugin state.
@@ -143,7 +142,7 @@ class PluginUtil
         }
 
         $r = new ReflectionClass($className);
-        $plugin = $r->newInstanceArgs(array($sm, $sm->get('event_dispatcher')));
+        $plugin = $r->newInstanceArgs([$sm, $sm->get('event_dispatcher')]);
 
         if (!$plugin instanceof Zikula_AbstractPlugin) {
             throw new LogicException(sprintf('Class %s must be an instance of Zikula_AbstractPlugin', $className));
@@ -197,9 +196,9 @@ class PluginUtil
      */
     public static function getAllModulePlugins()
     {
-        $pluginsArray = array();
+        $pluginsArray = [];
 
-        $dirs = array('system', 'modules');
+        $dirs = ['system', 'modules'];
 
         foreach ($dirs as $dir) {
             $modules = FileUtil::getFiles($dir, false, false, null, 'd');
@@ -241,7 +240,7 @@ class PluginUtil
      */
     public static function loadAllSystemPlugins()
     {
-        $classNames = array();
+        $classNames = [];
         $plugins = self::getAllSystemPlugins();
         foreach ($plugins as $plugin) {
             $plugin = realpath($plugin);
@@ -263,7 +262,7 @@ class PluginUtil
      */
     public static function loadAllModulePlugins()
     {
-        $classNames = array();
+        $classNames = [];
         $plugins = self::getAllModulePlugins();
         foreach ($plugins as $plugin) {
             $plugin = realpath($plugin);
@@ -346,7 +345,10 @@ class PluginUtil
             return false;
         }
 
-        $state = array('state' => self::ENABLED, 'version' => $plugin->getMetaVersion());
+        $state = [
+            'state' => self::ENABLED,
+            'version' => $plugin->getMetaVersion()
+        ];
         self::setState($plugin->getServiceId(), $state);
 
         return true;

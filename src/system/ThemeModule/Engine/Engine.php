@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright 2015 Zikula Foundation
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\ThemeModule\Engine;
@@ -50,39 +46,47 @@ class Engine
      * @var \Zikula\ThemeModule\AbstractTheme
      */
     private $activeThemeBundle = null;
+
     /**
      * Realm is a present value in the theme config determining which page templates to utilize.
      * @var string
      */
     private $realm;
+
     /**
      * AnnotationValue is the value of the active method Theme annotation.
      * @var null|string
      */
     private $annotationValue = null;
+
     /**
      * The requestStack.
      * @var RequestStack
      */
     private $requestStack;
+
     /**
      * The doctrine annotation reader service.
      * @var Reader
      */
     private $annotationReader;
+
     /**
      * @var \Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel
      */
     private $kernel;
+
     /**
      * The filter service.
      * @var Filter
      */
     private $filterService;
+
     /**
      * @var BlockApi
      */
     private $blockApi;
+
     /**
      * @var VariableApi
      */

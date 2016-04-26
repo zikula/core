@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright 2010 Zikula Foundation.
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Zikula_Core
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -59,10 +54,10 @@ abstract class Zikula_AbstractInstaller extends Zikula_AbstractBase
             $this->version = new $versionClass();
         }
 
-        $this->modinfo = array(
-                'directory' => $this->name,
-                'type'      => ModUtil::getModuleBaseDir($this->name) == 'system' ? ModUtil::TYPE_SYSTEM : ModUtil::TYPE_MODULE
-            );
+        $this->modinfo = [
+            'directory' => $this->name,
+            'type'      => ModUtil::getModuleBaseDir($this->name) == 'system' ? ModUtil::TYPE_SYSTEM : ModUtil::TYPE_MODULE
+        ];
 
         if ($this->modinfo['type'] == ModUtil::TYPE_MODULE) {
             $this->domain = ZLanguage::getModuleDomain($this->name);

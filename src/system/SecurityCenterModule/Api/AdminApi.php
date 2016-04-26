@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\SecurityCenterModule\Api;
@@ -39,7 +36,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaSecurityCenterModule::', '::', ACCESS_OVERVIEW)) {
-            return array();
+            return [];
         }
 
         // create a QueryBuilder instance
@@ -182,32 +179,46 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function getLinks()
     {
-        $links = array();
+        $links = [];
 
         if (SecurityUtil::checkPermission('ZikulaSecurityCenterModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => $this->get('router')->generate('zikulasecuritycentermodule_admin_modifyconfig'),
+            $links[] = [
+                'url' => $this->get('router')->generate('zikulasecuritycentermodule_admin_modifyconfig'),
                 'text' => $this->__('Settings'),
-                'icon' => 'wrench');
-            $links[] = array('url' => $this->get('router')->generate('zikulasecuritycentermodule_admin_allowedhtml'),
+                'icon' => 'wrench'
+            ];
+            $links[] = [
+                'url' => $this->get('router')->generate('zikulasecuritycentermodule_admin_allowedhtml'),
                 'text' => $this->__('Allowed HTML settings'),
-                'icon' => 'list');
-            $links[] = array('url' => $this->get('router')->generate('zikulasecuritycentermodule_admin_viewidslog'),
+                'icon' => 'list'
+            ];
+            $links[] = [
+                'url' => $this->get('router')->generate('zikulasecuritycentermodule_admin_viewidslog'),
                 'text' => $this->__('View IDS Log'),
                 'icon' => 'align-justify',
-                'links' => array(
-                    array('url' => $this->get('router')->generate('zikulasecuritycentermodule_admin_viewidslog'),
-                        'text' => $this->__('View IDS Log')),
-                    array('url' => $this->get('router')->generate('zikulasecuritycentermodule_admin_exportidslog'),
-                        'text' => $this->__('Export IDS Log')),
-                    array('url' => $this->get('router')->generate('zikulasecuritycentermodule_admin_purgeidslog'),
-                        'text' => $this->__('Purge IDS Log'))
-                ));
+                'links' => [
+                    [
+                        'url' => $this->get('router')->generate('zikulasecuritycentermodule_admin_viewidslog'),
+                        'text' => $this->__('View IDS Log')
+                    ],
+                    [
+                        'url' => $this->get('router')->generate('zikulasecuritycentermodule_admin_exportidslog'),
+                        'text' => $this->__('Export IDS Log')
+                    ],
+                    [
+                        'url' => $this->get('router')->generate('zikulasecuritycentermodule_admin_purgeidslog'),
+                        'text' => $this->__('Purge IDS Log')
+                    ]
+                ]
+            ];
 
             $outputfilter = System::getVar('outputfilter');
             if ($outputfilter == 1) {
-                $links[] = array('url' => $this->get('router')->generate('zikulasecuritycentermodule_admin_purifierconfig'),
+                $links[] = [
+                    'url' => $this->get('router')->generate('zikulasecuritycentermodule_admin_purifierconfig'),
                     'text' => $this->__('HTMLPurifier settings'),
-                    'icon' => 'wrench');
+                    'icon' => 'wrench'
+                ];
             }
         }
 

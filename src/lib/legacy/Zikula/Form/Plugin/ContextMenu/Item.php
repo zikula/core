@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_Form
- * @subpackage Zikula_Form_Plugin_ContextMenu
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -192,9 +187,12 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
         $hiddenName = "contentMenuArgument" . $contextMenu->id;
         $commandArgument = $this->request->request->get($hiddenName, null);
 
-        $args = array('commandName' => $eventArgument, 'commandArgument' => $commandArgument);
+        $args = [
+            'commandName' => $eventArgument,
+            'commandArgument' => $commandArgument
+        ];
 
-        $view->raiseEvent($contextMenu->onCommand == null ? 'handleCommand' : $contextMenu->onCommand, $args);
+        $view->raiseEvent(null == $contextMenu->onCommand ? 'handleCommand' : $contextMenu->onCommand, $args);
     }
 
     /**
@@ -207,7 +205,7 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
         // Locate parent context menu
         $contextMenu = $this->parentPlugin;
 
-        while ($contextMenu != null && !($contextMenu instanceof Zikula_Form_Block_ContextMenu)) {
+        while (null != $contextMenu && !($contextMenu instanceof Zikula_Form_Block_ContextMenu)) {
             $contextMenu = $contextMenu->parentPlugin;
         }
 

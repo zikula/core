@@ -1,6 +1,8 @@
+// Copyright Zikula Foundation, licensed MIT.
+
 Zikula.define('Imagine');
 
-document.observe("dom:loaded", function(){
+document.observe('dom:loaded', function() {
     Zikula.Imagine.init();
 });
 

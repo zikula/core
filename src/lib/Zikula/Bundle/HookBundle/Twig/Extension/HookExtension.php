@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of the Zikula package.
+ *
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Zikula\Bundle\HookBundle\Twig\Extension;
 
@@ -26,25 +34,25 @@ class HookExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            new \Twig_SimpleFunction('notifyDisplayHooks', [$this, 'notifyDisplayHooks'], array('is_safe' => array('html'))),
-        );
+        return [
+            new \Twig_SimpleFunction('notifyDisplayHooks', [$this, 'notifyDisplayHooks'], ['is_safe' => ['html']])
+        ];
     }
 
     public function getFilters()
     {
-        return array(
-            new \Twig_SimpleFilter('notifyFilters', array($this, 'notifyFilters')),
-        );
+        return [
+            new \Twig_SimpleFilter('notifyFilters', [$this, 'notifyFilters'])
+        ];
     }
 
     public function notifyDisplayHooks($eventName, $id = null, $urlObject = null)
     {
         if (!isset($eventName)) {
-            return trigger_error(__f('Error! "%1$s" must be set in %2$s', array('eventname', 'notifydisplayhooks')));
+            return trigger_error(__f('Error! "%1$s" must be set in %2$s', ['eventname', 'notifydisplayhooks']));
         }
         if ($urlObject && !($urlObject instanceof UrlInterface)) {
-            return trigger_error(__f('Error! "%1$s" must be an instance of %2$s', array('urlobject', '\Zikula\Core\UrlInterface')));
+            return trigger_error(__f('Error! "%1$s" must be an instance of %2$s', ['urlobject', '\Zikula\Core\UrlInterface']));
         }
 
         // create event and notify
@@ -55,7 +63,7 @@ class HookExtension extends \Twig_Extension
         $output = '';
         foreach ($responses as $result) {
             if (!empty($result)) {
-                $output .= "<div class=\"z-displayhook\">$result</div>\n";
+                $output .= '<div class="z-displayhook">' . $result . '</div>' . "\n";
             }
         }
 

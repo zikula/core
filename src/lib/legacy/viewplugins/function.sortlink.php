@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- * @subpackage Template_Plugins
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -44,10 +39,10 @@
 function smarty_function_sortlink($params, Zikula_View $view)
 {
     if (!isset($params['currentsort'])) {
-        trigger_error(__f('Error! "%1$s" must be set in %2$s', array('currentsort', 'sortlink')));
+        trigger_error(__f('Error! "%1$s" must be set in %2$s', ['currentsort', 'sortlink']));
     }
     if (!isset($params['sort'])) {
-        trigger_error(__f('Error! "%1$s" must be set in %2$s', array('sort', 'sortlink')));
+        trigger_error(__f('Error! "%1$s" must be set in %2$s', ['sort', 'sortlink']));
     }
 
     $modname = isset($params['modname']) ? $params['modname'] : $view->getTopLevelModule();
@@ -71,7 +66,7 @@ function smarty_function_sortlink($params, Zikula_View $view)
     }
 
     // unset non link parameters
-    $unsets = array('linktext', 'currentsort', 'assign', 'modname', 'type', 'func', 'route');
+    $unsets = ['linktext', 'currentsort', 'assign', 'modname', 'type', 'func', 'route'];
     foreach ($unsets as $unset) {
         unset($params[$unset]);
     }

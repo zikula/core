@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2015 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
@@ -22,6 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class GettextExtension extends \Twig_Extension
 {
     private $container;
+
     /**
      * @var \Zikula\Common\Translator\Translator
      */
@@ -40,16 +37,16 @@ class GettextExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            new \Twig_SimpleFunction('__', [$this, '__'], array('needs_environment' => true)),
-            new \Twig_SimpleFunction('_n', [$this, '_n'], array('needs_environment' => true)),
-            new \Twig_SimpleFunction('__f', [$this, '__f'], array('needs_environment' => true)),
-            new \Twig_SimpleFunction('_fn', [$this, '_fn'], array('needs_environment' => true)),
-            new \Twig_SimpleFunction('__p', [$this, '__p'], array('needs_environment' => true)),
-            new \Twig_SimpleFunction('__fp', [$this, '__fp'], array('needs_environment' => true)),
-            new \Twig_SimpleFunction('_fnp', [$this, '_fnp'], array('needs_environment' => true)),
+        return [
+            new \Twig_SimpleFunction('__', [$this, '__'], ['needs_environment' => true]),
+            new \Twig_SimpleFunction('_n', [$this, '_n'], ['needs_environment' => true]),
+            new \Twig_SimpleFunction('__f', [$this, '__f'], ['needs_environment' => true]),
+            new \Twig_SimpleFunction('_fn', [$this, '_fn'], ['needs_environment' => true]),
+            new \Twig_SimpleFunction('__p', [$this, '__p'], ['needs_environment' => true]),
+            new \Twig_SimpleFunction('__fp', [$this, '__fp'], ['needs_environment' => true]),
+            new \Twig_SimpleFunction('_fnp', [$this, '_fnp'], ['needs_environment' => true]),
             new \Twig_SimpleFunction('no__', [$this, 'no__']),
-        );
+        ];
     }
 
     /**

@@ -27,13 +27,13 @@ class CoreListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            'api.method_not_found'        => array('apiMethodNotFound', 5),
-            'core.preinit'                => array('preInit', 5),
-            'core.init'                   => array('init', 5),
-            'core.postinit'               => array('postInit', 5),
-            'controller.method_not_found' => array('controllerMethodNotFound', 5)
-        );
+        return [
+            'api.method_not_found'        => ['apiMethodNotFound', 5],
+            'core.preinit'                => ['preInit', 5],
+            'core.init'                   => ['init', 5],
+            'core.postinit'               => ['postInit', 5],
+            'controller.method_not_found' => ['controllerMethodNotFound', 5]
+        ];
     }
     
     /**

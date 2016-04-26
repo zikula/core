@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\ExtensionsModule\Controller;
@@ -53,7 +50,7 @@ class AdminController extends \Zikula_AbstractController
      */
     public function indexAction()
     {
-        return new RedirectResponse($this->get('router')->generate('zikulaextensionsmodule_module_viewmodulelist', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulaextensionsmodule_module_viewmodulelist', [], RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -67,7 +64,7 @@ class AdminController extends \Zikula_AbstractController
      */
     public function mainAction()
     {
-        return new RedirectResponse($this->get('router')->generate('zikulaextensionsmodule_module_viewmodulelist', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulaextensionsmodule_module_viewmodulelist', [], RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -97,7 +94,7 @@ class AdminController extends \Zikula_AbstractController
 
         // generate an auth key to use in urls
         $csrfToken = SecurityUtil::generateCsrfToken($this->getContainer(), true);
-        $plugins = array();
+        $plugins = [];
         $pluginClasses = ($systemplugins) ? PluginUtil::loadAllSystemPlugins() : PluginUtil::loadAllModulePlugins();
 
         foreach ($pluginClasses as $className) {
@@ -120,29 +117,31 @@ class AdminController extends \Zikula_AbstractController
                 continue;
             }
 
-            $actions = array();
+            $actions = [];
             // Translate state
             switch ($pluginstate['state']) {
                 case PluginUtil::NOTINSTALLED:
                     $status = $this->__('Not installed');
-                    $statusclass = "danger";
+                    $statusclass = 'danger';
 
-                    $actions[] = array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_initialiseplugin',
-                                                    array('plugin' => $className,
-                                                          'state'  => $state,
-                                                          'bymodule' => $module,
-                                                          'sort'   => $sort,
-                                                          'systemplugins' => $systemplugins,
-                                                          'csrftoken' => $csrfToken)
-                                                ),
-                                       'image' => 'cog fa-lg text-success',
-                                       'color' => '#0c0',
-                                       'title' => $this->__('Install'));
+                    $actions[] = [
+                        'url' => $this->get('router')->generate('zikulaextensionsmodule_admin_initialiseplugin', [
+                                    'plugin' => $className,
+                                    'state'  => $state,
+                                    'bymodule' => $module,
+                                    'sort'   => $sort,
+                                    'systemplugins' => $systemplugins,
+                                    'csrftoken' => $csrfToken
+                        ]),
+                        'image' => 'cog fa-lg text-success',
+                        'color' => '#0c0',
+                        'title' => $this->__('Install')
+                    ];
                     break;
                 case PluginUtil::ENABLED:
                     $status = $this->__('Active');
-                    $statusclass = "success";
-                    $pluginLink = array();
+                    $statusclass = 'success';
+                    $pluginLink = [];
                     if (!$systemplugins) {
                         $pluginLink['_module'] = $instance->getModuleName();
                     }
@@ -150,66 +149,76 @@ class AdminController extends \Zikula_AbstractController
                     $pluginLink['_action'] = 'configure';
 
                     if ($instance instanceof Zikula_Plugin_ConfigurableInterface) {
-                        $actions[] = array('url' => $this->get('router')->generate('zikulaextensionsmodule_adminplugin_dispatch', $pluginLink),
-                                           'image' => 'wrench fa-lg',
-                                           'color' => '#111',
-                                           'title' => $this->__('Configure plugin'));
+                        $actions[] = [
+                            'url' => $this->get('router')->generate('zikulaextensionsmodule_adminplugin_dispatch', $pluginLink),
+                            'image' => 'wrench fa-lg',
+                            'color' => '#111',
+                            'title' => $this->__('Configure plugin')
+                        ];
                     }
 
                     // Dont allow to disable/uninstall plugins that are AlwaysOn
                     if (!$instance instanceof Zikula_Plugin_AlwaysOnInterface) {
-                        $actions[] = array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_deactivateplugin',
-                                                    array('plugin' => $className,
-                                                          'state'  => $state,
-                                                          'bymodule' => $module,
-                                                          'sort'   => $sort,
-                                                          'systemplugins' => $systemplugins,
-                                                          'csrftoken' => $csrfToken)
-                                                ),
-                                       'image' => 'minus-circle fa-lg text-danger',
-                                       'color' => '#c00',
-                                       'title' => $this->__('Deactivate'));
+                        $actions[] = [
+                            'url' => $this->get('router')->generate('zikulaextensionsmodule_admin_deactivateplugin', [
+                                        'plugin' => $className,
+                                        'state'  => $state,
+                                        'bymodule' => $module,
+                                        'sort'   => $sort,
+                                        'systemplugins' => $systemplugins,
+                                        'csrftoken' => $csrfToken
+                            ]),
+                            'image' => 'minus-circle fa-lg text-danger',
+                            'color' => '#c00',
+                            'title' => $this->__('Deactivate')
+                        ];
 
-                        $actions[] = array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_removeplugin',
-                                                    array('plugin' => $className,
-                                                          'state'  => $state,
-                                                          'bymodule' => $module,
-                                                          'sort'   => $sort,
-                                                          'systemplugins' => $systemplugins,
-                                                          'csrftoken' => $csrfToken)
-                                                ),
-                                       'image' => 'trash-o fa-lg',
-                                       'color' => '#c00',
-                                       'title' => $this->__('Remove plugin'));
+                        $actions[] = [
+                            'url' => $this->get('router')->generate('zikulaextensionsmodule_admin_removeplugin', [
+                                        'plugin' => $className,
+                                        'state'  => $state,
+                                        'bymodule' => $module,
+                                        'sort'   => $sort,
+                                        'systemplugins' => $systemplugins,
+                                        'csrftoken' => $csrfToken
+                            ]),
+                            'image' => 'trash-o fa-lg',
+                            'color' => '#c00',
+                            'title' => $this->__('Remove plugin')
+                        ];
                     }
                     break;
                 case PluginUtil::DISABLED:
                     $status = $this->__('Inactive');
-                    $statusclass = "warning";
+                    $statusclass = 'warning';
 
-                    $actions[] = array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_activateplugin',
-                                                    array('plugin' => $className,
-                                                          'state'  => $state,
-                                                          'bymodule' => $module,
-                                                          'sort'   => $sort,
-                                                          'systemplugins' => $systemplugins,
-                                                          'csrftoken' => $csrfToken)
-                                                ),
-                                       'image' => 'plus-square fa-lg text-success',
-                                       'color' => '#0c0',
-                                       'title' => $this->__('Activate'));
+                    $actions[] = [
+                        'url' => $this->get('router')->generate('zikulaextensionsmodule_admin_activateplugin', [
+                                        'plugin' => $className,
+                                        'state'  => $state,
+                                        'bymodule' => $module,
+                                        'sort'   => $sort,
+                                        'systemplugins' => $systemplugins,
+                                        'csrftoken' => $csrfToken
+                        ]),
+                        'image' => 'plus-square fa-lg text-success',
+                        'color' => '#0c0',
+                        'title' => $this->__('Activate')
+                    ];
 
-                    $actions[] = array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_removeplugin',
-                                                    array('plugin' => $className,
-                                                           'state' => $state,
-                                                           'bymodule' => $module,
-                                                           'sort'   => $sort,
-                                                           'systemplugins' => $systemplugins,
-                                                           'csrftoken' => $csrfToken)
-                                                ),
-                                       'image' => 'trash-o fa-lg',
-                                       'color' => '#c00',
-                                       'title' => $this->__('Remove plugin'));
+                    $actions[] = [
+                        'url' => $this->get('router')->generate('zikulaextensionsmodule_admin_removeplugin', [
+                                        'plugin' => $className,
+                                        'state' => $state,
+                                        'bymodule' => $module,
+                                        'sort'   => $sort,
+                                        'systemplugins' => $systemplugins,
+                                        'csrftoken' => $csrfToken
+                        ]),
+                        'image' => 'trash-o fa-lg',
+                        'color' => '#c00',
+                        'title' => $this->__('Remove plugin')
+                    ];
 
                     break;
             }
@@ -218,38 +227,46 @@ class AdminController extends \Zikula_AbstractController
             if ($pluginstate['state'] != PluginUtil::NOTINSTALLED
                 && $pluginstate['version'] != $instance->getMetaVersion()) {
                 $status = $this->__('New version');
-                $statusclass = "danger";
+                $statusclass = 'danger';
 
-                $actions = array();
-                $actions[] = array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_upgradeplugin',
-                                                array('plugin' => $className,
-                                                      'state'  => $state,
-                                                      'bymodule' => $module,
-                                                      'sort'   => $sort,
-                                                      'systemplugins' => $systemplugins,
-                                                      'csrftoken' => $csrfToken)),
-                                    'image' => 'refresh fa-lg',
-                                    'color' => '#00c',
-                                    'title' => $this->__('Upgrade'));
+                $actions = [];
+                $actions[] = [
+                    'url' => $this->get('router')->generate('zikulaextensionsmodule_admin_upgradeplugin', [
+                                        'plugin' => $className,
+                                        'state'  => $state,
+                                        'bymodule' => $module,
+                                        'sort'   => $sort,
+                                        'systemplugins' => $systemplugins,
+                                        'csrftoken' => $csrfToken
+                    ]),
+                    'image' => 'refresh fa-lg',
+                    'color' => '#00c',
+                    'title' => $this->__('Upgrade')
+                ];
 
-                $actions[] = array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_removeplugin',
-                                                array('plugin' => $className,
-                                                       'state' => $state,
-                                                       'bymodule' => $module,
-                                                       'sort'   => $sort,
-                                                       'systemplugins' => $systemplugins,
-                                                       'csrftoken' => $csrfToken)),
-                                    'image' => 'trash-o fa-lg',
-                                    'color' => '#c00',
-                                    'title' => $this->__('Remove plugin'));
+                $actions[] = [
+                    'url' => $this->get('router')->generate('zikulaextensionsmodule_admin_removeplugin', [
+                                        'plugin' => $className,
+                                        'state' => $state,
+                                        'bymodule' => $module,
+                                        'sort'   => $sort,
+                                        'systemplugins' => $systemplugins,
+                                        'csrftoken' => $csrfToken
+                    ]),
+                    'image' => 'trash-o fa-lg',
+                    'color' => '#c00',
+                    'title' => $this->__('Remove plugin')
+                ];
             }
 
-            $info =  array('instance'    => $instance,
-                           'status'      => $status,
-                           'statusclass' => $statusclass,
-                           'actions'     => $actions,
-                           'version'     => $pluginstate['state'] == PluginUtil::NOTINSTALLED ?
-                                                 $instance->getMetaVersion() : $pluginstate['version']);
+            $info =  [
+                'instance'    => $instance,
+                'status'      => $status,
+                'statusclass' => $statusclass,
+                'actions'     => $actions,
+                'version'     => $pluginstate['state'] == PluginUtil::NOTINSTALLED ?
+                                        $instance->getMetaVersion() : $pluginstate['version']
+            ];
 
             // new version of plugin?
             if ($pluginstate['state'] != PluginUtil::NOTINSTALLED
@@ -262,9 +279,9 @@ class AdminController extends \Zikula_AbstractController
 
         // sort plugins array
         if (empty($sort) || $sort == 'module') {
-            usort($plugins, array($this, 'viewPluginsSorter_byModule'));
+            usort($plugins, [$this, 'viewPluginsSorter_byModule']);
         } elseif ($sort == 'name') {
-            usort($plugins, array($this, 'viewPluginsSorter_byName'));
+            usort($plugins, [$this, 'viewPluginsSorter_byName']);
         }
 
         $this->view->assign('plugins', $plugins)

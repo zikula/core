@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\CategoriesModule\Controller;
@@ -67,7 +64,7 @@ class UserformController extends \Zikula_AbstractController
 
         if ($category['is_locked']) {
             //! %1$s is the id, %2$s is the name
-            $request->getSession()->getFlashBag()->add('error', $this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($cid, $category['name'])), null, $url);
+            $request->getSession()->getFlashBag()->add('error', $this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', [$cid, $category['name']]), null, $url);
 
             return new RedirectResponse(System::normalizeUrl($url));
         }
@@ -103,7 +100,7 @@ class UserformController extends \Zikula_AbstractController
         $ref = $request->server->get('HTTP_REFERER');
 
         $returnfunc = strpos($ref, "useredit") !== false ? 'useredit' : 'edit';
-        $url = $this->get('router')->generate("zikulacategoriesmodule_user_$returnfunc", array('dr' => $dr), RouterInterface::ABSOLUTE_URL);
+        $url = $this->get('router')->generate("zikulacategoriesmodule_user_$returnfunc", ['dr' => $dr], RouterInterface::ABSOLUTE_URL);
 
         if (!$dr) {
             throw new \InvalidArgumentException($this->__('Error! The document root is invalid.'));
@@ -135,7 +132,7 @@ class UserformController extends \Zikula_AbstractController
         }
 
         if ($category['is_locked']) {
-            $request->getSession()->getFlashBag()->add('error', $this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($data['id'], $category['name'])));
+            $request->getSession()->getFlashBag()->add('error', $this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', [$data['id'], $category['name']]));
 
             return new RedirectResponse(System::normalizeUrl($url));
         }
@@ -152,8 +149,8 @@ class UserformController extends \Zikula_AbstractController
         $category['ipath'] = GenericUtil::processCategoryIPath($data['parent']['ipath'], $category['id']);
 
         // process category attributes
-        $attrib_names = $request->request->get('attribute_name', array());
-        $attrib_values = $request->request->get('attribute_value', array());
+        $attrib_names = $request->request->get('attribute_name', []);
+        $attrib_values = $request->request->get('attribute_value', []);
         GenericUtil::processCategoryAttributes($category, $attrib_names, $attrib_values);
 
         $this->entityManager->flush();
@@ -194,13 +191,16 @@ class UserformController extends \Zikula_AbstractController
         $cats1 = CategoryUtil::getSubCategories($dr, false, false, false, false);
         $cats2 = CategoryUtil::resequence($cats1, 10);
 
-        $sort_values = array();
+        $sort_values = [];
 
         $ak = array_keys($cats1);
         foreach ($ak as $k) {
             $obj = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cats1[$k]['id']);
             $obj['sort_value'] = $cats2[$k]['sort_value'];
-            $sort_values[] = array('id' => $obj['id'], 'sort_value' => $obj['sort_value']);
+            $sort_values[] = [
+                'id' => $obj['id'],
+                'sort_value' => $obj['sort_value']
+            ];
         }
 
         $this->entityManager->flush();
@@ -259,7 +259,7 @@ class UserformController extends \Zikula_AbstractController
 
         $valid = GenericUtil::validateCategoryData($data);
         if (!$valid) {
-            return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_user_edit', array('dr' => $dr), RouterInterface::ABSOLUTE_URL));
+            return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_user_edit', ['dr' => $dr], RouterInterface::ABSOLUTE_URL));
         }
 
         // process name
@@ -286,8 +286,8 @@ class UserformController extends \Zikula_AbstractController
         $category['ipath'] = GenericUtil::processCategoryIPath($data['parent']['ipath'], $category['id']);
 
         // process category attributes
-        $attrib_names = $request->request->get('attribute_name', array());
-        $attrib_values = $request->request->get('attribute_value', array());
+        $attrib_names = $request->request->get('attribute_name', []);
+        $attrib_values = $request->request->get('attribute_value', []);
         GenericUtil::processCategoryAttributes($category, $attrib_names, $attrib_values);
 
         $this->entityManager->flush();

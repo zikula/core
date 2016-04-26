@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\GroupsModule\Api;
@@ -41,7 +38,7 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function getall($args)
     {
-        $items = array();
+        $items = [];
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_READ)) {
@@ -126,7 +123,7 @@ class UserApi extends \Zikula_AbstractApi
             $args['numitems'] = null;
         }
 
-        $uidsArray = array();
+        $uidsArray = [];
         if ($args['group_membership']) {
             $groupUsers = $group->getUsers();
             /** @var UserEntity $user */
@@ -148,7 +145,7 @@ class UserApi extends \Zikula_AbstractApi
         $result['members'] = $uidsArray;
 
         if (!is_null($args['uid'])) {
-            $result['status'] = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isuserpending', array('gid' => $args['gid'], 'uid' => $args['uid']));
+            $result['status'] = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isuserpending', ['gid' => $args['gid'], 'uid' => $args['uid']]);
         } else {
             $result['status'] = false;
         }
@@ -232,7 +229,7 @@ class UserApi extends \Zikula_AbstractApi
 
         $userGroups = $this->entityManager->find('ZikulaUsersModule:UserEntity', $args['uid'])->getGroups();
 
-        $groupsArray = array();
+        $groupsArray = [];
         foreach ($userGroups as $gid => $group) {
             $groupsArray[$gid] = $group->toArray();
         }
@@ -253,7 +250,7 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function getallgroups($args)
     {
-        $items = array();
+        $items = [];
 
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', 'ANY', ACCESS_OVERVIEW)) {
             return $items;
@@ -297,12 +294,9 @@ class UserApi extends \Zikula_AbstractApi
 
         $uid = UserUtil::getVar('uid');
 
+        $memberships = false;
         if ($uid != 0) {
-            $memberships = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getusergroups',
-                            array('uid' => $uid,
-                                    'clean' => true));
-        } else {
-            $memberships = false;
+            $memberships = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getusergroups', ['uid' => $uid, 'clean' => true]);
         }
 
         $row = 1;
@@ -330,13 +324,12 @@ class UserApi extends \Zikula_AbstractApi
                     $ismember = true;
                 }
 
+                $status = false;
                 if ($uid != 0) {
-                    $status = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isuserpending', array('gid' => $gid, 'uid' => $uid));
-                } else {
-                    $status = false;
+                    $status = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isuserpending', ['gid' => $gid, 'uid' => $uid]);
                 }
 
-                $nbuser = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'countgroupmembers', array('gid' => $gid));
+                $nbuser = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'countgroupmembers', ['gid' => $gid]);
 
                 if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_READ)) {
                     $canview = true;
@@ -348,25 +341,26 @@ class UserApi extends \Zikula_AbstractApi
 
                 // Anon users or non-members should not be able to see private groups.
                 if ($gtype == CommonHelper::GTYPE_PRIVATE) {
-                    if (!$uid || !$this->isgroupmember(array('uid' => $uid, 'gid' => $gid))) {
+                    if (!$uid || !$this->isgroupmember(['uid' => $uid, 'gid' => $gid])) {
                         continue;
                     }
                 }
 
-                $items[] = array(
-                        'gid' => $gid,
-                        'name' => $name,
-                        'gtype' => $gtype,
-                        'description' => $description,
-                        'state' => $state,
-                        'nbuser' => (($nbuser != false) ? $nbuser : 0),
-                        'nbumax' => $nbumax,
-                        'ismember' => $ismember,
-                        'status' => $status,
-                        'canview' => $canview,
-                        'canapply' => $canapply,
-                        'islogged' => UserUtil::isLoggedIn(),
-                        'row' => $row);
+                $items[] = [
+                    'gid' => $gid,
+                    'name' => $name,
+                    'gtype' => $gtype,
+                    'description' => $description,
+                    'state' => $state,
+                    'nbuser' => (($nbuser != false) ? $nbuser : 0),
+                    'nbumax' => $nbumax,
+                    'ismember' => $ismember,
+                    'status' => $status,
+                    'canview' => $canview,
+                    'canapply' => $canapply,
+                    'islogged' => UserUtil::isLoggedIn(),
+                    'row' => $row
+                ];
 
                 if ($row == 1) {
                     $row = 2;
@@ -400,7 +394,7 @@ class UserApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $item = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid'], 'group_membership' => false));
+        $item = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', ['gid' => $args['gid'], 'group_membership' => false]);
 
         if (!$item) {
             return false;
@@ -411,10 +405,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // Check in case the user already applied
-        $pending = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isuserpending',
-                        array('gid' => $args['gid'],
-                              'uid' => $args['uid']));
-
+        $pending = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isuserpending', ['gid' => $args['gid'], 'uid' => $args['uid']]);
         if ($pending) {
             throw new \RuntimeException($this->__('Error! You have already applied for membership of this group.'));
         }
@@ -451,12 +442,10 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // Checking first if this user is really pending.
-        $ispending = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isuserpending',
-                        array('gid' => $args['gid'],
-                              'uid' => $args['uid']));
+        $ispending = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isuserpending', ['gid' => $args['gid'], 'uid' => $args['uid']]);
 
         if ($ispending == true) {
-            $application = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
+            $application = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findOneBy(['gid' => $args['gid'], 'uid' => $args['uid']]);
             $this->entityManager->remove($application);
             $this->entityManager->flush();
         }
@@ -483,7 +472,7 @@ class UserApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $applications = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
+        $applications = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findBy(['gid' => $args['gid'], 'uid' => $args['uid']]);
 
         if (count($applications) >= 1) {
             return true;
@@ -535,10 +524,11 @@ class UserApi extends \Zikula_AbstractApi
                 }
 
                 // We save the user in the application table
-                $save = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'saveapplication',
-                                array('gid' => $args['gid'],
-                                      'uid' => $userid,
-                                      'applytext' => $args['applytext']));
+                $save = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'saveapplication', [
+                    'gid' => $args['gid'],
+                    'uid' => $userid,
+                    'applytext' => $args['applytext']
+                ]);
 
                 if ($save == false) {
                     return false;
@@ -546,35 +536,27 @@ class UserApi extends \Zikula_AbstractApi
 
                 if ($this->getVar('mailwarning')) {
                     $uname = UserUtil::getVar('uname', $userid);
-                    $send = ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendmessage',
-                                    array('toname' => $this->__('Administrator'),
-                                          'toaddress' => System::getVar('adminmail'),
-                                          'subject' => $this->__('Group membership application registered'),
-                                          'body' => $this->__f('The registered user %1$s has applied for membership of a group. The details of the application are as follows: %2$s', array($uname, $args['applytext']))));
+                    $send = ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendmessage', [
+                        'toname' => $this->__('Administrator'),
+                        'toaddress' => System::getVar('adminmail'),
+                        'subject' => $this->__('Group membership application registered'),
+                        'body' => $this->__f('The registered user %1$s has applied for membership of a group. The details of the application are as follows: %2$s', [$uname, $args['applytext']])
+                    ]);
                 }
             } else {
                 // We save the user into the groups
-                $save = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'adduser',
-                                array('gid' => $args['gid'],
-                                      'uid' => $userid));
-
+                $save = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'adduser', ['gid' => $args['gid'], 'uid' => $userid]);
                 if ($save == false) {
                     throw new \RuntimeException($this->__('Error! Could not add the user to the group.'));
                 }
             }
         } elseif ($args['action'] == 'cancel') {
-            $save = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'cancelapp',
-                            array('gid' => $args['gid'],
-                                  'uid' => $userid));
-
+            $save = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'cancelapp', ['gid' => $args['gid'], 'uid' => $userid]);
             if ($save == false) {
                 throw new \RuntimeException($this->__('Error! Could not remove the user from the group.'));
             }
         } else {
-            $save = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'removeuser',
-                            array('gid' => $args['gid'],
-                                  'uid' => $userid));
-
+            $save = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'removeuser', ['gid' => $args['gid'], 'uid' => $userid]);
             if ($save == false) {
                 throw new \RuntimeException($this->__('Error! Could not remove the user from the group.'));
             }
@@ -678,7 +660,7 @@ class UserApi extends \Zikula_AbstractApi
         $this->entityManager->flush();
 
         // Let other modules know we have updated a group
-        $removeuserEvent = new GenericEvent(null, array('gid' => $args['gid'], 'uid' => $args['uid']));
+        $removeuserEvent = new GenericEvent(null, ['gid' => $args['gid'], 'uid' => $args['uid']]);
         $this->getDispatcher()->dispatch('group.removeuser', $removeuserEvent);
 
         // Let the calling process know that we have finished successfully
@@ -733,7 +715,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // Get group and check if the user exists in this group.
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid'], 'group_membership' => true, 'uid' => $args['uid']));
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', ['gid' => $args['gid'], 'group_membership' => true, 'uid' => $args['uid']]);
 
         if (!$group || !array_key_exists($args['uid'], $group['members'])) {
             // either group does not exist or the requested uid is not a member of the group

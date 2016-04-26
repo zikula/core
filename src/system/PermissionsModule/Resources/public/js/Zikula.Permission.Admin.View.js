@@ -1,3 +1,5 @@
+// Copyright Zikula Foundation, licensed MIT.
+
 var currentDelete, currentInsertBefore;
 (function ($) {
     $(document).ready(function () {
@@ -18,7 +20,7 @@ var currentDelete, currentInsertBefore;
         };
         $sortable.sortable({
             helper: fixHelper,
-            items: "tr:not(.warning)",
+            items: 'tr:not(.warning)',
             update: function (event, ui) {
                 var parameters = [];
 
@@ -28,8 +30,8 @@ var currentDelete, currentInsertBefore;
                 });
 
                 $.ajax({
-                    url: Routing.generate("zikulapermissionsmodule_ajax_changeorder"),
-                    dataType: "json",
+                    url: Routing.generate('zikulapermissionsmodule_ajax_changeorder'),
+                    dataType: 'json',
                     type: 'POST',
                     data: {
                         permorder: parameters
@@ -53,7 +55,7 @@ var currentDelete, currentInsertBefore;
             $('#test_instance').val($('#permission-instance-' + pid).text());
             $('#permission-test-info').html('&nbsp;');
             $('html, body').animate({
-                scrollTop: $("#testpermform").offset().top
+                scrollTop: $('#testpermform').offset().top
             }, 500);
         });
 
@@ -69,8 +71,8 @@ var currentDelete, currentInsertBefore;
                 test_level: $('#test_level').val()
             };
             $.ajax({
-                url: Routing.generate("zikulapermissionsmodule_ajax_test"),
-                dataType: "json",
+                url: Routing.generate('zikulapermissionsmodule_ajax_test'),
+                dataType: 'json',
                 type: 'POST',
                 data: vars,
                 success: function (result) {
@@ -112,8 +114,8 @@ var currentDelete, currentInsertBefore;
             };
 
             $.ajax({
-                url: Routing.generate("zikulapermissionsmodule_ajax_update"),
-                dataType: "html",
+                url: Routing.generate('zikulapermissionsmodule_ajax_update'),
+                dataType: 'html',
                 type: 'POST',
                 data: vars,
                 success: function () {
@@ -125,7 +127,6 @@ var currentDelete, currentInsertBefore;
                     $('#permission-level-' + pid).text($('#permission-level').find('option:selected').text());
                 }
             });
-
         });
 
         /* --- delete permission -------------------------------------------------------------------------------------------- */
@@ -140,7 +141,7 @@ var currentDelete, currentInsertBefore;
         /* Delete a permission */
         $('#confirm-delete-permission').click(function () {
             $.ajax({
-                url: Routing.generate("zikulapermissionsmodule_ajax_delete"),
+                url: Routing.generate('zikulapermissionsmodule_ajax_delete'),
                 type: 'POST',
                 data: {
                     pid: currentDelete.data('id')
@@ -186,12 +187,11 @@ var currentDelete, currentInsertBefore;
             };
 
             $.ajax({
-                url: Routing.generate("zikulapermissionsmodule_ajax_create"),
-                dataType: "json",
+                url: Routing.generate('zikulapermissionsmodule_ajax_create'),
+                dataType: 'json',
                 type: 'POST',
                 data: vars,
                 success: function (result) {
-
                     var data = result.data;
                     var row = '<tr data-id="' + data.pid + '">' +
                         '<td><i class="fa fa-arrows"></i></td>' +
@@ -260,13 +260,12 @@ var currentDelete, currentInsertBefore;
 
         $('#reset-filter').click(function () {
             $('#filter-component').val(-1);
-            $('#filter-group').val(-1).trigger("change");
+            $('#filter-group').val(-1).trigger('change');
         });
 
         // on modal close, stop all spinning icons
         $('.modal').on('hidden.bs.modal', function (e) {
             $('.fa').removeClass('fa-spin');
         });
-
     });
 })(jQuery);

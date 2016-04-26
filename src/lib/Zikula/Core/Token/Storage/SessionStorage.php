@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright 2010 Zikula Foundation
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Security_Storage
- * @subpackage Validate
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Core\Token\Storage;
@@ -57,7 +52,7 @@ class SessionStorage implements StorageInterface
             return false;
         }
 
-        $tokens = $this->session->get($this->key, array());
+        $tokens = $this->session->get($this->key, []);
 
         if (!array_key_exists($id, $tokens)) {
             return false;
@@ -71,8 +66,11 @@ class SessionStorage implements StorageInterface
      */
     public function save($id, $token, $timestamp)
     {
-        $tokens = $this->session->get($this->key, array());
-        $tokens[$id] = array('token' => $token, 'time' => (int)$timestamp);
+        $tokens = $this->session->get($this->key, []);
+        $tokens[$id] = [
+            'token' => $token,
+            'time' => (int)$timestamp
+        ];
         $this->session->set($this->key, $tokens);
     }
 
@@ -81,7 +79,7 @@ class SessionStorage implements StorageInterface
      */
     public function delete($id)
     {
-        $tokens = $this->session->get($this->key, array());
+        $tokens = $this->session->get($this->key, []);
         if (array_key_exists($id, $tokens)) {
             unset($tokens[$id]);
         }
@@ -94,7 +92,7 @@ class SessionStorage implements StorageInterface
      */
     public function gc($lifetime)
     {
-        $tokens = $this->session->get($this->key, array());
+        $tokens = $this->session->get($this->key, []);
         $now = time();
         foreach ($tokens as $key => $token) {
             if ($now - (int)$token['time'] > $lifetime) {

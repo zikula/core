@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPv3 (or at your option any later version).
- * @package FilterUtil
- * @subpackage Filter
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -26,7 +21,7 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_AbstractPlugin implements Filt
      *
      * @var array
      */
-    protected $ops = array();
+    protected $ops = [];
 
     /**
      * Field configuration.
@@ -35,7 +30,7 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_AbstractPlugin implements Filt
      *
      * @var array
      */
-    protected $fields = array();
+    protected $fields = [];
 
     /**
      * The table names of the relation tables.
@@ -44,7 +39,7 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_AbstractPlugin implements Filt
      *
      * @var array
      */
-    protected $mndbtable = array();
+    protected $mndbtable = [];
 
     /**
      * The table names in database.
@@ -53,7 +48,7 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_AbstractPlugin implements Filt
      *
      * @var aray
      */
-    protected $mntable = array();
+    protected $mntable = [];
 
     /**
      * The column set of the relation tables.
@@ -62,7 +57,7 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_AbstractPlugin implements Filt
      *
      * @var array
      */
-    protected $mncolumn = array();
+    protected $mncolumn = [];
 
     /**
      * The field in table to compare the relationed field with.
@@ -71,13 +66,13 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_AbstractPlugin implements Filt
      *
      * @var array
      */
-    protected $comparefield = array();
+    protected $comparefield = [];
 
     /**
      * Constructor
      *
      * Argument $config may contain "fields". This is an array in the form
-     * name => array(field=>'', table=>'', comparefield=>'').
+     * name => [field => '', table => '', comparefield => ''].
      * name is the filter field name.
      * field is the id field in the mn-relationship table.
      * table is the table of the mn-relationship.
@@ -107,14 +102,14 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_AbstractPlugin implements Filt
      */
     public function availableOperators()
     {
-        return array('eq', 'ne');
+        return ['eq', 'ne'];
     }
 
     /**
      * Adds fields to list in common way.
      *
      * Takes an array in the form
-     * name => array(field=>'', table=>'', comparefield=>'').
+     * name => [field => '', table => '', comparefield => ''].
      * name is the filter field name.
      * field is the id field in the mn-relationship table.
      * table is the table of the mn-relationship.
@@ -142,7 +137,7 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_AbstractPlugin implements Filt
      */
     public function activateOperators($op)
     {
-        static $ops = array('eq', 'ne');
+        static $ops = ['eq', 'ne'];
 
         if (is_array($op)) {
             foreach ($op as $v) {
@@ -175,7 +170,7 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_AbstractPlugin implements Filt
             $fields[] = '-';
         }
 
-        $ops = array();
+        $ops = [];
         foreach ($this->ops as $op) {
             $ops[$op] = $fields;
         }
@@ -246,6 +241,6 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_AbstractPlugin implements Filt
                 break;
         }
 
-        return array('where' => $where);
+        return ['where' => $where];
     }
 }

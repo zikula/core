@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- * @subpackage Template_Plugins
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -53,7 +48,7 @@ function smarty_function_gt($params, Zikula_View $view)
     }
 
     if (!isset($params['text'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_gt', 'text')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['smarty_function_gt', 'text']));
 
         return false;
     }
@@ -71,7 +66,7 @@ function smarty_function_gt($params, Zikula_View $view)
 
     // build array for tags (for %s, %1$s etc) if applicable
     ksort($params);
-    $tags = array();
+    $tags = [];
     foreach ($params as $key => $value) {
         if (preg_match('#^tag([0-9]{1,2})$#', $key)) {
             $tags[] = $value;

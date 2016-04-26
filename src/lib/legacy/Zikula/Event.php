@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright 2009 Zikula Foundation
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Zikula_EventManager
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -45,7 +40,7 @@ class Zikula_Event extends GenericEvent
      * @param array  $args    Arguments to store in the event.
      * @param mixed  $data    Convenience argument of data for optional processing.
      */
-    public function __construct($name, $subject = null, array $args = array(), $data = null)
+    public function __construct($name, $subject = null, array $args = [], $data = null)
     {
         $this->setName($name);
         $this->data = $data;
@@ -105,7 +100,7 @@ class Zikula_Event extends GenericEvent
      *
      * @return Zikula_Event
      */
-    public function setArgs(array $args = array())
+    public function setArgs(array $args = [])
     {
         return $this->setArguments($args);
     }

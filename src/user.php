@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 use Zikula_Request_Http as Request;
@@ -18,7 +14,7 @@ include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();
 $core->getContainer()->set('request', $request);
 $core->init(Zikula_Core::STAGE_ALL, $request);
-$url = $core->getContainer()->get('router')->generate('zikulausersmodule_user_index', array(), \Symfony\Component\Routing\RouterInterface::ABSOLUTE_URL);
+$url = $core->getContainer()->get('router')->generate('zikulausersmodule_user_index', [], \Symfony\Component\Routing\RouterInterface::ABSOLUTE_URL);
 $url = str_replace('/user.php', '', $url);
 $response = new \Symfony\Component\HttpFoundation\RedirectResponse($url);
 $response->send();

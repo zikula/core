@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_Form
- * @subpackage Zikula_Form_AbstractPlugin
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -105,13 +100,12 @@ class Zikula_Form_Plugin_IntInput extends Zikula_Form_Plugin_TextInput
 
         if ($this->text !== '') {
             $i = (int)$this->text;
-            if ($this->minValue !== null && $i < $this->minValue || $this->maxValue !== null && $i > $this->maxValue) {
-                if ($this->minValue !== null && $this->maxValue !== null) {
-                    $this->setError(__f('Error! Range error. Value must be between %1$s and %2$s.',
-                                        array($this->minValue, $this->maxValue)));
-                } elseif ($this->minValue !== null) {
+            if (null !== $this->minValue && $i < $this->minValue || null !== $this->maxValue && $i > $this->maxValue) {
+                if (null !== $this->minValue && null !== $this->maxValue) {
+                    $this->setError(__f('Error! Range error. Value must be between %1$s and %2$s.', [$this->minValue, $this->maxValue]));
+                } elseif (null !== $this->minValue) {
                     $this->setError(__f('Error! The value must be %s or more.', $this->minValue));
-                } elseif ($this->maxValue !== null) {
+                } elseif (null !== $this->maxValue) {
                     $this->setError(__f('Error! The value must be %s or less.', $this->maxValue));
                 }
             }

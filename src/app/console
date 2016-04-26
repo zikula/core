@@ -19,7 +19,7 @@ if (is_readable($file = __DIR__.'/../app/config/custom_parameters.yml')) {
 
 $kernelConfig = $kernelConfig['parameters'];
 
-if ($kernelConfig['env'] !== 'prod') {
+if ('prod' !== $kernelConfig['env']) {
     Debug::enable();
 }
 
@@ -30,13 +30,13 @@ if ((isset($kernelConfig['umask'])) && (!is_null($kernelConfig['umask']))) {
 require_once __DIR__.'/ZikulaKernel.php';
 
 $input = new ArgvInput();
-$defaultEnv = $input->getParameterOption(array('--env', '-e'), getenv('ZIKULA_ENV') ?: 'dev');
+$defaultEnv = $input->getParameterOption(['--env', '-e'], getenv('ZIKULA_ENV') ?: 'dev');
 // prefer install and upgrade commands default to prod environment
 $isInstallUpgradeCommand = ((strpos($input->getFirstArgument(), 'zikula:install') !== false)
     || (strpos($input->getFirstArgument(), 'zikula:upgrade') !== false));
 $env = $isInstallUpgradeCommand ? 'prod' : $defaultEnv;
 
-$debug = getenv('ZIKULA_DEBUG') !== '0' && !$input->hasParameterOption(array('--no-debug', '')) && $env !== 'prod';
+$debug = getenv('ZIKULA_DEBUG') !== '0' && !$input->hasParameterOption(['--no-debug', '']) && 'prod' !== $env;
 
 $kernel = new ZikulaKernel($env, $debug);
 

@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\BlocksModule\Block;
@@ -48,14 +45,16 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
      */
     public function info()
     {
-        return array('module'          => $this->name,
-                     'text_type'       => $this->__('Menutree'),
-                     'text_type_long'  => $this->__('Tree-like menu (menutree)'),
-                     'allow_multiple'  => true,
-                     'form_content'    => false,
-                     'form_refresh'    => false,
-                     'show_preview'    => true,
-                     'admin_tableless' => true);
+        return [
+            'module'          => $this->name,
+            'text_type'       => $this->__('Menutree'),
+            'text_type_long'  => $this->__('Tree-like menu (menutree)'),
+            'allow_multiple'  => true,
+            'form_content'    => false,
+            'form_refresh'    => false,
+            'show_preview'    => true,
+            'admin_tableless' => true
+        ];
     }
 
     /**
@@ -103,8 +102,8 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         }
 
         // set default block vars
-        $vars['menutree_content']    = isset($vars['menutree_content']) ? $vars['menutree_content'] : array();
-        $vars['menutree_titles']     = isset($vars['menutree_titles']) ? $vars['menutree_titles'] : array();
+        $vars['menutree_content']    = isset($vars['menutree_content']) ? $vars['menutree_content'] : [];
+        $vars['menutree_titles']     = isset($vars['menutree_titles']) ? $vars['menutree_titles'] : [];
         $vars['menutree_stylesheet'] = isset($vars['menutree_stylesheet']) ? $vars['menutree_stylesheet'] : '';
         $vars['menutree_editlinks']  = isset($vars['menutree_editlinks']) ? $vars['menutree_editlinks'] : false;
 
@@ -118,8 +117,8 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
 
         if (!empty($vars['menutree_content'])) {
             // select current lang, check permissions for each item and exclude unactive nodes
-            $newTree = array();
-            $blocked = array();
+            $newTree = [];
+            $blocked = [];
             foreach ($vars['menutree_content'] as $id => $item) {
                 $item = $item[$lang];
                 // check the permission access to the current link
@@ -135,28 +134,30 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
                         $func = $dynamic[2]; // plugin
                         $extrainfo = (isset($dynamic[3]) && !empty($dynamic[3])) ? $dynamic[3] : null;
                         if (!empty($modname) && !empty($func)) {
-                            $args = array(
-                                    'item' => $item,
-                                    'lang' => $lang,
-                                    'bid' => $blockinfo['bid'],
-                                    'extrainfo' => $extrainfo,
-                            );
+                            $args = [
+                                'item' => $item,
+                                'lang' => $lang,
+                                'bid' => $blockinfo['bid'],
+                                'extrainfo' => $extrainfo,
+                            ];
                             $node = ModUtil::apiFunc($modname, 'menutree', $func, $args);
                             if (!is_array($node)) {
-                                $node = array(array($lang => $item));
+                                $node = [[$lang => $item]];
                             }
                         }
                     } else {
-                        $node = array(array($lang => $item));
+                        $node = [[$lang => $item]];
                     }
                     $newTree = array_merge($newTree, (array)$node);
                 }
             }
 
             // bulid structured array
-            $langs = array('ref' => $lang,
-                           'list' => $lang,
-                           'flat' => true);
+            $langs = [
+                'ref' => $lang,
+                'list' => $lang,
+                'flat' => true
+            ];
 
             $tree = new MenutreeTree();
             $tree->setOption('langs', (array)$langs['list']);
@@ -166,7 +167,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
 
             $newTree = $tree->getData();
         } else {
-            $newTree = array();
+            $newTree = [];
         }
 
         // block title
@@ -200,17 +201,17 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
 
         // set some default vars
         $vars['isnew'] =                    empty($vars);
-        $vars['menutree_content'] =         isset($vars['menutree_content']) ? $vars['menutree_content'] : array();
+        $vars['menutree_content'] =         isset($vars['menutree_content']) ? $vars['menutree_content'] : [];
         $vars['menutree_tpl'] =             isset($vars['menutree_tpl']) ? $vars['menutree_tpl'] : '';
         $vars['menutree_stylesheet'] =      isset($vars['menutree_stylesheet']) ? $vars['menutree_stylesheet'] : '';
         $vars['menutree_linkclass'] =       isset($vars['menutree_linkclass']) ? $vars['menutree_linkclass'] : false;
-        $vars['menutree_linkclasses'] =     isset($vars['menutree_linkclasses']) ? $vars['menutree_linkclasses'] : array();
-        $vars['menutree_titles'] =          isset($vars['menutree_titles']) ? $vars['menutree_titles'] : array();
+        $vars['menutree_linkclasses'] =     isset($vars['menutree_linkclasses']) ? $vars['menutree_linkclasses'] : [];
+        $vars['menutree_titles'] =          isset($vars['menutree_titles']) ? $vars['menutree_titles'] : [];
         $vars['menutree_editlinks'] =       isset($vars['menutree_editlinks']) ? $vars['menutree_editlinks'] : false;
         $vars['menutree_stripbaseurl'] =    isset($vars['menutree_stripbaseurl']) ? $vars['menutree_stripbaseurl'] : true;
         $vars['menutree_maxdepth'] =        isset($vars['menutree_maxdepth']) ? $vars['menutree_maxdepth'] : 0;
-        $vars['oldlanguages'] =             isset($vars['oldlanguages']) ? $vars['oldlanguages'] : array();
-        $vars['olddefaultlanguage'] =        isset($vars['olddefaultlanguage']) ? $vars['olddefaultlanguage'] : '';
+        $vars['oldlanguages'] =             isset($vars['oldlanguages']) ? $vars['oldlanguages'] : [];
+        $vars['olddefaultlanguage'] =       isset($vars['olddefaultlanguage']) ? $vars['olddefaultlanguage'] : '';
 
         // get list of languages
         $vars['languages'] = ZLanguage::getInstalledLanguageNames();
@@ -229,8 +230,10 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
             $vars['multilingual'] = false;
         }
 
-        $langs = array('list' => array_keys($vars['languages']),
-                       'flat' => false);
+        $langs = [
+            'list' => array_keys($vars['languages']),
+            'flat' => false
+        ];
 
         // check if there is allredy content
         if (empty($vars['menutree_content'])) {
@@ -368,7 +371,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         }
 
         // sort tree array according to lineno key
-        uasort($vars['menutree_content'], array('Zikula\BlocksModule\Block\MenutreeBlock', 'sort_menu'));
+        uasort($vars['menutree_content'], ['Zikula\BlocksModule\Block\MenutreeBlock', 'sort_menu']);
 
         // get other form data
         $menutree_data = $this->request->request->get('menutree');
@@ -383,7 +386,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
             $vars['menutree_stylesheet'] = '';
         }
 
-        $vars['menutree_titles'] = isset($menutree_data['titles']) ? $menutree_data['titles'] : array();
+        $vars['menutree_titles'] = isset($menutree_data['titles']) ? $menutree_data['titles'] : [];
 
         $vars['menutree_linkclass'] = isset($menutree_data['linkclass']) ? (bool)$menutree_data['linkclass'] : false;
         // if class list is provided - rebuild array and fill empty entries
@@ -450,10 +453,12 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
      */
     private function _permlevels()
     {
-        return array('ACCESS_EDIT'   => $this->__('Edit access'),
-                     'ACCESS_ADD'    => $this->__('Add access'),
-                     'ACCESS_DELETE' => $this->__('Delete access'),
-                     'ACCESS_ADMIN'  => $this->__('Admin access'));
+        return [
+            'ACCESS_EDIT'   => $this->__('Edit access'),
+            'ACCESS_ADD'    => $this->__('Add access'),
+            'ACCESS_DELETE' => $this->__('Delete access'),
+            'ACCESS_ADMIN'  => $this->__('Admin access')
+        ];
     }
 
     /**
@@ -465,11 +470,11 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
      */
     private function _get_current_menus($bid)
     {
-        $supported = array('Menu', 'Extmenu', 'Menutree');
+        $supported = ['Menu', 'Extmenu', 'Menutree'];
 
         $_menus = BlockUtil::getBlocksInfo();
 
-        $menus = array();
+        $menus = [];
         foreach ($_menus as $menu) {
             if (in_array($menu['bkey'], $supported) && $menu['bid'] != $bid) {
                 $menus[$menu['bid']] = $menu['title'];
@@ -501,14 +506,14 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         $menuType = strtolower($menu['bkey']);
         switch ($menuType) {
             case 'menutree':
-                $data = isset($menuVars['menutree_content']) ? $menuVars['menutree_content'] : array();
+                $data = isset($menuVars['menutree_content']) ? $menuVars['menutree_content'] : [];
                 break;
 
             case 'menu':
                 if (isset($menuVars['content']) && !empty($menuVars['content'])) {
                     $reflang = $userlanguage;
                     $pid = 1;
-                    $data = array();
+                    $data = [];
                     $contentlines = explode('LINESPLIT', $menuVars['content']);
                     foreach ($contentlines as $lineno => $contentline) {
                         list($href, $name, $title) = explode('|', $contentline);
@@ -530,20 +535,20 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
             case 'extmenu':
                 if (isset($menuVars['links']) && !empty($menuVars['links'])) {
                     $langs = array_keys($menuVars['links']);
-                    $data = array();
+                    $data = [];
                     foreach ($langs as $lang) {
                         foreach ($menuVars['links'][$lang] as $id => $link) {
-                            $data[$id][$lang] = array(
-                                    'id'        => $id + 1,
-                                    'name'      => isset($link['name']) && !empty($link['name']) ? $link['name'] : $this->__('no name'),
-                                    'href'      => isset($link['url']) ? $link['url'] : '',
-                                    'title'     => isset($link['title']) ? $link['title'] : '',
-                                    'className' => '',
-                                    'state'     => isset($link['active']) && $link['active'] && $link['name'] ? 1 : 0,
-                                    'lang'      => $lang,
-                                    'lineno'    => $id,
-                                    'parent'    => 0
-                            );
+                            $data[$id][$lang] = [
+                                'id'        => $id + 1,
+                                'name'      => isset($link['name']) && !empty($link['name']) ? $link['name'] : $this->__('no name'),
+                                'href'      => isset($link['url']) ? $link['url'] : '',
+                                'title'     => isset($link['title']) ? $link['title'] : '',
+                                'className' => '',
+                                'state'     => isset($link['active']) && $link['active'] && $link['name'] ? 1 : 0,
+                                'lang'      => $lang,
+                                'lineno'    => $id,
+                                'parent'    => 0
+                            ];
                         }
                     }
                     ksort($data);
@@ -561,17 +566,21 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
                     $url = isset($mod['capabilities']['user']['url'])
                         ? $mod['capabilities']['user']['url']
                         : $this->get('router')->generate($mod['capabilities']['user']['route']);
-                    $tmp = array('name'  => $mod['displayname'],
-                                 'href'  => DataUtil::formatForDisplay($url),
-                                 'title' => $mod['description']);
+                    $tmp = [
+                        'name'  => $mod['displayname'],
+                        'href'  => DataUtil::formatForDisplay($url),
+                        'title' => $mod['description']
+                    ];
 
                     foreach ($langs as $lang) {
-                        $tmp = array_merge($tmp, array('className' => '',
-                                                       'parent' => 0,
-                                                       'lang' => $lang,
-                                                       'state' => 1,
-                                                       'lineno' => $lineno,
-                                                       'id' => $pid));
+                        $tmp = array_merge($tmp, [
+                            'className' => '',
+                            'parent' => 0,
+                            'lang' => $lang,
+                            'state' => 1,
+                            'lineno' => $lineno,
+                            'id' => $pid
+                        ]);
                         $tmparray[$lang] = $tmp;
                     }
 
@@ -589,12 +598,12 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
      * Validate an array as a valid menutree data array
      *
      * Menu should be an array of arrays:
-     * [id] = array(
-     *     [lang] = array (
+     * [id] = [
+     *     [lang] = [
      *         [data][lang] = [lang]
      *         [data][parent] = exist
-     *     )
-     * )
+     *     ]
+     * ]
      *
      * @param array $array the array to validate
      *

@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPv3 (or at your option any later version).
- * @package Zikula\Component\FilterUtil
- *
- *          Please see the NOTICE file distributed with this source code for further
- *          information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Component\FilterUtil;
@@ -24,14 +20,14 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
      *
      * @var array
      */
-    private $fields = array();
+    private $fields = [];
 
     /**
      * Enabled operators.
      *
      * @var array
      */
-    private $ops = array();
+    private $ops = [];
 
     /**
      * Constructor.
@@ -40,7 +36,7 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
      * @param array $ops     Operators to enable, see activateOperators() (optional) (default=null).
      * @param bool  $default set the plugin to default (optional) (default=false).
      */
-    public function __construct($fields = null, array $ops = array(), $default = false)
+    public function __construct($fields = null, array $ops = [], $default = false)
     {
         $this->addFields($fields);
         $this->activateOperators($ops ? $ops : $this->availableOperators());
@@ -109,7 +105,7 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
             $fields[] = '-';
         }
 
-        $ops = array();
+        $ops = [];
         foreach ($this->ops as $op) {
             $ops[$op] = $fields;
         }

@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright 2015 Zikula Foundation.
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Zikula_Exception
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -34,19 +29,19 @@ class Zikula_Bag_ParameterBag extends \Symfony\Component\HttpFoundation\Paramete
      *
      * @return mixed
      */
-    public function filter($key, $default = null, $deep = false, $filter = FILTER_DEFAULT, $options = array())
+    public function filter($key, $default = null, $deep = false, $filter = FILTER_DEFAULT, $options = [])
     {
         if (func_num_args() > 2) {
             if (is_bool(func_get_arg(2))) {
                 // usage is compatible with normal ParameterBag
                 $deep = func_get_arg(2);
                 $filter = (func_num_args() >= 4) && (func_get_arg(3) !== false) ? func_get_arg(3) : FILTER_DEFAULT;
-                $options = (func_num_args() == 5) && (func_get_arg(4) !== false) ? func_get_arg(4) : array();
+                $options = (func_num_args() == 5) && (func_get_arg(4) !== false) ? func_get_arg(4) : [];
             } else {
                 // using old signature - third param exists and is a constant, not a bool
                 LogUtil::log('The method signature for filter() has changed. See \Symfony\Component\HttpFoundation\ParameterBag::filter().', E_USER_DEPRECATED);
                 $filter = (func_num_args() >= 3) && (func_get_arg(2) !== false) ? func_get_arg(2) : FILTER_DEFAULT;
-                $options = (func_num_args() >= 4) && (func_get_arg(3) !== false) ? func_get_arg(3) : array();
+                $options = (func_num_args() >= 4) && (func_get_arg(3) !== false) ? func_get_arg(3) : [];
             }
         }
 

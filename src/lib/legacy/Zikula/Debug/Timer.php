@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -43,7 +39,7 @@ class Zikula_Debug_Timer
     public function __construct($name = '')
     {
         $this->name = $name;
-        $this->times = array();
+        $this->times = [];
         $this->start();
     }
 
@@ -57,7 +53,7 @@ class Zikula_Debug_Timer
     public function reset($name = '')
     {
         $this->name = $name;
-        $this->times = array();
+        $this->times = [];
         $this->start();
     }
 
@@ -133,7 +129,7 @@ class Zikula_Debug_Timer
         $size = count($this->times);
         $start = $this->times[0];
         $d = 0;
-        $data = array();
+        $data = [];
 
         for ($i = 1; $i < $size; $i++) {
             $last = $this->times[$i - 1];

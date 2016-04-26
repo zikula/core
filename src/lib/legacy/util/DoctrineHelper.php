@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright 2010 Zikula Foundation
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 use Doctrine\ORM\EntityManager as EntityManager;
@@ -23,7 +20,7 @@ class DoctrineHelper
     public static function createSchema(EntityManager $em, array $classes)
     {
         $tool = new SchemaTool($em);
-        $metaClasses = array();
+        $metaClasses = [];
         foreach ($classes as $class) {
             $metaClasses[] = $em->getClassMetadata($class);
         }
@@ -37,7 +34,7 @@ class DoctrineHelper
     public static function dropSchema(EntityManager $em, array $classes)
     {
         $tool = new SchemaTool($em);
-        $metaClasses = array();
+        $metaClasses = [];
         foreach ($classes as $class) {
             $metaClasses[] = $em->getClassMetadata($class);
         }
@@ -51,7 +48,7 @@ class DoctrineHelper
     public static function updateSchema(EntityManager $em, array $classes, $saveMode = true)
     {
         $tool = new SchemaTool($em);
-        $metaClasses = array();
+        $metaClasses = [];
         foreach ($classes as $class) {
             $metaClasses[] = $em->getClassMetadata($class);
         }

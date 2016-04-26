@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- * @subpackage Template_Plugins
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -83,7 +78,7 @@ function smarty_function_button($params, Zikula_View $view)
     require_once $view->_get_plugin_filepath('function', 'img');
 
     if (isset($params['src']) && !isset($params['set'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_button', 'set')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['smarty_function_button', 'set']));
 
         return false;
     }
@@ -121,7 +116,12 @@ function smarty_function_button($params, Zikula_View $view)
     $img = '';
     $imgsrc = '';
     if (isset($params['src'])) {
-        smarty_function_img(array('assign' => 'buttonsrc', 'src' => $params['src'], 'set' => $params['set'], 'modname' => 'core'), $view);
+        smarty_function_img([
+            'assign' => 'buttonsrc',
+            'src' => $params['src'],
+            'set' => $params['set'],
+            'modname' => 'core'
+        ], $view);
         $imgvars = $view->get_template_vars('buttonsrc');
         $imgsrc = $imgvars['src'];
         $img = '<img src="'.DataUtil::formatForDisplay($imgsrc).'" alt="'.DataUtil::formatForDisplay($alt).'" />';

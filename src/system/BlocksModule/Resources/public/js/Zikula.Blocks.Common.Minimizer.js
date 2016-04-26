@@ -1,6 +1,6 @@
-// Javascript functions to minimize/hide and maximize/show a block when clicking on a small adjacent icon.
-// Copyright Zikula Foundation 2016 - license GNU/LGPLv3 (or at your option, any later version).
+// Copyright Zikula Foundation, licensed MIT.
 
+// Javascript functions to minimize/hide and maximize/show a block when clicking on a small adjacent icon.
 (function($) {
     $(document).ready(function() {
         $('.z-block').children(':header').each(function() {
@@ -8,7 +8,7 @@
             if (!nextElement.hasClass('nonCollapsible') && nextElement.length > 0) {
                 var titleText = $(this).text();
                 var nextId, classes, icon;
-                if (typeof nextElement.attr('id') === "undefined") {
+                if (typeof nextElement.attr('id') === 'undefined') {
                     // create an id
                     nextId = titleText.replace(/([|!&;$%@"<>()+,])|(^\s*)|(\s*$)|( )/g, '').toLowerCase(); // strip all bad chars, spaces, make lowercase
                     nextElement.attr('id', nextId); // set the new id
@@ -16,14 +16,14 @@
                     nextId = nextElement.attr('id');
                 }
                 if (nextId && localStorage.getItem(nextId) === 'true' ) {
-                    classes = "collapse";
-                    icon = "expand";
+                    classes = 'collapse';
+                    icon = 'expand';
                 } else {
-                    classes = "collapse in";
-                    icon = "compress";
+                    classes = 'collapse in';
+                    icon = 'compress';
                 }
                 nextElement.addClass(classes);
-                $(this).html(titleText + ' <a role="button" data-toggle="collapse" href="#' + nextId + '"><i class="fa fa-'+icon+' small block-expander"></i></a>');
+                $(this).html(titleText + ' <a role="button" data-toggle="collapse" href="#' + nextId + '"><i class="fa fa-' + icon + ' small block-expander"></i></a>');
             }
         });
         $('.collapse').on('hide.bs.collapse', function() {
@@ -36,7 +36,7 @@
             }
         });
         $('.block-expander').on('click', function() {
-            $(this).toggleClass("fa-compress fa-expand");
+            $(this).toggleClass('fa-compress fa-expand');
         });
     });
 })(jQuery);

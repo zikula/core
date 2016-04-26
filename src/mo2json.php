@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -49,8 +45,8 @@ if (!preg_match('#(^[a-z]{2,3}$)|(^[a-z]{2,3}-[a-z]{2,3}$)|(^[a-z]{2,3}-[a-z]{2,
 
 $gettext = ZGettext::getInstance();
 $gettext->setLocale(LC_MESSAGES, $lang);
-$translations = array();
-$translations[$lang] = array();
+$translations = [];
+$translations[$lang] = [];
 
 foreach ($_GET as $domain => $meta) {
     if ($domain == 'lang') {
@@ -98,7 +94,10 @@ foreach ($_GET as $domain => $meta) {
     $data = $reader->getCache_translations();
     unset($data['']);
     if ($data) {
-        $translations[$lang][$domain] = array('plural-forms' => $reader->getPluralheader(), 'translations' => $data);
+        $translations[$lang][$domain] = [
+            'plural-forms' => $reader->getPluralheader(),
+            'translations' => $data
+        ];
     }
 }
 

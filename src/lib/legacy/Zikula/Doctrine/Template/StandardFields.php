@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright 2010 Zikula Foundation.
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Zikula_Doctrine
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -20,7 +15,7 @@
  * <code>
  * // in a doctrine model
  * public function setUp() {
- *     $this->actAs('Zikula_Doctrine_Template_StandardFields', array('oldColumnPrefix' => 'z_'));
+ *     $this->actAs('Zikula_Doctrine_Template_StandardFields', ['oldColumnPrefix' => 'z_']);
  * }
  * </code>
  *
@@ -36,7 +31,7 @@ class Zikula_Doctrine_Template_StandardFields extends Doctrine_Template
      *
      * @param array $options Options.
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         parent::__construct($options);
     }
@@ -51,11 +46,11 @@ class Zikula_Doctrine_Template_StandardFields extends Doctrine_Template
         // historical prefix
         $oldPrefix = isset($this->_options['oldColumnPrefix']) ? $this->_options['oldColumnPrefix'] : '';
 
-        $this->hasColumn($oldPrefix . 'obj_status as obj_status', 'string', 1, array('type' => 'string', 'length' => 1, 'notnull' => true, 'default' => 'A'));
-        $this->hasColumn($oldPrefix . 'cr_date as cr_date', 'timestamp', null, array('type' => 'timestamp', 'notnull' => true, 'default' => '1970-01-01 00:00:00'));
-        $this->hasColumn($oldPrefix . 'cr_uid as cr_uid', 'integer', 4, array('type' => 'integer', 'notnull' => true, 'default' => '0'));
-        $this->hasColumn($oldPrefix . 'lu_date as lu_date', 'timestamp', null, array('type' => 'timestamp', 'notnull' => true, 'default' => '1970-01-01 00:00:00'));
-        $this->hasColumn($oldPrefix . 'lu_uid as lu_uid', 'integer', 4, array('type' => 'integer', 'notnull' => true, 'default' => '0'));
+        $this->hasColumn($oldPrefix . 'obj_status as obj_status', 'string', 1, ['type' => 'string', 'length' => 1, 'notnull' => true, 'default' => 'A']);
+        $this->hasColumn($oldPrefix . 'cr_date as cr_date', 'timestamp', null, ['type' => 'timestamp', 'notnull' => true, 'default' => '1970-01-01 00:00:00']);
+        $this->hasColumn($oldPrefix . 'cr_uid as cr_uid', 'integer', 4, ['type' => 'integer', 'notnull' => true, 'default' => '0']);
+        $this->hasColumn($oldPrefix . 'lu_date as lu_date', 'timestamp', null, ['type' => 'timestamp', 'notnull' => true, 'default' => '1970-01-01 00:00:00']);
+        $this->hasColumn($oldPrefix . 'lu_uid as lu_uid', 'integer', 4, ['type' => 'integer', 'notnull' => true, 'default' => '0']);
     }
 
     /**

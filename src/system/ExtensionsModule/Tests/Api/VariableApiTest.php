@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright 2015 Zikula Foundation
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\ExtensionsModule\Tests\Api;
@@ -39,7 +35,7 @@ class VariableApiTest extends \PHPUnit_Framework_TestCase
         $kernel
             ->expects($this->once())
             ->method('getBundles')
-            ->will($this->returnValue(array('BaseBundle' => new BaseBundle())))
+            ->will($this->returnValue(['BaseBundle' => new BaseBundle()]))
         ;
 
         $repo = new ExtensionVarStubRepository();

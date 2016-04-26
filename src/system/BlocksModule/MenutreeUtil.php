@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\BlocksModule;
@@ -42,13 +39,13 @@ class MenutreeUtil
      */
     public static function getTemplates()
     {
-        $tpls = array();
+        $tpls = [];
 
         // restricted templates, array for possible future changes
-        $sysTpls = array(
+        $sysTpls = [
             'modify.tpl',
             'help.tpl'
-        );
+        ];
 
         // module templates
         $modulesTpls = FileUtil::getFiles('system/BlocksModule/Resources/views/Block/Menutree', false, true, 'tpl', null, false);
@@ -59,7 +56,7 @@ class MenutreeUtil
         $userThemes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_USER);
         $adminThemes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_ADMIN);
         $mergedThemes = $userThemes + $adminThemes;
-        $themesTpls = array();
+        $themesTpls = [];
         foreach ($mergedThemes as $ut) {
             $themeBundle = ThemeUtil::getTheme($ut['name']);
             if (null !== $themeBundle) {
@@ -88,7 +85,7 @@ class MenutreeUtil
         sort($templates);
 
         // prepare array values
-        $templatesValues = array();
+        $templatesValues = [];
         foreach ($templates as $t) {
             $templatesValues[] = 'Block/Menutree/'.$t;
         }
@@ -114,14 +111,14 @@ class MenutreeUtil
      */
     public static function getStylesheets()
     {
-        $styles = array();
+        $styles = [];
 
         // restricted stylesheets, array for possible future changes
-        $sysStyles = array(
+        $sysStyles = [
             'system/BlocksModule/Resources/public/css/menutree/adminstyle.css',
             'system/BlocksModule/Resources/public/css/menutree/contextmenu.css',
             'system/BlocksModule/Resources/public/css/menutree/tree.css'
-        );
+        ];
 
         // module stylesheets
         $modulesStyles = FileUtil::getFiles('system/BlocksModule/Resources/public/css/menutree', false, false, 'css', null, false);
@@ -132,7 +129,7 @@ class MenutreeUtil
         $userThemes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_USER);
         $adminThemes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_ADMIN);
         $mergedThemes = $userThemes + $adminThemes;
-        $themesStyles = array();
+        $themesStyles = [];
         foreach ($mergedThemes as $ut) {
             $themeBundle = ThemeUtil::getTheme($ut['name']);
             if (null !== $themeBundle) {
@@ -180,7 +177,7 @@ class MenutreeUtil
      */
     protected static function normalize($array)
     {
-        $normalizedArray = array();
+        $normalizedArray = [];
 
         foreach ($array as $k => $v) {
             if (is_array($v)) {

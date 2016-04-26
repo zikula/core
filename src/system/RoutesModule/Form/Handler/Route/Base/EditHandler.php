@@ -47,7 +47,12 @@ class EditHandler extends BaseEditHandler
     
         $this->hasPageLockSupport = true;
         // array with list fields and multiple flags
-        $this->listFields = array('workflowState' => false, 'routeType' => false, 'schemes' => true, 'methods' => true);
+        $this->listFields = [
+            'workflowState' => false,
+            'routeType' => false,
+            'schemes' => true,
+            'methods' => true
+        ];
     }
 
     /**
@@ -70,7 +75,7 @@ class EditHandler extends BaseEditHandler
             $modelHelper = $this->view->getServiceManager()->get('zikularoutesmodule.model_helper');
             if (!$modelHelper->canBeCreated($this->objectType)) {
                 $logger = $this->view->getServiceManager()->get('logger');
-                $logger->notice('{app}: User {user} tried to create a new {entity}, but failed as it other items are required which must be created before.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => $this->objectType));
+                $logger->notice('{app}: User {user} tried to create a new {entity}, but failed as it other items are required which must be created before.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => $this->objectType]);
     
                 return $this->view->redirect($this->getRedirectUrl(null));
             }
@@ -143,7 +148,7 @@ class EditHandler extends BaseEditHandler
         $legacyControllerType = $this->request->query->filter('lct', 'user', false, FILTER_SANITIZE_STRING);
     
         // redirect to the list of routes
-        $viewArgs = array('lct' => $legacyControllerType);
+        $viewArgs = ['lct' => $legacyControllerType];
         $url = $serviceManager->get('router')->generate('zikularoutesmodule_' . strtolower($this->objectType) . '_view', $viewArgs);
     
         return $url;
@@ -212,7 +217,7 @@ class EditHandler extends BaseEditHandler
      *
      * @throws RuntimeException Thrown if concurrent editing is recognised or another error occurs
      */
-    public function applyAction(array $args = array())
+    public function applyAction(array $args = [])
     {
         // get treated entity reference from persisted member var
         $entity = $this->entityRef;
@@ -225,9 +230,9 @@ class EditHandler extends BaseEditHandler
             $workflowHelper = $this->view->getServiceManager()->get('zikularoutesmodule.workflow_helper');
             $success = $workflowHelper->executeAction($entity, $action);
         } catch(\Exception $e) {
-            $this->request->getSession()->getFlashBag()->add('error', $this->__f('Sorry, but an unknown error occured during the %s action. Please apply the changes again!', array($action)));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__f('Sorry, but an unknown error occured during the %s action. Please apply the changes again!', [$action]));
             $logger = $this->view->getServiceManager()->get('logger');
-            $logger->error('{app}: User {user} tried to edit the {entity} with id {id}, but failed. Error details: {errorMessage}.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route', 'id' => $entity->createCompositeIdentifier(), 'errorMessage' => $e->getMessage()));
+            $logger->error('{app}: User {user} tried to edit the {entity} with id {id}, but failed. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route', 'id' => $entity->createCompositeIdentifier(), 'errorMessage' => $e->getMessage()]);
         }
     
         $this->addDefaultMessage($args, $success);
@@ -255,8 +260,10 @@ class EditHandler extends BaseEditHandler
         $serviceManager = $this->view->getContainer();
     
         if ($this->inlineUsage == true) {
-            $urlArgs = array('idPrefix'    => $this->idPrefix,
-                             'commandName' => $args['commandName']);
+            $urlArgs = [
+                'idPrefix'    => $this->idPrefix,
+                'commandName' => $args['commandName']
+            ];
             foreach ($this->idFields as $idField) {
                 $urlArgs[$idField] = $this->idValues[$idField];
             }
@@ -278,9 +285,9 @@ class EditHandler extends BaseEditHandler
         // parse given redirect code and return corresponding url
         switch ($this->returnTo) {
             case 'admin':
-                return $serviceManager->get('router')->generate('zikularoutesmodule_' . strtolower($this->objectType) . '_index', array('lct' => 'admin'));
+                return $serviceManager->get('router')->generate('zikularoutesmodule_' . strtolower($this->objectType) . '_index', ['lct' => 'admin']);
             case 'adminView':
-                return $serviceManager->get('router')->generate('zikularoutesmodule_' . strtolower($this->objectType) . '_view', array('lct' => 'admin'));
+                return $serviceManager->get('router')->generate('zikularoutesmodule_' . strtolower($this->objectType) . '_view', ['lct' => 'admin']);
             case 'adminDisplay':
                 if ($args['commandName'] != 'delete' && !($this->mode == 'create' && $args['commandName'] == 'cancel')) {
                     foreach ($this->idFields as $idField) {

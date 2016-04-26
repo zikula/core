@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\GroupsModule\Api;
@@ -183,9 +180,10 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Other check
-        $checkname = ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'getgidbyname',
-                        array('name' => $args['name'],
-                              'checkgid' => $args['gid']));
+        $checkname = ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'getgidbyname', [
+            'name' => $args['name'],
+            'checkgid' => $args['gid']
+        ]);
 
         if ($checkname != false) {
             throw new \RuntimeException($this->__('Error! There is already a group with that name.'));
@@ -232,7 +230,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get group
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid'], 'group_membership' => false));
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', ['gid' => $args['gid'], 'group_membership' => false]);
 
         if (!$group) {
             return false;
@@ -294,7 +292,7 @@ class AdminApi extends \Zikula_AbstractApi
         $this->entityManager->flush();
 
         // Let other modules know we have updated a group
-        $removeuserEvent = new GenericEvent(array('gid' => $args['gid'], 'uid' => $args['uid']));
+        $removeuserEvent = new GenericEvent(['gid' => $args['gid'], 'uid' => $args['uid']]);
         $this->getDispatcher()->dispatch('group.removeuser', $removeuserEvent);
 
         // Let the calling process know that we have finished successfully
@@ -400,29 +398,30 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function getapplications()
     {
-        $objArray = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findBy(array(), array('app_id' => 'ASC'));
+        $objArray = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findBy([], ['app_id' => 'ASC']);
 
-        if ($objArray === false) {
+        if (false === $objArray) {
             return false;
         }
 
-        $items = array();
+        $items = [];
 
         foreach ($objArray as $obj) {
-            $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $obj['gid'], 'group_membership' => false));
+            $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', ['gid' => $obj['gid'], 'group_membership' => false]);
             if (!$group) {
                 continue;
             }
 
             if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $group['gid'] . '::', ACCESS_EDIT) && $group != false) {
-                $items[] = array(
+                $items[] = [
                     'app_id' => $obj['app_id'],
                     'userid' => $obj['uid'],
                     'username' => UserUtil::getVar('uname', $obj['uid']),
                     'appgid' => $obj['gid'],
                     'gname' => $group['name'],
                     'application' => nl2br($obj['application']),
-                    'status' => $obj['status']);
+                    'status' => $obj['status']
+                ];
             }
         }
 
@@ -447,7 +446,7 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $appInfo = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['userid']));
+        $appInfo = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findOneBy(['gid' => $args['gid'], 'uid' => $args['userid']]);
 
         if (!$appInfo) {
             return false;
@@ -476,22 +475,23 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // delete group application
-        $application = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['userid']));
+        $application = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findOneBy(['gid' => $args['gid'], 'uid' => $args['userid']]);
         $this->entityManager->remove($application);
         $this->entityManager->flush();
 
         if ($args['action'] == 'accept') {
-            $adduser = ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'adduser', array('gid' => $args['gid'], 'uid' => $args['userid']));
+            $adduser = ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'adduser', ['gid' => $args['gid'], 'uid' => $args['userid']]);
         }
 
         // Send message part
         switch ($args['sendtag']) {
             case 1:
-                $send = ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendmessage',
-                                array('toname' => UserUtil::getVar('uname', $args['userid']),
-                                      'toaddress' => UserUtil::getVar('email', $args['userid']),
-                                      'subject' => $args['reasontitle'],
-                                      'body' => $args['reason']));
+                $send = ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendmessage', [
+                    'toname' => UserUtil::getVar('uname', $args['userid']),
+                    'toaddress' => UserUtil::getVar('email', $args['userid']),
+                    'subject' => $args['reasontitle'],
+                    'body' => $args['reason']
+                ]);
                 break;
             default:
                 $send = true;
@@ -522,13 +522,23 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function getLinks()
     {
-        $links = array();
+        $links = [];
 
         if (SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_READ)) {
-            $links[] = array('url' => ModUtil::url('ZikulaGroupsModule', 'admin', 'view'), 'text' => $this->__('Groups list'), 'id' => 'groups_view', 'icon' => 'list');
+            $links[] = [
+                'url' => ModUtil::url('ZikulaGroupsModule', 'admin', 'view'),
+                'text' => $this->__('Groups list'),
+                'id' => 'groups_view',
+                'icon' => 'list'
+            ];
         }
         if (SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('ZikulaGroupsModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'id' => 'groups_modifyconfig', 'icon' => 'wrench');
+            $links[] = [
+                'url' => ModUtil::url('ZikulaGroupsModule', 'admin', 'modifyconfig'),
+                'text' => $this->__('Settings'),
+                'id' => 'groups_modifyconfig',
+                'icon' => 'wrench'
+            ];
         }
 
         return $links;

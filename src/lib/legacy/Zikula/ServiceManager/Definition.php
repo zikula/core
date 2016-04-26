@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright 2010 Zikula Foundation
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Zikula_ServiceManager
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -35,10 +30,10 @@ class Zikula_ServiceManager_Definition extends \Symfony\Component\DependencyInje
      *
      * @param string $className       Name of the class (with full namespace if applicable).
      * @param array  $constructorArgs Non associative array of parameters.
-     * @param array  $methods         Associative array of array($method => array(0 => array($param1, $param2...),
-     *                                                                            1 => array($param1, $param2...).
+     * @param array  $methods         Associative array of [$method => [0 => [$param1, $param2...],
+     *                                                                  1 => [$param1, $param2...]].
      */
-    public function __construct($className, array $constructorArgs = array(), array $methods = array())
+    public function __construct($className, array $constructorArgs = [], array $methods = [])
     {
         parent::__construct($className, $constructorArgs);
 
@@ -70,11 +65,11 @@ class Zikula_ServiceManager_Definition extends \Symfony\Component\DependencyInje
     /**
      * Configure the constructor arguments.
      *
-     * @param array $args Non associative array of arguments, array() means none.
+     * @param array $args Non associative array of arguments, [] means none.
      *
      * @return void
      */
-    public function setConstructorArgs(array $args = array())
+    public function setConstructorArgs(array $args = [])
     {
         $this->setArguments($args);
     }
@@ -102,8 +97,8 @@ class Zikula_ServiceManager_Definition extends \Symfony\Component\DependencyInje
     /**
      * Setter for methods property.
      *
-     * @param array $methods Associative array of array($method => array(0 => array($param1, $param2...),
-     *                                                                   1 => array($param1, $param2...).
+     * @param array $methods Associative array of [$method => [0 => [$param1, $param2...],
+     *                                                         1 => [$param1, $param2...]].
      *
      * @return void
      */
@@ -118,14 +113,14 @@ class Zikula_ServiceManager_Definition extends \Symfony\Component\DependencyInje
      * Add method to be called after class is instanciated.
      *
      * Note $args must be a non-associative array of arguments
-     * or array() for none.
+     * or [] for none.
      *
      * @param string $method Method to be called.
-     * @param array  $args   Default = array() meaning no args are passed, else array of args.
+     * @param array  $args   Default = [] meaning no args are passed, else array of args.
      *
      * @return void
      */
-    public function addMethod($method, array $args = array())
+    public function addMethod($method, array $args = [])
     {
         $this->addMethodCall($method, $args);
     }

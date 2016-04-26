@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\ExtensionsModule;
@@ -32,11 +29,11 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
     public function install()
     {
         // create tables
-        $entities = array(
+        $entities = [
             'Zikula\ExtensionsModule\Entity\ExtensionEntity',
             'Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity',
             'Zikula\ExtensionsModule\Entity\ExtensionVarEntity',
-        );
+        ];
 
         try {
             $this->schemaTool->create($entities);
@@ -71,7 +68,7 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
                 $connection = $this->entityManager->getConnection();
 
                 // increase length of some hook table fields from 20 to 60
-                $commands = array();
+                $commands = [];
                 $commands[] = "ALTER TABLE `hook_provider` CHANGE `method` `method` VARCHAR(60) NOT NULL";
                 $commands[] = "ALTER TABLE `hook_runtime` CHANGE `method` `method` VARCHAR(60) NOT NULL";
 

@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2016 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\ExtensionsModule\Controller;
@@ -48,12 +45,14 @@ class ServicesController extends AbstractController
         }
 
         // notify EVENT here to gather any system service links
-        $event = new GenericEvent(null, array('modname' => $moduleName));
+        $event = new GenericEvent(null, ['modname' => $moduleName]);
         $this->get('event_dispatcher')->dispatch('module_dispatch.service_links', $event);
         $sublinks = $event->getData();
-        $templateParameters = [];
-        $templateParameters['sublinks'] = $sublinks;
-        $templateParameters['currentmodule'] = $moduleName;
+
+        $templateParameters = [
+            'sublinks' => $sublinks,
+            'currentmodule' => $moduleName
+        ];
 
         return $templateParameters;
     }

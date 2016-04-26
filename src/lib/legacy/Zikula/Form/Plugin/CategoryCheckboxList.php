@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_Form
- * @subpackage Zikula_Form_AbstractPlugin
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -47,10 +42,10 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
      * <code>
      * // Template: {formcategoryselector id=myCat category=xxx enableDBUtil=1}
      * // Result:
-     * array(
+     * [
      *   'title' => 'Item title',
-     *   '__CATEGORIES__' => array('myCat' => XX)
-     * )
+     *   '__CATEGORIES__' => ['myCat' => XX]
+     * ]
      * </code>
      *
      * @var boolean (default false)
@@ -89,7 +84,7 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
     public function load(Zikula_Form_View $view, &$params)
     {
         if (is_array($this->selectedValue)) {
-            $selectedValue = array();
+            $selectedValue = [];
             foreach ($this->selectedValue as $v) {
                 if (!is_array($v)) {
                     $selectedValue[] = $v;
@@ -117,7 +112,7 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
         $result = parent::render($view);
 
         if ($this->editLink && !empty($this->category) && SecurityUtil::checkPermission('ZikulaCategoriesModule::', "{$this->category['id']}::", ACCESS_EDIT)) {
-            $url = DataUtil::formatForDisplay(ModUtil::url('ZikulaCategoriesModule', 'user', 'edit', array('dr' => $this->category['id'])));
+            $url = DataUtil::formatForDisplay(ModUtil::url('ZikulaCategoriesModule', 'user', 'edit', ['dr' => $this->category['id']]));
             $result .= "<a class=\"help-block\" href=\"{$url}\">" . __('Edit') . '</a>';
         }
 
@@ -214,7 +209,7 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
                 $entity = $values[$this->group];
                 if (isset($entity[$this->dataField])) {
                     $collection = $entity[$this->dataField];
-                    $selectedValues = array();
+                    $selectedValues = [];
                     foreach ($collection as $c) {
                         $categoryId = $c->getCategoryRegistryId();
                         if ($categoryId == $this->registryId) {

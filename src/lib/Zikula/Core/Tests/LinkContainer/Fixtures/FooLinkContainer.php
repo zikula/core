@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of the Zikula package.
+ *
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Zikula\Core\Tests\LinkContainer\Fixtures;
 
@@ -20,7 +28,7 @@ class FooLinkContainer implements LinkContainerInterface
             return $this->$method();
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -30,11 +38,12 @@ class FooLinkContainer implements LinkContainerInterface
      */
     private function getAdmin()
     {
-        $links = array();
-        $links[] = array(
+        $links = [];
+        $links[] = [
             'url' => '/foo/admin',
             'text' => 'Foo Admin',
-            'icon' => 'wrench');
+            'icon' => 'wrench'
+        ];
 
         return $links;
     }
@@ -46,11 +55,12 @@ class FooLinkContainer implements LinkContainerInterface
      */
     private function getUser()
     {
-        $links = array();
-        $links[] = array(
+        $links = [];
+        $links[] = [
             'url' => '/foo',
             'text' => 'Foo',
-            'icon' => 'check-square-o');
+            'icon' => 'check-square-o'
+        ];
 
         return $links;
     }
@@ -62,11 +72,12 @@ class FooLinkContainer implements LinkContainerInterface
      */
     private function getAccount()
     {
-        $links = array();
-        $links[] = array(
+        $links = [];
+        $links[] = [
             'url' => '/foo/account',
             'text' => 'Foo Account',
-            'icon' => 'wrench');
+            'icon' => 'wrench'
+        ];
 
         return $links;
     }

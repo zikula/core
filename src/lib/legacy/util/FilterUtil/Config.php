@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPv3 (or at your option any later version).
- * @package FilterUtil
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -124,7 +120,7 @@ class FilterUtil_Config
         if (isset($args['join'])) {
             $this->setJoin($args['join']);
         } else {
-            $this->join = array();
+            $this->join = [];
         }
     }
 
@@ -383,7 +379,7 @@ class FilterUtil_Config
         $tables = DBUtil::getTables();
 
         // store the fixed aliases
-        $aliases = array();
+        $aliases = [];
         foreach ($this->_join as $join) {
             if (isset($join['join_alias'])) {
                 $aliases[] = $join['join_alias'];
@@ -446,11 +442,11 @@ class FilterUtil_Config
 
         // adds the external relation aliases
         // depending on the filter object to process
-        $joins = array();
+        $joins = [];
         $this->_getFilterRelations($joins, $filter);
 
         // stores the tables => dynaalias
-        $t = array();
+        $t = [];
         $a = 'dynajoin1';
         foreach ($joins as $join) {
             $alias = substr($join, 0, strpos($join, ':'));
@@ -476,7 +472,7 @@ class FilterUtil_Config
     private function _getFilterRelations(&$joins, $obj)
     {
         if (!is_array($obj) || count($obj) == 0) {
-            return array();
+            return [];
         }
 
         if (isset($obj['field']) && !empty($obj['field'])) {
@@ -521,7 +517,7 @@ class FilterUtil_Config
      */
     private function _getTableInformation()
     {
-        $tables = array();
+        $tables = [];
         foreach ($this->_doctrineQuery->getDQLPart('from') as $str) {
             $str = trim($str);
             $parts = explode('JOIN ', $str);
@@ -584,7 +580,7 @@ class FilterUtil_Config
         if (count($tables) == count($aliasMap)) {
             return array_combine($aliasMap, $tables);
         } elseif (count($tables) < count($aliasMap)) {
-            $aliasses = array();
+            $aliasses = [];
             foreach ($tables as $table) {
                 foreach ($aliasMap as $alias) {
                     if ($this->_doctrineQuery->getQueryComponent($alias) == $table) {
@@ -609,11 +605,11 @@ class FilterUtil_Config
      */
     private function _setColumnsFromDoctrineTables($tables, $dynaMap)
     {
-        $this->_column = array();
+        $this->_column = [];
 
         $aliasMap  = $this->_doctrineQuery->getTableAliasMap();
 
-        $aliases = array();
+        $aliases = [];
         foreach ($tables as $alias => $table) {
             $columns = $this->getDoctrineTableColumns($table['table'], $dynaMap);
 

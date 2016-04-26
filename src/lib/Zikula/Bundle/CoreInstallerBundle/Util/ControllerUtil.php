@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2014 - Zikula CoreInstaller bundle.
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Bundle\CoreInstallerBundle\Util;
@@ -30,12 +26,12 @@ class ControllerUtil
      */
     public function getTemplateGlobals(StageInterface $currentStage)
     {
-        $globals = array(
+        $globals = [
             'lang' => \ZLanguage::getLanguageCode(),
             'charset' => \ZLanguage::getEncoding(),
             'version' => \Zikula_Core::VERSION_NUM,
-            'currentstage' => $currentStage->getName(),
-        );
+            'currentstage' => $currentStage->getName()
+        ];
 
         return array_merge($globals, $currentStage->getTemplateParams());
     }
@@ -47,33 +43,33 @@ class ControllerUtil
      */
     public function initPhp()
     {
-        $warnings = array();
+        $warnings = [];
         if (!function_exists('mb_get_info')) {
             $warnings[] = __('mbstring is not installed in PHP.  Zikula cannot install or upgrade without this extension.');
         }
-        if ((version_compare(\PHP_VERSION, '5.6.0', '<')) && (ini_set('mbstring.internal_encoding', 'UTF-8') === false)) {
+        if (version_compare(\PHP_VERSION, '5.6.0', '<') && false === ini_set('mbstring.internal_encoding', 'UTF-8')) {
             // mbstring.internal_encoding is deprecated in php 5.6.0
             $currentSetting = ini_get('mbstring.internal_encoding');
-            $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The install or upgrade process may fail at your current setting of %4$s.', array('ini_set', 'mbstring.internal_encoding', 'UTF-8', $currentSetting));
+            $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The install or upgrade process may fail at your current setting of %4$s.', ['ini_set', 'mbstring.internal_encoding', 'UTF-8', $currentSetting]);
         }
-        if (ini_set('default_charset', 'UTF-8') === false) {
+        if (false === ini_set('default_charset', 'UTF-8')) {
             $currentSetting = ini_get('default_charset');
-            $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The install or upgrade process may fail at your current setting of %4$s.', array('ini_set', 'default_charset', 'UTF-8', $currentSetting));
+            $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The install or upgrade process may fail at your current setting of %4$s.', ['ini_set', 'default_charset', 'UTF-8', $currentSetting]);
         }
-        if (mb_regex_encoding('UTF-8') === false) {
+        if (false === mb_regex_encoding('UTF-8')) {
             $currentSetting = mb_regex_encoding();
-            $warnings[] = __f('Could not set %1$s to the value of %2$s. The install or upgrade process may fail at your current setting of %3$s.', array('mb_regex_encoding', 'UTF-8', $currentSetting));
+            $warnings[] = __f('Could not set %1$s to the value of %2$s. The install or upgrade process may fail at your current setting of %3$s.', ['mb_regex_encoding', 'UTF-8', $currentSetting]);
         }
-        if (ini_set('memory_limit', '128M') === false) {
+        if (false === ini_set('memory_limit', '128M')) {
             $currentSetting = ini_get('memory_limit');
-            $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The install or upgrade process may fail at your current setting of %4$s.', array('ini_set', 'memory_limit', '128M', $currentSetting));
+            $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The install or upgrade process may fail at your current setting of %4$s.', ['ini_set', 'memory_limit', '128M', $currentSetting]);
         }
-        if (ini_set('max_execution_time', 86400) === false) {
+        if (false === ini_set('max_execution_time', 86400)) {
             // 86400 = 24 hours
             $currentSetting = ini_get('max_execution_time');
             if ($currentSetting > 0) {
                 // 0 = unlimited time
-                $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The install or upgrade process may fail at your current setting of %4$s.', array('ini_set', 'max_execution_time', '86400', $currentSetting));
+                $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The install or upgrade process may fail at your current setting of %4$s.', ['ini_set', 'max_execution_time', '86400', $currentSetting]);
             }
         }
 
@@ -82,7 +78,7 @@ class ControllerUtil
 
     public function requirementsMet(ContainerInterface $container)
     {
-        $results = array();
+        $results = [];
 
         $x = explode('.', str_replace('-', '.', phpversion()));
         $phpVersion = "$x[0].$x[1].$x[2]";
@@ -96,14 +92,14 @@ class ControllerUtil
         $results['pcreUnicodePropertiesEnabled'] = (isset($isEnabled) && (bool)$isEnabled);
         $results['json_encode'] = function_exists('json_encode');
         $datadir = $container->getParameter('datadir');
-        $directories = array(
+        $directories = [
             '/cache/',
             '/config/',
             '/config/dynamic',
             '/logs/',
             "/../$datadir/",
-            "/../config/",
-        );
+            '/../config/',
+        ];
         $rootDir = $container->get('kernel')->getRootDir();
         foreach ($directories as $directory) {
             $path = realpath($rootDir . $directory);
@@ -116,9 +112,10 @@ class ControllerUtil
             }
         }
         if ($container->hasParameter('upgrading') && $container->getParameter('upgrading') === true) {
-            $files = array(
+            $files = [
                 'personal_config' => '/../config/personal_config.php',
-                'custom_parameters' => '/config/custom_parameters.yml');
+                'custom_parameters' => '/config/custom_parameters.yml'
+            ];
             foreach ($files as $key => $file) {
                 $path = realpath($rootDir . $file);
                 if ($path === false) {
@@ -173,12 +170,11 @@ class ControllerUtil
      */
     public function setupLang(ContainerInterface $container)
     {
+        $lang = 'en';
         // @TODO read this from parameters, not ini
         if (is_readable('config/installer.ini')) {
             $ini = parse_ini_file('config/installer.ini');
             $lang = isset($ini['language']) ? $ini['language'] : 'en';
-        } else {
-            $lang = 'en';
         }
 
         // setup multilingual

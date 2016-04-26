@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -25,10 +21,10 @@ class Categories_DBObject_Registry extends DBObject
         $this->_objType = 'categories_registry';
         $this->_objPath = 'category_registry';
 
-        $this->_objValidation['modname'] = array('modname', true, 'noop', '', __('Error! You did not select a module.'));
-        $this->_objValidation['table'] = array('table', true, 'noop', '', __('Error! You did not select a module table.'));
-        $this->_objValidation['property'] = array('property', true, 'noop', '', __('Error! You did not enter a property name.'));
-        $this->_objValidation['category_id'] = array('category_id', true, 'noop', '', __('Error! You did not select a category.'));
+        $this->_objValidation['modname'] = ['modname', true, 'noop', '', __('Error! You did not select a module.')];
+        $this->_objValidation['table'] = ['table', true, 'noop', '', __('Error! You did not select a module table.')];
+        $this->_objValidation['property'] = ['property', true, 'noop', '', __('Error! You did not enter a property name.')];
+        $this->_objValidation['category_id'] = ['category_id', true, 'noop', '', __('Error! You did not select a category.')];
 
         $this->_init($init, $key);
     }

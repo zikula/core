@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2015 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\BlocksModule;
@@ -187,7 +184,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         // build the menu content
         $languages = ZLanguage::getInstalledLanguages();
         $saveLanguage = ZLanguage::getLanguageCode();
-        $menucontent = array();
+        $menucontent = [];
         foreach ($languages as $lang) {
             ZLanguage::setLocale($lang);
             ZLanguage::bindCoreDomain();
@@ -198,23 +195,40 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             $menucontent['blocktitles'][$lang] = $this->__('Main menu');
 
             // insert the links
-            $menucontent['links'][$lang][] = array('name' => $this->__('Home'), 'url' => '{homepage}', 'title' => $this->__("Go to the home page"), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
-            $menucontent['links'][$lang][] = array('name' => $this->__('Site search'), 'url' => '{ZikulaSearchModule}', 'title' => $this->__('Search this site'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
+            $menucontent['links'][$lang][] = [
+                'name' => $this->__('Home'),
+                'url' => '{homepage}',
+                'title' => $this->__('Go to the home page'),
+                'level' => 0,
+                'parentid' => null,
+                'image' => '',
+                'active' => '1'
+            ];
+            $menucontent['links'][$lang][] = [
+                'name' => $this->__('Site search'),
+                'url' => '{ZikulaSearchModule}',
+                'title' => $this->__('Search this site'),
+                'level' => 0,
+                'parentid' => null,
+                'image' => '',
+                'active' => '1'
+            ];
         }
 
         ZLanguage::setLocale($saveLanguage);
 
         $searchcontent = [
             'displaySearchBtn' => 1,
-            'active' => array('ZikulaUsersModule' => 1)
+            'active' => ['ZikulaUsersModule' => 1]
         ];
 
         $hellomessage = $this->__('<p><a href="http://zikula.org/">Zikula</a> is a content management system (CMS) and application framework. It is secure and stable, and is a good choice for sites with a large volume of traffic.</p><p>With Zikula:</p><ul><li>you can customise all aspects of the site\'s appearance through themes, with support for CSS style sheets, JavaScript, Flash and all other modern web development technologies;</li><li>you can mark content as being suitable for either a single language or for all languages, and can control all aspects of localisation and internationalisation of your site;</li><li>you can be sure that your pages will display properly in all browsers, thanks to Zikula\'s full compliance with W3C HTML standards;</li><li>you get a standard application-programming interface (API) that lets you easily augment your site\'s functionality through modules, blocks and other extensions;</li><li>you can get help and support from the Zikula community of webmasters and developers at <a href="http://www.zikula.org">zikula.org</a>.</li></ul><p>Enjoy using Zikula!</p><p><strong>The Zikula team</strong></p><p><em>Note: Zikula is Free Open Source Software (FOSS) licensed under the GNU General Public License.</em></p>');
 
         $blocks = [];
-        $blocksModuleEntity = $this->entityManager->getRepository('\Zikula\ExtensionsModule\Entity\ExtensionEntity')->findOneBy(['name' => 'ZikulaBlocksModule']);
-        $searchModuleEntity = $this->entityManager->getRepository('\Zikula\ExtensionsModule\Entity\ExtensionEntity')->findOneBy(['name' => 'ZikulaSearchModule']);
-        $usersModuleEntity = $this->entityManager->getRepository('\Zikula\ExtensionsModule\Entity\ExtensionEntity')->findOneBy(['name' => 'ZikulaUsersModule']);
+        $extensionRepo = $this->entityManager->getRepository('\Zikula\ExtensionsModule\Entity\ExtensionEntity');
+        $blocksModuleEntity = $extensionRepo->findOneBy(['name' => 'ZikulaBlocksModule']);
+        $searchModuleEntity = $extensionRepo->findOneBy(['name' => 'ZikulaSearchModule']);
+        $usersModuleEntity = $extensionRepo->findOneBy(['name' => 'ZikulaUsersModule']);
         $blocks[] = [
             'bkey' => 'ZikulaBlocksModule:\Zikula\BlocksModule\Block\ExtmenuBlock',
             'blocktype' => 'Extmenu',
@@ -225,7 +239,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             'content' => $menucontent,
             'position' => $positions['topnav'],
             'order' => 0
-            ];
+        ];
         $blocks[] = [
             'bkey' => 'ZikulaSearchModule:\Zikula\SearchModule\Block\SearchBlock',
             'blocktype' => 'Search',
@@ -235,7 +249,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             'description' => $this->__('Search block'),
             'content' => $searchcontent,
             'position' => $positions['left']
-            ];
+        ];
         $blocks[] = [
             'bkey' => 'ZikulaBlocksModule:\Zikula\BlocksModule\Block\HtmlBlock',
             'blocktype' => 'Html',
@@ -245,7 +259,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             'description' => $this->__('HTML block'),
             'properties' => ['content' => $hellomessage],
             'position' => $positions['center']
-            ];
+        ];
         $blocks[] = [
             'bkey' => 'ZikulaUsersModule:\Zikula\UsersModule\Block\LoginBlock',
             'blocktype' => 'Login',
@@ -255,7 +269,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             'description' => $this->__('Login block'),
             'position' => $positions['topnav'],
             'order' => 1
-            ];
+        ];
 
         foreach ($blocks as $block) {
             $blockEntity = new BlockEntity();

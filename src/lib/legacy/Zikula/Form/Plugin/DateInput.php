@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_Form
- * @subpackage Zikula_Form_AbstractPlugin
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -166,7 +161,7 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
         if ($firstTime) {
             $lang = ZLanguage::transformFS(ZLanguage::getLanguageCode());
             // map of the jscalendar supported languages
-            $map = array(
+            $map = [
                 'ca' => 'ca_ES',
                 'cz' => 'cs_CZ',
                 'da' => 'da_DK',
@@ -193,7 +188,8 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
                 'si' => 'si_SL',
                 'sk' => 'sk_SK',
                 'sv' => 'sv_SE',
-                'tr' => 'tr_TR');
+                'tr' => 'tr_TR'
+            ];
 
             if (isset($map[$lang])) {
                 $lang = $map[$lang];
@@ -212,8 +208,8 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
         $result = '';
 
         if ($this->useSelectionMode) {
-            $hiddenInputField = str_replace(array('type="text"', '&nbsp;*'),
-                                            array('type="hidden"', ''),
+            $hiddenInputField = str_replace(['type="text"', '&nbsp;*'],
+                                            ['type="hidden"', ''],
                                             parent::render($view));
 
             $result .= '<div>' . $hiddenInputField . '<span id="' . $this->id . 'cal" style="background-color: #ff8; cursor: default" onmouseover="this.style.backgroundColor=\'#ff0\';" onmouseout="this.style.backgroundColor=\'#ff8\';">';

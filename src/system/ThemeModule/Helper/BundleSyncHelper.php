@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2016 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\ThemeModule\Helper;
@@ -29,6 +26,7 @@ class BundleSyncHelper
      * @var KernelInterface
      */
     private $kernel;
+
     /**
      * @var ThemeEntityRepository
      */
@@ -59,10 +57,10 @@ class BundleSyncHelper
         $helper->load();
 
         // Get all themes on filesystem
-        $filethemes = array();
+        $filethemes = [];
 
         $scanner = new Scanner();
-        $scanner->scan(array('themes'), 4);
+        $scanner->scan(['themes'], 4);
         $newThemes = $scanner->getThemesMetaData();
 
         /** @var \Zikula\Bundle\CoreBundle\Bundle\MetaData $themeMetaData */
@@ -129,18 +127,20 @@ class BundleSyncHelper
                 continue;
             }
 
-            $filethemes[$themeversion['name']] = array('directory' => $dir,
-                    'name' => $themeversion['name'],
-                    'type' => 3,
-                    'displayname' => (isset($themeversion['displayname']) ? $themeversion['displayname'] : $themeversion['name']),
-                    'version' => (isset($themeversion['version']) ? $themeversion['version'] : '1.0.0'),
-                    'description' => (isset($themeversion['description']) ? $themeversion['description'] : $themeversion['displayname']),
-                    'admin' => (isset($themeversion['admin']) ? (int)$themeversion['admin'] : '0'),
-                    'user' => (isset($themeversion['user']) ? (int)$themeversion['user'] : '1'),
-                    'system' => (isset($themeversion['system']) ? (int)$themeversion['system'] : '0'),
-                    'state' => (isset($themeversion['state']) ? $themeversion['state'] : ThemeEntityRepository::STATE_INACTIVE),
-                    'contact' => (isset($themeversion['contact']) ? $themeversion['contact'] : ''),
-                    'xhtml' => (isset($themeversion['xhtml']) ? (int)$themeversion['xhtml'] : 1));
+            $filethemes[$themeversion['name']] = [
+                'directory' => $dir,
+                'name' => $themeversion['name'],
+                'type' => 3,
+                'displayname' => (isset($themeversion['displayname']) ? $themeversion['displayname'] : $themeversion['name']),
+                'version' => (isset($themeversion['version']) ? $themeversion['version'] : '1.0.0'),
+                'description' => (isset($themeversion['description']) ? $themeversion['description'] : $themeversion['displayname']),
+                'admin' => (isset($themeversion['admin']) ? (int)$themeversion['admin'] : '0'),
+                'user' => (isset($themeversion['user']) ? (int)$themeversion['user'] : '1'),
+                'system' => (isset($themeversion['system']) ? (int)$themeversion['system'] : '0'),
+                'state' => (isset($themeversion['state']) ? $themeversion['state'] : ThemeEntityRepository::STATE_INACTIVE),
+                'contact' => (isset($themeversion['contact']) ? $themeversion['contact'] : ''),
+                'xhtml' => (isset($themeversion['xhtml']) ? (int)$themeversion['xhtml'] : 1)
+            ];
 
             unset($themeversion);
             unset($themetype);
@@ -149,7 +149,7 @@ class BundleSyncHelper
         /**
          * Persist themes
          */
-        $dbthemes = array();
+        $dbthemes = [];
         $themeEntities = $this->themeEntityRepository->findAll();
 
         // @todo - can this be done with the `findAll()` method or doctrine (index by name, hydrate to array?)
@@ -163,7 +163,7 @@ class BundleSyncHelper
             if (empty($filethemes[$name])) {
                 // delete a running configuration
                 try {
-                    \ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'deleterunningconfig', array('themename' => $name));
+                    \ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'deleterunningconfig', ['themename' => $name]);
                 } catch (\Exception $e) {
                     if (\System::isInstalling()) {
                         // silent fail when installing or upgrading
@@ -173,7 +173,7 @@ class BundleSyncHelper
                 }
 
                 // delete item from db
-                $item = $this->themeEntityRepository->findOneBy(array('name' => $name));
+                $item = $this->themeEntityRepository->findOneBy(['name' => $name]);
                 $this->themeEntityRepository->removeAndFlush($item);
 
                 unset($dbthemes[$name]);

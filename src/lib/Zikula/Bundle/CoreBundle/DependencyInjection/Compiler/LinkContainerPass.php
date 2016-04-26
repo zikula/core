@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of the Zikula package.
+ *
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Zikula\Bundle\CoreBundle\DependencyInjection\Compiler;
 
@@ -17,7 +25,7 @@ class LinkContainerPass implements CompilerPassInterface
         $definition = $container->getDefinition('zikula.link_container_collector');
 
         foreach ($container->findTaggedServiceIds('zikula.link_container') as $id => $linkContainer) {
-            $definition->addMethodCall('addContainer', array(new Reference($id)));
+            $definition->addMethodCall('addContainer', [new Reference($id)]);
         }
     }
 }

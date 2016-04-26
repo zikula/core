@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\PermissionsModule\Api;
@@ -245,7 +242,7 @@ class AdminApi extends \Zikula_AbstractApi
         $this->entityManager->flush();
 
         if ($args['seq'] != $args['oldseq']) {
-            $this->resequence(array('type' => 'group', 'newseq' => $args['seq'], 'oldseq' => $args['oldseq']));
+            $this->resequence(['type' => 'group', 'newseq' => $args['seq'], 'oldseq' => $args['oldseq']]);
         }
 
         return true;
@@ -396,7 +393,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get all permissions
-        $permissions = $this->entityManager->getRepository('ZikulaPermissionsModule:PermissionEntity')->findBy(array(), array('sequence' => 'ASC'));
+        $permissions = $this->entityManager->getRepository('ZikulaPermissionsModule:PermissionEntity')->findBy([], ['sequence' => 'ASC']);
         if (!$permissions) {
             return false;
         }
@@ -557,34 +554,41 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function getLinks()
     {
-        $links = array();
+        $links = [];
 
         if (SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_READ)) {
-            $links[] = array(
-                'url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'view', array()),
+            $links[] = [
+                'url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'view', []),
                 'text' => $this->__('Permission rules list'),
                 'id' => 'permissions_view',
-                'icon' => 'list');
+                'icon' => 'list'
+            ];
         }
 
         if (SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADD)) {
-            $links[] = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'listedit', array('action' => 'add')),
+            $links[] = [
+                'url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'listedit', ['action' => 'add']),
                 'text' => $this->__('Create new permission rule'),
                 'icon' => 'plus',
-                'class' => 'create-new-permission');
+                'class' => 'create-new-permission'
+            ];
         }
 
-        $links[] = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'viewinstanceinfo'),
+        $links[] = [
+            'url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'viewinstanceinfo'),
             'text' => $this->__('Permission rules information'),
             'title' => $this->__('Permission rules information'),
             'icon' => 'info',
-            'id' => 'view-instance-info');
+            'id' => 'view-instance-info'
+        ];
 
         if (SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'modifyconfig'),
+            $links[] = [
+                'url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'modifyconfig'),
                 'text' => $this->__('Settings'),
                 'id' => 'permissions_modifyconfig',
-                'icon' => 'wrench');
+                'icon' => 'wrench'
+            ];
         }
 
         return $links;

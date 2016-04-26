@@ -1,11 +1,11 @@
 <?php
 /**
- * Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * Copyright Zikula Foundation 2011 - Zikula Application Framework
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package      Zikula_System_Modules
- * @subpackage   Zikula_Admin
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**

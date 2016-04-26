@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- * @subpackage Template_Plugins
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -30,11 +25,11 @@ function smarty_outputfilter_shorturls($source, $view)
     // If you control the server, it is preferable for better performance to put rewrite rules
     // from the htaccess file into main configuration file, httpd.conf.
 
-    $baseurl = System::getBaseUrl();
+    $baseUrl = System::getBaseUrl();
 
-    $prefix = '[(<[^>]*?)[\'"](?:'.$baseurl.'|'.$baseurl.')?(?:[./]{0,2})'; // Match local URLs in HTML tags, removes / and ./
-    $in = array('[<([^>]+)\s(src|href|background|action)\s*=\s*((["\'])?)(?!http)(?!skype:)(?!xmpp:)(?!icq:)(?!mailto:)(?!tel:)(?!javascript:)(?!bitcoin:)(?!geo:)(?!im:)(?!irc:)(?!ircs:)(?!sms:)(?!ssh:)(?!urn:)(?!wtai:)(?!smsto:)(?!sms:)(?!sip:)(?!magnet:)(?!webcal:)(?!data:)(?![/"\'\s#]+)]Ui');
-    $out = array('<$1 $2=$3'.$baseurl);
+    $prefix = '[(<[^>]*?)[\'"](?:'.$baseUrl.'|'.$baseUrl.')?(?:[./]{0,2})'; // Match local URLs in HTML tags, removes / and ./
+    $in = ['[<([^>]+)\s(src|href|background|action)\s*=\s*((["\'])?)(?!http)(?!skype:)(?!xmpp:)(?!icq:)(?!mailto:)(?!tel:)(?!javascript:)(?!bitcoin:)(?!geo:)(?!im:)(?!irc:)(?!ircs:)(?!sms:)(?!ssh:)(?!urn:)(?!wtai:)(?!smsto:)(?!sms:)(?!sip:)(?!magnet:)(?!webcal:)(?!data:)(?![/"\'\s#]+)]Ui'];
+    $out = ['<$1 $2=$3'.$baseUrl];
 
     // perform the replacement
     $source = preg_replace($in, $out, $source);

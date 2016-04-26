@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2014 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPv3 (or at your option any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Bundle\CoreBundle;
@@ -42,35 +38,35 @@ class CacheClearer
 
         $cacheFolder = $cacheDir . DIRECTORY_SEPARATOR;
 
-        $fosJsRoutingFiles = array();
+        $fosJsRoutingFiles = [];
         foreach ($routingLocales as $locale) {
             $fosJsRoutingFiles[] = $fosJsRoutesExtractor->getCachePath($locale);
         }
 
-        $this->cacheTypes = array(
-            "symfony.annotations" => array(
-                "$cacheFolder/annotations"
-            ),
-            "symfony.routing.generator" => array(
-                "$cacheFolder{$cachePrefix}UrlGenerator.php",
-                "$cacheFolder{$cachePrefix}UrlGenerator.php.meta",
-            ),
-            "symfony.routing.matcher" => array(
-                "$cacheFolder{$cachePrefix}UrlMatcher.php",
-                "$cacheFolder{$cachePrefix}UrlMatcher.php.meta"
-            ),
-            "symfony.routing.fosjs" => $fosJsRoutingFiles,
-            "symfony.config" => array(
-                "$cacheFolder$kernelContainerClass.php",
-                "$cacheFolder$kernelContainerClass.php.meta",
-                "$cacheFolder$kernelContainerClass.xml",
-                "$cacheFolder{$kernelContainerClass}Compiler.log",
-                "{$cacheFolder}classes.map"
-            ),
-            "twig" => [
-                "$cacheFolder/twig"
+        $this->cacheTypes = [
+            'symfony.annotations' => [
+                $cacheFolder . '/annotations'
+            ],
+            'symfony.routing.generator' => [
+                $cacheFolder . $cachePrefix . 'UrlGenerator.php',
+                $cacheFolder . $cachePrefix . 'UrlGenerator.php.meta'
+            ],
+            'symfony.routing.matcher' => [
+                $cacheFolder . $cachePrefix . 'UrlMatcher.php',
+                $cacheFolder . $cachePrefix . 'UrlMatcher.php.meta'
+            ],
+            'symfony.routing.fosjs' => $fosJsRoutingFiles,
+            'symfony.config' => [
+                $cacheFolder . $kernelContainerClass . '.php',
+                $cacheFolder . $kernelContainerClass . '.php.meta',
+                $cacheFolder . $kernelContainerClass . '.xml',
+                $cacheFolder . $kernelContainerClass . 'Compiler.log',
+                $cacheFolder . 'classes.map'
+            ],
+            'twig' => [
+                $cacheFolder . '/twig'
             ]
-        );
+        ];
     }
 
     public function clear($type)

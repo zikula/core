@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2013 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPv3 (or at your option any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Bundle\CoreBundle\Controller;
@@ -33,7 +29,7 @@ class ControllerResolver extends BaseControllerResolver
                 // controller in the service:method notation
                 list($service, $method) = explode(':', $controller, 2);
 
-                return array($this->container->get($service), $method);
+                return [$this->container->get($service), $method];
             } else {
                 throw new \LogicException(sprintf('Unable to parse the controller name "%s".', $controller));
             }
@@ -77,6 +73,6 @@ class ControllerResolver extends BaseControllerResolver
             $controller->setContainer($this->container);
         }
 
-        return array($controller, $method);
+        return [$controller, $method];
     }
 }

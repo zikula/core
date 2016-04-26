@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of the Zikula package.
+ *
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Zikula\Bundle\CoreBundle\Twig\TokenParser;
 
@@ -26,7 +34,7 @@ class SwitchTokenParser extends \Twig_TokenParser
         $expression = $this->parser->getExpressionParser()->parseExpression();
 
         $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
-        $this->parser->subparse(array($this, 'decideCaseFork'));
+        $this->parser->subparse([$this, 'decideCaseFork']);
         $cases = new \Twig_Node();
         $default = null;
 
@@ -38,19 +46,19 @@ class SwitchTokenParser extends \Twig_TokenParser
                     $i++;
                     $expr = $this->parser->getExpressionParser()->parseExpression();
                     $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
-                    $body = $this->parser->subparse(array($this, 'decideCaseFork'));
+                    $body = $this->parser->subparse([$this, 'decideCaseFork']);
 
-                    $cases->setNode($i, new \Twig_Node(array(
+                    $cases->setNode($i, new \Twig_Node([
                         'expression' => $expr,
                         'body' => $body,
-                    )));
+                    ]));
 
                     break;
 
                 case 'default':
                     $i = null;
                     $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
-                    $body = $this->parser->subparse(array($this, 'decideCaseFork'));
+                    $body = $this->parser->subparse([$this, 'decideCaseFork']);
 
                     $default = $body;
 
@@ -58,7 +66,7 @@ class SwitchTokenParser extends \Twig_TokenParser
 
                 case 'break':
                     $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
-                    $this->parser->subparse(array($this, 'decideCaseFork'));
+                    $this->parser->subparse([$this, 'decideCaseFork']);
 
                     if ($cases->hasNode($i)) {
                         $cases->getNode($i)->setAttribute('break', true);
@@ -82,7 +90,7 @@ class SwitchTokenParser extends \Twig_TokenParser
 
     public function decideCaseFork(\Twig_Token $token)
     {
-        return $token->test(array('case', 'default', 'break', 'endswitch'));
+        return $token->test(['case', 'default', 'break', 'endswitch']);
     }
 
     public function getTag()

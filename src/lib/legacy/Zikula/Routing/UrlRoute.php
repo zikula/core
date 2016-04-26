@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright 2010 Zikula Foundation.
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Routing
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -94,8 +89,8 @@ class Zikula_Routing_UrlRoute
 
         // set reasonable default values
         $this->compiled = false;
-        $this->variables = array();
-        $this->tokens = array();
+        $this->variables = [];
+        $this->tokens = [];
     }
 
     /**
@@ -152,7 +147,7 @@ class Zikula_Routing_UrlRoute
         // look for the star sign
         if (false !== strpos($this->regex, '<_star>')) {
             // append additional parameters
-            $additionalArgs = array();
+            $additionalArgs = [];
             foreach (array_diff_key($allParams, array_flip($this->variables), $this->defaults) as $key => $value) {
                 $additionalArgs[] = urlencode($key) . '/' . urlencode($value);
             }
@@ -183,7 +178,7 @@ class Zikula_Routing_UrlRoute
         }
 
         // initialise list of parameters to be collected
-        $parameters = array();
+        $parameters = [];
 
         // check for * in urlPattern
         if (isset($matches['_star'])) {
@@ -281,19 +276,19 @@ class Zikula_Routing_UrlRoute
             if (preg_match('#^:([a-zA-z0-6_]+)#', $pattern, $match)) {
                 // variable
                 $name = $match[1];
-                $this->tokens[] = array('variable', $name);
+                $this->tokens[] = ['variable', $name];
                 $this->variables[] = $name;
 
                 $pattern = substr($pattern, strlen($match[0]));
             } elseif (preg_match('#^(?:/|\.|\-)#', $pattern, $match)) {
                 // separator
-                $this->tokens[] = array('separator', $match[0]);
+                $this->tokens[] = ['separator', $match[0]];
 
                 $pattern = substr($pattern, strlen($match[0]));
             } elseif (preg_match('#^(.+?)(?:(?:/|\.|\-)|$)#', $pattern, $match)) {
                 // text
                 $text = $match[1];
-                $this->tokens[] = array('text', $text);
+                $this->tokens[] = ['text', $text];
 
                 $pattern = substr($pattern, strlen($match[1]));
             } else {

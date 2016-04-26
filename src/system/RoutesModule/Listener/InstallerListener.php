@@ -41,12 +41,12 @@ class InstallerListener extends BaseInstallerListener
     public static function getSubscribedEvents()
     {
         // override subscription to ALL available events to only needed events.
-        return array(
-            CoreEvents::MODULE_POSTINSTALL => array('modulePostInstalled', 5),
-            CoreEvents::MODULE_UPGRADE => array('moduleUpgraded', 5),
-            CoreEvents::MODULE_REMOVE => array('moduleRemoved', 5),
-            'new.routes.avail' => array('newRoutesAvail', 5)
-        );
+        return [
+            CoreEvents::MODULE_POSTINSTALL => ['modulePostInstalled', 5],
+            CoreEvents::MODULE_UPGRADE => ['moduleUpgraded', 5],
+            CoreEvents::MODULE_REMOVE => ['moduleRemoved', 5],
+            'new.routes.avail' => ['newRoutesAvail', 5]
+        ];
     }
 
     public function __construct(EntityManagerInterface $em, RouteFinder $routeFinder, CacheClearer $cacheClearer, RouteDumperHelper $routeDumperHelper)

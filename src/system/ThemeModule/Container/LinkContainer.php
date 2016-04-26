@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2016 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\ThemeModule\Container;
@@ -81,20 +78,22 @@ class LinkContainer implements LinkContainerInterface
      */
     private function getAdmin()
     {
-        $links = array();
+        $links = [];
 
-        if ($this->permissionApi->hasPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            $links[] = [
-                'url' => $this->router->generate('zikulathememodule_theme_view'),
-                'text' => $this->translator->__('Themes list'),
-                'icon' => 'list'];
+        if (!$this->permissionApi->hasPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
+            return $links;
         }
-        if ($this->permissionApi->hasPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            $links[] = [
-                'url' => $this->router->generate('zikulathememodule_admin_modifyconfig'),
-                'text' => $this->translator->__('Settings'),
-                'icon' => 'wrench'];
-        }
+
+        $links[] = [
+            'url' => $this->router->generate('zikulathememodule_theme_view'),
+            'text' => $this->translator->__('Themes list'),
+            'icon' => 'list'
+        ];
+        $links[] = [
+            'url' => $this->router->generate('zikulathememodule_admin_modifyconfig'),
+            'text' => $this->translator->__('Settings'),
+            'icon' => 'wrench'
+        ];
 
         return $links;
     }
@@ -107,7 +106,8 @@ class LinkContainer implements LinkContainerInterface
             $links[] = [
                 'url' => $this->router->generate('zikulathememodule_user_index'),
                 'text' => $this->translator->__('Theme switcher'),
-                'icon' => 'admin.png'];
+                'icon' => 'admin.png'
+            ];
         }
 
         return $links;

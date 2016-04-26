@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula\Component\FilterUtil
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Component\FilterUtil;
@@ -81,7 +77,7 @@ class FilterUtil
      *
      * @return FilterUtil
      */
-    public static function create(QueryBuilder $queryBuilder, array $plugins = array(), array $restrictions = array(), Request $request = null, $filterKey = 'filter')
+    public static function create(QueryBuilder $queryBuilder, array $plugins = [], array $restrictions = [], Request $request = null, $filterKey = 'filter')
     {
         $pluginManager = new PluginManager(new Config($queryBuilder), $plugins, $restrictions);
 
@@ -112,7 +108,7 @@ class FilterUtil
         }
 
         $i = 1;
-        $filter = array();
+        $filter = [];
         // TODO get filter via request object
         // Get unnumbered filter string
         $filterStr = $this->request->query->filter(
@@ -267,11 +263,11 @@ class FilterUtil
             $parts = explode('^', $filter, 3);
         }
 
-        $con = array(
+        $con = [
             'field' => false,
             'op' => false,
             'value' => false
-        );
+        ];
 
         if (isset($parts) && is_array($parts) && count($parts) > 2) {
             $con['field'] = $parts[0];

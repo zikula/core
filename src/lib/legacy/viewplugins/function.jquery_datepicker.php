@@ -1,17 +1,11 @@
 <?php
-
 /**
- * Copyright Zikula Foundation 2012 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- * @subpackage Template_Plugins
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -95,7 +89,7 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
      * (optional) the javascript date format used for the storage element (should mirror the dateTime version) (default: computed from valuestorageformat)
      * @see http://docs.jquery.com/UI/Datepicker/formatDate
      */
-    $valueStorageFormat_javascript = (isset($params['valuestorageformat_javascript'])) ? $params['valuestorageformat_javascript'] : str_replace(array('Y', 'm', 'd'), array('yy', 'mm', 'dd'), $valueStorageFormat_dateTime);
+    $valueStorageFormat_javascript = (isset($params['valuestorageformat_javascript'])) ? $params['valuestorageformat_javascript'] : str_replace(['Y', 'm', 'd'], ['yy', 'mm', 'dd'], $valueStorageFormat_dateTime);
     unset($params['valuestorageformat_javascript']);
     /**
      * onselectcallback
@@ -153,7 +147,7 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
 
     // check required params
     if (!isset($displayElement)) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('jquery_datepicker', 'displayelement')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['jquery_datepicker', 'displayelement']));
 
         return false;
     }

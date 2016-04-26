@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2016 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\ExtensionsModule\Helper\Legacy;
@@ -27,10 +24,10 @@ class BundleSyncHelper
 {
     public static function scanForModules()
     {
-        $filemodules = array();
+        $filemodules = [];
 
         // set the paths to search
-        $rootdirs = array('modules' => \ModUtil::TYPE_MODULE); // do not scan `/system` since all are accounted for above
+        $rootdirs = ['modules' => \ModUtil::TYPE_MODULE]; // do not scan `/system` since all are accounted for above
 
         // scan for legacy modules
         // NOTE: the scan below does rescan all psr-0 & psr-4 type modules and intentionally fails.
@@ -42,7 +39,7 @@ class BundleSyncHelper
                     $oomod = false;
                     // register autoloader
                     if (file_exists("$rootdir/$dir/Version.php") || is_dir("$rootdir/$dir/lib")) {
-                        \ZLoader::addAutoloader($dir, array($rootdir, "$rootdir/$dir/lib"));
+                        \ZLoader::addAutoloader($dir, [$rootdir, "$rootdir/$dir/lib"]);
                         \ZLoader::addPrefix($dir, $rootdir);
                         $oomod = true;
                     }
@@ -64,7 +61,7 @@ class BundleSyncHelper
                     }
 
                     if (!isset($modversion['capabilities'])) {
-                        $modversion['capabilities'] = array();
+                        $modversion['capabilities'] = [];
                     }
 
                     $name = $dir;
@@ -81,14 +78,18 @@ class BundleSyncHelper
                         // Work out if admin-capable
                         if (file_exists("$rootdir/$dir/lib/$dir/Controller/Admin.php")) {
                             $caps = $modversion['capabilities'];
-                            $caps['admin'] = array('url' => \ModUtil::url($modversion['name'], 'admin', 'index'));
+                            $caps['admin'] = [
+                                'url' => \ModUtil::url($modversion['name'], 'admin', 'index')
+                            ];
                             $modversion['capabilities'] = $caps;
                         }
 
                         // Work out if user-capable
                         if (file_exists("$rootdir/$dir/lib/$dir/Controller/User.php")) {
                             $caps = $modversion['capabilities'];
-                            $caps['user'] = array('url' => \ModUtil::url($modversion['name'], 'user', 'index'));
+                            $caps['user'] = [
+                                'url' => \ModUtil::url($modversion['name'], 'user', 'index')
+                            ];
                             $modversion['capabilities'] = $caps;
                         }
                     }
@@ -114,7 +115,7 @@ class BundleSyncHelper
                     if (isset($modversion['securityschema']) && is_array($modversion['securityschema'])) {
                         $securityschema = serialize($modversion['securityschema']);
                     } else {
-                        $securityschema = serialize(array());
+                        $securityschema = serialize([]);
                     }
 
                     $core_min = isset($modversion['core_min']) ? $modversion['core_min'] : '';
@@ -124,10 +125,10 @@ class BundleSyncHelper
                     if (isset($modversion['dependencies']) && is_array($modversion['dependencies'])) {
                         $moddependencies = serialize($modversion['dependencies']);
                     } else {
-                        $moddependencies = serialize(array());
+                        $moddependencies = serialize([]);
                     }
 
-                    $filemodules[$name] = array(
+                    $filemodules[$name] = [
                         'directory'       => $dir,
                         'name'            => $name,
                         'type'            => $moduletype,
@@ -141,7 +142,7 @@ class BundleSyncHelper
                         'dependencies'    => $moddependencies,
                         'core_min'        => $core_min,
                         'core_max'        => $core_max,
-                    );
+                    ];
 
                     // important: unset modversion and modtype, otherwise the
                     // following modules will have some values not defined in

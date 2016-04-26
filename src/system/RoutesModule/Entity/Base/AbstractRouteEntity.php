@@ -60,12 +60,12 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
      * @Assert\Type(type="array")
      * @var array List of available item actions.
      */
-    protected $_actions = array();
+    protected $_actions = [];
     
     /**
      * @var array The current workflow data of this object.
      */
-    protected $__WORKFLOW__ = array();
+    protected $__WORKFLOW__ = [];
     
     /**
      * @ORM\Id
@@ -184,7 +184,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
      * @Assert\Type(type="array")
      * @var array $defaults.
      */
-    protected $defaults = array();
+    protected $defaults = [];
     
     /**
      * @ORM\Column(type="array")
@@ -192,7 +192,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
      * @Assert\Type(type="array")
      * @var array $requirements.
      */
-    protected $requirements = array();
+    protected $requirements = [];
     
     /**
      * @ORM\Column(name="route_condition", length=255, nullable=true)
@@ -336,7 +336,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
      *
      * @return void
      */
-    public function set_actions(array $_actions = Array())
+    public function set_actions(array $_actions = [])
     {
         $this->_actions = $_actions;
     }
@@ -358,7 +358,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
      *
      * @return void
      */
-    public function set__WORKFLOW__(array $__WORKFLOW__ = Array())
+    public function set__WORKFLOW__(array $__WORKFLOW__ = [])
     {
         $this->__WORKFLOW__ = $__WORKFLOW__;
     }
@@ -1053,7 +1053,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         $serviceManager = ServiceUtil::getManager();
         $objectId = $this->createCompositeIdentifier();
         $logger = $serviceManager->get('logger');
-        $logger->debug('{app}: User {user} created the {entity} with id {id}.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route', 'id' => $objectId));
+        $logger->debug('{app}: User {user} created the {entity} with id {id}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route', 'id' => $objectId]);
     
         $dispatcher = $serviceManager->get('event_dispatcher');
     
@@ -1136,7 +1136,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     
     
         $logger = $serviceManager->get('logger');
-        $logger->debug('{app}: User {user} removed the {entity} with id {id}.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route', 'id' => $objectId));
+        $logger->debug('{app}: User {user} removed the {entity} with id {id}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route', 'id' => $objectId]);
     
         $dispatcher = $serviceManager->get('event_dispatcher');
     
@@ -1192,7 +1192,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         $serviceManager = ServiceUtil::getManager();
         $objectId = $this->createCompositeIdentifier();
         $logger = $serviceManager->get('logger');
-        $logger->debug('{app}: User {user} updated the {entity} with id {id}.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route', 'id' => $objectId));
+        $logger->debug('{app}: User {user} updated the {entity} with id {id}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route', 'id' => $objectId]);
     
         $dispatcher = $serviceManager->get('event_dispatcher');
     
@@ -1243,7 +1243,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         $serviceManager = ServiceUtil::getManager();
         $objectId = $this->createCompositeIdentifier();
         $logger = $serviceManager->get('logger');
-        $logger->debug('{app}: User {user} saved the {entity} with id {id}.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route', 'id' => $objectId));
+        $logger->debug('{app}: User {user} saved the {entity} with id {id}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route', 'id' => $objectId]);
     
         $dispatcher = $serviceManager->get('event_dispatcher');
     
@@ -1284,7 +1284,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         $helper = $serviceManager->get('zikularoutesmodule.listentries_helper');
         $listEntries = $helper->getWorkflowStateEntriesForRoute();
     
-        $allowedValues = array();
+        $allowedValues = [];
         foreach ($listEntries as $entry) {
             $allowedValues[] = $entry['value'];
         }
@@ -1302,7 +1302,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         $helper = $serviceManager->get('zikularoutesmodule.listentries_helper');
         $listEntries = $helper->getRouteTypeEntriesForRoute();
     
-        $allowedValues = array();
+        $allowedValues = [];
         foreach ($listEntries as $entry) {
             $allowedValues[] = $entry['value'];
         }
@@ -1320,7 +1320,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         $listEntries = $helper->getSchemesEntriesForRoute();
         $dom = ZLanguage::getModuleDomain('ZikulaRoutesModule');
     
-        $allowedValues = array();
+        $allowedValues = [];
         foreach ($listEntries as $entry) {
             $allowedValues[] = $entry['value'];
         }
@@ -1348,7 +1348,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         $listEntries = $helper->getMethodsEntriesForRoute();
         $dom = ZLanguage::getModuleDomain('ZikulaRoutesModule');
     
-        $allowedValues = array();
+        $allowedValues = [];
         foreach ($listEntries as $entry) {
             $allowedValues[] = $entry['value'];
         }
@@ -1385,16 +1385,17 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         $workflowHelper = $serviceManager->get('zikularoutesmodule.workflow_helper');
         
         $schemaName = $workflowHelper->getWorkflowName($this['_objectType']);
-        $this['__WORKFLOW__'] = array(
+        $this['__WORKFLOW__'] = [
             'module' => 'ZikulaRoutesModule',
             'state' => $this['workflowState'],
             'obj_table' => $this['_objectType'],
             'obj_idcolumn' => $idColumn,
             'obj_id' => $this[$idColumn],
-            'schemaname' => $schemaName);
+            'schemaname' => $schemaName
+        ];
         
         // load the real workflow only when required (e. g. when func is edit or delete)
-        if ((!in_array($currentFunc, array('index', 'view', 'display')) && empty($isReuse)) || $forceLoading) {
+        if ((!in_array($currentFunc, ['index', 'view', 'display']) && empty($isReuse)) || $forceLoading) {
             $result = Zikula_Workflow_Util::getWorkflowForObject($this, $this['_objectType'], $idColumn, 'ZikulaRoutesModule');
             if (!$result) {
                 $dom = ZLanguage::getModuleDomain('ZikulaRoutesModule');
@@ -1423,13 +1424,14 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         $workflowHelper = $serviceManager->get('zikularoutesmodule.workflow_helper');
     
         $schemaName = $workflowHelper->getWorkflowName($this['_objectType']);
-        $this['__WORKFLOW__'] = array(
+        $this['__WORKFLOW__'] = [
             'module' => 'ZikulaRoutesModule',
             'state' => $this['workflowState'],
             'obj_table' => $this['_objectType'],
             'obj_idcolumn' => 'id',
             'obj_id' => 0,
-            'schemaname' => $schemaName);
+            'schemaname' => $schemaName
+        ];
     }
     
     /**
@@ -1484,45 +1486,45 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         $instance = $this->id . '::';
         $dom = ZLanguage::getModuleDomain('ZikulaRoutesModule');
         if ($currentLegacyControllerType == 'admin') {
-            if (in_array($currentFunc, array('index', 'view'))) {
-                $this->_actions[] = array(
-                    'url' => array('type' => 'route', 'func' => 'display', 'arguments' => array('lct' => 'admin', 'id' => $this['id'])),
+            if (in_array($currentFunc, ['index', 'view'])) {
+                $this->_actions[] = [
+                    'url' => ['type' => 'route', 'func' => 'display', 'arguments' => ['lct' => 'admin', 'id' => $this['id']]],
                     'icon' => 'eye',
                     'linkTitle' => str_replace('"', '', $this->getTitleFromDisplayPattern()),
                     'linkText' => __('Details', $dom)
-                );
+                ];
             }
-            if (in_array($currentFunc, array('index', 'view', 'display'))) {
+            if (in_array($currentFunc, ['index', 'view', 'display'])) {
                 if (SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT)) {
-                    $this->_actions[] = array(
-                        'url' => array('type' => 'route', 'func' => 'edit', 'arguments' => array('lct' => 'admin', 'id' => $this['id'])),
+                    $this->_actions[] = [
+                        'url' => ['type' => 'route', 'func' => 'edit', 'arguments' => ['lct' => 'admin', 'id' => $this['id']]],
                         'icon' => 'pencil-square-o',
                         'linkTitle' => __('Edit', $dom),
                         'linkText' => __('Edit', $dom)
-                    );
-                    $this->_actions[] = array(
-                        'url' => array('type' => 'route', 'func' => 'edit', 'arguments' => array('lct' => 'admin', 'astemplate' => $this['id'])),
+                    ];
+                    $this->_actions[] = [
+                        'url' => ['type' => 'route', 'func' => 'edit', 'arguments' => ['lct' => 'admin', 'astemplate' => $this['id']]],
                         'icon' => 'files-o',
                         'linkTitle' => __('Reuse for new item', $dom),
                         'linkText' => __('Reuse', $dom)
-                    );
+                    ];
                 }
                 if (SecurityUtil::checkPermission($component, $instance, ACCESS_DELETE)) {
-                    $this->_actions[] = array(
-                        'url' => array('type' => 'route', 'func' => 'delete', 'arguments' => array('lct' => 'admin', 'id' => $this['id'])),
+                    $this->_actions[] = [
+                        'url' => ['type' => 'route', 'func' => 'delete', 'arguments' => ['lct' => 'admin', 'id' => $this['id']]],
                         'icon' => 'trash-o',
                         'linkTitle' => __('Delete', $dom),
                         'linkText' => __('Delete', $dom)
-                    );
+                    ];
                 }
             }
             if ($currentFunc == 'display') {
-                $this->_actions[] = array(
-                    'url' => array('type' => 'route', 'func' => 'view', 'arguments' => array('lct' => 'admin')),
+                $this->_actions[] = [
+                    'url' => ['type' => 'route', 'func' => 'view', 'arguments' => ['lct' => 'admin']],
                     'icon' => 'reply',
                     'linkTitle' => __('Back to overview', $dom),
                     'linkText' => __('Back to overview', $dom)
-                );
+                ];
             }
         }
     }
@@ -1534,7 +1536,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
      */
     public function createUrlArgs()
     {
-        $args = array();
+        $args = [];
     
         $args['id'] = $this['id'];
     
@@ -1570,13 +1572,13 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     /**
      * Returns an array of all related objects that need to be persisted after clone.
      * 
-     * @param array $objects The objects are added to this array. Default: array()
+     * @param array $objects The objects are added to this array. Default: []
      * 
      * @return array of entity objects.
      */
-    public function getRelatedObjectsToPersist(&$objects = array()) 
+    public function getRelatedObjectsToPersist(&$objects = []) 
     {
-        return array();
+        return [];
     }
     
     /**

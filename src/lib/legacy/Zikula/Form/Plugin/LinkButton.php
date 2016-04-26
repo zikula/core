@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_Form
- * @subpackage Zikula_Form_AbstractPlugin
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -137,11 +132,13 @@ class Zikula_Form_Plugin_LinkButton extends Zikula_Form_AbstractStyledPlugin
             require_once $view->_get_plugin_filepath('function', 'img');
 
             // call the pnimg plugin and work out the src from the assigned template vars
-            $args = array('src' => $this->attributes['imgsrc'],
-                          'set' => $this->attributes['imgset'],
-                          'title' => $text,
-                          'alt' => $text,
-                          'modname' => 'core');
+            $args = [
+                'src' => $this->attributes['imgsrc'],
+                'set' => $this->attributes['imgset'],
+                'title' => $text,
+                'alt' => $text,
+                'modname' => 'core'
+            ];
 
             $imageHtml = smarty_function_img($args, $view);
             $imageHtml .= !empty($imageHtml) ? ' ' : '';
@@ -155,7 +152,10 @@ class Zikula_Form_Plugin_LinkButton extends Zikula_Form_AbstractStyledPlugin
 
         $attributes = $this->renderAttributes($view);
 
-        $carg = serialize(array('cname' => $this->commandName, 'carg' => $this->commandArgument));
+        $carg = serialize([
+            'cname' => $this->commandName,
+            'carg' => $this->commandArgument
+        ]);
         $href = $view->getPostBackEventReference($this, $carg);
         $href = htmlspecialchars($href);
 
@@ -175,10 +175,10 @@ class Zikula_Form_Plugin_LinkButton extends Zikula_Form_AbstractStyledPlugin
     public function raisePostBackEvent(Zikula_Form_View $view, $eventArgument)
     {
         $carg = unserialize($eventArgument);
-        $args = array(
+        $args = [
             'commandName' => $carg['cname'],
             'commandArgument' => $carg['carg']
-        );
+        ];
         if (!empty($this->onCommand)) {
             $view->raiseEvent($this->onCommand, $args);
         }

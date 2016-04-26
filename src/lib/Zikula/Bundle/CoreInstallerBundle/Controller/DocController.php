@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2014 - Zikula CoreInstaller bundle.
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Bundle\CoreInstallerBundle\Controller;
@@ -28,10 +24,15 @@ use Michelf\MarkdownExtra;
 class DocController
 {
     private $kernel;
+
     private $router;
+
     private $templatingService;
+
     private $parser;
+
     private $locale;
+
     private $basePath;
 
     /**
@@ -56,11 +57,11 @@ class DocController
      * @param string $name
      * @return Response
      */
-    public function displayAction(Request $request, $name = "INSTALL-1.4.0.md")
+    public function displayAction(Request $request, $name = 'INSTALL-1.4.0.md')
     {
         // @TODO this is temporary method of restricting the user input
-        if (!in_array($name, array("INSTALL-1.4.0.md", "UPGRADE-1.4.md", "CHANGELOG.md", "README.md"))) {
-            $name = "INSTALL-1.4.0.md";
+        if (!in_array($name, ['INSTALL-1.4.0.md', 'UPGRADE-1.4.md', 'CHANGELOG.md', 'README.md'])) {
+            $name = 'INSTALL-1.4.0.md';
         }
         $this->setBasePath();
 
@@ -70,11 +71,11 @@ class DocController
             $content = __f('The file you requested (%s) could not be found.', "$name");
         }
         $content = $this->parser->defaultTransform($content);
-        $templateParams = array(
+        $templateParams = [
             'lang' => $this->locale,
             'charset' => \ZLanguage::getEncoding(),
             'content' => $content,
-        );
+        ];
 
         return $this->templatingService->renderResponse('ZikulaCoreInstallerBundle::doc.html.twig', $templateParams);
     }

@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\CategoriesModule;
@@ -31,11 +28,11 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
     public function install()
     {
         // create tables
-        $classes = array(
+        $classes = [
             'Zikula\CategoriesModule\Entity\CategoryEntity',
             'Zikula\CategoriesModule\Entity\CategoryAttributeEntity',
             'Zikula\CategoriesModule\Entity\CategoryRegistryEntity'
-        );
+        ];
 
         try {
             DoctrineHelper::createSchema($this->entityManager, $classes);
@@ -49,7 +46,7 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
          * is being removed at 2.0.0
          */
         try {
-            DoctrineHelper::createSchema($this->entityManager, array('Zikula\CategoriesModule\Entity\CategoriesMapobj'));
+            DoctrineHelper::createSchema($this->entityManager, ['Zikula\CategoriesModule\Entity\CategoriesMapobj']);
         } catch (\Exception $e) {
             return false;
         }
@@ -100,12 +97,11 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             case '1.1':
             case '1.2':
                 // new column used in doctrine categorisable template
-                DoctrineUtil::createColumn('categories_mapobj', 'reg_property', array('type' => 'string',
-                        'length' => 60), false);
+                DoctrineUtil::createColumn('categories_mapobj', 'reg_property', ['type' => 'string', 'length' => 60], false);
             case '1.2.1':
             case '1.2.2':
                 try {
-                    DoctrineHelper::createSchema($this->entityManager, array('Zikula\CategoriesModule\Entity\CategoryAttributeEntity'));
+                    DoctrineHelper::createSchema($this->entityManager, ['Zikula\CategoriesModule\Entity\CategoryAttributeEntity']);
                 } catch (\Exception $e) {
                 }
                 // rename old tablename column for Core 1.4.0
@@ -141,8 +137,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
      */
     public function insertData_10($adminUserObj)
     {
-        $objArray = array();
-        $objArray[] = array(
+        $objArray = [];
+        $objArray[] = [
             'id' => 1,
             'parent_id' => 0,
             'is_locked' => 1,
@@ -155,8 +151,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__',
             'ipath' => '/1',
             'status' => 'A'
-        );
-        $objArray[] = array(
+        ];
+        $objArray[] = [
             'id' => 2,
             'parent_id' => 1,
             'is_locked' => 0,
@@ -167,9 +163,10 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'display_name' => $this->makeDisplayName($this->__('Modules')),
             'display_desc' => $this->makeDisplayDesc(),
             'path' => '/__SYSTEM__/Modules',
-            'ipath' => '/1/2', 'status' => 'A'
-        );
-        $objArray[] = array(
+            'ipath' => '/1/2',
+            'status' => 'A'
+        ];
+        $objArray[] = [
             'id' => 3,
             'parent_id' => 1,
             'is_locked' => 0,
@@ -182,8 +179,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General',
             'ipath' => '/1/3',
             'status' => 'A'
-        );
-        $objArray[] = array(
+        ];
+        $objArray[] = [
             'id' => 4,
             'parent_id' => 3,
             'is_locked' => 0,
@@ -196,8 +193,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General/YesNo',
             'ipath' => '/1/3/4',
             'status' => 'A'
-        );
-        $objArray[] = array(
+        ];
+        $objArray[] = [
             'id' => 5,
             'parent_id' => 4,
             'is_locked' => 0,
@@ -210,9 +207,9 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General/YesNo/1 - Yes',
             'ipath' => '/1/3/4/5',
             'status' => 'A',
-            '__ATTRIBUTES__' => array('code' => 'Y')
-        );
-        $objArray[] = array(
+            '__ATTRIBUTES__' => ['code' => 'Y']
+        ];
+        $objArray[] = [
             'id' => 6,
             'parent_id' => 4,
             'is_locked' => 0,
@@ -225,9 +222,9 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General/YesNo/2 - No',
             'ipath' => '/1/3/4/6',
             'status' => 'A',
-            '__ATTRIBUTES__' => array('code' => 'N')
-        );
-        $objArray[] = array(
+            '__ATTRIBUTES__' => ['code' => 'N']
+        ];
+        $objArray[] = [
             'id' => 10,
             'parent_id' => 3,
             'is_locked' => 0,
@@ -240,8 +237,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General/Publication Status Extended',
             'ipath' => '/1/3/10',
             'status' => 'A'
-        );
-        $objArray[] = array(
+        ];
+        $objArray[] = [
             'id' => 11,
             'parent_id' => 10,
             'is_locked' => 0,
@@ -254,9 +251,9 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General/Publication Status Extended/Pending',
             'ipath' => '/1/3/10/11',
             'status' => 'A',
-            '__ATTRIBUTES__' => array('code' => 'P')
-        );
-        $objArray[] = array(
+            '__ATTRIBUTES__' => ['code' => 'P']
+        ];
+        $objArray[] = [
             'id' => 12,
             'parent_id' => 10,
             'is_locked' => 0,
@@ -269,9 +266,9 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General/Publication Status Extended/Checked',
             'ipath' => '/1/3/10/12',
             'status' => 'A',
-            '__ATTRIBUTES__' => array('code' => 'C')
-        );
-        $objArray[] = array(
+            '__ATTRIBUTES__' => ['code' => 'C']
+        ];
+        $objArray[] = [
             'id' => 13,
             'parent_id' => 10,
             'is_locked' => 0,
@@ -284,9 +281,9 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General/Publication Status Extended/Approved',
             'ipath' => '/1/3/10/13',
             'status' => 'A',
-            '__ATTRIBUTES__' => array('code' => 'A')
-        );
-        $objArray[] = array(
+            '__ATTRIBUTES__' => ['code' => 'A']
+        ];
+        $objArray[] = [
             'id' => 14,
             'parent_id' => 10,
             'is_locked' => 0,
@@ -299,9 +296,9 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General/Publication Status Extended/Online',
             'ipath' => '/1/3/10/14',
             'status' => 'A',
-            '__ATTRIBUTES__' => array('code' => 'O')
-        );
-        $objArray[] = array(
+            '__ATTRIBUTES__' => ['code' => 'O']
+        ];
+        $objArray[] = [
             'id' => 15,
             'parent_id' => 10,
             'is_locked' => 0,
@@ -314,9 +311,9 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General/Publication Status Extended/Rejected',
             'ipath' => '/1/3/10/15',
             'status' => 'A',
-            '__ATTRIBUTES__' => array('code' => 'R')
-        );
-        $objArray[] = array(
+            '__ATTRIBUTES__' => ['code' => 'R']
+        ];
+        $objArray[] = [
             'id' => 16,
             'parent_id' => 3,
             'is_locked' => 0,
@@ -329,8 +326,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General/Gender',
             'ipath' => '/1/3/16',
             'status' => 'A'
-        );
-        $objArray[] = array(
+        ];
+        $objArray[] = [
             'id' => 17,
             'parent_id' => 16,
             'is_locked' => 0,
@@ -343,9 +340,9 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General/Gender/Male',
             'ipath' => '/1/3/16/17',
             'status' => 'A',
-            '__ATTRIBUTES__' => array('code' => 'M')
-        );
-        $objArray[] = array(
+            '__ATTRIBUTES__' => ['code' => 'M']
+        ];
+        $objArray[] = [
             'id' => 18,
             'parent_id' => 16,
             'is_locked' => 0,
@@ -358,9 +355,9 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General/Gender/Female',
             'ipath' => '/1/3/16/18',
             'status' => 'A',
-            '__ATTRIBUTES__' => array('code' => 'F')
-        );
-        $objArray[] = array(
+            '__ATTRIBUTES__' => ['code' => 'F']
+        ];
+        $objArray[] = [
             'id' => 19,
             'parent_id' => 3,
             'is_locked' => 0,
@@ -373,8 +370,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General/Title',
             'ipath' => '/1/3/19',
             'status' => 'A'
-        );
-        $objArray[] = array(
+        ];
+        $objArray[] = [
             'id' => 20,
             'parent_id' => 19,
             'is_locked' => 0,
@@ -387,8 +384,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General/Title/Mr',
             'ipath' => '/1/3/19/20',
             'status' => 'A'
-        );
-        $objArray[] = array(
+        ];
+        $objArray[] = [
             'id' => 21,
             'parent_id' => 19,
             'is_locked' => 0,
@@ -401,8 +398,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General/Title/Mrs',
             'ipath' => '/1/3/19/21',
             'status' => 'A'
-        );
-        $objArray[] = array(
+        ];
+        $objArray[] = [
             'id' => 22,
             'parent_id' => 19,
             'is_locked' => 0,
@@ -415,8 +412,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General/Title/Ms',
             'ipath' => '/1/3/19/22',
             'status' => 'A'
-        );
-        $objArray[] = array(
+        ];
+        $objArray[] = [
             'id' => 23,
             'parent_id' => 19,
             'is_locked' => 0,
@@ -429,8 +426,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General/Title/Miss',
             'ipath' => '/1/3/19/23',
             'status' => 'A'
-        );
-        $objArray[] = array(
+        ];
+        $objArray[] = [
             'id' => 24,
             'parent_id' => 19,
             'is_locked' => 0,
@@ -443,8 +440,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General/Title/Dr',
             'ipath' => '/1/3/19/24',
             'status' => 'A'
-        );
-        $objArray[] = array(
+        ];
+        $objArray[] = [
             'id' => 25,
             'parent_id' => 3,
             'is_locked' => 0,
@@ -457,8 +454,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General/ActiveStatus',
             'ipath' => '/1/3/25',
             'status' => 'A'
-        );
-        $objArray[] = array(
+        ];
+        $objArray[] = [
             'id' => 26,
             'parent_id' => 25,
             'is_locked' => 0,
@@ -471,9 +468,9 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General/ActiveStatus/Active',
             'ipath' => '/1/3/25/26',
             'status' => 'A',
-            '__ATTRIBUTES__' => array('code' => 'A')
-        );
-        $objArray[] = array(
+            '__ATTRIBUTES__' => ['code' => 'A']
+        ];
+        $objArray[] = [
             'id' => 27,
             'parent_id' => 25,
             'is_locked' => 0,
@@ -486,9 +483,9 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General/ActiveStatus/Inactive',
             'ipath' => '/1/3/25/27',
             'status' => 'A',
-            '__ATTRIBUTES__' => array('code' => 'I')
-        );
-        $objArray[] = array(
+            '__ATTRIBUTES__' => ['code' => 'I']
+        ];
+        $objArray[] = [
             'id' => 28,
             'parent_id' => 3,
             'is_locked' => 0,
@@ -501,8 +498,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General/Publication Status Basic',
             'ipath' => '/1/3/28',
             'status' => 'A'
-        );
-        $objArray[] = array(
+        ];
+        $objArray[] = [
             'id' => 29,
             'parent_id' => 28,
             'is_locked' => 0,
@@ -515,9 +512,9 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General/Publication Status Basic/Pending',
             'ipath' => '/1/3/28/29',
             'status' => 'A',
-            '__ATTRIBUTES__' => array('code' => 'P')
-        );
-        $objArray[] = array(
+            '__ATTRIBUTES__' => ['code' => 'P']
+        ];
+        $objArray[] = [
             'id' => 30,
             'parent_id' => 28,
             'is_locked' => 0,
@@ -530,9 +527,9 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/General/Publication Status Basic/Approved',
             'ipath' => '/1/3/28/30',
             'status' => 'A',
-            '__ATTRIBUTES__' => array('code' => 'A')
-        );
-        $objArray[] = array(
+            '__ATTRIBUTES__' => ['code' => 'A']
+        ];
+        $objArray[] = [
             'id' => 31,
             'parent_id' => 1,
             'is_locked' => 0,
@@ -545,8 +542,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/Users',
             'ipath' => '/1/31',
             'status' => 'A'
-        );
-        $objArray[] = array(
+        ];
+        $objArray[] = [
             'id' => 32,
             'parent_id' => 2,
             'is_locked' => 0,
@@ -559,8 +556,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/Modules/Global',
             'ipath' => '/1/2/32',
             'status' => 'A'
-        );
-        $objArray[] = array(
+        ];
+        $objArray[] = [
             'id' => 33,
             'parent_id' => 32,
             'is_locked' => 0,
@@ -573,8 +570,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/Modules/Global/Blogging',
             'ipath' => '/1/2/32/33',
             'status' => 'A'
-        );
-        $objArray[] = array(
+        ];
+        $objArray[] = [
             'id' => 34,
             'parent_id' => 32,
             'is_locked' => 0,
@@ -587,8 +584,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/Modules/Global/MusicAndAudio',
             'ipath' => '/1/2/32/34',
             'status' => 'A'
-        );
-        $objArray[] = array(
+        ];
+        $objArray[] = [
             'id' => 35,
             'parent_id' => 32,
             'is_locked' => 0,
@@ -601,8 +598,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/Modules/Global/ArtAndPhotography',
             'ipath' => '/1/2/32/35',
             'status' => 'A'
-        );
-        $objArray[] = array(
+        ];
+        $objArray[] = [
             'id' => 36,
             'parent_id' => 32,
             'is_locked' => 0,
@@ -615,8 +612,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/Modules/Global/WritingAndThinking',
             'ipath' => '/1/2/32/36',
             'status' => 'A'
-        );
-        $objArray[] = array(
+        ];
+        $objArray[] = [
             'id' => 37,
             'parent_id' => 32,
             'is_locked' => 0,
@@ -629,8 +626,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/Modules/Global/CommunicationsAndMedia',
             'ipath' => '/1/2/32/37',
             'status' => 'A'
-        );
-        $objArray[] = array(
+        ];
+        $objArray[] = [
             'id' => 38,
             'parent_id' => 32,
             'is_locked' => 0,
@@ -643,8 +640,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/Modules/Global/TravelAndCulture',
             'ipath' => '/1/2/32/38',
             'status' => 'A'
-        );
-        $objArray[] = array(
+        ];
+        $objArray[] = [
             'id' => 39,
             'parent_id' => 32,
             'is_locked' => 0,
@@ -657,8 +654,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/Modules/Global/ScienceAndTechnology',
             'ipath' => '/1/2/32/39',
             'status' => 'A'
-        );
-        $objArray[] = array(
+        ];
+        $objArray[] = [
             'id' => 40,
             'parent_id' => 32,
             'is_locked' => 0,
@@ -671,8 +668,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/Modules/Global/SportAndActivities',
             'ipath' => '/1/2/32/40',
             'status' => 'A'
-        );
-        $objArray[] = array(
+        ];
+        $objArray[] = [
             'id' => 41,
             'parent_id' => 32,
             'is_locked' => 0,
@@ -685,7 +682,7 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             'path' => '/__SYSTEM__/Modules/Global/BusinessAndWork',
             'ipath' => '/1/2/32/41',
             'status' => 'A'
-        );
+        ];
 
         foreach ($objArray as $obj) {
             $category = new CategoryEntity();
@@ -737,7 +734,7 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
      */
     public function makeDisplayName($name)
     {
-        return array(ZLanguage::getLanguageCode() => $name);
+        return [ZLanguage::getLanguageCode() => $name];
     }
 
     /**
@@ -749,7 +746,7 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
      */
     public function makeDisplayDesc()
     {
-        return array(ZLanguage::getLanguageCode() => '');
+        return [ZLanguage::getLanguageCode() => ''];
     }
 
     /**
@@ -764,7 +761,7 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
     {
         $attributes = $this->getEntityManager()->getConnection()->fetchAll("SELECT * FROM objectdata_attributes WHERE object_type = 'categories_category'");
         foreach ($attributes as $attribute) {
-            $category = $this->getEntityManager()->getRepository('ZikulaCategoriesModule:CategoryEntity')->findOneBy(array('id' => $attribute['object_id']));
+            $category = $this->getEntityManager()->getRepository('ZikulaCategoriesModule:CategoryEntity')->findOneBy(['id' => $attribute['object_id']]);
             if (isset($category) && is_object($category)) {
                 $category->setAttribute($attribute['attribute_name'], $attribute['value']);
             }

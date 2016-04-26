@@ -1,3 +1,5 @@
+// Copyright Zikula Foundation, licensed MIT.
+
 jQuery.noConflict();
 /*
  Fix provided by http://softec.lu/site/DevelopersCorner/BootstrapPrototypeConflict

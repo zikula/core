@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- * @subpackage Template_Plugins
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -57,7 +52,7 @@ function smarty_function_html_select_themes($params, Zikula_View $view)
         $type = constant($params['type']);
     }
 
-    $themelist = array();
+    $themelist = [];
     $themes = ThemeUtil::getAllThemes($filter, $state, $type);
     if (!empty($themes)) {
         foreach ($themes as $theme) {
@@ -67,11 +62,12 @@ function smarty_function_html_select_themes($params, Zikula_View $view)
     natcasesort($themelist);
 
     require_once $view->_get_plugin_filepath('function', 'html_options');
-    $output = smarty_function_html_options(array('options'  => $themelist,
-                                                 'selected' => isset($params['selected']) ? $params['selected'] : null,
-                                                 'name'     => isset($params['name'])     ? $params['name']     : null,
-                                                 'id'       => isset($params['id'])       ? $params['id']       : null),
-                                                 $view);
+    $output = smarty_function_html_options([
+        'options'  => $themelist,
+        'selected' => isset($params['selected']) ? $params['selected'] : null,
+        'name'     => isset($params['name'])     ? $params['name']     : null,
+        'id'       => isset($params['id'])       ? $params['id']       : null
+    ], $view);
 
     if (isset($params['assign'])) {
         $view->assign($params['assign'], $output);

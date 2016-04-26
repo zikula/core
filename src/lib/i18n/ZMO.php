@@ -1,15 +1,11 @@
 <?php
 /**
- * Zikula Application Framework.
+ * This file is part of the Zikula package.
  *
- * Copyright (c) 2003 Danilo Segan <danilo@kvota.net>
- * Copyright (c) 2005 Nico Kaiser <nico@siriux.net>
- * Copyright (c) 2009 Zikula Development Team
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @link http://www.zikula.org
- * @license GNU/GPLv3 (or at your option, any later version).
- *
- * @package I18n
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -262,9 +258,9 @@ class ZMO
         $source_encoding = mb_detect_encoding($text);
         if ($source_encoding != $this->encoding) {
             return mb_convert_encoding($text, $this->encoding, $source_encoding);
-        } else {
-            return $text;
         }
+
+        return $text;
     }
 
     /**
@@ -297,10 +293,10 @@ class ZMO
         if ($this->byteorder == 0) {
             // low endian
             return unpack('V' . $count, $this->stream->read(4 * $count));
-        } else {
-            // big endian
-            return unpack('N' . $count, $this->stream->read(4 * $count));
         }
+
+        // big endian
+        return unpack('N' . $count, $this->stream->read(4 * $count));
     }
 
     /**
@@ -324,7 +320,7 @@ class ZMO
         $this->table_translations = $this->readintarray($this->total * 2);
 
         if ($this->enable_cache) {
-            $this->cache_translations = array();
+            $this->cache_translations = [];
             // read all strings in the cache
             for ($i = 0; $i < $this->total; $i++) {
                 $this->stream->seekto($this->table_originals[$i * 2 + 2]);
@@ -388,7 +384,7 @@ class ZMO
      */
     private function find_string($string, $start = -1, $end = -1)
     {
-        if (($start == -1) || ($end == -1)) {
+        if ($start == -1 || $end == -1) {
             // find_string is called with only one parameter, set start end end
             $start = 0;
             $end = $this->total;
@@ -398,27 +394,29 @@ class ZMO
             $txt = $this->get_original_string($start);
             if ($string == $txt) {
                 return $start;
-            } else {
-                return -1;
             }
-        } elseif ($start > $end) {
+
+            return -1;
+        }
+        if ($start > $end) {
             // start > end -> turn around and start over
             return $this->find_string($string, $end, $start);
-        } else {
-            // Divide table in two parts
-            $half = (int)(($start + $end) / 2);
-            $cmp = strcmp($string, $this->get_original_string($half));
-            if ($cmp == 0) {
-                // string is exactly in the middle => return it
-                return $half;
-            } elseif ($cmp < 0) {
-                // The string is in the upper half
-                return $this->find_string($string, $start, $half);
-            } else {
-                // The string is in the lower half
-                return $this->find_string($string, $half, $end);
-            }
         }
+
+        // Divide table in two parts
+        $half = (int)(($start + $end) / 2);
+        $cmp = strcmp($string, $this->get_original_string($half));
+        if ($cmp == 0) {
+            // string is exactly in the middle => return it
+            return $half;
+        }
+        if ($cmp < 0) {
+            // The string is in the upper half
+            return $this->find_string($string, $start, $half);
+        }
+
+        // The string is in the lower half
+        return $this->find_string($string, $half, $end);
     }
 
     /**
@@ -439,17 +437,17 @@ class ZMO
             // Caching enabled, get translated string from cache
             if (array_key_exists($string, $this->cache_translations)) {
                 return $this->cache_translations[$string];
-            } else {
-                return $string;
             }
+
+            return $string;
         } else {
             // Caching not enabled, try to find string
             $num = $this->find_string($string);
             if ($num == -1) {
                 return $string;
-            } else {
-                return $this->get_translation_string($num);
             }
+
+            return $this->get_translation_string($num);
         }
     }
 
@@ -521,9 +519,9 @@ class ZMO
         if ($this->short_circuit) {
             if ($number != 1) {
                 return $plural;
-            } else {
-                return $single;
             }
+
+            return $single;
         }
 
         // find out the appropriate form
@@ -535,22 +533,22 @@ class ZMO
         if ($this->enable_cache) {
             if (!array_key_exists($key, $this->cache_translations)) {
                 return ($number != 1) ? $plural : $single;
-            } else {
-                $result = $this->cache_translations[$key];
-                $list = explode(chr(0), $result);
-
-                return $list[$select];
             }
+
+            $result = $this->cache_translations[$key];
+            $list = explode(chr(0), $result);
+
+            return $list[$select];
         } else {
             $num = $this->find_string($key);
             if ($num == -1) {
                 return ($number != 1) ? $plural : $single;
-            } else {
-                $result = $this->get_translation_string($num);
-                $list = explode(chr(0), $result);
-
-                return $list[$select];
             }
+
+            $result = $this->get_translation_string($num);
+            $list = explode(chr(0), $result);
+
+            return $list[$select];
         }
     }
 }

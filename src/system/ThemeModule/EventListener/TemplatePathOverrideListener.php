@@ -1,13 +1,11 @@
 <?php
-/*** Copyright Zikula Foundation 2015 - Zikula Application Framework
+/**
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\ThemeModule\EventListener;
@@ -30,6 +28,7 @@ use Zikula\ThemeModule\Engine\Engine;
 class TemplatePathOverrideListener implements EventSubscriberInterface
 {
     private $loader;
+
     private $themeEngine;
 
     public function __construct(\Twig_Loader_Filesystem $loader, Engine $themeEngine)
@@ -58,7 +57,7 @@ class TemplatePathOverrideListener implements EventSubscriberInterface
                 if (is_readable($overridePath)) {
                     $paths = $this->loader->getPaths($bundleName);
                     // inject themeOverridePath before the original path in the array
-                    array_splice($paths, count($paths) - 1, 0, array($overridePath));
+                    array_splice($paths, count($paths) - 1, 0, [$overridePath]);
                     $this->loader->setPaths($paths, $bundleName);
                 }
             }
@@ -67,10 +66,10 @@ class TemplatePathOverrideListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(
-            KernelEvents::CONTROLLER => array(
-                array('setUpThemePathOverrides'),
-            ),
-        );
+        return [
+            KernelEvents::CONTROLLER => [
+                ['setUpThemePathOverrides']
+            ]
+        ];
     }
 }

@@ -1,58 +1,61 @@
 <?php
 /**
- * Copyright Zikula Foundation 2014 - Zikula CoreInstaller bundle.
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class LoginType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username', 'text', array(
+            ->add('username', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => __('User Name'),
-                'label_attr' => array('class' => 'col-sm-3'),
+                'label_attr' => [
+                    'class' => 'col-sm-3'
+                ],
                 'data' => __('admin'),
-                'constraints' => array(
+                'constraints' => [
                     new NotBlank(),
-                )))
-            ->add('password', 'password', array(
+                ]
+            ])
+            ->add('password', 'Symfony\Component\Form\Extension\Core\Type\PasswordType', [
                 'label' => __('Password'),
-                'label_attr' => array('class' => 'col-sm-3'),
-                'constraints' => array(
+                'label_attr' => [
+                    'class' => 'col-sm-3'
+                ],
+                'constraints' => [
                     new NotBlank(),
-                )));
+                ]
+            ])
+        ;
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'login';
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'constraints' => new Callback(array('callback' => array('Zikula\Bundle\CoreInstallerBundle\Validator\CoreInstallerValidator', 'validateAndLogin'))),
+        $resolver->setDefaults([
+            'constraints' => new Callback(['callback' => ['Zikula\Bundle\CoreInstallerBundle\Validator\CoreInstallerValidator', 'validateAndLogin']]),
             'csrf_protection' => false,
 //                'csrf_field_name' => '_token',
 //                // a unique key to help generate the secret token
 //                'intention'       => '_zk_bdcreds',
-        ));
+        ]);
     }
 }

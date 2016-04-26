@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Util
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -27,7 +23,7 @@ class CacheUtil
      */
     public static function getLocalDir($dir = null)
     {
-        $array = array();
+        $array = [];
         $tmpDir = ServiceUtil::get('service_container')->getParameter('temp_dir');
         $array[] = DataUtil::formatForOS($tmpDir, true);
 

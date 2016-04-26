@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -160,7 +156,7 @@ class Zikula_View_Plugin extends Zikula_View
      */
     public function get_template_path($template)
     {
-        static $cache = array();
+        static $cache = [];
 
         if (isset($cache[$template])) {
             return $cache[$template];
@@ -178,7 +174,7 @@ class Zikula_View_Plugin extends Zikula_View
 
             $ostemplate = DataUtil::formatForOS($template);
 
-            $search_path = array();
+            $search_path = [];
             try {
                 $bundle = $this->getContainer()->get('kernel')->getBundle($module);
                 $bundlePath = $relativepath = $bundle->getRelalativePath().'/Resources/views';
@@ -192,11 +188,11 @@ class Zikula_View_Plugin extends Zikula_View
                 // templates.
                 $base = ($modinfo['type'] == ModUtil::TYPE_CORE) ? '' : "$os_dir/$os_module/";
                 //$configPath = ($modinfo['type'] == ModUtil::TYPE_CORE) ? 'zikula/' : "$os_module/";
-                $search_path = array(
+                $search_path = [
                     //"config/plugins/$configPath/{$this->pluginName}/templates", //global path
                     "{$base}plugins/{$this->pluginName}/Resources/views",
                     "{$base}plugins/{$this->pluginName}/templates",
-                );
+                ];
             }
 
             foreach ($search_path as $path) {

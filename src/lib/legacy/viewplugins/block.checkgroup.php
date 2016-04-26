@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- * @subpackage Template_Plugins
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -44,7 +39,7 @@ function smarty_block_checkgroup($params, $content, Zikula_View $view)
 
     // check our input
     if (!isset($params['gid'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_checkgroup', 'component')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['smarty_block_checkgroup', 'component']));
 
         return false;
     }
@@ -54,7 +49,7 @@ function smarty_block_checkgroup($params, $content, Zikula_View $view)
         return;
     }
 
-    if (!ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember', array('uid' => $uid, 'gid' => $params['gid']))) {
+    if (!ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember', ['uid' => $uid, 'gid' => $params['gid']])) {
         return;
     }
 

@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- * @subpackage Template_Plugins
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -50,7 +45,7 @@ function smarty_function_selector_user_category($params, Zikula_View $view)
     $multipleSize     = isset($params['multipleSize'])     ? $params['multipleSize']     : 1;
     $doReplaceRootCat = false;
 
-    $userCats = ModUtil::apiFunc('ZikulaCategoriesModule', 'user', 'getusercategories', array('returnCategory' => 1, 'relative' => $relative));
+    $userCats = ModUtil::apiFunc('ZikulaCategoriesModule', 'user', 'getusercategories', ['returnCategory' => 1, 'relative' => $relative]);
     $html = CategoryUtil::getSelector_Categories($userCats, $field, $selectedValue, $name, $defaultValue, $defaultText,
                                                   $submit, $displayPath, $doReplaceRootCat, $multipleSize);
 

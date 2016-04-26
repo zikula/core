@@ -29,12 +29,12 @@ class UserListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            'user.gettheme'       => array('getTheme', 5),
-            'user.account.create' => array('create', 5),
-            'user.account.update' => array('update', 5),
-            'user.account.delete' => array('delete', 5)
-        );
+        return [
+            'user.gettheme'       => ['getTheme', 5],
+            'user.account.create' => ['create', 5],
+            'user.account.update' => ['update', 5],
+            'user.account.delete' => ['delete', 5]
+        ];
     }
     
     /**
@@ -108,6 +108,6 @@ class UserListener implements EventSubscriberInterface
         $repo->updateLastEditor($uid, 2);
         
         $logger = $serviceManager->get('logger');
-        $logger->notice('{app}: User {user} has been deleted, so we deleted corresponding {entities}, too.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entities' => 'routes'));
+        $logger->notice('{app}: User {user} has been deleted, so we deleted corresponding {entities}, too.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entities' => 'routes']);
     }
 }

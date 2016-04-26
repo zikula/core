@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of the Zikula package.
+ *
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Zikula\ThemeModule;
 
@@ -10,6 +18,7 @@ use Zikula\Core\AbstractBundle;
 abstract class AbstractTheme extends AbstractBundle
 {
     private $config;
+
     private $isTwigBased = false;
 
     public function getNameType()
@@ -19,7 +28,7 @@ abstract class AbstractTheme extends AbstractBundle
 
     public function getServiceIds()
     {
-        return array();
+        return [];
     }
 
     public function getConfig()
@@ -60,7 +69,7 @@ abstract class AbstractTheme extends AbstractBundle
             . '</div>';
         $response->setContent($content);
 
-        return $this->getContainer()->get('templating')->renderResponse($this->name . ':' . $template, array('maincontent' => $response->getContent()));
+        return $this->getContainer()->get('templating')->renderResponse($this->name . ':' . $template, ['maincontent' => $response->getContent()]);
     }
 
     /**

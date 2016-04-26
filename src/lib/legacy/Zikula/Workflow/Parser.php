@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPL3 (or at your option any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -41,7 +37,7 @@ class Zikula_Workflow_Parser
      */
     public function __construct()
     {
-        $this->workflow = array('state' => 'initial');
+        $this->workflow = ['state' => 'initial'];
 
         // create xml parser
         $this->parser = xml_parser_create();
@@ -64,10 +60,11 @@ class Zikula_Workflow_Parser
         // parse XML
         if (!xml_parse($this->parser, $xmldata, true)) {
             xml_parser_free($this->parser);
-            throw new \Exception(__f('Unable to parse XML workflow (line %1$s, %2$s): %3$s',
-                        array(xml_get_current_line_number($this->parser),
-                              xml_get_current_column_number($this->parser),
-                              xml_error_string($this->parser))));
+            throw new \Exception(__f('Unable to parse XML workflow (line %1$s, %2$s): %3$s', [
+                xml_get_current_line_number($this->parser),
+                xml_get_current_column_number($this->parser),
+                xml_error_string($this->parser)
+            ]));
         }
 
         // close parser
@@ -100,13 +97,15 @@ class Zikula_Workflow_Parser
     public function mapWorkflow()
     {
         // create associative arrays maps
-        $stateMap  = array();
-        $actionMap = array();
+        $stateMap  = [];
+        $actionMap = [];
 
         foreach ($this->workflow['states'] as $state) {
-            $stateMap[$state['id']] = array('id' => $state['id'],
-                                            'title' => $state['title'],
-                                            'description' => $state['description']);
+            $stateMap[$state['id']] = [
+                'id' => $state['id'],
+                'title' => $state['title'],
+                'description' => $state['description']
+            ];
         }
 
         $states = array_keys($stateMap);
@@ -125,7 +124,7 @@ class Zikula_Workflow_Parser
                 // commit results
                 $actionMap[$stateID][$action['id']] = $action;
             } else {
-                LogUtil::registerError(__f('Unknown %1$s name \'%2$s\' in action \'%3$s\'.', array('state', $action['state'], $action['title'])));
+                LogUtil::registerError(__f('Unknown %1$s name \'%2$s\' in action \'%3$s\'.', ['state', $action['state'], $action['title']]));
             }
         }
 
@@ -144,14 +143,14 @@ class Zikula_Workflow_Parser
         foreach (array_keys($this->workflow['actions']) as $stateID) {
             foreach ($this->workflow['actions'][$stateID] as $action) {
                 if (isset($action['nextState']) && !isset($this->workflow['states'][$action['nextState']])) {
-                    return LogUtil::registerError(__f('Unknown %1$s name \'%2$s\' in action \'%3$s\' of the \'%4$s\' state.', array('next-state', $action['nextState'], $action['title'], $action['state'])));
+                    return LogUtil::registerError(__f('Unknown %1$s name \'%2$s\' in action \'%3$s\' of the \'%4$s\' state.', ['next-state', $action['nextState'], $action['title'], $action['state']]));
                 }
 
                 foreach ($action['operations'] as $operation) {
                     if (isset($operation['parameters']['nextState'])) {
                         $stateName = $operation['parameters']['nextState'];
                         if (!isset($this->workflow['states'][$stateName])) {
-                            return LogUtil::registerError(__f('Unknown state name \'%1$s\' in action \'%2$s\', operation \'%3$s\'.', array($stateName, $action['title'], $operation['name'])));
+                            return LogUtil::registerError(__f('Unknown state name \'%1$s\' in action \'%2$s\', operation \'%3$s\'.', [$stateName, $action['title'], $operation['name']]));
                         }
                     }
                 }
@@ -179,7 +178,7 @@ class Zikula_Workflow_Parser
             case 'initial':
                 if ($name == 'WORKFLOW') {
                     $state = 'workflow';
-                    $this->workflow['workflow'] = array();
+                    $this->workflow['workflow'] = [];
                 } else {
                     $state = 'error';
                     $this->workflow['errorMessage'] = $this->unexpectedXMLError($name, "$state ". __LINE__);
@@ -194,11 +193,11 @@ class Zikula_Workflow_Parser
                         break;
                     case 'STATES':
                         $state = 'states';
-                        $this->workflow['states'] = array();
+                        $this->workflow['states'] = [];
                         break;
                     case 'ACTIONS':
                         $state = 'actions';
-                        $this->workflow['actions'] = array();
+                        $this->workflow['actions'] = [];
                         break;
                     default:
                         $this->workflow['errorMessage'] = $this->unexpectedXMLError($name, "$state ". __LINE__);
@@ -209,7 +208,7 @@ class Zikula_Workflow_Parser
 
             case 'states':
                 if ($name == 'STATE') {
-                    $this->workflow['stateValue'] = array('id' => trim($attribs['ID']));
+                    $this->workflow['stateValue'] = ['id' => trim($attribs['ID'])];
                     $state = 'state';
                 } else {
                     $this->workflow['errorMessage'] = $this->unexpectedXMLError($name, "$state ". __LINE__);
@@ -229,9 +228,11 @@ class Zikula_Workflow_Parser
             case 'actions':
                 xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
                 if ($name == 'ACTION') {
-                    $this->workflow['action'] = array('id' => trim($attribs['ID']),
-                                                      'operations' => array(),
-                                                      'state' => null);
+                    $this->workflow['action'] = [
+                        'id' => trim($attribs['ID']),
+                        'operations' => [],
+                        'state' => null
+                    ];
                     $state = 'action';
                 } else {
                     $this->workflow['errorMessage'] = $this->unexpectedXMLError($name, "$state ". __LINE__);
@@ -277,7 +278,7 @@ class Zikula_Workflow_Parser
                 break;
 
             default:
-                $this->workflow['errorMessage'] = __f('Workflow state error: \'%2$s\' tag of the state \'%1$s\'.', array($state, $name));
+                $this->workflow['errorMessage'] = __f('Workflow state error: \'%2$s\' tag of the state \'%1$s\'.', [$state, $name]);
                 $state = 'error';
                 break;
         }
@@ -342,8 +343,10 @@ class Zikula_Workflow_Parser
                         $this->workflow['action']['nextState'] = trim($this->workflow['value']);
                         break;
                     case 'OPERATION':
-                        $this->workflow['action']['operations'][] = array('name' => trim($this->workflow['value']),
-                                                                          'parameters' => $this->workflow['operationParameters']);
+                        $this->workflow['action']['operations'][] = [
+                            'name' => trim($this->workflow['value']),
+                            'parameters' => $this->workflow['operationParameters']
+                        ];
                         $this->workflow['operation'] = null;
                         break;
                     case 'PARAMETER':
@@ -398,6 +401,6 @@ class Zikula_Workflow_Parser
      */
     public function unexpectedXMLError($name, $state)
     {
-        return __f('Unexpected %1$s tag in %2$s state', array($name, $state));
+        return __f('Unexpected %1$s tag in %2$s state', [$name, $state]);
     }
 }

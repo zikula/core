@@ -58,24 +58,30 @@ class WorkflowHelper
     }
 
     /**
-      * This method returns a list of possible object states.
-      *
-      * @return array List of collected state information.
-      */
-     public function getObjectStates()
-     {
-         $states = array();
-         $states[] = array('value' => 'initial',
-                           'text' => $this->translator->__('Initial'),
-                           'ui' => 'danger');
-         $states[] = array('value' => 'approved',
-                           'text' => $this->translator->__('Approved'),
-                           'ui' => 'success');
-         $states[] = array('value' => 'deleted',
-                           'text' => $this->translator->__('Deleted'),
-                           'ui' => 'danger');
+     * This method returns a list of possible object states.
+     *
+     * @return array List of collected state information.
+     */
+    public function getObjectStates()
+    {
+        $states = [];
+        $states[] = [
+            'value' => 'initial',
+            'text' => $this->translator->__('Initial'),
+            'ui' => 'danger'
+        ];
+        $states[] = [
+            'value' => 'approved',
+            'text' => $this->translator->__('Approved'),
+            'ui' => 'success'
+        ];
+        $states[] = [
+            'value' => 'deleted',
+            'text' => $this->translator->__('Deleted'),
+            'ui' => 'danger'
+        ];
     
-         return $states;
+        return $states;
      }
     
     /**
@@ -157,12 +163,12 @@ class WorkflowHelper
         // as we use the workflows for multiple object types we must maybe filter out some actions
         $listHelper = $this->container->get('zikularoutesmodule.listentries_helper');
         $states = $listHelper->getEntries($objectType, 'workflowState');
-        $allowedStates = array();
+        $allowedStates = [];
         foreach ($states as $state) {
             $allowedStates[] = $state['value'];
         }
     
-        $actions = array();
+        $actions = [];
         foreach ($wfActions as $actionId => $action) {
             $nextState = (isset($action['nextState']) ? $action['nextState'] : '');
             if ($nextState != '' && !in_array($nextState, $allowedStates)) {
@@ -262,7 +268,7 @@ class WorkflowHelper
             return true;
         }
     
-        $entity['__WORKFLOW__'] = array(
+        $entity['__WORKFLOW__'] = [
             'module'        => 'ZikulaRoutesModule',
             'id'            => $workflow->getId(),
             'state'         => $workflow->getState(),
@@ -270,7 +276,7 @@ class WorkflowHelper
             'obj_idcolumn'  => $workflow->getObjIdcolumn(),
             'obj_id'        => $workflow->getObjId(),
             'schemaname'    => $workflow->getSchemaname()
-        );
+        ];
     
         return true;
     }
@@ -282,7 +288,7 @@ class WorkflowHelper
      */
     public function collectAmountOfModerationItems()
     {
-        $amounts = array();
+        $amounts = [];
         $modname = 'ZikulaRoutesModule';
     
         // nothing required here as no entities use enhanced workflows including approval actions
@@ -304,7 +310,7 @@ class WorkflowHelper
         $repository = $this->container->get('zikularoutesmodule.' . $objectType . '_factory')->getRepository();
     
         $where = 'tbl.workflowState = \'' . $state . '\'';
-        $parameters = array('workflowState' => $state);
+        $parameters = ['workflowState' => $state];
         $useJoins = false;
         $amount = $repository->selectCount($where, $useJoins, $parameters);
     

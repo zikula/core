@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPv3 (or at your option any later version).
- * @package FilterUtil
- * @subpackage Filter
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -26,14 +21,14 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
      *
      * @var array
      */
-    protected $ops = array();
+    protected $ops = [];
 
     /**
      * Fields to use the plugin for.
      *
      * @var array
      */
-    protected $fields = array();
+    protected $fields = [];
 
     /**
      * Constructor.
@@ -66,14 +61,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
      */
     public function availableOperators()
     {
-        return array(
-                     'eq',
-                     'ne',
-                     'gt',
-                     'ge',
-                     'lt',
-                     'le'
-                    );
+        return ['eq', 'ne', 'gt', 'ge', 'lt', 'le'];
     }
 
     /**
@@ -134,7 +122,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
             $fields[] = '-';
         }
 
-        $ops = array();
+        $ops = [];
         foreach ($this->ops as $op) {
             $ops[$op] = $fields;
         }
@@ -154,25 +142,17 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
     public function replace($field, $op, $value)
     {
         // First check if this plugin have to work with this field
-        if (array_search($field, $this->fields) === false) {
-            return array(
-                         $field,
-                         $op,
-                         $value
-                        ); // If not, return given value
+        if (false === array_search($field, $this->fields)) {
+            return [$field, $op, $value]; // If not, return given value
         }
 
         // Now, work!
         // convert to unix timestamp
-        if (($date = $this->dateConvert($value)) === false) {
+        if (false === ($date = $this->dateConvert($value))) {
             return false;
         }
 
-        return array(
-                     $field,
-                     $op,
-                     $date
-                    );
+        return [$field, $op, $date];
     }
 
     /**
@@ -207,7 +187,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
      *   tomorrow:   The day after that day.
      *   hour:       That hour.
      *   min/minute: That minute.
-     * Returns an array(from, to).
+     * Returns an array [from, to].
      *
      * @param string $date Date string.
      * @param string $type Period type.
@@ -253,7 +233,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
                 break;
         }
 
-        return array($from, $to);
+        return [$from, $to];
     }
 
     /**
@@ -331,7 +311,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
                 break;
         }
 
-        return array('where' => $where);
+        return ['where' => $where];
     }
 
     /**
@@ -364,7 +344,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
         }
 
         $where = '';
-        $params = array();
+        $params = [];
         $column = $this->getColumn($field);
 
         switch ($op) {
@@ -419,6 +399,6 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
                 break;
         }
 
-        return array('where' => $where, 'params' => $params);
+        return ['where' => $where, 'params' => $params];
     }
 }

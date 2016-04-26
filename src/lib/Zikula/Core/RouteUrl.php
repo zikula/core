@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright 2014 Zikula Foundation
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Core;
@@ -24,10 +20,12 @@ use Symfony\Component\Routing\RouterInterface;
 class RouteUrl extends ModUrl implements UrlInterface
 {
     private $route;
+
     private $args;
+
     private $fragment;
 
-    public function __construct($route, array $args = array(), $fragment = null)
+    public function __construct($route, array $args = [], $fragment = null)
     {
         $this->route = $route;
         $this->args = $args;
@@ -78,7 +76,7 @@ class RouteUrl extends ModUrl implements UrlInterface
      *
      * @throws \InvalidArgumentException
      */
-    public static function createFromRoute($route, $args = array(), $fragment = '')
+    public static function createFromRoute($route, $args = [], $fragment = '')
     {
         if (empty($route)) {
             throw new \InvalidArgumentException();
@@ -90,10 +88,11 @@ class RouteUrl extends ModUrl implements UrlInterface
 
     public function toArray()
     {
-        return array(
+        return [
             'route' => $this->route,
             'args' => $this->args,
-            'fragment' => $this->fragment);
+            'fragment' => $this->fragment
+        ];
     }
 
     public function getArgs()

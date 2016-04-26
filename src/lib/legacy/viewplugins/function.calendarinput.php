@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- * @subpackage Template_Plugins
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -44,24 +39,24 @@
 function smarty_function_calendarinput($params, Zikula_View $view)
 {
     if (!isset($params['objectname'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pncalendarinput', 'objectname')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['calendarinput', 'objectname']));
 
         return false;
     }
     if (!isset($params['htmlname'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pncalendarinput', 'htmlname')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['calendarinput', 'htmlname']));
 
         return false;
     }
     if (!isset($params['dateformat'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pncalendarinput', 'dateformat')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['calendarinput', 'dateformat']));
 
         return false;
     }
     $ifformat = isset($params['ifformat']) ? $params['ifformat'] : $params['dateformat'];
     $inctime  = isset($params['time']) ? (bool)$params['time'] : false;
 
-    $validformats = array('%Y-%m-%d', '%Y-%m-%d %H:%M');
+    $validformats = ['%Y-%m-%d', '%Y-%m-%d %H:%M'];
     if (!in_array($ifformat, $validformats)) {
         $ifformat = $inctime ? '%Y-%m-%d %H:%M' : '%Y-%m-%d';
     }
@@ -74,15 +69,17 @@ function smarty_function_calendarinput($params, Zikula_View $view)
     if ($firstTime) {
         $lang = ZLanguage::transformFS(ZLanguage::getLanguageCode());
         // map of the jscalendar supported languages
-        $map = array('ca' => 'ca_ES', 'cz' => 'cs_CZ', 'da' => 'da_DK',
-                     'de' => 'de_DE', 'el' => 'el_GR', 'en-us' => 'en_US',
-                     'es' => 'es_ES', 'fi' => 'fi_FI', 'fr' => 'fr_FR',
-                     'he' => 'he_IL', 'hr' => 'hr_HR', 'hu' => 'hu_HU',
-                     'it' => 'it_IT', 'ja' => 'ja_JP', 'ko' => 'ko_KR',
-                     'lt' => 'lt_LT', 'lv' => 'lv_LV', 'nl' => 'nl_NL',
-                     'no' => 'no_NO', 'pl' => 'pl_PL', 'pt' => 'pt_BR',
-                     'ro' => 'ro_RO', 'ru' => 'ru_RU', 'si' => 'si_SL',
-                     'sk' => 'sk_SK', 'sv' => 'sv_SE', 'tr' => 'tr_TR');
+        $map = [
+            'ca' => 'ca_ES', 'cz' => 'cs_CZ', 'da' => 'da_DK',
+            'de' => 'de_DE', 'el' => 'el_GR', 'en-us' => 'en_US',
+            'es' => 'es_ES', 'fi' => 'fi_FI', 'fr' => 'fr_FR',
+            'he' => 'he_IL', 'hr' => 'hr_HR', 'hu' => 'hu_HU',
+            'it' => 'it_IT', 'ja' => 'ja_JP', 'ko' => 'ko_KR',
+            'lt' => 'lt_LT', 'lv' => 'lv_LV', 'nl' => 'nl_NL',
+            'no' => 'no_NO', 'pl' => 'pl_PL', 'pt' => 'pt_BR',
+            'ro' => 'ro_RO', 'ru' => 'ru_RU', 'si' => 'si_SL',
+            'sk' => 'sk_SK', 'sv' => 'sv_SE', 'tr' => 'tr_TR'
+        ];
 
         if (isset($map[$lang])) {
             $lang = $map[$lang];

@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license    GNU/LGPv3 (or at your option any later version).
- * @package    FilterUtil
- * @subpackage Filter
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Core\FilterUtil;
@@ -48,7 +43,7 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
      * @param array        $ops      Operators to enable, see activateOperators() (optional) (default=null).
      * @param bool         $default  set the plugin to default (optional) (default=false).
      */
-    public function __construct($modname = null, $property = null, $fields = 'category', $ops = array(), $default = false)
+    public function __construct($modname = null, $property = null, $fields = 'category', $ops = [], $default = false)
     {
         $this->setProperty($property);
         $this->modname = $modname;
@@ -63,11 +58,7 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
      */
     public function availableOperators()
     {
-        return array(
-            'eq',
-            'ne',
-            'sub'
-        );
+        return ['eq', 'ne', 'sub'];
     }
 
     /**
@@ -103,7 +94,7 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
     /**
      * Get the id of the registry defined by $module and $property.
      *
-     * @return array();
+     * @return array;
      */
     protected function getRegistryIds()
     {
@@ -112,13 +103,11 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
         $entityName = str_replace('Entity', '', end($parts));
         $em = $this->config->getEntityManager();
         $rCategories = $em->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')
-            ->findBy(
-                array(
-                     'modname' => $this->modname,
-                     'entityname' => $entityName,
-                )
-            );
-        $ids = array();
+            ->findBy([
+                'modname' => $this->modname,
+                'entityname' => $entityName,
+            ]);
+        $ids = [];
         /** @var $cat CategoryRegistryEntity */
         foreach ($rCategories as $cat) {
             if (in_array($cat->getProperty(), $this->property)) {
@@ -155,9 +144,7 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
             case 'ne':
                 $con = $expr->neq($column, $config->toParam($value, 'category', $field));
             case 'sub':
-                $items = array(
-                    $value
-                );
+                $items = [$value];
                 $cats = CategoryUtil::getSubCategories($value);
                 foreach ($cats as $item) {
                     $items[] = $item['id'];

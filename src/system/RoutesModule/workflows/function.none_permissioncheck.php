@@ -30,7 +30,7 @@ function ZikulaRoutesModule_workflow_none_permissioncheck($obj, $permLevel, $cur
     $component = 'ZikulaRoutesModule:' . ucfirst($objectType) . ':';
 
     // calculate the permission instance
-    $idFields = ModUtil::apiFunc('ZikulaRoutesModule', 'selection', 'getIdFields', array('ot' => $objectType));
+    $idFields = ModUtil::apiFunc('ZikulaRoutesModule', 'selection', 'getIdFields', ['ot' => $objectType]);
     $instanceId = '';
     foreach ($idFields as $idField) {
         if (!empty($instanceId)) {
@@ -51,30 +51,27 @@ function ZikulaRoutesModule_workflow_none_permissioncheck($obj, $permLevel, $cur
  */
 function ZikulaRoutesModule_workflow_none_gettextstrings()
 {
-    return array(
+    return [
         'title' => no__('None workflow (no approval)'),
         'description' => no__('This is like a non-existing workflow. Everything is online immediately after creation.'),
 
         // state titles
-        'states' => array(
+        'states' => [
             no__('Initial') => no__('Pseudo-state for content which is just created and not persisted yet.'),
             no__('Approved') => no__('Content has been approved and is available online.'),
             no__('Deleted') => no__('Pseudo-state for content which has been deleted from the database.')
-        ),
+        ],
 
         // action titles and descriptions for each state
-        'actions' => array(
-            'initial' => array(
+        'actions' => [
+            'initial' => [
                 no__('Submit') => no__('Submit content.'),
-            )
-            ,
-            'approved' => array(
+            ],
+            'approved' => [
                 no__('Update') => no__('Update content.'),
                 no__('Delete') => no__('Delete content permanently.')
-            )
-            ,
-            'deleted' => array(
-            )
-        )
-    );
+            ],
+            'deleted' => []
+        ]
+    ];
 }

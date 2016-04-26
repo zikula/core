@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -121,16 +117,17 @@ abstract class Zikula_AbstractThemeVersion implements ArrayAccess
      */
     public function toArray()
     {
-        $meta = array();
-        $meta['name'] = $this->name;
-        $meta['description'] = $this->description;
-        $meta['displayname'] = $this->displayname;
-        $meta['version'] = $this->version;
-        $meta['type'] = $this->type;
-        $meta['user'] = $this->user;
-        $meta['admin'] = $this->admin;
-        $meta['system'] = $this->system;
-        $meta['directory'] = $this->directory;
+        $meta = [
+            'name' => $this->name,
+            'description' => $this->description,
+            'displayname' => $this->displayname,
+            'version' => $this->version,
+            'type' => $this->type,
+            'user' => $this->user,
+            'admin' => $this->admin,
+            'system' => $this->system,
+            'directory' => $this->directory
+        ];
 
         return $meta;
     }

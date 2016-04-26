@@ -26,13 +26,13 @@ class ThemeListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            'theme.preinit'     => array('preInit', 5),
-            'theme.init'        => array('init', 5),
-            'theme.load_config' => array('loadConfig', 5),
-            'theme.prefetch'    => array('preFetch', 5),
-            'theme.postfetch'   => array('postFetch', 5)
-        );
+        return [
+            'theme.preinit'     => ['preInit', 5],
+            'theme.init'        => ['init', 5],
+            'theme.load_config' => ['loadConfig', 5],
+            'theme.prefetch'    => ['preFetch', 5],
+            'theme.postfetch'   => ['postFetch', 5]
+        ];
     }
     
     /**

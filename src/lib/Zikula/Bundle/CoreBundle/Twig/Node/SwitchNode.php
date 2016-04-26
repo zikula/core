@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of the Zikula package.
+ *
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Zikula\Bundle\CoreBundle\Twig\Node;
 
@@ -6,12 +14,12 @@ class SwitchNode extends \Twig_Node
 {
     public function __construct(\Twig_NodeInterface $cases, \Twig_NodeInterface $default = null, \Twig_Node_Expression $expression, $lineno, $tag = null)
     {
-        $nodes = array(
+        $nodes = [
             'cases' => $cases,
             'default' => $default,
             'expression' => $expression
-        );
-        parent::__construct($nodes, array(), $lineno, $tag);
+        ];
+        parent::__construct($nodes, [], $lineno, $tag);
     }
 
     public function compile(\Twig_Compiler $compiler)

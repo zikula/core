@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\BlocksModule\Block;
@@ -52,15 +49,17 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
             $requirement_message .= $this->__('Notice: This language block will not be display until you enable the multilanguage, you can enable/disable this into into the settings of Zikula.');
         }
 
-        return array('module'          => 'ZikulaBlocksModule',
-                     'text_type'       => $this->__('Language'),
-                     'text_type_long'  => $this->__('Language selector block'),
-                     'allow_multiple'  => false,
-                     'form_content'    => false,
-                     'form_refresh'    => false,
-                     'show_preview'    => true,
-                     'admin_tableless' => true,
-                     'requirement'     => $requirement_message);
+        return [
+            'module'          => 'ZikulaBlocksModule',
+            'text_type'       => $this->__('Language'),
+            'text_type_long'  => $this->__('Language selector block'),
+            'allow_multiple'  => false,
+            'form_content'    => false,
+            'form_refresh'    => false,
+            'show_preview'    => true,
+            'admin_tableless' => true,
+            'requirement'     => $requirement_message
+        ];
     }
 
     /**
@@ -166,7 +165,7 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
 
         // build URLS
 
-        $urls = array();
+        $urls = [];
         foreach ($languages as $code) {
             if (isset($module) && isset($type) && isset($func)) {
                 $thisurl = ModUtil::url($module, $type, $func, $get, null, null, $forcefqdn, !$shorturls, $code);
@@ -189,13 +188,18 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
                 ZLanguage::setLocale($code);
             }
 
-            $urls[] = array('code' => $code, 'name' => ZLanguage::getLanguageName($code), 'url' => $thisurl, 'flag' => $flag);
+            $urls[] = [
+                'code' => $code,
+                'name' => ZLanguage::getLanguageName($code),
+                'url' => $thisurl,
+                'flag' => $flag
+            ];
 
             if ($vars['fulltranslation'] == 2) {
                 ZLanguage::setLocale($currentlanguage);
             }
         }
-        usort($urls, array($this, '_blocks_thelangblock_sort'));
+        usort($urls, [$this, '_blocks_thelangblock_sort']);
 
         $this->view->assign('urls', $urls);
 
@@ -292,7 +296,7 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
         $savedLanguage = ZLanguage::getLanguageCode();
         $langlist = ZLanguage::getInstalledLanguages();
 
-        $list = array();
+        $list = [];
         foreach ($langlist as $code) {
             $img = file_exists("images/flags/flag-$code.png");
 
@@ -304,12 +308,14 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
             } else {
                 $langname = ZLanguage::getLanguageName($code);
             }
-            $list[] = array('code' => $code,
-                            'name' => $langname,
-                            'flag' => $img ? "images/flags/flag-$code.png" : '');
+            $list[] = [
+                'code' => $code,
+                'name' => $langname,
+                'flag' => $img ? "images/flags/flag-$code.png" : ''
+            ];
         }
 
-        usort($list, array($this, '_blocks_thelangblock_sort'));
+        usort($list, [$this, '_blocks_thelangblock_sort']);
 
         return $list;
     }

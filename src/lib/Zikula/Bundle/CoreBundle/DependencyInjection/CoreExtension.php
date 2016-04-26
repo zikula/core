@@ -1,13 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2015 - Zikula Application Framework
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * This file is part of the Zikula package.
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *          Please see the NOTICE file distributed with this source code for further
- *          information regarding copyright and licensing.
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Bundle\CoreBundle\DependencyInjection;
@@ -46,7 +44,7 @@ class CoreExtension extends Extension
         // @todo - temporary - remove at Core-2.0, also need to redeligate some
         // of this to other's responsibility
         $cacheDir = $container->getParameterBag()->resolveValue('%kernel.cache_dir%/ztemp');
-        $dirs = array(
+        $dirs = [
             'doctrinemodels',
             'idsTmp',
             'purifierCache',
@@ -57,7 +55,7 @@ class CoreExtension extends Extension
             'view_cache',
             'view_compiled',
             'error_logs'
-        );
+        ];
         foreach ($dirs as $dir) {
             if (!is_dir($cacheDir . '/' . $dir)) {
                 mkdir($cacheDir . '/' . $dir, 0777, true);
@@ -78,13 +76,13 @@ class CoreExtension extends Extension
     private function registerTranslatorConfiguration(array $config, ContainerBuilder $container)
     {
         $translator = $container->findDefinition('translator.default');
-        $translator->addMethodCall('setFallbackLocales', array(
+        $translator->addMethodCall('setFallbackLocales', [
             $config['fallbacks']
-        ));
+        ]);
         $container->setParameter('translator.logging', $config['logging']);
 
         // Discover translation directories
-        $dirs = array();
+        $dirs = [];
 
         if (class_exists('Symfony\Component\Validator\Validator')) {
             $r = new \ReflectionClass('Symfony\Component\Validator\Validator');
@@ -139,12 +137,12 @@ class CoreExtension extends Extension
             foreach ($finder as $file) {
                 // filename is domain.locale.format
                 list($domain, $locale, $format) = explode('.', $file->getBasename(), 3);
-                $translator->addMethodCall('addResource', array(
+                $translator->addMethodCall('addResource', [
                     $format,
                     (string) $file,
                     $locale,
                     $domain
-                ));
+                ]);
             }
 
             // zikula
@@ -162,12 +160,12 @@ class CoreExtension extends Extension
                     list($domain, $format) = explode('.', $file->getBasename(), 2);
                     // todo add $config['zk_loader'] config.xml translator when mo files handling will be working
                     if ($format == 'po') {
-                        $translator->addMethodCall('addResource', array(
+                        $translator->addMethodCall('addResource', [
                             $format,
                             (string) $file,
                             $locale,
                             $domain
-                        ));
+                        ]);
                     }
                 }
             }

@@ -1,13 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2015 - Zikula Application Framework
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * This file is part of the Zikula package.
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *          Please see the NOTICE file distributed with this source code for further
- *          information regarding copyright and licensing.
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Common\Translator;
@@ -26,22 +24,26 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
      * @var ContainerInterface
      */
     protected $container;
+
     /**
      * @var string
      */
     protected $domain;
+
     /**
      * @var array
      */
     protected $loaderIds;
+
     /**
      * @var array
      */
-    protected $options = array(
+    protected $options = [
         'cache_dir' => null,
         'debug' => false,
-        'resource_files' => array()
-    );
+        'resource_files' => []
+    ];
+
     /**
      * @var array
      */
@@ -60,7 +62,7 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
      * @param array $options An array of options
      * @throws \InvalidArgumentException
      */
-    public function __construct(ContainerInterface $container, MessageSelector $selector = null, $loaderIds = array(), array $options = array())
+    public function __construct(ContainerInterface $container, MessageSelector $selector = null, $loaderIds = [], array $options = [])
     {
         $this->container = $container;
         $this->loaderIds = $loaderIds;
@@ -180,7 +182,7 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
      *
      * @api
      */
-    public function trans($id, array $parameters = array(), $domain = null, $locale = null)
+    public function trans($id, array $parameters = [], $domain = null, $locale = null)
     {
         $domain = ($domain == null) ? $this->domain : $domain;
         $locale = ($locale == null) ? $this->locale : $locale;
@@ -203,7 +205,7 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
      *
      * @api
      */
-    public function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null)
+    public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
     {
         $domain = ($domain == null) ? $this->domain : $domain;
         $locale = ($locale == null) ? $this->locale : $locale;
@@ -221,7 +223,7 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
      */
     public function __($msg, $domain = null, $locale = null)
     {
-        return $this->trans($msg, array(), $domain, $locale);
+        return $this->trans($msg, [], $domain, $locale);
     }
 
     /**
@@ -238,7 +240,7 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
     {
         $message = $this->chooseMessage($m1, $m2, $n, $domain);
 
-        return $this->transChoice($message, $n, array(), $domain, $locale);
+        return $this->transChoice($message, $n, [], $domain, $locale);
     }
 
     /**

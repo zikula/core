@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright 2016 Zikula Foundation.
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Common\Collection\Collectible;
@@ -64,7 +60,7 @@ class PendingContentCollectible
      * @param string  $route       Route id (to view action).
      * @param array   $args        Arguments for method.
      */
-    public function __construct($type, $description, $number, $route, array $args = array())
+    public function __construct($type, $description, $number, $route, array $args = [])
     {
         $this->type = (string)$type;
         $this->description = (string)$description;

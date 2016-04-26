@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPv3 (or at your option any later version).
- * @package FilterUtil
- * @subpackage Filter
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -28,14 +23,14 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
      *
      * @var array
      */
-    protected $ops = array();
+    protected $ops = [];
 
     /**
      * Fields to use the plugin for.
      *
      * @var array
      */
-    protected $fields = array();
+    protected $fields = [];
 
     /**
      * Constructor
@@ -58,7 +53,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
         if (isset($config['ops']) && (!isset($this->ops) || !is_array($this->ops))) {
             $this->activateOperators($config['ops']);
         } else {
-            $this->activateOperators(array('eq', 'ne', 'lt', 'le', 'gt', 'ge', 'like', 'null', 'notnull'));
+            $this->activateOperators(['eq', 'ne', 'lt', 'le', 'gt', 'ge', 'like', 'null', 'notnull']);
         }
 
         if ($config['default'] == true || count($this->fields) <= 0) {
@@ -124,7 +119,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
             $fields[] = '-';
         }
 
-        $ops = array();
+        $ops = [];
         foreach ($this->ops as $op) {
             $ops[$op] = $fields;
         }
@@ -139,11 +134,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
      */
     public function availableOperators()
     {
-        return array(
-                     'eq',
-                     'ne',
-                     'sub'
-                    );
+        return ['eq', 'ne', 'sub'];
     }
 
     /**
@@ -175,7 +166,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
 
             case 'sub':
                 $cats = CategoryUtil::getSubCategories($value);
-                $items = array();
+                $items = [];
                 $items[] = $value;
                 foreach ($cats as $item) {
                     $items[] = $item['id'];
@@ -188,7 +179,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
                 break;
         }
 
-        return array('where' => $where);
+        return ['where' => $where];
     }
 
     /**
@@ -220,8 +211,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
 
             case 'sub':
                 $cats = CategoryUtil::getSubCategories($value);
-                $items = array();
-                $items[] = $value;
+                $items = [$value];
                 foreach ($cats as $item) {
                     $items[] = $item['id'];
                 }
@@ -233,6 +223,6 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
                 break;
         }
 
-        return array('where' => $where);
+        return ['where' => $where];
     }
 }

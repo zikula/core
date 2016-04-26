@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2014 - Zikula CoreInstaller bundle.
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade;
@@ -39,13 +35,13 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
 
     public function getTemplateName()
     {
-        return "ZikulaCoreInstallerBundle:Upgrade:notupgraded.html.twig";
+        return 'ZikulaCoreInstallerBundle:Upgrade:notupgraded.html.twig';
     }
 
     public function isNecessary()
     {
         if (version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<=')) {
-            throw new AbortStageException(__f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', array(ZIKULACORE_CURRENT_INSTALLED_VERSION, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION)));
+            throw new AbortStageException(__f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', [ZIKULACORE_CURRENT_INSTALLED_VERSION, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
         }
         // make sure selected language is installed
         $DBLocale = $this->fetchDBLocale();
@@ -61,7 +57,7 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
 
     public function getTemplateParams()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -71,11 +67,16 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
     private function fetchDBLocale()
     {
         $conn = $this->container->get('doctrine.dbal.default_connection');
-        $serializedValue = $conn->fetchColumn("SELECT value FROM module_vars WHERE name='language_i18n' AND modname='ZConfig'");
+        $serializedValue = $conn->fetchColumn("
+            SELECT value
+            FROM module_vars
+            WHERE name = 'language_i18n'
+            AND modname = 'ZConfig'
+        ");
         if ($serializedValue) {
             return unserialize($serializedValue);
-        } else {
-            throw new AbortStageException(__('The installed language could not be detected.'));
         }
+
+        throw new AbortStageException(__('The installed language could not be detected.'));
     }
 }

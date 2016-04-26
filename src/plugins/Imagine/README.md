@@ -312,13 +312,13 @@ There are also special options  which allows to store in preset additional setti
 
 ```
     $name = 'my_preset';
-    $data = array(
+    $data = [
         'width' => 100,
         'heigth' => 100,
         'mode' => 'outbound',
         '__module' => 'Foo',
         '__transformation' => $your_custom_transformations
-    );
+    ];
     $preset = new SystemPlugin_Imagine_Preset($name, $data);
 ```
 

@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPv3 (or at your option any later version).
- * @package FilterUtil
- * @subpackage Filter
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -26,14 +21,14 @@ class FilterUtil_Filter_Default extends FilterUtil_AbstractPlugin implements Fil
      *
      * @var array
      */
-    protected $_ops = array();
+    protected $_ops = [];
 
     /**
      * Fields to use the plugin for.
      *
      * @var array
      */
-    protected $_fields = array();
+    protected $_fields = [];
 
     /**
      * Constructor.
@@ -55,7 +50,7 @@ class FilterUtil_Filter_Default extends FilterUtil_AbstractPlugin implements Fil
         if (isset($config['ops']) && (!isset($this->_ops) || !is_array($this->_ops))) {
             $this->activateOperators($config['ops']);
         } else {
-            $this->activateOperators(array('eq', 'ne', 'lt', 'le', 'gt', 'ge', 'search', 'like', 'likefirst', 'null', 'notnull'));
+            $this->activateOperators(['eq', 'ne', 'lt', 'le', 'gt', 'ge', 'search', 'like', 'likefirst', 'null', 'notnull']);
         }
 
         if (isset($config['default']) && $config['default'] == true || count($this->_fields) <= 0) {
@@ -72,19 +67,11 @@ class FilterUtil_Filter_Default extends FilterUtil_AbstractPlugin implements Fil
      */
     public function activateOperators($op)
     {
-        static $ops = array(
-                            'eq',
-                            'ne',
-                            'lt',
-                            'le',
-                            'gt',
-                            'ge',
-                            'search',
-                            'like',
-                            'likefirst',
-                            'null',
-                            'notnull'
-                           );
+        static $ops = [
+            'eq', 'ne', 'lt', 'le', 'gt', 'ge',
+            'search', 'like', 'likefirst',
+            'null', 'notnull'
+        ];
 
         if (is_array($op)) {
             foreach ($op as $v) {
@@ -135,7 +122,7 @@ class FilterUtil_Filter_Default extends FilterUtil_AbstractPlugin implements Fil
             $fields[] = '-';
         }
 
-        $ops = array();
+        $ops = [];
         foreach ($this->_ops as $op) {
             $ops[$op] = $fields;
         }
@@ -207,7 +194,7 @@ class FilterUtil_Filter_Default extends FilterUtil_AbstractPlugin implements Fil
                 break;
         }
 
-        return array('where' => $where);
+        return ['where' => $where];
     }
 
     /**
@@ -226,7 +213,7 @@ class FilterUtil_Filter_Default extends FilterUtil_AbstractPlugin implements Fil
         }
 
         $where = '';
-        $params = array();
+        $params = [];
         $column = $this->getColumn($field);
 
         switch ($op) {
@@ -284,6 +271,6 @@ class FilterUtil_Filter_Default extends FilterUtil_AbstractPlugin implements Fil
                 break;
         }
 
-        return array('where' => $where, 'params' => $params);
+        return ['where' => $where, 'params' => $params];
     }
 }

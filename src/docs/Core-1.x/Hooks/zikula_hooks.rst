@@ -85,7 +85,7 @@ Subscriber Capability
 Modules that may subscriber to hook providers must advertise this capability
 in the Version.php using
 
-    $meta['capabilities'] = array(HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true));
+    $meta['capabilities'] = [HookUtil::SUBSCRIBER_CAPABLE => ['enabled' => true]];
 
 Zikula will add a configuration menu to the administration area of the module.  For
 this reason you *must* have an admin controller in the module.
@@ -137,7 +137,7 @@ Provider Capability
 Provider modules must make their available hook handlers known to Zikula provider
 capability to the provider's `Version.php` in the `getMetaData()` method:
 
-    $meta['capabilities'] = array(HookUtil::PROVIDER_CAPABLE => array('enabled' => true));
+    $meta['capabilities'] = [HookUtil::PROVIDER_CAPABLE => ['enabled' => true]];
 
 Zikula will add a configuration menu to the administration area of the module.  For
 this reason you *must* have an admin controller in the module.
@@ -219,10 +219,10 @@ Attaching display hooks is very simple.  Inside the template simply add
 The plugin will return all display hooks handler that respondes, sorted according to
 the administration settings.  The return is an array of
 
-    array(
+    [
         'providerarea1' => `Zikula_Response_DisplayHook`, // object
         'providerarea2' => `Zikula_Response_DisplayHook`, // object
-    );
+    ];
 
 In the module controllers, you will need to implement the process and or validation
 hook types.  This can be done as follows (example of a process hook).

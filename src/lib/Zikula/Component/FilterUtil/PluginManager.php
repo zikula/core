@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPv3 (or at your option any later version).
- * @package Zikula\Component\FilterUtil
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Component\FilterUtil;
@@ -27,7 +23,7 @@ class PluginManager
      *
      * @var AbstractPlugin[]
      */
-    private $plugins = array();
+    private $plugins = [];
 
     /**
      * Loaded operators.
@@ -48,7 +44,7 @@ class PluginManager
      *
      * @var array
      */
-    private $restrictions = array();
+    private $restrictions = [];
 
     /**
      * @var Config
@@ -62,7 +58,7 @@ class PluginManager
      * @param array  $plugins
      * @param array  $restrictions
      */
-    public function __construct(Config $config, array $plugins = array(), array $restrictions = array())
+    public function __construct(Config $config, array $plugins = [], array $restrictions = [])
     {
         $this->config = $config;
         $this->loadPlugins($plugins);
@@ -93,7 +89,7 @@ class PluginManager
         }
 
         if (!$default) {
-            $this->loadPlugin(new ComparePlugin(null, array(), true));
+            $this->loadPlugin(new ComparePlugin(null, [], true));
         }
     }
 
@@ -137,7 +133,7 @@ class PluginManager
             $ops = $plugin->getOperators();
             if (isset($ops) && is_array($ops)) {
                 foreach ($ops as $op => $fields) {
-                    $flds = array();
+                    $flds = [];
                     foreach ($fields as $field) {
                         $flds[$field] = $k;
                     }
@@ -190,11 +186,11 @@ class PluginManager
             }
         }
 
-        return array(
+        return [
             'field' => $field,
             'op' => $op,
             'value' => $value
-        );
+        ];
     }
 
     /**

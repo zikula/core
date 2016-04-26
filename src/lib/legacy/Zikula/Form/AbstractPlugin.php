@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_Form
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -148,11 +144,11 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      * HTML attributes.
      *
      * Associative array of attributes to add to the plugin. For instance:
-     * array('title' => 'A tooltip title', onclick => 'doSomething()')
+     * ['title' => 'A tooltip title', onclick => 'doSomething()']
      *
      * @var array
      */
-    public $attributes = array();
+    public $attributes = [];
 
     /**
      * Zikula_Form_View property.
@@ -204,7 +200,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      *
      * @var array
      */
-    public $plugins = array();
+    public $plugins = [];
 
     /**
      * Temporary storage of the output from renderBegin in blocks.

@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Util
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -88,7 +84,7 @@ class PageUtil
                     return true;
                     break;
                 case 'rawtext':
-                    LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', array('rawtext', 'header')), E_USER_DEPRECATED);
+                    LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', ['rawtext', 'header']), E_USER_DEPRECATED);
                     $varname = 'header';
                     break;
             }
@@ -96,7 +92,7 @@ class PageUtil
 
         // check for $_pageVars sanity
         if (!isset($_pageVars)) {
-            $_pageVars = array();
+            $_pageVars = [];
         } elseif (!is_array($_pageVars)) {
             return false;
         }
@@ -137,7 +133,7 @@ class PageUtil
                     return true;
                     break;
                 case 'rawtext':
-                    LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', array('rawtext', 'header')), E_USER_DEPRECATED);
+                    LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', ['rawtext', 'header']), E_USER_DEPRECATED);
                     $varname = 'header';
                     break;
             }
@@ -145,7 +141,7 @@ class PageUtil
 
         // check for $_pageVars sanity
         if (!isset($_pageVars)) {
-            $_pageVars = array();
+            $_pageVars = [];
         } elseif (!is_array($_pageVars)) {
             return false;
         }
@@ -156,9 +152,9 @@ class PageUtil
 
         if ($_pageVars[$varname]['multivalue']) {
             if (empty($_pageVars[$varname]['default'])) {
-                $_pageVars[$varname]['contents'] = array();
+                $_pageVars[$varname]['contents'] = [];
             } else {
-                $_pageVars[$varname]['contents'] = array($_pageVars[$varname]['default']);
+                $_pageVars[$varname]['contents'] = [$_pageVars[$varname]['default']];
             }
         } else {
             if (empty($_pageVars[$varname]['default'])) {
@@ -187,7 +183,7 @@ class PageUtil
     {
         global $_pageVars;
 
-        if (System::isLegacyMode() && in_array($varname, array('description', 'keywords', 'rawtext'))) {
+        if (System::isLegacyMode() && in_array($varname, ['description', 'keywords', 'rawtext'])) {
             $sm = ServiceUtil::getManager();
             $metaTags = $sm->getParameter('zikula_view.metatags');
             switch ($varname) {
@@ -198,7 +194,7 @@ class PageUtil
                     return $metaTags['keywords'];
                     break;
                 case 'rawtext':
-                    LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', array('rawtext', 'header')), E_USER_DEPRECATED);
+                    LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', ['rawtext', 'header']), E_USER_DEPRECATED);
                     $varname = 'header';
                     break;
             }
@@ -206,7 +202,7 @@ class PageUtil
 
         // check for $_pageVars sanity
         if (!isset($_pageVars)) {
-            $_pageVars = array();
+            $_pageVars = [];
         } elseif (!is_array($_pageVars)) {
             return false;
         }
@@ -253,7 +249,7 @@ class PageUtil
 
         if (System::isLegacyMode()) {
             $sm = ServiceUtil::getManager();
-            $metaTags = $sm->hasParameter('zikula_view.metatags') ? $sm->getParameter('zikula_view.metatags') : array();
+            $metaTags = $sm->hasParameter('zikula_view.metatags') ? $sm->getParameter('zikula_view.metatags') : [];
             switch ($varname) {
                 case 'description':
                     $metaTags['description'] = $value;
@@ -268,7 +264,7 @@ class PageUtil
                     return true;
                     break;
                 case 'rawtext':
-                    LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', array('rawtext', 'header')), E_USER_DEPRECATED);
+                    LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', ['rawtext', 'header']), E_USER_DEPRECATED);
                     $varname = 'header';
                     break;
             }
@@ -276,7 +272,7 @@ class PageUtil
 
         // check for $_pageVars sanity
         if (!isset($_pageVars)) {
-            $_pageVars = array();
+            $_pageVars = [];
         } elseif (!is_array($_pageVars)) {
             return false;
         }
@@ -286,7 +282,7 @@ class PageUtil
         }
 
         if ($_pageVars[$varname]['multivalue']) {
-            $_pageVars[$varname]['contents'] = array($value);
+            $_pageVars[$varname]['contents'] = [$value];
         } else {
             $_pageVars[$varname]['contents'] = $value;
         }
@@ -306,7 +302,7 @@ class PageUtil
     private static function fixJQueryThemesPath($path)
     {
         if (is_array($path)) {
-            $return = array();
+            $return = [];
             foreach ($path as $key => $value) {
                 $return[$key] = self::fixJQueryThemesPath($value);
             }
@@ -340,7 +336,7 @@ class PageUtil
         if (System::isLegacyMode()) {
             switch ($varname) {
                 case 'rawtext':
-                    LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', array('rawtext', 'header')), E_USER_DEPRECATED);
+                    LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', ['rawtext', 'header']), E_USER_DEPRECATED);
                     $varname = 'header';
                     break;
             }
@@ -348,7 +344,7 @@ class PageUtil
 
         // check for $_pageVars sanity
         if (!isset($_pageVars)) {
-            $_pageVars = array();
+            $_pageVars = [];
         } elseif (!is_array($_pageVars)) {
             return false;
         }
@@ -366,7 +362,7 @@ class PageUtil
         // @todo Remove in 1.5.0.
         $value = self::fixJQueryThemesPath($value);
 
-        $event = new \Zikula\Core\Event\GenericEvent($varname, array(), $value);
+        $event = new \Zikula\Core\Event\GenericEvent($varname, [], $value);
         $value = EventUtil::getManager()->dispatch('pageutil.addvar_filter', $event)->getData();
 
         if ($_pageVars[$varname]['multivalue']) {
@@ -409,7 +405,7 @@ class PageUtil
     private static function resolveSymfonyAsset($path)
     {
         if (is_array($path)) {
-            $return = array();
+            $return = [];
             foreach ($path as $key => $value) {
                 $return[$key] = self::resolveSymfonyAsset($value);
             }

@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_View
- * @subpackage Template_Plugins
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -39,13 +34,13 @@
 function smarty_function_notifydisplayhooks($params, Zikula_View $view)
 {
     if (!isset($params['eventname'])) {
-        return trigger_error(__f('Error! "%1$s" must be set in %2$s', array('eventname', 'notifydisplayhooks')));
+        return trigger_error(__f('Error! "%1$s" must be set in %2$s', ['eventname', 'notifydisplayhooks']));
     }
     $eventname = $params['eventname'];
     $id = isset($params['id']) ? $params['id'] : null;
     $urlObject = isset($params['urlobject']) ? $params['urlobject'] : null;
     if ($urlObject && !($urlObject instanceof \Zikula\Core\UrlInterface)) {
-        return trigger_error(__f('Error! "%1$s" must be an instance of %2$s', array('urlobject', '\Zikula\Core\UrlInterface')));
+        return trigger_error(__f('Error! "%1$s" must be an instance of %2$s', ['urlobject', '\Zikula\Core\UrlInterface']));
     }
     $assign  = isset($params['assign']) ? $params['assign'] : false;
 

@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2016 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\ExtensionsModule\Helper\Legacy;
@@ -42,7 +39,7 @@ class ExtensionHelper
 
         // add autoloaders for 1.3-type modules
         if ((false === strpos($osdir, '/')) && (is_dir("modules/$osdir/lib"))) {
-            \ZLoader::addAutoloader($osdir, array('modules', "modules/$osdir/lib"));
+            \ZLoader::addAutoloader($osdir, ['modules', "modules/$osdir/lib"]);
         }
         $bootstrap = "modules/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
@@ -53,7 +50,7 @@ class ExtensionHelper
         $installer = self::getInstaller($extension->getName());
         // perform the actual install of the module
         // system or module
-        $func = array($installer, 'install');
+        $func = [$installer, 'install'];
         if (is_callable($func)) {
             if (call_user_func($func) != true) {
                 return false;
@@ -83,7 +80,7 @@ class ExtensionHelper
 
         // add autoloaders for 1.3-type modules
         if ((false === strpos($osdir, '/')) && (is_dir("modules/$osdir/lib"))) {
-            \ZLoader::addAutoloader($osdir, array("modules", "modules/$osdir/lib"));
+            \ZLoader::addAutoloader($osdir, ['modules', "modules/$osdir/lib"]);
         }
         $bootstrap = "modules/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
@@ -93,7 +90,7 @@ class ExtensionHelper
         \ModUtil::dbInfoLoad($extension->getName(), $osdir);
         $installer = self::getInstaller($extension->getName());
         // perform the actual upgrade of the module
-        $func = array($installer, 'upgrade');
+        $func = [$installer, 'upgrade'];
 
         if (is_callable($func)) {
             $result = call_user_func($func, $extension->getVersion());
@@ -149,7 +146,7 @@ class ExtensionHelper
 
         // add autoloaders for 1.3-type modules
         if ($oomod && (false === strpos($osdir, '/')) && (is_dir("modules/$osdir/lib"))) {
-            \ZLoader::addAutoloader($osdir, array('modules', "modules/$osdir/lib"));
+            \ZLoader::addAutoloader($osdir, ['modules', "modules/$osdir/lib"]);
         }
         $bootstrap = "modules/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
@@ -159,7 +156,7 @@ class ExtensionHelper
         \ModUtil::dbInfoLoad($extension->getName(), $osdir);
         // perform the actual deletion of the module
         $installer = self::getInstaller($extension->getName());
-        $func = array($installer, 'uninstall');
+        $func = [$installer, 'uninstall'];
         if (is_callable($func)) {
             if (call_user_func($func) != true) {
                 return false;

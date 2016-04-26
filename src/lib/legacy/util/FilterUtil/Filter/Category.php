@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPv3 (or at your option any later version).
- * @package FilterUtil
- * @subpackage Filter
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -26,14 +21,14 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
      *
      * @var array
      */
-    protected $ops = array();
+    protected $ops = [];
 
     /**
      * Fields to use the plugin for.
      *
      * @var array
      */
-    protected $fields = array();
+    protected $fields = [];
 
     /**
      * Category property.
@@ -81,11 +76,7 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
      */
     public function availableOperators()
     {
-        return array(
-                     'eq',
-                     'ne',
-                     'sub'
-                    );
+        return ['eq', 'ne', 'sub'];
     }
 
     /**
@@ -147,7 +138,7 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
             $fields[] = '-';
         }
 
-        $ops = array();
+        $ops = [];
         foreach ($this->ops as $op) {
             $ops[$op] = $fields;
         }
@@ -183,7 +174,7 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
             return '';
         }
 
-        $items = array($value);
+        $items = [$value];
         if ($op == 'sub') {
             $cats = CategoryUtil::getSubCategories($value);
             foreach ($cats as $item) {
@@ -191,7 +182,7 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
             }
         }
 
-        $filter = array('__META__' => array('module' => $this->module));
+        $filter = ['__META__' => ['module' => $this->module]];
         foreach ($this->property as $prop) {
             $filter[$prop] = $items;
         }
@@ -201,6 +192,6 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
             $where = str_replace(' IN ', ' NOT IN ', $where);
         }
 
-        return array('where' => $where);
+        return ['where' => $where];
     }
 }

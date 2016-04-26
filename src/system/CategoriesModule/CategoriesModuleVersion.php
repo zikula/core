@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\CategoriesModule;
@@ -25,15 +22,18 @@ class CategoriesModuleVersion extends \Zikula_AbstractVersion
      */
     public function getMetaData()
     {
-        $meta = array();
-        $meta['displayname']    = $this->__('Categories');
-        $meta['description']    = $this->__('Category administration.');
-        //! module name that appears in URL
-        $meta['url']            = $this->__('categories');
-        $meta['version']        = '1.2.2';
-        $meta['core_min'] = '1.4.0';
-        $meta['securityschema'] = array('ZikulaCategoriesModule::' => '::',
-                                        'ZikulaCategoriesModule::Category' => 'Category ID:Category Path:Category IPath');
+        $meta = [
+            'displayname' => $this->__('Categories'),
+            'description' => $this->__('Category administration.'),
+            //! module name that appears in URL
+            'url' => $this->__('categories'),
+            'version' => '1.2.2',
+            'core_min' => '1.4.0',
+            'securityschema' => [
+                'ZikulaCategoriesModule::' => '::',
+                'ZikulaCategoriesModule::Category' => 'Category ID:Category Path:Category IPath'
+            ]
+        ];
 
         return $meta;
     }

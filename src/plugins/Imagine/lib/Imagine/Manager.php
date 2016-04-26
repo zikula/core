@@ -1,18 +1,15 @@
 <?php
 /**
- * Copyright Zikula Foundation 2012 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version.
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
- * Doctrine plugin definition.
+ * Imagine manager.
  */
 class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
 {
@@ -286,7 +283,7 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
                     ->createThumbnail($image, $preset);
             } catch (Exception $e) {
                 //! %1$s is source image path, %2$s is error message
-                LogUtil::log($this->__f('An error occurred during thumbnail creation for image [%1$s]. Error details: %2$s', array($imagePath, $e->getMessage())), \Monolog\Logger::INFO);
+                LogUtil::log($this->__f('An error occurred during thumbnail creation for image [%1$s]. Error details: %2$s', [$imagePath, $e->getMessage()]), \Monolog\Logger::INFO);
 
                 return $imagePath;
             }
@@ -409,7 +406,7 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
      */
     private function createThumbnail(SystemPlugin_Imagine_Image $image, SystemPlugin_Imagine_Preset $preset)
     {
-        $options = array();
+        $options = [];
         if (isset($preset['options']) || !is_array($preset['options'])) {
             $options = $preset['options'];
         }
@@ -457,10 +454,10 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
      */
     private function getFullThumbDir($objectId = null, $imagePath = null)
     {
-        $parts = array(
+        $parts = [
             $this->getThumbDir(),
             $this->getModule()
-        );
+        ];
         if (!is_null($objectId)) {
             $parts[] = $objectId;
         }
@@ -515,7 +512,7 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
             $directories = Symfony\Component\Finder\Finder::create()
                 ->directories()
                 ->in($source);
-            $dirs = array();
+            $dirs = [];
             foreach ($directories as $dir) {
                 $dirs[] = $dir;
             }

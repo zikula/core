@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright 2010 Zikula Foundation
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Core;
@@ -23,13 +19,18 @@ namespace Zikula\Core;
 class ModUrl implements UrlInterface
 {
     private $application;
+
     private $controller;
+
     private $action;
+
     private $args;
+
     private $language;
+
     private $fragment;
 
-    public function __construct($application, $controller, $action, $language, array $args = array(), $fragment = null)
+    public function __construct($application, $controller, $action, $language, array $args = [], $fragment = null)
     {
         $this->application = $application;
         $this->controller = $controller;
@@ -81,12 +82,13 @@ class ModUrl implements UrlInterface
 
     public function toArray()
     {
-        return array(
+        return [
             'application' => $this->application,
             'controller' => $this->controller,
             'action' => $this->action,
             'args' => $this->args,
             'language' => $this->language,
-            'fragment' => $this->fragment);
+            'fragment' => $this->fragment
+        ];
     }
 }

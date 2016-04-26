@@ -9,7 +9,7 @@ use Composer\Autoload\ClassLoader;
  */
 $loader = require __DIR__.'/../vendor/autoload.php';
 
-AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
+AnnotationRegistry::registerLoader([$loader, 'loadClass']);
 AnnotationReader::addGlobalIgnoredName('type');
 
 return $loader;

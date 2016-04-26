@@ -1,16 +1,11 @@
 <?php
 /**
- * Copyright 2010 Zikula Foundation.
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Zikula_Core
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -233,10 +228,11 @@ abstract class Zikula_AbstractPlugin extends Zikula_AbstractEventHandler impleme
      *
      * Should return an array like this:
      * <sample>
-     * $meta = array('displayname' => $this->__('Display name'),
-     *               'description' => $this->__('Description goes here'),
-     *               'version' => '1.0.0'
-     *         );
+     * $meta = [
+     *     'displayname' => $this->__('Display name'),
+     *     'description' => $this->__('Description goes here'),
+     *     'version' => '1.0.0'
+     * ];
      *
      * return $meta;
      * </sample>

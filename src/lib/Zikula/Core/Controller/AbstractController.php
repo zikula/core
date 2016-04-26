@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2015 - Zikula Application Framework
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * This file is part of the Zikula package.
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Zikula_Translate
- *             Please see the NOTICE file distributed with this source code for further
- *             information regarding copyright and licensing.
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Core\Controller;
@@ -75,7 +72,7 @@ abstract class AbstractController extends Controller
      *            An array of parameters to pass to the view
      * @return string The rendered view
      */
-    public function renderView($view, array $parameters = array())
+    public function renderView($view, array $parameters = [])
     {
         $parameters = $this->decorateTranslator($parameters);
 
@@ -93,7 +90,7 @@ abstract class AbstractController extends Controller
      *            A response instance
      * @return Response A Response instance
      */
-    public function render($view, array $parameters = array(), Response $response = null)
+    public function render($view, array $parameters = [], Response $response = null)
     {
         $parameters = $this->decorateTranslator($parameters);
 
@@ -111,7 +108,7 @@ abstract class AbstractController extends Controller
      *            A response instance
      * @return StreamedResponse A StreamedResponse instance
      */
-    public function stream($view, array $parameters = array(), StreamedResponse $response = null)
+    public function stream($view, array $parameters = [], StreamedResponse $response = null)
     {
         $parameters = $this->decorateTranslator($parameters);
 

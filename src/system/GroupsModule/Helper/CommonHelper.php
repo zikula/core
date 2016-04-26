@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2010 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\GroupsModule\Helper;
@@ -62,11 +59,11 @@ class CommonHelper extends \Zikula_AbstractHelper
         static $gtypeLabels;
 
         if (!isset($gtypeLabels)) {
-            $gtypeLabels = array(
-                    self::GTYPE_CORE => $this->__('Core'),
-                    self::GTYPE_PUBLIC => $this->__('Public'),
-                    self::GTYPE_PRIVATE => $this->__('Private')
-            );
+            $gtypeLabels = [
+                self::GTYPE_CORE => $this->__('Core'),
+                self::GTYPE_PUBLIC => $this->__('Public'),
+                self::GTYPE_PRIVATE => $this->__('Private')
+            ];
         }
 
         return $gtypeLabels;
@@ -84,10 +81,10 @@ class CommonHelper extends \Zikula_AbstractHelper
         static $stateLabels;
 
         if (!isset($stateLabels)) {
-            $stateLabels = array(
-                    self::STATE_CLOSED => $this->__('Closed'),
-                    self::STATE_OPEN => $this->__('Open')
-            );
+            $stateLabels = [
+                self::STATE_CLOSED => $this->__('Closed'),
+                self::STATE_OPEN => $this->__('Open')
+            ];
         }
 
         return $stateLabels;

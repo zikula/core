@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_Form
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -40,7 +36,7 @@ abstract class Zikula_Form_AbstractStyledPlugin extends Zikula_Form_AbstractPlug
      *
      * @var array
      */
-    public $styleAttributes = array();
+    public $styleAttributes = [];
 
     /**
      * Retrieve the styles added programatically.
@@ -61,7 +57,7 @@ abstract class Zikula_Form_AbstractStyledPlugin extends Zikula_Form_AbstractPlug
      */
     public function renderAttributes(Zikula_Form_View $view)
     {
-        static $styleElements = array('width', 'height', 'color', 'background_color', 'border', 'padding', 'margin', 'float', 'display', 'position', 'visibility', 'overflow', 'clip', 'font', 'font_family', 'font_style', 'font_weight', 'font_size');
+        static $styleElements = ['width', 'height', 'color', 'background_color', 'border', 'padding', 'margin', 'float', 'display', 'position', 'visibility', 'overflow', 'clip', 'font', 'font_family', 'font_style', 'font_weight', 'font_size'];
 
         $attr = '';
         $style = '';

@@ -1,17 +1,13 @@
 <?php
 /**
- * Copyright 2010 Zikula Foundation.
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Zikula_Core
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula\Bundle\HookBundle\Hook\Hook;
@@ -131,7 +127,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      *
      * @return Response
      */
-    public function response($text, $code = 200, $headers = array())
+    public function response($text, $code = 200, $headers = [])
     {
         return new Response($text, $code, $headers);
     }
@@ -153,23 +149,23 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
         // BC for methods that aren't prefixed with Action
         $method = preg_replace('/(\w+)Action$/', '$1', $method);
         if ($r->hasMethod($method)) {
-            return call_user_func_array(array($this, $method), $args);
+            return call_user_func_array([$this, $method], $args);
         }
 
         // BC for default entry point as 'index' if not present try main
         if ($method == 'index' && (false === $r->hasMethod('index') && false === $r->hasMethod('indexAction'))) {
             $method = $r->hasMethod('mainAction') ? 'mainAction' : 'main';
 
-            return call_user_func_array(array($this, $method), $args);
+            return call_user_func_array([$this, $method], $args);
         }
 
-        $event = new \Zikula\Core\Event\GenericEvent($this, array('method' => $method, 'args' => $args));
+        $event = new \Zikula\Core\Event\GenericEvent($this, ['method' => $method, 'args' => $args]);
         $this->eventManager->dispatch('controller.method_not_found', $event);
         if ($event->isPropagationStopped()) {
             return $event->getData();
         }
 
-        throw new Zikula_Exception_NotFound(__f('%1$s::%2$s() does not exist.', array(get_class($this), $method)));
+        throw new Zikula_Exception_NotFound(__f('%1$s::%2$s() does not exist.', [get_class($this), $method]));
     }
 
     /**

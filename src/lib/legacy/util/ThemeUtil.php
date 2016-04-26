@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPv2.1 (or at your option any later version).
- * @package Util
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 use Zikula\ThemeModule\Entity\ThemeEntity;
@@ -99,7 +95,7 @@ class ThemeUtil
      */
     public static function getAllThemes($filter = self::FILTER_ALL, $state = self::STATE_ACTIVE, $type = self::TYPE_ALL)
     {
-        static $themesarray = array();
+        static $themesarray = [];
 
         $key = md5((string)$filter . (string)$state . (string)$type);
 
@@ -287,11 +283,11 @@ class ThemeUtil
         $osstylesheet = DataUtil::formatForOS($stylesheet);
         $osmodname = DataUtil::formatForOS($modname);
 
-        $paths = array();
+        $paths = [];
 
         // config directory
         $configstyledir = 'config/style';
-        $paths[] = "$configstyledir/$osmodname";
+        $paths[] = $configstyledir . '/' . $osmodname;
 
         // theme directory
         $themeName = DataUtil::formatForOS(UserUtil::getTheme());

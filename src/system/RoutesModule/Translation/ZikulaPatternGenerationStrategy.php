@@ -1,25 +1,21 @@
 <?php
 /**
- * Copyright Zikula Foundation 2015 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPv3 (or at your option any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\RoutesModule\Translation;
 
+use JMS\I18nRoutingBundle\Router\PatternGenerationStrategyInterface;
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Translation\LoggingTranslator;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Translation\TranslatorBagInterface;
-use Symfony\Component\Routing\Route;
-use JMS\I18nRoutingBundle\Router\PatternGenerationStrategyInterface;
 
 /**
  * This strategy duplicates \JMS\I18nRoutingBundle\Router\DefaultPatternGenerationStrategy
@@ -37,7 +33,7 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
     private $locales;
     private $cacheDir;
     private $defaultLocale;
-    private $modUrlMap = array();
+    private $modUrlMap = [];
 
     public function __construct($strategy, TranslatorInterface $translator, array $locales, $cacheDir, $translationDomain = 'routes', $defaultLocale = 'en')
     {
@@ -54,7 +50,7 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
      */
     public function generateI18nPatterns($routeName, Route $route)
     {
-        $patterns = array();
+        $patterns = [];
         foreach ($route->getOption('i18n_locales') ?: $this->locales as $locale) {
             // Check if translation exists in the translation catalogue to avoid errors being logged by
             // the new LoggingTranslator of Symfony 2.6. However, the LoggingTranslator did not implement
@@ -66,11 +62,11 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
                     $i18nPattern = $route->getPath();
                 } else {
                     // Get translation.
-                    $i18nPattern = $this->translator->trans(/** @Ignore */$routeName, array(), $this->translationDomain, $locale);
+                    $i18nPattern = $this->translator->trans(/** @Ignore */$routeName, [], $this->translationDomain, $locale);
                 }
             } else {
                 // if no translation exists, we use the current pattern
-                if ($routeName === $i18nPattern = $this->translator->trans(/** @Ignore */$routeName, array(), $this->translationDomain, $locale)) {
+                if ($routeName === $i18nPattern = $this->translator->trans(/** @Ignore */$routeName, [], $this->translationDomain, $locale)) {
                     $i18nPattern = $route->getPath();
                 }
             }
