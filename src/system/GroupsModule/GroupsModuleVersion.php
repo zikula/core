@@ -29,7 +29,7 @@ class GroupsModuleVersion extends \Zikula_AbstractVersion
             'url' => $this->__('groups'),
             'version' => '2.3.2',
             'core_min' => '1.4.0',
-            'securityschema'] = [
+            'securityschema' => [
                 'ZikulaGroupsModule::' => 'Group ID::'
             ]
         ];
