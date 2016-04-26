@@ -66,7 +66,7 @@ class CacheClearer
             'twig' => [
                 $cacheFolder . '/twig'
             ]
-        );
+        ];
     }
 
     public function clear($type)

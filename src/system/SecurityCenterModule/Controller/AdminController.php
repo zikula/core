@@ -612,7 +612,7 @@ class AdminController extends \Zikula_AbstractController
         // sorting
         $sort = $request->get('sort', 'date DESC');
         $sort_exp = explode(' ', $sort);
-        $sorting = [$sort_exp[0] => (isset($sort_exp[1]) ? $sort_exp[1] : 'ASC']);
+        $sorting = [$sort_exp[0] => (isset($sort_exp[1]) ? $sort_exp[1] : 'ASC')];
 
         // filtering
         $filterdefault = [

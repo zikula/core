@@ -1791,7 +1791,7 @@ class DBUtil
             // For field arrays we construct a temporary literal table entry which allows us to
             // do ad-hoc queries on dynamic reference tables which do not have tables.php entry.
             $tables[$table]                    = $table;
-            $tables["{$table}_column"]         = []);
+            $tables["{$table}_column"]         = [];
             $tables["{$table}_column"][$field] = $field;
             if ($assocKey) {
                 $tables["{$table}_column"][$assocKey] = $assocKey;

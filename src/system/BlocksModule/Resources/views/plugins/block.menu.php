@@ -22,12 +22,12 @@
 function smarty_block_menu($params, $content, $smarty, &$repeat)
 {
     if (!isset($params['from'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['smarty_block_menu', 'from')]);
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['smarty_block_menu', 'from']));
 
         return false;
     }
     if (!isset($params['item'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['smarty_block_menu', 'item')]);
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['smarty_block_menu', 'item']));
 
         return false;
     }

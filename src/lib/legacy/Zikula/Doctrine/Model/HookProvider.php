@@ -31,7 +31,7 @@ class Zikula_Doctrine_Model_HookProvider extends Doctrine_Record
             'unsigned' => false,
             'primary' => true,
             'autoincrement' => true
-        ];
+        ]);
 
         $this->hasColumn('owner', 'string', 40, [
             'type' => 'string',

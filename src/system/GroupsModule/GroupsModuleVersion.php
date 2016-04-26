@@ -26,7 +26,7 @@ class GroupsModuleVersion extends \Zikula_AbstractVersion
             'displayname' => $this->__('Groups'),
             'description' => $this->__('User group administration module.'),
             //! module name that appears in URL
-            'url' => $this->__('groups');
+            'url' => $this->__('groups'),
             'version' => '2.3.2',
             'core_min' => '1.4.0',
             'securityschema'] = [

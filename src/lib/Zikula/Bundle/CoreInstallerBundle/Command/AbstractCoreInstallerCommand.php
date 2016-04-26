@@ -90,7 +90,7 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
             'description' => 'The locale to use.',
             'default' => 'en'
         ]
-    );
+    ];
 
     protected function bootstrap($disableSessions = true, $loadZikulaCore = true, $fakeRequest = true)
     {
