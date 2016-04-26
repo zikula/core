@@ -199,7 +199,7 @@ class ObjectUtil
         }
 
         $cols = $dbtables["${tablename}_column"];
-        $data = array();
+        $data = [];
         foreach ($cols as $k => $v) {
             $data[$k] = null;
         }
@@ -236,13 +236,14 @@ class ObjectUtil
     {
         $dbtable = DBUtil::getTables();
         if (!$dbtable[$type]) {
-            throw new \Exception(__f('%1$s: Unable to reference object type [%2$s]', array('ObjectUtil::createObject', $type)));
+            throw new \Exception(__f('%1$s: Unable to reference object type [%2$s]', ['ObjectUtil::createObject', $type]));
         }
 
-        $obj = array();
-        $obj['__TYPE__'] = $type;
-        $obj['cr_date'] = DateUtil::getDateTime();
-        $obj['cr_uid'] = UserUtil::getVar('uid');
+        $obj = [
+            '__TYPE__' => $type,
+            'cr_date' => DateUtil::getDateTime(),
+            'cr_uid' => UserUtil::getVar('uid')
+        ];
 
         return $obj;
     }
@@ -258,10 +259,10 @@ class ObjectUtil
     public static function diff($obj1, $obj2)
     {
         if (!is_array($obj1)) {
-            throw new \Exception(__f('%1$s: %2$s is not an object.', array('ObjectUtil::diff', 'object1')));
+            throw new \Exception(__f('%1$s: %2$s is not an object.', ['ObjectUtil::diff', 'object1']));
         }
         if (!is_array($obj2)) {
-            throw new \Exception(__f('%1$s: %2$s is not an object.', array('ObjectUtil::diff', 'object2')));
+            throw new \Exception(__f('%1$s: %2$s is not an object.', ['ObjectUtil::diff', 'object2']));
         }
 
         return array_diff($obj1, $obj2);
@@ -279,7 +280,7 @@ class ObjectUtil
      */
     public static function diffExtended($a1, $a2, $detail = false, $recurse = true)
     {
-        $res = array();
+        $res = [];
 
         if (!is_array($a1) || !is_array($a2)) {
             return $res;
@@ -294,7 +295,7 @@ class ObjectUtil
                 $res[$k] = 'I: ' . $v;
             } elseif ($v !== $a2[$k]) {
                 if ($detail) {
-                    $res[$k] = array();
+                    $res[$k] = [];
                     $res[$k]['old'] = $v;
                     $res[$k]['new'] = $a2[$k];
                 } else {
@@ -336,11 +337,11 @@ class ObjectUtil
     public static function moveField($obj, $tablename, $direction = 'up', $field = 'position', $idcolumn = 'id', $field2 = '', $value2 = '')
     {
         if (!is_array($obj)) {
-            throw new \Exception(__f('%1$s: %2$s is not an array.', array('ObjectUtil::moveField', 'object')));
+            throw new \Exception(__f('%1$s: %2$s is not an array.', ['ObjectUtil::moveField', 'object']));
         }
 
         if (!isset($obj[$idcolumn])) {
-            throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($idcolumn, 'ObjectUtil::moveField')));
+            throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', [$idcolumn, 'ObjectUtil::moveField']));
         }
 
         $dbtables = DBUtil::getTables();
@@ -348,7 +349,7 @@ class ObjectUtil
         $column = $dbtables["{$tablename}_column"];
 
         if (!$column[$field]) {
-            throw new \Exception(__f('%1$s: there is no [%2$s] field in the [%3$s] table.', array('ObjectUtil::moveField', $field, $tablename)));
+            throw new \Exception(__f('%1$s: there is no [%2$s] field in the [%3$s] table.', ['ObjectUtil::moveField', $field, $tablename]));
         }
 
         // Get info on current position of field
@@ -373,7 +374,7 @@ class ObjectUtil
                     WHERE $column[$field] > '" . DataUtil::formatForStore($seq) . "' $where2
                     ORDER BY $column[$field] ASC LIMIT 0,1";
         } else {
-            throw new \Exception(__f('%1$s: invalid direction [%2$s] supplied.', array('ObjectUtil::moveField', $direction)));
+            throw new \Exception(__f('%1$s: invalid direction [%2$s] supplied.', ['ObjectUtil::moveField', $direction]));
         }
 
         $res = DBUtil::executeSQL($sql);
@@ -407,11 +408,11 @@ class ObjectUtil
     public static function retrieveObjectAttributes($obj, $type, $idcolumn = 'id')
     {
         if (!$obj) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('object', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['object', __CLASS__ . '::' . __FUNCTION__]));
         }
 
         if (!$type) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('type', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['type', __CLASS__ . '::' . __FUNCTION__]));
         }
 
         // ensure that only objects with a valid ID are used
@@ -441,7 +442,7 @@ class ObjectUtil
     public static function expandObjectWithAttributes(&$obj, $type, $idcolumn = 'id')
     {
         if (!isset($obj[$idcolumn]) || !$obj[$idcolumn]) {
-            throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
+            throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', [$type, $idcolumn]));
         }
 
         $atrs = self::retrieveObjectAttributes($obj, $type, $idcolumn);
@@ -469,15 +470,15 @@ class ObjectUtil
     public static function storeObjectAttributes($obj, $type, $idcolumn = 'id', $wasUpdateQuery = true)
     {
         if (!$obj) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('object', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['object', __CLASS__ . '::' . __FUNCTION__]));
         }
 
         if (!$type) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('type', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['type', __CLASS__ . '::' . __FUNCTION__]));
         }
 
         if (!$idcolumn) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('idcolumn', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['idcolumn', __CLASS__ . '::' . __FUNCTION__]));
         }
 
         if (!isset($obj['__ATTRIBUTES__']) || !is_array($obj['__ATTRIBUTES__'])) {
@@ -490,7 +491,7 @@ class ObjectUtil
 
         $objID = $obj[$idcolumn];
         if (!$objID) {
-            throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
+            throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', [$type, $idcolumn]));
         }
 
         if ($wasUpdateQuery) {
@@ -511,7 +512,7 @@ class ObjectUtil
         }
 
         // process all the attribute fields
-        $tobj = array();
+        $tobj = [];
         foreach ($atrs as $k => $v) {
             if (strlen($v) || $v == false) {
                 // special treatment for false value, otherwise it doesn't get stored at all
@@ -542,11 +543,11 @@ class ObjectUtil
     public static function updateObjectAttributes($obj, $type, $idcolumn = 'id', $force = false)
     {
         if (!$obj) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('object', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['object', __CLASS__ . '::' . __FUNCTION__]));
         }
 
         if (!$type) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('type', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['type', __CLASS__ . '::' . __FUNCTION__]));
         }
 
         if (!isset($obj['__ATTRIBUTES__']) || !is_array($obj['__ATTRIBUTES__'])) {
@@ -555,7 +556,7 @@ class ObjectUtil
 
         $objID = $obj[$idcolumn];
         if (!$objID) {
-            throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
+            throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', [$type, $idcolumn]));
         }
 
         $dbtables = DBUtil::getTables();
@@ -603,15 +604,15 @@ class ObjectUtil
     public static function deleteObjectAttributes(&$obj, $type, $idcolumn = 'id')
     {
         if (!$obj) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('object', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['object', __CLASS__ . '::' . __FUNCTION__]));
         }
 
         if (!$type) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('type', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['type', __CLASS__ . '::' . __FUNCTION__]));
         }
 
         if (!$idcolumn) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('idcolumn', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['idcolumn', __CLASS__ . '::' . __FUNCTION__]));
         }
 
         $dbtables = DBUtil::getTables();
@@ -625,7 +626,7 @@ class ObjectUtil
 
         $objID = $obj[$idcolumn];
         if (!$objID) {
-            throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
+            throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', [$type, $idcolumn]));
         }
 
         $sql = "DELETE FROM $table WHERE $column[object_type] = '" . DataUtil::formatForStore($type) . "' AND
@@ -653,15 +654,15 @@ class ObjectUtil
     public static function deleteObjectSingleAttribute($objID, $type, $attributename)
     {
         if (!$objID) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('objectid', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['objectid', __CLASS__ . '::' . __FUNCTION__]));
         }
 
         if (!$type) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('type', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['type', __CLASS__ . '::' . __FUNCTION__]));
         }
 
         if (!$attributename) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('attributename', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['attributename', __CLASS__ . '::' . __FUNCTION__]));
         }
 
         $dbtables = DBUtil::getTables();
@@ -791,7 +792,7 @@ class ObjectUtil
     public static function fixObjectMetaData(&$obj, $tablename, $idcolumn)
     {
         if (!isset($obj['__META__']) || !is_array($obj['__META__'])) {
-            $obj['__META__'] = array();
+            $obj['__META__'] = [];
         }
 
         $meta = &$obj['__META__'];
@@ -889,7 +890,7 @@ class ObjectUtil
                         AND $meta_column[idcolumn]='" . DataUtil::formatForStore($meta['idcolumn']) . "'
                         AND $meta_column[obj_id]='" . DataUtil::formatForStore($meta['obj_id']) . "'";
 
-            $rc = DBUtil::deleteObject(array(), 'objectdata_meta', $where);
+            $rc = DBUtil::deleteObject([], 'objectdata_meta', $where);
         }
 
         $dbtables = DBUtil::getTables();
@@ -939,7 +940,7 @@ class ObjectUtil
     public static function expandObjectWithMeta(&$obj, $tablename, $idcolumn = 'id')
     {
         if (!isset($obj[$idcolumn]) || !$obj[$idcolumn]) {
-            throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
+            throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', [$type, $idcolumn]));
         }
 
         $meta = self::retrieveObjectMetaData($obj, $tablename, $idcolumn);
@@ -965,15 +966,15 @@ class ObjectUtil
     public static function storeObjectCategories($obj, $tablename, $idcolumn = 'id', $wasUpdateQuery = true)
     {
         if (!$obj) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('object', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['object', __CLASS__ . '::' . __FUNCTION__]));
         }
 
         if (!$tablename) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('tablename', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['tablename', __CLASS__ . '::' . __FUNCTION__]));
         }
 
         if (!$idcolumn) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('idcolumn', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['idcolumn', __CLASS__ . '::' . __FUNCTION__]));
         }
 
         if (!ModUtil::dbInfoLoad('ZikulaCategoriesModule')) {
@@ -989,7 +990,7 @@ class ObjectUtil
         }
 
         // ensure that we don't store duplicate object mappings
-        $values = array();
+        $values = [];
         foreach ($obj['__CATEGORIES__'] as $k => $v) {
             if (isset($values[$v])) {
                 unset($obj['__CATEGORIES__'][$k]);
@@ -999,7 +1000,7 @@ class ObjectUtil
         }
 
         // cache category id arrays to improve performance with DBUtil::(insert|update)ObjectArray()
-        static $modTableCategoryIDs = array();
+        static $modTableCategoryIDs = [];
 
         // Get the ids of the categories properties of the object
         $modname = isset($obj['__META__']['module']) ? $obj['__META__']['module'] : ModUtil::getName();
@@ -1010,9 +1011,10 @@ class ObjectUtil
         }
         $reg_ids = $modTableCategoryIDs[$reg_key];
 
-        $cobj = array();
-        $cobj['table'] = $tablename;
-        $cobj['obj_idcolumn'] = $idcolumn;
+        $cobj = [
+            'table' => $tablename,
+            'obj_idcolumn' => $idcolumn
+        ];
 
         $res = true;
         foreach ($obj['__CATEGORIES__'] as $prop => $cat) {
@@ -1093,7 +1095,13 @@ class ObjectUtil
                     AND tbl.$cat[obj_id]='" . DataUtil::formatForStore($obj[$idcolumn]) . "'";
         $orderby = "ORDER BY tbl.$cat[category_id]";
 
-        $joinInfo[] = array('join_table' => 'categories_registry', 'join_field' => 'property', 'object_field_name' => 'property', 'compare_field_table' => 'reg_id', 'compare_field_join' => 'id');
+        $joinInfo[] = [
+            'join_table' => 'categories_registry',
+            'join_field' => 'property',
+            'object_field_name' => 'property',
+            'compare_field_table' => 'reg_id',
+            'compare_field_join' => 'id'
+        ];
 
         $cache[$key] = DBUtil::selectExpandedFieldArray('categories_mapobj', $joinInfo, 'category_id', $where, $orderby, false, 'property');
 
@@ -1115,14 +1123,14 @@ class ObjectUtil
     {
         $catlist = self::retrieveObjectCategoriesList($obj, $tablename, $idcolumn);
         if (!$catlist) {
-            return array();
+            return [];
         }
 
         $cats = implode(',', array_values($catlist));
         $where = "c.id IN ($cats)";
         $catsdata = CategoryUtil::getCategories($where, '', 'id', $enablePermissionCheck);
 
-        $result = array();
+        $result = [];
         foreach ($catlist as $prop => $cat) {
             if (isset($catsdata[$cat])) {
                 $result[$prop] = $catsdata[$cat];
@@ -1157,8 +1165,8 @@ class ObjectUtil
         $tab = $pntabs['categories_mapobj'];
         $col = $pntabs['categories_mapobj_column'];
 
-        $w1 = array();
-        $w2 = array();
+        $w1 = [];
+        $w2 = [];
         foreach ($objArray as $obj) {
             $w1[] = DataUtil::formatForStore($obj[$idcolumn]);
         }
@@ -1169,7 +1177,13 @@ class ObjectUtil
         $where = "WHERE " . implode(' AND ', $w2);
         $sort = "ORDER BY tbl.$col[obj_id], tbl.$col[category_id]";
 
-        $joinInfo[] = array('join_table' => 'categories_registry', 'join_field' => 'property', 'object_field_name' => 'property', 'compare_field_table' => 'reg_id', 'compare_field_join' => 'id');
+        $joinInfo[] = [
+            'join_table' => 'categories_registry',
+            'join_field' => 'property',
+            'object_field_name' => 'property',
+            'compare_field_table' => 'reg_id',
+            'compare_field_join' => 'id'
+        ];
 
         $maps = DBUtil::selectExpandedObjectArray('categories_mapobj', $joinInfo, $where, $sort);
         if (!$maps) {
@@ -1179,7 +1193,7 @@ class ObjectUtil
         // since we don't know the order in which our data array will be, we
         // have to do this iteratively. However, this is still a lot faster
         // than doing a select for every data line.
-        $catlist = array();
+        $catlist = [];
         foreach ($objArray as $k => $obj) {
             $last = null;
             foreach ($maps as $map) {
@@ -1233,7 +1247,7 @@ class ObjectUtil
     public static function expandObjectWithCategories(&$obj, $tablename, $idcolumn = 'id', $assocKey = '')
     {
         if (!isset($obj[$idcolumn]) || !$obj[$idcolumn]) {
-            throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
+            throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', [$type, $idcolumn]));
         }
 
         if (!ModUtil::dbInfoLoad('ZikulaCategoriesModule')) {
@@ -1326,9 +1340,9 @@ class ObjectUtil
     {
         foreach ($obj as &$prop) {
             unset($prop['parent'], $prop['children']);
-            $prop['attributes'] = isset($prop['attributes']) && ($prop['attributes'] instanceof \Doctrine\ORM\PersistentCollection) ? $prop['attributes']->toArray() : array();
-            $prop['cr_date'] = isset($prop['cr_date']) && ($prop['cr_date'] instanceof \DateTime) ? $prop['cr_date']->format("Y-m-d H:i:s") : $prop['cr_date'];
-            $prop['lu_date'] = isset($prop['lu_date']) && ($prop['lu_date'] instanceof \DateTime) ? $prop['lu_date']->format("Y-m-d H:i:s") : $prop['lu_date'];
+            $prop['attributes'] = isset($prop['attributes']) && ($prop['attributes'] instanceof \Doctrine\ORM\PersistentCollection) ? $prop['attributes']->toArray() : [];
+            $prop['cr_date'] = isset($prop['cr_date']) && ($prop['cr_date'] instanceof \DateTime) ? $prop['cr_date']->format('Y-m-d H:i:s') : $prop['cr_date'];
+            $prop['lu_date'] = isset($prop['lu_date']) && ($prop['lu_date'] instanceof \DateTime) ? $prop['lu_date']->format('Y-m-d H:i:s') : $prop['lu_date'];
             $prop['cr_uid'] = isset($prop['cr_uid']) && ($prop['cr_uid'] instanceof \Zikula\UsersModule\Entity\UserEntity) ? $prop['cr_uid']->getUid() : $prop['cr_uid'];
             $prop['lu_uid'] = isset($prop['lu_uid']) && ($prop['lu_uid'] instanceof \Zikula\UsersModule\Entity\UserEntity) ? $prop['lu_uid']->getUid() : $prop['lu_uid'];
         }

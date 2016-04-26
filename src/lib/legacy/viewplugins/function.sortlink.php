@@ -39,10 +39,10 @@
 function smarty_function_sortlink($params, Zikula_View $view)
 {
     if (!isset($params['currentsort'])) {
-        trigger_error(__f('Error! "%1$s" must be set in %2$s', array('currentsort', 'sortlink')));
+        trigger_error(__f('Error! "%1$s" must be set in %2$s', ['currentsort', 'sortlink']));
     }
     if (!isset($params['sort'])) {
-        trigger_error(__f('Error! "%1$s" must be set in %2$s', array('sort', 'sortlink')));
+        trigger_error(__f('Error! "%1$s" must be set in %2$s', ['sort', 'sortlink']));
     }
 
     $modname = isset($params['modname']) ? $params['modname'] : $view->getTopLevelModule();
@@ -66,7 +66,7 @@ function smarty_function_sortlink($params, Zikula_View $view)
     }
 
     // unset non link parameters
-    $unsets = array('linktext', 'currentsort', 'assign', 'modname', 'type', 'func', 'route');
+    $unsets = ['linktext', 'currentsort', 'assign', 'modname', 'type', 'func', 'route'];
     foreach ($unsets as $unset) {
         unset($params[$unset]);
     }

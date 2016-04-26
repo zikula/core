@@ -31,15 +31,15 @@
 function smarty_function_html_select_languages($params, Zikula_View $view)
 {
     if (!isset($params['name']) || empty($params['name'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('html_select_languages', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['html_select_languages', 'name']));
 
         return false;
     }
 
     require_once $view->_get_plugin_filepath('function', 'html_options');
 
-    $params['output'] = array();
-    $params['values'] = array();
+    $params['output'] = [];
+    $params['values'] = [];
     if (isset($params['all']) && $params['all']) {
         $params['values'][] = '';
         $params['output'][] = DataUtil::formatForDisplay(__('All'));

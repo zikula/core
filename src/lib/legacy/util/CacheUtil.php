@@ -23,7 +23,7 @@ class CacheUtil
      */
     public static function getLocalDir($dir = null)
     {
-        $array = array();
+        $array = [];
         $tmpDir = ServiceUtil::get('service_container')->getParameter('temp_dir');
         $array[] = DataUtil::formatForOS($tmpDir, true);
 

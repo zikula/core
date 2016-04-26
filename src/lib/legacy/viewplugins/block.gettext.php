@@ -45,7 +45,7 @@ function smarty_block_gettext($params, $content, Zikula_View $view)
 
         // build array for tags (for %s, %1$s etc) if applicable
         ksort($params);
-        $tags = array();
+        $tags = [];
         foreach ($params as $key => $value) {
             if (preg_match('#^tag([0-9]{1,2})$#', $key)) {
                 $tags[] = $value;

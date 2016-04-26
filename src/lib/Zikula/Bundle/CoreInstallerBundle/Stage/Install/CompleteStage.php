@@ -45,7 +45,7 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
 
     public function getTemplateParams()
     {
-        return array();
+        return [];
     }
 
     public function getResponse(Request $request)
@@ -54,11 +54,11 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
         if ($this->sendEmailToAdmin($request, $admin)) {
             $request->getSession()->getFlashBag()->add('success', __('Congratulations! Zikula has been successfully installed.'));
 
-            return new RedirectResponse($this->container->get('router')->generate('zikulaadminmodule_admin_adminpanel', array(), RouterInterface::ABSOLUTE_URL));
+            return new RedirectResponse($this->container->get('router')->generate('zikulaadminmodule_admin_adminpanel', [], RouterInterface::ABSOLUTE_URL));
         } else {
             $request->getSession()->getFlashBag()->add('warning', __('Email settings are not yet configured. Please configure them below.'));
 
-            return new RedirectResponse($this->container->get('router')->generate('zikulamailermodule_config_config', array(), RouterInterface::ABSOLUTE_URL));
+            return new RedirectResponse($this->container->get('router')->generate('zikulamailermodule_config_config', [], RouterInterface::ABSOLUTE_URL));
         }
     }
 

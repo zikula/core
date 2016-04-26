@@ -94,10 +94,10 @@ class Zikula_Form_Plugin_PostBackFunction extends Zikula_Form_AbstractPlugin
      */
     public function raisePostBackEvent(Zikula_Form_View $view, $eventArgument)
     {
-        $args = array(
+        $args = [
             'commandName' => $eventArgument,
             'commandArgument' => null
-        );
+        ];
         if (!empty($this->onCommand)) {
             $view->raiseEvent($this->onCommand, $args);
         }

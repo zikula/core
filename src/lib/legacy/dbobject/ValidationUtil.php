@@ -32,15 +32,15 @@ class ValidationUtil
     public static function validateField($objectType, $object, $field, $required, $cmp_op, $cmp_value, $err_msg, $callback = null)
     {
         if (!is_array($object)) {
-            throw new \Exception(__f('%1s: %2s is not an array.', array('ValidationUtil::validateField', 'object')));
+            throw new \Exception(__f('%1s: %2s is not an array.', ['ValidationUtil::validateField', 'object']));
         }
 
         if (!$field) {
-            throw new \Exception(__f('%1s: empty %2s supplied.', array('ValidationUtil::validateField', 'field')));
+            throw new \Exception(__f('%1s: empty %2s supplied.', ['ValidationUtil::validateField', 'field']));
         }
 
         if (!$err_msg) {
-            throw new \Exception(__f('%1s: empty %2s supplied.', array('ValidationUtil::validateField', 'error message')));
+            throw new \Exception(__f('%1s: empty %2s supplied.', ['ValidationUtil::validateField', 'error message']));
         }
 
         $rc = true;
@@ -94,11 +94,11 @@ class ValidationUtil
                     break;
                 case 'noop':
                 case '': if (!$required) {
-     throw new \Exception(__f('%1$s: invalid cmp_op [%2$s] supplied for non-required field [%3$s].', array('ValidationUtil::validateField', $cmp_op, $field)));
+     throw new \Exception(__f('%1$s: invalid cmp_op [%2$s] supplied for non-required field [%3$s].', ['ValidationUtil::validateField', $cmp_op, $field]));
  }
                     $rc = true;
                     break;
-                default: throw new \Exception(__f('%1$s: invalid cmp_op [%2$s] supplied for field [%3$s].', array('ValidationUtil::validateField', $cmp_op, $field)));
+                default: throw new \Exception(__f('%1$s: invalid cmp_op [%2$s] supplied for field [%3$s].', ['ValidationUtil::validateField', $cmp_op, $field]));
             }
         }
 
@@ -115,12 +115,12 @@ class ValidationUtil
      * Validate a specific field using the supplied control parameters.
      *
      * The expected structure for the validation array is as follows:
-     * $validationControl[] = array ('field'         =>  $fieldname,
-     *                               'required'      =>  true/false,
-     *                               'cmp_op'        =>  eq/neq/lt/lte/gt/gte/url/email/valuearray/noop,
-     *                               'cmp_value'     =>  $value
-     *                               'err_msg'       =>  $errorMessage
-     *                               'callback'      =>  $callback - any valid PHP callable);
+     * $validationControl[] = ['field'         =>  $fieldname,
+     *                         'required'      =>  true/false,
+     *                         'cmp_op'        =>  eq/neq/lt/lte/gt/gte/url/email/valuearray/noop,
+     *                         'cmp_value'     =>  $value
+     *                         'err_msg'       =>  $errorMessage
+     *                         'callback'      =>  $callback - any valid PHP callable];
      *
      * The noop value for the cmp_op field is only valid if the field is not required.
      *
@@ -146,12 +146,12 @@ class ValidationUtil
      * Validate a specific field using the supplied control parameters.
      *
      * The expected structure for the validation array is as follows:
-     * $validationControls[] = array ('field'         =>  $fieldname,
-     *                                'required'      =>  true/false,
-     *                                'cmp_op'        =>  eq/neq/lt/lte/gt/gte/noop,
-     *                                'cmp_value'     =>  $value
-     *                                'err_msg'       =>  $errorMessage
-     *                                'callback'      =>  $callback - any valid PHP callable);
+     * $validationControls[] = ['field'         =>  $fieldname,
+     *                          'required'      =>  true/false,
+     *                          'cmp_op'        =>  eq/neq/lt/lte/gt/gte/noop,
+     *                          'cmp_value'     =>  $value
+     *                          'err_msg'       =>  $errorMessage
+     *                          'callback'      =>  $callback - any valid PHP callable];
      *
      * The noop value for the cmp_op field is only valid if the field is not required.
      *
@@ -186,7 +186,7 @@ class ValidationUtil
      * validation array and then calls ValidationUtil::validateObject().
      *
      * The expected structure for the validation array is as follows:
-     * $validationArray[] = array ($fieldname, true/false, eq/neq/lt/lte/gt/gte/noop, $value, $errorMessage);
+     * $validationArray[] = [$fieldname, true/false, eq/neq/lt/lte/gt/gte/noop, $value, $errorMessage];
      *
      * The noop value for the cmp_op field is only valid if the field is not required.
      *
@@ -198,13 +198,13 @@ class ValidationUtil
      */
     public static function validateObjectPlain($objectType, $object, $validationArray)
     {
-        $validationControls = array();
+        $validationControls = [];
 
-        $vc = array();
+        $vc = [];
         foreach ($validationArray as $va) {
             $size = count($va);
             if ($size < 5) {
-                throw new \Exception(__f('%1$s: invalid validationArray supplied: expected 5 fields but found %2$s.', array('ValidationUtil::validateObjectPlain', $size)));
+                throw new \Exception(__f('%1$s: invalid validationArray supplied: expected 5 fields but found %2$s.', ['ValidationUtil::validateObjectPlain', $size]));
             }
 
             $vc['objectType'] = $objectType;

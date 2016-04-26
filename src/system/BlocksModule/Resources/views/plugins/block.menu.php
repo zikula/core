@@ -22,12 +22,12 @@
 function smarty_block_menu($params, $content, $smarty, &$repeat)
 {
     if (!isset($params['from'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_menu', 'from')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['smarty_block_menu', 'from')]);
 
         return false;
     }
     if (!isset($params['item'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_menu', 'item')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['smarty_block_menu', 'item')]);
 
         return false;
     }
@@ -39,7 +39,7 @@ function smarty_block_menu($params, $content, $smarty, &$repeat)
         }
     }
     if (is_null($content)) {
-        $smarty->_tag_stack[$menuTagStackKey][1]['_content'] = array();
+        $smarty->_tag_stack[$menuTagStackKey][1]['_content'] = [];
     }
 
     $from = $params['from'];
@@ -64,13 +64,13 @@ function smarty_block_menu($params, $content, $smarty, &$repeat)
     }
 
     if (isset($params['name'])) {
-        $menuProps = array(
+        $menuProps = [
             'index' => $index,
             'iteration' => $index + 1,
             'total' => $total,
             'first' => (bool)is_null($content),
             'last' =>  $index + 1 >= $total
-        );
+        ];
     }
 
     if ($repeat || (empty($from) && is_null($content))) {
@@ -120,8 +120,8 @@ function _smarty_block_menu_parsemenu($params)
         $reflang = key($tmp);
     }
 
-    $tree = array();
-    $map  = array();
+    $tree = [];
+    $map  = [];
 
     foreach ($params['from'] as $i => $item) {
         if (isset($reflang)) {
@@ -134,9 +134,12 @@ function _smarty_block_menu_parsemenu($params)
             $item['id'] = 'dummy_'.$i;
         }
 
-        $_node = array('item' => $item, 'nodes' => array());
+        $_node = [
+            'item' => $item,
+            'nodes' => []
+        ];
 
-        if (!isset($item['parentid']) || $item['parentid'] === null) {
+        if (!isset($item['parentid']) || null === $item['parentid']) {
             $tree[$item['id']] = $_node;
             $path = null;
         } else {
@@ -144,7 +147,7 @@ function _smarty_block_menu_parsemenu($params)
             $path[] = $item['parentid'];
             $handle = &$tree;
             while (list($key, $value) = each($path)) {
-                if ($value === null) {
+                if (null === $value) {
                     continue;
                 }
                 $handle = &$handle[$value]['nodes'];

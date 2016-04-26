@@ -54,7 +54,7 @@
 function smarty_function_icon($params, Zikula_View $view)
 {
     if (!isset($params['type'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_icon', 'type')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['smarty_function_icon', 'type']));
 
         return false;
     }
@@ -92,7 +92,7 @@ function smarty_function_icon($params, Zikula_View $view)
 
     if ($imgsrc == '') {
         if (!isset($optional)) {
-            $view->trigger_error(__f("%s: Image '%s' not found", array('icon', DataUtil::formatForDisplay($params['type']))));
+            $view->trigger_error(__f("%s: Image '%s' not found", ['icon', DataUtil::formatForDisplay($params['type'])]));
         }
 
         return;
@@ -103,7 +103,7 @@ function smarty_function_icon($params, Zikula_View $view)
     // This way it is easy to scale the image to a certain dimension.
     if (!isset($params['width']) && !isset($params['height'])) {
         if (!($_image_data = @getimagesize($imgsrc))) {
-            $view->trigger_error(__f("%s: Image '%s' is not a valid image file", array('icon', DataUtil::formatForDisplay($params['type']))));
+            $view->trigger_error(__f("%s: Image '%s' is not a valid image file", ['icon', DataUtil::formatForDisplay($params['type'])]));
 
             return false;
         }

@@ -28,7 +28,7 @@ abstract class AbstractTheme extends AbstractBundle
 
     public function getServiceIds()
     {
-        return array();
+        return [];
     }
 
     public function getConfig()
@@ -69,7 +69,7 @@ abstract class AbstractTheme extends AbstractBundle
             . '</div>';
         $response->setContent($content);
 
-        return $this->getContainer()->get('templating')->renderResponse($this->name . ':' . $template, array('maincontent' => $response->getContent()));
+        return $this->getContainer()->get('templating')->renderResponse($this->name . ':' . $template, ['maincontent' => $response->getContent()]);
     }
 
     /**

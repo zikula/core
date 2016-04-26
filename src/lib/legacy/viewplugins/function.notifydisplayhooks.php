@@ -34,13 +34,13 @@
 function smarty_function_notifydisplayhooks($params, Zikula_View $view)
 {
     if (!isset($params['eventname'])) {
-        return trigger_error(__f('Error! "%1$s" must be set in %2$s', array('eventname', 'notifydisplayhooks')));
+        return trigger_error(__f('Error! "%1$s" must be set in %2$s', ['eventname', 'notifydisplayhooks']));
     }
     $eventname = $params['eventname'];
     $id = isset($params['id']) ? $params['id'] : null;
     $urlObject = isset($params['urlobject']) ? $params['urlobject'] : null;
     if ($urlObject && !($urlObject instanceof \Zikula\Core\UrlInterface)) {
-        return trigger_error(__f('Error! "%1$s" must be an instance of %2$s', array('urlobject', '\Zikula\Core\UrlInterface')));
+        return trigger_error(__f('Error! "%1$s" must be an instance of %2$s', ['urlobject', '\Zikula\Core\UrlInterface']));
     }
     $assign  = isset($params['assign']) ? $params['assign'] : false;
 

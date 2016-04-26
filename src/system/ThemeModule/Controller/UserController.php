@@ -95,8 +95,10 @@ class UserController extends AbstractController
                    ->assign('defaulttheme', ThemeUtil::getInfo(ThemeUtil::getIDFromName($variableApi->get(VariableApi::CONFIG, 'Default_Theme'))));
 
         // assign the values for the pager plugin
-        $this->view->assign('pager', array('numitems' => count($allthemes),
-                                           'itemsperpage' => $itemsPerPage));
+        $this->view->assign('pager', [
+            'numitems' => count($allthemes),
+            'itemsperpage' => $itemsPerPage
+        ]);
 
         return new Response($this->view->fetch('User/main.tpl'));
     }

@@ -64,22 +64,22 @@ Receives args['areaid'] as the areaId.  Use this to remove orphan data associate
 
 
 #### `module_dispatch.postloadgeneric`
-receives the args `array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api)`
+receives the args `['modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api]`
 
 #### `module_dispatch.preexecute`
 Occurs in `ModUtil::exec()` before function call with the following args:
-`array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)`
+`['modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api]`
 
 #### `module_dispatch.postexecute`
 Occurs in `ModUtil::exec()` after function call with the following args:
-`array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)`
+`['modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api]`
 receives the modules output with `$event->getData();`
 can modify this output with `$event->setData($data);`
 
 #### `module_dispatch.type_not_found`
 if `$type` is not found in `ModUtil::exec()` (e.g. no admin.php)
 _This is for classic module types only._
-`array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)`
+`['modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api]`
 This kind of eventhandler should
 
 1. Check $event['modfunc'] to see if it should run else exit silently.
@@ -92,7 +92,7 @@ This kind of eventhandler should
 In order to override the classname calculated in `ModUtil::exec()`
 In order to override a pre-existing controller/api method, use this event type to override the class name that is loaded.
 This allows to override the methods using inheritance.
-Receives no subject, args of `array('modname' => $modname, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)`
+Receives no subject, args of `['modname' => $modname, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api]`
 and 'event data' of `$className`.  This can be altered by setting `$event->setData()` followed by `$event->stopPropagation()`
 
 #### `module_dispatch.service_links`
@@ -100,7 +100,7 @@ Occurs when building admin menu items. Adds sublinks to a Services menu that is 
 triggered by module_dispatch.postexecute in bootstrap.
 format data like so:
 
-    $event->data[] = array('url' => ModUtil::url(<modname>, <type>, <method>), 'text' => __('Link Text'));
+    $event->data[] = ['url' => ModUtil::url(<modname>, <type>, <method>), 'text' => __('Link Text')];
 
 #### `module.mailer.api.sendmessage`
 Invoked from `Mailer_Api_User#sendmessage`. Subject is `Mailer_Api_User` with `$args`.
@@ -160,7 +160,7 @@ The subject is the Zikula_View instance.
 
 #### `view.postfetch`
 Filter of result of a fetch.  Receives `Zikula_View` instance as subject, args are
-`array('template' => $template), $data was the result of the fetch to be filtered.`
+`['template' => $template], $data was the result of the fetch to be filtered.`
 
 
 USER ACCOUNTS, REGISTRATIONS, AND LOG-INS
@@ -240,7 +240,7 @@ exception being thrown.
 
 To, instead, redirect the user back to the log-in screen (after possibly setting an error message that will
 be displayed), then set the event data to contain an array with a single element, `retry`, having a value
-of true (e.g., `$event->setData(array('retry' => true));`).  This will signal the log-in process to go back
+of true (e.g., `$event->setData(['retry' => true]);`).  This will signal the log-in process to go back
 to the log-in screen for another attempt. The expectation is that the notifying event handler has set an
 error message, and that the user will be able to log-in if the instructions in that message are followed,
 or the conditions in that message can be met.
@@ -294,20 +294,20 @@ The Users module uses this method to handle users who have been forced by the ad
 prior to logging in. The code used for the notification might look like the following example:
 
     $event->stopPropagation();
-    $event->setData(array(
-        'redirect_func'  => array(
+    $event->setData([
+        'redirect_func'  => [
             'modname'   => 'ZikulaUsersModule',
             'type'      => 'user',
             'func'      => 'changePassword',
-            'args'      => array(
-                'login'     => true,
-            ),
-            'session'   => array(
+            'args'      => [
+                'login'     => true
+            ],
+            'session'   => [
                 'var'       => 'Users_Controller_User_changePassword',
-                'namespace' => 'Zikula_Users',
-            )
-        ),
-    ));
+                'namespace' => 'Zikula_Users'
+            ]
+        ]
+    ]);
 
     LogUtil::registerError(__("Your log-in request was not completed. You must change your web site account's password first."));
 
@@ -377,8 +377,8 @@ programmatically by directly calling core functions will not see this event fire
 Occurs right after a successful logout. All handlers are notified.
 
  * The event's subject contains the user's user record
- * Args contain array of `array('authentication_method' => $authenticationMethod,
-                                'uid'                   => $uid));`
+ * Args contain array of `['authentication_method' => $authenticationMethod,
+                           'uid'                   => $uid];`
 
 #### `user.gettheme`
 Called during UserUtil::getTheme() and is used to filter the results.  Receives arg['type']

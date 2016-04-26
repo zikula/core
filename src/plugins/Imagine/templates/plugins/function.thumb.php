@@ -62,7 +62,7 @@
 function smarty_function_thumb($params, Zikula_View $view)
 {
     if (!isset($params['image']) || empty($params['image'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_thumb', 'image')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['smarty_function_thumb', 'image']));
 
         return false;
     }
@@ -81,12 +81,12 @@ function smarty_function_thumb($params, Zikula_View $view)
     } elseif (isset($params['preset']) && $manager->getPlugin()->hasPreset($params['preset'])) {
         $preset = $manager->getPlugin()->getPreset($params['preset']);
     } else {
-        $preset = array();
+        $preset = [];
         $preset['width'] = isset($params['width']) ? $params['width'] : 'auto';
         $preset['height'] = isset($params['height']) ? $params['height'] : 'auto';
         $preset['mode'] = isset($params['mode']) ? $params['mode'] : null;
         $preset['extension'] = isset($params['extension']) ? $params['extension'] : null;
-        $preset['options'] = isset($params['options']) ? $params['options'] : array();
+        $preset['options'] = isset($params['options']) ? $params['options'] : [];
         $preset = array_filter($preset);
     }
 
@@ -98,7 +98,7 @@ function smarty_function_thumb($params, Zikula_View $view)
 
     if (isset($params['tag']) && $params['tag']) {
         $thumbSize = @getimagesize($thumb);
-        $attributes = array();
+        $attributes = [];
         $attributes[] = "src=\"{$basePath}/{$thumb}\"";
         $attributes[] = $thumbSize[3]; // width and height
         // get tag params

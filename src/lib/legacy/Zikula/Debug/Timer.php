@@ -39,7 +39,7 @@ class Zikula_Debug_Timer
     public function __construct($name = '')
     {
         $this->name = $name;
-        $this->times = array();
+        $this->times = [];
         $this->start();
     }
 
@@ -53,7 +53,7 @@ class Zikula_Debug_Timer
     public function reset($name = '')
     {
         $this->name = $name;
-        $this->times = array();
+        $this->times = [];
         $this->start();
     }
 
@@ -129,7 +129,7 @@ class Zikula_Debug_Timer
         $size = count($this->times);
         $start = $this->times[0];
         $d = 0;
-        $data = array();
+        $data = [];
 
         for ($i = 1; $i < $size; $i++) {
             $last = $this->times[$i - 1];

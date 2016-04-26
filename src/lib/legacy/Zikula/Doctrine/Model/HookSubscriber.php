@@ -24,82 +24,84 @@ class Zikula_Doctrine_Model_HookSubscriber extends Doctrine_Record
     {
         $this->setTableName('hook_subscriber');
 
-        $this->hasColumn('id', 'integer', 4, array(
-             'type' => 'integer',
-             'length' => 4,
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => true,
-             'autoincrement' => true,
-             ));
+        $this->hasColumn('id', 'integer', 4, [
+            'type' => 'integer',
+            'length' => 4,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => true,
+            'autoincrement' => true
+        ]);
 
-        $this->hasColumn('owner', 'string', 40, array(
-             'type' => 'string',
-             'length' => 40,
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => false,
-             'notnull' => true,
-             'autoincrement' => false,
-             ));
+        $this->hasColumn('owner', 'string', 40, [
+            'type' => 'string',
+            'length' => 40,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => false,
+            'notnull' => true,
+            'autoincrement' => false
+        ]);
 
-        $this->hasColumn('subowner', 'string', 40, array(
-             'type' => 'string',
-             'length' => 40,
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => false,
-             'notnull' => false,
-             'autoincrement' => false,
-             ));
+        $this->hasColumn('subowner', 'string', 40, [
+            'type' => 'string',
+            'length' => 40,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => false,
+            'notnull' => false,
+            'autoincrement' => false
+        ]);
 
-        $this->hasColumn('sareaid', 'integer', 4, array(
-             'type' => 'integer',
-             'length' => 4,
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => false,
-             'notnull' => true,
-             'autoincrement' => false,
-             ));
+        $this->hasColumn('sareaid', 'integer', 4, [
+            'type' => 'integer',
+            'length' => 4,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => false,
+            'notnull' => true,
+            'autoincrement' => false
+        ]);
 
-        $this->hasColumn('hooktype', 'string', 20, array(
-             'type' => 'string',
-             'length' => 20,
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => false,
-             'notnull' => true,
-             'autoincrement' => false,
-             ));
+        $this->hasColumn('hooktype', 'string', 20, [
+            'type' => 'string',
+            'length' => 20,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => false,
+            'notnull' => true,
+            'autoincrement' => false
+        ]);
 
-        $this->hasColumn('category', 'string', 20, array(
-             'type' => 'string',
-             'length' => 10,
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => false,
-             'notnull' => true,
-             'autoincrement' => false,
-             ));
+        $this->hasColumn('category', 'string', 20, [
+            'type' => 'string',
+            'length' => 10,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => false,
+            'notnull' => true,
+            'autoincrement' => false
+        ]);
 
-        $this->hasColumn('eventname', 'string', 100, array(
-             'type' => 'string',
-             'length' => 100,
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => false,
-             'notnull' => true,
-             'autoincrement' => false,
-             ));
+        $this->hasColumn('eventname', 'string', 100, [
+            'type' => 'string',
+            'length' => 100,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => false,
+            'notnull' => true,
+            'autoincrement' => false
+        ]);
 
-        $this->index('myindex', array(
-                'fields' => array(
-                    'eventname' => array(
-                        'sorting' => 'ASC',
-                        'length'  => 100),
-                    ),
-                'type' => 'unique'));
+        $this->index('myindex', [
+            'fields' => [
+                'eventname' => [
+                    'sorting' => 'ASC',
+                    'length'  => 100
+                ]
+            ],
+            'type' => 'unique'
+        ]);
     }
 
     /**

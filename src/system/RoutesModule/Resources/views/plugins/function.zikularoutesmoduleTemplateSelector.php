@@ -24,11 +24,11 @@
 function smarty_function_zikularoutesmoduleTemplateSelector($params, $view)
 {
     $dom = \ZLanguage::getModuleDomain('ZikulaRoutesModule');
-    $result = array();
+    $result = [];
 
-    $result[] = array('text' => __('Only item titles', $dom), 'value' => 'itemlist_display.tpl');
-    $result[] = array('text' => __('With description', $dom), 'value' => 'itemlist_display_description.tpl');
-    $result[] = array('text' => __('Custom template', $dom), 'value' => 'custom');
+    $result[] = ['text' => __('Only item titles', $dom), 'value' => 'itemlist_display.tpl'];
+    $result[] = ['text' => __('With description', $dom), 'value' => 'itemlist_display_description.tpl'];
+    $result[] = ['text' => __('Custom template', $dom), 'value' => 'custom'];
 
     if (array_key_exists('assign', $params)) {
         $view->assign($params['assign'], $result);

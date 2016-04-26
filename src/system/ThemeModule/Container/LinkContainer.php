@@ -78,20 +78,22 @@ class LinkContainer implements LinkContainerInterface
      */
     private function getAdmin()
     {
-        $links = array();
+        $links = [];
 
-        if ($this->permissionApi->hasPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            $links[] = [
-                'url' => $this->router->generate('zikulathememodule_theme_view'),
-                'text' => $this->translator->__('Themes list'),
-                'icon' => 'list'];
+        if (!$this->permissionApi->hasPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
+            return $links;
         }
-        if ($this->permissionApi->hasPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            $links[] = [
-                'url' => $this->router->generate('zikulathememodule_admin_modifyconfig'),
-                'text' => $this->translator->__('Settings'),
-                'icon' => 'wrench'];
-        }
+
+        $links[] = [
+            'url' => $this->router->generate('zikulathememodule_theme_view'),
+            'text' => $this->translator->__('Themes list'),
+            'icon' => 'list'
+        ];
+        $links[] = [
+            'url' => $this->router->generate('zikulathememodule_admin_modifyconfig'),
+            'text' => $this->translator->__('Settings'),
+            'icon' => 'wrench'
+        ];
 
         return $links;
     }
@@ -104,7 +106,8 @@ class LinkContainer implements LinkContainerInterface
             $links[] = [
                 'url' => $this->router->generate('zikulathememodule_user_index'),
                 'text' => $this->translator->__('Theme switcher'),
-                'icon' => 'admin.png'];
+                'icon' => 'admin.png'
+            ];
         }
 
         return $links;

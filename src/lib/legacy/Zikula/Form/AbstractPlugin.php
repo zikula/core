@@ -144,11 +144,11 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      * HTML attributes.
      *
      * Associative array of attributes to add to the plugin. For instance:
-     * array('title' => 'A tooltip title', onclick => 'doSomething()')
+     * ['title' => 'A tooltip title', onclick => 'doSomething()']
      *
      * @var array
      */
-    public $attributes = array();
+    public $attributes = [];
 
     /**
      * Zikula_Form_View property.
@@ -200,7 +200,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      *
      * @var array
      */
-    public $plugins = array();
+    public $plugins = [];
 
     /**
      * Temporary storage of the output from renderBegin in blocks.

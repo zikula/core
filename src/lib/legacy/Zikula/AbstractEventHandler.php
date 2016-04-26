@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * of eventname => handlerMethod like the following.  (Can contain multiple
  * index pairs).
  *
- * protected $eventNames = array('name' => 'handlerMethod')
+ * protected $eventNames = ['name' => 'handlerMethod']
  *
  * The handler methods must be implemented as followes:
  *
@@ -32,7 +32,7 @@ abstract class Zikula_AbstractEventHandler
      *
      * @var array
      */
-    protected $eventNames = array();
+    protected $eventNames = [];
 
     /**
      * EventManager instance.
@@ -111,7 +111,11 @@ abstract class Zikula_AbstractEventHandler
             throw new InvalidArgumentException(sprintf('Method %1$s does not exist in this EventHandler class %2$s', $method, get_class($this)));
         }
 
-        $this->eventNames[] = array('name' => $name, 'method' => $method, 'weight' => $weight);
+        $this->eventNames[] = [
+            'name' => $name,
+            'method' => $method,
+            'weight' => $weight
+        ];
     }
 
     /**
@@ -162,7 +166,7 @@ abstract class Zikula_AbstractEventHandler
     public function attach()
     {
         foreach ($this->eventNames as $callable) {
-            $this->eventManager->addListener($callable['name'], array($this, $callable['method']), 0 - (int)$callable['weight']);
+            $this->eventManager->addListener($callable['name'], [$this, $callable['method']], 0 - (int)$callable['weight']);
         }
     }
 
@@ -174,7 +178,7 @@ abstract class Zikula_AbstractEventHandler
     public function detach()
     {
         foreach ($this->eventNames as $callable) {
-            $this->eventManager->removeListener($callable['name'], array($this, $callable['method']));
+            $this->eventManager->removeListener($callable['name'], [$this, $callable['method']]);
         }
     }
 

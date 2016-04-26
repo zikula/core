@@ -29,7 +29,7 @@ function smarty_outputfilter_admintitle($source, $view)
     }
 
     // init the args
-    $titleargs = array();
+    $titleargs = [];
 
     // checks for header level 3
     if ($header3 && isset($header3[1]) && $header3[1]) {

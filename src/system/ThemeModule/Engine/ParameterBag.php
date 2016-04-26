@@ -16,7 +16,7 @@ namespace Zikula\ThemeModule\Engine;
  *
  * This class provides an abstracted method of collecting, managing and retrieving variables.
  * values can be stored in a namespaced array structure. i.e.
- *   'key' = array('subkey' => value, 'subkey2' => value2)
+ *   'key' = ['subkey' => value, 'subkey2' => value2]
  *      or
  *   'key.subkey' = value
  *   'key.subkey2' = value2
@@ -35,7 +35,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
      */
     private $ns;
 
-    public function __construct(array $array = array(), $ns = '.')
+    public function __construct(array $array = [], $ns = '.')
     {
         $this->parameters = $array;
         $this->ns = $ns;
@@ -84,7 +84,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Sets value.
-     *   can use 'key' = array('subkey' => value, 'subkey2' => value2)
+     *   can use 'key' = ['subkey' => value, 'subkey2' => value2]
      *      or
      *   'key.subkey' = value
      *   'key.subkey2' = value2
@@ -136,7 +136,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
      */
     public function replace(array $parameters)
     {
-        $this->parameters = array();
+        $this->parameters = [];
         foreach ($parameters as $key => $value) {
             $this->set($key, $value);
         }
@@ -150,7 +150,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
     public function clear()
     {
         $return = $this->parameters;
-        $this->parameters = array();
+        $this->parameters = [];
 
         return $return;
     }
@@ -201,7 +201,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
                 return $array;
             }
 
-            $array[$parts[0]] = array();
+            $array[$parts[0]] = [];
 
             return $array;
         }
@@ -214,7 +214,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
                     return $array;
                 }
 
-                $array[$part] = array();
+                $array[$part] = [];
             }
 
             $array = &$array[$part];

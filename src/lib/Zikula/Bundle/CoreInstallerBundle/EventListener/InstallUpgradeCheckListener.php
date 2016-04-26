@@ -74,8 +74,10 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         // @todo can this be done on kernel.request instead?
-        return array(
-            'core.init' => array(array('onCoreInit')),
-        );
+        return [
+            'core.init' => [
+                ['onCoreInit']
+            ],
+        ];
     }
 }

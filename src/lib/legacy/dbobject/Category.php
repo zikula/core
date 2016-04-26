@@ -21,15 +21,17 @@ class Categories_DBObject_Category extends DBObject
         $this->_objType = 'categories_category';
         $this->_objPath = 'category';
 
-        $this->_objPermissionFilter[] = array('component_left' => 'ZikulaCategoriesModule',
-                'component_middle' => '',
-                'component_right' => '',
-                'instance_left' => 'id',
-                'instance_middle' => 'ipath',
-                'instance_right' => 'path',
-                'level' => ACCESS_READ);
+        $this->_objPermissionFilter[] = [
+            'component_left' => 'ZikulaCategoriesModule',
+            'component_middle' => '',
+            'component_right' => '',
+            'instance_left' => 'id',
+            'instance_middle' => 'ipath',
+            'instance_right' => 'path',
+            'level' => ACCESS_READ
+        ];
 
-        $this->_objValidation['name'] = array('name', true, 'noop', '', __('Error! You did not enter a name.'), '');
+        $this->_objValidation['name'] = ['name', true, 'noop', '', __('Error! You did not enter a name.'), ''];
 
         $this->_init($init, $key);
     }

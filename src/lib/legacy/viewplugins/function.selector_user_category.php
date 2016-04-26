@@ -45,7 +45,7 @@ function smarty_function_selector_user_category($params, Zikula_View $view)
     $multipleSize     = isset($params['multipleSize'])     ? $params['multipleSize']     : 1;
     $doReplaceRootCat = false;
 
-    $userCats = ModUtil::apiFunc('ZikulaCategoriesModule', 'user', 'getusercategories', array('returnCategory' => 1, 'relative' => $relative));
+    $userCats = ModUtil::apiFunc('ZikulaCategoriesModule', 'user', 'getusercategories', ['returnCategory' => 1, 'relative' => $relative]);
     $html = CategoryUtil::getSelector_Categories($userCats, $field, $selectedValue, $name, $defaultValue, $defaultText,
                                                   $submit, $displayPath, $doReplaceRootCat, $multipleSize);
 

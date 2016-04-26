@@ -21,11 +21,11 @@
  */
 function smarty_modifier_zdebug_print_var($var, $depth = 0, $length = 40)
 {
-    $_replace = array(
-            "\n" => '<i>\n</i>',
-            "\r" => '<i>\r</i>',
-            "\t" => '<i>\t</i>'
-    );
+    $_replace = [
+        "\n" => '<i>\n</i>',
+        "\r" => '<i>\r</i>',
+        "\t" => '<i>\t</i>'
+    ];
 
     if ($var instanceof Doctrine_Record || $var instanceof Doctrine_Collection) {
         $varname = get_class($var);
@@ -34,20 +34,20 @@ function smarty_modifier_zdebug_print_var($var, $depth = 0, $length = 40)
 
     switch (gettype($var)) {
         case 'array':
-            $results = '<b>' . (isset($varname) ? "$varname Object" : 'Array') . ' (' . count($var) . ')</b>';
+            $results = '<strong>' . (isset($varname) ? "$varname Object" : 'Array') . ' (' . count($var) . ')</strong>';
             foreach ($var as $curr_key => $curr_val) {
                 $results .= '<br>' . str_repeat('&nbsp;', $depth * 2)
-                        . '<b>' . strtr($curr_key, $_replace) . '</b> =&gt; '
+                        . '<strong>' . strtr($curr_key, $_replace) . '</strong> =&gt; '
                         . smarty_modifier_debug_print_var($curr_val, ++$depth, $length);
                 $depth--;
             }
             break;
         case 'object':
             $object_vars = get_object_vars($var);
-            $results = '<b>' . get_class($var) . ' Object (' . count($object_vars) . ')</b>';
+            $results = '<strong>' . get_class($var) . ' Object (' . count($object_vars) . ')</strong>';
             foreach ($object_vars as $curr_key => $curr_val) {
                 $results .= '<br>' . str_repeat('&nbsp;', $depth * 2)
-                        . '<b> -&gt;' . strtr($curr_key, $_replace) . '</b> = '
+                        . '<strong> -&gt;' . strtr($curr_key, $_replace) . '</strong> = '
                         . smarty_modifier_debug_print_var($curr_val, ++$depth, $length);
                 $depth--;
             }
@@ -64,7 +64,7 @@ function smarty_modifier_zdebug_print_var($var, $depth = 0, $length = 40)
             } else {
                 $results = htmlspecialchars((string)$var);
             }
-            $results = '<i>' . $results . '</i>';
+            $results = '<em>' . $results . '</em>';
             break;
         case 'integer':
         case 'float':

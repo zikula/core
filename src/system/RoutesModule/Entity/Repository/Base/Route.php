@@ -52,7 +52,7 @@ class Route extends SortableRepository
      */
     public function getAllowedSortingFields()
     {
-        return array(
+        return [
             'id',
             'workflowState',
             'routeType',
@@ -77,7 +77,7 @@ class Route extends SortableRepository
             'updatedUserId',
             'createdDate',
             'updatedDate',
-        );
+        ];
     }
 
     /**
@@ -182,30 +182,30 @@ class Route extends SortableRepository
      *
      * @return array List of template variables to be assigned.
      */
-    public function getAdditionalTemplateParameters($context = '', $args = array())
+    public function getAdditionalTemplateParameters($context = '', $args = [])
     {
-        if (!in_array($context, array('controllerAction', 'api', 'actionHandler', 'block', 'contentType'))) {
+        if (!in_array($context, ['controllerAction', 'api', 'actionHandler', 'block', 'contentType'])) {
             $context = 'controllerAction';
         }
     
-        $templateParameters = array();
+        $templateParameters = [];
     
         if ($context == 'controllerAction') {
             $serviceManager = ServiceUtil::getManager();
             if (!isset($args['action'])) {
                 $args['action'] = FormUtil::getPassedValue('func', 'index', 'GETPOST');
             }
-            if (in_array($args['action'], array('index', 'view'))) {
+            if (in_array($args['action'], ['index', 'view'])) {
                 $templateParameters = $this->getViewQuickNavParameters($context, $args);
                 $listHelper = $serviceManager->get('zikularoutesmodule.listentries_helper');
                 $templateParameters['workflowStateItems'] = $listHelper->getEntries('route', 'workflowState');
                 $templateParameters['routeTypeItems'] = $listHelper->getEntries('route', 'routeType');
                 $templateParameters['schemesItems'] = $listHelper->getEntries('route', 'schemes');
                 $templateParameters['methodsItems'] = $listHelper->getEntries('route', 'methods');
-                $booleanSelectorItems = array(
-                    array('value' => 'no', 'text' => __('No')),
-                    array('value' => 'yes', 'text' => __('Yes'))
-                );
+                $booleanSelectorItems = [
+                    ['value' => 'no', 'text' => __('No')],
+                    ['value' => 'yes', 'text' => __('Yes')]
+                ];
                 $templateParameters['prependBundlePrefixItems'] = $booleanSelectorItems;
                 $templateParameters['translatableItems'] = $booleanSelectorItems;
             }
@@ -227,13 +227,13 @@ class Route extends SortableRepository
      *
      * @return array List of template variables to be assigned.
      */
-    protected function getViewQuickNavParameters($context = '', $args = array())
+    protected function getViewQuickNavParameters($context = '', $args = [])
     {
-        if (!in_array($context, array('controllerAction', 'api', 'actionHandler', 'block', 'contentType'))) {
+        if (!in_array($context, ['controllerAction', 'api', 'actionHandler', 'block', 'contentType'])) {
             $context = 'controllerAction';
         }
     
-        $parameters = array();
+        $parameters = [];
         $parameters['workflowState'] = $this->request->query->get('workflowState', '');
         $parameters['routeType'] = $this->request->query->get('routeType', '');
         $parameters['schemes'] = $this->request->query->get('schemes', '');
@@ -267,7 +267,7 @@ class Route extends SortableRepository
     
         $serviceManager = ServiceUtil::getManager();
         $logger = $serviceManager->get('logger');
-        $logger->debug('{app}: User {user} truncated the {entity} entity table.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route'));
+        $logger->debug('{app}: User {user} truncated the {entity} entity table.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route']);
     }
     /**
      * Updates the creator of all objects created by a certain user.
@@ -297,7 +297,7 @@ class Route extends SortableRepository
     
         $serviceManager = ServiceUtil::getManager();
         $logger = $serviceManager->get('logger');
-        $logger->debug('{app}: User {user} updated {entities} created by user id {userid}.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entities' => 'routes', 'userid' => $userId));
+        $logger->debug('{app}: User {user} updated {entities} created by user id {userid}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entities' => 'routes', 'userid' => $userId]);
     }
     
     /**
@@ -328,7 +328,7 @@ class Route extends SortableRepository
     
         $serviceManager = ServiceUtil::getManager();
         $logger = $serviceManager->get('logger');
-        $logger->debug('{app}: User {user} updated {entities} edited by user id {userid}.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entities' => 'routes', 'userid' => $userId));
+        $logger->debug('{app}: User {user} updated {entities} edited by user id {userid}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entities' => 'routes', 'userid' => $userId]);
     }
     
     /**
@@ -357,7 +357,7 @@ class Route extends SortableRepository
     
         $serviceManager = ServiceUtil::getManager();
         $logger = $serviceManager->get('logger');
-        $logger->debug('{app}: User {user} deleted {entities} created by user id {userid}.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entities' => 'routes', 'userid' => $userId));
+        $logger->debug('{app}: User {user} deleted {entities} created by user id {userid}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entities' => 'routes', 'userid' => $userId]);
     }
     
     /**
@@ -386,7 +386,7 @@ class Route extends SortableRepository
     
         $serviceManager = ServiceUtil::getManager();
         $logger = $serviceManager->get('logger');
-        $logger->debug('{app}: User {user} deleted {entities} edited by user id {userid}.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entities' => 'routes', 'userid' => $userId));
+        $logger->debug('{app}: User {user} deleted {entities} edited by user id {userid}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entities' => 'routes', 'userid' => $userId]);
     }
 
     /**
@@ -399,7 +399,7 @@ class Route extends SortableRepository
      */
     protected function addIdFilter($id, QueryBuilder $qb)
     {
-        return $this->addIdListFilter(array($id), $qb);
+        return $this->addIdListFilter([$id], $qb);
     }
     
     /**
@@ -450,7 +450,7 @@ class Route extends SortableRepository
      */
     public function selectById($id = 0, $useJoins = true, $slimMode = false)
     {
-        $results = $this->selectByIdList(array($id));
+        $results = $this->selectByIdList([$id]);
     
         return (count($results) > 0) ? $results[0] : null;
     }
@@ -466,7 +466,7 @@ class Route extends SortableRepository
      *
      * @throws InvalidArgumentException Thrown if invalid parameters are received
      */
-    public function selectByIdList($idList = array(0), $useJoins = true, $slimMode = false)
+    public function selectByIdList($idList = [0], $useJoins = true, $slimMode = false)
     {
         $qb = $this->genericBaseQuery('', '', $useJoins, $slimMode);
         $qb = $this->addIdListFilter($idList, $qb);
@@ -539,7 +539,7 @@ class Route extends SortableRepository
         $count = 0; // will be set at a later stage (in calling method)
         
     
-        return array($query, $count);
+        return [$query, $count];
     }
     
     /**
@@ -561,7 +561,7 @@ class Route extends SortableRepository
         $page = $currentPage;
     
         // check if we have any filters set
-        $parameters = $this->getViewQuickNavParameters('', array());
+        $parameters = $this->getViewQuickNavParameters('', []);
         $hasFilters = false;
         foreach ($parameters as $k => $v) {
             if ((!is_numeric($v) && $v != '') || (is_numeric($v) && $v > 0)) {
@@ -610,7 +610,7 @@ class Route extends SortableRepository
             return $qb;
         }
     
-        $parameters = $this->getViewQuickNavParameters('', array());
+        $parameters = $this->getViewQuickNavParameters('', []);
         foreach ($parameters as $k => $v) {
             if ($k == 'catId') {
                 // single category filter
@@ -624,13 +624,13 @@ class Route extends SortableRepository
                 $qb->andWhere('tblCategories.category IN (:categories)')
                    ->setParameter('categories', $v);
                  */
-                $qb = ModUtil::apiFunc('ZikulaRoutesModule', 'category', 'buildFilterClauses', array('qb' => $qb, 'ot' => 'route', 'catids' => $v));
-            } elseif (in_array($k, array('q', 'searchterm'))) {
+                $qb = ModUtil::apiFunc('ZikulaRoutesModule', 'category', 'buildFilterClauses', ['qb' => $qb, 'ot' => 'route', 'catids' => $v]);
+            } elseif (in_array($k, ['q', 'searchterm'])) {
                 // quick search
                 if (!empty($v)) {
                     $qb = $this->addSearchFilter($qb, $v);
                 }
-            } elseif (in_array($k, array('prependBundlePrefix', 'translatable'))) {
+            } elseif (in_array($k, ['prependBundlePrefix', 'translatable'])) {
                 // boolean filter
                 if ($v == 'no') {
                     $qb->andWhere('tbl.' . $k . ' = 0');
@@ -667,7 +667,7 @@ class Route extends SortableRepository
      *
      * @return Doctrine\ORM\QueryBuilder Enriched query builder instance.
      */
-    protected function applyDefaultFilters(QueryBuilder $qb, $parameters = array())
+    protected function applyDefaultFilters(QueryBuilder $qb, $parameters = [])
     {
         $currentModule = ModUtil::getName();//FormUtil::getPassedValue('module', '', 'GETPOST');
         $currentLegacyControllerType = FormUtil::getPassedValue('lct', 'user', 'GETPOST');
@@ -677,7 +677,7 @@ class Route extends SortableRepository
     
         if (!in_array('workflowState', array_keys($parameters)) || empty($parameters['workflowState'])) {
             // per default we show approved routes only
-            $onlineStates = array('approved');
+            $onlineStates = ['approved'];
             $qb->andWhere('tbl.workflowState IN (:onlineStates)')
                ->setParameter('onlineStates', $onlineStates);
         }
@@ -697,7 +697,7 @@ class Route extends SortableRepository
      *
      * @return Array with retrieved collection and amount of total records affected by this query.
      */
-    public function selectSearch($fragment = '', $exclude = array(), $orderBy = '', $currentPage = 1, $resultsPerPage = 25, $useJoins = true)
+    public function selectSearch($fragment = '', $exclude = [], $orderBy = '', $currentPage = 1, $resultsPerPage = 25, $useJoins = true)
     {
         $qb = $this->genericBaseQuery('', $orderBy, $useJoins);
         if (count($exclude) > 0) {
@@ -817,9 +817,9 @@ class Route extends SortableRepository
     
         if (!$isPaginated) {
             return $result;
-        } else {
-            return array($result, $count);
         }
+
+        return [$result, $count];
     }
 
     /**
@@ -862,7 +862,7 @@ class Route extends SortableRepository
      *
      * @return integer amount of affected records
      */
-    public function selectCount($where = '', $useJoins = true, $parameters = array())
+    public function selectCount($where = '', $useJoins = true, $parameters = [])
     {
         $qb = $this->getCountQuery($where, $useJoins);
     
@@ -969,13 +969,13 @@ class Route extends SortableRepository
             // Array of plugins to load.
             // If no plugin with default = true given the compare plugin is loaded and used for unconfigured fields.
             // Multiple objects of the same plugin with different configurations are possible.
-            array(
-            ),
+            [
+            ],
     
             // Allowed operators per field.
             // Array in the form "field name => operator array".
             // If a field is not set in this array all operators are allowed.
-            array()
+            []
         );
     
         // Request object to obtain the filter string (only needed if the filter is set via GET or it reads values from GET).

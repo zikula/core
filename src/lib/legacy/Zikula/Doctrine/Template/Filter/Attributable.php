@@ -32,9 +32,9 @@ class Zikula_Doctrine_Template_Filter_Attributable extends Doctrine_Record_Filte
             if ($record->state() == Doctrine_Record::STATE_CLEAN) {
                 $record->state(Doctrine_Record::STATE_DIRTY);
             }
-        } else {
-            throw new Doctrine_Record_UnknownPropertyException(sprintf('Unknown record property / related component "%s" on "%s"', $name, get_class($record)));
         }
+
+        throw new Doctrine_Record_UnknownPropertyException(sprintf('Unknown record property / related component "%s" on "%s"', $name, get_class($record)));
     }
 
     /**
@@ -49,7 +49,7 @@ class Zikula_Doctrine_Template_Filter_Attributable extends Doctrine_Record_Filte
     public function filterGet(Doctrine_Record $record, $name)
     {
         if ($name == '__ATTRIBUTES__') {
-            $value = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+            $value = new ArrayObject([], ArrayObject::ARRAY_AS_PROPS);
 
             $record->mapValue('__ATTRIBUTES__', $value);
             if ($record->state() == Doctrine_Record::STATE_CLEAN) {
@@ -57,8 +57,8 @@ class Zikula_Doctrine_Template_Filter_Attributable extends Doctrine_Record_Filte
             }
 
             return $value;
-        } else {
-            throw new Doctrine_Record_UnknownPropertyException(sprintf('Unknown record property / related component "%s" on "%s"', $name, get_class($record)));
         }
+
+        throw new Doctrine_Record_UnknownPropertyException(sprintf('Unknown record property / related component "%s" on "%s"', $name, get_class($record)));
     }
 }

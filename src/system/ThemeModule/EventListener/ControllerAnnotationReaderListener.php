@@ -52,10 +52,10 @@ class ControllerAnnotationReaderListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(
-            KernelEvents::CONTROLLER => array(
-                array('readControllerAnnotations'),
-            ),
-        );
+        return [
+            KernelEvents::CONTROLLER => [
+                ['readControllerAnnotations']
+            ]
+        ];
     }
 }

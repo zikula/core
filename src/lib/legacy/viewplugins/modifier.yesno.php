@@ -29,7 +29,10 @@ function smarty_modifier_yesno($string, $images = false)
     if ($images) {
         $view = Zikula_View::getInstance();
         require_once $view->_get_plugin_filepath('function', 'img');
-        $params = array('modname' => 'core', 'set' => 'icons/extrasmall');
+        $params = [
+            'modname' => 'core',
+            'set' => 'icons/extrasmall'
+        ];
     }
 
     if ((bool)$string) {
@@ -38,17 +41,17 @@ function smarty_modifier_yesno($string, $images = false)
             $params['alt'] = $params['title'] = __('Yes');
 
             return smarty_function_img($params, $view);
-        } else {
-            return __('Yes');
         }
-    } else {
-        if ($images) {
-            $params['src'] = 'button_cancel.png';
-            $params['alt'] = $params['title'] = __('No');
 
-            return smarty_function_img($params, $view);
-        } else {
-            return __('No');
-        }
+        return __('Yes');
     }
+
+    if ($images) {
+        $params['src'] = 'button_cancel.png';
+        $params['alt'] = $params['title'] = __('No');
+
+        return smarty_function_img($params, $view);
+    }
+
+    return __('No');
 }

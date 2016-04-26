@@ -23,14 +23,14 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
      *
      * @var array
      */
-    protected $ops = array();
+    protected $ops = [];
 
     /**
      * Fields to use the plugin for.
      *
      * @var array
      */
-    protected $fields = array();
+    protected $fields = [];
 
     /**
      * Constructor
@@ -53,7 +53,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
         if (isset($config['ops']) && (!isset($this->ops) || !is_array($this->ops))) {
             $this->activateOperators($config['ops']);
         } else {
-            $this->activateOperators(array('eq', 'ne', 'lt', 'le', 'gt', 'ge', 'like', 'null', 'notnull'));
+            $this->activateOperators(['eq', 'ne', 'lt', 'le', 'gt', 'ge', 'like', 'null', 'notnull']);
         }
 
         if ($config['default'] == true || count($this->fields) <= 0) {
@@ -119,7 +119,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
             $fields[] = '-';
         }
 
-        $ops = array();
+        $ops = [];
         foreach ($this->ops as $op) {
             $ops[$op] = $fields;
         }
@@ -134,11 +134,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
      */
     public function availableOperators()
     {
-        return array(
-                     'eq',
-                     'ne',
-                     'sub'
-                    );
+        return ['eq', 'ne', 'sub'];
     }
 
     /**
@@ -170,7 +166,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
 
             case 'sub':
                 $cats = CategoryUtil::getSubCategories($value);
-                $items = array();
+                $items = [];
                 $items[] = $value;
                 foreach ($cats as $item) {
                     $items[] = $item['id'];
@@ -183,7 +179,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
                 break;
         }
 
-        return array('where' => $where);
+        return ['where' => $where];
     }
 
     /**
@@ -215,8 +211,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
 
             case 'sub':
                 $cats = CategoryUtil::getSubCategories($value);
-                $items = array();
-                $items[] = $value;
+                $items = [$value];
                 foreach ($cats as $item) {
                     $items[] = $item['id'];
                 }
@@ -228,6 +223,6 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
                 break;
         }
 
-        return array('where' => $where);
+        return ['where' => $where];
     }
 }

@@ -22,7 +22,7 @@ class MySqlGenerateSchemaListener
 
     public function __construct(EventManager $evm)
     {
-        $evm->addEventListener(array(self::postGenerateSchemaTable), $this);
+        $evm->addEventListener([self::postGenerateSchemaTable], $this);
     }
 
     public function postGenerateSchema(GenerateSchemaEventArgs $event)

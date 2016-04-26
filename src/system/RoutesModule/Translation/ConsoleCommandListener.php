@@ -23,7 +23,7 @@ class ConsoleCommandListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array (
-            ConsoleEvents::COMMAND => array('checkBundleForTranslatingRoutes')
+            ConsoleEvents::COMMAND => ['checkBundleForTranslatingRoutes']
         );
     }
 

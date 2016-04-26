@@ -14,7 +14,7 @@ use Symfony\Component\Finder\Finder;
 
 class Scanner
 {
-    private $jsons = array();
+    private $jsons = [];
 
     /**
      * Scans and loads composer.json files.
@@ -138,7 +138,7 @@ class Scanner
 
     private function getMetaData($type, $indexByShortName)
     {
-        $array = array();
+        $array = [];
         foreach ($this->jsons as $json) {
             if ($json['type'] === $type) {
                 $indexField = $indexByShortName ? $json['extra']['zikula']['short-name'] : $json['name'];

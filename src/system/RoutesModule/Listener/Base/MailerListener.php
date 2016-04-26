@@ -26,11 +26,11 @@ class MailerListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            'module.mailer.api.sendmessage' => array('sendMessage', 5)
-        );
+        return [
+            'module.mailer.api.sendmessage' => ['sendMessage', 5]
+        ];
     }
-    
+
     /**
      * Listener for the `module.mailer.api.sendmessage` event.
      *

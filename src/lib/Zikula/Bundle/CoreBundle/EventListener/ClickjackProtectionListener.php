@@ -33,11 +33,11 @@ class ClickjackProtectionListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(
-            KernelEvents::RESPONSE => array(
-                array('onKernelResponse'),
-            )
-        );
+        return [
+            KernelEvents::RESPONSE => [
+                ['onKernelResponse']
+            ]
+        ];
     }
 
     /**

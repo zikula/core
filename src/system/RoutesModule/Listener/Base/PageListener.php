@@ -26,10 +26,10 @@ class PageListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            'pageutil.addvar_filter' => array('pageutilAddvarFilter', 5),
-            'system.outputfilter'    => array('systemOutputfilter', 5)
-        );
+        return [
+            'pageutil.addvar_filter' => ['pageutilAddvarFilter', 5],
+            'system.outputfilter'    => ['systemOutputfilter', 5]
+        ];
     }
     
     /**

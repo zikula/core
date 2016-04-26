@@ -27,9 +27,9 @@ class BootstrapBundlesCommand extends ContainerAwareCommand
 The <info>scan:bundles</info> command loads bundle table.
 EOT
             )
-            ->setDefinition(array(
+            ->setDefinition([
                 new InputArgument('create', InputArgument::OPTIONAL, 'Create schema'),
-            ))
+            ])
             ->setName('bootstrap:bundles');
     }
 

@@ -89,8 +89,8 @@ class Zikula_Routing_UrlRoute
 
         // set reasonable default values
         $this->compiled = false;
-        $this->variables = array();
-        $this->tokens = array();
+        $this->variables = [];
+        $this->tokens = [];
     }
 
     /**
@@ -147,7 +147,7 @@ class Zikula_Routing_UrlRoute
         // look for the star sign
         if (false !== strpos($this->regex, '<_star>')) {
             // append additional parameters
-            $additionalArgs = array();
+            $additionalArgs = [];
             foreach (array_diff_key($allParams, array_flip($this->variables), $this->defaults) as $key => $value) {
                 $additionalArgs[] = urlencode($key) . '/' . urlencode($value);
             }
@@ -178,7 +178,7 @@ class Zikula_Routing_UrlRoute
         }
 
         // initialise list of parameters to be collected
-        $parameters = array();
+        $parameters = [];
 
         // check for * in urlPattern
         if (isset($matches['_star'])) {
@@ -276,19 +276,19 @@ class Zikula_Routing_UrlRoute
             if (preg_match('#^:([a-zA-z0-6_]+)#', $pattern, $match)) {
                 // variable
                 $name = $match[1];
-                $this->tokens[] = array('variable', $name);
+                $this->tokens[] = ['variable', $name];
                 $this->variables[] = $name;
 
                 $pattern = substr($pattern, strlen($match[0]));
             } elseif (preg_match('#^(?:/|\.|\-)#', $pattern, $match)) {
                 // separator
-                $this->tokens[] = array('separator', $match[0]);
+                $this->tokens[] = ['separator', $match[0]];
 
                 $pattern = substr($pattern, strlen($match[0]));
             } elseif (preg_match('#^(.+?)(?:(?:/|\.|\-)|$)#', $pattern, $match)) {
                 // text
                 $text = $match[1];
-                $this->tokens[] = array('text', $text);
+                $this->tokens[] = ['text', $text];
 
                 $pattern = substr($pattern, strlen($match[1]));
             } else {

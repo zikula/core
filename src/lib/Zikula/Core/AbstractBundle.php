@@ -36,7 +36,7 @@ abstract class AbstractBundle extends Bundle
 
     public function setState($state)
     {
-        if (!in_array($state, array(self::STATE_ACTIVE, self::STATE_DISABLED, self::STATE_MISSING))) {
+        if (!in_array($state, [self::STATE_ACTIVE, self::STATE_DISABLED, self::STATE_MISSING])) {
             throw new \InvalidArgumentException(sprintf('Invalid state %s', $state));
         }
 

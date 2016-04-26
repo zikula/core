@@ -27,19 +27,18 @@
 function smarty_function_html_select_modulestylesheets($params, Zikula_View $view)
 {
     if (!isset($params['modname'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('html_select_modulestylesheets', 'modname')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['html_select_modulestylesheets', 'modname']));
 
         return false;
     }
 
+    $exclude = [];
     if (isset($params['exclude'])) {
         $exclude = explode(',', trim($params['exclude']));
         unset($params['exclude']);
-    } else {
-        $exclude = array();
     }
 
-    $params['values'] = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodstyles', array('modname' => $params['modname'], 'exclude' => $exclude));
+    $params['values'] = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodstyles', ['modname' => $params['modname'], 'exclude' => $exclude]);
     unset($params['modname']);
     $params['output'] = $params['values'];
 

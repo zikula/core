@@ -24,100 +24,101 @@ class Zikula_Doctrine_Model_HookBinding extends Doctrine_Record
     {
         $this->setTableName('hook_binding');
 
-        $this->hasColumn('id', 'integer', 4, array(
-                'type' => 'integer',
-                'length' => 4,
-                'fixed' => false,
-                'unsigned' => false,
-                'primary' => true,
-                'autoincrement' => true,
-        ));
+        $this->hasColumn('id', 'integer', 4, [
+            'type' => 'integer',
+            'length' => 4,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => true,
+            'autoincrement' => true
+        ]);
 
-        $this->hasColumn('sowner', 'string', 40, array(
-                'type' => 'string',
-                'length' => 40,
-                'fixed' => false,
-                'unsigned' => false,
-                'primary' => false,
-                'notnull' => true,
-                'autoincrement' => false,
-        ));
+        $this->hasColumn('sowner', 'string', 40, [
+            'type' => 'string',
+            'length' => 40,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => false,
+            'notnull' => true,
+            'autoincrement' => false
+        ]);
 
-        $this->hasColumn('subsowner', 'string', 40, array(
-             'type' => 'string',
-             'length' => 40,
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => false,
-             'notnull' => false,
-             'autoincrement' => false,
-             ));
+        $this->hasColumn('subsowner', 'string', 40, [
+            'type' => 'string',
+            'length' => 40,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => false,
+            'notnull' => false,
+            'autoincrement' => false
+        ]);
 
-        $this->hasColumn('powner', 'string', 40, array(
-                'type' => 'string',
-                'length' => 40,
-                'fixed' => false,
-                'unsigned' => false,
-                'primary' => false,
-                'notnull' => true,
-                'autoincrement' => false,
-        ));
+        $this->hasColumn('powner', 'string', 40, [
+            'type' => 'string',
+            'length' => 40,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => false,
+            'notnull' => true,
+            'autoincrement' => false
+        ]);
 
-        $this->hasColumn('subpowner', 'string', 40, array(
-             'type' => 'string',
-             'length' => 40,
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => false,
-             'notnull' => false,
-             'autoincrement' => false,
-             ));
+        $this->hasColumn('subpowner', 'string', 40, [
+            'type' => 'string',
+            'length' => 40,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => false,
+            'notnull' => false,
+            'autoincrement' => false
+        ]);
 
-        $this->hasColumn('sareaid', 'integer', 4, array(
-                'type' => 'integer',
-                'length' => 4,
-                'fixed' => false,
-                'unsigned' => false,
-                'primary' => false,
-                'notnull' => true,
-                'autoincrement' => false,
-        ));
+        $this->hasColumn('sareaid', 'integer', 4, [
+            'type' => 'integer',
+            'length' => 4,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => false,
+            'notnull' => true,
+            'autoincrement' => false
+        ]);
 
-        $this->hasColumn('pareaid', 'integer', 4, array(
-                'type' => 'string',
-                'length' => 4,
-                'fixed' => false,
-                'unsigned' => false,
-                'primary' => false,
-                'notnull' => true,
-                'autoincrement' => false,
-        ));
+        $this->hasColumn('pareaid', 'integer', 4, [
+            'type' => 'string',
+            'length' => 4,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => false,
+            'notnull' => true,
+            'autoincrement' => false
+        ]);
 
-        $this->hasColumn('category', 'string', 20, array(
-             'type' => 'string',
-             'length' => 10,
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => false,
-             'notnull' => true,
-             'autoincrement' => false,
-             ));
+        $this->hasColumn('category', 'string', 20, [
+            'type' => 'string',
+            'length' => 10,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => false,
+            'notnull' => true,
+            'autoincrement' => false
+        ]);
 
-        $this->hasColumn('sortorder', 'integer', 2, array(
-                'type' => 'integer',
-                'length' => 2,
-                'fixed' => false,
-                'unsigned' => false,
-                'primary' => false,
-                'notnull' => true,
-                'default' => 999,
-                'autoincrement' => false,
-        ));
+        $this->hasColumn('sortorder', 'integer', 2, [
+            'type' => 'integer',
+            'length' => 2,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => false,
+            'notnull' => true,
+            'default' => 999,
+            'autoincrement' => false
+        ]);
 
-        $this->index('sortidx', array(
-                'fields' => array(
-                        'sareaid'),
-                        ));
+        $this->index('sortidx', [
+            'fields' => [
+                'sareaid'
+            ]
+        ]);
     }
 
     /**

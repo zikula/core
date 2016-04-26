@@ -35,7 +35,7 @@ class VariableApiTest extends \PHPUnit_Framework_TestCase
         $kernel
             ->expects($this->once())
             ->method('getBundles')
-            ->will($this->returnValue(array('BaseBundle' => new BaseBundle())))
+            ->will($this->returnValue(['BaseBundle' => new BaseBundle()]))
         ;
 
         $repo = new ExtensionVarStubRepository();

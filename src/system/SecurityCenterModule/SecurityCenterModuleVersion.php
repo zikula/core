@@ -22,14 +22,17 @@ class SecurityCenterModuleVersion extends \Zikula_AbstractVersion
      */
     public function getMetaData()
     {
-        $meta = array();
-        $meta['displayname']    = $this->__('Security Center');
-        $meta['description']    = $this->__('Manage site security and settings.');
-        //! module name that appears in URL
-        $meta['url']            = $this->__('securitycenter');
-        $meta['version']        = '1.4.4';
-        $meta['core_min'] = '1.4.0';
-        $meta['securityschema'] = array('ZikulaSecurityCenterModule::' => '::');
+        $meta = [
+            'displayname' => $this->__('Security Center'),
+            'description' => $this->__('Manage site security and settings.'),
+            //! module name that appears in URL
+            'url' => $this->__('securitycenter'),
+            'version' => '1.4.4',
+            'core_min' => '1.4.0',
+            'securityschema' => [
+                'ZikulaSecurityCenterModule::' => '::'
+            ]
+        ];
 
         return $meta;
     }

@@ -25,11 +25,11 @@ function smarty_outputfilter_shorturls($source, $view)
     // If you control the server, it is preferable for better performance to put rewrite rules
     // from the htaccess file into main configuration file, httpd.conf.
 
-    $baseurl = System::getBaseUrl();
+    $baseUrl = System::getBaseUrl();
 
-    $prefix = '[(<[^>]*?)[\'"](?:'.$baseurl.'|'.$baseurl.')?(?:[./]{0,2})'; // Match local URLs in HTML tags, removes / and ./
-    $in = array('[<([^>]+)\s(src|href|background|action)\s*=\s*((["\'])?)(?!http)(?!skype:)(?!xmpp:)(?!icq:)(?!mailto:)(?!tel:)(?!javascript:)(?!bitcoin:)(?!geo:)(?!im:)(?!irc:)(?!ircs:)(?!sms:)(?!ssh:)(?!urn:)(?!wtai:)(?!smsto:)(?!sms:)(?!sip:)(?!magnet:)(?!webcal:)(?!data:)(?![/"\'\s#]+)]Ui');
-    $out = array('<$1 $2=$3'.$baseurl);
+    $prefix = '[(<[^>]*?)[\'"](?:'.$baseUrl.'|'.$baseUrl.')?(?:[./]{0,2})'; // Match local URLs in HTML tags, removes / and ./
+    $in = ['[<([^>]+)\s(src|href|background|action)\s*=\s*((["\'])?)(?!http)(?!skype:)(?!xmpp:)(?!icq:)(?!mailto:)(?!tel:)(?!javascript:)(?!bitcoin:)(?!geo:)(?!im:)(?!irc:)(?!ircs:)(?!sms:)(?!ssh:)(?!urn:)(?!wtai:)(?!smsto:)(?!sms:)(?!sip:)(?!magnet:)(?!webcal:)(?!data:)(?![/"\'\s#]+)]Ui'];
+    $out = ['<$1 $2=$3'.$baseUrl];
 
     // perform the replacement
     $source = preg_replace($in, $out, $source);

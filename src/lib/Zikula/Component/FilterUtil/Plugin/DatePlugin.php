@@ -25,14 +25,7 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
      */
     public function availableOperators()
     {
-        return array(
-            'eq',
-            'ne',
-            'gt',
-            'ge',
-            'lt',
-            'le'
-        );
+        return ['eq', 'ne', 'gt', 'ge', 'lt', 'le'];
     }
 
     /**
@@ -48,24 +41,16 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
     {
         // First check if this plugin have to work with this field
         if (array_search($field, $this->getFields()) === false) {
-            return array(
-                $field,
-                $op,
-                $value
-            ); // If not, return given value
+            return [$field, $op, $value]; // If not, return given value
         }
 
         // Now, work!
         // convert to unix timestamp
-        if (($date = $this->dateConvert($value)) === false) {
+        if (false === ($date = $this->dateConvert($value))) {
             return false;
         }
 
-        return array(
-            $field,
-            $op,
-            $date
-        );
+        return [$field, $op, $date];
     }
 
     /**
@@ -107,7 +92,7 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
      * tomorrow: The day after that day.
      * hour: That hour.
      * min/minute: That minute.
-     * Returns an array(from, to).
+     * Returns an array [from, to].
      *
      * @param string $date Date string.
      * @param string $type Period type.
@@ -167,10 +152,7 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
                 break;
         }
 
-        return array(
-            $from,
-            $to
-        );
+        return [$from, $to];
     }
 
     /**

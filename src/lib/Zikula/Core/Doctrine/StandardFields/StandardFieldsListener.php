@@ -29,11 +29,11 @@ class StandardFieldsListener extends MappedEventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array(
+        return [
             'prePersist',
             'onFlush',
             'loadClassMetadata'
-        );
+        ];
     }
 
     /**

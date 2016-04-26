@@ -52,7 +52,7 @@ class SessionStorage implements StorageInterface
             return false;
         }
 
-        $tokens = $this->session->get($this->key, array());
+        $tokens = $this->session->get($this->key, []);
 
         if (!array_key_exists($id, $tokens)) {
             return false;
@@ -66,8 +66,11 @@ class SessionStorage implements StorageInterface
      */
     public function save($id, $token, $timestamp)
     {
-        $tokens = $this->session->get($this->key, array());
-        $tokens[$id] = array('token' => $token, 'time' => (int)$timestamp);
+        $tokens = $this->session->get($this->key, []);
+        $tokens[$id] = [
+            'token' => $token,
+            'time' => (int)$timestamp
+        ];
         $this->session->set($this->key, $tokens);
     }
 
@@ -76,7 +79,7 @@ class SessionStorage implements StorageInterface
      */
     public function delete($id)
     {
-        $tokens = $this->session->get($this->key, array());
+        $tokens = $this->session->get($this->key, []);
         if (array_key_exists($id, $tokens)) {
             unset($tokens[$id]);
         }
@@ -89,7 +92,7 @@ class SessionStorage implements StorageInterface
      */
     public function gc($lifetime)
     {
-        $tokens = $this->session->get($this->key, array());
+        $tokens = $this->session->get($this->key, []);
         $now = time();
         foreach ($tokens as $key => $token) {
             if ($now - (int)$token['time'] > $lifetime) {

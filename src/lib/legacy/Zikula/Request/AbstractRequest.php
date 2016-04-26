@@ -66,7 +66,11 @@ abstract class Zikula_Request_AbstractRequest extends Request
      */
     public function addRequest($module, $controller, $action)
     {
-        $this->requests->append(array('module' => $module, 'controller' => $controller, 'action' => $action));
+        $this->requests->append([
+            'module' => $module,
+            'controller' => $controller,
+            'action' => $action
+        ]);
     }
 
     /**

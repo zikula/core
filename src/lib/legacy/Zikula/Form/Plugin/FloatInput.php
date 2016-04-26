@@ -127,13 +127,13 @@ class Zikula_Form_Plugin_FloatInput extends Zikula_Form_Plugin_TextInput
             }
 
             $i = $this->text;
-            if ($this->minValue !== null && $i < $this->minValue || $this->maxValue !== null && $i > $this->maxValue) {
-                if ($this->minValue !== null && $this->maxValue !== null) {
+            if (null !== $this->minValue && $i < $this->minValue || null !== $this->maxValue && $i > $this->maxValue) {
+                if (null !== $this->minValue && null !== $this->maxValue) {
                     $this->setError(__f('Error! Range error. Value must be between %1$s and %2$s.',
-                                        array($this->minValue, $this->maxValue)));
-                } elseif ($this->minValue !== null) {
+                                        [$this->minValue, $this->maxValue]));
+                } elseif (null !== $this->minValue) {
                     $this->setError(__f('Error! The value must be %s or more.', $this->minValue));
-                } elseif ($this->maxValue !== null) {
+                } elseif (null !== $this->maxValue) {
                     $this->setError(__f('Error! The value must be %s or less.', $this->maxValue));
                 }
             }

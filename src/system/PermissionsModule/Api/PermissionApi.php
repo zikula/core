@@ -191,7 +191,7 @@ class PermissionApi
 
         // Test if user has ANY access to given component, without determining exact instance
         if ($instance == 'ANY') {
-            $levels = array($level);
+            $levels = [$level];
             foreach ($perms as $perm) {
                 // component check
                 if (!preg_match("=^$perm[component]$=", $component)) {

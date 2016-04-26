@@ -228,10 +228,11 @@ abstract class Zikula_AbstractPlugin extends Zikula_AbstractEventHandler impleme
      *
      * Should return an array like this:
      * <sample>
-     * $meta = array('displayname' => $this->__('Display name'),
-     *               'description' => $this->__('Description goes here'),
-     *               'version' => '1.0.0'
-     *         );
+     * $meta = [
+     *     'displayname' => $this->__('Display name'),
+     *     'description' => $this->__('Description goes here'),
+     *     'version' => '1.0.0'
+     * ];
      *
      * return $meta;
      * </sample>

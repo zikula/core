@@ -65,7 +65,7 @@ function smarty_function_block($params, Zikula_View $view)
     unset($params['assign']);
 
     if (!$bid) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnblock', 'bid')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['block', 'bid']));
 
         return false;
     }
@@ -95,7 +95,7 @@ function smarty_function_block($params, Zikula_View $view)
     // We need the module name.
     $modinfo = ModUtil::getInfo($blockinfo['module']->getId());
     if (!is_array($modinfo) || !isset($modinfo['name'])) {
-        $modinfo = array('name' => 'core');
+        $modinfo = ['name' => 'core'];
     }
 
     // show the block and capture its contents

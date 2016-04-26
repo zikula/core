@@ -24,33 +24,38 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function getLinks()
     {
-        $links = array();
+        $links = [];
 
         if (SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_READ)) {
-            $links[] = array(
+            $links[] = [
                 'url' => $this->get('router')->generate('zikulacategoriesmodule_admin_view'),
                 'text' => $this->__('Categories list'),
-                'icon' => 'list');
+                'icon' => 'list'
+            ];
         }
         if (SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADD)) {
-            $links[] = array(
+            $links[] = [
                 'url' => $this->get('router')->generate('zikulacategoriesmodule_admin_newcat'),
                 'text' => $this->__('Create new category'),
-                'icon' => 'plus');
+                'icon' => 'plus'
+            ];
         }
         if (SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array(
+            $links[] = [
                 'url' => $this->get('router')->generate('zikulacategoriesmodule_admin_editregistry'),
                 'text' => $this->__('Category registry'),
-                'icon' => 'archive');
-            $links[] = array(
+                'icon' => 'archive'
+            ];
+            $links[] = [
                 'url' => $this->get('router')->generate('zikulacategoriesmodule_admin_config'),
                 'text' => $this->__('Rebuild paths'),
-                'icon' => 'refresh');
-            $links[] = array(
+                'icon' => 'refresh'
+            ];
+            $links[] = [
                 'url' => $this->get('router')->generate('zikulacategoriesmodule_admin_preferences'),
                 'text' => $this->__('Settings'),
-                'icon' => 'wrench');
+                'icon' => 'wrench'
+            ];
         }
 
         return $links;

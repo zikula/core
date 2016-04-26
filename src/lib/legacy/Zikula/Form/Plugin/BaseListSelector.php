@@ -106,13 +106,15 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
      * The list of selectable items.
      *
      * This is an array of arrays like this:
-     * array( array('text' => 'A', 'value' => '1'),
-     * array('text' => 'B', 'value' => '2'),
-     * array('text' => 'C', 'value' => '3') )
+     * [
+     *     ['text' => 'A', 'value' => '1'],
+     *     ['text' => 'B', 'value' => '2'],
+     *     ['text' => 'C', 'value' => '3']
+     * ]
      *
      * @var array
      */
-    public $items = array();
+    public $items = [];
 
     /**
      * HTML input name for this plugin. Defaults to the ID of the plugin.
@@ -226,7 +228,7 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
                 $data[$this->dataField] = $this->getSelectedValue();
             } else {
                 if (!array_key_exists($this->group, $data)) {
-                    $data[$this->group] = array();
+                    $data[$this->group] = [];
                 }
                 $data[$this->group][$this->dataField] = $this->getSelectedValue();
             }
@@ -311,10 +313,10 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
      */
     public function addItem($text, $value)
     {
-        $item = array(
+        $item = [
             'text' => $text,
             'value' => $value
-        );
+        ];
 
         $this->items[] = $item;
     }

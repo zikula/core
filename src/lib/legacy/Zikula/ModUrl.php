@@ -16,9 +16,9 @@
  */
 class Zikula_ModUrl extends Zikula\Core\ModUrl
 {
-    public function __construct($application, $controller, $action, $language, array $args = array(), $fragment = null)
+    public function __construct($application, $controller, $action, $language, array $args = [], $fragment = null)
     {
-        LogUtil::log(__f('Warning! Class %s is deprecated.', array(__CLASS__), E_USER_DEPRECATED));
+        LogUtil::log(__f('Warning! Class %s is deprecated.', [__CLASS__], E_USER_DEPRECATED));
         parent::__construct($application, $controller, $action, $language, $args, $fragment);
     }
 }

@@ -24,7 +24,7 @@ class ReplaceNamePlugin extends FilterUtil\AbstractPlugin implements FilterUtil\
      *
      * @var array
      */
-    private $pair = array();
+    private $pair = [];
 
     /**
      * Constructor.
@@ -33,7 +33,7 @@ class ReplaceNamePlugin extends FilterUtil\AbstractPlugin implements FilterUtil\
      *
      * @param array $pairs
      */
-    public function __construct($pairs = array())
+    public function __construct($pairs = [])
     {
         $this->addPair($pairs);
     }
@@ -71,10 +71,6 @@ class ReplaceNamePlugin extends FilterUtil\AbstractPlugin implements FilterUtil\
             $field = $this->pair[$field];
         }
 
-        return array(
-            $field,
-            $op,
-            $value
-        );
+        return [$field, $op, $value];
     }
 }

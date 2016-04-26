@@ -27,7 +27,7 @@ class SelectionApi extends Zikula_AbstractBase
      *
      * @return array List of identifier field names.
      */
-    public function getIdFields(array $args = array())
+    public function getIdFields(array $args = [])
     {
         $objectType = $this->determineObjectType($args, 'getIdFields');
         $entityClass = 'ZikulaRoutesModule:' . ucfirst($objectType) . 'Entity';
@@ -38,7 +38,7 @@ class SelectionApi extends Zikula_AbstractBase
         if ($this->hasCompositeKeys($objectType)) {
             $idFields = $meta->getIdentifierFieldNames();
         } else {
-            $idFields = array($meta->getSingleIdentifierFieldName());
+            $idFields = [$meta->getSingleIdentifierFieldName()];
         }
     
         return $idFields;
@@ -68,7 +68,7 @@ class SelectionApi extends Zikula_AbstractBase
      *
      * @return mixed Desired entity object or null.
      */
-    public function getEntity(array $args = array())
+    public function getEntity(array $args = [])
     {
         if (!isset($args['id'])) {
             throw new \InvalidArgumentException(__('Invalid identifier received.'));
@@ -89,7 +89,7 @@ class SelectionApi extends Zikula_AbstractBase
      * Selects a list of entities by different criteria.
      *
      * @param string  $args['ot']       The object type to retrieve (optional).
-     * @param string  $args['idList']   A list of ids to select (optional) (default=array()).
+     * @param string  $args['idList']   A list of ids to select (optional) (default=[]).
      * @param string  $args['where']    The where clause to use when retrieving the collection (optional) (default='').
      * @param string  $args['orderBy']  The order-by clause to use when retrieving the collection (optional) (default='').
      * @param boolean $args['useJoins'] Whether to include joining related objects (optional) (default=true).
@@ -97,12 +97,12 @@ class SelectionApi extends Zikula_AbstractBase
      *
      * @return Array with retrieved collection.
      */
-    public function getEntities(array $args = array())
+    public function getEntities(array $args = [])
     {
         $objectType = $this->determineObjectType($args, 'getEntities');
         $repository = $this->getRepository($objectType);
     
-        $idList = isset($args['idList']) && is_array($args['idList']) ? $args['idList'] : array();
+        $idList = isset($args['idList']) && is_array($args['idList']) ? $args['idList'] : [];
         $where = isset($args['where']) ? $args['where'] : '';
         $orderBy = isset($args['orderBy']) ? $args['orderBy'] : '';
         $useJoins = isset($args['useJoins']) ? ((bool) $args['useJoins']) : true;
@@ -128,7 +128,7 @@ class SelectionApi extends Zikula_AbstractBase
      *
      * @return Array with retrieved collection and amount of total records affected by this query.
      */
-    public function getEntitiesPaginated(array $args = array())
+    public function getEntitiesPaginated(array $args = [])
     {
         $objectType = $this->determineObjectType($args, 'getEntitiesPaginated');
         $repository = $this->getRepository($objectType);
@@ -151,11 +151,11 @@ class SelectionApi extends Zikula_AbstractBase
      *
      * @return string the object type.
      */
-    protected function determineObjectType(array $args = array(), $methodName = '')
+    protected function determineObjectType(array $args = [], $methodName = '')
     {
         $objectType = isset($args['ot']) ? $args['ot'] : '';
         $controllerHelper = $this->get('zikularoutesmodule.controller_helper');
-        $utilArgs = array('api' => 'selection', 'action' => $methodName);
+        $utilArgs = ['api' => 'selection', 'action' => $methodName];
         if (!in_array($objectType, $controllerHelper->getObjectTypes('api', $utilArgs))) {
             $objectType = $controllerHelper->getDefaultObjectType('api', $utilArgs);
         }

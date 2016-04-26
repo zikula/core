@@ -34,7 +34,7 @@ class ValidationResponse
      *
      * @var array
      */
-    protected $errors = array();
+    protected $errors = [];
 
     /**
      * Constructor.

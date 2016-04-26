@@ -59,7 +59,7 @@ function smarty_function_modgetinfo($params, Zikula_View $view)
 
     $info = strtolower($info);
     if ($info != 'all' && !isset($modinfo[$info])) {
-        $view->trigger_error(__f('Invalid %1$s [%2$s] passed to %3$s.', array('info', $info, 'modgetinfo')));
+        $view->trigger_error(__f('Invalid %1$s [%2$s] passed to %3$s.', ['info', $info, 'modgetinfo']));
 
         return false;
     }

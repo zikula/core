@@ -102,10 +102,10 @@ abstract class AbstractBaseResponse extends PlainResponse
      */
     protected function generatePayload()
     {
-        return json_encode(array(
+        return json_encode([
             'core' => $this->generateCoreData(),
             'data' => $this->payload,
-        ));
+        ]);
     }
 
     /**
@@ -115,7 +115,7 @@ abstract class AbstractBaseResponse extends PlainResponse
      */
     protected function generateCoreData()
     {
-        $core = array();
+        $core = [];
 
         if ($this->options) {
             foreach ($this->options as $key => $value) {

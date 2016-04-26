@@ -22,8 +22,8 @@ if (!defined('LC_MESSAGES')) {
  * Note params must passed either as
  * __('beer') or as $beer where $beer = __('beer') somewhere before the call
  * __f('I want some %s with my meal', __('beer'));
- * __f('Give me %s with my %s', array(__('some sausages'), __('beer'));
- * __f('%1$s buy me %2$s', array('Drak', __('a beer'));
+ * __f('Give me %s with my %s', [__('some sausages'), __('beer')]);
+ * __f('%1$s buy me %2$s', ['Drak', __('a beer')]);
  *
  * @param string $msgid  The message.
  * @param mixed  $params Format parameters or attay of parameters.
@@ -34,8 +34,8 @@ if (!defined('LC_MESSAGES')) {
  */
 function __f($msgid, $params, $domain = null)
 {
-    $msgstr = (isset($domain) ? _dgettext($domain, $msgid) : _gettext($msgid));
-    $params = (is_array($params) ? $params : array($params));
+    $msgstr = isset($domain) ? _dgettext($domain, $msgid) : _gettext($msgid);
+    $params = is_array($params) ? $params : [$params];
 
     return vsprintf($msgstr, $params);
 }
@@ -63,8 +63,8 @@ function __f($msgid, $params, $domain = null)
  */
 function _fn($sin, $plu, $n, $params, $domain = null)
 {
-    $msgstr = (isset($domain) ? _dngettext($domain, $sin, $plu, (int)$n) : _ngettext($sin, $plu, (int)$n));
-    $params = (is_array($params) ? $params : array($params));
+    $msgstr = isset($domain) ? _dngettext($domain, $sin, $plu, (int)$n) : _ngettext($sin, $plu, (int)$n);
+    $params = is_array($params) ? $params : [$params];
 
     return vsprintf($msgstr, $params);
 }

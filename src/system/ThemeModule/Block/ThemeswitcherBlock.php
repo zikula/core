@@ -49,15 +49,17 @@ class ThemeswitcherBlock extends \Zikula_Controller_AbstractBlock
             $requirement_message = '';
         }
 
-        return array('module'       => 'ZikulaThemeModule',
-                     'text_type'         => $this->__('Theme switcher'),
-                     'text_type_long'    => $this->__('Theme switcher'),
-                     'allow_multiple'    => true,
-                     'form_content'      => false,
-                     'form_refresh'      => false,
-                     'show_preview'      => true,
-                     'admin_tableless'   => true,
-                     'requirement'       => $requirement_message);
+        return [
+            'module'       => 'ZikulaThemeModule',
+            'text_type'         => $this->__('Theme switcher'),
+            'text_type_long'    => $this->__('Theme switcher'),
+            'allow_multiple'    => true,
+            'form_content'      => false,
+            'form_refresh'      => false,
+            'show_preview'      => true,
+            'admin_tableless'   => true,
+            'requirement'       => $requirement_message
+        ];
     }
 
     /**
@@ -108,7 +110,7 @@ class ThemeswitcherBlock extends \Zikula_Controller_AbstractBlock
         // get all themes in our environment
         $themes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_USER);
 
-        $previewthemes = array();
+        $previewthemes = [];
         $currentthemepic = null;
         foreach ($themes as $themeinfo) {
             $themename = $themeinfo['name'];

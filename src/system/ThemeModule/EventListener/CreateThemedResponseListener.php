@@ -68,10 +68,10 @@ class CreateThemedResponseListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(
-            KernelEvents::RESPONSE => array(
-                array('createThemedResponse')
-            ),
-        );
+        return [
+            KernelEvents::RESPONSE => [
+                ['createThemedResponse']
+            ]
+        ];
     }
 }

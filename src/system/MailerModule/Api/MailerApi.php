@@ -115,15 +115,15 @@ class MailerApi
      * @param array         $headers custom headers to add
      * @param array         $attachments array of either absolute filenames to attach
      *                                   to the mail or array of arrays in format
-     *                                   array($path,$filename,$encoding,$type)
-     * @param array         $stringAttachments array of arrays to treat as attachments, format array($string,$filename,$encoding,$type)
+     *                                   [$path, $filename, $encoding, $type]
+     * @param array         $stringAttachments array of arrays to treat as attachments, format [$string, $filename, $encoding, $type]
      * @param array         $embeddedImages array of absolute filenames to image files to embed in the mail
      *
      * @throws \RuntimeException Thrown if there's an error sending the e-mail message
      *
      * @return bool true if successful
      */
-    public function sendMessage(Swift_Message $message, $subject, $body, $altBody, $html, array $headers = array(), array $attachments = array(), array $stringAttachments = array(), array $embeddedImages = array())
+    public function sendMessage(Swift_Message $message, $subject, $body, $altBody, $html, array $headers = [], array $attachments = [], array $stringAttachments = [], array $embeddedImages = [])
     {
         $this->message = $message;
 

@@ -53,7 +53,7 @@ The configuration values are:
 
 #### Mnlist ####
 
-- **fields**:  This is an array in the form: (name => array(field=>'', table=>'', comparefield=>'')).
+- **fields**:  This is an array in the form: (name => [field => '', table => '', comparefield => '']).
   *name* is the filter field name. *field* is the id field in the mn-relationship table.
   *table* is the table of the mn-relationship. *comparefield* is the field to compare with in the table.
 - **ops**: Array of operators to enable (available operators: eq, ne).
@@ -131,26 +131,26 @@ Your module may register a persistent EventHandler on its installer:
     EventUtil::registerPersistentModuleHandler(
         'ModuleName',
         'zikula.filterutil.get_plugin_classes',
-        array('ModuleName_EventHandler_Listeners', 'getFilterClasses')
+        ['ModuleName_EventHandler_Listeners', 'getFilterClasses']
     );
 
 to add your plugins to the list with:
 
     [php]
-	class ModuleName_EventHandler_Listeners
-	{
-		public static function getFilterClasses(Zikula_Event $event)
-		{
-			$classNames = array();
-			$classNames['id1'] = 'ModuleName_Filter_Filter1';
-			$classNames['id2'] = 'ModuleName_Filter_Filter2';
+    class ModuleName_EventHandler_Listeners
+    {
+        public static function getFilterClasses(Zikula_Event $event)
+        {
+            $classNames = [];
+            $classNames['id1'] = 'ModuleName_Filter_Filter1';
+            $classNames['id2'] = 'ModuleName_Filter_Filter2';
 
-			$event->setData(array_merge((array)$event->getData(), $classNames));
-		}
-	}
+            $event->setData(array_merge((array)$event->getData(), $classNames));
+        }
+    }
 
 and you will be able to filter, for instance, an *author* field with your plugin
 with an addition to your configuration array like:
 
     [php]
-	$config['plugins']['id1']['fields'][] = 'author'
+    $config['plugins']['id1']['fields'][] = 'author'

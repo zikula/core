@@ -23,14 +23,14 @@ abstract class AbstractHookContainer
      *
      * @var array Indexed array of SubscriberBundle
      */
-    protected $subscriberBundles = array();
+    protected $subscriberBundles = [];
 
     /**
      * Hook provider bundles.
      *
      * @var array Indexed array of ProviderBundle
      */
-    protected $providerBundles = array();
+    protected $providerBundles = [];
 
     public function __construct($translator)
     {

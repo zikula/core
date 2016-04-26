@@ -27,7 +27,7 @@ class ThemeTemplateOverrideYamlListener implements EventSubscriberInterface
      *
      * @var array
      */
-    private $overrideMap = array();
+    private $overrideMap = [];
 
     public function __construct()
     {
@@ -61,6 +61,8 @@ class ThemeTemplateOverrideYamlListener implements EventSubscriberInterface
     {
         // weight as 5 sets theme overrides taking precedent over config overrides
         // @see \Zikula\Bundle\CoreBundle\EventListener\ConfigTemplateOverrideYamlListener
-        return array('zikula_view.template_override' => array('handler', 5));
+        return [
+            'zikula_view.template_override' => ['handler', 5]
+        ];
     }
 }

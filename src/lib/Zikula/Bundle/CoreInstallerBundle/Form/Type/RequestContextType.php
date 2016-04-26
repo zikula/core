@@ -20,26 +20,33 @@ class RequestContextType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('router:request_context:host', 'Symfony\Component\Form\Extension\Core\Type\TextType', array(
+            ->add('router:request_context:host', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => __('The host where you install Zikula, e.g. "example.com". Do not include subdirectories.'),
-                'label_attr' => array('class' => 'col-sm-3'),
+                'label_attr' => [
+                    'class' => 'col-sm-3'
+                ],
                 'data' => __('localhost'),
-                'constraints' => array(
+                'constraints' => [
                     new NotBlank(),
-                )))
-            ->add('router:request_context:scheme', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', array(
+                ]
+            ])
+            ->add('router:request_context:scheme', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => __('Please enter the scheme of where you install Zikula, can be either "http" or "https"'),
-                'label_attr' => array('class' => 'col-sm-3'),
-                'choices' => array(
+                'label_attr' => [
+                    'class' => 'col-sm-3'
+                ],
+                'choices' => [
                     'http' => 'http',
                     'https' => 'https'
-                ),
+                ],
                 'data' => 'http',
-                ))
-            ->add('router:request_context:base_url', 'Symfony\Component\Form\Extension\Core\Type\TextType', array(
+            ])
+            ->add('router:request_context:base_url', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => __('Please enter the url path of the directory where you install Zikula, leave empty if you install it at the top level. Example: /my/sub-dir'),
-                'label_attr' => array('class' => 'col-sm-3'),
-            ))
+                'label_attr' => [
+                    'class' => 'col-sm-3'
+                ],
+            ])
         ;
     }
 
@@ -50,11 +57,11 @@ class RequestContextType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'csrf_protection' => false,
 //                'csrf_field_name' => '_token',
 //                // a unique key to help generate the secret token
 //                'intention'       => '_zk_bdcreds',
-        ));
+        ]);
     }
 }

@@ -37,7 +37,7 @@ function smarty_function_servergetvar($params, Zikula_View $view)
     $name    = isset($params['name'])    ? $params['name']    : null;
 
     if (!$name) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('System::serverGetVar', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['System::serverGetVar', 'name']));
 
         return false;
     }

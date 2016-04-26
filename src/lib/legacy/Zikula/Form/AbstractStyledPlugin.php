@@ -36,7 +36,7 @@ abstract class Zikula_Form_AbstractStyledPlugin extends Zikula_Form_AbstractPlug
      *
      * @var array
      */
-    public $styleAttributes = array();
+    public $styleAttributes = [];
 
     /**
      * Retrieve the styles added programatically.
@@ -57,7 +57,7 @@ abstract class Zikula_Form_AbstractStyledPlugin extends Zikula_Form_AbstractPlug
      */
     public function renderAttributes(Zikula_Form_View $view)
     {
-        static $styleElements = array('width', 'height', 'color', 'background_color', 'border', 'padding', 'margin', 'float', 'display', 'position', 'visibility', 'overflow', 'clip', 'font', 'font_family', 'font_style', 'font_weight', 'font_size');
+        static $styleElements = ['width', 'height', 'color', 'background_color', 'border', 'padding', 'margin', 'float', 'display', 'position', 'visibility', 'overflow', 'clip', 'font', 'font_family', 'font_style', 'font_weight', 'font_size'];
 
         $attr = '';
         $style = '';

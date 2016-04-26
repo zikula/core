@@ -45,12 +45,14 @@ class ServicesController extends AbstractController
         }
 
         // notify EVENT here to gather any system service links
-        $event = new GenericEvent(null, array('modname' => $moduleName));
+        $event = new GenericEvent(null, ['modname' => $moduleName]);
         $this->get('event_dispatcher')->dispatch('module_dispatch.service_links', $event);
         $sublinks = $event->getData();
-        $templateParameters = [];
-        $templateParameters['sublinks'] = $sublinks;
-        $templateParameters['currentmodule'] = $moduleName;
+
+        $templateParameters = [
+            'sublinks' => $sublinks,
+            'currentmodule' => $moduleName
+        ];
 
         return $templateParameters;
     }

@@ -27,14 +27,14 @@ class EditHandler extends BaseEditHandler
 {
     public function initialize(Zikula_Form_View $view)
     {
-        $items = array();
-        $urlNames = array();
+        $items = [];
+        $urlNames = [];
         $modules = ModUtil::getModulesByState(3, 'displayname');
         foreach ($modules as $module) {
-            $items[] = array(
+            $items[] = [
                 'text' => $module['displayname'],
                 'value' => $module['name']
-            );
+            ];
             $urlNames[$module['name']] = $module['url'];
         }
         $view->assign('modules', $items);
@@ -43,7 +43,7 @@ class EditHandler extends BaseEditHandler
         return parent::initialize($view);
     }
 
-    public function applyAction(array $args = array())
+    public function applyAction(array $args = [])
     {
         $return = parent::applyAction($args);
 
@@ -83,7 +83,7 @@ class EditHandler extends BaseEditHandler
         /** @var RouteCollection $routeCollection */
         $routeCollection = $router->getRouteCollection();
 
-        $errors = array();
+        $errors = [];
         foreach ($routeCollection->all() as $route) {
             $path = $route->getPath();
             if ($path === '/{url}') {
@@ -91,23 +91,23 @@ class EditHandler extends BaseEditHandler
             }
 
             if ($path === $newPath) {
-                $errors[] = array(
+                $errors[] = [
                     'type' => 'SAME',
                     'path' => $path
-                );
+                ];
                 continue;
             }
 
             $pathRegExp = preg_quote(preg_replace("/{(.+)}/", "____DUMMY____", $path), '/');
             $pathRegExp = "#^" . str_replace('____DUMMY____', '(.+)', $pathRegExp) . "$#";
 
-            $matches = array();
+            $matches = [];
             preg_match($pathRegExp, $newPath, $matches);
             if (count($matches)) {
-                $errors[] = array(
+                $errors[] = [
                     'type' => 'SIMILAR',
                     'path' => $path
-                );
+                ];
             }
         }
 
@@ -137,7 +137,7 @@ class EditHandler extends BaseEditHandler
         $action = ucfirst($action);
         $func = lcfirst(substr($action, 0, -6));
 
-        return array($action, $func);
+        return [$action, $func];
     }
 
     /**
@@ -159,6 +159,6 @@ class EditHandler extends BaseEditHandler
         $type = strtolower($type);
         $controller = ucfirst($controller);
 
-        return array($controller, $type);
+        return [$controller, $type];
     }
 }

@@ -21,15 +21,17 @@
  * <code>
  * class mymodule_user_testHandler extends Zikula_Form_Handler
  * {
- * function initialize(Zikula_Form_View $view)
- * {
- * $items = array( array('text' => 'A', 'value' => '1'),
- * array('text' => 'B', 'value' => '2'),
- * array('text' => 'C', 'value' => '3') );
+ *     function initialize(Zikula_Form_View $view)
+ *     {
+ *         $items = [
+ *             ['text' => 'A', 'value' => '1'],
+ *             ['text' => 'B', 'value' => '2'],
+ *             ['text' => 'C', 'value' => '3']
+ *         ];
  *
- * $view->assign('items', $items); // Supply items
- * $view->assign('mylist', 2);     // Supply selected value
- * }
+ *         $view->assign('items', $items); // Supply items
+ *         $view->assign('mylist', 2);     // Supply selected value
+ *     }
  * }
  * </code>
  * Or you can set them indirectly using the plugin's databased features:
@@ -40,15 +42,17 @@
  * <code>
  * class mymodule_user_testHandler extends Zikula_Form_Handler
  * {
- * function initialize(Zikula_Form_View $view)
- * {
- * $items = array( array('text' => 'A', 'value' => '1'),
- * array('text' => 'B', 'value' => '2'),
- * array('text' => 'C', 'value' => '3') );
+ *     function initialize(Zikula_Form_View $view)
+ *     {
+ *         $items = [
+ *             ['text' => 'A', 'value' => '1'],
+ *             ['text' => 'B', 'value' => '2'],
+ *             ['text' => 'C', 'value' => '3']
+ *         ];
  *
- * $view->assign('mylistItems', $items);  // Supply items
- * $view->assign('mylist', 2);            // Supply selected value
- * }
+ *         $view->assign('mylistItems', $items);  // Supply items
+ *         $view->assign('mylist', 2);            // Supply selected value
+ *     }
  * }
  * </code>
  *
@@ -61,15 +65,17 @@
  * <code>
  * class mymodule_user_testHandler extends Zikula_Form_Handler
  * {
- * function initialize(Zikula_Form_View $view)
- * {
- * $items = array( array('text' => 'A', 'value' => '1', 'optgroup' => 'AAA'),
- * array('text' => 'B', 'value' => '2', 'optgroup' => 'BBB'),
- * array('text' => 'C', 'value' => '3', 'optgroup' => 'CCC') );
+ *     function initialize(Zikula_Form_View $view)
+ *     {
+ *         $items = [
+ *             ['text' => 'A', 'value' => '1', 'optgroup' => 'AAA'],
+ *             ['text' => 'B', 'value' => '2', 'optgroup' => 'BBB'],
+ *             ['text' => 'C', 'value' => '3', 'optgroup' => 'CCC']
+ *         ];
  *
- * $view->assign('mylistItems', $items);  // Supply items
- * $view->assign('mylist', 2);            // Supply selected value
- * }
+ *         $view->assign('mylistItems', $items);  // Supply items
+ *         $view->assign('mylist', 2);            // Supply selected value
+ *     }
  * }
  * </code>
  *
@@ -320,10 +326,10 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
      */
     public function raisePostBackEvent(Zikula_Form_View $view, $eventArgument)
     {
-        $args = array(
+        $args = [
             'commandName' => null,
             'commandArgument' => null
-        );
+        ];
         if (!empty($this->onSelectedIndexChanged)) {
             $view->raiseEvent($this->onSelectedIndexChanged, $args);
         }
@@ -341,7 +347,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
         // Do not read new value if readonly (evil submiter might have forged it)
         if (!$this->readOnly) {
             $value = $this->request->request->get($this->inputName, null);
-            $value = ($value == null) ? array() : (array)$value;
+            $value = (null == $value) ? [] : (array)$value;
 
             for ($i = 0, $count = count($value); $i < $count; ++$i) {
                 if (get_magic_quotes_gpc()) {

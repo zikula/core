@@ -320,7 +320,7 @@ class ZMO
         $this->table_translations = $this->readintarray($this->total * 2);
 
         if ($this->enable_cache) {
-            $this->cache_translations = array();
+            $this->cache_translations = [];
             // read all strings in the cache
             for ($i = 0; $i < $this->total; $i++) {
                 $this->stream->seekto($this->table_originals[$i * 2 + 2]);

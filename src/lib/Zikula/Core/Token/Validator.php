@@ -70,7 +70,10 @@ class Validator
         }
 
         list($id, $hash, $timestamp) = $this->tokenGenerator->decode($token);
-        $decoded = array('id' => $id, 'time' => $timestamp);
+        $decoded = [
+            'id' => $id,
+            'time' => $timestamp
+        ];
 
         // Garbage collect the session.
         $this->tokenGenerator->garbageCollection();

@@ -123,7 +123,7 @@ class Zikula_Core
      *
      * @var array
      */
-    protected $attachedHandlers = array();
+    protected $attachedHandlers = [];
 
     /**
      * Array of handler files per directory.
@@ -132,14 +132,14 @@ class Zikula_Core
      *
      * @var array
      */
-    protected $directoryContents = array();
+    protected $directoryContents = [];
 
     /**
      * Array of scanned directories.
      *
      * @var array
      */
-    protected $scannedDirs = array();
+    protected $scannedDirs = [];
 
     private $kernel;
 
@@ -250,9 +250,7 @@ class Zikula_Core
         $services = $this->container->getServiceIds();
         rsort($services);
         foreach ($services as $id) {
-            if (!in_array($id, array(
-                'zikula', 'zikula.servicemanager', 'service_container', 'zikula.eventmanager', 'event_dispatcher'
-            ))) {
+            if (!in_array($id, ['zikula', 'zikula.servicemanager', 'service_container', 'zikula.eventmanager', 'event_dispatcher'])) {
                 $this->container->removeDefinition($id);
             }
         }
@@ -260,7 +258,7 @@ class Zikula_Core
         // flush arguments.
         $this->container->getParameterBag()->clear();
 
-        $this->attachedHandlers = array();
+        $this->attachedHandlers = [];
         $this->stage = 0;
         $this->bootime = microtime(true);
         $this->attachHandlers($this->handlerDir);
@@ -317,7 +315,7 @@ class Zikula_Core
                 }
 
                 if (!isset($this->directoryContents[$dir])) {
-                    $this->directoryContents[$dir] = array();
+                    $this->directoryContents[$dir] = [];
                 }
                 if (isset($className)) {
                     $this->directoryContents[$dir][] = $className;
@@ -412,7 +410,7 @@ class Zikula_Core
         if (($stage & self::STAGE_PRE) && ($this->stage & ~self::STAGE_PRE)) {
             ModUtil::flushCache();
             System::flushCache();
-            $args = !System::isInstalling() ? array('lazy' => true) : array();
+            $args = !System::isInstalling() ? ['lazy' => true] : [];
             $this->dispatcher->dispatch('core.preinit', new GenericEvent($this, $args));
         }
 
@@ -420,7 +418,7 @@ class Zikula_Core
         if ($stage & self::STAGE_CONFIG) {
             // for BC only. remove this code in 2.0.0
             if (!System::isInstalling()) {
-                $this->dispatcher->dispatch('setup.errorreporting', new GenericEvent(null, array('stage' => $stage)));
+                $this->dispatcher->dispatch('setup.errorreporting', new GenericEvent(null, ['stage' => $stage]));
             }
 
             // initialise custom event listeners from config.php settings
@@ -435,7 +433,7 @@ class Zikula_Core
 
         if ($stage & self::STAGE_DB) {
             try {
-                $dbEvent = new GenericEvent($this, array('stage' => self::STAGE_DB));
+                $dbEvent = new GenericEvent($this, ['stage' => self::STAGE_DB]);
                 $this->dispatcher->dispatch('core.init', $dbEvent);
             } catch (PDOException $e) {
                 if (!System::isInstalling()) {
@@ -513,10 +511,10 @@ class Zikula_Core
 
             // set some defaults
             // Metadata for SEO
-            $this->container->setParameter('zikula_view.metatags', array(
+            $this->container->setParameter('zikula_view.metatags', [
                 'description' => System::getVar('defaultmetadescription'),
                 'keywords' => System::getVar('metakeywords')
-            ));
+            ]);
 
             $coreInitEvent->setArgument('stage', self::STAGE_THEME);
             $this->dispatcher->dispatch('core.init', $coreInitEvent);
@@ -536,7 +534,7 @@ class Zikula_Core
         }
 
         if (($stage & self::STAGE_POST) && ($this->stage & ~self::STAGE_POST)) {
-            $this->dispatcher->dispatch('core.postinit', new GenericEvent($this, array('stages' => $stage)));
+            $this->dispatcher->dispatch('core.postinit', new GenericEvent($this, ['stages' => $stage]));
         }
     }
 }

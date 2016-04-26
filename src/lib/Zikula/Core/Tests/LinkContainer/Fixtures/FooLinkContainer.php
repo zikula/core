@@ -28,7 +28,7 @@ class FooLinkContainer implements LinkContainerInterface
             return $this->$method();
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -38,11 +38,12 @@ class FooLinkContainer implements LinkContainerInterface
      */
     private function getAdmin()
     {
-        $links = array();
-        $links[] = array(
+        $links = [];
+        $links[] = [
             'url' => '/foo/admin',
             'text' => 'Foo Admin',
-            'icon' => 'wrench');
+            'icon' => 'wrench'
+        ];
 
         return $links;
     }
@@ -54,11 +55,12 @@ class FooLinkContainer implements LinkContainerInterface
      */
     private function getUser()
     {
-        $links = array();
-        $links[] = array(
+        $links = [];
+        $links[] = [
             'url' => '/foo',
             'text' => 'Foo',
-            'icon' => 'check-square-o');
+            'icon' => 'check-square-o'
+        ];
 
         return $links;
     }
@@ -70,11 +72,12 @@ class FooLinkContainer implements LinkContainerInterface
      */
     private function getAccount()
     {
-        $links = array();
-        $links[] = array(
+        $links = [];
+        $links[] = [
             'url' => '/foo/account',
             'text' => 'Foo Account',
-            'icon' => 'wrench');
+            'icon' => 'wrench'
+        ];
 
         return $links;
     }

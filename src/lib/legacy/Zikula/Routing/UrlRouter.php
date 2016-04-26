@@ -27,7 +27,7 @@ class Zikula_Routing_UrlRouter
      */
     public function __construct()
     {
-        $this->routes = array();
+        $this->routes = [];
     }
 
     /**
@@ -38,7 +38,7 @@ class Zikula_Routing_UrlRouter
      *
      * @return mixed string With created url or false on error.
      */
-    public function generate($name = '', array $params = array())
+    public function generate($name = '', array $params = [])
     {
         // reference to the route used for url creation
         $route = null;

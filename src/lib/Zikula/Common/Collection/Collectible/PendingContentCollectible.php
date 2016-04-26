@@ -60,7 +60,7 @@ class PendingContentCollectible
      * @param string  $route       Route id (to view action).
      * @param array   $args        Arguments for method.
      */
-    public function __construct($type, $description, $number, $route, array $args = array())
+    public function __construct($type, $description, $number, $route, array $args = [])
     {
         $this->type = (string)$type;
         $this->description = (string)$description;

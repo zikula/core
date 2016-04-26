@@ -25,7 +25,7 @@ class RouteUrl extends ModUrl implements UrlInterface
 
     private $fragment;
 
-    public function __construct($route, array $args = array(), $fragment = null)
+    public function __construct($route, array $args = [], $fragment = null)
     {
         $this->route = $route;
         $this->args = $args;
@@ -76,7 +76,7 @@ class RouteUrl extends ModUrl implements UrlInterface
      *
      * @throws \InvalidArgumentException
      */
-    public static function createFromRoute($route, $args = array(), $fragment = '')
+    public static function createFromRoute($route, $args = [], $fragment = '')
     {
         if (empty($route)) {
             throw new \InvalidArgumentException();
@@ -88,10 +88,11 @@ class RouteUrl extends ModUrl implements UrlInterface
 
     public function toArray()
     {
-        return array(
+        return [
             'route' => $this->route,
             'args' => $this->args,
-            'fragment' => $this->fragment);
+            'fragment' => $this->fragment
+        ];
     }
 
     public function getArgs()

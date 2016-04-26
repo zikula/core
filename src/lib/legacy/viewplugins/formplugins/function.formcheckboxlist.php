@@ -24,9 +24,11 @@
  * {
  *   function initialize($view)
  *   {
- *       $items = array( array('text' => 'A', 'value' => '1'),
- *                       array('text' => 'B', 'value' => '2'),
- *                       array('text' => 'C', 'value' => '3') );
+ *       $items = [
+ *           ['text' => 'A', 'value' => '1'],
+ *           ['text' => 'B', 'value' => '2'],
+ *           ['text' => 'C', 'value' => '3']
+ *       ];
  *
  *       $view->assign('items', $items); // Supply items
  *       $view->assign('mylist', 2);     // Supply selected value
@@ -43,9 +45,11 @@
  * {
  *   function initialize($view)
  *   {
- *       $items = array( array('text' => 'A', 'value' => '1'),
- *                       array('text' => 'B', 'value' => '2'),
- *                       array('text' => 'C', 'value' => '3') );
+ *       $items = [
+ *           ['text' => 'A', 'value' => '1'],
+ *           ['text' => 'B', 'value' => '2'],
+ *           ['text' => 'C', 'value' => '3']
+ *       ];
  *
  *       $view->assign('mylistItems', $items);  // Supply items
  *       $view->assign('mylist', 2);            // Supply selected value
@@ -58,9 +62,9 @@
  * get a dataset like this:
  *
  * <code>
- *   array('xxx' => 'valueXX',
- *         'checkboxes' => array('15','17','22','34'),
- *         'yyy' => 'valueYYY')
+ *   ['xxx' => 'valueXX',
+ *    'checkboxes' => ['15','17','22','34'],
+ *    'yyy' => 'valueYYY']
  * </code>
  *
  * @param array            $params Parameters passed in the block tag.

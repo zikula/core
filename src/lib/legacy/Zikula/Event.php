@@ -40,7 +40,7 @@ class Zikula_Event extends GenericEvent
      * @param array  $args    Arguments to store in the event.
      * @param mixed  $data    Convenience argument of data for optional processing.
      */
-    public function __construct($name, $subject = null, array $args = array(), $data = null)
+    public function __construct($name, $subject = null, array $args = [], $data = null)
     {
         $this->setName($name);
         $this->data = $data;
@@ -100,7 +100,7 @@ class Zikula_Event extends GenericEvent
      *
      * @return Zikula_Event
      */
-    public function setArgs(array $args = array())
+    public function setArgs(array $args = [])
     {
         return $this->setArguments($args);
     }

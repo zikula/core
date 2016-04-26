@@ -77,7 +77,7 @@ class RandomUtil
      * @param boolean $useNumber      Whether or not to also use numeric characters (optional) (default=false).
      * @param boolean $useSpecial     Whether or not to also use special characters (optional) (default=false).
      * @param boolean $seed           Whether or not to seed the random number generator (unused since 1.3.0) (optional) (default=false) seeding not required for PHP>4.2.0.
-     * @param array   $dontuse        Array of characters not to use (optional) (default=null) eg $dontuse=array('a', 'b', 'c');.
+     * @param array   $dontuse        Array of characters not to use (optional) (default=null) eg $dontuse = ['a', 'b', 'c'];.
      *
      * @return The resulting random string.
      */
@@ -158,7 +158,7 @@ class RandomUtil
             $maxLength = min($maxLength, 25);
         }
 
-        return self::getString($minLength, $maxLength, false, false, true, false, true, false, false, array('0', 'o', 'O', 'l', '1', 'i', 'I', 'j', '!', '|'));
+        return self::getString($minLength, $maxLength, false, false, true, false, true, false, false, ['0', 'o', 'O', 'l', '1', 'i', 'I', 'j', '!', '|']);
     }
 
     /**
@@ -172,7 +172,7 @@ class RandomUtil
     public static function getSentence($nWords, $dictArray)
     {
         if (!$dictArray) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('dictArray', 'RandomUtil::getSentence')));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['dictArray', 'RandomUtil::getSentence']));
         }
 
         if (!$nWords) {
@@ -224,7 +224,7 @@ class RandomUtil
     public static function getParagraphs($nParas, $dict = '', $irndS = 0, $irndW = 0, $startCustomary = false)
     {
         if (!$dict) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('dictionary', 'RandomUtil::getParagraphs')));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['dictionary', 'RandomUtil::getParagraphs']));
         }
 
         if (!$nParas) {

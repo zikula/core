@@ -28,7 +28,7 @@ class MigrationUtil
         $ORMConfig = $em->getConfiguration();
         $annotationDriver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver(
             ServiceUtil::get('annotation_reader'),
-            array($path)
+            [$path]
         );
         $chain = $ORMConfig->getMetadataDriverImpl(); // driver chain
         $chain->addDriver($annotationDriver, $entityNamespace);

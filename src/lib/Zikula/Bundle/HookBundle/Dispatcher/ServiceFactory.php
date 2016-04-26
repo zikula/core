@@ -59,15 +59,15 @@ class ServiceFactory
      * @param string $className
      * @param string $method
      *
-     * @return array array($id, $method)
+     * @return array [$id, $method]
      */
     public function buildService($id, $className, $method)
     {
         if (!$this->container->has($id)) {
-            $definition = new Definition($className, array(new Reference($this->serviceId)));
+            $definition = new Definition($className, [new Reference($this->serviceId)]);
             $this->container->setDefinition($id, $definition);
         }
 
-        return array($id, $method);
+        return [$id, $method];
     }
 }

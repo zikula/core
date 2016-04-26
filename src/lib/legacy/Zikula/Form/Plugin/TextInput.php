@@ -254,7 +254,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
 
         if (array_key_exists('maxLength', $params)) {
             $this->maxLength = $params['maxLength'];
-        } elseif ($this->maxLength == null && !in_array(strtolower($this->textMode), array('multiline', 'hidden'))) {
+        } elseif ($this->maxLength == null && !in_array(strtolower($this->textMode), ['multiline', 'hidden'])) {
             $view->formDie("Missing maxLength value in textInput plugin '$this->id'.");
         }
         if (array_key_exists('minLength', $params)) {
@@ -358,7 +358,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
                 break;
 
             default:
-                $result = __f('Unknown value [%1$s] for \'%2$s\'.', array($this->textMode, 'textMode'));
+                $result = __f('Unknown value [%1$s] for \'%2$s\'.', [$this->textMode, 'textMode']);
         }
 
         return $result;
@@ -485,7 +485,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
                 $data[$this->dataField] = $value;
             } else {
                 if (!array_key_exists($this->group, $data)) {
-                    $data[$this->group] = array();
+                    $data[$this->group] = [];
                 }
                 $data[$this->group][$this->dataField] = $value;
             }

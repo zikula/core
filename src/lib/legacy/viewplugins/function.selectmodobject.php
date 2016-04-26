@@ -37,10 +37,10 @@ function smarty_function_selectmodobject($params, Zikula_View $view)
         // DBObject checks
 
         if (!isset($params['module']) || empty($params['module'])) {
-            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobject', 'module')));
+            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['selectmodobject', 'module']));
         }
         if (!isset($params['objecttype']) || empty($params['objecttype'])) {
-            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobject', 'objecttype')));
+            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['selectmodobject', 'objecttype']));
         }
         if (!isset($params['prefix'])) {
             $params['prefix'] = 'PN';
@@ -50,17 +50,17 @@ function smarty_function_selectmodobject($params, Zikula_View $view)
     }
 
     if (!isset($params['id']) || empty($params['id']) || !is_numeric($params['id'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobject', 'id')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['selectmodobject', 'id']));
     }
 
     if (!isset($params['assign']) || empty($params['assign'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobject', 'assign')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['selectmodobject', 'assign']));
     }
 
     // load object depending on mode: doctrine or dbobject
     if (!$doctrineMode) {
         if (!ModUtil::available($params['module'])) {
-            $view->trigger_error(__f('Invalid %1$s passed to %2$s.', array('module', 'selectmodobject')));
+            $view->trigger_error(__f('Invalid %1$s passed to %2$s.', ['module', 'selectmodobject']));
         }
 
         ModUtil::dbInfoLoad($params['module']);

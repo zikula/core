@@ -38,7 +38,7 @@ class UpgraderController extends AbstractController
         }
         // notinstalled?
         if (($this->container->getParameter('installed') == false)) {
-            return new RedirectResponse($this->router->generate('install', array(), RouterInterface::ABSOLUTE_URL));
+            return new RedirectResponse($this->router->generate('install', [], RouterInterface::ABSOLUTE_URL));
         }
 
         // check php
@@ -69,7 +69,7 @@ class UpgraderController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $currentStage->handleFormResult($form);
-                $url = $this->router->generate('upgrade', array('stage' => $wizard->getNextStage()->getName()), RouterInterface::ABSOLUTE_URL);
+                $url = $this->router->generate('upgrade', ['stage' => $wizard->getNextStage()->getName()], RouterInterface::ABSOLUTE_URL);
 
                 return new RedirectResponse($url);
             }

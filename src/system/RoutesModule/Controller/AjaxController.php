@@ -56,7 +56,7 @@ class AjaxController extends BaseAjaxController
         }
 
         $objectType = $request->request->filter('ot', 'route', false, FILTER_SANITIZE_STRING);
-        $sort = $request->request->get('sort', array());
+        $sort = $request->request->get('sort', []);
 
         foreach ($sort as $position => $id) {
             $id = substr($id, 4);
@@ -70,6 +70,6 @@ class AjaxController extends BaseAjaxController
         $cacheClearer = $this->get('zikula.cache_clearer');
         $cacheClearer->clear("symfony.routing");
 
-        return new AjaxResponse(array());
+        return new AjaxResponse([]);
     }
 }

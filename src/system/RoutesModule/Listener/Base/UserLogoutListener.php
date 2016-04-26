@@ -26,9 +26,9 @@ class UserLogoutListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            'module.users.ui.logout.succeeded' => array('succeeded', 5)
-        );
+        return [
+            'module.users.ui.logout.succeeded' => ['succeeded', 5]
+        ];
     }
     
     /**
@@ -37,8 +37,8 @@ class UserLogoutListener implements EventSubscriberInterface
      * Occurs right after a successful logout.
      * All handlers are notified.
      * The event's subject contains the user's user record.
-     * Args contain array of `array('authentication_method' => $authenticationMethod,
-     *                              'uid'                   => $uid));`
+     * Args contain array of `['authentication_method' => $authenticationMethod,
+     *                         'uid'                   => $uid];`
      *
      * @param GenericEvent $event The event instance.
      */

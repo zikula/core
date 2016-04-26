@@ -29,7 +29,7 @@ class ControllerResolver extends BaseControllerResolver
                 // controller in the service:method notation
                 list($service, $method) = explode(':', $controller, 2);
 
-                return array($this->container->get($service), $method);
+                return [$this->container->get($service), $method];
             } else {
                 throw new \LogicException(sprintf('Unable to parse the controller name "%s".', $controller));
             }
@@ -73,6 +73,6 @@ class ControllerResolver extends BaseControllerResolver
             $controller->setContainer($this->container);
         }
 
-        return array($controller, $method);
+        return [$controller, $method];
     }
 }

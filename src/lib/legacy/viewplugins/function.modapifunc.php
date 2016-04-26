@@ -51,7 +51,7 @@ function smarty_function_modapifunc($params, Zikula_View $view)
     unset($params['assign']);
 
     if (!$modname) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modapifunc', 'modname')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['modapifunc', 'modname']));
 
         return false;
     }

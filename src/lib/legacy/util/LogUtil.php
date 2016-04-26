@@ -321,7 +321,7 @@ class LogUtil
             if (is_null($url)) {
                 $request = ServiceUtil::get('request');
 
-                $loginArgs = array();
+                $loginArgs = [];
                 if ($request->isMethod('GET')) {
                     $loginArgs['returnpage'] = urlencode(System::getCurrentUri());
                 }

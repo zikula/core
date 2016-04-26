@@ -21,10 +21,10 @@ class Categories_DBObject_Registry extends DBObject
         $this->_objType = 'categories_registry';
         $this->_objPath = 'category_registry';
 
-        $this->_objValidation['modname'] = array('modname', true, 'noop', '', __('Error! You did not select a module.'));
-        $this->_objValidation['table'] = array('table', true, 'noop', '', __('Error! You did not select a module table.'));
-        $this->_objValidation['property'] = array('property', true, 'noop', '', __('Error! You did not enter a property name.'));
-        $this->_objValidation['category_id'] = array('category_id', true, 'noop', '', __('Error! You did not select a category.'));
+        $this->_objValidation['modname'] = ['modname', true, 'noop', '', __('Error! You did not select a module.')];
+        $this->_objValidation['table'] = ['table', true, 'noop', '', __('Error! You did not select a module table.')];
+        $this->_objValidation['property'] = ['property', true, 'noop', '', __('Error! You did not enter a property name.')];
+        $this->_objValidation['category_id'] = ['category_id', true, 'noop', '', __('Error! You did not select a category.')];
 
         $this->_init($init, $key);
     }

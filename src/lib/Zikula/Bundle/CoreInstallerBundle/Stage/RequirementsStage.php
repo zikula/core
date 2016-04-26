@@ -50,6 +50,6 @@ class RequirementsStage implements StageInterface, InjectContainerInterface
 
     public function getTemplateParams()
     {
-        return array('checks' => $this->requirementsMet);
+        return ['checks' => $this->requirementsMet];
     }
 }

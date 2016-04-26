@@ -31,10 +31,10 @@ class SystemPlugin_Imagine_Configuration extends Zikula_Controller_AbstractPlugi
     public function configure()
     {
         $modVars = $this->plugin->getVars();
-        $options = array(
-            'mode' => array('inset', 'outbound'),
-            'extension' => array('jpg', 'png', 'gif'),
-        );
+        $options = [
+            'mode' => ['inset', 'outbound'],
+            'extension' => ['jpg', 'png', 'gif']
+        ];
 
         $this->getView()
             ->assign('vars', $modVars)
@@ -70,9 +70,9 @@ class SystemPlugin_Imagine_Configuration extends Zikula_Controller_AbstractPlugi
         $thumb_auto_cleanup_period = $this->request->request->get('thumb_auto_cleanup_period');
         $this->plugin->setVar('thumb_auto_cleanup_period', $thumb_auto_cleanup_period);
 
-        $presets = $this->request->getPost()->get('presets', array());
+        $presets = $this->request->getPost()->get('presets', []);
 
-        $presetsToSave = array();
+        $presetsToSave = [];
         foreach ($presets as $preset) {
             // validate jpeg qual and png_compression
             if (!is_numeric($preset['options']['jpeg_quality']) || $preset['options']['jpeg_quality'] < 0 || $preset['options']['jpeg_quality'] > 100) {
@@ -91,10 +91,10 @@ class SystemPlugin_Imagine_Configuration extends Zikula_Controller_AbstractPlugi
 
         $this->registerStatus($this->__('Done! Saved plugin configuration.'));
 
-        $this->redirect(ModUtil::url('ZikulaExtensionsModule', 'adminplugin', 'dispatch', array(
+        $this->redirect(ModUtil::url('ZikulaExtensionsModule', 'adminplugin', 'dispatch', [
             '_plugin' => 'Imagine',
             '_action' => 'configure'
-        )));
+        ]));
     }
 
     /**
@@ -112,9 +112,9 @@ class SystemPlugin_Imagine_Configuration extends Zikula_Controller_AbstractPlugi
             $this->registerStatus($this->__('Done! Imagine thumbnails are cleaned up of source images that were removed!'));
         }
 
-        $this->redirect(ModUtil::url('ZikulaExtensionsModule', 'adminplugin', 'dispatch', array(
+        $this->redirect(ModUtil::url('ZikulaExtensionsModule', 'adminplugin', 'dispatch', [
             '_plugin' => 'Imagine',
             '_action' => 'configure'
-        )));
+        ]));
     }
 }

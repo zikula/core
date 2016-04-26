@@ -153,7 +153,7 @@ class DoctrineUtil
      *
      * @return void
      */
-    public static function createTable($tableName, array $columns, array $options = array())
+    public static function createTable($tableName, array $columns, array $options = [])
     {
         $tableName = self::decorateTableName($tableName);
         Doctrine_Manager::connection()->export->createTable($tableName, $columns, $options);
@@ -185,7 +185,7 @@ class DoctrineUtil
     {
         $oldTableName = self::decorateTableName($oldTableName);
         $newTableName = self::decorateTableName($newTableName);
-        Doctrine_Manager::connection()->export->alterTable($oldTableName, array('name' => $newTableName), $check);
+        Doctrine_Manager::connection()->export->alterTable($oldTableName, ['name' => $newTableName], $check);
     }
 
     /**
@@ -198,10 +198,10 @@ class DoctrineUtil
      *
      * @return void
      */
-    public static function createColumn($tableName, $columnName, $options = array(), $check = false)
+    public static function createColumn($tableName, $columnName, $options = [], $check = false)
     {
         $tableName = self::decorateTableName($tableName);
-        Doctrine_Manager::connection()->export->alterTable($tableName, array('add' => array($columnName => $options)), $check);
+        Doctrine_Manager::connection()->export->alterTable($tableName, ['add' => [$columnName => $options]], $check);
     }
 
     /**
@@ -216,7 +216,7 @@ class DoctrineUtil
     public static function dropColumn($tableName, $columnName, $check = false)
     {
         $tableName = self::decorateTableName($tableName);
-        Doctrine_Manager::connection()->export->alterTable($tableName, array('remove' => array($columnName => array())), $check);
+        Doctrine_Manager::connection()->export->alterTable($tableName, ['remove' => [$columnName => []]], $check);
     }
 
     /**
@@ -247,7 +247,7 @@ class DoctrineUtil
             }
 
             Doctrine_Manager::connection()->export->alterTable($tableName,
-                    array('rename' => array($oldColumnName => array('name' => $newColumnName, 'definition' => $coldef))), $check);
+                ['rename' => [$oldColumnName => ['name' => $newColumnName, 'definition' => $coldef]]], $check);
         }
     }
 
@@ -261,13 +261,13 @@ class DoctrineUtil
      *
      * @return void
      */
-    public static function alterColumn($tableName, $columnName, $column = array(), $check = false)
+    public static function alterColumn($tableName, $columnName, $column = [], $check = false)
     {
-        $options = array();
+        $options = [];
         $options = $column['options'];
         $options['type'] = $column['type'];
         $tableName = self::decorateTableName($tableName);
-        Doctrine_Manager::connection()->export->alterTable($tableName, array('change' => array($columnName => array('definition' => $options))), $check);
+        Doctrine_Manager::connection()->export->alterTable($tableName, ['change' => [$columnName => ['definition' => $options]]], $check);
     }
 
     /**
@@ -393,7 +393,7 @@ class DoctrineUtil
             if (isset($schemaColumns[$key])) {
                 continue;
             }
-            $alterTableDefinition = array('add' => array($key => $columnDefinition));
+            $alterTableDefinition = ['add' => [$key => $columnDefinition]];
             try {
                 $connection->export->alterTable($tableName, $alterTableDefinition);
             } catch (Exception $e) {
@@ -403,7 +403,7 @@ class DoctrineUtil
 
         // second round - alter table structures to match new tables definition.
         foreach ($modelColumns as $key => $columnDefinition) {
-            $alterTableDefinition = array('change' => array($key => array('definition' => $columnDefinition)));
+            $alterTableDefinition = ['change' => [$key => ['definition' => $columnDefinition]]];
             try {
                 $connection->export->alterTable($tableName, $alterTableDefinition);
             } catch (Exception $e) {
@@ -417,7 +417,7 @@ class DoctrineUtil
                 if (isset($modelColumns[$key])) {
                     continue;
                 }
-                $alterTableDefinition = array('remove' => array($key => array()));
+                $alterTableDefinition = ['remove' => [$key => []]];
                 try {
                     $connection->export->alterTable($tableName, $alterTableDefinition);
                 } catch (Exception $e) {
@@ -440,7 +440,7 @@ class DoctrineUtil
         $modelIndexes = $modelTable->getOption('indexes');
         if ($modelIndexes) {
             foreach ($modelIndexes as $indexName => $indexDefinition) {
-                $connection->export->createIndex($tableName, $indexName, $indexDefinition); //array('fields' => $indexDefinition));
+                $connection->export->createIndex($tableName, $indexName, $indexDefinition); //['fields' => $indexDefinition]);
             }
         }
 

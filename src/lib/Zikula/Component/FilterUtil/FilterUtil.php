@@ -77,7 +77,7 @@ class FilterUtil
      *
      * @return FilterUtil
      */
-    public static function create(QueryBuilder $queryBuilder, array $plugins = array(), array $restrictions = array(), Request $request = null, $filterKey = 'filter')
+    public static function create(QueryBuilder $queryBuilder, array $plugins = [], array $restrictions = [], Request $request = null, $filterKey = 'filter')
     {
         $pluginManager = new PluginManager(new Config($queryBuilder), $plugins, $restrictions);
 
@@ -108,7 +108,7 @@ class FilterUtil
         }
 
         $i = 1;
-        $filter = array();
+        $filter = [];
         // TODO get filter via request object
         // Get unnumbered filter string
         $filterStr = $this->request->query->filter(
@@ -263,11 +263,11 @@ class FilterUtil
             $parts = explode('^', $filter, 3);
         }
 
-        $con = array(
+        $con = [
             'field' => false,
             'op' => false,
             'value' => false
-        );
+        ];
 
         if (isset($parts) && is_array($parts) && count($parts) > 2) {
             $con['field'] = $parts[0];

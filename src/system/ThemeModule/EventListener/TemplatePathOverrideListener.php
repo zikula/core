@@ -57,7 +57,7 @@ class TemplatePathOverrideListener implements EventSubscriberInterface
                 if (is_readable($overridePath)) {
                     $paths = $this->loader->getPaths($bundleName);
                     // inject themeOverridePath before the original path in the array
-                    array_splice($paths, count($paths) - 1, 0, array($overridePath));
+                    array_splice($paths, count($paths) - 1, 0, [$overridePath]);
                     $this->loader->setPaths($paths, $bundleName);
                 }
             }
@@ -66,10 +66,10 @@ class TemplatePathOverrideListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(
-            KernelEvents::CONTROLLER => array(
-                array('setUpThemePathOverrides'),
-            ),
-        );
+        return [
+            KernelEvents::CONTROLLER => [
+                ['setUpThemePathOverrides']
+            ]
+        ];
     }
 }

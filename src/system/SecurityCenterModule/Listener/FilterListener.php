@@ -55,7 +55,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
         if ($event['stage'] & Zikula_Core::STAGE_MODS && System::getVar('useids') == 1) {
             // Run IDS if desired
             try {
-                $request = array();
+                $request = [];
                 // build request array defining what to scan
                 // @todo: change the order of the arrays to merge if ini_get('variables_order') != 'EGPCS'
                 if (isset($_REQUEST)) {
@@ -123,10 +123,10 @@ class FilterListener extends \Zikula_AbstractEventHandler
      */
     private function _getidsconfig()
     {
-        $config = array();
+        $config = [];
 
         // General configuration settings
-        $config['General'] = array();
+        $config['General'] = [];
 
         $config['General']['filter_type'] = System::getVar('idsfilter', 'xml');
         if (empty($config['General']['filter_type'])) {
@@ -150,20 +150,20 @@ class FilterListener extends \Zikula_AbstractEventHandler
         $config['General']['HTML_Purifier_Cache'] = CacheUtil::getLocalDir() . '/purifierCache';
 
         // define which fields contain html and need preparation before hitting the PHPIDS rules
-        $config['General']['html'] = System::getVar('idshtmlfields', array());
+        $config['General']['html'] = System::getVar('idshtmlfields', []);
 
         // define which fields contain JSON data and should be treated as such for fewer false positives
-        $config['General']['json'] = System::getVar('idsjsonfields', array());
+        $config['General']['json'] = System::getVar('idsjsonfields', []);
 
         // define which fields shouldn't be monitored (a[b]=c should be referenced via a.b)
-        $config['General']['exceptions'] = System::getVar('idsexceptions', array());
+        $config['General']['exceptions'] = System::getVar('idsexceptions', []);
 
         // PHPIDS should run with PHP 5.1.2 but this is untested - set this value to force compatibilty with minor versions
         $config['General']['min_php_version'] = '5.1.6';
 
         // caching settings
         // @todo: add UI for those caching settings
-        $config['Caching'] = array();
+        $config['Caching'] = [];
 
         // caching method (session|file|database|memcached|none), default file
         $config['Caching']['caching'] = 'none'; // deactivate caching for now
@@ -249,26 +249,27 @@ class FilterListener extends \Zikula_AbstractEventHandler
             // get entity manager
             $em = ServiceUtil::get('doctrine.entitymanager');
 
-            $intrusionItems = array();
+            $intrusionItems = [];
 
             foreach ($result as $event) {
                 $eventName = $event->getName();
                 $malVar = explode(".", $eventName, 2);
 
-                $filters = array();
+                $filters = [];
                 foreach ($event as $filter) {
-                    array_push($filters, array(
-                                            'id' => $filter->getId(),
-                                            'description' => $filter->getDescription(),
-                                            'impact' => $filter->getImpact(),
-                                            'tags' => $filter->getTags(),
-                                            'rule' => $filter->getRule()));
+                    array_push($filters, [
+                        'id' => $filter->getId(),
+                        'description' => $filter->getDescription(),
+                        'impact' => $filter->getImpact(),
+                        'tags' => $filter->getTags(),
+                        'rule' => $filter->getRule()
+                    ]);
                 }
 
                 $tagVal = $malVar[1];
 
-                $newIntrusionItem = array(
-                    'name'    => array($eventName),
+                $newIntrusionItem = [
+                    'name'    => [$eventName],
                     'tag'     => $tagVal,
                     'value'   => $event->getValue(),
                     'page'    => $currentPage,
@@ -276,8 +277,8 @@ class FilterListener extends \Zikula_AbstractEventHandler
                     'ip'      => $ipAddress,
                     'impact'  => $result->getImpact(),
                     'filters' => serialize($filters),
-                    'date'    => new \DateTime("now")
-                );
+                    'date'    => new \DateTime('now')
+                ];
 
                 if (array_key_exists($tagVal, $intrusionItems)) {
                     $intrusionItems[$tagVal]['name'][] = $newIntrusionItem['name'][0];
@@ -327,7 +328,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
             $mailTitle = __('Intrusion attempt detected by PHPIDS');
 
             if (ModUtil::available('ZikulaMailerModule')) {
-                $args = array();
+                $args = [];
                 $args['fromname']    = $siteName;
                 $args['fromaddress'] = $adminmail;
                 $args['toname']      = 'Site Administrator';

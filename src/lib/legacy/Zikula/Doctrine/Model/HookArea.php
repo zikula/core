@@ -24,72 +24,74 @@ class Zikula_Doctrine_Model_HookArea extends Doctrine_Record
     {
         $this->setTableName('hook_area');
 
-        $this->hasColumn('id', 'integer', 4, array(
-             'type' => 'integer',
-             'length' => 4,
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => true,
-             'autoincrement' => true,
-             ));
+        $this->hasColumn('id', 'integer', 4, [
+            'type' => 'integer',
+            'length' => 4,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => true,
+            'autoincrement' => true,
+        ]);
 
-        $this->hasColumn('owner', 'string', 40, array(
-             'type' => 'string',
-             'length' => 40,
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => false,
-             'notnull' => true,
-             'autoincrement' => false,
-             ));
+        $this->hasColumn('owner', 'string', 40, [
+            'type' => 'string',
+            'length' => 40,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => false,
+            'notnull' => true,
+            'autoincrement' => false,
+        ]);
 
-        $this->hasColumn('subowner', 'string', 40, array(
-             'type' => 'string',
-             'length' => 40,
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => false,
-             'notnull' => false,
-             'autoincrement' => false,
-             ));
+        $this->hasColumn('subowner', 'string', 40, [
+            'type' => 'string',
+            'length' => 40,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => false,
+            'notnull' => false,
+            'autoincrement' => false,
+        ]);
 
-        $this->hasColumn('areatype', 'string', 1, array(// (p)rovider or (s)ubscriber
-             'type' => 'string',
-             'length' => 1,
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => false,
-             'notnull' => true,
-             'autoincrement' => false,
-             ));
+        $this->hasColumn('areatype', 'string', 1, [// (p)rovider or (s)ubscriber
+            'type' => 'string',
+            'length' => 1,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => false,
+            'notnull' => true,
+            'autoincrement' => false,
+        ]);
 
-        $this->hasColumn('category', 'string', 20, array(
-             'type' => 'string',
-             'length' => 10,
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => false,
-             'notnull' => true,
-             'autoincrement' => false,
-             ));
+        $this->hasColumn('category', 'string', 20, [
+            'type' => 'string',
+            'length' => 10,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => false,
+            'notnull' => true,
+            'autoincrement' => false,
+        ]);
 
-        $this->hasColumn('areaname', 'string', 100, array(
-             'type' => 'string',
-             'length' => 100,
-             'fixed' => false,
-             'unsigned' => false,
-             'primary' => false,
-             'notnull' => true,
-             'autoincrement' => false,
-             ));
+        $this->hasColumn('areaname', 'string', 100, [
+            'type' => 'string',
+            'length' => 100,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => false,
+            'notnull' => true,
+            'autoincrement' => false,
+        ]);
 
-        $this->index('areaidx', array(
-                'fields' => array(
-                    'areaname' => array(
-                        'sorting' => 'ASC',
-                        'length'  => 100),
-                    ),
-                'type' => 'unique'));
+        $this->index('areaidx', [
+            'fields' => [
+                'areaname' => [
+                    'sorting' => 'ASC',
+                    'length'  => 100
+                ],
+            ],
+            'type' => 'unique'
+        ]);
     }
 
     /**

@@ -65,7 +65,7 @@ class ViewListener extends BaseViewListener
      *
      * Filter of result of a fetch.
      * Receives `Zikula_View` instance as subject,
-     * args are `array('template' => $template)`,
+     * args are `['template' => $template]`,
      * $data was the result of the fetch to be filtered.
      *
      * @param GenericEvent $event The event instance.

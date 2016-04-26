@@ -41,11 +41,11 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
             $idColumn = $idColumn[0];
         }
 
-        $this->hasMany($subclassName.' as Categories', array(
+        $this->hasMany($subclassName.' as Categories', [
             'local' => $idColumn,
             'foreign' => 'obj_id',
-            'cascade' => array('delete')
-        ));
+            'cascade' => ['delete']
+        ]);
 
         $this->addListener(new Zikula_Doctrine_Template_Listener_Categorisable());
     }
@@ -74,8 +74,11 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
             file_put_contents(CacheUtil::getLocalDir().'/'.$dir.'/'.$fileName, $fileContents);
 
             // save required data for later use
-            $modelsInfo = ModUtil::getVar('ZikulaCategoriesModule', 'EntityCategorySubclasses', array());
-            $modelsInfo[$subclassName] = array('module' => $module, 'table' => $tableName);
+            $modelsInfo = ModUtil::getVar('ZikulaCategoriesModule', 'EntityCategorySubclasses', []);
+            $modelsInfo[$subclassName] = [
+                'module' => $module,
+                'table' => $tableName
+            ];
             ModUtil::setVar('ZikulaCategoriesModule', 'EntityCategorySubclasses', $modelsInfo);
         } else {
             throw new Exception('Creation of the cache directory '.$dir.' failed');

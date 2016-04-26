@@ -29,7 +29,7 @@ class CacheApi extends Zikula_AbstractBase
      * @param $args['ot']   the treated object type
      * @param $args['item'] the actual object
      */
-    public function clearItemCache(array $args = array())
+    public function clearItemCache(array $args = [])
     {
         if (!isset($args['ot']) || !isset($args['item'])) {
             return;
@@ -39,13 +39,13 @@ class CacheApi extends Zikula_AbstractBase
         $item = $args['item'];
     
         $controllerHelper = $this->get('zikularoutesmodule.controller_helper');
-        $utilArgs = array('api' => 'cache', 'action' => 'clearItemCache');
+        $utilArgs = ['api' => 'cache', 'action' => 'clearItemCache'];
         if (!in_array($objectType, $controllerHelper->getObjectTypes('controllerAction', $utilArgs))) {
             return;
         }
     
         if ($item && !is_array($item) && !is_object($item)) {
-            $item = ModUtil::apiFunc($this->name, 'selection', 'getEntity', array('ot' => $objectType, 'id' => $item, 'useJoins' => false, 'slimMode' => true));
+            $item = ModUtil::apiFunc($this->name, 'selection', 'getEntity', ['ot' => $objectType, 'id' => $item, 'useJoins' => false, 'slimMode' => true]);
         }
     
         if (!$item) {
@@ -55,10 +55,10 @@ class CacheApi extends Zikula_AbstractBase
         $instanceId = $item->createCompositeIdentifier();
     
         $logger = $this->get('logger');
-        $logger->info('{app}: User {user} caused clearing the cache for entity {entity} with id {id}.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => $objectType, 'id' => $instanceId));
+        $logger->info('{app}: User {user} caused clearing the cache for entity {entity} with id {id}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => $objectType, 'id' => $instanceId]);
     
         // Clear View_cache
-        $cacheIds = array();
+        $cacheIds = [];
         switch ($objectType) {
             case 'route':
                 $cacheIds[] = 'route_index';
@@ -78,7 +78,7 @@ class CacheApi extends Zikula_AbstractBase
     
     
         // Clear Theme_cache
-        $cacheIds = array();
+        $cacheIds = [];
         $cacheIds[] = 'homepage'; // for homepage (can be assigned in the Settings module)
         switch ($objectType) {
             case 'route':

@@ -41,7 +41,7 @@ function smarty_function_adminpanelmenu($params, Zikula_View $view)
     $router = $view->getContainer()->get('router');
     $modules = ModUtil::getModulesCapableOf('admin');
     // sort modules by displayname
-    $moduleNames = array();
+    $moduleNames = [];
     foreach ($modules as $key => $module) {
         $moduleNames[$key] = $module['displayname'];
     }

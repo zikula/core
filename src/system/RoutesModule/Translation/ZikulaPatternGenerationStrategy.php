@@ -33,7 +33,7 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
     private $locales;
     private $cacheDir;
     private $defaultLocale;
-    private $modUrlMap = array();
+    private $modUrlMap = [];
 
     public function __construct($strategy, TranslatorInterface $translator, array $locales, $cacheDir, $translationDomain = 'routes', $defaultLocale = 'en')
     {
@@ -50,7 +50,7 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
      */
     public function generateI18nPatterns($routeName, Route $route)
     {
-        $patterns = array();
+        $patterns = [];
         foreach ($route->getOption('i18n_locales') ?: $this->locales as $locale) {
             // Check if translation exists in the translation catalogue to avoid errors being logged by
             // the new LoggingTranslator of Symfony 2.6. However, the LoggingTranslator did not implement
@@ -62,11 +62,11 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
                     $i18nPattern = $route->getPath();
                 } else {
                     // Get translation.
-                    $i18nPattern = $this->translator->trans(/** @Ignore */$routeName, array(), $this->translationDomain, $locale);
+                    $i18nPattern = $this->translator->trans(/** @Ignore */$routeName, [], $this->translationDomain, $locale);
                 }
             } else {
                 // if no translation exists, we use the current pattern
-                if ($routeName === $i18nPattern = $this->translator->trans(/** @Ignore */$routeName, array(), $this->translationDomain, $locale)) {
+                if ($routeName === $i18nPattern = $this->translator->trans(/** @Ignore */$routeName, [], $this->translationDomain, $locale)) {
                     $i18nPattern = $route->getPath();
                 }
             }

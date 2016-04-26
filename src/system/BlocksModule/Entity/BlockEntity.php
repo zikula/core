@@ -124,7 +124,7 @@ class BlockEntity extends EntityAccess
         $this->blocktype = '';
         $this->properties = [];
         $this->module = 0;
-        $this->filters = array();
+        $this->filters = [];
         $this->active = 1;
         $this->last_update = new \DateTime("now");
         $this->language = '';

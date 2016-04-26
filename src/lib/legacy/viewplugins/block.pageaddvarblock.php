@@ -49,12 +49,12 @@ function smarty_block_pageaddvarblock($params, $content, Zikula_View $view)
         $varname = isset($params['name']) ? $params['name'] : 'header';
 
         if (System::isLegacyMode() && ($varname == 'rawtext')) {
-            LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', array('rawtext', 'header')), E_USER_DEPRECATED);
+            LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', ['rawtext', 'header']), E_USER_DEPRECATED);
             $varname = 'header';
         }
 
         if (($varname != 'header') && ($varname != 'footer')) {
-            throw new Zikula_Exception_Fatal(__f('Invalid page variable name: \'%1$s\'.', array($varname)));
+            throw new Zikula_Exception_Fatal(__f('Invalid page variable name: \'%1$s\'.', [$varname]));
         }
 
         PageUtil::addVar($varname, $content);

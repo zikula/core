@@ -24,18 +24,19 @@ class AccountApi extends \Zikula_AbstractApi
      */
     public function getall()
     {
-        $items = array();
+        $items = [];
 
         // Check if there is at least one group to show
         $groups = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getallgroups');
 
         if ($groups) {
             // create an array of links to return
-            $items['0'] = array(
+            $items['0'] = [
                 'url'    => ModUtil::url('ZikulaGroupsModule', 'user', 'index'),
                 'module' => 'ZikulaGroupsModule',
                 'title'  => $this->__('Groups manager'),
-                'icon'   => 'admin.png');
+                'icon'   => 'admin.png'
+            ];
         }
 
         // Return the items

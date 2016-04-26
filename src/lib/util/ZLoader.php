@@ -31,7 +31,7 @@ class ZLoader
      */
     public static function register($autoloader)
     {
-        spl_autoload_register(array('ZLoader', 'autoload'));
+        spl_autoload_register(['ZLoader', 'autoload']);
         self::$autoloader = $autoloader;
     }
 

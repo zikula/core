@@ -55,7 +55,7 @@ class ModelHelper
     public function canBeCreated($objectType)
     {
         $controllerHelper = $this->container->get('zikularoutesmodule.controller_helper');
-        if (!in_array($objectType, $controllerHelper->getObjectTypes('util', array('util' => 'model', 'action' => 'canBeCreated')))) {
+        if (!in_array($objectType, $controllerHelper->getObjectTypes('util', ['util' => 'model', 'action' => 'canBeCreated']))) {
             throw new \Exception('Error! Invalid object type received.');
         }
     
@@ -80,7 +80,7 @@ class ModelHelper
     protected function hasExistingInstances($objectType)
     {
         $controllerHelper = $this->container->get('zikularoutesmodule.controller_helper');
-        if (!in_array($objectType, $controllerHelper->getObjectTypes('util', array('util' => 'model', 'action' => 'hasExistingInstances')))) {
+        if (!in_array($objectType, $controllerHelper->getObjectTypes('util', ['util' => 'model', 'action' => 'hasExistingInstances']))) {
             throw new \Exception('Error! Invalid object type received.');
         }
     

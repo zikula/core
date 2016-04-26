@@ -57,7 +57,7 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
                 // clear old modvars
                 // use manual method because getVars() is not available during system upgrade
                 $modVarEntities = $this->entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionVarEntity')->findBy(['modname' => $this->name]);
-                $modVars = array();
+                $modVars = [];
                 foreach ($modVarEntities as $var) {
                     $modVars[$var['name']] = $var['value'];
                 }
@@ -83,9 +83,9 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
                     'password' => $modVars['smtppassword'],
                     'host' => $modVars['smtpserver'],
                     'port' => $modVars['smtpport'],
-                    'encryption' => (isset($modVars['smtpsecuremethod']) && in_array($modVars['smtpsecuremethod'], array('ssl', 'tls')) ? $modVars['smtpsecuremethod'] : 'ssl'),
+                    'encryption' => (isset($modVars['smtpsecuremethod']) && in_array($modVars['smtpsecuremethod'], ['ssl', 'tls']) ? $modVars['smtpsecuremethod'] : 'ssl'),
                     'auth_mode' => (!empty($modVars['auth'])) ? 'login' : null,
-                    'spool' => array('type' => 'memory'),
+                    'spool' => ['type' => 'memory'],
                     'delivery_addresses' => [],
                     'disable_delivery' => $modVars['mailertype'] == 5,
                 ];

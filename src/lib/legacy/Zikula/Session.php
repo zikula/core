@@ -40,11 +40,11 @@ class Zikula_Session extends Session
 
     public function start()
     {
-        $config = array(
+        $config = [
             'gc_probability' => System::getVar('gc_probability'),
             'gc_divisor' => 10000,
             'gc_maxlifetime' => System::getVar('secinactivemins'),
-        );
+        ];
 
         $path = System::getBaseUri();
         if (empty($path)) {
@@ -141,11 +141,11 @@ class Zikula_Session extends Session
      * Get special attributes by type.
      *
      * @param string $type    Type.
-     * @param mixed  $default Default value to return (default = array()).
+     * @param mixed  $default Default value to return (default = []).
      *
      * @return mixed
      */
-    public function getMessages($type, $default = array())
+    public function getMessages($type, $default = [])
     {
         return $this->getFlashBag()->get($type, $default);
     }

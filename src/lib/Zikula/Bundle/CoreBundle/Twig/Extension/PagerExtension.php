@@ -32,9 +32,9 @@ class PagerExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            new \Twig_SimpleFunction('pager', [$this, 'pager'], array('is_safe' => array('html'))),
-        );
+        return [
+            new \Twig_SimpleFunction('pager', [$this, 'pager'], ['is_safe' => ['html']])
+        ];
     }
 
     /**
@@ -75,7 +75,7 @@ class PagerExtension extends \Twig_Extension
         }
 
         // set default values - $pager is sent to template
-        $pager = array();
+        $pager = [];
         $pager['total'] = $params['rowcount'];
         $pager['perpage'] = isset($params['limit']) ? $params['limit'] : 20;
         $pager['class'] = isset($params['class']) ? $params['class'] : 'z-pager';
@@ -90,7 +90,7 @@ class PagerExtension extends \Twig_Extension
         $processDetailLinks = isset($params['processDetailLinks']) ? (bool)$params['processDetailLinks'] : ($templateName != 'CoreBundle:Pager:pagerimage.html.twig');
         $anchorText = isset($params['anchorText']) ? '#' . $params['anchorText'] : '';
 
-        $routeParams = array();
+        $routeParams = [];
         if ($request->attributes->has('_route_params')) {
             $routeParams = $request->attributes->get('_route_params');
             if (isset($routeParams[$pager['posvar']])) {
@@ -120,7 +120,7 @@ class PagerExtension extends \Twig_Extension
         $pager['currentPage'] = ceil($pager['pos'] / $pager['perpage']);
         $pager['currentPage'] = $pager['currentPage'] > $pager['countPages'] ? $pager['countPages'] : $pager['currentPage'];
 
-        $pager['args'] = array();
+        $pager['args'] = [];
 
         // Include POST vars as requested, i.e. for search results
         $allVars = $includePostVars ? array_merge($request->request->all(), $request->query->all(), $routeParams) : array_merge($request->query->all(), $routeParams);
@@ -188,7 +188,7 @@ class PagerExtension extends \Twig_Extension
 
         // build links to items / pages
         // entries are marked as current or displayed / hidden
-        $pager['pages'] = array();
+        $pager['pages'] = [];
         if ($pager['maxPages'] > 0) {
             $pageInterval = floor($pager['maxPages'] / 2);
 
@@ -268,10 +268,11 @@ class PagerExtension extends \Twig_Extension
             $pager['itemEnd'] = $pager['total'];
         }
 
-        $templateParameters = array();
-        $templateParameters['pagerPluginArray'] = $pager;
-        $templateParameters['hiddenPageBoxOpened'] = 0;
-        $templateParameters['hiddenPageBoxClosed'] = 0;
+        $templateParameters = [
+            'pagerPluginArray' => $pager,
+            'hiddenPageBoxOpened' => 0,
+            'hiddenPageBoxClosed' => 0
+        ];
 
         return $this->container->get('templating')->renderResponse($templateName, $templateParameters)->getContent();
     }

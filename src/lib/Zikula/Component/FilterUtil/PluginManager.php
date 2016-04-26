@@ -23,7 +23,7 @@ class PluginManager
      *
      * @var AbstractPlugin[]
      */
-    private $plugins = array();
+    private $plugins = [];
 
     /**
      * Loaded operators.
@@ -44,7 +44,7 @@ class PluginManager
      *
      * @var array
      */
-    private $restrictions = array();
+    private $restrictions = [];
 
     /**
      * @var Config
@@ -58,7 +58,7 @@ class PluginManager
      * @param array  $plugins
      * @param array  $restrictions
      */
-    public function __construct(Config $config, array $plugins = array(), array $restrictions = array())
+    public function __construct(Config $config, array $plugins = [], array $restrictions = [])
     {
         $this->config = $config;
         $this->loadPlugins($plugins);
@@ -89,7 +89,7 @@ class PluginManager
         }
 
         if (!$default) {
-            $this->loadPlugin(new ComparePlugin(null, array(), true));
+            $this->loadPlugin(new ComparePlugin(null, [], true));
         }
     }
 
@@ -133,7 +133,7 @@ class PluginManager
             $ops = $plugin->getOperators();
             if (isset($ops) && is_array($ops)) {
                 foreach ($ops as $op => $fields) {
-                    $flds = array();
+                    $flds = [];
                     foreach ($fields as $field) {
                         $flds[$field] = $k;
                     }
@@ -186,11 +186,11 @@ class PluginManager
             }
         }
 
-        return array(
+        return [
             'field' => $field,
             'op' => $op,
             'value' => $value
-        );
+        ];
     }
 
     /**

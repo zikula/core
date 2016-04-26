@@ -33,7 +33,7 @@ First create a class to handle the event:
         {
             return [
                 'get.pending_content' => [
-                    array('getPendingContent'),
+                    ['getPendingContent']
                 ]
             ];
         }

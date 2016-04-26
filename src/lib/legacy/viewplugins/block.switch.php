@@ -44,7 +44,7 @@
 function smarty_block_switch($params, $content, Zikula_View $view, &$pages)
 {
     if (is_null($content) && !array_key_exists('expr', $params)) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_switch', 'expr')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['smarty_block_switch', 'expr']));
     }
 
     return $content;

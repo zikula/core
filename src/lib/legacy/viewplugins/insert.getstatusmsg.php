@@ -51,7 +51,7 @@ function smarty_insert_getstatusmsg($params, $view)
      */
     $result = '';
 
-    $total_messages = array();
+    $total_messages = [];
 
     /**
      * Get session.

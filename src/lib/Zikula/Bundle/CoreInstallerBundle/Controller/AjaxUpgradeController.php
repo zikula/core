@@ -37,7 +37,7 @@ class AjaxUpgradeController extends AbstractController
         $stage = $request->request->get('stage');
         $this->container->setParameter('upgrading', true);
         $status = $this->executeStage($stage);
-        $response = array('status' => (bool) $status);
+        $response = ['status' => (bool) $status];
         if (is_array($status)) {
             $response['results'] = $status;
         }
@@ -101,7 +101,7 @@ class AjaxUpgradeController extends AbstractController
 
         // regenerate modules list
         $modApi = new \Zikula\ExtensionsModule\Api\AdminApi($kernel->getContainer(), new \Zikula\ExtensionsModule\ZikulaExtensionsModule());
-        \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'regenerate', array('filemodules' => $modApi->getfilemodules()));
+        \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'regenerate', ['filemodules' => $modApi->getfilemodules()]);
 
         // determine module id
         $mid = \ModUtil::getIdFromName($routeModuleName);
@@ -110,18 +110,18 @@ class AjaxUpgradeController extends AbstractController
         \ModUtil::loadApi('ZikulaExtensionsModule', 'admin', true);
 
         // set module to active
-        \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate', array('id' => $mid, 'state' => \ModUtil::STATE_INACTIVE));
-        \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate', array('id' => $mid, 'state' => \ModUtil::STATE_ACTIVE));
+        \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate', ['id' => $mid, 'state' => \ModUtil::STATE_INACTIVE]);
+        \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate', ['id' => $mid, 'state' => \ModUtil::STATE_ACTIVE]);
 
         // add the Routes module to the appropriate category
         $categories = \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getall');
-        $modscat = array();
+        $modscat = [];
         foreach ($categories as $category) {
             $modscat[$category['name']] = $category['cid'];
         }
         $category = __('System');
         $destinationCategoryId = isset($modscat[$category]) ? $modscat[$category] : \ModUtil::getVar('ZikulaAdminModule', 'defaultcategory');
-        \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'addmodtocategory', array('module' => $routeModuleName, 'category' => (int)$destinationCategoryId));
+        \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'addmodtocategory', ['module' => $routeModuleName, 'category' => (int)$destinationCategoryId]);
 
         return true;
     }
@@ -132,7 +132,7 @@ class AjaxUpgradeController extends AbstractController
         \ModUtil::loadApi('ZikulaExtensionsModule', 'admin', true);
         // this also regenerates all the modules
         return \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'upgradeall');
-        // returns array(array(modname => boolean))
+        // returns [[modname => boolean]]
     }
 
     private function regenerateThemes()
@@ -209,7 +209,7 @@ class AjaxUpgradeController extends AbstractController
         // console commands always run in `dev` mode but site should be `prod` mode. clear both for good measure.
         $this->container->get('cache_clearer')->clear('dev');
         $this->container->get('cache_clearer')->clear('prod');
-        if (in_array($this->container->getParameter('env'), array('dev', 'prod'))) {
+        if (in_array($this->container->getParameter('env'), ['dev', 'prod'])) {
             // this is just in case anyone ever creates a mode that isn't dev|prod
             $this->container->get('cache_clearer')->clear($this->container->getParameter('env'));
         }

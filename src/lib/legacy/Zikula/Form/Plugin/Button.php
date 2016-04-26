@@ -142,10 +142,10 @@ class Zikula_Form_Plugin_Button extends Zikula_Form_AbstractStyledPlugin
         $fullName = $this->id . '_' . $this->commandName;
 
         if (isset($_POST[$fullName])) {
-            $args = array(
+            $args = [
                 'commandName' => $this->commandName,
                 'commandArgument' => $this->commandArgument
-            );
+            ];
             if (!empty($this->onCommand)) {
                 if ($view->raiseEvent($this->onCommand, $args) === false) {
                     return false;

@@ -65,17 +65,18 @@ class ExtensionServicesListener implements EventSubscriberInterface
         }
 
         // notify EVENT here to gather any system service links
-        $args = array('modname' => $event->getArgument('modname'));
+        $args = ['modname' => $event->getArgument('modname')];
         $localevent = new \Zikula\Core\Event\GenericEvent($event->getSubject(), $args);
         $this->eventDispatcher->dispatch('module_dispatch.service_links', $localevent);
         $sublinks = $localevent->getData();
 
         if (!empty($sublinks)) {
-            $event->data[] = array(
-                'url' => $this->router->generate('zikulaextensionsmodule_services_moduleservices', array('moduleName' => $event['modname'])),
+            $event->data[] = [
+                'url' => $this->router->generate('zikulaextensionsmodule_services_moduleservices', ['moduleName' => $event['modname']]),
                 'text' => __('Services'),
                 'icon' => 'cogs',
-                'links' => $sublinks);
+                'links' => $sublinks
+            ];
         }
     }
 
@@ -89,7 +90,7 @@ class ExtensionServicesListener implements EventSubscriberInterface
     public function linkCollectorResponder(GenericEvent $event)
     {
         $event->setArgument('modname', $event->getSubject());
-        $event->setArgument('modfunc', array(1 => 'getLinks'));
+        $event->setArgument('modfunc', [1 => 'getLinks']);
         $event->setArgument('api', true);
         $this->addServiceLink($event);
     }

@@ -158,10 +158,10 @@ class ListEntriesHelper
     public function getEntries($objectType, $fieldName)
     {
         if (empty($objectType) || empty($fieldName)) {
-            return array();
+            return [];
         }
     
-        $entries = array();
+        $entries = [];
         switch ($objectType) {
             case 'route':
                 switch ($fieldName) {
@@ -192,17 +192,21 @@ class ListEntriesHelper
      */
     public function getWorkflowStateEntriesForRoute()
     {
-        $states = array();
-        $states[] = array('value'   => 'approved',
-                          'text'    => $this->translator->__('Approved'),
-                          'title'   => $this->translator->__('Content has been approved and is available online.'),
-                          'image'   => '',
-                          'default' => false);
-        $states[] = array('value'   => '!approved',
-                          'text'    => $this->translator->__('All except approved'),
-                          'title'   => $this->translator->__('Shows all items except these which are approved'),
-                          'image'   => '',
-                          'default' => false);
+        $states = [];
+        $states[] = [
+            'value'   => 'approved',
+            'text'    => $this->translator->__('Approved'),
+            'title'   => $this->translator->__('Content has been approved and is available online.'),
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => '!approved',
+            'text'    => $this->translator->__('All except approved'),
+            'title'   => $this->translator->__('Shows all items except these which are approved'),
+            'image'   => '',
+            'default' => false
+        ];
     
         return $states;
     }
@@ -214,27 +218,35 @@ class ListEntriesHelper
      */
     public function getRouteTypeEntriesForRoute()
     {
-        $states = array();
-        $states[] = array('value'   => 'additional',
-                          'text'    => $this->translator->__('Additional'),
-                          'title'   => '',
-                          'image'   => '',
-                          'default' => true);
-        $states[] = array('value'   => 'temporaryRedirect',
-                          'text'    => $this->translator->__('Temporary redirect'),
-                          'title'   => '',
-                          'image'   => '',
-                          'default' => false);
-        $states[] = array('value'   => 'permanentRedirect',
-                          'text'    => $this->translator->__('Permanent redirect'),
-                          'title'   => '',
-                          'image'   => '',
-                          'default' => false);
-        $states[] = array('value'   => 'replace',
-                          'text'    => $this->translator->__('Replace'),
-                          'title'   => '',
-                          'image'   => '',
-                          'default' => false);
+        $states = [];
+        $states[] = [
+            'value'   => 'additional',
+            'text'    => $this->translator->__('Additional'),
+            'title'   => '',
+            'image'   => '',
+            'default' => true
+        ];
+        $states[] = [
+            'value'   => 'temporaryRedirect',
+            'text'    => $this->translator->__('Temporary redirect'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => 'permanentRedirect',
+            'text'    => $this->translator->__('Permanent redirect'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => 'replace',
+            'text'    => $this->translator->__('Replace'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
     
         return $states;
     }
@@ -246,17 +258,21 @@ class ListEntriesHelper
      */
     public function getSchemesEntriesForRoute()
     {
-        $states = array();
-        $states[] = array('value'   => 'http',
-                          'text'    => $this->translator->__('Http'),
-                          'title'   => '',
-                          'image'   => '',
-                          'default' => true);
-        $states[] = array('value'   => 'https',
-                          'text'    => $this->translator->__('Https'),
-                          'title'   => '',
-                          'image'   => '',
-                          'default' => true);
+        $states = [];
+        $states[] = [
+            'value'   => 'http',
+            'text'    => $this->translator->__('Http'),
+            'title'   => '',
+            'image'   => '',
+            'default' => true
+        ];
+        $states[] = [
+            'value'   => 'https',
+            'text'    => $this->translator->__('Https'),
+            'title'   => '',
+            'image'   => '',
+            'default' => true
+        ];
     
         return $states;
     }
@@ -268,37 +284,49 @@ class ListEntriesHelper
      */
     public function getMethodsEntriesForRoute()
     {
-        $states = array();
-        $states[] = array('value'   => 'GET',
-                          'text'    => $this->translator->__('G e t'),
-                          'title'   => '',
-                          'image'   => '',
-                          'default' => true);
-        $states[] = array('value'   => 'POST',
-                          'text'    => $this->translator->__('P o s t'),
-                          'title'   => '',
-                          'image'   => '',
-                          'default' => false);
-        $states[] = array('value'   => 'HEAD',
-                          'text'    => $this->translator->__('H e a d'),
-                          'title'   => '',
-                          'image'   => '',
-                          'default' => false);
-        $states[] = array('value'   => 'PUT',
-                          'text'    => $this->translator->__('P u t'),
-                          'title'   => '',
-                          'image'   => '',
-                          'default' => false);
-        $states[] = array('value'   => 'DELETE',
-                          'text'    => $this->translator->__('D e l e t e'),
-                          'title'   => '',
-                          'image'   => '',
-                          'default' => false);
-        $states[] = array('value'   => 'OPTIONS',
-                          'text'    => $this->translator->__('O p t i o n s'),
-                          'title'   => '',
-                          'image'   => '',
-                          'default' => false);
+        $states = [];
+        $states[] = [
+            'value'   => 'GET',
+            'text'    => $this->translator->__('G e t'),
+            'title'   => '',
+            'image'   => '',
+            'default' => true
+        ];
+        $states[] = [
+            'value'   => 'POST',
+            'text'    => $this->translator->__('P o s t'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => 'HEAD',
+            'text'    => $this->translator->__('H e a d'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => 'PUT',
+            'text'    => $this->translator->__('P u t'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => 'DELETE',
+            'text'    => $this->translator->__('D e l e t e'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => 'OPTIONS',
+            'text'    => $this->translator->__('O p t i o n s'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
     
         return $states;
     }

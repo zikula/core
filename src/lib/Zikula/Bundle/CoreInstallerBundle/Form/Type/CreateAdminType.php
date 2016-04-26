@@ -24,39 +24,47 @@ class CreateAdminType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username', 'Symfony\Component\Form\Extension\Core\Type\TextType', array(
+            ->add('username', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => __('Admin User Name'),
-                'label_attr' => array('class' => 'col-sm-3'),
+                'label_attr' => [
+                    'class' => 'col-sm-3'
+                ],
                 'data' => __('admin'),
-                'constraints' => array(
+                'constraints' => [
                     new NotBlank(),
-                    new Length(array('min' => 5)),
-                    new Regex(array(
+                    new Length(['min' => 5]),
+                    new Regex([
                         'pattern' => '#' . UsersConstant::UNAME_VALIDATION_PATTERN . '#',
                         'message' => __('Error! Usernames can only consist of a combination of letters, numbers and may only contain the symbols . and _')
-                    ))
-                )))
-            ->add('password', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', array(
+                    ])
+                ]
+            ])
+            ->add('password', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
                 'type' => 'password',
                 'invalid_message' => 'The password fields must match.',
-                'options' => array(
-                    'label_attr' => array('class' => 'col-sm-3'),
-                    'constraints' => array(
+                'options' => [
+                    'label_attr' => [
+                        'class' => 'col-sm-3'
+                    ],
+                    'constraints' => [
                         new NotBlank(),
-                        new Length(array('min' => 7, 'max' => 40))
-                    )
-                ),
+                        new Length(['min' => 7, 'max' => 40])
+                    ]
+                ],
                 'required' => true,
-                'first_options'  => array('label' => 'Admin Password'),
-                'second_options' => array('label' => 'Repeat Password'),
-                ))
-            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\EmailType', array(
+                'first_options'  => ['label' => __('Admin Password')],
+                'second_options' => ['label' => __('Repeat Password')]
+            ])
+            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\EmailType', [
                 'label' => __('Admin Email Address'),
-                'label_attr' => array('class' => 'col-sm-3'),
-                'constraints' => array(
+                'label_attr' => [
+                    'class' => 'col-sm-3'
+                ],
+                'constraints' => [
                     new NotBlank(),
-                    new Email(),
-                )))
+                    new Email()
+                ]
+            ])
         ;
     }
 
@@ -67,11 +75,11 @@ class CreateAdminType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'csrf_protection' => false,
 //                'csrf_field_name' => '_token',
 //                // a unique key to help generate the secret token
 //                'intention'       => '_zk_bdcreds',
-        ));
+        ]);
     }
 }

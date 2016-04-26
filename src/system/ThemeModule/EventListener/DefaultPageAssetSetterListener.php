@@ -106,11 +106,11 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(
-            KernelEvents::REQUEST => array(
-                array('setDefaultPageAssets', 201),
-            ),
-        );
+        return [
+            KernelEvents::REQUEST => [
+                ['setDefaultPageAssets', 201]
+            ]
+        ];
     }
 
     private function addJquery($basePath)
@@ -127,7 +127,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
                 $basePath . '/web/js/fos_js_routes.js' => AssetBag::WEIGHT_ROUTES_JS
             ]);
         } else {
-            $routeScript = $this->router->generate('fos_js_routing_js', array('callback' => 'fos.Router.setData'));
+            $routeScript = $this->router->generate('fos_js_routing_js', ['callback' => 'fos.Router.setData']);
             $this->jsAssetBag->add([
                 $basePath . '/web/bundles/fosjsrouting/js/router.js' => AssetBag::WEIGHT_ROUTER_JS,
                 $routeScript => AssetBag::WEIGHT_ROUTES_JS

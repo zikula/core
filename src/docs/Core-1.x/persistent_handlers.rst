@@ -12,7 +12,7 @@ EventUtil::register*() API:
     EventUtil::registerPersistentPluginHandler($moduleName, $pluginName, $eventName, $callable)
     EventUtil::unregisterPersistentPluginHandler($moduleName, $pluginName, $eventName, $callable)
 
-Callables should look like this `array('ClassName', 'methodName')` which represents ClassName::MethodName($event)
+Callables should look like this `['ClassName', 'methodName']` which represents ClassName::MethodName($event)
 
 The only restriction is the handlers must be PHP callables of static class methods.
 
@@ -42,7 +42,7 @@ abstract class Multihook_NeedleApi
 MyModule should now register a persistent listener for 'module.multihook.get_providers'
 using the following code in Installer.php
 
-    EventUtil::registerPersistentModuleHandler('MyModule', 'module.multihook.get_providers', array('MyModule_Listeners', 'getProvider'));
+    EventUtil::registerPersistentModuleHandler('MyModule', 'module.multihook.get_providers', ['MyModule_Listeners', 'getProvider']);
 
 In a separate file lib/MyModule/Listeners.php you place the following code (this is what receives the $events).
 
@@ -50,7 +50,7 @@ In a separate file lib/MyModule/Listeners.php you place the following code (this
     {
         public static function getProvider(Zikula_Event $event)
         {
-            $event->data = array_merge($event->data, array('MyModule_Needles_Foo'));
+            $event->data = array_merge($event->data, ['MyModule_Needles_Foo']);
         }
     }
 

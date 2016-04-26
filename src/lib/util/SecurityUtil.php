@@ -26,7 +26,7 @@ class SecurityUtil
      *
      * @var array
      */
-    protected static $schemas = array();
+    protected static $schemas = [];
 
     const PERMS_ALL = -1;
     const PERMS_UNREGISTERED = 0;
@@ -104,10 +104,10 @@ class SecurityUtil
      */
     public static function checkPermission($component = null, $instance = null, $level = null, $user = null)
     {
-        static $groupperms = array();
+        static $groupperms = [];
 
         if (!is_numeric($level)) {
-            throw new \Exception(__f('Invalid security level [%1$s] received in %2$s', array($level, 'SecurityUtil::checkPermission')));
+            throw new \Exception(__f('Invalid security level [%1$s] received in %2$s', [$level, 'SecurityUtil::checkPermission']));
         }
 
         if (!isset($user)) {
@@ -157,9 +157,9 @@ class SecurityUtil
      */
     public static function confirmAuthKey($modname = '', $varname = 'authid')
     {
-        LogUtil::log(__f('Warning! Static call %1$s is deprecated. Please use %2$s instead.', array(
-        'SecurityUtil::confirmAuthKey()',
-        'SecurityUtil::validateCsrfToken()')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Static call %1$s is deprecated. Please use %2$s instead.', [
+            'SecurityUtil::confirmAuthKey()',
+            'SecurityUtil::validateCsrfToken()']), E_USER_DEPRECATED);
 
         if (!$varname) {
             $varname = 'authid';
@@ -236,10 +236,10 @@ class SecurityUtil
         // So when this method is called by Zikula_Response_Ajax  or Zikula_Response_Ajax_Error class
         // do not mark it as deprecated.
         $trace = debug_backtrace(false);
-        if (!isset($trace[1]['class']) || !in_array($trace[1]['class'], array('Zikula_Response_Ajax', 'Zikula_Response_Ajax_Error'))) {
-            LogUtil::log(__f('Warning! Static call %1$s is deprecated. Please use %2$s instead.', array(
-            'SecurityUtil::generateAuthKey()',
-            'SecurityUtil::generateCsrfToken()')), E_USER_DEPRECATED);
+        if (!isset($trace[1]['class']) || !in_array($trace[1]['class'], ['Zikula_Response_Ajax', 'Zikula_Response_Ajax_Error'])) {
+            LogUtil::log(__f('Warning! Static call %1$s is deprecated. Please use %2$s instead.', [
+                'SecurityUtil::generateAuthKey()',
+                'SecurityUtil::generateCsrfToken()']), E_USER_DEPRECATED);
         }
 
         // since we need sessions for authorisation keys we should check
@@ -291,9 +291,9 @@ class SecurityUtil
     public static function getAuthInfo($user = null)
     {
         // Empty arrays
-        $groupperms = array();
+        $groupperms = [];
 
-        $uids = array();
+        $uids = [];
         $uids[] = -1;
         // Get user ID
         if (!isset($user)) {
@@ -325,8 +325,8 @@ class SecurityUtil
             }
         }
 
-        $usergroups = array();
-        $usergroups[] = array('gid' => -1);
+        $usergroups = [];
+        $usergroups[] = ['gid' => -1];
         if ($user == 0 || !UserUtil::isLoggedIn()) {
             $usergroups[] = 0; // Unregistered GID
         }
@@ -357,7 +357,11 @@ class SecurityUtil
             for ($i = 0; $i < $size; $i++) {
                 $instance = preg_replace('/<([^>]+)>/', $vars[$res[1][$i]], $instance, 1);
             }
-            $groupperms[] = array('component' => $component, 'instance' => $instance, 'level' => $level);
+            $groupperms[] = [
+                'component' => $component,
+                'instance' => $instance,
+                'level' => $level
+            ];
         }
 
         // we've now got the permissions info
@@ -403,7 +407,7 @@ class SecurityUtil
 
         // Test if user has ANY access to given component, without determining exact instance
         if ($instance == 'ANY') {
-            $levels = array($level);
+            $levels = [$level];
             foreach ($perms as $perm) {
                 // component check
                 if (!preg_match("=^$perm[component]$=", $component)) {
@@ -510,7 +514,7 @@ class SecurityUtil
         $key = System::getVar('signingkey');
         $unsignedData = json_encode($data);
         $signature = sha1($unsignedData . $key);
-        $signedData = json_encode(array($unsignedData, $signature));
+        $signedData = json_encode([$unsignedData, $signature]);
 
         return $signedData;
     }
@@ -548,7 +552,7 @@ class SecurityUtil
      * @return string|bool The algorithm name (or code if $hashMethodNameToCode specified), salt and hashed data separated by the salt delimiter;
      *                      false if an error occured.
      */
-    public static function buildSaltedHash($unhashedData, $hashMethodName, $saltStr, array $hashMethodNameToCode = array(), $saltDelimeter = self::SALT_DELIM)
+    public static function buildSaltedHash($unhashedData, $hashMethodName, $saltStr, array $hashMethodNameToCode = [], $saltDelimeter = self::SALT_DELIM)
     {
         $saltedHash = false;
         $algoList = hash_algos();
@@ -583,10 +587,10 @@ class SecurityUtil
      * @return string|bool The algorithm name (or code if $hashMethodNameToCode specified), salt and hashed data separated by the salt delimiter;
      *                      false if an error occured.
      */
-    public static function getSaltedHash($unhashedData, $hashMethodName, array $hashMethodNameToCode = array(), $saltLength = 5, $saltDelimeter = self::SALT_DELIM)
+    public static function getSaltedHash($unhashedData, $hashMethodName, array $hashMethodNameToCode = [], $saltLength = 5, $saltDelimeter = self::SALT_DELIM)
     {
         $saltedHash = false;
-        $saltStr = RandomUtil::getString($saltLength, $saltLength, false, true, true, true, true, true, false, array($saltDelimeter));
+        $saltStr = RandomUtil::getString($saltLength, $saltLength, false, true, true, true, true, true, false, [$saltDelimeter]);
 
         return self::buildSaltedHash($unhashedData, $hashMethodName, $saltStr, $hashMethodNameToCode, $saltDelimeter);
     }
@@ -604,7 +608,7 @@ class SecurityUtil
      * @return integer|bool If the data matches the salted hash, then 1; If the data does not match, then 0; false if an error occured (Note:
      *                      both 0 and false evaluate to false in boolean expressions--use strict comparisons to differentiate).
      */
-    public static function checkSaltedHash($unhashedData, $saltedHash, array $hashMethodCodeToName = array(), $saltDelimeter = self::SALT_DELIM)
+    public static function checkSaltedHash($unhashedData, $saltedHash, array $hashMethodCodeToName = [], $saltDelimeter = self::SALT_DELIM)
     {
         $dataMatches = false;
 
@@ -661,16 +665,17 @@ class SecurityUtil
     {
         static $accessnames = null;
         if (!is_array($accessnames)) {
-            $accessnames = array(
-                    0 => __('No access'),
-                    100 => __('Overview access'),
-                    200 => __('Read access'),
-                    300 => __('Comment access'),
-                    400 => __('Moderate access'),
-                    500 => __('Edit access'),
-                    600 => __('Add access'),
-                    700 => __('Delete access'),
-                    800 => __('Admin access'));
+            $accessnames = [
+                0 => __('No access'),
+                100 => __('Overview access'),
+                200 => __('Read access'),
+                300 => __('Comment access'),
+                400 => __('Moderate access'),
+                500 => __('Edit access'),
+                600 => __('Add access'),
+                700 => __('Delete access'),
+                800 => __('Admin access')
+            ];
         }
 
         return $accessnames;

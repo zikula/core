@@ -60,6 +60,6 @@ class LoginStage implements StageInterface, FormHandlerInterface, InjectContaine
 
     public function getTemplateParams()
     {
-        return array();
+        return [];
     }
 }

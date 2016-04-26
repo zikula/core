@@ -22,14 +22,17 @@ class GroupsModuleVersion extends \Zikula_AbstractVersion
      */
     public function getMetaData()
     {
-        $meta = array();
-        $meta['displayname']    = $this->__('Groups');
-        $meta['description']    = $this->__('User group administration module.');
-        //! module name that appears in URL
-        $meta['url']            = $this->__('groups');
-        $meta['version']        = '2.3.2';
-        $meta['core_min'] = '1.4.0';
-        $meta['securityschema'] = array('ZikulaGroupsModule::' => 'Group ID::');
+        $meta = [
+            'displayname' => $this->__('Groups'),
+            'description' => $this->__('User group administration module.'),
+            //! module name that appears in URL
+            'url' => $this->__('groups');
+            'version' => '2.3.2',
+            'core_min' => '1.4.0',
+            'securityschema'] = [
+                'ZikulaGroupsModule::' => 'Group ID::'
+            ]
+        ];
 
         return $meta;
     }

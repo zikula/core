@@ -73,11 +73,11 @@ class HooksListener implements EventSubscriberInterface
             return;
         }
 
-        $event->data[] = array(
-            'url' => $this->router->generate('zikula_hook_hook_edit', array('moduleName' => $event['modname'])),
+        $event->data[] = [
+            'url' => $this->router->generate('zikula_hook_hook_edit', ['moduleName' => $event['modname']]),
             'text' => __('Hooks'),
             'icon' => 'paperclip'
-        );
+        ];
     }
 
     /**
@@ -90,7 +90,7 @@ class HooksListener implements EventSubscriberInterface
     public function linkCollectorResponder(GenericEvent $event)
     {
         $event->setArgument('modname', $event->getSubject());
-        $event->setArgument('modfunc', array(1 => 'getLinks'));
+        $event->setArgument('modfunc', [1 => 'getLinks']);
         $event->setArgument('api', true);
         $this->addHooksLink($event);
     }

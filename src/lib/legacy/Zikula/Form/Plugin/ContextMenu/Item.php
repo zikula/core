@@ -187,9 +187,12 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
         $hiddenName = "contentMenuArgument" . $contextMenu->id;
         $commandArgument = $this->request->request->get($hiddenName, null);
 
-        $args = array('commandName' => $eventArgument, 'commandArgument' => $commandArgument);
+        $args = [
+            'commandName' => $eventArgument,
+            'commandArgument' => $commandArgument
+        ];
 
-        $view->raiseEvent($contextMenu->onCommand == null ? 'handleCommand' : $contextMenu->onCommand, $args);
+        $view->raiseEvent(null == $contextMenu->onCommand ? 'handleCommand' : $contextMenu->onCommand, $args);
     }
 
     /**
@@ -202,7 +205,7 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
         // Locate parent context menu
         $contextMenu = $this->parentPlugin;
 
-        while ($contextMenu != null && !($contextMenu instanceof Zikula_Form_Block_ContextMenu)) {
+        while (null != $contextMenu && !($contextMenu instanceof Zikula_Form_Block_ContextMenu)) {
             $contextMenu = $contextMenu->parentPlugin;
         }
 

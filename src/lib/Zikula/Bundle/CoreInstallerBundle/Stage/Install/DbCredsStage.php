@@ -75,7 +75,7 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
 
     public function getTemplateParams()
     {
-        return array();
+        return [];
     }
 
     public function handleFormResult(FormInterface $form)

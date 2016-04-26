@@ -22,7 +22,7 @@ class DisplayHook extends Hook
      *
      * @var array
      */
-    private $responses = array();
+    private $responses = [];
 
     /**
      * The return url.

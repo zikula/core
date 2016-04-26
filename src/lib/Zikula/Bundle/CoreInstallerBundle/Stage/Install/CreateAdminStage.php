@@ -64,7 +64,7 @@ class CreateAdminStage implements StageInterface, FormHandlerInterface, InjectCo
 
     public function getTemplateParams()
     {
-        return array();
+        return [];
     }
 
     public function handleFormResult(FormInterface $form)

@@ -117,8 +117,10 @@ class DBUtil
         $connection = Doctrine_Manager::getInstance()->getCurrentConnection();
 
         // we will form an array to keep formally compatible to the old ado-db style for now
-        return array('description' => $connection->getAttribute(PDO::ATTR_SERVER_INFO),
-                'version' => $connection->getAttribute(PDO::ATTR_CLIENT_VERSION));
+        return [
+            'description' => $connection->getAttribute(PDO::ATTR_SERVER_INFO),
+            'version' => $connection->getAttribute(PDO::ATTR_CLIENT_VERSION)
+        ];
     }
 
     /**
@@ -195,7 +197,7 @@ class DBUtil
      */
     public static function getDefaultTableOptions()
     {
-        $tableoptions = array();
+        $tableoptions = [];
         $serviceManager = ServiceUtil::getManager();
 
         $databases = $serviceManager['databases'];
@@ -333,7 +335,7 @@ class DBUtil
 
         static $numericFields = null;
         if (!$numericFields) {
-            $numericFields = array('I' => 'I', 'I1' => 'I1', 'I2' => 'I2', 'I4' => 'I4', 'I8' => 'I8', 'F' => 'F', 'L' => 'L', 'N' => 'N');
+            $numericFields = ['I' => 'I', 'I1' => 'I1', 'I2' => 'I2', 'I4' => 'I4', 'I8' => 'I8', 'F' => 'F', 'L' => 'L', 'N' => 'N'];
         }
 
         if (isset($numericFields[$fieldType])) {
@@ -366,7 +368,7 @@ class DBUtil
             throw new Exception(__f('Invalid table-key [%s] retrieved', $table));
         }
 
-        $queriesResult = array();
+        $queriesResult = [];
         foreach ($columns as $key => $val) {
             if (!$columnArray || in_array($key, $columnArray)) {
                 $queriesResult[] = $val . ' AS "' . $key . '"';
@@ -392,8 +394,8 @@ class DBUtil
      */
     public static function _getAllColumnsQualified($table, $tablealias, $columnArray = null)
     {
-        $search = array('+', '-', '*', '/', '%');
-        $replace = array('');
+        $search = ['+', '-', '*', '/', '%'];
+        $replace = [''];
 
         $tables = self::getTables();
         $columns = $tables["{$table}_column"];
@@ -430,7 +432,7 @@ class DBUtil
      */
     public static function getColumnsArray($table, $columnArray = null)
     {
-        $columnArrayResult = array();
+        $columnArrayResult = [];
 
         $tables = self::getTables();
         $tkey = $table . '_column';
@@ -534,15 +536,18 @@ class DBUtil
             $definition = self::getTableDefinition($table);
             $definition = $definition[$newcolumn];
             if (!$definition) {
-                throw new Exception(__f('Neither the sql parameter nor the table array contain the dictionary representation of table [%s]', array($table)));
+                throw new Exception(__f('Neither the sql parameter nor the table array contain the dictionary representation of table [%s]', [$table]));
             }
         }
 
-        $renameColumnArray = array($oldcolumn => array(
-                        'name' => $newcolumn,
-                        'definition' => $definition));
+        $renameColumnArray = [
+            $oldcolumn => [
+                'name' => $newcolumn,
+                'definition' => $definition
+            ]
+        ];
         try {
-            Doctrine_Manager::getInstance()->getCurrentConnection()->export->alterTable($tableName, array('rename' => $renameColumnArray));
+            Doctrine_Manager::getInstance()->getCurrentConnection()->export->alterTable($tableName, ['rename' => $renameColumnArray]);
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Column rename failed.') . ' ' . $e->getMessage());
         }
@@ -584,11 +589,11 @@ class DBUtil
                 $options = self::getTableOptions($table);
                 $definition = self::getTableDefinition($table);
                 if (!isset($definition[$field[0]])) {
-                    throw new InvalidArgumentException(__f('%1$s does not exist in table definition for %2$s.', array($field[0], $table)));
+                    throw new InvalidArgumentException(__f('%1$s does not exist in table definition for %2$s.', [$field[0], $table]));
                 }
                 $def = $definition[$field[0]];
 
-                $connection->export->alterTable($tableName, array('add' => array($field[0] => $def)));
+                $connection->export->alterTable($tableName, ['add' => [$field[0] => $def]]);
             }
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Column creation failed.') . ' ' . $e->getMessage());
@@ -623,16 +628,16 @@ class DBUtil
         }
 
         $fields = (array)$fields;
-        $arrayFields = array();
+        $arrayFields = [];
         foreach ($fields as $field) {
-            $arrayFields[$field] = array();
+            $arrayFields[$field] = [];
         }
 
         $tables = self::getTables();
         $tableName = $tables[$table];
 
         try {
-            Doctrine_Manager::getInstance()->getCurrentConnection()->export->alterTable($tableName, array('remove' => $arrayFields));
+            Doctrine_Manager::getInstance()->getCurrentConnection()->export->alterTable($tableName, ['remove' => $arrayFields]);
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Column deletion failed.') . ' ' . $e->getMessage());
         }
@@ -705,10 +710,10 @@ class DBUtil
         }
 
         // grab each key and value and append to the sql string
-        $search = array('+', '-', '*', '/', '%');
-        $replace = array('');
-        $cArray = array();
-        $vArray = array();
+        $search = ['+', '-', '*', '/', '%'];
+        $replace = [''];
+        $cArray = [];
+        $vArray = [];
 
         $dbDriverName = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
         foreach ($columnList as $key => $val) {
@@ -780,8 +785,8 @@ class DBUtil
             if (isset($columnDefList[$idfield])) {
                 $columnDefinition = $columnDefList[$idfield];
                 $columnDefFields  = explode(' ', $columnDefinition);
-                $colType          = substr($columnDefinition, 0, 1);
-                $colAuto          = in_array('AUTO', $columnDefFields);
+                $colType = substr($columnDefinition, 0, 1);
+                $colAuto = in_array('AUTO', $columnDefFields);
                 if ($colType == 'I' && $colAuto) {
                     $obj_id = self::getInsertID($table, $idfield);
                     $object[$idfield] = $obj_id;
@@ -838,9 +843,9 @@ class DBUtil
         }
 
         // grab each key and value and append to the sql string
-        $tArray = array();
-        $search = array('+', '-', '*', '/', '%');
-        $replace = array('');
+        $tArray = [];
+        $search = ['+', '-', '*', '/', '%'];
+        $replace = [''];
 
         foreach ($columnList as $key => $val) {
             $hasMath = (bool)(strcmp($val, str_replace($search, $replace, $val)));
@@ -1155,7 +1160,7 @@ class DBUtil
 
         $sql = 'DELETE FROM ' . $tableName . ' WHERE ' . $fieldName . ' IN (';
 
-        $sqlArray = array();
+        $sqlArray = [];
         foreach ($keyarray as $key => $val) {
             $sqlArray[] = $key;
         }
@@ -1182,7 +1187,7 @@ class DBUtil
      */
     public static function deleteObjectByID($table, $id, $idFieldName = 'id')
     {
-        $object = array();
+        $object = [];
         $object[$idFieldName] = $id;
 
         return self::deleteObject($object, $table, '', $idFieldName);
@@ -1316,7 +1321,7 @@ class DBUtil
         }
 
         $orderby      = str_ireplace('ORDER BY ', '', $orderby); // remove "ORDER BY" for easier parsing
-        $orderby      = trim(str_replace(array("\t", "\n", '  ', ' +0', '+ 0'), array(' ', ' ', ' ', '+0', '+0'), $orderby));
+        $orderby      = trim(str_replace(["\t", "\n", '  ', ' +0', '+ 0'], [' ', ' ', ' ', '+0', '+0'], $orderby));
         $tables       = self::getTables();
         $columns      = $tables["{$table}_column"];
         $dbDriverName = Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName();
@@ -1364,8 +1369,8 @@ class DBUtil
                 }
             }
         } else {
-            $search  = array('+', '-', '*', '/', '%');
-            $replace = array('');
+            $search = ['+', '-', '*', '/', '%'];
+            $replace = [''];
 
             foreach ($tokens as $k => $v) {
                 $hasMath  = (bool)(strcmp($v, str_replace($search, $replace, $v)));
@@ -1544,7 +1549,7 @@ class DBUtil
         }
 
         $resultRows = $result->fetchAll(Doctrine_Core::FETCH_NUM);
-        $fieldArray = array();
+        $fieldArray = [];
         if ($assocKey) {
             foreach ($resultRows as $resultRow) {
                 $f1 = $resultRow[1];
@@ -1590,8 +1595,8 @@ class DBUtil
             self::_setFetchedObjectCount(0);
         }
 
-        $object = array();
-        $objectArray = array();
+        $object = [];
+        $objectArray = [];
         $fetchedObjectCount = 0;
         $resultRows = $result->fetchAll(Doctrine_Core::FETCH_ASSOC);
         if ($resultRows && $objectColumns && count($resultRows[0]) != count($objectColumns)) {
@@ -1600,7 +1605,7 @@ class DBUtil
 
         if ($assocKey && $resultRows &&
             (!array_key_exists($assocKey, $resultRows[0]) && !in_array($assocKey, $objectColumns))) {
-            throw new Exception(__f('Unable to find assocKey [%1$s] in objectColumns for resultset.', array($assocKey)));
+            throw new Exception(__f('Unable to find assocKey [%1$s] in objectColumns for resultset.', [$assocKey]));
         }
 
         foreach ($resultRows as $resultRow) {
@@ -1619,8 +1624,7 @@ class DBUtil
 
                 // we need an array of arrays, but this will fix a single array
                 if (!is_array($permissionFilter[0])) {
-                    $permissionFilter = array(
-                            $permissionFilter);
+                    $permissionFilter = [$permissionFilter];
                 }
 
                 foreach (array_keys($permissionFilter) as $k) {
@@ -1787,7 +1791,7 @@ class DBUtil
             // For field arrays we construct a temporary literal table entry which allows us to
             // do ad-hoc queries on dynamic reference tables which do not have tables.php entry.
             $tables[$table]                    = $table;
-            $tables["{$table}_column"]         = array();
+            $tables["{$table}_column"]         = []);
             $tables["{$table}_column"][$field] = $field;
             if ($assocKey) {
                 $tables["{$table}_column"][$assocKey] = $assocKey;
@@ -1918,7 +1922,7 @@ class DBUtil
             return false;
         }
 
-        $objArray = array();
+        $objArray = [];
         foreach ($res as $row) {
             $objArray[$row[0]] = $row[1];
         }
@@ -1954,7 +1958,7 @@ class DBUtil
 
         // check operator to use
         // when it's AND, the where contains subqueries
-        if (isset($categoryFilter['__META__']['operator']) && in_array(strtolower($categoryFilter['__META__']['operator']), array('and', 'or'))) {
+        if (isset($categoryFilter['__META__']['operator']) && in_array(strtolower($categoryFilter['__META__']['operator']), ['and', 'or'])) {
             $op = strtoupper($categoryFilter['__META__']['operator']);
         } else {
             $op = 'OR';
@@ -1969,7 +1973,7 @@ class DBUtil
         $n = 1; // subquery counter
         $catmapobjtbl = 'categories_mapobj';
 
-        $where = array();
+        $where = [];
         foreach ($categoryFilter as $property => $category) {
             $prefix = '';
             if ($op == 'AND') {
@@ -1978,7 +1982,7 @@ class DBUtil
 
             // this allows to have an array of categories IDs
             if (is_array($category)) {
-                $wherecat = array();
+                $wherecat = [];
                 foreach ($category as $cat) {
                     $wherecat[] = "{$prefix}category_id='" . DataUtil::formatForStore($cat) . "'";
                 }
@@ -2102,7 +2106,7 @@ class DBUtil
         $idarr = self::_generateCategoryFilter($table, $categoryFilter, true);
         $idcol = isset($tables["{$table}_primary_key_column"]) ? $tables["{$table}_primary_key_column"] : 'id';
         if ($idarr && $idcol && !in_array($object[$idcol], $idarr)) {
-            return array();
+            return [];
         }
 
         $object = self::_selectPostProcess($object, $table, $idcol);
@@ -2181,7 +2185,7 @@ class DBUtil
         $where = self::_checkWhereClause($where);
         $orderby = self::_checkOrderByClause($orderby, $table);
 
-        $objects = array();
+        $objects = [];
         $ca = null; // Not required since Zikula 1.3.0 because of 'PDO::fetchAll()' #2227// self::getColumnsArray($table, $columnArray);
         $sql = self::_getSelectAllColumnsFrom($table, $where, $orderby, $columnArray, $distinct);
 
@@ -2263,7 +2267,7 @@ class DBUtil
         $where = self::_checkWhereClause($where);
         $orderby = self::_checkOrderByClause($orderby, $table);
 
-        $objects = array();
+        $objects = [];
         $fetchedObjectCount = 0;
         $ca = null; //Note required since Zikula 1.3.0 because of PDO::fetchAll() see #2227 //self::getColumnsArray($table, $columnArray);
         $sql = self::_getSelectAllColumnsFrom($table, $where, $orderby, $columnArray);
@@ -2641,7 +2645,7 @@ class DBUtil
         $where   = self::generateCategoryFilterWhere($table, $where, $categoryFilter, false, $useJoins);
         $where   = self::_checkWhereClause($where);
         $orderby = self::_checkOrderByClause($orderby, $table);
-        $objects = array();
+        $objects = [];
 
         if ($useJoins && !$disableJoins) {
             $sql = "$sqlStart $sqlJoinFieldList $sqlFrom $sqlJoin $where $orderby";
@@ -2685,7 +2689,7 @@ class DBUtil
                 $cols      = $tables["{$joinTable}_column"];
                 $colDefs   = $tables["{$joinTable}_column_def"];
 
-                $ids     = array();
+                $ids = [];
                 $idField = $ji['compare_field_table'];
                 foreach ($objects as $object) {
                     $id = isset($object[$idField]) ? $object[$idField] : null;
@@ -2699,10 +2703,10 @@ class DBUtil
                 $joinTableIdField = $ji['compare_field_join'];
 
                 if (!is_array($joinFields)) {
-                    $joinFields = array($joinFields);
+                    $joinFields = [$joinFields];
                 }
                 if (!is_array($objectFields)) {
-                    $objectFields = array($objectFields);
+                    $objectFields = [$objectFields];
                 }
 
                 $fieldType  = $colDefs[$joinTableIdField];
@@ -2711,7 +2715,7 @@ class DBUtil
 
                 static $numericFields = null;
                 if (!$numericFields) {
-                    $numericFields = array('I', 'I1', 'I2', 'I4', 'I8', 'F', 'N', 'L');
+                    $numericFields = ['I', 'I1', 'I2', 'I4', 'I8', 'F', 'N', 'L'];
                 }
 
                 if (!in_array($fieldType, $numericFields)) {
@@ -2722,7 +2726,7 @@ class DBUtil
 
                 $idList = implode(',', $ids);
                 $where  = "$cols[$joinTableIdField] IN ($idList)";
-                $joinObjects = $ids ? self::selectObjectArray($joinTable, $where, '', -1, -1, $joinTableIdField) : array();
+                $joinObjects = $ids ? self::selectObjectArray($joinTable, $where, '', -1, -1, $joinTableIdField) : [];
 
                 foreach ($objects as $k => $object) {
                     foreach ($joinFields as $kk => $joinField) {
@@ -2811,13 +2815,13 @@ class DBUtil
         $tables = self::getTables();
         $columns = $tables["{$table}_column"];
 
-        $allowedJoinMethods = array('LEFT JOIN', 'RIGHT JOIN', 'INNER JOIN');
+        $allowedJoinMethods = ['LEFT JOIN', 'RIGHT JOIN', 'INNER JOIN'];
 
         $ca = self::getColumnsArray($table, $columnArray);
         $alias = $alias ? $alias : 'a';
         $sqlJoin = '';
         $sqlJoinFieldList = '';
-        $sqlJoinFieldArray = array();
+        $sqlJoinFieldArray = [];
         foreach (array_keys($joinInfo) as $k) {
             $jt = $joinInfo[$k]['join_table'];
             $jf = $joinInfo[$k]['join_field'];
@@ -2835,11 +2839,11 @@ class DBUtil
             $jcol = $tables["{$jt}_column"];
 
             if (!is_array($jf)) {
-                $jf = array($jf);
+                $jf = [$jf];
             }
 
             if (!is_array($ofn)) {
-                $ofn = array($ofn);
+                $ofn = [$ofn];
             }
 
             // loop over all fields to select from the joined table
@@ -2876,7 +2880,7 @@ class DBUtil
             ++$alias;
         }
 
-        return array($sqlJoin, $sqlJoinFieldList, $ca, $sqlJoinFieldArray);
+        return [$sqlJoin, $sqlJoinFieldList, $ca, $sqlJoinFieldArray];
     }
 
     /**
@@ -3043,7 +3047,7 @@ class DBUtil
         $sql = '';
 
         // try to read table definitions from $table array if present
-        $ddict = array();
+        $ddict = [];
         $tables = self::getTables();
         $tablecol = $table . '_column';
         $tabledef = $table . '_column_def';
@@ -3051,38 +3055,34 @@ class DBUtil
         if (array_key_exists($tabledef, $tables) && is_array($tables[$tabledef])) {
             // we have a {$tablename}_column_def array as defined in tables.php. This is a real array, not a string.
             // The format is like "C(24) NOTNULL DEFAULT ''" which means we have to prepend the field name now
-            $typemap = array(
-                    'B' => 'blob',    // NOTE: not supported in Doctrine 2
-                    'C' => 'string',
-                    'C2' => 'blob',   // NOTE: not supported in Doctrine 2
-                    'D' => 'date',
-                    'F' => 'float',
-                    'I' => 'integer',
-                    'I1' => 'integer',
-                    'I2' => 'integer',
-                    'I4' => 'integer',
-                    'I8' => 'integer',
-                    'N' => 'number',
-                    'L' => 'boolean',
-                    'T' => 'timestamp',
-                    'TS' => 'timestamp',
-                    'X' => 'clob',
-                    'X2' => 'blob', // NOTE: not supported in Doctrine 2
-                    'XL' => 'clob');
-            $iLengthMap = array(
-                    'I' => 4, // maps to I4
-                    'I1' => 1,
-                    'I2' => 2,
-                    'I4' => 4,
-                    'I8' => 8);
-            $search = array(
-                    '+',
-                    '-',
-                    '*',
-                    '/',
-                    '%');
-            $replace = array(
-                    '');
+            $typemap = [
+                'B' => 'blob',    // NOTE: not supported in Doctrine 2
+                'C' => 'string',
+                'C2' => 'blob',   // NOTE: not supported in Doctrine 2
+                'D' => 'date',
+                'F' => 'float',
+                'I' => 'integer',
+                'I1' => 'integer',
+                'I2' => 'integer',
+                'I4' => 'integer',
+                'I8' => 'integer',
+                'N' => 'number',
+                'L' => 'boolean',
+                'T' => 'timestamp',
+                'TS' => 'timestamp',
+                'X' => 'clob',
+                'X2' => 'blob', // NOTE: not supported in Doctrine 2
+                'XL' => 'clob'
+            ];
+            $iLengthMap = [
+                'I' => 4, // maps to I4
+                'I1' => 1,
+                'I2' => 2,
+                'I4' => 4,
+                'I8' => 8
+            ];
+            $search = ['+', '-', '*', '/', '%'];
+            $replace = [''];
 
             foreach ($tables[$tablecol] as $id => $val) {
                 $hasMath = (bool)(strcmp($val, str_replace($search, $replace, $val)));
@@ -3111,7 +3111,7 @@ class DBUtil
                 // parse type and length
                 preg_match('#(B|D|C2|I1|I2|I4|I8|F|L|TS|T|X2|XL|X|(C|I)(?:\()(\d+)(?:\))|(N)(?:\()(\d+|\d+\.\d+)(?:\))|I)#', $fields[0], $matches);
                 if (!$matches) {
-                    throw new InvalidArgumentException(__f('Error in table definition for %1$s, column %2$s', array($table, $id)));
+                    throw new InvalidArgumentException(__f('Error in table definition for %1$s, column %2$s', [$table, $id]));
                 }
 
                 switch (count($matches)) {
@@ -3165,11 +3165,7 @@ class DBUtil
                             if ($j > $i + 1) {
                                 $fDef .= ' ';
                             }
-                            $fDef .= str_replace(array(
-                                            '"',
-                                            "'"), array(
-                                            '',
-                                            ''), $fields[$j]);
+                            $fDef .= str_replace(['"', "'"], ['', ''], $fields[$j]);
                             if ($fDef == 'NULL') {
                                 $fDef = '';
                             }
@@ -3177,7 +3173,7 @@ class DBUtil
                     }
                 }
 
-                $fieldDef = array();
+                $fieldDef = [];
                 $fieldDef['type'] = $fType;
                 $fieldDef['length'] = (!$fLen && isset($iLengthMap[$type]) ? $iLengthMap[$type] : $fLen);
 
@@ -3347,32 +3343,22 @@ class DBUtil
         }
 
         // verify that column and column_def definitions are consistent
-        $search = array(
-                '+',
-                '-',
-                '*',
-                '/',
-                '%');
-        $replace = array(
-                '');
+        $search = ['+', '-', '*', '/', '%'];
+        $replace = [''];
         $success = true;
         foreach ($columns as $k => $v) {
             $hasMath = (bool)(strcmp($v, str_replace($search, $replace, $v)));
             if (!$hasMath) {
                 if (!isset($columnDefs[$k])) {
-                    throw new Exception(__f('Inconsistent table definition detected for table [%1$s]: column [%2$s] has no counterpart in column_def structure', array(
-                                    $table,
-                                    $k)));
-                    //$success = LogUtil::registerError(__f('Inconsistent table definition detected for table [%1$s]: column [%2$s] has no counterpart in column_def structure', array($table, $k)));
+                    throw new Exception(__f('Inconsistent table definition detected for table [%1$s]: column [%2$s] has no counterpart in column_def structure', [$table, $k]));
+                    //$success = LogUtil::registerError(__f('Inconsistent table definition detected for table [%1$s]: column [%2$s] has no counterpart in column_def structure', [$table, $k]));
                 }
             }
         }
         foreach ($columnDefs as $k => $v) {
             if (!isset($columns[$k])) {
-                throw new Exception(__f('Inconsistent table definition detected for table [%1$s]: column_def [%2$s] has no counterpart in column structure', array(
-                                $table,
-                                $k)));
-                //$success = LogUtil::registerError(__f('Inconsistent table definition detected for table [%1$s]: column_def [%2$s] has no counterpart in column structure', array($table, $k)));
+                throw new Exception(__f('Inconsistent table definition detected for table [%1$s]: column_def [%2$s] has no counterpart in column structure', [$table, $k]));
+                //$success = LogUtil::registerError(__f('Inconsistent table definition detected for table [%1$s]: column_def [%2$s] has no counterpart in column structure', [$table, $k]));
             }
         }
 
@@ -3408,7 +3394,7 @@ class DBUtil
         if (empty($definition) || !is_array($definition)) {
             $definition = self::getTableDefinition($table);
             if (!$definition) {
-                throw new Exception(__f('Neither the sql parameter nor the table array contain the dictionary representation of table [%s]', array($table)));
+                throw new Exception(__f('Neither the sql parameter nor the table array contain the dictionary representation of table [%s]', [$table]));
             }
         }
 
@@ -3483,7 +3469,7 @@ class DBUtil
         if (empty($definition) || !is_array($definition)) {
             $definition = self::getTableDefinition($table);
             if (!$definition) {
-                throw new Exception(__f('Neither the sql parameter nor the table array contain the dictionary representation of table [%s]', array($table)));
+                throw new Exception(__f('Neither the sql parameter nor the table array contain the dictionary representation of table [%s]', [$table]));
             }
         }
 
@@ -3506,7 +3492,7 @@ class DBUtil
             if (isset($metaColumns[$key])) {
                 continue;
             }
-            $alterTableDefinition = array('add' => array($key => $columnDefinition));
+            $alterTableDefinition = ['add' => [$key => $columnDefinition]];
             try {
                 $connection->export->alterTable($tableName, $alterTableDefinition);
             } catch (Exception $e) {
@@ -3516,7 +3502,7 @@ class DBUtil
 
         // second round, alter table structures to match new tables definition.
         foreach ($definition as $key => $columnDefinition) {
-            $alterTableDefinition = array('change' => array($key => array('definition' => $columnDefinition)));
+            $alterTableDefinition = ['change' => [$key => ['definition' => $columnDefinition]]];
             try {
                 $connection->export->alterTable($tableName, $alterTableDefinition);
             } catch (Exception $e) {
@@ -3530,7 +3516,7 @@ class DBUtil
                 if (array_key_exists($key, $metaColumns)) {
                     continue;
                 }
-                $alterTableDefinition = array('remove' => array($key => array()));
+                $alterTableDefinition = ['remove' => [$key => []]];
                 try {
                     $connection->export->alterTable($tableName, $alterTableDefinition);
                 } catch (Exception $e) {
@@ -3637,7 +3623,7 @@ class DBUtil
         }
 
         try {
-            Doctrine_Manager::getInstance()->getCurrentConnection()->export->alterTable($tableName, array('name' => $newTableName));
+            Doctrine_Manager::getInstance()->getCurrentConnection()->export->alterTable($tableName, ['name' => $newTableName]);
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Table rename failed.') . ' ' . $e->getMessage());
         }
@@ -3717,28 +3703,28 @@ class DBUtil
             throw new Exception(__f('%s does not point to a valid column definition', $column));
         }
 
-        $indexFields = array();
+        $indexFields = [];
         if (!is_array($flds)) {
-            $indexFields[$column[$flds]] = array();
+            $indexFields[$column[$flds]] = [];
         } else {
             foreach ($flds as $fld) {
                 if (is_array($fld)) {
                     // this adds support to specifying index lengths in your pntables. So you can say
-                    // $flds[] = array('path', 100);
-                    // $flds[] = array('name', 10);
+                    // $flds[] = ['path', 100];
+                    // $flds[] = ['name', 10];
                     // $idxoptarray['UNIQUE'] = true;
                     // self::createIndex($idxname, $table, $flds, $idxoptarray);
-                    $indexFields[$column[$fld]] = array();
+                    $indexFields[$column[$fld]] = [];
                     // TODO - implement what is described in the above comment!
                 } else {
-                    $indexFields[$column[$fld]] = array();
+                    $indexFields[$column[$fld]] = [];
                 }
             }
         }
 
-        $indexDefinition = array(
-                'fields' => $indexFields,
-        );
+        $indexDefinition = [
+            'fields' => $indexFields
+        ];
 
         if (!empty($idxoptarray) && is_array($idxoptarray)) {
             if (isset($idxoptarray['UNIQUE']) && $idxoptarray['UNIQUE']) {
@@ -3802,7 +3788,7 @@ class DBUtil
     public static function metaColumns($table, $assoc = false, $notcasesensitive = true)
     {
         $rows = self::metaColumnNames($table, $assoc);
-        $array = array();
+        $array = [];
         if ($notcasesensitive) {
             foreach ($rows as $key => $row) {
                 $array[strtolower($key)] = $row;
@@ -3837,7 +3823,7 @@ class DBUtil
         }
 
         $rows = Doctrine_Manager::getInstance()->getCurrentConnection()->import->listTableColumns($tableName);
-        $array = array();
+        $array = [];
         if ($numericIndex) {
             foreach ($rows as $row) {
                 $array[] = $row;
@@ -3915,9 +3901,10 @@ class DBUtil
                     $table = substr($table, 0, $maxlen - 10 - $lenPrefix); // same as 20-strlen(), but easier to understand :-)
                 }
                 if (empty($table)) {
-                    throw new \Exception(__f('%1$s: unable to limit tablename [%2$s] because database prefix is too long for Oracle, please shorten it (recommended length is 4 chars)', array(
-                                    __CLASS__ . '::' . __FUNCTION__,
-                                    DataUtil::formatForDisplay($_tablename))));
+                    throw new \Exception(__f('%1$s: unable to limit tablename [%2$s] because database prefix is too long for Oracle, please shorten it (recommended length is 4 chars)', [
+                        __CLASS__ . '::' . __FUNCTION__,
+                        DataUtil::formatForDisplay($_tablename)
+                    ]));
                 }
                 break;
 
@@ -3965,7 +3952,7 @@ class DBUtil
 
         $options = '';
         foreach ($opt as $k => $v) {
-            if (in_array($k, array('type', 'charset', 'collate'))) {
+            if (in_array($k, ['type', 'charset', 'collate'])) {
                 continue;
             }
             $options .= "\$this->option('$k', '$v');\n";

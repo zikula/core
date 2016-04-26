@@ -25,13 +25,13 @@ abstract class Zikula_AbstractApi extends Zikula_AbstractBase
      */
     public function __call($method, $args)
     {
-        $event = new \Zikula\Core\Event\GenericEvent($this, array('method' => $method, 'args' => $args));
+        $event = new \Zikula\Core\Event\GenericEvent($this, ['method' => $method, 'args' => $args]);
         $this->eventManager->dispatch('api.method_not_found', $event);
         if ($event->isPropagationStopped()) {
             return $event->getData();
         }
 
-        //throw new BadMethodCallException(__f('%1$s::%2$s() does not exist.', array(get_class($this), $method)));
-        return false; // bah - BC requirements - drak
+        //throw new BadMethodCallException(__f('%1$s::%2$s() does not exist.', [get_class($this), $method]));
+        return false; // BC requirements
     }
 }

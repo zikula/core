@@ -75,8 +75,8 @@ class EntityAccess implements \ArrayAccess
     public function toArray()
     {
         $r = $this->getReflection();
-        $array = array();
-        $excluded = array(
+        $array = [];
+        $excluded = [
             'reflection',
             '_entityPersister',
             '_identifier',
@@ -84,7 +84,7 @@ class EntityAccess implements \ArrayAccess
             '__initializer__',
             '__cloner__',
             'lazyPropertiesDefaults'
-        );
+        ];
 
         while ($r !== false) {
             $properties = $r->getProperties();

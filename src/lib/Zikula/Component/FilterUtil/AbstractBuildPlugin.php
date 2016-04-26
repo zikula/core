@@ -20,14 +20,14 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
      *
      * @var array
      */
-    private $fields = array();
+    private $fields = [];
 
     /**
      * Enabled operators.
      *
      * @var array
      */
-    private $ops = array();
+    private $ops = [];
 
     /**
      * Constructor.
@@ -36,7 +36,7 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
      * @param array $ops     Operators to enable, see activateOperators() (optional) (default=null).
      * @param bool  $default set the plugin to default (optional) (default=false).
      */
-    public function __construct($fields = null, array $ops = array(), $default = false)
+    public function __construct($fields = null, array $ops = [], $default = false)
     {
         $this->addFields($fields);
         $this->activateOperators($ops ? $ops : $this->availableOperators());
@@ -105,7 +105,7 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
             $fields[] = '-';
         }
 
-        $ops = array();
+        $ops = [];
         foreach ($this->ops as $op) {
             $ops[$op] = $fields;
         }

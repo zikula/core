@@ -135,7 +135,7 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface, ContainerA
      * @param array $parameters An array of parameters to pass to the view
      * @return string The rendered view
      */
-    public function renderView($view, array $parameters = array())
+    public function renderView($view, array $parameters = [])
     {
         if ($this->container->has('templating')) {
             return $this->container->get('templating')->render($view, $parameters);

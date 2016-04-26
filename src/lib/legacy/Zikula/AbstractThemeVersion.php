@@ -117,16 +117,17 @@ abstract class Zikula_AbstractThemeVersion implements ArrayAccess
      */
     public function toArray()
     {
-        $meta = array();
-        $meta['name'] = $this->name;
-        $meta['description'] = $this->description;
-        $meta['displayname'] = $this->displayname;
-        $meta['version'] = $this->version;
-        $meta['type'] = $this->type;
-        $meta['user'] = $this->user;
-        $meta['admin'] = $this->admin;
-        $meta['system'] = $this->system;
-        $meta['directory'] = $this->directory;
+        $meta = [
+            'name' => $this->name,
+            'description' => $this->description,
+            'displayname' => $this->displayname,
+            'version' => $this->version,
+            'type' => $this->type,
+            'user' => $this->user,
+            'admin' => $this->admin,
+            'system' => $this->system,
+            'directory' => $this->directory
+        ];
 
         return $meta;
     }

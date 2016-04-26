@@ -68,7 +68,7 @@ class ValidationProviders extends Container
      */
     public function getErrors()
     {
-        $errors = array();
+        $errors = [];
         /** @var $response ValidationResponse */
         foreach ($this->collection as $response) {
             if ($response->hasErrors()) {

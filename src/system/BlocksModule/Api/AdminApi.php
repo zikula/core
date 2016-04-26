@@ -133,7 +133,7 @@ class AdminApi extends \Zikula_AbstractApi
             $args['content'] = '';
         }
 
-        $blockData = array(
+        $blockData = [
             'title' => $args['title'],
             'description' => $args['description'],
             'language' => $args['language'],
@@ -142,7 +142,7 @@ class AdminApi extends \Zikula_AbstractApi
             'defaultstate' => $args['defaultstate'],
             'bkey' => $args['bkey'],
             'content' => $args['content']
-        );
+        ];
 
         $block = new BlockEntity();
         $block->merge($blockData);
@@ -184,7 +184,7 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $item = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'get', array('bid' => $block['bid']));
+        $item = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'get', ['bid' => $block['bid']]);
         if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', "$item[bkey]:$item[title]:$item[bid]", ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
@@ -262,7 +262,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         /** @var \Zikula\BlocksModule\Entity\BlockEntity $block */
-        $block = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'get', array('bid' => $args['bid']));
+        $block = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'get', ['bid' => $args['bid']]);
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', "$block[bkey]:$block[title]:$block[bid]", ACCESS_DELETE)) {
@@ -357,7 +357,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Get the existing position
         /** @var \Zikula\BlocksModule\Entity\BlockPositionEntity $item */
-        $item = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getposition', array('pid' => $args['pid']));
+        $item = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getposition', ['pid' => $args['pid']]);
 
         if ($item == false) {
             return false;
@@ -404,7 +404,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         /** @var \Zikula\BlocksModule\Entity\BlockPositionEntity $position */
-        $position = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getposition', array('pid' => $args['pid']));
+        $position = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getposition', ['pid' => $args['pid']]);
 
         if (!SecurityUtil::checkPermission('ZikulaBlocksModule::position', "$position[name]::$position[pid]", ACCESS_DELETE)) {
             throw new AccessDeniedException();

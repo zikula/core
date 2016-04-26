@@ -173,7 +173,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         }
 
         // remove saved data about the record
-        $modelsInfo = ModUtil::getVar('ZikulaCategoriesModule', 'EntityCategorySubclasses', array());
+        $modelsInfo = ModUtil::getVar('ZikulaCategoriesModule', 'EntityCategorySubclasses', []);
         foreach ($modelsInfo as $class => $info) {
             if ($info['module'] == $moduleName) {
                 unset($modelsInfo[$class]);

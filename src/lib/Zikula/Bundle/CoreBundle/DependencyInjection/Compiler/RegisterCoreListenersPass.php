@@ -32,13 +32,13 @@ class RegisterCoreListenersPass implements CompilerPassInterface
                 }
 
                 if (!isset($event['method'])) {
-                    $event['method'] = 'on'.preg_replace(array(
+                    $event['method'] = 'on'.preg_replace([
                         '/(?<=\b)[a-z]/ie',
                         '/[^a-z0-9]/i'
-                    ), array('strtoupper("\\0")', ''), $event['event']);
+                    ], ['strtoupper("\\0")', ''], $event['event']);
                 }
 
-                $definition->addMethodCall('addListenerService', array($event['event'], array($id, $event['method']), $priority));
+                $definition->addMethodCall('addListenerService', [$event['event'], [$id, $event['method']], $priority]);
             }
         }
 
@@ -52,7 +52,7 @@ class RegisterCoreListenersPass implements CompilerPassInterface
                 throw new \InvalidArgumentException(sprintf('Service "%s" must implement interface "%s".', $id, $interface));
             }
 
-            $definition->addMethodCall('addSubscriberService', array($id, $class));
+            $definition->addMethodCall('addSubscriberService', [$id, $class]);
         }
     }
 }
