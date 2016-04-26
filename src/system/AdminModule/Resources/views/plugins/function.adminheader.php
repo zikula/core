@@ -24,14 +24,14 @@ function smarty_function_adminheader($params, $view)
     // check to make sure adminmodule is available and route is available
     $router = $view->getContainer()->get('router');
     try {
-        $router->generate('zikulaadminmodule_admin_adminheader');
+        $router->generate('zikulaadminmodule_admininterface_header');
     } catch (\Symfony\Component\Routing\Exception\RouteNotFoundException $e) {
         $url = $view->getContainer()->get('router')->generate('zikularoutesmodule_route_reload', ['lct' => 'admin', 'confirm' => 1]);
 
         return '<div class="alert alert-danger"><i class="fa fa-exclamation-triangle fa-2x"></i> ' . __f('Routes must be reloaded. Click %s to reload all routes.', "<a href='$url'>" . __('here') . '</a>') . '</div>';
     }
 
-    $path = ['_controller' => 'ZikulaAdminModule:Admin:adminheader'];
+    $path = ['_controller' => 'ZikulaAdminModule:AdminInterface:header'];
     $subRequest = $view->getRequest()->duplicate([], null, $path);
 
     return $view->getContainer()
