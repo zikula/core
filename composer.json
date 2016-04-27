@@ -66,7 +66,7 @@
 
 
         "imagine/Imagine": "0.6.*",
-        "michelf/php-markdown": "1.5.*",
+        "michelf/php-markdown": "1.6.*",
         "phpids/phpids": "dev-master",
         "twig/extensions": "~1.3.0",
         "vierbergenlars/php-semver": "~3.0",
