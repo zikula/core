@@ -30,9 +30,12 @@ CHANGELOG - ZIKULA 1.4.x
     - SettingsModule updated to Core-2.0 Spec.
 
  - Vendor updates:
-    - php-parser updated from 1.4.1 to 2.0.1
-    - jms/translation-bundle updated from 1.2.1 to 1.2.2
+    - font awesome updated from 4.5.0 to 4.6.1
+    - jms translation bundle updated from 1.2.1 to 1.2.2
     - monolog updated from 1.18.1 to 1.18.2
+    - php-markdown updated from 1.5.0 to 1.6.0
+    - php-parser updated from 1.4.1 to 2.0.1
+    - sensio distribution bundle updated from 5.0.5 to 5.0.6
 
 * 1.4.2 (2016-03-28)
 
