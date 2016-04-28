@@ -123,7 +123,7 @@ class MailerApi
      *
      * @return bool true if successful
      */
-    public function sendMessage(Swift_Message $message, $subject, $body, $altBody, $html, array $headers = [], array $attachments = [], array $stringAttachments = [], array $embeddedImages = [])
+    public function sendMessage(Swift_Message $message, $subject = null, $body = null, $altBody = '', $html = false, array $headers = [], array $attachments = [], array $stringAttachments = [], array $embeddedImages = [])
     {
         $this->message = $message;
 
@@ -148,14 +148,27 @@ class MailerApi
         }
 
         // add message subject
-        $this->message->setSubject($subject);
+        if (isset($subject)) {
+            $this->message->setSubject($subject);
+        } else {
+            if ('' == $message->getSubject() || null == $message->getSubject()) {
+                throw new \RuntimeException('There is no subject set.');
+            }
+        }
 
         // add body with formatting
         $bodyFormat = 'text/plain';
         if (!empty($altBody) || ((bool) $html) || $this->dataValues['html']) {
             $bodyFormat = 'text/html';
         }
-        $this->message->setBody($body);
+        if (isset($body)) {
+            $this->message->setBody($body);
+        } else {
+            if ('' == $message->getBody() || null == $message->getBody()) {
+                throw new \RuntimeException('There is no message body set.');
+            }
+        }
+
         $this->message->setContentType($bodyFormat);
         if (!empty($altBody)) {
             $this->message->addPart($altBody, 'text/plain');
