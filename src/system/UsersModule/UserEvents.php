@@ -23,6 +23,7 @@ class UserEvents
 
     const HOOK_USER_VALIDATE = 'users.ui_hooks.user.validate_edit';
     const HOOK_USER_PROCESS = 'users.ui_hooks.user.process_edit';
+    const HOOK_USER_EDIT = 'users.ui_hooks.user.form_edit';
 
     /**
      * Occurs after a user account is created. All handlers are notified. It does not apply to creation of a pending
@@ -67,6 +68,8 @@ class UserEvents
      * This event does not have a subject or arguments.
      */
     const FORM_SEARCH = 'module.users.ui.form_edit.search';
+
+    const FORM_SEARCH_PROCESS = 'users.search.process_edit';
 
     /**
      * Occurs after the Users module configuration has been updated via the administration interface.

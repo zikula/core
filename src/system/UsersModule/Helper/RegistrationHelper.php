@@ -57,9 +57,9 @@ class RegistrationHelper
      */
     private $verificationHelper;
     /**
-     * @var NotificationHelper
+     * @var MailHelper
      */
-    private $notificationHelper;
+    private $mailHelper;
 
     /**
      * RegistrationHelper constructor.
@@ -71,7 +71,7 @@ class RegistrationHelper
      * @param EventDispatcherInterface $eventDispatcher
      * @param TranslatorInterface $translator
      * @param RegistrationVerificationHelper $verificationHelper
-     * @param NotificationHelper $notificationHelper
+     * @param MailHelper $mailHelper
      */
     public function __construct(
         VariableApi $variableApi,
@@ -82,7 +82,7 @@ class RegistrationHelper
         EventDispatcherInterface $eventDispatcher,
         TranslatorInterface $translator,
         RegistrationVerificationHelper $verificationHelper,
-        NotificationHelper $notificationHelper
+        MailHelper $mailHelper
     ) {
         $this->variableApi = $variableApi;
         $this->session = $session;
@@ -92,7 +92,7 @@ class RegistrationHelper
         $this->eventDispatcher = $eventDispatcher;
         $this->setTranslator($translator);
         $this->verificationHelper = $verificationHelper;
-        $this->notificationHelper = $notificationHelper;
+        $this->mailHelper = $mailHelper;
     }
 
     public function setTranslator($translator)
@@ -239,13 +239,13 @@ class RegistrationHelper
      * @param UserEntity $userEntity
      * @param bool   $userNotification       Whether the user should be notified of the new registration or not; however
      *                                       if the user's password was created for him, then he will receive at
-     *                                       least that notification without regard to this setting.
-     * @param bool   $adminNotification      Whether the configured administrator notification e-mail address should be
-     *                                       sent notification of the new registration.
+     *                                       least that mail without regard to this setting.
+     * @param bool   $adminNotification      Whether the configured administrator mail e-mail address should be
+     *                                       sent mail of the new registration.
      * @param string $passwordCreatedForUser The password that was created for the user either automatically or by an
      *                                       administrator (but not by the user himself).
      *
-     * @return array of errors created from the notification process.
+     * @return array of errors created from the mail process.
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received.
      * @throws \RuntimeException Thrown if the registration couldn't be saved
@@ -292,7 +292,7 @@ class RegistrationHelper
 
         $this->eventDispatcher->dispatch(RegistrationEvents::CREATE_REGISTRATION, new GenericEvent($userEntity));
 
-        $notificationErrors = [];
+        $mailErrors = [];
         if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
             $approvalOrder = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, UsersConstant::APPROVAL_BEFORE);
             $rendererArgs = [];
@@ -305,28 +305,28 @@ class RegistrationHelper
             if (!$userEntity->getAttributeValue('_Users_isVerified') && (($approvalOrder != UsersConstant::APPROVAL_BEFORE) || $userEntity->isApproved())) {
                 $verificationSent = $this->verificationHelper->sendVerificationCode($userEntity, null, null, $rendererArgs);
                 if (!$verificationSent) {
-                    $notificationErrors[] = $this->__('Warning! The verification code for the new registration could not be sent.');
+                    $mailErrors[] = $this->__('Warning! The verification code for the new registration could not be sent.');
                 }
                 $userObj['verificationsent'] = $verificationSent;
             } elseif (($userNotification && $userEntity->isApproved()) || !empty($passwordCreatedForUser)) {
-                $notificationSent = $this->notificationHelper->sendNotification($userEntity->getEmail(), 'welcome', $rendererArgs);
-                if (!$notificationSent) {
-                    $notificationErrors[] = $this->__('Warning! The welcoming email for the new registration could not be sent.');
+                $mailSent = $this->mailHelper->sendNotification($userEntity->getEmail(), 'welcome', $rendererArgs);
+                if (!$mailSent) {
+                    $mailErrors[] = $this->__('Warning! The welcoming email for the new registration could not be sent.');
                 }
             }
             if ($adminNotification) {
                 // mail notify email to inform admin about registration
-                $notificationEmail = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL, '');
-                if (!empty($notificationEmail)) {
-                    $notificationSent = $this->notificationHelper->sendNotification($notificationEmail, 'regadminnotify', $rendererArgs);
-                    if (!$notificationSent) {
-                        $notificationErrors[] = $this->__('Warning! The notification email for the new registration could not be sent.');
+                $mailEmail = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL, '');
+                if (!empty($mailEmail)) {
+                    $mailSent = $this->mailHelper->sendNotification($mailEmail, 'regadminnotify', $rendererArgs);
+                    if (!$mailSent) {
+                        $mailErrors[] = $this->__('Warning! The mail email for the new registration could not be sent.');
                     }
                 }
             }
         }
 
-        return $notificationErrors;
+        return $mailErrors;
     }
 
     /**
@@ -347,13 +347,13 @@ class RegistrationHelper
      * @param UserEntity $userEntity
      * @param bool  $userNotification        Whether the user should be notified of the new registration or not;
      *                                       however if the user's password was created for him, then he will
-     *                                       receive at least that notification without regard to this setting.
-     * @param bool $adminNotification        Whether the configured administrator notification e-mail address should
-     *                                       be sent notification of the new registration.
+     *                                       receive at least that mail without regard to this setting.
+     * @param bool $adminNotification        Whether the configured administrator mail e-mail address should
+     *                                       be sent mail of the new registration.
      * @param string $passwordCreatedForUser The password that was created for the user either automatically or by
      *                                       an administrator (but not by the user himself).
      *
-     * @return array of notification errors
+     * @return array of mail errors
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received.
      * @throws AccessDeniedException Thrown if the current user does not have overview access.
@@ -441,7 +441,7 @@ class RegistrationHelper
         // saved before the hook is fired.
         $this->eventDispatcher->dispatch(UserEvents::CREATE_ACCOUNT, new GenericEvent($userEntity));
 
-        $notificationErrors = [];
+        $mailErrors = [];
 
         if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
             $rendererArgs = [];
@@ -453,25 +453,25 @@ class RegistrationHelper
             $rendererArgs['PWD_NO_USERS_AUTHENTICATION'] = UsersConstant::PWD_NO_USERS_AUTHENTICATION;
 
             if ($userNotification || !empty($passwordCreatedForUser)) {
-                $notificationSent = $this->notificationHelper->sendNotification($userEntity->getEmail(), 'welcome', $rendererArgs);
-                if (!$notificationSent) {
-                    $notificationErrors[] = $this->__('Warning! The welcoming email for the newly created user could not be sent.');
+                $mailSent = $this->mailHelper->sendNotification($userEntity->getEmail(), 'welcome', $rendererArgs);
+                if (!$mailSent) {
+                    $mailErrors[] = $this->__('Warning! The welcoming email for the newly created user could not be sent.');
                 }
             }
             if ($adminNotification) {
                 // mail notify email to inform admin about registration
-                $notificationEmail = $this->variableApi->get('ZikulaUsersModule', 'reg_notifyemail', '');
-                if (!empty($notificationEmail)) {
+                $mailEmail = $this->variableApi->get('ZikulaUsersModule', 'reg_notifyemail', '');
+                if (!empty($mailEmail)) {
                     $subject = $this->__f('New registration: %s', $userEntity->getUname());
-                    $notificationSent = $this->notificationHelper->sendNotification($notificationEmail, 'regadminnotify', $rendererArgs, $subject);
-                    if (!$notificationSent) {
-                        $notificationErrors[] = $this->__('Warning! The notification email for the newly created user could not be sent.');
+                    $mailSent = $this->mailHelper->sendNotification($mailEmail, 'regadminnotify', $rendererArgs, $subject);
+                    if (!$mailSent) {
+                        $mailErrors[] = $this->__('Warning! The mail email for the newly created user could not be sent.');
                     }
                 }
             }
         }
 
-        return $notificationErrors;
+        return $mailErrors;
     }
 
     /**

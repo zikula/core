@@ -13,7 +13,6 @@
 
 namespace Zikula\UsersModule\Controller;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -26,6 +25,7 @@ use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\PlainResponse;
+use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\Core\Event\GenericEvent;
@@ -268,7 +268,7 @@ class UserAdministrationController extends AbstractController
     /**
      * @Route("/search")
      * @Theme("admin")
-     * @Template()
+     * @Template
      * @param Request $request
      * @return array
      */
@@ -282,37 +282,63 @@ class UserAdministrationController extends AbstractController
         );
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            $filter = ['activated' => ['operator' => '!=', 'operand' => UsersConstant::ACTIVATED_PENDING_REG]];
-            $data = $form->getData();
-            foreach ($data as $k => $v) {
-                if (!empty($v)) {
-                    switch($k) {
-                        case 'registered_before':
-                            $filter['user_regdate'] = ['operator' => '<=', 'operand' => $v];
-                            break;
-                        case 'registered_after':
-                            $filter['user_regdate'] = ['operator' => '>=', 'operand' => $v];
-                            break;
-                        case 'groups':
-                            /** @var ArrayCollection $v */
-                            if (!$v->isEmpty()) {
-                                $filter['groups'] = ['operator' => 'in', 'operand' => $v->getValues()];
-                            }
-                            break;
-                        default:
-                            $filter[$k] = ['operator' => 'like', 'operand' => "%$v%"];
-                    }
-                }
-            }
-            $users = $this->get('zikula_users_module.user_repository')->query($filter);
+            $users = $this->get('zikula_users_module.user_repository')->queryBySearchForm($form->getData());
+            $this->get('event_dispatcher')->dispatch(UserEvents::FORM_SEARCH_PROCESS, new GenericEvent(null, array(), $users));
 
             return $this->render('@ZikulaUsersModule/UserAdministration/searchResults.html.twig', [
-                'users' => $users
+                'users' => $users,
+                'mailForm' => $this->buildMailForm()->createView()
             ]);
         }
 
         return [
             'form' => $form->createView(),
         ];
+    }
+
+    /**
+     * @Route("/mail")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function mailUsersAction(Request $request)
+    {
+        if (!$this->hasPermission('ZikulaUsersModule', '::MailUsers', ACCESS_COMMENT)) {
+            throw new AccessDeniedException();
+        }
+        $mailForm = $this->buildMailForm();
+        $mailForm->handleRequest($request);
+        if ($mailForm->isSubmitted() && $mailForm->isValid()) {
+            $data = $mailForm->getData();
+            $users = $this->get('zikula_users_module.user_repository')->query(['uid' => ['operator' => 'in', 'operand' => explode(',', $data['userIds'])]]);
+            if (empty($users)) {
+                throw new \InvalidArgumentException($this->__('No users found.'));
+            }
+            if ($this->get('zikulausersmodule.helper.mail_helper')->mailUsers($users, $data)) {
+                $this->addFlash('success', $this->__('Mail sent!'));
+            } else {
+                $this->addFlash('error', $this->__('Could not send mail.'));
+            }
+        } else {
+            $this->addFlash('error', $this->__('Could not send mail.'));
+        }
+
+        return $this->redirectToRoute('zikulausersmodule_useradministration_search');
+    }
+
+    /**
+     * @return \Symfony\Component\Form\Form
+     */
+    private function buildMailForm()
+    {
+        return $this->createForm('Zikula\UsersModule\Form\Type\MailType', [
+            'from' => $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'sitename_' . \ZLanguage::getLanguageCode()),
+            'replyto' => $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'adminmail'),
+            'format' => 'text',
+            'batchsize' => 100
+        ], [
+            'translator' => $this->get('translator.default'),
+            'action' => $this->generateUrl('zikulausersmodule_useradministration_mailusers')
+        ]);
     }
 }

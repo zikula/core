@@ -154,13 +154,6 @@ class LinkContainer implements LinkContainerInterface
                 'icon' => 'search'
             ];
         }
-        if ($this->permissionApi->hasPermission('ZikulaUsersModule::MailUsers', '::', ACCESS_MODERATE)) {
-            $links[] = [
-                'url' => $this->router->generate('zikulausersmodule_admin_mailusers'),
-                'text' => $this->translator->__('E-mail users'),
-                'icon' => 'envelope'
-            ];
-        }
         if ($this->permissionApi->hasPermission("ZikulaUsersModule::", '::', ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikulausersmodule_config_config'),

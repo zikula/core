@@ -106,67 +106,6 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * Renders a user search form used by both the search operation and the mail users operation.
-     *
-     * @param string $callbackFunc Either 'search' or 'mailUsers', indicating which operation is calling this function.
-     *
-     * @return string
-     */
-    protected function renderSearchForm($callbackFunc = 'search')
-    {
-        // get group items
-        $groups = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getAll');
-
-        return $this->view->assign('groups', $groups)
-                ->assign('callbackFunc', $callbackFunc)
-                ->fetch('Admin/search.tpl');
-    }
-
-    /**
-     * Gathers the user input from a rendered search form, and also makes the appropriate hook calls.
-     *
-     * @param Request $request
-     * @param string $callbackFunc Either 'search' or 'mailUsers', indicating which operation is calling this function.
-     *
-     * Parameters pulled from Request $request:
-     * ---------------------------
-     * string  uname         A fragment of a user name on which to search using an SQL LIKE clause. The user name will be
-     *                              surrounded by wildcards.
-     * integer ugroup        A group id in which to search (only users who are members of the specified group are returned).
-     * string  email         A fragment of an e-mail address on which to search using an SQL LIKE clause. The e-mail address
-     *                              will be surrounded by wildcards.
-     * string  regdateafter  An SQL date-time (in the form '1970-01-01 00:00:00'); only user accounts with a registration date
-     *                              after the date specified will be returned.
-     * string  regdatebefore An SQL date-time (in the form '1970-01-01 00:00:00'); only user accounts with a registration date
-     *                              before the date specified will be returned.
-     * array   dynadata      An array of search values to be passed to the designated profile module. Only those user records
-     *                              also satisfying the profile module's search of its dataare returned.
-     *
-     * @return array|boolean An array of search results, which may be empty; false if the search was unsuccessful.
-     */
-    protected function getSearchResults(Request $request, $callbackFunc = 'search')
-    {
-        $findUsersArgs = array(
-            'uname'         => $request->request->get('uname', null),
-            'email'         => $request->request->get('email', null),
-            'ugroup'        => $request->request->get('ugroup', null),
-            'regdateafter'  => $request->request->get('regdateafter', null),
-            'regdatebefore' => $request->request->get('regdatebefore', null),
-        );
-
-        if ($callbackFunc == 'mailUsers') {
-            $processEditEvent = $this->getDispatcher()->dispatch('users.mailuserssearch.process_edit', new GenericEvent(null, array(), $findUsersArgs));
-        } else {
-            $processEditEvent = $this->getDispatcher()->dispatch('users.search.process_edit', new GenericEvent(null, array(), $findUsersArgs));
-        }
-
-        $findUsersArgs = $processEditEvent->getData();
-
-        // call the api
-        return ModUtil::apiFunc($this->name, 'admin', 'findUsers', $findUsersArgs);
-    }
-
-    /**
      * @Route("/legacy-search")
      * @return RedirectResponse
      */
@@ -179,74 +118,13 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * @Route("/mailusers")
-     * @Method({"GET", "POST"})
-     *
-     * Search for users and then compose an email to them.
-     *
-     * @param Request $request
-     *
-     * Parameters passed via GET:
-     * --------------------------
-     * None.
-     *
-     * Parameters passed via POST:
-     * ---------------------------
-     * string formid The form id posting to this function. Used to determine the workflow.
-     *
-     * See also the definition of {@link getSearchResults()}.
-     *
-     * @return Response symfony response object containing the rendered template.
-     *
-     * @throws FatalErrorException Thrown if the function enters an unknown state or
-     *                                     if the method of accessing this function is improper.
-     * @throws AccessDeniedException Thrown if the current user does not have comment access
-     * @throws NotFoundHttpException Thrown if no users are found
+     * @return RedirectResponse
      */
     public function mailUsersAction(Request $request)
     {
-        if (!SecurityUtil::checkPermission($this->name . '::MailUsers', '::', ACCESS_COMMENT)) {
-            throw new AccessDeniedException();
-        }
+        @trigger_error('This method is deprecated. Please use UserAdministrationController::searchAction', E_USER_DEPRECATED);
 
-        $formId = '';
-        $userList = false;
-        $mailSent = false;
-
-        if ($request->isMethod('POST')) {
-            $this->checkCsrfToken();
-
-            $formId = $request->request->get('formid', 'UNKNOWN');
-
-            if ($formId == 'users_search') {
-                $userList = $this->getSearchResults($request, 'mailUsers');
-
-                if (!isset($userList) || !$userList) {
-                    throw new NotFoundHttpException($this->__('Sorry! No matching users found.'));
-                }
-            } elseif ($formId == 'users_mailusers') {
-                $uid = $request->request->get('userid', null);
-                $sendmail = $request->request->get('sendmail', null);
-
-                $mailSent = ModUtil::apiFunc($this->name, 'admin', 'sendmail', array(
-                    'uid'       => $uid,
-                    'sendmail'  => $sendmail,
-                ));
-            } else {
-                throw new FatalErrorException($this->__f('An unknown form type was received by %1$s.', array('mailUsers')));
-            }
-        }
-
-        if ($request->isMethod('GET') || (($formId == 'users_search') && (!isset($userList) || !$userList)) || (($formId == 'users_mailusers') && !$mailSent)) {
-            return new Response($this->renderSearchForm('mailUsers'));
-        } elseif ($formId == 'users_search') {
-            return new Response($this->view->assign('items', $userList)
-                ->assign('mailusers', SecurityUtil::checkPermission($this->name . '::MailUsers', '::', ACCESS_COMMENT))
-                ->fetch('Admin/mailusers.tpl'));
-        } elseif ($formId == 'users_mailusers') {
-            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
-        } else {
-            throw new FatalErrorException($this->__f('The %1$s function has entered an unknown state.', array('mailUsers')));
-        }
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_useradministration_search'));
     }
 
     /**

@@ -12,33 +12,86 @@ namespace Zikula\UsersModule\Helper;
 
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\MailerModule\Api\MailerApi;
+use Zikula\UsersModule\Entity\UserEntity;
 
-class NotificationHelper
+class MailHelper
 {
     /**
      * @var TranslatorInterface
      */
     private $translator;
+
     /**
      * @var \Twig_Environment
      */
     private $twig;
+
     /**
      * @var VariableApi
      */
     private $variableApi;
 
     /**
-     * NotificationHelper constructor.
+     * @var MailerApi
+     */
+    private $mailerApi;
+
+    /**
+     * MailHelper constructor.
      * @param TranslatorInterface $translator
      * @param \Twig_Environment $twig
      * @param VariableApi $variableApi
+     * @param MailerApi $mailerApi
      */
-    public function __construct(TranslatorInterface $translator, \Twig_Environment $twig, VariableApi $variableApi)
+    public function __construct(TranslatorInterface $translator, \Twig_Environment $twig, VariableApi $variableApi, MailerApi $mailerApi)
     {
         $this->translator = $translator;
         $this->twig = $twig;
         $this->variableApi = $variableApi;
+        $this->mailerApi = $mailerApi;
+    }
+
+    /**
+     * Send same mail to selected user(s). If more than one user, BCC and batchsize used.
+     * @param UserEntity[] $users
+     * @param array $messageData
+     *  required keys
+     *      'replyto'
+     *      'from'
+     *      'message'
+     *      'subject'
+     *      'batchsize'
+     *      'format'
+     * @return bool
+     */
+    public function mailUsers(array $users, array $messageData)
+    {
+        $mailSent = false;
+        $message = \Swift_Message::newInstance();
+        $message->setFrom([$messageData['replyto'] => $messageData['from']]);
+        if (count($users) == 1) {
+            $message->setTo([$users[0]->getEmail() => $users[0]->getUname()]);
+        } else {
+            $message->setTo([$messageData['replyto'] => $messageData['from']]);
+        }
+        $message->setSubject($messageData['subject']);
+        $message->setBody($messageData['message']);
+        if (count($users) > 1) {
+            $bcc = [];
+            foreach ($users as $user) {
+                $bcc[] = $user->getEmail();
+                if (count($bcc) == $messageData['batchsize']) {
+                    $message->setBcc($bcc);
+                    $mailSent = $mailSent && $this->mailerApi->sendMessage($message, null, null, '', $messageData['format'] == 'html');
+                    $bcc = [];
+                }
+            }
+            $message->setBcc($bcc);
+        }
+        $mailSent = $mailSent && $this->mailerApi->sendMessage($message, null, null, '', $messageData['format'] == 'html');
+
+        return $mailSent;
     }
 
     /**
@@ -53,45 +106,39 @@ class NotificationHelper
      */
     public function sendNotification($toAddress, $notificationType = '', array $templateArgs = [], $subject = '')
     {
-        $mailerArgs = [];
-        $mailerArgs['toaddress'] = $toAddress;
-        $templateArgs['sitename'] = !isset($templateArgs['sitename']) ? $this->variableApi->get(VariableApi::CONFIG, 'sitename') : $templateArgs['sitename'];
+        $templateArgs = [
+            'sitename' => !isset($templateArgs['sitename']) ? $this->variableApi->get(VariableApi::CONFIG, 'sitename') : $templateArgs['sitename'],
+        ];
+        $html = false;
 
         $templateName = "@ZikulaUsersModule/Email/{$notificationType}.html.twig";
         try {
             $this->twig->loadTemplate($templateName);
-            $mailerArgs['html'] = true;
-            $mailerArgs['body'] = $this->twig->render($templateName, $templateArgs);
+            $html = true;
+            $htmlBody = $this->twig->render($templateName, $templateArgs);
         } catch (\Twig_Error_Loader $e) {
-            // silent fail
+            $htmlBody = '';
         }
 
         $templateName = "@ZikulaUsersModule/Email/{$notificationType}.txt.twig";
         try {
             $this->twig->loadTemplate($templateName);
-            if (isset($mailerArgs['body'])) {
-                $bodyType = 'altbody';
-                unset($mailerArgs['html']);
-            } else {
-                $bodyType = 'body';
-                $mailerArgs['html'] = false;
-            }
-            $mailerArgs[$bodyType] = $this->twig->render($templateName, $templateArgs);
+            $textBody = $this->twig->render($templateName, $templateArgs);
         } catch (\Twig_Error_Loader $e) {
-            // silent fail
+            $textBody = '';
         }
 
-        if (!empty($subject)) {
-            $mailerArgs['subject'] = $subject;
-        } else {
-            $mailerArgs['subject'] = $this->generateEmailSubject($notificationType, $templateArgs);
+        if (empty($subject)) {
+            $subject = $this->generateEmailSubject($notificationType, $templateArgs);
         }
 
-        if ($mailerArgs['body']) {
-            return \ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendMessage', $mailerArgs);
-        }
+        $message = \Swift_Message::newInstance();
+        $message->setFrom([$this->variableApi->get(VariableApi::CONFIG, 'adminmail') => $this->variableApi->get(VariableApi::CONFIG, 'sitename_' . \ZLanguage::getLanguageCode())]);
+        $message->setTo([$toAddress]);
+        $message->setSubject($subject);
+        $message->setBody($html ? $htmlBody : $textBody);
 
-        return true;
+        return $this->mailerApi->sendMessage($message, null, null, $textBody, $html);
     }
 
     private function generateEmailSubject($notificationType, array $templateArgs = [])
