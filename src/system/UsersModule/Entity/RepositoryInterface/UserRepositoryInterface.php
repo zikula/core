@@ -11,6 +11,7 @@
 namespace Zikula\UsersModule\Entity\RepositoryInterface;
 
 use Zikula\UsersModule\Entity\UserEntity;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 interface UserRepositoryInterface
 {
@@ -36,12 +37,18 @@ interface UserRepositoryInterface
     public function find($id, $lockMode = null, $lockVersion = null);
 
     /**
+     * @param array $formData
+     * @return Paginator
+     */
+    public function queryBySearchForm(array $formData);
+
+    /**
      * @param array $filter
      * @param array $sort
      * @param int $limit
      * @param int $offset
      * @param string (and|or) $exprType expression type to use in the filter
-     * @return mixed
+     * @return Paginator
      */
     public function query(array $filter = [], array $sort = [], $limit = 0, $offset = 0, $exprType = 'and');
 

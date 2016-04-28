@@ -1,5 +1,5 @@
 {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
-    {{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/ZikulaUsersModule.Admin.MailUsers.js')) }}
+    {{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/ZikulaUsersModule.Admin.SearchResults.js')) }}
 {% endif %}
 
 {{ adminHeader() }}
@@ -53,12 +53,40 @@
 
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-9">
+                <button type="button" class="btn btn-primary fa fa-envelope" data-toggle="collapse" data-target="#email-users-form" aria-expanded="false" aria-controls="email-users-form"> {{ __('Mail selected users') }}</button>
                 {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
                     <button type="submit" class="btn btn-warning fa fa-trash-o" > {{ __('Delete selected users') }}</button>
                 {% endif %}
-                <a class="btn btn-default fa fa-refresh" href="{{ path('zikulausersmodule_admin_index') }}"> {{ __('Return to User Administration') }}</a>
+                <a class="btn btn-default fa fa-refresh" href="{{ path('zikulausersmodule_useradministration_list') }}"> {{ __('Return to User Administration') }}</a>
             </div>
         </div>
     </div>
 </form>
+{% form_theme mailForm with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+<div class="collapse" id="email-users-form">
+    <hr>
+    {{ form_start(mailForm) }}
+    {{ form_errors(mailForm) }}
+    <div class="container-fluid">
+        <div class="row">
+            {{ form_row(mailForm.from) }}
+            {{ form_row(mailForm.replyto) }}
+            {{ form_row(mailForm.subject) }}
+            {{ form_row(mailForm.format) }}
+            {{ form_row(mailForm.message) }}
+            {{ form_row(mailForm.batchsize) }}
+            {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\UserEvents::HOOK_USER_EDIT')) }}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+            {{ form_widget(mailForm.send) }}
+            <button type="button" class="btn btn-default" data-toggle="collapse" href="#email-users-form"><i class="fa fa-times"></i> {{ __('Close') }}</button>
+        </div>
+    </div>
+    {{ form_end(mailForm) }}
+</div>
 {{ adminFooter() }}

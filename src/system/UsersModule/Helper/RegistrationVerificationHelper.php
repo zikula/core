@@ -46,9 +46,9 @@ class RegistrationVerificationHelper
      */
     private $userRepository;
     /**
-     * @var NotificationHelper
+     * @var MailHelper
      */
-    private $notificationHelper;
+    private $mailHelper;
 
     /**
      * RegistrationHelper constructor.
@@ -58,7 +58,7 @@ class RegistrationVerificationHelper
      * @param UserVerificationRepositoryInterface $userVerificationRepository
      * @param TranslatorInterface $translator
      * @param UserRepository $userRepository
-     * @param NotificationHelper $notificationHelper
+     * @param MailHelper $mailHelper
      */
     public function __construct(
         VariableApi $variableApi,
@@ -67,7 +67,7 @@ class RegistrationVerificationHelper
         UserVerificationRepositoryInterface $userVerificationRepository,
         TranslatorInterface $translator,
         UserRepository $userRepository,
-        NotificationHelper $notificationHelper
+        MailHelper $mailHelper
     ) {
         $this->variableApi = $variableApi;
         $this->session = $session;
@@ -75,7 +75,7 @@ class RegistrationVerificationHelper
         $this->userVerificationRepository = $userVerificationRepository;
         $this->setTranslator($translator);
         $this->userRepository = $userRepository;
-        $this->notificationHelper = $notificationHelper;
+        $this->mailHelper = $mailHelper;
     }
 
     public function setTranslator($translator)
@@ -153,7 +153,7 @@ class RegistrationVerificationHelper
         $rendererArgs['verifycode'] = $verificationCode;
         $rendererArgs['approvalorder'] = $approvalOrder;
 
-        $codeSent = $this->notificationHelper->sendNotification($userEntity->getEmail(), 'regverifyemail', $rendererArgs);
+        $codeSent = $this->mailHelper->sendNotification($userEntity->getEmail(), 'regverifyemail', $rendererArgs);
 
         if ($codeSent) {
             return $verifyChgObj->getCreated_Dt();

@@ -8,7 +8,7 @@
         <parameter key="zikulausersmodule.helper.authentication_method_list_helper.class">Zikula\UsersModule\Helper\AuthenticationMethodListHelper</parameter>
         <parameter key="zikulausersmodule.helper.registration_helper.class">Zikula\UsersModule\Helper\RegistrationHelper</parameter>
         <parameter key="zikulausersmodule.helper.registration_verification_helper.class">Zikula\UsersModule\Helper\RegistrationVerificationHelper</parameter>
-        <parameter key="zikulausersmodule.helper.notification_helper.class">Zikula\UsersModule\Helper\NotificationHelper</parameter>
+        <parameter key="zikulausersmodule.helper.mail_helper.class">Zikula\UsersModule\Helper\MailHelper</parameter>
         <parameter key="zikula_users_module.helper.administration_actions.class">Zikula\UsersModule\Helper\AdministrationActionsHelper</parameter>
     </parameters>
 
@@ -28,7 +28,7 @@
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="translator.default" />
             <argument type="service" id="zikulausersmodule.helper.registration_verification_helper" />
-            <argument type="service" id="zikulausersmodule.helper.notification_helper" />
+            <argument type="service" id="zikulausersmodule.helper.mail_helper" />
         </service>
         <service id="zikulausersmodule.helper.registration_verification_helper" class="%zikulausersmodule.helper.registration_verification_helper.class%" lazy="true">
             <argument type="service" id="zikula_extensions_module.api.variable" />
@@ -37,12 +37,13 @@
             <argument type="service" id="zikula_users_module.user_verification_repository" />
             <argument type="service" id="translator.default" />
             <argument type="service" id="zikula_users_module.user_repository" />
-            <argument type="service" id="zikulausersmodule.helper.notification_helper" />
+            <argument type="service" id="zikulausersmodule.helper.mail_helper" />
         </service>
-        <service id="zikulausersmodule.helper.notification_helper" class="%zikulausersmodule.helper.notification_helper.class%" lazy="true">
+        <service id="zikulausersmodule.helper.mail_helper" class="%zikulausersmodule.helper.mail_helper.class%" lazy="true">
             <argument type="service" id="translator.default" />
             <argument type="service" id="twig" />
             <argument type="service" id="zikula_extensions_module.api.variable" />
+            <argument type="service" id="zikula_mailer_module.api.mailer" />
         </service>
         <service id="zikula_users_module.helper.administration_actions" class="%zikula_users_module.helper.administration_actions.class%" lazy="true">
             <argument type="service" id="zikula_permissions_module.api.permission" />
