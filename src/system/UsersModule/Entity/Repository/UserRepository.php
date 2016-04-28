@@ -10,12 +10,14 @@
 
 namespace Zikula\UsersModule\Entity\Repository;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Constant as UsersConstant;
 
 class UserRepository extends EntityRepository implements UserRepositoryInterface
 {
@@ -60,6 +62,37 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     }
 
     /**
+     * @param array $formData
+     * @return Paginator
+     */
+    public function queryBySearchForm(array $formData)
+    {
+        $filter = ['activated' => ['operator' => '!=', 'operand' => UsersConstant::ACTIVATED_PENDING_REG]];
+        foreach ($formData as $k => $v) {
+            if (!empty($v)) {
+                switch($k) {
+                    case 'registered_before':
+                        $filter['user_regdate'] = ['operator' => '<=', 'operand' => $v];
+                        break;
+                    case 'registered_after':
+                        $filter['user_regdate'] = ['operator' => '>=', 'operand' => $v];
+                        break;
+                    case 'groups':
+                        /** @var ArrayCollection $v */
+                        if (!$v->isEmpty()) {
+                            $filter['groups'] = ['operator' => 'in', 'operand' => $v->getValues()];
+                        }
+                        break;
+                    default:
+                        $filter[$k] = ['operator' => 'like', 'operand' => "%$v%"];
+                }
+            }
+        }
+
+        return $this->query($filter);
+    }
+
+    /**
      * Fetch a collection of users. Optionally filter, sort, limit, offset results.
      *   filter = [field => value, field => value, field => ['operator' => '!=', 'operand' => value], ...]
      *   when value is not an array, operator is assumed to be '='
@@ -69,7 +102,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
      * @param int $limit
      * @param int $offset
      * @param string $exprType
-     * @return \Doctrine\ORM\Tools\Pagination\Paginator
+     * @return \Doctrine\ORM\Tools\Pagination\Paginator|UserEntity[]
      */
     public function query(array $filter = [], array $sort = [], $limit = 0, $offset = 0, $exprType = 'and')
     {
