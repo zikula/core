@@ -42,7 +42,8 @@ class ConfigController extends AbstractController
         }
 
         $form = $this->createFormBuilder($this->getVars())
-            ->add('itemsperpage', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', ['label' => $this->__('Items per page'),
+            ->add('itemsperpage', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+                'label' => $this->__('Items per page'),
                 'constraints' => [
                     new NotBlank(),
                     new GreaterThan(0)
