@@ -65,7 +65,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
      * @param array $formData
      * @return Paginator
      */
-    public function queryBySearchForm(array $formData)
+    public function queryBySearchForm(array $formData = [])
     {
         $filter = ['activated' => ['operator' => '!=', 'operand' => UsersConstant::ACTIVATED_PENDING_REG]];
         foreach ($formData as $k => $v) {

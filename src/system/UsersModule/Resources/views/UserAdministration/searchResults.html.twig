@@ -8,60 +8,66 @@
     {{ __('Search results') }}
 </h3>
 
-<form id="users_searchresults" class="form-horizontal" role="form" method="post" action="{{ path('zikulausersmodule_admin_deleteusers') }}">
-    <div>
-        <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
-                    <th>&nbsp;</th>
-                    {% endif %}
-                    <th>{{ __('User name') }}</th>
-                    <th>{{ __('Email address') }}</th>
-                    <th class="text-right">{{ __('Actions') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for user in users %}
-                <tr>
-                    {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
-                    <td>{% if (user.uid > 2) %}<input type="checkbox" class="user-checkboxes" name="userid[]" value="{{ user.uid }}" />{% endif %}</td>
-                    {% endif %}
-                    <td>{{ user.uname }}</td>
-                    <td>
-                        {% if (user.email is defined) and (user.uid != 1) %}
-                        {{ user.email }}
-                        {% endif %}
-                    </td>
-					<td class="actions">
-						{% if hasPermission('ZikulaUsersModule', user.uname~'::'~user.uid, 'ACCESS_EDIT') %}
-                            <a class="fa fa-pencil tooltips" href="{{ path('zikulausersmodule_useradministration_modify', {user:user.uid}) }}" title="{{ __f('Edit %sub%', {"%sub%": user.uname}) }}"></a>
-                        {% endif %}
-                        {% if currentUser.uid != user.uid and hasPermission('ZikulaUsersModule', user.uname~'::'~user.uid, 'ACCESS_DELETE') %}
-                            <a class="fa fa-trash-o fa-fw tooltips" href="{{ path('zikulausersmodule_admin_deleteusers', {userid:user.uid}) }}" title="{{ __f('Delete %sub%', {"%sub%": user.uname}) }}"></a>
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+{% form_theme deleteForm with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
 
-        {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
-        <p><a href="#" id="select-all">{{ __('Select all') }}</a> / <a href="#" id="deselect-all">{{ __('De-select all') }}</a></p>
-        {% endif %}
-
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
-                <button type="button" class="btn btn-primary fa fa-envelope" data-toggle="collapse" data-target="#email-users-form" aria-expanded="false" aria-controls="email-users-form"> {{ __('Mail selected users') }}</button>
+<div>
+    {{ form_start(deleteForm) }}
+    {{ form_errors(deleteForm) }}
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
                 {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
-                    <button type="submit" class="btn btn-warning fa fa-trash-o" > {{ __('Delete selected users') }}</button>
+                <th>&nbsp;</th>
                 {% endif %}
-                <a class="btn btn-default fa fa-refresh" href="{{ path('zikulausersmodule_useradministration_list') }}"> {{ __('Return to User Administration') }}</a>
-            </div>
+                <th>{{ __('User name') }}</th>
+                <th>{{ __('Email address') }}</th>
+                <th class="text-right">{{ __('Actions') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in deleteForm.users %}
+                <tr{% if user.vars.name <= 2 %} class="warning"{% endif %}>
+                {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
+                <td>{{ form_widget(user, {title:__f('Delete %n', {'%n': user.vars.label}), disabled:user.vars.name <= 2}) }}</td>
+                {% endif %}
+                <td>{{ user.vars.label }}</td>
+                <td>
+                    {% if (user.parent.vars.choices[user.vars.name].data.email is defined) and (user.vars.name != 1) %}
+                    {{ user.parent.vars.choices[user.vars.name].data.email }}
+                    {% endif %}
+                </td>
+                <td class="actions">
+                    {% if hasPermission('ZikulaUsersModule', user.vars.label~'::'~user.vars.name, 'ACCESS_EDIT') %}
+                        <a class="fa fa-pencil tooltips" href="{{ path('zikulausersmodule_useradministration_modify', {user:user.vars.name}) }}" title="{{ __f('Edit %sub%', {"%sub%": user.vars.label}) }}"></a>
+                    {% endif %}
+                    {% if currentUser.uid != user.vars.name and hasPermission('ZikulaUsersModule', user.vars.label~'::'~user.vars.name, 'ACCESS_DELETE') %}
+                        <a class="fa fa-trash-o fa-fw tooltips" href="{{ path('zikulausersmodule_admin_deleteusers', {userid:user.vars.name}) }}" title="{{ __f('Delete %sub%', {"%sub%": user.vars.label}) }}"></a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
+    <p><a href="#" id="select-all">{{ __('Select all') }}</a> / <a href="#" id="deselect-all">{{ __('De-select all') }}</a></p>
+    {% endif %}
+
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+            <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#email-users-form" aria-expanded="false" aria-controls="email-users-form"><i class="fa fa-envelope"></i> {{ __('Mail selected users') }}</button>
+            {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
+                {{ form_widget(deleteForm.delete) }}
+            {% endif %}
+            <a class="btn btn-default" href="{{ path('zikulausersmodule_useradministration_list') }}"><i class="fa fa-refresh"></i> {{ __('Return to User Administration') }}</a>
         </div>
     </div>
-</form>
+    {{ form_end(deleteForm) }}
+</div>
+
 {% form_theme mailForm with [
 'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
 'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'

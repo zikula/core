@@ -192,7 +192,7 @@ class AdministrationActionsHelper
         }
         $isCurrentUser = $this->currentUser->get('uid') == $user->getUid();
         if ($user->getUid() > 2 && !$isCurrentUser && $hasDeletePermissionToUser) {
-            $url = $this->router->generate('zikulausersmodule_useradministration_modify', ['user' => $user->getUid()]);
+            $url = $this->router->generate('zikulausersmodule_admin_deleteusers', ['userid' => $user->getUid()]);
             $title = $this->translator->__f('Delete %sub%', ["%sub%" => $user->getUname()]);
             $content .= '<a class="fa fa-fw fa-trash-o tooltips" href="' . $url . '" title="' . $title . '"></a>';
         }
