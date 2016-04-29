@@ -1,0 +1,19 @@
+<form class="z-form z-linear" method="post" action="{{ path('zikulasearchmodule_user_search') }}">
+    <div>
+        <div class="input-group">
+            <input id="block_search_q" name="q" type="text" class="form-control">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+        <div class="hidden">
+            {% for plugin, pluginOption in pluginOptions %}
+                {{ pluginOption }}
+            {% endfor %}
+        </div>
+        {% set moduleVariables = zikulasearchmodule_searchVarToFieldNames() %}
+        {% for name, value in moduleVariables %}
+            <input type="hidden" name="{{ name|e('html_attr') }}" value="{{ value|e('html_attr') }}" />
+        {% endfor %}
+    </div>
+</form>

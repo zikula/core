@@ -17,7 +17,7 @@
             </div>
             {% set moduleVariables = zikulasearchmodule_searchVarToFieldNames() %}
             {% for name, value in moduleVariables %}
-                <input type="hidden" name="{{ name }}" value="{{ value }}" />
+                <input type="hidden" name="{{ name|e('html_attr') }}" value="{{ value|e('html_attr') }}" />
             {% endfor %}
         </fieldset>
     </div>
