@@ -69,6 +69,9 @@ class UserEvents
      */
     const FORM_SEARCH = 'module.users.ui.form_edit.search';
 
+    /**
+     * currently no longer used...
+     */
     const FORM_SEARCH_PROCESS = 'users.search.process_edit';
 
     /**
