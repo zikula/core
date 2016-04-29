@@ -4,4 +4,3 @@
 system/UsersModule/Resources/views/User/main.tpl: themes/BootstrapTheme/Resources/views/modules/ZikulaUsersModule/User/main.tpl
 system/UsersModule/Resources/views/Block/login_topnav.tpl: themes/BootstrapTheme/Resources/views/modules/ZikulaUsersModule/Block/login_topnav.tpl
 system/BlocksModule/Resources/views/Block/Extmenu/topnav.tpl: themes/BootstrapTheme/Resources/views/modules/ZikulaBlocksModule/Block/Extmenu/topnav.tpl
-system/SearchModule/Resources/views/Block/search.tpl: themes/BootstrapTheme/Resources/views/modules/ZikulaSearchModule/Block/search.tpl
