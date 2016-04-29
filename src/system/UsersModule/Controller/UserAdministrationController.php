@@ -13,6 +13,7 @@
 
 namespace Zikula\UsersModule\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -266,6 +267,36 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
+     * @Route("/delete/{user}")
+     * @param Request $request
+     * @param UserEntity|null $user
+     */
+    public function deleteAction(Request $request, UserEntity $user = null)
+    {
+        if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_DELETE)) {
+            throw new AccessDeniedException();
+        }
+        if ($request->getMethod() == 'POST') {
+            $deleteForm = $this->createForm('Zikula\UsersModule\Form\Type\DeleteType', [], [
+                'choices' => $this->get('zikula_users_module.user_repository')->queryBySearchForm(),
+                'action' => $this->generateUrl('zikulausersmodule_useradministration_delete'),
+                'translator' => $this->get('translator.default')
+            ]);
+            $data = $deleteForm->handleRequest($request)->getData();
+            $users = $data['users'];
+        } else {
+            $users = new ArrayCollection();
+            if (isset($user)) {
+                $users->add($user);
+            }
+        }
+        if (($users instanceof ArrayCollection) && $users->isEmpty()) {
+            throw new \InvalidArgumentException($this->__('No users selected.'));
+        }
+        var_dump($users);
+    }
+
+    /**
      * @Route("/search")
      * @Theme("admin")
      * @Template
@@ -282,11 +313,15 @@ class UserAdministrationController extends AbstractController
         );
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            $users = $this->get('zikula_users_module.user_repository')->queryBySearchForm($form->getData());
-            $this->get('event_dispatcher')->dispatch(UserEvents::FORM_SEARCH_PROCESS, new GenericEvent(null, array(), $users));
+            // @TODO the users.search.process_edit event is no longer dispatched with this method. could it be done in a Transformer?
+            $deleteForm = $this->createForm('Zikula\UsersModule\Form\Type\DeleteType', [], [
+                'choices' => $this->get('zikula_users_module.user_repository')->queryBySearchForm($form->getData()),
+                'action' => $this->generateUrl('zikulausersmodule_useradministration_delete'),
+                'translator' => $this->get('translator.default')
+            ]);
 
             return $this->render('@ZikulaUsersModule/UserAdministration/searchResults.html.twig', [
-                'users' => $users,
+                'deleteForm' => $deleteForm->createView(),
                 'mailForm' => $this->buildMailForm()->createView()
             ]);
         }

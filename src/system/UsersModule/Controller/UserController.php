@@ -101,7 +101,7 @@ class UserController extends \Zikula_AbstractController
                 $legacyAccountLinksFromNew[] = [
                     'module' => $moduleName,
                     'url' => $link['url'],
-                    'title' => $link['text'],
+                    'title' => !empty($link['text']) ? $link['text'] : '',
                     'icon' => 'admin.png'
                 ];
             }
