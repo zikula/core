@@ -177,11 +177,11 @@ class ModuleController extends AbstractController
             $extension->setDescription($metaData['description']);
         }
 
-        $form = $this->createForm('Zikula\ExtensionsModule\Form\Type\ExtensionModifyType', $extension);
+        $form = $this->createForm('Zikula\ExtensionsModule\Form\Type\ExtensionModifyType', $extension, [
+            'translator' => $this->get('translator.default')
+        ]);
 
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
+        if ($form->handleRequest($request)->isValid()) {
             if ($form->get('defaults')->isClicked()) {
                 $this->addFlash('info', $this->__('Default values reloaded. Save to confirm.'));
 
@@ -243,10 +243,13 @@ class ModuleController extends AbstractController
     public function installAction(Request $request, ExtensionEntity $extension)
     {
         $unsatisfiedDependencies = $this->get('zikula_extensions_module.extension_dependency_helper')->getUnsatisfiedExtensionDependencies($extension);
-        $form = $this->createForm('Zikula\ExtensionsModule\Form\Type\ExtensionInstallType', ['dependencies' => $this->formatDependencyCheckboxArray($unsatisfiedDependencies)]);
-        $form->handleRequest($request);
+        $form = $this->createForm('Zikula\ExtensionsModule\Form\Type\ExtensionInstallType', [
+            'dependencies' => $this->formatDependencyCheckboxArray($unsatisfiedDependencies)
+        ], [
+            'translator' => $this->get('translator.default')
+        ]);
 
-        if ($form->isValid() || empty($unsatisfiedDependencies)) {
+        if ($form->handleRequest($request)->isValid() || empty($unsatisfiedDependencies)) {
             if ($form->get('install')->isClicked() || empty($unsatisfiedDependencies)) {
                 $extensionsInstalled = [];
                 $data = $form->getData();
@@ -402,9 +405,8 @@ class ModuleController extends AbstractController
                 ]
             ])
             ->getForm();
-        $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->handleRequest($request)->isValid()) {
             if ($form->get('uninstall')->isClicked()) {
                 // remove dependent extensions
                 if (!$this->get('zikula_extensions_module.extension_helper')->uninstallArray($requiredDependents)) {
