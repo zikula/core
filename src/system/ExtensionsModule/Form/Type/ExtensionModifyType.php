@@ -14,31 +14,39 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Extension modification form type.
+ */
 class ExtensionModifyType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $translator = $options['translator'];
+
         $builder
             ->add('id', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
             ->add('displayname', 'Symfony\Component\Form\Extension\Core\Type\TextType')
             ->add('url', 'Symfony\Component\Form\Extension\Core\Type\TextType')
             ->add('description', 'Symfony\Component\Form\Extension\Core\Type\TextType')
             ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $this->__('Save'),
+                'label' => $translator->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('defaults', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $this->__('Reload Defaults'),
+                'label' => $translator->__('Reload Defaults'),
                 'icon' => 'fa-refresh',
                 'attr' => [
                     'class' => 'btn btn-warning'
                 ]
             ])
             ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $this->__('Cancel'),
+                'label' => $translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'
@@ -47,18 +55,22 @@ class ExtensionModifyType extends AbstractType
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
         return 'zikulaextensionsmodule_extensionmodify';
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => 'Zikula\ExtensionsModule\Entity\ExtensionEntity',
+            'translator' => null
         ]);
     }
 }
