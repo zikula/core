@@ -109,9 +109,14 @@ class AdministrationActionsHelper
         // send verification email requires no further perm check
         if (!$userIsVerified && (($approvalOrder != UsersConstant::APPROVAL_BEFORE) || $user->isApproved())) {
             $url = $this->router->generate('zikulausersmodule_admin_verifyregistration', ['uid' => $user->getUid()]);
-            $title = (null == $userVerification->getVerifycode())
-                ? $this->translator->__f('Send an e-mail verification code for %sub%', ["%sub%" => $user->getUname()])
-                : $this->translator->__f('Send a new e-mail verification code for %sub%', ["%sub%" => $user->getUname()]);
+            if (!empty($userVerification)) {
+                $title = (null == $userVerification->getVerifycode())
+                    ? $this->translator->__f('Send an e-mail verification code for %sub%', ["%sub%" => $user->getUname()])
+                    : $this->translator->__f('Send a new e-mail verification code for %sub%', ["%sub%" => $user->getUname()]);
+            } else {
+                // @todo is this state possible? or is this just a development error?
+                $title = $this->translator->__f('Unknown state for %sub%', ["%sub%" => $user->getUname()]);
+            }
             $content .= '<a class="fa fa-fw fa-envelope tooltips" href="' . $url . '" title="' . $title . '"></a>';
         }
 
@@ -192,7 +197,7 @@ class AdministrationActionsHelper
         }
         $isCurrentUser = $this->currentUser->get('uid') == $user->getUid();
         if ($user->getUid() > 2 && !$isCurrentUser && $hasDeletePermissionToUser) {
-            $url = $this->router->generate('zikulausersmodule_admin_deleteusers', ['userid' => $user->getUid()]);
+            $url = $this->router->generate('zikulausersmodule_useradministration_delete', ['user' => $user->getUid()]);
             $title = $this->translator->__f('Delete %sub%', ["%sub%" => $user->getUname()]);
             $content .= '<a class="fa fa-fw fa-trash-o tooltips" href="' . $url . '" title="' . $title . '"></a>';
         }
