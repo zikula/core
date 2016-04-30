@@ -10,7 +10,6 @@
 
 namespace Zikula\UsersModule\Controller;
 
-use Zikula\UsersModule\Entity\UserEntity;
 use Zikula_View;
 use UserUtil;
 use SecurityUtil;
@@ -23,20 +22,16 @@ use LogUtil;
 use DateTimeZone;
 use DateTime;
 use FileUtil;
-use Zikula\Core\Event\GenericEvent;
 use Exception;
 use Zikula_Session;
-use Zikula\Bundle\HookBundle\Hook\ProcessHook;
-use Zikula\Bundle\HookBundle\Hook\ValidationProviders;
-use Zikula\Bundle\HookBundle\Hook\ValidationHook;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula\Core\Exception\FatalErrorException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Routing\RouterInterface;
 
 /**

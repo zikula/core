@@ -252,7 +252,6 @@ class UserAdministrationController extends AbstractController
                 $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_PROCESS_EDIT, new ProcessHook($user->getUid()));
 
                 $this->addFlash('status', $this->__("Done! Saved user's account information."));
-
             }
             if ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
