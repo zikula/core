@@ -10,7 +10,6 @@
 
 namespace Zikula\UsersModule\Api;
 
-use DataUtil;
 use DateUtil;
 use SecurityUtil;
 use System;
@@ -18,7 +17,6 @@ use ModUtil;
 use UserUtil;
 use Zikula;
 use Zikula_View;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Constant as UsersConstant;
 

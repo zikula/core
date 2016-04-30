@@ -18,9 +18,7 @@ use System;
 use ModUtil;
 use ThemeUtil;
 use Zikula;
-use Zikula_Session;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Constant as UsersConstant;
 
 /**
