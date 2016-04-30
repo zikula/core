@@ -21,24 +21,12 @@ class RegistrationEvents
      */
     const REGISTRATION_STARTED = 'module.users.ui.registration.started';
 
-    /**
-     *
-     */
     const REGISTRATION_VALIDATE_NEW = 'module.users.ui.validate_edit.new_registration';
 
-    /**
-     *
-     */
     const REGISTRATION_VALIDATE_MODIFY = 'module.users.ui.validate_edit.modify_registration';
 
-    /**
-     *
-     */
     const REGISTRATION_PROCESS_NEW = 'module.users.ui.process_edit.new_registration';
 
-    /**
-     *
-     */
     const REGISTRATION_PROCESS_MODIFY = 'module.users.ui.process_edit.modify_registration';
 
     /**

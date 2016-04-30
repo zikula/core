@@ -20,7 +20,7 @@ class DeleteType extends AbstractType
     {
         $builder
             ->add('users', 'Symfony\Bridge\Doctrine\Form\Type\EntityType', [
-                'choice_attr' => function() {
+                'choice_attr' => function () {
                     return ['class' => 'user-checkboxes'];
                 },
                 'class' => 'ZikulaUsersModule:UserEntity',
