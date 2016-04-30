@@ -30,6 +30,7 @@ use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\Core\Event\GenericEvent;
+use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\UserEvents;
 
@@ -144,7 +145,7 @@ class UserAdministrationController extends AbstractController
         $this->get('event_dispatcher')->dispatch(UserEvents::USER_VALIDATE_NEW, $event);
         $validators = $event->getData();
         $hook = new ValidationHook($validators);
-        $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_VALIDATE_EDIT, $hook);
+        $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_VALIDATE_EDIT, $hook);
         $validators = $hook->getValidators();
 
         if ($form->isValid() && !$validators->hasErrors()) {
@@ -161,7 +162,7 @@ class UserAdministrationController extends AbstractController
                     $event = new GenericEvent($form->getData(), [], new ValidationProviders());
                     $this->get('event_dispatcher')->dispatch(UserEvents::USER_PROCESS_NEW, $event);
                     $hook = new ProcessHook($user->getUid());
-                    $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_PROCESS_EDIT, $hook);
+                    $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_PROCESS_EDIT, $hook);
 
                     if ($user->getActivated() == UsersConstant::ACTIVATED_PENDING_REG) {
                         $this->addFlash('status', $this->__('Done! Created new registration application.'));
@@ -216,7 +217,7 @@ class UserAdministrationController extends AbstractController
         $this->get('event_dispatcher')->dispatch(UserEvents::USER_VALIDATE_MODIFY, $event);
         $validators = $event->getData();
         $hook = new ValidationHook($validators);
-        $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_VALIDATE_EDIT, $hook);
+        $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_VALIDATE_EDIT, $hook);
         $validators = $hook->getValidators();
 
         /**
@@ -249,7 +250,7 @@ class UserAdministrationController extends AbstractController
                 $this->get('event_dispatcher')->dispatch(UserEvents::UPDATE_ACCOUNT, $updateEvent);
 
                 $this->get('event_dispatcher')->dispatch(UserEvents::USER_PROCESS_MODIFY, new GenericEvent($user));
-                $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_PROCESS_EDIT, new ProcessHook($user->getUid()));
+                $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_PROCESS_EDIT, new ProcessHook($user->getUid()));
 
                 $this->addFlash('status', $this->__("Done! Saved user's account information."));
             }
@@ -323,7 +324,7 @@ class UserAdministrationController extends AbstractController
                 $event = new GenericEvent(null, ['id' => $uid], new ValidationProviders());
                 $validators = $this->get('event_dispatcher')->dispatch(UserEvents::USER_VALIDATE_DELETE, $event)->getData();
                 $hook = new ValidationHook($validators);
-                $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_VALIDATE_DELETE, $hook);
+                $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_VALIDATE_DELETE, $hook);
                 $validators = $hook->getValidators();
                 if ($validators->hasErrors()) {
                     $valid = false;
@@ -334,7 +335,7 @@ class UserAdministrationController extends AbstractController
                 $this->addFlash('success', $this->_fn('User deleted!', '%n users deleted!', count($userIds), ['%n' => count($userIds)]));
                 foreach ($userIds as $uid) {
                     $this->get('event_dispatcher')->dispatch(UserEvents::USER_PROCESS_DELETE, new GenericEvent(null, ['id' => $uid]));
-                    $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_PROCESS_DELETE, new ProcessHook($uid));
+                    $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_PROCESS_DELETE, new ProcessHook($uid));
                 }
 
                 return $this->redirectToRoute('zikulausersmodule_useradministration_list');

@@ -117,9 +117,6 @@ class RegistrationEvents
      */
     const REGISTRATION_FAILED = 'module.users.ui.registration.failed';
 
-    const HOOK_REGISTRATION_VALIDATE = 'users.ui_hooks.registration.validate_edit';
-    const HOOK_REGISTRATION_PROCESS = 'users.ui_hooks.registration.process_edit';
-
     /**
      * Occurs after a registration record is created, either through the normal user registration process, or through
      * the administration panel for the Users module. This event will not fire if the result of the registration process

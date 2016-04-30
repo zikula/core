@@ -10,14 +10,13 @@
 
 namespace Zikula\UsersModule;
 
-use DoctrineHelper;
-use HookUtil;
+use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\UsersModule\Constant as UsersConstant;
 
 /**
- * Provides module installation and upgrade services for the Users module.
+ * Class UsersModuleInstaller
  */
-class UsersModuleInstaller extends \Zikula_AbstractInstaller
+class UsersModuleInstaller extends AbstractExtensionInstaller
 {
     /**
      * Initialise the users module.
@@ -30,14 +29,14 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
     public function install()
     {
         // create the tables
-        $classes = array(
+        $classes = [
             'Zikula\UsersModule\Entity\UserEntity',
             'Zikula\UsersModule\Entity\UserAttributeEntity',
             'Zikula\UsersModule\Entity\UserSessionEntity',
             'Zikula\UsersModule\Entity\UserVerificationEntity'
-        );
+        ];
         try {
-            DoctrineHelper::createSchema($this->entityManager, $classes);
+            $this->schemaTool->create($classes);
         } catch (\Exception $e) {
             return false;
         }
@@ -47,8 +46,8 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
         $this->setVars($this->getDefaultModvars());
 
         // Register hook bundles
-        HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
-        HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
+        $this->hookApi->installSubscriberHooks($this->bundle->getMetaData());
+        $this->hookApi->installProviderHooks($this->bundle->getMetaData());
 
         // Initialisation successful
         return true;
@@ -66,16 +65,13 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
      */
     public function upgrade($oldVersion)
     {
-
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '2.2.0': // version shipped with Core 1.3.5 -> current 1.3.x
                 // add new table
-                DoctrineHelper::createSchema($this->entityManager, array('Zikula\UsersModule\Entity\UserAttributeEntity'));
+                $this->schemaTool->create(['Zikula\UsersModule\Entity\UserAttributeEntity']);
                 $this->migrateAttributes();
             case '2.2.1':
-                // This is the current version: add 2.2.1 --> next when appropriate
-
                 $currentModVars = $this->getVars();
                 $defaultModVars = $this->getDefaultModvars();
 
@@ -156,7 +152,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
      */
     private function getDefaultModvars()
     {
-        return array(
+        return [
             UsersConstant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS              => UsersConstant::DEFAULT_ACCOUNT_DISPLAY_GRAPHICS,
             UsersConstant::MODVAR_ACCOUNT_ITEMS_PER_PAGE                => UsersConstant::DEFAULT_ACCOUNT_ITEMS_PER_PAGE,
             UsersConstant::MODVAR_ACCOUNT_ITEMS_PER_ROW                 => UsersConstant::DEFAULT_ACCOUNT_ITEMS_PER_ROW,
@@ -194,7 +190,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
             UsersConstant::MODVAR_REGISTRATION_ILLEGAL_UNAMES           => $this->__(/* illegal username list */'root, webmaster, admin, administrator, nobody, anonymous, username'),
             UsersConstant::MODVAR_REGISTRATION_VERIFICATION_MODE        => UsersConstant::DEFAULT_REGISTRATION_VERIFICATION_MODE,
             UsersConstant::MODVAR_REQUIRE_UNIQUE_EMAIL                  => UsersConstant::DEFAULT_REQUIRE_UNIQUE_EMAIL,
-        );
+        ];
     }
 
     /**
@@ -211,7 +207,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
         $nowUTCStr = $nowUTC->format(UsersConstant::DATETIME_FORMAT);
 
         // Anonymous
-        $record = array(
+        $record = [
             'uid'           => 1,
             'uname'         => 'guest',
             'email'         => '',
@@ -225,13 +221,13 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
             'theme'         => '',
             'ublockon'      => 0,
             'ublock'        => '',
-        );
+        ];
         $user = new \Zikula\UsersModule\Entity\UserEntity();
         $user->merge($record);
         $this->entityManager->persist($user);
 
         // Admin
-        $record = array(
+        $record = [
             'uid'           => 2,
             'uname'         => 'admin',
             'email'         => '',
@@ -245,7 +241,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
             'theme'         => '',
             'ublockon'      => 0,
             'ublock'        => '',
-        );
+        ];
         $user = new \Zikula\UsersModule\Entity\UserEntity();
         $user->merge($record);
         $this->entityManager->persist($user);
@@ -260,7 +256,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
     private function migrateAttributes()
     {
         $connection = $this->entityManager->getConnection();
-        $sqls = array();
+        $sqls = [];
         // copy data from objectdata_attributes to users_attributes
         $sqls[] = 'INSERT INTO users_attributes
                     (user_id, name, value)
