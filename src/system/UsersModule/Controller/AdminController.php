@@ -253,125 +253,13 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * @Route("/deleteusers")
-     * @Method({"GET", "POST"})
-     *
-     * Display a form to confirm the deletion of one user, and then process the deletion.
-     *
-     * @param Request $request
-     *
-     * Parameters passed via GET:
-     * --------------------------
-     * numeric userid The user id of the user to be deleted.
-     * string  uname  The user name of the user to be deleted.
-     *
-     * Parameters passed via POST:
-     * ---------------------------
-     * array   userid         The array of user ids of the users to be deleted.
-     * boolean process_delete True to process the posted userid list, and delete the corresponding accounts; false or null to confirm first.
-     *
-     * @return Response|RedirectResponse symfony response object containing the rendered template if a form is to be displayed, RedirectResponse otherwise
-     *
-     * @throws AccessDeniedException Thrown if the current user does not have delete access
-     * @throws FatalErrorException Thrown if the method of accessing this function is improper
-     * @throws NotFoundHttpException Thrown if the user doesn't exist
+     * @return RedirectResponse
      */
     public function deleteUsersAction(Request $request)
     {
-        // check permissions
-        if (!SecurityUtil::checkPermission('ZikulaUsersModule::', 'ANY', ACCESS_DELETE)) {
-            throw new AccessDeniedException();
-        }
+        @trigger_error('This method is deprecated. Please use UserAdministrationController::deleteAction', E_USER_DEPRECATED);
 
-        $proceedToForm = false;
-        $processDelete = false;
-
-        if ($request->getMethod() == 'POST') {
-            $userid = $request->request->get('userid', null);
-            $processDelete = $request->request->get('process_delete', false);
-            $proceedToForm = !$processDelete;
-        } elseif ($request->getMethod() == 'GET') {
-            $userid = $request->query->get('userid', null);
-            $uname  = $request->query->get('uname', null);
-
-            // retrieve userid from uname
-            if (empty($userid) && !empty($uname)) {
-                $userid = UserUtil::getIdFromName($uname);
-            }
-
-            $proceedToForm = true;
-        }
-
-        if (empty($userid)) {
-            throw new NotFoundHttpException($this->__('Sorry! No such user found.'));
-        }
-
-        if (!is_array($userid)) {
-            $userid = array($userid);
-        }
-
-        $currentUser = UserUtil::getVar('uid');
-        $users = array();
-        foreach ($userid as $key => $uid) {
-            if ($uid == 1) {
-                $request->getSession()->getFlashBag()->add('error', $this->__("Error! You can't delete the guest account."));
-                $proceedToForm = false;
-                $processDelete = false;
-            } elseif ($uid == 2) {
-                $request->getSession()->getFlashBag()->add('error', $this->__("Error! You can't delete the primary administrator account."));
-                $proceedToForm = false;
-                $processDelete = false;
-            } elseif ($uid == $currentUser) {
-                $request->getSession()->getFlashBag()->add('error', $this->__("Error! You can't delete the account you are currently logged into."));
-                $proceedToForm = false;
-                $processDelete = false;
-            }
-
-            // get the user vars
-            $users[$key] = UserUtil::getVars($uid);
-            if ($users[$key] == false) {
-                throw new NotFoundHttpException($this->__('Sorry! No such user found.'));
-            }
-        }
-
-        if ($processDelete) {
-            $valid = true;
-            foreach ($userid as $uid) {
-                $event = new GenericEvent(null, array('id' => $uid), new ValidationProviders());
-                $validators = $this->getDispatcher()->dispatch('module.users.ui.validate_delete', $event)->getData();
-
-                $hook = new ValidationHook($validators);
-                $this->dispatchHooks('users.ui_hooks.user.validate_delete', $hook);
-                $validators = $hook->getValidators();
-
-                if ($validators->hasErrors()) {
-                    $valid = false;
-                }
-            }
-
-            $proceedToForm = false;
-            if ($valid) {
-                $deleted = ModUtil::apiFunc($this->name, 'admin', 'deleteUser', array('uid' => $userid));
-
-                if ($deleted) {
-                    foreach ($userid as $uid) {
-                        $event = new GenericEvent(null, array('id' => $uid));
-                        $this->getDispatcher()->dispatch('module.users.ui.process_delete', $event);
-
-                        $hook = new ProcessHook($uid);
-                        $this->dispatchHooks('users.ui_hooks.user.process_delete', $hook);
-                    }
-                    $count = count($userid);
-                    $request->getSession()->getFlashBag()->add('status', $this->_fn('Done! Deleted %1$d user account.', 'Done! Deleted %1$d user accounts.', $count, array($count)));
-                }
-            }
-        }
-
-        if ($proceedToForm) {
-            return new Response($this->view->assign('users', $users)
-                ->fetch('Admin/deleteusers.tpl'));
-        } else {
-            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
-        }
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_useradministration_delete'));
     }
 
     /**
