@@ -44,7 +44,7 @@
                         <a class="fa fa-pencil tooltips" href="{{ path('zikulausersmodule_useradministration_modify', {user:user.vars.name}) }}" title="{{ __f('Edit %sub%', {"%sub%": user.vars.label}) }}"></a>
                     {% endif %}
                     {% if currentUser.uid != user.vars.name and hasPermission('ZikulaUsersModule', user.vars.label~'::'~user.vars.name, 'ACCESS_DELETE') %}
-                        <a class="fa fa-trash-o fa-fw tooltips" href="{{ path('zikulausersmodule_admin_deleteusers', {userid:user.vars.name}) }}" title="{{ __f('Delete %sub%', {"%sub%": user.vars.label}) }}"></a>
+                        <a class="fa fa-trash-o fa-fw tooltips" href="{{ path('zikulausersmodule_useradministration_delete', {user:user.vars.name}) }}" title="{{ __f('Delete %sub%', {"%sub%": user.vars.label}) }}"></a>
                     {% endif %}
                 </td>
             </tr>
