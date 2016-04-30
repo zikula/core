@@ -79,7 +79,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
         $filter = ['activated' => ['operator' => '!=', 'operand' => UsersConstant::ACTIVATED_PENDING_REG]];
         foreach ($formData as $k => $v) {
             if (!empty($v)) {
-                switch($k) {
+                switch ($k) {
                     case 'registered_before':
                         $filter['user_regdate'] = ['operator' => '<=', 'operand' => $v];
                         break;
@@ -117,7 +117,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     {
         $qb = $this->createQueryBuilder('u')
             ->select('u');
-        if(!empty($filter['groups'])) {
+        if (!empty($filter['groups'])) {
             $qb->join('u.groups', 'g');
         }
         if (!empty($filter)) {

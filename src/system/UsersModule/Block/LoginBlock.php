@@ -16,7 +16,6 @@ use SecurityUtil;
 use System;
 use UserUtil;
 use Zikula_View;
-use Zikula\UsersModule\Helper\AuthenticationMethodListHelper;
 
 /**
  * A block that allows users to log into the system.
