@@ -101,6 +101,9 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
     {
         /** @var UserVerificationEntity $userVerification */
         $userVerification = $this->findOneBy(['uid' => $uid]);
+        if (empty($userVerification)) {
+            return false;
+        }
 
         return (null != $userVerification->getCreated_Dt());
     }
