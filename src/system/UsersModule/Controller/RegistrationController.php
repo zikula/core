@@ -27,6 +27,7 @@ use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Exception\FatalErrorException;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\Core\Event\GenericEvent;
+use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\RegistrationEvents;
 
@@ -165,7 +166,7 @@ class RegistrationController extends AbstractController
 
             // Validate the hook
             $hook = new ValidationHook($validators);
-            $this->get('hook_dispatcher')->dispatch(RegistrationEvents::HOOK_REGISTRATION_VALIDATE, $hook);
+            $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_REGISTRATION_VALIDATE, $hook);
             $validators = $hook->getValidators();
 
             if ($form->isValid() && !$validators->hasErrors()) {
@@ -214,7 +215,7 @@ class RegistrationController extends AbstractController
                     // Allow hook-like events to process the registration...
                     $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_PROCESS_NEW, new GenericEvent($userEntity));
                     // ...and hooks to process the registration.
-                    $this->get('hook_dispatcher')->dispatch(RegistrationEvents::HOOK_REGISTRATION_PROCESS, new ProcessHook($userEntity->getUid()));
+                    $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_REGISTRATION_PROCESS, new ProcessHook($userEntity->getUid()));
 
                     // Register the appropriate status or error to be displayed to the user, depending on the account's
                     // activated status, whether registrations are moderated, whether e-mail addresses need to be verified,

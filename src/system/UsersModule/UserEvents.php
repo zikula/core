@@ -42,13 +42,6 @@ class UserEvents
      */
     const USER_PROCESS_DELETE = 'module.users.ui.process_delete';
 
-    const HOOK_VALIDATE_EDIT = 'users.ui_hooks.user.validate_edit';
-    const HOOK_VALIDATE_DELETE = 'users.ui_hooks.user.validate_delete';
-    const HOOK_USER_EDIT = 'users.ui_hooks.user.form_edit';
-    const HOOK_USER_DELETE = 'users.ui_hooks.user.form_delete';
-    const HOOK_PROCESS_EDIT = 'users.ui_hooks.user.process_edit';
-    const HOOK_PROCESS_DELETE = 'users.ui_hooks.user.process_delete';
-
     /**
      * Occurs after a user account is created. All handlers are notified. It does not apply to creation of a pending
      * registration. The full user record created is available as the subject. This is a storage-level event,

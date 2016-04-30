@@ -16,7 +16,7 @@
     {% for data in eventData %}
         {{ data }}
     {% endfor %}
-    {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\UserEvents::HOOK_USER_DELETE')) }}
+    {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::HOOK_USER_DELETE')) }}
     <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">
             {{ form_widget(form.delete) }}
