@@ -25,6 +25,7 @@ use Zikula\Core\Controller\AbstractController;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\Core\Event\GenericEvent;
+use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\RegistrationEvents;
 
@@ -94,7 +95,7 @@ class RegistrationAdministrationController extends AbstractController
         $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_VALIDATE_MODIFY, $event);
         $validators = $event->getData();
         $hook = new ValidationHook($validators);
-        $this->get('hook_dispatcher')->dispatch(RegistrationEvents::HOOK_REGISTRATION_VALIDATE, $hook);
+        $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_REGISTRATION_VALIDATE, $hook);
         $validators = $hook->getValidators();
 
         if ($form->isValid() && !$validators->hasErrors()) {
@@ -120,7 +121,7 @@ class RegistrationAdministrationController extends AbstractController
                     }
                 }
                 $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_PROCESS_MODIFY, new GenericEvent($user));
-                $this->get('hook_dispatcher')->dispatch(RegistrationEvents::HOOK_REGISTRATION_PROCESS, new ProcessHook($user->getUid()));
+                $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_REGISTRATION_PROCESS, new ProcessHook($user->getUid()));
 
                 $this->addFlash('status', $this->__("Done! Saved user's account information."));
 

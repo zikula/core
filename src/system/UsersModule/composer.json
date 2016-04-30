@@ -1,6 +1,7 @@
 {
     "name": "zikula/users-module",
-    "description": "User System Module",
+    "description": "Provides an interface for administering user accounts.",
+    "version": "2.2.6",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
     "authors": [
@@ -18,7 +19,20 @@
     "extra": {
         "zikula": {
             "url": "users",
-            "class": "Zikula\\UsersModule\\ZikulaUsersModule"
+            "class": "Zikula\\UsersModule\\ZikulaUsersModule",
+            "core-compatibility": ">=1.4.3",
+            "displayname": "Users Module",
+            "oldnames": [],
+            "capabilities": {
+                "authentication": {"version": "1.0"},
+                "admin": {"route": "zikulausersmodule_useradministration_list"},
+                "hook_subscriber": {"class": "Zikula\\UsersModule\\Container\\HookContainer"},
+                "searchable": {"class": "Zikula\\UsersModule\\Helper\\SearchHelper"}
+            },
+            "securityschema": {
+                "ZikulaUsersModule::": "Uname::User ID",
+                "ZikulaUsersModule::MailUsers": "::"
+            }
         }
     }
 }
