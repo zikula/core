@@ -140,11 +140,11 @@ class UserAdministrationController extends AbstractController
         );
         $form->handleRequest($request);
 
-        $event = new GenericEvent($form->getData(), array(), new ValidationProviders());
+        $event = new GenericEvent($form->getData(), [], new ValidationProviders());
         $this->get('event_dispatcher')->dispatch(UserEvents::USER_VALIDATE_NEW, $event);
         $validators = $event->getData();
         $hook = new ValidationHook($validators);
-        $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_USER_VALIDATE, $hook);
+        $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_VALIDATE_EDIT, $hook);
         $validators = $hook->getValidators();
 
         if ($form->isValid() && !$validators->hasErrors()) {
@@ -158,10 +158,10 @@ class UserAdministrationController extends AbstractController
                     $form['sendpass']->getData()
                 );
                 if (empty($registrationErrors)) {
-                    $event = new GenericEvent($form->getData(), array(), new ValidationProviders());
+                    $event = new GenericEvent($form->getData(), [], new ValidationProviders());
                     $this->get('event_dispatcher')->dispatch(UserEvents::USER_PROCESS_NEW, $event);
                     $hook = new ProcessHook($user->getUid());
-                    $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_USER_PROCESS, $hook);
+                    $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_PROCESS_EDIT, $hook);
 
                     if ($user->getActivated() == UsersConstant::ACTIVATED_PENDING_REG) {
                         $this->addFlash('status', $this->__('Done! Created new registration application.'));
@@ -212,11 +212,11 @@ class UserAdministrationController extends AbstractController
         $originalUser = clone $user;
         $form->handleRequest($request);
 
-        $event = new GenericEvent($form->getData(), array(), new ValidationProviders());
+        $event = new GenericEvent($form->getData(), [], new ValidationProviders());
         $this->get('event_dispatcher')->dispatch(UserEvents::USER_VALIDATE_MODIFY, $event);
         $validators = $event->getData();
         $hook = new ValidationHook($validators);
-        $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_USER_VALIDATE, $hook);
+        $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_VALIDATE_EDIT, $hook);
         $validators = $hook->getValidators();
 
         /**
@@ -249,7 +249,7 @@ class UserAdministrationController extends AbstractController
                 $this->get('event_dispatcher')->dispatch(UserEvents::UPDATE_ACCOUNT, $updateEvent);
 
                 $this->get('event_dispatcher')->dispatch(UserEvents::USER_PROCESS_MODIFY, new GenericEvent($user));
-                $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_USER_PROCESS, new ProcessHook($user->getUid()));
+                $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_PROCESS_EDIT, new ProcessHook($user->getUid()));
 
                 $this->addFlash('status', $this->__("Done! Saved user's account information."));
 
@@ -268,32 +268,83 @@ class UserAdministrationController extends AbstractController
 
     /**
      * @Route("/delete/{user}")
+     * @Template
+     * @Theme("admin")
      * @param Request $request
      * @param UserEntity|null $user
+     * @return array
      */
     public function deleteAction(Request $request, UserEntity $user = null)
     {
         if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_DELETE)) {
             throw new AccessDeniedException();
         }
+        $users = new ArrayCollection();
         if ($request->getMethod() == 'POST') {
             $deleteForm = $this->createForm('Zikula\UsersModule\Form\Type\DeleteType', [], [
                 'choices' => $this->get('zikula_users_module.user_repository')->queryBySearchForm(),
                 'action' => $this->generateUrl('zikulausersmodule_useradministration_delete'),
                 'translator' => $this->get('translator.default')
             ]);
-            $data = $deleteForm->handleRequest($request)->getData();
-            $users = $data['users'];
+            $deleteForm->handleRequest($request);
+            if ($deleteForm->isSubmitted() && $deleteForm->isValid()) {
+                $data = $deleteForm->getData();
+                $users = $data['users'];
+            }
         } else {
-            $users = new ArrayCollection();
             if (isset($user)) {
                 $users->add($user);
             }
         }
-        if (($users instanceof ArrayCollection) && $users->isEmpty()) {
+        $uids = [];
+        foreach ($users as $user) {
+            $uids[] = $user->getUid();
+        }
+        $usersImploded = implode(',', $uids);
+
+        $deleteConfirmationForm = $this->createForm('Zikula\UsersModule\Form\Type\DeleteConfirmationType', [
+            'users' => $usersImploded
+        ], [
+            'translator' => $this->get('translator.default')
+        ]);
+        $deleteConfirmationForm->handleRequest($request);
+        if (!$deleteConfirmationForm->isSubmitted() && ($users instanceof ArrayCollection) && $users->isEmpty()) {
             throw new \InvalidArgumentException($this->__('No users selected.'));
         }
-        var_dump($users);
+        if ($deleteConfirmationForm->isSubmitted()) {
+            $userIdsImploded = $deleteConfirmationForm->get('users')->getData();
+            $userIds = explode(',', $userIdsImploded);
+            $valid = true;
+            foreach ($userIds as $k => $uid) {
+                if (in_array($uid, [1, 2, $this->get('zikula_users_module.current_user')->get('uid')])) {
+                    unset($userIds[$k]);
+                    $this->addFlash('danger', $this->__f('You are not allowed to delete Uid %uid', ['%uid' => $uid]));
+                    continue;
+                }
+                $event = new GenericEvent(null, ['id' => $uid], new ValidationProviders());
+                $validators = $this->get('event_dispatcher')->dispatch(UserEvents::USER_VALIDATE_DELETE, $event)->getData();
+                $hook = new ValidationHook($validators);
+                $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_VALIDATE_DELETE, $hook);
+                $validators = $hook->getValidators();
+                if ($validators->hasErrors()) {
+                    $valid = false;
+                }
+            }
+            if ($valid && $deleteConfirmationForm->isValid()) {
+                $this->get('zikula_users_module.user_repository')->removeArray($userIds);
+                $this->addFlash('success', $this->_fn('User deleted!', '%n users deleted!', count($userIds), ['%n' => count($userIds)]));
+                foreach ($userIds as $uid) {
+                    $this->get('event_dispatcher')->dispatch(UserEvents::USER_PROCESS_DELETE, new GenericEvent(null, ['id' => $uid]));
+                    $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_PROCESS_DELETE, new ProcessHook($uid));
+                }
+
+                return $this->redirectToRoute('zikulausersmodule_useradministration_list');
+            }
+        }
+
+        return [
+            'form' => $deleteConfirmationForm->createView()
+        ];
     }
 
     /**

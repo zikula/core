@@ -385,32 +385,6 @@ Called during UserUtil::getTheme() and is used to filter the results.  Receives 
 with the type of result to be filtered and the $themeName in the $event->data which can
 be modified.  Must $event->stopPropagation() if handler performs filter.
 
-#### `module.users.ui.form_delete`
-A hook-like event that is triggered when the delete confirmation form is displayed. It allows other modules
-to intercept and add to the delete confirmation form.
-
- * The subject of the event is not set.
- * The the argument `'id'` is the uid of the user who will be deleted if confirmed.
-
-#### `module.users.ui.validate_delete`
-A hook-like event that is triggered when the delete confirmation form is submitted and the submitted data
-is being validated prior to processing. It allows other modules to intercept and add to the delete confirmation
-form, and in this case to validate the data entered on the portion of the delete confirmation form that
-they injected with the corresponding `form_delete` event.
-
- * The subject of the event is not set.
- * The the argument `'id'` is the uid of the user who will be deleted if confirmed.
-
-#### `module.users.ui.process_delete`
-A hook-like event that is triggered when the delete confirmation form is submitted and the submitted data
-is has validated. It allows other modules to intercept and add to the delete confirmation
-form, and in this case to process the data entered on the portion of the delete confirmation form that
-they injected with the corresponding `form_delete` event. This event will be triggered after the
-`user.account.delete` event.
-
- * The subject of the event is not set.
- * The the argument `'id'` is the uid of the user who will be deleted if confirmed.
-
 #### `user.account.delete`
 Occurs after a user is deleted from the system. All handlers are notified. The full user record
 deleted is available as the subject. This is a storage-level event, not a UI event. It should not be

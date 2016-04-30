@@ -37,7 +37,7 @@
         {% for data in eventData %}
             {{ data }}
         {% endfor %}
-        {{ notifyDisplayHooks('users.ui_hooks.user.form_edit') }}
+        {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\UserEvents::HOOK_USER_EDIT')) }}
 
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-9">
