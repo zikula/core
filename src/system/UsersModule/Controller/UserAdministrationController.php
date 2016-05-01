@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
@@ -410,6 +411,31 @@ class UserAdministrationController extends AbstractController
         }
 
         return $this->redirectToRoute('zikulausersmodule_useradministration_search');
+    }
+
+    /**
+     * @Route("/send-confirmation/{user}")
+     * @param Request $request
+     * @param UserEntity $user
+     * @return RedirectResponse
+     */
+    public function sendConfirmationAction(Request $request, UserEntity $user)
+    {
+        if (!$this->hasPermission('ZikulaUsersModule', $user->getUname() . '::' . $user->getUid(), ACCESS_MODERATE)) {
+            throw new AccessDeniedException();
+        }
+        if ($user->getPass() == UsersConstant::PWD_NO_USERS_AUTHENTICATION) {
+            // User has no password set -> Sending a recovery code is useless.
+            $this->addFlash('info', $this->__('This user logged in using a non-local verification method and therefore there is no password to reset.'));
+        } else {
+            $newConfirmationCode = $this->get('zikula_users_module.user_verification_repository')->resetVerificationCode($user->getUid());
+            $mailSent = $this->get('zikulausersmodule.helper.mail_helper')->mailConfirmationCode($user, $newConfirmationCode, true);
+            if ($mailSent) {
+                $this->addFlash('status', $this->__f('Done! The password recovery verification code for %s has been sent via e-mail.', ['%s' => $user->getUname()]));
+            }
+        }
+
+        return $this->redirectToRoute('zikulausersmodule_useradministration_list');
     }
 
     /**
