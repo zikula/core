@@ -1112,93 +1112,12 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * @Route("/forcepasswordchange")
-     * @Method({"GET", "POST"})
-     *
-     * Sets or resets a user's need to changed his password on his next attempt at logging in.
-     *
-     * @param Request $request
-     *
-     * Parameters passed via GET:
-     * --------------------------
-     * numeric userid The uid of the user for whom a change of password should be forced (or canceled).
-     *
-     * Parameters passed via POST:
-     * ---------------------------
-     * numeric userid                    The uid of the user for whom a change of password should be forced (or canceled).
-     * boolean user_must_change_password True to force the user to change his password at his next log-in attempt, otherwise false.
-     *
-     * @return Response symfony response object
-     *
-     * @throws \InvalidArgumentException Thrown if a user id is not specified, is invalid, or does not point to a valid account record,
-     *                                      or the account record is not in a consistent state.
-     * @throws AccessDeniedException Thrown if the current user does not have edit access for the account record.
-     * @throws FatalErrorException Thrown if the method of accessing this function is improper
+     * @return RedirectResponse
      */
     public function toggleForcedPasswordChangeAction(Request $request)
     {
-        if ($request->getMethod() == 'GET') {
-            $uid = $request->query->get('userid', false);
+        @trigger_error('This method is deprecated. Please use UserAdministrationController::togglePasswordChangeAction', E_USER_DEPRECATED);
 
-            if (!$uid || !is_numeric($uid) || ((int)$uid != $uid)) {
-                throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
-            }
-
-            $userObj = UserUtil::getVars($uid);
-
-            if (!isset($userObj) || !$userObj || !is_array($userObj) || empty($userObj) || $userObj['pass'] == UsersConstant::PWD_NO_USERS_AUTHENTICATION) {
-                throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
-            }
-
-            if (!SecurityUtil::checkPermission('ZikulaUsersModule::', "{$userObj['uname']}::{$uid}", ACCESS_EDIT)) {
-                throw new AccessDeniedException();
-            }
-
-            $userMustChangePassword = UserUtil::getVar('_Users_mustChangePassword', $uid, false);
-
-            return new Response($this->view->assign('user_obj', $userObj)
-                ->assign('user_must_change_password', $userMustChangePassword)
-                ->fetch('Admin/toggleforcedpasswordchange.tpl'));
-        } elseif ($request->getMethod() == 'POST') {
-            $this->checkCsrfToken();
-
-            $uid = $request->request->get('userid', false);
-            $userMustChangePassword = $request->request->get('user_must_change_password', false);
-
-            // Force reload of User object into cache.
-            $userObj = UserUtil::getVars($uid);
-
-            if (!$uid || !is_numeric($uid) || ((int)$uid != $uid) || $userObj['pass'] == UsersConstant::PWD_NO_USERS_AUTHENTICATION) {
-                throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
-            }
-
-            if (!SecurityUtil::checkPermission('ZikulaUsersModule::', "{$userObj['uname']}::{$uid}", ACCESS_EDIT)) {
-                throw new AccessDeniedException();
-            }
-
-            if ($userMustChangePassword) {
-                UserUtil::setVar('_Users_mustChangePassword', $userMustChangePassword, $uid);
-            } else {
-                UserUtil::delVar('_Users_mustChangePassword', $uid);
-            }
-
-            // Force reload of User object into cache.
-            $userObj = UserUtil::getVars($uid, true);
-
-            if ($userMustChangePassword) {
-                if (isset($userObj['__ATTRIBUTES__']) && isset($userObj['__ATTRIBUTES__']['_Users_mustChangePassword'])) {
-                    $request->getSession()->getFlashBag()->add('status', $this->__f('Done! A password change will be required the next time %1$s logs in.', array($userObj['uname'])));
-                } else {
-                    throw new \InvalidArgumentException();
-                }
-            } else {
-                if (isset($userObj['__ATTRIBUTES__']) && isset($userObj['__ATTRIBUTES__']['_Users_mustChangePassword'])) {
-                    throw new \InvalidArgumentException();
-                } else {
-                    $request->getSession()->getFlashBag()->add('status', $this->__f('Done! A password change will no longer be required for %1$s.', array($userObj['uname'])));
-                }
-            }
-
-            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
-        }
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_useradministration_togglepasswordchange', ['user' => $request->get('userid')]));
     }
 }
