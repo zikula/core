@@ -66,7 +66,7 @@
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-9">
                     <a class="btn btn-danger" href="{{ path('zikulausersmodule_useradministration_delete', {'user': form.vars.value.uid}) }}"><i class="fa fa-times"></i> {{ __('Delete user account') }}</a>
-                    <a class="btn btn-info" href="{{ path('zikulausersmodule_admin_lostusername', {'userid': form.vars.value.uid}) }}"><i class="fa fa-reply"></i> {{ __('Send user name') }}</a>
+                    <a class="btn btn-info" href="{{ path('zikulausersmodule_useradministration_sendusername', {'user': form.vars.value.uid}) }}"><i class="fa fa-reply"></i> {{ __('Send user name') }}</a>
                     <a class="btn btn-info" href="{{ path('zikulausersmodule_useradministration_sendconfirmation', {'user': form.vars.value.uid}) }}"><i class="fa fa-reply"></i> {{ __('Send password recovery code') }}</a>
                 </div>
             </div>
