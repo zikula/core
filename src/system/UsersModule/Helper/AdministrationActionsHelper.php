@@ -176,14 +176,14 @@ class AdministrationActionsHelper
             $content .= '<a class="fa fa-fw fa-key tooltips" href="' . $url . '" title="' . $title . '"></a>';
         }
         if ($userHasActualPassword && $hasEditPermissionToUser) {
-            if ($user->getAttributes()->containsKey('_Users_mustChangePassword') && $user->getAttributeValue('_Users_mustChangePassword')) {
+            if ($user->getAttributes()->containsKey('_Users_mustChangePassword') && (bool)$user->getAttributeValue('_Users_mustChangePassword')) {
                 $title = $this->translator->__f('Cancel required change of password for %sub%', ["%sub%" => $user->getUname()]);
                 $fa = 'unlock-alt';
             } else {
                 $title = $this->translator->__f('Require %sub% to change password at next login', ["%sub%" => $user->getUname()]);
                 $fa = 'lock';
             }
-            $url = $this->router->generate('zikulausersmodule_admin_toggleforcedpasswordchange', ['userid' => $user->getUid()]);
+            $url = $this->router->generate('zikulausersmodule_useradministration_togglepasswordchange', ['user' => $user->getUid()]);
             $content .= '<a class="fa fa-fw fa-' . $fa . ' tooltips" href="' . $url . '" title="' . $title . '"></a>';
         }
         if ($user->getUid() > 1 && $hasEditPermissionToUser) {
