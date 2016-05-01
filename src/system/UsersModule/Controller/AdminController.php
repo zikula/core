@@ -135,65 +135,13 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * @Route("/lostusername")
-     * @Method({"GET", "POST"})
-     *
-     * Allows an administrator to send a user his user name via email.
-     *
-     * @param Request $request
-     *
-     * Parameters passed via GET:
-     * --------------------------
-     * numeric userid The user id of the user to be modified.
-     *
-     * Parameters passed via POST:
-     * ---------------------------
-     * numeric userid The user id of the user to be modified.
-     *
      * @return RedirectResponse
-     *
-     * @throws AccessDeniedException Thrown if the current user does not have moderate access.
-     * @throws \InvalidArgumentException Thrown if the provided user id isn't an integer
-     * @throws NotFoundHttpException Thrown if user id doesn't match a valid user
-     *
-     * @todo The link on the view page should be a mini form, and should post.
-     * @todo This should have a confirmation page.
      */
     public function lostUsernameAction(Request $request)
     {
-        if ($request->getMethod() == 'POST') {
-            $this->checkCsrfToken();
-            $uid = $request->request->get('userid', null);
-        } else {
-            $this->checkCsrfToken($request->query->get('csrftoken'));
-            $uid = $request->query->get('userid', null);
-        }
+        @trigger_error('This method is deprecated. Please use UserAdministrationController::sendUserNameAction', E_USER_DEPRECATED);
 
-        if (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid) || ($uid <= 1)) {
-            throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
-        }
-
-        $user = UserUtil::getVars($uid);
-        if (!$user) {
-            throw new NotFoundHttpException($this->__('Sorry! Unable to retrieve information for that user id.'));
-        }
-
-        if (!SecurityUtil::checkPermission('ZikulaUsersModule::', "{$user['uname']}::{$user['uid']}", ACCESS_MODERATE)) {
-            throw new AccessDeniedException();
-        }
-
-        $userNameSent = ModUtil::apiFunc($this->name, 'user', 'mailUname', array(
-            'idfield'       => 'uid',
-            'id'            => $user['uid'],
-            'adminRequest'  => true,
-        ));
-
-        if ($userNameSent) {
-            $request->getSession()->getFlashBag()->add('status', $this->__f('Done! The user name for \'%s\' has been sent via e-mail.', $user['uname']));
-        } elseif (!$request->getSession()->getFlashBag()->has(Zikula_Session::MESSAGE_ERROR)) {
-            $request->getSession()->getFlashBag()->add('error', $this->__f('Sorry! There was an unknown error while trying to send the user name for \'%s\'.', $user['uname']));
-        }
-
-        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_useradministration_sendusername', ['user' => $request->get('userid')]));
     }
 
     /**

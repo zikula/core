@@ -123,6 +123,32 @@ class MailHelper
     }
 
     /**
+     * Mail the username to a user.
+     * @param UserEntity $user
+     * @param bool $requestedByAdmin
+     * @return bool
+     */
+    public function mailUserName(UserEntity $user, $requestedByAdmin = false)
+    {
+        $templateArgs = array(
+            'user' => $user,
+            'authentication_methods' => \UserUtil::getUserAccountRecoveryInfo($user->getUid()),
+            'requestedByAdmin' => $requestedByAdmin,
+        );
+        $htmlBody = $this->twig->render('@ZikulaUsersModule/Email/lostuname.html.twig', $templateArgs);
+        $plainTextBody = $this->twig->render('@ZikulaUsersModule/Email/lostuname.txt.twig', $templateArgs);
+
+        $subject = $this->translator->__f('Account information for %s', ['%s' => $user->getUname()]);
+        $message = \Swift_Message::newInstance();
+        $message->setFrom([$this->variableApi->get(VariableApi::CONFIG, 'adminmail') => $this->variableApi->get(VariableApi::CONFIG, 'sitename_' . \ZLanguage::getLanguageCode())])
+            ->setTo([$user->getEmail()])
+            ->setSubject($subject)
+            ->setBody($htmlBody);
+
+        return $this->mailerApi->sendMessage($message, null, null, $plainTextBody, true);
+    }
+
+    /**
      * Sends a notification e-mail of a specified type to a user or registrant.
      *
      * @param string $toAddress The destination e-mail address.
