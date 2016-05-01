@@ -13,6 +13,7 @@ namespace Zikula\MailerModule;
 /**
  * Class MailerEvents
  * Contains constant values for mailer event names.
+ * The subject of each event is the instance of Swift_Message
  */
 class MailerEvents
 {

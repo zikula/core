@@ -127,7 +127,7 @@ class MailerApi
     {
         $this->message = $message;
 
-        $event = new GenericEvent($this, $this->message);
+        $event = new GenericEvent($this->message);
         $this->eventDispatcher->dispatch(MailerEvents::SEND_MESSAGE_START, $event);
         if ($event->isPropagationStopped()) {
             return $event->getData();
@@ -171,7 +171,7 @@ class MailerApi
             $this->addEmbeddedImages($embeddedImages);
         }
 
-        $event = new GenericEvent($this, $this->message);
+        $event = new GenericEvent($this->message);
         $this->eventDispatcher->dispatch(MailerEvents::SEND_MESSAGE_PERFORM, $event);
         if ($event->isPropagationStopped()) {
             return $event->getData();
@@ -255,7 +255,7 @@ class MailerApi
     private function performSending()
     {
         $logFile = 'app/logs/mailer.log';
-        $event = new GenericEvent($this, $this->message);
+        $event = new GenericEvent($this->message);
 
         if (!$this->mailer->send($this->message, $failedEmails)) {
             // message was not sent successfully, do error handling
