@@ -170,7 +170,7 @@ class AdministrationActionsHelper
         $hasDeletePermissionToUser = $this->permissionsApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_DELETE);
         $userHasActualPassword = (null != $user->getPass()) && ('' != $user->getPass()) && ($user->getPass() != UsersConstant::PWD_NO_USERS_AUTHENTICATION);
         if ($user->getUid() > 1 && $hasModeratePermissionToUser) {
-            $url = $this->router->generate('zikulausersmodule_admin_lostusername', ['userid' => $user->getUid()]);
+            $url = $this->router->generate('zikulausersmodule_useradministration_sendusername', ['user' => $user->getUid()]);
             $title = $this->translator->__f('Send user name to %sub%', ["%sub%" => $user->getUname()]);
             $content .= '<a class="fa fa-fw fa-user tooltips" href="' . $url . '" title="' . $title . '"></a>';
         }

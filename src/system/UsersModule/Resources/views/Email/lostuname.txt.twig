@@ -1,15 +1,15 @@
 {{ __('Hello!') }}
 
-{% if adminRequested %}
-    {{ __f('The administrator at %sub% requested that you receive your user name via e-mail.', {"%sub%": sitename}) }}
+{% if requestedByAdmin %}
+    {{ __f('The administrator at %sub% requested that you receive your user name via e-mail.', {"%sub%": pagevars.title}) }}
 {% else %}
-    {{ __f('Someone with the IP address %1$s has just requested the account information at %2$s associated with this e-mail address.', {"%1$s": hostname, "%2$s": sitename}) }}
+    {{ __f('Someone with the IP address %1$s has just requested the account information at %2$s associated with this e-mail address.', {"%1$s": app.request.server.get('REMOTE_ADDR'), "%2$s": pagevars.title}) }}
 {% endif %}
 
-{{ __f('The user name for your account is: %1s', {"%sub%": uname}) }}
+{{ __f('The user name for your account is: %1s', {"%sub%": user.uname}) }}
 
 {% if authentication_methods is not empty %}
-    {{ __('You may use the following information to log into your account at:') }} {{ url }}
+    {{ __('You may use the following information to log into your account at:') }} {{ url('zikulausersmodule_user_login') }}
 
     {% for authentication_method in authentication_methods %}
     {{ authentication_method.short_description }}: {{ authentication_method.uname }}{% if authentication_method.link is not empty %} ({{ authentication_method.link }}){% endif %}
@@ -19,6 +19,6 @@
     {{ __('You do not have any active methods available to log into our site. Please contact a site administrator.') }}
 
 {% endif %}
-{% if not adminRequested %}{{ __('If the request was not made by you then you don\'t need to take any action.') }} {% endif %}
+{% if not requestedByAdmin %}{{ __('If the request was not made by you then you don\'t need to take any action.') }} {% endif %}
 {{ __('You are the only recipient of this message, and your user name has not been sent to any other e-mail address.') }}
-{% if not adminRequested %} {{ __('You can just delete this message.') }}{% endif %}
+{% if not requestedByAdmin %} {{ __('You can just delete this message.') }}{% endif %}
