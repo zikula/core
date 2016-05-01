@@ -455,6 +455,56 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
+     * @Route("/toggle-password-change/{user}")
+     * @Theme("admin")
+     * @Template
+     * @param Request $request
+     * @param UserEntity $user
+     * @return array|RedirectResponse
+     */
+    public function togglePasswordChangeAction(Request $request, UserEntity $user)
+    {
+        if (!$this->hasPermission('ZikulaUsersModule', $user->getUname() . '::' . $user->getUid(), ACCESS_MODERATE)) {
+            throw new AccessDeniedException();
+        }
+        if ($user->getAttributes()->containsKey('_Users_mustChangePassword')) {
+            $mustChangePass = $user->getAttributes()->get('_Users_mustChangePassword');
+        } else {
+            $mustChangePass = false;
+        }
+        $form = $this->createForm('Zikula\UsersModule\Form\Type\TogglePasswordConfirmationType', [
+            'uid' => $user->getUid(),
+        ], [
+            'mustChangePass' => $mustChangePass,
+            'translator' => $this->get('translator.default')
+        ]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('toggle')->isClicked()) {
+                if ($user->getAttributes()->containsKey('_Users_mustChangePassword') && (bool)$user->getAttributes()->get('_Users_mustChangePassword')) {
+                    $user->getAttributes()->remove('_Users_mustChangePassword');
+                    $this->addFlash('success', $this->__f('Done! A password change will no longer be required for %uname.', ['%uname' => $user->getUname()]));
+                } else {
+                    $user->setAttribute('_Users_mustChangePassword', true);
+                    $this->addFlash('success', $this->__f('Done! A password change will be required the next time %uname logs in.', ['%uname' => $user->getUname()]));
+                }
+                $this->get('doctrine')->getManager()->flush();
+            }
+            if ($form->get('cancel')->isClicked()) {
+                $this->addFlash('info', $this->__('Operation cancelled.'));
+            }
+
+            return $this->redirectToRoute('zikulausersmodule_useradministration_list');
+        }
+
+        return [
+            'form' => $form->createView(),
+            'mustChangePass' => $mustChangePass,
+            'user' => $user
+        ];
+    }
+
+    /**
      * @return \Symfony\Component\Form\Form
      */
     private function buildMailForm()
