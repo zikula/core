@@ -107,4 +107,35 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
 
         return null != $userVerification->getCreated_Dt();
     }
+
+    /**
+     * Reset a users confirmation code.
+     * @param integer $uid
+     * @return string new confirmation code.
+     */
+    public function resetVerificationCode($uid)
+    {
+        $confirmationCode = \UserUtil::generatePassword();
+        $hashedConfirmationCode = \UserUtil::getHashedPassword($confirmationCode);
+        $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
+
+        $query = $this->createQueryBuilder('v')
+            ->delete()
+            ->where('v.uid = :uid')
+            ->andWhere('v.changetype = :changetype')
+            ->setParameter('uid', $uid)
+            ->setParameter('changetype', UsersConstant::VERIFYCHGTYPE_PWD)
+            ->getQuery();
+        $query->execute();
+
+        $entity = new UserVerificationEntity();
+        $entity->setChangetype(UsersConstant::VERIFYCHGTYPE_PWD);
+        $entity->setUid($uid);
+        $entity->setVerifycode($hashedConfirmationCode);
+        $entity->setCreated_Dt($nowUTC->format(UsersConstant::DATETIME_FORMAT));
+        $this->_em->persist($entity);
+        $this->_em->flush();
+
+        return $confirmationCode;
+    }
 }

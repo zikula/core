@@ -29,4 +29,6 @@ interface UserVerificationRepositoryInterface
     public function resetVerifyChgFor($uid, $types = null);
 
     public function isVerificationEmailSent($uid);
+
+    public function resetVerificationCode($uid);
 }
