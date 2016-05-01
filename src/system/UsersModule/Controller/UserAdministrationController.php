@@ -439,6 +439,25 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
+     * @Route("/send-username/{user}")
+     * @param Request $request
+     * @param UserEntity $user
+     * @return RedirectResponse
+     */
+    public function sendUserNameAction(Request $request, UserEntity $user)
+    {
+        if (!$this->hasPermission('ZikulaUsersModule', $user->getUname() . '::' . $user->getUid(), ACCESS_MODERATE)) {
+            throw new AccessDeniedException();
+        }
+        $mailSent = $this->get('zikulausersmodule.helper.mail_helper')->mailUserName($user, true);
+        if ($mailSent) {
+            $this->addFlash('status', $this->__f('Done! The user name for %s has been sent via e-mail.', ['%s' => $user->getUname()]));
+        }
+
+        return $this->redirectToRoute('zikulausersmodule_useradministration_list');
+    }
+
+    /**
      * @return \Symfony\Component\Form\Form
      */
     private function buildMailForm()

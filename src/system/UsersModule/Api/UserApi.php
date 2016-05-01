@@ -176,52 +176,32 @@ class UserApi extends \Zikula_AbstractApi
     }
 
     /**
-     * Sends a notification e-mail of a specified type to a user or registrant.
-     *
-     * @param mixed[] $args {
-     *      @type string $toAddress        The destination e-mail address.
-     *      @type string $notificationType The type of notification, converted to the name of a template
-     *                                     in the form users_userapi_{type}mail.tpl and/or .txt.
-     *      @type array  $templateArgs     One or more arguments to pass to the renderer for use in the template.
-     *      @type string $subject          The e-mail subject, overriding the template's subject.
-     *                      }
-     *
-     * @return <type>
+     * @deprecated 
      */
     public function sendNotification($args)
     {
+        @trigger_error('This api method is deprecated. Please user MailHelper.');
+
         $toAddress = $args['toAddress'];
         $notificationType = isset($args['notificationType']) ? $args['notificationType'] : '';
         $templateArgs = isset($args['templateArgs']) ? $args['templateArgs'] : [];
         $subject = isset($args['subject']) ? $args['subject'] : '';
 
-        return $this->getContainer()->get('zikulausersmodule.helper.notification_helper')->sendNotification($toAddress, $notificationType, $templateArgs, $subject);
+        return $this->getContainer()->get('zikulausersmodule.helper.mail_helper')->sendNotification($toAddress, $notificationType, $templateArgs, $subject);
     }
 
     /**
-     * Send the user an account information recovery e-mail.
-     *
-     * @param mixed[] $args {
-     *      @type string $idfield The value 'email'.
-     *      @type string $id      The user's e-mail address.
-     *                      }
-     *
-     * @return bool True if user name sent; otherwise false.
-     *
-     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args.
-     * @throws \RuntimeException Thrown if the e-mail couldn't be sent
+     * @deprecated
      */
     public function mailUname($args)
     {
-        $emailMessageSent = false;
+        @trigger_error('This api method is deprecated. Please user MailHelper.');
 
         if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield'])
                 || (($args['idfield'] != 'email') && ($args['idfield'] != 'uid'))) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
-
         $adminRequested = (isset($args['adminRequest']) && is_bool($args['adminRequest']) && $args['adminRequest']);
-
         if ($args['idfield'] == 'email') {
             $query = $this->entityManager->createQueryBuilder()
                                          ->select('count(u.uid)')
@@ -229,58 +209,40 @@ class UserApi extends \Zikula_AbstractApi
                                          ->where('u.email = :email')
                                          ->setParameter('email', $args['id'])
                                          ->getQuery();
-
             $ucount = (int)$query->getSingleScalarResult();
-
             if ($ucount > 1) {
                 return false;
             }
         }
+        $user = $this->getContainer()->get('zikula_users_module.user_repository')->findOneBy([$args['idfield'] => $args['id']]);
 
-        $userObj = UserUtil::getVars($args['id'], true, $args['idfield']);
-
-        if ($userObj) {
-            $authenticationMethods = UserUtil::getUserAccountRecoveryInfo($userObj['uid']);
-
-            $view = Zikula_View::getInstance($this->name, false);
-            $viewArgs = array(
-                'uname'                 => $userObj['uname'],
-                'email'                 => $userObj['email'],
-                'has_password'          => !empty($userObj['pass']) && ($userObj['pass'] != UsersConstant::PWD_NO_USERS_AUTHENTICATION),
-                'authentication_methods' => $authenticationMethods,
-                'sitename'              => System::getVar('sitename'),
-                'hostname'              => System::serverGetVar('REMOTE_ADDR'),
-                'url'                   => $this->getContainer()->get('router')->generate('zikulausersmodule_user_login', array(), RouterInterface::ABSOLUTE_URL),
-                'adminRequested'        => $adminRequested,
-            );
-            $view->assign($viewArgs);
-            $htmlBody = $view->fetch('Email/lostuname_html.tpl');
-            $plainTextBody = $view->fetch('Email/lostuname_txt.tpl');
-
-            $subject = $this->__f('Account information for %s', $userObj['uname']);
-
-            $emailMessageSent = ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendMessage', array(
-                'toaddress' => $userObj['email'],
-                'subject'   => $subject,
-                'body'      => $htmlBody,
-                'altbody'   => $plainTextBody
-            ));
-
-            if (!$emailMessageSent) {
-                throw new \RuntimeException($this->__('Error! Unable to send user name e-mail message.'));
-            }
-        }
-
-        return $emailMessageSent;
+        return $this->getContainer()->get('zikulausersmodule.helper.mail_helper')->mailUserName($user, $adminRequested);
     }
 
     /**
-     * @deprecated 
+     * @deprecated
      */
     public function mailConfirmationCode($args)
     {
         @trigger_error('This api method is deprecated. Please user MailHelper.');
-        throw new \RuntimeException('This api method is deprecated. Please user MailHelper.');
+
+        if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield'])
+            || (($args['idfield'] != 'uname') && ($args['idfield'] != 'email') && ($args['idfield'] != 'uid'))
+        ) {
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+        }
+        if ($args['idfield'] == 'email') {
+            $ucount = UserUtil::getEmailUsageCount($args['id']);
+            if ($ucount > 1) {
+                return false;
+            }
+        }
+        $adminRequested = (isset($args['adminRequest']) && is_bool($args['adminRequest']) && $args['adminRequest']);
+
+        $user = $this->getContainer()->get('zikula_users_module.user_repository')->findOneBy([$args['idfield'] => $args['id']]);
+        $newConfirmationCode = $this->getContainer()->get('zikula_users_module.user_verification_repository')->resetVerificationCode($user->getUid());
+
+        return $this->getContainer()->get('zikulausersmodule.helper.mail_helper')->mailConfirmationCode($user, $newConfirmationCode, $adminRequested);
     }
 
     /**
