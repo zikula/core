@@ -275,104 +275,12 @@ class UserApi extends \Zikula_AbstractApi
     }
 
     /**
-     * Send the user a lost password confirmation code.
-     *
-     * @param string[] $args {
-     *      @type string $email The user's e-mail address.
-     *                       }
-     *
-     * @return bool True if confirmation code sent; otherwise false.
-     *
-     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args, or if the data cannot be loaded from the database.
-     * @throws \RuntimeException Thrown if the confirmation code couldn't be created, saved or sent by e-mail
+     * @deprecated 
      */
     public function mailConfirmationCode($args)
     {
-        $emailMessageSent = false;
-
-        if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield'])
-                || (($args['idfield'] != 'uname') && ($args['idfield'] != 'email') && ($args['idfield'] != 'uid'))
-                ) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
-        }
-
-        if ($args['idfield'] == 'email') {
-            $ucount = UserUtil::getEmailUsageCount($args['id']);
-
-            if ($ucount > 1) {
-                return false;
-            }
-        }
-
-        $adminRequested = (isset($args['adminRequest']) && is_bool($args['adminRequest']) && $args['adminRequest']);
-
-        $user = UserUtil::getVars($args['id'], true, $args['idfield']);
-
-        if ($user) {
-            $confirmationCode = UserUtil::generatePassword();
-            $hashedConfirmationCode = UserUtil::getHashedPassword($confirmationCode);
-
-            if ($hashedConfirmationCode !== false) {
-                $query = $this->entityManager->createQueryBuilder()
-                                             ->delete()
-                                             ->from('ZikulaUsersModule:UserVerificationEntity', 'v')
-                                             ->where('v.uid = :uid')
-                                             ->andWhere('v.changetype = :changetype')
-                                             ->setParameter('uid', $user['uid'])
-                                             ->setParameter('changetype', UsersConstant::VERIFYCHGTYPE_PWD)
-                                             ->getQuery();
-                $query->getResult();
-
-                $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
-
-                $codeSaved = new \Zikula\UsersModule\Entity\UserVerificationEntity();
-                $codeSaved['changetype'] = UsersConstant::VERIFYCHGTYPE_PWD;
-                $codeSaved['uid'] = $user['uid'];
-                $codeSaved['newemail'] = '';
-                $codeSaved['verifycode'] = $hashedConfirmationCode;
-                $codeSaved['created_dt'] = $nowUTC->format(UsersConstant::DATETIME_FORMAT);
-                $this->entityManager->persist($codeSaved);
-                $this->entityManager->flush();
-
-                if ($codeSaved) {
-                    $urlArgs = array();
-                    $urlArgs['code'] = $confirmationCode;
-                    $urlArgs[$args['idfield']] = $args['id'];
-
-                    $view = Zikula_View::getInstance($this->name, false);
-                    $viewArgs = array(
-                        'uname'         => $user['uname'],
-                        'sitename'      => System::getVar('sitename'),
-                        'hostname'      => System::serverGetVar('REMOTE_ADDR'),
-                        'code'          => $confirmationCode,
-                        'url'           => $this->getContainer()->get('router')->generate('zikulausersmodule_user_lostpasswordcode', $urlArgs, RouterInterface::ABSOLUTE_URL),
-                        'adminRequested' => $adminRequested,
-                    );
-                    $view->assign($viewArgs);
-                    $htmlBody = $view->fetch('Email/lostpassword_html.tpl');
-                    $plainTextBody = $view->fetch('Email/lostpassword_txt.tpl');
-
-                    $subject = $this->__f('Confirmation code for %s', $user['uname']);
-
-                    $emailMessageSent = ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendMessage', array(
-                        'toaddress' => $user['email'],
-                        'subject'   => $subject,
-                        'body'      => $htmlBody,
-                        'altbody'   => $plainTextBody
-                    ));
-
-                    if (!$emailMessageSent) {
-                        throw new \RuntimeException($this->__('Error! Unable to send confirmation code e-mail message.'));
-                    }
-                } else {
-                    throw new \RuntimeException($this->__('Error! Unable to save confirmation code.'));
-                }
-            } else {
-                throw new \RuntimeException($this->__("Error! Unable to create confirmation code."));
-            }
-        }
-
-        return $emailMessageSent;
+        @trigger_error('This api method is deprecated. Please user MailHelper.');
+        throw new \RuntimeException('This api method is deprecated. Please user MailHelper.');
     }
 
     /**

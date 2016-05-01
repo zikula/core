@@ -198,52 +198,13 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * @Route("/lostpassword/{userid}", requirements={"userid" = "^[1-9]\d*$"})
-     * @Method("GET")
-     *
-     * Allows an administrator to send a user a password recovery verification code.
-     *
-     * @param Request $request
-     * @param integer $userid
-     *
      * @return RedirectResponse
-     *
-     * @throws AccessDeniedException Thrown if the current user does not have moderate access.
-     * @throws \InvalidArgumentException Thrown if the provided user id isn't an integer or
-     *                                          if the user has no password set
-     * @throws NotFoundHttpException Thrown if user id doesn't match a valid user
-     *
-     * @todo The link on the view page should be a mini form, and should post.
-     * @todo This should have a confirmation page.
      */
     public function lostPasswordAction(Request $request, $userid)
     {
-        $this->checkCsrfToken($request->query->get('csrftoken'));
+        @trigger_error('This method is deprecated. Please use UserAdministrationController::sendConfirmation', E_USER_DEPRECATED);
 
-        $user = UserUtil::getVars($userid);
-        if (!$user) {
-            throw new NotFoundHttpException($this->__('Sorry! Unable to retrieve information for that user id.'));
-        }
-
-        if ($user['pass'] == UsersConstant::PWD_NO_USERS_AUTHENTICATION) {
-            // User has no password set -> Sending a recovery code is useless.
-            throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
-        }
-
-        if (!SecurityUtil::checkPermission('ZikulaUsersModule::', "{$user['uname']}::{$user['uid']}", ACCESS_MODERATE)) {
-            throw new AccessDeniedException();
-        }
-
-        $confirmationCodeSent = ModUtil::apiFunc($this->name, 'user', 'mailConfirmationCode', array(
-            'idfield'       => 'uid',
-            'id'            => $user['uid'],
-            'adminRequest'  => true,
-        ));
-
-        if ($confirmationCodeSent) {
-            $request->getSession()->getFlashBag()->add('status', $this->__f('Done! The password recovery verification code for %s has been sent via e-mail.', $user['uname']));
-        }
-
-        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_useradministration_sendconfirmation', ['user' => $userid]));
     }
 
     /**

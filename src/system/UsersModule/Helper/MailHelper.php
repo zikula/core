@@ -95,6 +95,34 @@ class MailHelper
     }
 
     /**
+     * Mail a confirmation code to a user.
+     * @param UserEntity $user
+     * @param $confirmationCode
+     * @param bool $requestedByAdmin
+     * @return bool
+     */
+    public function mailConfirmationCode(UserEntity $user, $confirmationCode, $requestedByAdmin = false)
+    {
+        $templateArgs = array(
+            'uname' => $user['uname'],
+            'code' => $confirmationCode,
+            'requestedByAdmin' => $requestedByAdmin
+        );
+        $htmlBody = $this->twig->render('@ZikulaUsersModule/Email/lostpassword.html.twig', $templateArgs);
+        $plainTextBody = $this->twig->render('@ZikulaUsersModule/Email/lostpassword.txt.twig', $templateArgs);
+
+        $subject = $this->translator->__f('Confirmation code for %s', ['%s' => $user->getUname()]);
+
+        $message = \Swift_Message::newInstance();
+        $message->setFrom([$this->variableApi->get(VariableApi::CONFIG, 'adminmail') => $this->variableApi->get(VariableApi::CONFIG, 'sitename_' . \ZLanguage::getLanguageCode())])
+            ->setTo([$user->getEmail()])
+            ->setSubject($subject)
+            ->setBody($htmlBody);
+
+        return $this->mailerApi->sendMessage($message, null, null, $plainTextBody, true);
+    }
+
+    /**
      * Sends a notification e-mail of a specified type to a user or registrant.
      *
      * @param string $toAddress The destination e-mail address.

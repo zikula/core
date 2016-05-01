@@ -175,7 +175,7 @@ class AdministrationActionsHelper
             $content .= '<a class="fa fa-fw fa-user tooltips" href="' . $url . '" title="' . $title . '"></a>';
         }
         if ($userHasActualPassword && $hasModeratePermissionToUser) {
-            $url = $this->router->generate('zikulausersmodule_admin_lostpassword', ['userid' => $user->getUid()]);
+            $url = $this->router->generate('zikulausersmodule_useradministration_sendconfirmation', ['user' => $user->getUid()]);
             $title = $this->translator->__f('Send password recovery code to %sub%', ["%sub%" => $user->getUname()]);
             $content .= '<a class="fa fa-fw fa-key tooltips" href="' . $url . '" title="' . $title . '"></a>';
         }
