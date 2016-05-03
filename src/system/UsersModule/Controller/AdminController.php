@@ -221,10 +221,10 @@ class AdminController extends \Zikula_AbstractController
                 $this->__('%m-%d-%Y %H:%M'));
         }
 
-        $actions = $this->getActionsForRegistrations(array($reginfo), 'display');
+//        $actions = $this->getActionsForRegistrations(array($reginfo), 'display');
 
         return new Response($this->view->assign('reginfo', $reginfo)
-            ->assign('actions', $actions)
+//            ->assign('actions', $actions)
             ->fetch('Admin/displayregistration.tpl'));
     }
 
