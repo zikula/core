@@ -24,18 +24,22 @@ class LinkContainer implements LinkContainerInterface
      * @var TranslatorInterface
      */
     private $translator;
+
     /**
      * @var RouterInterface
      */
     private $router;
+
     /**
      * @var PermissionApi
      */
     private $permissionApi;
+
     /**
      * @var VariableApi
      */
     private $variableApi;
+
     /**
      * @var RegistrationHelper
      */
