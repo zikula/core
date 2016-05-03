@@ -30,6 +30,8 @@ CHANGELOG - ZIKULA 1.4.x
     - SettingsModule updated to Core-2.0 Spec.
 
  - Vendor updates:
+    - symfony updated to from 2.8.4 to 2.8.5
+    - swiftmailer updated from 5.4.1 to 5.4.2
     - font awesome updated from 4.5.0 to 4.6.1
     - jms translation bundle updated from 1.2.1 to 1.2.2
     - monolog updated from 1.18.1 to 1.18.2
