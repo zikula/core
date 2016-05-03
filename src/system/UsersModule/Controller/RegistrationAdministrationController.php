@@ -10,6 +10,7 @@
 
 namespace Zikula\UsersModule\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,6 +25,7 @@ use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Entity\UserVerificationEntity;
 use Zikula\UsersModule\RegistrationEvents;
 
 /**
@@ -65,6 +67,17 @@ class RegistrationAdministrationController extends AbstractController
             ],
             'users' => $users
         ];
+    }
+
+    /**
+     * @Route("/display/{user}")
+     * @ParamConverter("user", options={"mapping": {"user": "uid"}})
+     * @param Request $request
+     * @param UserVerificationEntity $user
+     */
+    public function displayAction(Request $request, UserVerificationEntity $user)
+    {
+
     }
 
     /**
