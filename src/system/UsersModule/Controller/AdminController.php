@@ -23,7 +23,6 @@ use DateTimeZone;
 use DateTime;
 use FileUtil;
 use Exception;
-use Zikula_Session;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula\Core\Exception\FatalErrorException;
@@ -35,6 +34,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
+ * @deprecated
  * @Route("/admin")
  *
  * Administrator-initiated actions for the Users module.
@@ -179,53 +179,13 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * @Route("/displayregistration/{uid}", requirements={"uid" = "^[1-9]\d*$"})
-     * @Method("GET")
-     *
-     * Displays the information on a single registration request.
-     *
-     * @param Request $request
-     * @param integer $uid The id of the registration request (id) to retrieve and display.
-     *
-     * @return Response symfony response object containing the rendered template.
-     *
-     * @throws AccessDeniedException Thrown if the current user does not have moderate access
-     * @throws FatalErrorException Thrown if the method of accessing this function is improper
-     * @throws \InvalidArgumentException Thrown if the user id isn't set or numeric
+     * @return RedirectResponse
      */
     public function displayRegistrationAction(Request $request, $uid)
     {
-        if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
-            throw new AccessDeniedException();
-        }
+        @trigger_error('This method is deprecated. Please use RegistrationAdministrationController::displayAction', E_USER_DEPRECATED);
 
-//        $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
-        $reginfo = $this->get('zikulausersmodule.helper.registration_helper')->get($uid);
-        if (!$reginfo) {
-            // get application could fail (return false) because of a nonexistant
-            // record, no permission to read an existing record, or a database error
-            $request->getSession()->getFlashBag()->add('error', $this->__('Unable to retrieve registration record. The record with the specified id might not exist, or you might not have permission to access that record.'));
-
-            return false;
-        }
-
-        // So expiration can be displayed
-        $regExpireDays = $this->getVar('reg_expiredays', 0);
-        if (!$reginfo['isverified'] && !empty($reginfo['verificationsent']) && ($regExpireDays > 0)) {
-            try {
-                $expiresUTC = new DateTime($reginfo['verificationsent'], new DateTimeZone('UTC'));
-            } catch (Exception $e) {
-                $expiresUTC = new DateTime(UsersConstant::EXPIRED, new DateTimeZone('UTC'));
-            }
-            $expiresUTC->modify("+{$regExpireDays} days");
-            $reginfo['validuntil'] = DateUtil::formatDatetime($expiresUTC->format(UsersConstant::DATETIME_FORMAT),
-                $this->__('%m-%d-%Y %H:%M'));
-        }
-
-//        $actions = $this->getActionsForRegistrations(array($reginfo), 'display');
-
-        return new Response($this->view->assign('reginfo', $reginfo)
-//            ->assign('actions', $actions)
-            ->fetch('Admin/displayregistration.tpl'));
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_registrationadministration_display', ['user' => $uid]));
     }
 
     /**
@@ -305,7 +265,7 @@ class AdminController extends \Zikula_AbstractController
         if ($restoreView == 'display') {
             $cancelUrl = $this->get('router')->generate('zikulausersmodule_admin_displayregistration', array('uid' => $reginfo['uid']), RouterInterface::ABSOLUTE_URL);
         } else {
-            $cancelUrl = $this->get('router')->generate('zikulausersmodule_admin_viewregistrations', array('restoreview' => true), RouterInterface::ABSOLUTE_URL);
+            $cancelUrl = $this->get('router')->generate('zikulausersmodule_registrationadministration_list');
         }
 
         $approvalOrder = $this->getVar('moderation_order', UsersConstant::APPROVAL_BEFORE);
@@ -414,7 +374,7 @@ class AdminController extends \Zikula_AbstractController
         if ($restoreView == 'display') {
             $cancelUrl = $this->get('router')->generate('zikulausersmodule_admin_displayregistration', array('uid' => $reginfo['uid']), RouterInterface::ABSOLUTE_URL);
         } else {
-            $cancelUrl = $this->get('router')->generate('zikulausersmodule_admin_viewregistrations', array('restoreview' => true), RouterInterface::ABSOLUTE_URL);
+            $cancelUrl = $this->get('router')->generate('zikulausersmodule_registrationadministration_list');
         }
 
         $approvalOrder = $this->getVar('moderation_order', UsersConstant::APPROVAL_BEFORE);
@@ -542,7 +502,7 @@ class AdminController extends \Zikula_AbstractController
         if ($restoreView == 'display') {
             $cancelUrl = $this->get('router')->generate('zikulausersmodule_admin_displayregistration', array('uid' => $reginfo['uid']), RouterInterface::ABSOLUTE_URL);
         } else {
-            $cancelUrl = $this->get('router')->generate('zikulausersmodule_admin_viewregistrations', array('restoreview' => true), RouterInterface::ABSOLUTE_URL);
+            $cancelUrl = $this->get('router')->generate('zikulausersmodule_registrationadministration_list');
         }
 
         if (!$confirmed) {

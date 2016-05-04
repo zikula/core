@@ -25,7 +25,9 @@
             {% endswitch %}
         </td>
         <td class="actions">
-            {{ actionsHelper.user(user)|raw }}
+            {% for action in actionsHelper.user(user) %}
+                <a class="fa fa-fw fa-{{ action.icon }} tooltips" href="{{ action.url }}" title="{{ action.text }}"></a>
+            {% endfor %}
         </td>
     </tr>
 {% else %}
