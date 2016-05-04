@@ -115,7 +115,7 @@ class AdministrationActionsHelper
                 $title = $this->translator->__f('Unknown state for %sub%', ["%sub%" => $user->getUname()]);
             }
             $actions['verify'] = [
-                'url' => $this->router->generate('zikulausersmodule_admin_verifyregistration', ['uid' => $user->getUid()]),
+                'url' => $this->router->generate('zikulausersmodule_registrationadministration_verify', ['user' => $user->getUid()]),
                 'text' => $title,
                 'icon' => 'envelope',
             ];
