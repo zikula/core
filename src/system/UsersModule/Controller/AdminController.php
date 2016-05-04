@@ -201,115 +201,13 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * @Route("/verifyregistration")
-     * @Method({"GET", "POST"})
-     *
-     * Renders and processes the admin's force-verify form.
-     *
-     * Renders and processes a form confirming an administrators desire to skip verification for
-     * a registration record, approve it and add it to the users table.
-     *
-     * @param Request $request
-     *
-     * Parameters passed via GET:
-     * --------------------------
-     * numeric uid        The id of the registration request (id) to verify.
-     * boolean force      True to force the registration to be verified.
-     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view',
-     *                          otherwise not present.
-     *
-     * Parameters passed via POST:
-     * ---------------------------
-     * numeric uid        The id of the registration request (uid) to verify.
-     * boolean force      True to force the registration to be verified.
-     * boolean confirmed  True to execute this function's action.
-     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view',
-     *                          otherwise not present.
-     *
-     * @return Response symfony response object
-     *
-     * @throws AccessDeniedException Thrown if the current user does not have moderate access
-     * @throws FatalErrorException Thrown if the method of accessing this function is improper
-     * @throws \InvalidArgumentException Thrown if the user id isn't set or numeric
-     * @throws NotFoundHttpException Thrown if the registration record couldn't be retrieved
+     * @return RedirectResponse
      */
     public function verifyRegistrationAction(Request $request)
     {
-        if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
-            throw new AccessDeniedException();
-        }
+        @trigger_error('This method is deprecated. Please use RegistrationAdministrationController::verifyAction', E_USER_DEPRECATED);
 
-        if ($request->getMethod() == 'GET') {
-            $uid = $request->query->get('uid', null);
-            $forceVerification = $this->currentUserIsAdmin() && $request->query->get('force', false);
-            $restoreView = $request->query->get('restoreview', 'view');
-            $confirmed = false;
-        } elseif ($request->getMethod() == 'POST') {
-            $this->checkCsrfToken();
-            $uid = $request->request->get('uid', null);
-            $forceVerification = $this->currentUserIsAdmin() && $request->request->get('force', false);
-            $restoreView = $request->request->get('restoreview', 'view');
-            $confirmed = $request->request->get('confirmed', false);
-        }
-
-        if (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid)) {
-            throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
-        }
-
-        // Got just a uid.
-//        $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
-        $reginfo = $this->get('zikulausersmodule.helper.registration_helper')->get($uid);
-        if (!$reginfo) {
-            throw new NotFoundHttpException($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
-        }
-
-        if ($restoreView == 'display') {
-            $cancelUrl = $this->get('router')->generate('zikulausersmodule_admin_displayregistration', array('uid' => $reginfo['uid']), RouterInterface::ABSOLUTE_URL);
-        } else {
-            $cancelUrl = $this->get('router')->generate('zikulausersmodule_registrationadministration_list');
-        }
-
-        $approvalOrder = $this->getVar('moderation_order', UsersConstant::APPROVAL_BEFORE);
-
-        if ($reginfo['isverified']) {
-            $request->getSession()->getFlashBag()->add('error', $this->__f('Error! A verification code cannot be sent for the registration record for \'%1$s\'. It is already verified.', $reginfo['uname']));
-        } elseif (!$forceVerification && ($approvalOrder == UsersConstant::APPROVAL_BEFORE) && !$reginfo['isapproved']) {
-            $request->getSession()->getFlashBag()->add('error', $this->__f('Error! A verification code cannot be sent for the registration record for \'%1$s\'. It must first be approved.', $reginfo['uname']));
-        }
-
-        if (!$confirmed) {
-            // So expiration can be displayed
-            $regExpireDays = $this->getVar('reg_expiredays', 0);
-            if (!$reginfo['isverified'] && $reginfo['verificationsent'] && ($regExpireDays > 0)) {
-                try {
-                    $expiresUTC = new DateTime($reginfo['verificationsent'], new DateTimeZone('UTC'));
-                } catch (Exception $e) {
-                    $expiresUTC = new DateTime(UsersConstant::EXPIRED, new DateTimeZone('UTC'));
-                }
-                $expiresUTC->modify("+{$regExpireDays} days");
-                $reginfo['validuntil'] = DateUtil::formatDatetime($expiresUTC->format(UsersConstant::DATETIME_FORMAT),
-                    $this->__('%m-%d-%Y %H:%M'));
-            }
-
-            return new Response($this->view->assign('reginfo', $reginfo)
-                              ->assign('restoreview', $restoreView)
-                              ->assign('force', $forceVerification)
-                              ->assign('cancelurl', $cancelUrl)
-                              ->fetch('Admin/verifyregistration.tpl'));
-        } else {
-//            $verificationSent = ModUtil::apiFunc($this->name, 'registration', 'sendVerificationCode', array(
-//                'reginfo'   => $reginfo,
-//                'force'     => $forceVerification,
-//            ));
-            $verificationSent = $this->get('zikulausersmodule.helper.registration_verification_helper')->sendVerificationCode(null, $uid, true);
-
-            if (!$verificationSent) {
-                $request->getSession()->getFlashBag()->add('error', $this->__f('Sorry! There was a problem sending a verification code to \'%1$s\'.', $reginfo['uname']));
-            } else {
-                $request->getSession()->getFlashBag()->add('status', $this->__f('Done! Verification code sent to \'%1$s\'.', $reginfo['uname']));
-            }
-
-            return new RedirectResponse($cancelUrl);
-        }
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_registrationadministration_verify', ['user' => $request->get('uid', null)]));
     }
 
     /**
