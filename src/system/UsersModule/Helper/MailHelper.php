@@ -160,9 +160,7 @@ class MailHelper
      */
     public function sendNotification($toAddress, $notificationType = '', array $templateArgs = [], $subject = '')
     {
-        $templateArgs = [
-            'sitename' => !isset($templateArgs['sitename']) ? $this->variableApi->get(VariableApi::CONFIG, 'sitename') : $templateArgs['sitename'],
-        ];
+        $templateArgs['sitename'] = !isset($templateArgs['sitename']) ? $this->variableApi->get(VariableApi::CONFIG, 'sitename') : $templateArgs['sitename'];
         $html = false;
 
         $templateName = "@ZikulaUsersModule/Email/{$notificationType}.html.twig";
