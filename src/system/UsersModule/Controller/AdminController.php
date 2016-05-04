@@ -335,123 +335,13 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * @Route("/denyregistration")
-     * @Method({"GET", "POST"})
-     *
-     * Render and process a form confirming the administrator's rejection of a registration.
-     *
-     * @param Request $request
-     *
-     * If the denial is confirmed, the registration is deleted from the database.
-     *
-     * Parameters passed via GET:
-     * --------------------------
-     * numeric uid        The id of the registration request (id) to deny.
-     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view',
-     *                          otherwise not present.
-     *
-     * Parameters passed via POST:
-     * ---------------------------
-     * numeric uid        The id of the registration request (uid) to deny.
-     * boolean confirmed  True to execute this function's action.
-     * boolean usernorify True to notify the user that his registration request was denied; otherwise false.
-     * string  reason     The reason the registration request was denied, included in the notification.
-     * string  restorview To restore the main view to use the filtering options present prior to executing this function, then 'view',
-     *                          otherwise not present.
-     *
-     * @return Response Symfony response object
-     *
-     * @throws AccessDeniedException Thrown if the current user does not have delete access
-     * @throws FatalErrorException Thrown if the method of accessing this function is improper
-     * @throws \InvalidArgumentException Thrown if the user id isn't set or numeric
-     * @throws NotFoundHttpException Thrown if the registration record couldn't be retrieved
+     * @return RedirectResponse
      */
     public function denyRegistrationAction(Request $request)
     {
-        if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_DELETE)) {
-            throw new AccessDeniedException();
-        }
+        @trigger_error('This method is deprecated. Please use RegistrationAdministrationController::denyAction', E_USER_DEPRECATED);
 
-        if ($request->getMethod() == 'GET') {
-            $uid = $request->query->get('uid', null);
-            $restoreView = $request->query->get('restoreview', 'view');
-            $confirmed = false;
-        } elseif ($request->getMethod() == 'POST') {
-            $this->checkCsrfToken();
-            $uid = $request->request->get('uid', null);
-            $restoreView = $request->request->get('restoreview', 'view');
-            $sendNotification = $request->request->get('usernotify', false);
-            $reason = $request->request->get('reason', '');
-            $confirmed = $request->request->get('confirmed', false);
-        } else {
-            throw new FatalErrorException();
-        }
-
-        if (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid)) {
-            throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
-        }
-
-        // Got just a uid.
-//        $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
-        $reginfo = $this->get('zikulausersmodule.helper.registration_helper')->get($uid);
-        if (!$reginfo) {
-            throw new NotFoundHttpException($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
-        }
-
-        if ($restoreView == 'display') {
-            $cancelUrl = $this->get('router')->generate('zikulausersmodule_admin_displayregistration', array('uid' => $reginfo['uid']), RouterInterface::ABSOLUTE_URL);
-        } else {
-            $cancelUrl = $this->get('router')->generate('zikulausersmodule_registrationadministration_list');
-        }
-
-        if (!$confirmed) {
-            // Bad or no auth key, or bad or no confirmation, so display confirmation.
-
-            // So expiration can be displayed
-            $regExpireDays = $this->getVar('reg_expiredays', 0);
-            if (!$reginfo['isverified'] && !empty($reginfo['verificationsent']) && ($regExpireDays > 0)) {
-                try {
-                    $expiresUTC = new DateTime($reginfo['verificationsent'], new DateTimeZone('UTC'));
-                } catch (Exception $e) {
-                    $expiresUTC = new DateTime(UsersConstant::EXPIRED, new DateTimeZone('UTC'));
-                }
-                $expiresUTC->modify("+{$regExpireDays} days");
-                $reginfo['validuntil'] = DateUtil::formatDatetime($expiresUTC->format(UsersConstant::DATETIME_FORMAT),
-                    $this->__('%m-%d-%Y %H:%M'));
-            }
-
-            return new Response($this->view->assign('reginfo', $reginfo)
-                              ->assign('restoreview', $restoreView)
-                              ->assign('cancelurl', $cancelUrl)
-                              ->fetch('Admin/denyregistration.tpl'));
-        } else {
-//            $denied = ModUtil::apiFunc($this->name, 'registration', 'remove', array(
-//                'reginfo'   => $reginfo,
-//            ));
-            $denied = $this->get('zikulausersmodule.helper.registration_helper')->remove(null, $reginfo);
-
-            if (!$denied) {
-                $request->getSession()->getFlashBag()->add('error', $this->__f('Sorry! There was a problem deleting the registration for \'%1$s\'.', $reginfo['uname']));
-            } else {
-                if ($sendNotification) {
-                    $siteurl   = System::getBaseUrl();
-                    $rendererArgs = array(
-                        'sitename'  => System::getVar('sitename'),
-                        'siteurl'   => substr($siteurl, 0, strlen($siteurl) - 1),
-                        'reginfo'   => $reginfo,
-                        'reason'    => $reason,
-                    );
-
-                    $sent = ModUtil::apiFunc($this->name, 'user', 'sendNotification', array(
-                        'toAddress'         => $reginfo['email'],
-                        'notificationType'  => 'regdeny',
-                        'templateArgs'      => $rendererArgs
-                    ));
-                }
-                $request->getSession()->getFlashBag()->add('status', $this->__f('Done! The registration for \'%1$s\' has been denied and deleted.', $reginfo['uname']));
-
-                return new RedirectResponse($cancelUrl);
-            }
-        }
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_registrationadministration_deny', ['user' => $request->get('uid', null)]));
     }
 
     /**

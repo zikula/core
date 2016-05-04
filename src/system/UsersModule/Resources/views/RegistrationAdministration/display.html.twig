@@ -5,7 +5,7 @@
 </h3>
 
 <div class="form-horizontal">
-    {% include('@ZikulaUsersModule/RegistrationAdministration/include.html.twig') %}
+    {{ include('@ZikulaUsersModule/RegistrationAdministration/include.html.twig') }}
     <div class="text-center">
         {{ __('Actions:') }}&nbsp;
         {% for action in actions %}
