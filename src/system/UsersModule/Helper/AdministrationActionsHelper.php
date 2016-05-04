@@ -123,7 +123,7 @@ class AdministrationActionsHelper
 
         if ($this->permissionsApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_EDIT)) {
             $actions['modify'] = [
-                'url' => $this->router->generate('zikulausersmodule_admin_modifyregistration', ['uid' => $user->getUid()]),
+                'url' => $this->router->generate('zikulausersmodule_registrationadministration_modify', ['user' => $user->getUid()]),
                 'text' => $this->translator->__f('Modify registration details for %sub%', ["%sub%" => $user->getUname()]),
                 'icon' => 'pencil-square-o',
             ];
@@ -147,7 +147,7 @@ class AdministrationActionsHelper
 
         if ($this->permissionsApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_DELETE)) {
             $actions['deny'] = [
-                'url' => $this->router->generate('zikulausersmodule_admin_denyregistration', ['uid' => $user->getUid()]),
+                'url' => $this->router->generate('zikulausersmodule_registrationadministration_deny', ['user' => $user->getUid()]),
                 'text' => $this->translator->__f('Deny for %sub% (deletes registration)', ["%sub%" => $user->getUname()]),
                 'icon' => 'trash-o',
             ];
