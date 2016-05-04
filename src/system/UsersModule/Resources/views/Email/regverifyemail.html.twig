@@ -1,4 +1,4 @@
-{% set verificationurl = path('zikulausersmodule_user_verifyregistration', {"uname":"reginfo.uname","verifycode":"verifycode","urlencode":"urlencode","absolute":"true"}) %}
+{% set verificationurl = url('zikulausersmodule_user_verifyregistration', {"uname":reginfo.uname,"verifycode":verifycode|url_encode}) %}
 <h3>{{ __f('Welcome to %1s!', {"%sub%": sitename}) }}</h3>
 
 <p>{{ __f('Hello! This e-mail address (\'%email\') has been used to register an account on \'%site\' (%url).', {"%email": reginfo.email, "%site": sitename, "%url": url('home')}) }}</p>
@@ -27,14 +27,14 @@
 </p>
 
 <p>{{ __f('User name: %sub%', {"%sub%": reginfo.uname}) }}<br />
-{% if createdpassword is not empty %}
+{% if createdpassword|default %}
     {{ __f('Password: %sub%', {"%sub%": createdpassword}) }}
 {% elseif reginfo.passreminder|default %}
     {{ __f('Password reminder: %sub%', {"%sub%": reginfo.passreminder}) }}
 {% endif %}
 </p>
 
-{% if createdpassword is not empty %}<p>{{ __('(This is the only time you will receive your password. Please keep it in a safe place.)') }}</p>{% endif %}
+{% if createdpassword|default %}<p>{{ __('(This is the only time you will receive your password. Please keep it in a safe place.)') }}</p>{% endif %}
 
 {% if not reginfo.isApproved %}
     <p>{{ __('Remember: both this verification step and approval from an administrator must be completed before you can log in.') }} {{ __('You will receive an additional e-mail message once an administrator has reviewed your request.') }}</p>
