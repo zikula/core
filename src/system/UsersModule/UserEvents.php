@@ -16,6 +16,7 @@ namespace Zikula\UsersModule;
  */
 class UserEvents
 {
+    const USER_DISPLAY_VIEW = 'module.users.ui.display_view';
     const USER_VALIDATE_NEW = 'module.users.ui.validate_edit.new_user';
     const USER_VALIDATE_MODIFY = 'module.users.ui.validate_edit.modify_user';
 

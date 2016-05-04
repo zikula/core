@@ -79,13 +79,13 @@ class AdministrationActionsHelper
 
     /**
      * @param UserEntity $user
-     * @return string
+     * @return array
      */
     public function registration(UserEntity $user)
     {
-        $content = '';
+        $actions = [];
         if (!$this->permissionsApi->hasPermission('ZikulaUsersModule::', 'ANY', ACCESS_MODERATE)) {
-            return $content;
+            return $actions;
         }
         $approvalOrder = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, UsersConstant::APPROVAL_BEFORE);
         $userIsVerified = ($user->getActivated() == UsersConstant::ACTIVATED_PENDING_REG)
@@ -98,13 +98,14 @@ class AdministrationActionsHelper
             'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL
         ]);
         // display registration details requires no further perm check
-        $url = $this->router->generate('zikulausersmodule_admin_displayregistration', ['uid' => $user->getUid()]);
-        $title = $this->translator->__f('Display registration details for %sub%', ["%sub%" => $user->getUname()]);
-        $content .= '<a class="fa fa-fw fa-info-circle tooltips" href="' . $url . '" title="' . $title . '"></a>';
+        $actions['display'] = [
+            'url' => $this->router->generate('zikulausersmodule_registrationadministration_display', ['user' => $user->getUid()]),
+            'text' => $this->translator->__f('Display registration details for %sub%', ["%sub%" => $user->getUname()]),
+            'icon' => 'info-circle',
+        ];
 
         // send verification email requires no further perm check
         if (!$userIsVerified && (($approvalOrder != UsersConstant::APPROVAL_BEFORE) || $user->isApproved())) {
-            $url = $this->router->generate('zikulausersmodule_admin_verifyregistration', ['uid' => $user->getUid()]);
             if (!empty($userVerification)) {
                 $title = (null == $userVerification->getVerifycode())
                     ? $this->translator->__f('Send an e-mail verification code for %sub%', ["%sub%" => $user->getUname()])
@@ -113,18 +114,23 @@ class AdministrationActionsHelper
                 // @todo is this state possible? or is this just a development error?
                 $title = $this->translator->__f('Unknown state for %sub%', ["%sub%" => $user->getUname()]);
             }
-            $content .= '<a class="fa fa-fw fa-envelope tooltips" href="' . $url . '" title="' . $title . '"></a>';
+            $actions['verify'] = [
+                'url' => $this->router->generate('zikulausersmodule_admin_verifyregistration', ['uid' => $user->getUid()]),
+                'text' => $title,
+                'icon' => 'envelope',
+            ];
         }
 
         if ($this->permissionsApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_EDIT)) {
-            $url = $this->router->generate('zikulausersmodule_admin_modifyregistration', ['uid' => $user->getUid()]);
-            $title = $this->translator->__f('Modify registration details for %sub%', ["%sub%" => $user->getUname()]);
-            $content .= '<a class="fa fa-fw fa-pencil-square-o tooltips" href="' . $url . '" title="' . $title . '"></a>';
+            $actions['modify'] = [
+                'url' => $this->router->generate('zikulausersmodule_admin_modifyregistration', ['uid' => $user->getUid()]),
+                'text' => $this->translator->__f('Modify registration details for %sub%', ["%sub%" => $user->getUname()]),
+                'icon' => 'pencil-square-o',
+            ];
         }
 
         if ($this->permissionsApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADD)
             && !$user->isApproved() && (($approvalOrder != UsersConstant::APPROVAL_AFTER) || $userIsVerified)) {
-            $url = $this->router->generate('zikulausersmodule_admin_approveregistration', ['uid' => $user->getUid()]);
             if (!$userIsVerified) {
                 $title = ($approvalOrder == UsersConstant::APPROVAL_AFTER)
                     ? $this->translator->__f('Pre-approve %sub% (verification still required)', ["%sub%" => $user->getUname()])
@@ -132,48 +138,60 @@ class AdministrationActionsHelper
             } else {
                 $title = $this->translator->__f('Approve %sub% (creates a new user account)', ["%sub%" => $user->getUname()]);
             }
-            $content .= '<a class="fa fa-fw fa-check-square-o tooltips" href="' . $url . '" title="' . $title . '"></a>';
+            $actions['approve'] = [
+                'url' => $this->router->generate('zikulausersmodule_admin_approveregistration', ['uid' => $user->getUid()]),
+                'text' => $title,
+                'icon' => 'check-square-o',
+            ];
         }
 
         if ($this->permissionsApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_DELETE)) {
-            $url = $this->router->generate('zikulausersmodule_admin_denyregistration', ['uid' => $user->getUid()]);
-            $title = $this->translator->__f('Deny for %sub% (deletes registration)', ["%sub%" => $user->getUname()]);
-            $content .= '<a class="fa fa-fw fa-trash-o tooltips" href="' . $url . '" title="' . $title . '"></a>';
+            $actions['deny'] = [
+                'url' => $this->router->generate('zikulausersmodule_admin_denyregistration', ['uid' => $user->getUid()]),
+                'text' => $this->translator->__f('Deny for %sub% (deletes registration)', ["%sub%" => $user->getUname()]),
+                'icon' => 'trash-o',
+            ];
         }
 
         if ($this->permissionsApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)
             && !$userIsVerified && (null != $user->getPass()) && ('' != $user->getPass())) {
-            $url = $this->router->generate('zikulausersmodule_admin_approveregistration', ['uid' => $user->getUid(), 'force' => true]);
-            $title = $this->translator->__f('Skip verification for %sub% (approves, and creates a new user account) ', ["%sub%" => $user->getUname()]);
-            $content .= '<a class="fa fa-fw fa-share-square-o tooltips" href="' . $url . '" title="' . $title . '"></a>';
+            $actions['approveForce'] = [
+                'url' => $this->router->generate('zikulausersmodule_admin_approveregistration', ['uid' => $user->getUid(), 'force' => true]),
+                'text' => $this->translator->__f('Skip verification for %sub% (approves, and creates a new user account) ', ["%sub%" => $user->getUname()]),
+                'icon' => 'share-square-o',
+            ];
         }
 
-        return $content;
+        return $actions;
     }
 
     /**
      * @param UserEntity $user
-     * @return string
+     * @return array
      */
     public function user(UserEntity $user)
     {
-        $content = '';
+        $actions = [];
         if (!$this->permissionsApi->hasPermission('ZikulaUsersModule::', 'ANY', ACCESS_MODERATE)) {
-            return $content;
+            return $actions;
         }
         $hasModeratePermissionToUser = $this->permissionsApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_MODERATE);
         $hasEditPermissionToUser = $this->permissionsApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_EDIT);
         $hasDeletePermissionToUser = $this->permissionsApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_DELETE);
         $userHasActualPassword = (null != $user->getPass()) && ('' != $user->getPass()) && ($user->getPass() != UsersConstant::PWD_NO_USERS_AUTHENTICATION);
         if ($user->getUid() > 1 && $hasModeratePermissionToUser) {
-            $url = $this->router->generate('zikulausersmodule_useradministration_sendusername', ['user' => $user->getUid()]);
-            $title = $this->translator->__f('Send user name to %sub%', ["%sub%" => $user->getUname()]);
-            $content .= '<a class="fa fa-fw fa-user tooltips" href="' . $url . '" title="' . $title . '"></a>';
+            $actions['senduname'] = [
+                'url' => $this->router->generate('zikulausersmodule_useradministration_sendusername', ['user' => $user->getUid()]),
+                'text' => $this->translator->__f('Send user name to %sub%', ["%sub%" => $user->getUname()]),
+                'icon' => 'user',
+            ];
         }
         if ($userHasActualPassword && $hasModeratePermissionToUser) {
-            $url = $this->router->generate('zikulausersmodule_useradministration_sendconfirmation', ['user' => $user->getUid()]);
-            $title = $this->translator->__f('Send password recovery code to %sub%', ["%sub%" => $user->getUname()]);
-            $content .= '<a class="fa fa-fw fa-key tooltips" href="' . $url . '" title="' . $title . '"></a>';
+            $actions['sendconfirm'] = [
+                'url' => $this->router->generate('zikulausersmodule_useradministration_sendconfirmation', ['user' => $user->getUid()]),
+                'text' => $this->translator->__f('Send password recovery code to %sub%', ["%sub%" => $user->getUname()]),
+                'icon' => 'key',
+            ];
         }
         if ($userHasActualPassword && $hasEditPermissionToUser) {
             if ($user->getAttributes()->containsKey('_Users_mustChangePassword') && (bool)$user->getAttributeValue('_Users_mustChangePassword')) {
@@ -183,21 +201,28 @@ class AdministrationActionsHelper
                 $title = $this->translator->__f('Require %sub% to change password at next login', ["%sub%" => $user->getUname()]);
                 $fa = 'lock';
             }
-            $url = $this->router->generate('zikulausersmodule_useradministration_togglepasswordchange', ['user' => $user->getUid()]);
-            $content .= '<a class="fa fa-fw fa-' . $fa . ' tooltips" href="' . $url . '" title="' . $title . '"></a>';
+            $actions['togglepass'] = [
+                'url' => $this->router->generate('zikulausersmodule_useradministration_togglepasswordchange', ['user' => $user->getUid()]),
+                'text' => $title,
+                'icon' => $fa,
+            ];
         }
         if ($user->getUid() > 1 && $hasEditPermissionToUser) {
-            $url = $this->router->generate('zikulausersmodule_useradministration_modify', ['user' => $user->getUid()]);
-            $title = $this->translator->__f('Edit %sub%', ["%sub%" => $user->getUname()]);
-            $content .= '<a class="fa fa-fw fa-pencil tooltips" href="' . $url . '" title="' . $title . '"></a>';
+            $actions['modify'] = [
+                'url' => $this->router->generate('zikulausersmodule_useradministration_modify', ['user' => $user->getUid()]),
+                'text' => $this->translator->__f('Edit %sub%', ["%sub%" => $user->getUname()]),
+                'icon' => 'pencil',
+            ];
         }
         $isCurrentUser = $this->currentUser->get('uid') == $user->getUid();
         if ($user->getUid() > 2 && !$isCurrentUser && $hasDeletePermissionToUser) {
-            $url = $this->router->generate('zikulausersmodule_useradministration_delete', ['user' => $user->getUid()]);
-            $title = $this->translator->__f('Delete %sub%', ["%sub%" => $user->getUname()]);
-            $content .= '<a class="fa fa-fw fa-trash-o tooltips" href="' . $url . '" title="' . $title . '"></a>';
+            $actions['delete'] = [
+                'url' => $this->router->generate('zikulausersmodule_useradministration_delete', ['user' => $user->getUid()]),
+                'text' => $this->translator->__f('Delete %sub%', ["%sub%" => $user->getUname()]),
+                'icon' => 'trash-o',
+            ];
         }
 
-        return $content;
+        return $actions;
     }
 }

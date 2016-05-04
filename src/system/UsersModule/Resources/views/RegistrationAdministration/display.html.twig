@@ -1,0 +1,17 @@
+{{ adminHeader() }}
+<h3>
+    <span class="fa fa-eye"></span>
+    {{ __f('Registration for %sub%', {"%sub%": user.uname}) }}
+</h3>
+
+<div class="form-horizontal">
+    {% include('@ZikulaUsersModule/RegistrationAdministration/include.html.twig') %}
+    <div class="text-center">
+        {{ __('Actions:') }}&nbsp;
+        {% for action in actions %}
+            <a href="{{ action.url }}" title="{{ action.text }}" class="tooltips"><i class="fa fa-fw fa-3x fa-{{ action.icon }}"></i></a>
+        {% endfor %}
+    </div>
+</div>
+
+{{ adminFooter() }}

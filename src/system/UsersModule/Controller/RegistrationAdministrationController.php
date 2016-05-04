@@ -10,7 +10,6 @@
 
 namespace Zikula\UsersModule\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -71,13 +70,43 @@ class RegistrationAdministrationController extends AbstractController
 
     /**
      * @Route("/display/{user}")
-     * @ParamConverter("user", options={"mapping": {"user": "uid"}})
+     * @Template
+     * @Theme("admin")
      * @param Request $request
-     * @param UserVerificationEntity $user
+     * @param UserEntity $user
+     * @return array
      */
-    public function displayAction(Request $request, UserVerificationEntity $user)
+    public function displayAction(Request $request, UserEntity $user)
     {
+        if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
+            throw new AccessDeniedException();
+        }
 
+        /** @var UserVerificationEntity $verificationEntity */
+        $verificationEntity = $this->get('zikula_users_module.user_verification_repository')->find($user->getUid());
+        $isVerified = $user->getAttributes()->containsKey('_Users_isVerified') && (bool)$user->getAttributes()->get('_Users_isVerified');
+        $regExpireDays = $this->getVar('reg_expiredays', 0);
+
+        // So expiration can be displayed
+        $validUntil = false;
+        if (!$isVerified && !empty($verificationEntity) && ($regExpireDays > 0)) {
+            try {
+                $expiresUTC = new \DateTime($verificationEntity->getCreated_Dt(), new \DateTimeZone('UTC'));
+            } catch (\Exception $e) {
+                $expiresUTC = new \DateTime(UsersConstant::EXPIRED, new \DateTimeZone('UTC'));
+            }
+            $expiresUTC->modify("+{$regExpireDays} days");
+            $validUntil = \DateUtil::formatDatetime($expiresUTC->format(UsersConstant::DATETIME_FORMAT),
+                $this->__('%m-%d-%Y %H:%M'));
+        }
+
+        return [
+            'user' => $user,
+            'isVerified' => $isVerified,
+            'verificationSent' => empty($verificationEntity) ? false : $verificationEntity->getCreated_Dt(),
+            'validUntil' => $validUntil,
+            'actions' => $this->get('zikula_users_module.helper.administration_actions')->registration($user)
+        ];
     }
 
     /**
@@ -140,7 +169,7 @@ class RegistrationAdministrationController extends AbstractController
             if ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
 
-                return $this->redirectToRoute('zikulausersmodule_admin_viewregistrations');
+                return $this->redirectToRoute('zikulausersmodule_registrationadministration_list');
             }
         }
 
