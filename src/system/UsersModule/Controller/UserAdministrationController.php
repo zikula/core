@@ -265,7 +265,7 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{user}")
+     * @Route("/delete/{user}", requirements={"user" = "^[1-9]\d*$"})
      * @Template
      * @Theme("admin")
      * @param Request $request
@@ -411,7 +411,7 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
-     * @Route("/send-confirmation/{user}")
+     * @Route("/send-confirmation/{user}", requirements={"user" = "^[1-9]\d*$"})
      * @param Request $request
      * @param UserEntity $user
      * @return RedirectResponse
@@ -436,7 +436,7 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
-     * @Route("/send-username/{user}")
+     * @Route("/send-username/{user}", requirements={"user" = "^[1-9]\d*$"})
      * @param Request $request
      * @param UserEntity $user
      * @return RedirectResponse
@@ -455,7 +455,7 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
-     * @Route("/toggle-password-change/{user}")
+     * @Route("/toggle-password-change/{user}", requirements={"user" = "^[1-9]\d*$"})
      * @Theme("admin")
      * @Template
      * @param Request $request

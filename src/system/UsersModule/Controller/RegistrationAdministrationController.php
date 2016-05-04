@@ -14,14 +14,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationProviders;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\Core\Event\GenericEvent;
+use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Entity\UserVerificationEntity;
@@ -69,7 +71,7 @@ class RegistrationAdministrationController extends AbstractController
     }
 
     /**
-     * @Route("/display/{user}")
+     * @Route("/display/{user}", requirements={"user" = "^[1-9]\d*$"})
      * @Template
      * @Theme("admin")
      * @param Request $request
@@ -141,8 +143,8 @@ class RegistrationAdministrationController extends AbstractController
                 $user = $form->getData();
                 $this->get('doctrine')->getManager()->flush($user);
                 $eventArgs = [
-                    'action'    => 'setVar',
-                    'field'     => 'uname',
+                    'action' => 'setVar',
+                    'field' => 'uname',
                     'attribute' => null,
                 ];
                 $eventData = ['old_value' => $originalUser->getUname()];
@@ -221,6 +223,77 @@ class RegistrationAdministrationController extends AbstractController
 
             return $this->redirectToRoute('zikulausersmodule_registrationadministration_list');
         }
+        /** @var UserVerificationEntity $verificationEntity */
+        $verificationEntity = $this->get('zikula_users_module.user_verification_repository')->find($user->getUid());
+        $regExpireDays = $this->getVar('reg_expiredays', 0);
+
+        // So expiration can be displayed
+        $validUntil = false;
+        if (!$user->isVerified() && !empty($verificationEntity) && ($regExpireDays > 0)) {
+            try {
+                $expiresUTC = new \DateTime($verificationEntity->getCreated_Dt(), new \DateTimeZone('UTC'));
+            } catch (\Exception $e) {
+                $expiresUTC = new \DateTime(UsersConstant::EXPIRED, new \DateTimeZone('UTC'));
+            }
+            $expiresUTC->modify("+{$regExpireDays} days");
+            $validUntil = \DateUtil::formatDatetime($expiresUTC->format(UsersConstant::DATETIME_FORMAT),
+                $this->__('%m-%d-%Y %H:%M'));
+        }
+
+        return [
+            'form' => $form->createView(),
+            'validUntil' => $validUntil,
+            'verificationSent' => empty($verificationEntity) ? false : $verificationEntity->getCreated_Dt(),
+            'user' => $user
+        ];
+    }
+
+    /**
+     * @Route("/deny/{user}", requirements={"user" = "^[1-9]\d*$"})
+     * @Theme("admin")
+     * @Template()
+     * @param Request $request
+     * @param UserEntity $user
+     * @return array
+     */
+    public function denyAction(Request $request, UserEntity $user)
+    {
+        if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
+            throw new AccessDeniedException();
+        }
+        $form = $this->createForm('Zikula\UsersModule\Form\Type\DenyRegistrationConfirmationType', [
+            'user' => $user->getUid()
+        ], [
+            'translator' => $this->get('translator.default')
+        ]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('confirm')->isClicked()) {
+                $denied = $this->get('zikulausersmodule.helper.registration_helper')->remove($user->getUid());
+                if (!$denied) {
+                    $this->addFlash('error', $this->__f('Sorry! There was a problem deleting the registration for %sub%.', ['%sub%' => $user->getUname()]));
+                } else {
+                    $data = $form->getData();
+                    if ($data['notify']) {
+                        $rendererArgs = array(
+                            'sitename' => $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'sitename'),
+                            'siteurl' => $this->generateUrl('home', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                            'user' => $user,
+                            'reason' => $data['reason'],
+                        );
+                        $this->get('zikulausersmodule.helper.mail_helper')->sendNotification($user->getEmail(), 'regdeny', $rendererArgs);
+                    }
+                    $this->addFlash('status', $this->__f('Done! The registration for %sub% has been denied and deleted.', ['%sub%' => $user->getUname()]));
+                }
+            }
+            if ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', $this->__('Operation cancelled.'));
+            }
+
+            return $this->redirectToRoute('zikulausersmodule_registrationadministration_list');
+        }
+
+
         /** @var UserVerificationEntity $verificationEntity */
         $verificationEntity = $this->get('zikula_users_module.user_verification_repository')->find($user->getUid());
         $regExpireDays = $this->getVar('reg_expiredays', 0);

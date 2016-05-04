@@ -1,9 +1,9 @@
 <h3>{{ __f('A message from %s...', {"%s": sitename}) }}</h3>
 
-<p>{{ __f('Recently, this e-mail address (\'%email\') was used to request an account on \'%site\' (%url).', {"%email": reginfo.email, "%site": sitename, "%url": url('home')}) }}
+<p>{{ __f('Recently, this e-mail address (\'%email\') was used to request an account on \'%site\' (%url).', {"%email": user.email, "%site": sitename, "%url": url('home')}) }}
 {{ __('The information that was registered is as follows:') }}</p>
 
-<p>{{ __('User name') }}: {{ reginfo.uname }}</p>
+<p>{{ __('User name') }}: {{ user.uname }}</p>
 
 <p>{{ __('Thank you for your application for a new account. At this time we are unable to approve your application.') }}</p>
 
