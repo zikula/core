@@ -83,7 +83,7 @@ class PendingContentListener implements EventSubscriberInterface
 
             if (!empty($numPendingApproval)) {
                 $collection = new Container(UsersConstant::MODNAME);
-                $collection->add(new PendingContentCollectible('user_registrations', __('Registrations pending approval'), $numPendingApproval, 'zikulausersmodule_admin_viewregistrations'));
+                $collection->add(new PendingContentCollectible('user_registrations', __('Registrations pending approval'), $numPendingApproval, 'zikulausersmodule_registrationadministration_list'));
                 $event->getSubject()->add($collection);
             }
         }
