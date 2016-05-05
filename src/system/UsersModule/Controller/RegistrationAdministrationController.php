@@ -249,6 +249,99 @@ class RegistrationAdministrationController extends AbstractController
     }
 
     /**
+     * @Route("/approve/{user}/{force}", requirements={"user" = "^[1-9]\d*$"})
+     * @Theme("admin")
+     * @Template()
+     * @param Request $request
+     * @param UserEntity $user
+     * @param bool $force
+     * @return array
+     */
+    public function approveAction(Request $request, UserEntity $user, $force = false)
+    {
+        if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
+            throw new AccessDeniedException();
+        }
+        $forceVerification = $this->hasPermission('ZikulaUsersModule', '::', ACCESS_ADMIN) && $force;
+        $form = $this->createForm('Zikula\UsersModule\Form\Type\ApproveRegistrationConfirmationType', [
+            'user' => $user->getUid(),
+            'force' => $forceVerification
+        ], [
+            'translator' => $this->get('translator.default'),
+            'buttonLabel' => $force && !$user->isVerified() ? $this->__('Skip verification and approve') : $this->__('Approve')
+        ]);
+        $approvalOrder = $this->getVar(UsersConstant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, UsersConstant::APPROVAL_BEFORE);
+        if ($user->isApproved() && !$forceVerification) {
+            $this->addFlash('error', $this->__f('Warning! Nothing to do! The registration record for %sub% is already approved.', ['%sub%' => $user->getUname()]));
+
+            return $this->redirectToRoute('zikulausersmodule_registrationadministration_list');
+        } elseif (!$forceVerification && ($approvalOrder == UsersConstant::APPROVAL_AFTER) && !$user->isApproved()
+            && !$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
+            $this->addFlash('error', $this->__f('Error! The registration record for %sub% cannot be approved. The registration\'s e-mail address must first be verified.', ['%sub%' => $user->getUname()]));
+
+            return $this->redirectToRoute('zikulausersmodule_registrationadministration_list');
+        } elseif ($forceVerification && (null == $user->getPass() || '' == $user->getPass())) {
+            $this->addFlash('error', $this->__f('Error! E-mail verification cannot be skipped for %sub%. The user must establish a password as part of the verification process.', ['%sub%' => $user->getUname()]));
+
+            return $this->redirectToRoute('zikulausersmodule_registrationadministration_list');
+        }
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('confirm')->isClicked()) {
+                $denied = $this->get('zikulausersmodule.helper.registration_helper')->approve($user, true);
+                if (!$denied) {
+                    $this->addFlash('error', $this->__f('Sorry! There was a problem approving the registration for %sub%.', ['%sub%' => $user->getUname()]));
+                } else {
+                    $data = $form->getData();
+                    if ($data['notify']) {
+                        $rendererArgs = array(
+                            'sitename' => $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'sitename'),
+                            'siteurl' => $this->generateUrl('home', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                            'user' => $user,
+                            'reason' => $data['reason'],
+                        );
+                        $this->get('zikulausersmodule.helper.mail_helper')->sendNotification($user->getEmail(), 'regdeny', $rendererArgs);
+                    }
+                    if (null != $user->getUid()) {
+                        $this->addFlash('status', $this->__f('Done! The registration for %sub% has been approved and a new user account has been created.', ['%sub%' => $user->getUname()]));
+                    } else {
+                        $this->addFlash('status', $this->__f('Done! The registration for %sub% has been approved and is awaiting e-mail verification.', ['%sub%' => $user->getUname()]));
+                    }
+                }
+            }
+            if ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', $this->__('Operation cancelled.'));
+            }
+
+            return $this->redirectToRoute('zikulausersmodule_registrationadministration_list');
+        }
+        /** @var UserVerificationEntity $verificationEntity */
+        $verificationEntity = $this->get('zikula_users_module.user_verification_repository')->find($user->getUid());
+        $regExpireDays = $this->getVar('reg_expiredays', 0);
+
+        // So expiration can be displayed
+        $validUntil = false;
+        if (!$user->isVerified() && !empty($verificationEntity) && ($regExpireDays > 0)) {
+            try {
+                $expiresUTC = new \DateTime($verificationEntity->getCreated_Dt(), new \DateTimeZone('UTC'));
+            } catch (\Exception $e) {
+                $expiresUTC = new \DateTime(UsersConstant::EXPIRED, new \DateTimeZone('UTC'));
+            }
+            $expiresUTC->modify("+{$regExpireDays} days");
+            $validUntil = \DateUtil::formatDatetime($expiresUTC->format(UsersConstant::DATETIME_FORMAT),
+                $this->__('%m-%d-%Y %H:%M'));
+        }
+
+        return [
+            'form' => $form->createView(),
+            'validUntil' => $validUntil,
+            'verificationSent' => empty($verificationEntity) ? false : $verificationEntity->getCreated_Dt(),
+            'user' => $user
+        ];
+    }
+
+    /**
      * @Route("/deny/{user}", requirements={"user" = "^[1-9]\d*$"})
      * @Theme("admin")
      * @Template()
