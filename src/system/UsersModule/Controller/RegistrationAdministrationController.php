@@ -386,7 +386,6 @@ class RegistrationAdministrationController extends AbstractController
             return $this->redirectToRoute('zikulausersmodule_registrationadministration_list');
         }
 
-
         /** @var UserVerificationEntity $verificationEntity */
         $verificationEntity = $this->get('zikula_users_module.user_verification_repository')->find($user->getUid());
         $regExpireDays = $this->getVar('reg_expiredays', 0);
