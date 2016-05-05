@@ -139,7 +139,7 @@ class AdministrationActionsHelper
                 $title = $this->translator->__f('Approve %sub% (creates a new user account)', ["%sub%" => $user->getUname()]);
             }
             $actions['approve'] = [
-                'url' => $this->router->generate('zikulausersmodule_admin_approveregistration', ['uid' => $user->getUid()]),
+                'url' => $this->router->generate('zikulausersmodule_registrationadministration_approve', ['user' => $user->getUid()]),
                 'text' => $title,
                 'icon' => 'check-square-o',
             ];
@@ -156,7 +156,7 @@ class AdministrationActionsHelper
         if ($this->permissionsApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)
             && !$userIsVerified && (null != $user->getPass()) && ('' != $user->getPass())) {
             $actions['approveForce'] = [
-                'url' => $this->router->generate('zikulausersmodule_admin_approveregistration', ['uid' => $user->getUid(), 'force' => true]),
+                'url' => $this->router->generate('zikulausersmodule_registrationadministration_approve', ['user' => $user->getUid(), 'force' => true]),
                 'text' => $this->translator->__f('Skip verification for %sub% (approves, and creates a new user account) ', ["%sub%" => $user->getUname()]),
                 'icon' => 'share-square-o',
             ];
@@ -183,7 +183,7 @@ class AdministrationActionsHelper
             $actions['senduname'] = [
                 'url' => $this->router->generate('zikulausersmodule_useradministration_sendusername', ['user' => $user->getUid()]),
                 'text' => $this->translator->__f('Send user name to %sub%', ["%sub%" => $user->getUname()]),
-                'icon' => 'user',
+                'icon' => 'envelope',
             ];
         }
         if ($userHasActualPassword && $hasModeratePermissionToUser) {
