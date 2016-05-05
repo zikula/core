@@ -729,67 +729,35 @@ class RegistrationHelper
      * If the registration is also verified (or does not need it) then a new users table record
      * is created.
      *
-     * @param array $reginfo An array of registration information containing a valid uid pointing to the registration
-     *                           record to be approved; optional; if not set, then $uid should be set.
-     * @param int $uid The uid of the registration record to be set; optional, used only if $reginfo not set; if not
-     *                           set then $reginfo must be set and have a valid uid.
+     * @param UserEntity $user
      * @param bool $force Force the approval of the registration record; optional; only effective if the current user
      *                           is an administrator.
-     *                      }
      * @return bool True on success; otherwise false.
      */
-    public function approve(array $reginfo = null, $uid = null, $force = null)
+    public function approve(UserEntity $user, $force = false)
     {
         if (!$this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADD)) {
             throw new AccessDeniedException();
         }
-
-        if (isset($reginfo)) {
-            // Got a full reginfo record
-            if (!is_array($reginfo)) {
-                throw new \InvalidArgumentException(__('Invalid arguments array received'));
-            }
-            if (!$reginfo || !is_array($reginfo) || !isset($reginfo['uid']) || !is_numeric($reginfo['uid'])) {
-                throw new \InvalidArgumentException($this->__('Error! Invalid registration record.'));
-            }
-        } elseif (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid)) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
-        } else {
-            // Got just an id.
-            $reginfo = $this->get($uid);
-            if (!$reginfo) {
-                throw new \RuntimeException($this->__f('Error! Unable to retrieve registration record with id \'%1$s\'', $uid));
-            }
-        }
-
+        $user->setApproved_By(\UserUtil::getVar('uid'));
         $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
+        $user->setApproved_Date($nowUTC);
 
-        $reginfo['approved_by'] = \UserUtil::getVar('uid');
-        \UserUtil::setVar('approved_by', $reginfo['approved_by'], $reginfo['uid']);
-
-        $reginfo['approved_date'] = $nowUTC->format(UsersConstant::DATETIME_FORMAT);
-        \UserUtil::setVar('approved_date', $reginfo['approved_date'], $reginfo['uid']);
-
-        $reginfo = \UserUtil::getVars($reginfo['uid'], true, 'uid', true);
-
-        if (isset($force) && $force) {
-            if (!isset($reginfo['email']) || empty($reginfo['email'])) {
-                throw new \RuntimeException($this->__f('Error: Unable to force registration for \'%1$s\' to be verified during approval. No e-mail address.', [$reginfo['uname']]));
+        if ($force) {
+            if (null == $user->getEmail() || '' == $user->getEmail()) {
+                throw new \RuntimeException($this->translator->__f('Error: Unable to force registration for %sub% to be verified during approval. No e-mail address.', ['%sub%' => $user->getUname()]));
             }
+            $user->setActivated(UsersConstant::ACTIVATED_PENDING_REG);
+            $user->setAttribute('_Users_isVerified', true);
+            $this->userVerificationRepository->resetVerifyChgFor($user->getUid(), [UsersConstant::VERIFYCHGTYPE_REGEMAIL]);
+        }
+        $this->userRepository->persistAndFlush($user);
 
-            $reginfo['isverified'] = true;
-
-            \ModUtil::apiFunc('ZikulaUsersModule', 'user', 'resetVerifyChgFor', [
-                'uid' => $reginfo['uid'],
-                'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL,
-            ]);
+        if ($user->isVerified()) {
+            $user = $this->createUser($user, true, false);
         }
 
-        if ($reginfo['isverified']) {
-            $reginfo = $this->createUser($reginfo, true, false);
-        }
-
-        return $reginfo;
+        return $user;
     }
 
     /**
