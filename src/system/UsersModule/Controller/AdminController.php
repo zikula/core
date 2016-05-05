@@ -10,21 +10,14 @@
 
 namespace Zikula\UsersModule\Controller;
 
-use Zikula_View;
 use UserUtil;
 use SecurityUtil;
 use ModUtil;
 use Zikula\UsersModule\Constant as UsersConstant;
 use DataUtil;
-use DateUtil;
 use System;
-use LogUtil;
-use DateTimeZone;
-use DateTime;
 use FileUtil;
-use Exception;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula\Core\Exception\FatalErrorException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
