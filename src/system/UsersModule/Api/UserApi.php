@@ -176,7 +176,7 @@ class UserApi extends \Zikula_AbstractApi
     }
 
     /**
-     * @deprecated 
+     * @deprecated
      */
     public function sendNotification($args)
     {
