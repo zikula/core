@@ -1,7 +1,7 @@
 preset: symfony
 
 enabled:
-
+  - short_array_syntax
 disabled:
   - concat_without_spaces
   - multiline_array_trailing_comma
