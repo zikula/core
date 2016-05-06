@@ -17,7 +17,6 @@ use Symfony\Component\Form\FormEvents;
 
 /**
  * Class CategoriesMergeCollectionListener
- * @package Zikula\CategoriesModule\Form\EventListener
  */
 class CategoriesMergeCollectionListener implements EventSubscriberInterface
 {

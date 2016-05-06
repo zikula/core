@@ -17,7 +17,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * Class ZikulaFormExtensionExtension
- * @package Zikula\Bundle\FormExtensionBundle\DependencyInjection
  */
 class ZikulaFormExtensionExtension extends Extension
 {

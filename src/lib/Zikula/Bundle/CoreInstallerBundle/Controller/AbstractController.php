@@ -19,7 +19,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class AbstractController
- * @package Zikula\Bundle\CoreInstallerBundle\Controller
  */
 abstract class AbstractController
 {

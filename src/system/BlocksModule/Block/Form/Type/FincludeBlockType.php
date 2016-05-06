@@ -20,7 +20,6 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Class FincludeBlockType
- * @package Zikula\BlocksModule\Block\Form\Type
  */
 class FincludeBlockType extends AbstractType
 {

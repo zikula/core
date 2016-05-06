@@ -20,7 +20,6 @@ use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Class InstallerController
- * @package Zikula\Bundle\CoreInstallerBundle\Controller
  */
 class InstallerController extends AbstractController
 {

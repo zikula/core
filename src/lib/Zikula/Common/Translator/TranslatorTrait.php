@@ -12,7 +12,6 @@ namespace Zikula\Common\Translator;
 
 /**
  * Class TranslatorTrait
- * @package Zikula\Common\Translator
  */
 trait TranslatorTrait
 {

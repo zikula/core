@@ -51,7 +51,6 @@ namespace Zikula\Module\SearchModule {
      * This class maintains the 1.4.x BC API
      *
      * Class AbstractSearchable
-     * @package Zikula\Module\SearchModule
      */
     abstract class AbstractSearchable extends AbstractSearchableActual
     {

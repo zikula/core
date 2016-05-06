@@ -12,7 +12,6 @@ namespace Zikula\Common\Collection\Collectible;
 
 /**
  * Class PendingContentCollectible
- * @package Zikula\Common\Collection\Collectible
  */
 class PendingContentCollectible
 {

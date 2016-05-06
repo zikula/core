@@ -17,7 +17,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * Class CoreInstallerExtension
- * @package Zikula\Bundle\CoreInstallerBundle\DependencyInjection
  */
 class ZikulaCoreInstallerExtension extends Extension
 {

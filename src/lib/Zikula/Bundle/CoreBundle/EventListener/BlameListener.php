@@ -20,8 +20,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Class BlameListener overrides Stof\DoctrineExtensionsBundle\EventListener\BlameListener
- *
- * @package Zikula\Bundle\CoreBundle\EventListener
  */
 class BlameListener implements EventSubscriberInterface
 {

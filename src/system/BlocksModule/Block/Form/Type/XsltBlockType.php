@@ -19,7 +19,6 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Class XsltBlockType
- * @package Zikula\BlocksModule\Block\Form\Type
  */
 class XsltBlockType extends AbstractType
 {

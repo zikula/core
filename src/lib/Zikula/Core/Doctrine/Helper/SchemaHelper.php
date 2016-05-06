@@ -15,7 +15,6 @@ use Doctrine\ORM\Tools\SchemaTool;
 
 /**
  * Class SchemaHelper
- * @package Zikula\Core\Doctrine\Helper
  */
 class SchemaHelper
 {

@@ -16,7 +16,6 @@ use Symfony\Component\Translation\TranslatorInterface as SymfonyTranslatorInterf
  * reference the "translator.default" service id and typehint against this interface.
  *
  * Interface TranslatorInterface
- * @package Zikula\Common\Translator
  */
 interface TranslatorInterface extends SymfonyTranslatorInterface
 {

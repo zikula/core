@@ -17,7 +17,6 @@ use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterf
 
 /**
  * Class CapabilityApi
- * @package Zikula\ExtensionsModule
  */
 class CapabilityApi implements CapabilityApiInterface
 {

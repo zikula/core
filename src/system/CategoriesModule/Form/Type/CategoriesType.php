@@ -19,7 +19,6 @@ use Zikula\CategoriesModule\Form\EventListener\CategoriesMergeCollectionListener
 
 /**
  * Class CategoriesType
- * @package Zikula\CategoriesModule\Form\Type
  */
 class CategoriesType extends AbstractType
 {

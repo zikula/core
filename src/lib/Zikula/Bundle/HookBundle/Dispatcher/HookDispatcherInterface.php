@@ -17,7 +17,6 @@ use Zikula\Bundle\HookBundle\Hook\Hook;
 
 /**
  * Interface HookDispatcherInterface
- * @package Zikula\Bundle\HookBundle\Dispatcher
  */
 interface HookDispatcherInterface
 {
