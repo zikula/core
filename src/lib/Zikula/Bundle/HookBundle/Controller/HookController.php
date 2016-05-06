@@ -26,7 +26,6 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class HookController
- * @package Zikula\HookBundle\Controller
  * @Route("/hooks")
  */
 class HookController extends Controller

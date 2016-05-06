@@ -28,7 +28,6 @@ use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 
 /**
  * Class ThemeController
- * @package Zikula\ThemeModule\Controller
  * @Route("/admin")
  */
 class ThemeController extends AbstractController

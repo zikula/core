@@ -14,7 +14,6 @@ use Zikula\BlocksModule\BlockHandlerInterface;
 
 /**
  * Class BlockCollector
- * @package Zikula\BlocksModule\Collector
  */
 class BlockCollector
 {

@@ -17,7 +17,6 @@ use Zikula\Core\Event\GenericEvent;
 
 /**
  * Class PendingContentBlock
- * @package Zikula\BlocksModule\Block
  */
 class PendingContentBlock extends AbstractBlockHandler
 {

@@ -17,7 +17,6 @@ use Zikula\Bundle\CoreBundle\YamlDumper;
 
 /**
  * Class AjaxUpgradeController
- * @package Zikula\Bundle\CoreInstallerBundle\Controller
  */
 class AjaxUpgradeController extends AbstractController
 {

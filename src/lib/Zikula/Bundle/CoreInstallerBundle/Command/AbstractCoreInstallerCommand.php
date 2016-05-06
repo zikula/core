@@ -21,7 +21,6 @@ use Zikula_Request_Http as Request;
 
 /**
  * Class AbstractCoreInstallerCmd
- * @package Zikula\Bundle\CoreInstallerBundle\Command\Install
  */
 abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
 {

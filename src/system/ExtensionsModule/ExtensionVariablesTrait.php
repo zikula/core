@@ -14,7 +14,6 @@ use Zikula\ExtensionsModule\Api\VariableApi;
 
 /**
  * Class ExtensionVariablesTrait
- * @package Zikula\ExtensionsModule
  */
 trait ExtensionVariablesTrait
 {
