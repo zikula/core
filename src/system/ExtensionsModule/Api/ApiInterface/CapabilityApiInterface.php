@@ -16,7 +16,6 @@ use Zikula\ExtensionsModule\Entity\ExtensionEntity;
  * Interface CapabilityInterface
  * Constant strings for use in the Core.
  * in composer.json extra/zikula/capabilities definition, use the actual string.
- * @package Zikula\ExtensionsModule
  */
 interface CapabilityApiInterface
 {

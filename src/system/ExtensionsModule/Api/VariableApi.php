@@ -16,7 +16,6 @@ use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionVarRepositoryInt
 
 /**
  * Class VariableApi
- * @package Zikula\ExtensionsModule\Api
  *
  * This class manages the storage and retrieval of extension variables and is the intended replacement
  * for ModUtil::* methods (getVar, setVar, etc) as well as similar functionality in System:: and ThemeUtil::

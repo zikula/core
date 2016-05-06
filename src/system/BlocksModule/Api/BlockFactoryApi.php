@@ -18,7 +18,6 @@ use Zikula\BlocksModule\BlockHandlerInterface;
 
 /**
  * Class BlockFactoryApi
- * @package Zikula\BlocksModule\Api
  *
  * This class provides an API for the instantiation of block classes.
  */

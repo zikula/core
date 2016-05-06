@@ -27,7 +27,6 @@ use Zikula\Core\CoreEvents;
 
 /**
  * Class AjaxInstallController
- * @package Zikula\Bundle\CoreInstallerBundle\Controller
  */
 class AjaxInstallController extends AbstractController
 {

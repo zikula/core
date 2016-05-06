@@ -32,7 +32,6 @@ use Zikula\PermissionsModule\Api\PermissionApi;
  * THESE ROUTES MUST BE LOADED LAST! (see app/config/routing.yml)
  *
  * @deprecated immediately @todo remove at Core-2.0
- * @package Zikula\Bundle\CoreBundle\Controller
  */
 class LegacyController
 {

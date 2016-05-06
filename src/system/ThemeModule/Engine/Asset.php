@@ -15,7 +15,6 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Class Asset
- * @package Zikula\ThemeModule\Engine
  *
  * This class locates assets accounting for possible overrides in app/Resources/$bundleName or in the
  * active theme. It is foremost used by the zasset() Twig template plugin, but can be utilized as a standalone

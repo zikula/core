@@ -20,7 +20,6 @@ use Zikula\ExtensionsModule\Api\VariableApi;
 /**
  * Class MainController
  * This controller is a service defined in `CoreBundle/Resources/config/services.xml`
- * @package Zikula\Bundle\CoreBundle\Controller
  */
 class MainController
 {

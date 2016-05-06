@@ -19,7 +19,6 @@ use Zikula\Core\Controller\AbstractController;
 
 /**
  * Class ModuleStylesheetInsertListener
- * @package Zikula\ThemeModule\EventListener
  */
 class ModuleStylesheetInsertListener implements EventSubscriberInterface
 {

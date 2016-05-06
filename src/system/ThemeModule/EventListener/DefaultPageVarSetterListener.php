@@ -19,7 +19,6 @@ use Zikula\ExtensionsModule\Api\VariableApi;
 
 /**
  * Class DefaultPageVarSetterListener
- * @package Zikula\ThemeModule\EventListener
  *
  * This class sets default pagevars that are available in all Twig templates in a global scope.
  * @todo remove use of legacy Util classes and replace

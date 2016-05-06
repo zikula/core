@@ -19,7 +19,6 @@ use Michelf\MarkdownExtra;
 
 /**
  * Class DocController
- * @package Zikula\Bundle\CoreInstallerBundle\Controller
  */
 class DocController
 {

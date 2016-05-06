@@ -18,7 +18,6 @@ use Zikula\ThemeModule\Engine\Engine;
 
 /**
  * Class TemplatePathOverrideListener
- * @package Zikula\ThemeModule\EventListener
  *
  * This class adds the theme Resources path to the search path when locating assets like templates.
  * This listener only works when new "namespaced" (e.g. "@Bundle/template.html.twig") is used.

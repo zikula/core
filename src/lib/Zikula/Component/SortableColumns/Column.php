@@ -12,7 +12,6 @@ namespace Zikula\Component\SortableColumns;
 
 /**
  * Class Column
- * @package Zikula\Component\SortableColumns
  *
  * A column defines a column of a data table that is used in conjunction with SortableColumns to
  * assist in the display of column headers and links to facilitate resorting based on column and direction.

@@ -16,7 +16,6 @@ use Zikula\CategoriesModule\Entity\CategoryEntity;
 
 /**
  * Class CategoriesCollectionTransformer
- * @package Zikula\CategoriesModule\Form\DataTransformer
  */
 class CategoriesCollectionTransformer implements DataTransformerInterface
 {

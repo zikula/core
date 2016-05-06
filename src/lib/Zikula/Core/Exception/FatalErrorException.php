@@ -14,8 +14,6 @@ use Symfony\Component\Debug\Exception\FatalErrorException as SymfonyFatalErrorEx
 
 /**
  * Class FatalErrorException
- *
- * @package Zikula\Core\Exception
  */
 class FatalErrorException extends SymfonyFatalErrorException
 {
