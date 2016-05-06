@@ -17,7 +17,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Class TextBlockType
- * @package Zikula\BlocksModule\Block\Form\Type
  */
 class TextBlockType extends AbstractType
 {

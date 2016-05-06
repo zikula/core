@@ -19,7 +19,6 @@ use Zikula\ExtensionsModule\Api\VariableApi;
 
 /**
  * Class Engine
- * @package Zikula\ThemeModule\Engine
  *
  * The Theme Engine class is responsible to manage all aspects of theme management using the classes referenced below.
  * @see \Zikula\ThemeModule\Engine\*

@@ -17,8 +17,6 @@ use Zikula\ExtensionsModule\Util as ExtensionsUtil;
  * Class BundleSyncHelper
  *
  * A class to assist in the syncronization of legacy modules.
- *
- * @package Zikula\ExtensionsModule\Helper\Legacy
  */
 class BundleSyncHelper
 {

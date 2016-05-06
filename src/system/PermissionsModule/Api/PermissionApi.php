@@ -18,7 +18,6 @@ use Zikula\UsersModule\Entity\UserEntity;
 
 /**
  * Class PermissionApi
- * @package Zikula\PermissionsModule\Api
  *
  * This class is used to determine whether a user has rights (or permissions) to a given component. Rights are granted
  * or denied from the Permissions module User Interface. Components/Extensions must declare their Permission structure in

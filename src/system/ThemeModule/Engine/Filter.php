@@ -14,7 +14,6 @@ use Zikula\ThemeModule\Engine\Asset\ResolverInterface;
 
 /**
  * Class Filter
- * @package Zikula\ThemeModule\Engine
  *
  * This class resolves, compiles and renders all page assets and adds them to the outgoing source content
  * Recently, the accepted practice for placement of javascript has changed from header to footer. Placement in this

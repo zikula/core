@@ -20,7 +20,6 @@ use Zikula\UsersModule\Api\CurrentUserApi;
 
 /**
  * Class LockingApi.
- * @package Zikula\PageLockModule\Api
  *
  * This class provides means for using a locking mechanism.
  * It should be used instead of the old user api.

@@ -16,7 +16,6 @@ use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Class SortableColumns
- * @package Zikula\Component\SortableColumns
  *
  * SortableColumns is a zikula component to help manage data table column headings that can be clicked to sort the data.
  * The collection is an ArrayCollection of Zikula\Component\SortableColumns\Column objects.

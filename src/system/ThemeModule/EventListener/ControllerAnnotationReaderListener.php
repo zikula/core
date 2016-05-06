@@ -18,7 +18,6 @@ use Zikula\ThemeModule\Engine\Engine;
 
 /**
  * Class ControllerAnnotationReaderListener
- * @package Zikula\ThemeModule\EventListener
  *
  * This class reads annotations from a controller and submits them to the theme engine to
  * potentially change the theme based on that annotation. (e.g. @Theme("admin") annotation)

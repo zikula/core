@@ -20,7 +20,6 @@ use Zikula\ExtensionsModule\Api\VariableApi;
 
 /**
  * Class CollapseableBlockListener
- * @package Zikula\BlocksModule\Listener
  */
 class CollapseableBlockListener implements EventSubscriberInterface
 {

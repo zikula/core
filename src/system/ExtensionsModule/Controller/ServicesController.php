@@ -21,7 +21,6 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class ServicesController
- * @package Zikula\ExtensionsModule\Controller
  * @Route("/services")
  */
 class ServicesController extends AbstractController

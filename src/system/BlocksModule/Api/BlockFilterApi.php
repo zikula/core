@@ -15,7 +15,6 @@ use Zikula\BlocksModule\Entity\BlockEntity;
 
 /**
  * Class BlockFilterApi
- * @package Zikula\BlocksModule\Api
  */
 class BlockFilterApi
 {

@@ -18,7 +18,6 @@ use Symfony\Component\Form\DataTransformerInterface;
  * @author b.b3rn4ard
  * @see http://stackoverflow.com/a/28889445/2600812
  * Class NullToEmptyTransformer
- * @package Zikula\Bundle\FormExtensionBundle\Form\DataTransformer
  */
 class NullToEmptyTransformer implements DataTransformerInterface
 {

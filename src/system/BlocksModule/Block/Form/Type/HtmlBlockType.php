@@ -16,7 +16,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Class HtmlBlockType
- * @package Zikula\BlocksModule\Block\Form\Type
  */
 class HtmlBlockType extends AbstractType
 {

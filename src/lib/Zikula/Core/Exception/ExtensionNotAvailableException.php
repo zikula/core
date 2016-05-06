@@ -14,8 +14,6 @@ namespace Zikula\Core\Exception;
  * Class ExtensionNotAvailableException
  *
  * Describes a state where the Module|Theme|Plugin is installed but not available
- *
- * @package Zikula\Core\Exception
  */
 class ExtensionNotAvailableException extends \Exception
 {

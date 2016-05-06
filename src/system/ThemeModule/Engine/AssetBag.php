@@ -12,7 +12,6 @@ namespace Zikula\ThemeModule\Engine;
 
 /**
  * Class AssetBag
- * @package Zikula\ThemeModule\Engine
  *
  * This class provides an abstracted method of collecting, managing and retrieving page assets.
  * Each asset should be assigned a 'weight' which helps determine in what order the assets are loaded into the page.
