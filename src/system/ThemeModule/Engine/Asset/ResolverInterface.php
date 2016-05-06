@@ -14,7 +14,6 @@ use Zikula\ThemeModule\Engine\AssetBag;
 
 /**
  * Interface ResolverInterface
- * @package Zikula\ThemeModule\Engine\Asset
  *
  * Provide an interface for Resolver classes.
  */

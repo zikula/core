@@ -27,7 +27,6 @@ use Zikula\PermissionsModule\Api\PermissionApi;
 
 /**
  * Class MailerApi.
- * @package Zikula\MailerModule\Api
  *
  * This class manages the sending of mails using SwiftMailer.
  * It should be used instead of the old sendmessage() method in user api.

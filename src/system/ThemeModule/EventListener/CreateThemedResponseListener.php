@@ -19,7 +19,6 @@ use Zikula_View_Theme;
 
 /**
  * Class CreateThemedResponseListener
- * @package Zikula\ThemeModule\EventListener
  *
  * This class intercepts the Response and modifies it to return a themed Response.
  * It is currently fully BC with Core-1.3 in order to return a smarty-based themed response.

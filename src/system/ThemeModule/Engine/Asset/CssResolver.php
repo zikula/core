@@ -14,7 +14,6 @@ use Zikula\ThemeModule\Engine\AssetBag;
 
 /**
  * Class CssResolver
- * @package Zikula\ThemeModule\Engine\Asset
  *
  * This class compiles all css page assets into proper html code for inclusion into a page header
  */

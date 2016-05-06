@@ -20,7 +20,6 @@ use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 /**
  * Class BlockApi
- * @package Zikula\BlocksModule\Api
  *
  * This class provides an API for interaction with and management of blocks. The class is mainly used internally
  * by Twig-based theme tags in order to 'decorate' a page with the requested blocks.

@@ -12,7 +12,6 @@ namespace Zikula\Core\LinkContainer;
 
 /**
  * Interface LinkContainerInterface
- * @package Zikula\Core\LinkContainer
  *
  * This interface is used to implement the Extension LinkContainer
  */

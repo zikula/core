@@ -20,7 +20,6 @@ use Zikula\ThemeModule\Engine\Engine;
 
 /**
  * Class DefaultPageAssetSetterListener
- * @package Zikula\ThemeModule\EventListener
  *
  * This class adds default assets (javascripts and stylesheets) to every page, regardless of the selected theme.
  * In some cases, the actual asset is configurable or able to be overridden.
