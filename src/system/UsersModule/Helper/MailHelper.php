@@ -195,6 +195,7 @@ class MailHelper
 
     private function generateEmailSubject($notificationType, array $templateArgs = [])
     {
+        $siteName = $this->variableApi->get(VariableApi::CONFIG, 'sitename');
         switch ($notificationType) {
             case 'activation':
                 return $this->translator->__('Verify your account.');
@@ -203,16 +204,16 @@ class MailHelper
                 return $this->translator->__('Verify your new e-mail address.');
                 break;
             case 'importnotify':
-                return $this->translator->__f('Welcome to %s!', ['%s' => $templateArgs['sitename']]);
+                return $this->translator->__f('Welcome to %s!', ['%s' => $siteName]);
                 break;
             case 'lostpasscode':
                 return $this->translator->__('Recover your password.');
                 break;
             case 'lostpassword':
-                return $this->translator->__f('Reset your password at \'%s\'', ['%s' => $templateArgs['sitename']]);
+                return $this->translator->__f('Reset your password at \'%s\'', ['%s' => $siteName]);
                 break;
             case 'lostuname':
-                return $this->translator->__f('\'%s\' account information', ['%s' => $templateArgs['sitename']]);
+                return $this->translator->__f('\'%s\' account information', ['%s' => $siteName]);
                 break;
             case 'regadminnotify':
                 if ($templateArgs['reginfo']['isapproved']) {
@@ -224,19 +225,19 @@ class MailHelper
                 }
                 break;
             case 'regdeny':
-                return $this->translator->__f('Your recent request at %s.', ['%s' => $templateArgs['sitename']]);
+                return $this->translator->__f('Your recent request at %s.', ['%s' => $siteName]);
                 break;
             case 'regverifyemail':
-                return $this->translator->__f('Verify your e-mail address for %s.', ['%s' => $templateArgs['sitename']]);
+                return $this->translator->__f('Verify your e-mail address for %s.', ['%s' => $siteName]);
                 break;
             case 'userveryifyemail':
-                return $this->translator->__f('Verify your request to change your e-mail address at \'%s\'', ['%s' => $templateArgs['sitename']]);
+                return $this->translator->__f('Verify your request to change your e-mail address at \'%s\'', ['%s' => $siteName]);
                 break;
             case 'welcome':
-                return $this->translator->__f('Welcome to %1$s, %2$s!', ['%1$s' => $templateArgs['sitename'], '%2$s' => $templateArgs['reginfo']['uname']]);
+                return $this->translator->__f('Welcome to %1$s, %2$s!', ['%1$s' => $siteName, '%2$s' => $templateArgs['reginfo']['uname']]);
                 break;
             default:
-                return $this->translator->__f('A message from %s.', ['%s' => $templateArgs['sitename']]);
+                return $this->translator->__f('A message from %s.', ['%s' => $siteName]);
         }
     }
 }
