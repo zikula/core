@@ -10,14 +10,7 @@
 
 namespace Zikula\GroupsModule\Entity\Repository;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr;
-use Doctrine\ORM\Tools\Pagination\Paginator;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
-use Zikula\UsersModule\Entity\UserEntity;
-use Zikula\UsersModule\Constant as UsersConstant;
 
 class GroupRepository extends EntityRepository
 {
