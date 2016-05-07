@@ -10,6 +10,7 @@
         <parameter key="zikulausersmodule.helper.registration_verification_helper.class">Zikula\UsersModule\Helper\RegistrationVerificationHelper</parameter>
         <parameter key="zikulausersmodule.helper.mail_helper.class">Zikula\UsersModule\Helper\MailHelper</parameter>
         <parameter key="zikula_users_module.helper.administration_actions.class">Zikula\UsersModule\Helper\AdministrationActionsHelper</parameter>
+        <parameter key="zikula_users_module.helper.file_io.class">Zikula\UsersModule\Helper\FileIOHelper</parameter>
     </parameters>
 
     <services>
@@ -51,6 +52,16 @@
             <argument type="service" id="translator.default" />
             <argument type="service" id="zikula_users_module.user_verification_repository" />
             <argument type="service" id="zikula_extensions_module.api.variable" />
+            <argument type="service" id="zikula_users_module.current_user" />
+        </service>
+        <service id="zikula_users_module.helper.file_io" class="%zikula_users_module.helper.file_io.class%" lazy="true">
+            <argument type="service" id="zikula_extensions_module.api.variable" />
+            <argument type="service" id="zikula_permissions_module.api.permission" />
+            <argument type="service" id="translator.default" />
+            <argument type="service" id="validator" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="zikulausersmodule.helper.mail_helper" />
+            <argument type="service" id="event_dispatcher" />
             <argument type="service" id="zikula_users_module.current_user" />
         </service>
 

@@ -132,7 +132,7 @@ class LinkContainer implements LinkContainerInterface
                 'text' => $this->translator->__('Create new user')
             ];
             $submenulinks[] = [
-                'url' => $this->router->generate('zikulausersmodule_admin_import'),
+                'url' => $this->router->generate('zikulausersmodule_fileio_import'),
                 'text' => $this->translator->__('Import users')
             ];
             if ($this->permissionApi->hasPermission("ZikulaUsersModule::", '::', ACCESS_ADMIN)) {
