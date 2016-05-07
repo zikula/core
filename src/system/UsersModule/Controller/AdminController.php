@@ -13,9 +13,6 @@ namespace Zikula\UsersModule\Controller;
 use UserUtil;
 use SecurityUtil;
 use ModUtil;
-use Zikula\UsersModule\Constant as UsersConstant;
-use DataUtil;
-use System;
 use FileUtil;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Exception\FatalErrorException;
@@ -24,7 +21,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @deprecated
@@ -222,7 +218,6 @@ class AdminController extends \Zikula_AbstractController
         @trigger_error('This method is deprecated. Please use FileIOController::importAction', E_USER_DEPRECATED);
 
         return new RedirectResponse($this->get('router')->generate('zikulausersmodule_fileio_import'));
-
     }
 
     /**
