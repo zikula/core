@@ -28,34 +28,42 @@ use Zikula\UsersModule\UserEvents;
 class RegistrationHelper
 {
     use TranslatorTrait;
+
     /**
      * @var VariableApi
      */
     private $variableApi;
+
     /**
      * @var SessionInterface
      */
     private $session;
+
     /**
      * @var PermissionApi
      */
     private $permissionApi;
+
     /**
      * @var UserRepositoryInterface
      */
     private $userRepository;
+
     /**
      * @var UserVerificationRepositoryInterface
      */
     private $userVerificationRepository;
+
     /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
+
     /**
      * @var RegistrationVerificationHelper
      */
     private $verificationHelper;
+
     /**
      * @var MailHelper
      */
