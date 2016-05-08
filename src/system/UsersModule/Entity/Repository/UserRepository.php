@@ -230,4 +230,15 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
 
         return $expr;
     }
+
+    /**
+     * Return all users as memory-saving iterable result.
+     * @return \Doctrine\ORM\Internal\Hydration\IterableResult
+     */
+    public function findAllAsIterable()
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        return $qb->getQuery()->iterate();
+    }
 }

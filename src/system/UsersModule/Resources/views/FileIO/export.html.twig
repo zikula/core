@@ -1,74 +1,33 @@
-{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+{% form_theme form with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ adminHeader() }}
 <h3>
     <span class="fa fa-download"></span>
     {{ __('Export users') }}
 </h3>
 
-<form class="form-horizontal" role="form" action="{{ path('zikulausersmodule_admin_exporter') }}" method="post" enctype="multipart/form-data">
-    <div>
-	<input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
-        <input type="hidden" name="confirmed" value="1" />
-        <fieldset>
-            <legend>Export Options</legend>
-            <div class="form-group">
-                <label class="col-sm-3 control-label" for="users_export_titles">{{ __('Export Title Row') }}</label>
-                <div class="col-sm-9">
-                    <input id="users_export_titles" type="checkbox" name="exportTitles" value="1" checked="checked" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label" for="users_export_email">{{ __('Export Email Address') }}</label>
-                <div class="col-sm-9">
-                    <input id="users_export_email" type="checkbox" name="exportEmail" value="1" checked="checked" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label" for="users_export_regdate">{{ __('Export Registration Date') }}</label>
-                <div class="col-sm-9">
-                    <input id="users_export_regdate" type="checkbox" name="exportRegDate" value="1" checked="checked" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label" for="users_export_lastlogin">{{ __('Export Last Login Date') }}</label>
-                <div class="col-sm-9">
-                    <input id="users_export_lastlogin" type="checkbox" name="exportLastLogin" value="1" checked="checked" />
-                </div>
-            </div>
-            {% if isset(groups) && groups == '1' %}
-            <div class="form-group">
-                <label class="col-sm-3 control-label" for="users_export_groups">{{ __('Export Group Membership') }}</label>
-                <div class="col-sm-9">
-                    <input id="users_export_groups" type="checkbox" name="exportGroups" value="1"/>
-                </div>
-            </div>
-            {% endif %}
-        </fieldset>
-        <fieldset>
-            <legend>{{ __('CSV Export File') }}</legend>
-            <div class="form-group">
-                <label class="col-sm-3 control-label" for="users_export">{{ __('CSV filename') }}</label>
-                <div class="col-sm-9">
-                    <input id="users_export" type="text" class="form-control" name="exportFile" size="30" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label" for="users_export_delimiter">{{ __('CSV delimiter') }}</label>
-                <div class="col-sm-9">
-                    <select class="form-control" id="users_export_delimiter" name="delimiter">
-                        <option value="1">{{ __('Comma') }} (,)</option>
-                        <option value="2">{{ __('Semicolon') }} (;)</option>
-                        <option value="3">{{ __('Colon') }} (:)</option>
-                        <option value="4">{{ __('Tab') }}</option>
-                    </select>
-                </div>
-            </div>
-        </fieldset>
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
-                {button class="btn btn-success" __alt='Export' __title='Export' __text='Export'}
-                <a class="btn btn-danger" href="{{ path('zikulausersmodule_admin_view') }}" title="{{ __('Cancel') }}">{{ __('Cancel') }}</a>
-            </div>
-        </div>
+{{ form_start(form) }}
+{{ form_errors(form) }}
+<fieldset>
+    <legend>{{ __('Export options') }}</legend>
+    {{ form_row(form.title) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.user_regdate) }}
+    {{ form_row(form.lastlogin) }}
+    {{ form_row(form.groups) }}
+</fieldset>
+<fieldset>
+    <legend>{{ __('File options') }}</legend>
+    {{ form_row(form.filename) }}
+    {{ form_row(form.delimiter) }}
+</fieldset>
+<div class="form-group">
+    <div class="col-sm-offset-3 col-sm-9">
+        {{ form_widget(form.download) }}
+        {{ form_widget(form.cancel) }}
     </div>
-</form>
-{{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}
+</div>
+{{ form_end(form) }}
+{{ adminFooter() }}
