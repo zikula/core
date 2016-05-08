@@ -86,25 +86,11 @@ class RegistrationAdministrationController extends AbstractController
 
         /** @var UserVerificationEntity $verificationEntity */
         $verificationEntity = $this->get('zikula_users_module.user_verification_repository')->find($user->getUid());
-        $regExpireDays = $this->getVar('reg_expiredays', 0);
-
-        // So expiration can be displayed
-        $validUntil = false;
-        if (!$user->isVerified() && !empty($verificationEntity) && ($regExpireDays > 0)) {
-            try {
-                $expiresUTC = new \DateTime($verificationEntity->getCreated_Dt(), new \DateTimeZone('UTC'));
-            } catch (\Exception $e) {
-                $expiresUTC = new \DateTime(UsersConstant::EXPIRED, new \DateTimeZone('UTC'));
-            }
-            $expiresUTC->modify("+{$regExpireDays} days");
-            $validUntil = \DateUtil::formatDatetime($expiresUTC->format(UsersConstant::DATETIME_FORMAT),
-                $this->__('%m-%d-%Y %H:%M'));
-        }
 
         return [
             'user' => $user,
             'verificationSent' => empty($verificationEntity) ? false : $verificationEntity->getCreated_Dt(),
-            'validUntil' => $validUntil,
+            'validUntil' => $user->isVerified() ? false : $this->registrationValidUntil($verificationEntity),
             'actions' => $this->get('zikula_users_module.helper.administration_actions')->registration($user)
         ];
     }
@@ -225,24 +211,10 @@ class RegistrationAdministrationController extends AbstractController
         }
         /** @var UserVerificationEntity $verificationEntity */
         $verificationEntity = $this->get('zikula_users_module.user_verification_repository')->find($user->getUid());
-        $regExpireDays = $this->getVar('reg_expiredays', 0);
-
-        // So expiration can be displayed
-        $validUntil = false;
-        if (!$user->isVerified() && !empty($verificationEntity) && ($regExpireDays > 0)) {
-            try {
-                $expiresUTC = new \DateTime($verificationEntity->getCreated_Dt(), new \DateTimeZone('UTC'));
-            } catch (\Exception $e) {
-                $expiresUTC = new \DateTime(UsersConstant::EXPIRED, new \DateTimeZone('UTC'));
-            }
-            $expiresUTC->modify("+{$regExpireDays} days");
-            $validUntil = \DateUtil::formatDatetime($expiresUTC->format(UsersConstant::DATETIME_FORMAT),
-                $this->__('%m-%d-%Y %H:%M'));
-        }
 
         return [
             'form' => $form->createView(),
-            'validUntil' => $validUntil,
+            'validUntil' => $user->isVerified() ? false : $this->registrationValidUntil($verificationEntity),
             'verificationSent' => empty($verificationEntity) ? false : $verificationEntity->getCreated_Dt(),
             'user' => $user
         ];
@@ -293,16 +265,6 @@ class RegistrationAdministrationController extends AbstractController
                 if (!$denied) {
                     $this->addFlash('error', $this->__f('Sorry! There was a problem approving the registration for %sub%.', ['%sub%' => $user->getUname()]));
                 } else {
-                    $data = $form->getData();
-                    if ($data['notify']) {
-                        $rendererArgs = array(
-                            'sitename' => $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'sitename'),
-                            'siteurl' => $this->generateUrl('home', [], UrlGeneratorInterface::ABSOLUTE_URL),
-                            'user' => $user,
-                            'reason' => $data['reason'],
-                        );
-                        $this->get('zikulausersmodule.helper.mail_helper')->sendNotification($user->getEmail(), 'regdeny', $rendererArgs);
-                    }
                     if (null != $user->getUid()) {
                         $this->addFlash('status', $this->__f('Done! The registration for %sub% has been approved and a new user account has been created.', ['%sub%' => $user->getUname()]));
                     } else {
@@ -318,24 +280,10 @@ class RegistrationAdministrationController extends AbstractController
         }
         /** @var UserVerificationEntity $verificationEntity */
         $verificationEntity = $this->get('zikula_users_module.user_verification_repository')->find($user->getUid());
-        $regExpireDays = $this->getVar('reg_expiredays', 0);
-
-        // So expiration can be displayed
-        $validUntil = false;
-        if (!$user->isVerified() && !empty($verificationEntity) && ($regExpireDays > 0)) {
-            try {
-                $expiresUTC = new \DateTime($verificationEntity->getCreated_Dt(), new \DateTimeZone('UTC'));
-            } catch (\Exception $e) {
-                $expiresUTC = new \DateTime(UsersConstant::EXPIRED, new \DateTimeZone('UTC'));
-            }
-            $expiresUTC->modify("+{$regExpireDays} days");
-            $validUntil = \DateUtil::formatDatetime($expiresUTC->format(UsersConstant::DATETIME_FORMAT),
-                $this->__('%m-%d-%Y %H:%M'));
-        }
 
         return [
             'form' => $form->createView(),
-            'validUntil' => $validUntil,
+            'validUntil' => $user->isVerified() ? false : $this->registrationValidUntil($verificationEntity),
             'verificationSent' => empty($verificationEntity) ? false : $verificationEntity->getCreated_Dt(),
             'user' => $user
         ];
@@ -369,8 +317,6 @@ class RegistrationAdministrationController extends AbstractController
                     $data = $form->getData();
                     if ($data['notify']) {
                         $rendererArgs = array(
-                            'sitename' => $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'sitename'),
-                            'siteurl' => $this->generateUrl('home', [], UrlGeneratorInterface::ABSOLUTE_URL),
                             'user' => $user,
                             'reason' => $data['reason'],
                         );
@@ -388,11 +334,24 @@ class RegistrationAdministrationController extends AbstractController
 
         /** @var UserVerificationEntity $verificationEntity */
         $verificationEntity = $this->get('zikula_users_module.user_verification_repository')->find($user->getUid());
-        $regExpireDays = $this->getVar('reg_expiredays', 0);
 
-        // So expiration can be displayed
+        return [
+            'form' => $form->createView(),
+            'validUntil' => $user->isVerified() ? false : $this->registrationValidUntil($verificationEntity),
+            'verificationSent' => empty($verificationEntity) ? false : $verificationEntity->getCreated_Dt(),
+            'user' => $user
+        ];
+    }
+
+    /**
+     * @param UserVerificationEntity $verificationEntity
+     * @return bool|string
+     */
+    private function registrationValidUntil(UserVerificationEntity $verificationEntity)
+    {
+        $regExpireDays = $this->getVar('reg_expiredays', 0);
         $validUntil = false;
-        if (!$user->isVerified() && !empty($verificationEntity) && ($regExpireDays > 0)) {
+        if (!empty($verificationEntity) && ($regExpireDays > 0)) {
             try {
                 $expiresUTC = new \DateTime($verificationEntity->getCreated_Dt(), new \DateTimeZone('UTC'));
             } catch (\Exception $e) {
@@ -403,11 +362,6 @@ class RegistrationAdministrationController extends AbstractController
                 $this->__('%m-%d-%Y %H:%M'));
         }
 
-        return [
-            'form' => $form->createView(),
-            'validUntil' => $validUntil,
-            'verificationSent' => empty($verificationEntity) ? false : $verificationEntity->getCreated_Dt(),
-            'user' => $user
-        ];
+        return $validUntil;
     }
 }
