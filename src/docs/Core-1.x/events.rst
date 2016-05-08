@@ -166,16 +166,6 @@ Filter of result of a fetch.  Receives `Zikula_View` instance as subject, args a
 USER ACCOUNTS, REGISTRATIONS, AND LOG-INS
 -----------------------------------------
 
-#### `module.users.ui.display_view`
-A hook-like UI event that is triggered when a user's account detail is viewed. This allows another module
-to intercept the display of the user account detail in order to add its own information.
-
-To add display elements to the user account detail, render output and add this as an element in the event's
-data array.
-
- * The subject contains the user's account record.
- * The `'id'` argument contain's the user's uid.
-
 #### `module.users.ui.login.started`
 Occurs at the beginning of the log-in process, before the registration form is displayed to the user.
 

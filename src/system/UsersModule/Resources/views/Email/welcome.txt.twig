@@ -1,8 +1,8 @@
-{{ __f('Welcome to %1s!', {"%sub%": sitename}) }}
+{{ __f('Welcome to %1s!', {"%sub%": pagevars.title}) }}
 
 {{ __('Hello!') }}
 
-{{ __f('This e-mail address (\'%email\') has been used to register an account on \'%site\' (%url).', {"%email": reginfo.email, "%site": sitename, "%url": url('home')}) }}
+{{ __f('This e-mail address (\'%email\') has been used to register an account on \'%site\' (%url).', {"%email": reginfo.email, "%site": pagevars.title, "%url": url('home')}) }}
 {{ __('The information that was registered is as follows:') }}
 
 {{ __('User name') }}: {{ reginfo.uname }}
