@@ -1,6 +1,6 @@
-{{ __f('A message from %s...', {"%s": sitename}) }}
+{{ __f('A message from %s...', {"%s": pagevars.title}) }}
 
-{{ __f('Recently, this e-mail address (\'%email\') was used to request an account on \'%site\' (%url).', {"%email": user.email, "%site": sitename, "%url": url('home')}) }}
+{{ __f('Recently, this e-mail address (\'%email\') was used to request an account on \'%site\' (%url).', {"%email": user.email, "%site": pagevars.title, "%url": url('home')}) }}
 {{ __('The information that was registered is as follows:') }}
 
 {{ __('User name') }}: {{ user.uname }}
