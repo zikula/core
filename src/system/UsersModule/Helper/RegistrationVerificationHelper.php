@@ -25,26 +25,32 @@ use Zikula\UsersModule\Entity\UserVerificationEntity;
 class RegistrationVerificationHelper
 {
     use TranslatorTrait;
+
     /**
      * @var VariableApi
      */
     private $variableApi;
+
     /**
      * @var SessionInterface
      */
     private $session;
+
     /**
      * @var PermissionApi
      */
     private $permissionApi;
+
     /**
      * @var UserVerificationRepositoryInterface
      */
     private $userVerificationRepository;
+
     /**
      * @var UserRepository
      */
     private $userRepository;
+
     /**
      * @var MailHelper
      */

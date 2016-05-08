@@ -22,11 +22,14 @@ use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 class AuthenticationMethodListHelper implements \ArrayAccess, \Countable, \Iterator
 {
     use TranslatorTrait;
+
     private $initialized = false;
+
     /**
      * @var Logger
      */
     private $logger;
+
     /**
      * @var CapabilityApiInterface
      */
