@@ -10,7 +10,6 @@
 
 namespace Zikula\UsersModule\Controller;
 
-use SecurityUtil;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
