@@ -10,17 +10,10 @@
 
 namespace Zikula\UsersModule\Controller;
 
-use UserUtil;
 use SecurityUtil;
-use ModUtil;
-use FileUtil;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Core\Exception\FatalErrorException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
  * @deprecated
