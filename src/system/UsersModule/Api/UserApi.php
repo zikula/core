@@ -187,7 +187,7 @@ class UserApi extends \Zikula_AbstractApi
         $templateArgs = isset($args['templateArgs']) ? $args['templateArgs'] : [];
         $subject = isset($args['subject']) ? $args['subject'] : '';
 
-        return $this->getContainer()->get('zikulausersmodule.helper.mail_helper')->sendNotification($toAddress, $notificationType, $templateArgs, $subject);
+        return $this->getContainer()->get('zikula_users_module.helper.mail_helper')->sendNotification($toAddress, $notificationType, $templateArgs, $subject);
     }
 
     /**
@@ -216,7 +216,7 @@ class UserApi extends \Zikula_AbstractApi
         }
         $user = $this->getContainer()->get('zikula_users_module.user_repository')->findOneBy([$args['idfield'] => $args['id']]);
 
-        return $this->getContainer()->get('zikulausersmodule.helper.mail_helper')->mailUserName($user, $adminRequested);
+        return $this->getContainer()->get('zikula_users_module.helper.mail_helper')->mailUserName($user, $adminRequested);
     }
 
     /**
@@ -242,7 +242,7 @@ class UserApi extends \Zikula_AbstractApi
         $user = $this->getContainer()->get('zikula_users_module.user_repository')->findOneBy([$args['idfield'] => $args['id']]);
         $newConfirmationCode = $this->getContainer()->get('zikula_users_module.user_verification_repository')->resetVerificationCode($user->getUid());
 
-        return $this->getContainer()->get('zikulausersmodule.helper.mail_helper')->mailConfirmationCode($user, $newConfirmationCode, $adminRequested);
+        return $this->getContainer()->get('zikula_users_module.helper.mail_helper')->mailConfirmationCode($user, $newConfirmationCode, $adminRequested);
     }
 
     /**

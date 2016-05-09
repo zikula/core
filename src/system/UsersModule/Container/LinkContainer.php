@@ -15,6 +15,7 @@ use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\UsersModule\Api\CurrentUserApi;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Helper\RegistrationHelper;
 
@@ -46,6 +47,11 @@ class LinkContainer implements LinkContainerInterface
     private $registrationHelper;
 
     /**
+     * @var CurrentUserApi
+     */
+    private $currentUser;
+
+    /**
      * constructor.
      *
      * @param TranslatorInterface $translator
@@ -53,14 +59,22 @@ class LinkContainer implements LinkContainerInterface
      * @param PermissionApi $permissionApi
      * @param VariableApi $variableApi
      * @param RegistrationHelper $registrationHelper
+     * @param CurrentUserApi $currentUserApi
      */
-    public function __construct(TranslatorInterface $translator, RouterInterface $router, PermissionApi $permissionApi, VariableApi $variableApi, RegistrationHelper $registrationHelper)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        RouterInterface $router,
+        PermissionApi $permissionApi,
+        VariableApi $variableApi,
+        RegistrationHelper $registrationHelper,
+        CurrentUserApi $currentUserApi
+    ) {
         $this->translator = $translator;
         $this->router = $router;
         $this->permissionApi = $permissionApi;
         $this->variableApi = $variableApi;
         $this->registrationHelper = $registrationHelper;
+        $this->currentUser = $currentUserApi;
     }
 
     /**
@@ -271,6 +285,50 @@ class LinkContainer implements LinkContainerInterface
                 ];
             }
         }
+
+        return $links;
+    }
+
+    private function getAccount()
+    {
+        $links = [];
+
+        // Show change password action only if the account record contains a password, and the password is not the
+        // special marker for an account created without a Users module authentication password.
+        $pass = $this->currentUser->get('pass');
+        if (!empty($pass) && ($pass != UsersConstant::PWD_NO_USERS_AUTHENTICATION)) {
+            // show edit password link
+            $links[1] = [
+                'url'   => $this->router->generate('zikulausersmodule_user_changepassword'),
+                'text' => $this->translator->__('Password changer'),
+                'icon'  => 'key text-success'
+            ];
+        }
+
+        // show edit email link if configured to manage email address
+        if ($this->variableApi->get('ZikulaUsersModule', 'changeemail', true)) {
+            $links[2] = [
+                'url'   => $this->router->generate('zikulausersmodule_user_changeemail'),
+                'text' => $this->translator->__('E-mail address manager'),
+                'icon'  => 'at'
+            ];
+        }
+
+        if ($this->variableApi->get(VariableApi::CONFIG, 'multilingual')) {
+            if (count(\ZLanguage::getInstalledLanguages()) > 1) {
+                $links[3] = [
+                    'url'   => $this->router->generate('zikulausersmodule_user_changelang'),
+                    'text' => $this->translator->__('Language switcher'),
+                    'icon'  => 'language'
+                ];
+            }
+        }
+
+        $links[4] = [
+            'url'   => $this->router->generate('zikulausersmodule_user_logout'),
+            'text' => $this->translator->__('Log out'),
+            'icon'  => 'power-off text-danger'
+        ];
 
         return $links;
     }

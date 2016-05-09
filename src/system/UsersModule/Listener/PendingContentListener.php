@@ -76,9 +76,9 @@ class PendingContentListener implements EventSubscriberInterface
         if ($this->permissionApi->hasPermission(UsersConstant::MODNAME . '::', '::', ACCESS_MODERATE)) {
             $approvalOrder = $this->variableApi->get(UsersConstant::MODNAME, 'moderation_order', UsersConstant::APPROVAL_ANY);
             if ($approvalOrder == UsersConstant::APPROVAL_AFTER) {
-                $numPendingApproval = $this->get('zikulausersmodule.helper.registration_helper')->countAll(['approved_by' => 0, 'isverified' => true]);
+                $numPendingApproval = $this->get('zikula_users_module.helper.registration_helper')->countAll(['approved_by' => 0, 'isverified' => true]);
             } else {
-                $numPendingApproval = $this->get('zikulausersmodule.helper.registration_helper')->countAll(['approved_by' => 0]);
+                $numPendingApproval = $this->get('zikula_users_module.helper.registration_helper')->countAll(['approved_by' => 0]);
             }
 
             if (!empty($numPendingApproval)) {
