@@ -89,7 +89,7 @@ class LoginBlock extends \Zikula_Controller_AbstractBlock
                     $blockInfo['title'] = DataUtil::formatForDisplay('Login');
                 }
 
-                $authenticationMethodList = $this->get('zikulausersmodule.helper.authentication_method_list_helper');
+                $authenticationMethodList = $this->get('zikula_users_module.helper.authentication_method_list_helper');
                 $authenticationMethodList->initialize();
 
                 if ($authenticationMethodList->countEnabledForAuthentication() > 1) {

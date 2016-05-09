@@ -26,6 +26,7 @@
             "capabilities": {
                 "authentication": {"version": "1.0"},
                 "admin": {"route": "zikulausersmodule_useradministration_list"},
+                "user": {"route": "zikulausersmodule_account_menu"},
                 "hook_subscriber": {"class": "Zikula\\UsersModule\\Container\\HookContainer"},
                 "searchable": {"class": "Zikula\\UsersModule\\Helper\\SearchHelper"}
             },
