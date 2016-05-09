@@ -69,7 +69,7 @@ class RegistrationController extends AbstractController
         // An authentication method to use with the user's registration has not been selected.
         // Present the choices to the user.
         /** @var \Zikula\UsersModule\Helper\AuthenticationMethodListHelper $authenticationMethodList */
-        $authenticationMethodList = $this->get('zikulausersmodule.helper.authentication_method_list_helper');
+        $authenticationMethodList = $this->get('zikula_users_module.helper.authentication_method_list_helper');
         $authenticationMethodList->initialize([], \Zikula_Api_AbstractAuthentication::FILTER_REGISTRATION_ENABLED);
         // If there is only the default ZikulaUsersModule method available. Skip method selection.
         if ($authenticationMethodList->countEnabledForRegistration() == 1 && $authenticationMethodList[0]->modname == $this->name) {
@@ -174,7 +174,7 @@ class RegistrationController extends AbstractController
                 /** @var UserEntity $userEntity */
                 $userEntity = $form->getData();
                 $clearPassword = $userEntity->getPass();
-                $notificationErrors = $this->get('zikulausersmodule.helper.registration_helper')->registerNewUser($userEntity);
+                $notificationErrors = $this->get('zikula_users_module.helper.registration_helper')->registerNewUser($userEntity);
 
                 if (!empty($notificationErrors)) {
                     // The main registration process failed.

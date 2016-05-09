@@ -1,0 +1,22 @@
+{{ moduleHeader('user', __('My account'), '', true, true) }}
+
+{% set displayGraphics = getModVar('ZikulaUsersModule', 'accountdisplaygraphics', 0) %}
+{% set width = 100/getModVar('ZikulaUsersModule', 'accountitemsperrow') %}
+{% for link in accountLinks %}
+    <div class="z-accountlink" style="width:{{ width|round(1, 'floor') }}%">
+        {% if displayGraphics %}
+            {% if '.' in link.icon %}
+                {% set icon = '<img title="'~link.text~'" src="'~zasset('@'~link.module~':images/'~link.icon)~'" />' %}
+            {% else %}
+                {% set icon = '<i title="'~link.text~'" class="fa fa-3x fa-'~link.icon~'"></i>' %}
+            {% endif %}
+            <a href="{{ link.url }}">{{ icon|raw }}</a><br />
+        {% endif %}
+        <a href="{{ link.url }}">{{ link.text }}</a>
+    </div>
+{% else %}
+    <div class="alert alert-warning">{{ __('No account links available.') }}</div>
+{% endfor %}
+<br style="clear: left" />
+
+{{ moduleFooter() }}

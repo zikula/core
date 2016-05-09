@@ -58,70 +58,24 @@ class UserController extends \Zikula_AbstractController
 
     /**
      * Note: No Route needed here because this is legacy-only
-     *
-     * Render and display the user's account panel. If he is not logged in, then redirect to the login screen.
-     *
      * @return RedirectResponse symfony response object
-     *
-     * @throws AccessDeniedException if the current user does not have adequate permissions to perform this function.
      */
     public function mainAction()
     {
-        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', array(), RouterInterface::ABSOLUTE_URL));
+        @trigger_error('This method is deprecated. Please use AccountController::menuAction', E_USER_DEPRECATED);
+
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_account_menu'));
     }
 
     /**
      * @Route("/useraccount", options={"zkNoBundlePrefix"=1})
-     *
-     * Render and display the user's account panel. If he is not logged in, then redirect to the login screen.
-     *
-     * @param Request $request
-     *
-     * @return RedirectResponse symfony response object
-     *
-     * @throws AccessDeniedException if the current user does not have adequate permissions to perform this function.
+     * @return RedirectResponse
      */
     public function indexAction(Request $request)
     {
-        // Security check
-        if (!UserUtil::isLoggedIn()) {
-            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_login', array('returnpage' => urlencode($this->get('router')->generate('zikulausersmodule_user_index'))), RouterInterface::ABSOLUTE_URL));
-        }
+        @trigger_error('This method is deprecated. Please use AccountController::menuAction', E_USER_DEPRECATED);
 
-        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
-            throw new AccessDeniedException();
-        }
-
-        // get the menu links for Core-2.0 modules
-        $accountLinks = $this->get('zikula.link_container_collector')->getAllLinksByType(LinkContainerInterface::TYPE_ACCOUNT);
-        // create legacy array @todo refactor template to remove need for this
-        $legacyAccountLinksFromNew = [];
-        foreach ($accountLinks as $moduleName => $links) {
-            foreach ($links as $link) {
-                $legacyAccountLinksFromNew[] = [
-                    'module' => $moduleName,
-                    'url' => $link['url'],
-                    'title' => !empty($link['text']) ? $link['text'] : '',
-                    'icon' => 'admin.png'
-                ];
-            }
-        }
-
-        // The API function is called for old-style modules
-        $legacyAccountLinks = ModUtil::apiFunc($this->name, 'user', 'accountLinks');
-        if (false === $legacyAccountLinks) {
-            $legacyAccountLinks = [];
-        }
-
-        // add the arrays together
-        $accountLinks = $legacyAccountLinksFromNew + $legacyAccountLinks;
-
-        if ($accountLinks == false) {
-            $request->getSession()->getFlashBag()->add('warning', $this->__('Error! No account links available.'));
-        }
-
-        return new Response($this->view->assign('accountLinks', $accountLinks)
-            ->fetch('User/main.tpl'));
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_account_menu'));
     }
 
     /**
@@ -137,7 +91,7 @@ class UserController extends \Zikula_AbstractController
     {
         // If user has logged in, redirect to homepage
         if (UserUtil::isLoggedIn()) {
-            return new RedirectResponse(System::normalizeUrl(System::getHomepageUrl()));
+            return new RedirectResponse($this->get('router')->generate('home'));
         }
 
         return new Response($this->view->assign($this->getVars())
@@ -151,6 +105,7 @@ class UserController extends \Zikula_AbstractController
      */
     public function registerAction(Request $request)
     {
+        @trigger_error('This method is deprecated. Please use RegistrationController::selectRegistrationMethodAction', E_USER_DEPRECATED);
         $subRequest = $this->getContainer()
             ->get('request_stack')
             ->getCurrentRequest()
@@ -710,7 +665,7 @@ class UserController extends \Zikula_AbstractController
         $request->getSession()->remove('User_login', UsersConstant::SESSION_VAR_NAMESPACE);
 
 //        $authenticationMethodList = new AuthenticationMethodListHelper($this);
-        $authenticationMethodList = $this->get('zikulausersmodule.helper.authentication_method_list_helper');
+        $authenticationMethodList = $this->get('zikula_users_module.helper.authentication_method_list_helper');
         $authenticationMethodList->initialize();
 
         if ($request->isMethod('POST') || $isFunctionCall || $isReentry) {
@@ -1080,7 +1035,7 @@ class UserController extends \Zikula_AbstractController
             // Both a user name and verification code were submitted
 
 //            $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uname' => $uname));
-            $reginfo = $this->get('zikulausersmodule.helper.registration_helper')->get(null, $uname);
+            $reginfo = $this->get('zikula_users_module.helper.registration_helper')->get(null, $uname);
 
             if ($reginfo) {
                 if (!isset($reginfo['pass']) || empty($reginfo['pass'])) {
@@ -1114,13 +1069,13 @@ class UserController extends \Zikula_AbstractController
                 }
 
                 if ($verifycode && $reginfo && isset($reginfo['pass']) && !empty($reginfo['pass'])) {
-                    $verifyChg = $this->get('zikulausersmodule.helper.registration_verification_helper')->getVerificationCode($reginfo['uid']);
+                    $verifyChg = $this->get('zikula_users_module.helper.registration_verification_helper')->getVerificationCode($reginfo['uid']);
 
                     if ($verifyChg) {
                         $codesMatch = UserUtil::passwordsMatch($verifycode, $verifyChg['verifycode']);
 
                         if ($codesMatch) {
-                            $verified = $this->get('zikulausersmodule.helper.registration_verification_helper')->verify($reginfo);
+                            $verified = $this->get('zikula_users_module.helper.registration_verification_helper')->verify($reginfo);
 
                             if ($verified) {
                                 if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {

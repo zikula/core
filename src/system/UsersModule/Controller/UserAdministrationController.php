@@ -149,7 +149,7 @@ class UserAdministrationController extends AbstractController
         if ($form->isValid() && !$validators->hasErrors()) {
             if ($form->get('submit')->isClicked()) {
                 $user = $form->getData();
-                $registrationErrors = $this->get('zikulausersmodule.helper.registration_helper')->registerNewUser(
+                $registrationErrors = $this->get('zikula_users_module.helper.registration_helper')->registerNewUser(
                     $user,
                     false,
                     $form['usernotification']->getData(),
@@ -398,7 +398,7 @@ class UserAdministrationController extends AbstractController
             if (empty($users)) {
                 throw new \InvalidArgumentException($this->__('No users found.'));
             }
-            if ($this->get('zikulausersmodule.helper.mail_helper')->mailUsers($users, $data)) {
+            if ($this->get('zikula_users_module.helper.mail_helper')->mailUsers($users, $data)) {
                 $this->addFlash('success', $this->__('Mail sent!'));
             } else {
                 $this->addFlash('error', $this->__('Could not send mail.'));
@@ -426,7 +426,7 @@ class UserAdministrationController extends AbstractController
             $this->addFlash('info', $this->__('This user logged in using a non-local verification method and therefore there is no password to reset.'));
         } else {
             $newConfirmationCode = $this->get('zikula_users_module.user_verification_repository')->resetVerificationCode($user->getUid());
-            $mailSent = $this->get('zikulausersmodule.helper.mail_helper')->mailConfirmationCode($user, $newConfirmationCode, true);
+            $mailSent = $this->get('zikula_users_module.helper.mail_helper')->mailConfirmationCode($user, $newConfirmationCode, true);
             if ($mailSent) {
                 $this->addFlash('status', $this->__f('Done! The password recovery verification code for %s has been sent via e-mail.', ['%s' => $user->getUname()]));
             }
@@ -446,7 +446,7 @@ class UserAdministrationController extends AbstractController
         if (!$this->hasPermission('ZikulaUsersModule', $user->getUname() . '::' . $user->getUid(), ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
-        $mailSent = $this->get('zikulausersmodule.helper.mail_helper')->mailUserName($user, true);
+        $mailSent = $this->get('zikula_users_module.helper.mail_helper')->mailUserName($user, true);
         if ($mailSent) {
             $this->addFlash('status', $this->__f('Done! The user name for %s has been sent via e-mail.', ['%s' => $user->getUname()]));
         }

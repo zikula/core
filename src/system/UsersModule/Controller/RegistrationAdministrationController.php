@@ -46,7 +46,7 @@ class RegistrationAdministrationController extends AbstractController
         if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
-        $this->get('zikulausersmodule.helper.registration_helper')->purgeExpired();
+        $this->get('zikula_users_module.helper.registration_helper')->purgeExpired();
 
         $limit = $this->getVar(UsersConstant::MODVAR_ITEMS_PER_PAGE, UsersConstant::DEFAULT_ITEMS_PER_PAGE);
         $users = $this->get('zikula_users_module.user_repository')->query(
@@ -137,7 +137,7 @@ class RegistrationAdministrationController extends AbstractController
                 if ($user->getEmail() != $originalUser->getEmail()) {
                     $approvalOrder = $this->getVar('moderation_order', UsersConstant::APPROVAL_BEFORE);
                     if (!(bool)$user->getAttributeValue('_Users_isVerified') && (($approvalOrder != UsersConstant::APPROVAL_BEFORE) || $originalUser->isApproved())) {
-                        $verificationSent = $this->get('zikulausersmodule.helper.registration_verification_helper')->sendVerificationCode(null, $user->getUid(), true);
+                        $verificationSent = $this->get('zikula_users_module.helper.registration_verification_helper')->sendVerificationCode(null, $user->getUid(), true);
                         if (!$verificationSent) {
                             $this->addFlash('error', $this->__('Could not resend verification code.'));
                         }
@@ -194,7 +194,7 @@ class RegistrationAdministrationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('confirm')->isClicked()) {
-                $verificationSent = $this->get('zikulausersmodule.helper.registration_verification_helper')->sendVerificationCode($user);
+                $verificationSent = $this->get('zikula_users_module.helper.registration_verification_helper')->sendVerificationCode($user);
                 if (!$verificationSent) {
                     $this->addFlash('error', $this->__f('Sorry! There was a problem sending a verification code to %sub%.', ['%sub%' => $user->getUname()]));
                 } else {
@@ -259,7 +259,7 @@ class RegistrationAdministrationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('confirm')->isClicked()) {
-                $denied = $this->get('zikulausersmodule.helper.registration_helper')->approve($user, true);
+                $denied = $this->get('zikula_users_module.helper.registration_helper')->approve($user, true);
                 if (!$denied) {
                     $this->addFlash('error', $this->__f('Sorry! There was a problem approving the registration for %sub%.', ['%sub%' => $user->getUname()]));
                 } else {
@@ -308,7 +308,7 @@ class RegistrationAdministrationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('confirm')->isClicked()) {
-                $denied = $this->get('zikulausersmodule.helper.registration_helper')->remove($user->getUid());
+                $denied = $this->get('zikula_users_module.helper.registration_helper')->remove($user->getUid());
                 if (!$denied) {
                     $this->addFlash('error', $this->__f('Sorry! There was a problem deleting the registration for %sub%.', ['%sub%' => $user->getUname()]));
                 } else {
@@ -318,7 +318,7 @@ class RegistrationAdministrationController extends AbstractController
                             'user' => $user,
                             'reason' => $data['reason'],
                         );
-                        $this->get('zikulausersmodule.helper.mail_helper')->sendNotification($user->getEmail(), 'regdeny', $rendererArgs);
+                        $this->get('zikula_users_module.helper.mail_helper')->sendNotification($user->getEmail(), 'regdeny', $rendererArgs);
                     }
                     $this->addFlash('status', $this->__f('Done! The registration for %sub% has been denied and deleted.', ['%sub%' => $user->getUname()]));
                 }
