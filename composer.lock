@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "83e02c48376d560bc92755c2c8b3d329",
+    "hash": "65d93e7c56fdef559a42ba426b0bd1ba",
     "content-hash": "8e7abdf784c3477c629df0b6ae850e82",
     "packages": [
         {
@@ -1836,17 +1836,17 @@
         },
         {
             "name": "jms/translation-bundle",
-            "version": "1.2.2",
+            "version": "1.2.3",
             "target-dir": "JMS/TranslationBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSTranslationBundle.git",
-                "reference": "b025251eaf65b73a775fa22ec277e771cdba35d8"
+                "reference": "d0d6c7f002e4210217b5f7271a438309d305540a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSTranslationBundle/zipball/b025251eaf65b73a775fa22ec277e771cdba35d8",
-                "reference": "b025251eaf65b73a775fa22ec277e771cdba35d8",
+                "url": "https://api.github.com/repos/schmittjoh/JMSTranslationBundle/zipball/d0d6c7f002e4210217b5f7271a438309d305540a",
+                "reference": "d0d6c7f002e4210217b5f7271a438309d305540a",
                 "shasum": ""
             },
             "require": {
@@ -1900,7 +1900,7 @@
                 "ui",
                 "webinterface"
             ],
-            "time": "2016-04-03 16:16:17"
+            "time": "2016-05-08 03:48:49"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -3554,16 +3554,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.5",
+            "version": "v2.8.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "39ddd2383f4113cf67f8b28cde2c9d3fa340c3c2"
+                "reference": "8408816780215fae055599d100b5385d9a247151"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/39ddd2383f4113cf67f8b28cde2c9d3fa340c3c2",
-                "reference": "39ddd2383f4113cf67f8b28cde2c9d3fa340c3c2",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/8408816780215fae055599d100b5385d9a247151",
+                "reference": "8408816780215fae055599d100b5385d9a247151",
                 "shasum": ""
             },
             "require": {
@@ -3684,7 +3684,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2016-04-29 15:34:08"
+            "time": "2016-05-09 21:45:54"
         },
         {
             "name": "twig/extensions",
@@ -3834,16 +3834,16 @@
         },
         {
             "name": "vakata/jstree",
-            "version": "3.3.0",
+            "version": "3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vakata/jstree.git",
-                "reference": "c0cd19cd3e0823ca817dd7991549c2fd57db0fad"
+                "reference": "7a976d1bfa545f196a1c8fb904bcdd8d3bb45c71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vakata/jstree/zipball/c0cd19cd3e0823ca817dd7991549c2fd57db0fad",
-                "reference": "c0cd19cd3e0823ca817dd7991549c2fd57db0fad",
+                "url": "https://api.github.com/repos/vakata/jstree/zipball/7a976d1bfa545f196a1c8fb904bcdd8d3bb45c71",
+                "reference": "7a976d1bfa545f196a1c8fb904bcdd8d3bb45c71",
                 "shasum": ""
             },
             "require": {
@@ -3887,7 +3887,7 @@
             ],
             "description": "jsTree is jquery plugin, that provides interactive trees.",
             "homepage": "http://jstree.com",
-            "time": "2016-03-19 23:19:56"
+            "time": "2016-05-04 21:21:39"
         },
         {
             "name": "vierbergenlars/php-semver",
@@ -4056,9 +4056,7 @@
             "authors": [
                 {
                     "name": "Karma Dordrak",
-                    "email": "drak@zikula.org",
-                    "homepage": "http://zikula.org",
-                    "role": "OO & PSR-4 migration"
+                    "email": "drak@zikula.org"
                 },
                 {
                     "name": "Kyle Giovannetti",
