@@ -41,7 +41,6 @@ class AccountController extends AbstractController
 
         // get the menu links for Core-2.0 modules
         $accountLinks = $this->get('zikula.link_container_collector')->getAllLinksByType(LinkContainerInterface::TYPE_ACCOUNT);
-        // create legacy array @todo refactor template to remove need for this
         $legacyAccountLinksFromNew = [];
         foreach ($accountLinks as $moduleName => $links) {
             foreach ($links as $link) {
@@ -54,7 +53,7 @@ class AccountController extends AbstractController
             }
         }
 
-        // The API function is called for old-style modules
+        // @deprecated The API function is called for old-style modules
         $legacyAccountLinks = \ModUtil::apiFunc('ZikulaUsersModule', 'user', 'accountLinks');
         if (false === $legacyAccountLinks) {
             $legacyAccountLinks = [];
