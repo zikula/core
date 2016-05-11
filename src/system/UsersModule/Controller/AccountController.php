@@ -63,4 +63,44 @@ class AccountController extends AbstractController
 
         return ['accountLinks' => $accountLinks];
     }
+
+    /**
+     * @Route("/lost-user-name")
+     * @Template
+     * @param Request $request
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function lostUserNameAction(Request $request)
+    {
+        if ($this->get('zikula_users_module.current_user')->isLoggedIn()) {
+            return $this->redirectToRoute('zikulausersmodule_account_menu');
+        }
+
+        $form = $this->createForm('Zikula\UsersModule\Form\Account\Type\LostUserNameType',
+            [], ['translator' => $this->get('translator.default')]
+        );
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            $data = $form->getData();
+            $user = $this->get('zikula_users_module.user_repository')->findBy(['email' => $data['email']]);
+            if (count($user) == 1) {
+                // send email
+                $sent = $this->get('zikula_users_module.helper.mail_helper')->mailUserName($user[0]);
+                if ($sent) {
+                    $this->addFlash('status', $this->__f('Done! The account information for %s has been sent via e-mail.', ['%s' => $data['email']]));
+                }
+            } elseif (count($user) > 1) {
+                // too many users
+                $this->addFlash('error', $this->__('There are too many users registered with that address. Please contact the system administrator for assistance.'));
+            } else {
+                // no user
+                $this->addFlash('error', $this->__('Unable to send email to the request address. Please contact the system administrator for assistance.'));
+            }
+        }
+
+        return [
+            'form' => $form->createView(),
+        ];
+
+    }
 }
