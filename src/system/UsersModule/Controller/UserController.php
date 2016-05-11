@@ -132,65 +132,13 @@ class UserController extends \Zikula_AbstractController
 
     /**
      * @Route("/lost-username")
-     * @Method({"GET", "POST"})
-     *
-     * @param Request $request
-     *
-     * Display the account information recovery form.
-     *
-     * Parameters passed via GET:
-     * --------------------------
-     * None.
-     *
-     * Parameters passed via POST:
-     * ---------------------------
-     * string email The email address on the account of the account information to recover.
-     *
-     * @return Response|RedirectResponse symfony response object
+     * @return RedirectResponse
      */
     public function lostUnameAction(Request $request)
     {
-        // we shouldn't get here if logged in already....
-        if (UserUtil::isLoggedIn()) {
-            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', array(), RouterInterface::ABSOLUTE_URL));
-        }
+        @trigger_error('This method is deprecated. Please use AccountController::lostUserNameAction', E_USER_DEPRECATED);
 
-        $proceedToForm = true;
-        $email = '';
-
-        if ($request->isMethod('POST')) {
-            $emailMessageSent = false;
-
-            $this->checkCsrfToken();
-
-            $email = $request->request->get('email', null);
-
-            if (empty($email)) {
-                $request->getSession()->getFlashBag()->add('error', $this->__('Error! E-mail address field is empty.'));
-            } else {
-                // save username and password for redisplay
-                $emailMessageSent = ModUtil::apiFunc($this->name, 'user', 'mailUname', array(
-                    'idfield'   => 'email',
-                    'id'        => $email
-                ));
-
-                if ($emailMessageSent) {
-                    $request->getSession()->getFlashBag()->add('status', $this->__f('Done! The account information for %s has been sent via e-mail.', $email));
-                    $proceedToForm = false;
-                } else {
-                    $request->getSession()->getFlashBag()->add('error', $this->__('Sorry! We are unable to send the account information for that e-mail address. Please reenter your information, or contact an administrator.'));
-                }
-            }
-        } elseif ($request->isMethod('GET')) {
-            $email = '';
-        }
-
-        if ($proceedToForm) {
-            return new Response($this->view->assign('email', $email)
-                    ->fetch('User/lostuname.tpl'));
-        } else {
-            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_login', array(), RouterInterface::ABSOLUTE_URL));
-        }
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_account_lostusername'));
     }
 
     /**
