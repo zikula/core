@@ -13,6 +13,10 @@ namespace Zikula\UsersModule\Form\Account\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Zikula\UsersModule\Validator\Constraints\ValidPassword;
 
 class LostPasswordType extends AbstractType
 {
@@ -35,6 +39,30 @@ class LostPasswordType extends AbstractType
                 'attr' => ['class' => 'btn btn-success']
             ])
         ;
+        if ($options['includeCode']) {
+            $builder
+                ->add('code', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+                    'label' => $options['translator']->__('Confirmation code'),
+                    'input_group' => ['left' => '<i class="fa fa-code"></i>'],
+                ])
+                ->add('pass', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
+                    'type' => 'Symfony\Component\Form\Extension\Core\Type\PasswordType',
+                    'first_options' => [
+                        'label' => $options['translator']->__('Create new password'),
+                        'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
+                    ],
+                    'second_options' => [
+                        'label' => $options['translator']->__('Repeat new password'),
+                        'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
+                    ],
+                    'invalid_message' => $options['translator']->__('The passwords must match!'),
+                    'constraints' => [
+                        new ValidPassword(),
+                        new NotNull()
+                    ]
+                ])
+            ;
+        }
     }
 
     public function getBlockPrefix()
@@ -49,6 +77,13 @@ class LostPasswordType extends AbstractType
     {
         $resolver->setDefaults([
             'translator' => null,
+            'includeCode' => false,
+            'constraints' => new Callback(['callback' => function ($data, ExecutionContextInterface $context) use ($resolver) {
+                if (empty($data['uname'] && empty($data['email']))) {
+                    $context->buildViolation(__('Error! You must enter either your username or email address.'))
+                        ->addViolation();
+                }
+            }]),
         ]);
     }
 }

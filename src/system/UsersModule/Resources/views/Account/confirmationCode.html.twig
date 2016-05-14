@@ -1,0 +1,22 @@
+{% form_theme form with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ polyfill() }}
+{{ moduleHeader('user', __('Account information recovery'), '', true) }}
+
+<p class="alert alert-info">{{ __('Please complete the form below to reset your password and login.') }}</p>
+
+<div class="well">
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_row(form.uname) }}
+    <div class="form-group">
+        <label class="col-sm-3 control-label">{{ __('OR') }}</label>
+    </div>
+    {{ form_row(form.email) }}
+    {{ form_row(form.code) }}
+    <div class="alert alert-info">{{ __('Create a new password.') }}</div>
+    {{ form_row(form.pass) }}
+    {{ form_end(form) }}
+</div>

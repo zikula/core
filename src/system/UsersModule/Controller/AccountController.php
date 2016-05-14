@@ -19,6 +19,7 @@ use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Entity\UserVerificationEntity;
 
 /**
  * @Route("/account")
@@ -109,6 +110,15 @@ class AccountController extends AbstractController
     }
 
     /**
+     * @Route("/lost-password-user-name")
+     * @param Request $request
+     */
+    public function lostPasswordOrUserNameAction(Request $request)
+    {
+
+    }
+
+    /**
      * @todo refactor to reduce code/simplify in controller
      * @todo consider click overload protection to prevent DOS
      * @Route("/lost-password")
@@ -126,7 +136,7 @@ class AccountController extends AbstractController
             [], ['translator' => $this->get('translator.default')]
         );
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $redirectToRoute = '';
             $map = ['uname' => $this->__('username'), 'email' => $this->__('email address')];
             $data = $form->getData();
@@ -211,20 +221,58 @@ class AccountController extends AbstractController
     }
 
     /**
-     * @Route("/lost-password-user-name")
-     * @param Request $request
-     */
-    public function lostPasswordOrUserNameAction(Request $request)
-    {
-
-    }
-
-    /**
+     * @todo consider click overload protection to prevent DOS
      * @Route("/lost-password/code")
+     * @Template
      * @param Request $request
+     * @return array
      */
     public function confirmationCodeAction(Request $request)
     {
+        if ($this->get('zikula_users_module.current_user')->isLoggedIn()) {
+            return $this->redirectToRoute('zikulausersmodule_account_menu');
+        }
 
+        $form = $this->createForm('Zikula\UsersModule\Form\Account\Type\LostPasswordType', [], [
+                'translator' => $this->get('translator.default'),
+                'includeCode' => true,
+            ]
+        );
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $map = ['uname' => $this->__('username'), 'email' => $this->__('email address')];
+            $data = $form->getData();
+            $field = empty($data['uname']) ? 'email' : 'uname';
+            $user = $this->get('zikula_users_module.user_repository')->findBy([$field => $data[$field]]);
+            if (count($user) == 1) {
+                /** @var UserEntity $user */
+                $user = $user[0];
+                $changePasswordExpireDays = $this->getVar(UsersConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD, UsersConstant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD);
+                $this->get('zikula_users_module.user_verification_repository')->purgeExpiredRecords($changePasswordExpireDays);
+                /** @var UserVerificationEntity $userVerificationEntity */
+                $userVerificationEntity = $this->get('zikula_users_module.user_verification_repository')->findOneBy(['uid' => $user->getUid(), 'changetype' => UsersConstant::VERIFYCHGTYPE_PWD]);
+                if (\UserUtil::passwordsMatch($data['code'], $userVerificationEntity->getVerifycode())) {
+                    \UserUtil::setPassword($data['pass'], $user->getUid());
+                    $authenticationInfo = ['login_id' => $data[$field], 'pass' => $data['pass']];
+                    $authenticationMethod = ['modname' => 'ZikulaUsersModule', 'method' => $field];
+                    \UserUtil::loginUsing($authenticationMethod, $authenticationInfo);
+                    $this->addFlash('success', $this->__('Code is confirmed. You are now logged in with your new password.'));
+
+                    return $this->redirectToRoute('zikulausersmodule_account_menu');
+                } else {
+                    $this->addFlash('error', $this->__('Invalid code.'));
+                }
+            } elseif (count($user) > 1) {
+                // too many users
+                $this->addFlash('error', $this->__('There are too many users registered with that address. Please contact the system administrator for assistance.'));
+            } else {
+                // no user
+                $this->addFlash('error', $this->__f('%s not found. Please contact the system administrator for assistance.', ['%s' => ucwords($map[$field])]));
+            }
+        }
+
+        return [
+            'form' => $form->createView(),
+        ];
     }
 }
