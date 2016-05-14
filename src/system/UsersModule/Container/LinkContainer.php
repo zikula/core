@@ -185,9 +185,13 @@ class LinkContainer implements LinkContainerInterface
         $isLoggedIn = \UserUtil::isLoggedIn();
 
         $links = [];
+        $links[] = [
+            'icon' => 'wrench',
+            'text' => $this->translator->__('Account Settings'),
+            'url' => $this->router->generate('zikulausersmodule_account_menu')
+        ];
 
-        // we do not check permissions for guests here (see #1874)
-        if (!$isLoggedIn/* && $this->permissionApi->hasPermission('ZikulaUsersModule' . '::', '::', ACCESS_READ)*/) {
+        if (!$isLoggedIn) {
             $links[] = [
                 'icon' => 'sign-in',
                 'text' => $this->translator->__('Log in'),
@@ -222,14 +226,6 @@ class LinkContainer implements LinkContainerInterface
                     'url'   => $this->router->generate('zikulausersmodule_registration_register')
                 ];
             }
-        }
-
-        if ($isLoggedIn && $this->permissionApi->hasPermission('ZikulaUsersModule' . '::', '::', ACCESS_READ)) {
-            $links[] = [
-                'icon' => 'wrench',
-                'text' => $this->translator->__('Account Settings'),
-                'url' => $this->router->generate('zikulausersmodule_account_menu')
-            ];
         }
 
         return $links;

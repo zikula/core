@@ -3,6 +3,8 @@
 {% if not currentUser.loggedin %}
     <p>{{ __('Please select one of the following:') }}</p>
     <ul>
+        <li><a href="{{ path('zikulausersmodule_user_login') }}">{{ __('I would like to login.') }}</a></li>
+        <li><a href="{{ path('zikulausersmodule_registration_register') }}">{{ __('I would like to create a new account.') }}</a></li>
         <li><a href="{{ path('zikulausersmodule_account_lostusername') }}">{{ __('I have forgotten my account information (for example, my user name).') }}</a></li>
         <li><a href="{{ path('zikulausersmodule_user_lostpassword') }}">{{ __('I have forgotten my password.') }}</a></li>
         <li><a href="{{ path('zikulausersmodule_user_lostpasswordcode') }}">{{ __('I have received a password recovery code, and would like to enter it.') }}</a></li>
