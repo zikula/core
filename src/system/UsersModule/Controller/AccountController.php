@@ -39,7 +39,7 @@ class AccountController extends AbstractController
         }
 
         $accountLinks = [];
-        if (!$this->get('zikula_users_module.current_user')->isLoggedIn()) {
+        if ($this->get('zikula_users_module.current_user')->isLoggedIn()) {
             // get the menu links for Core-2.0 modules
             $accountLinks = $this->get('zikula.link_container_collector')->getAllLinksByType(LinkContainerInterface::TYPE_ACCOUNT);
             $legacyAccountLinksFromNew = [];
