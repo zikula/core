@@ -182,8 +182,6 @@ class LinkContainer implements LinkContainerInterface
 
     private function getUser()
     {
-        $messageModule = $this->variableApi->get(VariableApi::CONFIG, 'messagemodule', '');
-        $profileModule = $this->variableApi->get(VariableApi::CONFIG, 'profilemodule', '');
         $isLoggedIn = \UserUtil::isLoggedIn();
 
         $links = [];
@@ -214,7 +212,7 @@ class LinkContainer implements LinkContainerInterface
                     ]
                 ],
                 'text' => $this->translator->__('Recover account information or password'),
-                'url' => $this->router->generate('zikulausersmodule_user_lostpwduname'),
+                'url' => $this->router->generate('zikulausersmodule_account_menu'),
             ];
 
             if ($this->variableApi->get('ZikulaUsersModule', 'reg_allowreg')) {
@@ -234,64 +232,15 @@ class LinkContainer implements LinkContainerInterface
             ];
         }
 
-        if ($isLoggedIn && !empty($profileModule) && \ModUtil::available($profileModule) && $this->permissionApi->hasPermission($profileModule . '::', '::', ACCESS_READ)) {
-            $links[] = [
-                'text' => $this->translator->__('Profile'),
-                'url' => \ModUtil::url($profileModule, 'user', 'view'),
-                'icon' => 'user',
-                'links' => [
-                    [
-                        'text' => $this->translator->__('Edit Profile'),
-                        'url' => \ModUtil::url($profileModule, 'user', 'modify')
-                    ],
-                    [
-                        'text' => $this->translator->__('Change Email Address'),
-                        'url' => $this->router->generate('zikulausersmodule_user_changeemail')
-                    ],
-                    [
-                        'text' => $this->translator->__('Change Password'),
-                        'url' => $this->router->generate('zikulausersmodule_user_changepassword')
-                    ]
-                ]
-            ];
-        }
-
-        if ($isLoggedIn && !empty($messageModule) && \ModUtil::available($messageModule) && $this->permissionApi->hasPermission($messageModule . '::', '::', ACCESS_READ)) {
-            $links[] = [
-                'icon' => 'envelope',
-                'text' => $this->translator->__('Messages'),
-                'url' => \ModUtil::url($messageModule, 'user', 'main')
-            ];
-        }
-
-        if (!empty($profileModule) && \ModUtil::available($profileModule) && $this->permissionApi->hasPermission($profileModule . ':Members:', '::', ACCESS_READ)) {
-            $links[9999] = [
-                'icon' => 'list',
-                'text' => $this->translator->__('Registered Users'),
-                'url' => \ModUtil::url($profileModule, 'user', 'viewmembers')
-            ];
-
-            if ($this->permissionApi->hasPermission($profileModule . ':Members:recent', '::', ACCESS_READ)) {
-                $links[9999]['links'][] = [
-                    'text' => $this->translator->__f('Last %s Registered Users', $this->variableApi->get($profileModule, 'recentmembersitemsperpage')),
-                    'url' => \ModUtil::url($profileModule, 'user', 'recentmembers')
-                ];
-            }
-
-            if ($this->permissionApi->hasPermission($profileModule . ':Members:online', '::', ACCESS_READ)) {
-                $links[9999]['links'][] = [
-                    'text' => $this->translator->__('Users Online'),
-                    'url' => \ModUtil::url($profileModule, 'user', 'online')
-                ];
-            }
-        }
-
         return $links;
     }
 
     private function getAccount()
     {
         $links = [];
+        if (!\UserUtil::isLoggedIn()) {
+            return $links;
+        }
 
         // Show change password action only if the account record contains a password, and the password is not the
         // special marker for an account created without a Users module authentication password.

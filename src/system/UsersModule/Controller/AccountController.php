@@ -34,35 +34,34 @@ class AccountController extends AbstractController
      */
     public function menuAction(Request $request)
     {
-        if (!$this->get('zikula_users_module.current_user')->isLoggedIn()) {
-            return $this->redirectToRoute('zikulausersmodule_user_login', ['returnpage' => urlencode($this->get('router')->generate('zikulausersmodule_account_menu'))]);
-        }
-
-        if (!$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
+        if ($this->get('zikula_users_module.current_user')->isLoggedIn() && !$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
         }
 
-        // get the menu links for Core-2.0 modules
-        $accountLinks = $this->get('zikula.link_container_collector')->getAllLinksByType(LinkContainerInterface::TYPE_ACCOUNT);
-        $legacyAccountLinksFromNew = [];
-        foreach ($accountLinks as $moduleName => $links) {
-            foreach ($links as $link) {
-                $legacyAccountLinksFromNew[] = [
-                    'module' => $moduleName,
-                    'url' => $link['url'],
-                    'text' => $link['text'],
-                    'icon' => $link['icon']
-                ];
+        $accountLinks = [];
+        if (!$this->get('zikula_users_module.current_user')->isLoggedIn()) {
+            // get the menu links for Core-2.0 modules
+            $accountLinks = $this->get('zikula.link_container_collector')->getAllLinksByType(LinkContainerInterface::TYPE_ACCOUNT);
+            $legacyAccountLinksFromNew = [];
+            foreach ($accountLinks as $moduleName => $links) {
+                foreach ($links as $link) {
+                    $legacyAccountLinksFromNew[] = [
+                        'module' => $moduleName,
+                        'url' => $link['url'],
+                        'text' => $link['text'],
+                        'icon' => $link['icon']
+                    ];
+                }
             }
-        }
 
-        // @deprecated The API function is called for old-style modules
-        $legacyAccountLinks = \ModUtil::apiFunc('ZikulaUsersModule', 'user', 'accountLinks');
-        if (false === $legacyAccountLinks) {
-            $legacyAccountLinks = [];
+            // @deprecated The API function is called for old-style modules
+            $legacyAccountLinks = \ModUtil::apiFunc('ZikulaUsersModule', 'user', 'accountLinks');
+            if (false === $legacyAccountLinks) {
+                $legacyAccountLinks = [];
+            }
+            // add the arrays together
+            $accountLinks = $legacyAccountLinksFromNew + $legacyAccountLinks;
         }
-        // add the arrays together
-        $accountLinks = $legacyAccountLinksFromNew + $legacyAccountLinks;
 
         return ['accountLinks' => $accountLinks];
     }
@@ -110,15 +109,6 @@ class AccountController extends AbstractController
     }
 
     /**
-     * @Route("/lost-password-user-name")
-     * @param Request $request
-     */
-    public function lostPasswordOrUserNameAction(Request $request)
-    {
-
-    }
-
-    /**
      * @todo refactor to reduce code/simplify in controller
      * @todo consider click overload protection to prevent DOS
      * @Route("/lost-password")
@@ -150,7 +140,7 @@ class AccountController extends AbstractController
                     case UsersConstant::ACTIVATED_ACTIVE:
                         if ('' == $user->getPass() || UsersConstant::PWD_NO_USERS_AUTHENTICATION == $user->getPass()) {
                             $this->addFlash('error', $this->__('Sorry! Your account is not set up to use a password to log into this site. Please recover your account information to determine your available log-in options.'));
-                            $redirectToRoute = 'zikulausersmodule_account_lostpasswordorusername';
+                            $redirectToRoute = 'zikulausersmodule_account_menu';
                             break;
                         }
                         $newConfirmationCode = $this->get('zikula_users_module.user_verification_repository')->resetVerificationCode($user->getUid());
@@ -166,13 +156,13 @@ class AccountController extends AbstractController
                         if ($this->getVar(UsersConstant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_INACTIVE_STATUS)) {
                             $this->addFlash('error', $this->__('Sorry! Your account is marked as inactive. Please contact a site administrator for more information.'));
                         }
-                        $redirectToRoute = 'zikulausersmodule_account_lostpasswordorusername';
+                        $redirectToRoute = 'zikulausersmodule_account_menu';
                         break;
                     case UsersConstant::ACTIVATED_PENDING_DELETE:
                         if ($this->getVar(UsersConstant::MODVAR_LOGIN_DISPLAY_DELETE_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_DELETE_STATUS)) {
                             $this->addFlash('error', $this->__('Sorry! Your account is marked for removal. Please contact a site administrator for more information.'));
                         }
-                        $redirectToRoute = 'zikulausersmodule_account_lostpasswordorusername';
+                        $redirectToRoute = 'zikulausersmodule_account_menu';
                         break;
                     case UsersConstant::ACTIVATED_PENDING_REG:
                         $displayPendingApproval = $this->getVar(UsersConstant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_APPROVAL_STATUS);
@@ -195,7 +185,7 @@ class AccountController extends AbstractController
                             } else {
                                 $this->addFlash('error', $this->__('Sorry! Your account has not completed the registration process. Please contact a site administrator for more information.'));
                             }
-                            $redirectToRoute = 'zikulausersmodule_account_lostpasswordorusername';
+                            $redirectToRoute = 'zikulausersmodule_account_menu';
                         } else {
                             $this->addFlash('error', $this->__('Sorry! An account could not be located with that information. Correct your entry and try again. If you have recently registered a new account with this site, we may be waiting for you to verify your e-mail address, or we might not have approved your registration request yet.'));
                         }
