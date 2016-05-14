@@ -228,7 +228,7 @@ class LinkContainer implements LinkContainerInterface
             $links[] = [
                 'icon' => 'wrench',
                 'text' => $this->translator->__('Account Settings'),
-                'url' => $this->router->generate('zikulausersmodule_user_index')
+                'url' => $this->router->generate('zikulausersmodule_account_menu')
             ];
         }
 
