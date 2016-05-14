@@ -63,7 +63,7 @@
                 <li role="separator" class="divider"></li>
                 <li><a href="{route name='zikulausersmodule_account_lostusername'}">{gt text='Recover lost username'}</a></li>
                 <li><a href="{route name='zikulausersmodule_account_lostpassword'}">{gt text='Recover lost password'}</a></li>
-                <li><a href="{route name='zikulausersmodule_user_lostpasswordcode'}">{gt text='Enter recovery code'}</a></li>
+                <li><a href="{route name='zikulausersmodule_account_confirmationcode'}">{gt text='Enter recovery code'}</a></li>
             </ul>
         </div>
     </form>

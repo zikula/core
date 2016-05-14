@@ -720,7 +720,7 @@ class RegistrationHelper
      */
     public function purgeExpired()
     {
-        $regExpireDays = $this->variableApi->get('ZikulaUsersModule', 'reg_expiredays', 0);
+        $regExpireDays = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_EXPIRE_DAYS_REGISTRATION, UsersConstant::DEFAULT_EXPIRE_DAYS_REGISTRATION);
 
         if ($regExpireDays > 0) {
             $deletedUsers = $this->userVerificationRepository->purgeExpiredRecords($regExpireDays);

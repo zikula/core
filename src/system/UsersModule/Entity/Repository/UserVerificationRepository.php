@@ -34,6 +34,9 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
      */
     public function purgeExpiredRecords($daysOld)
     {
+        if ($daysOld < 1) {
+            return [];
+        }
         // Expiration date/times, as with all date/times in the Users module, are stored as UTC.
         $staleRecordUTC = new \DateTime(null, new \DateTimeZone('UTC'));
         $staleRecordUTC->modify("-{$daysOld} days");
