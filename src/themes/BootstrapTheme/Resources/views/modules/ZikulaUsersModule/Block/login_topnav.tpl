@@ -61,8 +61,8 @@
                 <li><a href="{route name='zikulausersmodule_user_login'}">{gt text='Log in page'}</a></li>
                 <li><a href="{route name='zikulausersmodule_registration_selectregistrationmethod'}">{gt text='Create new account'}</a></li>
                 <li role="separator" class="divider"></li>
-                <li><a href="{route name='zikulausersmodule_user_lostuname'}">{gt text='Recover lost username'}</a></li>
-                <li><a href="{route name='zikulausersmodule_user_lostpassword'}">{gt text='Recover lost password'}</a></li>
+                <li><a href="{route name='zikulausersmodule_account_lostusername'}">{gt text='Recover lost username'}</a></li>
+                <li><a href="{route name='zikulausersmodule_account_lostpassword'}">{gt text='Recover lost password'}</a></li>
                 <li><a href="{route name='zikulausersmodule_user_lostpasswordcode'}">{gt text='Enter recovery code'}</a></li>
             </ul>
         </div>
