@@ -210,7 +210,7 @@ class LinkContainer implements LinkContainerInterface
                     ],
                     [
                         'text' => $this->translator->__('Enter Password Recovery Code'),
-                        'url' => $this->router->generate('zikulausersmodule_user_lostpasswordcode')
+                        'url' => $this->router->generate('zikulausersmodule_account_confirmationcode')
                     ]
                 ],
                 'text' => $this->translator->__('Recover account information or password'),
