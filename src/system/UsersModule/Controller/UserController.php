@@ -115,19 +115,13 @@ class UserController extends \Zikula_AbstractController
 
     /**
      * @Route("/lost-account-details")
-     *
-     * Display the lost user name / password choices.
-     *
-     * @return Response|RedirectResponse symfony response object
+     * @return RedirectResponse
      */
     public function lostPwdUnameAction()
     {
-        // we shouldn't get here if logged in already....
-        if (UserUtil::isLoggedIn()) {
-            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', array(), RouterInterface::ABSOLUTE_URL));
-        }
+        @trigger_error('This method is deprecated. Please use AccountController::menuAction', E_USER_DEPRECATED);
 
-        return new Response($this->view->fetch('User/lostpwduname.tpl'));
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_account_menu'));
     }
 
     /**
