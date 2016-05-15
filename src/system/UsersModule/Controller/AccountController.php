@@ -14,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
@@ -29,10 +30,9 @@ class AccountController extends AbstractController
     /**
      * @Route("")
      * @Template
-     * @param Request $request
      * @return Response|array
      */
-    public function menuAction(Request $request)
+    public function menuAction()
     {
         if ($this->get('zikula_users_module.current_user')->isLoggedIn() && !$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
@@ -109,7 +109,7 @@ class AccountController extends AbstractController
     }
 
     /**
-     * @todo refactor to reduce code/simplify in controller
+     * @todo refactor to reduce code/simplify in this method
      * @todo consider click overload protection to prevent DOS
      * @Route("/lost-password")
      * @Template
@@ -143,7 +143,7 @@ class AccountController extends AbstractController
                             $redirectToRoute = 'zikulausersmodule_account_menu';
                             break;
                         }
-                        $newConfirmationCode = $this->get('zikula_users_module.user_verification_repository')->resetVerificationCode($user->getUid());
+                        $newConfirmationCode = $this->get('zikula_users_module.user_verification_repository')->setVerificationCode($user->getUid());
                         $sent = $this->get('zikula_users_module.helper.mail_helper')->mailConfirmationCode($user, $newConfirmationCode);
                         if ($sent) {
                             $this->addFlash('status', $this->__f('Done! The confirmation code for %s has been sent via e-mail.', ['%s' => $data[$field]]));
@@ -264,5 +264,84 @@ class AccountController extends AbstractController
         return [
             'form' => $form->createView(),
         ];
+    }
+
+    /**
+     * @Route("/change-email")
+     * @Template
+     * @param Request $request
+     * @return array
+     */
+    public function changeEmailAction(Request $request)
+    {
+        if (!$this->get('zikula_users_module.current_user')->isLoggedIn()) {
+            throw new AccessDeniedException();
+        }
+        if ((bool)$this->getVar(UsersConstant::MODVAR_MANAGE_EMAIL_ADDRESS, UsersConstant::DEFAULT_MANAGE_EMAIL_ADDRESS) != true) {
+            return $this->redirectToRoute('zikulausersmodule_account_menu');
+        }
+        $form = $this->createForm('Zikula\UsersModule\Form\Account\Type\ChangeEmailType', [], [
+                'translator' => $this->get('translator.default'),
+            ]
+        );
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $currentUser = $this->get('zikula_users_module.current_user');
+            $code = $this->get('zikula_users_module.user_verification_repository')->setVerificationCode($currentUser->get('uid'), UsersConstant::VERIFYCHGTYPE_EMAIL, $data['email']);
+            $templateArgs = [
+                'uname'     => $currentUser->get('uname'),
+                'email'     => $currentUser->get('email'),
+                'newemail'  => $data['email'],
+                'url'       => $this->get('router')->generate('zikulausersmodule_account_confirmchangedemail', ['code' => $code], RouterInterface::ABSOLUTE_URL),
+            ];
+            $sent = $this->get('zikula_users_module.helper.mail_helper')->sendNotification($data['email'], 'userverifyemail', $templateArgs);
+            if ($sent) {
+                $this->addFlash('success', $this->__('Done! You will receive an e-mail to your new e-mail address to confirm the change. You must follow the instructions in that message in order to verify your new address.'));
+            } else {
+                $this->addFlash('error', $this->__('Error! There was a problem saving your new e-mail address or sending you a verification message.'));
+            }
+
+            return $this->redirectToRoute('zikulausersmodule_account_menu');
+        }
+
+        return [
+            'form' => $form->createView(),
+        ];
+    }
+
+    /**
+     * @Route("/change-email-confirm/{code}")
+     * @param null $code
+     * @return Response
+     */
+    public function confirmChangedEmailAction($code = null)
+    {
+        if (!$this->get('zikula_users_module.current_user')->isLoggedIn()) {
+            throw new AccessDeniedException();
+        }
+        if (empty($code)) {
+            return $this->redirectToRoute('zikulausersmodule_account_menu');
+        }
+        $emailExpireDays = $this->getVar(UsersConstant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL, UsersConstant::DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL);
+        $this->get('zikula_users_module.user_verification_repository')->purgeExpiredRecords($emailExpireDays, UsersConstant::VERIFYCHGTYPE_PWD, false);
+        $currentUser = $this->get('zikula_users_module.current_user');
+        /** @var UserVerificationEntity $verificationRecord */
+        $verificationRecord = $this->get('zikula_users_module.user_verification_repository')->findOneBy([
+            'uid' => $currentUser->get('uid'),
+            'changetype' => UsersConstant::VERIFYCHGTYPE_EMAIL
+        ]);
+        $validCode = \UserUtil::passwordsMatch($code, $verificationRecord->getVerifycode());
+        if (!$validCode) {
+            $this->addFlash('error', $this->__f('Error! Your e-mail has not been found. After your request you have %s days to confirm the new e-mail address.', ['%s' => $emailExpireDays]));
+        } else {
+            $user = $this->get('zikula_users_module.user_repository')->find($currentUser->get('uid'));
+            $user->setEmail($verificationRecord->getNewemail());
+            $this->get('zikula_users_module.user_repository')->persistAndFlush($user);
+            $this->get('zikula_users_module.user_verification_repository')->resetVerifyChgFor($user->getUid(), [UsersConstant::VERIFYCHGTYPE_EMAIL]);
+            $this->addFlash('success', $this->__('Done! Changed your e-mail address.'));
+        }
+
+        return $this->redirectToRoute('zikulausersmodule_account_menu');
     }
 }
