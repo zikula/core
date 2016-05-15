@@ -32,7 +32,7 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
     /**
      * {@inheritdoc}
      */
-    public function purgeExpiredRecords($daysOld)
+    public function purgeExpiredRecords($daysOld, $changeType = UsersConstant::VERIFYCHGTYPE_REGEMAIL, $deleteUserEntities = true)
     {
         if ($daysOld < 1) {
             return [];
@@ -40,16 +40,17 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
         // Expiration date/times, as with all date/times in the Users module, are stored as UTC.
         $staleRecordUTC = new \DateTime(null, new \DateTimeZone('UTC'));
         $staleRecordUTC->modify("-{$daysOld} days");
-        $staleRecordUTCStr = $staleRecordUTC->format(UsersConstant::DATETIME_FORMAT);
+//        $staleRecordUTCStr = $staleRecordUTC->format(UsersConstant::DATETIME_FORMAT);
 
         $qb = $this->createQueryBuilder('v');
         $and = $qb->expr()->andX()
-            ->add($qb->expr()->eq('v.changetype', UsersConstant::VERIFYCHGTYPE_REGEMAIL))
+            ->add($qb->expr()->eq('v.changetype', ':changetype'))
             ->add($qb->expr()->isNotNull('v.created_dt'))
             ->add($qb->expr()->neq('v.created_dt', '0000-00-00 00:00:00'))
-            ->add($qb->expr()->lt('v.created_dt', $staleRecordUTCStr));
+            ->add($qb->expr()->lt('v.created_dt', $staleRecordUTC));
         $qb->select('v')
-            ->where($and);
+            ->where($and)
+            ->setParameter('changetype', $changeType);
         $staleVerificationRecords = $qb->getQuery()->getResult();
 
         $deletedUsers = [];
@@ -57,9 +58,11 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
             foreach ($staleVerificationRecords as $staleVerificationRecord) {
                 // delete user record
                 $userRepo = $this->_em->getRepository('ZikulaUsersModule:UserEntity');
-                $user = $userRepo->find($staleVerificationRecord['uid']);
-                $deletedUsers[] = $user;
-                $userRepo->removeAndFlush($user);
+                if ($deleteUserEntities) {
+                    $user = $userRepo->find($staleVerificationRecord['uid']);
+                    $deletedUsers[] = $user;
+                    $userRepo->removeAndFlush($user);
+                }
 
                 // delete verification record
                 $this->_em->remove($staleVerificationRecord);
@@ -112,11 +115,13 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
     }
 
     /**
-     * Reset a users confirmation code.
+     * Set a user's confirmation code.
      * @param integer $uid
+     * @param int $changeType
+     * @param null $email
      * @return string new confirmation code.
      */
-    public function resetVerificationCode($uid)
+    public function setVerificationCode($uid, $changeType = UsersConstant::VERIFYCHGTYPE_PWD, $email = null)
     {
         $confirmationCode = \UserUtil::generatePassword();
         $hashedConfirmationCode = \UserUtil::getHashedPassword($confirmationCode);
@@ -127,15 +132,18 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
             ->where('v.uid = :uid')
             ->andWhere('v.changetype = :changetype')
             ->setParameter('uid', $uid)
-            ->setParameter('changetype', UsersConstant::VERIFYCHGTYPE_PWD)
+            ->setParameter('changetype', $changeType)
             ->getQuery();
         $query->execute();
 
         $entity = new UserVerificationEntity();
-        $entity->setChangetype(UsersConstant::VERIFYCHGTYPE_PWD);
+        $entity->setChangetype($changeType);
         $entity->setUid($uid);
         $entity->setVerifycode($hashedConfirmationCode);
         $entity->setCreated_Dt($nowUTC->format(UsersConstant::DATETIME_FORMAT));
+        if (!empty($email)) {
+            $entity->setNewemail($email);
+        }
         $this->_em->persist($entity);
         $this->_em->flush();
 

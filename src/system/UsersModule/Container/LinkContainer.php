@@ -253,7 +253,7 @@ class LinkContainer implements LinkContainerInterface
         // show edit email link if configured to manage email address
         if ($this->variableApi->get('ZikulaUsersModule', 'changeemail', true)) {
             $links[2] = [
-                'url'   => $this->router->generate('zikulausersmodule_user_changeemail'),
+                'url'   => $this->router->generate('zikulausersmodule_account_changeemail'),
                 'text' => $this->translator->__('E-mail address manager'),
                 'icon'  => 'at'
             ];

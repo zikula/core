@@ -1295,99 +1295,24 @@ class UserController extends \Zikula_AbstractController
 
     /**
      * @Route("/email")
-     *
-     * Display the change email address form.
-     *
-     * @return Response symfony response object
-     *
-     * @throws AccessDeniedException Thrown if the user isn't logged in
+     * @return RedirectResponse
      */
     public function changeEmailAction()
     {
-        if (!UserUtil::isLoggedIn()) {
-            throw new AccessDeniedException();
-        }
+        @trigger_error('This method is deprecated. Please use AccountController::menuAction', E_USER_DEPRECATED);
 
-        if ($this->getVar('changeemail', 1) != 1) {
-            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', array(), RouterInterface::ABSOLUTE_URL));
-        }
-
-        return new Response($this->view->fetch('User/changeemail.tpl'));
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_account_changeemail'));
     }
 
     /**
-     * @Route("/email/update")
-     *
-     * Update the email address.
-     *
-     * @param Request $request
-     *
-     * Parameters passed via GET:
-     * --------------------------
-     * None.
-     *
-     * Parameters passed via POST:
-     * ---------------------------
-     * string newemail      The new e-mail address to store for the user.
-     * string newemailagain The new e-mail address repeated for verification.
-     *
-     * Parameters passed via SESSION:
-     * ------------------------------
-     * None.
-     *
+     * @Route("/email/confirm/{confirmcode}")
      * @return RedirectResponse
-     *
-     * @throws AccessDeniedException Thrown if the user isn't logged in
      */
-    public function updateEmailAction(Request $request)
+    public function confirmChEmailAction(Request $request, $confirmcode = null)
     {
-        if (!UserUtil::isLoggedIn()) {
-            throw new AccessDeniedException();
-        }
+        @trigger_error('This method is deprecated. Please use AccountController::confirmChangeEmailAction', E_USER_DEPRECATED);
 
-        $this->checkCsrfToken();
-
-        $uservars = $this->getVars();
-        if ($uservars['changeemail'] != 1) {
-            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', array(), RouterInterface::ABSOLUTE_URL));
-        }
-
-        $newemail = $request->request->get('newemail', '');
-        $newemailagain = $request->request->get('newemailagain', '');
-
-        $emailErrors = ModUtil::apiFunc($this->name, 'registration', 'getEmailErrors', array(
-            'uid'           => \UserUtil::getVar('uid'),
-            'email'         => $newemail,
-            'emailagain'    => $newemailagain,
-            'checkmode'     => 'modify',
-        ));
-
-        if (!empty($emailErrors)) {
-            foreach ($emailErrors as $field => $errorList) {
-                if (is_array($errorList)) {
-                    // More than one error.
-                    foreach ($errorList as $errorMessage) {
-                        $request->getSession()->getFlashBag()->add('error', $errorMessage);
-                    }
-                } else {
-                    // Only one error.
-                    $request->getSession()->getFlashBag()->add('error', $errorList);
-                }
-            }
-
-            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_changeemail', array(), RouterInterface::ABSOLUTE_URL));
-        }
-
-        // save the provisional email until confimation
-        $verificationSent = ModUtil::apiFunc($this->name, 'user', 'savePreEmail', array('newemail' => $newemail));
-
-        if (!$verificationSent) {
-            $request->getSession()->getFlashBag()->add('error', $this->__('Error! There was a problem saving your new e-mail address or sending you a verification message.'));
-        }
-
-        $request->getSession()->getFlashBag()->add('status', $this->__('Done! You will receive an e-mail to your new e-mail address to confirm the change. You must follow the instructions in that message in order to verify your new address.'));
-
-        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_account_confirmchangedemail', ['code' => $confirmcode]));
     }
 
     /**
@@ -1407,51 +1332,8 @@ class UserController extends \Zikula_AbstractController
 
         // Assign the languages
         return new Response($this->view->assign('languages', \ZLanguage::getInstalledLanguageNames())
-                ->assign('usrlang', \ZLanguage::getLanguageCode())
-                ->fetch('User/changelang.tpl'));
-    }
-
-    /**
-     * @Route("/email/confirm/{confirmcode}")
-     * @Method("GET")
-     *
-     * Confirm the update of the email address.
-     *
-     * @param Request $request
-     * @param $confirmcode
-     *
-     * @return RedirectResponse
-     *
-     * @throws \RuntimeException Thrown if the user isn't logged in or
-     *                                  if the e-mail address hasn't be found
-     */
-    public function confirmChEmailAction(Request $request, $confirmcode = null)
-    {
-        if (!UserUtil::isLoggedIn()) {
-            $request->getSession()->getFlashBag()->add('error', $this->__('Please log into your account in order to confirm your change of e-mail address.'));
-        }
-
-        // get user new email that is waiting for confirmation
-        $preemail = ModUtil::apiFunc($this->name, 'user', 'getUserPreEmail');
-
-        $validCode = UserUtil::passwordsMatch($confirmcode, $preemail['verifycode']);
-
-        if (!$preemail || !$validCode) {
-            $request->getSession()->getFlashBag()->add('error', $this->__('Error! Your e-mail has not been found. After your request you have five days to confirm the new e-mail address.'));
-        }
-
-        // user and confirmation code are correct. set the new email
-        UserUtil::setVar('email', $preemail['newemail']);
-
-        // the preemail record is deleted
-        ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
-            'uid'       => $preemail['uid'],
-            'changetype' => UsersConstant::VERIFYCHGTYPE_EMAIL,
-        ));
-
-        $request->getSession()->getFlashBag()->add('status', $this->__('Done! Changed your e-mail address.'));
-
-        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', array(), RouterInterface::ABSOLUTE_URL));
+            ->assign('usrlang', \ZLanguage::getLanguageCode())
+            ->fetch('User/changelang.tpl'));
     }
 
     /**

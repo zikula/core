@@ -10,6 +10,7 @@
 
 namespace Zikula\UsersModule\Entity\RepositoryInterface;
 
+use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserVerificationEntity;
 
 interface UserVerificationRepositoryInterface
@@ -20,9 +21,11 @@ interface UserVerificationRepositoryInterface
 
     /**
      * @param integer $daysOld
+     * @param int $changeType
+     * @param bool $deleteUserEntities
      * @return array UserEntity[] records deleted
      */
-    public function purgeExpiredRecords($daysOld);
+    public function purgeExpiredRecords($daysOld, $changeType = UsersConstant::VERIFYCHGTYPE_REGEMAIL, $deleteUserEntities = true);
 
     public function findOneBy(array $criteria, array $orderBy = null);
 
@@ -30,5 +33,5 @@ interface UserVerificationRepositoryInterface
 
     public function isVerificationEmailSent($uid);
 
-    public function resetVerificationCode($uid);
+    public function setVerificationCode($uid, $changeType = UsersConstant::VERIFYCHGTYPE_PWD, $email = null);
 }

@@ -425,7 +425,7 @@ class UserAdministrationController extends AbstractController
             // User has no password set -> Sending a recovery code is useless.
             $this->addFlash('info', $this->__('This user logged in using a non-local verification method and therefore there is no password to reset.'));
         } else {
-            $newConfirmationCode = $this->get('zikula_users_module.user_verification_repository')->resetVerificationCode($user->getUid());
+            $newConfirmationCode = $this->get('zikula_users_module.user_verification_repository')->setVerificationCode($user->getUid());
             $mailSent = $this->get('zikula_users_module.helper.mail_helper')->mailConfirmationCode($user, $newConfirmationCode, true);
             if ($mailSent) {
                 $this->addFlash('status', $this->__f('Done! The password recovery verification code for %s has been sent via e-mail.', ['%s' => $user->getUname()]));
