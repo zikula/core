@@ -240,7 +240,7 @@ class UserApi extends \Zikula_AbstractApi
         $adminRequested = (isset($args['adminRequest']) && is_bool($args['adminRequest']) && $args['adminRequest']);
 
         $user = $this->getContainer()->get('zikula_users_module.user_repository')->findOneBy([$args['idfield'] => $args['id']]);
-        $newConfirmationCode = $this->getContainer()->get('zikula_users_module.user_verification_repository')->resetVerificationCode($user->getUid());
+        $newConfirmationCode = $this->getContainer()->get('zikula_users_module.user_verification_repository')->setVerificationCode($user->getUid());
 
         return $this->getContainer()->get('zikula_users_module.helper.mail_helper')->mailConfirmationCode($user, $newConfirmationCode, $adminRequested);
     }
@@ -365,117 +365,6 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         return $accountlinks;
-    }
-
-    /**
-     * Save the preliminary user e-mail until user's confirmation.
-     *
-     * @param string[] $args {
-     *      @type string $newemail The new e-mail address to store pending confirmation.
-     *                       }
-     *
-     * @return bool True if success and false otherwise.
-     *
-     * @throws AccessDeniedException Thrown if the current user is logged in.
-     */
-    public function savePreEmail($args)
-    {
-        if (!UserUtil::isLoggedIn()) {
-            throw new AccessDeniedException();
-        }
-
-        $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
-
-        $uid = UserUtil::getVar('uid');
-        $uname = UserUtil::getVar('uname');
-
-        // generate a randomize value of 7 characters needed to confirm the e-mail change
-        $confirmCode = UserUtil::generatePassword();
-        $confirmCodeHash = UserUtil::getHashedPassword($confirmCode);
-
-        $query = $this->entityManager->createQueryBuilder()
-                                     ->delete()
-                                     ->from('ZikulaUsersModule:UserVerificationEntity', 'v')
-                                     ->where('v.uid = :uid')
-                                     ->andWhere('v.changetype = :changetype')
-                                     ->setParameter('uid', $uid)
-                                     ->setParameter('changetype', UsersConstant::VERIFYCHGTYPE_EMAIL)
-                                     ->getQuery();
-        $query->getResult();
-
-        $obj = new \Zikula\UsersModule\Entity\UserVerificationEntity();
-        $obj['changetype'] = UsersConstant::VERIFYCHGTYPE_EMAIL;
-        $obj['uid'] = $uid;
-        $obj['newemail'] = $args['newemail'];
-        $obj['verifycode'] = $confirmCodeHash;
-        $obj['created_dt'] = $nowUTC->format(UsersConstant::DATETIME_FORMAT);
-        $this->entityManager->persist($obj);
-        $this->entityManager->flush();
-
-        // send confirmation e-mail to user with the changing code
-        $subject = $this->__f('Confirmation change of e-mail for %s', $uname);
-
-        $view = Zikula_View::getInstance($this->name, false);
-        $viewArgs = array(
-            'uname'     => $uname,
-            'email'     => UserUtil::getVar('email'),
-            'newemail'  => $args['newemail'],
-            'sitename'  => System::getVar('sitename'),
-            'url'       => $this->getContainer()->get('router')->generate('zikulausersmodule_user_confirmchemail', array('confirmcode' => $confirmCode), RouterInterface::ABSOLUTE_URL),
-        );
-        $view->assign($viewArgs);
-
-        $message = $view->fetch('Email/userverifyemail_html.tpl');
-        $sent = ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendMessage', array(
-            'toaddress' => $args['newemail'],
-            'subject'   => $subject,
-            'body'      => $message,
-            'html'      => true
-        ));
-
-        if (!$sent) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Retrieve the user's new e-mail address that is awaiting his confirmation.
-     *
-     * @return string The e-mail address waiting for confirmation for the current user.
-     *
-     * @throws AccessDeniedException Thrown if the current user is logged in.
-     */
-    public function getUserPreEmail()
-    {
-        if (!UserUtil::isLoggedIn()) {
-            throw new AccessDeniedException();
-        }
-
-        // delete all the records from e-mail confirmation that have expired
-        $chgEmailExpireDays = $this->getVar(UsersConstant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL, UsersConstant::DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL);
-        if ($chgEmailExpireDays > 0) {
-            $staleRecordUTC = new \DateTime(null, new \DateTimeZone('UTC'));
-            $staleRecordUTC->modify("-{$chgEmailExpireDays} days");
-            $staleRecordUTCStr = $staleRecordUTC->format(UsersConstant::DATETIME_FORMAT);
-
-            $query = $this->entityManager->createQueryBuilder()
-                                         ->delete()
-                                         ->from('ZikulaUsersModule:UserVerificationEntity', 'v')
-                                         ->where('v.created_dt < :staleRecordUTCStr')
-                                         ->andWhere('v.changetype = :changetype')
-                                         ->setParameter('staleRecordUTCStr', $staleRecordUTCStr)
-                                         ->setParameter('changetype', UsersConstant::VERIFYCHGTYPE_PWD)
-                                         ->getQuery();
-            $query->getResult();
-        }
-
-        $uid = UserUtil::getVar('uid');
-
-        $item = $this->entityManager->getRepository('ZikulaUsersModule:UserVerificationEntity')->findOneBy(array('uid' => $uid, 'changetype' => UsersConstant::VERIFYCHGTYPE_EMAIL));
-
-        return $item;
     }
 
     /**
