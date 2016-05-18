@@ -27,10 +27,9 @@ CHANGELOG - ZIKULA 1.4.x
     - PageLockModule updated to Core-2.0 Spec (#2862).
     - SearchModule updated to Core-2.0 Spec (#2853).
     - SettingsModule updated to Core-2.0 Spec (#2832).
-    - SettingsModule updated to Core-2.0 Spec.
 
  - Vendor updates:
-    - font awesome updated from 4.5.0 to 4.6.1
+    - font awesome updated from 4.5.0 to 4.6.3
     - jms translation bundle updated from 1.2.1 to 1.2.3
     - jstree updated from 3.3.0 to 3.3.1
     - monolog updated from 1.18.1 to 1.18.2
