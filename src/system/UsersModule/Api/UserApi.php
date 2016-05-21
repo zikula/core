@@ -18,7 +18,6 @@ use UserUtil;
 use Zikula_View;
 use Doctrine\ORM\AbstractQuery;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Routing\RouterInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 
 /**

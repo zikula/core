@@ -4,7 +4,7 @@ CHANGELOG - ZIKULA 1.4.x
 * 1.4.3 (?)
 
  - BC Breaks:
-    -
+    - User block function removed.
 
  - Deprecated:
     -
@@ -29,6 +29,7 @@ CHANGELOG - ZIKULA 1.4.x
     - SearchModule updated to Core-2.0 Spec (#2853).
     - SecurityCenterModule updated to Core-2.0 Spec (#2890).
     - SettingsModule updated to Core-2.0 Spec (#2832).
+    - UserModule updated to Core-2.0 Spec (#2851)
 
  - Vendor updates:
     - font awesome updated from 4.5.0 to 4.6.3
