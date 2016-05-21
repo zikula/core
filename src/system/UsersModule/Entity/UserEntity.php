@@ -153,21 +153,6 @@ class UserEntity extends EntityAccess
     private $theme;
 
     /**
-     * User-defined Block On?: Whether the custom user-defined block is displayed or not (1 == true == displayed)
-     *
-     * @Assert\Type(type="integer")
-     * @ORM\Column(type="smallint")
-     */
-    private $ublockon;
-
-    /**
-     * User-defined Block: Custom user-defined block content.
-     *
-     * @ORM\Column(type="text")
-     */
-    private $ublock;
-
-    /**
      * User's timezone, as supported by PHP (listed at http://us2.php.net/manual/en/timezones.php), and as expressed by the Olson tz database.
      * Optional, if blank then the system default timezone should be used. [FUTURE USE]
      *
@@ -221,8 +206,6 @@ class UserEntity extends EntityAccess
         $this->user_regdate = new \DateTime("1970-01-01 00:00:00");
         $this->lastlogin = new \DateTime("1970-01-01 00:00:00");
         $this->theme = '';
-        $this->ublockon = 0;
-        $this->ublock = '';
         $this->tz = '';
         $this->locale = '';
 
@@ -479,46 +462,6 @@ class UserEntity extends EntityAccess
     public function setTheme($theme)
     {
         $this->theme = $theme;
-    }
-
-    /**
-     * get the ublockon of the user
-     *
-     * @return integer the user's ublockon
-     */
-    public function getUblockon()
-    {
-        return $this->ublockon;
-    }
-
-    /**
-     * set the ublockon for the user
-     *
-     * @param integer $ublockon the user's ublockon
-     */
-    public function setUblockon($ublockon)
-    {
-        $this->ublockon = $ublockon;
-    }
-
-    /**
-     * get the ublock of the user
-     *
-     * @return string the user's ublock
-     */
-    public function getUblock()
-    {
-        return $this->ublock;
-    }
-
-    /**
-     * set the ublock for the user
-     *
-     * @param string $ublock the user's ublock
-     */
-    public function setUblock($ublock)
-    {
-        $this->ublock = $ublock;
     }
 
     /**

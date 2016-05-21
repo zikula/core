@@ -71,9 +71,10 @@ class MailerApi
      * @param bool                     $isInstalled     Installed flag.
      * @param TranslatorInterface      $translator      Translator service instance.
      * @param EventDispatcherInterface $eventDispatcher EventDispatcher service instance.
-     * @param DynamicConfigDumper      $configDumper    Configuration dumper for retrieving SwiftMailer configuration parameters.
-     * @param VariableApi              $variableApi     VariableApi service instance.
-     * @param PermissionApi            $permissionApi   PermissionApi service instance.
+     * @param DynamicConfigDumper $configDumper Configuration dumper for retrieving SwiftMailer configuration parameters.
+     * @param VariableApi $variableApi VariableApi service instance.
+     * @param Swift_Mailer $mailer
+     * @param PermissionApi $permissionApi PermissionApi service instance.
      */
     public function __construct(
         $isInstalled,
@@ -82,8 +83,8 @@ class MailerApi
         DynamicConfigDumper $configDumper,
         VariableApi $variableApi,
         Swift_Mailer $mailer,
-        PermissionApi $permissionApi)
-    {
+        PermissionApi $permissionApi
+        ) {
         $this->isInstalled = $isInstalled;
         $this->setTranslator($translator);
         $this->eventDispatcher = $eventDispatcher;

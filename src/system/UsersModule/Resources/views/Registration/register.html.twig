@@ -6,7 +6,7 @@
 {{ polyfill() }}
 {{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/Zikula.Users.Common.UserValidation.js')) }}
 
-{% include('@ZikulaUsersModule/User/menu.html.twig') %}
+{{ moduleHeader('user', __('New account registration'), '', true) }}
 
 <p id="users_formtop">
     {{ __('Registering for a user account is easy. Registration can give you access to content and to features of this site that are not available to unregistered guests.') }}

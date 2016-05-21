@@ -27,6 +27,11 @@ interface UserVerificationRepositoryInterface
      */
     public function purgeExpiredRecords($daysOld, $changeType = UsersConstant::VERIFYCHGTYPE_REGEMAIL, $deleteUserEntities = true);
 
+    /**
+     * @param array $criteria
+     * @param array|null $orderBy
+     * @return UserVerificationEntity
+     */
     public function findOneBy(array $criteria, array $orderBy = null);
 
     public function resetVerifyChgFor($uid, $types = null);
