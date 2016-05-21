@@ -1,12 +1,12 @@
-{% set verificationurl = url('zikulausersmodule_user_verifyregistration', {"uname":reginfo.uname,"verifycode":verifycode|url_encode}) %}
+{% set verificationurl = url('zikulausersmodule_user_verifyregistration', {"uname":user.uname,"verifycode":verifycode|url_encode}) %}
 {{ __f('Welcome to %1s!', {"%sub%": pagevars.title}) }}
 
-{{ __f('Hello! This e-mail address (\'%email\') has been used to register an account on \'%site\' (%url).', {"%email": reginfo.email, "%site": pagevars.title, "%url": url('home')}) }}
+{{ __f('Hello! This e-mail address (\'%email\') has been used to register an account on \'%site\' (%url).', {"%email": user.email, "%site": pagevars.title, "%url": url('home')}) }}
 
 {{ __('If you did not request a new user account at this web site, please either contact our site administrator, or simply disregard this message.') }}
 
 {{ __('If you did request a new user account, then your request is waiting for you to verify your e-mail address with us.') }}
-{% if not reginfo.isApproved %}{{ __('Your request is also waiting for administrator approval.') }}
+{% if not user.isApproved %}{{ __('Your request is also waiting for administrator approval.') }}
 {% if approvalorder == constant('Zikula\\UsersModule\\Constant::APPROVAL_AFTER') %}{{ __('We will not be able to approve your request until after you have completed this verification step.') }}{% endif %}
 {{ __('Once both this verification step is complete and an administrator has approved your request, you will be able to log in with your user name.') }}{% endif %}
 
@@ -16,22 +16,22 @@
 
 {{ __('Your verification code is:') }} {{ verifycode }}
 
-{% if not reginfo.isApproved %}
+{% if not user.isApproved %}
 {{ __('Once verified and your account has been approved, then you will be able to log in.') }}
-{% elseif reginfo.pass is empty %}
+{% elseif user.pass is empty %}
 {{ __('Once verified, you will be able to choose a password and then log in.') }}
 {% else %}
 {{ __('Once verified, you will be able to log in.') }}
 {% endif %}
 {{ __('Your account details are as follows:') }}
 
-{{ __f('User name: %sub%', {"%sub%": reginfo.uname}) }}
+{{ __f('User name: %sub%', {"%sub%": user.uname}) }}
 {% if createdpassword|default %}
 {{ __f('Password: %sub%', {"%sub%": createdpassword}) }}
-{% elseif reginfo.passreminder|default %}
-{{ __f('Password reminder: %sub%', {"%sub%": reginfo.passreminder}) }}
+{% elseif user.passreminder|default %}
+{{ __f('Password reminder: %sub%', {"%sub%": user.passreminder}) }}
 {% endif %}
 
 {% if createdpassword|default %}{{ __('(This is the only time you will receive your password. Please keep it in a safe place.)') }}{% endif %}
 
-{% if not reginfo.isApproved %}{{ __('Remember: both this verification step and approval from an administrator must be completed before you can log in.') }} {{ __('You will receive an additional e-mail message once an administrator has reviewed your request.') }}{% endif %}
+{% if not user.isApproved %}{{ __('Remember: both this verification step and approval from an administrator must be completed before you can log in.') }} {{ __('You will receive an additional e-mail message once an administrator has reviewed your request.') }}{% endif %}

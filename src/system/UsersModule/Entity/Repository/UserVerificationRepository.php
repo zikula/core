@@ -115,7 +115,8 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
     }
 
     /**
-     * Set a user's confirmation code.
+     * @todo change to return the entire entity and refactor usage throughout core
+     * Set a confirmation code.
      * @param integer $uid
      * @param int $changeType
      * @param null $email

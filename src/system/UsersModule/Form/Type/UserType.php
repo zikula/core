@@ -46,7 +46,6 @@ class UserType extends AbstractType
                 'invalid_message' => $options['translator']->__('The emails  must match!'),
             ])
             // theme - deprecated
-            // ublock on? - should be deprecated
             // time zone
             // locale i18n
         ;

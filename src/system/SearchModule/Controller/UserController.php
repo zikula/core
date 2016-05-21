@@ -161,7 +161,6 @@ class UserController extends AbstractController
 
     /**
      * @Route("/results/{page}", requirements={"page"="\d+"})
-     * @Template
      *
      * Perform the search then show the results
      *
@@ -243,7 +242,7 @@ class UserController extends AbstractController
             ModUtil::apiFunc('ZikulaSearchModule', 'user', 'log', $vars);
         }
 
-        return $templateParameters;
+        return $this->render('@ZikulaSearchModule/User/results.html.twig', $templateParameters);
     }
 
     /**
@@ -308,7 +307,7 @@ class UserController extends AbstractController
             'hasAdultContent' => $variableApi->get('ZikulaSearchModule', 'opensearch_adult_content', false)
         ];
 
-        return new PlainResponse($this->view->fetch('User/opensearch.xml'), Response::HTTP_OK, ['Content-Type' => 'text/xml']);
+        return new PlainResponse($this->renderView('@ZikulaSearchModule/User/opensearch.xml', $templateParameters), Response::HTTP_OK, ['Content-Type' => 'text/xml']);
     }
 
     /**

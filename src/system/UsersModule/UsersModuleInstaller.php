@@ -119,6 +119,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
                 foreach ($modvarsToConvertToBool as $modvarToConvert) {
                     $this->setVar($modvarToConvert, (bool) $this->getVar($modvarToConvert));
                 }
+                $this->schemaTool->update(['Zikula\UsersModule\Entity\UserEntity']);
             case '2.2.6':
                 // current version
         }
@@ -219,8 +220,6 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             'user_regdate'  => '1970-01-01 00:00:00',
             'lastlogin'     => '1970-01-01 00:00:00',
             'theme'         => '',
-            'ublockon'      => 0,
-            'ublock'        => '',
         ];
         $user = new \Zikula\UsersModule\Entity\UserEntity();
         $user->merge($record);
@@ -239,8 +238,6 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             'user_regdate'  => $nowUTCStr,
             'lastlogin'     => '1970-01-01 00:00:00',
             'theme'         => '',
-            'ublockon'      => 0,
-            'ublock'        => '',
         ];
         $user = new \Zikula\UsersModule\Entity\UserEntity();
         $user->merge($record);

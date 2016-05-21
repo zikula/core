@@ -134,37 +134,25 @@ class RegistrationVerificationHelper
 
         $approvalOrder = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, UsersConstant::APPROVAL_BEFORE);
 
-        // Set the verification code
         if (isset($reginfo['isverified']) && $reginfo['isverified']) {
             throw new \InvalidArgumentException($this->translator->__f('Error! A verification code cannot be sent for the registration record for \'%name%\'. It is already verified.', ['%name%' => $userEntity->getUname()]));
         } elseif (!$forceVerification && ($approvalOrder == UsersConstant::APPROVAL_BEFORE) && isset($reginfo['approvedby']) && !empty($reginfo['approved_by'])) {
             throw new \InvalidArgumentException($this->translator->__f('Error! A verification code cannot be sent for the registration record for \'%name%\'. It must first be approved.', ['%name%' => $userEntity->getUname()]));
         }
 
-        $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
-        $verificationCode = \UserUtil::generatePassword();
+        $verificationCode = $this->userVerificationRepository->setVerificationCode($uid, UsersConstant::VERIFYCHGTYPE_REGEMAIL, $userEntity->getEmail());
 
-        $this->userVerificationRepository->resetVerifyChgFor($userEntity->getUid(), UsersConstant::VERIFYCHGTYPE_REGEMAIL);
+        $codeSent = $this->mailHelper->sendNotification($userEntity->getEmail(), 'regverifyemail', [
+            'user' => $userEntity,
+            'verifycode' => $verificationCode,
+            'approvalorder' => $approvalOrder
+        ]);
 
-        $verifyChgObj = new UserVerificationEntity();
-        $verifyChgObj->setChangetype(UsersConstant::VERIFYCHGTYPE_REGEMAIL);
-        $verifyChgObj->setUid($userEntity->getUid());
-        $verifyChgObj->setNewemail($userEntity->getEmail());
-        $verifyChgObj->setVerifycode(\UserUtil::getHashedPassword($verificationCode));
-        $verifyChgObj->setCreated_Dt($nowUTC);
-        $this->userVerificationRepository->persistAndFlush($verifyChgObj);
-
-        $rendererArgs['sitename'] = \System::getVar('sitename');
-        $rendererArgs['reginfo'] = $userEntity;
-        $rendererArgs['verifycode'] = $verificationCode;
-        $rendererArgs['approvalorder'] = $approvalOrder;
-
-        $codeSent = $this->mailHelper->sendNotification($userEntity->getEmail(), 'regverifyemail', $rendererArgs);
-
+        $userVerificationEntity = $this->userVerificationRepository->findOneBy(['uid' => $userEntity->getUid(), 'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL]);
         if ($codeSent) {
-            return $verifyChgObj->getCreated_Dt();
+            return $userVerificationEntity->getCreated_Dt();
         } else {
-            $this->userVerificationRepository->removeAndFlush($verifyChgObj);
+            $this->userVerificationRepository->removeAndFlush($userVerificationEntity);
 
             return false;
         }
