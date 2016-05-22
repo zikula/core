@@ -111,7 +111,6 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
                     UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY,
                     UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED,
                     UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN,
-                    UsersConstant::MODVAR_LOGIN_WCAG_COMPLIANT,
                     UsersConstant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS,
                     UsersConstant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS,
                     UsersConstant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS
@@ -120,6 +119,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
                     $this->setVar($modvarToConvert, (bool) $this->getVar($modvarToConvert));
                 }
                 $this->schemaTool->update(['Zikula\UsersModule\Entity\UserEntity']);
+                $this->delVar('login_redirect');
             case '2.2.6':
                 // current version
         }
@@ -172,7 +172,6 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             UsersConstant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS         => UsersConstant::DEFAULT_LOGIN_DISPLAY_INACTIVE_STATUS,
             UsersConstant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS           => UsersConstant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS,
             UsersConstant::MODVAR_LOGIN_METHOD                          => UsersConstant::DEFAULT_LOGIN_METHOD,
-            UsersConstant::MODVAR_LOGIN_WCAG_COMPLIANT                  => UsersConstant::DEFAULT_LOGIN_WCAG_COMPLIANT,
             UsersConstant::MODVAR_MANAGE_EMAIL_ADDRESS                  => UsersConstant::DEFAULT_MANAGE_EMAIL_ADDRESS,
             UsersConstant::MODVAR_PASSWORD_MINIMUM_LENGTH               => UsersConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH,
             UsersConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED       => UsersConstant::DEFAULT_PASSWORD_STRENGTH_METER_ENABLED,
