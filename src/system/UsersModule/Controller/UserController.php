@@ -852,40 +852,6 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
-     * Print a (legacy) login/logout redirect page. Internal use only, not intended to be called through the API.
-     *
-     * @param string $message The message to display on the redirect page.
-     * @param string $url     The URL of the page to redirect to after this redirect page has been displayed.
-     *
-     * @return PlainResponse symfony response object
-     */
-    private function printRedirectPage($message, $url)
-    {
-        $url = (!isset($url) || empty($url)) ? System::getHomepageUrl() : $url;
-
-        // check the url
-        if (substr($url, 0, 1) == '/') {
-            // Root-relative links
-            $url = 'http'.(System::serverGetVar('HTTPS') == 'on' ? 's' : '').'://'.System::serverGetVar('HTTP_HOST').$url;
-        } elseif (!preg_match('!^(?:http|https):\/\/!', $url)) {
-            // Removing leading slashes from redirect url
-            $url = preg_replace('!^/*!', '', $url);
-            // Get base URL and append it to our redirect url
-            $baseurl = System::getBaseUrl();
-            $url = $baseurl.$url;
-        }
-
-        $this->view->assign('ThemeSel', System::getVar('Default_Theme'))
-                ->assign('url', $url)
-                ->assign('message', $message)
-                ->assign('stylesheet', ThemeUtil::getModuleStylesheet($this->name))
-                ->assign('redirectmessage', $this->__('If you are not automatically re-directed then please click here.'))
-                ->display('User/redirectpage.tpl');
-
-        return new PlainResponse();
-    }
-
-    /**
      * Log into a site that is currently "off" (normal logins are not allowed).
      * @Method("POST")
      *
