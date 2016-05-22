@@ -32,7 +32,10 @@
             },
             "securityschema": {
                 "ZikulaUsersModule::": "Uname::User ID",
-                "ZikulaUsersModule::MailUsers": "::"
+                "ZikulaUsersModule::MailUsers": "::",
+                "Accountlinks::": "Block title::",
+                "Loginblock::": "Block title::",
+                "Onlineblock::": "Block ID::"
             }
         }
     }
