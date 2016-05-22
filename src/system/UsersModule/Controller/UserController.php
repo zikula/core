@@ -540,17 +540,7 @@ class UserController extends \Zikula_AbstractController
                 $returnPage = System::getHomepageUrl();
             }
 
-            // A successful login.
-            if ($this->getVar(UsersConstant::MODVAR_LOGIN_WCAG_COMPLIANT, 1) == 1) {
-
-                // WCAG compliant login
-                return new RedirectResponse(System::normalizeUrl($returnPage));
-            } else {
-                // meta refresh
-                $this->printRedirectPage($this->__('You are being logged-in. Please wait...'), $returnPage);
-
-                return true;
-            }
+            return new RedirectResponse(System::normalizeUrl($returnPage));
         }
     }
 
@@ -571,8 +561,7 @@ class UserController extends \Zikula_AbstractController
      */
     public function logoutAction(Request $request)
     {
-        $login_redirect = $this->getVar('login_redirect');
-        $returnpage     = $request->query->get('returnpage', System::getHomepageUrl());
+        $returnpage = $request->query->get('returnpage', System::getHomepageUrl());
 
         // start logout event
         $uid = UserUtil::getVar('uid');
@@ -585,15 +574,7 @@ class UserController extends \Zikula_AbstractController
             ));
             $this->getDispatcher()->dispatch('module.users.ui.logout.succeeded', $event);
 
-            if ($login_redirect == 1) {
-
-                // WCAG compliant logout - we redirect to index.php because
-                // we might no have the permission for the recent site any longer
-                return new RedirectResponse(System::normalizeUrl($returnpage));
-            } else {
-                // meta refresh
-                $this->printRedirectPage($this->__('Done! You have been logged out.'), $returnpage);
-            }
+            return new RedirectResponse(System::normalizeUrl($returnpage));
         } else {
             $request->getSession()->getFlashBag()->add('error', $this->__('Error! You have not been logged out.'));
         }

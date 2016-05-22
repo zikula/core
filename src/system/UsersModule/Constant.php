@@ -252,10 +252,6 @@ namespace Zikula\UsersModule
          */
         const DEFAULT_LOGIN_METHOD = self::LOGIN_METHOD_UNAME;
         /**
-         * Module variable key for the flag indicating whether WCAG-compliant log-ins should be used (redirect), or not (meta refresh).
-         */
-        const MODVAR_LOGIN_WCAG_COMPLIANT = 'login_redirect';
-        /**
          * Default value for the flag indicating whether WCAG-compliant log-ins should be used (redirect), or not (meta refresh).
          */
         const DEFAULT_LOGIN_WCAG_COMPLIANT = true;
