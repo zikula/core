@@ -219,7 +219,7 @@ class LinkContainer implements LinkContainerInterface
                 'url' => $this->router->generate('zikulausersmodule_account_menu'),
             ];
 
-            if ($this->variableApi->get('ZikulaUsersModule', 'reg_allowreg')) {
+            if ($this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ENABLED)) {
                 $links[] = [
                     'icon' => 'plus',
                     'text'  => $this->translator->__('New account'),
@@ -251,7 +251,7 @@ class LinkContainer implements LinkContainerInterface
         }
 
         // show edit email link if configured to manage email address
-        if ($this->variableApi->get('ZikulaUsersModule', 'changeemail', true)) {
+        if ($this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_MANAGE_EMAIL_ADDRESS, UsersConstant::DEFAULT_MANAGE_EMAIL_ADDRESS)) {
             $links[2] = [
                 'url'   => $this->router->generate('zikulausersmodule_account_changeemail'),
                 'text' => $this->translator->__('E-mail address manager'),
@@ -262,7 +262,7 @@ class LinkContainer implements LinkContainerInterface
         if ($this->variableApi->get(VariableApi::CONFIG, 'multilingual')) {
             if (count(\ZLanguage::getInstalledLanguages()) > 1) {
                 $links[3] = [
-                    'url'   => $this->router->generate('zikulausersmodule_user_changelang'),
+                    'url'   => $this->router->generate('zikulausersmodule_account_changelanguage'),
                     'text' => $this->translator->__('Language switcher'),
                     'icon'  => 'language'
                 ];
