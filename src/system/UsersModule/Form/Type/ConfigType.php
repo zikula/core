@@ -310,11 +310,6 @@ class ConfigType extends AbstractType
             /**
              * User Login Settings
              */
-            ->add(UsersConstant::MODVAR_LOGIN_WCAG_COMPLIANT, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
-                'label' => $options['translator']->__('WCAG-compliant log-in and log-out'),
-                'required' => false,
-                'help' => $options['translator']->__('Notice: Uses meta refresh.'),
-            ])
             ->add(UsersConstant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $options['translator']->__('Failed login displays inactive status'),
                 'required' => false,
