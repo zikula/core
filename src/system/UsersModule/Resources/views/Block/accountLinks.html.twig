@@ -1,0 +1,7 @@
+<div class="navcontainer">
+    <ul class="navlist">
+        {% for link in accountLinks|default %}
+            <li><a href="{{ link.url }}">{{ link.text }}</a></li>
+        {% endfor %}
+    </ul>
+</div>

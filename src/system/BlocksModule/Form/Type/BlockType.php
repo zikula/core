@@ -78,14 +78,14 @@ class BlockType extends AbstractType
                 'required' => false
             ])
             ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $this->__('Save'),
+                'label' => $this->translator->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $this->__('Cancel'),
+                'label' => $this->translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'
