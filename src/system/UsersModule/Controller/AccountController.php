@@ -40,27 +40,7 @@ class AccountController extends AbstractController
 
         $accountLinks = [];
         if ($this->get('zikula_users_module.current_user')->isLoggedIn()) {
-            // get the menu links for Core-2.0 modules
-            $accountLinks = $this->get('zikula.link_container_collector')->getAllLinksByType(LinkContainerInterface::TYPE_ACCOUNT);
-            $legacyAccountLinksFromNew = [];
-            foreach ($accountLinks as $moduleName => $links) {
-                foreach ($links as $link) {
-                    $legacyAccountLinksFromNew[] = [
-                        'module' => $moduleName,
-                        'url' => $link['url'],
-                        'text' => $link['text'],
-                        'icon' => $link['icon']
-                    ];
-                }
-            }
-
-            // @deprecated The API function is called for old-style modules
-            $legacyAccountLinks = \ModUtil::apiFunc('ZikulaUsersModule', 'user', 'accountLinks');
-            if (false === $legacyAccountLinks) {
-                $legacyAccountLinks = [];
-            }
-            // add the arrays together
-            $accountLinks = $legacyAccountLinksFromNew + $legacyAccountLinks;
+            $accountLinks = $this->get('zikula_users_module.helper.account_links_helper')->getAllAccountLinks();
         }
 
         return ['accountLinks' => $accountLinks];

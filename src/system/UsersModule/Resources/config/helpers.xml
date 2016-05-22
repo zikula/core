@@ -11,6 +11,7 @@
         <parameter key="zikula_users_module.helper.mail_helper.class">Zikula\UsersModule\Helper\MailHelper</parameter>
         <parameter key="zikula_users_module.helper.administration_actions.class">Zikula\UsersModule\Helper\AdministrationActionsHelper</parameter>
         <parameter key="zikula_users_module.helper.file_io.class">Zikula\UsersModule\Helper\FileIOHelper</parameter>
+        <parameter key="zikula_users_module.helper.account_links_helper.class">Zikula\UsersModule\Helper\AccountLinksHelper</parameter>
     </parameters>
 
     <services>
@@ -63,6 +64,9 @@
             <argument type="service" id="zikula_users_module.helper.mail_helper" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="zikula_users_module.current_user" />
+        </service>
+        <service id="zikula_users_module.helper.account_links_helper" class="%zikula_users_module.helper.account_links_helper.class%">
+            <argument type="service" id="zikula.link_container_collector" />
         </service>
 
     </services>
