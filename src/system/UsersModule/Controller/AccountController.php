@@ -323,4 +323,60 @@ class AccountController extends AbstractController
 
         return $this->redirectToRoute('zikulausersmodule_account_menu');
     }
+
+    /**
+     * @Route("/change-language")
+     * @Template
+     * @param Request $request
+     * @return array
+     */
+    public function changeLanguageAction(Request $request)
+    {
+        if (!$this->get('zikula_users_module.current_user')->isLoggedIn()) {
+            throw new AccessDeniedException();
+        }
+        $installedLanguages = \ZLanguage::getInstalledLanguageNames();
+        $form = $this->createFormBuilder()
+            ->add('language', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+                'label' => $this->__('Choose language'),
+                'choices' => array_flip($installedLanguages),
+                'choices_as_values' => true,
+                'placeholder' => $this->__('Site default'),
+                'required' => false,
+                'data' => \ZLanguage::getLanguageCode()
+            ])
+            ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Save'),
+                'icon' => 'fa-check',
+                'attr' => ['class' => 'btn btn-success']
+            ])
+            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Cancel'),
+                'icon' => 'fa-times',
+                'attr' => ['class' => 'btn btn-default']
+            ])
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if ($form->get('submit')->isClicked()) {
+                $data = $form->getData();
+                if ($data['language']) {
+                    $request->getSession()->set('language', $data['language']);
+                    $this->addFlash('success', $this->__f('Language changed to %lang', ['%lang' => $installedLanguages[$data['language']]]));
+                } else {
+                    $request->getSession()->remove('language');
+                    $this->addFlash('success', $this->__('Language set to site default.'));
+                }
+            }
+            if ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', $this->__('Operation cancelled.'));
+            }
+
+            return $this->redirectToRoute('zikulausersmodule_account_menu');
+        }
+
+        return [
+            'form' => $form->createView()
+        ];
+    }
 }

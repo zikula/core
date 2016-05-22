@@ -1115,34 +1115,20 @@ class UserController extends \Zikula_AbstractController
 
     /**
      * @Route("/lang")
-     *
-     * Display the form that allows the user to change the language displayed to him on the site.
-     *
-     * @return Response symfony response object if a form is to be displayed
-     *
-     * @throws AccessDeniedException Thrown if the user isn't logged in
+     * @return RedirectResponse
      */
     public function changeLangAction()
     {
-        if (!UserUtil::isLoggedIn()) {
-            throw new AccessDeniedException();
-        }
+        @trigger_error('This method is deprecated. Please use AccountController::changeLanguageAction', E_USER_DEPRECATED);
 
-        // Assign the languages
-        return new Response($this->view->assign('languages', \ZLanguage::getInstalledLanguageNames())
-            ->assign('usrlang', \ZLanguage::getLanguageCode())
-            ->fetch('User/changelang.tpl'));
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_account_changelanguage'));
     }
 
     /**
      * Display the login screen
-     *
      * @param array $args parameters for this function
-     *
      * @see \Zikula\UsersModule\Controller\UserController::login
-     *
      * @return RedirectResponse
-     *
      * @deprecated since 1.4.0 use loginAction instead
      */
     public function loginScreenAction($args)
