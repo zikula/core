@@ -24,8 +24,6 @@ use SecurityUtil;
 use System;
 use SessionUtil;
 use Zikula_Session;
-use LogUtil;
-use ThemeUtil;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Exception\FatalErrorException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -79,22 +77,13 @@ class UserController extends \Zikula_AbstractController
 
     /**
      * @Route("/view")
-     *
-     * Display the base user form (login/lostpassword/register options).
-     *
-     * If the user is logged in, then he is redirected to the home page.
-     *
-     * @return Response|RedirectResponse symfony response object
+     * @return RedirectResponse
      */
     public function viewAction()
     {
-        // If user has logged in, redirect to homepage
-        if (UserUtil::isLoggedIn()) {
-            return new RedirectResponse($this->get('router')->generate('home'));
-        }
+        @trigger_error('This method is deprecated. Please use AccountController::menuAction', E_USER_DEPRECATED);
 
-        return new Response($this->view->assign($this->getVars())
-            ->fetch('User/view.tpl'));
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_account_menu'));
     }
 
     /**
@@ -218,7 +207,7 @@ class UserController extends \Zikula_AbstractController
     {
         // we shouldn't get here if logged in already....
         if (UserUtil::isLoggedIn()) {
-            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', array(), RouterInterface::ABSOLUTE_URL));
+            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index'));
         }
 
         // set default value of variables
@@ -227,8 +216,8 @@ class UserController extends \Zikula_AbstractController
         $isReentry = false;
         $firstmethodisdefault = true;
         $fromPasswordChange = $request->get('from_password_change', false);
-        $authenticationInfo = array();
-        $selectedAuthenticationMethod = array();
+        $authenticationInfo = [];
+        $selectedAuthenticationMethod = [];
         $rememberMe = false;
         $returnPage = $request->query->get('returnpage', '');
         $eventType = false;
@@ -252,15 +241,15 @@ class UserController extends \Zikula_AbstractController
                     $this->checkCsrfToken();
                 }
 
-                $authenticationInfo = (array)$request->request->get('authentication_info', array());
-                $selectedAuthenticationMethod = (array)$request->request->get('authentication_method', array());
+                $authenticationInfo = (array)$request->request->get('authentication_info', []);
+                $selectedAuthenticationMethod = (array)$request->request->get('authentication_method', []);
                 $rememberMe = (bool)$request->request->get('rememberme', false);
                 $eventType = $request->request->get('event_type', false);
             } elseif ($request->isMethod('GET')) {
                 $reentry = false;
                 $reentrantTokenReceived = $request->query->get('reentranttoken', '');
 
-                $sessionVars = $request->getSession()->get('User_login', array(), UsersConstant::SESSION_VAR_NAMESPACE);
+                $sessionVars = $request->getSession()->get('User_login', [], UsersConstant::SESSION_VAR_NAMESPACE);
                 $request->getSession()->remove('User_login', UsersConstant::SESSION_VAR_NAMESPACE);
 
                 $reentrantToken = isset($sessionVars['reentranttoken']) ? $sessionVars['reentranttoken'] : false;
@@ -268,8 +257,8 @@ class UserController extends \Zikula_AbstractController
                 if (!empty($reentrantTokenReceived) && ($reentrantTokenReceived == $reentrantToken)) {
                     // We are coming back (reentering) from someplace else. It is likely that we are coming back from an external
                     // authentication process initiated by an authentication module such as OpenID.
-                    $authenticationInfo = isset($sessionVars['authentication_info']) ? $sessionVars['authentication_info'] : array();
-                    $selectedAuthenticationMethod = isset($sessionVars['authentication_method']) ? $sessionVars['authentication_method'] : array();
+                    $authenticationInfo = isset($sessionVars['authentication_info']) ? $sessionVars['authentication_info'] : [];
+                    $selectedAuthenticationMethod = isset($sessionVars['authentication_method']) ? $sessionVars['authentication_method'] : [];
                     $rememberMe         = isset($sessionVars['rememberme']) ? $sessionVars['rememberme'] : false;
                     $returnPage         = isset($sessionVars['returnpage']) ? $sessionVars['returnpage'] : $returnPage;
                     $eventType          = isset($sessionVars['event_type']) ? $sessionVars['event_type'] : false;
@@ -277,11 +266,11 @@ class UserController extends \Zikula_AbstractController
 
                     $isReentry = true;
                 } else {
-                    $authenticationInfo = array();
-                    $selectedAuthenticationMethod = array();
+                    $authenticationInfo = [];
+                    $selectedAuthenticationMethod = [];
                     $rememberMe         = false;
                     $eventType          = 'login_screen';
-                    $user               = array();
+                    $user               = [];
 
                     $this->getDispatcher()->dispatch('module.users.ui.login.started', new GenericEvent());
                 }
@@ -314,10 +303,10 @@ class UserController extends \Zikula_AbstractController
                         && ModUtil::apiFunc($selectedAuthenticationMethod['modname'], 'authentication', 'isEnabledForAuthentication', $selectedAuthenticationMethod)
                         ) {
                     // The authentication method is reasonably valid, moving on to validate the user-entered credentials
-                    $validateAuthenticationInfoArgs = array(
+                    $validateAuthenticationInfoArgs = [
                         'authenticationMethod'  => $selectedAuthenticationMethod,
                         'authenticationInfo'    => $authenticationInfo,
-                    );
+                    ];
 
                     if (ModUtil::func($selectedAuthenticationMethod['modname'], 'authentication', 'validateAuthenticationInformation', $validateAuthenticationInfoArgs)) {
                         // The authentication method and the authentication information have been validated at the UI level.
@@ -329,20 +318,20 @@ class UserController extends \Zikula_AbstractController
                         // If the user is trying to log in, then he's going to get a session if he's successful,
                         // so using sessions on the anonymous user just before logging in should be ok.
                         SessionUtil::requireSession();
-                        $sessionVars = array(
+                        $sessionVars = [
                             'event_type'            => $eventType,
                             'returnpage'            => $returnPage,
                             'authentication_info'   => $authenticationInfo,
                             'authentication_method' => $selectedAuthenticationMethod,
                             'rememberme'            => $rememberMe,
                             'reentranttoken'        => $reentrantToken,
-                        );
+                        ];
                         $request->getSession()->set('User_login', $sessionVars, UsersConstant::SESSION_VAR_NAMESPACE);
 
                         // The authentication method selected might be reentrant (it might send the user out to an external web site
                         // for authentication, and then send us back to finish the job). We need to tell the external system to where
                         // we would like to return.
-                        $reentrantUrl = $this->get('router')->generate('zikulausersmodule_user_login', array('reentranttoken' => $reentrantToken), RouterInterface::ABSOLUTE_URL);
+                        $reentrantUrl = $this->get('router')->generate('zikulausersmodule_user_login', ['reentranttoken' => $reentrantToken]);
 
                         // There may be hook providers that need to be validated, so we cannot yet log in. The hook providers will
                         // need a user object to make sure they know who they're dealing with. Authenticate (so we are sure that
@@ -360,7 +349,7 @@ class UserController extends \Zikula_AbstractController
                         if (isset($user) && $user && is_array($user) && isset($user['uid']) && is_numeric($user['uid'])) {
                             $validators = new ValidationProviders();
                             if ($eventType) {
-                                $event = new GenericEvent($user, array(), $validators);
+                                $event = new GenericEvent($user, [], $validators);
                                 $validators  = $this->getDispatcher()->dispatch("module.users.ui.validate_edit.{$eventType}", $event)->getData();
 
                                 $hook = new ValidationHook($validators);
@@ -372,7 +361,7 @@ class UserController extends \Zikula_AbstractController
                                 // Process the edit hooks BEFORE we log in, so that any changes to the user record are recorded before we re-check
                                 // the user's ability to log in. If we don't do this, then user.login.veto might trap and cancel the login attempt again.
                                 if ($eventType) {
-                                    $event = new GenericEvent($user, array());
+                                    $event = new GenericEvent($user, []);
                                     $this->getDispatcher()->dispatch("module.users.ui.process_edit.{$eventType}", $event);
 
                                     $hook = new ProcessHook($user['uid']);
@@ -396,11 +385,11 @@ class UserController extends \Zikula_AbstractController
                                         $request->getSession()->getFlashBag()->add('error', $this->__('Your log-in request was not completed.'));
                                     }
 
-                                    $eventArgs = array(
+                                    $eventArgs = [
                                         'authentication_method' => $selectedAuthenticationMethod,
                                         'authentication_info'   => $authenticationInfo,
                                         'redirecturl'           => '',
-                                    );
+                                    ];
                                     $failedEvent = new GenericEvent($user, $eventArgs);
                                     $failedEvent = $this->getDispatcher()->dispatch('module.users.ui.login.failed', $failedEvent);
 
@@ -414,11 +403,11 @@ class UserController extends \Zikula_AbstractController
                                     $request->getSession()->getFlashBag()->add('error', $this->__('Your log-in request was not completed.'));
                                 }
 
-                                $eventArgs = array(
+                                $eventArgs = [
                                     'authentication_method' => $selectedAuthenticationMethod,
                                     'authentication_info'   => $authenticationInfo,
                                     'redirecturl'           => '',
-                                );
+                                ];
                                 $failedEvent = new GenericEvent($user, $eventArgs);
                                 $failedEvent = $this->getDispatcher()->dispatch('module.users.ui.login.failed', $failedEvent);
 
@@ -431,17 +420,24 @@ class UserController extends \Zikula_AbstractController
                             // The user with the given credentials does not exist.
                             // Check if we shall redirect to the account registration screen if a user with the given
                             // credentials does not exist..
-                            if (ModUtil::apiFunc($selectedAuthenticationMethod['modname'], 'Authentication', 'redirectToRegistrationOnLoginError', array('authentication_method' => $selectedAuthenticationMethod, 'authentication_info' => $authenticationInfo))) {
+                            if (ModUtil::apiFunc($selectedAuthenticationMethod['modname'], 'Authentication', 'redirectToRegistrationOnLoginError', [
+                                'authentication_method' => $selectedAuthenticationMethod,
+                                'authentication_info' => $authenticationInfo
+                            ])) {
                                 // We shall redirect to the account registration screen, but first we need to check
                                 // if the user can be created with the given credentials or if another error has
                                 // occured.
-                                if (ModUtil::apiFunc($selectedAuthenticationMethod['modname'], 'Authentication', 'checkPassword', array('authentication_method' => $selectedAuthenticationMethod, 'authentication_info' => $authenticationInfo, 'reentrant_url' => $reentrantUrl))) {
+                                if (ModUtil::apiFunc($selectedAuthenticationMethod['modname'], 'Authentication', 'checkPassword', [
+                                    'authentication_method' => $selectedAuthenticationMethod,
+                                    'authentication_info' => $authenticationInfo,
+                                    'reentrant_url' => $reentrantUrl
+                                ])) {
                                     // Redirect to account registration screen. Clear error messages and re-save session
                                     // vars for registration.
                                     $request->getSession()->clearMessages(Zikula_Session::MESSAGE_ERROR);
                                     $request->getSession()->set('User_register', $sessionVars, UsersConstant::SESSION_VAR_NAMESPACE);
 
-                                    return new RedirectResponse($this->get('router')->generate('zikulausersmodule_registration_register', array('reentranttoken' => $reentrantTokenReceived), RouterInterface::ABSOLUTE_URL));
+                                    return new RedirectResponse($this->get('router')->generate('zikulausersmodule_registration_register', ['reentranttoken' => $reentrantTokenReceived]));
                                 }
                             }
 
@@ -449,11 +445,11 @@ class UserController extends \Zikula_AbstractController
                                 throw new NotFoundHttpException($this->__('There is no user account matching that information, or the password you gave does not match the password on file for that account.'));
                             }
 
-                            $eventArgs = array(
+                            $eventArgs = [
                                 'authentication_method' => $selectedAuthenticationMethod,
                                 'authentication_info'   => $authenticationInfo,
                                 'redirecturl'           => '',
-                            );
+                            ];
                             $failedEvent = new GenericEvent(null, $eventArgs);
                             $failedEvent = $this->getDispatcher()->dispatch('module.users.ui.login.failed', $failedEvent);
 
@@ -494,38 +490,38 @@ class UserController extends \Zikula_AbstractController
                     ) {
                 /* @var AuthenticationMethodHelper $authenticationMethod */
                 $authenticationMethod = $authenticationMethodList->getAuthenticationMethodForDefault();
-                $selectedAuthenticationMethod = array(
+                $selectedAuthenticationMethod = [
                     'modname'   => $authenticationMethod->modname,
                     'method'    => $authenticationMethod->method,
-                );
+                ];
             }
 
             // TODO - The order and availability should be set by configuration
-            $authenticationMethodDisplayOrder = array();
+            $authenticationMethodDisplayOrder = [];
             foreach ($authenticationMethodList as $authenticationMethod) {
                 if ($authenticationMethod->isEnabledForAuthentication()) {
-                    $authenticationMethodDisplayOrder[] = array(
+                    $authenticationMethodDisplayOrder[] = [
                         'modname'   => $authenticationMethod->modname,
                         'method'    => $authenticationMethod->method,
-                    );
+                    ];
                 }
             }
 
-            $templateArgs = array(
+            $templateArgs = [
                 'returnpage'                            => isset($returnPage) ? $returnPage : '',
-                'authentication_info'                   => isset($authenticationInfo) ? $authenticationInfo : array(),
+                'authentication_info'                   => isset($authenticationInfo) ? $authenticationInfo : [],
                 'selected_authentication_method'        => $selectedAuthenticationMethod,
                 'authentication_method_display_order'   => $authenticationMethodDisplayOrder,
-                'user_obj'                              => isset($user) ? $user : array(),
-            );
+                'user_obj'                              => isset($user) ? $user : [],
+            ];
 
             return new Response($this->view->assign($templateArgs)
                     ->fetch('User/login.tpl'));
         } else {
-            $eventArgs = array(
+            $eventArgs = [
                 'authentication_method' => $selectedAuthenticationMethod,
                 'redirecturl'           => $returnPage,
-            );
+            ];
 
             if (isset($isFirstLogin)) {
                 $eventArgs['is_first_login'] = $isFirstLogin;
@@ -566,12 +562,12 @@ class UserController extends \Zikula_AbstractController
         // start logout event
         $uid = UserUtil::getVar('uid');
         $userObj = UserUtil::getVars($uid);
-        $authenticationMethod = SessionUtil::getVar('authentication_method', array('modname' => '', 'method' => ''), UsersConstant::SESSION_VAR_NAMESPACE);
+        $authenticationMethod = SessionUtil::getVar('authentication_method', ['modname' => '', 'method' => ''], UsersConstant::SESSION_VAR_NAMESPACE);
         if (UserUtil::logout()) {
-            $event = new GenericEvent($userObj, array(
+            $event = new GenericEvent($userObj, [
                 'authentication_method' => $authenticationMethod,
                 'uid'                   => $uid,
-            ));
+            ]);
             $this->getDispatcher()->dispatch('module.users.ui.logout.succeeded', $event);
 
             return new RedirectResponse(System::normalizeUrl($returnpage));
@@ -647,7 +643,6 @@ class UserController extends \Zikula_AbstractController
         if ($uname && $verifycode) {
             // Both a user name and verification code were submitted
 
-//            $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uname' => $uname));
             $reginfo = $this->get('zikula_users_module.helper.registration_helper')->get(null, $uname);
 
             if ($reginfo) {
@@ -655,12 +650,12 @@ class UserController extends \Zikula_AbstractController
                     $setPass = true;
 
                     if ($request->isMethod('POST')) {
-                        $passwordErrors = ModUtil::apiFunc($this->name, 'registration', 'getPasswordErrors', array(
+                        $passwordErrors = ModUtil::apiFunc($this->name, 'registration', 'getPasswordErrors', [
                             'uname'         => $uname,
                             'pass'          => $newpass,
                             'passagain'     => $newpassagain,
                             'passreminder'  => $newpassreminder,
-                        ));
+                        ]);
 
                         if (empty($passwordErrors)) {
                             $newpassHash = UserUtil::getHashedPassword($newpass);
@@ -725,7 +720,7 @@ class UserController extends \Zikula_AbstractController
 
                                             return new Response($this->view->fetch('User/displaystatusmsg.tpl'));
                                         } else {
-                                            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_login', array(), RouterInterface::ABSOLUTE_URL));
+                                            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_login', [], RouterInterface::ABSOLUTE_URL));
                                         }
                                         break;
                                     default:
@@ -742,7 +737,7 @@ class UserController extends \Zikula_AbstractController
                                 if (!$request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
                                     $request->getSession()->getFlashBag()->add('error', $this->__('Sorry! There was an error while marking your registration as verifed. Please contact an administrator.'));
                                 } else {
-                                    return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', array(), RouterInterface::ABSOLUTE_URL));
+                                    return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', [], RouterInterface::ABSOLUTE_URL));
                                 }
                             }
                         } else {
@@ -753,7 +748,7 @@ class UserController extends \Zikula_AbstractController
 
                         return new Response();
                     } else {
-                        $request->getSession()->getFlashBag()->add('error', $this->__f('Error! There is no pending verification code for \'%1$s\'. Please contact the site administrator.', array($reginfo['uname'])));
+                        $request->getSession()->getFlashBag()->add('error', $this->__f('Error! There is no pending verification code for \'%1$s\'. Please contact the site administrator.', [$reginfo['uname']]));
 
                         return new Response();
                     }
@@ -765,19 +760,19 @@ class UserController extends \Zikula_AbstractController
         }
 
         if (isset($passwordErrors) && !empty($passwordErrors)) {
-            $errorInfo = ModUtil::apiFunc($this->name, 'user', 'processRegistrationErrorsForDisplay', array('registrationErrors' => $passwordErrors));
+            $errorInfo = ModUtil::apiFunc($this->name, 'user', 'processRegistrationErrorsForDisplay', ['registrationErrors' => $passwordErrors]);
         } else {
-            $errorInfo = array();
+            $errorInfo = [];
         }
-        $rendererArgs = array(
+        $rendererArgs = [
             'verify_uname'      => $uname,
             'verifycode'        => $verifycode,
-            'reginfo'           => isset($reginfo) ? $reginfo : array(),
+            'reginfo'           => isset($reginfo) ? $reginfo : [],
             'setpass'           => $setPass,
             'newpass'           => isset($newpass) ? $newpass : '',
             'newpassreminder'   => isset($newpassreminder) ? $newpassreminder : '',
-            'errormessages'     => (isset($errorInfo['errorMessages']) && !empty($errorInfo['errorMessages'])) ? $errorInfo['errorMessages'] : array(),
-        );
+            'errormessages'     => (isset($errorInfo['errorMessages']) && !empty($errorInfo['errorMessages'])) ? $errorInfo['errorMessages'] : [],
+        ];
 
         return new Response($this->view->assign($rendererArgs)
                           ->fetch('User/verifyregistration.tpl'));
@@ -785,70 +780,15 @@ class UserController extends \Zikula_AbstractController
 
     /**
      * LEGACY user account activation.
-     *
-     * We must keep this function, because there is no way to know whether an inactive account
-     * is inactive because it needs activation, or for some other reason set manually by the site admin.
-     *
-     * Parameters passed via GET:
-     * --------------------------
-     * string code Confirmation/Activation code.
-     *
-     * Parameters passed via POST:
-     * ---------------------------
-     * string code Confirmation/Activation code.
-     *
-     * Parameters passed via SESSION:
-     * ------------------------------
-     * None.
-     *
-     * @param array $args All parameters passed to this function.
-     *
+     * This is a Core-1.2 era method and is only kept here to properly redirect if it is used.
      * @return RedirectResponse
      */
-    public function activationAction(array $args = array())
+    public function activationAction(Request $request)
     {
-        if ($this->request->query->has('code')) {
-            $code = $this->request->query->get('code');
-        } elseif ($this->request->request->has('code')) {
-            $code = $this->request->request->get('code');
-        } else {
-            $code = isset($args['code']) ? $args['code'] : null;
-        }
-        $code = base64_decode($code);
-        $code = explode('#', $code);
+        @trigger_error('This method is removed.', E_USER_DEPRECATED);
+        $request->getSession()->getFlashBag()->add('error', $this->__('Warning! This method is no longer functional. You must re-register.'));
 
-        if (!isset($code[0]) || !isset($code[1])) {
-            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Could not activate your account. Please contact the site administrator.'));
-        }
-        $uid = $code[0];
-        $code = $code[1];
-
-        // Get user Regdate
-        $regdate = UserUtil::getVar('user_regdate', $uid);
-
-        // Checking length in case the date has been stripped from its space in the mail.
-        if (strlen($code) == 18) {
-            if (!strpos($code, ' ')) {
-                $code = substr($code, 0, 10) . ' ' . substr($code, -8);
-            }
-        }
-
-        if (hash('md5', $regdate) == hash('md5', $code)) {
-            $returncode = ModUtil::apiFunc($this->name, 'registration', 'activateUser',
-                                       array('uid'     => $uid,
-                                             'regdate' => $regdate));
-
-            if (!$returncode) {
-                $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Could not activate your account. Please contact the site administrator.'));
-            }
-            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Account activated.'));
-
-            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_login', array(), RouterInterface::ABSOLUTE_URL));
-        } else {
-            $this->request->getSession()->getFlashBag()->add('error', $this->__('Sorry! You entered an invalid confirmation code. Please correct your entry and try again.'));
-
-            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_activation', array(), RouterInterface::ABSOLUTE_URL));
-        }
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_registration_selectregistrationmethod'));
     }
 
     /**
@@ -886,42 +826,42 @@ class UserController extends \Zikula_AbstractController
 
         $redirectUrl = System::getHomepageUrl();
 
-        $authenticationInfo = array(
+        $authenticationInfo = [
             'login_id'  => $user,
             'pass'      => $pass
-        );
-        $authenticationMethod = array(
+        ];
+        $authenticationMethod = [
             'modname'   => $this->name,
             'method'    => 'uname',
-        );
+        ];
 
         if (UserUtil::loginUsing($authenticationMethod, $authenticationInfo, $rememberme)) {
             $user = UserUtil::getVars(UserUtil::getVar('uid'));
             if (!SecurityUtil::checkPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN)) {
                 UserUtil::logout();
 
-                $eventArgs = array(
+                $eventArgs = [
                     'authentication_method' => $authenticationMethod,
                     'redirecturl'           => '',
-                );
+                ];
                 $event = new GenericEvent($user, $eventArgs);
                 $event = $this->getDispatcher()->dispatch('module.users.ui.login.failed', $event);
                 $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
             } else {
-                $eventArgs = array(
+                $eventArgs = [
                     'authentication_method' => $authenticationMethod,
                     'redirecturl'           => $redirectUrl,
-                );
+                ];
                 $event = new GenericEvent($user, $eventArgs);
                 $event = $this->getDispatcher()->dispatch('module.users.ui.login.succeeded', $event);
                 $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
             }
         } else {
-            $eventArgs = array(
+            $eventArgs = [
                 'authentication_method' => $authenticationMethod,
                 'authentication_info'   => $authenticationInfo,
                 'redirecturl'           => '',
-            );
+            ];
             $event = new GenericEvent(null, $eventArgs);
             $event = $this->getDispatcher()->dispatch('module.users.ui.login.failed', $event);
             $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : '';
@@ -991,10 +931,10 @@ class UserController extends \Zikula_AbstractController
         }
 
         if ($this->getVar('changepassword', 1) != 1) {
-            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', array(), RouterInterface::ABSOLUTE_URL));
+            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', [], RouterInterface::ABSOLUTE_URL));
         }
 
-        $passwordErrors = array();
+        $passwordErrors = [];
         if (isset($sessionVars['password_errors'])) {
             if (!empty($sessionVars['password_errors'])) {
                 $passwordErrors = $sessionVars['password_errors'];
@@ -1077,17 +1017,17 @@ class UserController extends \Zikula_AbstractController
         $newPassword        = $request->request->get('newpassword', '');
         $newPasswordAgain   = $request->request->get('newpasswordconfirm', '');
         $newPasswordReminder = $request->request->get('passreminder', '');
-        $passwordErrors     = array();
+        $passwordErrors     = [];
 
         if (empty($currentPassword) || !UserUtil::passwordsMatch($currentPassword, $userObj['pass'])) {
             $passwordErrors['oldpass'][] = $this->__('The current password you entered is not correct. Please correct your entry and try again.');
         } else {
-            $passwordErrors = ModUtil::apiFunc($this->name, 'registration', 'getPasswordErrors', array(
+            $passwordErrors = ModUtil::apiFunc($this->name, 'registration', 'getPasswordErrors', [
                 'uname'         => $userObj['uname'],
                 'pass'          => $newPassword,
                 'passagain'     => $newPasswordAgain,
                 'passreminder'  => $newPasswordReminder
-            ));
+            ]);
 
             if ($login && ($currentPassword == $newPassword)) {
                 $passwordErrors['reginfo_pass'][] = $this->__('Your new password cannot match your current password.');
@@ -1125,13 +1065,13 @@ class UserController extends \Zikula_AbstractController
 
         if ($passwordChanged) {
             if ($login) {
-                $sessionVars = $request->getSession()->get('User_login', array(), UsersConstant::SESSION_VAR_NAMESPACE);
+                $sessionVars = $request->getSession()->get('User_login', [], UsersConstant::SESSION_VAR_NAMESPACE);
                 $post['authentication_method'] = $sessionVars['authentication_method'];
                 $post['authentication_info'] = $sessionVars['authentication_info'];
                 $post['rememberme'] = $sessionVars['rememberme'];
                 $post['from_password_change'] = true;
 
-                $subRequest = $request->duplicate(array(), $post, ['_controller' => 'ZikulaUsersModule:User:login']);
+                $subRequest = $request->duplicate([], $post, ['_controller' => 'ZikulaUsersModule:User:login']);
                 $httpKernel = $this->get('http_kernel');
                 $response = $httpKernel->handle(
                     $subRequest,
@@ -1140,14 +1080,14 @@ class UserController extends \Zikula_AbstractController
 
                 return $response;
             } else {
-                return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', array(), RouterInterface::ABSOLUTE_URL));
+                return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', [], RouterInterface::ABSOLUTE_URL));
             }
         } else {
             $sessionVars['password_errors'] = $passwordErrors;
             SessionUtil::requireSession();
             $request->getSession()->set('User_changePassword', $sessionVars, UsersConstant::SESSION_VAR_NAMESPACE);
 
-            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_changepassword', array('login' => $login), RouterInterface::ABSOLUTE_URL));
+            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_changepassword', ['login' => $login]));
         }
     }
 
@@ -1207,8 +1147,8 @@ class UserController extends \Zikula_AbstractController
      */
     public function loginScreenAction($args)
     {
-        LogUtil::log(__f('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
+        @trigger_error('This method is deprecated.', E_USER_DEPRECATED);
 
-        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_login', array(), RouterInterface::ABSOLUTE_URL), 301);
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_login'), 301);
     }
 }
