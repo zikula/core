@@ -130,8 +130,8 @@ class CoreExtension extends Extension
             // nativ
             $finder = Finder::create()->files()
                 ->filter(function (\SplFileInfo $file) {
-                return 2 === substr_count($file->getBasename(), '.') && preg_match('/\.\w+$/', $file->getBasename());
-            })
+                    return 2 === substr_count($file->getBasename(), '.') && preg_match('/\.\w+$/', $file->getBasename());
+                })
                 ->in($dirs);
 
             foreach ($finder as $file) {
@@ -148,8 +148,8 @@ class CoreExtension extends Extension
             // zikula
             $zfinder = Finder::create()->files()
                 ->filter(function (\SplFileInfo $file) {
-                return 1 === substr_count($file->getBasename(), '.') && preg_match('/\.\w+$/', $file->getBasename());
-            })
+                    return 1 === substr_count($file->getBasename(), '.') && preg_match('/\.\w+$/', $file->getBasename());
+                })
                 ->in($dirs);
 
             foreach ($zfinder as $file) {
