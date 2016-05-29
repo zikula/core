@@ -21,7 +21,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\Token\CsrfTokenHandler;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -329,12 +328,13 @@ class IdsLogController extends AbstractController
      * @return RedirectResponse
      *
      * @throws \InvalidArgumentException Thrown if the object id is not numeric or if
-     * /
+     */
     public function deleteentryAction(Request $request)
     {
         // verify auth-key
         $csrftoken = $request->get('csrftoken');
-        $this->checkCsrfToken($csrftoken);
+        $tokenHandler = $this->get('zikula_core.common.csrf_token_handler');
+        $tokenHandler->validate($csrftoken);
 
         // Security check
         if (!$this->hasPermission('ZikulaSecurityCenterModule::', '::', ACCESS_DELETE)) {
@@ -362,5 +362,4 @@ class IdsLogController extends AbstractController
 
         return $this->redirectToRoute('zikulasecuritycentermodule_idslog_view');
     }
-*/
 }
