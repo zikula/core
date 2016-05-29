@@ -52,7 +52,7 @@
     system/RoutesModule/Resources/public/js/ZikulaRoutesModule.js,
     system/RoutesModule/Resources/public/js/ZikulaRoutesModule.Validation.js,
     system/SearchModule/Resources/public/js/ZikulaSearchModule.User.Form.js,
-    system/SecurityCenterModule/Resources/public/js/securitycenter_admin_allowedhtm.js,
+    system/SecurityCenterModule/Resources/public/js/securitycenter_admin_allowedhtml.js,
     system/SecurityCenterModule/Resources/public/js/securitycenter_admin_purifierconfig.js,
     system/SettingsModule/Resources/public/js/ZikulaSettingsModule.Admin.Phpinfo.js,
     system/ThemeModule/Resources/public/js/ZikulaThemeModule.Admin.ModifyConfig.js,

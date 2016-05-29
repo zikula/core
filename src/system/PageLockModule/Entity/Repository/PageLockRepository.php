@@ -39,7 +39,7 @@ class PageLockRepository extends EntityRepository
         }
 
         $qb = $this->createQueryBuilder('tbl')
-            ->select('count(tbl.id)');
+            ->select('COUNT(tbl.id)');
         $qb = $this->addCommonFilters($qb, $lockName, $sessionId);
 
         $query = $qb->getQuery();

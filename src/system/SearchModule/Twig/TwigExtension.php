@@ -27,7 +27,7 @@ class TwigExtension extends \Twig_Extension
     /**
      * TwigExtension constructor.
      *
-     * @param VariableApi              $variableApi     VariableApi service instance.
+     * @param VariableApi $variableApi VariableApi service instance.
      */
     public function __construct(VariableApi $variableApi)
     {

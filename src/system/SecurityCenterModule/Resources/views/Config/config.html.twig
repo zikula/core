@@ -1,0 +1,101 @@
+{% form_theme form with [
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ adminHeader() }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-wrench"></span>
+            {{ __('Settings') }}
+        </h3>
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        <fieldset>
+            <legend>{{ __('Automatic update settings') }}</legend>
+
+            {{ form_row(form.updatecheck) }}
+            <div data-switch="zikulasecuritycentermodule_config[updatecheck]" data-switch-value="1">
+                {{ form_row(form.updatefrequency) }}
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Host settings') }}</legend>
+
+            {{ form_row(form.keyexpiry) }}
+            {{ form_row(form.sessionauthkeyua) }}
+            {{ form_row(form.secure_domain) }}
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Cookies settings') }}</legend>
+
+            {{ form_row(form.signcookies) }}
+            <div data-switch="zikulasecuritycentermodule_config[signcookies]" data-switch-value="1">
+                {{ form_row(form.signingkey) }}
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Session settings') }}</legend>
+
+            {{ form_row(form.seclevel) }}
+            <div data-switch="zikulasecuritycentermodule_config[seclevel]" data-switch-value="Medium">
+                {{ form_row(form.secmeddays) }}
+            </div>
+            <div data-switch="zikulasecuritycentermodule_config[seclevel]" data-switch-value="Medium,High">
+                {{ form_row(form.secinactivemins) }}
+            </div>
+            {{ form_row(form.sessionstoretofile) }}
+            <div data-switch="zikulasecuritycentermodule_config[sessionstoretofile]" data-switch-value="1" class="form-group">
+                {{ form_row(form.sessionsavepath) }}
+            </div>
+            {{ form_row(form.gc_probability) }}
+            {{ form_row(form.sessioncsrftokenonetime) }}
+            {{ form_row(form.anonymoussessions) }}
+            {{ form_row(form.sessionrandregenerate) }}
+            {{ form_row(form.sessionregenerate) }}
+            {{ form_row(form.sessionregeneratefreq) }}
+            {{ form_row(form.sessionipcheck) }}
+            {{ form_row(form.sessionname) }}
+        </fieldset>
+        <fieldset id="securitycenter_ids">
+            <legend>{{ __('Intrusion Detection System') }}</legend>
+
+            {{ form_row(form.useids) }}
+            <div data-switch="zikulasecuritycentermodule_config[useids]" data-switch-value="1">
+                <p class="col-sm-offset-3 col-sm-9 help-block alert alert-info">
+                    {{ __('PHPIDS performs many different checks which return an impact value for scoring the treated request. Depending on the sum of all impacts performed actions are selected.') }}
+                    {{ __('Read more about this system on the <a href="http://phpids.org" title="PHPIDS homepage">PHPIDS homepage</a>.') }}
+                </p>
+                {{ form_row(form.idssoftblock) }}
+                {{ form_row(form.idsmail) }}
+                {{ form_row(form.idsfilter) }}
+                {{ form_row(form.idsrulepath) }}
+                {{ form_row(form.idsimpactthresholdone) }}
+                {{ form_row(form.idsimpactthresholdtwo) }}
+                {{ form_row(form.idsimpactthresholdthree) }}
+                {{ form_row(form.idsimpactthresholdfour) }}
+                {{ form_row(form.idsimpactmode) }}
+                {{ form_row(form.idshtmlfields) }}
+                {{ form_row(form.idsjsonfields) }}
+                {{ form_row(form.idsexceptions) }}
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Output filter settings') }}</legend>
+
+            {{ form_row(form.outputfilter) }}
+        </fieldset>
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.save) }}
+                {{ form_widget(form.cancel) }}
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>
+{{ adminFooter() }}

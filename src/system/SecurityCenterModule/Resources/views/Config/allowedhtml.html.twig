@@ -1,0 +1,94 @@
+{{ pageAddAsset('javascript', zasset('@ZikulaSecurityCenterModule:js/securitycenter_admin_allowedhtml.js')) }}
+{{ adminHeader() }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-list"></span>
+            {{ __('Allowed HTML settings') }}
+        </h3>
+
+        <p class="alert alert-info">{{ __('Filtering of allowed HTML occurs when a template string or variable is modified with the \'safehtml\' modifier, or when a module asks for similar processing from within its functions.') }}</p>
+
+        <form class="form-horizontal" role="form" action="{{ path('zikulasecuritycentermodule_config_allowedhtml') }}" method="post" enctype="application/x-www-form-urlencoded">
+            <fieldset>
+                <legend>{{ __('HTML entities') }}</legend>
+
+                <div class="form-group" id="securitycenter_htmlentities">
+                    <div class="col-sm-12">
+                        <label>{{ __('Translate embedded HTML entities into real characters') }}</label>
+                        <input id="securitycenter_htmlentities_yes" type="radio" name="xhtmlentities" value="1"{% if htmlEntities == 1 %} checked="checked"{% endif %} />
+                        <label for="securitycenter_htmlentities_yes">{{ __('Yes') }}</label>
+                        <input id="securitycenter_htmlentities_n0" type="radio" name="xhtmlentities" value="0"{% if htmlEntities != 1 %} checked="checked"{% endif %} />
+                        <label for="securitycenter_htmlentities_n0">{{ __('No') }}</label>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>{{ __('HTML tags') }}</legend>
+
+                <div class="alert alert-warning">
+                    <p>{{ __("Warning! Enabling the &lt;img&gt;, &lt;span&gt;, &lt;marquee&gt;, &lt;script&gt;, &lt;embed&gt;, &lt;object&gt; or &lt;iframe&gt; tags increases the opportunity for attacks against your users that might reveal their personal information. Therefore, you are recommended to keep these tags set to 'Not allowed' unless you are sure that you really understand the consequences of enabling them.")|raw }}</p>
+                    {% if htmlPurifier %}
+                        <p>{{ __f('Warning! Using the <a href="%s">HTML Purifier output filter</a> will override settings for some HTML tags (such as &lt;object&gt; and &lt;embed&gt;).', {'%s': configUrl }) }}</p>
+                    {% endif %}
+                </div>
+
+                <table class="table table-bordered table-striped">
+                    <colgroup>
+                        <col id="cTag" />
+                        <col id="cNotAllowed" />
+                        <col id="cAllowed" />
+                        <col id="cAllowedWithAttributes" />
+                        <col id="cUsageInfo" />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th id="hTag" scope="col" class="text-left">{{ __('Tag') }}</th>
+                            <th id="hNotAllowed" scope="col" class="text-left">
+                                <label for="toggle_notallowed" title="{{ __('Check all') }}">{{ __('Not allowed') }}</label>
+                                <input name="radiotoggle" id="toggle_notallowed" type="radio" value="0" />
+                            </th>
+                            <th id="hAllowed" scope="col" class="text-left">
+                                <label for="toggle_allowed" title="{{ __('Check all') }}">{{ __('Allowed') }}</label>
+                                <input name="radiotoggle" id="toggle_allowed" type="radio" value="1" />
+                            </th>
+                            <th id="hAllowedWithAttributes" scope="col" class="text-left">
+                                <label for="toggle_allowedwith" title="{{ __('Check all') }}">{{ __('Allowed with attributes') }}</label>
+                                <input name="radiotoggle" id="toggle_allowedwith" type="radio" value="2" />
+                            </th>
+                            <th id="hUsageInfo" scope="col" class="text-left">{{ __('Tag usage (from <a href="http://www.w3schools.com">W3Schools</a>)')|raw }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for htmlTag, usageTag in htmlTags %}
+                        <tr>
+                            <th id="hTag{{ htmlTag }}" scope="row">&lt;{{ htmlTag }}&gt;</th>
+                            <td headers="hTag{{ htmlTag }} hNotAllowed">
+                                <input class="notallowed_radio" type="radio" value="0" name="htmlallow{{ htmlTag }}tag"{% if currentHtmlTags[htmlTag] is not defined or currentHtmlTags[htmlTag] == 0 %} checked="checked"{% endif %} />
+                            </td>
+                            <td headers="hTag{{ htmlTag }} hAllowed">
+                                <input class="allowed_radio" type="radio" value="1" name="htmlallow{{ htmlTag }}tag"{% if currentHtmlTags[htmlTag] is defined and currentHtmlTags[htmlTag] == 1 %} checked="checked"{% endif %} />
+                            </td>
+                            <td headers="hTag{{ htmlTag }} hAllowedWithAttributes">
+                                <input class="allowedwith_radio" type="radio" value="2" name="htmlallow{{ htmlTag }}tag"{% if currentHtmlTags[htmlTag] is defined and currentHtmlTags[htmlTag] == 2 %} checked="checked"{% endif %} />
+                            </td>
+                            <td headers="hTag{{ htmlTag }} hUsageInfo">
+                                {% if usageTag is not empty %}<a href="{{ usageTag }}">{{ __f('About "&lt;%s&gt;"', {'%s': htmlTag})|raw }}</a>{% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </fieldset>
+
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <button class="btn btn-success" title="{{ __('Save') }}"><i class="fa fa-check"></i> {{ __('Save') }}</button>
+                    <a class="btn btn-default" href="{{ path('zikulasecuritycentermodule_config_config') }}" title="{{ __('Cancel') }}"><i clas="fa fa-times"></i> {{ __('Cancel') }}</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{{ adminFooter() }}

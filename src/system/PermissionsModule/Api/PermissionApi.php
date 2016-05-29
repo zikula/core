@@ -70,10 +70,10 @@ class PermissionApi
 
     /**
      * PermissionApi constructor.
-     * @param PermissionRepositoryInterface $permRepository
-     * @param UserRepositoryInterface $userRepository
-     * @param SessionInterface $session
-     * @param TranslatorInterface $translator
+     * @param PermissionRepositoryInterface $permRepository Permission repository.
+     * @param UserRepositoryInterface       $userRepository User repository
+     * @param SessionInterface              $session        Session service instance.
+     * @param TranslatorInterface           $translator     Translator service instance.
      */
     public function __construct(PermissionRepositoryInterface $permRepository, UserRepositoryInterface $userRepository, SessionInterface $session, TranslatorInterface $translator)
     {

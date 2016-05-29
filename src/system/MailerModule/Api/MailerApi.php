@@ -36,6 +36,11 @@ class MailerApi
     use TranslatorTrait;
 
     /**
+     * @var bool
+     */
+    private $isInstalled;
+
+    /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
@@ -63,6 +68,7 @@ class MailerApi
     /**
      * MailerApi constructor.
      *
+     * @param bool                     $isInstalled     Installed flag.
      * @param TranslatorInterface      $translator      Translator service instance.
      * @param EventDispatcherInterface $eventDispatcher EventDispatcher service instance.
      * @param DynamicConfigDumper      $configDumper    Configuration dumper for retrieving SwiftMailer configuration parameters.
@@ -70,6 +76,7 @@ class MailerApi
      * @param PermissionApi            $permissionApi   PermissionApi service instance.
      */
     public function __construct(
+        $isInstalled,
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         DynamicConfigDumper $configDumper,
@@ -77,10 +84,15 @@ class MailerApi
         Swift_Mailer $mailer,
         PermissionApi $permissionApi)
     {
+        $this->isInstalled = $isInstalled;
         $this->setTranslator($translator);
         $this->eventDispatcher = $eventDispatcher;
         $this->mailer = $mailer;
         $this->permissionApi = $permissionApi;
+
+        if (!$this->isInstalled) {
+            return;
+        }
 
         $mailerParams = $configDumper->getConfiguration('swiftmailer');
         $modVars = $variableApi->getAll('ZikulaMailerModule');
@@ -124,6 +136,10 @@ class MailerApi
      */
     public function sendMessage(Swift_Message $message, $subject, $body, $altBody, $html, array $headers = [], array $attachments = [], array $stringAttachments = [], array $embeddedImages = [])
     {
+        if (!$this->isInstalled) {
+            return;
+        }
+
         $this->message = $message;
 
         $event = new GenericEvent($this->message);

@@ -467,7 +467,7 @@ class System
     /**
      * Send an email.
      *
-     * E-mail messages should now be send with a ModUtil::apiFunc call to the mailer module.
+     * E-mail messages should now be sent with a ModUtil::apiFunc call to the mailer module.
      *
      * @param string  $to      Recipient of the email.
      * @param string  $subject Title of the email.

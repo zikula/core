@@ -1,0 +1,98 @@
+{{ pageAddAsset('javascript', zasset('@ZikulaSecurityCenterModule:js/securitycenter_admin_purifierconfig.js')) }}
+{{ adminHeader() }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-wrench"></span>
+            {{ __('HTMLPurifier Settings') }}
+        </h3>
+
+        <p class="alert alert-info">{{ __('HTMLPurifier filtering occurs when a template string or variable is modified with the \'safehtml\' modifier, or when a module asks for similar processing from within its functions.') }}</p>
+
+        <div class="alert alert-warning">
+            <h4>{{ __('Warning') }}</h4>
+            <p>{{ __('Setting HTMLPurifier configuration directives incorrectly can render your system unstable and inacessible. No validity checking is performed on any user-supplied settings. Ensure you fully understand each directive and its effects on your system. Ensure that all prerequisites are met and that any additional software or libraries required by each directive are properly installed and available to HTMLPurifier.') }}</p>
+            <p><a href="{{ path('zikulasecuritycentermodule_config_allowedhtml') }}" title="{{ __('Allowed HTML settings') }}">{{ __('Allowed HTML settings') }}</a> {{ __('will be applied after HTMLPurifier processing is completed.') }}</p>
+        </div>
+
+        <form class="form-horizontal" action="{{ path('zikulasecuritycentermodule_config_purifierconfig') }}" method="post" enctype="application/x-www-form-urlencoded">
+            {% for directiveNamespace, directives in purifierAllowed %}
+            <fieldset>
+                {% set namespaceFrag = directiveNamespace|e('url') %}
+                {% set namespaceLink = '<a href="http://htmlpurifier.org/live/configdoc/plain.html#' ~ namespaceFrag ~ '">' ~ directiveNamespace ~ '</a>' %}
+                <legend>{{ __f('HTMLPurifier \'%s\' configuration directives', {'%s': namespaceLink})|raw }}</legend>
+                {% for directiveName, directive in directives if directive.supported %}
+                    {% set idVal = 'purifierConfig_' ~ directive.key %}
+                    {% set nameVal = 'purifierConfig[' ~ directive.key ~ ']' %}
+
+                    {% if directive.allowNull %}
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="purifierConfig_div_{{ directive.key }}">
+                            {{ directiveName }} <a href="http://htmlpurifier.org/live/configdoc/plain.html#{{ directive.key|e('url') }}">(?)</a>
+                        </label>
+                        <div class="col-sm-9">
+                            <div id="purifierConfig_div_{{ directive.key }}">
+                                <input id="purifierConfig_Null_{{ directive.key }}" name="purifierConfig[Null_{{ directive.key }}]" type="checkbox" value="1"{% if directive.value is null %} checked="checked"{% endif %} onclick="{% if directive.type != purifierTypes.bool %}toggleWriteability('{{ idVal }}', checked);{% else %}toggleWriteability('{{ idVal }}_Yes', checked); toggleWriteability('{{ idVal }}_No', checked);{% endif %}" />
+                                <label for="purifierConfig_Null_{{ directive.key }}">{{ __('Use default value (if checked) or override value') }}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="{{ idVal }}">&nbsp;</label>
+                    {% else %}
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="{{ idVal }}">{{ directiveName }} <a href="http://htmlpurifier.org/live/configdoc/plain.html#{{ directive.key|e('url') }}">(?)</a></label>
+                    {% endif %}
+
+                        {% set disabledVal = directive.value is null ? ' disabled="disabled"' : '' %}
+
+                        {% if directive.allowedValues is defined %}
+                        <div class="col-sm-9">
+                            <select id="{{ idVal }}" class="form-control" name="{{ nameVal }}"{{ disabledVal }} style="min-width: 5em">
+                                {% for allowedVal in directive.allowedValues %}
+                                <option value="{{ allowedVal }}"{% if directive.value == allowedVal %} selected="selected"{% endif %}>{{ allowedVal }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% elseif directive.type in [purifierTypes.text, purifierTypes.itext, purifierTypes.list, purifierTypes.hash, purifierTypes.lookup] %}
+                        <div class="col-sm-9">
+                            <textarea id="{{ idVal }}" class="form-control" name="{{ nameVal }}" cols="50" rows="8"{{ disabledVal }}>{{ directive.value }}</textarea>
+
+                            {% if directive.type == purifierTypes.list or directive.type == purifierTypes.lookup %}
+                            <em class="help-block sub">{{ __('(Place each value on a separate line.)') }}</em>
+                            {% elseif directive.type == purifierTypes.hash %}
+                            <em class="help-block sub">{{ __('(Separate each key-value pair with a colon (e.g., key:value). Place each key-value pair on a separate line.)') }}</em>
+                            {% endif %}
+                        </div>
+                        {% elseif directive.type in [purifierTypes.string, purifierTypes.istring, purifierTypes.int, purifierTypes.float] %}
+                        <div class="col-sm-9">  
+                            <input id="{{ idVal }}" name="{{ nameVal }}" class="form-control" type="text" value="{{ directive.value }}"{{ disabledVal }} />
+                        </div>
+                        {% elseif directive.type == purifierTypes.bool %}
+                        <div id="{{ idVal }}" class="col-sm-9"> 
+                            <input id="{{ idVal }}_Yes" name="{{ nameVal }}" type="radio" value="1"{% if directive.value == true %} checked="checked"{% endif %}{{ disabledVal }} />
+                            <label for="{{ idVal }}_Yes">{{ __('Yes') }}</label>
+                            <input id="{{ idVal }}_No" name="{{ nameVal }}" type="radio" value="0"{% if directive.value != true %} checked="checked"{% endif %}{{ disabledVal }} />
+                            <label for="{{ idVal }}_No">{{ __('No') }}</label>
+                        </div>
+                        {% else %}
+                        <div class="col-sm-9">
+                            <em class="help-block sub">{{ __('(Modification not supported.)') }} {{ __('Value:') }} {# directive.value|serialize #}{{ directive.value }}</em>
+                        </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </fieldset>
+            {% endfor %}
+
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <button class="btn btn-success" title="{{ __('Save') }}"><i class="fa fa-check"></i> {{ __('Save') }}</button>
+                    <a class="btn btn-default" href="{{ path('zikulasecuritycentermodule_config_config') }}" title="{{ __('Cancel') }}"><i class="fa fa-times"></i> {{ __('Cancel') }}</a>
+                    <a class="btn btn-default" href="{{ path('zikulasecuritycentermodule_config_purifierconfig', { reset: 'default' }) }}" title="{{ __('Reset to default values') }}"><i class="fa fa-refresh"></i> {{ __('Reset to default values') }}</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{{ adminFooter() }}
