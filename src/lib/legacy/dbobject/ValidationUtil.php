@@ -93,9 +93,10 @@ class ValidationUtil
                 case 'email': $rc = System::varValidate($postval, 'email');
                     break;
                 case 'noop':
-                case '': if (!$required) {
-     throw new \Exception(__f('%1$s: invalid cmp_op [%2$s] supplied for non-required field [%3$s].', ['ValidationUtil::validateField', $cmp_op, $field]));
- }
+                case '':
+                    if (!$required) {
+                        throw new \Exception(__f('%1$s: invalid cmp_op [%2$s] supplied for non-required field [%3$s].', ['ValidationUtil::validateField', $cmp_op, $field]));
+                    }
                     $rc = true;
                     break;
                 default: throw new \Exception(__f('%1$s: invalid cmp_op [%2$s] supplied for field [%3$s].', ['ValidationUtil::validateField', $cmp_op, $field]));
