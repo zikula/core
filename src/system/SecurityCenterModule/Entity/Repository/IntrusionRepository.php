@@ -170,7 +170,7 @@ class IntrusionRepository extends EntityRepository
         $qb = $this->createQueryBuilder('tbl')
             ->delete('Zikula\RoutesModule\Entity\RouteEntity', 'tbl');
         $query = $qb->getQuery();
-    
+
         $query->execute();
     }
 }
