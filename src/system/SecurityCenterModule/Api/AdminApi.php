@@ -12,7 +12,6 @@ namespace Zikula\SecurityCenterModule\Api;
 
 use SecurityUtil;
 use ServiceUtil;
-use System;
 
 /**
  * API functions used by administrative controllers
