@@ -85,7 +85,6 @@ class CoreExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFilter('languageName', [$this, 'languageName']),
-            new \Twig_SimpleFilter('safeHtml', [$this, 'safeHtml'], ['is_safe' => ['html']]),
             new \Twig_SimpleFilter('yesNo', [$this, 'yesNo']),
             new \Twig_SimpleFilter('php', [$this, 'applyPhp'])
         ];
@@ -205,15 +204,6 @@ class CoreExtension extends \Twig_Extension
     public function languageName($code)
     {
         return \ZLanguage::getLanguageName($code);
-    }
-
-    /**
-     * @param $string
-     * @return string
-     */
-    public function safeHtml($string)
-    {
-        return \DataUtil::formatForDisplayHTML($string);
     }
 
     public function yesNo($string)

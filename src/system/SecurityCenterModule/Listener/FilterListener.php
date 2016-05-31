@@ -26,7 +26,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\MailerModule\Api\MailerApi;
-use Zikula\SecurityCenterModule\Util as SecurityCenterUtil;
 use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
 use Zikula\UsersModule\Api\CurrentUserApi;
 use ZLanguage;
@@ -34,7 +33,7 @@ use ZLanguage;
 /**
  * Event handler for the security center module
  *
- * Adds the intrustion detection filter to the core.init phase and an output filter to the system.outputfiler phase.
+ * Adds the intrustion detection filter request event.
  */
 class FilterListener implements EventSubscriberInterface
 {
@@ -73,9 +72,6 @@ class FilterListener implements EventSubscriberInterface
         return [
             KernelEvents::REQUEST => [
                 ['idsInputFilter', 100]
-            ],
-            KernelEvents::RESPONSE => [
-                ['outputFilter', 10]
             ]
         ];
     }
@@ -422,66 +418,6 @@ class FilterListener implements EventSubscriberInterface
         // TODO $impactThresholdFour is not considered yet
 
         return;
-    }
-
-    /**
-     * output filter to implement html purifier
-     *
-     * @param FilterResponseEvent $event
-     *
-     * @return mixed modified event data
-     */
-    public function outputFilter(FilterResponseEvent $event)
-    {
-        if (!$this->isInstalled) {
-            return;
-        }
-        if (System::isInstalling() || System::isUpgrading()) {
-            return;
-        }
-
-        if ($this->getSystemVar('outputfilter') > 1) {
-            return;
-        }
-
-        /*if (!$event->isMasterRequest()) {
-            return;
-        }
-        if ($request->isXmlHttpRequest()) {
-            return;
-        }*/
-
-        // recursive call for arrays
-        // [removed as it's duplicated in datautil]
-
-        // prepare htmlpurifier class
-        static $safeCache;
-        $purifier = SecurityCenterUtil::getpurifier();
-
-        $response = $event->getResponse();
-        $responseContent = $response->getContent();
-
-        $md5 = md5($responseContent);
-        // check if the value is in the safecache
-        if (isset($safeCache[$md5])) {
-            $responseContent = $safeCache[$md5];
-        } else {
-            // save renderer delimiters
-            $responseContent = str_replace('{', '%VIEW_LEFT_DELIMITER%', $responseContent);
-            $responseContent = str_replace('}', '%VIEW_RIGHT_DELIMITER%', $responseContent);
-            $responseContent = $purifier->purify($responseContent);
-
-            // restore renderer delimiters
-            $responseContent = str_replace('%VIEW_LEFT_DELIMITER%', '{', $responseContent);
-            $responseContent = str_replace('%VIEW_RIGHT_DELIMITER%', '}', $responseContent);
-
-            // cache the value
-            $safeCache[$md5] = $responseContent;
-        }
-
-        $response->setContent($responseContent);
-
-        $event->setResponse($response);
     }
 
     /**
