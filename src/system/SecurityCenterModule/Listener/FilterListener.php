@@ -10,35 +10,89 @@
 
 namespace Zikula\SecurityCenterModule\Listener;
 
-use Zikula_Core;
-use System;
 use CacheUtil;
-use SessionUtil;
-use UserUtil;
 use DateUtil;
-use ModUtil;
-use ServiceUtil;
-use Zikula\SecurityCenterModule\Util as SecurityCenterUtil;
-use Zikula_Event;
-use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
+use System;
+use Doctrine\ORM\EntityManagerInterface;
+use IDS\Init as IdsInit;
+use IDS\Monitor as IdsMonitor;
+use IDS\Report as IdsReport;
+use Swift_Message;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\MailerModule\Api\MailerApi;
+use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
+use Zikula\UsersModule\Api\CurrentUserApi;
+use ZLanguage;
 
 /**
  * Event handler for the security center module
  *
- * Adds the intrustion detection filter to the core.init phase and an output filter to the system.outputfiler phase.
+ * Adds the intrustion detection filter request event.
  */
-class FilterListener extends \Zikula_AbstractEventHandler
+class FilterListener implements EventSubscriberInterface
 {
     /**
-     * Setup this handler.
-     *
-     * @return void
+     * @var bool
      */
-    protected function setupHandlerDefinitions()
+    private $isInstalled;
+
+    /**
+     * @var VariableApi
+     */
+    private $variableApi;
+
+    /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private $em;
+
+    /**
+     * @var CurrentUserApi
+     */
+    private $currentUserApi;
+
+    /**
+     * @var MailerApi
+     */
+    private $mailer;
+
+    public static function getSubscribedEvents()
     {
-        $this->addHandlerDefinition('core.init', 'idsInputFilter');
-        $this->addHandlerDefinition('system.outputfilter', 'outputFilter');
+        return [
+            KernelEvents::REQUEST => [
+                ['idsInputFilter', 100]
+            ]
+        ];
+    }
+
+    /**
+     * FilterListener constructor.
+     *
+     * @param bool                   $isInstalled    Installed flag.
+     * @param VariableApi            $variableApi    VariableApi service instance.
+     * @param SessionInterface       $session        Session service instance.
+     * @param EntityManagerInterface $em             Doctrine entity manager.
+     * @param CurrentUserApi         $currentUserApi CurrentUserApi service instance.
+     * @param MailerApi              $mailer         MailerApi service instance.
+     */
+    public function __construct($isInstalled, VariableApi $variableApi, SessionInterface $session, EntityManagerInterface $em, CurrentUserApi $currentUserApi, MailerApi $mailer)
+    {
+        $this->isInstalled = $isInstalled;
+        $this->variableApi = $variableApi;
+        $this->session = $session;
+        $this->em = $em;
+        $this->currentUserApi = $currentUserApi;
+        $this->mailer = $mailer;
     }
 
     /**
@@ -46,73 +100,87 @@ class FilterListener extends \Zikula_AbstractEventHandler
      *
      * @see    http://technicalinfo.net/papers/CSS.html
      *
+     * @param GetResponseEvent $event
+     *
      * @return void
      *
      * @throws \Exception Thrown if there was a problem running ids detection
      */
-    public function idsInputFilter(Zikula_Event $event)
+    public function idsInputFilter(GetResponseEvent $event)
     {
-        if ($event['stage'] & Zikula_Core::STAGE_MODS && System::getVar('useids') == 1) {
-            // Run IDS if desired
-            try {
-                $request = [];
-                // build request array defining what to scan
-                // @todo: change the order of the arrays to merge if ini_get('variables_order') != 'EGPCS'
-                if (isset($_REQUEST)) {
-                    $request['REQUEST'] = $_REQUEST;
-                }
-                if (isset($_GET)) {
-                    $request['GET'] = $_GET;
-                }
-                if (isset($_POST)) {
-                    $request['POST'] = $_POST;
-                }
-                if (isset($_COOKIE)) {
-                    $request['COOKIE'] = $_COOKIE;
-                }
-                if (isset($_SERVER['HTTP_HOST'])) {
-                    $request['HOST'] = $_SERVER['HTTP_HOST'];
-                }
-                if (isset($_SERVER['HTTP_ACCEPT'])) {
-                    $request['ACCEPT'] = $_SERVER['HTTP_ACCEPT'];
-                }
-                if (isset($_SERVER['USER_AGENT'])) {
-                    $request['USER_AGENT'] = $_SERVER['USER_AGENT'];
-                }
-                // while i think that REQUEST_URI is unnecessary,
-                // the REFERER would be important, but results in way too many false positives
-                /*
-                if (isset($_SERVER['REQUEST_URI'])) {
-                    $request['REQUEST_URI'] = $_SERVER['REQUEST_URI'];
-                }
-                if (isset($_SERVER['HTTP_REFERER'])) {
-                    $request['REFERER'] = $_SERVER['HTTP_REFERER'];
-                }
-                */
+        if (!$this->isInstalled) {
+            return;
+        }
+        if (System::isInstalling() || System::isUpgrading()) {
+            return;
+        }
 
-                // initialise configuration object
-                $init = \IDS\Init::init();
+        if ($this->getSystemVar('useids') != 1) {
+            return;
+        }
+        if (!$event->isMasterRequest()) {
+            return;
+        }
 
-                // set configuration options
-                $init->config = $this->_getidsconfig();
-
-                // create new IDS instance
-                $ids = new \IDS\Monitor($init);
-
-                // run the request check and fetch the results
-                $result = $ids->run($request);
-
-                // analyze the results
-                if (!$result->isEmpty()) {
-                    // process the \IDS\Report object
-                    $this->_processIdsResult($init, $result);
-                } else {
-                    // no attack detected
-                }
-            } catch (\Exception $e) {
-                // sth went wrong - maybe the filter rules weren't found
-                throw new \Exception(__f('An error occured during executing PHPIDS: %s', $e->getMessage()));
+        // Run IDS if desired
+        try {
+            $request = [];
+            // build request array defining what to scan
+            // @todo: change the order of the arrays to merge if ini_get('variables_order') != 'EGPCS'
+            if (isset($_REQUEST)) {
+                $request['REQUEST'] = $_REQUEST;
             }
+            if (isset($_GET)) {
+                $request['GET'] = $_GET;
+            }
+            if (isset($_POST)) {
+                $request['POST'] = $_POST;
+            }
+            if (isset($_COOKIE)) {
+                $request['COOKIE'] = $_COOKIE;
+            }
+            if (isset($_SERVER['HTTP_HOST'])) {
+                $request['HOST'] = $_SERVER['HTTP_HOST'];
+            }
+            if (isset($_SERVER['HTTP_ACCEPT'])) {
+                $request['ACCEPT'] = $_SERVER['HTTP_ACCEPT'];
+            }
+            if (isset($_SERVER['USER_AGENT'])) {
+                $request['USER_AGENT'] = $_SERVER['USER_AGENT'];
+            }
+            // while i think that REQUEST_URI is unnecessary,
+            // the REFERER would be important, but results in way too many false positives
+            /*
+            if (isset($_SERVER['REQUEST_URI'])) {
+                $request['REQUEST_URI'] = $_SERVER['REQUEST_URI'];
+            }
+            if (isset($_SERVER['HTTP_REFERER'])) {
+                $request['REFERER'] = $_SERVER['HTTP_REFERER'];
+            }
+            */
+
+            // initialise configuration object
+            $init = IdsInit::init();
+
+            // set configuration options
+            $init->config = $this->getIdsConfig();
+
+            // create new IDS instance
+            $ids = new IdsMonitor($init);
+
+            // run the request check and fetch the results
+            $result = $ids->run($request);
+
+            // analyze the results
+            if (!$result->isEmpty()) {
+                // process the IdsReport object
+                $this->processIdsResult($init, $result);
+            } else {
+                // no attack detected
+            }
+        } catch (\Exception $e) {
+            // sth went wrong - maybe the filter rules weren't found
+            throw new \Exception(__f('An error occured during executing PHPIDS: %s', $e->getMessage()));
         }
     }
 
@@ -121,14 +189,14 @@ class FilterListener extends \Zikula_AbstractEventHandler
      *
      * @return array IDS configuration settings.
      */
-    private function _getidsconfig()
+    private function getIdsConfig()
     {
         $config = [];
 
         // General configuration settings
         $config['General'] = [];
 
-        $config['General']['filter_type'] = System::getVar('idsfilter', 'xml');
+        $config['General']['filter_type'] = $this->getSystemVar('idsfilter', 'xml');
         if (empty($config['General']['filter_type'])) {
             $config['General']['filter_type'] = 'xml';
         }
@@ -138,7 +206,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
         $config['General']['use_base_path'] = false;
 
         // path to the filters used
-        $config['General']['filter_path'] = System::getVar('idsrulepath', 'config/phpids_zikula_default.xml');
+        $config['General']['filter_path'] = $this->getSystemVar('idsrulepath', 'config/phpids_zikula_default.xml');
         // path to (writable) tmp directory
         $config['General']['tmp_path'] = CacheUtil::getLocalDir() . '/idsTmp';
         $config['General']['scan_keys'] = false;
@@ -146,17 +214,17 @@ class FilterListener extends \Zikula_AbstractEventHandler
         // we use a different HTML Purifier source
         // by default PHPIDS does also contain those files
         // we do this more efficiently in boostrap (drak).
-        $config['General']['HTML_Purifier_Path'] = ''; // this must be set or IDS/Monitor will never fill in the HTML_Purifier_Cache property (drak).
+        $config['General']['HTML_Purifier_Path'] = ''; // this must be set or IdsMonitor will never fill in the HTML_Purifier_Cache property (drak).
         $config['General']['HTML_Purifier_Cache'] = CacheUtil::getLocalDir() . '/purifierCache';
 
         // define which fields contain html and need preparation before hitting the PHPIDS rules
-        $config['General']['html'] = System::getVar('idshtmlfields', []);
+        $config['General']['html'] = $this->getSystemVar('idshtmlfields', []);
 
         // define which fields contain JSON data and should be treated as such for fewer false positives
-        $config['General']['json'] = System::getVar('idsjsonfields', []);
+        $config['General']['json'] = $this->getSystemVar('idsjsonfields', []);
 
         // define which fields shouldn't be monitored (a[b]=c should be referenced via a.b)
-        $config['General']['exceptions'] = System::getVar('idsexceptions', []);
+        $config['General']['exceptions'] = $this->getSystemVar('idsexceptions', []);
 
         // PHPIDS should run with PHP 5.1.2 but this is untested - set this value to force compatibilty with minor versions
         $config['General']['min_php_version'] = '5.1.6';
@@ -190,17 +258,17 @@ class FilterListener extends \Zikula_AbstractEventHandler
     /**
      * Process results from IDS scan.
      *
-     * @param \IDS\Init   $init   PHPIDS init object reference.
-     * @param \IDS\Report $result The result object from PHPIDS.
+     * @param IdsInit   $init   PHPIDS init object reference.
+     * @param IdsReport $result The result object from PHPIDS.
      *
      * @return void
      */
-    private function _processIdsResult(\IDS\Init $init, \IDS\Report $result)
+    private function processIdsResult(IdsInit $init, IdsReport $result)
     {
         // $result contains any suspicious fields enriched with additional info
 
         // Note: it is moreover possible to dump this information by simply doing
-        //"echo $result", calling the \IDS\Report::$this->__toString() method implicitely.
+        //"echo $result", calling the IdsReport::$this->__toString() method implicitely.
 
         $requestImpact = $result->getImpact();
         if ($requestImpact < 1) {
@@ -209,11 +277,11 @@ class FilterListener extends \Zikula_AbstractEventHandler
         }
 
         // update total session impact to track an attackers activity for some time
-        $sessionImpact = SessionUtil::getVar('idsImpact', 0) + $requestImpact;
-        SessionUtil::setVar('idsImpact', $sessionImpact);
+        $sessionImpact = $this->session->get('idsImpact', 0) + $requestImpact;
+        $this->session->set('idsImpact', $sessionImpact);
 
         // let's see which impact mode we are using
-        $idsImpactMode = System::getVar('idsimpactmode', 1);
+        $idsImpactMode = $this->getSystemVar('idsimpactmode', 1);
         $idsImpactFactor = 1;
         if ($idsImpactMode == 1) {
             $idsImpactFactor = 1;
@@ -224,10 +292,10 @@ class FilterListener extends \Zikula_AbstractEventHandler
         }
 
         // determine our impact threshold values
-        $impactThresholdOne   = System::getVar('idsimpactthresholdone', 1) * $idsImpactFactor;
-        $impactThresholdTwo   = System::getVar('idsimpactthresholdtwo', 10) * $idsImpactFactor;
-        $impactThresholdThree = System::getVar('idsimpactthresholdthree', 25) * $idsImpactFactor;
-        $impactThresholdFour  = System::getVar('idsimpactthresholdfour', 75) * $idsImpactFactor;
+        $impactThresholdOne   = $this->getSystemVar('idsimpactthresholdone', 1) * $idsImpactFactor;
+        $impactThresholdTwo   = $this->getSystemVar('idsimpactthresholdtwo', 10) * $idsImpactFactor;
+        $impactThresholdThree = $this->getSystemVar('idsimpactthresholdthree', 25) * $idsImpactFactor;
+        $impactThresholdFour  = $this->getSystemVar('idsimpactthresholdfour', 75) * $idsImpactFactor;
 
         $usedImpact = ($idsImpactMode == 1) ? $requestImpact : $sessionImpact;
 
@@ -241,19 +309,17 @@ class FilterListener extends \Zikula_AbstractEventHandler
             $ipAddress = ($_HTTP_X_FORWARDED_FOR) ? $_HTTP_X_FORWARDED_FOR : $_REMOTE_ADDR;
 
             $currentPage = System::getCurrentUri();
-            $currentUid = UserUtil::getVar('uid');
+            $currentUid = $this->currentUserApi->get('uid');
             if (!$currentUid) {
                 $currentUid = 1;
             }
-
-            // get entity manager
-            $em = ServiceUtil::get('doctrine.entitymanager');
+            $currentUser = $this->em->getReference('ZikulaUsersModule:UserEntity', $currentUid);
 
             $intrusionItems = [];
 
             foreach ($result as $event) {
                 $eventName = $event->getName();
-                $malVar = explode(".", $eventName, 2);
+                $malVar = explode('.', $eventName, 2);
 
                 $filters = [];
                 foreach ($event as $filter) {
@@ -273,7 +339,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
                     'tag'     => $tagVal,
                     'value'   => $event->getValue(),
                     'page'    => $currentPage,
-                    'user'    => $em->getReference('ZikulaUsersModule:UserEntity', $currentUid),
+                    'user'    => $currentUser,
                     'ip'      => $ipAddress,
                     'impact'  => $result->getImpact(),
                     'filters' => serialize($filters),
@@ -289,24 +355,24 @@ class FilterListener extends \Zikula_AbstractEventHandler
 
             // log details to database
             foreach ($intrusionItems as $tag => $intrusionItem) {
-                $intrusionItem['name'] = implode(", ", $intrusionItem['name']);
+                $intrusionItem['name'] = implode(', ', $intrusionItem['name']);
 
                 $obj = new IntrusionEntity();
                 $obj->merge($intrusionItem);
-                $em->persist($obj);
+                $this->em->persist($obj);
             }
 
-            $em->flush();
+            $this->em->flush();
         }
 
-        if (System::getVar('idsmail') && ($usedImpact > $impactThresholdTwo)) {
+        if ($this->getSystemVar('idsmail') && $usedImpact > $impactThresholdTwo) {
             // mail admin
 
             // prepare mail text
             $mailBody = __('The following attack has been detected by PHPIDS') . "\n\n";
             $mailBody .= __f('IP: %s', $ipAddress) . "\n";
             $mailBody .= __f('UserID: %s', $currentUid) . "\n";
-            $mailBody .= __f('Date: %s', DateUtil::strftime(__('%b %d, %Y'), (time()))) . "\n";
+            $mailBody .= __f('Date: %s', DateUtil::strftime(__('%b %d, %Y'), time())) . "\n";
             if ($idsImpactMode == 1) {
                 $mailBody .= __f('Request Impact: %d', $requestImpact) . "\n";
             } else {
@@ -323,31 +389,24 @@ class FilterListener extends \Zikula_AbstractEventHandler
             $mailBody .= __f('Request URI: %s', urlencode($currentPage));
 
             // prepare other mail arguments
-            $siteName = System::getVar('sitename');
-            $adminmail = System::getVar('adminmail');
-            $mailTitle = __('Intrusion attempt detected by PHPIDS');
+            $siteName = $this->getSystemVar('sitename_' . ZLanguage::getLanguageCode(), $this->getSystemVar('sitename_en'));
+            $adminMail = $this->getSystemVar('adminmail');
 
-            if (ModUtil::available('ZikulaMailerModule')) {
-                $args = [];
-                $args['fromname']    = $siteName;
-                $args['fromaddress'] = $adminmail;
-                $args['toname']      = 'Site Administrator';
-                $args['toaddress']   = $adminmail;
-                $args['subject']     = $mailTitle;
-                $args['body']        = $mailBody;
+            // create new message instance
+            /** @var Swift_Message */
+            $message = Swift_Message::newInstance();
 
-                $rc = ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendmessage', $args);
-            } else {
-                $headers = "From: $siteName <$adminmail>\n"
-                        ."X-Priority: 1 (Highest)";
-                System::mail($adminmail, $mailTitle, $mailBody, $headers);
-            }
+            $message->setFrom([$adminMail => $siteName]);
+            $message->setTo([$adminMail => 'Site Administrator']);
+
+            $subject = __('Intrusion attempt detected by PHPIDS');
+            $rc = $this->mailer->sendMessage($message, $formData['subject'], $mailBody);
         }
 
         if ($usedImpact > $impactThresholdThree) {
             // block request
 
-            if (System::getVar('idssoftblock')) {
+            if ($this->getSystemVar('idssoftblock')) {
                 // warn only for debugging the ruleset
                 throw new \RuntimeException(__('Malicious request code / a hacking attempt was detected. This request has NOT been blocked!'));
             } else {
@@ -355,48 +414,21 @@ class FilterListener extends \Zikula_AbstractEventHandler
             }
         }
 
+        // TODO $impactThresholdFour is not considered yet
+
         return;
     }
 
     /**
-     * output filter to implement html purifier
+     * Returns a system var.
      *
-     * @param \Zikula_Event $event event object
+     * @param string $variableName The variable name.
+     * @param mixed  $default      The default value.
      *
-     * @return mixed modified event data
+     * @return mixed Result returned by variable api call.
      */
-    public function outputFilter(Zikula_Event $event)
+    private function getSystemVar($variableName, $default = false)
     {
-        if (System::getVar('outputfilter') > 1) {
-            return;
-        }
-
-        // recursive call for arrays
-        // [removed as it's duplicated in datautil]
-
-        // prepare htmlpurifier class
-        static $safecache;
-        $purifier = SecurityCenterUtil::getpurifier();
-
-        $md5 = md5($event->data);
-        // check if the value is in the safecache
-        if (isset($safecache[$md5])) {
-            $event->data = $safecache[$md5];
-        } else {
-
-            // save renderer delimiters
-            $event->data = str_replace('{', '%VIEW_LEFT_DELIMITER%', $event->data);
-            $event->data = str_replace('}', '%VIEW_RIGHT_DELIMITER%', $event->data);
-            $event->data = $purifier->purify($event->data);
-
-            // restore renderer delimiters
-            $event->data = str_replace('%VIEW_LEFT_DELIMITER%', '{', $event->data);
-            $event->data = str_replace('%VIEW_RIGHT_DELIMITER%', '}', $event->data);
-
-            // cache the value
-            $safecache[$md5] = $event->data;
-        }
-
-        return $event->data;
+        return $this->variableApi->get(VariableApi::CONFIG, $variableName, $default);
     }
 }

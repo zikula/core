@@ -153,14 +153,14 @@ class ConfigController extends AbstractController
 
                 // send the email
                 try {
-                    $sitename = $variableApi->get(VariableApi::CONFIG, 'sitename_' . ZLanguage::getLanguageCode(), $variableApi->get(VariableApi::CONFIG, 'sitename_en'));
+                    $siteName = $variableApi->get(VariableApi::CONFIG, 'sitename_' . ZLanguage::getLanguageCode(), $variableApi->get(VariableApi::CONFIG, 'sitename_en'));
                     $adminMail = $variableApi->get(VariableApi::CONFIG, 'adminmail');
 
                     // create new message instance
                     /** @var Swift_Message */
                     $message = Swift_Message::newInstance();
 
-                    $message->setFrom([$adminMail => $sitename]);
+                    $message->setFrom([$adminMail => $siteName]);
                     $message->setTo([$formData['toAddress'] => $formData['toName']]);
 
                     $mailer = $this->get('zikula_mailer_module.api.mailer');
@@ -203,6 +203,9 @@ class ConfigController extends AbstractController
 
         $dataValues['sitename'] = $variableApi->get(VariableApi::CONFIG, 'sitename_' . ZLanguage::getLanguageCode(), $variableApi->get(VariableApi::CONFIG, 'sitename_en'));
         $dataValues['adminmail'] = $variableApi->get(VariableApi::CONFIG, 'adminmail');
+
+        $dataValues['fromName'] = $dataValues['sitename'];
+        $dataValues['fromAddress'] = $dataValues['adminmail'];
 
         return $dataValues;
     }

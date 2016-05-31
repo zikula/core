@@ -55,7 +55,9 @@ class Configuration implements ConfigurationInterface
         ->fixXmlConfig('fallback')
         ->children()
         ->arrayNode('fallbacks')
-        ->beforeNormalization()->ifString()->then(function ($v) { return [$v]; })->end()
+        ->beforeNormalization()->ifString()->then(function ($v) {
+            return [$v];
+        })->end()
         ->prototype('scalar')->end()
         ->defaultValue(['en'])
         ->end()

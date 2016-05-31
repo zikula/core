@@ -11,7 +11,7 @@
         }
     ],
     "autoload": {
-        "psr-0": { "Zikula\\MailerModule\\": "" }
+        "psr-4": { "Zikula\\MailerModule\\": "" }
     },
     "require": {
         "php": ">5.4.0"

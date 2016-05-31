@@ -24,12 +24,24 @@ use Zikula\ThemeModule\AbstractTheme;
  */
 class RouteLoader extends Loader
 {
+    /**
+     * @var bool
+     */
     private $loaded = false;
 
+    /**
+     * @var EntityManagerInterface
+     */
     private $em;
 
+    /**
+     * @var ContainerInterface
+     */
     private $container;
 
+    /**
+     * @var \Zikula\Common\Translator\Translator
+     */
     private $translator;
 
     /**
@@ -37,6 +49,13 @@ class RouteLoader extends Loader
      */
     private $zikulaKernel;
 
+    /**
+     * RouteLoader constructor.
+     *
+     * @param EntityManagerInterface $em           Doctrine entity manager.
+     * @param ContainerInterface     $container    Service container.
+     * @param \ZikulaKernel          $zikulaKernel Zikula kernel.
+     */
     public function __construct(EntityManagerInterface $em, ContainerInterface $container, \ZikulaKernel $zikulaKernel)
     {
         $this->em = $em;

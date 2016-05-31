@@ -20,7 +20,7 @@ One example for using this service can be found in the `Zikula\MailerModule\Cont
     /** @var Swift_Message */
     $message = Swift_Message::newInstance();
 
-    $message->setFrom([$adminMail => $sitename]);
+    $message->setFrom([$adminMail => $siteName]);
     $message->setTo([$formData['toAddress'] => $formData['toName']]);
 
     $mailer = $this->get('zikula_mailer_module.api.mailer');

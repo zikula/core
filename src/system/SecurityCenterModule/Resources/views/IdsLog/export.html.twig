@@ -1,0 +1,39 @@
+{% form_theme form with [
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ adminHeader() }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-download"></span>
+            {{ __('Export IDS Log') }}
+        </h3>
+
+        <ul class="navbar navbar-default navbar-modulelinks">
+            <li class="active"><span class="fa fa-download"> {{ __('Export IDS Log') }}</span></li>
+            <li><a href="{{ path('zikulasecuritycentermodule_idslog_purge') }}" title="{{ __('Delete the entire log') }}" class="fa fa-trash-o"> {{ __('Purge IDS Log') }}</a></li>
+        </ul>
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        <fieldset>
+            <legend>{{ __('Export Options') }}</legend>
+
+            {{ form_row(form.titles) }}
+            {{ form_row(form.file) }}
+            {{ form_row(form.delimiter) }}
+        </fieldset>
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.export) }}
+                {{ form_widget(form.cancel) }}
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>
+{{ adminFooter() }}
