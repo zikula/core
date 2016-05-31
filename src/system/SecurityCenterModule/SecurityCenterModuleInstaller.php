@@ -10,16 +10,16 @@
 
 namespace Zikula\SecurityCenterModule;
 
+use CacheUtil;
 use System;
 use Zikula_Core;
-use CacheUtil;
+use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\SecurityCenterModule\Util as SecurityCenterUtil;
-use DoctrineHelper;
 
 /**
  * Installation routines for the security center module
  */
-class SecurityCenterModuleInstaller extends \Zikula_AbstractInstaller
+class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
 {
     /**
      * initialise the SecurityCenter module
@@ -30,7 +30,7 @@ class SecurityCenterModuleInstaller extends \Zikula_AbstractInstaller
     {
         // create the table
         try {
-            DoctrineHelper::createSchema($this->entityManager, [
+            $this->schemaTool->create([
                 'Zikula\SecurityCenterModule\Entity\IntrusionEntity'
             ]);
         } catch (\Exception $e) {
@@ -46,7 +46,7 @@ class SecurityCenterModuleInstaller extends \Zikula_AbstractInstaller
         System::setVar('updatelastchecked', 0);
         System::setVar('updateversion', Zikula_Core::VERSION_NUM);
         System::setVar('keyexpiry', 0);
-        System::setVar('sessionauthkeyua', false);
+        System::setVar('sessionauthkeyua', 0);
         System::setVar('secure_domain', '');
         System::setVar('signcookies', 1);
         System::setVar('signingkey', sha1(mt_rand(0, time())));
@@ -56,18 +56,17 @@ class SecurityCenterModuleInstaller extends \Zikula_AbstractInstaller
         System::setVar('sessionstoretofile', 0);
         System::setVar('sessionsavepath', '');
         System::setVar('gc_probability', 100);
+        System::setVar('sessioncsrftokenonetime', 1);  // 1 means use same token for entire session
         System::setVar('anonymoussessions', 1);
-        System::setVar('sessionrandregenerate', true);
-        System::setVar('sessionregenerate', true);
+        System::setVar('sessionrandregenerate', 1);
+        System::setVar('sessionregenerate', 1);
         System::setVar('sessionregeneratefreq', 10);
         System::setVar('sessionipcheck', 0);
         System::setVar('sessionname', '_zsid');
-        System::setVar('sessioncsrftokenonetime', 1);  // 1 means use same token for entire session
 
         System::setVar('filtergetvars', 1);
         System::setVar('filterpostvars', 1);
         System::setVar('filtercookievars', 1);
-        System::setVar('outputfilter', 1);
 
         // Location of HTML Purifier
         System::setVar('htmlpurifierlocation', __DIR__.'/vendor/htmlpurifier/');
@@ -85,7 +84,7 @@ class SecurityCenterModuleInstaller extends \Zikula_AbstractInstaller
         // create vars for phpids usage
         System::setVar('useids', 0);
         System::setVar('idsmail', 0);
-        System::setVar('idsrulepath', __DIR__.'/Resources/config/phpids_zikula_default.xml');
+        System::setVar('idsrulepath', __DIR__ . '/Resources/config/phpids_zikula_default.xml');
         System::setVar('idssoftblock', 1);                // do not block requests, but warn for debugging
         System::setVar('idsfilter', 'xml');               // filter type
         System::setVar('idsimpactthresholdone', 1);       // db logging
@@ -105,7 +104,9 @@ class SecurityCenterModuleInstaller extends \Zikula_AbstractInstaller
             'REQUEST.filter.value', 'POST.filter.value'
         ]);
 
-        System::setVar('htmlentities', '1');
+        System::setVar('outputfilter', 1);
+
+        System::setVar('htmlentities', 1);
 
         // default values for AllowableHTML
         $defhtml = [
@@ -229,13 +230,13 @@ class SecurityCenterModuleInstaller extends \Zikula_AbstractInstaller
     /**
      * upgrade the SecurityCenter module from an old version
      *
-     * @param string $oldversion version number string to upgrade from
+     * @param string $oldVersion version number string to upgrade from
      *
      * @return bool|string true on success, last valid version string or false if fails
      */
-    public function upgrade($oldversion)
+    public function upgrade($oldVersion)
     {
-        switch ($oldversion) {
+        switch ($oldVersion) {
             case '1.4.4':
             // future upgrade routines
         }

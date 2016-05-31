@@ -48,7 +48,7 @@ class FrontControllerListener implements EventSubscriberInterface
             // Make sure to load the handler *every time* and *before* the routing listeners are running (32).
             KernelEvents::REQUEST => [
                 ['pageLoad', 40]
-            ],
+            ]
         ];
     }
 

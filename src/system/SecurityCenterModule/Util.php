@@ -10,13 +10,13 @@
 
 namespace Zikula\SecurityCenterModule;
 
-use HTMLPurifier_Config;
-use ZLanguage;
-use UserUtil;
-use ThemeUtil;
-use ModUtil;
-use CacheUtil;
 use HTMLPurifier;
+use HTMLPurifier_Config;
+use CacheUtil;
+use ModUtil;
+use ThemeUtil;
+use UserUtil;
+use ZLanguage;
 
 /**
  * Utility methods for the security center module
@@ -24,11 +24,72 @@ use HTMLPurifier;
 class Util
 {
     /**
+     * Retrieves configuration array for HTML Purifier.
+     *
+     * @param bool[] $args {
+     *      @type bool $forcedefault true to force return of default config / false to auto detect
+     *                    }
+     *
+     * @return array HTML Purifier configuration settings.
+     */
+    public static function getpurifierconfig($args)
+    {
+        if (isset($args['forcedefault']) && $args['forcedefault'] == true) {
+            $config = self::getPurifierDefaultConfig();
+        } else {
+            // don't change the following statement to getVar()
+            // $this is not allowed in functions declared as static
+            $currentconfig = ModUtil::getVar('ZikulaSecurityCenterModule', 'htmlpurifierConfig');
+
+            if (!is_null($currentconfig) && ($currentconfig !== false)) {
+                $config = unserialize($currentconfig);
+            } else {
+                $config = self::getPurifierDefaultConfig();
+            }
+        }
+
+        return $config;
+    }
+
+    /**
+     * Retrieves an instance of HTMLPurifier.
+     *
+     * The instance returned is either a newly created instance, or previously created instance
+     * that has been cached in a static variable.
+     *
+     * @param bool[] $args {
+     *      @type bool $force If true, the HTMLPurifier instance will be generated anew, rather than using an
+     *                        existing instance from the static variable.
+     *                     }
+     *
+     * @staticvar array $purifier The HTMLPurifier instance.
+     *
+     * @return HTMLPurifier The HTMLPurifier instance, returned by reference.
+     */
+    public static function getpurifier($args = null)
+    {
+        $force = isset($args['force']) ? $args['force'] : false;
+
+        // prepare htmlpurifier class
+        static $purifier;
+
+        if (!isset($purifier) || $force) {
+            $config = self::getpurifierconfig(['forcedefault' => false]);
+
+            $config['Cache']['SerializerPath'] = CacheUtil::getLocalDir() . '/purifierCache';
+
+            $purifier = new HTMLPurifier($config);
+        }
+
+        return $purifier;
+    }
+
+    /**
      * Retrieves default configuration array for HTML Purifier.
      *
      * @return array HTML Purifier default configuration settings.
      */
-    private static function _getpurifierdefaultconfig()
+    private static function getPurifierDefaultConfig()
     {
         $purifierDefaultConfig = HTMLPurifier_Config::createDefault();
         $purifierDefaultConfigValues = $purifierDefaultConfig->def->defaults;
@@ -36,7 +97,7 @@ class Util
         $config = [];
 
         foreach ($purifierDefaultConfigValues as $key => $val) {
-            $keys = explode(".", $key, 2);
+            $keys = explode('.', $key, 2);
 
             $config[$keys[0]][$keys[1]] = $val;
         }
@@ -90,66 +151,5 @@ class Util
         $config['HTML']['SafeEmbed'] = true;
 
         return $config;
-    }
-
-    /**
-     * Retrieves configuration array for HTML Purifier.
-     *
-     * @param bool[] $args {
-     *      @type bool $forcedefault true to force return of default config / false to auto detect
-     *                    }
-     *
-     * @return array HTML Purifier configuration settings.
-     */
-    public static function getpurifierconfig($args)
-    {
-        if (isset($args['forcedefault']) && $args['forcedefault'] == true) {
-            $config = self::_getpurifierdefaultconfig();
-        } else {
-            // don't change the following statement to getVar()
-            // $this is not allowed in functions declared as static
-            $currentconfig = ModUtil::getVar('ZikulaSecurityCenterModule', 'htmlpurifierConfig');
-
-            if (!is_null($currentconfig) && ($currentconfig !== false)) {
-                $config = unserialize($currentconfig);
-            } else {
-                $config = self::_getpurifierdefaultconfig();
-            }
-        }
-
-        return $config;
-    }
-
-    /**
-     * Retrieves an instance of HTMLPurifier.
-     *
-     * The instance returned is either a newly created instance, or previously created instance
-     * that has been cached in a static variable.
-     *
-     * @param bool[] $args {
-     *      @type bool $force If true, the HTMLPurifier instance will be generated anew, rather than using an
-     *                        existing instance from the static variable.
-     *                     }
-     *
-     * @staticvar array $purifier The HTMLPurifier instance.
-     *
-     * @return HTMLPurifier The HTMLPurifier instance, returned by reference.
-     */
-    public static function getpurifier($args = null)
-    {
-        $force = (isset($args['force']) ? $args['force'] : false);
-
-        // prepare htmlpurifier class
-        static $purifier;
-
-        if (!isset($purifier) || $force) {
-            $config = self::getpurifierconfig(['forcedefault' => false]);
-
-            $config['Cache']['SerializerPath'] = CacheUtil::getLocalDir() . '/purifierCache';
-
-            $purifier = new HTMLPurifier($config);
-        }
-
-        return $purifier;
     }
 }

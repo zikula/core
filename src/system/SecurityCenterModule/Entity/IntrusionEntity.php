@@ -10,14 +10,14 @@
 
 namespace Zikula\SecurityCenterModule\Entity;
 
-use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
+use Zikula\Core\Doctrine\EntityAccess;
 
 /**
  * Intrusion
  *
+ * @ORM\Entity(repositoryClass="Zikula\SecurityCenterModule\Entity\Repository\IntrusionRepository")
  * @ORM\Table(name="sc_intrusion")
- * @ORM\Entity
  */
 class IntrusionEntity extends EntityAccess
 {
