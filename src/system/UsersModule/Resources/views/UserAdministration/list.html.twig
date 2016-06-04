@@ -35,7 +35,7 @@
             {{ include('@ZikulaUsersModule/UserAdministration/userlist.html.twig') }}
         </tbody>
     </table>
-    {{ pager({rowcount:pager.count, limit:pager.limit, route:'zikulausersmodule_useradministration_list'}) }}
+    {{ pager({rowcount:pager.count, limit:pager.limit, route:'zikulausersmodule_useradministration_list', posvar:'startnum'}) }}
 </div>
 
 {# This table is for ajax search results and is hidden until needed and populated then with the results. #}
