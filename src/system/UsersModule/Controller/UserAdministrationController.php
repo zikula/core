@@ -54,6 +54,7 @@ class UserAdministrationController extends AbstractController
         if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
+        $startnum = $startnum > 0 ? $startnum -1 : 0;
 
         $sortableColumns = new SortableColumns($this->get('router'), 'zikulausersmodule_useradministration_list', 'sort', 'sortdir');
         $sortableColumns->addColumns([new Column('uname'), new Column('uid'), new Column('user_regdate'), new Column('lastlogin'), new Column('activated')]);
