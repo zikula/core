@@ -15,6 +15,7 @@ namespace Zikula\UsersModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,16 +44,15 @@ class RegistrationController extends AbstractController
      * If more than one method is available, it must display these methods to the user.
      *
      * @Route("/register", options={"zkNoBundlePrefix"=1})
+     * @Template
      * @param Request $request
-     * @return Response
+     * @return array
      * @throws FatalErrorException
      */
     public function selectRegistrationMethodAction(Request $request)
     {
-        // access checks
-        if ((bool)$request->getSession()->get('uid')) {
-            // user is logged in
-            return $this->redirectToRoute('zikulausersmodule_user_index');
+        if ($this->get('zikula_users_module.current_user')->isLoggedIn()) {
+            return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
         // Check if registration is enabled
         if (!$this->getVar(UsersConstant::MODVAR_REGISTRATION_ENABLED, UsersConstant::DEFAULT_REGISTRATION_ENABLED)) {
@@ -92,29 +92,26 @@ class RegistrationController extends AbstractController
             }
         }
 
-        $arguments = [
+        return [
             'authentication_info'                   => [],
             'selected_authentication_method'        => $selectedAuthenticationMethod,
             'authentication_method_display_order'   => $authenticationMethodDisplayOrder,
         ];
-
-        return $this->render('@ZikulaUsersModule/Registration/selectRegistrationMethod.html.twig', $arguments); // form_action is this method
     }
 
     /**
      * Display the registration form.
      *
      * @Route("/register-form", options={"zkNoBundlePrefix"=1})
+     * @Template
      * @Method({"GET", "POST"})
      * @param Request $request
-     * @return Response|RedirectResponse symfony response object
+     * @return array
      */
     public function registerAction(Request $request)
     {
-        // access checks
-        if ((bool)$request->getSession()->get('uid')) {
-            // user is logged in
-            return $this->redirectToRoute('zikulausersmodule_user_index');
+        if ($this->get('zikula_users_module.current_user')->isLoggedIn()) {
+            return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
         // Check if registration is enabled
         if (!$this->getVar(UsersConstant::MODVAR_REGISTRATION_ENABLED, UsersConstant::DEFAULT_REGISTRATION_ENABLED)) {
@@ -253,13 +250,101 @@ class RegistrationController extends AbstractController
         // Notify that we are beginning a registration session.
         $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_STARTED, new GenericEvent());
 
-        return $this->render('@ZikulaUsersModule/Registration/register.html.twig', [
+        return [
             'form' => $form->createView(),
             'authentication_method' => $selectedAuthenticationMethod,
 //            'authentication_info'   => $authenticationInfo,
             'registration_info'     => isset($registrationInfo) ? $registrationInfo : [],
             'modvars' => $this->getVars()
-        ]);
+        ];
+    }
+
+    /**
+     * @Route("/verify-registration/{uname}/{verifycode}")
+     * @Template
+     * @param Request $request
+     * @param null|string $uname
+     * @param null|string $verifycode
+     *
+     * Render and process a registration e-mail verification code.
+     *
+     * This function will render and display to the user a form allowing him to enter
+     * a verification code sent to him as part of the registration process. If the user's
+     * registration does not have a password set (e.g., if an admin created the registration),
+     * then he is prompted for it at this time. This function also processes the results of
+     * that form, setting the registration record to verified (if appropriate), saving the password
+     * (if provided) and if the registration record is also approved (or does not require it)
+     * then a new user account is created.
+     *
+     * @return array
+     */
+    public function verifyAction(Request $request, $uname = null, $verifycode = null)
+    {
+        if ($this->get('zikula_users_module.current_user')->isLoggedIn()) {
+            return $this->redirectToRoute('zikulausersmodule_account_menu');
+        }
+
+        $setPass = false;
+        if ($uname) {
+            $uname = mb_strtolower($uname);
+        }
+        $reginfo = $this->get('zikula_users_module.helper.registration_helper')->get(null, $uname);
+        if ($reginfo) {
+            $setPass = !isset($reginfo['pass']) || empty($reginfo['pass']);
+        }
+        $form = $this->createForm('Zikula\UsersModule\Form\Type\VerifyRegistrationType',
+            [
+                'uname' => $uname,
+                'verifycode' => $verifycode
+            ],
+            [
+                'translator' => $this->getTranslator(),
+                'setpass' => $setPass,
+                'passwordReminderEnabled' => $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED),
+                'passwordReminderMandatory' => $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY)
+            ]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $userEntity = $this->get('zikula_users_module.user_repository')->find($reginfo['uid']);
+            $userEntity->setPass(\UserUtil::getHashedPassword($data['pass']));
+            $userEntity->setAttribute('_Users_isVerified', 1);
+            if ($this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED)) {
+                $userEntity->setPassreminder($data['passreminder']);
+            }
+            $this->get('zikula_users_module.user_repository')->persistAndFlush($userEntity);
+            $this->get('zikula_users_module.user_verification_repository')->resetVerifyChgFor($userEntity->getUid(), UsersConstant::VERIFYCHGTYPE_REGEMAIL);
+
+            switch ($userEntity->getActivated()) {
+                case UsersConstant::ACTIVATED_PENDING_REG:
+                    if ('' == $userEntity->getApproved_By()) {
+                        $this->addFlash('status', $this->__('Done! Your account has been verified, and is awaiting administrator approval.'));
+                    } else {
+                        $this->addFlash('status', $this->__('Done! Your account has been verified. Your registration request is still pending completion. Please contact the site administrator for more information.'));
+                    }
+                    break;
+                case UsersConstant::ACTIVATED_ACTIVE:
+                    if ($userEntity->getPass() != UsersConstant::PWD_NO_USERS_AUTHENTICATION) {
+                        // The users module was used to register that account.
+                        $this->addFlash('status', $this->__('Done! Your account has been verified. You may now log in with your user name and password.'));
+                    } else {
+                        // A third party module was used to register that account.
+                        $this->addFlash('status', $this->__('Done! Your account has been verified. You may now log in.'));
+                    }
+
+                    return $this->redirectToRoute('zikulausersmodule_user_login');
+                    break;
+                default:
+                    $this->addFlash('status', $this->__('Done! Your account has been verified.'));
+                    $this->addFlash('status', $this->__('Your new account is not active yet. Please contact the site administrator for more information.'));
+                    break;
+            }
+        }
+
+        return [
+            'form' => $form->createView(),
+            'modvars' => $this->getVars()
+        ];
     }
 
     /**
