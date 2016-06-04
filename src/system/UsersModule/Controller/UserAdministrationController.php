@@ -49,7 +49,7 @@ class UserAdministrationController extends AbstractController
      * @param integer $startnum
      * @return array
      */
-    public function listAction(Request $request, $sort = 'uid', $sortdir = 'DESC', $letter = null, $startnum = 0)
+    public function listAction(Request $request, $sort = 'uid', $sortdir = 'DESC', $letter = 'all', $startnum = 0)
     {
         if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
             throw new AccessDeniedException();
@@ -68,7 +68,7 @@ class UserAdministrationController extends AbstractController
             UsersConstant::ACTIVATED_PENDING_REG,
             UsersConstant::ACTIVATED_PENDING_DELETE
         ]];
-        if (!empty($letter)) {
+        if (!empty($letter) && 'all' != $letter) {
             $filter['uname'] = ['operator' => 'like', 'operand' => "$letter%"];
         }
         $limit = $this->getVar(UsersConstant::MODVAR_ITEMS_PER_PAGE, UsersConstant::DEFAULT_ITEMS_PER_PAGE);
