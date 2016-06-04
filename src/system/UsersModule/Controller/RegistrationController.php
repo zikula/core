@@ -307,13 +307,16 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $userEntity = $this->get('zikula_users_module.user_repository')->find($reginfo['uid']);
-            $userEntity->setPass(\UserUtil::getHashedPassword($data['pass']));
+            if (isset($data['pass'])) {
+                $userEntity->setPass(\UserUtil::getHashedPassword($data['pass']));
+            }
             $userEntity->setAttribute('_Users_isVerified', 1);
-            if ($this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED)) {
+            if ($this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED) && isset($data['passreminder'])) {
                 $userEntity->setPassreminder($data['passreminder']);
             }
             $this->get('zikula_users_module.user_repository')->persistAndFlush($userEntity);
             $this->get('zikula_users_module.user_verification_repository')->resetVerifyChgFor($userEntity->getUid(), UsersConstant::VERIFYCHGTYPE_REGEMAIL);
+            $this->get('zikula_users_module.helper.registration_helper')->createUser($userEntity, true, false);
 
             switch ($userEntity->getActivated()) {
                 case UsersConstant::ACTIVATED_PENDING_REG:

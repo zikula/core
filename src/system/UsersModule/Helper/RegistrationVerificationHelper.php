@@ -139,7 +139,7 @@ class RegistrationVerificationHelper
             throw new \InvalidArgumentException($this->translator->__f('Error! A verification code cannot be sent for the registration record for \'%name%\'. It must first be approved.', ['%name%' => $userEntity->getUname()]));
         }
 
-        $verificationCode = $this->userVerificationRepository->setVerificationCode($uid, UsersConstant::VERIFYCHGTYPE_REGEMAIL, $userEntity->getEmail());
+        $verificationCode = $this->userVerificationRepository->setVerificationCode($userEntity->getUid(), UsersConstant::VERIFYCHGTYPE_REGEMAIL, $userEntity->getEmail());
 
         $codeSent = $this->mailHelper->sendNotification($userEntity->getEmail(), 'regverifyemail', [
             'user' => $userEntity,
