@@ -14,9 +14,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\Core\Exception\FatalErrorException;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Entity\UserVerificationEntity;
@@ -377,6 +379,111 @@ class AccountController extends AbstractController
 
         return [
             'form' => $form->createView()
+        ];
+    }
+
+    /**
+     * @Route("/change-password")
+     * @Template
+     * @param Request $request
+     * @return array
+     * @throws FatalErrorException|\InvalidArgumentException Thrown if there are no arguments provided or
+     *                                    if the user is logged in but the user is coming from the login process or
+     *                                    if the authentication information is invalid
+     * @throws AccessDeniedException Thrown if the user isn't logged in and isn't coming from the login process
+     */
+    public function changePasswordAction(Request $request)
+    {
+        // Retrieve and delete any session variables being sent in before we give the function a chance to
+        // throw an exception. We need to make sure no sensitive data is left dangling in the session variables.
+        $sessionVars = $request->getSession()->get('User_changePassword', null);
+        $request->getSession()->remove('User_changePassword');
+        $currentUser = $this->get('zikula_users_module.current_user');
+        $loginAfterChange = $request->get('login', false);
+
+        // In order to change one's password, the user either must be logged in already, or specifically
+        // must be coming from the login process. This is an exclusive-or. It is an error if neither is set,
+        // and likewise if both are set. One or the other, please!
+        if (!$loginAfterChange && !$currentUser->isLoggedIn()) {
+            throw new AccessDeniedException();
+        } elseif ($loginAfterChange && $currentUser->isLoggedIn()) {
+            throw new FatalErrorException();
+        }
+
+        // If we are coming here from the login process, then uid must be set in the session variable. If not, then throw an exception.
+        if ($loginAfterChange
+            && (!isset($sessionVars['uid'])
+                || !isset($sessionVars['authentication_info'])
+                || !is_array($sessionVars['authentication_info'])
+                || !isset($sessionVars['authentication_method'])
+                || !is_array($sessionVars['authentication_method']))
+        ) {
+            throw new \InvalidArgumentException();
+        }
+        if (isset($sessionVars) && !empty($sessionVars)) {
+            $login = true;
+            $uid = $sessionVars['uid'];
+        } else {
+            $login = false;
+            $uid = $currentUser->get('uid');
+        }
+        $userEntity = $this->get('zikula_users_module.user_repository')->find($uid);
+
+        $form = $this->createForm('Zikula\UsersModule\Form\Account\Type\ChangePasswordType', ['uid' => $uid], [
+                'translator' => $this->get('translator.default'),
+                'passwordReminderEnabled' => $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED),
+                'passwordReminderMandatory' => $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY)
+            ]
+        );
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $userEntity->setPass(\UserUtil::getHashedPassword($data['pass']));
+            $userEntity->setPassreminder($data['passreminder']);
+            $userEntity->delAttribute('_Users_mustChangePassword');
+            $this->get('zikula_users_module.user_repository')->persistAndFlush($userEntity);
+            $this->addFlash('success', $this->__('Password successfully changed.'));
+            if ($login) {
+                $sessionVars['uid'] = $uid;
+                // @todo move this to event?
+                if ($sessionVars['authentication_method']['modname'] == 'ZikulaUsersModule') {
+                    // The password for Users module authentication was just changed.
+                    // In order to successfully log in the user, we need to change it on the authentication_info.
+                    $sessionVars['authentication_info']['pass'] = $userEntity->getPass();
+                }
+                $sessionVars = $request->getSession()->get('User_login', []);
+                $post['authentication_method'] = $sessionVars['authentication_method'];
+                $post['authentication_info'] = $sessionVars['authentication_info'];
+                $post['rememberme'] = $sessionVars['rememberme'];
+                $post['from_password_change'] = true;
+
+                $subRequest = $request->duplicate([], $post, ['_controller' => 'ZikulaUsersModule:User:login']);
+                $httpKernel = $this->get('http_kernel');
+                $response = $httpKernel->handle(
+                    $subRequest,
+                    HttpKernelInterface::SUB_REQUEST
+                );
+
+                return $response;
+            }
+
+            return $this->redirectToRoute('zikulausersmodule_account_menu');
+        }
+
+        if ($loginAfterChange) {
+            // Pass along the session vars. We didn't want to just keep them in the session variable because if we throw
+            // an exception or got redirected, then the data would have been orphaned, and it contains some sensitive information.
+            $request->getSession()->start();
+            $request->getSession()->set('User_updatePassword', $sessionVars);
+        }
+
+        // Return the output that has been generated by this function
+        return [
+            'form' => $form->createView(),
+            'login' => (bool)$loginAfterChange,
+            'user' => $loginAfterChange ? $userEntity : null,
+            'modvars' => $this->getVars(),
+            'authentication_method' => $loginAfterChange ? $sessionVars['authentication_method'] : null
         ];
     }
 }
