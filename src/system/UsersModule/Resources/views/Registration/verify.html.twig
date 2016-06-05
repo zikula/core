@@ -11,12 +11,12 @@
         {{ form_row(form.uname) }}
         {{ form_row(form.verifycode) }}
     </fieldset>
-    {% if form.pass|default %}
+    {% if form.children.pass is defined %}
         <fieldset>
             <legend>{{ __('Create a password') }}</legend>
             {{ form_row(form.pass) }}
             <div id="{{ form.vars.id }}_passmeter" class="col-sm-offset-3 col-sm-9"></div>
-            {% if form.passreminder|default %}
+            {% if form.children.passreminder is defined %}
                 {{ form_row(form.passreminder) }}
             {% endif %}
         </fieldset>
