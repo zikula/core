@@ -13,12 +13,12 @@ namespace Zikula\UsersModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Validator\Constraints\ValidPassword;
+use Zikula\UsersModule\Validator\Constraints\ValidPasswordReminder;
 use Zikula\UsersModule\Validator\Constraints\ValidRegistrationVerification;
 
 class VerifyRegistrationType extends AbstractType
@@ -28,14 +28,14 @@ class VerifyRegistrationType extends AbstractType
         $builder
             ->add('uname', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $options['translator']->__('User name'),
-                'constraints'=> [
+                'constraints' => [
                     new NotBlank(),
                     new Type(['type' => 'string'])
                 ]
             ])
             ->add('verifycode', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $options['translator']->__('Verification code'),
-                'constraints'=> [
+                'constraints' => [
                     new NotBlank(),
                     new Type(['type' => 'string'])
                 ]
@@ -53,7 +53,10 @@ class VerifyRegistrationType extends AbstractType
                     'first_options' => ['label' => $options['translator']->__('Password')],
                     'second_options' => ['label' => $options['translator']->__('Repeat Password')],
                     'invalid_message' => $options['translator']->__('The passwords must match!'),
-                    'constraints' => [new NotNull()]
+                    'constraints' => [
+                        new NotNull(),
+                        new ValidPassword()
+                    ]
                 ]);
             if ($options['passwordReminderEnabled']) {
                 $builder
@@ -61,6 +64,7 @@ class VerifyRegistrationType extends AbstractType
                         'required' => $options['passwordReminderMandatory'],
                         'help' => $options['translator']->__('Enter a word or a phrase that will remind you of your password.'),
                         'alert' => [$options['translator']->__('Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!') => 'info'],
+                        'constraints' => [new ValidPasswordReminder()]
                     ])
                 ;
             }
@@ -85,7 +89,6 @@ class VerifyRegistrationType extends AbstractType
             'constraints' => [
                 new ValidRegistrationVerification(),
             ]
-
         ]);
     }
 }

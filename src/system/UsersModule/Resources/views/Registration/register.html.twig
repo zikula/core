@@ -54,7 +54,7 @@
     {% endif %}
     <fieldset {% if hideEmail is defined and hideEmail %}class="hide"{% endif %}>
         <legend>{{ __('Enter your e-mail address') }}</legend>
-        {% if form.user.email is defined %}{{ form_row(form.user.email) }}{% endif %}{# email may not be defined if authentication is non-local #}
+        {% if form.children.user.email is defined %}{{ form_row(form.user.email) }}{% endif %}{# email may not be defined if authentication is non-local #}
     </fieldset>
 
     {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\RegistrationEvents::FORM_REGISTRATION_NEW')) %}
