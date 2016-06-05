@@ -13,16 +13,11 @@ namespace Zikula\UsersModule\Form\Account\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Callback;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Constraints\Type;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Validator\Constraints\ValidPassword;
 use Zikula\UsersModule\Validator\Constraints\ValidPasswordChange;
 use Zikula\UsersModule\Validator\Constraints\ValidPasswordReminder;
-use Zikula\UsersModule\Validator\Constraints\ValidRegistrationVerification;
 
 class ChangePasswordType extends AbstractType
 {
