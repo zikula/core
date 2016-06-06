@@ -342,19 +342,14 @@ class RouteLoader extends Loader
      */
     private function sanitizeController($bundleName, $controllerString)
     {
-        if (strpos($controllerString, '::') === false) {
+        if (0 === preg_match('#^(.*?\\\\Controller\\\\(.+)Controller)::(.+)Action$#', $controllerString, $match)) {
             return $controllerString;
         }
-
-        $action = substr($controllerString, strpos($controllerString, '::') + 2);
-        $func = lcfirst(substr($action, 0, -6));
-
-        $a = strrpos($controllerString, '\\') + 1;
-        $b = strrpos($controllerString, '::');
-        $controller = substr($controllerString, $a, $b - $a);
-        $type = substr($controller, 0, -10);
-
-        return $bundleName . ':' . $type . ':' . $func;
+        
+        $controllerName = $match[2];
+        $actionName = $match[3];       
+  
+        return $bundleName . ':' . $controllerName . ':' . $actionName;
     }
 
     /**
