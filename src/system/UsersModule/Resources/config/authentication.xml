@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="zikula_users_module.internal.authentication_method_collector.class">Zikula\UsersModule\Collector\AuthenticationMethodCollector</parameter>
+        <parameter key="zikula_users_module.authentication_method.native_uname.class">Zikula\UsersModule\AuthenticationMethod\NativeUnameAuthenticationMethod</parameter>
+    </parameters>
+
+    <services>
+        <service id="zikula_users_module.internal.authentication_method_collector" class="%zikula_users_module.internal.authentication_method_collector.class%" />
+
+        <service id="zikula_users_module.authentication_method.native_uname" class="%zikula_users_module.authentication_method.native_uname.class%">
+            <argument type="service" id="zikula_users_module.user_repository" />
+            <argument type="service" id="session" />
+            <argument type="service" id="translator.default" />
+            <tag name="zikula.authentication_method" alias="native.uname" />
+        </service>
+        <service id="zikula_users_module.authentication_method.github" class="Zikula\UsersModule\AuthenticationMethod\GithubAuthenticationMethod">
+            <argument type="service" id="session" />
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="router" />
+            <tag name="zikula.authentication_method" alias="github" />
+        </service>
+    </services>
+</container>
+

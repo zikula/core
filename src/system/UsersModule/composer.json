@@ -14,7 +14,8 @@
         "psr-4": { "Zikula\\UsersModule\\": "" }
     },
     "require": {
-        "php": ">5.4.0"
+        "php": ">5.4.0",
+        "league/oauth2-github": "~0.2.1"
     },
     "extra": {
         "zikula": {

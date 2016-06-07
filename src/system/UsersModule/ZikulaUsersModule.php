@@ -9,13 +9,22 @@
  */
 
 namespace Zikula\UsersModule {
+
+    use Symfony\Component\DependencyInjection\ContainerBuilder;
     use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
+    use Zikula\UsersModule\DependencyInjection\Compiler\AuthenticationMethodCollectorPass;
 
     /**
      * Base module definition for the users module
      */
     class ZikulaUsersModule extends AbstractCoreModule
     {
+        public function build(ContainerBuilder $container)
+        {
+            parent::build($container);
+
+            $container->addCompilerPass(new AuthenticationMethodCollectorPass());
+        }
     }
 }
 

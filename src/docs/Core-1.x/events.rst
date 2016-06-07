@@ -363,13 +363,6 @@ that was notified prior to the current handler may already have changed the `'re
 Finally, this event only fires in the event of a "normal" UI-oriented log-in attempt. A module attempting to log in
 programmatically by directly calling core functions will not see this event fired.
 
-#### `module.users.ui.logout.succeeded`
-Occurs right after a successful logout. All handlers are notified.
-
- * The event's subject contains the user's user record
- * Args contain array of `['authentication_method' => $authenticationMethod,
-                           'uid'                   => $uid];`
-
 #### `user.gettheme`
 Called during UserUtil::getTheme() and is used to filter the results.  Receives arg['type']
 with the type of result to be filtered and the $themeName in the $event->data which can
