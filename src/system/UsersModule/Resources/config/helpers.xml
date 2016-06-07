@@ -12,6 +12,7 @@
         <parameter key="zikula_users_module.helper.administration_actions.class">Zikula\UsersModule\Helper\AdministrationActionsHelper</parameter>
         <parameter key="zikula_users_module.helper.file_io.class">Zikula\UsersModule\Helper\FileIOHelper</parameter>
         <parameter key="zikula_users_module.helper.account_links_helper.class">Zikula\UsersModule\Helper\AccountLinksHelper</parameter>
+        <parameter key="zikula_users_module.helper.access_helper.class">Zikula\UsersModule\Helper\AccessHelper</parameter>
     </parameters>
 
     <services>
@@ -67,6 +68,11 @@
         </service>
         <service id="zikula_users_module.helper.account_links_helper" class="%zikula_users_module.helper.account_links_helper.class%">
             <argument type="service" id="zikula.link_container_collector" />
+        </service>
+        <service id="zikula_users_module.helper.access_helper" class="%zikula_users_module.helper.access_helper.class%" >
+            <argument type="service" id="session" />
+            <argument type="service" id="zikula_users_module.user_repository" />
+            <argument type="service" id="zikula_permissions_module.api.permission" />
         </service>
 
     </services>

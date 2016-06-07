@@ -30,5 +30,6 @@ class ZikulaUsersExtension extends Extension
         $loader->load('services.xml');
         $loader->load('helpers.xml');
         $loader->load('validators.xml');
+        $loader->load('authentication.xml');
     }
 }
