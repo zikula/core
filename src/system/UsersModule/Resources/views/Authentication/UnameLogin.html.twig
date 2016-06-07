@@ -1,0 +1,16 @@
+{% form_theme form with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ polyfill() }}
+<h2>{{ __('User Login') }}</h2>
+
+<div class="well">
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_row(form.uname) }}
+    {{ form_row(form.pass) }}
+    {{ form_row(form.rememberme) }}
+    {{ form_row(form.submit) }}
+    {{ form_end(form) }}
+</div>

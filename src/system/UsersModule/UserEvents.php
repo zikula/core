@@ -117,4 +117,12 @@ class UserEvents
      * Event data is populated by the new values.
      */
     const CONFIG_UPDATED = 'module.users.config.updated';
+
+    /**
+     * Occurs right after a successful logout. All handlers are notified.
+     * The event's subject contains the user's UserEntity
+     * Args contain array of `['authentication_method' => $authenticationMethod,
+     * 'uid'=> $uid];`
+     */
+    const USER_LOGOUT_SUCCESS = 'module.users.ui.logout.succeeded';
 }
