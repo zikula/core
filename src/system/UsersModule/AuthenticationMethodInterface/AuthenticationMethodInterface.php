@@ -28,7 +28,7 @@ interface AuthenticationMethodInterface
     /**
      * Authenticate the user from the provided data and return the associated native uid.
      * @param array $data
-     * @return integer
+     * @return integer|null
      */
     public function authenticate(array $data);
 }

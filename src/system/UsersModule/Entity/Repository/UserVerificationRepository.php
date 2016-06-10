@@ -73,11 +73,6 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
         return $deletedUsers;
     }
 
-    public function findOneBy(array $criteria, array $orderBy = null)
-    {
-        return parent::findOneBy($criteria, $orderBy);
-    }
-
     /**
      * Removes a record from the users_verifychg table for a specified uid and changetype.
      *

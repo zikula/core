@@ -13,5 +13,10 @@ namespace Zikula\UsersModule\AuthenticationMethodInterface;
 
 interface ReEntrantAuthenticationmethodInterface extends AuthenticationMethodInterface
 {
-
+    /**
+     * An array of user data sent by the provider.
+     * must include keys 'email' and 'nickname'
+     * @return array
+     */
+    public function getUserData();
 }

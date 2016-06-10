@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\Entity\Repository\UserRepository;
+use Zikula\UsersModule\Entity\UserEntity;
 
 class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMethodInterface
 {
@@ -64,7 +65,7 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
     /**
      * {@inheritdoc}
      */
-    public function getFormClassName()
+    public function getLoginFormClassName()
     {
         return 'Zikula\UsersModule\Form\AuthenticationMethodType\UnameType';
     }
@@ -72,9 +73,19 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
     /**
      * {@inheritdoc}
      */
-    public function getTemplateName()
+    public function getLoginTemplateName()
     {
         return '@ZikulaUsersModule/Authentication/UnameLogin.html.twig';
+    }
+
+    public function getRegistrationFormClassName()
+    {
+        // TODO: Implement getRegistrationFormClassName() method.
+    }
+
+    public function getRegistrationTemplateName()
+    {
+        // TODO: Implement getRegistrationTemplateName() method.
     }
 
     /**

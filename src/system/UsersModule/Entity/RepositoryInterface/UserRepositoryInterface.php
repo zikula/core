@@ -11,9 +11,11 @@
 namespace Zikula\UsersModule\Entity\RepositoryInterface;
 
 use Zikula\UsersModule\Entity\UserEntity;
+use Doctrine\Common\Collections\Selectable;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
-interface UserRepositoryInterface
+interface UserRepositoryInterface extends ObjectRepository, Selectable
 {
     public function findByUids($uids);
 
@@ -29,14 +31,6 @@ interface UserRepositoryInterface
      * @param null $approvedBy if null, user is 'self-approved'
      */
     public function setApproved(UserEntity $user, $approvedOn, $approvedBy = null);
-
-    /**
-     * @param $id
-     * @param null $lockMode
-     * @param null $lockVersion
-     * @return UserEntity
-     */
-    public function find($id, $lockMode = null, $lockVersion = null);
 
     /**
      * @param array $formData

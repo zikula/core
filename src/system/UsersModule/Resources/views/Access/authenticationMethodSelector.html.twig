@@ -1,0 +1,6 @@
+<h2>{{ __('Choose a login method') }}</h2>
+<ul>
+{% for method in collector.keys %}
+    <li><a href="{{ path('zikulausersmodule_access_login', {"authenticationMethod": method}) }}">{{ collector.get(method).DisplayName }}</a></li>
+{% endfor %}
+</ul>
