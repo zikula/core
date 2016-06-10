@@ -10,10 +10,12 @@
 
 namespace Zikula\UsersModule\Entity\RepositoryInterface;
 
+use Doctrine\Common\Collections\Selectable;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserVerificationEntity;
 
-interface UserVerificationRepositoryInterface
+interface UserVerificationRepositoryInterface extends ObjectRepository, Selectable
 {
     public function persistAndFlush(UserVerificationEntity $entity);
 
@@ -26,13 +28,6 @@ interface UserVerificationRepositoryInterface
      * @return array UserEntity[] records deleted
      */
     public function purgeExpiredRecords($daysOld, $changeType = UsersConstant::VERIFYCHGTYPE_REGEMAIL, $deleteUserEntities = true);
-
-    /**
-     * @param array $criteria
-     * @param array|null $orderBy
-     * @return UserVerificationEntity
-     */
-    public function findOneBy(array $criteria, array $orderBy = null);
 
     public function resetVerifyChgFor($uid, $types = null);
 
