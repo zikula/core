@@ -58,4 +58,9 @@ class AuthenticationMethodCollector
     {
         return $this->authenticationMethods;
     }
+
+    public function getKeys()
+    {
+        return array_keys($this->authenticationMethods);
+    }
 }

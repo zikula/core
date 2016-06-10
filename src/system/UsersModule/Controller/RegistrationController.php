@@ -61,7 +61,7 @@ class RegistrationController extends AbstractController
 
         // A selection was made. If selection is ZikulaUsersModule, proceed to registration stage
         $selectedAuthenticationMethod = $request->request->get('authentication_method', []);
-        if (isset($selectedAuthenticationMethod['modname']) && $selectedAuthenticationMethod['modname'] == $this->name) {
+        if (isset($selectedAuthenticationMethod['modname']) && $selectedAuthenticationMethod['modname'] == 'ZikulaUsersModule') {
             return $this->redirectToRoute('zikulausersmodule_registration_register', ['authentication_method' => $selectedAuthenticationMethod]);
         }
 
@@ -71,7 +71,7 @@ class RegistrationController extends AbstractController
         $authenticationMethodList = $this->get('zikula_users_module.helper.authentication_method_list_helper');
         $authenticationMethodList->initialize([], \Zikula_Api_AbstractAuthentication::FILTER_REGISTRATION_ENABLED);
         // If there is only the default ZikulaUsersModule method available. Skip method selection.
-        if ($authenticationMethodList->countEnabledForRegistration() == 1 && $authenticationMethodList[0]->modname == $this->name) {
+        if ($authenticationMethodList->countEnabledForRegistration() == 1 && $authenticationMethodList[0]->modname == 'ZikulaUsersModule') {
             $selectedAuthenticationMethod = [
                 'modname' => $authenticationMethodList[0]->modname,
                 'method' => $authenticationMethodList[0]->method,
@@ -185,7 +185,7 @@ class RegistrationController extends AbstractController
                     return !empty($redirectUrl) ? $this->redirect($redirectUrl) : $this->redirectToRoute('home');
                 } else {
                     // The main registration completed successfully.
-                    if ($selectedAuthenticationMethod['modname'] != $this->name) {
+                    if ($selectedAuthenticationMethod['modname'] != 'ZikulaUsersModule') {
                         // The selected authentication module is NOT the Users module, so make sure the user is registered
                         // with the authentication module (associate the Users module record uid with the login information).
                         $arguments = [

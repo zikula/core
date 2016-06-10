@@ -18,12 +18,6 @@
             <argument type="service" id="translator.default" />
             <tag name="zikula.authentication_method" alias="native.uname" />
         </service>
-        <service id="zikula_users_module.authentication_method.github" class="Zikula\UsersModule\AuthenticationMethod\GithubAuthenticationMethod">
-            <argument type="service" id="session" />
-            <argument type="service" id="request_stack" />
-            <argument type="service" id="router" />
-            <tag name="zikula.authentication_method" alias="github" />
-        </service>
     </services>
 </container>
 

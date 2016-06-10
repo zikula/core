@@ -33,13 +33,17 @@ class AccessController extends AbstractController
             return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
 
-        // @todo implement method selector
         $authenticationMethodCollector = $this->get('zikula_users_module.internal.authentication_method_collector');
-        $selectedMethod = 'github';
+        $selectedMethod = $request->query->get('authenticationMethod', $request->getSession()->get('authenticationMethod', null));
+        if (empty($selectedMethod)) {
+            return $this->render('@ZikulaUsersModule/Access/authenticationMethodSelector.html.twig', ['collector' => $authenticationMethodCollector]);
+        } else {
+            $request->getSession()->set('authenticationMethod', $selectedMethod); // save method to session for reEntrant needs
+        }
         $authenticationMethod = $authenticationMethodCollector->get($selectedMethod);
 
         if ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface) {
-            $form = $this->createForm($authenticationMethod->getFormClassName(), [], [
+            $form = $this->createForm($authenticationMethod->getLoginFormClassName(), [], [
                 'translator' => $this->getTranslator()
             ]);
 
@@ -59,7 +63,7 @@ class AccessController extends AbstractController
                 }
             }
 
-            return $this->render($authenticationMethod->getTemplateName(), [
+            return $this->render($authenticationMethod->getLoginTemplateName(), [
                 'form' => $form->createView()
             ]);
         } elseif ($authenticationMethod instanceof ReEntrantAuthenticationmethodInterface) {
