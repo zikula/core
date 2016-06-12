@@ -13,24 +13,39 @@ namespace Zikula\UsersModule\Form\AuthenticationMethodType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\TranslatorInterface;
 
 class UnameType extends AbstractType
 {
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * UnameType constructor.
+     * @param $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('uname', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $options['translator']->__('User name'),
+                'label' => $this->translator->__('User name'),
             ])
             ->add('pass', 'Symfony\Component\Form\Extension\Core\Type\PasswordType', [
-                'label' => $options['translator']->__('Password'),
+                'label' => $this->translator->__('Password'),
             ])
             ->add('rememberme', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'required' => false,
-                'label' => $options['translator']->__('Remember me'),
+                'label' => $this->translator->__('Remember me'),
             ])
             ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $options['translator']->__('Login'),
+                'label' => $this->translator->__('Login'),
                 'icon' => 'fa-angle-double-right',
                 'attr' => ['class' => 'btn btn-success']
             ])

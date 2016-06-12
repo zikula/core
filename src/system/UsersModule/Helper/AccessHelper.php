@@ -87,6 +87,7 @@ class AccessHelper
         $displayVerifyPending = $this->variableApi->get(UsersConstant::MODNAME, UsersConstant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS);
         $displayApprovalPending = $this->variableApi->get(UsersConstant::MODNAME, UsersConstant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS);
         $moderationOrder = $this->variableApi->get(UsersConstant::MODNAME, UsersConstant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, UsersConstant::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE);
+        $siteOff = $this->variableApi->get(VariableApi::CONFIG, 'siteoff', false);
 
         switch ($user->getActivated()) {
             case UsersConstant::ACTIVATED_ACTIVE:
@@ -100,9 +101,12 @@ class AccessHelper
                     // @todo should this return something else from the event args?
                     return false;
                 }
+                if ($siteOff && !$this->permissionApi->hasPermission('::', '::', ACCESS_ADMIN)) {
+                    return false;
+                }
 
                 return true;
-            case UsersConstant::ACTIVATED_INACTIVE;
+            case UsersConstant::ACTIVATED_INACTIVE:
                 $this->session->getFlashBag()->add('error', $this->translator->__('Your account has been disabled. Please contact a site administrator for more information.'));
 
                 return false;
