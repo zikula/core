@@ -63,14 +63,6 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function find($id, $lockMode = null, $lockVersion = null)
-    {
-        return parent::find($id, $lockMode, $lockVersion);
-    }
-
-    /**
      * @param array $formData
      * @return Paginator
      */
