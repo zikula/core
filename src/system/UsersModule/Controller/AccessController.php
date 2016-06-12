@@ -14,11 +14,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
+use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationmethodInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\UserEvents;
+use Zikula\UsersModule\Constant as UsersConstant;
 
 class AccessController extends AbstractController
 {
@@ -34,8 +36,9 @@ class AccessController extends AbstractController
         if ($this->get('zikula_users_module.current_user')->isLoggedIn()) {
             return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
-        // @todo check if login is enabled
-        // @todo allow admin to login regardless
+        if ($this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'siteoff', false)) {
+            $this->addFlash('error', $this->__('The site is currently unavailable. Attempts to login will fail unless the user has full Admin rights.'));
+        }
 
         $authenticationMethodCollector = $this->get('zikula_users_module.internal.authentication_method_collector');
         $selectedMethod = $request->query->get('authenticationMethod', $request->getSession()->get('authenticationMethod', null));
@@ -49,13 +52,11 @@ class AccessController extends AbstractController
         $rememberMe = false;
 
         if ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface) {
-            $form = $this->createForm($authenticationMethod->getLoginFormClassName(), [], [
-                'translator' => $this->getTranslator()
-            ]);
+            $form = $this->createForm($authenticationMethod->getLoginFormClassName());
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
-                $rememberMe = $data['rememberme'];
+                $rememberMe = $data['rememberme']; // @todo cannot enforce contract w/ third party module to contain this field
                 $uid = $authenticationMethod->authenticate($data);
             } else {
                 return $this->render($authenticationMethod->getLoginTemplateName(), [
@@ -63,7 +64,7 @@ class AccessController extends AbstractController
                 ]);
             }
         } elseif ($authenticationMethod instanceof ReEntrantAuthenticationmethodInterface) {
-            $uid = $authenticationMethod->authenticate(['returnUrl' => $returnUrl]);
+            $uid = $authenticationMethod->authenticate([]);
         } else {
             throw new \LogicException($this->__('Invalid authentication method.'));
         }
@@ -75,13 +76,13 @@ class AccessController extends AbstractController
                 // hooks
                 if ($this->get('zikula_users_module.helper.access_helper')->loginAllowed($user, $selectedMethod)) {
                     $this->get('zikula_users_module.helper.access_helper')->login($user, $selectedMethod, $rememberMe);
+                    $returnUrl = $this->dispatchLoginSuccessEvent($user, $selectedMethod, $request->getSession()->get('returnUrl', null));
                 }
-                $returnUrl = $this->dispatchLoginSuccessEvent($user, $selectedMethod, $returnUrl);
 
                 return isset($returnUrl) ? $this->redirect($returnUrl) : $this->redirectToRoute('home');
             }
         }
-        // login failed no uid available
+        // login failed - no uid available
         $this->addFlash('error', $this->__('Login failed'));
 
         return $this->redirectToRoute('home');
@@ -116,10 +117,9 @@ class AccessController extends AbstractController
         if ($currentUser->isLoggedIn()) {
             $uid = $currentUser->get('uid');
             $user = $this->get('zikula_users_module.user_repository')->find($uid);
-            $authenticationMethod = $request->getSession()->get('authenticationMethod');
             if ($this->get('zikula_users_module.helper.access_helper')->logout()) {
                 $event = new GenericEvent($user, [
-                    'authenticationMethod' => $authenticationMethod,
+                    'authenticationMethod' => $request->getSession()->get('authenticationMethod'),
                     'uid' => $uid,
                 ]);
                 $this->get('event_dispatcher')->dispatch(UserEvents::USER_LOGOUT_SUCCESS, $event);

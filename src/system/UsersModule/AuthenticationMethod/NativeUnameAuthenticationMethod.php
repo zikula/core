@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\Entity\Repository\UserRepository;
-use Zikula\UsersModule\Entity\UserEntity;
 
 class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMethodInterface
 {

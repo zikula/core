@@ -94,9 +94,9 @@ class AccessEvents
      * `'rememberme'` A flag indicating whether the user checked the box to remain logged in.
      * `'user_obj'` The user object array (same as received when calling `UserUtil::getVars($uid);`) of the user who is
      * logging in.
-    
+     *
      * This information is also passed back to the log-in process when the user is redirected back there.
-    
+     * 
      * The Users module uses this method to handle users who have been forced by the administrator to change their password
      * prior to logging in. The code used for the notification might look like the following example:
      *
@@ -126,7 +126,6 @@ class AccessEvents
      * SessionUtil::setVar('Users_Controller_User_changePassword', $sessionVars, 'Zikula_Users' true, true);
      *
      * where `$sessionVars` contains the information discussed previously.
-     *
      */
     const LOGIN_VETO = 'user.login.veto';
 
