@@ -14,8 +14,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
+use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationmethodInterface;
+use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\UserEvents;
 
 class AccessController extends AbstractController
@@ -32,6 +34,8 @@ class AccessController extends AbstractController
         if ($this->get('zikula_users_module.current_user')->isLoggedIn()) {
             return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
+        // @todo check if login is enabled
+        // @todo allow admin to login regardless
 
         $authenticationMethodCollector = $this->get('zikula_users_module.internal.authentication_method_collector');
         $selectedMethod = $request->query->get('authenticationMethod', $request->getSession()->get('authenticationMethod', null));
@@ -39,49 +43,64 @@ class AccessController extends AbstractController
             return $this->render('@ZikulaUsersModule/Access/authenticationMethodSelector.html.twig', ['collector' => $authenticationMethodCollector]);
         } else {
             $request->getSession()->set('authenticationMethod', $selectedMethod); // save method to session for reEntrant needs
+            $request->getSession()->set('returnUrl', $returnUrl); // save returnUrl to session for reEntrant needs
         }
         $authenticationMethod = $authenticationMethodCollector->get($selectedMethod);
+        $rememberMe = false;
 
         if ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface) {
             $form = $this->createForm($authenticationMethod->getLoginFormClassName(), [], [
                 'translator' => $this->getTranslator()
             ]);
-
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
+                $rememberMe = $data['rememberme'];
                 $uid = $authenticationMethod->authenticate($data);
-                if (isset($uid)) {
-                    $user = $this->get('zikula_users_module.user_repository')->find($uid);
-                    if (isset($user)) {
-                        // events
-                        // hooks
-                        $this->get('zikula_users_module.helper.access_helper')->login($user, $selectedMethod, $data['rememberme']);
-
-                        return isset($returnUrl) ? $this->redirect($returnUrl) : $this->redirectToRoute('home');
-                    }
-                }
+            } else {
+                return $this->render($authenticationMethod->getLoginTemplateName(), [
+                    'form' => $form->createView()
+                ]);
             }
-
-            return $this->render($authenticationMethod->getLoginTemplateName(), [
-                'form' => $form->createView()
-            ]);
         } elseif ($authenticationMethod instanceof ReEntrantAuthenticationmethodInterface) {
-            $uid = $authenticationMethod->authenticate([]);
-            // @todo remove code duplication from above
-            if (isset($uid)) {
-                $user = $this->get('zikula_users_module.user_repository')->find($uid);
-                if (isset($user)) {
-                    // events
-                    // hooks
-                    $this->get('zikula_users_module.helper.access_helper')->login($user, $selectedMethod);
-
-                    return isset($returnUrl) ? $this->redirect($returnUrl) : $this->redirectToRoute('home');
-                }
-            }
+            $uid = $authenticationMethod->authenticate(['returnUrl' => $returnUrl]);
         } else {
-            throw new \LogicException('Invalid authentication method.');
+            throw new \LogicException($this->__('Invalid authentication method.'));
         }
+        if (isset($uid)) {
+            // authentication succeeded
+            $user = $this->get('zikula_users_module.user_repository')->find($uid);
+            if (isset($user)) {
+                // events
+                // hooks
+                if ($this->get('zikula_users_module.helper.access_helper')->loginAllowed($user, $selectedMethod)) {
+                    $this->get('zikula_users_module.helper.access_helper')->login($user, $selectedMethod, $rememberMe);
+                }
+                $returnUrl = $this->dispatchLoginSuccessEvent($user, $selectedMethod, $returnUrl);
+
+                return isset($returnUrl) ? $this->redirect($returnUrl) : $this->redirectToRoute('home');
+            }
+        }
+        // login failed no uid available
+        $this->addFlash('error', $this->__('Login failed'));
+
+        return $this->redirectToRoute('home');
+    }
+
+    private function dispatchLoginSuccessEvent(UserEntity $user, $selectedMethod, $returnUrl)
+    {
+        $eventArgs = [
+            'authenticationMethod' => $selectedMethod,
+            'redirecturl' => $returnUrl,
+        ];
+        if (isset($isFirstLogin)) {
+            // @todo compute isFirstLogin
+            $eventArgs['isFirstLogin'] = $isFirstLogin;
+        }
+        $event = new GenericEvent($user, $eventArgs);
+        $event = $this->get('event_dispatcher')->dispatch(AccessEvents::LOGIN_SUCCESS, $event);
+
+        return $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : $returnUrl;
     }
 
     /**
