@@ -10,7 +10,6 @@
 
 namespace Zikula\UsersModule\AuthenticationMethodInterface;
 
-
 interface ReEntrantAuthenticationmethodInterface extends AuthenticationMethodInterface
 {
     /**

@@ -87,8 +87,7 @@ class UserController extends \Zikula_AbstractController
 
     /**
      * @Route("/register", options={"zkNoBundlePrefix"=1})
-     *
-     * BC Method to forward to new Controller
+     * @return RedirectResponse
      */
     public function registerAction(Request $request)
     {
@@ -541,40 +540,13 @@ class UserController extends \Zikula_AbstractController
 
     /**
      * @Route("/logout", options={"zkNoBundlePrefix"=1})
-     *
-     * Log a user out.
-     *
-     * @param Request $request
-     *
-     * The user is redirected to the entry point of the site, or to a redirect
-     * page if specified in the site configuration.
-     *
-     * Parameters:
-     * string  returnpage The URL of the page to return to if the log-out attempt is successful. (This URL must not be urlencoded.)
-     *
-     * @return Response
+     * @return RedirectResponse
      */
     public function logoutAction(Request $request)
     {
-        $returnpage = $request->query->get('returnpage', System::getHomepageUrl());
+        @trigger_error('This method is deprecated. Please use AccessController::logoutAction', E_USER_DEPRECATED);
 
-        // start logout event
-        $uid = UserUtil::getVar('uid');
-        $userObj = UserUtil::getVars($uid);
-        $authenticationMethod = SessionUtil::getVar('authentication_method', ['modname' => '', 'method' => ''], UsersConstant::SESSION_VAR_NAMESPACE);
-        if (UserUtil::logout()) {
-            $event = new GenericEvent($userObj, [
-                'authentication_method' => $authenticationMethod,
-                'uid'                   => $uid,
-            ]);
-            $this->getDispatcher()->dispatch('module.users.ui.logout.succeeded', $event);
-
-            return new RedirectResponse(System::normalizeUrl($returnpage));
-        } else {
-            $request->getSession()->getFlashBag()->add('error', $this->__('Error! You have not been logged out.'));
-        }
-
-        return new PlainResponse();
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_access_logout'));
     }
 
     /**
@@ -602,82 +574,13 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
-     * Log into a site that is currently "off" (normal logins are not allowed).
-     * @Method("POST")
-     *
-     * Allows the administrator to access the site during maintenance.
-     *
-     * @param Request $request
-     *
-     * Parameters passed via POST:
-     * ---------------------------
-     * string  user       The user name of the user attempting to log in.
-     * string  pass       The password of the user attempting to log in.
-     * boolean rememberme Whether the login session should persist.
-     *
-     * Parameters passed via SESSION:
-     * ------------------------------
-     * None.
-     *
      * @return RedirectResponse
-     *
-     * @throws AccessDeniedException Thrown if there are no POST parameters
      */
     public function siteOffLoginAction(Request $request)
     {
-        // do not process if the site is enabled
-        if (!System::getVar('siteoff', false)) {
-            return new RedirectResponse(System::normalizeUrl(System::getHomepageUrl()));
-        }
+        @trigger_error('This method is deprecated. Please use AccessController::loginAction', E_USER_DEPRECATED);
 
-        $user = $request->request->get('user', null);
-        $pass = $request->request->get('pass', null);
-        $rememberme = $request->request->get('rememberme', false);
-
-        $redirectUrl = System::getHomepageUrl();
-
-        $authenticationInfo = [
-            'login_id'  => $user,
-            'pass'      => $pass
-        ];
-        $authenticationMethod = [
-            'modname'   => $this->name,
-            'method'    => 'uname',
-        ];
-
-        if (UserUtil::loginUsing($authenticationMethod, $authenticationInfo, $rememberme)) {
-            $user = UserUtil::getVars(UserUtil::getVar('uid'));
-            if (!SecurityUtil::checkPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN)) {
-                UserUtil::logout();
-
-                $eventArgs = [
-                    'authentication_method' => $authenticationMethod,
-                    'redirecturl'           => '',
-                ];
-                $event = new GenericEvent($user, $eventArgs);
-                $event = $this->getDispatcher()->dispatch('module.users.ui.login.failed', $event);
-                $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
-            } else {
-                $eventArgs = [
-                    'authentication_method' => $authenticationMethod,
-                    'redirecturl'           => $redirectUrl,
-                ];
-                $event = new GenericEvent($user, $eventArgs);
-                $event = $this->getDispatcher()->dispatch('module.users.ui.login.succeeded', $event);
-                $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
-            }
-        } else {
-            $eventArgs = [
-                'authentication_method' => $authenticationMethod,
-                'authentication_info'   => $authenticationInfo,
-                'redirecturl'           => '',
-            ];
-            $event = new GenericEvent(null, $eventArgs);
-            $event = $this->getDispatcher()->dispatch('module.users.ui.login.failed', $event);
-            $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : '';
-        }
-
-        return new RedirectResponse(System::normalizeUrl($redirectUrl));
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_access_login'));
     }
 
     /**
@@ -725,16 +628,12 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
-     * Display the login screen
-     * @param array $args parameters for this function
-     * @see \Zikula\UsersModule\Controller\UserController::login
      * @return RedirectResponse
-     * @deprecated since 1.4.0 use loginAction instead
      */
     public function loginScreenAction($args)
     {
-        @trigger_error('This method is deprecated.', E_USER_DEPRECATED);
+        @trigger_error('This method is deprecated. Please use AccessController::loginAction', E_USER_DEPRECATED);
 
-        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_login'), 301);
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_access_login'), 301);
     }
 }
