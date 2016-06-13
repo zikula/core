@@ -11,13 +11,15 @@
     </parameters>
 
     <services>
-        <service id="zikula_users_module.internal.authentication_method_collector" class="%zikula_users_module.internal.authentication_method_collector.class%" />
+        <service id="zikula_users_module.internal.authentication_method_collector" class="%zikula_users_module.internal.authentication_method_collector.class%">
+            <argument type="service" id="zikula_extensions_module.api.variable" />
+        </service>
 
         <service id="zikula_users_module.authentication_method.native_uname" class="%zikula_users_module.authentication_method.native_uname.class%">
             <argument type="service" id="zikula_users_module.user_repository" />
             <argument type="service" id="session" />
             <argument type="service" id="translator.default" />
-            <tag name="zikula.authentication_method" alias="native.uname" />
+            <tag name="zikula.authentication_method" alias="native_uname" />
         </service>
 
         <service id="zikula_users_module.form.authentication_method_type.uname_type" class="%zikula_users_module.form.authentication_method_type.uname_type.class%">

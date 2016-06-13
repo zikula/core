@@ -10,6 +10,7 @@
 
 namespace Zikula\UsersModule\Collector;
 
+use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\AuthenticationMethodInterface\AuthenticationMethodInterface;
 
 /**
@@ -20,15 +21,29 @@ class AuthenticationMethodCollector
     /**
      * @var AuthenticationMethodInterface[] e.g. ['alias' => ServiceObject]
      */
-    private $authenticationMethods;
+    private $authenticationMethods = [];
 
-    public function __construct()
+    /**
+     * @var AuthenticationMethodInterface[] e.g. ['alias' => ServiceObject]
+     */
+    private $activeAuthenticationMethods = [];
+
+    /**
+     * @var array e.g. ['alias' => bool]
+     */
+    private $authenticationMethodsStatus;
+
+    /**
+     * AuthenticationMethodCollector constructor.
+     * @param VariableApi $variableApi
+     */
+    public function __construct(VariableApi $variableApi)
     {
-        $this->authenticationMethods = [];
+        $this->authenticationMethodsStatus = $variableApi->get(VariableApi::CONFIG, 'authenticationMethodsStatus', []);
     }
 
     /**
-     * Add a block to the collection.
+     * Add a method to the collection.
      * @param string $alias
      * @param AuthenticationMethodInterface $method
      */
@@ -38,6 +53,9 @@ class AuthenticationMethodCollector
             throw new \InvalidArgumentException('Attempting to register an authentication method with a duplicate alias. (' . $alias . ')');
         }
         $this->authenticationMethods[$alias] = $method;
+        if (isset($this->authenticationMethodsStatus[$alias]) && $this->authenticationMethodsStatus[$alias]) {
+            $this->activeAuthenticationMethods[$alias] = $method;
+        }
     }
 
     /**
@@ -59,8 +77,28 @@ class AuthenticationMethodCollector
         return $this->authenticationMethods;
     }
 
+    /**
+     * Get all the active authenticationMethods in the collection.
+     * @return AuthenticationMethodInterface[]
+     */
+    public function getActive()
+    {
+        return $this->activeAuthenticationMethods;
+    }
+
+    /**
+     * @return array of service aliases
+     */
     public function getKeys()
     {
         return array_keys($this->authenticationMethods);
+    }
+
+    /**
+     * @return array of active service aliases
+     */
+    public function getActiveKeys()
+    {
+        return array_keys($this->activeAuthenticationMethods);
     }
 }

@@ -11,7 +11,6 @@
 namespace Zikula\UsersModule\Controller;
 
 use Zikula\Core\Event\GenericEvent;
-use Zikula\Core\Response\PlainResponse;
 use Zikula_View;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Helper\AuthenticationMethodHelper;

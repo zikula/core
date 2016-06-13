@@ -1,0 +1,36 @@
+{% form_theme form with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ polyfill() }}
+
+{{ adminHeader() }}
+
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-lock"></span>
+            {{ __('Authentication Methods') }}
+        </h3>
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                <div class="alert alert-info">{{ __('Check the methods you wish to activate.') }}</div>
+                <ul class="list-group">
+                {% for name, child in form.children.authenticationMethodsStatus %}
+                    <li class="list-group-item">{{ methods[name].DisplayName }}: {{ form_widget(child) }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.save) }}
+                {{ form_widget(form.cancel) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+{{ adminFooter() }}
