@@ -96,7 +96,7 @@ class AccessEvents
      * logging in.
      *
      * This information is also passed back to the log-in process when the user is redirected back there.
-     * 
+     *
      * The Users module uses this method to handle users who have been forced by the administrator to change their password
      * prior to logging in. The code used for the notification might look like the following example:
      *
