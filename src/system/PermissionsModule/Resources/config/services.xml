@@ -5,11 +5,19 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+        <parameter key="zikula_permissions_module.container.link_container.class">Zikula\PermissionsModule\Container\LinkContainer</parameter>
         <parameter key="zikula_permissions_module.api.permission.class">Zikula\PermissionsModule\Api\PermissionApi</parameter>
         <parameter key="zikula_permissions_module.permission_repository.class">Zikula\PermissionsModule\Entity\Repository\PermissionRepository</parameter>
     </parameters>
 
     <services>
+        <service id="zikula_permissions_module.container.link_container" class="%zikula_permissions_module.container.link_container.class%">
+            <argument type="service" id="translator.default" />
+            <argument type="service" id="jms_i18n_routing.router" />
+            <argument type="service" id="zikula_permissions_module.api.permission" />
+            <tag name="zikula.link_container" />
+        </service>
+
         <service id="zikula_permissions_module.permission_repository" class="%zikula_permissions_module.permission_repository.class%">
             <factory service="doctrine.orm.default_entity_manager" method="getRepository"/>
             <argument type="string">Zikula\PermissionsModule\Entity\PermissionEntity</argument>

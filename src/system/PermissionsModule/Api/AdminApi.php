@@ -10,11 +10,11 @@
 
 namespace Zikula\PermissionsModule\Api;
 
-use SecurityUtil;
 use BlockUtil;
 use ModUtil;
-use Zikula\PermissionsModule\Entity\PermissionEntity;
+use SecurityUtil;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\PermissionsModule\Entity\PermissionEntity;
 
 /**
  * API functions used by administrative controllers
@@ -545,52 +545,5 @@ class AdminApi extends \Zikula_AbstractApi
         SecurityUtil::setSchemas($schemas);
 
         return $schemas;
-    }
-
-    /**
-     * Get available admin panel links.
-     *
-     * @return array array of admin links.
-     */
-    public function getLinks()
-    {
-        $links = [];
-
-        if (SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_READ)) {
-            $links[] = [
-                'url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'view', []),
-                'text' => $this->__('Permission rules list'),
-                'id' => 'permissions_view',
-                'icon' => 'list'
-            ];
-        }
-
-        if (SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADD)) {
-            $links[] = [
-                'url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'listedit', ['action' => 'add']),
-                'text' => $this->__('Create new permission rule'),
-                'icon' => 'plus',
-                'class' => 'create-new-permission'
-            ];
-        }
-
-        $links[] = [
-            'url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'viewinstanceinfo'),
-            'text' => $this->__('Permission rules information'),
-            'title' => $this->__('Permission rules information'),
-            'icon' => 'info',
-            'id' => 'view-instance-info'
-        ];
-
-        if (SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            $links[] = [
-                'url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'modifyconfig'),
-                'text' => $this->__('Settings'),
-                'id' => 'permissions_modifyconfig',
-                'icon' => 'wrench'
-            ];
-        }
-
-        return $links;
     }
 }

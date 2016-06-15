@@ -16,9 +16,13 @@ use Zikula\PermissionsModule\Tests\Api\Fixtures\StubPermissionRepository;
 class PermissionApiTest extends \PHPUnit_Framework_TestCase
 {
     private $permRepo;
+
     private $user;
+
     private $userRepo;
+
     private $session;
+
     private $translator;
 
     /**
@@ -134,45 +138,45 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [2/* SITE ADMIN */, [
-                ["component" => ".*",
-                    "instance" => ".*",
-                    "level" => ACCESS_ADMIN],
-                ["component" => "ExtendedMenublock:.*:.*",
-                    "instance" => "1:1:.*",
-                    "level" => ACCESS_NONE],
-                ["component" => ".*",
-                    "instance" => ".*",
-                    "level" => ACCESS_COMMENT],
+                ['component' => '.*',
+                    'instance' => '.*',
+                    'level' => ACCESS_ADMIN],
+                ['component' => 'ExtendedMenublock:.*:.*',
+                    'instance' => '1:1:.*',
+                    'level' => ACCESS_NONE],
+                ['component' => '.*',
+                    'instance' => '.*',
+                    'level' => ACCESS_COMMENT],
             ]],
             [PermissionApi::UNREGISTERED_USER, [
-                ["component" => "ExtendedMenublock:.*:.*",
-                    "instance" => "1:1:.*",
-                    "level" => ACCESS_NONE],
-                ["component" => "ExtendedMenublock:.*:.*",
-                    "instance" => "1:(1|2|3):.*",
-                    "level" => ACCESS_NONE],
-                ["component" => ".*",
-                    "instance" => ".*",
-                    "level" => ACCESS_READ],
+                ['component' => 'ExtendedMenublock:.*:.*',
+                    'instance' => '1:1:.*',
+                    'level' => ACCESS_NONE],
+                ['component' => 'ExtendedMenublock:.*:.*',
+                    'instance' => '1:(1|2|3):.*',
+                    'level' => ACCESS_NONE],
+                ['component' => '.*',
+                    'instance' => '.*',
+                    'level' => ACCESS_READ],
             ]],
             [99/* Random UID */, [
-                ["component" => "ExtendedMenublock:.*:.*",
-                    "instance" => "1:1:.*",
-                    "level" => ACCESS_NONE],
-                ["component" => "ExtendedMenublock:.*:.*",
-                    "instance" => "1:(1|2|3):.*",
-                    "level" => ACCESS_NONE],
-                ["component" => ".*",
-                    "instance" => ".*",
-                    "level" => ACCESS_READ],
+                ['component' => 'ExtendedMenublock:.*:.*',
+                    'instance' => '1:1:.*',
+                    'level' => ACCESS_NONE],
+                ['component' => 'ExtendedMenublock:.*:.*',
+                    'instance' => '1:(1|2|3):.*',
+                    'level' => ACCESS_NONE],
+                ['component' => '.*',
+                    'instance' => '.*',
+                    'level' => ACCESS_READ],
             ]],
             [1/* GUEST */, [
-                ["component" => "ExtendedMenublock:.*:.*",
-                    "instance" => "1:1:.*",
-                    "level" => ACCESS_NONE],
-                ["component" => ".*",
-                    "instance" => ".*",
-                    "level" => ACCESS_COMMENT],
+                ['component' => 'ExtendedMenublock:.*:.*',
+                    'instance' => '1:1:.*',
+                    'level' => ACCESS_NONE],
+                ['component' => '.*',
+                    'instance' => '.*',
+                    'level' => ACCESS_COMMENT],
             ]],
         ];
     }

@@ -1,0 +1,136 @@
+{{ adminHeader() }}
+<h3>
+    {% if action == 'add' %}
+        <span class="fa fa-plus"></span>
+    {% else %}
+        <span class="fa fa-pencil"></span>
+    {% endif %}
+    {{ title }}
+</h3>
+
+{% if action == 'insert' or action == 'modify' or action == 'add' %}
+<form class="form-horizontal" role="form" action="{{ formurl|e('html_attr') }}" method="post" enctype="application/x-www-form-urlencoded">
+    <div>
+        <input type="hidden" name="csrftoken" value="{{ csrfToken|e('html_attr') }}" />
+        <input type="hidden" name="insseq" value="{{ insseq }}" />
+        <input type="hidden" name="realm" value="0" />
+        {% endif %}
+        <table class="table table-bordered table-striped">
+            <colgroup>
+                <col id="cSequence" />
+                <col id="cGroup" />
+                <col id="cComponent" />
+                <col id="cInstance" />
+                <col id="cLevel" />
+                <col id="cAction" />
+            </colgroup>
+            <thead>
+                <tr>
+                    <th id="hSequence" scope="col" class="text-left">{{ __('Sequence') }}</th>
+                    <th id="hGroup" scope="col" class="text-left">{{ __('Group') }}</th>
+                    <th id="hComponent" scope="col" class="text-left"><a href="javascript:showinstanceinformation()" title="{{ __('Show instance information') }}">{{ __('Component') }}</a></th>
+                    <th id="hInstance" scope="col" class="text-left"><a href="javascript:showinstanceinformation()" title="{{ __('Show instance information') }}">{{ __('Instance') }}</a></th>
+                    <th id="hLevel" scope="col" class="text-left">{{ __('Permission level') }}</th>
+                    <th id="hAction" scope="col" class="text-left">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for permission in permissions %}
+                <tr>
+                    {% if insseq == permission.sequence and action == 'insert' %}
+                    <td headers="hSequence">&nbsp;</td>
+                    <td headers="hGroup">
+                        <select class="form-control" name="id">
+                            {% for groupId, groupName in groups %}
+                                <option value="{{ groupId }}">{{ groupName }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td headers="hComponent"><textarea class="form-control" name="component"></textarea></td>
+                    <td headers="hInstance"><textarea class="form-control" name="instance"></textarea></td>
+                    <td headers="hLevel">
+                        <select class="form-control" name="level">
+                            {% for levelId, levelName in permissionLevels %}
+                                <option value="{{ levelId }}">{{ levelName }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td headers="hAction">
+                        <input name="submit" type="submit" value="{{ __('Create new permission rule') }}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td headers="hSequence">{{ permission.sequence }}</td>
+                    <td headers="hGroup">{{ permission.group }}</td>
+                    <td headers="hComponent">{{ permission.component }}</td>
+                    <td headers="hInstance">{{ permission.instance }}</td>
+                    <td headers="hLevel">{{ permission.accesslevel }}</td>
+                    <td headers="hAction">&nbsp;</td>
+                    {% elseif action == 'modify' and chgpid == permission.pid %}
+                    <td headers="hSequence">
+                        <input type="text" class="form-control" name="seq" size="3" value="{{ permission.sequence }}" />
+                        <input type="hidden" name="oldseq" value="{{ permission.sequence }}" />
+                        <input type="hidden" name="pid" value="{{ permission.pid }}" />
+                    </td>
+                    <td headers="hGroup">
+                        <select class="form-control" name="id">
+                            {% for groupId, groupName in groups %}
+                                <option value="{{ groupId }}"{{ groupId == selectedId ? ' selected="selected"' : '' }}>{{ groupName }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td headers="hComponent"><textarea class="form-control" name="component">{{ permission.component }}</textarea></td>
+                    <td headers="hInstance"><textarea class="form-control" name="instance">{{ permission.instance }}</textarea></td>
+                    <td headers="hLevel">
+                        <select class="form-control" name="level">
+                            {% for levelId, levelName in permissionLevels %}
+                                <option value="{{ levelId }}"{{ levelId == permission.level ? ' selected="selected"' : '' }}>{{ levelName }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td headers="hAction">
+                        <input name="submit" type="submit" value="{{ __('Edit permission rule') }}" />
+                    </td>
+                    {% else %}
+                    <td headers="hSequence">{{ permission.sequence }}</td>
+                    <td headers="hGroup">{{ permission.group }}</td>
+                    <td headers="hComponent">{{ permission.component }}</td>
+                    <td headers="hInstance">{{ permission.instance }}</td>
+                    <td headers="hLevel">{{ permission.accesslevel }}</td>
+                    <td headers="hAction">&nbsp;</td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+                {% if action == 'add' %}
+                <tr style="vertical-align: top">
+                    <td headers="hSequence">&nbsp;</td>
+                    <td headers="hGroup">
+                        <select class="form-control" name="id">
+                            {% for groupId, groupName in groups %}
+                                <option value="{{ groupId }}">{{ groupName }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td headers="hComponent"><textarea class="form-control no-editor" name="component" rows="2" cols="20">.*</textarea></td>
+                    <td headers="hInstance"><textarea class="form-control no-editor" name="instance"  rows="2" cols="20">.*</textarea></td>
+                    <td headers="hLevel">
+                        <select class="form-control" name="level">
+                            {% for levelId, levelName in permissionLevels %}
+                                <option value="{{ levelId }}">{{ levelName }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td headers="hAction" class="z-buttons text-right">
+                        {% set buttonText = __('Create new permission rule') %}
+                        <button type="submit" name="submit" class="btn btn-success" title="{{ buttonText }}">{{ buttonText }}</button>
+                    </td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        {% if action == 'insert' or action == 'modify' or action == 'add' %}
+    </div>
+</form>
+{% endif %}
+
+{{ adminFooter() }}

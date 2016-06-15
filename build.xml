@@ -45,7 +45,6 @@
     system/CategoriesModule/Resources/public/js/categories_admin_view.js,
     system/GroupsModule/Resources/public/js/groups.js,
     system/PageLockModule/Resources/public/js/PageLock.js,
-    system/PermissionsModule/Resources/public/js/Zikula.Permission.Admin.ModifyConfig.js,
     system/PermissionsModule/Resources/public/js/Zikula.Permission.Admin.View.js,
     system/RoutesModule/Resources/public/js/ZikulaRoutesModule.EditFunctions.js,
     system/RoutesModule/Resources/public/js/ZikulaRoutesModule.Finder.js,
