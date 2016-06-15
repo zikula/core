@@ -61,7 +61,7 @@ function smarty_compiler_setvar($params, Smarty_Compiler $compiler)
     /* test a possible variable */
     $_lval_var = $compiler->_parse_var_props('$'.$compiler->_dequote($_lval));
 
-    if ($_lval_var{0} == '$') {
+    if ($_lval_var[0] == '$') {
         $_lval = $_lval_var;
     } else {
         /* take it as a variable-name */
@@ -107,5 +107,5 @@ function smarty_compiler_setvar($params, Smarty_Compiler $compiler)
         return;
     }
 
-    return $_lval.'='.$_rval.';';
+    return $_lval . '=' . $_rval . ';';
 }
