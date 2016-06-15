@@ -10,6 +10,7 @@
 
 namespace Zikula\ExtensionsModule\Controller;
 
+use ModUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -127,6 +128,10 @@ class ExtensionsInterfaceController extends AbstractController
             $links_type = ('' !== $currentRequest->attributes->get('type')) ? $currentRequest->attributes->get('type') : $links_type;
             //get the menu links
             $links = $this->get('zikula.link_container_collector')->getLinks($modname, $links_type);
+            // BC support
+            if (empty($links)) {
+                $links = ModUtil::apiFunc($modname, $links_type, 'getLinks');
+            }
         }
 
         return $this->render("@ZikulaExtensionsModule/ExtensionsInterface/links.html.twig", [
