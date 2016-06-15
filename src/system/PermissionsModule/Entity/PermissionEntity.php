@@ -10,8 +10,8 @@
 
 namespace Zikula\PermissionsModule\Entity;
 
-use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
+use Zikula\Core\Doctrine\EntityAccess;
 
 /**
  * Permission entity class.

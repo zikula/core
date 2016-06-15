@@ -94,7 +94,7 @@ class ConfigController extends AbstractController
                 foreach (['ignoreinstallercheck', 'admingraphic', 'displaynametype', 'itemsperpage', 'modulesperrow', 'admintheme', 'startcategory', 'defaultcategory'] as $varName) {
                     $vars[$varName] = $formData[$varName];
                 }
-                $this->setVars($vars);
+                $variableApi->setAll('ZikulaAdminModule', $vars);
 
                 foreach ($adminModules as $adminModule) {
                     $moduleName = $adminModule['name'];

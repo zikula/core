@@ -25,6 +25,7 @@ CHANGELOG - ZIKULA 1.4.x
     - AdminModule updated to Core-2.0 Spec (#2856, #2860).
     - MailerModule updated to Core-2.0 Spec (#2866).
     - PageLockModule updated to Core-2.0 Spec (#2862).
+    - PermissionsModule updated to Core-2.0 Spec (#2896).
     - SearchModule updated to Core-2.0 Spec (#2853).
     - SecurityCenterModule updated to Core-2.0 Spec (#2890).
     - SettingsModule updated to Core-2.0 Spec (#2832).

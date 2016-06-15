@@ -10,26 +10,24 @@
 
 namespace Zikula\PermissionsModule;
 
+use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\PermissionsModule\Entity\PermissionEntity;
 
 /**
  * Installation and upgrade routines for the permissions module
  */
-class PermissionsModuleInstaller extends \Zikula_AbstractInstaller
+class PermissionsModuleInstaller extends AbstractExtensionInstaller
 {
     /**
      * Initialise the Permissions module.
      *
-     * This function is only ever called once during the lifetime of a particular
-     * module instance
-     *
-     * @return boolean True if initialisation successful, false otherwise.
+     * @return boolean True on success, false otherwise.
      */
     public function install()
     {
         // create the table
         try {
-            \DoctrineHelper::createSchema($this->entityManager, [
+            $this->schemaTool->create([
                 'Zikula\PermissionsModule\Entity\PermissionEntity'
             ]);
         } catch (\Exception $e) {
@@ -46,19 +44,18 @@ class PermissionsModuleInstaller extends \Zikula_AbstractInstaller
     /**
      * upgrade the module from an old version
      *
-     * This function must consider all the released versions of the module!
-     * If the upgrade fails at some point, it returns the last upgraded version.
+     * @param string $oldVersion version number string to upgrade from
      *
-     * @param  string $oldversion version number string to upgrade from
-     *
-     * @return bool|string true on success, last valid version string or false if fails
+     * @return bool|string true on success, false otherwise
      */
-    public function upgrade($oldversion)
+    public function upgrade($oldVersion)
     {
         // Upgrade dependent on old version number
-        switch ($oldversion) {
+        switch ($oldVersion) {
             case '1.1.1':
-                $lastPerm = $this->entityManager->getRepository('ZikulaPermissionsModule:PermissionEntity')->findOneBy([], ['sequence' => 'DESC']);
+                $lastPerm = $this->entityManager
+                    ->getRepository('ZikulaPermissionsModule:PermissionEntity')
+                    ->findOneBy([], ['sequence' => 'DESC']);
                 // allow access to non-html themes
                 $record = new PermissionEntity();
                 $record['gid']       = -1;
@@ -71,7 +68,7 @@ class PermissionsModuleInstaller extends \Zikula_AbstractInstaller
                 $this->entityManager->persist($record);
                 $lastPerm->setSequence($record->getSequence() + 1);
                 $this->entityManager->flush();
-                $this->get('session')->addMessage('success', $this->__('A permission rule was added to allow users access to "utility" themes. Please check the sequence.'));
+                $this->addFlash('success', $this->__('A permission rule was added to allow users access to "utility" themes. Please check the sequence.'));
 
             case '1.1.2':
             // future upgrade routines
@@ -83,9 +80,6 @@ class PermissionsModuleInstaller extends \Zikula_AbstractInstaller
 
     /**
      * delete the permissions module
-     *
-     * This function is only ever called once during the lifetime of a particular
-     * module instance
      *
      * Since the permissions module should never be deleted we'all always return false here
      *
@@ -153,11 +147,10 @@ class PermissionsModuleInstaller extends \Zikula_AbstractInstaller
 
         $this->entityManager->flush();
 
-        $this->setVar('filter', 1);
-        $this->setVar('warnbar', 1);
-        $this->setVar('rowview', 20);
-        $this->setVar('rowedit', 20);
         $this->setVar('lockadmin', 1);
         $this->setVar('adminid', 1);
+        $this->setVar('filter', 1);
+        $this->setVar('rowview', 25);
+        $this->setVar('rowedit', 35);
     }
 }
