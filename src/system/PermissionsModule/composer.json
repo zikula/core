@@ -1,6 +1,7 @@
 {
     "name": "zikula/permissions-module",
-    "description": "User Permissions Administration Module",
+    "version": "1.2.0",
+    "description": "User permissions manager.",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
     "authors": [
@@ -17,8 +18,13 @@
     },
     "extra": {
         "zikula": {
+            "class": "Zikula\\PermissionsModule\\ZikulaPermissionsModule",
+            "core-compatibility": ">=1.4.1",
+            "displayname": "Permissions",
             "url": "permissions",
-            "class": "Zikula\\PermissionsModule\\ZikulaPermissionsModule"
+            "securityschema": {
+                "ZikulaPermissionsModule::": "::"
+            }
         }
     }
 }

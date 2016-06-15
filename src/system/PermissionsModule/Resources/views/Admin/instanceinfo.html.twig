@@ -1,0 +1,16 @@
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th>{{ __('Registered component') }}</th>
+        <th>{{ __('Instance template') }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for component, instance in schemas %}
+        <tr>
+            <td>{{ component }}</td>
+            <td>{{ instance }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
