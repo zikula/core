@@ -59,7 +59,7 @@
                 <li role="separator" class="divider"></li>
                 {/if}
                 <li><a href="{route name='zikulausersmodule_user_login'}">{gt text='Log in page'}</a></li>
-                <li><a href="{route name='zikulausersmodule_registration_selectregistrationmethod'}">{gt text='Create new account'}</a></li>
+                <li><a href="{route name='zikulausersmodule_registration_register'}">{gt text='Create new account'}</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a href="{route name='zikulausersmodule_account_lostusername'}">{gt text='Recover lost username'}</a></li>
                 <li><a href="{route name='zikulausersmodule_account_lostpassword'}">{gt text='Recover lost password'}</a></li>
@@ -81,7 +81,7 @@
     <div id="users_loginblock_authentication_method_selectors">
         {if (count($authentication_method_display_order) > 1)}
         <div class="btn-group btn-group-sm nav navbar-nav navbar-btn navbar-right">
-            <a href="{route name='zikulausersmodule_registration_selectregistrationmethod'}" class="btn btn-default" style='margin: 3px 0;'>{gt text='Create new account'}</a>
+            <a href="{route name='zikulausersmodule_registration_register'}" class="btn btn-default" style='margin: 3px 0;'>{gt text='Create new account'}</a>
             <button type="button" class="btn btn-default dropdown-toggle" style='margin: 3px 0;' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <strong id="users_loginblock_h5_authentication_method"{if (!isset($selected_authentication_method) || !$selected_authentication_method)} class="hide"{/if}>{gt text="Or instead, login with your..."}</strong>
                 <strong id="users_loginblock_h5_no_authentication_method"{if (isset($selected_authentication_method) && $selected_authentication_method)} class="hide"{/if}>{gt text="Login with your..."}</strong>

@@ -30,7 +30,8 @@
 {{ form_errors(form) }}
     <input id="{{ form.vars.id }}_event_type" type="hidden" name="event_type" value="new_registration" />
     <input id="{{ form.vars.id }}_registration_info" type="hidden" name="registration_info" value="1" />
-    <input id="{{ form.vars.id }}_authentication_method" type="hidden" name="authentication_method_ser" value="{{ authentication_method|json_encode }}" />
+    {#<input id="{{ form.vars.id }}_authentication_method" type="hidden" name="authentication_method_ser" value="{{ authentication_method|json_encode }}" />#}
+{% set authentication_method= {'modname':'ZikulaUsersModule'} %}
     {#<input id="{{ form.vars.id }}_authentication_info" type="hidden" name="authentication_info_ser" value="{{ authentication_info|json_encode }}" />#}
     <fieldset>
         <legend>{{ __('Choose a user name') }}</legend>
@@ -59,10 +60,10 @@
 
     {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\RegistrationEvents::FORM_REGISTRATION_NEW')) %}
     {% for eventDisplay in eventData %}
-        {{ eventDisplay }}
+        {{ eventDisplay|raw }}
     {% endfor %}
 
-    {% set hooks = notifyDisplayHooks('users.ui_hooks.registration.form_edit') %}
+    {% set hooks = notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::HOOK_REGISTRATION_EDIT')) %}
     {% if hooks is iterable %}
     <fieldset>
         <legend>{{ __('Further information') }}</legend>

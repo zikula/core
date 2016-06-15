@@ -16,15 +16,13 @@ namespace Zikula\UsersModule\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationProviders;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\Exception\FatalErrorException;
+use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Container\HookContainer;
@@ -38,70 +36,9 @@ use Zikula\UsersModule\RegistrationEvents;
 class RegistrationController extends AbstractController
 {
     /**
-     * This method is the first stage in a registration.
-     * If only one registration method is available, it must redirect immediately to that method.
-     * If more than one method is available, it must display these methods to the user.
-     *
-     * @Route("/register", options={"zkNoBundlePrefix"=1})
-     * @Template
-     * @param Request $request
-     * @return array
-     * @throws FatalErrorException
-     */
-    public function selectRegistrationMethodAction(Request $request)
-    {
-        if ($this->get('zikula_users_module.current_user')->isLoggedIn()) {
-            return $this->redirectToRoute('zikulausersmodule_account_menu');
-        }
-        // Check if registration is enabled
-        if (!$this->getVar(UsersConstant::MODVAR_REGISTRATION_ENABLED, UsersConstant::DEFAULT_REGISTRATION_ENABLED)) {
-            return $this->render('@ZikulaUsersModule/Registration/registration_disabled.html.twig');
-        }
-        $this->throwExceptionForBannedUserAgents($request);
-
-        // A selection was made. If selection is ZikulaUsersModule, proceed to registration stage
-        $selectedAuthenticationMethod = $request->request->get('authentication_method', []);
-        if (isset($selectedAuthenticationMethod['modname']) && $selectedAuthenticationMethod['modname'] == 'ZikulaUsersModule') {
-            return $this->redirectToRoute('zikulausersmodule_registration_register', ['authentication_method' => $selectedAuthenticationMethod]);
-        }
-
-        // An authentication method to use with the user's registration has not been selected.
-        // Present the choices to the user.
-        /** @var \Zikula\UsersModule\Helper\AuthenticationMethodListHelper $authenticationMethodList */
-        $authenticationMethodList = $this->get('zikula_users_module.helper.authentication_method_list_helper');
-        $authenticationMethodList->initialize([], \Zikula_Api_AbstractAuthentication::FILTER_REGISTRATION_ENABLED);
-        // If there is only the default ZikulaUsersModule method available. Skip method selection.
-        if ($authenticationMethodList->countEnabledForRegistration() == 1 && $authenticationMethodList[0]->modname == 'ZikulaUsersModule') {
-            $selectedAuthenticationMethod = [
-                'modname' => $authenticationMethodList[0]->modname,
-                'method' => $authenticationMethodList[0]->method,
-            ];
-
-            return $this->redirectToRoute('zikulausersmodule_registration_register', ['authentication_method' => $selectedAuthenticationMethod]);
-        }
-
-        // @todo - The order and availability should be set by configuration somewhere
-        $authenticationMethodDisplayOrder = [];
-        foreach ($authenticationMethodList as $authenticationMethodDisplayOrderItem) {
-            if ($authenticationMethodDisplayOrderItem->isEnabledForRegistration()) {
-                $authenticationMethodDisplayOrder[] = [
-                    'modname'   => $authenticationMethodDisplayOrderItem->modname,
-                    'method'    => $authenticationMethodDisplayOrderItem->method,
-                ];
-            }
-        }
-
-        return [
-            'authentication_info'                   => [],
-            'selected_authentication_method'        => $selectedAuthenticationMethod,
-            'authentication_method_display_order'   => $authenticationMethodDisplayOrder,
-        ];
-    }
-
-    /**
      * Display the registration form.
      *
-     * @Route("/register-form", options={"zkNoBundlePrefix"=1})
+     * @Route("/register", options={"zkNoBundlePrefix"=1})
      * @Template
      * @Method({"GET", "POST"})
      * @param Request $request
@@ -118,41 +55,32 @@ class RegistrationController extends AbstractController
         }
         $this->throwExceptionForBannedUserAgents($request);
 
-        $selectedAuthenticationMethod = $request->query->get('authentication_method', []);
-        if (empty($selectedAuthenticationMethod)) {
-            return $this->redirectToRoute('zikulausersmodule_registration_selectregistrationmethod');
+        // Display the authentication method selector if required
+        // @todo see AccessController::loginAction for code duplication
+        $authenticationMethodCollector = $this->get('zikula_users_module.internal.authentication_method_collector');
+        $selectedMethod = $request->query->get('authenticationMethod', $request->getSession()->get('authenticationMethod', null));
+        if (empty($selectedMethod) && count($authenticationMethodCollector->getActiveKeys()) > 1) {
+            return $this->render('@ZikulaUsersModule/Access/authenticationMethodSelector.html.twig', [
+                'collector' => $authenticationMethodCollector,
+                'path' => 'zikulausersmodule_registration_register'
+            ]);
+        } else {
+            if (empty($selectedMethod) && count($authenticationMethodCollector->getActiveKeys()) == 1) {
+                $selectedMethod = $authenticationMethodCollector->getActiveKeys()[0];
+            }
+            $request->getSession()->set('authenticationMethod', $selectedMethod); // save method to session for reEntrant needs
         }
+        $authenticationMethod = $authenticationMethodCollector->get($selectedMethod);
 
-        /**
-         * @todo
-         *  - here must parse the $data possibly coming from authenticateRegistrationMethodAction as query params
-         *    and modify the form data and options accordingly
-         *      [
-         *          'removePasswordReminderValidation'
-         *          'authentication_info'
-         *          'includeEmail'
-         *          'uname'
-         *          'email'
-         *          'lang' ?
-         *          'emailVerified' ??
-         *      ]
-         *  - also must deal with $removePasswordReminderValidation
-         */
-        $removePasswordReminderValidation = false;
-        if ($selectedAuthenticationMethod['modname'] != 'ZikulaUsersModule') {
-            $removePasswordReminderValidation = true;
-        }
-//        $authenticationInfo = json_decode($request->request->get('authentication_info_ser', false), true); // in register.twig.html
 
-        $form = $this->createForm('Zikula\UsersModule\Form\Type\RegistrationType',
-            new UserEntity(),
-            [
-                'translator' => $this->get('translator.default'),
-                'passwordReminderEnabled' => $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED, UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED),
-                'passwordReminderMandatory' => $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY, UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY),
-                'antiSpamQuestion' => $this->getVar(UsersConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION, ''),
-            ]
-        );
+        // @todo if $hasListeners && count($hookBindings) == 0 then no need for form?
+        $hasListeners = $this->get('event_dispatcher')->hasListeners(RegistrationEvents::FORM_REGISTRATION_NEW);
+        $hookBindings = $this->get('hook_dispatcher')->getBindingsFor('subscriber.users.ui_hooks.registration');
+
+        $formClassName = ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface)
+            ? $authenticationMethod->getRegistrationFormClassName()
+            : 'Zikula\UsersModule\Form\Type\DefaultRegistrationType';
+        $form = $this->createForm($formClassName);
 
         $form->handleRequest($request);
 
@@ -185,28 +113,8 @@ class RegistrationController extends AbstractController
                     return !empty($redirectUrl) ? $this->redirect($redirectUrl) : $this->redirectToRoute('home');
                 } else {
                     // The main registration completed successfully.
-                    if ($selectedAuthenticationMethod['modname'] != 'ZikulaUsersModule') {
-                        // The selected authentication module is NOT the Users module, so make sure the user is registered
-                        // with the authentication module (associate the Users module record uid with the login information).
-                        $arguments = [
-                            'authentication_method' => $selectedAuthenticationMethod,
-//                            'authentication_info'   => $authenticationInfo,
-                            'uid'                   => $userEntity->getUid(),
-                        ];
-                        $authenticationRegistered = \ModUtil::apiFunc($selectedAuthenticationMethod['modname'], 'authentication', 'register', $arguments, 'Zikula_Api_AbstractAuthentication');
-                        if (!$authenticationRegistered) {
-                            $this->addFlash('warning', $this->__('There was a problem associating your log-in information with your account. Please contact the site administrator.'));
-
-                            return $this->redirectToRoute('home');
-                        }
-                    } else {
-                        // The authentication method IS the Users module, prepare for auto-login.
-                        $loginMethodIsEmail = $this->getVar(UsersConstant::MODVAR_LOGIN_METHOD, UsersConstant::LOGIN_METHOD_UNAME) == UsersConstant::LOGIN_METHOD_EMAIL;
-                        $authenticationInfo = [
-                            'login_id' => $loginMethodIsEmail ? $userEntity->getEmail() : $userEntity->getUname(),
-                            'pass'     => $clearPassword
-                        ];
-                    }
+                    $uid = $authenticationMethod->authenticate([]);
+                    // prepare for autologin?
 
                     // Allow hook-like events to process the registration...
                     $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_PROCESS_NEW, new GenericEvent($userEntity));
@@ -214,8 +122,7 @@ class RegistrationController extends AbstractController
                     $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_REGISTRATION_PROCESS, new ProcessHook($userEntity->getUid()));
 
                     // Register the appropriate status or error to be displayed to the user, depending on the account's
-                    // activated status, whether registrations are moderated, whether e-mail addresses need to be verified,
-                    // and other sundry conditions.
+                    // activated status, whether registrations are moderated, whether e-mail addresses need to be verified, etc.
                     $canLogIn = $userEntity->getActivated() == UsersConstant::ACTIVATED_ACTIVE;
                     $autoLogIn = $this->getVar(UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN, UsersConstant::DEFAULT_REGISTRATION_AUTO_LOGIN);
                     $this->generateRegistrationFlashMessage($userEntity->getActivated(), $autoLogIn);
@@ -224,23 +131,14 @@ class RegistrationController extends AbstractController
                     $event = $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_SUCCEEDED, new GenericEvent($userEntity, ['redirecturl' => '']));
                     $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : '';
 
-                    if ($canLogIn && $autoLogIn) {
-                        // Next is auto-login.
-                        $post = [
-                            'csrftoken' => $this->get('zikula_core.common.csrf_token_handler')->generate(),
-                            'authentication_method' => $selectedAuthenticationMethod,
-                            'authentication_info' => $authenticationInfo,
-                            'rememberme' => false,
-                            'returnpage' => $this->get('router')->generate('home'),
-                        ];
-
-                        return $this->forward('ZikulaUsersModule:User:login', [], [], $post);
+                    if ($autoLogIn && $this->get('zikula_users_module.helper.access_helper')->loginAllowed($userEntity, $selectedMethod)) {
+                        $this->get('zikula_users_module.helper.access_helper')->login($userEntity, $selectedMethod);
                     } elseif (!empty($redirectUrl)) {
                         return $this->redirect($redirectUrl);
                     } elseif (!$canLogIn) {
                         return $this->redirectToRoute('home');
                     } else {
-                        return $this->redirectToRoute('zikulausersmodule_user_login');
+                        return $this->redirectToRoute('zikulausersmodule_access_login');
                     }
                 }
             }
@@ -249,13 +147,17 @@ class RegistrationController extends AbstractController
         // Notify that we are beginning a registration session.
         $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_STARTED, new GenericEvent());
 
-        return [
+        $templateName = ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface)
+            ? $authenticationMethod->getRegistrationTemplateName()
+            : '@ZikulaUsersModule\Registration\defaultRegister.html.twig';
+
+        return $this->render($templateName, [
             'form' => $form->createView(),
-            'authentication_method' => $selectedAuthenticationMethod,
+//            'authentication_method' => $selectedAuthenticationMethod,
 //            'authentication_info'   => $authenticationInfo,
             'registration_info'     => isset($registrationInfo) ? $registrationInfo : [],
             'modvars' => $this->getVars()
-        ];
+        ]);
     }
 
     /**
@@ -347,112 +249,6 @@ class RegistrationController extends AbstractController
             'form' => $form->createView(),
             'modvars' => $this->getVars()
         ];
-    }
-
-    /**
-     * Display or authenticate the selected registration method with external authentication method.
-     * If successful, redirect to registration.
-     *
-     * @Route("/authenticate-registration-method", options={"zkNoBundlePrefix"=1})
-     * @param Request $request
-     * @return RedirectResponse
-     */
-    public function authenticateRegistrationMethodAction(Request $request)
-    {
-        // @todo this needs to be enabled... was only when method was GET before
-//        $sessionVars = $request->getSession()->get('User_register', false);
-//        if ($sessionVars) {
-//            $reentrantTokenReceived = $request->query->get('reentranttoken', false);
-//            $reentrantToken = isset($sessionVars['reentranttoken']) ? $sessionVars['reentranttoken'] : false;
-//            $authenticationInfo = isset($sessionVars['authentication_info']) ? $sessionVars['authentication_info'] : [];
-//            $selectedAuthenticationMethod = isset($sessionVars['authentication_method']) ? $sessionVars['authentication_method'] : [];
-//
-//            if ($reentrantToken != $reentrantTokenReceived) {
-//                throw new AccessDeniedException();
-//            }
-//        } else {
-//            throw new FatalErrorException($this->__('An internal error occurred. Failed to retrieve stored registration state.'));
-//        }
-
-        // Save the submitted information in case the authentication method is external and reentrant.
-        // We're using sessions here, even though anonymous sessions might be turned off for anonymous users.
-        // If the user is trying to regiuster, then he's going to get a session if he's successful and logs in,
-        // so using sessions on the anonymous user just before registration should be ok.
-        $request->getSession()->start(); // restart?
-        $authenticationInfo           = $request->request->get('authentication_info', []);
-        $selectedAuthenticationMethod = $request->request->get('authentication_method', []);
-        $reentrantToken = substr(\SecurityUtil::generateCsrfToken(), 0, 10);
-        $sessionVars = [
-            'authentication_info'   => $authenticationInfo,
-            'authentication_method' => $selectedAuthenticationMethod,
-            'reentranttoken'        => $reentrantToken,
-        ];
-        $request->getSession()->set('User_register', $sessionVars);
-
-        // The authentication method selected might be reentrant (it might send the user out to an external web site
-        // for authentication, and then send us back to finish the job). We need to tell the external system to where
-        // we would like to return.
-        $reentrantUrl = $this->get('router')->generate('zikulausersmodule_registration_register', ['reentranttoken' => $reentrantToken], RouterInterface::ABSOLUTE_URL);
-
-        // The chosen authentication method might be reentrant, and this is the point were the user might be directed
-        // outside the Zikula system for external authentication.
-        $arguments = [
-            'authentication_info'   => $authenticationInfo,
-            'authentication_method' => $selectedAuthenticationMethod,
-            'reentrant_url'         => $reentrantUrl,
-        ];
-        $checkPasswordResult = \ModUtil::apiFunc($selectedAuthenticationMethod['modname'], 'authentication', 'checkPasswordForRegistration', $arguments, 'Zikula_Api_AbstractAuthentication');
-
-        // Did we get a good user? If so, then we can proceed to hook-like event and hook validation.
-        if (isset($checkPasswordResult) && $checkPasswordResult && is_array($checkPasswordResult)) {
-            if (isset($checkPasswordResult['authentication_info'])) {
-                $arguments['authentication_info'] = $checkPasswordResult['authentication_info'];
-            }
-            $uid = \ModUtil::apiFunc($selectedAuthenticationMethod['modname'], 'authentication', 'getUidForAuthenticationInfo', $arguments, 'Zikula_Api_AbstractAuthentication');
-
-            if ($uid === false) {
-                $data = [];
-                if (isset($checkPasswordResult['authentication_info'])) {
-                    $data['authenticationInfo'] = $checkPasswordResult['authentication_info'];
-                }
-
-                $registrationInfo = (isset($checkPasswordResult['registration_info']) && is_array($checkPasswordResult['registration_info'])) ? $checkPasswordResult['registration_info'] : [];
-                $data['removePasswordReminderValidation'] = ($selectedAuthenticationMethod['modname'] != 'ZikulaUsersModule');
-                $data['includeEmail'] = true;
-                if (!empty($registrationInfo)) {
-                    if (isset($registrationInfo['uname']) && !empty($registrationInfo['uname'])) {
-                        $data['uname'] = $registrationInfo['uname'];
-                    }
-                    if (isset($registrationInfo['email']) && !empty($registrationInfo['email'])) {
-                        $data['email'] = $registrationInfo['email'];
-                    }
-                    if (isset($registrationInfo['hideEmail']) && $registrationInfo['hideEmail'] == true) {
-                        $data['includeEmail'] = false;
-                    }
-                    // @todo Add this as soon as #1330 is implemented.
-                    //if (isset($registrationInfo['lang']) && !empty($registrationInfo['lang'])) {
-                    //    $data['lang'] = $registrationInfo['lang'];
-                    //}
-
-                    // @todo React to emailVerified !
-                    // $registrationInfo['emailVerified']
-                }
-                // remove the session vars that were set prior to re-entrant authentication
-                $request->getSession()->remove('User_register');
-
-                return $this->redirectToRoute('zikulausersmodule_registration_register', $data);
-            } else {
-                $this->addFlash('error', $this->__('The credentials you provided are already associated with an existing user account or registration request.'));
-
-                return $this->redirectToRoute('zikulausersmodule_registration_selectregistrationmethod');
-            }
-        } else {
-            if (!$request->getSession()->getFlashBag()->has(\Zikula_Session::MESSAGE_ERROR)) {
-                $this->addFlash('error', $this->__('Error: Unable to confirm your credentials with the selected service.'));
-            }
-
-            return $this->redirectToRoute('zikulausersmodule_registration_selectregistrationmethod');
-        }
     }
 
     /**

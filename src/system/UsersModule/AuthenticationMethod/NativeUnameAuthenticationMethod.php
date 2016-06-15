@@ -79,12 +79,12 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
 
     public function getRegistrationFormClassName()
     {
-        // TODO: Implement getRegistrationFormClassName() method.
+        return 'Zikula\UsersModule\Form\Type\RegistrationType';
     }
 
     public function getRegistrationTemplateName()
     {
-        // TODO: Implement getRegistrationTemplateName() method.
+        return '@ZikulaUsersModule/Registration/register.html.twig';
     }
 
     /**

@@ -569,7 +569,7 @@ class UserController extends \Zikula_AbstractController
         @trigger_error('This method is removed.', E_USER_DEPRECATED);
         $request->getSession()->getFlashBag()->add('error', $this->__('Warning! This method is no longer functional. You must re-register.'));
 
-        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_registration_selectregistrationmethod'));
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_registration_register'));
     }
 
     /**

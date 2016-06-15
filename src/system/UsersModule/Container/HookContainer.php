@@ -23,6 +23,7 @@ class HookContainer extends AbstractHookContainer
     const HOOK_PROCESS_DELETE = 'users.ui_hooks.user.process_delete';
 
     const HOOK_REGISTRATION_DISPLAY = 'users.ui_hooks.registration.display_view';
+    const HOOK_REGISTRATION_EDIT = 'users.ui_hooks.registration.form_edit';
     const HOOK_REGISTRATION_VALIDATE = 'users.ui_hooks.registration.validate_edit';
     const HOOK_REGISTRATION_PROCESS = 'users.ui_hooks.registration.process_edit';
 
@@ -41,7 +42,7 @@ class HookContainer extends AbstractHookContainer
 
         $bundle = new SubscriberBundle('ZikulaUsersModule', 'subscriber.users.ui_hooks.registration', 'ui_hooks', $this->__('Registration management hooks'));
         $bundle->addEvent('display_view', self::HOOK_REGISTRATION_DISPLAY);
-        $bundle->addEvent('form_edit', 'users.ui_hooks.registration.form_edit');
+        $bundle->addEvent('form_edit', self::HOOK_REGISTRATION_EDIT);
         $bundle->addEvent('validate_edit', self::HOOK_REGISTRATION_VALIDATE);
         $bundle->addEvent('process_edit', self::HOOK_REGISTRATION_PROCESS);
         $bundle->addEvent('form_delete', 'users.ui_hooks.registration.form_delete');
