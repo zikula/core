@@ -70,6 +70,9 @@ class LegacyController
         unset($arguments['module']);
         unset($arguments['type']);
         unset($arguments['func']);
+        $request->attributes->set('_zkModule', $module);
+        $request->attributes->set('_zkType', $type);
+        $request->attributes->set('_zkFunc', $func);
         $modInfo = \ModUtil::getInfoFromName($module);
 
         return $this->getLegacyResponse($modInfo['name'], $type, $func, $arguments, $request->isXmlHttpRequest());
