@@ -49,6 +49,10 @@ class AccountLinksHelper
         $legacyAccountLinks = \ModUtil::apiFunc('ZikulaUsersModule', 'user', 'accountLinks');
         if (false === $legacyAccountLinks) {
             $legacyAccountLinks = [];
+        } else {
+            foreach ($legacyAccountLinks as $key => $legacyAccountLink) {
+                $legacyAccountLinks[$key]['text'] = $legacyAccountLink['title'];
+            }
         }
 
         // add the arrays together

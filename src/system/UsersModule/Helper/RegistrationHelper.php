@@ -110,8 +110,6 @@ class RegistrationHelper
 
     /**
      * Create a new user or registration.
-     * @todo used in \Zikula\UsersModule\Controller\AdminController::newUserAction() NEEDS REFACTORING
-     * @todo FYI used in \Zikula\UsersModule\Controller\RegistrationController::registerAction() correctly
      *
      * This is the primary and almost exclusive method for creating new user accounts, and the primary and
      * exclusive method for creating registration applications that are either pending approval, pending e-mail
@@ -139,8 +137,8 @@ class RegistrationHelper
         $isAdmin = $this->currentUserIsAdmin();
         $isAdminOrSubAdmin = $this->currentUserIsAdminOrSubAdmin();
 
-        if (!$isAdmin && !$this->variableApi->get('ZikulaUsersModule', 'reg_allowreg', false)) {
-            $registrationUnavailableReason = $this->variableApi->get('ZikulaUsersModule', 'reg_noregreasons', $this->__('New user registration is currently disabled.'));
+        if (!$isAdmin && !$this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ENABLED, false)) {
+            $registrationUnavailableReason = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_DISABLED_REASON, $this->__('New user registration is currently disabled.'));
             throw new \LogicException($registrationUnavailableReason);
         }
 
