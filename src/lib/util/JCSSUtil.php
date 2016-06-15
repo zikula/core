@@ -561,11 +561,14 @@ class JCSSUtil
         $themevars = ModUtil::getVar('ZikulaThemeModule');
         $lifetime = $themevars['cssjscombine_lifetime'];
         $hash = md5(serialize($files) . UserUtil::getTheme());
+
         $cachedFile = "{$cache_dir}/{$hash}_{$ext}.php";
         $cachedFileUri = "{$hash}_{$ext}.php";
+
         if (is_readable($cachedFile) && (($lifetime == -1) || (filemtime($cachedFile) + $lifetime) > time())) {
             return System::getBaseUri() . '/jcss.php?f=' . $cachedFileUri;
         }
+
         switch ($ext) {
             case 'css':
                 $ctype = 'text/css';
@@ -582,14 +585,16 @@ class JCSSUtil
         $contents = [];
         $dest = fopen($cachedFile, 'w');
         foreach ($files as $file) {
-            if (!empty($file)) {
-                // skip remote files from combining
-                if (is_file($file)) {
-                    self::readfile($contents, $file, $ext);
-                    $includedFiles[] = $file;
-                } else {
-                    $outputFiles[] = $file;
-                }
+            if (empty($file)) {
+                continue;
+            }
+
+            // skip remote files from combining
+            if (is_file($file)) {
+                self::readfile($contents, $file, $ext);
+                $includedFiles[] = $file;
+            } else {
+                $outputFiles[] = $file;
             }
         }
 
@@ -642,94 +647,62 @@ class JCSSUtil
             return;
         }
         $source = fopen($file, 'r');
-        if ($source) {
-            $filepath = explode('/', dirname($file));
-            $contents[] = "/* --- Source file: {$file} */\n\n";
-            $inMultilineComment = false;
-            $importsAllowd = true;
-            $wasCommentHack = false;
-            while (!feof($source)) {
-                if ($ext == 'css') {
-                    $line = fgets($source, 4096);
-                    $lineParse = trim($line);
-                    $lineParse_length = mb_strlen($lineParse, 'UTF-8');
-                    $newLine = "";
-                    // parse line char by char
-                    for ($i = 0; $i < $lineParse_length; $i++) {
-                        $char = $lineParse{$i};
-                        $nextchar = $i < ($lineParse_length - 1) ? $lineParse{$i + 1}
-                        : "";
-                        if (!$inMultilineComment && $char == '/' && $nextchar == '*') {
-                            // a multiline comment starts here
-                            $inMultilineComment = true;
-                            $wasCommentHack = false;
-                            $newLine .= $char . $nextchar;
-                            $i++;
-                        } elseif ($inMultilineComment && $char == '*' && $nextchar == '/') {
-                            // a multiline comment stops here
-                            $inMultilineComment = false;
-                            $newLine .= $char . $nextchar;
-                            if (substr($lineParse, $i - 3, 8) == '/*\*//*/') {
-                                $wasCommentHack = true;
-                                $i += 3; // move to end of hack process hack as it where
-                                $newLine .= '/*/'; // fix hack comment because we lost some chars with $i += 3
-                            }
-                            $i++;
-                        } elseif ($importsAllowd && $char == '@' && substr($lineParse, $i, 7) == '@import') {
-                            // an @import starts here
-                            $lineParseRest = trim(substr($lineParse, $i + 7));
-                            if (strtolower(substr($lineParseRest, 0, 3)) == 'url') {
-                                // the @import uses url to specify the path
-                                $posEnd = strpos($lineParse, ';', $i);
-                                $charsEnd = substr($lineParse, $posEnd - 1, 2);
-                                if ($charsEnd == ');') {
-                                    // used url() without media
-                                    $start = strpos($lineParseRest, '(') + 1;
-                                    $end = strpos($lineParseRest, ')');
-                                    $url = substr($lineParseRest, $start, $end - $start);
-                                    if ($url{0} == '"' | $url{0} == "'") {
-                                        $url = substr($url, 1, strlen($url) - 2);
-                                    }
-                                    // fix url
-                                    $url = dirname($file) . '/' . $url;
-                                    if (!$wasCommentHack) {
-                                        // clear buffer
-                                        $contents[] = $newLine;
-                                        $newLine = "";
-                                        // process include
-                                        self::readfile($contents, $url, $ext);
-                                    } else {
-                                        $newLine .= '@import url("' . $url . '");';
-                                    }
-                                    // skip @import statement
-                                    $i += $posEnd - $i;
-                                } else {
-                                    // @import contains media type so we can't include its contents.
-                                    // We need to fix the url instead.
-                                    $start = strpos($lineParseRest, '(') + 1;
-                                    $end = strpos($lineParseRest, ')');
-                                    $url = substr($lineParseRest, $start, $end - $start);
-                                    if ($url{0} == '"' | $url{0} == "'") {
-                                        $url = substr($url, 1, strlen($url) - 2);
-                                    }
-                                    // fix url
-                                    $url = dirname($file) . '/' . $url;
-                                    // readd @import with fixed url
-                                    $newLine .= '@import url("' . $url . '")' . substr($lineParseRest, $end + 1, strpos($lineParseRest, ';') - $end - 1) . ';';
-                                    // skip @import statement
-                                    $i += $posEnd - $i;
+        if (!$source) {
+            return;
+        }
+
+        $filepath = explode('/', dirname($file));
+        $contents[] = "/* --- Source file: {$file} */\n\n";
+        $inMultilineComment = false;
+        $importsAllowd = true;
+        $wasCommentHack = false;
+        while (!feof($source)) {
+            if ($ext == 'css') {
+                $line = fgets($source, 4096);
+                $lineParse = trim($line);
+                $lineParse_length = mb_strlen($lineParse, 'UTF-8');
+                $newLine = '';
+                // parse line char by char
+                for ($i = 0; $i < $lineParse_length; $i++) {
+                    $char = $lineParse[$i];
+                    $nextchar = $i < ($lineParse_length - 1) ? $lineParse[$i + 1] : '';
+                    if (!$inMultilineComment && $char == '/' && $nextchar == '*') {
+                        // a multiline comment starts here
+                        $inMultilineComment = true;
+                        $wasCommentHack = false;
+                        $newLine .= $char . $nextchar;
+                        $i++;
+                    } elseif ($inMultilineComment && $char == '*' && $nextchar == '/') {
+                        // a multiline comment stops here
+                        $inMultilineComment = false;
+                        $newLine .= $char . $nextchar;
+                        if (substr($lineParse, $i - 3, 8) == '/*\*//*/') {
+                            $wasCommentHack = true;
+                            $i += 3; // move to end of hack process hack as it where
+                            $newLine .= '/*/'; // fix hack comment because we lost some chars with $i += 3
+                        }
+                        $i++;
+                    } elseif ($importsAllowd && $char == '@' && substr($lineParse, $i, 7) == '@import') {
+                        // an @import starts here
+                        $lineParseRest = trim(substr($lineParse, $i + 7));
+                        if (strtolower(substr($lineParseRest, 0, 3)) == 'url') {
+                            // the @import uses url to specify the path
+                            $posEnd = strpos($lineParse, ';', $i);
+                            $charsEnd = substr($lineParse, $posEnd - 1, 2);
+                            if ($charsEnd == ');') {
+                                // used url() without media
+                                $start = strpos($lineParseRest, '(') + 1;
+                                $end = strpos($lineParseRest, ')');
+                                $url = substr($lineParseRest, $start, $end - $start);
+                                if ($url[0] == '"' | $url[0] == "'") {
+                                    $url = substr($url, 1, strlen($url) - 2);
                                 }
-                            } elseif (substr($lineParseRest, 0, 1) == '"' || substr($lineParseRest, 0, 1) == '\'') {
-                                // the @import uses an normal string to specify the path
-                                $posEnd = strpos($lineParseRest, ';');
-                                $url = substr($lineParseRest, 1, $posEnd - 2);
-                                $posEnd = strpos($lineParse, ';', $i);
                                 // fix url
                                 $url = dirname($file) . '/' . $url;
                                 if (!$wasCommentHack) {
                                     // clear buffer
                                     $contents[] = $newLine;
-                                    $newLine = "";
+                                    $newLine = '';
                                     // process include
                                     self::readfile($contents, $url, $ext);
                                 } else {
@@ -737,30 +710,63 @@ class JCSSUtil
                                 }
                                 // skip @import statement
                                 $i += $posEnd - $i;
+                            } else {
+                                // @import contains media type so we can't include its contents.
+                                // We need to fix the url instead.
+                                $start = strpos($lineParseRest, '(') + 1;
+                                $end = strpos($lineParseRest, ')');
+                                $url = substr($lineParseRest, $start, $end - $start);
+                                if ($url[0] == '"' | $url[0] == "'") {
+                                    $url = substr($url, 1, strlen($url) - 2);
+                                }
+                                // fix url
+                                $url = dirname($file) . '/' . $url;
+                                // readd @import with fixed url
+                                $newLine .= '@import url("' . $url . '")' . substr($lineParseRest, $end + 1, strpos($lineParseRest, ';') - $end - 1) . ';';
+                                // skip @import statement
+                                $i += $posEnd - $i;
                             }
-                        } elseif (!$inMultilineComment && $char != ' ' && $char != "\n" && $char != "\r\n" && $char != "\r") {
-                            // css rule found -> stop processing of @import statements
-                            $importsAllowd = false;
-                            $newLine .= $char;
-                        } else {
-                            $newLine .= $char;
+                        } elseif (substr($lineParseRest, 0, 1) == '"' || substr($lineParseRest, 0, 1) == '\'') {
+                            // the @import uses an normal string to specify the path
+                            $posEnd = strpos($lineParseRest, ';');
+                            $url = substr($lineParseRest, 1, $posEnd - 2);
+                            $posEnd = strpos($lineParse, ';', $i);
+                            // fix url
+                            $url = dirname($file) . '/' . $url;
+                            if (!$wasCommentHack) {
+                                // clear buffer
+                                $contents[] = $newLine;
+                                $newLine = '';
+                                // process include
+                                self::readfile($contents, $url, $ext);
+                            } else {
+                                $newLine .= '@import url("' . $url . '");';
+                            }
+                            // skip @import statement
+                            $i += $posEnd - $i;
                         }
+                    } elseif (!$inMultilineComment && $char != ' ' && $char != "\n" && $char != "\r\n" && $char != "\r") {
+                        // css rule found -> stop processing of @import statements
+                        $importsAllowd = false;
+                        $newLine .= $char;
+                    } else {
+                        $newLine .= $char;
                     }
-                    // fix other paths after @import processing
-                    if (!$importsAllowd) {
-                        $newLine = self::cssFixPath($newLine, explode('/', dirname($file)));
-                    }
-                    $contents[] = $newLine;
-                } else {
-                    $contents[] = fgets($source, 4096);
                 }
-            }
-            fclose($source);
-            if ($ext == 'js') {
-                $contents[] = "\n;\n";
+                // fix other paths after @import processing
+                if (!$importsAllowd) {
+                    $newLine = self::cssFixPath($newLine, explode('/', dirname($file)));
+                }
+                $contents[] = $newLine;
             } else {
-                $contents[] = "\n\n";
+                $contents[] = fgets($source, 4096);
             }
+        }
+        fclose($source);
+        if ($ext == 'js') {
+            $contents[] = "\n;\n";
+        } else {
+            $contents[] = "\n\n";
         }
     }
 
@@ -775,16 +781,18 @@ class JCSSUtil
     private static function cssFixPath($line, $filepath)
     {
         $regexpurl = '/url\([\'"]?([\.\/]*)(.*?)[\'"]?\)/i';
-        if (strpos($line, 'url') !== false) {
-            preg_match_all($regexpurl, $line, $matches, PREG_SET_ORDER);
-            foreach ($matches as $match) {
-                if ((strpos($match[1], '/') !== 0) && (substr($match[2], 0, 7) != 'http://') && (substr($match[2], 0, 8) != 'https://')) {
-                    $depth = substr_count($match[1], '../') * -1;
-                    $path = $depth < 0 ? array_slice($filepath, 0, $depth) : $filepath;
-                    $path = implode('/', $path);
-                    $path = !empty($path) ? $path . '/' : '';
-                    $line = str_replace($match[0], "url('{$path}{$match[2]}')", $line);
-                }
+        if (false === strpos($line, 'url')) {
+            return $line;
+        }
+
+        preg_match_all($regexpurl, $line, $matches, PREG_SET_ORDER);
+        foreach ($matches as $match) {
+            if ((strpos($match[1], '/') !== 0) && (substr($match[2], 0, 7) != 'http://') && (substr($match[2], 0, 8) != 'https://')) {
+                $depth = substr_count($match[1], '../') * -1;
+                $path = $depth < 0 ? array_slice($filepath, 0, $depth) : $filepath;
+                $path = implode('/', $path);
+                $path = !empty($path) ? $path . '/' : '';
+                $line = str_replace($match[0], "url('{$path}{$match[2]}')", $line);
             }
         }
 
