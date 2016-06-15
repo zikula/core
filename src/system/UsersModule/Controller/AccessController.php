@@ -42,7 +42,10 @@ class AccessController extends AbstractController
         $authenticationMethodCollector = $this->get('zikula_users_module.internal.authentication_method_collector');
         $selectedMethod = $request->query->get('authenticationMethod', $request->getSession()->get('authenticationMethod', null));
         if (empty($selectedMethod) && count($authenticationMethodCollector->getActiveKeys()) > 1) {
-            return $this->render('@ZikulaUsersModule/Access/authenticationMethodSelector.html.twig', ['collector' => $authenticationMethodCollector]);
+            return $this->render('@ZikulaUsersModule/Access/authenticationMethodSelector.html.twig', [
+                'collector' => $authenticationMethodCollector,
+                'path' => 'zikulausersmodule_access_login'
+            ]);
         } else {
             if (empty($selectedMethod) && count($authenticationMethodCollector->getActiveKeys()) == 1) {
                 $selectedMethod = $authenticationMethodCollector->getActiveKeys()[0];
