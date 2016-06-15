@@ -16,9 +16,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\Translator;
 
 /**
- * Category deletion form type class.
+ * Permission rule deletion form type class.
  */
-class DeleteCategoryType extends AbstractType
+class DeletePermissionType extends AbstractType
 {
     /**
      * {@inheritdoc}
