@@ -180,11 +180,11 @@
                     </div>
                     <div class="form-group">
                         <label for="permission-component">{{ __('Component') }}</label>
-                        <textarea id="permission-component" class="no-editor form-control" rows="2" cols="20">{{ permission.component }}</textarea>
+                        <textarea id="permission-component" class="no-editor form-control" rows="2" cols="20">{% if permission is defined %}{{ permission.component }}{% endif %}</textarea>
                     </div>
                     <div class="form-group">
                         <label for="permission-instance">{{ __('Instance') }}</label>
-                        <textarea id="permission-instance" class="no-editor form-control" rows="2" cols="20">{{ permission.instance }}</textarea>
+                        <textarea id="permission-instance" class="no-editor form-control" rows="2" cols="20">{% if permission is defined %}{{ permission.instance }}{% endif %}</textarea>
                     </div>
                     <div class="form-group">
                         <label for="permission-level">{{ __('Level') }}</label>
