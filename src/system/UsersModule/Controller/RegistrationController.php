@@ -17,12 +17,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationProviders;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
+use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationmethodInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Container\HookContainer;
@@ -71,7 +73,14 @@ class RegistrationController extends AbstractController
             $request->getSession()->set('authenticationMethod', $selectedMethod); // save method to session for reEntrant needs
         }
         $authenticationMethod = $authenticationMethodCollector->get($selectedMethod);
-
+        $redirectUri = $this->generateUrl('zikulausersmodule_registration_register', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        if ($authenticationMethod instanceof ReEntrantAuthenticationmethodInterface) {
+            $uid = $authenticationMethod->authenticate(['redirectUri' => $redirectUri]);
+//            if (isset($uid)) {
+//                throw new \Exception('User already exists!');
+//            }
+            $userData = $authenticationMethod->getUserData(); // get a username and email
+        }
 
         // @todo if $hasListeners && count($hookBindings) == 0 then no need for form?
         $hasListeners = $this->get('event_dispatcher')->hasListeners(RegistrationEvents::FORM_REGISTRATION_NEW);
