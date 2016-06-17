@@ -13,6 +13,7 @@ namespace Zikula\UsersModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\UsersModule\Constant as UsersConstant;
 
 class DefaultRegistrationType extends AbstractType
 {
@@ -33,6 +34,11 @@ class DefaultRegistrationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('uname', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
+            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
+            ->add('pass', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [
+                'data' => UsersConstant::PWD_NO_USERS_AUTHENTICATION
+            ])
             ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'label' => $this->translator->__('Save'),
                 'icon' => 'fa-plus',

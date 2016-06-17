@@ -163,12 +163,6 @@ class RegistrationHelper
             $userEntity->setPass($hashedPassword);
         }
 
-        // @todo This forces both uname and email to all lowercase - I'm not convinced this is required nor desired.
-        // maybe the uname part could be configurable. The email part is probably not needed.
-        // https://tools.ietf.org/html/rfc5321#section-4.1.2 states that 'local part' of email addresses ARE case-sensitive, so foring to lowercase COULD break someone's email!
-        $userEntity->setUname(mb_strtolower($userEntity->getUname()));
-        $userEntity->setEmail(mb_strtolower(($userEntity->getEmail())));
-
         // DO NOT yet persist and flush the user in this method. It will occur in one of the two below methods.
 
         // Dispatch to the appropriate function, depending on whether a registration record or a full user record is needed.

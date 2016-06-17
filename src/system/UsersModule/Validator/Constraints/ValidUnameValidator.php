@@ -74,11 +74,11 @@ class ValidUnameValidator extends ConstraintValidator
         }
 
         // ensure all lowercase
-        if ($value != mb_strtolower($value)) {
-            $this->context->buildViolation($this->translator->__('The username cannot use uppercase letters'))
-                ->setParameter('%string%', $value)
-                ->addViolation();
-        }
+//        if ($value != mb_strtolower($value)) {
+//            $this->context->buildViolation($this->translator->__('The username cannot use uppercase letters'))
+//                ->setParameter('%string%', $value)
+//                ->addViolation();
+//        }
 
         // ensure not reserved/illegal
         // @todo old method allowed Admin to skip this check

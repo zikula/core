@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\Entity\Repository\UserRepository;
+use Zikula\UsersModule\Entity\UserEntity;
 
 class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMethodInterface
 {
@@ -87,20 +88,27 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
         return '@ZikulaUsersModule/Registration/register.html.twig';
     }
 
+    public function updateUserEntity(UserEntity $userEntity)
+    {
+        // nothing to do?
+    }
+
     /**
      * {@inheritdoc}
      */
     public function authenticate(array $data)
     {
-        $userEntity = $this->userRepository->findOneBy(['uname' => $data['uname']]);
-        if ($userEntity) {
-            if (\UserUtil::passwordsMatch($data['pass'], $userEntity->getPass())) { // @todo
-                return $userEntity->getUid();
+        if (isset($data['uname'])) {
+            $userEntity = $this->userRepository->findOneBy(['uname' => $data['uname']]);
+            if ($userEntity) {
+                if (\UserUtil::passwordsMatch($data['pass'], $userEntity->getPass())) { // @todo
+                    return $userEntity->getUid();
+                } else {
+                    $this->session->getFlashBag()->add('error', $this->translator->__('Incorrect password'));
+                }
             } else {
-                $this->session->getFlashBag()->add('error', $this->translator->__('Incorrect password'));
+                $this->session->getFlashBag()->add('error', $this->translator->__f('User not found with uname %uname', ['%uname' => $data['uname']]));
             }
-        } else {
-            $this->session->getFlashBag()->add('error', $this->translator->__f('User not found with uname %uname', ['%uname' => $data['uname']]));
         }
 
         return null;

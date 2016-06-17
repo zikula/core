@@ -10,6 +10,8 @@
 
 namespace Zikula\UsersModule\AuthenticationMethodInterface;
 
+use Zikula\UsersModule\Entity\UserEntity;
+
 interface AuthenticationMethodInterface
 {
     /**
@@ -30,4 +32,10 @@ interface AuthenticationMethodInterface
      * @return integer|null
      */
     public function authenticate(array $data);
+
+    /**
+     * After authentication, this method is used to update the Entity.
+     * properties `email` and `uname` must be updated.
+     */
+    public function updateUserEntity(UserEntity $userEntity);
 }
