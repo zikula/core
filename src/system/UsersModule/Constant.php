@@ -382,8 +382,9 @@ namespace Zikula\UsersModule
         const DEFAULT_REQUIRE_UNIQUE_EMAIL = true;
         /**
          * The PCRE regular expression fragment used to validate user names.
+         * 17 June 2016 - CAH - As of ZikulaUsersModule 3.0, spaces are allowed and the field is not restricted to lowercase
          */
-        const UNAME_VALIDATION_PATTERN = '[\\p{L}\\p{N}_\\.\\-]+';
+        const UNAME_VALIDATION_PATTERN = '[\\p{L}\\p{N}_\\.\\-\\s?]+';
         /**
          * The maximum length of a user name, used for validation.
          */
