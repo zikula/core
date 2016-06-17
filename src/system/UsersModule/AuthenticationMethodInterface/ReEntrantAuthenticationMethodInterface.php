@@ -12,4 +12,15 @@ namespace Zikula\UsersModule\AuthenticationMethodInterface;
 
 interface ReEntrantAuthenticationMethodInterface extends AuthenticationMethodInterface
 {
+    /**
+     * Return the ID of the user sent by the provider.
+     * @return string
+     */
+    public function getId();
+
+    /**
+     * Persist the data required to map external authorization to a Zikula UID.
+     * @param $data
+     */
+    public function persistMapping($data);
 }
