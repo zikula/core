@@ -75,11 +75,9 @@ class ValidUserFieldsValidator extends ConstraintValidator
             // note: removed 'similar' reminder <=> pass comparison from <= Core-1.4.2
         }
         // ensure unique uname
-        // @todo comparison should be done with all lower-case
-        // also consider removing spaces or using 'LIKE'
-        $qb = $this->userRepository->createQueryBuilder('u')
-            ->select('count(u.uid)')
-            ->where('u.uname = :uname')
+        $qb = $this->userRepository->createQueryBuilder('u');
+        $qb->select('count(u.uid)')
+            ->where($qb->expr()->eq('LOWER(u.uname)', ':uname'))
             ->setParameter('uname', $userEntity->getUname());
         // when updating an existing User, the existing Uid must be excluded.
         if (null !== $userEntity->getUid()) {

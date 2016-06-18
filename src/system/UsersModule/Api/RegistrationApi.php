@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\UsersModule\Constant as UsersConstant;
 
 /**
- * @deprecated 
+ * @deprecated
  * The system-level and database-level functions for user-initiated actions related to new account registrations.
  */
 class RegistrationApi extends \Zikula_AbstractApi
