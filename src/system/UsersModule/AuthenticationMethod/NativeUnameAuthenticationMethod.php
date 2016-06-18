@@ -88,11 +88,6 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
         return '@ZikulaUsersModule/Registration/register.html.twig';
     }
 
-    public function updateUserEntity(UserEntity $userEntity)
-    {
-        // nothing to do?
-    }
-
     /**
      * {@inheritdoc}
      */

@@ -72,6 +72,11 @@ class UserEvents
     const UPDATE_ACCOUNT = 'user.account.update';
 
     /**
+     * Occurs after the deletion of a user account. Subject is $uid.
+     */
+    const DELETE_ACCOUNT = 'user.account.delete';
+
+    /**
      * A hook-like event triggered when the adminitstrator's new user form is displayed, which allows other
      * modules to intercept and display their own elements for submission on the new user form.
      * To add elements to the new user form, render output and add this as an array element on the event's

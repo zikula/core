@@ -139,7 +139,7 @@ class RegistrationEvents
      * event will not fire if a registration record is converted to a full user account record. Instead, a
      * `user.account.create` event will fire. This is a storage-level event, not a UI event. It should not be used for
      * UI-level actions such as redirects.
-     * The subject of the event is set to the registration record begin deleted.
+     * The subject of the event is set to the registration record being deleted.
      */
     const DELETE_REGISTRATION = 'user.registration.delete';
 

@@ -330,9 +330,11 @@ class UserAdministrationController extends AbstractController
                 }
             }
             if ($valid && $deleteConfirmationForm->isValid()) {
+                // @todo add possibilty to 'mark as pending deletion' UsersConstant::ACTIVATED_PENDING_DELETE ???
                 $this->get('zikula_users_module.user_repository')->removeArray($userIds);
                 $this->addFlash('success', $this->_fn('User deleted!', '%n users deleted!', count($userIds), ['%n' => count($userIds)]));
                 foreach ($userIds as $uid) {
+                    $this->get('event_dispatcher')->dispatch(UserEvents::DELETE_ACCOUNT, new GenericEvent($uid));
                     $this->get('event_dispatcher')->dispatch(UserEvents::USER_PROCESS_DELETE, new GenericEvent(null, ['id' => $uid]));
                     $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_PROCESS_DELETE, new ProcessHook($uid));
                 }

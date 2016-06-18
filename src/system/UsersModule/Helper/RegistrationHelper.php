@@ -111,17 +111,6 @@ class RegistrationHelper
     /**
      * Create a new user or registration.
      *
-     * This is the primary and almost exclusive method for creating new user accounts, and the primary and
-     * exclusive method for creating registration applications that are either pending approval, pending e-mail
-     * verification, or both. 99.9% of all cases where a new user record needs to be created should use this
-     * function to create the user or registration. This will ensure that all users and registrations are created
-     * consistently, and that the system configuration for approval and verification is carried out correctly.
-     * Only a few system-related internal edge cases should attempt to create user accounts without going through
-     * this function.
-     *
-     * All information provided to this function is in the form of registration data, even if it is expected that
-     * the end result will be a fully active user account.
-     *
      * @param UserEntity $userEntity
      * @param boolean $userMustVerify
      * @param boolean $userNotification
@@ -129,18 +118,10 @@ class RegistrationHelper
      * @param boolean $sendPassword
      *
      * @return array If the creation was unsuccessful, an array of errors is returned.
-     *
-     * @throws \LogicException Thrown if registration is disabled.
      */
     public function registerNewUser(UserEntity $userEntity, $userMustVerify = false, $userNotification = true, $adminNotification = true, $sendPassword = false)
     {
-        $isAdmin = $this->currentUserIsAdmin();
         $isAdminOrSubAdmin = $this->currentUserIsAdminOrSubAdmin();
-
-        if (!$isAdmin && !$this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ENABLED, false)) {
-            $registrationUnavailableReason = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_DISABLED_REASON, $this->__('New user registration is currently disabled.'));
-            throw new \LogicException($registrationUnavailableReason);
-        }
 
         if (!$userEntity->getAttributes()->contains('_Users_isVerified')) {
             $adminWantsVerification = $isAdminOrSubAdmin && $userMustVerify || '' == $userEntity->getPass();
@@ -160,81 +141,119 @@ class RegistrationHelper
 
         if (('' != $userEntity->getPass()) && (UsersConstant::PWD_NO_USERS_AUTHENTICATION != $userEntity->getPass())) {
             $hashedPassword = \UserUtil::getHashedPassword($userEntity->getPass());
+            // DO NOT yet persist and flush the user in this method. It will occur in one of the two below methods.
             $userEntity->setPass($hashedPassword);
         }
+        $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
 
-        // DO NOT yet persist and flush the user in this method. It will occur in one of the two below methods.
-
-        // Dispatch to the appropriate function, depending on whether a registration record or a full user record is needed.
-        if (!$userEntity->isApproved() || !$userEntity->getAttributeValue('_Users_isVerified')) {
+        if (!$userEntity->isApproved() || !$userEntity->isVerified()) {
             // We need a registration record
+            $userEntity->setActivated(UsersConstant::ACTIVATED_PENDING_REG);
+            $userEntity->setUser_Regdate($nowUTC);
+            if ($isAdminOrSubAdmin && $userEntity->isApproved()) {
+                // Approved by admin
+                // If self approved (moderation is off), then see below.
+                $userEntity->setApproved_Date($nowUTC);
+                $userEntity->setApproved_By(\UserUtil::getVar('uid'));
+            }
 
-            return $this->createRegistration($userEntity, $userNotification, $adminNotification, $passwordCreatedForUser);
+            // ATTENTION: Do NOT issue an item-create hook at this point! The record is a pending
+            // registration, not a user, so a user account record has really not yet been "created".
+            // The item-create hook will be fired when the registration becomes a "real" user
+            // account record. This is so that modules that do default actions on the creation
+            // of a user account do not perform those actions on a pending registration, which
+            // may be deleted at any point.
+            $this->userRepository->persistAndFlush($userEntity);
+            if (!$isAdminOrSubAdmin && $userEntity->isApproved()) {
+                // moderation is off, so the user "self-approved".
+                // We could not set it earlier because we didn't know the uid.
+                $this->userRepository->setApproved($userEntity, $nowUTC);
+            }
+
+            $this->eventDispatcher->dispatch(RegistrationEvents::CREATE_REGISTRATION, new GenericEvent($userEntity));
+
+            return $this->createAndSendRegistrationMail($userEntity, $userNotification, $adminNotification, $passwordCreatedForUser);
         } else {
             // Everything is in order for a full user record
 
-            return $this->createUser($userEntity, $userNotification, $adminNotification, $passwordCreatedForUser);
-        }
-    }
+            // Check to see if we are getting a record directly from the registration request process, or one
+            // from a later step in the registration process (e.g., approval or verification)
+            if (null == $userEntity->getUid()) {
+                // This is a record directly from the registration request process (never been saved before)
 
-    /**
-     * Utility method to clean up an object in preparation for storage.
-     *
-     * Moves any fields in the array that are not core database fields into the __ATTRIBUTES__ array.
-     *
-     * @param array $obj The array appropriate for the $table; passed by reference (this function will cause
-     *                      the $obj to be modified in the calling function).
-     *
-     * @return array The $obj, modified for storage as described.
-     */
-    protected function cleanFieldsToAttributes(&$obj)
-    {
-        if (!isset($obj) || !is_array($obj)) {
-            return $obj;
-        }
+                // Ensure that no user gets created without a password, and that the password is reasonable (no spaces, salted)
+                // or == UsersConstant::PWD_NO_USERS_AUTHENTICATION.
+                $userPassword = $userEntity->getPass();
+                $hasPassword = null != $userPassword;
+                if ($userPassword === UsersConstant::PWD_NO_USERS_AUTHENTICATION) {
+                    $hasSaltedPassword = false;
+                    $hasNoUsersAuthenticationPassword = true;
+                } else {
+                    $hasSaltedPassword = $hasPassword && (strpos($userPassword, UsersConstant::SALT_DELIM) != strrpos($userPassword, UsersConstant::SALT_DELIM));
+                    $hasNoUsersAuthenticationPassword = false;
+                }
+                if (!$hasPassword || (!$hasSaltedPassword && !$hasNoUsersAuthenticationPassword)) {
+                    throw new \InvalidArgumentException(__('Invalid arguments array received'));
+                }
 
-        $user = new UserEntity();
+                $userEntity->setUser_Regdate($nowUTC);
 
-        if (!isset($obj['__ATTRIBUTES__'])) {
-            $obj['__ATTRIBUTES__'] = [];
-        }
+                if ($isAdminOrSubAdmin) {
+                    // Current user is admin, so admin is creating this registration.
+                    // See below if moderation is off and user is self-approved
+                    $userEntity->setApproved_By(\UserUtil::getVar('uid'));
+                }
+                // Approved date is set no matter what approved_by will become.
+                $userEntity->setApproved_Date($nowUTC);
 
-        if (isset($obj['isverified'])) {
-            $obj['__ATTRIBUTES__']['_Users_isVerified'] = (int)$obj['isverified'];
-            unset($obj['isverified']);
-        } else {
-            $obj['__ATTRIBUTES__']['_Users_isVerified'] = 0;
-        }
+                // Set activated state as pending registration for now to prevent firing of update hooks after the insert until the
+                // activated state is set properly further below.
+                $userEntity->setActivated(UsersConstant::ACTIVATED_PENDING_REG);
 
-        foreach ($obj as $field => $value) {
-            if (substr($field, 0, 2) == '__') {
-                continue;
-            } elseif (!isset($user[$field])) {
-                $obj['__ATTRIBUTES__'][$field] = is_array($value) ? serialize($value) : $value;
-                unset($obj[$field]);
+                $this->userRepository->persistAndFlush($userEntity);
+
+                if (!$isAdminOrSubAdmin) {
+                    // Current user is not admin, so moderation is off and user "self-approved" through the registration process
+                    // updated approvedBy to `self` then flush
+                    $this->userRepository->setApproved($userEntity, $nowUTC);
+                }
+            } else {
+                // This is a record from intermediate step in the registration process (e.g. verification or approval)
+                // delete attribute from user so that we don't get an update event. (Create hasn't happened yet.);
+                $userEntity->delAttribute('_Users_isVerified');
+
+                $this->userRepository->persistAndFlush($userEntity);
+                // NOTE: See below for the firing of the item-create hook.
             }
-        }
 
-        return $obj;
+            // Set appropriate activated status. Again, use Doctrine so we don't get an update event. (Create hasn't happened yet.)
+            // Need to do this here so that it happens for both the case where $reginfo is coming in new, and the case where
+            // $reginfo was already in the database.
+            $userEntity->setActivated(UsersConstant::ACTIVATED_ACTIVE);
+            $this->userRepository->persistAndFlush($userEntity);
+
+            // Add user to default group
+            $defaultGroup = $this->variableApi->get('ZikulaGroupsModule', 'defaultgroup', false);
+            if (!$defaultGroup) {
+                throw new \RuntimeException($this->__('Warning! The user account was created, but there was a problem adding the account to the default group.'));
+            }
+            $groupAdded = \ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'adduser', ['gid' => $defaultGroup, 'uid' => $userEntity->getUid()]);
+            if (!$groupAdded) {
+                throw new \RuntimeException($this->__('Warning! The user account was created, but there was a problem adding the account to the default group.'));
+            }
+
+            // ATTENTION: This is the proper place for the item-create hook, not when a pending
+            // registration is created. It is not a "real" record until now, so it wasn't really
+            // "created" until now. It is way down here so that the activated state can be properly
+            // saved before the hook is fired.
+            $this->eventDispatcher->dispatch(UserEvents::CREATE_ACCOUNT, new GenericEvent($userEntity));
+
+            return $this->createAndSendUserMail($userEntity, $userNotification, $adminNotification, $passwordCreatedForUser);
+        }
     }
 
     /**
-     * NOT A PUBLIC API !
-     *
-     * Creates a new registration record in the users table.
-     *
-     * This is an internal function that creates a new user registration. External calls to create either a new
-     * registration record or a new users record are made to registerNewUser(), which
-     * dispatches either this function or createUser(). registerNewUser() should be the
-     * primary and exclusive function used to create either a user record or a registration, as it knows how to
-     * decide which gets created based on the system configuration and the data provided.
-     *
-     * ATTENTION: Do NOT issue an item-create hook at this point! The record is a pending
-     * registration, not a user, so a user account record has really not yet been "created".
-     * The item-create hook will be fired when the registration becomes a "real" user
-     * account record. This is so that modules that do default actions on the creation
-     * of a user account do not perform those actions on a pending registration, which
-     * may be deleted at any point.
+     * Creates a new registration mail.
      *
      * @param UserEntity $userEntity
      * @param bool   $userNotification       Whether the user should be notified of the new registration or not; however
@@ -250,99 +269,43 @@ class RegistrationHelper
      * @throws \InvalidArgumentException Thrown if invalid parameters are received.
      * @throws \RuntimeException Thrown if the registration couldn't be saved
      */
-    protected function createRegistration(UserEntity $userEntity, $userNotification = true, $adminNotification = true, $passwordCreatedForUser = '')
+    private function createAndSendRegistrationMail(UserEntity $userEntity, $userNotification = true, $adminNotification = true, $passwordCreatedForUser = '')
     {
-        $createdByAdminOrSubAdmin = $this->currentUserIsAdminOrSubAdmin();
-
-        // Protected method (not callable from the api), so assume that the data has been validated in registerNewUser().
-        // Just check some basic things we need directly in this function.
-        if ($userEntity->isApproved() && $userEntity->getAttributeValue('_Users_isVerified')) {
-            // One or the other must be false, otherwise why are we in this function?
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
-        } elseif ((null == $userEntity->getPass()) || ('' == $userEntity->getPass()) && ($userEntity->getAttributeValue('_Users_isVerified') || !$createdByAdminOrSubAdmin)) {
-            // If the password is not set (or is empty) then both isverified must be set to false AND this
-            // function call must be the result of an admin or sub-admin creating the record.
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
-        }
-
-        $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
-        $userEntity->setActivated(UsersConstant::ACTIVATED_PENDING_REG);
-        $userEntity->setUser_Regdate($nowUTC);
-        if ($createdByAdminOrSubAdmin && $userEntity->isApproved()) {
-            // Approved by admin
-            // If self approved (moderation is off), then see below.
-            $userEntity->setApproved_Date($nowUTC);
-            $userEntity->setApproved_By(\UserUtil::getVar('uid'));
-        }
-
-//        $userObj = $this->cleanFieldsToAttributes($userObj);
-        // @todo it is possible someone is trying to set additional properties/attributes here and this would need to be accommodated.
-
-        // ATTENTION: Do NOT issue an item-create hook at this point! The record is a pending
-        // registration, not a user, so a user account record has really not yet been "created".
-        // The item-create hook will be fired when the registration becomes a "real" user
-        // account record. This is so that modules that do default actions on the creation
-        // of a user account do not perform those actions on a pending registration, which
-        // may be deleted at any point.
-
-        $this->userRepository->persistAndFlush($userEntity);
-
-        // TODO - Even though we are not firing an item-create hook, should we fire a special
-        // registration created event?
-
-        $this->eventDispatcher->dispatch(RegistrationEvents::CREATE_REGISTRATION, new GenericEvent($userEntity));
-
         $mailErrors = [];
-        if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
-            $approvalOrder = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, UsersConstant::APPROVAL_BEFORE);
-            $rendererArgs = [];
-            $rendererArgs['sitename'] = $this->variableApi->get(VariableApi::CONFIG, 'sitename');
-            $rendererArgs['reginfo'] = $userEntity;
-            $rendererArgs['createdpassword'] = $passwordCreatedForUser;
-            $rendererArgs['admincreated'] = $createdByAdminOrSubAdmin;
-            $rendererArgs['approvalorder'] = $approvalOrder;
+        $approvalOrder = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, UsersConstant::APPROVAL_BEFORE);
+        $rendererArgs = [];
+        $rendererArgs['reginfo'] = $userEntity;
+        $rendererArgs['createdpassword'] = $passwordCreatedForUser;
+        $rendererArgs['admincreated'] = $this->currentUserIsAdminOrSubAdmin();
 
-            if (!$userEntity->getAttributeValue('_Users_isVerified') && (($approvalOrder != UsersConstant::APPROVAL_BEFORE) || $userEntity->isApproved())) {
-                $verificationSent = $this->verificationHelper->sendVerificationCode($userEntity, null, null, $rendererArgs);
-                if (!$verificationSent) {
-                    $mailErrors[] = $this->__('Warning! The verification code for the new registration could not be sent.');
-                }
-                $userObj['verificationsent'] = $verificationSent;
-            } elseif (($userNotification && $userEntity->isApproved()) || !empty($passwordCreatedForUser)) {
-                $mailSent = $this->mailHelper->sendNotification($userEntity->getEmail(), 'welcome', $rendererArgs);
-                if (!$mailSent) {
-                    $mailErrors[] = $this->__('Warning! The welcoming email for the new registration could not be sent.');
-                }
+        if (!$userEntity->isVerified() && (($approvalOrder != UsersConstant::APPROVAL_BEFORE) || $userEntity->isApproved())) {
+            $verificationSent = $this->verificationHelper->sendVerificationCode($userEntity);
+            if (!$verificationSent) {
+                $mailErrors[] = $this->__('Warning! The verification code for the new registration could not be sent.');
             }
-            if ($adminNotification) {
-                // mail notify email to inform admin about registration
-                $mailEmail = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL, '');
-                if (!empty($mailEmail)) {
-                    $mailSent = $this->mailHelper->sendNotification($mailEmail, 'regadminnotify', $rendererArgs);
-                    if (!$mailSent) {
-                        $mailErrors[] = $this->__('Warning! The mail email for the new registration could not be sent.');
-                    }
-                }
+            $userObj['verificationsent'] = $verificationSent;
+        } elseif (($userNotification && $userEntity->isApproved()) || !empty($passwordCreatedForUser)) {
+            $mailSent = $this->mailHelper->sendNotification($userEntity->getEmail(), 'welcome', $rendererArgs);
+            if (!$mailSent) {
+                $mailErrors[] = $this->__('Warning! The welcoming email for the new registration could not be sent.');
             }
         }
+        if ($adminNotification) {
+            // mail notify email to inform admin about registration
+            $mailEmail = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL, '');
+            if (!empty($mailEmail)) {
+                $mailSent = $this->mailHelper->sendNotification($mailEmail, 'regadminnotify', $rendererArgs);
+                if (!$mailSent) {
+                    $mailErrors[] = $this->__('Warning! The mail email for the new registration could not be sent.');
+                }
+            }
+            }
 
         return $mailErrors;
     }
 
     /**
-     * NOT A PUBLIC API !
-     *
-     * Creates a new users table record.
-     *
-     * This is an internal function that creates a new user. External calls to create either a new
-     * registration record or a new users record are made to registerNewUser(), which
-     * dispatches either this function or createRegistration(). registerNewUser() should be the
-     * primary and exclusive function used to create either a user record or a registration, as it knows how to
-     * decide which gets created based on the system configuration and the data provided.
-     *
-     * ATTENTION: This is the proper place to fire an item-created hook for the user account
-     * record, even though the physical database record may have been saved previously as a pending
-     * registration. See the note in createRegistration().
+     * Creates a new users mail.
      *
      * @param UserEntity $userEntity
      * @param bool  $userNotification        Whether the user should be notified of the new registration or not;
@@ -360,248 +323,33 @@ class RegistrationHelper
      * @throws \RuntimeException Thrown if the user couldn't be added to the relevant user groups or
      *                                  if the registration couldn't be saved
      */
-    public function createUser(UserEntity $userEntity, $userNotification = true, $adminNotification = true, $passwordCreatedForUser = '')
+    private function createAndSendUserMail(UserEntity $userEntity, $userNotification = true, $adminNotification = true, $passwordCreatedForUser = '')
     {
-        $currentUserIsAdminOrSubadmin = $this->currentUserIsAdminOrSubAdmin();
-        // It is only considered 'created by admin' if the UserEntity has no id yet. If it has an id, then the
-        // registration record was created by an admin, but this is being created after a verification
-        $createdByAdminOrSubAdmin = $currentUserIsAdminOrSubadmin && (null == $userEntity->getUid());
-
-        // Check to see if we are getting a record directly from the registration request process, or one
-        // from a later step in the registration process (e.g., approval or verification)
-        if (null == $userEntity->getUid()) {
-            // This is a record directly from the registration request process (never been saved before)
-
-            // Ensure that no user gets created without a password, and that the password is reasonable (no spaces, salted)
-            // If the user is being registered with an authentication method other than one from the Users module, then the
-            // password will be the unsalted, unhashed string stored in UsersConstant::PWD_NO_USERS_AUTHENTICATION.
-            $userPassword = $userEntity->getPass();
-            $hasPassword = null != $userPassword && is_string($userEntity->getPass());
-            if ($userPassword === UsersConstant::PWD_NO_USERS_AUTHENTICATION) {
-                $hasSaltedPassword = false;
-                $hasNoUsersAuthenticationPassword = true;
-            } else {
-                $hasSaltedPassword = $hasPassword && (strpos($userPassword, UsersConstant::SALT_DELIM) != strrpos($userPassword, UsersConstant::SALT_DELIM));
-                $hasNoUsersAuthenticationPassword = false;
-            }
-            if (!$hasPassword || (!$hasSaltedPassword && !$hasNoUsersAuthenticationPassword)) {
-                throw new \InvalidArgumentException(__('Invalid arguments array received'));
-            }
-
-            $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
-            $userEntity->setUser_Regdate($nowUTC);
-
-            if ($createdByAdminOrSubAdmin) {
-                // Current user is admin, so admin is creating this registration.
-                // See below if moderation is off and user is self-approved
-                $userEntity->setApproved_By(\UserUtil::getVar('uid'));
-            }
-            // Approved date is set no matter what approved_by will become.
-            $userEntity->setApproved_Date($nowUTC);
-
-            // Set activated state as pending registration for now to prevent firing of update hooks after the insert until the
-            // activated state is set properly further below.
-            $userEntity->setActivated(UsersConstant::ACTIVATED_PENDING_REG);
-
-            $this->userRepository->persistAndFlush($userEntity);
-
-            if (!$createdByAdminOrSubAdmin) {
-                // Current user is not admin, so moderation is off and user "self-approved" through the registration process
-                // updated approvedBy to `self` then flush
-                $this->userRepository->setApproved($userEntity, $nowUTC);
-            }
-        } else {
-            // This is a record from intermediate step in the registration process (e.g. verification or approval)
-            // delete attribute from user so that we don't get an update event. (Create hasn't happened yet.);
-            $userEntity->delAttribute('_Users_isVerified');
-
-            $this->userRepository->persistAndFlush($userEntity);
-            // NOTE: See below for the firing of the item-create hook.
-        }
-
-        // Set appropriate activated status. Again, use Doctrine so we don't get an update event. (Create hasn't happened yet.)
-        // Need to do this here so that it happens for both the case where $reginfo is coming in new, and the case where
-        // $reginfo was already in the database.
-        $userEntity->setActivated(UsersConstant::ACTIVATED_ACTIVE);
-        $this->userRepository->persistAndFlush($userEntity);
-
-        // Add user to default group
-        $defaultGroup = $this->variableApi->get('ZikulaGroupsModule', 'defaultgroup', false);
-        if (!$defaultGroup) {
-            throw new \RuntimeException($this->__('Warning! The user account was created, but there was a problem adding the account to the default group.'));
-        }
-        $groupAdded = \ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'adduser', ['gid' => $defaultGroup, 'uid' => $userEntity->getUid()]);
-        if (!$groupAdded) {
-            throw new \RuntimeException($this->__('Warning! The user account was created, but there was a problem adding the account to the default group.'));
-        }
-
-        // ATTENTION: This is the proper place for the item-create hook, not when a pending
-        // registration is created. It is not a "real" record until now, so it wasn't really
-        // "created" until now. It is way down here so that the activated state can be properly
-        // saved before the hook is fired.
-        $this->eventDispatcher->dispatch(UserEvents::CREATE_ACCOUNT, new GenericEvent($userEntity));
-
         $mailErrors = [];
+        $rendererArgs = [];
+        $rendererArgs['reginfo'] = $userEntity;
+        $rendererArgs['createdpassword'] = $passwordCreatedForUser;
+        $rendererArgs['admincreated'] = $this->currentUserIsAdminOrSubAdmin();
 
-        if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
-            $rendererArgs = [];
-            $rendererArgs['sitename'] = $this->variableApi->get(VariableApi::CONFIG, 'sitename');
-            $rendererArgs['reginfo'] = $userEntity;
-            $rendererArgs['createdpassword'] = $passwordCreatedForUser;
-            $rendererArgs['admincreated'] = $createdByAdminOrSubAdmin;
-            $rendererArgs['approvalorder'] = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, UsersConstant::APPROVAL_BEFORE);
-            $rendererArgs['PWD_NO_USERS_AUTHENTICATION'] = UsersConstant::PWD_NO_USERS_AUTHENTICATION;
-
-            if ($userNotification || !empty($passwordCreatedForUser)) {
-                $mailSent = $this->mailHelper->sendNotification($userEntity->getEmail(), 'welcome', $rendererArgs);
-                if (!$mailSent) {
-                    $mailErrors[] = $this->__('Warning! The welcoming email for the newly created user could not be sent.');
-                }
+        if ($userNotification || !empty($passwordCreatedForUser)) {
+            $mailSent = $this->mailHelper->sendNotification($userEntity->getEmail(), 'welcome', $rendererArgs);
+            if (!$mailSent) {
+                $mailErrors[] = $this->__('Warning! The welcoming email for the newly created user could not be sent.');
             }
-            if ($adminNotification) {
-                // mail notify email to inform admin about registration
-                $mailEmail = $this->variableApi->get('ZikulaUsersModule', 'reg_notifyemail', '');
-                if (!empty($mailEmail)) {
-                    $subject = $this->__f('New registration: %s', $userEntity->getUname());
-                    $mailSent = $this->mailHelper->sendNotification($mailEmail, 'regadminnotify', $rendererArgs, $subject);
-                    if (!$mailSent) {
-                        $mailErrors[] = $this->__('Warning! The mail email for the newly created user could not be sent.');
-                    }
+        }
+        if ($adminNotification) {
+            // mail notify email to inform admin about registration
+            $mailEmail = $this->variableApi->get('ZikulaUsersModule', 'reg_notifyemail', '');
+            if (!empty($mailEmail)) {
+                $subject = $this->__f('New registration: %s', $userEntity->getUname());
+                $mailSent = $this->mailHelper->sendNotification($mailEmail, 'regadminnotify', $rendererArgs, $subject);
+                if (!$mailSent) {
+                    $mailErrors[] = $this->__('Warning! The mail email for the newly created user could not be sent.');
                 }
             }
         }
 
         return $mailErrors;
-    }
-
-    /**
-     * Retrieve one registration application for a new user account (one registration request).
-     *
-     * NOTE: Expired registrations are purged prior to performing the get.
-     *
-     * @param int|null $uid The uid of the registration record (registration request) to return;
-     *                          required if uname and email are not specified, otherwise not allowed.
-     * @param null $uname The uname of the registration record (registration request) to return;
-     *                          required if id and email are not specified, otherwise not allowed.
-     * @param null|string $email The e-mail address of the registration record (registration request) to return;
-     *                          not allowed if the system allows an e-mail address to be registered
-     *                          more than once; required if id and uname are not specified, otherwise not allowed.
-     * @return array|bool An array containing the record, or false on error.
-     *
-     * Either id, uname, or email must be specified, but no more than one of those three, and email is not allowed
-     * if the system allows an email address to be registered more than once.
-     */
-    public function get($uid = null, $uname = null, $email = null)
-    {
-        // we do not check permissions for guests here (see #1874)
-        if ((bool)$this->session->get('uid') && !$this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
-            throw new AccessDeniedException();
-        }
-
-        $uniqueEmails = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REQUIRE_UNIQUE_EMAIL, true);
-        // Checks the following:
-        // - none of the three possible IDs is set
-        // - uid is set along with either uname or email
-        // - uname is set with email
-        // - email is set but the system allows multiple registrations per email
-        if ((!isset($uid) && !isset($uname) && !isset($email))
-            || (isset($uid) && (isset($uname) || isset($email)))
-            || (isset($uname) && isset($email))
-            || (isset($email) && !$uniqueEmails)
-        ) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
-        }
-
-        $idField = 'uid';
-        if (isset($uid)) {
-            if (empty($uid) || !is_numeric($uid) || ((int)$uid != $uid)) {
-                throw new \InvalidArgumentException(__('Invalid arguments array received'));
-            }
-            $idField = 'uid';
-        } elseif (isset($uname)) {
-            if (empty($uname) || !is_string($uname)) {
-                throw new \InvalidArgumentException(__('Invalid arguments array received'));
-            }
-            $idField = 'uname';
-        } elseif (isset($email)) {
-            if (empty($email) || !is_string($email)) {
-                throw new \InvalidArgumentException(__('Invalid arguments array received'));
-            }
-            $idField = 'email';
-        }
-        $idValue = $$idField; // intentional $$ variable variable.
-
-        $this->purgeExpired();
-
-        if ($idField == 'email') {
-            // If reg_uniemail was ever false, or the admin created one or more users with an existing e-mail address,
-            // then more than one user with the same e-mail address might exists.  The get function should not return the first
-            // one it finds, as that is a security breach. It should return false, because we are not sure which one we want.
-            $emailUsageCount = \UserUtil::getEmailUsageCount($idValue);
-            if ($emailUsageCount > 1) {
-                return false;
-            }
-        }
-
-        $userObj = \UserUtil::getVars($idValue, false, $idField, true);
-
-        if ($userObj === false) {
-            throw new \RuntimeException($this->__('Error! Could not load data.'));
-        }
-
-        return $userObj;
-    }
-
-    /**
-     * Retrieve all pending registration applications for a new user account (all registration requests).
-     *
-     * NOTE: The registration table is purged of expired records prior to retrieving results for this function.
-     *
-     * @param array $filter An array of field/value combinations used to filter the results. Optional, default
-     *                            is to return all records.
-     * @param array $orderBy An array of field name(s) by which to order the results, and the order direction. Example:
-     *                            ['uname' => 'ASC'] orders by uname in ascending order.
-     *                            The order direction is optional, and if not specified, the
-     *                            database default is used (typically ASC). Optional, default is by id.
-     * @param int $limitNumRows The number (count) of items to return.
-     * @param int $limitOffset The ordinal number of the first item to return.
-     * @param bool $reformatToLegacyArray @deprecated - reformat the array of objects to array of legacy user arrays with __ATTRIBUTES__
-     * @return array|bool Array of registration requests, or false on failure.
-     */
-    public function getAll(array $filter = [], array $orderBy = ['user_regdate' => 'DESC'], $limitNumRows = 0, $limitOffset = 0, $reformatToLegacyArray = true)
-    {
-        if ((!(bool)$this->session->get('uid') && !$this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ))
-            || ((bool)$this->session->get('uid') && !$this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
-            throw new AccessDeniedException();
-        }
-
-        // activated must always be set to UsersConstant::ACTIVATED_PENDING_REG
-        $filter['activated'] = UsersConstant::ACTIVATED_PENDING_REG;
-
-        $this->purgeExpired();
-
-        $pendingRegistrationRequests = $this->userRepository->query($filter, $orderBy, $limitNumRows, $limitOffset);
-
-        // @todo - remove this reformatting back to legacy array structure and only use objects and 'attributes' (not __ATTRIBUTES__)
-        if (!$reformatToLegacyArray) {
-            return $pendingRegistrationRequests;
-        }
-
-        // reformat to legacy
-        $legacyPendingRegistrationRequests = [];
-        foreach ($pendingRegistrationRequests as $key => $userObj) {
-            $userObj = $userObj->toArray();
-            $attributes = [];
-            foreach ($userObj['attributes'] as $attribute) {
-                $attributes[$attribute['name']] = $attribute['value'];
-            }
-            $userObj['__ATTRIBUTES__'] = $attributes;
-            unset($userObj['attributes']);
-            $legacyPendingRegistrationRequests[$key] = $userObj;
-            $legacyPendingRegistrationRequests[$key] = \UserUtil::postProcessGetRegistration($userObj);
-        }
-
-        return $legacyPendingRegistrationRequests;
     }
 
     /**
@@ -615,11 +363,6 @@ class RegistrationHelper
      */
     public function countAll(array $filter = [])
     {
-        if ((!(bool)$this->session->get('uid') && !$this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ))
-            || ((bool)$this->session->get('uid') && !$this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
-            return false;
-        }
-
         // activated must always be set to UsersConstant::ACTIVATED_PENDING_REG
         $filter['activated'] = UsersConstant::ACTIVATED_PENDING_REG;
         if (isset($filter['isverified'])) {
@@ -658,46 +401,18 @@ class RegistrationHelper
     }
 
     /**
-     * Processes a delete() operation for registration records.
+     * Delete a registration record.
      *
-     * @param int $uid The uid of the registration record to remove; optional; if not set then $reginfo
-     *                           must be set with a valid uid.
-     * @param array $reginfo An array containing a registration record with a valid uid in $reginfo['uid'];
-     *                           optional; if not set, then $uid must be set.
-     *                      }
+     * @param int $uid The uid of the registration record to remove
      * @return bool True on success; otherwise false.
      */
-    public function remove($uid = null, array $reginfo = null)
+    public function remove($uid)
     {
-        if ((!(bool)$this->session->get('uid') && !$this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ))
-            || ((bool)$this->session->get('uid') && !$this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_DELETE))) {
-            throw new AccessDeniedException();
-        }
-
-        if (isset($uid)) {
-            if (empty($uid) || !is_numeric($uid)) {
-                throw new \InvalidArgumentException(__('Invalid arguments array received'));
-            }
-        } elseif (!isset($reginfo) || empty($reginfo) || !is_array($reginfo)
-            || !isset($reginfo['uid']) || empty($reginfo['uid']) || !is_numeric($reginfo['uid'])) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
-        } else {
-            $uid = $reginfo['uid'];
-        }
-
-        $registration = \UserUtil::getVars($uid, true, 'uid', true);
-
-        if (isset($registration) && $registration) {
-            $user = $this->userRepository->find($uid);
+        $user = $this->userRepository->find($uid);
+        if (isset($user)) {
             $this->userRepository->removeAndFlush($user);
-
-            \ModUtil::apiFunc('ZikulaUsersModule', 'user', 'resetVerifyChgFor', [
-                'uid' => $uid,
-                'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL,
-            ]);
-
-            $deleteEvent = new GenericEvent($registration);
-            $this->eventDispatcher->dispatch(RegistrationEvents::DELETE_REGISTRATION, $deleteEvent);
+            $this->userVerificationRepository->resetVerifyChgFor($uid, [UsersConstant::VERIFYCHGTYPE_REGEMAIL]);
+            $this->eventDispatcher->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($user));
 
             return true;
         }
@@ -707,8 +422,6 @@ class RegistrationHelper
 
     /**
      * Removes expired registrations from the users table.
-     *
-     * @return void
      */
     public function purgeExpired()
     {
@@ -725,20 +438,14 @@ class RegistrationHelper
 
     /**
      * Approves a registration.
-     *
-     * If the registration is also verified (or does not need it) then a new users table record
-     * is created.
+     * If the registration is also verified (or does not need it) then a new users table recordis created.
      *
      * @param UserEntity $user
-     * @param bool $force Force the approval of the registration record; optional; only effective if the current user
-     *                           is an administrator.
+     * @param bool $force Force the approval of the registration record.
      * @return bool True on success; otherwise false.
      */
     public function approve(UserEntity $user, $force = false)
     {
-        if (!$this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADD)) {
-            throw new AccessDeniedException();
-        }
         $user->setApproved_By(\UserUtil::getVar('uid'));
         $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
         $user->setApproved_Date($nowUTC);
@@ -754,28 +461,18 @@ class RegistrationHelper
         $this->userRepository->persistAndFlush($user);
 
         if ($user->isVerified()) {
-            $user = $this->createUser($user, true, false);
+            $mailErrors = $this->registerNewUser($user, false, true, false);
+            if (count($mailErrors) > 0) {
+                return false;
+            }
         }
 
-        return $user;
-    }
-
-    /**
-     * Determines if the user currently logged in has administrative access for the Users module.
-     *
-     * @return bool True if the current user is logged in and has administrator access for the Users
-     *                  module; otherwise false.
-     */
-    private function currentUserIsAdmin()
-    {
-        return (bool)$this->session->get('uid') && $this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN);
+        return true;
     }
 
     /**
      * Determines if the user currently logged in has add access for the Users module.
-     *
-     * @return bool True if the current user is logged in and has administrative permission for the Users
-     *                  module; otherwise false.
+     * @return bool
      */
     private function currentUserIsAdminOrSubAdmin()
     {
