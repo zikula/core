@@ -299,7 +299,7 @@ class RegistrationHelper
                     $mailErrors[] = $this->__('Warning! The mail email for the new registration could not be sent.');
                 }
             }
-            }
+        }
 
         return $mailErrors;
     }
