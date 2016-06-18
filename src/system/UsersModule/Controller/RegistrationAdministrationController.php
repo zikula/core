@@ -259,11 +259,11 @@ class RegistrationAdministrationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('confirm')->isClicked()) {
-                $denied = $this->get('zikula_users_module.helper.registration_helper')->approve($user, true);
-                if (!$denied) {
+                $approved = $this->get('zikula_users_module.helper.registration_helper')->approve($user, true);
+                if (!$approved) {
                     $this->addFlash('error', $this->__f('Sorry! There was a problem approving the registration for %sub%.', ['%sub%' => $user->getUname()]));
                 } else {
-                    if (null != $user->getUid()) {
+                    if ($user->isVerified()) {
                         $this->addFlash('status', $this->__f('Done! The registration for %sub% has been approved and a new user account has been created.', ['%sub%' => $user->getUname()]));
                     } else {
                         $this->addFlash('status', $this->__f('Done! The registration for %sub% has been approved and is awaiting e-mail verification.', ['%sub%' => $user->getUname()]));
@@ -308,8 +308,8 @@ class RegistrationAdministrationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('confirm')->isClicked()) {
-                $denied = $this->get('zikula_users_module.helper.registration_helper')->remove($user->getUid());
-                if (!$denied) {
+                $deleted = $this->get('zikula_users_module.helper.registration_helper')->remove($user->getUid());
+                if (!$deleted) {
                     $this->addFlash('error', $this->__f('Sorry! There was a problem deleting the registration for %sub%.', ['%sub%' => $user->getUname()]));
                 } else {
                     $data = $form->getData();

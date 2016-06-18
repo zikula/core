@@ -41,7 +41,7 @@ class DefaultRegistrationType extends AbstractType
             ])
             ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'label' => $this->translator->__('Save'),
-                'icon' => 'fa-plus',
+                'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [

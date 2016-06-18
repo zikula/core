@@ -107,7 +107,7 @@ class AdminApi extends \Zikula_AbstractApi
 
                 // Let other modules know we have deleted an item
                 $deleteEvent = new GenericEvent($userObj);
-                $this->getDispatcher()->dispatch('user.account.delete', $deleteEvent);
+                $this->getDispatcher()->dispatch(Zikula\UsersModule\UserEvents::DELETE_ACCOUNT, $deleteEvent);
             }
         }
 

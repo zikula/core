@@ -7,7 +7,9 @@
 
 {{ __('If you did request a new user account, then your request is waiting for you to verify your e-mail address with us.') }}
 {% if not user.isApproved %}{{ __('Your request is also waiting for administrator approval.') }}
-{% if approvalorder == constant('Zikula\\UsersModule\\Constant::APPROVAL_AFTER') %}{{ __('We will not be able to approve your request until after you have completed this verification step.') }}{% endif %}
+{% if getModVar('ZikulaUsersModule', constant('Zikula\\UsersModule\\Constant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE')) == constant('Zikula\\UsersModule\\Constant::APPROVAL_AFTER') %}
+    {{ __('We will not be able to approve your request until after you have completed this verification step.') }}
+{% endif %}
 {{ __('Once both this verification step is complete and an administrator has approved your request, you will be able to log in with your user name.') }}{% endif %}
 
 {{ __('Please click on the following link to complete the e-mail address check: ') }}{{ verificationurl }}
