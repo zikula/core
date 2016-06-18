@@ -19,7 +19,7 @@ use Zikula\UsersModule\Helper\AuthenticationMethodHelper;
 use Zikula_Api_AbstractAuthentication;
 
 /**
- * @deprecated 
+ * @deprecated
  * The user authentication services for the log-in process through the core Users table.
  */
 class AuthenticationApi extends \Zikula_Api_AbstractAuthentication

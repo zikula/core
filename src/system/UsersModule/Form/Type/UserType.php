@@ -24,7 +24,7 @@ class UserType extends AbstractType
         $builder
             ->add('uname', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $options['translator']->__('User name'),
-                'help' => $options['translator']->__('User names can contain letters, numbers, underscores, periods and/or dashes.'),
+                'help' => $options['translator']->__('User names can contain letters, numbers, underscores, periods, spaces and/or dashes.'),
                 'attr' => [
                     'class' => 'to-lower-case'
                 ]
