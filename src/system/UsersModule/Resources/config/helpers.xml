@@ -5,7 +5,6 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="zikula_users_module.helper.authentication_method_list_helper.class">Zikula\UsersModule\Helper\AuthenticationMethodListHelper</parameter>
         <parameter key="zikula_users_module.helper.registration_helper.class">Zikula\UsersModule\Helper\RegistrationHelper</parameter>
         <parameter key="zikula_users_module.helper.registration_verification_helper.class">Zikula\UsersModule\Helper\RegistrationVerificationHelper</parameter>
         <parameter key="zikula_users_module.helper.mail_helper.class">Zikula\UsersModule\Helper\MailHelper</parameter>
@@ -17,11 +16,6 @@
 
     <services>
 
-        <service id="zikula_users_module.helper.authentication_method_list_helper" class="%zikula_users_module.helper.authentication_method_list_helper.class%" lazy="true">
-            <argument type="service" id="monolog.logger" />
-            <argument type="service" id="zikula_extensions_module.api.capability" />
-            <argument type="service" id="translator.default" />
-        </service>
         <service id="zikula_users_module.helper.registration_helper" class="%zikula_users_module.helper.registration_helper.class%" lazy="true">
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="session" />

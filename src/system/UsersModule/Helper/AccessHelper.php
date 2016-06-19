@@ -146,9 +146,10 @@ class AccessHelper
         $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
         $user->setLastlogin($nowUTC);
         $this->userRepository->persistAndFlush($user);
+        $this->session->clear();
         $this->session->start();
         $this->session->set('uid', $user->getUid());
-        $this->session->set('authenticationMethod', $method);
+//        $this->session->set('authenticationMethod', $method);
         if ($rememberMe) {
             $this->session->set('rememberme', 1);
         }

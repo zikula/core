@@ -19,7 +19,7 @@
     <div id="users_loginblock_waiting" class="hide navbar-text navbar-right">
         <i class="fa fa-spinner fa-lg fa-spin"></i>
     </div>
-    <form id="users_loginblock_login_form" class="navbar-form navbar-right{if !$show_login_form} hide{/if}" style="margin-top: 3px; margin-bottom: 3px;" action="{route name='zikulausersmodule_user_login'}" method="post">
+    <form id="users_loginblock_login_form" class="navbar-form navbar-right{if !$show_login_form} hide{/if}" style="margin-top: 3px; margin-bottom: 3px;" action="{route name='zikulausersmodule_access_login'}" method="post">
         <div>
             <input type="hidden" id="users_loginblock_returnpage" name="returnpage" value="{$returnpage|safetext}" />
             <input type="hidden" id="users_loginblock_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -58,7 +58,7 @@
                 </li>
                 <li role="separator" class="divider"></li>
                 {/if}
-                <li><a href="{route name='zikulausersmodule_user_login'}">{gt text='Log in page'}</a></li>
+                <li><a href="{route name='zikulausersmodule_access_login'}">{gt text='Log in page'}</a></li>
                 <li><a href="{route name='zikulausersmodule_registration_register'}">{gt text='Create new account'}</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a href="{route name='zikulausersmodule_account_lostusername'}">{gt text='Recover lost username'}</a></li>

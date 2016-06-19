@@ -16,6 +16,19 @@ namespace Zikula\UsersModule;
 class AccessEvents
 {
     /**
+     * Occurs at the beginning of the log-in process, before the registration form is displayed to the user.
+     * NOTE: This event will not fire if the log-in process is entered through any other method other than visiting the
+     * log-in screen directly. For example, if automatic log-in is enabled following registration, then this event
+     * will not fire when the system passes control from the registration process to the log-in process.
+     * Likewise, this event will not fire if a user begins the log-in process from the log-in block or a log-in
+     * plugin if the user provides valid authentication information. This event will fire, however, if invalid
+     * information is provided to the log-in block or log-in plugin, resulting in the user being
+     * redirected to the full log-in screen for corrections.
+     * This event does not have any subject, arguments, or data.
+     */
+    const LOGIN_STARTED = 'module.users.ui.login.started';
+
+    /**
      * Occurs immediately prior to a log-in that is expected to succeed. (All prerequisites for a
      * successful login have been checked and are satisfied.) This event allows a module to
      * intercept the login process and prevent a successful login from taking place.
@@ -185,4 +198,32 @@ class AccessEvents
      * programmatically by directly calling core functions will not see this event fired.
      */
     const LOGIN_FAILED = 'module.users.ui.login.failed';
+
+    /**
+     * Occurs right after a successful logout. All handlers are notified.
+     * The event's subject contains the user's UserEntity
+     * Args contain array of `['authentication_method' => $authenticationMethod,
+     * 'uid'=> $uid];`
+     */
+    const LOGOUT_SUCCESS = 'module.users.ui.logout.succeeded';
+
+    /**
+     * A hook-like UI event that is triggered when the login screen is displayed. This allows another module to
+     * intercept the display of the full-page version of the login form to add its own form elements for submission.
+     * To add elements to the form, render the output and add this as an array element to the event's
+     * data array.
+     * This event does not have any subject, arguments, or data.
+     */
+    const LOGIN_FORM = 'module.users.ui.form_edit.login_screen';
+    const LOGIN_VALIDATE = 'module.users.ui.validate_edit.login_screen';
+    const LOGIN_PROCESS = 'module.users.ui.process_edit.login_screen';
+
+    /**
+     * A hook-like UI event that is triggered when the login block is displayed. This allows another module to
+     * intercept the display of the login form on the block to add its own form elements for submission.
+     * To add elements to the form, render the output and add this as an array element to the event's
+     * data array.
+     * This event does not have any subject, arguments, or data.
+     */
+    const LOGIN_BLOCK_FORM = 'module.users.ui.form_edit.login_block';
 }

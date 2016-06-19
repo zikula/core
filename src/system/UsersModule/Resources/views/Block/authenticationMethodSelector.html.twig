@@ -1,0 +1,11 @@
+<div class="dropdown navbar-right">
+    <button class="btn btn-default dropdown-toggle navbar-btn" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        {{ __('Login with ...') }}
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        {% for method in collector.activeKeys %}
+            <li><a href="{{ path(path, {"authenticationMethod": method}) }}">{{ collector.get(method).DisplayName }}</a></li>
+        {% endfor %}
+    </ul>
+</div>

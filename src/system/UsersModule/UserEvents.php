@@ -26,10 +26,6 @@ class UserEvents
      */
     const USER_DISPLAY_VIEW = 'module.users.ui.display_view';
 
-    const USER_VALIDATE_NEW = 'module.users.ui.validate_edit.new_user';
-
-    const USER_VALIDATE_MODIFY = 'module.users.ui.validate_edit.modify_user';
-
     /**
      * A hook-like event that is triggered when the delete confirmation form is submitted and the submitted data
      * is being validated prior to processing. It allows other modules to intercept and add to the delete confirmation
@@ -39,10 +35,6 @@ class UserEvents
      * The the argument `'id'` is the uid of the user who will be deleted if confirmed.
      */
     const USER_VALIDATE_DELETE = 'module.users.ui.validate_delete';
-
-    const USER_PROCESS_NEW = 'module.users.ui.process_edit.new_user';
-
-    const USER_PROCESS_MODIFY = 'module.users.ui.process_edit.modify_user';
 
     /**
      * A hook-like event that is triggered when the delete confirmation form is submitted and the submitted data
@@ -73,6 +65,7 @@ class UserEvents
 
     /**
      * Occurs after the deletion of a user account. Subject is $uid.
+     * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
      */
     const DELETE_ACCOUNT = 'user.account.delete';
 
@@ -84,6 +77,8 @@ class UserEvents
      * There is no subject and no arguments for the event.
      */
     const FORM_NEW = 'module.users.ui.form_edit.new_user';
+    const PROCESS_NEW = 'module.users.ui.process_edit.new_user';
+    const VALIDATE_NEW = 'module.users.ui.validate_edit.new_user';
 
     /**
      * A hook-like event triggered when the modify user form is displayed, which allows other
@@ -94,6 +89,8 @@ class UserEvents
      * The `'id'` argument contains the uid of the user account.
      */
     const FORM_MODIFY = 'module.users.ui.form_edit.modify_user';
+    const PROCESS_MODIFY = 'module.users.ui.process_edit.modify_user';
+    const VALIDATE_MODIFY = 'module.users.ui.validate_edit.modify_user';
 
     /**
      * A hook-like event that is triggered when the delete confirmation form is displayed. It allows other modules
@@ -122,12 +119,4 @@ class UserEvents
      * Event data is populated by the new values.
      */
     const CONFIG_UPDATED = 'module.users.config.updated';
-
-    /**
-     * Occurs right after a successful logout. All handlers are notified.
-     * The event's subject contains the user's UserEntity
-     * Args contain array of `['authentication_method' => $authenticationMethod,
-     * 'uid'=> $uid];`
-     */
-    const USER_LOGOUT_SUCCESS = 'module.users.ui.logout.succeeded';
 }
