@@ -293,7 +293,7 @@ class ConfigController extends AbstractController
 
                     $returnPage = urlencode($this->get('router')->generate('zikulasecuritycentermodule_config_config'));
 
-                    return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_login', ['returnpage' => $returnPage]));
+                    return new RedirectResponse($this->get('router')->generate('zikulausersmodule_access_login', ['returnUrl' => $returnPage]));
                 }
             }
             if ($form->get('cancel')->isClicked()) {

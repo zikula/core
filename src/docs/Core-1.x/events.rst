@@ -166,50 +166,10 @@ Filter of result of a fetch.  Receives `Zikula_View` instance as subject, args a
 USER ACCOUNTS, REGISTRATIONS, AND LOG-INS
 -----------------------------------------
 
-#### `module.users.ui.login.started`
-Occurs at the beginning of the log-in process, before the registration form is displayed to the user.
-
-NOTE: This event will not fire if the log-in process is entered through any other method other than visiting the
-log-in screen directly. For example, if automatic log-in is enabled following registration, then this event
-will not fire when the system passes control from the registration process to the log-in process.
-
-Likewise, this event will not fire if a user begins the log-in process from the log-in block or a log-in
-plugin if the user provides valid authentication information. This event will fire, however, if invalid
-information is provided to the log-in block or log-in plugin, resulting in the user being
-redirected to the full log-in screen for corrections.
-
-This event does not have any subject, arguments, or data.
-
-#### `module.users.ui.form_edit.login_block`
-A hook-like UI event that is triggered when the login block is displayed. This allows another module to
-intercept the display of the login form on the block to add its own form elements for submission.
-
-To add elements to the form, render the output and add this as an array element to the event's
-data array.
-
-This event does not have any subject, arguments, or data.
-
-#### `module.users.ui.form_edit.login_screen`
-A hook-like UI event that is triggered when the login screen is displayed. This allows another module to
-intercept the display of the full-page version of the login form to add its own form elements for submission.
-
-To add elements to the form, render the output and add this as an array element to the event's
-data array.
-
-This event does not have any subject, arguments, or data.
-
-
 #### `user.gettheme`
 Called during UserUtil::getTheme() and is used to filter the results.  Receives arg['type']
 with the type of result to be filtered and the $themeName in the $event->data which can
 be modified.  Must $event->stopPropagation() if handler performs filter.
-
-#### `user.account.delete`
-Occurs after a user is deleted from the system. All handlers are notified. The full user record
-deleted is available as the subject. This is a storage-level event, not a UI event. It should not be
-used for UI-level actions such as redirects.
-
- * The subject of the event is set to the user record that is being deleted.
 
 #### `module.users.ui.form_edit.mail_users_search`
 

@@ -141,7 +141,7 @@ class UserAdministrationController extends AbstractController
         $form->handleRequest($request);
 
         $event = new GenericEvent($form->getData(), [], new ValidationProviders());
-        $this->get('event_dispatcher')->dispatch(UserEvents::USER_VALIDATE_NEW, $event);
+        $this->get('event_dispatcher')->dispatch(UserEvents::VALIDATE_NEW, $event);
         $validators = $event->getData();
         $hook = new ValidationHook($validators);
         $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_VALIDATE_EDIT, $hook);
@@ -159,7 +159,7 @@ class UserAdministrationController extends AbstractController
                 );
                 if (empty($registrationErrors)) {
                     $event = new GenericEvent($form->getData(), [], new ValidationProviders());
-                    $this->get('event_dispatcher')->dispatch(UserEvents::USER_PROCESS_NEW, $event);
+                    $this->get('event_dispatcher')->dispatch(UserEvents::PROCESS_NEW, $event);
                     $hook = new ProcessHook($user->getUid());
                     $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_PROCESS_EDIT, $hook);
 
@@ -213,7 +213,7 @@ class UserAdministrationController extends AbstractController
         $form->handleRequest($request);
 
         $event = new GenericEvent($form->getData(), [], new ValidationProviders());
-        $this->get('event_dispatcher')->dispatch(UserEvents::USER_VALIDATE_MODIFY, $event);
+        $this->get('event_dispatcher')->dispatch(UserEvents::VALIDATE_MODIFY, $event);
         $validators = $event->getData();
         $hook = new ValidationHook($validators);
         $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_VALIDATE_EDIT, $hook);
@@ -248,7 +248,7 @@ class UserAdministrationController extends AbstractController
                 $updateEvent = new GenericEvent($user, $eventArgs, $eventData);
                 $this->get('event_dispatcher')->dispatch(UserEvents::UPDATE_ACCOUNT, $updateEvent);
 
-                $this->get('event_dispatcher')->dispatch(UserEvents::USER_PROCESS_MODIFY, new GenericEvent($user));
+                $this->get('event_dispatcher')->dispatch(UserEvents::PROCESS_MODIFY, new GenericEvent($user));
                 $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_PROCESS_EDIT, new ProcessHook($user->getUid()));
 
                 $this->addFlash('status', $this->__("Done! Saved user's account information."));
