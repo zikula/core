@@ -279,21 +279,11 @@ class AjaxInstallController extends AbstractController
      */
     public function loginAdmin()
     {
-        $this->container->get('session')->start();
         $params = $this->decodeParameters($this->yamlManager->getParameters());
+        $user = $this->container->get('zikula_users_module.user_repository')->findOneBy(['uname' => $params['username']]);
+        $this->container->get('zikula_users_module.helper.access_helper')->login($user, 'native_uname');
 
-        // login as admin using provided credentials
-        $authenticationInfo = [
-            'login_id'  => $params['username'],
-            'pass'      => $params['password']
-        ];
-        $authenticationMethod = [
-            'modname'   => 'ZikulaUsersModule',
-            'method'    => 'uname',
-        ];
-        $loggedIn = \UserUtil::loginUsing($authenticationMethod, $authenticationInfo);
-
-        return (bool) $loggedIn;
+        return true;
     }
 
     private function finalizeParameters()
