@@ -15,6 +15,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\Core\Event\GenericEvent;
+use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\Constant as UsersConstant;
 
 class UserEventListener implements EventSubscriberInterface
@@ -29,9 +30,9 @@ class UserEventListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            'module.users.ui.logout.succeeded' => array('clearUsersNamespace'),
+            AccessEvents::LOGOUT_SUCCESS => array('clearUsersNamespace'),
             KernelEvents::EXCEPTION => array('clearUsersNamespace'),
-            'user.login.veto' => array('forcedPasswordChange'),
+            AccessEvents::LOGIN_VETO => array('forcedPasswordChange'),
         );
     }
 

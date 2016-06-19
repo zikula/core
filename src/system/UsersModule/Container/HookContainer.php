@@ -27,6 +27,14 @@ class HookContainer extends AbstractHookContainer
     const HOOK_REGISTRATION_VALIDATE = 'users.ui_hooks.registration.validate_edit';
     const HOOK_REGISTRATION_PROCESS = 'users.ui_hooks.registration.process_edit';
 
+    const LOGIN_FORM = 'users.ui_hooks.login_screen.form_edit';
+    const LOGIN_VALIDATE = 'users.ui_hooks.login_screen.validate_edit';
+    const LOGIN_PROCESS = 'users.ui_hooks.login_screen.process_edit';
+
+    const LOGIN_BLOCK_FORM = 'users.ui_hooks.login_block.form_edit';
+    const LOGIN_BLOCK_VALIDATE = 'users.ui_hooks.login_block.validate_edit';
+    const LOGIN_BLOCK_PROCESS = 'users.ui_hooks.login_block.process_edit';
+
     protected function setupHookBundles()
     {
         // Subscriber bundles
@@ -52,16 +60,16 @@ class HookContainer extends AbstractHookContainer
 
         // Bundle for the login form
         $bundle = new SubscriberBundle('ZikulaUsersModule', 'subscriber.users.ui_hooks.login_screen', 'ui_hooks', $this->__('Login form and block hooks'));
-        $bundle->addEvent('form_edit', 'users.ui_hooks.login_screen.form_edit');
-        $bundle->addEvent('validate_edit', 'users.ui_hooks.login_screen.validate_edit');
-        $bundle->addEvent('process_edit', 'users.ui_hooks.login_screen.process_edit');
+        $bundle->addEvent('form_edit', self::LOGIN_FORM);
+        $bundle->addEvent('validate_edit', self::LOGIN_VALIDATE);
+        $bundle->addEvent('process_edit', self::LOGIN_PROCESS);
         $this->registerHookSubscriberBundle($bundle);
 
         // Bundle for the login block
         $bundle = new SubscriberBundle('ZikulaUsersModule', 'subscriber.users.ui_hooks.login_block', 'ui_hooks', $this->__('Login form and block hooks'));
-        $bundle->addEvent('form_edit', 'users.ui_hooks.login_block.form_edit');
-        $bundle->addEvent('validate_edit', 'users.ui_hooks.login_block.validate_edit');
-        $bundle->addEvent('process_edit', 'users.ui_hooks.login_block.process_edit');
+        $bundle->addEvent('form_edit', self::LOGIN_BLOCK_FORM);
+        $bundle->addEvent('validate_edit', self::LOGIN_BLOCK_VALIDATE);
+        $bundle->addEvent('process_edit', self::LOGIN_BLOCK_PROCESS);
         $this->registerHookSubscriberBundle($bundle);
     }
 }

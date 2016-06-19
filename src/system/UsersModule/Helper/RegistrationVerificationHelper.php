@@ -214,12 +214,7 @@ class RegistrationVerificationHelper
 
         \UserUtil::setVar('_Users_isVerified', 1, $reginfo['uid']);
 
-        \ModUtil::apiFunc('ZikulaUsersModule', 'user', 'resetVerifyChgFor', [
-            'uid' => $reginfo['uid'],
-            'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL,
-        ]);
-//        $this->userVerificationRepository->resetVerifyChgFor($userEntity->getUid(), UsersConstant::VERIFYCHGTYPE_REGEMAIL);
-//
+        $this->userVerificationRepository->resetVerifyChgFor($uid, UsersConstant::VERIFYCHGTYPE_REGEMAIL);
         $reginfo = \UserUtil::getVars($reginfo['uid'], true, 'uid', true);
 
         // @todo move this createUser call to follow verify where it is used.

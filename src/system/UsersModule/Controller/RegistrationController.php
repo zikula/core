@@ -254,7 +254,7 @@ class RegistrationController extends AbstractController
                         $this->addFlash('status', $this->__('Done! Your account has been verified. You may now log in.'));
                     }
 
-                    return $this->redirectToRoute('zikulausersmodule_user_login');
+                    return $this->redirectToRoute('zikulausersmodule_access_login');
                     break;
                 default:
                     $this->addFlash('status', $this->__('Done! Your account has been verified.'));

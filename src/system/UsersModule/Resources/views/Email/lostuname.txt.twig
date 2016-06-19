@@ -9,7 +9,7 @@
 {{ __f('The user name for your account is: %1s', {"%sub%": user.uname}) }}
 
 {% if authentication_methods is not empty %}
-    {{ __('You may use the following information to log into your account at:') }} {{ url('zikulausersmodule_user_login') }}
+    {{ __('You may use the following information to log into your account at:') }} {{ url('zikulausersmodule_access_login') }}
 
     {% for authentication_method in authentication_methods %}
     {{ authentication_method.short_description }}: {{ authentication_method.uname }}{% if authentication_method.link is not empty %} ({{ authentication_method.link }}){% endif %}

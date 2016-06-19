@@ -31,7 +31,7 @@
             </td>
             {if $coredata.logged_in eq false}
                 {route name='zikulagroupsmodule_user_memberslist' gid=$group.gid assign='return_page'}
-                <td><a href="{route name='zikulausersmodule_user_login' returnpage=$return_page|urlencode}" title="{gt text='Sorry! You must register for a user account on this site before you can apply for membership of a group.'}"> {gt text='Log in or register'}</a></td>
+                <td><a href="{route name='zikulausersmodule_access_login' returnUrl=$return_page|urlencode}" title="{gt text='Sorry! You must register for a user account on this site before you can apply for membership of a group.'}"> {gt text='Log in or register'}</a></td>
             {elseif $group.state gt 0}
                 {if $group.status eq true}
                     <td>[ <strong>{gt text='Pending'}</strong> | <a href="{route name='zikulagroupsmodule_user_membership' action='cancel' gid=$group.gid}" title="{gt text='Cancel'}">{gt text='Cancel'}</a> ]</td>
@@ -53,7 +53,7 @@
         </tr>
     </tbody>
 </table>
-        
+
 <br />
 
 <table class="table table-bordered table-striped">
@@ -67,7 +67,7 @@
         {section name='members' loop=$members}
             <tr>
                 <td>{$members[members].uname|profilelinkbyuname}</td>
-                <td class="actions"> 
+                <td class="actions">
                     {if $members[members].isonline}
                     <span class="label label-success">{gt text='on-line'}</span>
                     {else}
@@ -82,5 +82,5 @@
         {/section}
     </tbody>
 </table>
-        
+
 {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum' route='zikulagroupsmodule_user_memberlist'}

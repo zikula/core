@@ -200,7 +200,7 @@ class LinkContainer implements LinkContainerInterface
             $links[] = [
                 'icon' => 'sign-in',
                 'text' => $this->translator->__('Log in'),
-                'url' => $this->router->generate('zikulausersmodule_user_login')
+                'url' => $this->router->generate('zikulausersmodule_access_login')
 
             ];
 

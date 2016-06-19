@@ -12,20 +12,22 @@ namespace Zikula\UsersModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Zikula\Bundle\HookBundle\Hook\ProcessHook;
+use Zikula\Bundle\HookBundle\Hook\ValidationHook;
+use Zikula\Bundle\HookBundle\Hook\ValidationProviders;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
-use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationmethodInterface;
+use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationMethodInterface;
+use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
-use Zikula\UsersModule\UserEvents;
 
 class AccessController extends AbstractController
 {
     /**
-     * @todo change route
-     * @Route("/login-new/{returnUrl}", options={"zkNoBundlePrefix"=1})
+     * @Route("/login/{returnUrl}", options={"zkNoBundlePrefix"=1})
      * @param Request $request
      * @param null $returnUrl
      * @return string
@@ -56,6 +58,8 @@ class AccessController extends AbstractController
         $authenticationMethod = $authenticationMethodCollector->get($selectedMethod);
         $rememberMe = false;
 
+        $this->get('event_dispatcher')->dispatch(AccessEvents::LOGIN_STARTED, new GenericEvent());
+
         if ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface) {
             $form = $this->createForm($authenticationMethod->getLoginFormClassName());
             $form->handleRequest($request);
@@ -68,8 +72,9 @@ class AccessController extends AbstractController
                     'form' => $form->createView()
                 ]);
             }
-        } elseif ($authenticationMethod instanceof ReEntrantAuthenticationmethodInterface) {
+        } elseif ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
             $uid = $authenticationMethod->authenticate([]);
+            // @todo - like registration - must we check events and hooks and show a form if required?
         } else {
             throw new \LogicException($this->__('Invalid authentication method.'));
         }
@@ -77,22 +82,36 @@ class AccessController extends AbstractController
             // authentication succeeded
             $user = $this->get('zikula_users_module.user_repository')->find($uid);
             if (isset($user)) {
-                // events
-                // hooks
-                if ($this->get('zikula_users_module.helper.access_helper')->loginAllowed($user, $selectedMethod)) {
+                $validators  = $this->get('event_dispatcher')->dispatch(AccessEvents::LOGIN_VALIDATE, new GenericEvent($user, [], new ValidationProviders()))->getData();
+                $hook = new ValidationHook($validators);
+                $this->get('hook_dispatcher')->dispatch(HookContainer::LOGIN_VALIDATE, $hook);
+                $validators = $hook->getValidators();
+                if (!$validators->hasErrors() && $this->get('zikula_users_module.helper.access_helper')->loginAllowed($user, $selectedMethod)) {
+                    $this->get('event_dispatcher')->dispatch(AccessEvents::LOGIN_PROCESS, new GenericEvent($user));
+                    $this->get('hook_dispatcher')->dispatch(HookContainer::LOGIN_PROCESS, new ProcessHook($user));
                     $this->get('zikula_users_module.helper.access_helper')->login($user, $selectedMethod, $rememberMe);
                     $returnUrl = $this->dispatchLoginSuccessEvent($user, $selectedMethod, $request->getSession()->get('returnUrl', null));
                 }
-
-                return isset($returnUrl) ? $this->redirect($returnUrl) : $this->redirectToRoute('home');
             }
+        } else {
+            // login failed - no uid available
+            // @todo can we auto-register this user and proceed?
+            $this->addFlash('error', $this->__('Login failed.'));
+            $this->get('event_dispatcher')->dispatch(AccessEvents::LOGIN_FAILED, new GenericEvent($user, [
+                'authenticationMethod' => $selectedMethod,
+                'methodId' => $authenticationMethod->getId(),
+            ]));
         }
-        // login failed - no uid available
-        $this->addFlash('error', $this->__('Login failed'));
 
-        return $this->redirectToRoute('home');
+        return isset($returnUrl) ? $this->redirect($returnUrl) : $this->redirectToRoute('home');
     }
 
+    /**
+     * @param UserEntity $user
+     * @param $selectedMethod
+     * @param $returnUrl
+     * @return mixed
+     */
     private function dispatchLoginSuccessEvent(UserEntity $user, $selectedMethod, $returnUrl)
     {
         $eventArgs = [
@@ -110,8 +129,7 @@ class AccessController extends AbstractController
     }
 
     /**
-     * @todo change route
-     * @Route("/logout-new/{returnUrl}", options={"zkNoBundlePrefix"=1})
+     * @Route("/logout/{returnUrl}", options={"zkNoBundlePrefix"=1})
      * @param Request $request
      * @param null $returnUrl
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
@@ -127,7 +145,7 @@ class AccessController extends AbstractController
                     'authenticationMethod' => $request->getSession()->get('authenticationMethod'),
                     'uid' => $uid,
                 ]);
-                $this->get('event_dispatcher')->dispatch(UserEvents::USER_LOGOUT_SUCCESS, $event);
+                $this->get('event_dispatcher')->dispatch(AccessEvents::LOGOUT_SUCCESS, $event);
             } else {
                 $this->addFlash('error', $this->__('Error! You have not been logged out.'));
             }
