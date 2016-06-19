@@ -21,7 +21,7 @@ use SecurityUtil;
 class UserApi extends \Zikula_AbstractApi
 {
     /**
-     * @deprecated 
+     * @deprecated
      * Retrieve the account links for each user module.
      *
      * @return array An array of links for the user account page.
