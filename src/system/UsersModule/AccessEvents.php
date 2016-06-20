@@ -37,9 +37,9 @@ class AccessEvents
      * should call `stopPropagation()`. This will prevent other handlers from receiving the event, will
      * return to the login process, and will prevent the login from taking place. A handler that
      * vetoes a login attempt should set an appropriate session flash message and give any additional
-     * feedback to the user attempting to log in that might be appropriate. If a handler does not
-     * need to veto the login attempt, then it should simply return null (`return;` with no
-     * return value).
+     * feedback to the user attempting to log in that might be appropriate.
+     * 
+     * If vetoing the login, the 'returnUrl' argument should be set to redirect the user to an appropriate action.
      *
      * Note: the user __will not__ be logged in at the point where the event handler is
      * executing. Any attempt to check a user's permissions, his logged-in status, or any
@@ -50,7 +50,6 @@ class AccessEvents
      * The subject of the event will contain the userEntity
      * The arguments of the event are:
      * `'authenticationMethod'` will contain the alias (name) of the method that was used to authenticate the user.
-     * `'uid'` will contain the user's uid.
      */
     const LOGIN_VETO = 'user.login.veto';
 
