@@ -60,7 +60,7 @@ class AccountController extends AbstractController
             return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
 
-        $form = $this->createForm('Zikula\UsersModule\Form\Account\Type\LostUserNameType',
+        $form = $this->createForm('Zikula\UsersModule\Form\AccountType\LostUserNameType',
             [], ['translator' => $this->get('translator.default')]
         );
         $form->handleRequest($request);
@@ -103,7 +103,7 @@ class AccountController extends AbstractController
             return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
 
-        $form = $this->createForm('Zikula\UsersModule\Form\Account\Type\LostPasswordType',
+        $form = $this->createForm('Zikula\UsersModule\Form\AccountType\LostPasswordType',
             [], ['translator' => $this->get('translator.default')]
         );
         $form->handleRequest($request);
@@ -204,7 +204,7 @@ class AccountController extends AbstractController
             return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
 
-        $form = $this->createForm('Zikula\UsersModule\Form\Account\Type\LostPasswordType', [], [
+        $form = $this->createForm('Zikula\UsersModule\Form\AccountType\LostPasswordType', [], [
                 'translator' => $this->get('translator.default'),
                 'includeCode' => true,
             ]
@@ -261,7 +261,7 @@ class AccountController extends AbstractController
         if ((bool)$this->getVar(UsersConstant::MODVAR_MANAGE_EMAIL_ADDRESS, UsersConstant::DEFAULT_MANAGE_EMAIL_ADDRESS) != true) {
             return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
-        $form = $this->createForm('Zikula\UsersModule\Form\Account\Type\ChangeEmailType', [], [
+        $form = $this->createForm('Zikula\UsersModule\Form\AccountType\ChangeEmailType', [], [
                 'translator' => $this->get('translator.default'),
             ]
         );
@@ -429,7 +429,7 @@ class AccountController extends AbstractController
         }
         $userEntity = $this->get('zikula_users_module.user_repository')->find($uid);
 
-        $form = $this->createForm('Zikula\UsersModule\Form\Account\Type\ChangePasswordType', ['uid' => $uid], [
+        $form = $this->createForm('Zikula\UsersModule\Form\AccountType\ChangePasswordType', ['uid' => $uid], [
                 'translator' => $this->get('translator.default'),
                 'passwordReminderEnabled' => $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED),
                 'passwordReminderMandatory' => $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY)

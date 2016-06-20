@@ -107,7 +107,7 @@ class RegistrationAdministrationController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm('Zikula\UsersModule\Form\Type\ModifyRegistrationType',
+        $form = $this->createForm('Zikula\UsersModule\Form\RegistrationType\ModifyRegistrationType',
             $user, ['translator' => $this->get('translator.default')]
         );
 
@@ -169,7 +169,7 @@ class RegistrationAdministrationController extends AbstractController
         if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
-        $form = $this->createForm('Zikula\UsersModule\Form\Type\SendVerificationConfirmationType', [
+        $form = $this->createForm('Zikula\UsersModule\Form\RegistrationType\SendVerificationConfirmationType', [
             'user' => $user->getUid()
         ], [
             'translator' => $this->get('translator.default')
@@ -227,7 +227,7 @@ class RegistrationAdministrationController extends AbstractController
             throw new AccessDeniedException();
         }
         $forceVerification = $this->hasPermission('ZikulaUsersModule', '::', ACCESS_ADMIN) && $force;
-        $form = $this->createForm('Zikula\UsersModule\Form\Type\ApproveRegistrationConfirmationType', [
+        $form = $this->createForm('Zikula\UsersModule\Form\RegistrationType\ApproveRegistrationConfirmationType', [
             'user' => $user->getUid(),
             'force' => $forceVerification
         ], [
@@ -294,7 +294,7 @@ class RegistrationAdministrationController extends AbstractController
         if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
-        $form = $this->createForm('Zikula\UsersModule\Form\Type\DenyRegistrationConfirmationType', [
+        $form = $this->createForm('Zikula\UsersModule\Form\RegistrationType\DenyRegistrationConfirmationType', [
             'user' => $user->getUid()
         ], [
             'translator' => $this->get('translator.default')

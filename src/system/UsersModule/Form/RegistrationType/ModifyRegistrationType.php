@@ -8,34 +8,39 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersModule\Form\Type;
+namespace Zikula\UsersModule\Form\RegistrationType;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SendVerificationConfirmationType extends AbstractType
+class ModifyRegistrationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('user', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('confirm', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $options['translator']->__('Confirm sending code'),
-                'icon' => 'fa-check',
-                'attr' => ['class' => 'btn btn-success'],
+            ->add('user', 'Zikula\UsersModule\Form\Type\UserType', [
+                'translator' => $options['translator'],
+                'passwordReminderEnabled' => false,
+                'passwordReminderMandatory' => false
+            ])
+            ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $options['translator']->__('Save'),
+                'icon' => 'fa-plus',
+                'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'label' => $options['translator']->__('Cancel'),
                 'icon' => 'fa-times',
-                'attr' => ['class' => 'btn btn-default']
+                'attr' => ['class' => 'btn btn-danger']
             ])
         ;
+        $builder->get('user')->remove('pass');
     }
 
     public function getBlockPrefix()
     {
-        return 'zikulausersmodule_sendverificationconfirmation';
+        return 'zikulausersmodule_modifyregistration';
     }
 
     /**
