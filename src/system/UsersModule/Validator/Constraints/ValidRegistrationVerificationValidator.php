@@ -15,8 +15,8 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\Repository\UserRepository;
-use Zikula\UsersModule\Entity\Repository\UserVerificationRepository;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 
 class ValidRegistrationVerificationValidator extends ConstraintValidator
 {
@@ -31,24 +31,27 @@ class ValidRegistrationVerificationValidator extends ConstraintValidator
     private $translator;
 
     /**
-     * @var UserRepository
-     * @todo refactor to UserRepositoryInterface when appropriate
+     * @var UserRepositoryInterface
      */
     private $userRepository;
 
     /**
-     * @var UserVerificationRepository
+     * @var UserVerificationRepositoryInterface
      */
     private $userVerificationRepository;
 
     /**
      * @param VariableApi $variableApi
      * @param TranslatorInterface $translator
-     * @param UserRepository $userRepository
-     * @param UserVerificationRepository $userVerificationRepository
+     * @param UserRepositoryInterface $userRepository
+     * @param UserVerificationRepositoryInterface $userVerificationRepository
      */
-    public function __construct(VariableApi $variableApi, TranslatorInterface $translator, UserRepository $userRepository, UserVerificationRepository $userVerificationRepository)
-    {
+    public function __construct(
+        VariableApi $variableApi,
+        TranslatorInterface $translator,
+        UserRepositoryInterface $userRepository,
+        UserVerificationRepositoryInterface $userVerificationRepository
+    ) {
         $this->variableApi = $variableApi;
         $this->translator = $translator;
         $this->userRepository = $userRepository;

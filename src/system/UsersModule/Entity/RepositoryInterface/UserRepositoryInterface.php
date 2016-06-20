@@ -54,4 +54,6 @@ interface UserRepositoryInterface extends ObjectRepository, Selectable
      * @return integer
      */
     public function count(array $filter = [], $exprType = 'and');
+
+    public function findAllAsIterable();
 }

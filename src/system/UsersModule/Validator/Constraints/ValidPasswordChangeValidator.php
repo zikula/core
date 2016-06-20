@@ -14,12 +14,12 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\Repository\UserRepository;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 
 class ValidPasswordChangeValidator extends ConstraintValidator
 {
     /**
-     * @var UserRepository
+     * @var UserRepositoryInterface
      */
     private $userRepository;
 
@@ -30,9 +30,9 @@ class ValidPasswordChangeValidator extends ConstraintValidator
 
     /**
      * ValidPasswordChangeValidator constructor.
-     * @param UserRepository $userRepository
+     * @param UserRepositoryInterface $userRepository
      */
-    public function __construct(UserRepository $userRepository, TranslatorInterface $translator)
+    public function __construct(UserRepositoryInterface $userRepository, TranslatorInterface $translator)
     {
         $this->userRepository = $userRepository;
         $this->translator = $translator;

@@ -13,6 +13,9 @@ namespace Zikula\UsersModule\Twig\Extension;
 use Zikula\UsersModule\Twig\Extension\SimpleFunction\AuthenticationMethodSelectorFunction;
 use Zikula\UsersModule\Twig\Extension\SimpleFunction\LoginFormFieldsFunction;
 
+/**
+ * Class RegistrationExtension
+ */
 class RegistrationExtension extends \Twig_Extension
 {
     /**
@@ -33,6 +36,7 @@ class RegistrationExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
+            // note: both functions are @deprecated
             new \Twig_SimpleFunction('authenticationMethodSelector', [new AuthenticationMethodSelectorFunction(), 'display'], ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('loginFormFields', [new LoginFormFieldsFunction(), 'display'], ['is_safe' => ['html']]),
         ];

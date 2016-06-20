@@ -15,7 +15,7 @@ use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Api\CurrentUserApi;
-use Zikula\UsersModule\Entity\Repository\UserVerificationRepository;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserVerificationEntity;
@@ -38,7 +38,7 @@ class AdministrationActionsHelper
     private $translator;
 
     /**
-     * @var UserVerificationRepository
+     * @var UserVerificationRepositoryInterface
      */
     private $verificationRepository;
 
@@ -57,7 +57,7 @@ class AdministrationActionsHelper
      * @param PermissionApi $permissionsApi
      * @param RouterInterface $router
      * @param TranslatorInterface $translator
-     * @param UserVerificationRepository $userVerificationRepository
+     * @param UserVerificationRepositoryInterface $userVerificationRepository
      * @param VariableApi $variableApi
      * @param CurrentUserApi $currentUserApi
      */
@@ -65,7 +65,7 @@ class AdministrationActionsHelper
         PermissionApi $permissionsApi,
         RouterInterface $router,
         TranslatorInterface $translator,
-        UserVerificationRepository $userVerificationRepository,
+        UserVerificationRepositoryInterface $userVerificationRepository,
         VariableApi $variableApi,
         CurrentUserApi $currentUserApi
     ) {
