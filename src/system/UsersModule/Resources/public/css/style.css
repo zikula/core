@@ -1,43 +1,13 @@
 #users_register_email {
-    text-transform: lowercase; 
+    text-transform: lowercase;
 }
 
 #users_register_emailagain {
-    text-transform: lowercase;    
+    text-transform: lowercase;
 }
 
 #users_register_uname {
-    text-transform: lowercase;      
-}
-
-#liveusersearch {
-    margin: 1em 0 1em 0;
-}
-
-#liveusersearch .autocomplete_user {
-    position: absolute;
-    width: 25em;
-    background-color: white;
-    border: 1px solid #888;
-    margin: 0;
-    padding: 0;
-}
-
-#liveusersearch .autocomplete_user ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-#liveusersearch .autocomplete_user ul li.selected {
-    background-color: #ffb;
-}
-
-#liveusersearch .autocomplete_user ul li {
-    background: transparent url("../../../../../../../images/icons/extrasmall/user.png") no-repeat scroll 0 50%;
-    cursor: pointer;
-    margin: 0;
-    padding: 3px 0 3px 25px;
+    text-transform: lowercase;
 }
 
 .newuserinfo {

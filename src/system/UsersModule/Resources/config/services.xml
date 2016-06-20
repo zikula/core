@@ -46,10 +46,6 @@
             <argument type="service" id="zikula_users_module.user_repository"/>
         </service>
 
-        <service id="zikula_users_module.twig.extension.registration_extension" class="%zikula_users_module.twig.extension.registration_extension.class%">
-            <tag name="twig.extension"/>
-        </service>
-
         <service id="zikula_users_module.container.link_container" class="%zikula_users_module.container.link_container.class%">
             <argument type="service" id="translator.default" />
             <argument type="service" id="router" />
