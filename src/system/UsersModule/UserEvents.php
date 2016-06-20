@@ -12,41 +12,9 @@ namespace Zikula\UsersModule;
 
 /**
  * Class UserEvents
- * Contains constant values for user event names, including hook events.
  */
 class UserEvents
 {
-    /**
-     * A hook-like UI event that is triggered when a user's account detail is viewed. This allows another module
-     * to intercept the display of the user account detail in order to add its own information.
-     * To add display elements to the user account detail, render output and add this as an element in the event's
-     * data array.
-     * The subject contains the user's account record.
-     * The `'id'` argument contain's the user's uid.
-     */
-    const USER_DISPLAY_VIEW = 'module.users.ui.display_view';
-
-    /**
-     * A hook-like event that is triggered when the delete confirmation form is submitted and the submitted data
-     * is being validated prior to processing. It allows other modules to intercept and add to the delete confirmation
-     * form, and in this case to validate the data entered on the portion of the delete confirmation form that
-     * they injected with the corresponding `form_delete` event.
-     * The subject of the event is not set.
-     * The the argument `'id'` is the uid of the user who will be deleted if confirmed.
-     */
-    const USER_VALIDATE_DELETE = 'module.users.ui.validate_delete';
-
-    /**
-     * A hook-like event that is triggered when the delete confirmation form is submitted and the submitted data
-     * is has validated. It allows other modules to intercept and add to the delete confirmation
-     * form, and in this case to process the data entered on the portion of the delete confirmation form that
-     * they injected with the corresponding `form_delete` event. This event will be triggered after the
-     * `user.account.delete` event.
-     * The subject of the event is not set.
-     * The the argument `'id'` is the uid of the user who will be deleted if confirmed.
-     */
-    const USER_PROCESS_DELETE = 'module.users.ui.process_delete';
-
     /**
      * Occurs after a user account is created. All handlers are notified. It does not apply to creation of a pending
      * registration. The full user record created is available as the subject. This is a storage-level event,
@@ -70,15 +38,25 @@ class UserEvents
     const DELETE_ACCOUNT = 'user.account.delete';
 
     /**
-     * A hook-like event triggered when the adminitstrator's new user form is displayed, which allows other
+     * A hook-like UI event that is triggered when a user's account detail is viewed. This allows another module
+     * to intercept the display of the user account detail in order to add its own information.
+     * To add display elements to the user account detail, render output and add this as an element in the event's
+     * data array.
+     * The subject contains the user's account record.
+     * The `'id'` argument contain's the user's uid.
+     */
+    const DISPLAY_VIEW = 'module.users.ui.display_view';
+
+    /**
+     * A hook-like event triggered when the administrator's new user form is displayed, which allows other
      * modules to intercept and display their own elements for submission on the new user form.
      * To add elements to the new user form, render output and add this as an array element on the event's
      * data array.
      * There is no subject and no arguments for the event.
      */
     const FORM_NEW = 'module.users.ui.form_edit.new_user';
-    const PROCESS_NEW = 'module.users.ui.process_edit.new_user';
     const VALIDATE_NEW = 'module.users.ui.validate_edit.new_user';
+    const PROCESS_NEW = 'module.users.ui.process_edit.new_user';
 
     /**
      * A hook-like event triggered when the modify user form is displayed, which allows other
@@ -89,8 +67,8 @@ class UserEvents
      * The `'id'` argument contains the uid of the user account.
      */
     const FORM_MODIFY = 'module.users.ui.form_edit.modify_user';
-    const PROCESS_MODIFY = 'module.users.ui.process_edit.modify_user';
     const VALIDATE_MODIFY = 'module.users.ui.validate_edit.modify_user';
+    const PROCESS_MODIFY = 'module.users.ui.process_edit.modify_user';
 
     /**
      * A hook-like event that is triggered when the delete confirmation form is displayed. It allows other modules
@@ -99,6 +77,8 @@ class UserEvents
      * The the argument `'id'` is the uid of the user who will be deleted if confirmed.
      */
     const FORM_DELETE = 'module.users.ui.form_delete';
+    const VALIDATE_DELETE = 'module.users.ui.validate_delete';
+    const PROCESS_DELETE = 'module.users.ui.process_delete';
 
     /**
      * A hook-like UI event triggered when the users search form is displayed. Allows other
