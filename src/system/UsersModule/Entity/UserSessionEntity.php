@@ -16,7 +16,7 @@ use Zikula\Core\Doctrine\EntityAccess;
 /**
  * UserSession entity class.
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Zikula\UsersModule\Entity\Repository\UserSessionRepository")
  * @ORM\Table(name="session_info")
  *
  * Sessions Table.

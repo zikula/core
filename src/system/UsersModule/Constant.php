@@ -27,6 +27,10 @@ namespace Zikula\UsersModule
          */
         const SESSION_VAR_NAMESPACE = 'Zikula_Module_UsersModule';
         /**
+         * This key is used to 'disguise' the purpose of passing the UID in the session.
+         */
+        const FORCE_PASSWORD_SESSION_UID_KEY = 'l56F2fe7ZBbLm6ruQhgU';
+        /**
          * The identifier for the 'authentication' capability.
          */
         const CAPABILITY_AUTHENTICATION = 'authentication';

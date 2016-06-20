@@ -84,11 +84,17 @@ class AccessController extends AbstractController
             $hook = new ValidationHook($validators);
             $this->get('hook_dispatcher')->dispatch(HookContainer::LOGIN_VALIDATE, $hook);
             $validators = $hook->getValidators();
-            if (!$validators->hasErrors() && $this->get('zikula_users_module.helper.access_helper')->loginAllowed($user, $selectedMethod)) {
+            if (!$validators->hasErrors() && $this->get('zikula_users_module.helper.access_helper')->loginAllowed($user)) {
                 $this->get('event_dispatcher')->dispatch(AccessEvents::LOGIN_PROCESS, new GenericEvent($user));
                 $this->get('hook_dispatcher')->dispatch(HookContainer::LOGIN_PROCESS, new ProcessHook($user));
-                $this->get('zikula_users_module.helper.access_helper')->login($user, $selectedMethod, $rememberMe);
-                $returnUrl = $this->dispatchLoginSuccessEvent($user, $selectedMethod, $request->getSession()->get('returnUrl', null));
+                $event = new GenericEvent($user, ['authenticationMethod' => $selectedMethod]);
+                $this->get('event_dispatcher')->dispatch(AccessEvents::LOGIN_VETO, $event);
+                if (!$event->isPropagationStopped()) {
+                    $this->get('zikula_users_module.helper.access_helper')->login($user, $selectedMethod, $rememberMe);
+                    $returnUrl = $this->dispatchLoginSuccessEvent($user, $selectedMethod, $request->getSession()->get('returnUrl', null));
+                } else {
+                    $returnUrl = $event->getArgument('returnUrl');
+                }
 
                 return !empty($returnUrl) ? $this->redirect($returnUrl) : $this->redirectToRoute('home');
             }
