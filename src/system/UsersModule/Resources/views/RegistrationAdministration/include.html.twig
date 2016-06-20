@@ -31,7 +31,7 @@
 </fieldset>
 {% endif %}
 
-{% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\UserEvents::USER_DISPLAY_VIEW'), null, user, {id:user.uid}) %}
+{% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\UserEvents::DISPLAY_VIEW'), null, user, {id:user.uid}) %}
 {% for data in eventData %}
     {{ data }}
 {% endfor %}

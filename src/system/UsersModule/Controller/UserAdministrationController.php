@@ -321,7 +321,7 @@ class UserAdministrationController extends AbstractController
                     continue;
                 }
                 $event = new GenericEvent(null, ['id' => $uid], new ValidationProviders());
-                $validators = $this->get('event_dispatcher')->dispatch(UserEvents::USER_VALIDATE_DELETE, $event)->getData();
+                $validators = $this->get('event_dispatcher')->dispatch(UserEvents::VALIDATE_DELETE, $event)->getData();
                 $hook = new ValidationHook($validators);
                 $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_VALIDATE_DELETE, $hook);
                 $validators = $hook->getValidators();
@@ -335,7 +335,7 @@ class UserAdministrationController extends AbstractController
                 $this->addFlash('success', $this->_fn('User deleted!', '%n users deleted!', count($userIds), ['%n' => count($userIds)]));
                 foreach ($userIds as $uid) {
                     $this->get('event_dispatcher')->dispatch(UserEvents::DELETE_ACCOUNT, new GenericEvent($uid));
-                    $this->get('event_dispatcher')->dispatch(UserEvents::USER_PROCESS_DELETE, new GenericEvent(null, ['id' => $uid]));
+                    $this->get('event_dispatcher')->dispatch(UserEvents::PROCESS_DELETE, new GenericEvent(null, ['id' => $uid]));
                     $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_PROCESS_DELETE, new ProcessHook($uid));
                 }
 

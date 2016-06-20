@@ -115,7 +115,7 @@ class RegistrationAdministrationController extends AbstractController
         $form->handleRequest($request);
 
         $event = new GenericEvent($form->getData(), array(), new ValidationProviders());
-        $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_VALIDATE_MODIFY, $event);
+        $this->get('event_dispatcher')->dispatch(RegistrationEvents::VALIDATE_MODIFY, $event);
         $validators = $event->getData();
         $hook = new ValidationHook($validators);
         $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_REGISTRATION_VALIDATE, $hook);
@@ -126,13 +126,7 @@ class RegistrationAdministrationController extends AbstractController
                 /** @var UserEntity $user */
                 $user = $form->getData();
                 $this->get('doctrine')->getManager()->flush($user);
-                $eventArgs = [
-                    'action' => 'setVar',
-                    'field' => 'uname',
-                    'attribute' => null,
-                ];
-                $eventData = ['old_value' => $originalUser->getUname()];
-                $updateEvent = new GenericEvent($user, $eventArgs, $eventData);
+                $updateEvent = new GenericEvent($user, [], ['oldValue' => $originalUser]);
                 $this->get('event_dispatcher')->dispatch(RegistrationEvents::UPDATE_REGISTRATION, $updateEvent);
                 if ($user->getEmail() != $originalUser->getEmail()) {
                     $approvalOrder = $this->getVar('moderation_order', UsersConstant::APPROVAL_BEFORE);
@@ -143,7 +137,7 @@ class RegistrationAdministrationController extends AbstractController
                         }
                     }
                 }
-                $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_PROCESS_MODIFY, new GenericEvent($user));
+                $this->get('event_dispatcher')->dispatch(RegistrationEvents::PROCESS_MODIFY, new GenericEvent($user));
                 $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_REGISTRATION_PROCESS, new ProcessHook($user->getUid()));
 
                 $this->addFlash('status', $this->__("Done! Saved user's account information."));
