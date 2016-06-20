@@ -239,7 +239,6 @@ class FileIOHelper
                 $importValue['approved_date'] = $nowUTC;
                 $importValue['approved_by'] = $this->currentUser->get('uid');
             }
-            // @todo set approved Date, approved by if activated?
             $user = new UserEntity();
             $groupsArray = explode('|', $importValue['groups']);
             unset($importValue['groups'], $importValue['sendmail']);

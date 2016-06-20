@@ -13,12 +13,12 @@ namespace Zikula\UsersModule\AuthenticationMethod;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
-use Zikula\UsersModule\Entity\Repository\UserRepository;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 
 class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMethodInterface
 {
     /**
-     * @var UserRepository
+     * @var UserRepositoryInterface
      */
     private $userRepository;
 
@@ -34,11 +34,11 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
 
     /**
      * NativeUnameAuthenticationMethod constructor.
-     * @param UserRepository $userRepository
+     * @param UserRepositoryInterface $userRepository
      * @param Session $session
      * @param TranslatorInterface $translator
      */
-    public function __construct(UserRepository $userRepository, Session $session, TranslatorInterface $translator)
+    public function __construct(UserRepositoryInterface $userRepository, Session $session, TranslatorInterface $translator)
     {
         $this->userRepository = $userRepository;
         $this->session = $session;
