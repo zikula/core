@@ -396,40 +396,32 @@ class AccountController extends AbstractController
     {
         // Retrieve and delete any session variables being sent in before we give the function a chance to
         // throw an exception. We need to make sure no sensitive data is left dangling in the session variables.
-        $sessionVars = $request->getSession()->get('User_changePassword', null);
-        $request->getSession()->remove('User_changePassword');
+        $uid = $request->getSession()->get(UsersConstant::FORCE_PASSWORD_SESSION_UID_KEY);
+        $authenticationMethod = $request->getSession()->get('authenticationMethod');
+        $request->getSession()->clear();
         $currentUser = $this->get('zikula_users_module.current_user');
-        $loginAfterChange = $request->get('login', false);
 
         // In order to change one's password, the user either must be logged in already, or specifically
         // must be coming from the login process. This is an exclusive-or. It is an error if neither is set,
         // and likewise if both are set. One or the other, please!
-        if (!$loginAfterChange && !$currentUser->isLoggedIn()) {
+        if (!isset($uid) && !$currentUser->isLoggedIn()) {
             throw new AccessDeniedException();
-        } elseif ($loginAfterChange && $currentUser->isLoggedIn()) {
+        } elseif (isset($uid) && $currentUser->isLoggedIn()) {
             throw new FatalErrorException();
         }
 
-        // If we are coming here from the login process, then uid must be set in the session variable. If not, then throw an exception.
-        if ($loginAfterChange
-            && (!isset($sessionVars['uid'])
-                || !isset($sessionVars['authentication_info'])
-                || !is_array($sessionVars['authentication_info'])
-                || !isset($sessionVars['authentication_method'])
-                || !is_array($sessionVars['authentication_method']))
-        ) {
-            throw new \InvalidArgumentException();
-        }
-        if (isset($sessionVars) && !empty($sessionVars)) {
+        if (isset($uid)) {
             $login = true;
-            $uid = $sessionVars['uid'];
         } else {
             $login = false;
             $uid = $currentUser->get('uid');
         }
         $userEntity = $this->get('zikula_users_module.user_repository')->find($uid);
 
-        $form = $this->createForm('Zikula\UsersModule\Form\AccountType\ChangePasswordType', ['uid' => $uid], [
+        $form = $this->createForm('Zikula\UsersModule\Form\AccountType\ChangePasswordType', [
+            'uid' => $uid,
+            'authenticationMethod' => $authenticationMethod
+        ], [
                 'translator' => $this->get('translator.default'),
                 'passwordReminderEnabled' => $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED),
                 'passwordReminderMandatory' => $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY)
@@ -444,46 +436,17 @@ class AccountController extends AbstractController
             $this->get('zikula_users_module.user_repository')->persistAndFlush($userEntity);
             $this->addFlash('success', $this->__('Password successfully changed.'));
             if ($login) {
-                $sessionVars['uid'] = $uid;
-                // @todo move this to event?
-                if ($sessionVars['authentication_method']['modname'] == 'ZikulaUsersModule') {
-                    // The password for Users module authentication was just changed.
-                    // In order to successfully log in the user, we need to change it on the authentication_info.
-                    $sessionVars['authentication_info']['pass'] = $userEntity->getPass();
-                }
-                $sessionVars = $request->getSession()->get('User_login', []);
-                $post['authentication_method'] = $sessionVars['authentication_method'];
-                $post['authentication_info'] = $sessionVars['authentication_info'];
-                $post['rememberme'] = $sessionVars['rememberme'];
-                $post['from_password_change'] = true;
-
-                $subRequest = $request->duplicate([], $post, ['_controller' => 'ZikulaUsersModule:User:login']);
-                $httpKernel = $this->get('http_kernel');
-                $response = $httpKernel->handle(
-                    $subRequest,
-                    HttpKernelInterface::SUB_REQUEST
-                );
-
-                return $response;
+                $this->get('zikula_users_module.helper.access_helper')->login($userEntity, $data['authenticationMethod']);
             }
 
             return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
 
-        if ($loginAfterChange) {
-            // Pass along the session vars. We didn't want to just keep them in the session variable because if we throw
-            // an exception or got redirected, then the data would have been orphaned, and it contains some sensitive information.
-            $request->getSession()->start();
-            $request->getSession()->set('User_updatePassword', $sessionVars);
-        }
-
-        // Return the output that has been generated by this function
         return [
+            'login' => $login,
             'form' => $form->createView(),
-            'login' => (bool)$loginAfterChange,
-            'user' => $loginAfterChange ? $userEntity : null,
+            'user' => $userEntity,
             'modvars' => $this->getVars(),
-            'authentication_method' => $loginAfterChange ? $sessionVars['authentication_method'] : null
         ];
     }
 }

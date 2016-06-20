@@ -10,22 +10,31 @@
 
 namespace Zikula\UsersModule\Listener;
 
-use UserUtil;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Entity\UserEntity;
 
 class UserEventListener implements EventSubscriberInterface
 {
+    /**
+     * @var \Zikula_Session
+     */
     private $session;
 
     /**
      * @var \Symfony\Component\HttpFoundation\RequestStack
      */
     private $requestStack;
+
+    /**
+     * @var RouterInterface
+     */
+    private $router;
 
     public static function getSubscribedEvents()
     {
@@ -36,10 +45,11 @@ class UserEventListener implements EventSubscriberInterface
         );
     }
 
-    public function __construct(\Zikula_Session $session, RequestStack $requestStack)
+    public function __construct(\Zikula_Session $session, RequestStack $requestStack, RouterInterface $router)
     {
         $this->session = $session;
         $this->requestStack = $requestStack;
+        $this->router = $router;
     }
 
     /**
@@ -68,7 +78,7 @@ class UserEventListener implements EventSubscriberInterface
         }
 
         if ($doClear) {
-            $this->session->clearNamespace(UsersConstant::SESSION_VAR_NAMESPACE);
+            $this->session->clear();
         }
     }
 
@@ -83,34 +93,20 @@ class UserEventListener implements EventSubscriberInterface
      *
      * @param GenericEvent $event The event that triggered this handler.
      *
-     * @return void
-     *
-     * @throws \RuntimeException Thrown if the user hasn't changed the account password
+     * @see \Zikula\UsersModule\Controller\AccountController::changePasswordAction
      */
     public function forcedPasswordChange(GenericEvent $event)
     {
-        $userObj = $event->getSubject();
-
-        $userMustChangePassword = UserUtil::getVar('_Users_mustChangePassword', $userObj['uid'], false);
-
-        if ($userMustChangePassword && ($userObj['pass'] != UsersConstant::PWD_NO_USERS_AUTHENTICATION)) {
+        /** @var UserEntity $user */
+        $user = $event->getSubject();
+        if ($user->getAttributes()->containsKey('_Users_mustChangePassword') && $user->getAttributes()->get('_Users_mustChangePassword')
+            && $user->getPass() != UsersConstant::PWD_NO_USERS_AUTHENTICATION) {
             $event->stopPropagation();
-            $event->setData(array(
-                'redirect_func' => array(
-                    'modname' => UsersConstant::MODNAME,
-                    'type'    => 'user',
-                    'func'    => 'changePassword',
-                    'args'    => array(
-                        'login' => true,
-                    ),
-                    'session' => array(
-                        'var'       => 'User_changePassword',
-                        'namespace' => UsersConstant::SESSION_VAR_NAMESPACE,
-                    )
-                ),
-            ));
+            $event->setArgument('returnUrl', $this->router->generate('zikulausersmodule_account_changepassword'));
+            $this->session->set('authenticationMethod', $event->getArgument('authenticationMethod'));
+            $this->session->set(UsersConstant::FORCE_PASSWORD_SESSION_UID_KEY, $user->getUid());;
 
-            $this->requestStack->getCurrentRequest()->getSession()->getFlashBag()->add('error', __("Your log-in request was not completed. You must change your web site account's password first."));
+            $this->session->getFlashBag()->add('error', __("Your log-in request was not completed. You must change your web site account's password first."));
         }
     }
 }

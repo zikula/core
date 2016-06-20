@@ -49,11 +49,6 @@ class AccessHelper
     private $translator;
 
     /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
      * AccessHelper constructor.
      * @param Session $session
      * @param UserRepositoryInterface $userRepository
@@ -74,15 +69,13 @@ class AccessHelper
         $this->permissionApi = $permissionApi;
         $this->variableApi = $variableApi;
         $this->translator = $translator;
-        $this->eventDispatcher = $eventDistpatcher;
     }
 
     /**
      * @param UserEntity $user
-     * @param string $method authentication method alias
      * @return bool
      */
-    public function loginAllowed(UserEntity $user, $method)
+    public function loginAllowed(UserEntity $user)
     {
         $displayVerifyPending = $this->variableApi->get(UsersConstant::MODNAME, UsersConstant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS);
         $displayApprovalPending = $this->variableApi->get(UsersConstant::MODNAME, UsersConstant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS);
@@ -91,16 +84,6 @@ class AccessHelper
 
         switch ($user->getActivated()) {
             case UsersConstant::ACTIVATED_ACTIVE:
-                $eventArgs = [
-                    'authenticationMethod' => $method,
-                    'uid' => $user->getUid(),
-                ];
-                $event = new GenericEvent($user, $eventArgs);
-                $this->eventDispatcher->dispatch(AccessEvents::LOGIN_VETO, $event);
-                if ($event->isPropagationStopped()) {
-                    // @todo should this return something else from the event args?
-                    return false;
-                }
                 if ($siteOff && !$this->permissionApi->hasPermission('::', '::', ACCESS_ADMIN)) {
                     return false;
                 }
@@ -149,7 +132,6 @@ class AccessHelper
         $this->session->clear();
         $this->session->start();
         $this->session->set('uid', $user->getUid());
-//        $this->session->set('authenticationMethod', $method);
         if ($rememberMe) {
             $this->session->set('rememberme', 1);
         }

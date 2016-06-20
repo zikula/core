@@ -25,6 +25,7 @@ class ChangePasswordType extends AbstractType
     {
         $builder
             ->add('uid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
+            ->add('authenticationMethod', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
             ->add('oldpass', 'Symfony\Component\Form\Extension\Core\Type\PasswordType', [
                 'required' => false,
                 'label' => $options['translator']->__('Old password'),

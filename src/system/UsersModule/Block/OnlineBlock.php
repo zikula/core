@@ -29,32 +29,16 @@ class OnlineBlock extends AbstractBlockHandler
             return '';
         }
         $inactiveLimit = $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'secinactivemins');
-        $now = new \DateTime();
-        $now->modify('-' . $inactiveLimit . 'minutes');
-
-        $query = $this->get('doctrine')->getManager()->createQueryBuilder()
-                      ->select('count(s.uid)')
-                      ->from('ZikulaUsersModule:UserSessionEntity', 's')
-                      ->where('s.lastused > :activetime')
-                      ->setParameter('activetime', $now)
-                      ->andWhere('s.uid <> 0')
-                      ->getQuery();
-        $numusers = (int)$query->getSingleScalarResult();
-
-        $query = $this->get('doctrine')->getManager()->createQueryBuilder()
-                      ->select('count(s.uid)')
-                      ->from('ZikulaUsersModule:UserSessionEntity', 's')
-                      ->where('s.lastused > :activetime')
-                      ->setParameter('activetime', $now)
-                      ->andWhere('s.uid = 0')
-                      ->getQuery();
-        $numguests = (int)$query->getSingleScalarResult();
+        $dateTime = new \DateTime();
+        $dateTime->modify('-' . $inactiveLimit . 'minutes');
+        $numusers = $this->get('zikula_users_module.user_session_repository')->countUsersSince($dateTime);
+        $numguests = $this->get('zikula_users_module.user_session_repository')->countGuestsSince($dateTime);
 
         $templateArgs = [
             'registerallowed' => $this->get('zikula_extensions_module.api.variable')->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ENABLED),
             'usercount' => $numusers,
             'guestcount' => $numguests,
-            'since' => $now
+            'since' => $dateTime
         ];
 
         return $this->renderView('@ZikulaUsersModule/Block/online.html.twig', $templateArgs);
