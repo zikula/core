@@ -11,7 +11,7 @@
 namespace Zikula\UsersModule\Api;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Zikula\UsersModule\Entity\Repository\UserRepository;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 
 class CurrentUserApi
 {
@@ -21,7 +21,7 @@ class CurrentUserApi
     private $session;
 
     /**
-     * @var UserRepository
+     * @var UserRepositoryInterface
      */
     private $repository;
 
@@ -38,9 +38,9 @@ class CurrentUserApi
     /**
      * CurrentUser constructor.
      * @param SessionInterface $session
-     * @param UserRepository $repository
+     * @param UserRepositoryInterface $repository
      */
-    public function __construct(SessionInterface $session, UserRepository $repository)
+    public function __construct(SessionInterface $session, UserRepositoryInterface $repository)
     {
         $this->loggedIn = false;
         $this->session = $session;

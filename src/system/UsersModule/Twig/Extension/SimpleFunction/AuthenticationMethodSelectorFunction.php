@@ -13,6 +13,10 @@ namespace Zikula\UsersModule\Twig\Extension\SimpleFunction;
 use Symfony\Component\HttpFoundation\Response;
 use Zikula\Core\Exception\FatalErrorException;
 
+/**
+ * @deprecated
+ * Class AuthenticationMethodSelectorFunction
+ */
 class AuthenticationMethodSelectorFunction
 {
     /**

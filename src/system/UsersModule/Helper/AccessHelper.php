@@ -18,7 +18,7 @@ use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\Repository\UserRepository;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 
 class AccessHelper
@@ -29,7 +29,7 @@ class AccessHelper
     private $session;
 
     /**
-     * @var UserRepository
+     * @var UserRepositoryInterface
      */
     private $userRepository;
 
@@ -56,14 +56,14 @@ class AccessHelper
     /**
      * AccessHelper constructor.
      * @param Session $session
-     * @param UserRepository $userRepository
+     * @param UserRepositoryInterface $userRepository
      * @param PermissionApi $permissionApi
      * @param VariableApi $variableApi
      * @param TranslatorInterface $translator
      */
     public function __construct(
         Session $session,
-        UserRepository $userRepository,
+        UserRepositoryInterface $userRepository,
         PermissionApi $permissionApi,
         VariableApi $variableApi,
         TranslatorInterface $translator,
