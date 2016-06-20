@@ -16,7 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
  * @deprecated
- * @Route("/admin")
+ * @Route("/admin-old")
  *
  * Administrator-initiated actions for the Users module.
  */

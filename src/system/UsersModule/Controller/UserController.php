@@ -16,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
+ * @deprecated
  * User controllers for the Users module.
  */
 class UserController extends \Zikula_AbstractController

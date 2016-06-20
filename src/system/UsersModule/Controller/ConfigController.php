@@ -22,8 +22,7 @@ use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\UserEvents;
 
 /**
- * @todo change route
- * @Route("/newadmin")
+ * @Route("/admin")
  */
 class ConfigController extends AbstractController
 {
@@ -40,7 +39,7 @@ class ConfigController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm('Zikula\UsersModule\Form\Type\ConfigType',
+        $form = $this->createForm('Zikula\UsersModule\Form\ConfigType\ConfigType',
             $this->getVars(), ['translator' => $this->get('translator.default')]
         );
         $form->handleRequest($request);

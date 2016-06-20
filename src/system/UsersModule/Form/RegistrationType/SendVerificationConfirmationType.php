@@ -8,21 +8,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersModule\Form\Type;
+namespace Zikula\UsersModule\Form\RegistrationType;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ApproveRegistrationConfirmationType extends AbstractType
+class SendVerificationConfirmationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('user', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('force', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
             ->add('confirm', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $options['buttonLabel'],
+                'label' => $options['translator']->__('Confirm sending code'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success'],
             ])
@@ -36,7 +35,7 @@ class ApproveRegistrationConfirmationType extends AbstractType
 
     public function getBlockPrefix()
     {
-        return 'zikulausersmodule_approveregistrationconfirmation';
+        return 'zikulausersmodule_sendverificationconfirmation';
     }
 
     /**
@@ -46,7 +45,6 @@ class ApproveRegistrationConfirmationType extends AbstractType
     {
         $resolver->setDefaults([
             'translator' => null,
-            'buttonLabel' => ''
         ]);
     }
 }

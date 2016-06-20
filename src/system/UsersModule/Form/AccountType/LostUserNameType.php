@@ -8,39 +8,32 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersModule\Form\Type;
+namespace Zikula\UsersModule\Form\AccountType;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ModifyRegistrationType extends AbstractType
+class LostUserNameType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('user', 'Zikula\UsersModule\Form\Type\UserType', [
-                'translator' => $options['translator'],
-                'passwordReminderEnabled' => false,
-                'passwordReminderMandatory' => false
+            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\EmailType', [
+                'label' => $options['translator']->__('Email Address'),
+                'input_group' => ['left' => '<i class="fa fa-at"></i>'],
             ])
             ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $options['translator']->__('Save'),
-                'icon' => 'fa-plus',
+                'label' => $options['translator']->__('Submit'),
+                'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $options['translator']->__('Cancel'),
-                'icon' => 'fa-times',
-                'attr' => ['class' => 'btn btn-danger']
-            ])
         ;
-        $builder->get('user')->remove('pass');
     }
 
     public function getBlockPrefix()
     {
-        return 'zikulausersmodule_modifyregistration';
+        return 'zikulausersmodule_account_lostusername';
     }
 
     /**
