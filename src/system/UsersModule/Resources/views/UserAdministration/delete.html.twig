@@ -12,11 +12,11 @@
 <div>
     {{ form_start(form) }}
     {{ form_errors(form) }}
-    {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\UserEvents::FORM_DELETE')) %}
+    {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\UserEvents::DELETE_FORM')) %}
     {% for data in eventData %}
         {{ data }}
     {% endfor %}
-    {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::HOOK_USER_DELETE')) }}
+    {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::DELETE_FORM')) }}
     <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">
             {{ form_widget(form.delete) }}

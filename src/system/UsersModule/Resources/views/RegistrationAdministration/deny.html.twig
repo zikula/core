@@ -17,6 +17,7 @@
 {{ form_errors(form) }}
 {{ form_row(form.notify) }}
 {{ form_row(form.reason) }}
+{{ notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::REGISTRATION_DELETE_FORM')) }}
 <div class="form-group">
     <div class="col-sm-offset-3 col-sm-9">
         {{ form_widget(form.confirm) }}

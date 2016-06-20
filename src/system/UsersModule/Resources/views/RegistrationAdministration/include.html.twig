@@ -35,7 +35,7 @@
 {% for data in eventData %}
     {{ data }}
 {% endfor %}
-{{ notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::HOOK_REGISTRATION_DISPLAY'), user.uid) }}
+{{ notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::REGISTRATION_DISPLAY'), user.uid) }}
 
 <fieldset>
     <legend>{{ __('Registration Status') }}</legend>
