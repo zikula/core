@@ -16,7 +16,7 @@
 {{ form_start(form) }}
 {{ form_errors(form) }}
 
-    {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\RegistrationEvents::FORM_REGISTRATION_NEW')) %}
+    {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\RegistrationEvents::FORM_NEW')) %}
     {% for eventDisplay in eventData %}
         {{ eventDisplay|raw }}
     {% endfor %}

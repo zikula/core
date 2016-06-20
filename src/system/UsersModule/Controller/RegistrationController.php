@@ -88,7 +88,7 @@ class RegistrationController extends AbstractController
                 $request->getSession()->set('authenticationMethodId', $authenticationMethod->getId());
                 $authenticationMethod->updateUserEntity($userEntity);
                 $validationErrors = $this->get('validator')->validate($userEntity); // Symfony\Component\Validator\ConstraintViolation[]
-                $hasListeners = $this->get('event_dispatcher')->hasListeners(RegistrationEvents::FORM_REGISTRATION_NEW);
+                $hasListeners = $this->get('event_dispatcher')->hasListeners(RegistrationEvents::FORM_NEW);
                 $hookBindings = $this->get('hook_dispatcher')->getBindingsFor('subscriber.users.ui_hooks.registration');
                 if (!$hasListeners && count($validationErrors) == 0 && count($hookBindings) == 0) {
                     // process registration - no further user interaction needed
@@ -104,7 +104,7 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted()) {
             $event = new GenericEvent($form->getData(), [], new ValidationProviders());
-            $validators = $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_VALIDATE_NEW, $event)->getData();
+            $validators = $this->get('event_dispatcher')->dispatch(RegistrationEvents::VALIDATE_NEW, $event)->getData();
 
             // Validate the hook
             $hook = new ValidationHook($validators);
@@ -122,21 +122,22 @@ class RegistrationController extends AbstractController
                     foreach ($notificationErrors as $notificationError) {
                         $this->addFlash('error', $notificationError);
                     }
-                    $event = $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_FAILED, new GenericEvent(null, ['redirecturl' => '']));
-                    $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : '';
+                    $event = $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_FAILED, new GenericEvent(null, ['redirectUrl' => '']));
+                    $redirectUrl = $event->hasArgument('redirectUrl') ? $event->getArgument('redirectUrl') : '';
 
                     return !empty($redirectUrl) ? $this->redirect($redirectUrl) : $this->redirectToRoute('home');
                 } else {
                     // The main registration completed successfully.
                     if ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
+                        // @todo NonReEntrant method needs persistance too?
                         $authenticationMethod->persistMapping([
-                            'method' => $selectedMethod,
-                            'id' => $authenticationMethodId,
+                            'method' => $selectedMethod, // @todo the method should provide this, not get as arg
+                            'id' => $authenticationMethodId, // @can method provide this also?
                             'uid' => $userEntity->getUid()
                         ]);
                     }
                     // Allow hook-like events to process the registration...
-                    $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_PROCESS_NEW, new GenericEvent($userEntity));
+                    $this->get('event_dispatcher')->dispatch(RegistrationEvents::PROCESS_NEW, new GenericEvent($userEntity));
                     // ...and hooks to process the registration.
                     $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_REGISTRATION_PROCESS, new ProcessHook($userEntity->getUid()));
 
@@ -147,8 +148,8 @@ class RegistrationController extends AbstractController
                     $this->generateRegistrationFlashMessage($userEntity->getActivated(), $autoLogIn);
 
                     // Notify that we are completing a registration session.
-                    $event = $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_SUCCEEDED, new GenericEvent($userEntity, ['redirecturl' => '']));
-                    $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : '';
+                    $event = $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_SUCCEEDED, new GenericEvent($userEntity, ['redirectUrl' => '']));
+                    $redirectUrl = $event->hasArgument('redirectUrl') ? $event->getArgument('redirectUrl') : '';
 
                     if ($autoLogIn && $this->get('zikula_users_module.helper.access_helper')->loginAllowed($userEntity, $selectedMethod)) {
                         $this->get('zikula_users_module.helper.access_helper')->login($userEntity, $selectedMethod);
@@ -163,9 +164,9 @@ class RegistrationController extends AbstractController
             }
             if ($form->get('cancel')->isClicked()) {
                 $request->getSession()->clear();
-
-                return $this->redirectToRoute('home');
             }
+
+            return !empty($redirectUrl) ? $this->redirect($redirectUrl) : $this->redirectToRoute('home');
         }
 
         // Notify that we are beginning a registration session.

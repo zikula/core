@@ -20,7 +20,7 @@
             {{ form_row(form.user.email) }}
             <div class="alert alert-info col-sm-offset-3 col-sm-9">{{ __('Setting a user theme is no longer available here.') }}</div>
         </fieldset>
-        {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\RegistrationEvents::FORM_REGISTRATION_MODIFY')) %}
+        {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\RegistrationEvents::FORM_MODIFY')) %}
         {% for data in eventData %}
             {{ data }}
         {% endfor %}

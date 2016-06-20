@@ -430,8 +430,7 @@ class RegistrationHelper
         if ($regExpireDays > 0) {
             $deletedUsers = $this->userVerificationRepository->purgeExpiredRecords($regExpireDays);
             foreach ($deletedUsers as $deletedUser) {
-                $deleteEvent = new GenericEvent($deletedUser);
-                $this->eventDispatcher->dispatch(RegistrationEvents::DELETE_REGISTRATION, $deleteEvent);
+                $this->eventDispatcher->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($deletedUser));
             }
         }
     }

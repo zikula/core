@@ -15,14 +15,16 @@ use Zikula\Bundle\HookBundle\Bundle\SubscriberBundle;
 
 class HookContainer extends AbstractHookContainer
 {
-    const HOOK_VALIDATE_EDIT = 'users.ui_hooks.user.validate_edit';
-    const HOOK_VALIDATE_DELETE = 'users.ui_hooks.user.validate_delete';
     const HOOK_USER_EDIT = 'users.ui_hooks.user.form_edit';
-    const HOOK_USER_DELETE = 'users.ui_hooks.user.form_delete';
+    const HOOK_VALIDATE_EDIT = 'users.ui_hooks.user.validate_edit';
     const HOOK_PROCESS_EDIT = 'users.ui_hooks.user.process_edit';
+
+    const HOOK_USER_DELETE = 'users.ui_hooks.user.form_delete';
+    const HOOK_VALIDATE_DELETE = 'users.ui_hooks.user.validate_delete';
     const HOOK_PROCESS_DELETE = 'users.ui_hooks.user.process_delete';
 
     const HOOK_REGISTRATION_DISPLAY = 'users.ui_hooks.registration.display_view';
+
     const HOOK_REGISTRATION_EDIT = 'users.ui_hooks.registration.form_edit';
     const HOOK_REGISTRATION_VALIDATE = 'users.ui_hooks.registration.validate_edit';
     const HOOK_REGISTRATION_PROCESS = 'users.ui_hooks.registration.process_edit';
@@ -31,6 +33,7 @@ class HookContainer extends AbstractHookContainer
     const LOGIN_VALIDATE = 'users.ui_hooks.login_screen.validate_edit';
     const LOGIN_PROCESS = 'users.ui_hooks.login_screen.process_edit';
 
+    // the LOGIN_BLOCK hooks are not used.
     const LOGIN_BLOCK_FORM = 'users.ui_hooks.login_block.form_edit';
     const LOGIN_BLOCK_VALIDATE = 'users.ui_hooks.login_block.validate_edit';
     const LOGIN_BLOCK_PROCESS = 'users.ui_hooks.login_block.process_edit';
@@ -66,6 +69,7 @@ class HookContainer extends AbstractHookContainer
         $this->registerHookSubscriberBundle($bundle);
 
         // Bundle for the login block
+        // the LOGIN_BLOCK hooks are not used.
         $bundle = new SubscriberBundle('ZikulaUsersModule', 'subscriber.users.ui_hooks.login_block', 'ui_hooks', $this->__('Login form and block hooks'));
         $bundle->addEvent('form_edit', self::LOGIN_BLOCK_FORM);
         $bundle->addEvent('validate_edit', self::LOGIN_BLOCK_VALIDATE);
