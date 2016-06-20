@@ -29,7 +29,7 @@ class DenyRegistrationConfirmationType extends AbstractType
                 'required' => false
             ])
             ->add('confirm', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $options['translator']->__('Confirm sending code'),
+                'label' => $options['translator']->__('Deny and delete'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success'],
             ])

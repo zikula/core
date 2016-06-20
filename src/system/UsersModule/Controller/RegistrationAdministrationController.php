@@ -83,7 +83,7 @@ class RegistrationAdministrationController extends AbstractController
         }
 
         /** @var UserVerificationEntity $verificationEntity */
-        $verificationEntity = $this->get('zikula_users_module.user_verification_repository')->find($user->getUid());
+        $verificationEntity = $this->get('zikula_users_module.user_verification_repository')->findOneBy(['uid' => $user->getUid()]);
 
         return [
             'user' => $user,
@@ -115,10 +115,10 @@ class RegistrationAdministrationController extends AbstractController
         $form->handleRequest($request);
 
         $event = new GenericEvent($form->getData(), array(), new ValidationProviders());
-        $this->get('event_dispatcher')->dispatch(RegistrationEvents::VALIDATE_MODIFY, $event);
+        $this->get('event_dispatcher')->dispatch(RegistrationEvents::MODIFY_VALIDATE, $event);
         $validators = $event->getData();
         $hook = new ValidationHook($validators);
-        $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_REGISTRATION_VALIDATE, $hook);
+        $this->get('hook_dispatcher')->dispatch(HookContainer::REGISTRATION_VALIDATE, $hook);
         $validators = $hook->getValidators();
 
         if ($form->isValid() && !$validators->hasErrors()) {
@@ -137,8 +137,8 @@ class RegistrationAdministrationController extends AbstractController
                         }
                     }
                 }
-                $this->get('event_dispatcher')->dispatch(RegistrationEvents::PROCESS_MODIFY, new GenericEvent($user));
-                $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_REGISTRATION_PROCESS, new ProcessHook($user->getUid()));
+                $this->get('event_dispatcher')->dispatch(RegistrationEvents::MODIFY_PROCESS, new GenericEvent($user));
+                $this->get('hook_dispatcher')->dispatch(HookContainer::REGISTRATION_PROCESS, new ProcessHook($user->getUid()));
 
                 $this->addFlash('status', $this->__("Done! Saved user's account information."));
 
@@ -202,7 +202,7 @@ class RegistrationAdministrationController extends AbstractController
             return $this->redirectToRoute('zikulausersmodule_registrationadministration_list');
         }
         /** @var UserVerificationEntity $verificationEntity */
-        $verificationEntity = $this->get('zikula_users_module.user_verification_repository')->find($user->getUid());
+        $verificationEntity = $this->get('zikula_users_module.user_verification_repository')->findOneBy(['uid' => $user->getUid()]);
 
         return [
             'form' => $form->createView(),
@@ -271,7 +271,7 @@ class RegistrationAdministrationController extends AbstractController
             return $this->redirectToRoute('zikulausersmodule_registrationadministration_list');
         }
         /** @var UserVerificationEntity $verificationEntity */
-        $verificationEntity = $this->get('zikula_users_module.user_verification_repository')->find($user->getUid());
+        $verificationEntity = $this->get('zikula_users_module.user_verification_repository')->findOneBy(['uid' => $user->getUid()]);
 
         return [
             'form' => $form->createView(),
@@ -300,7 +300,11 @@ class RegistrationAdministrationController extends AbstractController
             'translator' => $this->get('translator.default')
         ]);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        $hook = new ValidationHook();
+        $this->get('hook_dispatcher')->dispatch(HookContainer::REGISTRATION_DELETE_VALIDATE, $hook);
+        $validators = $hook->getValidators();
+
+        if ($form->isSubmitted() && $form->isValid() && !$validators->hasErrors()) {
             if ($form->get('confirm')->isClicked()) {
                 $deleted = $this->get('zikula_users_module.helper.registration_helper')->remove($user->getUid());
                 if (!$deleted) {
@@ -314,6 +318,7 @@ class RegistrationAdministrationController extends AbstractController
                         );
                         $this->get('zikula_users_module.helper.mail_helper')->sendNotification($user->getEmail(), 'regdeny', $rendererArgs);
                     }
+                    $this->get('hook_dispatcher')->dispatch(HookContainer::REGISTRATION_DELETE_PROCESS, new ProcessHook($user->getUid()));
                     $this->addFlash('status', $this->__f('Done! The registration for %sub% has been denied and deleted.', ['%sub%' => $user->getUname()]));
                 }
             }
@@ -325,7 +330,7 @@ class RegistrationAdministrationController extends AbstractController
         }
 
         /** @var UserVerificationEntity $verificationEntity */
-        $verificationEntity = $this->get('zikula_users_module.user_verification_repository')->find($user->getUid());
+        $verificationEntity = $this->get('zikula_users_module.user_verification_repository')->findOneBy(['uid' => $user->getUid()]);
 
         return [
             'form' => $form->createView(),
