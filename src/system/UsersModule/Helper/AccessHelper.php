@@ -13,10 +13,8 @@ namespace Zikula\UsersModule\Helper;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
-use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
@@ -61,8 +59,7 @@ class AccessHelper
         UserRepositoryInterface $userRepository,
         PermissionApi $permissionApi,
         VariableApi $variableApi,
-        TranslatorInterface $translator,
-        EventDispatcherInterface $eventDistpatcher
+        TranslatorInterface $translator
     ) {
         $this->session = $session;
         $this->userRepository = $userRepository;
