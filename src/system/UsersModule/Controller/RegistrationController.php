@@ -88,7 +88,7 @@ class RegistrationController extends AbstractController
                 $request->getSession()->set('authenticationMethodId', $authenticationMethod->getId());
                 $authenticationMethod->updateUserEntity($userEntity);
                 $validationErrors = $this->get('validator')->validate($userEntity); // Symfony\Component\Validator\ConstraintViolation[]
-                $hasListeners = $this->get('event_dispatcher')->hasListeners(RegistrationEvents::FORM_NEW);
+                $hasListeners = $this->get('event_dispatcher')->hasListeners(RegistrationEvents::NEW_FORM);
                 $hookBindings = $this->get('hook_dispatcher')->getBindingsFor('subscriber.users.ui_hooks.registration');
                 if (!$hasListeners && count($validationErrors) == 0 && count($hookBindings) == 0) {
                     // process registration - no further user interaction needed
@@ -104,11 +104,11 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted()) {
             $event = new GenericEvent($form->getData(), [], new ValidationProviders());
-            $validators = $this->get('event_dispatcher')->dispatch(RegistrationEvents::VALIDATE_NEW, $event)->getData();
+            $validators = $this->get('event_dispatcher')->dispatch(RegistrationEvents::NEW_VALIDATE, $event)->getData();
 
             // Validate the hook
             $hook = new ValidationHook($validators);
-            $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_REGISTRATION_VALIDATE, $hook);
+            $this->get('hook_dispatcher')->dispatch(HookContainer::REGISTRATION_VALIDATE, $hook);
             $validators = $hook->getValidators();
 
             if ($form->get('submit')->isClicked() && $form->isValid() && !$validators->hasErrors()) {
@@ -137,9 +137,9 @@ class RegistrationController extends AbstractController
                         ]);
                     }
                     // Allow hook-like events to process the registration...
-                    $this->get('event_dispatcher')->dispatch(RegistrationEvents::PROCESS_NEW, new GenericEvent($userEntity));
+                    $this->get('event_dispatcher')->dispatch(RegistrationEvents::NEW_PROCESS, new GenericEvent($userEntity));
                     // ...and hooks to process the registration.
-                    $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_REGISTRATION_PROCESS, new ProcessHook($userEntity->getUid()));
+                    $this->get('hook_dispatcher')->dispatch(HookContainer::REGISTRATION_PROCESS, new ProcessHook($userEntity->getUid()));
 
                     // Register the appropriate status or error to be displayed to the user, depending on the account's
                     // activated status, whether registrations are moderated, whether e-mail addresses need to be verified, etc.

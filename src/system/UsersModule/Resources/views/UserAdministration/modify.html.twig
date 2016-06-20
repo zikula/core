@@ -45,11 +45,11 @@
             </table>
             {#{{ form_row(form.groups) }}#}
         </fieldset>
-        {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\UserEvents::FORM_MODIFY'), null, form.vars.value, {'id': form.vars.value.uid}) %}
+        {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\UserEvents::MODIFY_FORM'), null, form.vars.value, {'id': form.vars.value.uid}) %}
         {% for data in eventData %}
             {{ data }}
         {% endfor %}
-        {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::HOOK_USER_EDIT')) }}
+        {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::EDIT_FORM')) }}
 
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-9">

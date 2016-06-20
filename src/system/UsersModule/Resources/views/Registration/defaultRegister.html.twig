@@ -16,12 +16,12 @@
 {{ form_start(form) }}
 {{ form_errors(form) }}
 
-    {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\RegistrationEvents::FORM_NEW')) %}
+    {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\RegistrationEvents::NEW_FORM')) %}
     {% for eventDisplay in eventData %}
         {{ eventDisplay|raw }}
     {% endfor %}
 
-    {% set hooks = notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::HOOK_REGISTRATION_EDIT')) %}
+    {% set hooks = notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::REGISTRATION_FORM')) %}
     {% if hooks is iterable %}
     <fieldset>
         <legend>{{ __('Further information') }}</legend>

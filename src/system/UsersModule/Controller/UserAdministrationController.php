@@ -141,10 +141,10 @@ class UserAdministrationController extends AbstractController
         $form->handleRequest($request);
 
         $event = new GenericEvent($form->getData(), [], new ValidationProviders());
-        $this->get('event_dispatcher')->dispatch(UserEvents::VALIDATE_NEW, $event);
+        $this->get('event_dispatcher')->dispatch(UserEvents::NEW_VALIDATE, $event);
         $validators = $event->getData();
         $hook = new ValidationHook($validators);
-        $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_VALIDATE_EDIT, $hook);
+        $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_VALIDATE, $hook);
         $validators = $hook->getValidators();
 
         if ($form->isValid() && !$validators->hasErrors()) {
@@ -159,9 +159,9 @@ class UserAdministrationController extends AbstractController
                 );
                 if (empty($registrationErrors)) {
                     $event = new GenericEvent($form->getData(), [], new ValidationProviders());
-                    $this->get('event_dispatcher')->dispatch(UserEvents::PROCESS_NEW, $event);
+                    $this->get('event_dispatcher')->dispatch(UserEvents::NEW_PROCESS, $event);
                     $hook = new ProcessHook($user->getUid());
-                    $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_PROCESS_EDIT, $hook);
+                    $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_PROCESS, $hook);
 
                     if ($user->getActivated() == UsersConstant::ACTIVATED_PENDING_REG) {
                         $this->addFlash('status', $this->__('Done! Created new registration application.'));
@@ -213,10 +213,10 @@ class UserAdministrationController extends AbstractController
         $form->handleRequest($request);
 
         $event = new GenericEvent($form->getData(), [], new ValidationProviders());
-        $this->get('event_dispatcher')->dispatch(UserEvents::VALIDATE_MODIFY, $event);
+        $this->get('event_dispatcher')->dispatch(UserEvents::MODIFY_VALIDATE, $event);
         $validators = $event->getData();
         $hook = new ValidationHook($validators);
-        $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_VALIDATE_EDIT, $hook);
+        $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_VALIDATE, $hook);
         $validators = $hook->getValidators();
 
         /**
@@ -248,8 +248,8 @@ class UserAdministrationController extends AbstractController
                 $updateEvent = new GenericEvent($user, $eventArgs, $eventData);
                 $this->get('event_dispatcher')->dispatch(UserEvents::UPDATE_ACCOUNT, $updateEvent);
 
-                $this->get('event_dispatcher')->dispatch(UserEvents::PROCESS_MODIFY, new GenericEvent($user));
-                $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_PROCESS_EDIT, new ProcessHook($user->getUid()));
+                $this->get('event_dispatcher')->dispatch(UserEvents::MODIFY_PROCESS, new GenericEvent($user));
+                $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_PROCESS, new ProcessHook($user->getUid()));
 
                 $this->addFlash('status', $this->__("Done! Saved user's account information."));
             }
@@ -321,9 +321,9 @@ class UserAdministrationController extends AbstractController
                     continue;
                 }
                 $event = new GenericEvent(null, ['id' => $uid], new ValidationProviders());
-                $validators = $this->get('event_dispatcher')->dispatch(UserEvents::VALIDATE_DELETE, $event)->getData();
+                $validators = $this->get('event_dispatcher')->dispatch(UserEvents::DELETE_VALIDATE, $event)->getData();
                 $hook = new ValidationHook($validators);
-                $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_VALIDATE_DELETE, $hook);
+                $this->get('hook_dispatcher')->dispatch(HookContainer::DELETE_VALIDATE, $hook);
                 $validators = $hook->getValidators();
                 if ($validators->hasErrors()) {
                     $valid = false;
@@ -335,8 +335,8 @@ class UserAdministrationController extends AbstractController
                 $this->addFlash('success', $this->_fn('User deleted!', '%n users deleted!', count($userIds), ['%n' => count($userIds)]));
                 foreach ($userIds as $uid) {
                     $this->get('event_dispatcher')->dispatch(UserEvents::DELETE_ACCOUNT, new GenericEvent($uid));
-                    $this->get('event_dispatcher')->dispatch(UserEvents::PROCESS_DELETE, new GenericEvent(null, ['id' => $uid]));
-                    $this->get('hook_dispatcher')->dispatch(HookContainer::HOOK_PROCESS_DELETE, new ProcessHook($uid));
+                    $this->get('event_dispatcher')->dispatch(UserEvents::DELETE_PROCESS, new GenericEvent(null, ['id' => $uid]));
+                    $this->get('hook_dispatcher')->dispatch(HookContainer::DELETE_PROCESS, new ProcessHook($uid));
                 }
 
                 return $this->redirectToRoute('zikulausersmodule_useradministration_list');

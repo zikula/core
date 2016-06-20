@@ -122,25 +122,25 @@ class RegistrationEvents
     const DELETE_REGISTRATION = 'user.registration.delete';
 
     /**
-     * A hook-like event triggered when the registration form is displayed, which allows other modules to intercept
+     * A hook-like event process triggered when the registration form is displayed, which allows other modules to intercept
      * and display their own elements for submission on the registration form.
      * To add elements to the registration form, render output and add this as an array element on the event's
      * data array.
      * There is no subject and no arguments for the event.
      */
-    const FORM_NEW = 'module.users.ui.form_edit.new_registration';
-    const VALIDATE_NEW = 'module.users.ui.validate_edit.new_registration';
-    const PROCESS_NEW = 'module.users.ui.process_edit.new_registration';
+    const NEW_FORM = 'module.users.ui.form_edit.new_registration';
+    const NEW_VALIDATE = 'module.users.ui.validate_edit.new_registration';
+    const NEW_PROCESS = 'module.users.ui.process_edit.new_registration';
 
     /**
-     * A hook-like event triggered when the administrator's modify registration form is displayed, which allows other
+     * A hook-like event process triggered when the administrator's modify registration form is displayed, which allows other
      * modules to intercept and display their own elements for submission on the new user form.
      * To add elements to the modify registration form, render output and add this as an array element on the event's
      * data array.
      * The subject contains the current state of the registration object, possibly edited from its original state.
      * The `'id'` argument contains the uid of the registration record.
      */
-    const FORM_MODIFY = 'module.users.ui.form_edit.modify_registration';
-    const VALIDATE_MODIFY = 'module.users.ui.validate_edit.modify_registration';
-    const PROCESS_MODIFY = 'module.users.ui.process_edit.modify_registration';
+    const MODIFY_FORM = 'module.users.ui.form_edit.modify_registration';
+    const MODIFY_VALIDATE = 'module.users.ui.validate_edit.modify_registration';
+    const MODIFY_PROCESS = 'module.users.ui.process_edit.modify_registration';
 }

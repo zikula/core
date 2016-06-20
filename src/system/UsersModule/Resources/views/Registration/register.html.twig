@@ -57,12 +57,12 @@
         {% if form.children.user.email is defined %}{{ form_row(form.user.email) }}{% endif %}{# email may not be defined if authentication is non-local #}
     </fieldset>
 
-    {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\RegistrationEvents::FORM_NEW')) %}
+    {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\RegistrationEvents::NEW_FORM')) %}
     {% for eventDisplay in eventData %}
         {{ eventDisplay|raw }}
     {% endfor %}
 
-    {% set hooks = notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::HOOK_REGISTRATION_EDIT')) %}
+    {% set hooks = notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::REGISTRATION_FORM')) %}
     {% if hooks is iterable %}
     <fieldset>
         <legend>{{ __('Further information') }}</legend>

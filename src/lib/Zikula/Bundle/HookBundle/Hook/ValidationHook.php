@@ -20,7 +20,7 @@ class ValidationHook extends Hook
      */
     private $validators;
 
-    public function __construct(ValidationProviders $validators)
+    public function __construct(ValidationProviders $validators = null)
     {
         if (isset($validators)) {
             $this->validators = $validators;
