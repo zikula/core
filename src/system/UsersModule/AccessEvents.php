@@ -38,7 +38,7 @@ class AccessEvents
      * return to the login process, and will prevent the login from taking place. A handler that
      * vetoes a login attempt should set an appropriate session flash message and give any additional
      * feedback to the user attempting to log in that might be appropriate.
-     * 
+     *
      * If vetoing the login, the 'returnUrl' argument should be set to redirect the user to an appropriate action.
      *
      * Note: the user __will not__ be logged in at the point where the event handler is

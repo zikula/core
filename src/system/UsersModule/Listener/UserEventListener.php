@@ -104,7 +104,7 @@ class UserEventListener implements EventSubscriberInterface
             $event->stopPropagation();
             $event->setArgument('returnUrl', $this->router->generate('zikulausersmodule_account_changepassword'));
             $this->session->set('authenticationMethod', $event->getArgument('authenticationMethod'));
-            $this->session->set(UsersConstant::FORCE_PASSWORD_SESSION_UID_KEY, $user->getUid());;
+            $this->session->set(UsersConstant::FORCE_PASSWORD_SESSION_UID_KEY, $user->getUid());
 
             $this->session->getFlashBag()->add('error', __("Your log-in request was not completed. You must change your web site account's password first."));
         }

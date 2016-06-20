@@ -16,5 +16,6 @@ use Doctrine\Common\Persistence\ObjectRepository;
 interface UserSessionRepositoryInterface extends ObjectRepository, Selectable
 {
     public function countUsersSince(\DateTime $dateTime);
+
     public function countGuestsSince(\DateTime $dateTime);
 }
