@@ -52,6 +52,9 @@ class AuthenticationMethodCollector
         if (isset($this->authenticationMethods[$alias])) {
             throw new \InvalidArgumentException('Attempting to register an authentication method with a duplicate alias. (' . $alias . ')');
         }
+        if ($alias !== $method->getAlias()) {
+            throw new \InvalidArgumentException('The alias set in the class does not exactly match the alias set in the compiler pass.');
+        }
         $this->authenticationMethods[$alias] = $method;
         if (isset($this->authenticationMethodsStatus[$alias]) && $this->authenticationMethodsStatus[$alias]) {
             $this->activeAuthenticationMethods[$alias] = $method;

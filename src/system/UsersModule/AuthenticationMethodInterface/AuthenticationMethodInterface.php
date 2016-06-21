@@ -13,6 +13,12 @@ namespace Zikula\UsersModule\AuthenticationMethodInterface;
 interface AuthenticationMethodInterface
 {
     /**
+     * The alias registered in the compiler pass. Must match exactly.
+     * @return string
+     */
+    public function getAlias();
+
+    /**
      * A displayable title.
      * @return string
      */
