@@ -10,7 +10,6 @@
 
 namespace Zikula\SecurityCenterModule\Twig;
 
-use DataUtil;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\SecurityCenterModule\Util as SecurityCenterUtil;
 
@@ -54,12 +53,12 @@ class TwigExtension extends \Twig_Extension
      */
     public function safeHtml($string)
     {
-        $string = DataUtil::formatForDisplayHTML($string);
+        $string = \DataUtil::formatForDisplayHTML($string);
 
         if (!$this->isInstalled) {
             return $string;
         }
-        if (System::isInstalling() || System::isUpgrading()) {
+        if (\System::isInstalling() || \System::isUpgrading()) {
             return $string;
         }
 

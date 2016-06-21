@@ -26,20 +26,26 @@ class LoginBlock extends AbstractBlockHandler
 
                 $authenticationMethodCollector = $this->get('zikula_users_module.internal.authentication_method_collector');
                 $template = '@ZikulaUsersModule/Block/authenticationMethodSelector.html.twig';
+                $templateParams = [
+                    'collector' => $authenticationMethodCollector,
+                    'path' => 'zikulausersmodule_access_login',
+                    'position' => $properties['position']
+                ];
                 if (count($authenticationMethodCollector->getActiveKeys()) == 1) {
                     $selectedMethod = $authenticationMethodCollector->getActiveKeys()[0];
                     $request->getSession()->set('authenticationMethod', $selectedMethod);
                     $request->getSession()->set('returnUrl', $request->isMethod('GET') ? $request->getUri() : '');
                     $authenticationMethod = $authenticationMethodCollector->get($selectedMethod);
                     if ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface) {
-                        $template = $authenticationMethod->getLoginTemplateName();
+                        $form = $this->get('form.factory')->create($authenticationMethod->getLoginFormClassName(), [], [
+                            'action' => $this->get('router')->generate('zikulausersmodule_access_login')
+                        ]);
+                        $templateParams['form'] = $form->createView();
+                        $template = $authenticationMethod->getLoginTemplateName('block', $properties['position']);
                     }
                 }
 
-                return $this->renderView($template, [
-                    'collector' => $authenticationMethodCollector,
-                    'path' => 'zikulausersmodule_access_login'
-                ]);
+                return $this->renderView($template, $templateParams);
             }
         }
 

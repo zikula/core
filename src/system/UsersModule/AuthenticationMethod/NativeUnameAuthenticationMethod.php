@@ -72,8 +72,16 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
     /**
      * {@inheritdoc}
      */
-    public function getLoginTemplateName()
+    public function getLoginTemplateName($type = 'page', $position = 'left')
     {
+        if ($type == 'block') {
+            if ($position == 'topnav') {
+                return '@ZikulaUsersModule/Authentication/UnameLoginBlock.topnav.html.twig';
+            }
+
+            return '@ZikulaUsersModule/Authentication/UnameLoginBlock.html.twig';
+        }
+
         return '@ZikulaUsersModule/Authentication/UnameLogin.html.twig';
     }
 
