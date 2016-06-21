@@ -104,7 +104,7 @@
         <exec command="cp -a ${workspace}/source/src ${packagepath}"/>
 
         <!-- generate composer_vendors file -->
-        <exec command="${workspace}/source/build.php build:generate_vendor_doc --write-to '${packagepath}/docs/en/Composer_Vendors.md'" checkreturn="true" passthru="true"/>
+        <exec command="${workspace}/source/build.php build:generate_vendor_doc --write-to '${packagepath}/docs/Composer_Vendors.md'" checkreturn="true" passthru="true"/>
 
         <!-- generate less file -->
         <exec command="${workspace}/source/build.php build:generate_less --write-to '${packagepath}/web/bootstrap-font-awesome.css'" checkreturn="true" passthru="true"/>
