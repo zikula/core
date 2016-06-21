@@ -141,7 +141,7 @@ class RegistrationHelper
 
         if (('' != $userEntity->getPass()) && (UsersConstant::PWD_NO_USERS_AUTHENTICATION != $userEntity->getPass())) {
             $hashedPassword = \UserUtil::getHashedPassword($userEntity->getPass());
-            // DO NOT yet persist and flush the user in this method. It will occur in one of the two below methods.
+            // DO NOT yet persist and flush the user.
             $userEntity->setPass($hashedPassword);
         }
         $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));

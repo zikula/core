@@ -1,6 +1,6 @@
-{{ __f('Welcome to %1$s (%2$s)!', {"%1$s": pagevars.title, "%2$s": url('home')}) }}
+{{ __f('Welcome to %1$s (%2$s)!', {"%1$s": getModVar('ZConfig', 'sitename'), "%2$s": url('home')}) }}
 
-{{ __f('Hello! This e-mail address (\'%1$s\') has been used to register an account on the \'%2$s\' site.', {"%1$s": user.email, "%2$s": pagevars.title}) }}
+{{ __f('Hello! This e-mail address (\'%1$s\') has been used to register an account on the \'%2$s\' site.', {"%1$s": user.email, "%2$s": getModVar('ZConfig', 'sitename')}) }}
 
 {{ __('Your account details are as follows:') }}
 
