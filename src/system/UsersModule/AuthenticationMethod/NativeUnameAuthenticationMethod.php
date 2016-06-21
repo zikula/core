@@ -45,6 +45,11 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
         $this->translator = $translator;
     }
 
+    public function getAlias()
+    {
+        return 'native_uname';
+    }
+
     /**
      * {@inheritdoc}
      */
