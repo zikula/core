@@ -90,10 +90,15 @@ class ConfigController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
-                // @todo check if ALL are disabled
                 $data = $form->getData();
+                if (!in_array(true, $data['authenticationMethodsStatus'])) {
+                    $data['authenticationMethodsStatus']['native_uname'] = true; // do not allow all methods to be inactive.
+                    $this->addFlash('info', $this->__f('All methods cannot be inactive. At least one methods must be enabled. (%m has been enabled).', ['%m' => $allMethods['native_uname']->getDisplayName()]));
+                }
                 $this->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'authenticationMethodsStatus', $data['authenticationMethodsStatus']);
                 $this->addFlash('status', $this->__('Done! Configuration updated.'));
+
+                return $this->redirectToRoute('zikulausersmodule_config_authenticationmethods');
             }
             if ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));

@@ -36,9 +36,11 @@ class UnameType extends AbstractType
         $builder
             ->add('uname', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $this->translator->__('User name'),
+                'input_group' => ['left' => '<i class="fa fa-user fa-fw"></i>']
             ])
             ->add('pass', 'Symfony\Component\Form\Extension\Core\Type\PasswordType', [
                 'label' => $this->translator->__('Password'),
+                'input_group' => ['left' => '<i class="fa fa-key fa-fw"></i>']
             ])
             ->add('rememberme', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'required' => false,

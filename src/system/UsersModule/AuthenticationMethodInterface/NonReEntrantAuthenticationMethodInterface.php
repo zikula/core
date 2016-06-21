@@ -20,9 +20,11 @@ interface NonReEntrantAuthenticationMethodInterface extends AuthenticationMethod
 
     /**
      * Provide a path to the required template for login.
+     * @param string $type
+     * @param string $position
      * @return string
      */
-    public function getLoginTemplateName();
+    public function getLoginTemplateName($type = 'page', $position = 'left');
 
     /**
      * Provide a FqCN for a Symfony form for registration.

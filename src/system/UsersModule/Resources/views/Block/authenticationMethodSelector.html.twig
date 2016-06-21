@@ -1,6 +1,6 @@
-<div class="dropdown navbar-right">
-    <button class="btn btn-default dropdown-toggle navbar-btn" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        {{ __('Login with ...') }}
+<div class="dropdown{% if 'nav' in position %} navbar-right{% endif %}">
+    <button class="btn btn-default dropdown-toggle{% if 'nav' in position %} navbar-btn{% endif %}" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <i class="fa fa-key"></i> {{ __('Login with ...') }}
         <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
