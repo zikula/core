@@ -306,6 +306,8 @@ class RegistrationAdministrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid() && !$validators->hasErrors()) {
             if ($form->get('confirm')->isClicked()) {
+                $data = $form->getData();
+                $user = $this->get('zikula_users_module.user_repository')->find($data['user']);
                 $deleted = $this->get('zikula_users_module.helper.registration_helper')->remove($user->getUid());
                 if (!$deleted) {
                     $this->addFlash('error', $this->__f('Sorry! There was a problem deleting the registration for %sub%.', ['%sub%' => $user->getUname()]));
