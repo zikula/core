@@ -129,6 +129,7 @@ class BlocksExtension extends \Twig_Extension
             $blockProperties = $block->getContent();
             $blockProperties['bid'] = $block->getBid();
             $blockProperties['title'] = $block->getTitle();
+            $blockProperties['position'] = $positionName;
             $content = $blockInstance->display($blockProperties);
         } elseif ($blockInstance instanceof \Zikula_Controller_AbstractBlock) { // @todo remove at Core-2.0
             $legacy = true;
