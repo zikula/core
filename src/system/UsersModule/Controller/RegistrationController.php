@@ -131,8 +131,7 @@ class RegistrationController extends AbstractController
                     if ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
                         // @todo NonReEntrant method needs persistance too?
                         $authenticationMethod->persistMapping([
-                            'method' => $selectedMethod, // @todo the method should provide this, not get as arg
-                            'id' => $authenticationMethodId, // @can method provide this also?
+                            'id' => $authenticationMethodId, // comes from session and earlier authentication
                             'uid' => $userEntity->getUid()
                         ]);
                     }

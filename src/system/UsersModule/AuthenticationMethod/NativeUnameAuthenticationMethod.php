@@ -55,7 +55,7 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
      */
     public function getDisplayName()
     {
-        return 'Native Uname';
+        return $this->translator->__('Native Uname');
     }
 
     /**
@@ -63,7 +63,7 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
      */
     public function getDescription()
     {
-        return 'Allow a user to authenticate and login via Zikula\'s native user database';
+        return $this->translator->__('Allow a user to authenticate and login via Zikula\'s native user database');
     }
 
     /**
