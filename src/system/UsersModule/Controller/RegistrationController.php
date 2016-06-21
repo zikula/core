@@ -91,7 +91,7 @@ class RegistrationController extends AbstractController
                 $hasListeners = $this->get('event_dispatcher')->hasListeners(RegistrationEvents::NEW_FORM);
                 $hookBindings = $this->get('hook_dispatcher')->getBindingsFor('subscriber.users.ui_hooks.registration');
                 if (!$hasListeners && count($validationErrors) == 0 && count($hookBindings) == 0) {
-                    // process registration - no further user interaction needed
+                    // @todo !!! process registration - no further user interaction needed
                 }
             }
         }
