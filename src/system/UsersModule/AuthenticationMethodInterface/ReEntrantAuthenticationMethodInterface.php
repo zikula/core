@@ -21,12 +21,6 @@ interface ReEntrantAuthenticationMethodInterface extends AuthenticationMethodInt
     public function getId();
 
     /**
-     * Persist the data required to map external authorization to a Zikula UID.
-     * @param $data
-     */
-    public function persistMapping($data);
-
-    /**
      * After authentication, this method is used to update the Entity.
      * properties `email` and `uname` must be updated.
      */

@@ -124,7 +124,7 @@ class RegistrationHelper
         $isAdminOrSubAdmin = $this->currentUserIsAdminOrSubAdmin();
 
         if (!$userEntity->getAttributes()->contains('_Users_isVerified')) {
-            $adminWantsVerification = $isAdminOrSubAdmin && $userMustVerify || '' == $userEntity->getPass();
+            $adminWantsVerification = $isAdminOrSubAdmin && $userMustVerify/* || '' == $userEntity->getPass()*/;
             $isVerified = ($isAdminOrSubAdmin && !$adminWantsVerification)
                 || (!$isAdminOrSubAdmin
                     && ($this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_VERIFICATION_MODE) == UsersConstant::VERIFY_NO));
@@ -138,12 +138,15 @@ class RegistrationHelper
 
         // Function called by admin adding user/reg, administrator created the password; no approval needed, so must need verification.
         $passwordCreatedForUser = $sendPassword ? $userEntity->getPass() : '';
-
-        if (('' != $userEntity->getPass()) && (UsersConstant::PWD_NO_USERS_AUTHENTICATION != $userEntity->getPass())) {
-            $hashedPassword = \UserUtil::getHashedPassword($userEntity->getPass());
-            // DO NOT yet persist and flush the user.
-            $userEntity->setPass($hashedPassword);
-        }
+        // remove pass so it is not set in the UserEntity at all (now handled by authenticationMethod).
+        $userEntity->setPassreminder('');
+        $userEntity->setPass('');
+//
+//        if (('' != $userEntity->getPass()) && (UsersConstant::PWD_NO_USERS_AUTHENTICATION != $userEntity->getPass())) {
+//            $hashedPassword = \UserUtil::getHashedPassword($userEntity->getPass());
+//            // DO NOT yet persist and flush the user.
+//            $userEntity->setPass($hashedPassword);
+//        }
         $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
 
         if (!$userEntity->isApproved() || !$userEntity->isVerified()) {
@@ -183,18 +186,18 @@ class RegistrationHelper
 
                 // Ensure that no user gets created without a password, and that the password is reasonable (no spaces, salted)
                 // or == UsersConstant::PWD_NO_USERS_AUTHENTICATION.
-                $userPassword = $userEntity->getPass();
-                $hasPassword = null != $userPassword;
-                if ($userPassword === UsersConstant::PWD_NO_USERS_AUTHENTICATION) {
-                    $hasSaltedPassword = false;
-                    $hasNoUsersAuthenticationPassword = true;
-                } else {
-                    $hasSaltedPassword = $hasPassword && (strpos($userPassword, UsersConstant::SALT_DELIM) != strrpos($userPassword, UsersConstant::SALT_DELIM));
-                    $hasNoUsersAuthenticationPassword = false;
-                }
-                if (!$hasPassword || (!$hasSaltedPassword && !$hasNoUsersAuthenticationPassword)) {
-                    throw new \InvalidArgumentException(__('Invalid arguments array received'));
-                }
+//                $userPassword = $userEntity->getPass();
+//                $hasPassword = null != $userPassword;
+//                if ($userPassword === UsersConstant::PWD_NO_USERS_AUTHENTICATION) {
+//                    $hasSaltedPassword = false;
+//                    $hasNoUsersAuthenticationPassword = true;
+//                } else {
+//                    $hasSaltedPassword = $hasPassword && (strpos($userPassword, UsersConstant::SALT_DELIM) != strrpos($userPassword, UsersConstant::SALT_DELIM));
+//                    $hasNoUsersAuthenticationPassword = false;
+//                }
+//                if (!$hasPassword || (!$hasSaltedPassword && !$hasNoUsersAuthenticationPassword)) {
+//                    throw new \InvalidArgumentException(__('Invalid arguments array received'));
+//                }
 
                 $userEntity->setUser_Regdate($nowUTC);
 

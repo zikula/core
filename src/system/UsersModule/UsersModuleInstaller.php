@@ -33,7 +33,8 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             'Zikula\UsersModule\Entity\UserEntity',
             'Zikula\UsersModule\Entity\UserAttributeEntity',
             'Zikula\UsersModule\Entity\UserSessionEntity',
-            'Zikula\UsersModule\Entity\UserVerificationEntity'
+            'Zikula\UsersModule\Entity\UserVerificationEntity',
+            'Zikula\UsersModule\Entity\AuthenticationMappingEntity'
         ];
         try {
             $this->schemaTool->create($classes);
@@ -121,6 +122,8 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
                 $this->schemaTool->update(['Zikula\UsersModule\Entity\UserEntity']);
                 $this->delVar('login_redirect');
             case '2.2.6':
+                $this->schemaTool->create(['Zikula\UsersModule\Entity\AuthenticationMappingEntity']);
+            case '2.2.8':
                 // current version
         }
 

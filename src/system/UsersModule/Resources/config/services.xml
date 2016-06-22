@@ -7,9 +7,11 @@
     <parameters>
         <parameter key="zikula_users_module.user_listener.class">Zikula\UsersModule\Listener\UserEventListener</parameter>
         <parameter key="zikula_users_module.pending_content_listener.class">Zikula\UsersModule\Listener\PendingContentListener</parameter>
+        <parameter key="zikula_users_module.user_delete_listener.class">Zikula\UsersModule\Listener\UserDeleteListener</parameter>
         <parameter key="zikula_users_module.user_repository.class">Zikula\UsersModule\Entity\Repository\UserRepository</parameter>
         <parameter key="zikula_users_module.user_verification_repository.class">Zikula\UsersModule\Entity\Repository\UserVerificationRepository</parameter>
         <parameter key="zikula_users_module.user_session_repository.class">Zikula\UsersModule\Entity\Repository\UserSessionRepository</parameter>
+        <parameter key="zikula_users_module.authentication_mapping_repository.class">Zikula\UsersModule\Entity\Repository\AuthenticationMappingRepository</parameter>
         <parameter key="zikula_users_module.current_user.class">Zikula\UsersModule\Api\CurrentUserApi</parameter>
         <parameter key="zikula_users_module.twig.extension.registration_extension.class">Zikula\UsersModule\Twig\Extension\RegistrationExtension</parameter>
         <parameter key="zikula_users_module.container.link_container.class">Zikula\UsersModule\Container\LinkContainer</parameter>
@@ -27,6 +29,10 @@
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="zikula_permissions_module.api.permission" />
         </service>
+        <service id="zikula_users_module.listener.user_delete_listener" class="%zikula_users_module.user_delete_listener.class%">
+            <argument id="zikula_users_module.authentication_mapping_repository" type="service"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
 
         <service id="zikula_users_module.user_repository" class="%zikula_users_module.user_repository.class%">
             <factory service="doctrine.orm.default_entity_manager" method="getRepository"/>
@@ -39,6 +45,10 @@
         <service id="zikula_users_module.user_session_repository" class="%zikula_users_module.user_session_repository.class%">
             <factory service="doctrine.orm.default_entity_manager" method="getRepository"/>
             <argument type="string">Zikula\UsersModule\Entity\UserSessionEntity</argument>
+        </service>
+        <service id="zikula_users_module.authentication_mapping_repository" class="%zikula_users_module.authentication_mapping_repository.class%">
+            <factory service="doctrine.orm.default_entity_manager" method="getRepository"/>
+            <argument type="string">Zikula\UsersModule\Entity\AuthenticationMappingEntity</argument>
         </service>
 
         <service id="zikula_users_module.current_user" class="%zikula_users_module.current_user.class%">
