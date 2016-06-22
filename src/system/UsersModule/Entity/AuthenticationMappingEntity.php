@@ -51,7 +51,7 @@ class AuthenticationMappingEntity
     /**
      * Password: User's password for logging in.
      * This value is salted and hashed. The salt is stored in this field, delimited from the hash with a dollar sign character ($).
-     * 
+     *
      * @ZikulaAssert\ValidPassword()
      * @ORM\Column(type="string")
      */
