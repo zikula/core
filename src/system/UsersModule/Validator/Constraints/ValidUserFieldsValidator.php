@@ -89,7 +89,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
         }
 
         if ((int)$qb->getQuery()->getSingleScalarResult() > 0) {
-            $this->context->buildViolation($this->translator->__('The user name you entered has already been registered.'))
+            $this->context->buildViolation($this->translator->__f('The user name you entered (%u) has already been registered.', ['%u' => $userEntity->getUname()]))
                 ->atPath('uname')
                 ->addViolation();
         }
