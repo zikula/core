@@ -167,4 +167,3 @@ class AuthenticationMappingEntity
         $this->passreminder = $passreminder;
     }
 }
-
