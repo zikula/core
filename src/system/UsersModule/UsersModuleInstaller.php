@@ -11,6 +11,7 @@
 namespace Zikula\UsersModule;
 
 use Zikula\Core\AbstractExtensionInstaller;
+use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\Constant as UsersConstant;
 
 /**
@@ -45,6 +46,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
         // Set default values and modvars for module
         $this->defaultdata();
         $this->setVars($this->getDefaultModvars());
+        $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'authenticationMethodsStatus', ['native_uname' => true]);
 
         // Register hook bundles
         $this->hookApi->installSubscriberHooks($this->bundle->getMetaData());
@@ -124,6 +126,8 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             case '2.2.6':
                 $this->schemaTool->create(['Zikula\UsersModule\Entity\AuthenticationMappingEntity']);
             case '2.2.8':
+                $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'authenticationMethodsStatus', ['native_uname' => true]);
+            case '2.2.9';
                 // current version
         }
 
