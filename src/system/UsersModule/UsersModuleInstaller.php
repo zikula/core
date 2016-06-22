@@ -127,7 +127,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
                 $this->schemaTool->create(['Zikula\UsersModule\Entity\AuthenticationMappingEntity']);
             case '2.2.8':
                 $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'authenticationMethodsStatus', ['native_uname' => true]);
-            case '2.2.9';
+            case '2.2.9':
                 // current version
         }
 
