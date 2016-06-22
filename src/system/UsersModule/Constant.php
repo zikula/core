@@ -399,7 +399,7 @@ namespace Zikula\UsersModule
         const EMAIL_DOMAIN_VALIDATION_PATTERN = '(?:[^\\s\\000-\\037\\177\\(\\)<>@,;:\\\\"\\[\\]]\\.?)+\\.[a-z]{2,6}';
 
         /**
-         * The string identifying that a user can user either the native_uname or native_email authentication methods. 
+         * The string identifying that a user can user either the native_uname or native_email authentication methods.
          */
         const AUTHENTICATION_METHOD_EITHER = 'native_either';
     }
