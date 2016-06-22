@@ -102,7 +102,7 @@ class RegistrationController extends AbstractController
         $form = $this->createForm($formClassName, $userEntity);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $event = new GenericEvent($form->getData(), [], new ValidationProviders());
             $validators = $this->get('event_dispatcher')->dispatch(RegistrationEvents::NEW_VALIDATE, $event)->getData();
 
@@ -111,7 +111,7 @@ class RegistrationController extends AbstractController
             $this->get('hook_dispatcher')->dispatch(HookContainer::REGISTRATION_VALIDATE, $hook);
             $validators = $hook->getValidators();
 
-            if ($form->get('submit')->isClicked() && $form->isValid() && !$validators->hasErrors()) {
+            if ($form->get('submit')->isClicked() && !$validators->hasErrors()) {
                 /** @var UserEntity $userEntity */ // @todo maybe this shouldn't be a UserEntity, but simply an array $formData
                 $userEntity = $form->getData();
                 // save pass and passreminder since they are emptied in next func @todo refactor
