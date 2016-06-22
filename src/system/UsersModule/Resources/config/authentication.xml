@@ -19,6 +19,7 @@
 
         <service id="zikula_users_module.authentication_method.native_uname" class="%zikula_users_module.authentication_method.native_uname.class%">
             <argument type="service" id="zikula_users_module.user_repository" />
+            <argument type="service" id="zikula_users_module.authentication_mapping_repository" />
             <argument type="service" id="session" />
             <argument type="service" id="translator.default" />
             <tag name="zikula.authentication_method" alias="native_uname" />

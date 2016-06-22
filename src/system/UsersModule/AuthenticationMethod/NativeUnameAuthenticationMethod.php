@@ -13,7 +13,10 @@ namespace Zikula\UsersModule\AuthenticationMethod;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
+use Zikula\UsersModule\Entity\AuthenticationMappingEntity;
+use Zikula\UsersModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\Constant as UsersConstant;
 
 class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMethodInterface
 {
@@ -21,6 +24,11 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
      * @var UserRepositoryInterface
      */
     private $userRepository;
+
+    /**
+     * @var AuthenticationMappingRepositoryInterface
+     */
+    private $mappingRepository;
 
     /**
      * @var Session
@@ -35,12 +43,14 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
     /**
      * NativeUnameAuthenticationMethod constructor.
      * @param UserRepositoryInterface $userRepository
+     * @param AuthenticationMappingRepositoryInterface $mappingRepository
      * @param Session $session
      * @param TranslatorInterface $translator
      */
-    public function __construct(UserRepositoryInterface $userRepository, Session $session, TranslatorInterface $translator)
+    public function __construct(UserRepositoryInterface $userRepository, AuthenticationMappingRepositoryInterface $mappingRepository, Session $session, TranslatorInterface $translator)
     {
         $this->userRepository = $userRepository;
+        $this->mappingRepository = $mappingRepository;
         $this->session = $session;
         $this->translator = $translator;
     }
@@ -106,10 +116,11 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
     public function authenticate(array $data)
     {
         if (isset($data['uname'])) {
-            $userEntity = $this->userRepository->findOneBy(['uname' => $data['uname']]);
-            if ($userEntity) {
-                if (\UserUtil::passwordsMatch($data['pass'], $userEntity->getPass())) { // @todo
-                    return $userEntity->getUid();
+            $mapping = $this->getMapping($data['uname']);
+            if ($mapping) {
+                if (\UserUtil::passwordsMatch($data['pass'], $mapping->getPass())) { // @todo
+                    // @todo is this the place to update the hash method?
+                    return $mapping->getUid();
                 } else {
                     $this->session->getFlashBag()->add('error', $this->translator->__('Incorrect password'));
                 }
@@ -119,5 +130,56 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
         }
 
         return null;
+    }
+
+    /**
+     * Get a AuthenticationMappingEntity if it exists. If not, check for existing UserEntity and
+     * migrate data from UserEntity to AuthenticationMappingEntity and return that.
+     * If mapping exists
+     * @param string $uname
+     * @return AuthenticationMappingEntity|null
+     */
+    private function getMapping($uname)
+    {
+        $mapping = $this->mappingRepository->findOneBy(['uname' => $uname]);
+        if (!isset($mapping)) {
+            $userEntity = $this->userRepository->findOneBy(['uname' => $uname]);
+            if ($userEntity) {
+                // create new mapping
+                $mapping = new AuthenticationMappingEntity();
+                $mapping->setUid($userEntity->getUid());
+                $mapping->setUname($userEntity->getUname());
+                $mapping->setEmail($userEntity->getEmail());
+                $mapping->setPass($userEntity->getPass()); // salted and hashed
+                $mapping->setPassreminder($userEntity->getPassreminder());
+                $mapping->setMethod($this->getAlias());
+                // @todo validate the new entity? check for duplicates, etc.
+                $this->mappingRepository->persistAndFlush($mapping);
+                // remove data from UserEntity
+                $userEntity->setPass('');
+                $userEntity->setPassreminder('');
+                $this->userRepository->persistAndFlush($userEntity);
+
+                return $mapping;
+            }
+        } elseif ('native_email' == $mapping->getMethod()) {
+            $mapping->setMethod(UsersConstant::AUTHENTICATION_METHOD_EITHER);
+            $this->mappingRepository->persistAndFlush($mapping);
+        }
+
+        return $mapping;
+    }
+
+    public function register(array $data)
+    {
+        $mapping = new AuthenticationMappingEntity();
+        $mapping->setUid($data['uid']);
+        $mapping->setUname($data['uname']);
+        $mapping->setEmail($data['email']);
+        $mapping->setPass(\UserUtil::getHashedPassword($data['pass'])); // @todo salted and hashed
+        $mapping->setPassreminder($data['passreminder']);
+        $mapping->setMethod($this->getAlias());
+        // @todo validate the new entity? check for duplicates, etc.
+        $this->mappingRepository->persistAndFlush($mapping);
     }
 }

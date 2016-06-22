@@ -78,31 +78,34 @@ class AccessController extends AbstractController
         } else {
             throw new \LogicException($this->__('Invalid authentication method.'));
         }
-        $user = $this->get('zikula_users_module.user_repository')->find($uid);
-        if (isset($user)) {
-            $validators  = $this->get('event_dispatcher')->dispatch(AccessEvents::LOGIN_VALIDATE, new GenericEvent($user, [], new ValidationProviders()))->getData();
-            $hook = new ValidationHook($validators);
-            $this->get('hook_dispatcher')->dispatch(HookContainer::LOGIN_VALIDATE, $hook);
-            $validators = $hook->getValidators();
-            if (!$validators->hasErrors() && $this->get('zikula_users_module.helper.access_helper')->loginAllowed($user)) {
-                $this->get('event_dispatcher')->dispatch(AccessEvents::LOGIN_PROCESS, new GenericEvent($user));
-                $this->get('hook_dispatcher')->dispatch(HookContainer::LOGIN_PROCESS, new ProcessHook($user));
-                $event = new GenericEvent($user, ['authenticationMethod' => $selectedMethod]);
-                $this->get('event_dispatcher')->dispatch(AccessEvents::LOGIN_VETO, $event);
-                if (!$event->isPropagationStopped()) {
-                    $this->get('zikula_users_module.helper.access_helper')->login($user, $selectedMethod, $rememberMe);
-                    $returnUrl = $this->dispatchLoginSuccessEvent($user, $selectedMethod, $request->getSession()->get('returnUrl', null));
-                } else {
-                    $returnUrl = $event->getArgument('returnUrl');
-                }
+        $user = null;
+        if (isset($uid)) {
+            $user = $this->get('zikula_users_module.user_repository')->find($uid);
+            if (isset($user)) {
+                $validators = $this->get('event_dispatcher')->dispatch(AccessEvents::LOGIN_VALIDATE, new GenericEvent($user, [], new ValidationProviders()))->getData();
+                $hook = new ValidationHook($validators);
+                $this->get('hook_dispatcher')->dispatch(HookContainer::LOGIN_VALIDATE, $hook);
+                $validators = $hook->getValidators();
+                if (!$validators->hasErrors() && $this->get('zikula_users_module.helper.access_helper')->loginAllowed($user)) {
+                    $this->get('event_dispatcher')->dispatch(AccessEvents::LOGIN_PROCESS, new GenericEvent($user));
+                    $this->get('hook_dispatcher')->dispatch(HookContainer::LOGIN_PROCESS, new ProcessHook($user));
+                    $event = new GenericEvent($user, ['authenticationMethod' => $selectedMethod]);
+                    $this->get('event_dispatcher')->dispatch(AccessEvents::LOGIN_VETO, $event);
+                    if (!$event->isPropagationStopped()) {
+                        $this->get('zikula_users_module.helper.access_helper')->login($user, $selectedMethod, $rememberMe);
+                        $returnUrl = $this->dispatchLoginSuccessEvent($user, $selectedMethod, $request->getSession()->get('returnUrl', null));
+                    } else {
+                        $returnUrl = $event->getArgument('returnUrl');
+                    }
 
-                return !empty($returnUrl) ? $this->redirect($returnUrl) : $this->redirectToRoute('home');
+                    return !empty($returnUrl) ? $this->redirect($returnUrl) : $this->redirectToRoute('home');
+                }
             }
         }
         // login failed
         // @todo can we auto-register this user and proceed?
         $this->addFlash('error', $this->__('Login failed.'));
-        $returnUrl = $this->dispatchLoginFailedEvent($user, $selectedMethod, $returnUrl, $authenticationMethod);
+        $returnUrl = $this->dispatchLoginFailedEvent($user, $returnUrl, $authenticationMethod);
 
         return !empty($returnUrl) ? $this->redirect($returnUrl) : $this->redirectToRoute('home');
     }
@@ -131,16 +134,14 @@ class AccessController extends AbstractController
 
     /**
      * @param UserEntity|null $user
-     * @param $selectedMethod
      * @param $returnUrl
      * @param $authenticationMethod
      * @return mixed
      */
-    private function dispatchLoginFailedEvent(UserEntity $user = null, $selectedMethod, $returnUrl, $authenticationMethod)
+    private function dispatchLoginFailedEvent(UserEntity $user = null, $returnUrl, $authenticationMethod)
     {
         $eventArgs = [
-            'authenticationMethod' => $selectedMethod, // @todo possibly send entire $authenticationMethod
-            'methodId' => $authenticationMethod->getId(), // @todo this is not available for NonReEntrant
+            'authenticationMethod' => $authenticationMethod,
             'returnUrl' => $returnUrl,
         ];
         $event = new GenericEvent($user, $eventArgs);
