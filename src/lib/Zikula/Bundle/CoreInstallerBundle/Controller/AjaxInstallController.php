@@ -93,6 +93,8 @@ class AjaxInstallController extends AbstractController
                 return $this->installModule('ZikulaBlocksModule');
             case "users":
                 return $this->installModule('ZikulaUsersModule');
+            case "zauth":
+                return $this->installModule('ZikulaZAuthModule');
             case "security":
                 return $this->installModule('ZikulaSecurityCenterModule');
             case "categories":
@@ -206,6 +208,7 @@ class AjaxInstallController extends AbstractController
             'ZikulaGroupsModule' => __('Users'),
             'ZikulaBlocksModule' => __('Layout'),
             'ZikulaUsersModule' => __('Users'),
+            'ZikulaZAuthModule' => __('Users'),
             'ZikulaThemeModule' => __('Layout'),
             'ZikulaSecurityCenterModule' => __('Security'),
             'ZikulaCategoriesModule' => __('Content'),
