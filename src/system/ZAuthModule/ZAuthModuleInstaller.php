@@ -14,11 +14,6 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
         'Zikula\ZAuthModule\Entity\AuthenticationMappingEntity'
     ];
 
-    public function setBundle(AbstractBundle $bundle)
-    {
-        $this->bundle = $bundle;
-    }
-
     public function install()
     {
         $this->schemaTool->create($this->entities);
