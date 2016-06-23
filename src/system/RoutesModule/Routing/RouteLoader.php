@@ -262,7 +262,7 @@ class RouteLoader extends Loader
         $controller = $this->sanitizeController($bundleName, $defaults['_controller']);
         $controller = explode(':', $controller);
         $defaults['_zkType'] = $type = lcfirst($controller[1]);
-        $defaults['_zkFunc'] = $func = $controller[2];
+        $defaults['_zkFunc'] = $func = lcfirst($controller[2]);
         $defaults['_controller'] = $bundleName . ":" . $controller[1] . ":" . $func;
 
         $route->setDefaults($defaults);
