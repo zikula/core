@@ -24,6 +24,7 @@ use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\Core\CoreEvents;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
  * Class AjaxInstallController
@@ -252,8 +253,10 @@ class AjaxInstallController extends AbstractController
         $em = $this->container->get('doctrine.entitymanager');
         $params = $this->decodeParameters($this->yamlManager->getParameters());
 
+        // @todo this must be updated to use ZAuth
+
         // create the password hash
-        $password = \UserUtil::getHashedPassword($params['password'], \UserUtil::getPasswordHashMethodCode(UsersConstant::DEFAULT_HASH_METHOD));
+        $password = \UserUtil::getHashedPassword($params['password'], \UserUtil::getPasswordHashMethodCode(ZAuthConstant::DEFAULT_HASH_METHOD));
 
         // prepare the data
         $username = mb_strtolower($params['username']);

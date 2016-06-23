@@ -2,7 +2,6 @@
 
 namespace Zikula\ZAuthModule;
 
-use Zikula\Core\AbstractBundle;
 use Zikula\Core\AbstractExtensionInstaller;
 
 class ZAuthModuleInstaller extends AbstractExtensionInstaller
