@@ -18,6 +18,7 @@ use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 class ValidUserFieldsValidator extends ConstraintValidator
 {
@@ -67,7 +68,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
                 ->atPath('pass')
                 ->addViolation();
         }
-        if ($this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED, UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED)) {
+        if ($this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED, ZAuthConstant::DEFAULT_PASSWORD_REMINDER_ENABLED)) {
             $testPass = mb_strtolower(trim($userEntity->getPass()));
             $testPassreminder = mb_strtolower(trim($userEntity->getPassreminder()));
             if (!empty($testPass) && (strlen($testPassreminder) >= strlen($testPass)) && (stristr($testPassreminder, $testPass) !== false)) {
@@ -95,32 +96,33 @@ class ValidUserFieldsValidator extends ConstraintValidator
         }
 
         // ensure unique email from both user and verification entities
-        if ($this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REQUIRE_UNIQUE_EMAIL, false)) {
-            $qb = $this->userRepository->createQueryBuilder('u')
-                ->select('count(u.uid)')
-                ->where('u.email = :email')
-                ->setParameter('email', $userEntity->getEmail());
-            // when updating an existing User, the existing Uid must be excluded.
-            if (null !== $userEntity->getUid()) {
-                $qb->andWhere('u.uid <> :excludedUid')
-                    ->setParameter('excludedUid', $userEntity->getUid());
-            }
-            $uCount = (int)$qb->getQuery()->getSingleScalarResult();
-
-            $query = $this->userVerificationRepository->createQueryBuilder('v')
-                ->select('count(v.uid)')
-                ->where('v.newemail = :email')
-                ->andWhere('v.changetype = :chgtype')
-                ->setParameter('email', $userEntity->getEmail())
-                ->setParameter('chgtype', UsersConstant::VERIFYCHGTYPE_EMAIL)
-                ->getQuery();
-            $vCount = (int)$query->getSingleScalarResult();
-
-            if ($uCount + $vCount > 0) {
-                $this->context->buildViolation($this->translator->__('The email address you entered has already been registered.'))
-                    ->atPath('email')
-                    ->addViolation();
-            }
-        }
+        // @todo this should be handled only in the ZAuth module and should only fail if authenticationMethod = native_uname or native_either
+//        if ($this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REQUIRE_UNIQUE_EMAIL, false)) {
+//            $qb = $this->userRepository->createQueryBuilder('u')
+//                ->select('count(u.uid)')
+//                ->where('u.email = :email')
+//                ->setParameter('email', $userEntity->getEmail());
+//            // when updating an existing User, the existing Uid must be excluded.
+//            if (null !== $userEntity->getUid()) {
+//                $qb->andWhere('u.uid <> :excludedUid')
+//                    ->setParameter('excludedUid', $userEntity->getUid());
+//            }
+//            $uCount = (int)$qb->getQuery()->getSingleScalarResult();
+//
+//            $query = $this->userVerificationRepository->createQueryBuilder('v')
+//                ->select('count(v.uid)')
+//                ->where('v.newemail = :email')
+//                ->andWhere('v.changetype = :chgtype')
+//                ->setParameter('email', $userEntity->getEmail())
+//                ->setParameter('chgtype', UsersConstant::VERIFYCHGTYPE_EMAIL)
+//                ->getQuery();
+//            $vCount = (int)$query->getSingleScalarResult();
+//
+//            if ($uCount + $vCount > 0) {
+//                $this->context->buildViolation($this->translator->__('The email address you entered has already been registered.'))
+//                    ->atPath('email')
+//                    ->addViolation();
+//            }
+//        }
     }
 }

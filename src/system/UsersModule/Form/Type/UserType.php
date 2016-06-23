@@ -15,6 +15,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 class UserType extends AbstractType
 {
@@ -75,8 +76,8 @@ class UserType extends AbstractType
             'inherit_data' => true,
             'translator' => null,
             'allowNullPassword' => false,
-            'passwordReminderEnabled' => UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED,
-            'passwordReminderMandatory' => UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY
+            'passwordReminderEnabled' => ZAuthConstant::DEFAULT_PASSWORD_REMINDER_ENABLED,
+            'passwordReminderMandatory' => ZAuthConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY
         ]);
     }
 }

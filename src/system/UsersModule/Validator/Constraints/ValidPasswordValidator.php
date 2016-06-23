@@ -12,14 +12,13 @@ namespace Zikula\UsersModule\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 class ValidPasswordValidator extends ConstraintValidator
 {
@@ -57,7 +56,7 @@ class ValidPasswordValidator extends ConstraintValidator
 //            new NotNull(),
             new Type('string'),
             new Length([
-                'min' => $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, UsersConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH)
+                'min' => $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH)
             ])
         ]);
         if (count($errors) > 0) {

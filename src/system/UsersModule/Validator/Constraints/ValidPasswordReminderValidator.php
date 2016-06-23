@@ -18,6 +18,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 class ValidPasswordReminderValidator extends ConstraintValidator
 {
@@ -43,7 +44,7 @@ class ValidPasswordReminderValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        if ($this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED, UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED)) {
+        if ($this->variableApi->get('ZikulaUsersModule', ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED, ZAuthConstant::DEFAULT_PASSWORD_REMINDER_ENABLED)) {
             /** @var ConstraintViolationListInterface $errors */
             $errors = $this->validator->validate($value, [
                 new NotNull(),

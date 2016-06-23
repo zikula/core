@@ -30,6 +30,7 @@ use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\RegistrationEvents;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
  * Class RegistrationController
@@ -91,6 +92,7 @@ class RegistrationController extends AbstractController
                 $hasListeners = $this->get('event_dispatcher')->hasListeners(RegistrationEvents::NEW_FORM);
                 $hookBindings = $this->get('hook_dispatcher')->getBindingsFor('subscriber.users.ui_hooks.registration');
                 if (!$hasListeners && count($validationErrors) == 0 && count($hookBindings) == 0) {
+                    // @todo need to check anti-spam question here?
                     // @todo !!! process registration - no further user interaction needed
                 }
             }
@@ -225,8 +227,8 @@ class RegistrationController extends AbstractController
             [
                 'translator' => $this->getTranslator(),
                 'setpass' => $setPass,
-                'passwordReminderEnabled' => $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED),
-                'passwordReminderMandatory' => $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY)
+                'passwordReminderEnabled' => $this->getVar(ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED), // @todo
+                'passwordReminderMandatory' => $this->getVar(ZAuthConstant::MODVAR_PASSWORD_REMINDER_MANDATORY) // @todo
             ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -236,7 +238,7 @@ class RegistrationController extends AbstractController
                 $userEntity->setPass($data['pass']); // temp set to unhashed - will be hashed in registerNewUser() method
             }
             $userEntity->setAttribute('_Users_isVerified', 1);
-            if ($this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED) && isset($data['passreminder'])) {
+            if ($this->getVar(ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED) && isset($data['passreminder'])) {
                 $userEntity->setPassreminder($data['passreminder']);
             }
             $this->get('zikula_users_module.helper.registration_helper')->registerNewUser($userEntity, false, true, false, false);
