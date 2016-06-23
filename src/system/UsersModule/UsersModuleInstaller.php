@@ -271,7 +271,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
     {
         return [
             ZAuthConstant::MODVAR_HASH_METHOD,
-            ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH ,
+            ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH,
             ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED, // convert to bool
             ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED, // convert to bool
             ZAuthConstant::MODVAR_PASSWORD_REMINDER_MANDATORY, // convert to bool
