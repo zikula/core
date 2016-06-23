@@ -1,13 +1,13 @@
 // Copyright Zikula Foundation, licensed MIT.
 
-var ZikulaUsersPassMeter = {};
-var ZikulaUsersPassCalc = {};
+var ZikulaZAuthPassMeter = {};
+var ZikulaZAuthPassCalc = {};
 
 var currentCalculator;
 
 ( function($) {
 
-    ZikulaUsersPassCalc.initialize = function(options) {
+    ZikulaZAuthPassCalc.initialize = function(options) {
         this.score = {};
         this.options = $.extend({
             minLength: 8,
@@ -20,8 +20,8 @@ var currentCalculator;
 
         return this;
     };
-    ZikulaUsersPassCalc.dictionary = ['password', 'qwerty'];
-    ZikulaUsersPassCalc.restrictions = {
+    ZikulaZAuthPassCalc.dictionary = ['password', 'qwerty'];
+    ZikulaZAuthPassCalc.restrictions = {
         minLength: {
             test: function(word) {
                 return word.length === 0 || word.length >= this.options.minLength;
@@ -29,7 +29,7 @@ var currentCalculator;
             msg: 'Password is too short'
         }
     };
-    ZikulaUsersPassCalc.ruleScores = {
+    ZikulaZAuthPassCalc.ruleScores = {
         length: 0,
         repetitions: -1,
         sequences: 1/*-100*/,
@@ -44,7 +44,7 @@ var currentCalculator;
         letter_number_combo: 2,
         letter_number_char_combo: 2
     };
-    ZikulaUsersPassCalc.rules = {
+    ZikulaZAuthPassCalc.rules = {
         length: true,
         repetitions: true,
         sequences: true,
@@ -59,7 +59,7 @@ var currentCalculator;
         letter_number_combo: true,
         letter_number_char_combo: true
     };
-    ZikulaUsersPassCalc.validationRules = {
+    ZikulaZAuthPassCalc.validationRules = {
         length: function (word, score) {
             return Math.pow(word.length, this.options.raisePower);
         },
@@ -100,7 +100,7 @@ var currentCalculator;
             return word.match(/([a-zA-Z0-9].*[!,@,#,$,%,\^,&,*,?,_,~])|([!,@,#,$,%,\^,&,*,?,_,~].*[a-zA-Z0-9])/) && score;
         }
     };
-    ZikulaUsersPassCalc.calculate = function (word) {
+    ZikulaZAuthPassCalc.calculate = function (word) {
         var score = {
             totalscore: 0,
             level: 0,
@@ -110,20 +110,20 @@ var currentCalculator;
             messages: {}
         };
         for (var rule in this.rules) {
-            if (ZikulaUsersPassCalc.rules.hasOwnProperty(rule)) {
-                if (ZikulaUsersPassCalc.rules[rule] === true) {
-                    var scoreTmp = ZikulaUsersPassCalc.ruleScores[rule];
-                    var result = ZikulaUsersPassCalc.validationRules[rule].bind(this)(word, scoreTmp);
+            if (ZikulaZAuthPassCalc.rules.hasOwnProperty(rule)) {
+                if (ZikulaZAuthPassCalc.rules[rule] === true) {
+                    var scoreTmp = ZikulaZAuthPassCalc.ruleScores[rule];
+                    var result = ZikulaZAuthPassCalc.validationRules[rule].bind(this)(word, scoreTmp);
                     if (!isNaN(result)) {
                         score.totalscore += result;
                     }
                 }
             }
         }
-        for (var restriction in ZikulaUsersPassCalc.restrictions) {
-            if (ZikulaUsersPassCalc.restrictions.hasOwnProperty(restriction)) {
-                if (typeof ZikulaUsersPassCalc.restrictions[restriction].test === 'function' && !ZikulaUsersPassCalc.restrictions[restriction].test.bind(this)(word)) {
-                    score.messages[restriction] = ZikulaUsersPassCalc.restrictions[restriction].msg || true;
+        for (var restriction in ZikulaZAuthPassCalc.restrictions) {
+            if (ZikulaZAuthPassCalc.restrictions.hasOwnProperty(restriction)) {
+                if (typeof ZikulaZAuthPassCalc.restrictions[restriction].test === 'function' && !ZikulaZAuthPassCalc.restrictions[restriction].test.bind(this)(word)) {
+                    score.messages[restriction] = ZikulaZAuthPassCalc.restrictions[restriction].msg || true;
                 } else {
                     score.messages[restriction] = false;
                 }
@@ -151,7 +151,7 @@ var currentCalculator;
         return score;
     };
 
-    ZikulaUsersPassMeter.init = function(passwordElementId, visualizationElementId, options) {
+    ZikulaZAuthPassMeter.init = function(passwordElementId, visualizationElementId, options) {
         var passwordInput = $('#' + passwordElementId);
         var visualizationDiv = false;
         if ($('#' + visualizationElementId).length > 0) {
@@ -172,9 +172,9 @@ var currentCalculator;
 //             minLength: Zikula.__f('The minimum length for user passwords is %s characters.', options.minLength)
             minLength: 'The minimum length for user passwords is ' + options.minLength + ' characters.'
         }, options.messages);
-        currentCalculator = ZikulaUsersPassCalc.initialize(options);
+        currentCalculator = ZikulaZAuthPassCalc.initialize(options);
         if ($('#' + options.username).length > 0) {
-            ZikulaUsersPassCalc.restrictions.username = {
+            ZikulaZAuthPassCalc.restrictions.username = {
                 test: function(word) {
                     return word ==='' || word != $('#' + options.username).val();
                 },

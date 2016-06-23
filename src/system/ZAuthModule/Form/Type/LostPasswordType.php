@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersModule\Form\AccountType;
+namespace Zikula\ZAuthModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -67,7 +67,7 @@ class LostPasswordType extends AbstractType
 
     public function getBlockPrefix()
     {
-        return 'zikulausersmodule_account_lostpassword';
+        return 'zikulazauthmodule_account_lostpassword';
     }
 
     /**

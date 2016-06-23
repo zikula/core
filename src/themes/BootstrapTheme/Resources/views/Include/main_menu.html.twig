@@ -15,7 +15,7 @@
             {{ showblockposition('topnav') }}
             {% if currentUser.loggedIn %}
                 <div class="btn-group navbar-right navbar-btn">
-                    <a href="{{ path('zikulausersmodule_user_index') }}" class="btn btn-default"><i class="fa fa-user"></i>&nbsp;&nbsp;{{ __('Signed in as') }} {{ currentUser.uname }}</a>
+                    <a href="{{ path('zikulausersmodule_account_menu') }}" class="btn btn-default"><i class="fa fa-user"></i>&nbsp;&nbsp;{{ __('Signed in as') }} {{ currentUser.uname }}</a>
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="caret"></span>
                         <span class="sr-only">{{ __('Toggle Dropdown') }}</span>

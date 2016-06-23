@@ -94,62 +94,9 @@ class ConfigType extends AbstractType
                     new GreaterThanOrEqual(['value' => 1])
                 ]
             ])
-            ->add(UsersConstant::MODVAR_MANAGE_EMAIL_ADDRESS, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
-                'label' => $options['translator']->__('Users module handles e-mail address maintenance'),
-                'required' => false,
-            ])
             /**
              * User Credential Settings
              */
-            ->add(UsersConstant::MODVAR_LOGIN_METHOD, 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $options['translator']->__('Credential required for user log-in'),
-                'alert' => [
-                    $options['translator']->__('Notice: If the \'Credential required for user log-in\' is set to \'E-mail address\' or to \'Either user name or e-mail address\', then the \'New e-mail addresses must be unique\' option below must be checked.') => 'warning',
-                    $options['translator']->__('Notice: If the \'New e-mail addresses must be unique\' option was unchecked at some point, then user accounts with duplicate e-mail addresses might exist in the system. They will experience difficulties logging in with their e-mail address.') => 'warning'
-                ],
-                'choices' => [
-                    $options['translator']->__('User name') => UsersConstant::LOGIN_METHOD_UNAME,
-                    $options['translator']->__('E-mail address') => UsersConstant::LOGIN_METHOD_EMAIL,
-                    $options['translator']->__('Either user name or e-mail address') => UsersConstant::LOGIN_METHOD_ANY
-                ],
-                'choices_as_values' => true,
-                'expanded' => true,
-                'choice_attr' => function () {
-                    return ['class' => 'login-method-input'];
-                },
-                'label_attr' => ['class' => 'radio-inline']
-            ])
-            ->add(UsersConstant::MODVAR_REQUIRE_UNIQUE_EMAIL, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
-                'label' => $options['translator']->__('New e-mail addresses must be unique'),
-                'required' => false,
-                'help' => $options['translator']->__('If checked, then e-mail addresses entered for new registrations and for e-mail address change requests cannot already be in use by another user account or registration.'),
-                'alert' => [
-                    $options['translator']->__('Notice: If the \'New e-mail addresses must be unique\' option was unchecked at some point, then user accounts with duplicate e-mail addresses might exist in the system. They will experience difficulties logging in with their e-mail address.') => 'warning'
-                ]
-            ])
-            ->add(UsersConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
-                'label' => $options['translator']->__('Minimum length for user passwords'),
-                'required' => false,
-                'help' => $options['translator']->__('This affects both passwords created during registration, as well as passwords modified by users or administrators. Enter an integer greater than zero.'),
-                'constraints' => [
-                    new NotBlank(),
-                    new GreaterThanOrEqual(['value' => 3]) // @todo
-                ]
-            ])
-            ->add(UsersConstant::MODVAR_HASH_METHOD, 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $options['translator']->__('Password hashing method'),
-                'help' => $options['translator']->__('The default hashing method is \'SHA256\'.'), //@todo
-                'choices' => [
-                    'SHA1'  => 'sha1',
-                    'SHA256' => 'sha256',
-                    // @todo bcrypt
-                ],
-                'choices_as_values' => true
-            ])
-            ->add(UsersConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
-                'label' => $options['translator']->__('Show password strength meter'),
-                'required' => false,
-            ])
             ->add(UsersConstant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL, 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $options['translator']->__('E-mail address verifications expire in'),
                 'help' => $options['translator']->__('Enter the number of days a user\'s request to change e-mail addresses should be kept while waiting for verification. Enter zero (0) for no expiration.'),
@@ -196,14 +143,6 @@ class ConfigType extends AbstractType
                 'constraints' => [
                     new Type('string')
                 ]
-            ])
-            ->add(UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
-                'label' => $options['translator']->__('Password reminder is enabled'),
-                'required' => false,
-            ])
-            ->add(UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
-                'label' => $options['translator']->__('Password reminder is mandatory'),
-                'required' => false,
             ])
             ->add(UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $options['translator']->__('User registration is moderated'),
@@ -343,10 +282,6 @@ class ConfigType extends AbstractType
              */
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
                 $data = $event->getData();
-                // if Login method can use email, then require unique email.
-                if ($data[UsersConstant::MODVAR_LOGIN_METHOD] != UsersConstant::LOGIN_METHOD_UNAME) {
-                    $data[UsersConstant::MODVAR_REQUIRE_UNIQUE_EMAIL] = true;
-                }
                 // clear anti-spam answer if there is no question
                 if (empty($data[UsersConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION])) {
                     $data[UsersConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER] = '';

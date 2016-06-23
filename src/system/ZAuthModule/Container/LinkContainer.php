@@ -5,7 +5,10 @@ namespace Zikula\ZAuthModule\Container;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
+use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 
 class LinkContainer implements LinkContainerInterface
 {
@@ -23,17 +26,44 @@ class LinkContainer implements LinkContainerInterface
     private $permissionApi;
 
     /**
+     * @var VariableApi
+     */
+    private $variableApi;
+
+    /**
+     * @var CurrentUserApi
+     */
+    private $currentUser;
+
+    /**
+     * @var AuthenticationMappingRepositoryInterface
+     */
+    private $mappingRepository;
+
+    /**
      * constructor.
      *
      * @param TranslatorInterface $translator
      * @param RouterInterface $router
      * @param PermissionApi $permissionApi
+     * @param VariableApi $variableApi
+     * @param CurrentUserApi $currentUserApi
+     * @param AuthenticationMappingRepositoryInterface $mappingRepository
      */
-    public function __construct(TranslatorInterface $translator, RouterInterface $router, PermissionApi $permissionApi)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        RouterInterface $router,
+        PermissionApi $permissionApi,
+        VariableApi $variableApi,
+        CurrentUserApi $currentUserApi,
+        AuthenticationMappingRepositoryInterface $mappingRepository
+    ) {
         $this->translator = $translator;
         $this->router = $router;
         $this->permissionApi = $permissionApi;
+        $this->variableApi = $variableApi;
+        $this->currentUser = $currentUserApi;
+        $this->mappingRepository = $mappingRepository;
     }
 
     /**
@@ -67,13 +97,55 @@ class LinkContainer implements LinkContainerInterface
                 'text' => $this->translator->__('Mapping list'),
                 'icon' => 'list'
             ];
+            $links[] = [
+                'url' => $this->router->generate('zikulazauthmodule_config_config'),
+                'text' => $this->translator->__('Settings'),
+                'icon' => 'wrench'
+            ];
         }
 
         return $links;
     }
 
+    private function getUser()
+    {
+        $links = $this->getAccount();
+        array_unshift($links, [
+            'url'   => $this->router->generate('zikulausersmodule_account_menu'),
+            'text' => $this->translator->__('Menu'),
+            'icon'  => 'cubes'
+        ]);
+
+        return $links;
+    }
+
+    private function getAccount()
+    {
+        $links = [];
+        if (!$this->currentUser->isLoggedIn()) {
+            return $links;
+        }
+
+        $userMapping = $this->mappingRepository->findOneBy(['uid' => $this->currentUser->get('uid')]);
+        if (isset($userMapping)) {
+            $links[] = [
+                'url'   => $this->router->generate('zikulazauthmodule_account_changepassword'),
+                'text' => $this->translator->__('Change password'),
+                'icon'  => 'key text-success'
+            ];
+        }
+
+        $links[] = [
+            'url'   => $this->router->generate('zikulazauthmodule_account_changeemail'),
+            'text' => $this->translator->__('Change e-mail address'),
+            'icon'  => 'at'
+        ];
+
+        return $links;
+    }
+
     /**
-     * set the BundleName as required buy the interface
+     * set the BundleName as required by the interface
      *
      * @return string
      */

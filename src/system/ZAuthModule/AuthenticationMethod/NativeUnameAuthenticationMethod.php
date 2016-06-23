@@ -16,7 +16,7 @@ use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationM
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
-use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMethodInterface
 {
@@ -163,7 +163,7 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
                 return $mapping;
             }
         } elseif ('native_email' == $mapping->getMethod()) {
-            $mapping->setMethod(UsersConstant::AUTHENTICATION_METHOD_EITHER);
+            $mapping->setMethod(ZAuthConstant::AUTHENTICATION_METHOD_EITHER);
             $this->mappingRepository->persistAndFlush($mapping);
         }
 

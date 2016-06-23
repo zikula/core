@@ -28,11 +28,11 @@
     </div>
 {{ form_end(form) }}
 {% if modvars.use_password_strength_meter and form.pass|default %}
-{{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/Zikula.Users.PassMeter.js')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaZAuthModule:js/Zikula.ZAuth.PassMeter.js')) }}
 <script type="text/javascript">
     (function($) {
         $(document).ready(function() {
-            ZikulaUsersPassMeter.init('{{ form.pass.vars.id }}_first', '{{ form.vars.id }}_passmeter', {
+            ZikulaZAuthPassMeter.init('{{ form.pass.vars.id }}_first', '{{ form.vars.id }}_passmeter', {
                 username: '{{ form.uname.vars.id }}',
                 minLength: '{{ modvars.minpass }}'
             });

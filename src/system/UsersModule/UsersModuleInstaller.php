@@ -13,6 +13,7 @@ namespace Zikula\UsersModule;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
  * Class UsersModuleInstaller
@@ -105,12 +106,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
                 $modvarsToConvertToBool = [
                     UsersConstant::MODVAR_GRAVATARS_ENABLED,
                     UsersConstant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS,
-                    UsersConstant::MODVAR_MANAGE_EMAIL_ADDRESS,
-                    UsersConstant::MODVAR_REQUIRE_UNIQUE_EMAIL,
-                    UsersConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED,
                     UsersConstant::MODVAR_REGISTRATION_ENABLED,
-                    UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED,
-                    UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY,
                     UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED,
                     UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN,
                     UsersConstant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS,
@@ -125,6 +121,8 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             case '2.2.8':
                 $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'authenticationMethodsStatus', ['native_uname' => true]);
             case '2.2.9':
+                // @todo expire all sessions so everyone has to login again (to force migration)
+                // @todo migrate modvar values to ZAuth (see $this->getMigratedModVarNames())
                 // current version
         }
 
@@ -169,18 +167,11 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             UsersConstant::MODVAR_EXPIRE_DAYS_REGISTRATION              => UsersConstant::DEFAULT_EXPIRE_DAYS_REGISTRATION,
             UsersConstant::MODVAR_GRAVATARS_ENABLED                     => UsersConstant::DEFAULT_GRAVATARS_ENABLED,
             UsersConstant::MODVAR_GRAVATAR_IMAGE                        => UsersConstant::DEFAULT_GRAVATAR_IMAGE,
-            UsersConstant::MODVAR_HASH_METHOD                           => UsersConstant::DEFAULT_HASH_METHOD,
             UsersConstant::MODVAR_ITEMS_PER_PAGE                        => UsersConstant::DEFAULT_ITEMS_PER_PAGE,
             UsersConstant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS         => UsersConstant::DEFAULT_LOGIN_DISPLAY_APPROVAL_STATUS,
             UsersConstant::MODVAR_LOGIN_DISPLAY_DELETE_STATUS           => UsersConstant::DEFAULT_LOGIN_DISPLAY_DELETE_STATUS,
             UsersConstant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS         => UsersConstant::DEFAULT_LOGIN_DISPLAY_INACTIVE_STATUS,
             UsersConstant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS           => UsersConstant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS,
-            UsersConstant::MODVAR_LOGIN_METHOD                          => UsersConstant::DEFAULT_LOGIN_METHOD,
-            UsersConstant::MODVAR_MANAGE_EMAIL_ADDRESS                  => UsersConstant::DEFAULT_MANAGE_EMAIL_ADDRESS,
-            UsersConstant::MODVAR_PASSWORD_MINIMUM_LENGTH               => UsersConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH,
-            UsersConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED       => UsersConstant::DEFAULT_PASSWORD_STRENGTH_METER_ENABLED,
-            UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED             => UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED,
-            UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY           => UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY,
             UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL => '',
             UsersConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION        => '',
             UsersConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER          => '',
@@ -193,7 +184,6 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             UsersConstant::MODVAR_REGISTRATION_ILLEGAL_DOMAINS          => '',
             UsersConstant::MODVAR_REGISTRATION_ILLEGAL_UNAMES           => $this->__(/* illegal username list */'root, webmaster, admin, administrator, nobody, anonymous, username'),
             UsersConstant::MODVAR_REGISTRATION_VERIFICATION_MODE        => UsersConstant::DEFAULT_REGISTRATION_VERIFICATION_MODE,
-            UsersConstant::MODVAR_REQUIRE_UNIQUE_EMAIL                  => UsersConstant::DEFAULT_REQUIRE_UNIQUE_EMAIL,
         ];
     }
 
@@ -271,5 +261,20 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             $stmt = $connection->prepare($sql);
             $stmt->execute();
         }
+    }
+
+    /**
+     * These modvar names used to have UsersConstant values, but have been moved to ZAuthConstant and maintain their actual values.
+     * @return array
+     */
+    private function getMigratedModVarNames()
+    {
+        return [
+            ZAuthConstant::MODVAR_HASH_METHOD,
+            ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH ,
+            ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED, // convert to bool
+            ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED, // convert to bool
+            ZAuthConstant::MODVAR_PASSWORD_REMINDER_MANDATORY, // convert to bool
+        ];
     }
 }

@@ -74,8 +74,8 @@
     </div>
 </div>
 {{ adminFooter() }}
-{% if getModVar('ZikulaUsersModule' ,'use_password_strength_meter') %}
-    {{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/Zikula.Users.PassMeter.js')) }}
+{% if getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED')) %}
+    {{ pageAddAsset('javascript', zasset('@ZikulaZAuthModule:js/Zikula.ZAuth.PassMeter.js')) }}
     <script type="text/javascript">
         (function($) {
             $(document).ready(function() {
@@ -98,7 +98,7 @@
                 };
                 setPassAlert.addClass('collapse in');
 
-                ZikulaUsersPassMeter.init(passFirst.attr('id'), '{{ form.vars.id }}_passmeter', {
+                ZikulaZAuthPassMeter.init(passFirst.attr('id'), '{{ form.vars.id }}_passmeter', {
                     username: '{{ form.user.uname.vars.id }}',
                     minLength: '{{ getModVar('ZikulaUsersModule', 'minpass') }}'
                 });
