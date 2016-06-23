@@ -6,10 +6,7 @@
 
     <parameters>
         <parameter key="zikula_users_module.internal.authentication_method_collector.class">Zikula\UsersModule\Collector\AuthenticationMethodCollector</parameter>
-        <!--<parameter key="zikula_users_module.authentication_method.native_uname.class">Zikula\UsersModule\AuthenticationMethod\NativeUnameAuthenticationMethod</parameter>-->
-        <!--<parameter key="zikula_users_module.form.authentication_method_type.uname_type.class">Zikula\UsersModule\Form\AuthenticationMethodType\UnameType</parameter>-->
         <parameter key="zikula_users_module.form.default_registration_type.class">Zikula\UsersModule\Form\Type\DefaultRegistrationType</parameter>
-        <!--<parameter key="zikula_users_module.form.registration_type.class">Zikula\UsersModule\Form\Type\RegistrationType</parameter>-->
     </parameters>
 
     <services>
@@ -17,29 +14,11 @@
             <argument type="service" id="zikula_extensions_module.api.variable" />
         </service>
 
-        <!--<service id="zikula_users_module.authentication_method.native_uname" class="%zikula_users_module.authentication_method.native_uname.class%">-->
-            <!--<argument type="service" id="zikula_users_module.user_repository" />-->
-            <!--<argument type="service" id="zikula_users_module.authentication_mapping_repository" />-->
-            <!--<argument type="service" id="session" />-->
-            <!--<argument type="service" id="translator.default" />-->
-            <!--<tag name="zikula.authentication_method" alias="native_uname" />-->
-        <!--</service>-->
-
-        <!--<service id="zikula_users_module.form.authentication_method_type.uname_type" class="%zikula_users_module.form.authentication_method_type.uname_type.class%">-->
-            <!--<argument type="service" id="translator.default" />-->
-            <!--<tag alias="Zikula\UsersModule\Form\AuthenticationMethodType\UnameType" name="form.type"/>-->
-        <!--</service>-->
-
         <service id="zikula_users_module.form.default_registration_type" class="%zikula_users_module.form.default_registration_type.class%">
             <argument type="service" id="translator.default" />
             <tag alias="Zikula\UsersModule\Form\Type\DefaultRegistrationType" name="form.type"/>
         </service>
 
-        <!--<service id="zikula_users_module.form.registration_type" class="%zikula_users_module.form.registration_type.class%">-->
-            <!--<argument type="service" id="translator.default" />-->
-            <!--<argument type="service" id="zikula_extensions_module.api.variable" />-->
-            <!--<tag alias="Zikula\UsersModule\Form\Type\RegistrationType" name="form.type"/>-->
-        <!--</service>-->
     </services>
 </container>
 
