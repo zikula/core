@@ -13,28 +13,18 @@ namespace Zikula\UsersModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotNull;
-use Zikula\ZAuthModule\ZAuthConstant;
+use Zikula\UsersModule\Validator\Constraints\ValidEmail;
+use Zikula\UsersModule\Validator\Constraints\ValidUname;
 
 class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $passwordConstraints = $options['allowNullPassword'] ? [] : [new NotNull()];
         $builder
             ->add('uname', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $options['translator']->__('User name'),
                 'help' => $options['translator']->__('User names can contain letters, numbers, underscores, periods, spaces and/or dashes.'),
-                'attr' => [
-                    'class' => 'to-lower-case'
-                ]
-            ])
-            ->add('pass', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
-                'type' => 'Symfony\Component\Form\Extension\Core\Type\PasswordType',
-                'first_options' => ['label' => $options['translator']->__('Password')],
-                'second_options' => ['label' => $options['translator']->__('Repeat Password')],
-                'invalid_message' => $options['translator']->__('The passwords must match!'),
-                'constraints' => $passwordConstraints
+                'constraints' => [new ValidUname()]
             ])
             ->add('email', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
                 'type' => 'Symfony\Component\Form\Extension\Core\Type\EmailType',
@@ -44,20 +34,12 @@ class UserType extends AbstractType
                 ],
                 'second_options' => ['label' => $options['translator']->__('Repeat Email')],
                 'invalid_message' => $options['translator']->__('The emails  must match!'),
+                'constraints' => [new ValidEmail()]
             ])
             // theme - deprecated
             // time zone
             // locale i18n
         ;
-        if ($options['passwordReminderEnabled']) {
-            $builder
-                ->add('passreminder', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                    'required' => $options['passwordReminderMandatory'],
-                    'help' => $options['translator']->__('Enter a word or a phrase that will remind you of your password.'),
-                    'alert' => [$options['translator']->__('Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!') => 'info'],
-                ])
-            ;
-        }
     }
 
     public function getBlockPrefix()
@@ -71,12 +53,7 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Zikula\UsersModule\Entity\UserEntity',
-            'inherit_data' => true,
             'translator' => null,
-            'allowNullPassword' => false,
-            'passwordReminderEnabled' => ZAuthConstant::DEFAULT_PASSWORD_REMINDER_ENABLED,
-            'passwordReminderMandatory' => ZAuthConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY
         ]);
     }
 }

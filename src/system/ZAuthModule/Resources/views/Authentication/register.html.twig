@@ -42,7 +42,7 @@
     {% if authentication_method.modname == 'ZikulaUsersModule' %}
     <fieldset>
         <legend>{{ __('Set a password') }}</legend>
-        {{ form_row(form.user.pass, {'help': __f('The minimum length for user passwords is %sub% characters.', {"%sub%": modvars.minpass})}) }}
+        {{ form_row(form.pass, {'help': __f('The minimum length for user passwords is %sub% characters.', {"%sub%": modvars.minpass})}) }}
         <div id="{{ form.vars.id }}_passmeter" class="col-sm-offset-3 col-sm-9"></div>
         {% if modvars.password_reminder_enabled is defined and modvars.password_reminder_enabled %}
             {{ form_row(form.user.passreminder) }}
@@ -92,7 +92,7 @@
 <script type="text/javascript">
     (function($) {
         $(document).ready(function() {
-            ZikulaUsersPassMeter.init('{{ form.user.pass.vars.id }}_first', '{{ form.vars.id }}_passmeter', {
+            ZikulaUsersPassMeter.init('{{ form.pass.vars.id }}_first', '{{ form.vars.id }}_passmeter', {
                 username: '{{ form.user.uname.vars.id }}',
                 minLength: '{{ modvars.minpass }}'
             });

@@ -150,12 +150,13 @@ class UserAdministrationController extends AbstractController
         if ($form->isValid() && !$validators->hasErrors()) {
             if ($form->get('submit')->isClicked()) {
                 $user = $form->getData();
+                $passToSend = $form['sendpass']->getData() ? $user->getPass() : '';
                 $registrationErrors = $this->get('zikula_users_module.helper.registration_helper')->registerNewUser(
                     $user,
                     false,
                     $form['usernotification']->getData(),
                     $form['adminnotification']->getData(),
-                    $form['sendpass']->getData()
+                    $passToSend
                 );
                 if (empty($registrationErrors)) {
                     $event = new GenericEvent($form->getData(), [], new ValidationProviders());

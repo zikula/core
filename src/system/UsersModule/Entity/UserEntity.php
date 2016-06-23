@@ -64,7 +64,6 @@ class UserEntity extends EntityAccess
      * The hash algorithm is stored as a numeric code in the hash_method field. This field may be blank in instances
      * where the user registered with an alternative authentication module (e.g., OpenID) and did not also establish a password for his web site account.
      *
-     * @ZikulaAssert\ValidPassword()
      * @ORM\Column(type="string", length=138)
      */
     private $pass;
@@ -74,7 +73,6 @@ class UserEntity extends EntityAccess
      *
      * This field may be blank if pass is blank.
      *
-     * @ZikulaAssert\ValidPasswordReminder()
      * @ORM\Column(type="string", length=255)
      */
     private $passreminder;

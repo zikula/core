@@ -13,10 +13,14 @@ namespace Zikula\ZAuthModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotNull;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Validator\Constraints\ValidAntiSpamAnswer;
+use Zikula\UsersModule\Validator\Constraints\ValidPassword;
+use Zikula\UsersModule\Validator\Constraints\ValidPasswordReminder;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 class RegistrationType extends AbstractType
 {
@@ -28,7 +32,12 @@ class RegistrationType extends AbstractType
     /**
      * @var array
      */
-    private $modVars;
+    private $zAuthModVars;
+
+    /**
+     * @var array
+     */
+    private $usersModVars;
 
     /**
      * RegistrationType constructor.
@@ -38,7 +47,8 @@ class RegistrationType extends AbstractType
     public function __construct(TranslatorInterface $translator, VariableApi $variableApi)
     {
         $this->translator = $translator;
-        $this->modVars = $variableApi->getAll('ZikulaUsersModule');
+        $this->usersModVars = $variableApi->getAll('ZikulaUsersModule');
+        $this->zAuthModVars = $variableApi->getAll('ZikulaZAuthModule');
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -46,8 +56,13 @@ class RegistrationType extends AbstractType
         $builder
             ->add('user', 'Zikula\UsersModule\Form\Type\UserType', [
                 'translator' => $this->translator,
-                'passwordReminderEnabled' => $options['passwordReminderEnabled'],
-                'passwordReminderMandatory' => $options['passwordReminderMandatory']
+            ])
+            ->add('pass', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
+                'type' => 'Symfony\Component\Form\Extension\Core\Type\PasswordType',
+                'first_options' => ['label' => $this->translator->__('Password')],
+                'second_options' => ['label' => $this->translator->__('Repeat Password')],
+                'invalid_message' => $this->translator->__('The passwords must match!'),
+                'constraints' => [new ValidPassword()]
             ])
             ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'label' => $this->translator->__('Save'),
@@ -65,8 +80,15 @@ class RegistrationType extends AbstractType
                 'attr' => ['class' => 'btn btn-primary']
             ])
         ;
-        if (!$options['includeEmail']) {
-            $builder->get('user')->remove('email');
+        if ($options['passwordReminderEnabled']) {
+            $builder
+                ->add('passreminder', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+                    'required' => $options['passwordReminderMandatory'],
+                    'constraints' => [new ValidPasswordReminder()],
+                    'help' => $this->translator->__('Enter a word or a phrase that will remind you of your password.'),
+                    'alert' => [$this->translator->__('Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!') => 'info'],
+                ])
+            ;
         }
         if (!empty($options['antiSpamQuestion'])) {
             $builder->add('antispamanswer', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
@@ -89,10 +111,9 @@ class RegistrationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'passwordReminderEnabled' => $this->modVars[UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED],
-            'passwordReminderMandatory' => $this->modVars[UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY],
-            'antiSpamQuestion' => $this->modVars[UsersConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION],
-            'includeEmail' => true,
+            'passwordReminderEnabled' => $this->zAuthModVars[ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED],
+            'passwordReminderMandatory' => $this->zAuthModVars[ZAuthConstant::MODVAR_PASSWORD_REMINDER_MANDATORY],
+            'antiSpamQuestion' => $this->usersModVars[UsersConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION],
         ]);
     }
 }

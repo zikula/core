@@ -15,7 +15,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\TranslatorInterface;
 
-class UnameType extends AbstractType
+class UnameLoginType extends AbstractType
 {
     /**
      * @var TranslatorInterface

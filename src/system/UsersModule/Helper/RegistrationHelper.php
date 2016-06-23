@@ -115,11 +115,11 @@ class RegistrationHelper
      * @param boolean $userMustVerify
      * @param boolean $userNotification
      * @param boolean $adminNotification
-     * @param boolean $sendPassword
-     *
+     * @param string $passwordCreatedForUser empty if do not wish to send
      * @return array If the creation was unsuccessful, an array of errors is returned.
+     *
      */
-    public function registerNewUser(UserEntity $userEntity, $userMustVerify = false, $userNotification = true, $adminNotification = true, $sendPassword = false)
+    public function registerNewUser(UserEntity $userEntity, $userMustVerify = false, $userNotification = true, $adminNotification = true, $passwordCreatedForUser = '')
     {
         $isAdminOrSubAdmin = $this->currentUserIsAdminOrSubAdmin();
 
@@ -137,10 +137,10 @@ class RegistrationHelper
         }
 
         // Function called by admin adding user/reg, administrator created the password; no approval needed, so must need verification.
-        $passwordCreatedForUser = $sendPassword ? $userEntity->getPass() : '';
+//        $passwordCreatedForUser = $sendPassword ? $userEntity->getPass() : '';
         // remove pass so it is not set in the UserEntity at all (now handled by authenticationMethod).
-        $userEntity->setPassreminder('');
-        $userEntity->setPass('');
+//        $userEntity->setPassreminder('');
+//        $userEntity->setPass('');
 //
 //        if (('' != $userEntity->getPass()) && (UsersConstant::PWD_NO_USERS_AUTHENTICATION != $userEntity->getPass())) {
 //            $hashedPassword = \UserUtil::getHashedPassword($userEntity->getPass());
