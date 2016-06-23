@@ -10,7 +10,6 @@
 
 namespace Zikula\ZAuthModule;
 
-
 class ZAuthConstant
 {
     /**

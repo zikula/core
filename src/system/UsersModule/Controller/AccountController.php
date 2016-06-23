@@ -14,13 +14,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\Exception\FatalErrorException;
-use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\UserEntity;
-use Zikula\UsersModule\Entity\UserVerificationEntity;
 
 /**
  * @Route("/account")
