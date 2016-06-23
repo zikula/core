@@ -17,7 +17,6 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 class ValidPasswordReminderValidator extends ConstraintValidator
