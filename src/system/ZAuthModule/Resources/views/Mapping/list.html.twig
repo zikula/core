@@ -1,0 +1,15 @@
+{{ adminHeader() }}
+
+<h2><i class="fa fa-list"></i>{{ __('Mappings list') }}</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr><th>{{ __('Method') }}</th><th>{{ __('Uid') }}</th><th>{{ __('Uname') }}</th><th>{{ __('Email') }}</th></tr>
+    </thead>
+    <tbody>
+        {% for mapping in mappings %}
+            <tr><td>{{ mapping.method }}</td><td>{{ mapping.uid }}</td><td>{{ mapping.uname }}</td><td>{{ mapping.email }}</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{{ adminFooter() }}
