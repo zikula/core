@@ -23,7 +23,6 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
     {
         $this->schemaTool->create($this->entities);
         $this->setVars($this->getDefaultModvars());
-        // @todo migrate modvar settings from Users
 
         return true;
     }
