@@ -1,0 +1,31 @@
+{% form_theme form with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ polyfill() }}
+<h2>{{ __('User Login') }}</h2>
+
+<div class="well">
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_row(form.uname) }}
+    {{ form_row(form.pass) }}
+    {{ form_row(form.rememberme) }}
+
+    {# every login form must implement this event and hook call #}
+    <div id="zikulausersmodule-login-event-display">
+        {% set eventDatas = dispatchEvent(constant('Zikula\\UsersModule\\AccessEvents::LOGIN_FORM')) %}
+        {% for eventData in eventDatas %}
+            {{ eventData }}
+        {% endfor %}
+    </div>
+    <div id="zikulausersmodule-login-hooks">
+        {% set hooks = notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::LOGIN_FORM')) %}
+        {% for hook in hooks %}
+            {{ hook }}
+        {% endfor %}
+    </div>
+
+    {{ form_row(form.submit) }}
+    {{ form_end(form) }}
+</div>
