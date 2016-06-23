@@ -94,7 +94,7 @@ class AjaxInstallerStage implements StageInterface
                 self::SUCCESS => __('Zikula Users Module installed'),
                 self::FAIL => __('There was an error installing Zikula Users Module')
             ],
-            8 => [
+            9 => [
                 self::NAME => 'zauth',
                 self::PRE => __('Zikula ZAuth Module'),
                 self::DURING => __('Installing Zikula ZAuth Module'),
