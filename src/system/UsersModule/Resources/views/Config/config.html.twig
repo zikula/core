@@ -28,15 +28,9 @@
             {{ form_row(form[constant('MODVAR_ACCOUNT_PAGE_IMAGE_PATH', UC)]) }}
             {{ form_row(form[constant('MODVAR_ACCOUNT_ITEMS_PER_PAGE', UC)]) }}
             {{ form_row(form[constant('MODVAR_ACCOUNT_ITEMS_PER_ROW', UC)]) }}
-            {{ form_row(form[constant('MODVAR_MANAGE_EMAIL_ADDRESS', UC)]) }}
         </fieldset>
         <fieldset>
             <legend>{{ __('User Credential Settings') }}</legend>
-            {{ form_row(form[constant('MODVAR_LOGIN_METHOD', UC)]) }}
-            {{ form_row(form[constant('MODVAR_REQUIRE_UNIQUE_EMAIL', UC)]) }}
-            {{ form_row(form[constant('MODVAR_PASSWORD_MINIMUM_LENGTH', UC)]) }}
-            {{ form_row(form[constant('MODVAR_HASH_METHOD', UC)]) }}
-            {{ form_row(form[constant('MODVAR_PASSWORD_STRENGTH_METER_ENABLED', UC)]) }}
             {{ form_row(form[constant('MODVAR_EXPIRE_DAYS_CHANGE_EMAIL', UC)]) }}
             {{ form_row(form[constant('MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD', UC)]) }}
         </fieldset>
@@ -47,8 +41,6 @@
                 {{ form_row(form[constant('MODVAR_REGISTRATION_DISABLED_REASON', UC)]) }}
             </div>
             {{ form_row(form[constant('MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL', UC)]) }}
-            {{ form_row(form[constant('MODVAR_PASSWORD_REMINDER_ENABLED', UC)]) }}
-            {{ form_row(form[constant('MODVAR_PASSWORD_REMINDER_MANDATORY', UC)]) }}
             {{ form_row(form[constant('MODVAR_REGISTRATION_APPROVAL_REQUIRED', UC)]) }}
             {{ form_row(form[constant('MODVAR_REGISTRATION_VERIFICATION_MODE', UC)]) }}
             <div id="{{ form[constant('MODVAR_REGISTRATION_AUTO_LOGIN', UC)].vars.id }}_wrap" class="collapse in">
@@ -106,19 +98,6 @@
                 autoLoginWrap.collapse('show');
             } else {
                 autoLoginWrap.collapse('hide');
-            }
-        }
-        /**
-         * check requireUniqueEmail if login-type is allowed to use email.
-         */
-        function toggleLoginItemsDisplay()
-        {
-            var requireUniqueEmail = $('#{{ form[constant('MODVAR_REQUIRE_UNIQUE_EMAIL', UC)].vars.id }}');
-            if ($('.login-method-input:checked').val() > 0) {
-                // value is not 'username', require unique email and disable input
-                requireUniqueEmail.prop('checked', true).prop('disabled', true);
-            } else {
-                requireUniqueEmail.prop('disabled', false);
             }
         }
         /**

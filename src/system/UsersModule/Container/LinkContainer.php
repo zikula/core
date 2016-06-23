@@ -78,7 +78,7 @@ class LinkContainer implements LinkContainerInterface
     }
 
     /**
-     * set the BundleName as required buy the interface
+     * set the BundleName as required by the interface
      *
      * @return string
      */
@@ -239,34 +239,13 @@ class LinkContainer implements LinkContainerInterface
     private function getAccount()
     {
         $links = [];
-        if (!\UserUtil::isLoggedIn()) {
+        if (!$this->currentUser->isLoggedIn()) {
             return $links;
-        }
-
-        // Show change password action only if the account record contains a password, and the password is not the
-        // special marker for an account created without a Users module authentication password.
-        $pass = $this->currentUser->get('pass');
-        if (!empty($pass) && ($pass != UsersConstant::PWD_NO_USERS_AUTHENTICATION)) {
-            // show edit password link
-            $links[1] = [
-                'url'   => $this->router->generate('zikulausersmodule_user_changepassword'),
-                'text' => $this->translator->__('Password changer'),
-                'icon'  => 'key text-success'
-            ];
-        }
-
-        // show edit email link if configured to manage email address
-        if ($this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_MANAGE_EMAIL_ADDRESS, UsersConstant::DEFAULT_MANAGE_EMAIL_ADDRESS)) {
-            $links[2] = [
-                'url'   => $this->router->generate('zikulausersmodule_account_changeemail'),
-                'text' => $this->translator->__('E-mail address manager'),
-                'icon'  => 'at'
-            ];
         }
 
         if ($this->variableApi->get(VariableApi::CONFIG, 'multilingual')) {
             if (count(\ZLanguage::getInstalledLanguages()) > 1) {
-                $links[3] = [
+                $links[] = [
                     'url'   => $this->router->generate('zikulausersmodule_account_changelanguage'),
                     'text' => $this->translator->__('Language switcher'),
                     'icon'  => 'language'
@@ -274,7 +253,7 @@ class LinkContainer implements LinkContainerInterface
             }
         }
 
-        $links[4] = [
+        $links[] = [
             'url'   => $this->router->generate('zikulausersmodule_user_logout'),
             'text' => $this->translator->__('Log out'),
             'icon'  => 'power-off text-danger'

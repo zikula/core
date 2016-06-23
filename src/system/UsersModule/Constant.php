@@ -199,14 +199,7 @@ namespace Zikula\UsersModule
          * Default value for the file name containing the generic gravatar image.
          */
         const DEFAULT_GRAVATAR_IMAGE = 'gravatar.jpg';
-        /**
-         * Module variable key for the hash method used for hashing passwords.
-         */
-        const MODVAR_HASH_METHOD = 'hash_method';
-        /**
-         * Default value for the hash method used for hashing passwords.
-         */
-        const DEFAULT_HASH_METHOD = 'sha256';
+
         /**
          * Module variable key for the number of items (e.g., user account records) to display per list "page."
          */
@@ -247,58 +240,7 @@ namespace Zikula\UsersModule
          * Default value for the flag indicating whether the pending e-mail verification status is displayed on a failed log-in attempt.
          */
         const DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS = false;
-        /**
-         * Module variable key for the enabled log-in option (for the Users module).
-         */
-        const MODVAR_LOGIN_METHOD = 'loginviaoption';
-        /**
-         * Default value for the enabled log-in option (for the Users module).
-         */
-        const DEFAULT_LOGIN_METHOD = self::LOGIN_METHOD_UNAME;
-        /**
-         * Default value for the flag indicating whether WCAG-compliant log-ins should be used (redirect), or not (meta refresh).
-         */
-        const DEFAULT_LOGIN_WCAG_COMPLIANT = true;
-        /**
-         * Module variable key for the flag indicating whether the Users module manages the user's e-mail address or not.
-         */
-        const MODVAR_MANAGE_EMAIL_ADDRESS = 'changeemail';
-        /**
-         * Default value for the flag indicating whether the Users module manages the user's e-mail address or not.
-         */
-        const DEFAULT_MANAGE_EMAIL_ADDRESS = true;
-        /**
-         * Module variable key for the minimum password length.
-         */
-        const MODVAR_PASSWORD_MINIMUM_LENGTH = 'minpass';
-        /**
-         * Default value for the minimum password length.
-         */
-        const DEFAULT_PASSWORD_MINIMUM_LENGTH = 5;
-        /**
-         * Module variable key for the flag indicating whether the password strength meter should be enabled or not.
-         */
-        const MODVAR_PASSWORD_STRENGTH_METER_ENABLED = 'use_password_strength_meter';
-        /**
-         * Default value for the flag indicating whether the password strength meter should be enabled or not.
-         */
-        const DEFAULT_PASSWORD_STRENGTH_METER_ENABLED = false;
-        /**
-         * Module variable key for the flag indicating whether the password reminder should be enabled.
-         */
-        const MODVAR_PASSWORD_REMINDER_ENABLED = 'password_reminder_enabled';
-        /**
-         * Default value for the flag indicating whether the password reminder should be enabled.
-         */
-        const DEFAULT_PASSWORD_REMINDER_ENABLED = false;
-        /**
-         * Module variable key for the flag indicating whether the password reminder should be mandatory or not.
-         */
-        const MODVAR_PASSWORD_REMINDER_MANDATORY = 'password_reminder_mandatory';
-        /**
-         * Default value for the flag indicating whether the password reminder should be mandatory or not.
-         */
-        const DEFAULT_PASSWORD_REMINDER_MANDATORY = true;
+
         /**
          * Module variable key for the admin notification e-mail address.
          */
@@ -376,14 +318,7 @@ namespace Zikula\UsersModule
          * Default value for the flag indicating whether newly registered e-mail addresses must be verified or not.
          */
         const DEFAULT_REGISTRATION_VERIFICATION_MODE = self::VERIFY_USERPWD;
-        /**
-         * Module variable key for the flag indicating whether newly registered e-mail addresses must be unique within the system or not.
-         */
-        const MODVAR_REQUIRE_UNIQUE_EMAIL = 'reg_uniemail';
-        /**
-         * Default value for the flag indicating whether newly registered e-mail addresses must be unique within the system or not.
-         */
-        const DEFAULT_REQUIRE_UNIQUE_EMAIL = true;
+
         /**
          * The PCRE regular expression fragment used to validate user names.
          * 17 June 2016 - CAH - As of ZikulaUsersModule 3.0, spaces are allowed and the field is not restricted to lowercase
@@ -397,10 +332,5 @@ namespace Zikula\UsersModule
          * The PCRE regular expression fragment used to validate e-mail address domains.
          */
         const EMAIL_DOMAIN_VALIDATION_PATTERN = '(?:[^\\s\\000-\\037\\177\\(\\)<>@,;:\\\\"\\[\\]]\\.?)+\\.[a-z]{2,6}';
-
-        /**
-         * The string identifying that a user can user either the native_uname or native_email authentication methods.
-         */
-        const AUTHENTICATION_METHOD_EITHER = 'native_either';
     }
 }
