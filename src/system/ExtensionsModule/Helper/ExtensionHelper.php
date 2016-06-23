@@ -265,7 +265,8 @@ class ExtensionHelper
     {
         $osDir = \DataUtil::formatForOS($extension->getDirectory());
         $scanner = new Scanner();
-        $directory = $extension->getName() == 'ZikulaPageLockModule' ? 'system' : 'modules';
+        $systemModules = ['ZikulaZAuthModule', 'ZikulaPageLockModule'];
+        $directory = in_array($extension->getName(), $systemModules) ? 'system' : 'modules';
         $scanner->scan(["$directory/$osDir"], 1);
         $modules = $scanner->getModulesMetaData(true);
         /** @var $moduleMetaData \Zikula\Bundle\CoreBundle\Bundle\MetaData */

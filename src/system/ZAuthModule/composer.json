@@ -1,0 +1,33 @@
+{
+    "name": "zikula/zauth-module",
+    "version": "1.0.0-beta",
+    "description": "Provide native zikula authentication.",
+    "type": "zikula-module",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Zikula Team",
+            "homepage": "http://zikula.org/"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Zikula\\ZAuthModule\\": "" }
+    },
+    "require": {
+        "php": ">5.4.1"
+    },
+    "extra": {
+        "zikula": {
+            "core-compatibility": ">=1.4.3",
+            "class": "Zikula\\ZAuthModule\\ZikulaZAuthModule",
+            "displayname": "ZAuth",
+            "capabilities": {
+                "admin": {"route": "zikulazauthmodule_mapping_list"}
+            },
+            "url": "zauth",
+            "securityschema": {
+                "ZikulaZAuthModule::": "::"
+            }
+        }
+    }
+}

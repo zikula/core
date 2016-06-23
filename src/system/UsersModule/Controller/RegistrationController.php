@@ -231,7 +231,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $userEntity = $this->get('zikula_users_module.user_repository')->find($reginfo['uid']);
+            $userEntity = $this->get('zikula_users_module.user_repository')->findOneBy(['uname' => $data['uname']]);
             if (isset($data['pass'])) {
                 $userEntity->setPass($data['pass']); // temp set to unhashed - will be hashed in registerNewUser() method
             }
@@ -251,13 +251,7 @@ class RegistrationController extends AbstractController
                     }
                     break;
                 case UsersConstant::ACTIVATED_ACTIVE:
-                    if ($userEntity->getPass() != UsersConstant::PWD_NO_USERS_AUTHENTICATION) {
-                        // The users module was used to register that account.
-                        $this->addFlash('status', $this->__('Done! Your account has been verified. You may now log in with your user name and password.'));
-                    } else {
-                        // A third party module was used to register that account.
-                        $this->addFlash('status', $this->__('Done! Your account has been verified. You may now log in.'));
-                    }
+                    $this->addFlash('status', $this->__('Done! Your account has been verified. You may now log in.'));
 
                     return $this->redirectToRoute('zikulausersmodule_access_login');
                     break;
