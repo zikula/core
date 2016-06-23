@@ -1,3 +1,4 @@
+{% if collector.activeKeys|length > 1 %}
 <div class="dropdown{% if 'nav' in position %} navbar-right{% endif %}">
     <button class="btn btn-default dropdown-toggle{% if 'nav' in position %} navbar-btn{% endif %}" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
         <i class="fa fa-key"></i> {{ __('Login with ...') }}
@@ -9,3 +10,6 @@
         {% endfor %}
     </ul>
 </div>
+{% else %}
+    <a class="btn btn-default{% if 'nav' in position %} navbar-btn navbar-right{% endif %}" href="{{ path(path, {"authenticationMethod": collector.activeKeys|first}) }}"><i class="fa fa-key"></i> {{ __('Login with') }} {{ collector.get(collector.activeKeys|first).DisplayName }}</a>
+{% endif %}
