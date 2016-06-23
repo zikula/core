@@ -62,6 +62,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
 
     public function validate($userEntity, Constraint $constraint)
     {
+        // @todo move these two checks to ZAuth
         /** @var UserEntity $userEntity */
         if ($userEntity->getUname() == $userEntity->getPass()) {
             $this->context->buildViolation($this->translator->__('The password cannot be the same as the user name. Please choose a different password.'))

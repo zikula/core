@@ -42,7 +42,6 @@ class RegistrationController extends AbstractController
      * Display the registration form.
      *
      * @Route("/register", options={"zkNoBundlePrefix"=1})
-     * @Template
      * @Method({"GET", "POST"})
      * @param Request $request
      * @return array
@@ -76,7 +75,6 @@ class RegistrationController extends AbstractController
         $authenticationMethod = $authenticationMethodCollector->get($selectedMethod);
 
         $authenticationMethodId = $request->getSession()->get('authenticationMethodId');
-        $userEntity = new UserEntity();
 
         // authenticate user if required && check to make sure user doesn't already exist.
         if (!isset($authenticationMethodId)) {
@@ -87,6 +85,7 @@ class RegistrationController extends AbstractController
             }
             if ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
                 $request->getSession()->set('authenticationMethodId', $authenticationMethod->getId());
+                $userEntity = new UserEntity();
                 $authenticationMethod->updateUserEntity($userEntity);
                 $validationErrors = $this->get('validator')->validate($userEntity); // Symfony\Component\Validator\ConstraintViolation[]
                 $hasListeners = $this->get('event_dispatcher')->hasListeners(RegistrationEvents::NEW_FORM);
@@ -101,7 +100,7 @@ class RegistrationController extends AbstractController
         $formClassName = ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface)
             ? $authenticationMethod->getRegistrationFormClassName()
             : 'Zikula\UsersModule\Form\Type\DefaultRegistrationType';
-        $form = $this->createForm($formClassName, $userEntity);
+        $form = $this->createForm($formClassName);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -114,11 +113,10 @@ class RegistrationController extends AbstractController
             $validators = $hook->getValidators();
 
             if ($form->get('submit')->isClicked() && !$validators->hasErrors()) {
-                /** @var UserEntity $userEntity */ // @todo maybe this shouldn't be a UserEntity, but simply an array $formData
-                $userEntity = $form->getData();
+                $formData = $form->getData();
                 // save pass and passreminder since they are emptied in next func @todo refactor
-                $pass = $userEntity->getPass();
-                $passReminder = $userEntity->getPassreminder();
+                $userEntity = new UserEntity();
+                $userEntity->merge($formData['user']);
                 $notificationErrors = $this->get('zikula_users_module.helper.registration_helper')->registerNewUser($userEntity);
 
                 if (!empty($notificationErrors)) {
@@ -133,15 +131,10 @@ class RegistrationController extends AbstractController
                     return !empty($redirectUrl) ? $this->redirect($redirectUrl) : $this->redirectToRoute('home');
                 } else {
                     // The main registration completed successfully.
-                    // @todo may be easier just to pass the entire $formData array here (amending the authenticationMethodId)
-                    $authenticationMethod->register([
-                        'id' => $authenticationMethodId, // comes from session and earlier authentication
-                        'uid' => $userEntity->getUid(),
-                        'pass' => $pass,
-                        'passreminder' => $passReminder,
-                        'email' => $userEntity->getEmail(),
-                        'uname' => $userEntity->getUname()
-                    ]);
+                    $formData['id'] = $authenticationMethodId;
+                    $formData['uid'] = $userEntity->getUid();
+                    $authenticationMethod->register($formData);
+                    // @todo if register fails, then we have to handle the failure.
                     // Allow hook-like events to process the registration...
                     $this->get('event_dispatcher')->dispatch(RegistrationEvents::NEW_PROCESS, new GenericEvent($userEntity));
                     // ...and hooks to process the registration.
@@ -157,7 +150,7 @@ class RegistrationController extends AbstractController
                     $event = $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_SUCCEEDED, new GenericEvent($userEntity, ['redirectUrl' => '']));
                     $redirectUrl = $event->hasArgument('redirectUrl') ? $event->getArgument('redirectUrl') : '';
 
-                    if ($autoLogIn && $this->get('zikula_users_module.helper.access_helper')->loginAllowed($userEntity, $selectedMethod)) {
+                    if ($autoLogIn && $this->get('zikula_users_module.helper.access_helper')->loginAllowed($userEntity)) {
                         $this->get('zikula_users_module.helper.access_helper')->login($userEntity, $selectedMethod);
                     } elseif (!empty($redirectUrl)) {
                         return $this->redirect($redirectUrl);

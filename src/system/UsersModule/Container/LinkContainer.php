@@ -204,26 +204,6 @@ class LinkContainer implements LinkContainerInterface
 
             ];
 
-            $links[] = [
-                'icon' => 'key',
-                'links' => [
-                    [
-                        'text' => $this->translator->__('Recover Lost User Name'),
-                        'url' => $this->router->generate('zikulausersmodule_account_lostusername')
-                    ],
-                    [
-                        'text' => $this->translator->__('Recover Lost Password'),
-                        'url' => $this->router->generate('zikulausersmodule_account_lostpassword')
-                    ],
-                    [
-                        'text' => $this->translator->__('Enter Password Recovery Code'),
-                        'url' => $this->router->generate('zikulausersmodule_account_confirmationcode')
-                    ]
-                ],
-                'text' => $this->translator->__('Recover account information or password'),
-                'url' => $this->router->generate('zikulausersmodule_account_menu'),
-            ];
-
             if ($this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ENABLED)) {
                 $links[] = [
                     'icon' => 'plus',

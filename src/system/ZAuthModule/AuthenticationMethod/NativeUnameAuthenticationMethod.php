@@ -81,7 +81,7 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
      */
     public function getLoginFormClassName()
     {
-        return 'Zikula\ZAuthModule\Form\Type\UnameType';
+        return 'Zikula\ZAuthModule\Form\Type\UnameLoginType';
     }
 
     /**
@@ -174,10 +174,12 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
     {
         $mapping = new AuthenticationMappingEntity();
         $mapping->setUid($data['uid']);
-        $mapping->setUname($data['uname']);
-        $mapping->setEmail($data['email']);
+        $mapping->setUname($data['user']['uname']);
+        $mapping->setEmail($data['user']['email']);
         $mapping->setPass(\UserUtil::getHashedPassword($data['pass'])); // @todo salted and hashed
-        $mapping->setPassreminder($data['passreminder']);
+        if (isset($data['passreminder'])) {
+            $mapping->setPassreminder($data['passreminder']);
+        }
         $mapping->setMethod($this->getAlias());
         // @todo validate the new entity? check for duplicates, etc.
         $this->mappingRepository->persistAndFlush($mapping);
