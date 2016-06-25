@@ -17,6 +17,7 @@ use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Helper\RegistrationHelper;
 
 class PendingContentListener implements EventSubscriberInterface
 {
@@ -31,14 +32,20 @@ class PendingContentListener implements EventSubscriberInterface
     private $permissionApi;
 
     /**
+     * @var RegistrationHelper
+     */
+    private $registrationHelper;
+
+    /**
      * PendingContentListener constructor.
      * @param $variableApi
      * @param $permissionApi
      */
-    public function __construct(VariableApi $variableApi, PermissionApi $permissionApi)
+    public function __construct(VariableApi $variableApi, PermissionApi $permissionApi, RegistrationHelper $registrationHelper)
     {
         $this->variableApi = $variableApi;
         $this->permissionApi = $permissionApi;
+        $this->registrationHelper = $registrationHelper;
     }
 
     public static function getSubscribedEvents()
@@ -74,12 +81,7 @@ class PendingContentListener implements EventSubscriberInterface
     public function pendingContent(GenericEvent $event)
     {
         if ($this->permissionApi->hasPermission(UsersConstant::MODNAME . '::', '::', ACCESS_MODERATE)) {
-            $approvalOrder = $this->variableApi->get(UsersConstant::MODNAME, 'moderation_order', UsersConstant::APPROVAL_ANY);
-            if ($approvalOrder == UsersConstant::APPROVAL_AFTER) {
-                $numPendingApproval = $this->get('zikula_users_module.helper.registration_helper')->countAll(['approved_by' => 0, 'isverified' => true]);
-            } else {
-                $numPendingApproval = $this->get('zikula_users_module.helper.registration_helper')->countAll(['approved_by' => 0]);
-            }
+            $numPendingApproval = $this->registrationHelper->countAll(['approved_by' => 0]);
 
             if (!empty($numPendingApproval)) {
                 $collection = new Container(UsersConstant::MODNAME);

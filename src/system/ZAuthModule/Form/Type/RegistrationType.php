@@ -13,7 +13,6 @@ namespace Zikula\ZAuthModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotNull;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -69,12 +68,12 @@ class RegistrationType extends AbstractType
                 'icon' => 'fa-plus',
                 'attr' => ['class' => 'btn btn-success']
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\ButtonType', [
                 'label' => $this->translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-danger']
             ])
-            ->add('reset', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('reset', 'Symfony\Component\Form\Extension\Core\Type\ResetType', [
                 'label' => $this->translator->__('Reset'),
                 'icon' => 'fa-refresh',
                 'attr' => ['class' => 'btn btn-primary']

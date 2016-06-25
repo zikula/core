@@ -44,12 +44,10 @@ class ValidPasswordChangeValidator extends ConstraintValidator
         if ($userEntity) {
             $currentPass = $userEntity->getPass();
             // is oldpass correct?
-            if ('' != $currentPass && UsersConstant::PWD_NO_USERS_AUTHENTICATION != $currentPass) {
-                if (empty($data['oldpass']) || !\UserUtil::passwordsMatch($data['oldpass'], $currentPass)) {
-                    $this->context->buildViolation($this->translator->__('Old password is incorrect.'))
-                        ->atPath('oldpass')
-                        ->addViolation();
-                }
+            if (empty($data['oldpass']) || !\UserUtil::passwordsMatch($data['oldpass'], $currentPass)) {
+                $this->context->buildViolation($this->translator->__('Old password is incorrect.'))
+                    ->atPath('oldpass')
+                    ->addViolation();
             }
             // oldpass == newpass??
             if (isset($data['pass']) && $data['oldpass'] == $data['pass']) {

@@ -36,9 +36,6 @@ class DefaultRegistrationType extends AbstractType
         $builder
             ->add('uname', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
             ->add('email', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('pass', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [
-                'data' => UsersConstant::PWD_NO_USERS_AUTHENTICATION
-            ])
             ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'label' => $this->translator->__('Save'),
                 'icon' => 'fa-check',

@@ -42,12 +42,8 @@
             </div>
             {{ form_row(form[constant('MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL', UC)]) }}
             {{ form_row(form[constant('MODVAR_REGISTRATION_APPROVAL_REQUIRED', UC)]) }}
-            {{ form_row(form[constant('MODVAR_REGISTRATION_VERIFICATION_MODE', UC)]) }}
             <div id="{{ form[constant('MODVAR_REGISTRATION_AUTO_LOGIN', UC)].vars.id }}_wrap" class="collapse in">
                 {{ form_row(form[constant('MODVAR_REGISTRATION_AUTO_LOGIN', UC)]) }}
-            </div>
-            <div id="{{ form[constant('MODVAR_REGISTRATION_APPROVAL_SEQUENCE', UC)].vars.id }}_wrap" class="collapse in">
-                {{ form_row(form[constant('MODVAR_REGISTRATION_APPROVAL_SEQUENCE', UC)]) }}
             </div>
             {{ form_row(form[constant('MODVAR_EXPIRE_DAYS_REGISTRATION', UC)]) }}
             {{ form_row(form[constant('MODVAR_REGISTRATION_ANTISPAM_QUESTION', UC)]) }}
@@ -83,21 +79,12 @@
          */
         function toggleModerationItemsDisplay()
         {
-            var approvalOrderWrap = $('#{{ form[constant('MODVAR_REGISTRATION_APPROVAL_SEQUENCE', UC)].vars.id }}_wrap');
             var autoLoginWrap = $('#{{ form[constant('MODVAR_REGISTRATION_AUTO_LOGIN', UC)].vars.id }}_wrap');
             var isModerated = $('#{{ form[constant('MODVAR_REGISTRATION_APPROVAL_REQUIRED', UC)].vars.id }}').is(':checked');
-            var isVerified = $('#{{ form[constant('MODVAR_REGISTRATION_VERIFICATION_MODE', UC)].vars.id }}').find('input[type=radio][value="0"]:checked').length > 0;
-            var approvalOrderState = (isModerated && !isVerified);
-            var autoLoginState = (!isModerated && isVerified);
-            if (approvalOrderState == true) {
-                approvalOrderWrap.collapse('show');
-            } else {
-                approvalOrderWrap.collapse('hide');
-            }
-            if (autoLoginState == true) {
-                autoLoginWrap.collapse('show');
-            } else {
+            if (isModerated == true) {
                 autoLoginWrap.collapse('hide');
+            } else {
+                autoLoginWrap.collapse('show');
             }
         }
         /**

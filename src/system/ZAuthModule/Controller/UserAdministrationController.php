@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersModule\Controller;
+namespace Zikula\ZAuthModule\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -39,86 +39,147 @@ use Zikula\UsersModule\UserEvents;
 class UserAdministrationController extends AbstractController
 {
     /**
-     * @Route("/list/{sort}/{sortdir}/{letter}/{startnum}")
+     * @Route("/user/create")
      * @Theme("admin")
-     * @Template
+     * @Template()
      * @param Request $request
-     * @param string $sort
-     * @param string $sortdir
-     * @param string $letter
-     * @param integer $startnum
      * @return array
      */
-    public function listAction(Request $request, $sort = 'uid', $sortdir = 'DESC', $letter = 'all', $startnum = 0)
+    public function createAction(Request $request)
     {
-        if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
+        if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-        $startnum = $startnum > 0 ? $startnum - 1 : 0;
 
-        $sortableColumns = new SortableColumns($this->get('router'), 'zikulausersmodule_useradministration_list', 'sort', 'sortdir');
-        $sortableColumns->addColumns([new Column('uname'), new Column('uid'), new Column('user_regdate'), new Column('lastlogin'), new Column('activated')]);
-        $sortableColumns->setOrderByFromRequest($request);
-        $sortableColumns->setAdditionalUrlParameters([
-            'letter' => $letter,
-            'startnum' => $startnum
-        ]);
-
-        $filter = [];
-        $filter['activated'] = ['operator' => 'notIn', 'operand' => [
-            UsersConstant::ACTIVATED_PENDING_REG,
-            UsersConstant::ACTIVATED_PENDING_DELETE
-        ]];
-        if (!empty($letter) && 'all' != $letter) {
-            $filter['uname'] = ['operator' => 'like', 'operand' => "$letter%"];
-        }
-        $limit = $this->getVar(UsersConstant::MODVAR_ITEMS_PER_PAGE, UsersConstant::DEFAULT_ITEMS_PER_PAGE);
-        $users = $this->get('zikula_users_module.user_repository')->query(
-            $filter,
-            [$sort => $sortdir],
-            $limit,
-            $startnum
+        $user = new UserEntity();
+        $form = $this->createForm('Zikula\UsersModule\Form\Type\AdminCreatedUserType',
+            $user, ['translator' => $this->get('translator.default')]
         );
+        $form->handleRequest($request);
+
+        $event = new GenericEvent($form->getData(), [], new ValidationProviders());
+        $this->get('event_dispatcher')->dispatch(UserEvents::NEW_VALIDATE, $event);
+        $validators = $event->getData();
+        $hook = new ValidationHook($validators);
+        $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_VALIDATE, $hook);
+        $validators = $hook->getValidators();
+
+        if ($form->isValid() && !$validators->hasErrors()) {
+            if ($form->get('submit')->isClicked()) {
+                $user = $form->getData();
+                $passToSend = $form['sendpass']->getData() ? $user->getPass() : '';
+                $registrationErrors = $this->get('zikula_users_module.helper.registration_helper')->registerNewUser(
+                    $user,
+                    $form['usernotification']->getData(),
+                    $form['adminnotification']->getData(),
+                    $passToSend
+                );
+                if (empty($registrationErrors)) {
+                    $event = new GenericEvent($form->getData(), [], new ValidationProviders());
+                    $this->get('event_dispatcher')->dispatch(UserEvents::NEW_PROCESS, $event);
+                    $hook = new ProcessHook($user->getUid());
+                    $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_PROCESS, $hook);
+
+                    if ($user->getActivated() == UsersConstant::ACTIVATED_PENDING_REG) {
+                        $this->addFlash('status', $this->__('Done! Created new registration application.'));
+                    } elseif (null !== $user->getActivated()) {
+                        $this->addFlash('status', $this->__('Done! Created new user account.'));
+                    } else {
+                        $this->addFlash('error', $this->__('Warning! New user information has been saved, however there may have been an issue saving it properly.'));
+                    }
+
+                    return $this->redirectToRoute('zikulausersmodule_admin_view');
+                } else {
+                    $this->addFlash('error', $this->__('Errors creating user!'));
+                    foreach ($registrationErrors as $registrationError) {
+                        $this->addFlash('error', $registrationError);
+                    }
+                }
+            }
+            if ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', $this->__('Operation cancelled.'));
+            }
+        }
 
         return [
-            'sort' => $sortableColumns->generateSortableColumns(),
-            'pager' => [
-                'count' => $users->count(),
-                'limit' => $limit
-            ],
-            'actionsHelper' => $this->get('zikula_users_module.helper.administration_actions'),
-            'users' => $users
+            'form' => $form->createView(),
         ];
     }
 
     /**
-     * Called from UsersModule/Resources/public/js/Zikula.Users.Admin.View.js
-     * to populate a username search
-     *
-     * @Route("/getusersbyfragmentastable", options={"expose"=true})
-     * @Method("POST")
+     * @Route("/user/modify/{user}", requirements={"user" = "^[1-9]\d*$"})
+     * @Theme("admin")
+     * @Template()
      * @param Request $request
-     * @return PlainResponse
+     * @param UserEntity $user
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function getUsersByFragmentAsTableAction(Request $request)
+    public function modifyAction(Request $request, UserEntity $user)
     {
-        if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
-            return new PlainResponse('');
+        if (!$this->hasPermission('ZikulaUsersModule::', $user->getUname() . "::" . $user->getUid(), ACCESS_EDIT)) {
+            throw new AccessDeniedException();
         }
-        $fragment = $request->request->get('fragment');
-        $filter = [
-            'activated' => ['operator' => 'notIn', 'operand' => [
-                UsersConstant::ACTIVATED_PENDING_REG,
-                UsersConstant::ACTIVATED_PENDING_DELETE
-            ]],
-            'uname' => ['operator' => 'like', 'operand' => "$fragment%"]
-        ];
-        $users = $this->get('zikula_users_module.user_repository')->query($filter);
+        if (1 === $user->getUid()) {
+            throw new AccessDeniedException($this->__("Error! You can't edit the guest account."));
+        }
 
-        return $this->render('@ZikulaUsersModule/UserAdministration/userlist.html.twig', [
-            'users' => $users,
-            'actionsHelper' => $this->get('zikula_users_module.helper.administration_actions'),
-        ], new PlainResponse());
+        $form = $this->createForm('Zikula\UsersModule\Form\Type\AdminModifyUserType',
+            $user, ['translator' => $this->get('translator.default')]
+        );
+        $originalUser = clone $user;
+        $form->handleRequest($request);
+
+        $event = new GenericEvent($form->getData(), [], new ValidationProviders());
+        $this->get('event_dispatcher')->dispatch(UserEvents::MODIFY_VALIDATE, $event);
+        $validators = $event->getData();
+        $hook = new ValidationHook($validators);
+        $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_VALIDATE, $hook);
+        $validators = $hook->getValidators();
+
+        /**
+         * @todo CAH 22 Apr 2016
+         * In previous version, user was not allowed to edit certain properties if editing himself:
+         *  - group membership in 'certain system groups'
+         *     - the 'default' group
+         *     - primary admin group
+         *  - activated state
+         * The fields were disabled in the form.
+         * User was not able to delete self. (button removed from form)
+         *
+         * It is possible users will not have a password if their account is provided externally. If they do not,
+         *  this may need to change the text displayed to users, e.g. 'change' -> 'create', etc.
+         *  Setting the password may 'disable' the external authorization and the editor should be made aware.
+         */
+
+        if ($form->isValid() && !$validators->hasErrors()) {
+            if ($form->get('submit')->isClicked()) {
+                $user = $form->getData();
+                // @todo hash new password if set @see UserUtil::setPassword
+                $this->get('doctrine')->getManager()->flush($user);
+                $eventArgs = [
+                    'action'    => 'setVar',
+                    'field'     => 'uname',
+                    'attribute' => null,
+                ];
+                $eventData = ['old_value' => $originalUser->getUname()];
+                $updateEvent = new GenericEvent($user, $eventArgs, $eventData);
+                $this->get('event_dispatcher')->dispatch(UserEvents::UPDATE_ACCOUNT, $updateEvent);
+
+                $this->get('event_dispatcher')->dispatch(UserEvents::MODIFY_PROCESS, new GenericEvent($user));
+                $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_PROCESS, new ProcessHook($user->getUid()));
+
+                $this->addFlash('status', $this->__("Done! Saved user's account information."));
+            }
+            if ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', $this->__('Operation cancelled.'));
+            }
+
+            return $this->redirectToRoute('zikulausersmodule_admin_view');
+        }
+
+        return [
+            'form' => $form->createView(),
+        ];
     }
 
     /**
@@ -270,7 +331,26 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
-     * @todo not sure this method should be kept or moved to ZAuth
+     * @Route("/send-confirmation/{user}", requirements={"user" = "^[1-9]\d*$"})
+     * @param Request $request
+     * @param UserEntity $user
+     * @return RedirectResponse
+     */
+    public function sendConfirmationAction(Request $request, UserEntity $user)
+    {
+        if (!$this->hasPermission('ZikulaUsersModule', $user->getUname() . '::' . $user->getUid(), ACCESS_MODERATE)) {
+            throw new AccessDeniedException();
+        }
+        $newConfirmationCode = $this->get('zikula_users_module.user_verification_repository')->setVerificationCode($user->getUid());
+        $mailSent = $this->get('zikula_users_module.helper.mail_helper')->mailConfirmationCode($user, $newConfirmationCode, true);
+        if ($mailSent) {
+            $this->addFlash('status', $this->__f('Done! The password recovery verification code for %s has been sent via e-mail.', ['%s' => $user->getUname()]));
+        }
+
+        return $this->redirectToRoute('zikulausersmodule_useradministration_list');
+    }
+
+    /**
      * @Route("/send-username/{user}", requirements={"user" = "^[1-9]\d*$"})
      * @param Request $request
      * @param UserEntity $user
@@ -287,6 +367,56 @@ class UserAdministrationController extends AbstractController
         }
 
         return $this->redirectToRoute('zikulausersmodule_useradministration_list');
+    }
+
+    /**
+     * @Route("/toggle-password-change/{user}", requirements={"user" = "^[1-9]\d*$"})
+     * @Theme("admin")
+     * @Template
+     * @param Request $request
+     * @param UserEntity $user
+     * @return array|RedirectResponse
+     */
+    public function togglePasswordChangeAction(Request $request, UserEntity $user)
+    {
+        if (!$this->hasPermission('ZikulaUsersModule', $user->getUname() . '::' . $user->getUid(), ACCESS_MODERATE)) {
+            throw new AccessDeniedException();
+        }
+        if ($user->getAttributes()->containsKey('_Users_mustChangePassword')) {
+            $mustChangePass = $user->getAttributes()->get('_Users_mustChangePassword');
+        } else {
+            $mustChangePass = false;
+        }
+        $form = $this->createForm('Zikula\UsersModule\Form\Type\TogglePasswordConfirmationType', [
+            'uid' => $user->getUid(),
+        ], [
+            'mustChangePass' => $mustChangePass,
+            'translator' => $this->get('translator.default')
+        ]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('toggle')->isClicked()) {
+                if ($user->getAttributes()->containsKey('_Users_mustChangePassword') && (bool)$user->getAttributes()->get('_Users_mustChangePassword')) {
+                    $user->getAttributes()->remove('_Users_mustChangePassword');
+                    $this->addFlash('success', $this->__f('Done! A password change will no longer be required for %uname.', ['%uname' => $user->getUname()]));
+                } else {
+                    $user->setAttribute('_Users_mustChangePassword', true);
+                    $this->addFlash('success', $this->__f('Done! A password change will be required the next time %uname logs in.', ['%uname' => $user->getUname()]));
+                }
+                $this->get('doctrine')->getManager()->flush();
+            }
+            if ($form->get('cancel')->isClicked()) {
+                $this->addFlash('info', $this->__('Operation cancelled.'));
+            }
+
+            return $this->redirectToRoute('zikulausersmodule_useradministration_list');
+        }
+
+        return [
+            'form' => $form->createView(),
+            'mustChangePass' => $mustChangePass,
+            'user' => $user
+        ];
     }
 
     /**

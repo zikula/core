@@ -123,6 +123,8 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             case '2.2.9':
                 // @todo expire all sessions so everyone has to login again (to force migration)
                 // @todo migrate modvar values to ZAuth (see $this->getMigratedModVarNames())
+                // @todo remove modvars no longer used
+                // @todo update users table and set pass = '' where pass = 'NO_USERS_AUTHENTICATION'
                 // current version
         }
 
@@ -176,14 +178,12 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             UsersConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION        => '',
             UsersConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER          => '',
             UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED        => UsersConstant::DEFAULT_REGISTRATION_APPROVAL_REQUIRED,
-            UsersConstant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE        => UsersConstant::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE,
             UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN               => UsersConstant::DEFAULT_REGISTRATION_AUTO_LOGIN,
             UsersConstant::MODVAR_REGISTRATION_DISABLED_REASON          => $this->__(/* registration disabled reason (default value, */'Sorry! New user registration is currently disabled.'),
             UsersConstant::MODVAR_REGISTRATION_ENABLED                  => UsersConstant::DEFAULT_REGISTRATION_ENABLED,
             UsersConstant::MODVAR_REGISTRATION_ILLEGAL_AGENTS           => '',
             UsersConstant::MODVAR_REGISTRATION_ILLEGAL_DOMAINS          => '',
             UsersConstant::MODVAR_REGISTRATION_ILLEGAL_UNAMES           => $this->__(/* illegal username list */'root, webmaster, admin, administrator, nobody, anonymous, username'),
-            UsersConstant::MODVAR_REGISTRATION_VERIFICATION_MODE        => UsersConstant::DEFAULT_REGISTRATION_VERIFICATION_MODE,
         ];
     }
 

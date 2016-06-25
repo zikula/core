@@ -49,6 +49,11 @@ class AuthenticationMappingEntity
     private $email;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $verifiedEmail;
+
+    /**
      * Password: User's password for logging in.
      * This value is salted and hashed. The salt is stored in this field, delimited from the hash with a dollar sign character ($).
      *
@@ -133,6 +138,22 @@ class AuthenticationMappingEntity
     public function setEmail($email)
     {
         $this->email = $email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function isVerifiedEmail()
+    {
+        return $this->verifiedEmail;
+    }
+
+    /**
+     * @param mixed $verifiedEmail
+     */
+    public function setVerifiedEmail($verifiedEmail)
+    {
+        $this->verifiedEmail = $verifiedEmail;
     }
 
     /**

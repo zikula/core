@@ -30,4 +30,16 @@ class AuthenticationMappingRepository extends EntityRepository implements Authen
             $this->_em->flush();
         }
     }
+
+    public function getByZikulaId($uid)
+    {
+        return parent::findOneBy(['uid' => $uid]);
+    }
+
+    public function setEmailVerification($uid, $value = true)
+    {
+        $mapping = parent::findOneBy(['uid' => $uid]);
+        $mapping->setVerifiedEmail($value);
+        $this->_em->flush($mapping);
+    }
 }

@@ -35,18 +35,6 @@ namespace Zikula\UsersModule
          */
         const CAPABILITY_AUTHENTICATION = 'authentication';
         /**
-         * Allow users to identify themselves during login with only their user name (does not affect alternate authentication methods).
-         */
-        const LOGIN_METHOD_UNAME = 0;
-        /**
-         * Allow users to identify themselves during login with only their e-mail address (does not affect alternate authentication methods).
-         */
-        const LOGIN_METHOD_EMAIL = 1;
-        /**
-         * Allow users to identify themselves during login with either their user name or their e-mail address (does not affect alternate authentication methods).
-         */
-        const LOGIN_METHOD_ANY = 2;
-        /**
          * Pending registration (not able to log in).
          * Moderation and/or e-mail verification are in use in the registration process, and one or more of the required steps has not yet
          * been completed.
@@ -68,34 +56,6 @@ namespace Zikula\UsersModule
          */
         const ACTIVATED_PENDING_DELETE = 16384;
         /**
-         * A user's e-mail address is not verified during the registration process, and a user selects his own password.
-         */
-        const VERIFY_NO = 0;
-        /**
-         * A user's e-mail address is verified by sending him a system-generated password directly to the e-mail address provided; the user does not select his initial password.
-         * NOTE: Use of system-generated passwords is deprecated due to security concerns when sending passwords via e-mail.
-         *
-         * @deprecated since 1.3.0
-         */
-        const VERIFY_SYSTEMPWD = 1;
-        /**
-         * A user's e-mail address is verified by sending him a unique verification code to the e-mail address provided; the user selects his own password during registration.
-         */
-        const VERIFY_USERPWD = 2;
-        /**
-         * A moderator must approve a registration application prior to any e-mail verification process is initiated.
-         */
-        const APPROVAL_BEFORE = 0;
-        /**
-         * The user must complete the e-mail verification process first, then the moderator must approve the account.
-         * If the user is created directly by the administrator, then the need for verification can be overridden.
-         */
-        const APPROVAL_AFTER = 1;
-        /**
-         * The administrator's approval of a registration application and the user's verification of his e-mail address can happen in any order.
-         */
-        const APPROVAL_ANY = 2;
-        /**
          * An indicator for the change verification table that the record represents a change of password request.
          */
         const VERIFYCHGTYPE_PWD = 1;
@@ -107,10 +67,6 @@ namespace Zikula\UsersModule
          * An indicator for the change verification table that the record represents a registration e-mail verification.
          */
         const VERIFYCHGTYPE_REGEMAIL = 3;
-        /**
-         * Pseudo-password used as a marker for account records registered with an authentication method other than one from the Users module.
-         */
-        const PWD_NO_USERS_AUTHENTICATION = 'NO_USERS_AUTHENTICATION';
         /**
          * Default salt delimeter character.
          */
@@ -262,14 +218,6 @@ namespace Zikula\UsersModule
          */
         const DEFAULT_REGISTRATION_APPROVAL_REQUIRED = false;
         /**
-         * Module variable key for the code indicating the approval/verification sequencing when both are enabled.
-         */
-        const MODVAR_REGISTRATION_APPROVAL_SEQUENCE = 'moderation_order';
-        /**
-         * Default value for the code indicating the approval/verification sequencing when both are enabled.
-         */
-        const DEFAULT_REGISTRATION_APPROVAL_SEQUENCE = self::APPROVAL_BEFORE;
-        /**
          * Module variable key for the flag indicating when a new user registers, should the user be automatically logged in
          * if admin approval (moderation) and e-mail verification are not required?
          */
@@ -310,14 +258,6 @@ namespace Zikula\UsersModule
          * Module variable key for the comma-separated list of illegal user names.
          */
         const MODVAR_REGISTRATION_ILLEGAL_UNAMES = 'reg_Illegalusername';
-        /**
-         * Module variable key for the flag indicating whether newly registered e-mail addresses must be verified or not.
-         */
-        const MODVAR_REGISTRATION_VERIFICATION_MODE = 'reg_verifyemail';
-        /**
-         * Default value for the flag indicating whether newly registered e-mail addresses must be verified or not.
-         */
-        const DEFAULT_REGISTRATION_VERIFICATION_MODE = self::VERIFY_USERPWD;
 
         /**
          * The PCRE regular expression fragment used to validate user names.

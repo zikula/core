@@ -63,6 +63,16 @@ class ZAuthConstant
     const DEFAULT_HASH_METHOD = 'sha256';
 
     /**
+     * Module variable key for the status of requirement for email verification.
+     */
+    const MODVAR_EMAIL_VERIFICATION_REQUIRED = 'email_verification_required';
+
+    /**
+     * Default value for the status of requirement for email verification.
+     */
+    const DEFAULT_EMAIL_VERIFICATION_REQUIRED = true;
+
+    /**
      * The string identifying that a user can user either the native_uname or native_email authentication methods.
      */
     const AUTHENTICATION_METHOD_EITHER = 'native_either';

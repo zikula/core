@@ -41,7 +41,6 @@ class UserEventListener implements EventSubscriberInterface
         return array(
             AccessEvents::LOGOUT_SUCCESS => array('clearUsersNamespace'),
             KernelEvents::EXCEPTION => array('clearUsersNamespace'),
-            AccessEvents::LOGIN_VETO => array('forcedPasswordChange'),
         );
     }
 
@@ -77,36 +76,8 @@ class UserEventListener implements EventSubscriberInterface
             $doClear = true;
         }
 
-        if ($doClear) {
+        if ($this->session->get('uid') !== 2 && $doClear) { // @todo the main site admin will NOT be logged out.
             $this->session->clear();
-        }
-    }
-
-    /**
-     * Vetos (denies) a login attempt, and forces the user to change his password.
-     * This handler is triggered by the 'user.login.veto' event.  It vetos (denies) a
-     * login attempt if the users's account record is flagged to force the user to change
-     * his password maintained by the Users module. If the user does not maintain a
-     * password on his Users account (e.g., he registered with and logs in with a Google
-     * Account or an OpenID, and never established a Users password), then this handler
-     * will not trigger a change of password.
-     *
-     * @param GenericEvent $event The event that triggered this handler.
-     *
-     * @see \Zikula\UsersModule\Controller\AccountController::changePasswordAction
-     */
-    public function forcedPasswordChange(GenericEvent $event)
-    {
-        /** @var UserEntity $user */
-        $user = $event->getSubject();
-        if ($user->getAttributes()->containsKey('_Users_mustChangePassword') && $user->getAttributes()->get('_Users_mustChangePassword')
-            && $user->getPass() != UsersConstant::PWD_NO_USERS_AUTHENTICATION) {
-            $event->stopPropagation();
-            $event->setArgument('returnUrl', $this->router->generate('zikulausersmodule_account_changepassword'));
-            $this->session->set('authenticationMethod', $event->getArgument('authenticationMethod'));
-            $this->session->set(UsersConstant::FORCE_PASSWORD_SESSION_UID_KEY, $user->getUid());
-
-            $this->session->getFlashBag()->add('error', __("Your log-in request was not completed. You must change your web site account's password first."));
         }
     }
 }

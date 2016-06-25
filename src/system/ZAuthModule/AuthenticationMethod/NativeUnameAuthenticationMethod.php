@@ -12,6 +12,7 @@ namespace Zikula\ZAuthModule\AuthenticationMethod;
 
 use Symfony\Component\HttpFoundation\Session\Session;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
@@ -41,18 +42,30 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
     private $translator;
 
     /**
+     * @var VariableApi
+     */
+    private $variableApi;
+
+    /**
      * NativeUnameAuthenticationMethod constructor.
      * @param UserRepositoryInterface $userRepository
      * @param AuthenticationMappingRepositoryInterface $mappingRepository
      * @param Session $session
      * @param TranslatorInterface $translator
+     * @param VariableApi $variableApi
      */
-    public function __construct(UserRepositoryInterface $userRepository, AuthenticationMappingRepositoryInterface $mappingRepository, Session $session, TranslatorInterface $translator)
-    {
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        AuthenticationMappingRepositoryInterface $mappingRepository,
+        Session $session,
+        TranslatorInterface $translator,
+        VariableApi $variableApi
+    ) {
         $this->userRepository = $userRepository;
         $this->mappingRepository = $mappingRepository;
         $this->session = $session;
         $this->translator = $translator;
+        $this->variableApi = $variableApi;
     }
 
     public function getAlias()
@@ -181,6 +194,8 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
             $mapping->setPassreminder($data['passreminder']);
         }
         $mapping->setMethod($this->getAlias());
+        $requireVerifiedEmail = $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED);
+        $mapping->setVerifiedEmail(!$requireVerifiedEmail);
         // @todo validate the new entity? check for duplicates, etc.
         $this->mappingRepository->persistAndFlush($mapping);
     }
