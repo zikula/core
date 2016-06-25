@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersModule\Form\Type;
+namespace Zikula\ZAuthModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,6 +20,7 @@ use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Validator\Constraints\ValidPassword;
 use Zikula\UsersModule\Validator\Constraints\ValidPasswordReminder;
 use Zikula\UsersModule\Validator\Constraints\ValidRegistrationVerification;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 class VerifyRegistrationType extends AbstractType
 {
@@ -84,8 +85,8 @@ class VerifyRegistrationType extends AbstractType
         $resolver->setDefaults([
             'translator' => null,
             'setpass' => true,
-            'passwordReminderEnabled' => UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED,
-            'passwordReminderMandatory' => UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY,
+            'passwordReminderEnabled' => ZAuthConstant::DEFAULT_PASSWORD_REMINDER_ENABLED,
+            'passwordReminderMandatory' => ZAuthConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY,
             'constraints' => [
                 new ValidRegistrationVerification(),
             ]

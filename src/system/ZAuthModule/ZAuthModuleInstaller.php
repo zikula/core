@@ -23,6 +23,13 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
 
     public function upgrade($oldversion)
     {
+//        switch ($oldversion) {
+//            case "1.0.0-beta":
+//                $this->schemaTool->update($this->entities);
+//            case "1.0.0-beta2":
+//                // current version
+//        }
+
         return true;
     }
 
@@ -39,11 +46,13 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
     private function getDefaultModvars()
     {
         return [
-            ZAuthConstant::MODVAR_HASH_METHOD                           => ZAuthConstant::DEFAULT_HASH_METHOD,
-            ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH               => ZAuthConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH,
-            ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED       => ZAuthConstant::DEFAULT_PASSWORD_STRENGTH_METER_ENABLED,
-            ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED             => ZAuthConstant::DEFAULT_PASSWORD_REMINDER_ENABLED,
-            ZAuthConstant::MODVAR_PASSWORD_REMINDER_MANDATORY           => ZAuthConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY,
+            ZAuthConstant::MODVAR_HASH_METHOD => ZAuthConstant::DEFAULT_HASH_METHOD,
+            ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH => ZAuthConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH,
+            ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED => ZAuthConstant::DEFAULT_PASSWORD_STRENGTH_METER_ENABLED,
+            ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED => ZAuthConstant::DEFAULT_PASSWORD_REMINDER_ENABLED,
+            ZAuthConstant::MODVAR_PASSWORD_REMINDER_MANDATORY => ZAuthConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY,
+
+            ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED => ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED
         ];
     }
 }

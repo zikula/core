@@ -77,6 +77,11 @@ class ConfigType extends AbstractType
                 'label' => $options['translator']->__('Password reminder is mandatory'),
                 'required' => false,
             ])
+            ->add(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+                'label' => $options['translator']->__('New users must verify their email address on registration.'),
+                'help' => $options['translator']->__('Users created by an admin are automatically considered verified.'),
+                'required' => false,
+            ])
             /**
              * Buttons
              */

@@ -149,31 +149,9 @@ class ConfigType extends AbstractType
                 'required' => false,
                 'attr' => ['class' => 'registration-moderation-input']
             ])
-            ->add(UsersConstant::MODVAR_REGISTRATION_VERIFICATION_MODE, 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $options['translator']->__('Verify e-mail address during registration'),
-                'choices' => [
-                    $options['translator']->__('Yes. User chooses password, then activates account via e-mail') => UsersConstant::VERIFY_USERPWD,
-                    $options['translator']->__('No') => UsersConstant::VERIFY_NO
-                ],
-                'choices_as_values' => true,
-                'choice_attr' => function () {
-                    return ['class' => 'registration-moderation-input'];
-                },
-                'expanded' => true
-            ])
             ->add(UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $options['translator']->__('Newly registered users are logged in automatically'),
                 'required' => false,
-            ])
-            ->add(UsersConstant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $options['translator']->__('Order that approval and verification occur'),
-                'choices' => [
-                    $options['translator']->__('Registration applications must be approved before users verify their e-mail address.') => UsersConstant::APPROVAL_BEFORE,
-                    $options['translator']->__('Users must verify their e-mail address before their application is approved.') => UsersConstant::APPROVAL_AFTER,
-                    $options['translator']->__('Application approval and e-mail address verification can occur in any order.') => UsersConstant::APPROVAL_ANY
-                ],
-                'choices_as_values' => true,
-                'expanded' => true
             ])
             ->add(UsersConstant::MODVAR_EXPIRE_DAYS_REGISTRATION, 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $options['translator']->__('Registrations pending verification expire in'),

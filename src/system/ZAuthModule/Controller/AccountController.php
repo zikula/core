@@ -100,11 +100,6 @@ class AccountController extends AbstractController
                 $user = $user[0];
                 switch ($user->getActivated()) {
                     case UsersConstant::ACTIVATED_ACTIVE:
-                        if ('' == $user->getPass() || UsersConstant::PWD_NO_USERS_AUTHENTICATION == $user->getPass()) {
-                            $this->addFlash('error', $this->__('Sorry! Your account is not set up to use a password to log into this site. Please recover your account information to determine your available log-in options.'));
-                            $redirectToRoute = 'zikulausersmodule_account_menu';
-                            break;
-                        }
                         $newConfirmationCode = $this->get('zikula_users_module.user_verification_repository')->setVerificationCode($user->getUid());
                         $sent = $this->get('zikula_users_module.helper.mail_helper')->mailConfirmationCode($user, $newConfirmationCode);
                         if ($sent) {
@@ -132,16 +127,16 @@ class AccountController extends AbstractController
                         if ($displayPendingApproval || $displayPendingVerification) {
                             $registrationsModerated = $this->getVar(UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED, UsersConstant::DEFAULT_REGISTRATION_APPROVAL_REQUIRED);
                             if ($registrationsModerated) {
-                                $registrationApprovalOrder = $this->getVar(UsersConstant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, UsersConstant::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE);
-                                if (!$user->isApproved() && ($registrationApprovalOrder == UsersConstant::APPROVAL_BEFORE)) {
-                                    $this->addFlash('error', $this->__('Sorry! Your registration request is still waiting for approval from a site administrator.'));
-                                } elseif (!$user->isVerified() && (($registrationApprovalOrder == UsersConstant::APPROVAL_AFTER) || ($registrationApprovalOrder == UsersConstant::APPROVAL_ANY)
-                                        || (($registrationApprovalOrder == UsersConstant::APPROVAL_BEFORE) && $user->isApproved()))
-                                ) {
-                                    $this->addFlash('error', $this->__('Sorry! Your registration request is still waiting for verification of your e-mail address. Check your inbox for an e-mail message from us. If you need another verification e-mail sent, please contact a site administrator.'));
-                                } else {
+//                                $registrationApprovalOrder = $this->getVar(UsersConstant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, UsersConstant::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE);
+//                                if (!$user->isApproved() && ($registrationApprovalOrder == UsersConstant::APPROVAL_BEFORE)) {
+//                                    $this->addFlash('error', $this->__('Sorry! Your registration request is still waiting for approval from a site administrator.'));
+//                                } elseif (!$user->isVerified() && (($registrationApprovalOrder == UsersConstant::APPROVAL_AFTER) || ($registrationApprovalOrder == UsersConstant::APPROVAL_ANY)
+//                                        || (($registrationApprovalOrder == UsersConstant::APPROVAL_BEFORE) && $user->isApproved()))
+//                                ) {
+//                                    $this->addFlash('error', $this->__('Sorry! Your registration request is still waiting for verification of your e-mail address. Check your inbox for an e-mail message from us. If you need another verification e-mail sent, please contact a site administrator.'));
+//                                } else {
                                     $this->addFlash('error', $this->__('Sorry! Your account has not completed the registration process. Please contact a site administrator for more information.'));
-                                }
+//                                }
                             } elseif (!$user->isVerified()) {
                                 $this->addFlash('error', $this->__('Sorry! Your registration request is still waiting for verification of your e-mail address. Check your inbox for an e-mail message from us. If you need another verification e-mail sent, please contact a site administrator.'));
                             } else {

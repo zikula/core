@@ -24,8 +24,4 @@
     <p>{{ __('The web site administrator has created this new account for you.') }}</p>
 {% endif %}
 
-{% if reginfo.isApproved and reginfo.pass != constant('Zikula\\UsersModule\\Constant::PWD_NO_USERS_AUTHENTICATION') %}
-    <p>{{ __('You may now log into the web site with your user name and password.') }}</p>
-{% elseif reginfo.isApproved and reginfo.pass == constant('Zikula\\UsersModule\\Constant::PWD_NO_USERS_AUTHENTICATION') %}
-    <p>{{ __('You may now log into the web site.') }}</p>
-{% endif %}
+<p>{{ __('You may now log into the web site.') }}</p>

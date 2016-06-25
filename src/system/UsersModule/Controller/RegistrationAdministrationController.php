@@ -57,7 +57,6 @@ class RegistrationAdministrationController extends AbstractController
         );
 
         return [
-            'moderationOrder' => $this->getVar(UsersConstant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, UsersConstant::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE),
             'actionsHelper' => $this->get('zikula_users_module.helper.administration_actions'),
             'verificationRepo' => $this->get('zikula_users_module.user_verification_repository'),
             'pager' => [
@@ -131,7 +130,7 @@ class RegistrationAdministrationController extends AbstractController
                 if ($user->getEmail() != $originalUser->getEmail()) {
                     $approvalOrder = $this->getVar('moderation_order', UsersConstant::APPROVAL_BEFORE);
                     if (!(bool)$user->getAttributeValue('_Users_isVerified') && (($approvalOrder != UsersConstant::APPROVAL_BEFORE) || $originalUser->isApproved())) {
-                        $verificationSent = $this->get('zikula_users_module.helper.registration_verification_helper')->sendVerificationCode(null, $user->getUid(), true);
+                        $verificationSent = $this->get('zikula_users_module.helper.registration_verification_helper')->sendVerificationCode($user, true);
                         if (!$verificationSent) {
                             $this->addFlash('error', $this->__('Could not resend verification code.'));
                         }
@@ -234,12 +233,11 @@ class RegistrationAdministrationController extends AbstractController
             'translator' => $this->get('translator.default'),
             'buttonLabel' => $force && !$user->isVerified() ? $this->__('Skip verification and approve') : $this->__('Approve')
         ]);
-        $approvalOrder = $this->getVar(UsersConstant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, UsersConstant::APPROVAL_BEFORE);
         if ($user->isApproved() && !$forceVerification) {
             $this->addFlash('error', $this->__f('Warning! Nothing to do! The registration record for %sub% is already approved.', ['%sub%' => $user->getUname()]));
 
             return $this->redirectToRoute('zikulausersmodule_registrationadministration_list');
-        } elseif (!$forceVerification && ($approvalOrder == UsersConstant::APPROVAL_AFTER) && !$user->isApproved()
+        } elseif (!$forceVerification && !$user->isApproved()
             && !$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
             $this->addFlash('error', $this->__f('Error! The registration record for %sub% cannot be approved. The registration\'s e-mail address must first be verified.', ['%sub%' => $user->getUname()]));
 
@@ -253,7 +251,7 @@ class RegistrationAdministrationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('confirm')->isClicked()) {
-                $approved = $this->get('zikula_users_module.helper.registration_helper')->approve($user, true);
+                $approved = $this->get('zikula_users_module.helper.registration_helper')->approve($user);
                 if (!$approved) {
                     $this->addFlash('error', $this->__f('Sorry! There was a problem approving the registration for %sub%.', ['%sub%' => $user->getUname()]));
                 } else {

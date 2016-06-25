@@ -19,4 +19,16 @@ interface AuthenticationMappingRepositoryInterface extends ObjectRepository, Sel
     public function persistAndFlush(AuthenticationMappingEntity $entity);
 
     public function removeByZikulaId($uid);
+
+    /**
+     * @param integer $uid
+     * @return AuthenticationMappingEntity
+     */
+    public function getByZikulaId($uid);
+
+    /**
+     * @param $uid
+     * @param bool $value
+     */
+    public function setEmailVerification($uid, $value = true);
 }

@@ -22,8 +22,4 @@
 {{ __('The web site administrator has created this new account for you.') }}
 {% endif %}
 
-{% if reginfo.isApproved and reginfo.pass != constant('Zikula\\UsersModule\\Constant::PWD_NO_USERS_AUTHENTICATION') %}
-{{ __('You may now log into the web site with your user name and password.') }}
-{% elseif reginfo.isApproved and reginfo.pass == constant('Zikula\\UsersModule\\Constant::PWD_NO_USERS_AUTHENTICATION') %}
 {{ __('You may now log into the web site.') }}
-{% endif %}

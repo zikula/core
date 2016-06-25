@@ -143,7 +143,7 @@ class UserController extends \Zikula_AbstractController
     {
         @trigger_error('This method is deprecated. Please use RegistrationController::verifyAction', E_USER_DEPRECATED);
 
-        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_registration_verify', ['uname' => $request->get('uname'), 'verifycode' => $request->get('verifycode')]));
+        return new RedirectResponse($this->get('router')->generate('zikulazauthmodule_registration_verify', ['uname' => $request->get('uname'), 'verifycode' => $request->get('verifycode')]));
     }
 
     /**

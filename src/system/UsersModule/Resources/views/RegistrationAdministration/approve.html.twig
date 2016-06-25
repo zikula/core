@@ -8,14 +8,6 @@
     {{ __f('Approve registration of %sub%', {"%sub%": user.uname}) }}
 </h3>
 
-{% if not user.verified %}
-    {% if form.vars.value.force %}
-        <p class="alert alert-warning">{{ __('Warning! The e-mail address for this registration has not been verified. Approving this registration will create a new user record without completing the e-mail verification process.') }}</p>
-    {% elseif constant('Zikula\\UsersModule\\Constant::APPROVAL_AFTER') == getModVar('ZikulaUsersModule', constant('Zikula\\UsersModule\\Constant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE'), constant('Zikula\\UsersModule\\Constant::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE')) %}
-        <p class="alert alert-warning">{{ __('Warning! The e-mail address for this registration has not been verified. You are pre-approving this registration, and a new user record will be created upon completion of the e-mail verification process.') }}</p>
-    {% endif %}
-{% endif %}
-
 {{ include('@ZikulaUsersModule/RegistrationAdministration/include.html.twig') }}
 
 <hr>

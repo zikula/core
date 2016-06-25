@@ -73,9 +73,6 @@ class AccessHelper
      */
     public function loginAllowed(UserEntity $user)
     {
-        $displayVerifyPending = $this->variableApi->get(UsersConstant::MODNAME, UsersConstant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS);
-        $displayApprovalPending = $this->variableApi->get(UsersConstant::MODNAME, UsersConstant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS);
-        $moderationOrder = $this->variableApi->get(UsersConstant::MODNAME, UsersConstant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, UsersConstant::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE);
         $siteOff = $this->variableApi->get(VariableApi::CONFIG, 'siteoff', false);
 
         switch ($user->getActivated()) {
@@ -94,18 +91,7 @@ class AccessHelper
 
                 return false;
             case UsersConstant::ACTIVATED_PENDING_REG:
-                if (!$user->isVerified()
-                    && (($moderationOrder == UsersConstant::APPROVAL_AFTER) || ($moderationOrder == UsersConstant::APPROVAL_ANY)
-                        || '' != $user->getApproved_By())
-                    && $displayVerifyPending
-                ) {
-                    $this->session->getFlashBag()->add('error', $this->translator->__('Your request to register with this site is still waiting for verification of your e-mail address. Please check your inbox for a message from us.'));
-                } elseif ((($moderationOrder == UsersConstant::APPROVAL_BEFORE) || ($moderationOrder == UsersConstant::APPROVAL_ANY))
-                    && $displayApprovalPending
-                    && '' == $user->getApproved_By()
-                ) {
-                    $this->session->getFlashBag()->add('error', $this->translator->__('Your request to register with this site is still waiting for approval from a site administrator.'));
-                }
+                $this->session->getFlashBag()->add('error', $this->translator->__('Your request to register with this site is still waiting for approval from a site administrator.'));
 
                 return false;
             default:
