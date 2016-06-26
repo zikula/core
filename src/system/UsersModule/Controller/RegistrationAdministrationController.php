@@ -24,7 +24,7 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
-use Zikula\UsersModule\Entity\UserVerificationEntity;
+use Zikula\ZAuthModule\Entity\UserVerificationEntity;
 use Zikula\UsersModule\RegistrationEvents;
 
 /**
@@ -58,7 +58,7 @@ class RegistrationAdministrationController extends AbstractController
 
         return [
             'actionsHelper' => $this->get('zikula_users_module.helper.administration_actions'),
-            'verificationRepo' => $this->get('zikula_users_module.user_verification_repository'),
+            'verificationRepo' => $this->get('zikula_zauth_module.user_verification_repository'),
             'pager' => [
                 'count' => $users->count(),
                 'limit' => $limit
@@ -82,7 +82,7 @@ class RegistrationAdministrationController extends AbstractController
         }
 
         /** @var UserVerificationEntity $verificationEntity */
-        $verificationEntity = $this->get('zikula_users_module.user_verification_repository')->findOneBy(['uid' => $user->getUid()]);
+        $verificationEntity = $this->get('zikula_zauth_module.user_verification_repository')->findOneBy(['uid' => $user->getUid()]);
 
         return [
             'user' => $user,
@@ -201,7 +201,7 @@ class RegistrationAdministrationController extends AbstractController
             return $this->redirectToRoute('zikulausersmodule_registrationadministration_list');
         }
         /** @var UserVerificationEntity $verificationEntity */
-        $verificationEntity = $this->get('zikula_users_module.user_verification_repository')->findOneBy(['uid' => $user->getUid()]);
+        $verificationEntity = $this->get('zikula_zauth_module.user_verification_repository')->findOneBy(['uid' => $user->getUid()]);
 
         return [
             'form' => $form->createView(),
@@ -269,7 +269,7 @@ class RegistrationAdministrationController extends AbstractController
             return $this->redirectToRoute('zikulausersmodule_registrationadministration_list');
         }
         /** @var UserVerificationEntity $verificationEntity */
-        $verificationEntity = $this->get('zikula_users_module.user_verification_repository')->findOneBy(['uid' => $user->getUid()]);
+        $verificationEntity = $this->get('zikula_zauth_module.user_verification_repository')->findOneBy(['uid' => $user->getUid()]);
 
         return [
             'form' => $form->createView(),
@@ -330,7 +330,7 @@ class RegistrationAdministrationController extends AbstractController
         }
 
         /** @var UserVerificationEntity $verificationEntity */
-        $verificationEntity = $this->get('zikula_users_module.user_verification_repository')->findOneBy(['uid' => $user->getUid()]);
+        $verificationEntity = $this->get('zikula_zauth_module.user_verification_repository')->findOneBy(['uid' => $user->getUid()]);
 
         return [
             'form' => $form->createView(),

@@ -17,7 +17,7 @@ use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Api\CurrentUserApi;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
+use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 
 class RegistrationVerificationHelper
@@ -44,6 +44,9 @@ class RegistrationVerificationHelper
      */
     private $mailHelper;
 
+    /**
+     * @var CurrentUserApi
+     */
     private $currentUserApi;
 
     /**
@@ -53,6 +56,7 @@ class RegistrationVerificationHelper
      * @param UserVerificationRepositoryInterface $userVerificationRepository
      * @param TranslatorInterface $translator
      * @param MailHelper $mailHelper
+     * @param CurrentUserApi $currentUserApi
      */
     public function __construct(
         VariableApi $variableApi,

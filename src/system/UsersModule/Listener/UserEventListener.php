@@ -17,7 +17,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\UserEntity;
 
 class UserEventListener implements EventSubscriberInterface
 {

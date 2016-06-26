@@ -15,10 +15,10 @@ use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Api\CurrentUserApi;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
+use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\UserVerificationEntity;
+use Zikula\ZAuthModule\Entity\UserVerificationEntity;
 
 class AdministrationActionsHelper
 {

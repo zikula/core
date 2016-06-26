@@ -30,11 +30,6 @@
             {{ form_row(form[constant('MODVAR_ACCOUNT_ITEMS_PER_ROW', UC)]) }}
         </fieldset>
         <fieldset>
-            <legend>{{ __('User Credential Settings') }}</legend>
-            {{ form_row(form[constant('MODVAR_EXPIRE_DAYS_CHANGE_EMAIL', UC)]) }}
-            {{ form_row(form[constant('MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD', UC)]) }}
-        </fieldset>
-        <fieldset>
             <legend>{{ __('Registration Settings') }}</legend>
             {{ form_row(form[constant('MODVAR_REGISTRATION_ENABLED', UC)]) }}
             <div id="registration_disabled_reason" class="collapse in">

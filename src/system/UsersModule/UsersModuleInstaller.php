@@ -35,7 +35,6 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             'Zikula\UsersModule\Entity\UserEntity',
             'Zikula\UsersModule\Entity\UserAttributeEntity',
             'Zikula\UsersModule\Entity\UserSessionEntity',
-            'Zikula\UsersModule\Entity\UserVerificationEntity',
         ];
         try {
             $this->schemaTool->create($classes);
@@ -164,8 +163,6 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             UsersConstant::MODVAR_ACCOUNT_PAGE_IMAGE_PATH               => UsersConstant::DEFAULT_ACCOUNT_PAGE_IMAGE_PATH,
             UsersConstant::MODVAR_ANONYMOUS_DISPLAY_NAME                => $this->__(/* Anonymous (guest) account display name */'Guest'),
             UsersConstant::MODVAR_AVATAR_IMAGE_PATH                     => UsersConstant::DEFAULT_AVATAR_IMAGE_PATH,
-            UsersConstant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL              => UsersConstant::DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL,
-            UsersConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD           => UsersConstant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD,
             UsersConstant::MODVAR_EXPIRE_DAYS_REGISTRATION              => UsersConstant::DEFAULT_EXPIRE_DAYS_REGISTRATION,
             UsersConstant::MODVAR_GRAVATARS_ENABLED                     => UsersConstant::DEFAULT_GRAVATARS_ENABLED,
             UsersConstant::MODVAR_GRAVATAR_IMAGE                        => UsersConstant::DEFAULT_GRAVATAR_IMAGE,

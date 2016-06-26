@@ -8,12 +8,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersModule\Entity\RepositoryInterface;
+namespace Zikula\ZAuthModule\Entity\RepositoryInterface;
 
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\UserVerificationEntity;
+use Zikula\ZAuthModule\Entity\UserVerificationEntity;
 
 interface UserVerificationRepositoryInterface extends ObjectRepository, Selectable
 {

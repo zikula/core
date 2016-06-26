@@ -32,7 +32,7 @@
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="translator.default" />
             <argument type="service" id="zikula_users_module.user_repository" />
-            <argument type="service" id="zikula_users_module.user_verification_repository" />
+            <argument type="service" id="zikula_zauth_module.user_verification_repository" />
             <tag name="validator.constraint_validator" alias="zikula.user_fields.validator" />
         </service>
         <service id="zikula_users_module.validator.constraints.valid_password_validator" class="%zikula_users_module.validator.constraints.valid_password_validator.class%">
@@ -56,7 +56,7 @@
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="translator.default" />
             <argument type="service" id="zikula_users_module.user_repository" />
-            <argument type="service" id="zikula_users_module.user_verification_repository" />
+            <argument type="service" id="zikula_zauth_module.user_verification_repository" />
             <tag name="validator.constraint_validator" alias="zikula.registration_verification.validator" />
         </service>
         <service id="zikula_users_module.validator.constraints.valid_password_change_validator" class="%zikula_users_module.validator.constraints.valid_password_change_validator.class%">

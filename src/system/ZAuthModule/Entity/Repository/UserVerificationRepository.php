@@ -8,12 +8,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersModule\Entity\Repository;
+namespace Zikula\ZAuthModule\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
+use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\UserVerificationEntity;
+use Zikula\ZAuthModule\Entity\UserVerificationEntity;
 
 class UserVerificationRepository extends EntityRepository implements UserVerificationRepositoryInterface
 {
@@ -136,7 +136,7 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
         $entity->setChangetype($changeType);
         $entity->setUid($uid);
         $entity->setVerifycode($hashedConfirmationCode);
-        $entity->setCreated_Dt($nowUTC->format(UsersConstant::DATETIME_FORMAT));
+        $entity->setCreated_Dt($nowUTC);
         if (!empty($email)) {
             $entity->setNewemail($email);
         }

@@ -124,22 +124,6 @@ namespace Zikula\UsersModule
          */
         const DEFAULT_AVATAR_IMAGE_PATH = 'images/avatar';
         /**
-         * Module variable key for the number of days before a change of e-mail request is canceled.
-         */
-        const MODVAR_EXPIRE_DAYS_CHANGE_EMAIL = 'chgemail_expiredays';
-        /**
-         * Default value for the number of days before a change of e-mail request is canceled.
-         */
-        const DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL = 0;
-        /**
-         * Module variable key for the number of days before a change of password request is canceled.
-         */
-        const MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD = 'chgpass_expiredays';
-        /**
-         * Default value for the number of days before a change of password request is canceled.
-         */
-        const DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD = 0;
-        /**
          * Module variable key for the flag indicating whether gravatars are allowed or not.
          */
         const MODVAR_GRAVATARS_ENABLED = 'allowgravatars';
