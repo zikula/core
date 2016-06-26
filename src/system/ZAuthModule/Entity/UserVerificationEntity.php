@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersModule\Entity;
+namespace Zikula\ZAuthModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Zikula\Core\Doctrine\EntityAccess;
@@ -18,7 +18,7 @@ use Zikula\Core\Doctrine\EntityAccess;
  *
  * We use annotations to define the entity mappings to database (see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/basic-mapping.html).
  *
- * @ORM\Entity(repositoryClass="Zikula\UsersModule\Entity\Repository\UserVerificationRepository")
+ * @ORM\Entity(repositoryClass="Zikula\ZAuthModule\Entity\Repository\UserVerificationRepository")
  * @ORM\Table(name="users_verifychg")
  *
  * Account-change verification table.
@@ -189,7 +189,7 @@ class UserVerificationEntity extends EntityAccess
     /**
      * get the created date of the user verification
      *
-     * @return datetime the user verification's created date
+     * @return \DateTime the user verification's created date
      */
     public function getCreated_Dt()
     {

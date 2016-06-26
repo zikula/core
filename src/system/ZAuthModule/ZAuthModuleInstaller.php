@@ -10,7 +10,8 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
      * @var array
      */
     private $entities = [
-        'Zikula\ZAuthModule\Entity\AuthenticationMappingEntity'
+        'Zikula\ZAuthModule\Entity\AuthenticationMappingEntity',
+        'Zikula\ZAuthModule\Entity\UserVerificationEntity',
     ];
 
     public function install()
@@ -51,6 +52,8 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
             ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED => ZAuthConstant::DEFAULT_PASSWORD_STRENGTH_METER_ENABLED,
             ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED => ZAuthConstant::DEFAULT_PASSWORD_REMINDER_ENABLED,
             ZAuthConstant::MODVAR_PASSWORD_REMINDER_MANDATORY => ZAuthConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY,
+            ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL => ZAuthConstant::DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL,
+            ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD => ZAuthConstant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD,
 
             ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED => ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED
         ];

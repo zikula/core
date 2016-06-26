@@ -85,7 +85,7 @@ class RegistrationController extends AbstractController
             $mapping->setVerifiedEmail(true);
             $this->get('zikula_zauth_module.authentication_mapping_repository')->persistAndFlush($mapping);
             $this->get('zikula_users_module.helper.registration_helper')->registerNewUser($userEntity, true, false);
-            $this->get('zikula_users_module.user_verification_repository')->resetVerifyChgFor($userEntity->getUid(), UsersConstant::VERIFYCHGTYPE_REGEMAIL);
+            $this->get('zikula_zauth_module.user_verification_repository')->resetVerifyChgFor($userEntity->getUid(), UsersConstant::VERIFYCHGTYPE_REGEMAIL);
 
             switch ($userEntity->getActivated()) {
                 case UsersConstant::ACTIVATED_PENDING_REG:

@@ -76,7 +76,7 @@
 <script type="text/javascript">
     (function($) {
         $(document).ready(function() {
-            ZikulaUsersPassMeter.init('{{ form.pass.vars.id }}_first', '{{ form.vars.id }}_passmeter', {
+            ZikulaZAuthPassMeter.init('{{ form.pass.vars.id }}_first', '{{ form.vars.id }}_passmeter', {
                 username: '{{ form.user.uname.vars.id }}',
                 minLength: '{{ modvars.minpass }}'
             });

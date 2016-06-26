@@ -13,7 +13,6 @@ namespace Zikula\UsersModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\UsersModule\Constant as UsersConstant;
 
 class DefaultRegistrationType extends AbstractType
 {

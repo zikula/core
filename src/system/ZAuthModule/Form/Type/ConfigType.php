@@ -45,30 +45,30 @@ class ConfigType extends AbstractType
                 'label' => $options['translator']->__('Show password strength meter'),
                 'required' => false,
             ])
-//            ->add(UsersConstant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL, 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
-//                'label' => $options['translator']->__('E-mail address verifications expire in'),
-//                'help' => $options['translator']->__('Enter the number of days a user\'s request to change e-mail addresses should be kept while waiting for verification. Enter zero (0) for no expiration.'),
-//                'input_group' => ['right' => $options['translator']->__('days')],
-//                'alert' => [
-//                    $options['translator']->__('Changing this setting will affect all requests to change e-mail addresses currently pending verification.') => 'warning'
-//                ],
-//                'constraints' => [
-//                    new NotBlank(),
-//                    new GreaterThanOrEqual(['value' => 0])
-//                ]
-//            ])
-//            ->add(UsersConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD, 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
-//                'label' => $options['translator']->__('Password reset requests expire in'),
-//                'help' => $options['translator']->__('This setting only affects users who have not established security question responses. Enter the number of days a user\'s request to reset a password should be kept while waiting for verification. Enter zero (0) for no expiration.'),
-//                'input_group' => ['right' => $options['translator']->__('days')],
-//                'alert' => [
-//                    $options['translator']->__('Changing this setting will affect all password change requests currently pending verification.') => 'warning'
-//                ],
-//                'constraints' => [
-//                    new NotBlank(),
-//                    new GreaterThanOrEqual(['value' => 0])
-//                ]
-//            ])
+            ->add(ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL, 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+                'label' => $options['translator']->__('E-mail address verifications expire in'),
+                'help' => $options['translator']->__('Enter the number of days a user\'s request to change e-mail addresses should be kept while waiting for verification. Enter zero (0) for no expiration.'),
+                'input_group' => ['right' => $options['translator']->__('days')],
+                'alert' => [
+                    $options['translator']->__('Changing this setting will affect all requests to change e-mail addresses currently pending verification.') => 'warning'
+                ],
+                'constraints' => [
+                    new NotBlank(),
+                    new GreaterThanOrEqual(['value' => 0])
+                ]
+            ])
+            ->add(ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD, 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+                'label' => $options['translator']->__('Password reset requests expire in'),
+                'help' => $options['translator']->__('This setting only affects users who have not established security question responses. Enter the number of days a user\'s request to reset a password should be kept while waiting for verification. Enter zero (0) for no expiration.'),
+                'input_group' => ['right' => $options['translator']->__('days')],
+                'alert' => [
+                    $options['translator']->__('Changing this setting will affect all password change requests currently pending verification.') => 'warning'
+                ],
+                'constraints' => [
+                    new NotBlank(),
+                    new GreaterThanOrEqual(['value' => 0])
+                ]
+            ])
             ->add(ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $options['translator']->__('Password reminder is enabled'),
                 'required' => false,

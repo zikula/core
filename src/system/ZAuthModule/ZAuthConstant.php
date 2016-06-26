@@ -76,4 +76,24 @@ class ZAuthConstant
      * The string identifying that a user can user either the native_uname or native_email authentication methods.
      */
     const AUTHENTICATION_METHOD_EITHER = 'native_either';
+
+    /**
+     * Module variable key for the number of days before a change of e-mail request is canceled.
+     */
+    const MODVAR_EXPIRE_DAYS_CHANGE_EMAIL = 'chgemail_expiredays';
+
+    /**
+     * Default value for the number of days before a change of e-mail request is canceled.
+     */
+    const DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL = 0;
+
+    /**
+     * Module variable key for the number of days before a change of password request is canceled.
+     */
+    const MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD = 'chgpass_expiredays';
+
+    /**
+     * Default value for the number of days before a change of password request is canceled.
+     */
+    const DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD = 0;
 }

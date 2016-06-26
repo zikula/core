@@ -19,8 +19,8 @@
             {{ form_row(form[constant('MODVAR_PASSWORD_MINIMUM_LENGTH', ZAC)]) }}
             {{ form_row(form[constant('MODVAR_HASH_METHOD', ZAC)]) }}
             {{ form_row(form[constant('MODVAR_PASSWORD_STRENGTH_METER_ENABLED', ZAC)]) }}
-            {#{{ form_row(form[constant('MODVAR_EXPIRE_DAYS_CHANGE_EMAIL', ZAC)]) }}#}
-            {#{{ form_row(form[constant('MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD', ZAC)]) }}#}
+            {{ form_row(form[constant('MODVAR_EXPIRE_DAYS_CHANGE_EMAIL', ZAC)]) }}
+            {{ form_row(form[constant('MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD', ZAC)]) }}
         </fieldset>
         <fieldset>
             <legend>{{ __('Registration Settings') }}</legend>
