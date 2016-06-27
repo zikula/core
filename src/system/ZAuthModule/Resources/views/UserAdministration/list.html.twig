@@ -1,0 +1,70 @@
+{{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/Zikula.Users.Admin.View.js')) }}
+{{ adminHeader() }}
+<h3>
+    <span class="fa fa-list"></span>
+    {{ __('Users list') }}
+</h3>
+
+<div id="user-search-container" class="form hide">
+    <div class="input-group">
+        <input placeholder="{{ __('Search') }}" id="user-search" class="form-control" size="25" maxlength="25" type="text" value="" />
+        <span class="input-group-addon"><i class="fa fa-times pointer" id="user-search-discard"></i></span>
+    </div>
+</div>
+
+<div id="user-search-min-char" class="hide">{{ __('Please enter at least 3 characters') }}</div>
+
+<p id="users-alphafilter">
+    {{ pagerabc({posvar:'letter', forwardvars:'sortby', printempty:true, route:'zikulausersmodule_useradministration_list'}) }}
+</p>
+
+<div id="user-list">
+    <table id="user-table" class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th><a class='{{ sort.uname.class }}' href='{{ sort.uname.url }}'>{{ __('User name') }}</a></th>
+            <th>{{ __('Email') }}</th>
+            <th>{{ __('Email verified') }}</th>
+            <th><a class='{{ sort.uid.class }}' href='{{ sort.uid.url }}'>{{ __('Internal ID') }}</a></th>
+            <th>{{ __('Method') }}</th>
+            <th>{{ __('Actions') }}</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for mapping in mappings %}
+                <tr>
+                    <td>{{ mapping.uname }}</td>
+                    <td>{{ mapping.email }}</td>
+                    <td>{% if mapping.verifiedEmail %}<i class="fa fa-check text-success"></i>{% else %}<i class="fa fa-times text-danger"></i>{% endif %}</td>
+                    <td>{{ mapping.uid }}</td>
+                    <td>{{ mapping.method }}</td>
+                    <td class="actions">
+                    {% for action in actionsHelper.user(mapping) %}
+                        <a class="fa fa-fw fa-{{ action.icon }} tooltips" href="{{ action.url }}" title="{{ action.text }}"></a>
+                    {% endfor %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr class="info"><td colspan="7" class="text-center">{{ __('No records found.') }}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {{ pager({rowcount:pager.count, limit:pager.limit, route:'zikulausersmodule_useradministration_list', posvar:'startnum'}) }}
+</div>
+
+{# This table is for ajax search results and is hidden until needed and populated then with the results. #}
+<table id="user-search-list" class="table table-bordered table-striped hide">
+    <thead>
+    <tr>
+        <th><a class='{{ sort.uname.class }}' href='{{ sort.uname.url }}'>{{ __('User name') }}</a></th>
+        <th>{{ __('Email') }}</th>
+        <th>{{ __('Email verified') }}</th>
+        <th><a class='{{ sort.uid.class }}' href='{{ sort.uid.url }}'>{{ __('Internal ID') }}</a></th>
+        <th>{{ __('Method') }}</th>
+        <th>{{ __('Actions') }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+{{ adminFooter() }}

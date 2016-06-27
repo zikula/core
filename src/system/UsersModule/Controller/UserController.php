@@ -88,7 +88,7 @@ class UserController extends \Zikula_AbstractController
     {
         @trigger_error('This method is deprecated. Please use AccountController::lostUserNameAction', E_USER_DEPRECATED);
 
-        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_account_lostusername'));
+        return new RedirectResponse($this->get('router')->generate('zikulazauthmodule_account_lostusername'));
     }
 
     /**
@@ -99,7 +99,7 @@ class UserController extends \Zikula_AbstractController
     {
         @trigger_error('This method is deprecated. Please use AccountController::lostPasswordAction', E_USER_DEPRECATED);
 
-        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_account_lostpassword'));
+        return new RedirectResponse($this->get('router')->generate('zikulazauthmodule_account_lostpassword'));
     }
 
     /**
@@ -110,7 +110,7 @@ class UserController extends \Zikula_AbstractController
     {
         @trigger_error('This method is deprecated. Please use AccountController::confirmationCodeAction', E_USER_DEPRECATED);
 
-        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_account_confirmationcode'));
+        return new RedirectResponse($this->get('router')->generate('zikulazauthmodule_account_confirmationcode'));
     }
 
     /**
@@ -177,7 +177,7 @@ class UserController extends \Zikula_AbstractController
     {
         @trigger_error('This method is deprecated. Please use AccountController::changePasswordAction', E_USER_DEPRECATED);
 
-        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_account_changepassword'));
+        return new RedirectResponse($this->get('router')->generate('zikulazauthmodule_account_changepassword'));
     }
 
     /**
@@ -188,7 +188,7 @@ class UserController extends \Zikula_AbstractController
     {
         @trigger_error('This method is deprecated. Please use AccountController::menuAction', E_USER_DEPRECATED);
 
-        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_account_changeemail'));
+        return new RedirectResponse($this->get('router')->generate('zikulazauthmodule_account_changeemail'));
     }
 
     /**
@@ -199,7 +199,7 @@ class UserController extends \Zikula_AbstractController
     {
         @trigger_error('This method is deprecated. Please use AccountController::confirmChangeEmailAction', E_USER_DEPRECATED);
 
-        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_account_confirmchangedemail', ['code' => $confirmcode]));
+        return new RedirectResponse($this->get('router')->generate('zikulazauthmodule_account_confirmchangedemail', ['code' => $confirmcode]));
     }
 
     /**

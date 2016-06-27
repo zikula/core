@@ -22,7 +22,7 @@
             "class": "Zikula\\ZAuthModule\\ZikulaZAuthModule",
             "displayname": "ZAuth",
             "capabilities": {
-                "admin": {"route": "zikulazauthmodule_mapping_list"}
+                "admin": {"route": "zikulazauthmodule_useradministration_list"}
             },
             "url": "zauth",
             "securityschema": {

@@ -29,7 +29,6 @@ use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\RegistrationEvents;
-use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
  * Class RegistrationController

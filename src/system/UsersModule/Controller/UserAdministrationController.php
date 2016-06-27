@@ -31,6 +31,7 @@ use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\UserEvents;
+use Zikula\ZAuthModule\Entity\UserVerificationEntity;
 
 /**
  * Class UserAdministrationController
@@ -65,10 +66,6 @@ class UserAdministrationController extends AbstractController
         ]);
 
         $filter = [];
-        $filter['activated'] = ['operator' => 'notIn', 'operand' => [
-            UsersConstant::ACTIVATED_PENDING_REG,
-            UsersConstant::ACTIVATED_PENDING_DELETE
-        ]];
         if (!empty($letter) && 'all' != $letter) {
             $filter['uname'] = ['operator' => 'like', 'operand' => "$letter%"];
         }
@@ -119,6 +116,138 @@ class UserAdministrationController extends AbstractController
             'users' => $users,
             'actionsHelper' => $this->get('zikula_users_module.helper.administration_actions'),
         ], new PlainResponse());
+    }
+
+    /**
+     * @Route("/user/modify/{user}", requirements={"user" = "^[1-9]\d*$"})
+     * @Theme("admin")
+     * @Template()
+     * @param Request $request
+     * @param UserEntity $user
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function modifyAction(Request $request, UserEntity $user)
+    {
+        if (!$this->hasPermission('ZikulaZAuthModule::', $user->getUname() . "::" . $user->getUid(), ACCESS_EDIT)) {
+            throw new AccessDeniedException();
+        }
+        if (1 === $user->getUid()) {
+            throw new AccessDeniedException($this->__("Error! You can't edit the guest account."));
+        }
+
+        $form = $this->createForm('Zikula\UsersModule\Form\Type\AdminModifyUserType',
+            $user, ['translator' => $this->get('translator.default')]
+        );
+        $originalUser = clone $user;
+        $form->handleRequest($request);
+
+        $event = new GenericEvent($form->getData(), [], new ValidationProviders());
+        $this->get('event_dispatcher')->dispatch(UserEvents::MODIFY_VALIDATE, $event);
+        $validators = $event->getData();
+        $hook = new ValidationHook($validators);
+        $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_VALIDATE, $hook);
+        $validators = $hook->getValidators();
+
+        /**
+         * @todo CAH 22 Apr 2016
+         * In previous version, user was not allowed to edit certain properties if editing himself:
+         *  - group membership in 'certain system groups'
+         *     - the 'default' group
+         *     - primary admin group
+         *  - activated state
+         * The fields were disabled in the form.
+         * User was not able to delete self. (button removed from form)
+         *
+         * It is possible users will not have a password if their account is provided externally. If they do not,
+         *  this may need to change the text displayed to users, e.g. 'change' -> 'create', etc.
+         *  Setting the password may 'disable' the external authorization and the editor should be made aware.
+         */
+
+        if ($form->isValid() && !$validators->hasErrors()) {
+            if ($form->get('submit')->isClicked()) {
+                $user = $form->getData();
+                // @todo hash new password if set @see UserUtil::setPassword
+                $this->get('doctrine')->getManager()->flush($user);
+                $eventArgs = [
+                    'action'    => 'setVar',
+                    'field'     => 'uname',
+                    'attribute' => null,
+                ];
+                $eventData = ['old_value' => $originalUser->getUname()];
+                $updateEvent = new GenericEvent($user, $eventArgs, $eventData);
+                $this->get('event_dispatcher')->dispatch(UserEvents::UPDATE_ACCOUNT, $updateEvent);
+
+                $this->get('event_dispatcher')->dispatch(UserEvents::MODIFY_PROCESS, new GenericEvent($user));
+                $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_PROCESS, new ProcessHook($user->getUid()));
+
+                $this->addFlash('status', $this->__("Done! Saved user's account information."));
+            }
+            if ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', $this->__('Operation cancelled.'));
+            }
+
+            return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
+        }
+
+        return [
+            'form' => $form->createView(),
+        ];
+    }
+
+    /**
+     * @Route("/approve/{user}/{force}", requirements={"user" = "^[1-9]\d*$"})
+     * @Theme("admin")
+     * @Template()
+     * @param Request $request
+     * @param UserEntity $user
+     * @param bool $force
+     * @return array
+     */
+    public function approveAction(Request $request, UserEntity $user, $force = false)
+    {
+        if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
+            throw new AccessDeniedException();
+        }
+        $forceVerification = $this->hasPermission('ZikulaUsersModule', '::', ACCESS_ADMIN) && $force;
+        $form = $this->createForm('Zikula\UsersModule\Form\RegistrationType\ApproveRegistrationConfirmationType', [
+            'user' => $user->getUid(),
+            'force' => $forceVerification
+        ], [
+            'translator' => $this->get('translator.default'),
+            'buttonLabel' => $this->__('Approve')
+        ]);
+        if ($user->isApproved() && !$forceVerification) {
+            $this->addFlash('error', $this->__f('Warning! Nothing to do! %sub% is already approved.', ['%sub%' => $user->getUname()]));
+
+            return $this->redirectToRoute('zikulausersmodule_useradministration_list');
+        } elseif (!$user->isApproved() && !$forceVerification
+            && !$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
+            $this->addFlash('error', $this->__f('Error! %sub% cannot be approved.', ['%sub%' => $user->getUname()]));
+
+            return $this->redirectToRoute('zikulausersmodule_useradministration_list');
+        }
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('confirm')->isClicked()) {
+                $approved = $this->get('zikula_users_module.helper.registration_helper')->approve($user);
+                if ($approved) {
+                    $this->addFlash('status', $this->__f('Done! %sub% has been approved.', ['%sub%' => $user->getUname()]));
+                } else {
+                    $this->addFlash('error', $this->__f('Sorry! There was a problem approving %sub%.', ['%sub%' => $user->getUname()]));
+                }
+            }
+            if ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', $this->__('Operation cancelled.'));
+            }
+
+            return $this->redirectToRoute('zikulausersmodule_useradministration_list');
+        }
+
+        return [
+            'form' => $form->createView(),
+            'user' => $user
+        ];
     }
 
     /**
@@ -267,26 +396,6 @@ class UserAdministrationController extends AbstractController
         }
 
         return $this->redirectToRoute('zikulausersmodule_useradministration_search');
-    }
-
-    /**
-     * @todo not sure this method should be kept or moved to ZAuth
-     * @Route("/send-username/{user}", requirements={"user" = "^[1-9]\d*$"})
-     * @param Request $request
-     * @param UserEntity $user
-     * @return RedirectResponse
-     */
-    public function sendUserNameAction(Request $request, UserEntity $user)
-    {
-        if (!$this->hasPermission('ZikulaUsersModule', $user->getUname() . '::' . $user->getUid(), ACCESS_MODERATE)) {
-            throw new AccessDeniedException();
-        }
-        $mailSent = $this->get('zikula_users_module.helper.mail_helper')->mailUserName($user, true);
-        if ($mailSent) {
-            $this->addFlash('status', $this->__f('Done! The user name for %s has been sent via e-mail.', ['%s' => $user->getUname()]));
-        }
-
-        return $this->redirectToRoute('zikulausersmodule_useradministration_list');
     }
 
     /**

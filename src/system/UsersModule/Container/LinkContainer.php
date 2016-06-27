@@ -120,16 +120,6 @@ class LinkContainer implements LinkContainerInterface
                 'icon' => 'list'
             ];
         }
-        if ($this->permissionApi->hasPermission("ZikulaUsersModule::", '::', ACCESS_MODERATE)) {
-            $pending = $this->registrationHelper->countAll();
-            if ($pending) {
-                $links[] = [
-                    'url' => $this->router->generate('zikulausersmodule_registrationadministration_list'),
-                    'text' => $this->translator->__('Pending registrations') . ' (' . $pending . ')',
-                    'icon' => 'plus'
-                ];
-            }
-        }
 
         // To create a new user (or import users) when registration is enabled, ADD access is required.
         // If registration is disabled, then ADMIN access required.
