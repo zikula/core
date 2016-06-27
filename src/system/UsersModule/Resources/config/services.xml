@@ -19,7 +19,7 @@
             <tag name="kernel.event_subscriber" />
             <argument type="service" id="session" />
             <argument type="service" id="request_stack" />
-            <argument type="service" id="router.default" />
+            <argument type="service" id="router" />
         </service>
         <service id="zikula_users_module.pending_content_listener" class="%zikula_users_module.pending_content_listener.class%">
             <tag name="kernel.event_subscriber" />

@@ -12,6 +12,7 @@
         <parameter key="zikula_zauth_module.authentication_mapping_repository.class">Zikula\ZAuthModule\Entity\Repository\AuthenticationMappingRepository</parameter>
         <parameter key="zikula_zauth_module.user_verification_repository.class">Zikula\ZAuthModule\Entity\Repository\UserVerificationRepository</parameter>
 
+        <parameter key="zikula_zauth_module.helper.administration_actions_helper.class">Zikula\ZAuthModule\Helper\AdministrationActionsHelper</parameter>
         <parameter key="zikula_zauth_module.container.link_container.class">Zikula\ZAuthModule\Container\LinkContainer</parameter>
     </parameters>
 
@@ -30,7 +31,7 @@
         </service>
         <service id="zikula_zauth_module.listener.user_event_listener" class="%zikula_zauth_module.user_event_listener.class%">
             <argument type="service" id="session" />
-            <argument type="service" id="router.default" />
+            <argument type="service" id="router" />
             <tag name="kernel.event_subscriber"/>
         </service>
 
@@ -41,6 +42,14 @@
         <service id="zikula_zauth_module.user_verification_repository" class="%zikula_zauth_module.user_verification_repository.class%">
             <factory service="doctrine.orm.default_entity_manager" method="getRepository"/>
             <argument type="string">Zikula\ZAuthModule\Entity\UserVerificationEntity</argument>
+        </service>
+
+        <service id="zikula_zauth_module.helper.administration_actions_helper" class="%zikula_zauth_module.helper.administration_actions_helper.class%">
+            <argument type="service" id="zikula_permissions_module.api.permission" />
+            <argument type="service" id="router" />
+            <argument type="service" id="translator.default" />
+            <argument type="service" id="zikula_zauth_module.user_verification_repository" />
+            <argument type="service" id="zikula_users_module.user_repository" />
         </service>
 
         <service id="zikula_zauth_module.container.link_container" class="%zikula_zauth_module.container.link_container.class%">

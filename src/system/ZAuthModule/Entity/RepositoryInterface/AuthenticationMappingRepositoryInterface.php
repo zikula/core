@@ -31,4 +31,6 @@ interface AuthenticationMappingRepositoryInterface extends ObjectRepository, Sel
      * @param bool $value
      */
     public function setEmailVerification($uid, $value = true);
+
+    public function query(array $filter = [], array $sort = [], $limit = 0, $offset = 0, $exprType = 'and');
 }

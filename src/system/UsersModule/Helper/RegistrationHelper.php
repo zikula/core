@@ -126,7 +126,7 @@ class RegistrationHelper
         }
         $userCreateEvent = new GenericEvent($userEntity);
         $this->eventDispatcher->dispatch(RegistrationEvents::FULL_USER_CREATE_VETO, $userCreateEvent);
-        if ($adminApprovalRequired || $userCreateEvent->isPropagationStopped()) {
+        if (($adminApprovalRequired && !$userEntity->isApproved()) || $userCreateEvent->isPropagationStopped()) {
             // We need a registration record
             $userEntity->setActivated(UsersConstant::ACTIVATED_PENDING_REG);
             $this->userRepository->persistAndFlush($userEntity);
@@ -329,7 +329,7 @@ class RegistrationHelper
         $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
         $user->setApproved_Date($nowUTC);
 
-        $user->setActivated(UsersConstant::ACTIVATED_PENDING_REG);
+        $user->setActivated(UsersConstant::ACTIVATED_ACTIVE);
         $this->userRepository->persistAndFlush($user);
         $this->eventDispatcher->dispatch(RegistrationEvents::FORCE_REGISTRATION_APPROVAL, new GenericEvent($user));
 

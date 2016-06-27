@@ -25,7 +25,7 @@ class LoginBlock extends AbstractBlockHandler
                 $request = $this->get('request_stack')->getCurrentRequest();
 
                 $authenticationMethodCollector = $this->get('zikula_users_module.internal.authentication_method_collector');
-                $template = '@ZikulaUsersModule/Block/authenticationMethodSelector.html.twig';
+                $template = '@ZikulaUsersModule/Block/login.html.twig';
                 $templateParams = [
                     'collector' => $authenticationMethodCollector,
                     'path' => 'zikulausersmodule_access_login',

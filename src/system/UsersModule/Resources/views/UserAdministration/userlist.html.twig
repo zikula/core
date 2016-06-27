@@ -17,6 +17,9 @@
             {% case constant('Zikula\\UsersModule\\Constant::ACTIVATED_INACTIVE') %}
             <span class="label label-default">{{ __('Inactive') }}</span>
             {% break %}
+            {% case constant('Zikula\\UsersModule\\Constant::ACTIVATED_PENDING_REG') %}
+            <span class="label label-warning">{{ __('Pending') }}</span>
+            {% break %}
             {% case constant('Zikula\\UsersModule\\Constant::ACTIVATED_PENDING_DELETE') %}
             <span class="label label-warning">{{ __('Marked for deletion') }}</span>
             {% break %}

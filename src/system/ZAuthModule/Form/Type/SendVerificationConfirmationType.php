@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersModule\Form\RegistrationType;
+namespace Zikula\ZAuthModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,7 +35,7 @@ class SendVerificationConfirmationType extends AbstractType
 
     public function getBlockPrefix()
     {
-        return 'zikulausersmodule_sendverificationconfirmation';
+        return 'zikulazauthmodule_sendverificationconfirmation';
     }
 
     /**
