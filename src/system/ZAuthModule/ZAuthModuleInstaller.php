@@ -24,12 +24,12 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
 
     public function upgrade($oldversion)
     {
-//        switch ($oldversion) {
-//            case "1.0.0-beta":
-//                $this->schemaTool->update($this->entities);
-//            case "1.0.0-beta2":
-//                // current version
-//        }
+        switch ($oldversion) {
+            case "1.0.0-beta":
+                // nothing
+            case "1.0.0-beta2":
+                // current version
+        }
 
         return true;
     }

@@ -81,5 +81,4 @@ trait WhereFromFilterTrait
 
         return $expr;
     }
-
 }

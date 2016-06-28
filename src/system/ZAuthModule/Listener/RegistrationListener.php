@@ -17,7 +17,6 @@ use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Api\CurrentUserApi;
 use Zikula\UsersModule\Helper\RegistrationVerificationHelper;
 use Zikula\UsersModule\RegistrationEvents;
-use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthModule\ZAuthConstant;
 

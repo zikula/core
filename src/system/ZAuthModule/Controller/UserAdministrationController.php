@@ -238,7 +238,7 @@ class UserAdministrationController extends AbstractController
      */
     public function verifyAction(Request $request, UserEntity $user)
     {
-        if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
+        if (!$this->hasPermission('ZikulaZAuthModule', '::', ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
         $form = $this->createForm('Zikula\ZAuthModule\Form\Type\SendVerificationConfirmationType', [
@@ -327,7 +327,7 @@ class UserAdministrationController extends AbstractController
         } else {
             $mustChangePass = false;
         }
-        $form = $this->createForm('Zikula\UsersModule\Form\Type\TogglePasswordConfirmationType', [
+        $form = $this->createForm('Zikula\ZAuthModule\Form\Type\TogglePasswordConfirmationType', [
             'uid' => $user->getUid(),
         ], [
             'mustChangePass' => $mustChangePass,
