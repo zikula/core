@@ -20,10 +20,8 @@
         {{ form_errors(form) }}
         <fieldset>
             <legend>{{ __('Account information') }}</legend>
-            {{ form_row(form.uname) }}
-            {{ form_row(form.email) }}
             {{ form_row(form.activated) }}
-            <div class="alert alert-info col-sm-offset-3 col-sm-9">{{ __('Setting a user theme is no longer available here.') }}</div>
+            <div class="alert alert-info col-sm-offset-3 col-sm-9">{{ __('Setting a user theme is no longer available.') }}</div>
         </fieldset>
         <fieldset>
             <legend>{{ __('Group membership') }}</legend>
@@ -55,9 +53,7 @@
             </legend>
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-9">
-                    <a class="btn btn-danger" href="{{ path('zikulausersmodule_useradministration_delete', {'user': form.vars.value.uid}) }}"><i class="fa fa-times"></i> {{ __('Delete user account') }}</a>
-                    <a class="btn btn-info" href="{{ path('zikulazauthmodule_useradministration_sendusername', {'user': form.vars.value.uid}) }}"><i class="fa fa-reply"></i> {{ __('Send user name') }}</a>
-                    <a class="btn btn-info" href="{{ path('zikulazauthmodule_useradministration_sendconfirmation', {'user': form.vars.value.uid}) }}"><i class="fa fa-reply"></i> {{ __('Send password recovery code') }}</a>
+                    <a class="btn btn-danger" href="{{ path('zikulausersmodule_useradministration_delete', {'user': form.vars.value.uid}) }}"><i class="fa fa-trash-o"></i> {{ __('Delete user account') }}</a>
                 </div>
             </div>
         </fieldset>
