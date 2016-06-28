@@ -39,7 +39,7 @@ class HookContainer extends AbstractHookContainer
     const LOGIN_VALIDATE = 'users.ui_hooks.login_screen.validate_edit';
     const LOGIN_PROCESS = 'users.ui_hooks.login_screen.process_edit';
 
-    // the LOGIN_BLOCK hooks are not used.
+    // @todo the LOGIN_BLOCK hooks are not used.
     const LOGIN_BLOCK_FORM = 'users.ui_hooks.login_block.form_edit';
     const LOGIN_BLOCK_VALIDATE = 'users.ui_hooks.login_block.validate_edit';
     const LOGIN_BLOCK_PROCESS = 'users.ui_hooks.login_block.process_edit';

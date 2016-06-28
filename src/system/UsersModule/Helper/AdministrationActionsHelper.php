@@ -80,17 +80,6 @@ class AdministrationActionsHelper
      * @param UserEntity $user
      * @return array
      */
-    public function registration(UserEntity $user)
-    {
-        $actions = [];
-
-        return $actions;
-    }
-
-    /**
-     * @param UserEntity $user
-     * @return array
-     */
     public function user(UserEntity $user)
     {
         $actions = [];

@@ -24,50 +24,6 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 class FileIOController extends AbstractController
 {
     /**
-     * @Route("/import")
-     * @Theme("admin")
-     * @Template
-     * @param Request $request
-     * @return array
-     */
-    public function importAction(Request $request)
-    {
-        if (!$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
-        $form = $this->createForm('Zikula\UsersModule\Form\Type\ImportUserType',
-            [], ['translator' => $this->get('translator.default')]
-        );
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            if ($form->get('upload')->isClicked()) {
-                $data = $form->getData();
-                $importErrors = $this->get('zikula_users_module.helper.file_io')->importUsersFromFile($data['file'], $data['delimiter']);
-                if (empty($importErrors)) {
-                    $this->addFlash('status', $this->__('Done! Users imported.'));
-                } else {
-                    $this->addFlash('error', $importErrors);
-                }
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
-            }
-
-            $this->redirectToRoute('zikulausersmodule_useradministration_list');
-        }
-
-        $defaultGroupId = $this->get('zikula_extensions_module.api.variable')->get('ZikulaGroupsModule', 'defaultgroup');
-        $groupEntity = $this->get('doctrine')->getManager()->getRepository('ZikulaGroupsModule:GroupEntity')->find($defaultGroupId);
-
-        return [
-            'form' => $form->createView(),
-            'defaultGroupName' => $groupEntity->getName()
-        ];
-    }
-
-    /**
      * @Route("/export")
      * @Theme("admin")
      * @Template

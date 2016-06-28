@@ -20,7 +20,7 @@
         "zikula": {
             "core-compatibility": ">=1.4.3",
             "class": "Zikula\\ZAuthModule\\ZikulaZAuthModule",
-            "displayname": "ZAuth",
+            "displayname": "Zikula Native Authorization",
             "capabilities": {
                 "admin": {"route": "zikulazauthmodule_useradministration_list"}
             },

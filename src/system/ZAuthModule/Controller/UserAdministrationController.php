@@ -98,7 +98,7 @@ class UserAdministrationController extends AbstractController
         }
 
         $user = new UserEntity();
-        $form = $this->createForm('Zikula\UsersModule\Form\Type\AdminCreatedUserType',
+        $form = $this->createForm('Zikula\ZAuthModule\Form\Type\AdminCreatedUserType',
             $user, ['translator' => $this->get('translator.default')]
         );
         $form->handleRequest($request);
@@ -250,7 +250,7 @@ class UserAdministrationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('confirm')->isClicked()) {
-                $verificationSent = $this->get('zikula_users_module.helper.registration_verification_helper')->sendVerificationCode($user);
+                $verificationSent = $this->get('zikula_zauth_module.helper.registration_verification_helper')->sendVerificationCode($user);
                 if (!$verificationSent) {
                     $this->addFlash('error', $this->__f('Sorry! There was a problem sending a verification code to %sub%.', ['%sub%' => $user->getUname()]));
                 } else {

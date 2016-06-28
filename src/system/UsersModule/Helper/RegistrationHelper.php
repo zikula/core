@@ -60,11 +60,6 @@ class RegistrationHelper
     private $eventDispatcher;
 
     /**
-     * @var RegistrationVerificationHelper
-     */
-    private $verificationHelper;
-
-    /**
      * @var MailHelper
      */
     private $mailHelper;
@@ -78,7 +73,6 @@ class RegistrationHelper
      * @param UserVerificationRepositoryInterface $userVerificationRepository
      * @param EventDispatcherInterface $eventDispatcher
      * @param TranslatorInterface $translator
-     * @param RegistrationVerificationHelper $verificationHelper
      * @param MailHelper $mailHelper
      */
     public function __construct(
@@ -89,7 +83,6 @@ class RegistrationHelper
         UserVerificationRepositoryInterface $userVerificationRepository,
         EventDispatcherInterface $eventDispatcher,
         TranslatorInterface $translator,
-        RegistrationVerificationHelper $verificationHelper,
         MailHelper $mailHelper
     ) {
         $this->variableApi = $variableApi;
@@ -99,7 +92,6 @@ class RegistrationHelper
         $this->userVerificationRepository = $userVerificationRepository;
         $this->eventDispatcher = $eventDispatcher;
         $this->setTranslator($translator);
-        $this->verificationHelper = $verificationHelper;
         $this->mailHelper = $mailHelper;
     }
 
@@ -172,6 +164,7 @@ class RegistrationHelper
 
     /**
      * Creates a new registration mail.
+     * NOTE: called by `$this->$mailMethodName()` above. (IDE makes it appear this method is unused)
      *
      * @param UserEntity $userEntity
      * @param bool   $userNotification       Whether the user should be notified of the new registration or not; however
@@ -217,6 +210,7 @@ class RegistrationHelper
 
     /**
      * Creates a new users mail.
+     * NOTE: called by `$this->$mailMethodName()` above. (IDE makes it appear this method is unused)
      *
      * @param UserEntity $userEntity
      * @param bool  $userNotification        Whether the user should be notified of the new registration or not;
