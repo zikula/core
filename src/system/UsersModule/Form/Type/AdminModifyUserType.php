@@ -21,21 +21,6 @@ class AdminModifyUserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('uname', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $options['translator']->__('User name'),
-                'help' => $options['translator']->__('User names can contain letters, numbers, underscores, periods, spaces and/or dashes.'),
-                'constraints' => [new ValidUname()]
-            ])
-            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
-                'type' => 'Symfony\Component\Form\Extension\Core\Type\EmailType',
-                'first_options' => [
-                    'label' => $options['translator']->__('Email'),
-                    'help' => $options['translator']->__('You will use your e-mail address to identify yourself when you log in.'),
-                ],
-                'second_options' => ['label' => $options['translator']->__('Repeat Email')],
-                'invalid_message' => $options['translator']->__('The emails  must match!'),
-                'constraints' => [new ValidEmail()]
-            ])
             ->add('activated', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'choices' => [
                     $options['translator']->__('Active') => 1,

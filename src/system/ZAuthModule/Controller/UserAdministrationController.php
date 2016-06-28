@@ -169,7 +169,7 @@ class UserAdministrationController extends AbstractController
             throw new AccessDeniedException($this->__("Error! You can't edit the guest account."));
         }
 
-        $form = $this->createForm('Zikula\UsersModule\Form\Type\AdminModifyUserType',
+        $form = $this->createForm('Zikula\ZAuthModule\Form\Type\AdminModifyUserType',
             $user, ['translator' => $this->get('translator.default')]
         );
         $originalUser = clone $user;

@@ -8,7 +8,51 @@
     {{ __f('Approve registration of %sub%', {"%sub%": user.uname}) }}
 </h3>
 
-{{ include('@ZikulaUsersModule/UserAdministration/include.html.twig') }}
+<fieldset>
+    <legend>{{ __('Account Information') }}</legend>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">{{ __('User name:') }}</label>
+        <div class="col-sm-9">
+            <div class="form-control-static">
+                {{ user.uname }}
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">{{ __('E-mail address:') }}</label>
+        <div class="col-sm-9">
+            <div class="form-control-static">
+                {% if user.email|default %}
+                    <a href="mailto:{{ user.email|url_encode }}">{{ user.email }}</a>
+                {% else %}
+                    ---
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</fieldset>
+
+{% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\UserEvents::DISPLAY_VIEW'), null, user, {id:user.uid}) %}
+{% for data in eventData %}
+    {{ data }}
+{% endfor %}
+{{ notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::REGISTRATION_DISPLAY'), user.uid) }}
+
+<fieldset>
+    <legend>{{ __('Registration Status') }}</legend>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">{{ __('Administrator approval:') }}</label>
+        <div class="col-sm-9">
+            <div class="form-control-static">
+                {% if user.isapproved is empty or not user.isapproved %}
+                    <span class="fa fa-times fa-fw fa-red"></span>{{ __('Not yet approved') }}
+                {% else %}
+                    <span class="fa fa-check fa-fw fa-green"></span>{{ __('Approved') }} <span class="small">{{ __('(or approval was not required when the registration was completed)') }}</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</fieldset>
 
 <hr>
 {{ form_start(form) }}
