@@ -229,8 +229,8 @@ class AdminController extends \Zikula_AbstractController
      */
     public function toggleForcedPasswordChangeAction(Request $request)
     {
-        @trigger_error('This method is deprecated. Please use UserAdministrationController::togglePasswordChangeAction', E_USER_DEPRECATED);
+        @trigger_error('This method is deprecated. Please use ZAuthModule:UserAdministrationController::togglePasswordChangeAction', E_USER_DEPRECATED);
 
-        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_useradministration_togglepasswordchange', ['user' => $request->get('userid')]));
+        return new RedirectResponse($this->get('router')->generate('zikulazauthmodule_useradministration_togglepasswordchange', ['user' => $request->get('userid')]));
     }
 }
