@@ -120,41 +120,6 @@ class LinkContainer implements LinkContainerInterface
                 'icon' => 'list'
             ];
         }
-
-        // To create a new user (or import users) when registration is enabled, ADD access is required.
-        // If registration is disabled, then ADMIN access required.
-        // ADMIN access is always required for exporting the users.
-        if ($this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ENABLED, false)) {
-            $createUserAccessLevel = ACCESS_ADD;
-        } else {
-            $createUserAccessLevel = ACCESS_ADMIN;
-        }
-        if ($this->permissionApi->hasPermission("ZikulaUsersModule::", '::', $createUserAccessLevel)) {
-            $submenulinks = [];
-            $submenulinks[] = [
-                'url' => $this->router->generate('zikulausersmodule_fileio_import'),
-                'text' => $this->translator->__('Import users')
-            ];
-            if ($this->permissionApi->hasPermission("ZikulaUsersModule::", '::', ACCESS_ADMIN)) {
-                $submenulinks[] = [
-                    'url' => $this->router->generate('zikulausersmodule_fileio_export'),
-                    'text' => $this->translator->__('Export users')
-                ];
-            }
-            $links[] = [
-                'url' => $this->router->generate('zikulausersmodule_admin_newuser'),
-                'text' => $this->translator->__('Create new user'),
-                'icon' => 'plus',
-                'links' => $submenulinks
-            ];
-        }
-        if ($this->permissionApi->hasPermission("ZikulaUsersModule::", '::', ACCESS_MODERATE)) {
-            $links[] = [
-                'url' => $this->router->generate('zikulausersmodule_useradministration_search'),
-                'text' => $this->translator->__('Find users'),
-                'icon' => 'search'
-            ];
-        }
         if ($this->permissionApi->hasPermission("ZikulaUsersModule::", '::', ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikulausersmodule_config_config'),
@@ -165,6 +130,18 @@ class LinkContainer implements LinkContainerInterface
                 'url' => $this->router->generate('zikulausersmodule_config_authenticationmethods'),
                 'text' => $this->translator->__('Authentication Methods'),
                 'icon' => 'lock'
+            ];
+        }
+        if ($this->permissionApi->hasPermission("ZikulaUsersModule::", '::', ACCESS_MODERATE)) {
+            $links[] = [
+                'url' => $this->router->generate('zikulausersmodule_fileio_export'),
+                'text' => $this->translator->__('Export users'),
+                'icon' => 'download',
+            ];
+            $links[] = [
+                'url' => $this->router->generate('zikulausersmodule_useradministration_search'),
+                'text' => $this->translator->__('Find users'),
+                'icon' => 'search'
             ];
         }
 

@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersModule\Form\Type;
+namespace Zikula\ZAuthModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -64,7 +64,7 @@ class ImportUserType extends AbstractType
 
     public function getBlockPrefix()
     {
-        return 'zikulausersmodule_importuser';
+        return 'zikulazauthmodule_importuser';
     }
 
     /**

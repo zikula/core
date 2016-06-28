@@ -8,6 +8,7 @@ use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 
 class LinkContainer implements LinkContainerInterface
@@ -97,6 +98,30 @@ class LinkContainer implements LinkContainerInterface
                 'text' => $this->translator->__('Users list'),
                 'icon' => 'list'
             ];
+            // To create a new user (or import users) when registration is enabled, ADD access is required.
+            // If registration is disabled, then ADMIN access required.
+            // ADMIN access is always required for exporting the users.
+            if ($this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ENABLED, false)) {
+                $createUserAccessLevel = ACCESS_ADD;
+            } else {
+                $createUserAccessLevel = ACCESS_ADMIN;
+            }
+            if ($this->permissionApi->hasPermission("ZikulaUsersModule::", '::', $createUserAccessLevel)) {
+                $submenulinks[] = [
+                    'url' => $this->router->generate('zikulazauthmodule_useradministration_create'),
+                    'text' => $this->translator->__('Create new user'),
+                ];
+                $submenulinks[] = [
+                    'url' => $this->router->generate('zikulazauthmodule_fileio_import'),
+                    'text' => $this->translator->__('Import users')
+                ];
+                $links[] = [
+                    'url' => $this->router->generate('zikulazauthmodule_useradministration_create'),
+                    'text' => $this->translator->__('New users'),
+                    'icon' => 'plus',
+                    'links' => $submenulinks
+                ];
+            }
             $links[] = [
                 'url' => $this->router->generate('zikulazauthmodule_config_config'),
                 'text' => $this->translator->__('Settings'),
@@ -152,13 +177,12 @@ class LinkContainer implements LinkContainerInterface
                 'text' => $this->translator->__('Change password'),
                 'icon'  => 'key text-success'
             ];
+            $links[] = [
+                'url'   => $this->router->generate('zikulazauthmodule_account_changeemail'),
+                'text' => $this->translator->__('Change e-mail address'),
+                'icon'  => 'at'
+            ];
         }
-
-        $links[] = [
-            'url'   => $this->router->generate('zikulazauthmodule_account_changeemail'),
-            'text' => $this->translator->__('Change e-mail address'),
-            'icon'  => 'at'
-        ];
 
         return $links;
     }

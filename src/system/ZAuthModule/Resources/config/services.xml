@@ -13,6 +13,9 @@
         <parameter key="zikula_zauth_module.user_verification_repository.class">Zikula\ZAuthModule\Entity\Repository\UserVerificationRepository</parameter>
 
         <parameter key="zikula_zauth_module.helper.administration_actions_helper.class">Zikula\ZAuthModule\Helper\AdministrationActionsHelper</parameter>
+        <parameter key="zikula_zauth_module.helper.file_io.class">Zikula\ZAuthModule\Helper\FileIOHelper</parameter>
+        <parameter key="zikula_zauth_module.helper.registration_verification_helper.class">Zikula\ZAuthModule\Helper\RegistrationVerificationHelper</parameter>
+
         <parameter key="zikula_zauth_module.container.link_container.class">Zikula\ZAuthModule\Container\LinkContainer</parameter>
     </parameters>
 
@@ -26,7 +29,7 @@
             <argument type="service" id="zikula_permissions_module.api.permission" />
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="zikula_zauth_module.authentication_mapping_repository" />
-            <argument type="service" id="zikula_users_module.helper.registration_verification_helper" />
+            <argument type="service" id="zikula_zauth_module.helper.registration_verification_helper" />
             <tag name="kernel.event_subscriber"/>
         </service>
         <service id="zikula_zauth_module.listener.user_event_listener" class="%zikula_zauth_module.user_event_listener.class%">
@@ -50,6 +53,24 @@
             <argument type="service" id="translator.default" />
             <argument type="service" id="zikula_zauth_module.user_verification_repository" />
             <argument type="service" id="zikula_users_module.user_repository" />
+        </service>
+        <service id="zikula_zauth_module.helper.file_io" class="%zikula_zauth_module.helper.file_io.class%" lazy="true">
+            <argument type="service" id="zikula_extensions_module.api.variable" />
+            <argument type="service" id="zikula_permissions_module.api.permission" />
+            <argument type="service" id="translator.default" />
+            <argument type="service" id="validator" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="zikula_users_module.helper.mail_helper" />
+            <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="zikula_users_module.current_user" />
+        </service>
+        <service id="zikula_zauth_module.helper.registration_verification_helper" class="%zikula_zauth_module.helper.registration_verification_helper.class%" lazy="true">
+            <argument type="service" id="zikula_extensions_module.api.variable" />
+            <argument type="service" id="zikula_permissions_module.api.permission" />
+            <argument type="service" id="zikula_zauth_module.user_verification_repository" />
+            <argument type="service" id="translator.default" />
+            <argument type="service" id="zikula_users_module.helper.mail_helper" />
+            <argument type="service" id="zikula_users_module.current_user" />
         </service>
 
         <service id="zikula_zauth_module.container.link_container" class="%zikula_zauth_module.container.link_container.class%">

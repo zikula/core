@@ -8,29 +8,55 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersModule\Form\Type;
+namespace Zikula\ZAuthModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\UsersModule\Validator\Constraints\ValidEmail;
+use Zikula\UsersModule\Validator\Constraints\ValidPassword;
+use Zikula\UsersModule\Validator\Constraints\ValidUname;
 
 class AdminCreatedUserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('user', 'Zikula\UsersModule\Form\Type\UserType', [
-                'data_class' => 'Zikula\UsersModule\Entity\UserEntity',
-                'translator' => $options['translator'],
-                'passwordReminderEnabled' => false,
-                'passwordReminderMandatory' => false,
-                'allowNullPassword' => true
+            ->add('uname', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+                'label' => $options['translator']->__('User name'),
+                'help' => $options['translator']->__('User names can contain letters, numbers, underscores, periods, spaces and/or dashes.'),
+                'constraints' => [new ValidUname()]
+            ])
+            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
+                'type' => 'Symfony\Component\Form\Extension\Core\Type\EmailType',
+                'first_options' => [
+                    'label' => $options['translator']->__('Email'),
+                    'help' => $options['translator']->__('You will use your e-mail address to identify yourself when you log in.'),
+                ],
+                'second_options' => ['label' => $options['translator']->__('Repeat Email')],
+                'invalid_message' => $options['translator']->__('The emails  must match!'),
+                'constraints' => [new ValidEmail()]
             ])
             ->add('setpass', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'required' => false,
                 'mapped' => false,
                 'label' => $options['translator']->__('Set password now'),
                 'alert' => [$options['translator']->__('If unchecked, the user\'s e-mail address will be verified. The user will create a password at that time.') => 'info']
+            ])
+            ->add('pass', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
+                'type' => 'Symfony\Component\Form\Extension\Core\Type\PasswordType',
+                'first_options' => [
+                    'label' => $options['translator']->__('Create new password'),
+                    'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
+                ],
+                'second_options' => [
+                    'label' => $options['translator']->__('Repeat new password'),
+                    'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
+                ],
+                'invalid_message' => $options['translator']->__('The passwords must match!'),
+                'constraints' => [
+                    new ValidPassword(),
+                ]
             ])
             ->add('sendpass', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'required' => false,
@@ -69,12 +95,11 @@ class AdminCreatedUserType extends AbstractType
                 'attr' => ['class' => 'btn btn-default']
             ])
         ;
-        $builder->get('user')->get('pass')->setRequired(false);
     }
 
     public function getBlockPrefix()
     {
-        return 'zikulausersmodule_admincreateduser';
+        return 'zikulazauthmodule_admincreateduser';
     }
 
     /**

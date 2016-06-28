@@ -384,15 +384,6 @@ class UserEntity extends EntityAccess
         return $this->approved_by != 0;
     }
 
-    public function isVerified()
-    {
-        if ($this->getAttributes()->containsKey('_Users_isVerified')) {
-            return $this->getAttributeValue('_Users_isVerified');
-        } else {
-            return true;
-        }
-    }
-
     /**
      * get the regdate of the user
      *

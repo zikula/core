@@ -187,9 +187,9 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
     {
         $mapping = new AuthenticationMappingEntity();
         $mapping->setUid($data['uid']);
-        $mapping->setUname($data['user']['uname']);
-        $mapping->setEmail($data['user']['email']);
-        $mapping->setPass(\UserUtil::getHashedPassword($data['pass'])); // @todo salted and hashed
+        $mapping->setUname($data['uname']);
+        $mapping->setEmail($data['email']);
+        $mapping->setPass(\UserUtil::getHashedPassword($data['pass'])); // @todo replace UserUtil
         if (isset($data['passreminder'])) {
             $mapping->setPassreminder($data['passreminder']);
         }

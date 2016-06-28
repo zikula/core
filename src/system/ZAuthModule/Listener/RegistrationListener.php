@@ -15,9 +15,9 @@ use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Api\CurrentUserApi;
-use Zikula\UsersModule\Helper\RegistrationVerificationHelper;
 use Zikula\UsersModule\RegistrationEvents;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
+use Zikula\ZAuthModule\Helper\RegistrationVerificationHelper;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 class RegistrationListener implements EventSubscriberInterface

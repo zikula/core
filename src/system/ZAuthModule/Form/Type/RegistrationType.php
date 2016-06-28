@@ -17,8 +17,10 @@ use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Validator\Constraints\ValidAntiSpamAnswer;
+use Zikula\UsersModule\Validator\Constraints\ValidEmail;
 use Zikula\UsersModule\Validator\Constraints\ValidPassword;
 use Zikula\UsersModule\Validator\Constraints\ValidPasswordReminder;
+use Zikula\UsersModule\Validator\Constraints\ValidUname;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 class RegistrationType extends AbstractType
@@ -53,8 +55,20 @@ class RegistrationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('user', 'Zikula\UsersModule\Form\Type\UserType', [
-                'translator' => $this->translator,
+            ->add('uname', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+                'label' => $options['translator']->__('User name'),
+                'help' => $options['translator']->__('User names can contain letters, numbers, underscores, periods, spaces and/or dashes.'),
+                'constraints' => [new ValidUname()]
+            ])
+            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
+                'type' => 'Symfony\Component\Form\Extension\Core\Type\EmailType',
+                'first_options' => [
+                    'label' => $options['translator']->__('Email'),
+                    'help' => $options['translator']->__('You will use your e-mail address to identify yourself when you log in.'),
+                ],
+                'second_options' => ['label' => $options['translator']->__('Repeat Email')],
+                'invalid_message' => $options['translator']->__('The emails  must match!'),
+                'constraints' => [new ValidEmail()]
             ])
             ->add('pass', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
                 'type' => 'Symfony\Component\Form\Extension\Core\Type\PasswordType',

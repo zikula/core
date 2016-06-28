@@ -13,8 +13,6 @@ namespace Zikula\UsersModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\UsersModule\Validator\Constraints\ValidEmail;
-use Zikula\UsersModule\Validator\Constraints\ValidUname;
 
 class AdminModifyUserType extends AbstractType
 {

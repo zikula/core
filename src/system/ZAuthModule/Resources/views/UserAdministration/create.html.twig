@@ -16,15 +16,15 @@
         {{ form_errors(form) }}
         <fieldset>
             <legend>{{ __('Account information') }}</legend>
-            {{ form_row(form.user.uname) }}
-            {{ form_row(form.user.email) }}
+            {{ form_row(form.uname) }}
+            {{ form_row(form.email) }}
             <div class="alert alert-info col-sm-offset-3 col-sm-9">{{ __('Setting a user theme is no longer available here.') }}</div>
         </fieldset>
         <fieldset>
             <legend>{{ __('Log-in information') }}</legend>
             {{ form_row(form.setpass, {'attr': {'data-toggle': 'collapse', 'data-target': '#'~form.setpass.vars.id~'_wrap'}}) }}
             <div id="{{ form.setpass.vars.id }}_wrap" class="collapse{% if form.setpass.vars.data %} in {% endif %}">
-                {{ form_row(form.user.pass) }}
+                {{ form_row(form.pass) }}
                 <div id="{{ form.vars.id }}_passmeter" class="col-sm-offset-3 col-sm-9"></div>
                 {{ form_row(form.sendpass) }}
             </div>
@@ -57,8 +57,8 @@
                 var setPassEle = $("#{{ form.setpass.vars.id }}");
                 var setPassAlert = setPassEle.parent().find('.alert');
                 var setPassWrap = $('#{{ form.setpass.vars.id }}_wrap');
-                var passFirst = $('#{{ form.user.pass.vars.id }}_first');
-                var passSecond = $('#{{ form.user.pass.vars.id }}_second');
+                var passFirst = $('#{{ form.pass.vars.id }}_first');
+                var passSecond = $('#{{ form.pass.vars.id }}_second');
                 var showPasswordsRequired = function() {
                     passFirst.prop('required', true);
                     passFirst.parents('.form-group').find('label').addClass('required');
@@ -74,7 +74,7 @@
                 setPassAlert.addClass('collapse in');
 
                 ZikulaZAuthPassMeter.init(passFirst.attr('id'), '{{ form.vars.id }}_passmeter', {
-                    username: '{{ form.user.uname.vars.id }}',
+                    username: '{{ form.uname.vars.id }}',
                     minLength: '{{ getModVar('ZikulaUsersModule', 'minpass') }}'
                 });
                 // ensure wrap is shown on form re-draw

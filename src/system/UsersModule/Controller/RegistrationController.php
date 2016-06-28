@@ -96,7 +96,7 @@ class RegistrationController extends AbstractController
 
         $formClassName = ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface)
             ? $authenticationMethod->getRegistrationFormClassName()
-            : 'Zikula\UsersModule\Form\Type\DefaultRegistrationType';
+            : 'Zikula\UsersModule\Form\RegistrationType\DefaultRegistrationType';
         $form = $this->createForm($formClassName);
         $form->handleRequest($request);
 
@@ -112,7 +112,8 @@ class RegistrationController extends AbstractController
             if ($form->get('submit')->isClicked() && !$validators->hasErrors()) {
                 $formData = $form->getData();
                 $userEntity = new UserEntity();
-                $userEntity->merge($formData['user']);
+                $userEntity->setUname($formData['uname']);
+                $userEntity->setEmail($formData['email']);
                 $notificationErrors = $this->get('zikula_users_module.helper.registration_helper')->registerNewUser($userEntity);
 
                 if (!empty($notificationErrors)) {

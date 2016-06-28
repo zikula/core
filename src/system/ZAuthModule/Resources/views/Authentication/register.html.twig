@@ -25,7 +25,7 @@
     <input id="{{ form.vars.id }}_registration_info" type="hidden" name="registration_info" value="1" />
     <fieldset>
         <legend>{{ __('Choose a user name') }}</legend>
-        {{ form_row(form.user.uname) }}
+        {{ form_row(form.uname) }}
         <em class="help-block small col-sm-offset-3 col-sm-9">{{ __('Your user name is used to identify you to other users on the site. You still need to set one up, even though you will not be using it to log in.') }}</em>
     </fieldset>
     <fieldset>
@@ -33,12 +33,12 @@
         {{ form_row(form.pass, {'help': __f('The minimum length for user passwords is %sub% characters.', {"%sub%": modvars.minpass})}) }}
         <div id="{{ form.vars.id }}_passmeter" class="col-sm-offset-3 col-sm-9"></div>
         {% if modvars.password_reminder_enabled is defined and modvars.password_reminder_enabled %}
-            {{ form_row(form.user.passreminder) }}
+            {{ form_row(form.passreminder) }}
         {% endif %}
     </fieldset>
     <fieldset {% if hideEmail is defined and hideEmail %}class="hide"{% endif %}>
         <legend>{{ __('Enter your e-mail address') }}</legend>
-        {% if form.children.user.email is defined %}{{ form_row(form.user.email) }}{% endif %}{# email may not be defined if authentication is non-local #}
+        {% if form.children.email is defined %}{{ form_row(form.email) }}{% endif %}{# email may not be defined if authentication is non-local #}
     </fieldset>
 
     {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\RegistrationEvents::NEW_FORM')) %}
@@ -77,7 +77,7 @@
     (function($) {
         $(document).ready(function() {
             ZikulaZAuthPassMeter.init('{{ form.pass.vars.id }}_first', '{{ form.vars.id }}_passmeter', {
-                username: '{{ form.user.uname.vars.id }}',
+                username: '{{ form.uname.vars.id }}',
                 minLength: '{{ modvars.minpass }}'
             });
         });
