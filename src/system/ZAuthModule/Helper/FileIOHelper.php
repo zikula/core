@@ -26,7 +26,7 @@ use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Helper\MailHelper;
 use Zikula\UsersModule\Validator\Constraints\ValidEmail;
-use Zikula\UsersModule\Validator\Constraints\ValidPassword;
+use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
 
 class FileIOHelper
