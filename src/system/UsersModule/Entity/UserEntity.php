@@ -59,7 +59,7 @@ class UserEntity extends EntityAccess
     /**
      * @deprecated at Core-1.4.3 and removed in 2.0
      * Password: This will be blank for all new accounts and as each new user logs in, it will be removed.
-     * 
+     *
      * Old information:
      * User's password for logging in.
      * This value is salted and hashed. The salt is stored in this field, delimited from the hash with a dollar sign character ($).

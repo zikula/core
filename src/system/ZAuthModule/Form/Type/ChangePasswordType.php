@@ -15,9 +15,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Validator\Constraints\ValidPassword;
-use Zikula\UsersModule\Validator\Constraints\ValidPasswordChange;
-use Zikula\UsersModule\Validator\Constraints\ValidPasswordReminder;
+use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
+use Zikula\ZAuthModule\Validator\Constraints\ValidPasswordChange;
+use Zikula\ZAuthModule\Validator\Constraints\ValidPasswordReminder;
 
 class ChangePasswordType extends AbstractType
 {
