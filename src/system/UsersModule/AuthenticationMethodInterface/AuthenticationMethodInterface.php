@@ -39,7 +39,9 @@ interface AuthenticationMethodInterface
 
     /**
      * Register a new user from the provided data and map authorization to a Zikula UID.
+     * MUST return boolean TRUE on success.
      * @param array $data
+     * @return boolean
      */
     public function register(array $data);
 }

@@ -21,7 +21,8 @@
 
     <services>
         <service id="zikula_zauth_module.listener.user_delete_listener" class="%zikula_zauth_module.user_delete_listener.class%">
-            <argument id="zikula_zauth_module.authentication_mapping_repository" type="service"/>
+            <argument type="service" id="zikula_zauth_module.authentication_mapping_repository" />
+            <argument type="service" id="zikula_zauth_module.user_verification_repository" />
             <tag name="kernel.event_subscriber"/>
         </service>
         <service id="zikula_zauth_module.listener.registration_listener" class="%zikula_zauth_module.registration_listener.class%">

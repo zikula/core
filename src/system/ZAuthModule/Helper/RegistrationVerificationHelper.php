@@ -16,10 +16,10 @@ use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Api\CurrentUserApi;
-use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Helper\MailHelper;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 class RegistrationVerificationHelper
 {
@@ -93,14 +93,14 @@ class RegistrationVerificationHelper
             throw new AccessDeniedException();
         }
 
-        $verificationCode = $this->userVerificationRepository->setVerificationCode($userEntity->getUid(), UsersConstant::VERIFYCHGTYPE_REGEMAIL, $userEntity->getEmail());
+        $verificationCode = $this->userVerificationRepository->setVerificationCode($userEntity->getUid(), ZAuthConstant::VERIFYCHGTYPE_REGEMAIL, $userEntity->getEmail());
 
         $codeSent = $this->mailHelper->sendNotification($userEntity->getEmail(), 'regverifyemail', [
             'user' => $userEntity,
             'verifycode' => $verificationCode,
         ]);
 
-        $userVerificationEntity = $this->userVerificationRepository->findOneBy(['uid' => $userEntity->getUid(), 'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL]);
+        $userVerificationEntity = $this->userVerificationRepository->findOneBy(['uid' => $userEntity->getUid(), 'changetype' => ZAuthConstant::VERIFYCHGTYPE_REGEMAIL]);
         if ($codeSent) {
             return $userVerificationEntity->getCreated_Dt();
         } else {

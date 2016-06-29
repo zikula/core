@@ -56,18 +56,6 @@ namespace Zikula\UsersModule
          */
         const ACTIVATED_PENDING_DELETE = 16384;
         /**
-         * An indicator for the change verification table that the record represents a change of password request.
-         */
-        const VERIFYCHGTYPE_PWD = 1;
-        /**
-         * An indicator for the change verification table that the record represents a change of e-mail address request, pending e-mail address verification.
-         */
-        const VERIFYCHGTYPE_EMAIL = 2;
-        /**
-         * An indicator for the change verification table that the record represents a registration e-mail verification.
-         */
-        const VERIFYCHGTYPE_REGEMAIL = 3;
-        /**
          * Default salt delimeter character.
          */
         const SALT_DELIM = '$';

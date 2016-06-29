@@ -17,8 +17,8 @@ use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
-use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\ZAuthModule\Entity\UserVerificationEntity;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 class AdministrationActionsHelper
 {
@@ -82,7 +82,7 @@ class AdministrationActionsHelper
         /** @var UserVerificationEntity $userVerification */
         $userVerification = $this->verificationRepository->findOneBy([
             'uid' => $user->getUid(),
-            'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL
+            'changetype' => ZAuthConstant::VERIFYCHGTYPE_REGEMAIL
         ]);
         // send verification email requires no further perm check
         if (!$user->isVerifiedEmail()) {

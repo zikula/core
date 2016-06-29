@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
  * UserUtil
@@ -537,7 +538,7 @@ class UserUtil
                  ->where('v.newemail = :email')
                  ->andWhere('v.changetype = :chgtype')
                  ->setParameter('email', $emailAddress)
-                 ->setParameter('chgtype', UsersConstant::VERIFYCHGTYPE_EMAIL);
+                 ->setParameter('chgtype', ZAuthConstant::VERIFYCHGTYPE_EMAIL);
 
         if ($excludeUid > 1) {
             $qb->andWhere('v.uid <> :excludeUid')
@@ -580,7 +581,7 @@ class UserUtil
                         ->where('v.uid = :uid')
                         ->andWhere('v.changetype = :changetype')
                         ->setParameter('uid', $userObj['uid'])
-                        ->setParameter('changetype', UsersConstant::VERIFYCHGTYPE_REGEMAIL)
+                        ->setParameter('changetype', ZAuthConstant::VERIFYCHGTYPE_REGEMAIL)
                         ->getQuery();
 
             $verifyChgList = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);

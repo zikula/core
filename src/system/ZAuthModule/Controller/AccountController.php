@@ -197,7 +197,7 @@ class AccountController extends AbstractController
                 $changePasswordExpireDays = $this->getVar(ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD, ZAuthConstant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD);
                 $this->get('zikula_zauth_module.user_verification_repository')->purgeExpiredRecords($changePasswordExpireDays);
                 /** @var UserVerificationEntity $userVerificationEntity */
-                $userVerificationEntity = $this->get('zikula_zauth_module.user_verification_repository')->findOneBy(['uid' => $user->getUid(), 'changetype' => UsersConstant::VERIFYCHGTYPE_PWD]);
+                $userVerificationEntity = $this->get('zikula_zauth_module.user_verification_repository')->findOneBy(['uid' => $user->getUid(), 'changetype' => ZAuthConstant::VERIFYCHGTYPE_PWD]);
                 if (\UserUtil::passwordsMatch($data['code'], $userVerificationEntity->getVerifycode())) {
                     \UserUtil::setPassword($data['pass'], $user->getUid());
                     $authenticationInfo = ['login_id' => $data[$field], 'pass' => $data['pass']];
@@ -244,7 +244,7 @@ class AccountController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $currentUser = $this->get('zikula_users_module.current_user');
-            $code = $this->get('zikula_zauth_module.user_verification_repository')->setVerificationCode($currentUser->get('uid'), UsersConstant::VERIFYCHGTYPE_EMAIL, $data['email']);
+            $code = $this->get('zikula_zauth_module.user_verification_repository')->setVerificationCode($currentUser->get('uid'), ZAuthConstant::VERIFYCHGTYPE_EMAIL, $data['email']);
             $templateArgs = [
                 'uname'     => $currentUser->get('uname'),
                 'email'     => $currentUser->get('email'),
@@ -280,12 +280,12 @@ class AccountController extends AbstractController
             return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
         $emailExpireDays = $this->getVar(ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL, ZAuthConstant::DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL);
-        $this->get('zikula_zauth_module.user_verification_repository')->purgeExpiredRecords($emailExpireDays, UsersConstant::VERIFYCHGTYPE_PWD, false);
+        $this->get('zikula_zauth_module.user_verification_repository')->purgeExpiredRecords($emailExpireDays, ZAuthConstant::VERIFYCHGTYPE_PWD, false);
         $currentUser = $this->get('zikula_users_module.current_user');
         /** @var UserVerificationEntity $verificationRecord */
         $verificationRecord = $this->get('zikula_zauth_module.user_verification_repository')->findOneBy([
             'uid' => $currentUser->get('uid'),
-            'changetype' => UsersConstant::VERIFYCHGTYPE_EMAIL
+            'changetype' => ZAuthConstant::VERIFYCHGTYPE_EMAIL
         ]);
         $validCode = \UserUtil::passwordsMatch($code, $verificationRecord->getVerifycode());
         if (!$validCode) {
@@ -294,7 +294,7 @@ class AccountController extends AbstractController
             $user = $this->get('zikula_users_module.user_repository')->find($currentUser->get('uid'));
             $user->setEmail($verificationRecord->getNewemail());
             $this->get('zikula_users_module.user_repository')->persistAndFlush($user);
-            $this->get('zikula_zauth_module.user_verification_repository')->resetVerifyChgFor($user->getUid(), [UsersConstant::VERIFYCHGTYPE_EMAIL]);
+            $this->get('zikula_zauth_module.user_verification_repository')->resetVerifyChgFor($user->getUid(), [ZAuthConstant::VERIFYCHGTYPE_EMAIL]);
             $this->addFlash('success', $this->__('Done! Changed your e-mail address.'));
         }
 

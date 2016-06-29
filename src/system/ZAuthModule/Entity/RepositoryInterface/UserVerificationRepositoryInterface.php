@@ -12,8 +12,8 @@ namespace Zikula\ZAuthModule\Entity\RepositoryInterface;
 
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\ZAuthModule\Entity\UserVerificationEntity;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 interface UserVerificationRepositoryInterface extends ObjectRepository, Selectable
 {
@@ -21,17 +21,19 @@ interface UserVerificationRepositoryInterface extends ObjectRepository, Selectab
 
     public function removeAndFlush(UserVerificationEntity $entity);
 
+    public function removeByZikulaId($uid);
+
     /**
      * @param integer $daysOld
      * @param int $changeType
      * @param bool $deleteUserEntities
      * @return array UserEntity[] records deleted
      */
-    public function purgeExpiredRecords($daysOld, $changeType = UsersConstant::VERIFYCHGTYPE_REGEMAIL, $deleteUserEntities = true);
+    public function purgeExpiredRecords($daysOld, $changeType = ZAuthConstant::VERIFYCHGTYPE_REGEMAIL, $deleteUserEntities = true);
 
     public function resetVerifyChgFor($uid, $types = null);
 
     public function isVerificationEmailSent($uid);
 
-    public function setVerificationCode($uid, $changeType = UsersConstant::VERIFYCHGTYPE_PWD, $email = null);
+    public function setVerificationCode($uid, $changeType = ZAuthConstant::VERIFYCHGTYPE_PWD, $email = null);
 }

@@ -11,11 +11,12 @@
 namespace Zikula\ZAuthModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zikula\ZAuthModule\Validator\Constraints as ZikulaAssert;
+use Zikula\ZAuthModule\Validator\Constraints as ZAuthAssert;
 
 /**
  * @ORM\Entity(repositoryClass="Zikula\ZAuthModule\Entity\Repository\AuthenticationMappingRepository")
  * @ORM\Table(name="zauth_authentication_mapping")
+ * @ZAuthAssert\ValidUserFields()
  */
 class AuthenticationMappingEntity
 {
@@ -37,13 +38,13 @@ class AuthenticationMappingEntity
     private $uid;
 
     /**
-     * @ZikulaAssert\ValidUname()
+     * @ZAuthAssert\ValidUname()
      * @ORM\Column(type="string")
      */
     private $uname;
 
     /**
-     * @ZikulaAssert\ValidEmail()
+     * @ZAuthAssert\ValidEmail()
      * @ORM\Column(type="string")
      */
     private $email;
@@ -57,13 +58,13 @@ class AuthenticationMappingEntity
      * Password: User's password for logging in.
      * This value is salted and hashed. The salt is stored in this field, delimited from the hash with a dollar sign character ($).
      *
-     * @ZikulaAssert\ValidPassword()
+     * @ZAuthAssert\ValidPassword()
      * @ORM\Column(type="string")
      */
     private $pass;
 
     /**
-     * @ZikulaAssert\ValidPasswordReminder()
+     * @ZAuthAssert\ValidPasswordReminder()
      * @ORM\Column(type="string", nullable=true)
      */
     private $passreminder;
