@@ -11,7 +11,7 @@
 namespace Zikula\ZAuthModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zikula\UsersModule\Validator\Constraints as ZikulaAssert;
+use Zikula\ZAuthModule\Validator\Constraints as ZikulaAssert;
 
 /**
  * @ORM\Entity(repositoryClass="Zikula\ZAuthModule\Entity\Repository\AuthenticationMappingRepository")
