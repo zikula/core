@@ -11,6 +11,7 @@
 namespace Zikula\ZAuthModule\AuthenticationMethod;
 
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
@@ -47,6 +48,11 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
     private $variableApi;
 
     /**
+     * @var ValidatorInterface
+     */
+    private $validator;
+
+    /**
      * NativeUnameAuthenticationMethod constructor.
      * @param UserRepositoryInterface $userRepository
      * @param AuthenticationMappingRepositoryInterface $mappingRepository
@@ -59,18 +65,20 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
         AuthenticationMappingRepositoryInterface $mappingRepository,
         Session $session,
         TranslatorInterface $translator,
-        VariableApi $variableApi
+        VariableApi $variableApi,
+        ValidatorInterface $validator
     ) {
         $this->userRepository = $userRepository;
         $this->mappingRepository = $mappingRepository;
         $this->session = $session;
         $this->translator = $translator;
         $this->variableApi = $variableApi;
+        $this->validator = $validator;
     }
 
     public function getAlias()
     {
-        return 'native_uname';
+        return ZAuthConstant::AUTHENTICATION_METHOD_UNAME;
     }
 
     /**
@@ -148,7 +156,6 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
     /**
      * Get a AuthenticationMappingEntity if it exists. If not, check for existing UserEntity and
      * migrate data from UserEntity to AuthenticationMappingEntity and return that.
-     * If mapping exists
      * @todo The migration from UserEntity parts of this method must be removed at Core-2.0
      * @param string $uname
      * @return AuthenticationMappingEntity|null
@@ -159,7 +166,7 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
         if (!isset($mapping)) {
             $userEntity = $this->userRepository->findOneBy(['uname' => $uname]);
             if ($userEntity) {
-                // create new mapping
+                // This is a migration from existing UserEntity. Create new mapping.
                 $mapping = new AuthenticationMappingEntity();
                 $mapping->setUid($userEntity->getUid());
                 $mapping->setUname($userEntity->getUname());
@@ -167,7 +174,11 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
                 $mapping->setPass($userEntity->getPass()); // previously salted and hashed
                 $mapping->setPassreminder($userEntity->getPassreminder());
                 $mapping->setMethod($this->getAlias());
-                // @todo validate the new entity? check for duplicates, etc.
+                $errors = $this->validator->validate($mapping);
+                if (count($errors) > 0) {
+                    $error = implode(',', $errors);
+                    throw new \Exception($error);
+                }
                 $this->mappingRepository->persistAndFlush($mapping);
                 // remove data from UserEntity
                 $userEntity->setPass('');
@@ -177,6 +188,7 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
                 return $mapping;
             }
         } elseif ('native_email' == $mapping->getMethod()) {
+            // mapping exists but method is set to uname. allow either.
             // @todo validate unique email
             $mapping->setMethod(ZAuthConstant::AUTHENTICATION_METHOD_EITHER);
             $this->mappingRepository->persistAndFlush($mapping);
@@ -198,7 +210,16 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
         $mapping->setMethod($this->getAlias());
         $requireVerifiedEmail = $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED);
         $mapping->setVerifiedEmail(!$requireVerifiedEmail);
-        // @todo validate the new entity? check for duplicates, etc.
+        $errors = $this->validator->validate($mapping);
+        if (count($errors) > 0) {
+            foreach ($errors as $error) {
+                $this->session->getFlashBag()->add('error', $error->getMessage());
+            }
+
+            return false;
+        }
         $this->mappingRepository->persistAndFlush($mapping);
+
+        return true;
     }
 }

@@ -78,6 +78,16 @@ class ZAuthConstant
     const AUTHENTICATION_METHOD_EITHER = 'native_either';
 
     /**
+     * The string identifying that a user can user the native_uname authentication method.
+     */
+    const AUTHENTICATION_METHOD_UNAME = 'native_uname';
+
+    /**
+     * The string identifying that a user can user the native_email authentication method.
+     */
+    const AUTHENTICATION_METHOD_EMAIL = 'native_email';
+
+    /**
      * Module variable key for the number of days before a change of e-mail request is canceled.
      */
     const MODVAR_EXPIRE_DAYS_CHANGE_EMAIL = 'chgemail_expiredays';
@@ -106,4 +116,19 @@ class ZAuthConstant
      * Module variable key for the anti-spam registration question text.
      */
     const MODVAR_REGISTRATION_ANTISPAM_QUESTION = 'reg_question';
+
+    /**
+     * An indicator for the change verification table that the record represents a change of password request.
+     */
+    const VERIFYCHGTYPE_PWD = 1;
+
+    /**
+     * An indicator for the change verification table that the record represents a change of e-mail address request, pending e-mail address verification.
+     */
+    const VERIFYCHGTYPE_EMAIL = 2;
+
+    /**
+     * An indicator for the change verification table that the record represents a registration e-mail verification.
+     */
+    const VERIFYCHGTYPE_REGEMAIL = 3;
 }

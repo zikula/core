@@ -6,6 +6,8 @@
 
     <parameters>
         <parameter key="zikula_zauth_module.authentication_method.native_uname.class">Zikula\ZAuthModule\AuthenticationMethod\NativeUnameAuthenticationMethod</parameter>
+        <parameter key="zikula_zauth_module.authentication_method.alias.native_uname.value" type="constant">Zikula\ZAuthModule\ZAuthConstant::AUTHENTICATION_METHOD_UNAME</parameter>
+
         <parameter key="zikula_zauth_module.form.authentication_method_type.uname_type.class">Zikula\ZAuthModule\Form\Type\UnameLoginType</parameter>
         <parameter key="zikula_zauth_module.form.registration_type.class">Zikula\ZAuthModule\Form\Type\RegistrationType</parameter>
     </parameters>
@@ -17,7 +19,8 @@
             <argument type="service" id="session" />
             <argument type="service" id="translator.default" />
             <argument type="service" id="zikula_extensions_module.api.variable" />
-            <tag name="zikula.authentication_method" alias="native_uname" />
+            <argument type="service" id="validator" />
+            <tag name="zikula.authentication_method" alias="%zikula_zauth_module.authentication_method.alias.native_uname.value%" />
         </service>
 
         <service id="zikula_zauth_module.form.authentication_method_type.uname_type" class="%zikula_zauth_module.form.authentication_method_type.uname_type.class%">

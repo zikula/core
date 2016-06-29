@@ -287,7 +287,7 @@ class RegistrationHelper
         $user = $this->userRepository->find($uid);
         if (isset($user)) {
             $this->userRepository->removeAndFlush($user);
-            $this->eventDispatcher->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($user));
+            $this->eventDispatcher->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($uid));
 
             return true;
         }
@@ -305,7 +305,7 @@ class RegistrationHelper
         if ($regExpireDays > 0) {
             $deletedUsers = $this->userVerificationRepository->purgeExpiredRecords($regExpireDays);
             foreach ($deletedUsers as $deletedUser) {
-                $this->eventDispatcher->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($deletedUser));
+                $this->eventDispatcher->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($deletedUser->getUid()));
             }
         }
     }

@@ -12,8 +12,8 @@ namespace Zikula\ZAuthModule\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
-use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\ZAuthModule\Entity\UserVerificationEntity;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 class UserVerificationRepository extends EntityRepository implements UserVerificationRepositoryInterface
 {
@@ -29,10 +29,18 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
         $this->_em->flush($entity);
     }
 
+    public function removeByZikulaId($uid)
+    {
+        $entity = parent::findOneBy(['uid' => $uid]);
+        if ($entity) {
+            $this->removeAndFlush($entity);
+        }
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function purgeExpiredRecords($daysOld, $changeType = UsersConstant::VERIFYCHGTYPE_REGEMAIL, $deleteUserEntities = true)
+    public function purgeExpiredRecords($daysOld, $changeType = ZAuthConstant::VERIFYCHGTYPE_REGEMAIL, $deleteUserEntities = true)
     {
         if ($daysOld < 1) {
             return [];
@@ -117,7 +125,7 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
      * @param null $email
      * @return string new confirmation code.
      */
-    public function setVerificationCode($uid, $changeType = UsersConstant::VERIFYCHGTYPE_PWD, $email = null)
+    public function setVerificationCode($uid, $changeType = ZAuthConstant::VERIFYCHGTYPE_PWD, $email = null)
     {
         $confirmationCode = \UserUtil::generatePassword();
         $hashedConfirmationCode = \UserUtil::getHashedPassword($confirmationCode);

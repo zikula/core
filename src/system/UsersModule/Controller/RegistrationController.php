@@ -88,7 +88,6 @@ class RegistrationController extends AbstractController
                 $hasListeners = $this->get('event_dispatcher')->hasListeners(RegistrationEvents::NEW_FORM);
                 $hookBindings = $this->get('hook_dispatcher')->getBindingsFor('subscriber.users.ui_hooks.registration');
                 if (!$hasListeners && count($validationErrors) == 0 && count($hookBindings) == 0) {
-                    // @todo need to check anti-spam question exists here? And therefore must be asked?
                     // @todo !!! process registration - no further user interaction needed
                 }
             }
@@ -130,8 +129,14 @@ class RegistrationController extends AbstractController
                     // The main registration completed successfully.
                     $formData['id'] = $authenticationMethodId;
                     $formData['uid'] = $userEntity->getUid();
-                    $authenticationMethod->register($formData);
-                    // @todo if register fails, then we have to handle the failure.
+                    $externalRegistrationSuccess = $authenticationMethod->register($formData);
+                    if (true !== $externalRegistrationSuccess) {
+                        // revert registration
+                        $this->get('zikula_users_module.user_repository')->removeAndFlush($userEntity);
+                        $this->get('event_dispatcher')->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($userEntity->getUid()));
+
+                        return $this->redirectToRoute('zikulausersmodule_registration_register'); // try again.
+                    }
                     // Allow hook-like events to process the registration...
                     $this->get('event_dispatcher')->dispatch(RegistrationEvents::NEW_PROCESS, new GenericEvent($userEntity));
                     // ...and hooks to process the registration.

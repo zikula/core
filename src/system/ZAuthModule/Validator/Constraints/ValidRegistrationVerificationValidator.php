@@ -14,9 +14,9 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 class ValidRegistrationVerificationValidator extends ConstraintValidator
 {
@@ -66,7 +66,7 @@ class ValidRegistrationVerificationValidator extends ConstraintValidator
                 ->atPath('uname')
                 ->addViolation();
         }
-        $verifyChg = $this->userVerificationRepository->findOneBy(['uid' => $userEntity->getUid(), 'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL]);
+        $verifyChg = $this->userVerificationRepository->findOneBy(['uid' => $userEntity->getUid(), 'changetype' => ZAuthConstant::VERIFYCHGTYPE_REGEMAIL]);
         if (!$verifyChg) {
             $this->context->buildViolation($this->translator->__('Invalid username.'))
                 ->atPath('uname')

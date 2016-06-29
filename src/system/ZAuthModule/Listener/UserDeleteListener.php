@@ -15,6 +15,7 @@ use Zikula\Core\Event\GenericEvent;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
+use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 
 class UserDeleteListener implements EventSubscriberInterface
 {
@@ -23,19 +24,24 @@ class UserDeleteListener implements EventSubscriberInterface
      */
     private $mappingRepository;
 
+    private $verificationRepository;
+
     /**
      * UserDeleteListener constructor.
-     * @param $mappingRepository
+     * @param AuthenticationMappingRepositoryInterface $mappingRepository
+     * @param UserVerificationRepositoryInterface $verificationRepository
      */
-    public function __construct(AuthenticationMappingRepositoryInterface $mappingRepository)
+    public function __construct(AuthenticationMappingRepositoryInterface $mappingRepository, UserVerificationRepositoryInterface $verificationRepository)
     {
         $this->mappingRepository = $mappingRepository;
+        $this->verificationRepository = $verificationRepository;
     }
 
     public function deleteUsers(GenericEvent $event)
     {
         $deletedUid = $event->getSubject();
         $this->mappingRepository->removeByZikulaId($deletedUid);
+        $this->verificationRepository->removeByZikulaId($deletedUid);
     }
 
     public static function getSubscribedEvents()
