@@ -21,7 +21,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Routing\RouterInterface;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\GroupsModule\Helper\CommonHelper;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
@@ -770,7 +769,6 @@ class AdminController extends AbstractController
                             $this->addFlash('status', $this->__("Done! The user's application for group membership has been rejected."));
                         }
                     }
-
                 } catch (\RuntimeException $e) {
                     $this->addFlash('error', $e->getMessage());
                 }

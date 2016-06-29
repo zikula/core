@@ -51,7 +51,7 @@ class TwigExtension extends \Twig_Extension
         } else {
             $result = \UserUtil::getVar('uname', $uid);
         }
-    
+
         return $result;
     }
 
