@@ -172,8 +172,6 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             UsersConstant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS         => UsersConstant::DEFAULT_LOGIN_DISPLAY_INACTIVE_STATUS,
             UsersConstant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS           => UsersConstant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS,
             UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL => '',
-            UsersConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION        => '',
-            UsersConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER          => '',
             UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED        => UsersConstant::DEFAULT_REGISTRATION_APPROVAL_REQUIRED,
             UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN               => UsersConstant::DEFAULT_REGISTRATION_AUTO_LOGIN,
             UsersConstant::MODVAR_REGISTRATION_DISABLED_REASON          => $this->__(/* registration disabled reason (default value, */'Sorry! New user registration is currently disabled.'),
@@ -272,6 +270,8 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED, // convert to bool
             ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED, // convert to bool
             ZAuthConstant::MODVAR_PASSWORD_REMINDER_MANDATORY, // convert to bool
+            ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION,
+            ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER,
         ];
     }
 }

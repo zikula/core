@@ -96,4 +96,14 @@ class ZAuthConstant
      * Default value for the number of days before a change of password request is canceled.
      */
     const DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD = 0;
+
+    /**
+     * Module variable key for the anti-spam registration question answer text.
+     */
+    const MODVAR_REGISTRATION_ANTISPAM_ANSWER = 'reg_answer';
+
+    /**
+     * Module variable key for the anti-spam registration question text.
+     */
+    const MODVAR_REGISTRATION_ANTISPAM_QUESTION = 'reg_question';
 }

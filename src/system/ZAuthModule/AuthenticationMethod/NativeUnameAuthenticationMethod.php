@@ -149,6 +149,7 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
      * Get a AuthenticationMappingEntity if it exists. If not, check for existing UserEntity and
      * migrate data from UserEntity to AuthenticationMappingEntity and return that.
      * If mapping exists
+     * @todo The migration from UserEntity parts of this method must be removed at Core-2.0
      * @param string $uname
      * @return AuthenticationMappingEntity|null
      */
@@ -163,7 +164,7 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
                 $mapping->setUid($userEntity->getUid());
                 $mapping->setUname($userEntity->getUname());
                 $mapping->setEmail($userEntity->getEmail());
-                $mapping->setPass($userEntity->getPass()); // salted and hashed
+                $mapping->setPass($userEntity->getPass()); // previously salted and hashed
                 $mapping->setPassreminder($userEntity->getPassreminder());
                 $mapping->setMethod($this->getAlias());
                 // @todo validate the new entity? check for duplicates, etc.
@@ -176,6 +177,7 @@ class NativeUnameAuthenticationMethod implements NonReEntrantAuthenticationMetho
                 return $mapping;
             }
         } elseif ('native_email' == $mapping->getMethod()) {
+            // @todo validate unique email
             $mapping->setMethod(ZAuthConstant::AUTHENTICATION_METHOD_EITHER);
             $this->mappingRepository->persistAndFlush($mapping);
         }

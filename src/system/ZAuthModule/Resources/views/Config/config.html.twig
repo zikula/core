@@ -27,6 +27,10 @@
             {{ form_row(form[constant('MODVAR_PASSWORD_REMINDER_ENABLED', ZAC)]) }}
             {{ form_row(form[constant('MODVAR_PASSWORD_REMINDER_MANDATORY', ZAC)]) }}
             {{ form_row(form[constant('MODVAR_EMAIL_VERIFICATION_REQUIRED', ZAC)]) }}
+            {{ form_row(form[constant('MODVAR_REGISTRATION_ANTISPAM_QUESTION', ZAC)]) }}
+            <div id="antispam_answer" class="collapse in">
+                {{ form_row(form[constant('MODVAR_REGISTRATION_ANTISPAM_ANSWER', ZAC)]) }}
+            </div>
         </fieldset>
 
         <div class="form-group">
@@ -40,3 +44,30 @@
 
 </div>
 {{ adminFooter() }}
+<script type="text/javascript">
+    (function($) {
+        /**
+         * show & require or hide anti-spam answer based on question value
+         */
+        function toggleAntiSpamAnswerDisplay()
+        {
+            var antiSpamAnswerElementId = '{{ form[constant('MODVAR_REGISTRATION_ANTISPAM_ANSWER', ZAC)].vars.id }}';
+            if ($('#{{ form[constant('MODVAR_REGISTRATION_ANTISPAM_QUESTION', ZAC)].vars.id }}').val() != '') {
+                $('label[for="'+antiSpamAnswerElementId+'"]').addClass('required');
+                $('#'+antiSpamAnswerElementId).prop('required', true);
+                $('#antispam_answer').collapse('show');
+            } else {
+                $('label[for="'+antiSpamAnswerElementId+'"]').removeClass('required');
+                $('#'+antiSpamAnswerElementId).prop('required', false).val('');
+                $('#antispam_answer').collapse('hide');
+            }
+        }
+
+        $(document).ready(function() {
+            // set up event handlers
+            $('#{{ form[constant('MODVAR_REGISTRATION_ANTISPAM_QUESTION', ZAC)].vars.id }}').on('change', toggleAntiSpamAnswerDisplay);
+            // initialize form - show|hide appropriate inputs
+            toggleAntiSpamAnswerDisplay();
+        });
+    })(jQuery);
+</script>

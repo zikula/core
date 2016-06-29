@@ -8,24 +8,28 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersModule\Validator\Constraints;
+namespace Zikula\ZAuthModule\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
 /**
  * @Annotation
  */
-class ValidRegistrationVerification extends Constraint
+class ValidUname extends Constraint
 {
-    public $message = 'The fields are invalid.';
+    public $message = 'The uname "%string%" is invalid.';
+    public $excludedUid;
 
     public function validatedBy()
     {
-        return 'zikula.registration_verification.validator';
+        return 'zikula.uname.validator';
     }
 
-    public function getTargets()
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefaultOption()
     {
-        return self::CLASS_CONSTRAINT;
+        return 'excludedUid';
     }
 }

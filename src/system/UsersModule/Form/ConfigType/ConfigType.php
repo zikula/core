@@ -12,8 +12,6 @@ namespace Zikula\UsersModule\Form\ConfigType;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
@@ -139,22 +137,6 @@ class ConfigType extends AbstractType
                     new GreaterThanOrEqual(['value' => 0])
                 ]
             ])
-            ->add(UsersConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $options['translator']->__('Spam protection question'),
-                'required' => false,
-                'help' => $options['translator']->__('You can set a question to be answered at registration time, to protect the site against spam automated registrations by bots and scripts.'),
-                'constraints' => [
-                    new Type('string')
-                ]
-            ])
-            ->add(UsersConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $options['translator']->__('Spam protection answer'),
-                'required' => false,
-                'help' => $options['translator']->__('Registering users will have to provide this response when answering the spam protection question. It is required if a spam protection question is provided.'),
-                'constraints' => [
-                    new Type('string')
-                ]
-            ])
             ->add(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_UNAMES, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $options['translator']->__('Reserved user names'),
                 'required' => false,
@@ -228,17 +210,6 @@ class ConfigType extends AbstractType
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
             ])
-            /**
-             * Form Listeners
-             */
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-                $data = $event->getData();
-                // clear anti-spam answer if there is no question
-                if (empty($data[UsersConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION])) {
-                    $data[UsersConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER] = '';
-                }
-                $event->setData($data);
-            })
         ;
     }
 
@@ -254,17 +225,6 @@ class ConfigType extends AbstractType
     {
         $resolver->setDefaults([
             'translator' => null,
-            'constraints' => [
-                new Callback([
-                    'callback' => function ($data, ExecutionContextInterface $context) {
-                        if (!empty($data[UsersConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION]) && empty($data[UsersConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER])) {
-                            $context->buildViolation(__('If a spam protection question is provided, then a spam protection answer must also be provided.'))
-                                ->atPath(UsersConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER)
-                                ->addViolation();
-                        }
-                    }
-                ]),
-            ]
         ]);
     }
 }
