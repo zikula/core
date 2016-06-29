@@ -1,0 +1,21 @@
+<td headers="hName" class="bold">{{ name }}</td>
+<td headers="hDescription" >{{ description }}</td>
+<td headers="hType" >{{ __(typeLabel) }}</td>
+<td headers="hState" >{{ __(stateLabel) }}</td>
+<td headers="hMembers">
+    {{ nbuser }}
+    {% if canview == true %}
+        - <a href="{{ path('zikulagroupsmodule_user_memberslist', { gid: gid }) }}" title="{{ __('Members list') }}">{{ __('Members list') }}</a>
+    {% endif %}
+</td>
+{% if nbumax == 0 %}
+    {% set nbumax = __('Unlimited') %}
+{% endif %}
+<td headers="hMaximum">{{ nbumax }}</td>
+<td headers="hFunctions">
+    {% if currentUser.loggedIn == true %}
+        {{ __('Private') }}
+    {% else %}
+        <a href="{{ path('zikulagroupsmodule_user_view') }}" title="{{ __('Sorry! You must register for a user account on this site before you can apply for membership of a group.') }}">{{ __('Log in or register') }}</a>
+    {% endif %}
+</td>

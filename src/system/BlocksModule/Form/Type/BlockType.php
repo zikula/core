@@ -47,6 +47,9 @@ class BlockType extends AbstractType
         $this->translator = $translator;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -94,13 +97,16 @@ class BlockType extends AbstractType
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
         return 'zikulablocksmodule_block';
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

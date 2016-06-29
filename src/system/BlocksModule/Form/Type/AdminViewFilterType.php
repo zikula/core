@@ -17,6 +17,9 @@ use Zikula\BlocksModule\Api\BlockApi;
 
 class AdminViewFilterType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -67,13 +70,16 @@ class AdminViewFilterType extends AbstractType
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
         return 'zikulablocksmodule_adminviewfilter';
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

@@ -77,7 +77,7 @@ class CreateCategoryType extends AbstractType
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

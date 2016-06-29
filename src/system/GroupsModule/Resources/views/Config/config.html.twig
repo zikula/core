@@ -1,0 +1,35 @@
+{% form_theme form with [
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ adminHeader() }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-wrench"></span>
+            {{ __('Settings') }}
+        </h3>
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        <fieldset>
+            <legend>{{ __('General settings') }}</legend>
+
+            {{ form_row(form.itemsperpage) }}
+            {{ form_row(form.defaultgroup) }}
+            {{ form_row(form.hideclosed) }}
+            {{ form_row(form.mailwarning) }}
+        </fieldset>
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.save) }}
+                {{ form_widget(form.cancel) }}
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>
+{{ adminFooter() }}

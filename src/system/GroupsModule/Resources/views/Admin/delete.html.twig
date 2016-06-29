@@ -1,0 +1,33 @@
+{% form_theme form with [
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ adminHeader() }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-trash-o"></span>
+            {{ __('Delete group') }}
+        </h3>
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        <fieldset>
+            <legend>{{ __('Confirmation prompt') }}</legend>
+            <p class="alert alert-warning">{{ __f("Do you really want to delete group '%s'?", { '%s': group.name }) }}</p>
+
+            {{ form_row(form.gid) }}
+        </fieldset>
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.delete) }}
+                {{ form_widget(form.cancel) }}
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>
+{{ adminFooter() }}
