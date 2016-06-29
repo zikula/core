@@ -21,5 +21,6 @@ class ZikulaZAuthExtension extends Extension
 
         $loader->load('services.xml');
         $loader->load('authentication.xml');
+        $loader->load('validators.xml');
     }
 }

@@ -41,10 +41,6 @@
                 {{ form_row(form[constant('MODVAR_REGISTRATION_AUTO_LOGIN', UC)]) }}
             </div>
             {{ form_row(form[constant('MODVAR_EXPIRE_DAYS_REGISTRATION', UC)]) }}
-            {{ form_row(form[constant('MODVAR_REGISTRATION_ANTISPAM_QUESTION', UC)]) }}
-            <div id="antispam_answer" class="collapse in">
-                {{ form_row(form[constant('MODVAR_REGISTRATION_ANTISPAM_ANSWER', UC)]) }}
-            </div>
             {{ form_row(form[constant('MODVAR_REGISTRATION_ILLEGAL_UNAMES', UC)]) }}
             {{ form_row(form[constant('MODVAR_REGISTRATION_ILLEGAL_AGENTS', UC)]) }}
             {{ form_row(form[constant('MODVAR_REGISTRATION_ILLEGAL_DOMAINS', UC)]) }}
@@ -93,33 +89,12 @@
                 $('#registration_disabled_reason').collapse('show');
             }
         }
-        /**
-         * show & require or hide anti-spam answer based on question value
-         */
-        function toggleAntiSpamAnswerDisplay()
-        {
-            var antiSpamAnswerElementId = '{{ form[constant('MODVAR_REGISTRATION_ANTISPAM_ANSWER', UC)].vars.id }}';
-            if ($('#{{ form[constant('MODVAR_REGISTRATION_ANTISPAM_QUESTION', UC)].vars.id }}').val() != '') {
-                $('label[for="'+antiSpamAnswerElementId+'"]').addClass('required');
-                $('#'+antiSpamAnswerElementId).prop('required', true);
-                $('#antispam_answer').collapse('show');
-            } else {
-                $('label[for="'+antiSpamAnswerElementId+'"]').removeClass('required');
-                $('#'+antiSpamAnswerElementId).prop('required', false).val('');
-                $('#antispam_answer').collapse('hide');
-            }
-        }
-
         $(document).ready(function() {
             // set up event handlers
             $('#{{ form[constant('MODVAR_REGISTRATION_ENABLED', UC)].vars.id }}').on('click', toggleRegistrationDisabledDisplay);
-            $('#{{ form[constant('MODVAR_REGISTRATION_ANTISPAM_QUESTION', UC)].vars.id }}').on('change', toggleAntiSpamAnswerDisplay);
-            $('.login-method-input').on('click', toggleLoginItemsDisplay);
             $('.registration-moderation-input').on('click', toggleModerationItemsDisplay);
             // initialize form - show|hide appropriate inputs
             toggleRegistrationDisabledDisplay();
-            toggleAntiSpamAnswerDisplay();
-            toggleLoginItemsDisplay();
             toggleModerationItemsDisplay();
         });
     })(jQuery);

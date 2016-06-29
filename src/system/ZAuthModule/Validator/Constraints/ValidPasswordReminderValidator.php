@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersModule\Validator\Constraints;
+namespace Zikula\ZAuthModule\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -43,7 +43,7 @@ class ValidPasswordReminderValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        if ($this->variableApi->get('ZikulaUsersModule', ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED, ZAuthConstant::DEFAULT_PASSWORD_REMINDER_ENABLED)) {
+        if ($this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED, ZAuthConstant::DEFAULT_PASSWORD_REMINDER_ENABLED)) {
             /** @var ConstraintViolationListInterface $errors */
             $errors = $this->validator->validate($value, [
                 new NotNull(),

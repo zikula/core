@@ -8,19 +8,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersModule\Validator\Constraints;
+namespace Zikula\ZAuthModule\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
 /**
  * @Annotation
  */
-class ValidAntiSpamAnswer extends Constraint
+class ValidPasswordChange extends Constraint
 {
-    public $message = 'The anti-spam answer is incorrect.';
+    public $message = 'The password "%string%" is invalid.';
 
     public function validatedBy()
     {
-        return 'zikula.antispam_answer.validator';
+        return 'zikula.password_change.validator';
     }
 }

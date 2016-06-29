@@ -186,14 +186,6 @@ namespace Zikula\UsersModule
          */
         const MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL = 'reg_notifyemail';
         /**
-         * Module variable key for the anti-spam registration question answer text.
-         */
-        const MODVAR_REGISTRATION_ANTISPAM_ANSWER = 'reg_answer';
-        /**
-         * Module variable key for the anti-spam registration question text.
-         */
-        const MODVAR_REGISTRATION_ANTISPAM_QUESTION = 'reg_question';
-        /**
          * Module variable key for the flag indicating whether new registrations require approval or not.
          */
         const MODVAR_REGISTRATION_APPROVAL_REQUIRED = 'moderation';

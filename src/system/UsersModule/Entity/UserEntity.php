@@ -41,7 +41,7 @@ class UserEntity extends EntityAccess
     private $uid;
 
     /**
-     * User Name: Primary user display name, primary log in identifier.
+     * User Name: Primary user display name.
      *
      * @ZikulaAssert\ValidUname()
      * @ORM\Column(type="string", length=25)
@@ -49,9 +49,7 @@ class UserEntity extends EntityAccess
     private $uname;
 
     /**
-     * E-mail Address: Secondary log in identifier, user notifications.
-     * For pending registrations awaiting e-mail address verification, this will be an empty string, and the email address for the account will be found in the users_verifychg table.
-     * ("Regular" user accounts may also have e-mail addresses pending verification in the users_verifychg table, however those are the result of a request to change the account's address.)
+     * E-mail Address: For user notifications.
      *
      * @ZikulaAssert\ValidEmail()
      * @ORM\Column(type="string", length=60)
@@ -59,7 +57,11 @@ class UserEntity extends EntityAccess
     private $email;
 
     /**
-     * Password: User's password for logging in.
+     * @deprecated at Core-1.4.3 and removed in 2.0
+     * Password: This will be blank for all new accounts and as each new user logs in, it will be removed.
+     * 
+     * Old information:
+     * User's password for logging in.
      * This value is salted and hashed. The salt is stored in this field, delimited from the hash with a dollar sign character ($).
      * The hash algorithm is stored as a numeric code in the hash_method field. This field may be blank in instances
      * where the user registered with an alternative authentication module (e.g., OpenID) and did not also establish a password for his web site account.
@@ -69,6 +71,7 @@ class UserEntity extends EntityAccess
     private $pass;
 
     /**
+     * @deprecated at Core-1.4.3 and removed in 2.0
      * Password reminder: Set during registration or password changes, to remind the user what his password is.
      *
      * This field may be blank if pass is blank.
@@ -143,6 +146,7 @@ class UserEntity extends EntityAccess
     private $lastlogin;
 
     /**
+     * @deprecated removal at Core-2.0
      * User's Theme: The name (identifier) of the per-user theme the user would like to use while viewing the site, when user theme switching is enabled.
      *
      * @Assert\Type(type="string")

@@ -8,19 +8,24 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersModule\Validator\Constraints;
+namespace Zikula\ZAuthModule\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
 /**
  * @Annotation
  */
-class ValidPassword extends Constraint
+class ValidRegistrationVerification extends Constraint
 {
-    public $message = 'The password "%string%" is invalid.';
+    public $message = 'The fields are invalid.';
 
     public function validatedBy()
     {
-        return 'zikula.password.validator';
+        return 'zikula.registration_verification.validator';
+    }
+
+    public function getTargets()
+    {
+        return self::CLASS_CONSTRAINT;
     }
 }
