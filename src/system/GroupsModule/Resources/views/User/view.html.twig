@@ -1,0 +1,39 @@
+{% if nogroups == true %}
+    <p class="alert alert-warning">{{ __('There are currently no groups that can be joined.') }}</p>
+{% else %}
+    {% set templateTitle = __('Groups manager') %}
+    {{ include('@ZikulaGroupsModule/User/menu.html.twig') }}
+    <table class="table table-bordered table-striped">
+        <colgroup>
+            <col id="cName" />
+            <col id="cDescription" />
+            <col id="cType" />
+            <col id="cState" />
+            <col id="cMembers" />
+            <col id="cMaximum" />
+            <col id="cFunctions" />
+        </colgroup>
+        <thead>
+            <tr>
+                <th id="hName" scope="col">{{ __('Name') }}</th>
+                <th id="hDescription" scope="col">{{ __('Description') }}</th>
+                <th id="hType" scope="col">{{ __('Type') }}</th>
+                <th id="hState" scope="col">{{ __('State') }}</th>
+                <th id="hMembers" scope="col">{{ __('Members') }}</th>
+                <th id="hMaximum" scope="col">{{ __('Maximum membership') }}</th>
+                <th id="hFunctions" scope="col">{{ __('Functions') }}</th>
+            </tr>
+        </thead>
+        {% if items %}
+        <tbody>
+            {% for item in items %}
+            <tr>
+                {{ item|raw }}
+            </tr>
+            {% endfor %}
+        </tbody>
+        {% endif %}
+    </table>
+
+    {{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, posvar: 'startnum', route: 'zikulagroupsmodule_user_view'}) }}
+{% endif %}

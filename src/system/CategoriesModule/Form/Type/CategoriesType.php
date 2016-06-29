@@ -22,6 +22,9 @@ use Zikula\CategoriesModule\Form\EventListener\CategoriesMergeCollectionListener
  */
 class CategoriesType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if (empty($options['entityCategoryClass']) || empty($options['module']) || empty($options['entity'])) {
@@ -53,13 +56,16 @@ class CategoriesType extends AbstractType
         $builder->addEventSubscriber(new CategoriesMergeCollectionListener());
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
         return 'categories';
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

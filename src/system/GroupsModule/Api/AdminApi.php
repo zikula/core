@@ -13,9 +13,8 @@ namespace Zikula\GroupsModule\Api;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\GroupsModule\Helper\CommonHelper;
-use SecurityUtil;
-use Zikula;
 use ModUtil;
+use SecurityUtil;
 use UserUtil;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -132,11 +131,11 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Remove any group permissions for this group
         $query = $this->entityManager->createQueryBuilder()
-                                     ->delete()
-                                     ->from('ZikulaPermissionsModule:PermissionEntity', 'p')
-                                     ->where('p.gid = :gid')
-                                     ->setParameter('gid', $args['gid'])
-                                     ->getQuery();
+            ->delete()
+            ->from('ZikulaPermissionsModule:PermissionEntity', 'p')
+            ->where('p.gid = :gid')
+            ->setParameter('gid', $args['gid'])
+            ->getQuery();
         $query->getResult();
 
         // Let other modules know that we have deleted a group.
@@ -180,7 +179,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Other check
-        $checkname = ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'getgidbyname', [
+        $checkname = $this->getgidbyname([
             'name' => $args['name'],
             'checkgid' => $args['gid']
         ]);
@@ -231,7 +230,6 @@ class AdminApi extends \Zikula_AbstractApi
 
         // get group
         $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', ['gid' => $args['gid'], 'group_membership' => false]);
-
         if (!$group) {
             return false;
         }
@@ -326,12 +324,14 @@ class AdminApi extends \Zikula_AbstractApi
            ->from('ZikulaGroupsModule:GroupEntity', 'g');
 
         // add clause for filtering name
-        $qb->andWhere($qb->expr()->eq('g.name', ':gname'))->setParameter('gname', $args['name']);
+        $qb->andWhere($qb->expr()->eq('g.name', ':gname'))
+           ->setParameter('gname', $args['name']);
 
         // Optional Where to use when modifying a group to check if there is
         // already another group by that name.
         if (isset($args['checkgid']) && is_numeric($args['checkgid'])) {
-            $qb->andWhere($qb->expr()->neq('g.gid', ':ggid'))->setParameter('ggid', $args['checkgid']);
+            $qb->andWhere($qb->expr()->neq('g.gid', ':ggid'))
+               ->setParameter('ggid', $args['checkgid']);
         }
 
         // convert querybuilder instance into a Query object
@@ -375,7 +375,8 @@ class AdminApi extends \Zikula_AbstractApi
            ->from('Zikula\GroupsModule\Entity\GroupEntity', 'g');
 
         // add clause for filtering name
-        $qb->andWhere($qb->expr()->eq('g.gid', ':ggid'))->setParameter('ggid', $args['gid']);
+        $qb->andWhere($qb->expr()->eq('g.gid', ':ggid'))
+           ->setParameter('ggid', $args['gid']);
 
         // convert querybuilder instance into a Query object
         $query = $qb->getQuery();
@@ -398,7 +399,8 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function getapplications()
     {
-        $objArray = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findBy([], ['app_id' => 'ASC']);
+        $objArray = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')
+            ->findBy([], ['app_id' => 'ASC']);
 
         if (false === $objArray) {
             return false;
@@ -446,7 +448,8 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $appInfo = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findOneBy(['gid' => $args['gid'], 'uid' => $args['userid']]);
+        $appInfo = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')
+            ->findOneBy(['gid' => $args['gid'], 'uid' => $args['userid']]);
 
         if (!$appInfo) {
             return false;
@@ -475,12 +478,13 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // delete group application
-        $application = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findOneBy(['gid' => $args['gid'], 'uid' => $args['userid']]);
+        $application = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')
+            ->findOneBy(['gid' => $args['gid'], 'uid' => $args['userid']]);
         $this->entityManager->remove($application);
         $this->entityManager->flush();
 
         if ($args['action'] == 'accept') {
-            $adduser = ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'adduser', ['gid' => $args['gid'], 'uid' => $args['userid']]);
+            $adduser = $this->adduser(['gid' => $args['gid'], 'uid' => $args['userid']]);
         }
 
         // Send message part
@@ -508,39 +512,10 @@ class AdminApi extends \Zikula_AbstractApi
     public function countitems()
     {
         $query = $this->entityManager->createQueryBuilder()
-                                     ->select('count(g.gid)')
-                                     ->from('ZikulaGroupsModule:GroupEntity', 'g')
-                                     ->getQuery();
+            ->select('COUNT(g.gid)')
+            ->from('ZikulaGroupsModule:GroupEntity', 'g')
+            ->getQuery();
 
         return (int)$query->getSingleScalarResult();
-    }
-
-    /**
-     * Get available admin panel links.
-     *
-     * @return array array of admin links.
-     */
-    public function getLinks()
-    {
-        $links = [];
-
-        if (SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_READ)) {
-            $links[] = [
-                'url' => ModUtil::url('ZikulaGroupsModule', 'admin', 'view'),
-                'text' => $this->__('Groups list'),
-                'id' => 'groups_view',
-                'icon' => 'list'
-            ];
-        }
-        if (SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADMIN)) {
-            $links[] = [
-                'url' => ModUtil::url('ZikulaGroupsModule', 'admin', 'modifyconfig'),
-                'text' => $this->__('Settings'),
-                'id' => 'groups_modifyconfig',
-                'icon' => 'wrench'
-            ];
-        }
-
-        return $links;
     }
 }

@@ -145,7 +145,7 @@ class UserApi extends \Zikula_AbstractApi
         $result['members'] = $uidsArray;
 
         if (!is_null($args['uid'])) {
-            $result['status'] = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isuserpending', ['gid' => $args['gid'], 'uid' => $args['uid']]);
+            $result['status'] = $this->isuserpending(['gid' => $args['gid'], 'uid' => $args['uid']]);
         } else {
             $result['status'] = false;
         }
@@ -168,7 +168,7 @@ class UserApi extends \Zikula_AbstractApi
            ->setParameter('gtype', CommonHelper::GTYPE_CORE);
 
         if ($this->getVar('hideclosed')) {
-            $qb->andWhere('g.state <> :state')
+            $qb->andWhere('g.state != :state')
                ->setParameter('state', CommonHelper::STATE_CLOSED);
         }
 
@@ -296,7 +296,7 @@ class UserApi extends \Zikula_AbstractApi
 
         $memberships = false;
         if ($uid != 0) {
-            $memberships = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getusergroups', ['uid' => $uid, 'clean' => true]);
+            $memberships = $this->getusergroups(['uid' => $uid, 'clean' => true]);
         }
 
         $row = 1;
@@ -319,24 +319,20 @@ class UserApi extends \Zikula_AbstractApi
                     $state = CommonHelper::STATE_CLOSED;
                 }
 
-                $ismember = false;
-                if (is_array($memberships) && in_array($gid, $memberships)) {
-                    $ismember = true;
-                }
+                $ismember = is_array($memberships) && in_array($gid, $memberships) ? true : false;
 
                 $status = false;
                 if ($uid != 0) {
-                    $status = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isuserpending', ['gid' => $gid, 'uid' => $uid]);
+                    $status = $this->isuserpending(['gid' => $gid, 'uid' => $uid]);
                 }
 
-                $nbuser = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'countgroupmembers', ['gid' => $gid]);
+                $nbuser = $this->countgroupmembers(['gid' => $gid]);
 
+                $canview = false;
+                $canapply = false;
                 if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_READ)) {
                     $canview = true;
                     $canapply = true;
-                } else {
-                    $canview = false;
-                    $canapply = false;
                 }
 
                 // Anon users or non-members should not be able to see private groups.
@@ -394,7 +390,7 @@ class UserApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $item = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', ['gid' => $args['gid'], 'group_membership' => false]);
+        $item = $this->get(['gid' => $args['gid'], 'group_membership' => false]);
 
         if (!$item) {
             return false;
@@ -405,7 +401,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // Check in case the user already applied
-        $pending = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isuserpending', ['gid' => $args['gid'], 'uid' => $args['uid']]);
+        $pending = $this->isuserpending(['gid' => $args['gid'], 'uid' => $args['uid']]);
         if ($pending) {
             throw new \RuntimeException($this->__('Error! You have already applied for membership of this group.'));
         }
@@ -442,10 +438,11 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // Checking first if this user is really pending.
-        $ispending = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isuserpending', ['gid' => $args['gid'], 'uid' => $args['uid']]);
+        $ispending = $this->isuserpending(['gid' => $args['gid'], 'uid' => $args['uid']]);
 
         if ($ispending == true) {
-            $application = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findOneBy(['gid' => $args['gid'], 'uid' => $args['uid']]);
+            $application = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')
+                ->findOneBy(['gid' => $args['gid'], 'uid' => $args['uid']]);
             $this->entityManager->remove($application);
             $this->entityManager->flush();
         }
@@ -472,9 +469,10 @@ class UserApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $applications = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findBy(['gid' => $args['gid'], 'uid' => $args['uid']]);
+        $applications = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')
+            ->findBy(['gid' => $args['gid'], 'uid' => $args['uid']]);
 
-        if (count($applications) >= 1) {
+        if (count($applications) > 0) {
             return true;
         }
 
@@ -507,7 +505,7 @@ class UserApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        if ($args['action'] != 'subscribe' && $args['action'] != 'unsubscribe' && $args['action'] != 'cancel') {
+        if (!in_array($args['action'], ['subscribe', 'unsubscribe', 'cancel'])) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -524,7 +522,7 @@ class UserApi extends \Zikula_AbstractApi
                 }
 
                 // We save the user in the application table
-                $save = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'saveapplication', [
+                $save = $this->saveapplication([
                     'gid' => $args['gid'],
                     'uid' => $userid,
                     'applytext' => $args['applytext']
@@ -545,18 +543,18 @@ class UserApi extends \Zikula_AbstractApi
                 }
             } else {
                 // We save the user into the groups
-                $save = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'adduser', ['gid' => $args['gid'], 'uid' => $userid]);
+                $save = $this->adduser(['gid' => $args['gid'], 'uid' => $userid]);
                 if ($save == false) {
                     throw new \RuntimeException($this->__('Error! Could not add the user to the group.'));
                 }
             }
         } elseif ($args['action'] == 'cancel') {
-            $save = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'cancelapp', ['gid' => $args['gid'], 'uid' => $userid]);
+            $save = $this->cancelapp(['gid' => $args['gid'], 'uid' => $userid]);
             if ($save == false) {
                 throw new \RuntimeException($this->__('Error! Could not remove the user from the group.'));
             }
         } else {
-            $save = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'removeuser', ['gid' => $args['gid'], 'uid' => $userid]);
+            $save = $this->removeuser(['gid' => $args['gid'], 'uid' => $userid]);
             if ($save == false) {
                 throw new \RuntimeException($this->__('Error! Could not remove the user from the group.'));
             }
@@ -681,11 +679,11 @@ class UserApi extends \Zikula_AbstractApi
            ->from('ZikulaUsersModule:UserSessionEntity', 's')
            ->where('s.lastused > :activetime')
            ->setParameter('activetime', $activetime)
-           ->andWhere('s.uid <> 0');
+           ->andWhere('s.uid != 0');
 
         $query = $qb->getQuery();
 
-        $items = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+        $items = $query->getArrayResult();
 
         return $items;
     }
@@ -715,7 +713,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // Get group and check if the user exists in this group.
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', ['gid' => $args['gid'], 'group_membership' => true, 'uid' => $args['uid']]);
+        $group = $this->get(['gid' => $args['gid'], 'group_membership' => true, 'uid' => $args['uid']]);
 
         if (!$group || !array_key_exists($args['uid'], $group['members'])) {
             // either group does not exist or the requested uid is not a member of the group

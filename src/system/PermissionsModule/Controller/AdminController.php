@@ -515,7 +515,9 @@ class AdminController extends AbstractController
      *
      * Delete a permission.
      *
-     * @param int 'pid' permissions id.
+     * @param Request $request
+     * @param int     $pid     permissions id.
+     * @param int     $permgrp permissions group filter.
      *
      * @return Response
      *
@@ -542,10 +544,12 @@ class AdminController extends AbstractController
                 $formData = $form->getData();
 
                 try {
-                    // delete category
+                    // delete permission rule
                     $delete = ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'delete', ['pid' => $formData['pid']]);
                     if ($delete) {
                         $this->addFlash('status', $this->__('Done! Permission rule deleted.'));
+                    } else {
+                        $this->addFlash('error', $this->__('Error! A problem occurred while attempting to delete the permission rule. The rule has not been deleted.'));
                     }
                 } catch (\RuntimeException $e) {
                     $this->addFlash('error', $e->getMessage());

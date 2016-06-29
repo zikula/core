@@ -8,17 +8,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\AdminModule\Form\Type;
+namespace Zikula\GroupsModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Common\Translator\Translator;
+use Zikula\GroupsModule\Helper\CommonHelper;
 
 /**
- * Category editing form type class.
+ * Group editing form type class.
  */
-class EditCategoryType extends AbstractType
+class EditGroupType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -27,14 +27,45 @@ class EditCategoryType extends AbstractType
     {
         $translator = $options['translator'];
 
+        $groupsCommon = new CommonHelper();
+        $typeChoices = array_flip($groupsCommon->gtypeLabels());
+        $stateChoices = array_flip($groupsCommon->stateLabels());
+
         $builder
-            ->add('cid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [])
+            ->add('gid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [])
             ->add('name', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $translator->__('Name'),
-                'max_length' => 50
+                'empty_data' => '',
+                'max_length' => 30
+            ])
+            ->add('gtype', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+                'label' => $translator->__('Type'),
+                'empty_data' => 0,
+                'choices' => $typeChoices,
+                'choices_as_values' => true,
+                'expanded' => false,
+                'multiple' => false
+            ])
+            ->add('state', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+                'label' => $translator->__('State'),
+                'empty_data' => 0,
+                'choices' => $stateChoices,
+                'choices_as_values' => true,
+                'expanded' => false,
+                'multiple' => false
+            ])
+            ->add('nbumax', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+                'label' => $translator->__('Maximum membership'),
+                'empty_data' => 0,
+                'max_length' => 10,
+                'attr' => [
+                    'min' => 0
+                ],
+                'required' => false
             ])
             ->add('description', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
                 'label' => $translator->__('Description'),
+                'empty_data' => '',
                 'required' => false
             ])
             ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
@@ -51,13 +82,6 @@ class EditCategoryType extends AbstractType
                     'class' => 'btn btn-default'
                 ]
             ])
-            ->add('help', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $translator->__('Help'),
-                'icon' => 'fa-question',
-                'attr' => [
-                    'class' => 'btn btn-info'
-                ]
-            ])
         ;
     }
 
@@ -66,7 +90,7 @@ class EditCategoryType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'zikulaadminmodule_editcategory';
+        return 'zikulagroupsmodule_editgroup';
     }
 
     /**

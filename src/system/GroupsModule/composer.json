@@ -1,6 +1,7 @@
 {
     "name": "zikula/groups-module",
-    "description": "Permission Groups Administration Module",
+    "version": "2.4.0",
+    "description": "User group administration module.",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
     "authors": [
@@ -17,8 +18,18 @@
     },
     "extra": {
         "zikula": {
+            "class": "Zikula\\GroupsModule\\ZikulaGroupsModule",
+            "core-compatibility": ">=1.4.1",
+            "displayname": "Groups",
             "url": "groups",
-            "class": "Zikula\\GroupsModule\\ZikulaGroupsModule"
+            "capabilities": {
+                "admin": {"route": "zikulagroupsmodule_admin_view"},
+                "user": {"route": "zikulagroupsmodule_user_view"}
+            },
+            "securityschema": {
+                "ZikulaGroupsModule::": "Group ID::",
+                "ZikulaGroupsModule::memberslist": "::"
+            }
         }
     }
 }

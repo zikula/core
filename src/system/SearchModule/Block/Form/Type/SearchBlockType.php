@@ -43,6 +43,9 @@ class SearchBlockType extends AbstractType
         $this->translator = $translator;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('displaySearchBtn', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
@@ -64,13 +67,16 @@ class SearchBlockType extends AbstractType
          */
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'zikulasearchmodule_searchblock';
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
