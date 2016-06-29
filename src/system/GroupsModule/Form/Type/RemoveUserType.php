@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\AdminModule\Form\Type;
+namespace Zikula\GroupsModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,9 +16,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\Translator;
 
 /**
- * Category deletion form type class.
+ * User removal form type class.
  */
-class DeleteCategoryType extends AbstractType
+class RemoveUserType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -28,10 +28,11 @@ class DeleteCategoryType extends AbstractType
         $translator = $options['translator'];
 
         $builder
-            ->add('cid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [])
-            ->add('delete', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $translator->__('Delete'),
-                'icon' => 'fa-trash-o',
+            ->add('gid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [])
+            ->add('uid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [])
+            ->add('remove', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $translator->__('Remove'),
+                'icon' => 'fa-user-times',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
@@ -51,7 +52,7 @@ class DeleteCategoryType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'zikulaadminmodule_deletecategory';
+        return 'zikulagroupsmodule_removeuser';
     }
 
     /**

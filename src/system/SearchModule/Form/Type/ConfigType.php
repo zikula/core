@@ -32,7 +32,10 @@ class ConfigType extends AbstractType
                 'label' => $translator->__('Items per page'),
                 'empty_data' => 10,
                 'scale' => 0,
-                'max_length' => 3
+                'max_length' => 3,
+                'attr' => [
+                    'min' => 1
+                ]
             ])
             ->add('limitsummary', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $translator->__('Number of characters to display in item summaries'),
@@ -113,7 +116,7 @@ class ConfigType extends AbstractType
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

@@ -33,7 +33,8 @@ class PagerExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('pager', [$this, 'pager'], ['is_safe' => ['html']])
+            new \Twig_SimpleFunction('pager', [$this, 'pager'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('pagerabc', [$this, 'pagerabc'], array('is_safe' => array('html')))
         ];
     }
 
@@ -275,6 +276,181 @@ class PagerExtension extends \Twig_Extension
         ];
 
         return $this->container->get('templating')->renderResponse($templateName, $templateParameters)->getContent();
+    }
+
+    /**
+     * @TODO SIMPLIFY THIS AND REMOVE ALL LEGACY!
+     *
+     *  Examples:
+     *    code:
+     *    {{ pagerabc({route:'acmefoomodule_user_view', posvar:'letter', class:'abcpager', class_num:'abclink', class_numon:'abclink_on', separator:' - ', names:'A,B;C,D;E,F;G,H;I,J;K,L;M,N,O;P,Q,R;S,T;U,V,W,X,Y,Z') }}
+     *
+     *    result
+     * <span class="abcpager">
+     * <a class="abclink_on" href="index.php?module=Example&amp;letter=A,B">&nbspA,B</a>
+     *  - <a class="abclink" href="index.php?module=Example&amp;letter=C,D">&nbspC,D</a>
+     *  - <a class="abclink" href="index.php?module=Example&amp;letter=E,F">&nbspE,F</a>
+     *  - <a class="abclink" href="index.php?module=Example&amp;letter=G,H">&nbspG,H</a>
+     *  - <a class="abclink" href="index.php?module=Example&amp;letter=I,J">&nbspI,J</a>
+     *  - <a class="abclink" href="index.php?module=Example&amp;letter=K,L">&nbspK,L</a>
+     *  - <a class="abclink" href="index.php?module=Example&amp;letter=M,N,O">&nbspM,N,O</a>
+     *  - <a class="abclink" href="index.php?module=Example&amp;letter=P,Q,R">&nbspP,Q,R</a>
+     *  - <a class="abclink" href="index.php?module=Example&amp;letter=S,T">&nbspS,T</a>
+     *  - <a class="abclink" href="index.php?module=Example&amp;letter=U,V,W,X,Y,Z">&nbspU,V,W,X,Y,Z</a>
+     * </span>
+     *
+     *
+     * Parameters:
+     *  route          Name of a fixed route to use REQURIED
+     *  posvar         Name of the variable that contains the position data, eg "letter"
+     *  forwardvars    Comma- semicolon- or space-delimited list of POST and GET variables to forward in the pager links. If unset, all vars are forwarded.
+     *  additionalvars Comma- semicolon- or space-delimited list of additional variable and value pairs to forward in the links. eg "foo=2,bar=4"
+     *  class          Class for the pager
+     *  class_num      Class for the pager links (<a> tags)
+     *  class_numon    Class for the active page
+     *  printempty     Print empty sel ('-')
+     *  lang           Language
+     *  names          String or array of names to select from (array or csv)
+     *  values         Optional parameter for the previous names (array or cvs)
+     *  skin           Use predefined values (hu - hungarian ABC)
+     *
+     * @param array       $params All attributes passed to this function from the template.
+     *
+     * @return string
+     */
+    public function pagerabc($params)
+    {
+        if (empty($params['route'])) {
+            throw new \InvalidArgumentException('route is a required parameter.');
+        }
+        /** @var Request $request */
+        $request = $this->container->get('request');
+        if (!isset($params['posvar'])) {
+            $params['posvar'] = 'letter';
+        }
+        if (!isset($params['separator'])) {
+            $params['separator'] = ' | ';
+        }
+        if (!isset($params['skin'])) {
+            $params['skin'] = '';
+        }
+        if (!isset($params['printempty']) || !is_bool($params['printempty'])) {
+            $params['printempty'] = false;
+        }
+        // set a default class
+        if (!isset($params['class'])) {
+            $params['class'] = 'pagination pagination-sm';
+        }
+        if (!isset($params['class_num'])) {
+            $params['class_num'] = '';
+        }
+        if (!isset($params['class_numon'])) {
+            $params['class_numon'] = ' ';
+        }
+        $pager = array();
+        if (!empty($params['names'])) {
+            if (!is_array($params['names'])) {
+                $pager['names'] = explode(';', $params['names']);
+            } else {
+                $pager['names'] = $params['names'];
+            }
+            if (!empty($params['values'])) {
+                if (!is_array($params['values'])) {
+                    $pager['values'] = explode(';', $params['values']);
+                } else {
+                    $pager['values'] = $params['values'];
+                }
+                if (count($pager['values']) != count($pager['names'])) {
+                    $pager['values'] = $pager['names'];
+                }
+            } else {
+                $pager['values'] = $pager['names'];
+            }
+        } else {
+            // predefined abc
+            if (strtolower($params['skin']) == 'hu') {
+                // Hungarian
+                $pager['names']  = $pager['values'] = array('A', '?', 'B', 'C', 'D', 'E', '?', 'F', 'G', 'H', 'I', '?', 'J', 'K', 'L', 'M', 'N', 'O', '?', '?', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', '?', '?', 'U', 'V', 'W', 'X', 'Y', 'Z');
+                //$params['names']  = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U'    ,'V','W','X','Y','Z');
+                //$params['values'] = array('A,?','B','C','D','E,?','F','G','H','I,?','J','K','L','M','N','O,?,?,O','P','Q','R','S','T','U,?,?,U','V','W','X','Y','Z');
+            } else {
+                $alphabet = (defined('_ALPHABET')) ? constant('_ALPHABET') : 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z';
+                $pager['names'] = $pager['values'] = explode(',', $alphabet);
+            }
+        }
+        $pager['posvar'] = $params['posvar'];
+        $pager['route'] = $params['route'];
+        unset($params['posvar']);
+        unset($params['names']);
+        unset($params['values']);
+        unset($params['route']);
+        $pagerUrl = function ($pager) {
+            return $this->container->get('router')->generate($pager['route'], $pager['args']);
+        };
+        $allVars = array_merge($request->request->all(), $request->query->all(), $request->attributes->get('_route_params', array()));
+        $pager['args'] = array();
+        // If $forwardvars set, add only listed vars to query string, else add all POST and GET vars
+        if (isset($params['forwardvars'])) {
+            if (!is_array($params['forwardvars'])) {
+                $params['forwardvars'] = preg_split('/[,;\s]/', $params['forwardvars'], -1, PREG_SPLIT_NO_EMPTY);
+            }
+            foreach ((array)$params['forwardvars'] as $key => $var) {
+                if (!empty($var) && (!empty($allVars[$var]))) {
+                    $pager['args'][$var] = $allVars[$var];
+                }
+            }
+        } else {
+            $pager['args'] = array_merge($pager['args'], $allVars);
+        }
+        if (isset($params['additionalvars'])) {
+            if (!is_array($params['additionalvars'])) {
+                $params['additionalvars'] = preg_split('/[,;\s]/', $params['additionalvars'], -1, PREG_SPLIT_NO_EMPTY);
+            }
+            foreach ((array)$params['additionalvars'] as $var) {
+                $additionalvar = preg_split('/=/', $var);
+                if (!empty($var) && !empty($additionalvar[1])) {
+                    $pager['args'][$additionalvar[0]] = $additionalvar[1];
+                }
+            }
+        }
+        unset($pager['args'][$pager['posvar']]);
+        // begin to fill the output
+        $output = '<ul class="'.$params['class'].'">'."\n";
+        $style = '';
+        if ($params['printempty']) {
+            $active = '';
+            if (!empty($params['class_numon'])) {
+                if (!isset($allVars[$pager['posvar']])) {
+                    $style = ' class="'.$params['class_numon'].'"';
+                    $active = 'class="active"';
+                } elseif (!empty($params['class_num'])) {
+                    $style = ' class="'.$params['class_num'].'"';
+                } else {
+                    $style = '';
+                }
+            }
+            $vars[$pager['posvar']] = '';
+            $output .= '<li '.$active.'><a '.$style.' href="'.$pagerUrl($pager).'"> -'."\n</a></li>";
+        }
+        $style = '';
+        foreach (array_keys($pager['names']) as $i) {
+            $active = '';
+            if (!empty($params['class_numon'])) {
+                if (isset($allVars[$pager['posvar']]) && $allVars[$pager['posvar']] == $pager['values'][$i]) {
+                    $style = ' class="'.$params['class_numon'].'"';
+                    $active = 'class="active"';
+                } elseif (!empty($params['class_num'])) {
+                    $style = ' class="'.$params['class_num'].'"';
+                } else {
+                    $style = '';
+                }
+            }
+            $pager['args'][$pager['posvar']] = $pager['values'][$i];
+            $output .= '<li '.$active.'><a '.$style.' href="'.$pagerUrl($pager).'">'.$pager['names'][$i]."</a></li>\n";
+        }
+        $output .= "</ul>\n";
+
+        return $output;
     }
 
     /**

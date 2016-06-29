@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\AdminModule\Form\Type;
+namespace Zikula\GroupsModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,9 +16,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\Translator;
 
 /**
- * Category deletion form type class.
+ * Group deletion form type class.
  */
-class DeleteCategoryType extends AbstractType
+class DeleteGroupType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -28,7 +28,7 @@ class DeleteCategoryType extends AbstractType
         $translator = $options['translator'];
 
         $builder
-            ->add('cid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [])
+            ->add('gid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [])
             ->add('delete', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'label' => $translator->__('Delete'),
                 'icon' => 'fa-trash-o',
@@ -51,7 +51,7 @@ class DeleteCategoryType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'zikulaadminmodule_deletecategory';
+        return 'zikulagroupsmodule_deletegroup';
     }
 
     /**

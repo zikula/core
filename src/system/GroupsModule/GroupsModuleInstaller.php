@@ -10,13 +10,13 @@
 
 namespace Zikula\GroupsModule;
 
-use DoctrineHelper;
+use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\GroupsModule\Entity\GroupEntity;
 
 /**
  * Installation and upgrade routines for the groups module
  */
-class GroupsModuleInstaller extends \Zikula_AbstractInstaller
+class GroupsModuleInstaller extends AbstractExtensionInstaller
 {
     /**
      * initialise the groups module
@@ -25,14 +25,11 @@ class GroupsModuleInstaller extends \Zikula_AbstractInstaller
      */
     public function install()
     {
-        // create tables
-        $classes = [
-            'Zikula\GroupsModule\Entity\GroupEntity',
-            'Zikula\GroupsModule\Entity\GroupApplicationEntity'
-        ];
-
         try {
-            DoctrineHelper::createSchema($this->entityManager, $classes);
+            $this->schemaTool->create([
+                'Zikula\GroupsModule\Entity\GroupEntity',
+                'Zikula\GroupsModule\Entity\GroupApplicationEntity'
+            ]);
         } catch (\Exception $e) {
             return false;
         }
@@ -57,14 +54,14 @@ class GroupsModuleInstaller extends \Zikula_AbstractInstaller
     /**
      * upgrade the module from an old version
      *
-     * @param string $oldversion version number string to upgrade from
+     * @param string $oldVersion version number string to upgrade from
      *
      * @return bool|string true on success, last valid version string or false if fails
      */
-    public function upgrade($oldversion)
+    public function upgrade($oldVersion)
     {
         // Upgrade dependent on old version number
-        switch ($oldversion) {
+        switch ($oldVersion) {
             case '2.3.2':
             // future upgrade routines
         }

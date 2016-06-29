@@ -1,0 +1,42 @@
+{% if theAction == 'subscribe' %}
+    {% set templateTitle = __('Membership application') %}
+{% elseif theAction == 'unsubscribe' %}
+    {% set templateTitle = __('Membership resignation') %}
+{% elseif theAction == 'cancel' %}
+    {% set templateTitle = __('Membership application cancellation') %}
+{% endif %}
+{{ include('@ZikulaGroupsModule/User/menu.html.twig') }}
+
+{% form_theme form with [
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+<div class="container-fluid">
+    <div class="row">
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        {{ form_row(form.gid) }}
+        {{ form_row(form.theAction) }}
+        {{ form_row(form.groupType) }}
+
+        <fieldset>
+            <legend>{{ templateTitle }}</legend>
+
+            {{ form_row(form.groupName) }}
+            {{ form_row(form.groupDescription) }}
+            {% if theAction == 'subscribe' and groupType == 2 %}
+                {{ form_row(form.applyText) }}
+            {% endif %}
+        </fieldset>
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.apply) }}
+                {{ form_widget(form.cancel) }}
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>
