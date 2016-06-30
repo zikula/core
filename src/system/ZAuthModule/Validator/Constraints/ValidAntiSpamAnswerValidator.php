@@ -17,7 +17,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 class ValidAntiSpamAnswerValidator extends ConstraintValidator
 {
@@ -50,7 +50,7 @@ class ValidAntiSpamAnswerValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        $correctAnswer = $this->variableApi->get('ZikulaZAuthModule', UsersConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER, '');
+        $correctAnswer = $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER, '');
         /** @var ConstraintViolationListInterface $errors */
         $errors = $this->validator->validate($value, [
             new EqualTo([

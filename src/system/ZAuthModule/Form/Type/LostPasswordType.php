@@ -57,8 +57,7 @@ class LostPasswordType extends AbstractType
                     ],
                     'invalid_message' => $options['translator']->__('The passwords must match!'),
                     'constraints' => [
-                        new ValidPassword(),
-                        new NotNull()
+                        new ValidPassword()
                     ]
                 ])
             ;

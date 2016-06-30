@@ -14,6 +14,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\UsersModule\Validator\Constraints\ValidEmail;
+use Zikula\UsersModule\Validator\Constraints\ValidUserFields;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
 
@@ -109,6 +110,9 @@ class AdminCreatedUserType extends AbstractType
     {
         $resolver->setDefaults([
             'translator' => null,
+            'constraints' => [
+                new ValidUserFields()
+            ]
         ]);
     }
 }

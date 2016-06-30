@@ -12,7 +12,9 @@ namespace Zikula\UsersModule\Form\RegistrationType;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\UsersModule\Validator\Constraints\ValidUserFields;
 
 class DefaultRegistrationType extends AbstractType
 {
@@ -56,5 +58,18 @@ class DefaultRegistrationType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulausersmodule_defaultregistration';
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'translator' => null,
+            'constraints' => [
+                new ValidUserFields()
+            ]
+        ]);
     }
 }
