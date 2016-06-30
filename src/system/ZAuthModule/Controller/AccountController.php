@@ -47,16 +47,16 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $data = $form->getData();
-            $user = $this->get('zikula_users_module.user_repository')->findBy(['email' => $data['email']]);
-            if (count($user) == 1) {
+            $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->findBy(['email' => $data['email']]);
+            if (count($mapping) == 1) {
                 // send email
-                $sent = $this->get('zikula_users_module.helper.mail_helper')->mailUserName($user[0]);
+                $sent = $this->get('zikula_users_module.helper.mail_helper')->mailUserName($mapping[0]);
                 if ($sent) {
                     $this->addFlash('status', $this->__f('Done! The account information for %s has been sent via e-mail.', ['%s' => $data['email']]));
                 } else {
                     $this->addFlash('error', $this->__('Unable to send email to the requested address. Please contact the system administrator for assistance.'));
                 }
-            } elseif (count($user) > 1) {
+            } elseif (count($mapping) > 1) {
                 // too many users
                 $this->addFlash('error', $this->__('There are too many users registered with that address. Please contact the system administrator for assistance.'));
             } else {
@@ -94,14 +94,14 @@ class AccountController extends AbstractController
             $data = $form->getData();
             $field = empty($data['uname']) ? 'email' : 'uname';
             $inverse = $field == 'uname' ? 'email' : 'uname';
-            $user = $this->get('zikula_users_module.user_repository')->findBy([$field => $data[$field]]);
-            if (count($user) == 1) {
-                /** @var UserEntity $user */
-                $user = $user[0];
+            $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->findBy([$field => $data[$field]]);
+            if (count($mapping) == 1) {
+                $mapping = $mapping[0];
+                $user = $this->get('zikula_users_module.user_repository')->find($mapping->getUid());
                 switch ($user->getActivated()) {
                     case UsersConstant::ACTIVATED_ACTIVE:
-                        $newConfirmationCode = $this->get('zikula_zauth_module.user_verification_repository')->setVerificationCode($user->getUid());
-                        $sent = $this->get('zikula_users_module.helper.mail_helper')->mailConfirmationCode($user, $newConfirmationCode);
+                        $newConfirmationCode = $this->get('zikula_zauth_module.user_verification_repository')->setVerificationCode($mapping->getUid());
+                        $sent = $this->get('zikula_users_module.helper.mail_helper')->mailConfirmationCode($mapping, $newConfirmationCode);
                         if ($sent) {
                             $this->addFlash('status', $this->__f('Done! The confirmation code for %s has been sent via e-mail.', ['%s' => $data[$field]]));
                             $redirectToRoute = 'zikulazauthmodule_account_confirmationcode';
@@ -150,7 +150,7 @@ class AccountController extends AbstractController
                     default:
                         $this->addFlash('error', $this->__('Sorry! An active account could not be located with that information. Correct your entry and try again. If you have recently registered a new account with this site, we may be waiting for you to verify your e-mail address, or we might not have approved your registration request yet.'));
                 }
-            } elseif (count($user) > 1) {
+            } elseif (count($mapping) > 1) {
                 // too many users
                 $this->addFlash('error', $this->__('There are too many users registered with that address. Please contact the system administrator for assistance.'));
             } else {
@@ -351,7 +351,7 @@ class AccountController extends AbstractController
             $data = $form->getData();
             $userEntity->setPass(\UserUtil::getHashedPassword($data['pass']));
             $userEntity->setPassreminder($data['passreminder']);
-            $userEntity->delAttribute('_Users_mustChangePassword');
+            $userEntity->delAttribute(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY);
             $this->get('zikula_users_module.user_repository')->persistAndFlush($userEntity);
             $this->addFlash('success', $this->__('Password successfully changed.'));
             if ($login) {

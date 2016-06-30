@@ -31,6 +31,7 @@ use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
  * Class UserAdministrationController
@@ -307,39 +308,39 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
-     * @Route("/send-confirmation/{user}", requirements={"user" = "^[1-9]\d*$"})
+     * @Route("/send-confirmation/{mapping}", requirements={"mapping" = "^[1-9]\d*$"})
      * @param Request $request
-     * @param UserEntity $user
+     * @param AuthenticationMappingEntity $mapping
      * @return RedirectResponse
      */
-    public function sendConfirmationAction(Request $request, UserEntity $user)
+    public function sendConfirmationAction(Request $request, AuthenticationMappingEntity $mapping)
     {
-        if (!$this->hasPermission('ZikulaZAuthModule', $user->getUname() . '::' . $user->getUid(), ACCESS_MODERATE)) {
+        if (!$this->hasPermission('ZikulaZAuthModule', $mapping->getUname() . '::' . $mapping->getUid(), ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
-        $newConfirmationCode = $this->get('zikula_zauth_module.user_verification_repository')->setVerificationCode($user->getUid());
-        $mailSent = $this->get('zikula_users_module.helper.mail_helper')->mailConfirmationCode($user, $newConfirmationCode, true);
+        $newConfirmationCode = $this->get('zikula_zauth_module.user_verification_repository')->setVerificationCode($mapping->getUid());
+        $mailSent = $this->get('zikula_users_module.helper.mail_helper')->mailConfirmationCode($mapping, $newConfirmationCode, true);
         if ($mailSent) {
-            $this->addFlash('status', $this->__f('Done! The password recovery verification code for %s has been sent via e-mail.', ['%s' => $user->getUname()]));
+            $this->addFlash('status', $this->__f('Done! The password recovery verification code for %s has been sent via e-mail.', ['%s' => $mapping->getUname()]));
         }
 
         return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
     }
 
     /**
-     * @Route("/send-username/{user}", requirements={"user" = "^[1-9]\d*$"})
+     * @Route("/send-username/{mapping}", requirements={"mapping" = "^[1-9]\d*$"})
      * @param Request $request
-     * @param UserEntity $user
+     * @param AuthenticationMappingEntity $mapping
      * @return RedirectResponse
      */
-    public function sendUserNameAction(Request $request, UserEntity $user)
+    public function sendUserNameAction(Request $request, AuthenticationMappingEntity $mapping)
     {
-        if (!$this->hasPermission('ZikulaZAuthModule', $user->getUname() . '::' . $user->getUid(), ACCESS_MODERATE)) {
+        if (!$this->hasPermission('ZikulaZAuthModule', $mapping->getUname() . '::' . $mapping->getUid(), ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
-        $mailSent = $this->get('zikula_users_module.helper.mail_helper')->mailUserName($user, true);
+        $mailSent = $this->get('zikula_users_module.helper.mail_helper')->mailUserName($mapping, true);
         if ($mailSent) {
-            $this->addFlash('status', $this->__f('Done! The user name for %s has been sent via e-mail.', ['%s' => $user->getUname()]));
+            $this->addFlash('status', $this->__f('Done! The user name for %s has been sent via e-mail.', ['%s' => $mapping->getUname()]));
         }
 
         return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
@@ -350,7 +351,7 @@ class UserAdministrationController extends AbstractController
      * @Theme("admin")
      * @Template
      * @param Request $request
-     * @param UserEntity $user
+     * @param UserEntity $user // note: this is intentionally left as UserEntity instead of mapping because of need to access attributes.
      * @return array|RedirectResponse
      */
     public function togglePasswordChangeAction(Request $request, UserEntity $user)
@@ -358,8 +359,8 @@ class UserAdministrationController extends AbstractController
         if (!$this->hasPermission('ZikulaZAuthModule', $user->getUname() . '::' . $user->getUid(), ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
-        if ($user->getAttributes()->containsKey('_Users_mustChangePassword')) {
-            $mustChangePass = $user->getAttributes()->get('_Users_mustChangePassword');
+        if ($user->getAttributes()->containsKey(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY)) {
+            $mustChangePass = $user->getAttributes()->get(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY);
         } else {
             $mustChangePass = false;
         }
@@ -372,11 +373,11 @@ class UserAdministrationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('toggle')->isClicked()) {
-                if ($user->getAttributes()->containsKey('_Users_mustChangePassword') && (bool)$user->getAttributes()->get('_Users_mustChangePassword')) {
-                    $user->getAttributes()->remove('_Users_mustChangePassword');
+                if ($user->getAttributes()->containsKey(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY) && (bool)$user->getAttributes()->get(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY)) {
+                    $user->getAttributes()->remove(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY);
                     $this->addFlash('success', $this->__f('Done! A password change will no longer be required for %uname.', ['%uname' => $user->getUname()]));
                 } else {
-                    $user->setAttribute('_Users_mustChangePassword', true);
+                    $user->setAttribute(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY, true);
                     $this->addFlash('success', $this->__f('Done! A password change will be required the next time %uname logs in.', ['%uname' => $user->getUname()]));
                 }
                 $this->get('doctrine')->getManager()->flush();

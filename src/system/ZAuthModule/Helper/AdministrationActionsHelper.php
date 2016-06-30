@@ -101,21 +101,21 @@ class AdministrationActionsHelper
         $hasEditPermissionToUser = $this->permissionsApi->hasPermission('ZikulaZAuthModule::', $mapping->getUname() . '::' . $mapping->getUid(), ACCESS_EDIT);
         if ($mapping->getUid() > 1 && $hasModeratePermissionToUser) {
             $actions['senduname'] = [
-                'url' => $this->router->generate('zikulazauthmodule_useradministration_sendusername', ['user' => $mapping->getUid()]),
+                'url' => $this->router->generate('zikulazauthmodule_useradministration_sendusername', ['mapping' => $mapping->getId()]),
                 'text' => $this->translator->__f('Send user name to %sub%', ["%sub%" => $mapping->getUname()]),
                 'icon' => 'user',
             ];
         }
         if ($hasModeratePermissionToUser) {
             $actions['sendconfirm'] = [
-                'url' => $this->router->generate('zikulazauthmodule_useradministration_sendconfirmation', ['user' => $mapping->getUid()]),
+                'url' => $this->router->generate('zikulazauthmodule_useradministration_sendconfirmation', ['mapping' => $mapping->getId()]),
                 'text' => $this->translator->__f('Send password recovery code to %sub%', ["%sub%" => $mapping->getUname()]),
                 'icon' => 'key',
             ];
         }
         if ($hasEditPermissionToUser) {
             $userEntity = $this->userRepository->find($mapping->getUid());
-            if ($userEntity->getAttributes()->containsKey('_Users_mustChangePassword') && (bool)$userEntity->getAttributeValue('_Users_mustChangePassword')) {
+            if ($userEntity->getAttributes()->containsKey(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY) && (bool)$userEntity->getAttributeValue(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY)) {
                 $title = $this->translator->__f('Cancel required change of password for %sub%', ["%sub%" => $mapping->getUname()]);
                 $fa = 'unlock-alt';
             } else {

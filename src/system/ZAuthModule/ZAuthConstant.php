@@ -131,4 +131,10 @@ class ZAuthConstant
      * An indicator for the change verification table that the record represents a registration e-mail verification.
      */
     const VERIFYCHGTYPE_REGEMAIL = 3;
+
+    /**
+     * Key used as a UserAttribute that indicates a user is required to change his password on next login.
+     * Set value to (bool) TRUE if change is required. The existence of the key and the value are both tested.
+     */
+    const REQUIRE_PASSWORD_CHANGE_KEY = '_Users_mustChangePassword';
 }

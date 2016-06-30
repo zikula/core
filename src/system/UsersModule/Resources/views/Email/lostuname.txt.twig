@@ -6,7 +6,7 @@
     {{ __f('Someone with the IP address %1$s has just requested the account information at %2$s associated with this e-mail address.', {"%1$s": app.request.server.get('REMOTE_ADDR'), "%2$s": getModVar('ZConfig', 'sitename')}) }}
 {% endif %}
 
-{{ __f('The user name for your account is: %1s', {"%sub%": user.uname}) }}
+{{ __f('The user name for your account is: %1s', {"%sub%": uname}) }}
 
 {% if authentication_methods is not empty %}
     {{ __('You may use the following information to log into your account at:') }} {{ url('zikulausersmodule_access_login') }}

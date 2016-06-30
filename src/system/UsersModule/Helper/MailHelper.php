@@ -14,6 +14,7 @@ use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\MailerModule\Api\MailerApi;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 
 class MailHelper
 {
@@ -95,27 +96,28 @@ class MailHelper
     }
 
     /**
+     * @todo this belongs in ZAuth
      * Mail a confirmation code to a user.
-     * @param UserEntity $user
+     * @param AuthenticationMappingEntity $mapping
      * @param $confirmationCode
      * @param bool $requestedByAdmin
      * @return bool
      */
-    public function mailConfirmationCode(UserEntity $user, $confirmationCode, $requestedByAdmin = false)
+    public function mailConfirmationCode(AuthenticationMappingEntity $mapping, $confirmationCode, $requestedByAdmin = false)
     {
         $templateArgs = array(
-            'uname' => $user['uname'],
+            'uname' => $mapping->getUname(),
             'code' => $confirmationCode,
             'requestedByAdmin' => $requestedByAdmin
         );
         $htmlBody = $this->twig->render('@ZikulaUsersModule/Email/lostpassword.html.twig', $templateArgs);
         $plainTextBody = $this->twig->render('@ZikulaUsersModule/Email/lostpassword.txt.twig', $templateArgs);
 
-        $subject = $this->translator->__f('Confirmation code for %s', ['%s' => $user->getUname()]);
+        $subject = $this->translator->__f('Confirmation code for %s', ['%s' => $mapping->getUname()]);
 
         $message = \Swift_Message::newInstance();
         $message->setFrom([$this->variableApi->get(VariableApi::CONFIG, 'adminmail') => $this->variableApi->get(VariableApi::CONFIG, 'sitename_' . \ZLanguage::getLanguageCode())])
-            ->setTo([$user->getEmail()])
+            ->setTo([$mapping->getEmail()])
             ->setSubject($subject)
             ->setBody($htmlBody);
 
@@ -123,25 +125,26 @@ class MailHelper
     }
 
     /**
+     * @todo this belongs in ZAuth
      * Mail the username to a user.
-     * @param UserEntity $user
+     * @param AuthenticationMappingEntity $mapping
      * @param bool $requestedByAdmin
      * @return bool
      */
-    public function mailUserName(UserEntity $user, $requestedByAdmin = false)
+    public function mailUserName(AuthenticationMappingEntity $mapping, $requestedByAdmin = false)
     {
         $templateArgs = array(
-            'user' => $user,
-            'authentication_methods' => \UserUtil::getUserAccountRecoveryInfo($user->getUid()),
+            'uname' => $mapping->getUname(),
+            'authentication_methods' => \UserUtil::getUserAccountRecoveryInfo($mapping->getUid()),
             'requestedByAdmin' => $requestedByAdmin,
         );
         $htmlBody = $this->twig->render('@ZikulaUsersModule/Email/lostuname.html.twig', $templateArgs);
         $plainTextBody = $this->twig->render('@ZikulaUsersModule/Email/lostuname.txt.twig', $templateArgs);
 
-        $subject = $this->translator->__f('Account information for %s', ['%s' => $user->getUname()]);
+        $subject = $this->translator->__f('Account information for %s', ['%s' => $mapping->getUname()]);
         $message = \Swift_Message::newInstance();
         $message->setFrom([$this->variableApi->get(VariableApi::CONFIG, 'adminmail') => $this->variableApi->get(VariableApi::CONFIG, 'sitename_' . \ZLanguage::getLanguageCode())])
-            ->setTo([$user->getEmail()])
+            ->setTo([$mapping->getEmail()])
             ->setSubject($subject)
             ->setBody($htmlBody);
 

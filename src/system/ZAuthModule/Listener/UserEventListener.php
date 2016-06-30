@@ -16,6 +16,7 @@ use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 class UserEventListener implements EventSubscriberInterface
 {
@@ -59,7 +60,7 @@ class UserEventListener implements EventSubscriberInterface
     {
         /** @var UserEntity $user */
         $user = $event->getSubject();
-        if ($user->getAttributes()->containsKey('_Users_mustChangePassword') && $user->getAttributes()->get('_Users_mustChangePassword')) {
+        if ($user->getAttributes()->containsKey(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY) && $user->getAttributes()->get(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY)) {
             $event->stopPropagation();
             $event->setArgument('returnUrl', $this->router->generate('zikulazauthmodule_account_changepassword'));
             $this->session->set('authenticationMethod', $event->getArgument('authenticationMethod'));
