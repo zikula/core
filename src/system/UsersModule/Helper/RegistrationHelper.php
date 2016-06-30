@@ -141,9 +141,11 @@ class RegistrationHelper
             if (!$defaultGroup) {
                 throw new \RuntimeException($this->__('Warning! The user account was created, but there was a problem adding the account to the default group.'));
             }
-            $groupAdded = \ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'adduser', ['gid' => $defaultGroup, 'uid' => $userEntity->getUid()]);
-            if (!$groupAdded) {
-                throw new \RuntimeException($this->__('Warning! The user account was created, but there was a problem adding the account to the default group.'));
+            if (!$userEntity->getGroups()->containsKey($defaultGroup)) {
+                $groupAdded = \ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'adduser', ['gid' => $defaultGroup, 'uid' => $userEntity->getUid()]);
+                if (!$groupAdded) {
+                    throw new \RuntimeException($this->__('Warning! The user account was created, but there was a problem adding the account to the default group.'));
+                }
             }
 
             // ATTENTION: This is the proper place for the item-create hook, not when a pending

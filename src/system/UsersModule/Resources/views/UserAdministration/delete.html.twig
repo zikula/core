@@ -8,7 +8,7 @@
     {{ __('Delete confirmation') }}
 </h3>
 
-<p class="alert alert-danger">{{ __('Are you sure you want to delete the selected items?') }}</p>
+<p class="alert alert-danger">{{ __f('Are you sure you want to delete the user (%un)?', {'%un': user.uname}) }}</p>
 <div>
     {{ form_start(form) }}
     {{ form_errors(form) }}

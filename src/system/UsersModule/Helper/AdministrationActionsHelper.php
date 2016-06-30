@@ -89,7 +89,7 @@ class AdministrationActionsHelper
         if ($user->getActivated() != UsersConstant::ACTIVATED_ACTIVE && $this->permissionsApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
             $actions['approveForce'] = [
                 'url' => $this->router->generate('zikulausersmodule_useradministration_approve', ['user' => $user->getUid(), 'force' => true]),
-                'text' => $this->translator->__f('Approve %sub% (approves, and creates a new user account) ', ["%sub%" => $user->getUname()]),
+                'text' => $this->translator->__f('Approve %sub%', ["%sub%" => $user->getUname()]),
                 'icon' => 'check text-success',
             ];
         }

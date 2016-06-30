@@ -184,7 +184,7 @@ class UserAdministrationController extends AbstractController
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
+            return $this->redirectToRoute('zikulausersmodule_useradministration_list');
         }
 
         return [
@@ -327,6 +327,7 @@ class UserAdministrationController extends AbstractController
         }
 
         return [
+            'user' => $user,
             'form' => $deleteConfirmationForm->createView()
         ];
     }
