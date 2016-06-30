@@ -376,9 +376,13 @@ class DataUtil
             if ($current == '.') {
                 // current path element is a dot, so we don't do anything
             } elseif ($current == '..') {
-                // current path element is .., so we remove the last path in case of relative paths
-                if (!$absolutepathused) {
+                // current path element is .., so we remove the last path
+                if (count($clean_array) > 0) {
                     array_pop($clean_array);
+                } else {
+                    if (!$absolutepathused) {
+                        array_push($clean_array, $current);
+                    }
                 }
             } else {
                 // current path element is valid, so we add it to the path
