@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/claviska/jquery-minicolors.git",
-                "reference": "543116f93a74b5576f4e36680ac4366c36562ef9"
+                "reference": "aadf121ac92b48a8f0265016501151b63622ada8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/claviska/jquery-minicolors/zipball/543116f93a74b5576f4e36680ac4366c36562ef9",
-                "reference": "543116f93a74b5576f4e36680ac4366c36562ef9",
+                "url": "https://api.github.com/repos/claviska/jquery-minicolors/zipball/aadf121ac92b48a8f0265016501151b63622ada8",
+                "reference": "aadf121ac92b48a8f0265016501151b63622ada8",
                 "shasum": ""
             },
             "type": "component",
@@ -41,7 +41,7 @@
             ],
             "description": "jQuery MiniColors Plugin",
             "homepage": "http://www.abeautifulsite.net/",
-            "time": "2016-03-18 14:56:51"
+            "time": "2016-06-13 13:33:38"
         },
         {
             "name": "acasademont/i18n-routing-bundle",
@@ -1593,7 +1593,7 @@
                     "homepage": "https://github.com/friendsofsymfony/FOSJsRoutingBundle/contributors"
                 },
                 {
-                    "name": "William DURAND",
+                    "name": "William Durand",
                     "email": "william.durand1@gmail.com"
                 }
             ],
@@ -2537,16 +2537,16 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v5.0.6",
+            "version": "v5.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "ffe306d09c1f2bad721237f63b2169d1b78253d0"
+                "reference": "a9c4723cbdbc6cf7fbfdfde3c639cb1943f0293a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/ffe306d09c1f2bad721237f63b2169d1b78253d0",
-                "reference": "ffe306d09c1f2bad721237f63b2169d1b78253d0",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/a9c4723cbdbc6cf7fbfdfde3c639cb1943f0293a",
+                "reference": "a9c4723cbdbc6cf7fbfdfde3c639cb1943f0293a",
                 "shasum": ""
             },
             "require": {
@@ -2585,7 +2585,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2016-04-25 20:50:31"
+            "time": "2016-06-23 16:11:33"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -2651,16 +2651,16 @@
         },
         {
             "name": "sensio/generator-bundle",
-            "version": "v3.0.6",
+            "version": "v3.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioGeneratorBundle.git",
-                "reference": "ac91535054d025937d897d78ebb5fc2da5e955a4"
+                "reference": "d1be460925376703a470a3ac6ec034eb7eab3892"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioGeneratorBundle/zipball/ac91535054d025937d897d78ebb5fc2da5e955a4",
-                "reference": "ac91535054d025937d897d78ebb5fc2da5e955a4",
+                "url": "https://api.github.com/repos/sensiolabs/SensioGeneratorBundle/zipball/d1be460925376703a470a3ac6ec034eb7eab3892",
+                "reference": "d1be460925376703a470a3ac6ec034eb7eab3892",
                 "shasum": ""
             },
             "require": {
@@ -2699,7 +2699,7 @@
                 }
             ],
             "description": "This bundle generates code for you",
-            "time": "2016-02-26 04:36:01"
+            "time": "2016-06-20 05:58:05"
         },
         {
             "name": "sensiolabs/security-checker",
@@ -3554,16 +3554,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.7",
+            "version": "v2.8.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "663b2d6202c3149515b39cfe50a174a130acb8e2"
+                "reference": "038d13264f732f9bba850c423e374dc72874d1a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/663b2d6202c3149515b39cfe50a174a130acb8e2",
-                "reference": "663b2d6202c3149515b39cfe50a174a130acb8e2",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/038d13264f732f9bba850c423e374dc72874d1a6",
+                "reference": "038d13264f732f9bba850c423e374dc72874d1a6",
                 "shasum": ""
             },
             "require": {
@@ -3637,7 +3637,7 @@
                 "doctrine/dbal": "~2.4",
                 "doctrine/doctrine-bundle": "~1.2",
                 "doctrine/orm": "~2.4,>=2.4.5",
-                "egulias/email-validator": "~1.2",
+                "egulias/email-validator": "~1.2,>=1.2.1",
                 "monolog/monolog": "~1.11",
                 "ocramius/proxy-manager": "~0.4|~1.0|~2.0",
                 "phpdocumentor/reflection": "^1.0.7"
@@ -3684,7 +3684,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2016-06-06 16:05:37"
+            "time": "2016-06-30 15:42:24"
         },
         {
             "name": "twig/extensions",
@@ -4056,9 +4056,7 @@
             "authors": [
                 {
                     "name": "Karma Dordrak",
-                    "email": "drak@zikula.org",
-                    "homepage": "http://zikula.org",
-                    "role": "OO & PSR-4 migration"
+                    "email": "drak@zikula.org"
                 },
                 {
                     "name": "Kyle Giovannetti",
@@ -4352,12 +4350,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "0efc1eabc26d7c427f881a69911f4516d0c83fad"
+                "reference": "59ef3bf47d95a1b9f831cc9e25a95a31a065e1d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/0efc1eabc26d7c427f881a69911f4516d0c83fad",
-                "reference": "0efc1eabc26d7c427f881a69911f4516d0c83fad",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/59ef3bf47d95a1b9f831cc9e25a95a31a065e1d6",
+                "reference": "59ef3bf47d95a1b9f831cc9e25a95a31a065e1d6",
                 "shasum": ""
             },
             "require": {
@@ -4388,7 +4386,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2015-04-03 08:27:39"
+            "time": "2016-06-14 14:10:00"
         },
         {
             "name": "zikula/wizard",
