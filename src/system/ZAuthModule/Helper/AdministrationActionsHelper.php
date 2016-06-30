@@ -123,7 +123,7 @@ class AdministrationActionsHelper
                 $fa = 'lock';
             }
             $actions['togglepass'] = [
-                'url' => $this->router->generate('zikulazauthmodule_useradministration_togglepasswordchange', ['user' => $mapping->getUid()]),
+                'url' => $this->router->generate('zikulazauthmodule_useradministration_togglepasswordchange', ['user' => $mapping->getUid()]), // note intentionally UID
                 'text' => $title,
                 'icon' => $fa,
             ];

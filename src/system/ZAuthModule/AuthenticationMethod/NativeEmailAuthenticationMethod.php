@@ -12,14 +12,14 @@ namespace Zikula\ZAuthModule\AuthenticationMethod;
 
 use Zikula\ZAuthModule\ZAuthConstant;
 
-class NativeUnameAuthenticationMethod extends AbstractNativeAuthenticationMethod
+class NativeEmailAuthenticationMethod extends AbstractNativeAuthenticationMethod
 {
     /**
      * {@inheritdoc}
      */
     public function getAlias()
     {
-        return ZAuthConstant::AUTHENTICATION_METHOD_UNAME;
+        return ZAuthConstant::AUTHENTICATION_METHOD_EMAIL;
     }
 
     /**
@@ -27,7 +27,7 @@ class NativeUnameAuthenticationMethod extends AbstractNativeAuthenticationMethod
      */
     public function getDisplayName()
     {
-        return $this->translator->__('Native Uname');
+        return $this->translator->__('Native Email');
     }
 
     /**
@@ -35,7 +35,7 @@ class NativeUnameAuthenticationMethod extends AbstractNativeAuthenticationMethod
      */
     public function getDescription()
     {
-        return $this->translator->__('Allow a user to authenticate and login via Zikula\'s native user database with their username.');
+        return $this->translator->__('Allow a user to authenticate and login via Zikula\'s native user database with their email address.');
     }
 
     /**
@@ -43,7 +43,7 @@ class NativeUnameAuthenticationMethod extends AbstractNativeAuthenticationMethod
      */
     public function getLoginFormClassName()
     {
-        return 'Zikula\ZAuthModule\Form\Type\UnameLoginType';
+        return 'Zikula\ZAuthModule\Form\Type\EmailLoginType';
     }
 
     /**
@@ -53,13 +53,13 @@ class NativeUnameAuthenticationMethod extends AbstractNativeAuthenticationMethod
     {
         if ($type == 'block') {
             if ($position == 'topnav') {
-                return '@ZikulaZAuthModule/Authentication/UnameLoginBlock.topnav.html.twig';
+                return '@ZikulaZAuthModule/Authentication/EmailLoginBlock.topnav.html.twig';
             }
 
-            return '@ZikulaZAuthModule/Authentication/UnameLoginBlock.html.twig';
+            return '@ZikulaZAuthModule/Authentication/EmailLoginBlock.html.twig';
         }
 
-        return '@ZikulaZAuthModule/Authentication/UnameLogin.html.twig';
+        return '@ZikulaZAuthModule/Authentication/EmailLogin.html.twig';
     }
 
     /**
@@ -67,6 +67,6 @@ class NativeUnameAuthenticationMethod extends AbstractNativeAuthenticationMethod
      */
     public function authenticate(array $data)
     {
-        return $this->authenticateByField($data, 'uname');
+        return $this->authenticateByField($data, 'email');
     }
 }

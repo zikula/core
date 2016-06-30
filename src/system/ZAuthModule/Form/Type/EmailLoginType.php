@@ -15,7 +15,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\TranslatorInterface;
 
-class UnameLoginType extends AbstractType
+class EmailLoginType extends AbstractType
 {
     /**
      * @var TranslatorInterface
@@ -23,7 +23,7 @@ class UnameLoginType extends AbstractType
     private $translator;
 
     /**
-     * UnameLoginType constructor.
+     * EmailLoginType constructor.
      * @param $translator
      */
     public function __construct(TranslatorInterface $translator)
@@ -34,9 +34,9 @@ class UnameLoginType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('uname', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $this->translator->__('User name'),
-                'input_group' => ['left' => '<i class="fa fa-user fa-fw"></i>']
+            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\EmailType', [
+                'label' => $this->translator->__('Email address'),
+                'input_group' => ['left' => '<i class="fa fa-at fa-fw"></i>']
             ])
             ->add('pass', 'Symfony\Component\Form\Extension\Core\Type\PasswordType', [
                 'label' => $this->translator->__('Password'),
@@ -56,7 +56,7 @@ class UnameLoginType extends AbstractType
 
     public function getBlockPrefix()
     {
-        return 'zikulazauthmodule_authentication_uname';
+        return 'zikulazauthmodule_authentication_email';
     }
 
     /**
