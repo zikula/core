@@ -166,6 +166,7 @@ class UserAdministrationController extends AbstractController
                     $this->get('event_dispatcher')->dispatch(UserEvents::NEW_PROCESS, $event);
                     $hook = new ProcessHook($user->getUid());
                     $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_PROCESS, $hook);
+                    $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_SUCCEEDED, new GenericEvent($user));
 
                     if ($user->getActivated() == UsersConstant::ACTIVATED_PENDING_REG) {
                         $this->addFlash('status', $this->__('Done! Created new registration application.'));
@@ -270,20 +271,20 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
-     * @Route("/verify/{user}", requirements={"user" = "^[1-9]\d*$"})
+     * @Route("/verify/{mapping}", requirements={"mapping" = "^[1-9]\d*$"})
      * @Theme("admin")
      * @Template()
      * @param Request $request
-     * @param UserEntity $user
+     * @param AuthenticationMappingEntity $mapping
      * @return array
      */
-    public function verifyAction(Request $request, UserEntity $user)
+    public function verifyAction(Request $request, AuthenticationMappingEntity $mapping)
     {
         if (!$this->hasPermission('ZikulaZAuthModule', '::', ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
         $form = $this->createForm('Zikula\ZAuthModule\Form\Type\SendVerificationConfirmationType', [
-            'user' => $user->getUid()
+            'mapping' => $mapping->getId()
         ], [
             'translator' => $this->get('translator.default')
         ]);
@@ -291,11 +292,12 @@ class UserAdministrationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('confirm')->isClicked()) {
-                $verificationSent = $this->get('zikula_zauth_module.helper.registration_verification_helper')->sendVerificationCode($user);
+                $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->find($form->get('mapping')->getData());
+                $verificationSent = $this->get('zikula_zauth_module.helper.registration_verification_helper')->sendVerificationCode($mapping);
                 if (!$verificationSent) {
-                    $this->addFlash('error', $this->__f('Sorry! There was a problem sending a verification code to %sub%.', ['%sub%' => $user->getUname()]));
+                    $this->addFlash('error', $this->__f('Sorry! There was a problem sending a verification code to %sub%.', ['%sub%' => $mapping->getUname()]));
                 } else {
-                    $this->addFlash('status', $this->__f('Done! Verification code sent to %sub%.', ['%sub%' => $user->getUname()]));
+                    $this->addFlash('status', $this->__f('Done! Verification code sent to %sub%.', ['%sub%' => $mapping->getUname()]));
                 }
             }
             if ($form->get('cancel')->isClicked()) {
@@ -307,7 +309,7 @@ class UserAdministrationController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'user' => $user
+            'mapping' => $mapping
         ];
     }
 

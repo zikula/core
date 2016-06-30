@@ -19,7 +19,7 @@ class SendVerificationConfirmationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('user', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
+            ->add('mapping', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
             ->add('confirm', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'label' => $options['translator']->__('Confirm sending code'),
                 'icon' => 'fa-check',

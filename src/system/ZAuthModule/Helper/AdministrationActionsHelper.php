@@ -70,10 +70,10 @@ class AdministrationActionsHelper
     }
 
     /**
-     * @param AuthenticationMappingEntity $user
+     * @param AuthenticationMappingEntity $mapping
      * @return array
      */
-    public function user(AuthenticationMappingEntity $user)
+    public function user(AuthenticationMappingEntity $mapping)
     {
         $actions = [];
         if (!$this->permissionsApi->hasPermission('ZikulaZAuthModule::', '::', ACCESS_MODERATE)) {
@@ -81,57 +81,57 @@ class AdministrationActionsHelper
         }
         /** @var UserVerificationEntity $userVerification */
         $userVerification = $this->verificationRepository->findOneBy([
-            'uid' => $user->getUid(),
+            'uid' => $mapping->getUid(),
             'changetype' => ZAuthConstant::VERIFYCHGTYPE_REGEMAIL
         ]);
         // send verification email requires no further perm check
-        if (!$user->isVerifiedEmail()) {
+        if (!$mapping->isVerifiedEmail()) {
             if (!empty($userVerification)) {
                 $title = (null == $userVerification->getVerifycode())
-                    ? $this->translator->__f('Send an e-mail verification code for %sub%', ["%sub%" => $user->getUname()])
-                    : $this->translator->__f('Send a new e-mail verification code for %sub%', ["%sub%" => $user->getUname()]);
+                    ? $this->translator->__f('Send an e-mail verification code for %sub%', ["%sub%" => $mapping->getUname()])
+                    : $this->translator->__f('Send a new e-mail verification code for %sub%', ["%sub%" => $mapping->getUname()]);
                 $actions['verify'] = [
-                    'url' => $this->router->generate('zikulazauthmodule_useradministration_verify', ['user' => $user->getUid()]), // @todo route
+                    'url' => $this->router->generate('zikulazauthmodule_useradministration_verify', ['mapping' => $mapping->getId()]),
                     'text' => $title,
                     'icon' => 'envelope',
                 ];
             }
         }
-        $hasModeratePermissionToUser = $this->permissionsApi->hasPermission('ZikulaZAuthModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_MODERATE);
-        $hasEditPermissionToUser = $this->permissionsApi->hasPermission('ZikulaZAuthModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_EDIT);
-        if ($user->getUid() > 1 && $hasModeratePermissionToUser) {
+        $hasModeratePermissionToUser = $this->permissionsApi->hasPermission('ZikulaZAuthModule::', $mapping->getUname() . '::' . $mapping->getUid(), ACCESS_MODERATE);
+        $hasEditPermissionToUser = $this->permissionsApi->hasPermission('ZikulaZAuthModule::', $mapping->getUname() . '::' . $mapping->getUid(), ACCESS_EDIT);
+        if ($mapping->getUid() > 1 && $hasModeratePermissionToUser) {
             $actions['senduname'] = [
-                'url' => $this->router->generate('zikulazauthmodule_useradministration_sendusername', ['user' => $user->getUid()]),
-                'text' => $this->translator->__f('Send user name to %sub%', ["%sub%" => $user->getUname()]),
+                'url' => $this->router->generate('zikulazauthmodule_useradministration_sendusername', ['user' => $mapping->getUid()]),
+                'text' => $this->translator->__f('Send user name to %sub%', ["%sub%" => $mapping->getUname()]),
                 'icon' => 'user',
             ];
         }
         if ($hasModeratePermissionToUser) {
             $actions['sendconfirm'] = [
-                'url' => $this->router->generate('zikulazauthmodule_useradministration_sendconfirmation', ['user' => $user->getUid()]),
-                'text' => $this->translator->__f('Send password recovery code to %sub%', ["%sub%" => $user->getUname()]),
+                'url' => $this->router->generate('zikulazauthmodule_useradministration_sendconfirmation', ['user' => $mapping->getUid()]),
+                'text' => $this->translator->__f('Send password recovery code to %sub%', ["%sub%" => $mapping->getUname()]),
                 'icon' => 'key',
             ];
         }
         if ($hasEditPermissionToUser) {
-            $userEntity = $this->userRepository->find($user->getUid());
+            $userEntity = $this->userRepository->find($mapping->getUid());
             if ($userEntity->getAttributes()->containsKey('_Users_mustChangePassword') && (bool)$userEntity->getAttributeValue('_Users_mustChangePassword')) {
-                $title = $this->translator->__f('Cancel required change of password for %sub%', ["%sub%" => $user->getUname()]);
+                $title = $this->translator->__f('Cancel required change of password for %sub%', ["%sub%" => $mapping->getUname()]);
                 $fa = 'unlock-alt';
             } else {
-                $title = $this->translator->__f('Require %sub% to change password at next login', ["%sub%" => $user->getUname()]);
+                $title = $this->translator->__f('Require %sub% to change password at next login', ["%sub%" => $mapping->getUname()]);
                 $fa = 'lock';
             }
             $actions['togglepass'] = [
-                'url' => $this->router->generate('zikulazauthmodule_useradministration_togglepasswordchange', ['user' => $user->getUid()]),
+                'url' => $this->router->generate('zikulazauthmodule_useradministration_togglepasswordchange', ['user' => $mapping->getUid()]),
                 'text' => $title,
                 'icon' => $fa,
             ];
         }
-        if ($user->getUid() > 1 && $hasEditPermissionToUser) {
+        if ($mapping->getUid() > 1 && $hasEditPermissionToUser) {
             $actions['modify'] = [
-                'url' => $this->router->generate('zikulazauthmodule_useradministration_modify', ['user' => $user->getUid()]),
-                'text' => $this->translator->__f('Edit %sub%', ["%sub%" => $user->getUname()]),
+                'url' => $this->router->generate('zikulazauthmodule_useradministration_modify', ['user' => $mapping->getUid()]),
+                'text' => $this->translator->__f('Edit %sub%', ["%sub%" => $mapping->getUname()]),
                 'icon' => 'pencil',
             ];
         }

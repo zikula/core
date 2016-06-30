@@ -108,7 +108,7 @@ class RegistrationListener implements EventSubscriberInterface
         if (null !== $userEntity->getUid()) {
             $mapping = $this->mappingRepository->getByZikulaId($userEntity->getUid());
             if (isset($mapping) && !$mapping->isVerifiedEmail()) {
-                $this->verificationHelper->sendVerificationCode($userEntity);
+                $this->verificationHelper->sendVerificationCode($mapping);
             }
         }
     }

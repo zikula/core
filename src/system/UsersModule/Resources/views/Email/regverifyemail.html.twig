@@ -5,7 +5,7 @@
 <p>{{ __('If you did not request a new user account at this web site, please either contact our site administrator, or simply disregard this message.') }}</p>
 
 <p>{{ __('If you did request a new user account, then your request is waiting for you to verify your e-mail address with us.') }}
-{% if not user.isApproved %}{{ __('Your request is also waiting for administrator approval.') }}
+{% if not isApproved %}{{ __('Your request is also waiting for administrator approval.') }}
 {{ __('Once both this verification step is complete and an administrator has approved your request, you will be able to log in with your user name.') }}{% endif %}</p>
 
 <p>{{ __('Please click on the following link to complete the e-mail address check: ') }}<a href="{{ verificationurl }}">{{ __('Verify my e-mail address') }}</a></p>
@@ -15,10 +15,8 @@
 <p>{{ __('Your verification code is:') }} {{ verifycode }}</p>
 
 <p>
-    {% if not user.isApproved %}
+    {% if not isApproved %}
         {{ __('Once verified and your account has been approved, then you will be able to log in.') }}
-    {% elseif user.pass is empty %}
-        {{ __('Once verified, you will be able to choose a password and then log in.') }}
     {% else %}
         {{ __('Once verified, you will be able to log in.') }}
     {% endif %}
@@ -28,13 +26,11 @@
 <p>{{ __f('User name: %sub%', {"%sub%": user.uname}) }}<br />
 {% if createdpassword|default %}
     {{ __f('Password: %sub%', {"%sub%": createdpassword}) }}
-{% elseif user.passreminder|default %}
-    {{ __f('Password reminder: %sub%', {"%sub%": user.passreminder}) }}
 {% endif %}
 </p>
 
 {% if createdpassword|default %}<p>{{ __('(This is the only time you will receive your password. Please keep it in a safe place.)') }}</p>{% endif %}
 
-{% if not user.isApproved %}
+{% if not isApproved %}
     <p>{{ __('Remember: both this verification step and approval from an administrator must be completed before you can log in.') }} {{ __('You will receive an additional e-mail message once an administrator has reviewed your request.') }}</p>
 {% endif %}

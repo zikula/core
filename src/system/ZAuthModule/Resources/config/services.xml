@@ -66,12 +66,12 @@
             <argument type="service" id="zikula_users_module.current_user" />
         </service>
         <service id="zikula_zauth_module.helper.registration_verification_helper" class="%zikula_zauth_module.helper.registration_verification_helper.class%" lazy="true">
-            <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="zikula_permissions_module.api.permission" />
             <argument type="service" id="zikula_zauth_module.user_verification_repository" />
             <argument type="service" id="translator.default" />
             <argument type="service" id="zikula_users_module.helper.mail_helper" />
             <argument type="service" id="zikula_users_module.current_user" />
+            <argument type="service" id="zikula_users_module.user_repository" />
         </service>
 
         <service id="zikula_zauth_module.container.link_container" class="%zikula_zauth_module.container.link_container.class%">

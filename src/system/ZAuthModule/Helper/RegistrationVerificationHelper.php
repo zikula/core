@@ -16,7 +16,9 @@ use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Helper\MailHelper;
+use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\ZAuthModule\ZAuthConstant;
@@ -24,11 +26,6 @@ use Zikula\ZAuthModule\ZAuthConstant;
 class RegistrationVerificationHelper
 {
     use TranslatorTrait;
-
-    /**
-     * @var VariableApi
-     */
-    private $variableApi;
 
     /**
      * @var PermissionApi
@@ -51,28 +48,33 @@ class RegistrationVerificationHelper
     private $currentUserApi;
 
     /**
+     * @var UserRepositoryInterface
+     */
+    private $userRepository;
+
+    /**
      * RegistrationHelper constructor.
-     * @param VariableApi $variableApi
      * @param PermissionApi $permissionApi
      * @param UserVerificationRepositoryInterface $userVerificationRepository
      * @param TranslatorInterface $translator
      * @param MailHelper $mailHelper
      * @param CurrentUserApi $currentUserApi
+     * @param UserRepositoryInterface $userRepository
      */
     public function __construct(
-        VariableApi $variableApi,
         PermissionApi $permissionApi,
         UserVerificationRepositoryInterface $userVerificationRepository,
         TranslatorInterface $translator,
         MailHelper $mailHelper,
-        CurrentUserApi $currentUserApi
+        CurrentUserApi $currentUserApi,
+        UserRepositoryInterface $userRepository
     ) {
-        $this->variableApi = $variableApi;
         $this->permissionApi = $permissionApi;
         $this->userVerificationRepository = $userVerificationRepository;
         $this->setTranslator($translator);
         $this->mailHelper = $mailHelper;
         $this->currentUserApi = $currentUserApi;
+        $this->userRepository = $userRepository;
     }
 
     public function setTranslator($translator)
@@ -83,24 +85,25 @@ class RegistrationVerificationHelper
     /**
      * Creates, saves and sends a registration e-mail address verification code.
      *
-     * @param UserEntity $userEntity
+     * @param AuthenticationMappingEntity $mapping
      * @return bool True on success; otherwise false.
      */
-    public function sendVerificationCode(UserEntity $userEntity)
+    public function sendVerificationCode(AuthenticationMappingEntity $mapping)
     {
         // we do not check permissions for guests here - registering users are not logged in and must complete this method.
         if ($this->currentUserApi->isLoggedIn() && !$this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
 
-        $verificationCode = $this->userVerificationRepository->setVerificationCode($userEntity->getUid(), ZAuthConstant::VERIFYCHGTYPE_REGEMAIL, $userEntity->getEmail());
-
-        $codeSent = $this->mailHelper->sendNotification($userEntity->getEmail(), 'regverifyemail', [
-            'user' => $userEntity,
+        $verificationCode = $this->userVerificationRepository->setVerificationCode($mapping->getUid(), ZAuthConstant::VERIFYCHGTYPE_REGEMAIL, $mapping->getEmail());
+        $userEntity = $this->userRepository->find($mapping->getUid());
+        $codeSent = $this->mailHelper->sendNotification($mapping->getEmail(), 'regverifyemail', [
+            'user' => $mapping,
+            'isApproved' => $userEntity->isApproved(),
             'verifycode' => $verificationCode,
         ]);
 
-        $userVerificationEntity = $this->userVerificationRepository->findOneBy(['uid' => $userEntity->getUid(), 'changetype' => ZAuthConstant::VERIFYCHGTYPE_REGEMAIL]);
+        $userVerificationEntity = $this->userVerificationRepository->findOneBy(['uid' => $mapping->getUid(), 'changetype' => ZAuthConstant::VERIFYCHGTYPE_REGEMAIL]);
         if ($codeSent) {
             return $userVerificationEntity->getCreated_Dt();
         } else {
