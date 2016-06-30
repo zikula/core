@@ -195,26 +195,26 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
-     * @Route("/user/modify/{user}", requirements={"user" = "^[1-9]\d*$"})
+     * @Route("/user/modify/{mapping}", requirements={"mapping" = "^[1-9]\d*$"})
      * @Theme("admin")
      * @Template()
      * @param Request $request
-     * @param UserEntity $user
+     * @param AuthenticationMappingEntity $mapping
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function modifyAction(Request $request, UserEntity $user)
+    public function modifyAction(Request $request, AuthenticationMappingEntity $mapping)
     {
-        if (!$this->hasPermission('ZikulaZAuthModule::', $user->getUname() . "::" . $user->getUid(), ACCESS_EDIT)) {
+        if (!$this->hasPermission('ZikulaZAuthModule::', $mapping->getUname() . "::" . $mapping->getUid(), ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
-        if (1 === $user->getUid()) {
+        if (1 === $mapping->getUid()) {
             throw new AccessDeniedException($this->__("Error! You can't edit the guest account."));
         }
 
         $form = $this->createForm('Zikula\ZAuthModule\Form\Type\AdminModifyUserType',
-            $user, ['translator' => $this->get('translator.default')]
+            $mapping, ['translator' => $this->get('translator.default')]
         );
-        $originalUser = clone $user;
+        $originalMapping = clone $mapping;
         $form->handleRequest($request);
 
         $event = new GenericEvent($form->getData(), [], new ValidationProviders());
@@ -224,37 +224,30 @@ class UserAdministrationController extends AbstractController
         $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_VALIDATE, $hook);
         $validators = $hook->getValidators();
 
-        /**
-         * @todo CAH 22 Apr 2016
-         * In previous version, user was not allowed to edit certain properties if editing himself:
-         *  - group membership in 'certain system groups'
-         *     - the 'default' group
-         *     - primary admin group
-         *  - activated state
-         * The fields were disabled in the form.
-         * User was not able to delete self. (button removed from form)
-         *
-         * It is possible users will not have a password if their account is provided externally. If they do not,
-         *  this may need to change the text displayed to users, e.g. 'change' -> 'create', etc.
-         *  Setting the password may 'disable' the external authorization and the editor should be made aware.
-         */
-
         if ($form->isValid() && !$validators->hasErrors()) {
             if ($form->get('submit')->isClicked()) {
-                $user = $form->getData();
-                // @todo hash new password if set @see UserUtil::setPassword
-                $this->get('doctrine')->getManager()->flush($user);
+                /** @var AuthenticationMappingEntity $mapping */
+                $mapping = $form->getData();
+                if ($form->get('setpass')->getData()) {
+                    $mapping->setPass(\UserUtil::getHashedPassword($mapping->getPass()));
+                } else {
+                    $mapping->setPass($originalMapping->getPass());
+                }
+                $this->get('zikula_zauth_module.authentication_mapping_repository')->persistAndFlush($mapping);
+                $userEntity = $this->get('zikula_users_module.user_repository')->find($mapping->getUid());
+                $userEntity->merge($mapping->getUserEntityData());
+                $this->get('zikula_users_module.user_repository')->persistAndFlush($userEntity);
                 $eventArgs = [
                     'action'    => 'setVar',
                     'field'     => 'uname',
                     'attribute' => null,
                 ];
-                $eventData = ['old_value' => $originalUser->getUname()];
-                $updateEvent = new GenericEvent($user, $eventArgs, $eventData);
+                $eventData = ['old_value' => $originalMapping->getUname()];
+                $updateEvent = new GenericEvent($userEntity, $eventArgs, $eventData);
                 $this->get('event_dispatcher')->dispatch(UserEvents::UPDATE_ACCOUNT, $updateEvent);
 
-                $this->get('event_dispatcher')->dispatch(UserEvents::MODIFY_PROCESS, new GenericEvent($user));
-                $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_PROCESS, new ProcessHook($user->getUid()));
+                $this->get('event_dispatcher')->dispatch(UserEvents::MODIFY_PROCESS, new GenericEvent($userEntity));
+                $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_PROCESS, new ProcessHook($mapping->getUid()));
 
                 $this->addFlash('status', $this->__("Done! Saved user's account information."));
             }

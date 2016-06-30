@@ -13,7 +13,6 @@
         </h3>
         <div class="alert alert-warning">{{ __('The items that are marked with an asterisk (\'*\') are required entries.') }}</div>
         {% if form.vars.value.uid == currentUser.uid %}
-            {# @todo see controller for notes about editing own account #}
             <div class="alert alert-danger">{{ __('WARNING: You appear to be editing your OWN account.') }}</div>
         {% endif %}
         {{ form_start(form) }}
@@ -71,6 +70,7 @@
                     passSecond.parents('.form-group').find('label').removeClass('required');
                 };
                 setPassAlert.addClass('collapse in');
+                showPasswordsOptional();
 
                 ZikulaZAuthPassMeter.init(passFirst.attr('id'), '{{ form.vars.id }}_passmeter', {
                     username: '{{ form.uname.vars.id }}',

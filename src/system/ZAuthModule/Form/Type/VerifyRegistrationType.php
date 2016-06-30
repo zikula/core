@@ -14,6 +14,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPasswordReminder;
@@ -53,6 +54,7 @@ class VerifyRegistrationType extends AbstractType
                     'second_options' => ['label' => $options['translator']->__('Repeat Password')],
                     'invalid_message' => $options['translator']->__('The passwords must match!'),
                     'constraints' => [
+                        new NotNull(),
                         new ValidPassword()
                     ]
                 ]);

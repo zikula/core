@@ -14,6 +14,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 
@@ -56,6 +57,7 @@ class LostPasswordType extends AbstractType
                     ],
                     'invalid_message' => $options['translator']->__('The passwords must match!'),
                     'constraints' => [
+                        new NotNull(),
                         new ValidPassword()
                     ]
                 ])

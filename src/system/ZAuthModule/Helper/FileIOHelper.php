@@ -13,6 +13,7 @@ namespace Zikula\ZAuthModule\Helper;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -159,7 +160,7 @@ class FileIOHelper
 
             // validate password
             $pass = (string)trim($importValues[$counter - 1]['pass']);
-            $errors = $this->validator->validate($pass, new ValidPassword());
+            $errors = $this->validator->validate($pass, [new NotNull(), new ValidPassword()]);
             if ($errors->count() > 0) {
                 return $this->locateErrors($errors, 'password', $counter);
             }

@@ -14,7 +14,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\UsersModule\Validator\Constraints\ValidEmail;
-use Zikula\UsersModule\Validator\Constraints\ValidUserFields;
+use Zikula\ZAuthModule\Validator\Constraints\ValidUserFields;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
 
@@ -32,7 +32,6 @@ class AdminModifyUserType extends AbstractType
                 'type' => 'Symfony\Component\Form\Extension\Core\Type\EmailType',
                 'first_options' => [
                     'label' => $options['translator']->__('Email'),
-                    'help' => $options['translator']->__('You will use your e-mail address to identify yourself when you log in.'),
                 ],
                 'second_options' => ['label' => $options['translator']->__('Repeat Email')],
                 'invalid_message' => $options['translator']->__('The emails  must match!'),
@@ -42,15 +41,16 @@ class AdminModifyUserType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'label' => $options['translator']->__('Set password now'),
-                'alert' => [$options['translator']->__('If unchecked, the user\'s e-mail address will be verified. The user will create a password at that time.') => 'info']
             ])
             ->add('pass', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
                 'type' => 'Symfony\Component\Form\Extension\Core\Type\PasswordType',
                 'first_options' => [
+                    'required' => false,
                     'label' => $options['translator']->__('Create new password'),
                     'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
                 ],
                 'second_options' => [
+                    'required' => false,
                     'label' => $options['translator']->__('Repeat new password'),
                     'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
                 ],

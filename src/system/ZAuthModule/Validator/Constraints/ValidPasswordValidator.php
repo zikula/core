@@ -12,7 +12,6 @@ namespace Zikula\ZAuthModule\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -54,7 +53,6 @@ class ValidPasswordValidator extends ConstraintValidator
     {
         /** @var ConstraintViolationListInterface $errors */
         $errors = $this->validator->validate($value, [
-            new NotNull(),
             new Type('string'),
             new Length([
                 'min' => $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH)

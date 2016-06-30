@@ -13,6 +13,7 @@ namespace Zikula\ZAuthModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotNull;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPasswordChange;
@@ -36,6 +37,7 @@ class ChangePasswordType extends AbstractType
                 'second_options' => ['label' => $options['translator']->__('Repeat new password')],
                 'invalid_message' => $options['translator']->__('The passwords must match!'),
                 'constraints' => [
+                    new NotNull(),
                     new ValidPassword()
                 ]
             ])

@@ -13,6 +13,7 @@ namespace Zikula\ZAuthModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotNull;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ZAuthModule\Validator\Constraints\ValidAntiSpamAnswer;
@@ -74,7 +75,10 @@ class RegistrationType extends AbstractType
                 'first_options' => ['label' => $this->translator->__('Password')],
                 'second_options' => ['label' => $this->translator->__('Repeat Password')],
                 'invalid_message' => $this->translator->__('The passwords must match!'),
-                'constraints' => [new ValidPassword()]
+                'constraints' => [
+                    new NotNull(),
+                    new ValidPassword()
+                ]
             ])
             ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'label' => $this->translator->__('Save'),
