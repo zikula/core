@@ -14,15 +14,23 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\UsersModule\Validator\Constraints\ValidEmail;
-use Zikula\UsersModule\Validator\Constraints\ValidUserFields;
-use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
+use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
+use Zikula\ZAuthModule\Validator\Constraints\ValidUserFields;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 class AdminCreatedUserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('method', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+                'label' => $options['translator']->__('Login method'),
+                'choices_as_values' => true,
+                'choices' => [
+                    $options['translator']->__('User name') => ZAuthConstant::AUTHENTICATION_METHOD_UNAME
+                ]
+            ])
             ->add('uname', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $options['translator']->__('User name'),
                 'help' => $options['translator']->__('User names can contain letters, numbers, underscores, periods, spaces and/or dashes.'),
@@ -32,7 +40,7 @@ class AdminCreatedUserType extends AbstractType
                 'type' => 'Symfony\Component\Form\Extension\Core\Type\EmailType',
                 'first_options' => [
                     'label' => $options['translator']->__('Email'),
-                    'help' => $options['translator']->__('You will use your e-mail address to identify yourself when you log in.'),
+                    'help' => $options['translator']->__('If login method is Email, then this value must be unique for the site.'),
                 ],
                 'second_options' => ['label' => $options['translator']->__('Repeat Email')],
                 'invalid_message' => $options['translator']->__('The emails  must match!'),

@@ -15,10 +15,13 @@
         {{ form_start(form) }}
         {{ form_errors(form) }}
         <fieldset>
+            <legend>{{ __('Login method') }}</legend>
+            {{ form_row(form.method) }}
+        </fieldset>
+        <fieldset>
             <legend>{{ __('Account information') }}</legend>
             {{ form_row(form.uname) }}
             {{ form_row(form.email) }}
-            <div class="alert alert-info col-sm-offset-3 col-sm-9">{{ __('Setting a user theme is no longer available here.') }}</div>
         </fieldset>
         <fieldset>
             <legend>{{ __('Log-in information') }}</legend>

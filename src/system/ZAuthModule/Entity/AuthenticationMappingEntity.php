@@ -11,6 +11,7 @@
 namespace Zikula\ZAuthModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\ZAuthModule\Validator\Constraints as ZAuthAssert;
 
 /**
@@ -18,7 +19,7 @@ use Zikula\ZAuthModule\Validator\Constraints as ZAuthAssert;
  * @ORM\Table(name="zauth_authentication_mapping")
  * @ZAuthAssert\ValidUserFields()
  */
-class AuthenticationMappingEntity
+class AuthenticationMappingEntity extends EntityAccess
 {
     /**
      * @ORM\Id
@@ -187,5 +188,14 @@ class AuthenticationMappingEntity
     public function setPassreminder($passreminder)
     {
         $this->passreminder = $passreminder;
+    }
+
+    public function getUserEntityData()
+    {
+        return [
+            'uid' => $this->getUid(),
+            'uname' => $this->getUname(),
+            'email' => $this->getEmail()
+        ];
     }
 }

@@ -26,16 +26,16 @@ trait WhereFromFilterTrait
      * @param QueryBuilder $qb
      * @param array $filter The filter, see getAll() and countAll().
      * @param string $exprType default 'and'
+     * @param string $alias table alias e.g. SELECT * from tableName u WHERE u.uname ...
      * @return Composite
      */
-    private function whereFromFilter(QueryBuilder $qb, array $filter, $exprType = 'and')
+    private function whereFromFilter(QueryBuilder $qb, array $filter, $exprType = 'and', $alias = 'u')
     {
         $exprType = in_array($exprType, ['and', 'or']) ? $exprType : 'and';
         $exprMethod = strtolower($exprType) . "X";
         /** @var \Doctrine\ORM\Query\Expr\Composite $expr */
         $expr = $qb->expr()->$exprMethod();
         $i = 1; // parameter counter
-        $alias = 'u';
         foreach ($filter as $field => $value) {
             if ($field == 'groups') {
                 $field = 'gid';

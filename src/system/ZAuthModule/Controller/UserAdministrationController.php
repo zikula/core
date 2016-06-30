@@ -10,6 +10,7 @@
 
 namespace Zikula\ZAuthModule\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -21,12 +22,15 @@ use Zikula\Bundle\HookBundle\Hook\ValidationProviders;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\Core\Response\PlainResponse;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
+use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 
 /**
  * Class UserAdministrationController
@@ -85,6 +89,32 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
+     * Called from ZAuthModule/Resources/public/js/Zikula.ZAuth.Admin.View.js
+     * to populate a username search
+     *
+     * @Route("/getusersbyfragmentastable", options={"expose"=true})
+     * @Method("POST")
+     * @param Request $request
+     * @return PlainResponse
+     */
+    public function getUsersByFragmentAsTableAction(Request $request)
+    {
+        if (!$this->hasPermission('ZikulaZAuthModule', '::', ACCESS_MODERATE)) {
+            return new PlainResponse('');
+        }
+        $fragment = $request->request->get('fragment');
+        $filter = [
+            'uname' => ['operator' => 'like', 'operand' => "$fragment%"]
+        ];
+        $mappings = $this->get('zikula_zauth_module.authentication_mapping_repository')->query($filter);
+
+        return $this->render('@ZikulaZAuthModule/UserAdministration/userlist.html.twig', [
+            'mappings' => $mappings,
+            'actionsHelper' => $this->get('zikula_zauth_module.helper.administration_actions_helper'),
+        ], new PlainResponse());
+    }
+
+    /**
      * @Route("/user/create")
      * @Theme("admin")
      * @Template()
@@ -97,9 +127,9 @@ class UserAdministrationController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $user = new UserEntity();
+        $mapping = new AuthenticationMappingEntity();
         $form = $this->createForm('Zikula\ZAuthModule\Form\Type\AdminCreatedUserType',
-            $user, ['translator' => $this->get('translator.default')]
+            $mapping, ['translator' => $this->get('translator.default')]
         );
         $form->handleRequest($request);
 
@@ -112,8 +142,11 @@ class UserAdministrationController extends AbstractController
 
         if ($form->isValid() && !$validators->hasErrors()) {
             if ($form->get('submit')->isClicked()) {
-                $user = $form->getData();
-                $passToSend = $form['sendpass']->getData() ? $user->getPass() : '';
+                $mapping = $form->getData();
+                $passToSend = $form['sendpass']->getData() ? $mapping->getPass() : '';
+                $authMethod = $this->get('zikula_users_module.internal.authentication_method_collector')->get($mapping->getMethod());
+                $user = new UserEntity();
+                $user->merge($mapping->getUserEntityData());
                 $registrationErrors = $this->get('zikula_users_module.helper.registration_helper')->registerNewUser(
                     $user,
                     $form['usernotification']->getData(),
@@ -121,6 +154,14 @@ class UserAdministrationController extends AbstractController
                     $passToSend
                 );
                 if (empty($registrationErrors)) {
+                    $mapping->setUid($user->getUid());
+                    if (!$authMethod->register($mapping->toArray())) {
+                        $this->addFlash('error', $this->__('The create process failed for an unknown reason.'));
+                        $this->get('zikula_users_module.user_repository')->removeAndFlush($user);
+                        $this->get('event_dispatcher')->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($user->getUid()));
+
+                        return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
+                    }
                     $event = new GenericEvent($form->getData(), [], new ValidationProviders());
                     $this->get('event_dispatcher')->dispatch(UserEvents::NEW_PROCESS, $event);
                     $hook = new ProcessHook($user->getUid());

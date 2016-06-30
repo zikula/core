@@ -132,6 +132,7 @@ class RegistrationController extends AbstractController
                     $externalRegistrationSuccess = $authenticationMethod->register($formData);
                     if (true !== $externalRegistrationSuccess) {
                         // revert registration
+                        $this->addFlash('error', $this->__('The registration process failed for an unknown reason.'));
                         $this->get('zikula_users_module.user_repository')->removeAndFlush($userEntity);
                         $this->get('event_dispatcher')->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($userEntity->getUid()));
 

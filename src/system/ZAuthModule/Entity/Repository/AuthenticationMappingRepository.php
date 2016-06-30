@@ -66,7 +66,7 @@ class AuthenticationMappingRepository extends EntityRepository implements Authen
         $qb = $this->createQueryBuilder('m')
             ->select('m');
         if (!empty($filter)) {
-            $where = $this->whereFromFilter($qb, $filter, $exprType);
+            $where = $this->whereFromFilter($qb, $filter, $exprType, 'm');
             $qb->andWhere($where);
         }
         if (!empty($sort)) {
