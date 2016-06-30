@@ -37,7 +37,6 @@ class ChangePasswordType extends AbstractType
                 'second_options' => ['label' => $options['translator']->__('Repeat new password')],
                 'invalid_message' => $options['translator']->__('The passwords must match!'),
                 'constraints' => [
-                    new NotNull(),
                     new ValidPassword()
                 ]
             ])
