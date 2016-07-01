@@ -83,7 +83,7 @@ class RegistrationController extends AbstractController
             if ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
                 $request->getSession()->set('authenticationMethodId', $authenticationMethod->getId());
                 $userEntity = new UserEntity();
-                $authenticationMethod->updateUserEntity($userEntity);
+                $authenticationMethod->updateUserEntity($userEntity); // @todo this is not specific enough in the contract
                 $validationErrors = $this->get('validator')->validate($userEntity); // Symfony\Component\Validator\ConstraintViolation[]
                 $hasListeners = $this->get('event_dispatcher')->hasListeners(RegistrationEvents::NEW_FORM);
                 $hookBindings = $this->get('hook_dispatcher')->getBindingsFor('subscriber.users.ui_hooks.registration');

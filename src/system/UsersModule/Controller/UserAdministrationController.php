@@ -155,16 +155,11 @@ class UserAdministrationController extends AbstractController
          *  - activated state
          * The fields were disabled in the form.
          * User was not able to delete self. (button removed from form)
-         *
-         * It is possible users will not have a password if their account is provided externally. If they do not,
-         *  this may need to change the text displayed to users, e.g. 'change' -> 'create', etc.
-         *  Setting the password may 'disable' the external authorization and the editor should be made aware.
          */
 
         if ($form->isValid() && !$validators->hasErrors()) {
             if ($form->get('submit')->isClicked()) {
                 $user = $form->getData();
-                // @todo hash new password if set @see UserUtil::setPassword
                 $this->get('doctrine')->getManager()->flush($user);
                 $eventArgs = [
                     'action'    => 'setVar',

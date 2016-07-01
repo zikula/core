@@ -174,9 +174,8 @@ class UserEntity extends EntityAccess
 
     /**
      * Additional attributes of this user
-     * @todo at Core-2.0 this property can be changed to private and the targetEntity namespace can be reduced to just `UserAttributeEntity`
      *
-     * @ORM\OneToMany(targetEntity="\Zikula\UsersModule\Entity\UserAttributeEntity",
+     * @ORM\OneToMany(targetEntity="UserAttributeEntity",
      *                mappedBy="user",
      *                cascade={"all"},
      *                orphanRemoval=true,
