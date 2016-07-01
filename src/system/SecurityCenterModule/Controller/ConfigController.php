@@ -144,7 +144,7 @@ class ConfigController extends AbstractController
                     $this->setSystemVar('sessionsavepath', $sessionSavePath);
                 }
 
-                if ((bool)$sessionStoreToFile != (bool)System::getVar('sessionstoretofile')) {
+                if ((bool)$sessionStoreToFile != (bool)\System::getVar('sessionstoretofile')) {
                     // logout if going from one storage to another one
                     $causeLogout = true;
                 }
