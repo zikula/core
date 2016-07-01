@@ -13,8 +13,6 @@ namespace Zikula\ZAuthModule\Helper;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\MailerModule\Api\MailerApi;
-use Zikula\UsersModule\Entity\UserEntity;
-use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 
 class MailHelper
 {
