@@ -289,6 +289,11 @@ class UserAdministrationController extends AbstractController
             throw new \InvalidArgumentException($this->__('No users selected.'));
         }
         if ($deleteConfirmationForm->isSubmitted()) {
+            if ($deleteConfirmationForm->get('cancel')->isClicked()) {
+                $this->addFlash('success', $this->__('Operation cancelled.'));
+
+                return $this->redirectToRoute('zikulausersmodule_useradministration_list');
+            }
             $userIdsImploded = $deleteConfirmationForm->get('users')->getData();
             $userIds = explode(',', $userIdsImploded);
             $valid = true;

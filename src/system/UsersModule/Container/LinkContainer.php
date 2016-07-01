@@ -140,7 +140,7 @@ class LinkContainer implements LinkContainerInterface
             ];
             $links[] = [
                 'url' => $this->router->generate('zikulausersmodule_useradministration_search'),
-                'text' => $this->translator->__('Find/Mail users'),
+                'text' => $this->translator->__('Find/Mail/Delete users'),
                 'icon' => 'search'
             ];
         }
