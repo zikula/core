@@ -45,6 +45,7 @@ class AjaxInstallController extends AbstractController
         'ZikulaGroupsModule',
         'ZikulaBlocksModule',
         'ZikulaUsersModule',
+        'ZikulaZAuthModule',
         'ZikulaSecurityCenterModule',
         'ZikulaCategoriesModule',
         'ZikulaMailerModule',
