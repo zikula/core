@@ -362,7 +362,7 @@ class AccountController extends AbstractController
             $this->get('zikula_users_module.user_repository')->persistAndFlush($userEntity);
             $this->addFlash('success', $this->__('Password successfully changed.'));
             if ($login) {
-                $this->get('zikula_users_module.helper.access_helper')->login($userEntity, $data['authenticationMethod']);
+                $this->get('zikula_users_module.helper.access_helper')->login($userEntity);
             }
 
             return $this->redirectToRoute('zikulausersmodule_account_menu');

@@ -153,7 +153,7 @@ class RegistrationController extends AbstractController
                     $redirectUrl = $event->hasArgument('redirectUrl') ? $event->getArgument('redirectUrl') : '';
 
                     if ($autoLogIn && $this->get('zikula_users_module.helper.access_helper')->loginAllowed($userEntity)) {
-                        $this->get('zikula_users_module.helper.access_helper')->login($userEntity, $selectedMethod);
+                        $this->get('zikula_users_module.helper.access_helper')->login($userEntity);
                     } elseif (!empty($redirectUrl)) {
                         return $this->redirect($redirectUrl);
                     } elseif (!$canLogIn) {

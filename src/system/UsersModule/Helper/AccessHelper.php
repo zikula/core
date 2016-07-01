@@ -103,10 +103,9 @@ class AccessHelper
 
     /**
      * @param UserEntity $user
-     * @param string $method authentication method alias
      * @param bool $rememberMe
      */
-    public function login(UserEntity $user, $method, $rememberMe = false)
+    public function login(UserEntity $user, $rememberMe = false)
     {
         $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
         $user->setLastlogin($nowUTC);

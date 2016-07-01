@@ -126,7 +126,7 @@ class UserAdministrationController extends AbstractController
      */
     public function modifyAction(Request $request, UserEntity $user)
     {
-        if (!$this->hasPermission('ZikulaZAuthModule::', $user->getUname() . "::" . $user->getUid(), ACCESS_EDIT)) {
+        if (!$this->hasPermission('ZikulaUsersModule::', $user->getUname() . "::" . $user->getUid(), ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
         if (1 === $user->getUid()) {

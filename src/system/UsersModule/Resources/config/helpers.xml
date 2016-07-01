@@ -34,8 +34,6 @@
             <argument type="service" id="zikula_permissions_module.api.permission" />
             <argument type="service" id="jms_i18n_routing.router" />
             <argument type="service" id="translator.default" />
-            <argument type="service" id="zikula_zauth_module.user_verification_repository" />
-            <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="zikula_users_module.current_user" />
         </service>
         <service id="zikula_users_module.helper.account_links_helper" class="%zikula_users_module.helper.account_links_helper.class%">

@@ -298,6 +298,7 @@ class RegistrationHelper
     }
 
     /**
+     * @todo move this to \Zikula\ZAuthModule\Helper\RegistrationVerificationHelper
      * Removes expired registrations from the users table.
      */
     public function purgeExpired()

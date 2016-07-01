@@ -92,7 +92,7 @@ class AccessController extends AbstractController
                     $event = new GenericEvent($user, ['authenticationMethod' => $selectedMethod]);
                     $this->get('event_dispatcher')->dispatch(AccessEvents::LOGIN_VETO, $event);
                     if (!$event->isPropagationStopped()) {
-                        $this->get('zikula_users_module.helper.access_helper')->login($user, $selectedMethod, $rememberMe);
+                        $this->get('zikula_users_module.helper.access_helper')->login($user, $rememberMe);
                         $returnUrl = $this->dispatchLoginSuccessEvent($user, $selectedMethod, $request->getSession()->get('returnUrl', null));
                     } else {
                         $returnUrl = $event->getArgument('returnUrl');

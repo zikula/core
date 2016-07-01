@@ -37,16 +37,6 @@ class AdministrationActionsHelper
     private $translator;
 
     /**
-     * @var UserVerificationRepositoryInterface
-     */
-    private $verificationRepository;
-
-    /**
-     * @var VariableApi
-     */
-    private $variableApi;
-
-    /**
      * @var CurrentUserApi
      */
     private $currentUser;
@@ -56,23 +46,17 @@ class AdministrationActionsHelper
      * @param PermissionApi $permissionsApi
      * @param RouterInterface $router
      * @param TranslatorInterface $translator
-     * @param UserVerificationRepositoryInterface $userVerificationRepository
-     * @param VariableApi $variableApi
      * @param CurrentUserApi $currentUserApi
      */
     public function __construct(
         PermissionApi $permissionsApi,
         RouterInterface $router,
         TranslatorInterface $translator,
-        UserVerificationRepositoryInterface $userVerificationRepository,
-        VariableApi $variableApi,
         CurrentUserApi $currentUserApi
     ) {
         $this->permissionsApi = $permissionsApi;
         $this->router = $router;
         $this->translator = $translator;
-        $this->verificationRepository = $userVerificationRepository;
-        $this->variableApi = $variableApi;
         $this->currentUser = $currentUserApi;
     }
 
