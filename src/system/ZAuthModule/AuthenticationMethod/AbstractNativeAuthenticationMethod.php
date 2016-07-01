@@ -134,6 +134,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
                 $mapping->setUid($userEntity->getUid());
                 $mapping->setUname($userEntity->getUname());
                 $mapping->setEmail($userEntity->getEmail());
+                $mapping->setVerifiedEmail(true);
                 $mapping->setPass($userEntity->getPass()); // previously salted and hashed
                 $mapping->setPassreminder($userEntity->getPassreminder());
                 $mapping->setMethod($this->getAlias());
