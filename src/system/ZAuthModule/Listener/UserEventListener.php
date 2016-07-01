@@ -54,7 +54,7 @@ class UserEventListener implements EventSubscriberInterface
      *
      * @param GenericEvent $event The event that triggered this handler.
      *
-     * @see \Zikula\UsersModule\Controller\AccountController::changePasswordAction
+     * @see \Zikula\ZAuthModule\Controller\AccountController::changePasswordAction
      */
     public function forcedPasswordChange(GenericEvent $event)
     {

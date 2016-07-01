@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersModule\Helper;
+namespace Zikula\ZAuthModule\Helper;
 
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
@@ -54,48 +54,6 @@ class MailHelper
     }
 
     /**
-     * Send same mail to selected user(s). If more than one user, BCC and batchsize used.
-     * @param UserEntity[] $users
-     * @param array $messageData
-     *  required keys
-     *      'replyto'
-     *      'from'
-     *      'message'
-     *      'subject'
-     *      'batchsize'
-     *      'format'
-     * @return bool
-     */
-    public function mailUsers(array $users, array $messageData)
-    {
-        $mailSent = false;
-        $message = \Swift_Message::newInstance();
-        $message->setFrom([$messageData['replyto'] => $messageData['from']]);
-        if (count($users) == 1) {
-            $message->setTo([$users[0]->getEmail() => $users[0]->getUname()]);
-        } else {
-            $message->setTo([$messageData['replyto'] => $messageData['from']]);
-        }
-        $message->setSubject($messageData['subject']);
-        $message->setBody($messageData['message']);
-        if (count($users) > 1) {
-            $bcc = [];
-            foreach ($users as $user) {
-                $bcc[] = $user->getEmail();
-                if (count($bcc) == $messageData['batchsize']) {
-                    $message->setBcc($bcc);
-                    $mailSent = $mailSent && $this->mailerApi->sendMessage($message, null, null, '', $messageData['format'] == 'html');
-                    $bcc = [];
-                }
-            }
-            $message->setBcc($bcc);
-        }
-        $mailSent = $mailSent && $this->mailerApi->sendMessage($message, null, null, '', $messageData['format'] == 'html');
-
-        return $mailSent;
-    }
-
-    /**
      * Sends a notification e-mail of a specified type to a user or registrant.
      *
      * @param string $toAddress The destination e-mail address.
@@ -109,7 +67,7 @@ class MailHelper
     {
         $html = false;
 
-        $templateName = "@ZikulaUsersModule/Email/{$notificationType}.html.twig";
+        $templateName = "@ZikulaZAuthModule/Email/{$notificationType}.html.twig";
         try {
             $html = true;
             $htmlBody = $this->twig->render($templateName, $templateArgs);
@@ -117,7 +75,7 @@ class MailHelper
             $htmlBody = '';
         }
 
-        $templateName = "@ZikulaUsersModule/Email/{$notificationType}.txt.twig";
+        $templateName = "@ZikulaZAuthModule/Email/{$notificationType}.txt.twig";
         try {
             $textBody = $this->twig->render($templateName, $templateArgs);
         } catch (\Twig_Error_Loader $e) {
@@ -141,18 +99,20 @@ class MailHelper
     {
         $siteName = $this->variableApi->get(VariableApi::CONFIG, 'sitename');
         switch ($notificationType) {
-            case 'regadminnotify':
-                if ($templateArgs['reginfo']['isapproved']) {
-                    return $this->translator->__f('New registration pending approval: %s', ['%s' => $templateArgs['reginfo']['uname']]);
-                } else {
-                    return $this->translator->__f('New user activated: %s', ['%s' => $templateArgs['reginfo']['uname']]);
-                }
+            case 'importnotify':
+                return $this->translator->__f('Welcome to %s!', ['%s' => $siteName]);
                 break;
-            case 'regdeny':
-                return $this->translator->__f('Your recent request at %s.', ['%s' => $siteName]);
+            case 'lostpassword':
+                return $this->translator->__f('Reset your password at \'%s\'', ['%s' => $siteName]);
                 break;
-            case 'welcome':
-                return $this->translator->__f('Welcome to %1$s, %2$s!', ['%1$s' => $siteName, '%2$s' => $templateArgs['reginfo']['uname']]);
+            case 'lostuname':
+                return $this->translator->__f('\'%s\' account information', ['%s' => $siteName]);
+                break;
+            case 'regverifyemail':
+                return $this->translator->__f('Verify your e-mail address for %s.', ['%s' => $siteName]);
+                break;
+            case 'userverifyemail':
+                return $this->translator->__f('Verify your request to change your e-mail address at \'%s\'', ['%s' => $siteName]);
                 break;
             default:
                 return $this->translator->__f('A message from %s.', ['%s' => $siteName]);

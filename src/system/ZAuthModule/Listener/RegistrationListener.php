@@ -95,7 +95,7 @@ class RegistrationListener implements EventSubscriberInterface
             return;
         }
         // user doesn't exist or email is not verified
-        $isAdmin = $this->currentUserApi->isLoggedIn() && $this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_EDIT);
+        $isAdmin = $this->currentUserApi->isLoggedIn() && $this->permissionApi->hasPermission('ZikulaZAuthModule::', '::', ACCESS_EDIT);
         $userMustVerify = $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED);
         if ($userMustVerify && !$isAdmin) {
             $event->stopPropagation();

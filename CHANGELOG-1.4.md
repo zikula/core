@@ -5,12 +5,14 @@ CHANGELOG - ZIKULA 1.4.x
 
  - BC Breaks:
     - User block function removed.
+    - Old Authentication_Method_Api system has been completely removed.
+    - Due to refactoring the UsersModule, some unknown BC Breaks may have occurred.
 
  - Deprecated:
     -
 
  - Fixes:
-    - Fix error on creation of new ExtendedMenublock
+    - Fix error on creation of new ExtendedMenublock.
 
  - Features:
     - Add help text, alert text and input groups to forms utilizing the provided form themes (#2846, #2847).
@@ -31,6 +33,8 @@ CHANGELOG - ZIKULA 1.4.x
     - SecurityCenterModule updated to Core-2.0 Spec (#2890).
     - SettingsModule updated to Core-2.0 Spec (#2832).
     - UserModule updated to Core-2.0 Spec (#2851)
+      - New AuthenticationMethodInterface created.
+      - Functionality split into UsersModule and new system module, ZAuthModule.
 
  - Vendor updates:
     - font awesome updated from 4.5.0 to 4.6.3

@@ -8,18 +8,6 @@
 
 <p>{{ __f('The user name for your account is: %1s', {"%sub%": uname}) }}</p>
 
-{% if authentication_methods is not empty %}
-    {% set xLink = __f('<a href=\'%s\'>log into your account</a>', {"%s": url('zikulausersmodule_access_login')}) %}
-    <p>{{ __f('You may use the following information to %s:', {"%s": xLink|raw}) }}</p>
-    {% for authentication_method in authentication_methods %}
-        <p>{{ authentication_method.short_description }}: {{ authentication_method.uname }}{% if authentication_method.link is not empty %} ({{ authentication_method.link }}){% endif %}</p>
-    {% endfor %}
-
-    <p>{{ __f('(If you cannot click on the log-in link, you can copy this URL and paste it into your browser: %sub% )', {"%sub%": url('zikulausersmodule_access_login')}) }}</p>
-{% else %}
-    <p>{{ __('You do not have any active methods available to log into our site. Please contact a site administrator.') }}</p>
-{% endif %}
-
 <p>
     {% if not requestedByAdmin %}{{ __('If the request was not made by you then you don\'t need to take any action.') }} {% endif %}
     {{ __('You are the only recipient of this message, and your user name has not been sent to any other e-mail address.') }}

@@ -50,7 +50,10 @@ class AccountController extends AbstractController
             $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->findBy(['email' => $data['email']]);
             if (count($mapping) == 1) {
                 // send email
-                $sent = $this->get('zikula_users_module.helper.mail_helper')->mailUserName($mapping[0]);
+                $sent = $this->get('zikula_zauth_module.helper.mail_helper')->sendNotification($mapping[0]->getEmail(), 'lostuname', [
+                    'uname' => $mapping[0]->getUname(),
+                    'requestedByAdmin' => false,
+                ]);
                 if ($sent) {
                     $this->addFlash('status', $this->__f('Done! The account information for %s has been sent via e-mail.', ['%s' => $data['email']]));
                 } else {
@@ -101,7 +104,11 @@ class AccountController extends AbstractController
                 switch ($user->getActivated()) {
                     case UsersConstant::ACTIVATED_ACTIVE:
                         $newConfirmationCode = $this->get('zikula_zauth_module.user_verification_repository')->setVerificationCode($mapping->getUid());
-                        $sent = $this->get('zikula_users_module.helper.mail_helper')->mailConfirmationCode($mapping, $newConfirmationCode);
+                        $sent = $this->get('zikula_zauth_module.helper.mail_helper')->sendNotification($mapping->getEmail(), 'lostpassword', [
+                            'uname' => $mapping->getUname(),
+                            'code' => $newConfirmationCode,
+                            'requestedByAdmin' => false
+                        ]);
                         if ($sent) {
                             $this->addFlash('status', $this->__f('Done! The confirmation code for %s has been sent via e-mail.', ['%s' => $data[$field]]));
                             $redirectToRoute = 'zikulazauthmodule_account_confirmationcode';
@@ -251,7 +258,7 @@ class AccountController extends AbstractController
                 'newemail'  => $data['email'],
                 'url'       => $this->get('router')->generate('zikulazauthmodule_account_confirmchangedemail', ['code' => $code], RouterInterface::ABSOLUTE_URL),
             ];
-            $sent = $this->get('zikula_users_module.helper.mail_helper')->sendNotification($data['email'], 'userverifyemail', $templateArgs);
+            $sent = $this->get('zikula_zauth_module.helper.mail_helper')->sendNotification($data['email'], 'userverifyemail', $templateArgs);
             if ($sent) {
                 $this->addFlash('success', $this->__('Done! You will receive an e-mail to your new e-mail address to confirm the change. You must follow the instructions in that message in order to verify your new address.'));
             } else {

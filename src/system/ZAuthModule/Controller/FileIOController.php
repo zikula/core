@@ -31,7 +31,7 @@ class FileIOController extends AbstractController
      */
     public function importAction(Request $request)
     {
-        if (!$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
+        if (!$this->hasPermission('ZikulaZAuthModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 

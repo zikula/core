@@ -319,7 +319,11 @@ class UserAdministrationController extends AbstractController
             throw new AccessDeniedException();
         }
         $newConfirmationCode = $this->get('zikula_zauth_module.user_verification_repository')->setVerificationCode($mapping->getUid());
-        $mailSent = $this->get('zikula_users_module.helper.mail_helper')->mailConfirmationCode($mapping, $newConfirmationCode, true);
+        $mailSent = $this->get('zikula_zauth_module.helper.mail_helper')->sendNotification($mapping->getEmail(), 'lostpassword', [
+            'uname' => $mapping->getUname(),
+            'code' => $newConfirmationCode,
+            'requestedByAdmin' => true
+        ]);
         if ($mailSent) {
             $this->addFlash('status', $this->__f('Done! The password recovery verification code for %s has been sent via e-mail.', ['%s' => $mapping->getUname()]));
         }
@@ -338,7 +342,11 @@ class UserAdministrationController extends AbstractController
         if (!$this->hasPermission('ZikulaZAuthModule', $mapping->getUname() . '::' . $mapping->getUid(), ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
-        $mailSent = $this->get('zikula_users_module.helper.mail_helper')->mailUserName($mapping, true);
+        $mailSent = $this->get('zikula_zauth_module.helper.mail_helper')->sendNotification($mapping->getEmail(), 'lostuname', [
+            'uname' => $mapping->getUname(),
+            'requestedByAdmin' => true,
+        ]);
+
         if ($mailSent) {
             $this->addFlash('status', $this->__f('Done! The user name for %s has been sent via e-mail.', ['%s' => $mapping->getUname()]));
         }

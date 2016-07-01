@@ -309,6 +309,7 @@ class UserAdministrationController extends AbstractController
             }
             if ($valid && $deleteConfirmationForm->isValid()) {
                 // @todo add possibilty to 'mark as pending deletion' UsersConstant::ACTIVATED_PENDING_DELETE ???
+                // @todo send email to 'denied' registrations. see MailHelper::sendNotification (regdeny)
                 $this->get('zikula_users_module.user_repository')->removeArray($userIds);
                 $this->addFlash('success', $this->_fn('User deleted!', '%n users deleted!', count($userIds), ['%n' => count($userIds)]));
                 foreach ($userIds as $uid) {
@@ -322,7 +323,7 @@ class UserAdministrationController extends AbstractController
         }
 
         return [
-            'user' => $user,
+            'users' => $users,
             'form' => $deleteConfirmationForm->createView()
         ];
     }

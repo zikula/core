@@ -106,7 +106,7 @@ class LinkContainer implements LinkContainerInterface
             } else {
                 $createUserAccessLevel = ACCESS_ADMIN;
             }
-            if ($this->permissionApi->hasPermission("ZikulaUsersModule::", '::', $createUserAccessLevel)) {
+            if ($this->permissionApi->hasPermission("ZikulaZAuthModule::", '::', $createUserAccessLevel)) {
                 $submenulinks[] = [
                     'url' => $this->router->generate('zikulazauthmodule_useradministration_create'),
                     'text' => $this->translator->__('Create new user'),

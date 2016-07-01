@@ -74,7 +74,7 @@
 
                 ZikulaZAuthPassMeter.init(passFirst.attr('id'), '{{ form.vars.id }}_passmeter', {
                     username: '{{ form.uname.vars.id }}',
-                    minLength: '{{ getModVar('ZikulaUsersModule', 'minpass') }}'
+                    minLength: '{{ getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH') }}'
                 });
                 // ensure wrap is shown on form re-draw
                 if (setPassEle.is(':checked')) {

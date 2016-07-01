@@ -16,7 +16,6 @@ use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Api\CurrentUserApi;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
-use Zikula\UsersModule\Helper\MailHelper;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\ZAuthConstant;
@@ -89,7 +88,7 @@ class RegistrationVerificationHelper
     public function sendVerificationCode(AuthenticationMappingEntity $mapping)
     {
         // we do not check permissions for guests here - registering users are not logged in and must complete this method.
-        if ($this->currentUserApi->isLoggedIn() && !$this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
+        if ($this->currentUserApi->isLoggedIn() && !$this->permissionApi->hasPermission('ZikulaZAuthModule::', '::', ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
 
