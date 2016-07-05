@@ -23,6 +23,7 @@ use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationM
 use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Exception\InvalidAuthenticationMethodLoginFormException;
 
 class AccessController extends AbstractController
 {
@@ -31,6 +32,7 @@ class AccessController extends AbstractController
      * @param Request $request
      * @param null $returnUrl
      * @return string
+     * @throws InvalidAuthenticationMethodLoginFormException
      */
     public function loginAction(Request $request, $returnUrl = null)
     {
@@ -62,10 +64,13 @@ class AccessController extends AbstractController
 
         if ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface) {
             $form = $this->createForm($authenticationMethod->getLoginFormClassName());
+            if (!$form->has('rememberme')) {
+                throw new InvalidAuthenticationMethodLoginFormException();
+            }
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
-                $rememberMe = $data['rememberme']; // @todo cannot enforce contract w/ third party module to contain this field
+                $rememberMe = $data['rememberme'];
                 $uid = $authenticationMethod->authenticate($data);
             } else {
                 return $this->render($authenticationMethod->getLoginTemplateName(), [
@@ -73,7 +78,7 @@ class AccessController extends AbstractController
                 ]);
             }
         } elseif ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
-            $uid = $authenticationMethod->authenticate([]);
+            $uid = $authenticationMethod->authenticate();
             // @todo - like registration - must we check events and hooks and show a form if required?
         } else {
             throw new \LogicException($this->__('Invalid authentication method.'));

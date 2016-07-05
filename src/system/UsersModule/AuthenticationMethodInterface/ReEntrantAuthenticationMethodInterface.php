@@ -10,8 +10,6 @@
 
 namespace Zikula\UsersModule\AuthenticationMethodInterface;
 
-use Zikula\UsersModule\Entity\UserEntity;
-
 interface ReEntrantAuthenticationMethodInterface extends AuthenticationMethodInterface
 {
     /**
@@ -22,8 +20,11 @@ interface ReEntrantAuthenticationMethodInterface extends AuthenticationMethodInt
 
     /**
      * After authentication, this method is used to update the Entity.
-     * properties `email` and `uname` must be updated.
-     * @todo this is not specific enough in the contract change to setEmail and setUname or similar.
      */
-    public function updateUserEntity(UserEntity $userEntity);
+    public function getEmail();
+
+    /**
+     * After authentication, this method is used to update the Entity.
+     */
+    public function getUname();
 }

@@ -35,7 +35,7 @@ interface AuthenticationMethodInterface
      * @param array $data
      * @return integer|null
      */
-    public function authenticate(array $data);
+    public function authenticate(array $data = []);
 
     /**
      * Register a new user from the provided data and map authorization to a Zikula UID.

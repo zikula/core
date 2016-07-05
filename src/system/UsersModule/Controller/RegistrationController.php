@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2016 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\UsersModule\Controller;
@@ -28,6 +25,7 @@ use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Exception\InvalidAuthenticationMethodRegistrationFormException;
 use Zikula\UsersModule\RegistrationEvents;
 
 /**
@@ -43,6 +41,8 @@ class RegistrationController extends AbstractController
      * @Method({"GET", "POST"})
      * @param Request $request
      * @return array
+     * @throws InvalidAuthenticationMethodRegistrationFormException
+     * @throws \Exception
      */
     public function registerAction(Request $request)
     {
@@ -83,7 +83,8 @@ class RegistrationController extends AbstractController
             if ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
                 $request->getSession()->set('authenticationMethodId', $authenticationMethod->getId());
                 $userEntity = new UserEntity();
-                $authenticationMethod->updateUserEntity($userEntity); // @todo this is not specific enough in the contract
+                $userEntity->setEmail($authenticationMethod->getEmail());
+                $userEntity->setUname($authenticationMethod->getUname());
                 $validationErrors = $this->get('validator')->validate($userEntity); // Symfony\Component\Validator\ConstraintViolation[]
                 $hasListeners = $this->get('event_dispatcher')->hasListeners(RegistrationEvents::NEW_FORM);
                 $hookBindings = $this->get('hook_dispatcher')->getBindingsFor('subscriber.users.ui_hooks.registration');
@@ -97,6 +98,9 @@ class RegistrationController extends AbstractController
             ? $authenticationMethod->getRegistrationFormClassName()
             : 'Zikula\UsersModule\Form\RegistrationType\DefaultRegistrationType';
         $form = $this->createForm($formClassName);
+        if (!$form->has('uname') || !$form->has('email')) {
+            throw new InvalidAuthenticationMethodRegistrationFormException();
+        }
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -132,7 +136,7 @@ class RegistrationController extends AbstractController
                     $externalRegistrationSuccess = $authenticationMethod->register($formData);
                     if (true !== $externalRegistrationSuccess) {
                         // revert registration
-                        $this->addFlash('error', $this->__('The registration process failed for an unknown reason.'));
+                        $this->addFlash('error', $this->__('The registration process failed.'));
                         $this->get('zikula_users_module.user_repository')->removeAndFlush($userEntity);
                         $this->get('event_dispatcher')->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($userEntity->getUid()));
 

@@ -25,7 +25,8 @@ NonReEntrantAuthenticationMethodInterface
 
 A NonReEntrant method never leaves the local site to determine authentication and therefore typically requires a form
 and the processing of that form. The method can maintain it's own table(s) and use this information to indicate a user's
-status to the zikula website. The **ZAuthModule** is an example of this type of method.
+status to the zikula website. The **ZAuthModule** is an example of this type of method. Registration forms MUST contain
+an `email`, `uname` and `submit` field (may be hidden) and login forms must contain a `rememberme` field (boolean). 
 
 
 Authentication, Login and Registration
