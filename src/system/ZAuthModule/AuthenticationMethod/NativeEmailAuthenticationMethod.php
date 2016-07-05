@@ -65,7 +65,7 @@ class NativeEmailAuthenticationMethod extends AbstractNativeAuthenticationMethod
     /**
      * {@inheritdoc}
      */
-    public function authenticate(array $data)
+    public function authenticate(array $data = [])
     {
         return $this->authenticateByField($data, 'email');
     }
