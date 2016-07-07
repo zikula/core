@@ -45,8 +45,10 @@ class AuthenticationMappingRepository extends EntityRepository implements Authen
     public function setEmailVerification($uid, $value = true)
     {
         $mapping = parent::findOneBy(['uid' => $uid]);
-        $mapping->setVerifiedEmail($value);
-        $this->_em->flush($mapping);
+        if (isset($mapping)) {
+            $mapping->setVerifiedEmail($value);
+            $this->_em->flush($mapping);
+        }
     }
 
     /**
