@@ -124,6 +124,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
                 // @todo migrate modvar values to ZAuth (see $this->getMigratedModVarNames())
                 // @todo remove modvars no longer used
                 // @todo update users table and set pass = '' where pass = 'NO_USERS_AUTHENTICATION'
+            case '3.0.0':
                 // current version
         }
 
@@ -163,7 +164,6 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             UsersConstant::MODVAR_ACCOUNT_PAGE_IMAGE_PATH               => UsersConstant::DEFAULT_ACCOUNT_PAGE_IMAGE_PATH,
             UsersConstant::MODVAR_ANONYMOUS_DISPLAY_NAME                => $this->__(/* Anonymous (guest) account display name */'Guest'),
             UsersConstant::MODVAR_AVATAR_IMAGE_PATH                     => UsersConstant::DEFAULT_AVATAR_IMAGE_PATH,
-            UsersConstant::MODVAR_EXPIRE_DAYS_REGISTRATION              => UsersConstant::DEFAULT_EXPIRE_DAYS_REGISTRATION,
             UsersConstant::MODVAR_GRAVATARS_ENABLED                     => UsersConstant::DEFAULT_GRAVATARS_ENABLED,
             UsersConstant::MODVAR_GRAVATAR_IMAGE                        => UsersConstant::DEFAULT_GRAVATAR_IMAGE,
             UsersConstant::MODVAR_ITEMS_PER_PAGE                        => UsersConstant::DEFAULT_ITEMS_PER_PAGE,
@@ -272,6 +272,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             ZAuthConstant::MODVAR_PASSWORD_REMINDER_MANDATORY, // convert to bool
             ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION,
             ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER,
+            ZAuthConstant::MODVAR_EXPIRE_DAYS_REGISTRATION,
         ];
     }
 }

@@ -88,7 +88,7 @@ class AdministrationActionsHelper
         if ($user->getUid() > 2 && !$isCurrentUser && $hasDeletePermissionToUser) {
             $actions['delete'] = [
                 'url' => $this->router->generate('zikulausersmodule_useradministration_delete', ['user' => $user->getUid()]),
-                // @todo or deny and delete if pending :: zikulausersmodule_registrationadministration_deny
+                // @todo or deny and delete if pending :: zikulausersmodule_useradministration_delete
                 'text' => $this->translator->__f('Delete %sub%', ["%sub%" => $user->getUname()]),
                 'icon' => 'trash-o',
             ];

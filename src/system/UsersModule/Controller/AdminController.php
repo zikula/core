@@ -127,9 +127,9 @@ class AdminController extends \Zikula_AbstractController
      */
     public function viewRegistrationsAction(Request $request)
     {
-        @trigger_error('This method is deprecated. Please use RegistrationAdministrationController::listAction', E_USER_DEPRECATED);
+        @trigger_error('This method is deprecated. Please use UserAdministrationController::listAction', E_USER_DEPRECATED);
 
-        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_registrationadministration_list'));
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_useradministration_list'));
     }
 
     /**
@@ -138,9 +138,9 @@ class AdminController extends \Zikula_AbstractController
      */
     public function displayRegistrationAction(Request $request, $uid)
     {
-        @trigger_error('This method is deprecated. Please use RegistrationAdministrationController::displayAction', E_USER_DEPRECATED);
+        @trigger_error('This method is deprecated. Please use UserAdministrationController::listAction', E_USER_DEPRECATED);
 
-        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_registrationadministration_display', ['user' => $uid]));
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_useradministration_display', ['user' => $uid]));
     }
 
     /**
@@ -149,9 +149,9 @@ class AdminController extends \Zikula_AbstractController
      */
     public function modifyRegistrationAction(Request $request)
     {
-        @trigger_error('This method is deprecated. Please use RegistrationAdministrationController::modifyAction', E_USER_DEPRECATED);
+        @trigger_error('This method is deprecated. Please use UserAdministrationController::modifyAction', E_USER_DEPRECATED);
 
-        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_registrationadministration_modify', ['user' => $request->get('uid', null)]));
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_useradministration_modify', ['user' => $request->get('uid', null)]));
     }
 
     /**
@@ -160,9 +160,9 @@ class AdminController extends \Zikula_AbstractController
      */
     public function verifyRegistrationAction(Request $request)
     {
-        @trigger_error('This method is deprecated. Please use RegistrationAdministrationController::verifyAction', E_USER_DEPRECATED);
+        @trigger_error('This method is deprecated. Please use ZAuthModule::UserAdministrationController::verifyAction', E_USER_DEPRECATED);
 
-        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_registrationadministration_verify', ['user' => $request->get('uid', null)]));
+        return new RedirectResponse($this->get('router')->generate('zikulazauthmodule_useradministration_list'));
     }
 
     /**
@@ -171,9 +171,9 @@ class AdminController extends \Zikula_AbstractController
      */
     public function approveRegistrationAction(Request $request)
     {
-        @trigger_error('This method is deprecated. Please use RegistrationAdministrationController::approveAction', E_USER_DEPRECATED);
+        @trigger_error('This method is deprecated. Please use UserAdministrationController::approveAction', E_USER_DEPRECATED);
 
-        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_registrationadministration_approve', [
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_useradministration_approve', [
             'user' => $request->get('uid', null),
             'force' => $request->get('force', false)
         ]));
@@ -185,9 +185,9 @@ class AdminController extends \Zikula_AbstractController
      */
     public function denyRegistrationAction(Request $request)
     {
-        @trigger_error('This method is deprecated. Please use RegistrationAdministrationController::denyAction', E_USER_DEPRECATED);
+        @trigger_error('This method is deprecated. Please use UserAdministrationController::deleteAction', E_USER_DEPRECATED);
 
-        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_registrationadministration_deny', ['user' => $request->get('uid', null)]));
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_useradministration_delete', ['user' => $request->get('uid', null)]));
     }
 
     /**

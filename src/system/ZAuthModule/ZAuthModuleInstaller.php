@@ -25,9 +25,7 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
     public function upgrade($oldversion)
     {
         switch ($oldversion) {
-            case "1.0.0-beta":
-                // nothing
-            case "1.0.0-beta2":
+            case "1.0.0":
                 // current version
         }
 
@@ -54,6 +52,7 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
             ZAuthConstant::MODVAR_PASSWORD_REMINDER_MANDATORY => ZAuthConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY,
             ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL => ZAuthConstant::DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL,
             ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD => ZAuthConstant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD,
+            ZAuthConstant::MODVAR_EXPIRE_DAYS_REGISTRATION => ZAuthConstant::DEFAULT_EXPIRE_DAYS_REGISTRATION,
 
             ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED => ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED,
             ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER => '',

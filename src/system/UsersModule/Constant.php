@@ -207,14 +207,6 @@ namespace Zikula\UsersModule
          */
         const DEFAULT_REGISTRATION_ENABLED = true;
         /**
-         * Module variable key for the number of days until a new registration expires if the e-mail address is not verified.
-         */
-        const MODVAR_EXPIRE_DAYS_REGISTRATION = 'reg_expiredays';
-        /**
-         * Default value for the number of days until a new registration expires if the e-mail address is not verified.
-         */
-        const DEFAULT_EXPIRE_DAYS_REGISTRATION = 0;
-        /**
          * Module variable key for the comma-separated list of illegal user agent string fragments.
          */
         const MODVAR_REGISTRATION_ILLEGAL_AGENTS = 'reg_Illegaluseragents';

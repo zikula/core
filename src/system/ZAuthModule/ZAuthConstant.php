@@ -108,6 +108,16 @@ class ZAuthConstant
     const DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD = 0;
 
     /**
+     * Module variable key for the number of days until a new registration expires if the e-mail address is not verified.
+     */
+    const MODVAR_EXPIRE_DAYS_REGISTRATION = 'reg_expiredays';
+
+    /**
+     * Default value for the number of days until a new registration expires if the e-mail address is not verified.
+     */
+    const DEFAULT_EXPIRE_DAYS_REGISTRATION = 0;
+
+    /**
      * Module variable key for the anti-spam registration question answer text.
      */
     const MODVAR_REGISTRATION_ANTISPAM_ANSWER = 'reg_answer';

@@ -17,7 +17,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\RegistrationEvents;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
@@ -52,7 +54,15 @@ class RegistrationController extends AbstractController
         }
 
         $setPass = false;
-        $this->get('zikula_users_module.helper.registration_helper')->purgeExpired(); // remove expired registrations
+        // remove expired registrations
+        $regExpireDays = $this->getVar(ZAuthConstant::MODVAR_EXPIRE_DAYS_REGISTRATION, ZAuthConstant::DEFAULT_EXPIRE_DAYS_REGISTRATION);
+        if ($regExpireDays > 0) {
+            $deletedUsers = $this->get('zikula_zauth_module.user_verification_repository')->purgeExpiredRecords($regExpireDays);
+            foreach ($deletedUsers as $deletedUser) {
+                $this->get('event_dispatcher')->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($deletedUser->getUid()));
+            }
+        }
+
         $userEntity = $this->get('zikula_users_module.user_repository')->findOneBy(['uname' => $uname]);
         if ($userEntity) {
             $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->getByZikulaId($userEntity->getUid());

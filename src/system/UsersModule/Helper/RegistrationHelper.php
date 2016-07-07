@@ -20,7 +20,6 @@ use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Api\CurrentUserApi;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
-use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
@@ -50,11 +49,6 @@ class RegistrationHelper
     private $userRepository;
 
     /**
-     * @var UserVerificationRepositoryInterface
-     */
-    private $userVerificationRepository;
-
-    /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
@@ -70,7 +64,6 @@ class RegistrationHelper
      * @param CurrentUserApi $currentUserApi
      * @param PermissionApi $permissionApi
      * @param UserRepositoryInterface $userRepository
-     * @param UserVerificationRepositoryInterface $userVerificationRepository
      * @param EventDispatcherInterface $eventDispatcher
      * @param TranslatorInterface $translator
      * @param MailHelper $mailHelper
@@ -80,7 +73,6 @@ class RegistrationHelper
         CurrentUserApi $currentUserApi,
         PermissionApi $permissionApi,
         UserRepositoryInterface $userRepository,
-        UserVerificationRepositoryInterface $userVerificationRepository,
         EventDispatcherInterface $eventDispatcher,
         TranslatorInterface $translator,
         MailHelper $mailHelper
@@ -89,7 +81,6 @@ class RegistrationHelper
         $this->currentUserApi = $currentUserApi;
         $this->permissionApi = $permissionApi;
         $this->userRepository = $userRepository;
-        $this->userVerificationRepository = $userVerificationRepository;
         $this->eventDispatcher = $eventDispatcher;
         $this->setTranslator($translator);
         $this->mailHelper = $mailHelper;
@@ -260,25 +251,6 @@ class RegistrationHelper
     }
 
     /**
-     * Returns the number of pending applications for new user accounts (registration requests).
-     *
-     * NOTE: Expired registrations are purged before the count is performed.
-     *
-     * @param array $filter An array of field/value combinations used to filter the results. Optional, default is to count all records.
-     * @return integer|boolean Numer of pending applications, false on error.
-     * @throws \InvalidArgumentException Thrown if invalid parameters are received.
-     */
-    public function countAll(array $filter = [])
-    {
-        // activated must always be set to UsersConstant::ACTIVATED_PENDING_REG
-        $filter['activated'] = UsersConstant::ACTIVATED_PENDING_REG;
-
-        $this->purgeExpired();
-
-        return $this->userRepository->count($filter);
-    }
-
-    /**
      * Delete a registration record.
      *
      * @param int $uid The uid of the registration record to remove
@@ -295,22 +267,6 @@ class RegistrationHelper
         }
 
         return false;
-    }
-
-    /**
-     * @todo move this to \Zikula\ZAuthModule\Helper\RegistrationVerificationHelper
-     * Removes expired registrations from the users table.
-     */
-    public function purgeExpired()
-    {
-        $regExpireDays = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_EXPIRE_DAYS_REGISTRATION, UsersConstant::DEFAULT_EXPIRE_DAYS_REGISTRATION);
-
-        if ($regExpireDays > 0) {
-            $deletedUsers = $this->userVerificationRepository->purgeExpiredRecords($regExpireDays);
-            foreach ($deletedUsers as $deletedUser) {
-                $this->eventDispatcher->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($deletedUser->getUid()));
-            }
-        }
     }
 
     /**

@@ -48,7 +48,6 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
         // Expiration date/times, as with all date/times in the Users module, are stored as UTC.
         $staleRecordUTC = new \DateTime(null, new \DateTimeZone('UTC'));
         $staleRecordUTC->modify("-{$daysOld} days");
-//        $staleRecordUTCStr = $staleRecordUTC->format(UsersConstant::DATETIME_FORMAT);
 
         $qb = $this->createQueryBuilder('v');
         $and = $qb->expr()->andX()

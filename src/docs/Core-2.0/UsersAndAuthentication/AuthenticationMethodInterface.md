@@ -43,6 +43,19 @@ process differs for all systems, but in each some relationship must be establish
 module is required to manage this data and provide appropriate user/admin interfaces as needed for such management.
 
 
+User Creation, modification and deletion
+----------------------------------------
+
+Because an AuthenticationMethod providing module is responsible for the initial authentication of a user, it is therefore
+considered the user *creator*. The module therefore assumes responsibility for the modification of said user (for the
+properties it manages, e.g. uname, email, password, etc).
+
+However - it is *very important* to note that the providing module must rely on the UsersModule for deletion (via admin
+interface) of said user. This is because UserModule will take appropriate steps to not orphan data and will fire the
+required events, et al on user deletion. The providing authenticationMethod should react to said events in managing
+their own data.
+
+
 Installation and discoverability
 --------------------------------
 

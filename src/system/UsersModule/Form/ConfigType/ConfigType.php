@@ -122,19 +122,6 @@ class ConfigType extends AbstractType
                 'label' => $options['translator']->__('Newly registered users are logged in automatically'),
                 'required' => false,
             ])
-            ->add(UsersConstant::MODVAR_EXPIRE_DAYS_REGISTRATION, 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
-                'label' => $options['translator']->__('Registrations pending verification expire in'),
-                'help' => $options['translator']->__('Enter the number of days a registration record should be kept while waiting for e-mail address verification. (Unverified registrations will be deleted the specified number of days after sending an e-mail verification message.) Enter zero (0) for no expiration (no automatic deletion).'),
-                'input_group' => ['right' => $options['translator']->__('days')],
-                'alert' => [
-                    $options['translator']->__('If registration is moderated and applications must be approved before verification, then registrations will not expire until the specified number of days after approval.') => 'info',
-                    $options['translator']->__('Changing this setting will affect all password change requests currently pending verification.') => 'warning'
-                ],
-                'constraints' => [
-                    new NotBlank(),
-                    new GreaterThanOrEqual(['value' => 0])
-                ]
-            ])
             ->add(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_UNAMES, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $options['translator']->__('Reserved user names'),
                 'required' => false,
