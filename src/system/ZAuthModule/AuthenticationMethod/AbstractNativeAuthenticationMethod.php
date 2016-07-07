@@ -15,9 +15,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
+use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthenticationMethodInterface
@@ -147,6 +148,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
                 // remove data from UserEntity
                 $userEntity->setPass('');
                 $userEntity->setPassreminder('');
+                $userEntity->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $mapping->getMethod());
                 $this->userRepository->persistAndFlush($userEntity);
 
                 return $mapping;

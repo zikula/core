@@ -28,7 +28,9 @@ class AdminCreatedUserType extends AbstractType
                 'label' => $options['translator']->__('Login method'),
                 'choices_as_values' => true,
                 'choices' => [
-                    $options['translator']->__('User name') => ZAuthConstant::AUTHENTICATION_METHOD_UNAME
+                    $options['translator']->__('User name or email') => ZAuthConstant::AUTHENTICATION_METHOD_EITHER,
+                    $options['translator']->__('User name') => ZAuthConstant::AUTHENTICATION_METHOD_UNAME,
+                    $options['translator']->__('Email') => ZAuthConstant::AUTHENTICATION_METHOD_EMAIL
                 ]
             ])
             ->add('uname', 'Symfony\Component\Form\Extension\Core\Type\TextType', [

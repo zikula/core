@@ -31,6 +31,10 @@ namespace Zikula\UsersModule
          */
         const FORCE_PASSWORD_SESSION_UID_KEY = 'l56F2fe7ZBbLm6ruQhgU';
         /**
+         * This key is used to define an attribute.
+         */
+        const AUTHENTICATION_METHOD_ATTRIBUTE_KEY = 'authenticationMethod';
+        /**
          * The identifier for the 'authentication' capability.
          */
         const CAPABILITY_AUTHENTICATION = 'authentication';

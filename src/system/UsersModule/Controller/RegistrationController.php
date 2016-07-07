@@ -89,6 +89,7 @@ class RegistrationController extends AbstractController
                 ];
                 $userEntity = new UserEntity();
                 $userEntity->merge($userData);
+                $userEntity->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $authenticationMethod->getAlias());
                 $validationErrors = $this->get('validator')->validate($userEntity); // Symfony\Component\Validator\ConstraintViolation[]
                 $hasListeners = $this->get('event_dispatcher')->hasListeners(RegistrationEvents::NEW_FORM);
                 $hookBindings = $this->get('hook_dispatcher')->getBindingsFor('subscriber.users.ui_hooks.registration');
@@ -121,6 +122,7 @@ class RegistrationController extends AbstractController
                 $userEntity = new UserEntity();
                 $userEntity->setUname($formData['uname']);
                 $userEntity->setEmail($formData['email']);
+                $userEntity->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $authenticationMethod->getAlias());
                 $notificationErrors = $this->get('zikula_users_module.helper.registration_helper')->registerNewUser($userEntity);
 
                 if (!empty($notificationErrors)) {

@@ -15,6 +15,7 @@ use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\RegistrationEvents;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthModule\Helper\RegistrationVerificationHelper;
@@ -88,6 +89,12 @@ class RegistrationListener implements EventSubscriberInterface
     {
         // user exists
         $userEntity = $event->getSubject();
+        if ($userEntity->getAttributes()->containsKey(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY)) {
+            $method = $userEntity->getAttributeValue(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY);
+            if (!in_array($method, [ZAuthConstant::AUTHENTICATION_METHOD_EMAIL, ZAuthConstant::AUTHENTICATION_METHOD_UNAME, ZAuthConstant::AUTHENTICATION_METHOD_EITHER])) {
+                return;
+            }
+        }
         if (null !== $userEntity->getUid()) {
             $mapping = $this->mappingRepository->getByZikulaId($userEntity->getUid());
         }

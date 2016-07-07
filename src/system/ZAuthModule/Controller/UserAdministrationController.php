@@ -148,6 +148,7 @@ class UserAdministrationController extends AbstractController
                 $authMethod = $this->get('zikula_users_module.internal.authentication_method_collector')->get($mapping->getMethod());
                 $user = new UserEntity();
                 $user->merge($mapping->getUserEntityData());
+                $user->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $mapping->getMethod());
                 $registrationErrors = $this->get('zikula_users_module.helper.registration_helper')->registerNewUser(
                     $user,
                     $form['usernotification']->getData(),
