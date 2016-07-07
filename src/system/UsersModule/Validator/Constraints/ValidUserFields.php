@@ -21,7 +21,7 @@ class ValidUserFields extends Constraint
 
     public function validatedBy()
     {
-        return 'zikula.user_fields.validator';
+        return 'zikula.users.user_fields.validator';
     }
 
     public function getTargets()

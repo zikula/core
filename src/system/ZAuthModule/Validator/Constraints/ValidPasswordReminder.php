@@ -21,6 +21,6 @@ class ValidPasswordReminder extends Constraint
 
     public function validatedBy()
     {
-        return 'zikula.password_reminder.validator';
+        return 'zikula.zauth.password_reminder.validator';
     }
 }

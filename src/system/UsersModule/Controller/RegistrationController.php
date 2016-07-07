@@ -74,6 +74,7 @@ class RegistrationController extends AbstractController
         $authenticationMethodId = $request->getSession()->get('authenticationMethodId');
 
         // authenticate user if required && check to make sure user doesn't already exist.
+        $userData = [];
         if (!isset($authenticationMethodId)) {
             $redirectUri = $this->generateUrl('zikulausersmodule_registration_register', [], UrlGeneratorInterface::ABSOLUTE_URL);
             $uid = $authenticationMethod->authenticate(['redirectUri' => $redirectUri]);
@@ -82,9 +83,12 @@ class RegistrationController extends AbstractController
             }
             if ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
                 $request->getSession()->set('authenticationMethodId', $authenticationMethod->getId());
+                $userData = [
+                    'uname' => $authenticationMethod->getUname(),
+                    'email' => $authenticationMethod->getEmail()
+                ];
                 $userEntity = new UserEntity();
-                $userEntity->setEmail($authenticationMethod->getEmail());
-                $userEntity->setUname($authenticationMethod->getUname());
+                $userEntity->merge($userData);
                 $validationErrors = $this->get('validator')->validate($userEntity); // Symfony\Component\Validator\ConstraintViolation[]
                 $hasListeners = $this->get('event_dispatcher')->hasListeners(RegistrationEvents::NEW_FORM);
                 $hookBindings = $this->get('hook_dispatcher')->getBindingsFor('subscriber.users.ui_hooks.registration');
@@ -97,7 +101,7 @@ class RegistrationController extends AbstractController
         $formClassName = ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface)
             ? $authenticationMethod->getRegistrationFormClassName()
             : 'Zikula\UsersModule\Form\RegistrationType\DefaultRegistrationType';
-        $form = $this->createForm($formClassName);
+        $form = $this->createForm($formClassName, $userData);
         if (!$form->has('uname') || !$form->has('email')) {
             throw new InvalidAuthenticationMethodRegistrationFormException();
         }

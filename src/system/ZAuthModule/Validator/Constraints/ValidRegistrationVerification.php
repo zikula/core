@@ -21,7 +21,7 @@ class ValidRegistrationVerification extends Constraint
 
     public function validatedBy()
     {
-        return 'zikula.registration_verification.validator';
+        return 'zikula.zauth.registration_verification.validator';
     }
 
     public function getTargets()

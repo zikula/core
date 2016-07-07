@@ -22,7 +22,7 @@ class ValidUname extends Constraint
 
     public function validatedBy()
     {
-        return 'zikula.uname.validator';
+        return 'zikula.zauth.uname.validator';
     }
 
     /**

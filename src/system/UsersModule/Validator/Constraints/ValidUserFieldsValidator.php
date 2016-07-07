@@ -39,21 +39,21 @@ class ValidUserFieldsValidator extends ConstraintValidator
         $this->userRepository = $userRepository;
     }
 
-    public function validate($userEntity, Constraint $constraint)
+    public function validate($data, Constraint $constraint)
     {
         // ensure unique uname
         $qb = $this->userRepository->createQueryBuilder('u');
         $qb->select('count(u.uid)')
             ->where($qb->expr()->eq('LOWER(u.uname)', ':uname'))
-            ->setParameter('uname', $userEntity->getUname());
+            ->setParameter('uname', $data['uname']);
         // when updating an existing User, the existing Uid must be excluded.
-        if (null !== $userEntity->getUid()) {
+        if (isset($data['uid'])) {
             $qb->andWhere('u.uid <> :excludedUid')
-                ->setParameter('excludedUid', $userEntity->getUid());
+                ->setParameter('excludedUid', $data['uid']);
         }
 
         if ((int)$qb->getQuery()->getSingleScalarResult() > 0) {
-            $this->context->buildViolation($this->translator->__f('The user name you entered (%u) has already been registered.', ['%u' => $userEntity->getUname()]))
+            $this->context->buildViolation($this->translator->__f('The user name you entered (%u) has already been registered.', ['%u' => $data['uname']]))
                 ->atPath('uname')
                 ->addViolation();
         }

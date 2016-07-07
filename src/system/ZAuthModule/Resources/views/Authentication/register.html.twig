@@ -2,7 +2,6 @@
 'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
 'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
-{% set templatetitle = __('New account registration') %}
 {{ polyfill() }}
 
 {{ moduleHeader('user', __('New account registration'), '', true) }}
@@ -78,7 +77,7 @@
         $(document).ready(function() {
             ZikulaZAuthPassMeter.init('{{ form.pass.vars.id }}_first', '{{ form.vars.id }}_passmeter', {
                 username: '{{ form.uname.vars.id }}',
-                minLength: '{{ getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH') }}'
+                minLength: '{{ getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH')) }}'
             });
         });
     })(jQuery);

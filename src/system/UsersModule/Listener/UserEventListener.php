@@ -75,7 +75,7 @@ class UserEventListener implements EventSubscriberInterface
             $doClear = true;
         }
 
-        if ($this->session->get('uid') !== 2 && $doClear) { // @todo the main site admin will NOT be logged out.
+        if ($doClear) {
             $this->session->clear();
         }
     }

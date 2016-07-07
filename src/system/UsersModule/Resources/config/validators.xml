@@ -15,18 +15,18 @@
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="translator.default" />
             <argument type="service" id="validator" />
-            <tag name="validator.constraint_validator" alias="zikula.uname.validator" />
+            <tag name="validator.constraint_validator" alias="zikula.users.uname.validator" />
         </service>
         <service id="zikula_users_module.validator.constraints.valid_email_validator" class="%zikula_users_module.validator.constraints.valid_email_validator.class%">
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="translator.default" />
             <argument type="service" id="validator" />
-            <tag name="validator.constraint_validator" alias="zikula.email.validator" />
+            <tag name="validator.constraint_validator" alias="zikula.users.email.validator" />
         </service>
         <service id="zikula_users_module.validator.constraints.valid_user_fields_validator" class="%zikula_users_module.validator.constraints.valid_user_fields_validator.class%">
             <argument type="service" id="translator.default" />
             <argument type="service" id="zikula_users_module.user_repository" />
-            <tag name="validator.constraint_validator" alias="zikula.user_fields.validator" />
+            <tag name="validator.constraint_validator" alias="zikula.users.user_fields.validator" />
         </service>
     </services>
 </container>

@@ -21,6 +21,6 @@ class ValidAntiSpamAnswer extends Constraint
 
     public function validatedBy()
     {
-        return 'zikula.antispam_answer.validator';
+        return 'zikula.zauth.antispam_answer.validator';
     }
 }

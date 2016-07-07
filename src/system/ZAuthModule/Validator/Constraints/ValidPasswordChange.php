@@ -21,6 +21,6 @@ class ValidPasswordChange extends Constraint
 
     public function validatedBy()
     {
-        return 'zikula.password_change.validator';
+        return 'zikula.zauth.password_change.validator';
     }
 }

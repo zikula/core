@@ -22,7 +22,7 @@ class ValidEmail extends Constraint
 
     public function validatedBy()
     {
-        return 'zikula.email.validator';
+        return 'zikula.users.email.validator';
     }
 
     /**
