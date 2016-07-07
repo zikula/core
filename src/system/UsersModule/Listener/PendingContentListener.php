@@ -64,7 +64,6 @@ class PendingContentListener implements EventSubscriberInterface
     public function pendingContent(GenericEvent $event)
     {
         if ($this->permissionApi->hasPermission(UsersConstant::MODNAME . '::', '::', ACCESS_MODERATE)) {
-
             $numPendingApproval = $this->userRepository->count([
                 'approved_by' => 0,
                 'activated' => UsersConstant::ACTIVATED_PENDING_REG
