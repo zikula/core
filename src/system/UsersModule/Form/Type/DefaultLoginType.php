@@ -8,15 +8,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersModule\Form\RegistrationType;
+namespace Zikula\UsersModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\UsersModule\Validator\Constraints\ValidUserFields;
 
-class DefaultRegistrationType extends AbstractType
+class DefaultLoginType extends AbstractType
 {
     /**
      * @var TranslatorInterface
@@ -24,7 +22,7 @@ class DefaultRegistrationType extends AbstractType
     private $translator;
 
     /**
-     * DefaultRegistrationType constructor.
+     * DefaultLoginType constructor.
      * @param TranslatorInterface $translator
      */
     public function __construct(TranslatorInterface $translator)
@@ -35,40 +33,26 @@ class DefaultRegistrationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('uname', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
+            ->add('uid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
+            ->add('rememberme', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+                'required' => false,
+                'label' => $this->translator->__('Remember me'),
+            ])
             ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $this->translator->__('Save'),
+                'label' => $this->translator->__('Login'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'label' => $this->translator->__('Cancel'),
                 'icon' => 'fa-times',
-                'attr' => ['class' => 'btn btn-danger']
-            ])
-            ->add('reset', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $this->translator->__('Reset'),
-                'icon' => 'fa-refresh',
-                'attr' => ['class' => 'btn btn-primary']
+                'attr' => ['class' => 'btn btn-default']
             ])
         ;
     }
 
     public function getBlockPrefix()
     {
-        return 'zikulausersmodule_defaultregistration';
-    }
-
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'constraints' => [
-                new ValidUserFields()
-            ]
-        ]);
+        return 'zikulausersmodule_defaultlogin';
     }
 }

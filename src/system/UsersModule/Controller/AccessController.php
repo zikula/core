@@ -79,7 +79,20 @@ class AccessController extends AbstractController
             }
         } elseif ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
             $uid = $authenticationMethod->authenticate();
-            // @todo - like registration - must we check events and hooks and show a form if required?
+            $hasListeners = $this->get('event_dispatcher')->hasListeners(AccessEvents::LOGIN_FORM);
+            $hookBindings = $this->get('hook_dispatcher')->getBindingsFor('subscriber.users.ui_hooks.login_screen');
+            if ($hasListeners || count($hookBindings) > 0) {
+                $form = $this->createForm('Zikula\UsersModule\Form\Type\DefaultLoginType', ['uid' => $uid]);
+                $form->handleRequest($request);
+                if ($form->isValid() && $form->isSubmitted()) {
+                    $uid = $form->get('uid')->getData();
+                    $rememberMe = $form->get('rememberme')->getData();
+                } else {
+                    return $this->render('@ZikulaUsersModule/Access/defaultLogin.html.twig', [
+                        'form' => $form,
+                    ]);
+                }
+            }
         } else {
             throw new \LogicException($this->__('Invalid authentication method.'));
         }
@@ -108,7 +121,7 @@ class AccessController extends AbstractController
             }
         }
         // login failed
-        // @todo can we auto-register this user and proceed?
+        // @todo implement auto-register setting. If true, do so and proceed from here.
         $this->addFlash('error', $this->__('Login failed.'));
         $returnUrl = $this->dispatchLoginFailedEvent($user, $returnUrl, $authenticationMethod);
 
@@ -127,9 +140,10 @@ class AccessController extends AbstractController
             'authenticationMethod' => $selectedMethod,
             'returnUrl' => $returnUrl,
         ];
-        if (isset($isFirstLogin)) {
-            // @todo compute isFirstLogin
-            $eventArgs['isFirstLogin'] = $isFirstLogin;
+        $defaultLastLogin = new \DateTime("1970-01-01 00:00:00");
+        $actualLastLogin = $user->getLastlogin();
+        if (empty($actualLastLogin) || $actualLastLogin == $defaultLastLogin) {
+            $eventArgs['isFirstLogin'] = true;
         }
         $event = new GenericEvent($user, $eventArgs);
         $event = $this->get('event_dispatcher')->dispatch(AccessEvents::LOGIN_SUCCESS, $event);

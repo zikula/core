@@ -7,6 +7,7 @@
     <parameters>
         <parameter key="zikula_users_module.internal.authentication_method_collector.class">Zikula\UsersModule\Collector\AuthenticationMethodCollector</parameter>
         <parameter key="zikula_users_module.form.default_registration_type.class">Zikula\UsersModule\Form\RegistrationType\DefaultRegistrationType</parameter>
+        <parameter key="zikula_users_module.form.default_login_type.class">Zikula\UsersModule\Form\Type\DefaultLoginType</parameter>
     </parameters>
 
     <services>
@@ -17,6 +18,10 @@
         <service id="zikula_users_module.form.default_registration_type" class="%zikula_users_module.form.default_registration_type.class%">
             <argument type="service" id="translator.default" />
             <tag alias="Zikula\UsersModule\Form\RegistrationType\DefaultRegistrationType" name="form.type"/>
+        </service>
+        <service id="zikula_users_module.form.default_login_type" class="%zikula_users_module.form.default_login_type.class%">
+            <argument type="service" id="translator.default" />
+            <tag alias="Zikula\UsersModule\Form\Type\DefaultLoginType" name="form.type"/>
         </service>
 
     </services>
