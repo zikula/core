@@ -35,6 +35,7 @@ class HookContainer extends AbstractHookContainer
     const REGISTRATION_DELETE_VALIDATE = 'users.ui_hooks.registration.validate_delete';
     const REGISTRATION_DELETE_PROCESS = 'users.ui_hooks.registration.process_delete';
 
+    // @todo this should probably be changed to the ZAuthModule
     const LOGIN_FORM = 'users.ui_hooks.login_screen.form_edit';
     const LOGIN_VALIDATE = 'users.ui_hooks.login_screen.validate_edit';
     const LOGIN_PROCESS = 'users.ui_hooks.login_screen.process_edit';
@@ -68,6 +69,7 @@ class HookContainer extends AbstractHookContainer
         $this->registerHookSubscriberBundle($bundle);
 
         // Bundle for the login form
+        // @todo this should probably be changed to the ZAuthModule
         $bundle = new SubscriberBundle('ZikulaUsersModule', 'subscriber.users.ui_hooks.login_screen', 'ui_hooks', $this->__('Login form and block hooks'));
         $bundle->addEvent('form_edit', self::LOGIN_FORM);
         $bundle->addEvent('validate_edit', self::LOGIN_VALIDATE);
@@ -75,7 +77,7 @@ class HookContainer extends AbstractHookContainer
         $this->registerHookSubscriberBundle($bundle);
 
         // Bundle for the login block
-        // the LOGIN_BLOCK hooks are not used.
+        // @todo the LOGIN_BLOCK hooks are not used.
         $bundle = new SubscriberBundle('ZikulaUsersModule', 'subscriber.users.ui_hooks.login_block', 'ui_hooks', $this->__('Login form and block hooks'));
         $bundle->addEvent('form_edit', self::LOGIN_BLOCK_FORM);
         $bundle->addEvent('validate_edit', self::LOGIN_BLOCK_VALIDATE);

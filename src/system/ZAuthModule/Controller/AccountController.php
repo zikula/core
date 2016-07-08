@@ -29,7 +29,6 @@ use Zikula\ZAuthModule\ZAuthConstant;
 class AccountController extends AbstractController
 {
     /**
-     * @todo consider click overload protection to prevent DOS
      * @Route("/lost-user-name")
      * @Template
      * @param Request $request
@@ -75,7 +74,6 @@ class AccountController extends AbstractController
 
     /**
      * @todo refactor to reduce code/simplify in this method
-     * @todo consider click overload protection to prevent DOS
      * @Route("/lost-password")
      * @Template
      * @param Request $request
@@ -175,7 +173,6 @@ class AccountController extends AbstractController
     }
 
     /**
-     * @todo consider click overload protection to prevent DOS
      * @Route("/lost-password/code")
      * @Template
      * @param Request $request
@@ -205,17 +202,16 @@ class AccountController extends AbstractController
                 $this->get('zikula_zauth_module.user_verification_repository')->purgeExpiredRecords($changePasswordExpireDays);
                 /** @var UserVerificationEntity $userVerificationEntity */
                 $userVerificationEntity = $this->get('zikula_zauth_module.user_verification_repository')->findOneBy(['uid' => $user->getUid(), 'changetype' => ZAuthConstant::VERIFYCHGTYPE_PWD]);
-                if (\UserUtil::passwordsMatch($data['code'], $userVerificationEntity->getVerifycode())) {
-                    \UserUtil::setPassword($data['pass'], $user->getUid());
-                    $authenticationInfo = ['login_id' => $data[$field], 'pass' => $data['pass']];
-                    $authenticationMethod = ['modname' => 'ZikulaZAuthModule', 'method' => $field];
-//                    \UserUtil::loginUsing($authenticationMethod, $authenticationInfo);
-                    // @todo !!!
+                if (isset($userVerificationEntity) && (\UserUtil::passwordsMatch($data['code'], $userVerificationEntity->getVerifycode()))) {
+                    $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->getByZikulaId($user->getUid());
+                    $mapping->setPass(\UserUtil::getHashedPassword($data['pass']));
+                    $this->get('zikula_zauth_module.authentication_mapping_repository')->persistAndFlush($mapping);
+                    $this->get('zikula_users_module.helper.access_helper')->login($user);
                     $this->addFlash('success', $this->__('Code is confirmed. You are now logged in with your new password.'));
 
                     return $this->redirectToRoute('zikulausersmodule_account_menu');
                 } else {
-                    $this->addFlash('error', $this->__('Invalid code.'));
+                    $this->addFlash('error', $this->__('Invalid or expired code.'));
                 }
             } elseif (count($user) > 1) {
                 // too many users

@@ -78,8 +78,8 @@ class RegistrationController extends AbstractController
             [
                 'translator' => $this->getTranslator(),
                 'setpass' => $setPass,
-                'passwordReminderEnabled' => $this->getVar(ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED), // @todo
-                'passwordReminderMandatory' => $this->getVar(ZAuthConstant::MODVAR_PASSWORD_REMINDER_MANDATORY) // @todo
+                'passwordReminderEnabled' => $this->getVar(ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED),
+                'passwordReminderMandatory' => $this->getVar(ZAuthConstant::MODVAR_PASSWORD_REMINDER_MANDATORY)
             ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

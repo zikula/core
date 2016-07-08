@@ -67,6 +67,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
      */
     public function upgrade($oldVersion)
     {
+        $connection = $this->entityManager->getConnection();
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '2.2.0': // version shipped with Core 1.3.5 -> current 1.3.x
@@ -97,7 +98,6 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             case '2.2.3':
                 // Nothing to do.
             case '2.2.4':
-                $connection = $this->entityManager->getConnection();
                 $sql = "UPDATE users_attributes SET value='gravatar.jpg' WHERE value='gravatar.gif'";
                 $stmt = $connection->prepare($sql);
                 $stmt->execute();
@@ -120,10 +120,14 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             case '2.2.8':
                 $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'authenticationMethodsStatus', ['native_uname' => true]);
             case '2.2.9':
-                // @todo expire all sessions so everyone has to login again (to force migration)
-                // @todo migrate modvar values to ZAuth (see $this->getMigratedModVarNames())
-                // @todo remove modvars no longer used
-                // @todo update users table and set pass = '' where pass = 'NO_USERS_AUTHENTICATION'
+                // migrate modvar values to ZAuth and remove from Users
+                $this->migrateModVarsToZAuth();
+                // update users table
+                $sql = "UPDATE users SET pass='' WHERE pass='NO_USERS_AUTHENTICATION'";
+                $stmt = $connection->prepare($sql);
+                $stmt->execute();
+                // expire all sessions so everyone has to login again (to force migration)
+                $this->entityManager->createQuery('DELETE FROM Zikula\UsersModule\Entity\UserSessionEntity')->execute();
             case '3.0.0':
                 // current version
         }
@@ -259,6 +263,28 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
     }
 
     /**
+     * v2.2.9 -> 3.0.0
+     * move select modvar values to ZAuthModule.
+     * change to boolean where required.
+     */
+    private function migrateModVarsToZAuth()
+    {
+        $migratedModVarNames = $this->getMigratedModVarNames();
+        foreach ($migratedModVarNames as $migratedModVarName) {
+            $value = $this->getVar($migratedModVarName);
+            $this->delVar($migratedModVarName); // removes from UsersModule
+            $migratedModVarName = ($migratedModVarName == 'reg_verifyemail') ? ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED : $migratedModVarName;
+            $value = in_array($migratedModVarName, [
+                ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED,
+                ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED,
+                ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED,
+                ZAuthConstant::MODVAR_PASSWORD_REMINDER_MANDATORY
+            ]) ? (bool) $value : $value;
+            $this->container->get('zikula_extensions_module.api.variable')->set('ZikulaZAuthModule', $migratedModVarName, $value);
+        }
+    }
+
+    /**
      * These modvar names used to have UsersConstant values, but have been moved to ZAuthConstant and maintain their actual values.
      * @return array
      */
@@ -273,6 +299,9 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION,
             ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER,
             ZAuthConstant::MODVAR_EXPIRE_DAYS_REGISTRATION,
+            ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL,
+            ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD,
+            'reg_verifyemail', // convert to bool
         ];
     }
 }

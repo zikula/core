@@ -69,7 +69,7 @@ class UserAdministrationController extends AbstractController
         if (!empty($letter) && 'all' != $letter) {
             $filter['uname'] = ['operator' => 'like', 'operand' => "$letter%"];
         }
-        $limit = $this->getVar(UsersConstant::MODVAR_ITEMS_PER_PAGE, UsersConstant::DEFAULT_ITEMS_PER_PAGE); // @todo
+        $limit = 25; // @todo make this configurable?
 
         $mappings = $this->get('zikula_zauth_module.authentication_mapping_repository')->query(
             $filter,
