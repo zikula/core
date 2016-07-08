@@ -123,7 +123,12 @@ class RegistrationController extends AbstractController
                 $userEntity->setUname($formData['uname']);
                 $userEntity->setEmail($formData['email']);
                 $userEntity->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $authenticationMethod->getAlias());
-                $notificationErrors = $this->get('zikula_users_module.helper.registration_helper')->registerNewUser($userEntity);
+                $this->get('zikula_users_module.helper.registration_helper')->registerNewUser($userEntity);
+                if ($userEntity->getActivated() == UsersConstant::ACTIVATED_PENDING_REG) {
+                    $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendRegistrationMail($userEntity);
+                } else {
+                    $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendUserMail($userEntity);
+                }
 
                 if (!empty($notificationErrors)) {
                     // The main registration process failed.

@@ -94,11 +94,15 @@ class RegistrationController extends AbstractController
             }
             $mapping->setVerifiedEmail(true);
             $this->get('zikula_zauth_module.authentication_mapping_repository')->persistAndFlush($mapping);
-            $this->get('zikula_users_module.helper.registration_helper')->registerNewUser($userEntity, true, false);
+            $this->get('zikula_users_module.helper.registration_helper')->registerNewUser($userEntity);
             $this->get('zikula_zauth_module.user_verification_repository')->resetVerifyChgFor($userEntity->getUid(), ZAuthConstant::VERIFYCHGTYPE_REGEMAIL);
 
             switch ($userEntity->getActivated()) {
                 case UsersConstant::ACTIVATED_PENDING_REG:
+                    $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendRegistrationMail($userEntity, true, false);
+                    if (!empty($notificationErrors)) {
+                        $this->addFlash('error', implode('<br>', $notificationErrors));
+                    }
                     if ('' == $userEntity->getApproved_By()) {
                         $this->addFlash('status', $this->__('Done! Your account has been verified, and is awaiting administrator approval.'));
                     } else {
@@ -106,6 +110,10 @@ class RegistrationController extends AbstractController
                     }
                     break;
                 case UsersConstant::ACTIVATED_ACTIVE:
+                    $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendUserMail($userEntity, true, false);
+                    if (!empty($notificationErrors)) {
+                        $this->addFlash('error', implode('<br>', $notificationErrors));
+                    }
                     $this->addFlash('status', $this->__('Done! Your account has been verified. You may now log in.'));
 
                     return $this->redirectToRoute('zikulausersmodule_access_login');

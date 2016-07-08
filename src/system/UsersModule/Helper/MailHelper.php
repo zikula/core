@@ -10,10 +10,13 @@
 
 namespace Zikula\UsersModule\Helper;
 
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\MailerModule\Api\MailerApi;
+use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Constant as UsersConstant;
 
 class MailHelper
 {
@@ -38,18 +41,123 @@ class MailHelper
     private $mailerApi;
 
     /**
+     * @var PermissionApi
+     */
+    private $permissionApi;
+
+    /**
      * MailHelper constructor.
      * @param TranslatorInterface $translator
      * @param \Twig_Environment $twig
      * @param VariableApi $variableApi
      * @param MailerApi $mailerApi
+     * @param PermissionApi $permissionApi
      */
-    public function __construct(TranslatorInterface $translator, \Twig_Environment $twig, VariableApi $variableApi, MailerApi $mailerApi)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        \Twig_Environment $twig,
+        VariableApi $variableApi,
+        MailerApi $mailerApi,
+        PermissionApi $permissionApi
+    ) {
         $this->translator = $translator;
         $this->twig = $twig;
         $this->variableApi = $variableApi;
         $this->mailerApi = $mailerApi;
+        $this->permissionApi = $permissionApi;
+    }
+
+    /**
+     * Creates a new registration mail.
+     *
+     * @param UserEntity $userEntity
+     * @param bool   $userNotification       Whether the user should be notified of the new registration or not; however
+     *                                       if the user's password was created for him, then he will receive at
+     *                                       least that mail without regard to this setting.
+     * @param bool   $adminNotification      Whether the configured administrator mail e-mail address should be
+     *                                       sent mail of the new registration.
+     * @param string $passwordCreatedForUser The password that was created for the user either automatically or by an
+     *                                       administrator (but not by the user himself).
+     *
+     * @return array of errors created from the mail process.
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received.
+     * @throws \RuntimeException Thrown if the registration couldn't be saved
+     */
+    public function createAndSendRegistrationMail(UserEntity $userEntity, $userNotification = true, $adminNotification = true, $passwordCreatedForUser = '')
+    {
+        $mailErrors = [];
+        $rendererArgs = [];
+        $rendererArgs['reginfo'] = $userEntity;
+        $rendererArgs['createdpassword'] = $passwordCreatedForUser;
+        $rendererArgs['admincreated'] = $this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_EDIT);
+
+        if (($userNotification && $userEntity->isApproved()) || !empty($passwordCreatedForUser)) {
+            $mailSent = $this->sendNotification($userEntity->getEmail(), 'welcome', $rendererArgs);
+            if (!$mailSent) {
+                $mailErrors[] = $this->translator->__('Warning! The welcoming email for the new registration could not be sent.');
+            }
+        }
+        if ($adminNotification) {
+            // mail notify email to inform admin about registration
+            $mailEmail = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL, '');
+            if (!empty($mailEmail)) {
+                $mailSent = $this->sendNotification($mailEmail, 'regadminnotify', $rendererArgs);
+                if (!$mailSent) {
+                    $mailErrors[] = $this->translator->__('Warning! The mail email for the new registration could not be sent.');
+                }
+            }
+        }
+
+        return $mailErrors;
+    }
+
+    /**
+     * Creates a new users mail.
+     *
+     * @param UserEntity $userEntity
+     * @param bool  $userNotification        Whether the user should be notified of the new registration or not;
+     *                                       however if the user's password was created for him, then he will
+     *                                       receive at least that mail without regard to this setting.
+     * @param bool $adminNotification        Whether the configured administrator mail e-mail address should
+     *                                       be sent mail of the new registration.
+     * @param string $passwordCreatedForUser The password that was created for the user either automatically or by
+     *                                       an administrator (but not by the user himself).
+     *
+     * @return array of mail errors
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received.
+     * @throws AccessDeniedException Thrown if the current user does not have overview access.
+     * @throws \RuntimeException Thrown if the user couldn't be added to the relevant user groups or
+     *                                  if the registration couldn't be saved
+     */
+    public function createAndSendUserMail(UserEntity $userEntity, $userNotification = true, $adminNotification = true, $passwordCreatedForUser = '')
+    {
+        $mailErrors = [];
+        $rendererArgs = [];
+        $rendererArgs['reginfo'] = $userEntity;
+        $rendererArgs['createdpassword'] = $passwordCreatedForUser;
+        $rendererArgs['admincreated'] = $this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_EDIT);
+
+        if ($userNotification || !empty($passwordCreatedForUser)) {
+            $mailSent = $this->sendNotification($userEntity->getEmail(), 'welcome', $rendererArgs);
+            if (!$mailSent) {
+                $mailErrors[] = $this->translator->__('Warning! The welcoming email for the newly created user could not be sent.');
+            }
+        }
+        if ($adminNotification) {
+            // mail notify email to inform admin about registration
+            $mailEmail = $this->variableApi->get('ZikulaUsersModule', 'reg_notifyemail', '');
+            if (!empty($mailEmail)) {
+                $subject = $this->translator->__f('New registration: %s', $userEntity->getUname());
+                $mailSent = $this->sendNotification($mailEmail, 'regadminnotify', $rendererArgs, $subject);
+                if (!$mailSent) {
+                    $mailErrors[] = $this->translator->__('Warning! The mail email for the newly created user could not be sent.');
+                }
+            }
+        }
+
+        return $mailErrors;
     }
 
     /**

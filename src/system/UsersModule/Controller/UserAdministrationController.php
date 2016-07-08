@@ -223,11 +223,19 @@ class UserAdministrationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('confirm')->isClicked()) {
-                $approved = $this->get('zikula_users_module.helper.registration_helper')->approve($user);
-                if ($approved) {
-                    $this->addFlash('status', $this->__f('Done! %sub% has been approved.', ['%sub%' => $user->getUname()]));
+                $this->get('zikula_users_module.helper.registration_helper')->approve($user);
+                if ($user->getActivated() == UsersConstant::ACTIVATED_PENDING_REG) {
+                    $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendRegistrationMail($user, true, false);
                 } else {
-                    $this->addFlash('error', $this->__f('Sorry! There was a problem approving %sub%.', ['%sub%' => $user->getUname()]));
+                    $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendUserMail($user, true, false);
+                }
+
+                if ($notificationErrors) {
+                    foreach ($notificationErrors as $error) {
+                        $this->addFlash('error', $error);
+                    }
+                } else {
+                    $this->addFlash('status', $this->__f('Done! %sub% has been approved.', ['%sub%' => $user->getUname()]));
                 }
             }
             if ($form->get('cancel')->isClicked()) {
@@ -313,8 +321,9 @@ class UserAdministrationController extends AbstractController
                 }
             }
             if ($valid && $deleteConfirmationForm->isValid()) {
-                // @todo add possibilty to 'mark as pending deletion' UsersConstant::ACTIVATED_PENDING_DELETE ???
+                // @todo add possibility to 'mark as pending deletion' UsersConstant::ACTIVATED_PENDING_DELETE ???
                 // @todo send email to 'denied' registrations. see MailHelper::sendNotification (regdeny)
+                // @todo determine if user was a 'registration' (e.g. pending) and fire RegistrationEvents::DELETE_REGISTRATION instead of UserEvents::DELETE_ACCOUNT
                 $this->get('zikula_users_module.user_repository')->removeArray($userIds);
                 $this->addFlash('success', $this->_fn('User deleted!', '%n users deleted!', count($userIds), ['%n' => count($userIds)]));
                 foreach ($userIds as $uid) {

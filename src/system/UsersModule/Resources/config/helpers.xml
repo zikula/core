@@ -17,17 +17,16 @@
         <service id="zikula_users_module.helper.registration_helper" class="%zikula_users_module.helper.registration_helper.class%" lazy="true">
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="zikula_users_module.current_user" />
-            <argument type="service" id="zikula_permissions_module.api.permission" />
             <argument type="service" id="zikula_users_module.user_repository" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="translator.default" />
-            <argument type="service" id="zikula_users_module.helper.mail_helper" />
         </service>
         <service id="zikula_users_module.helper.mail_helper" class="%zikula_users_module.helper.mail_helper.class%" lazy="true">
             <argument type="service" id="translator.default" />
             <argument type="service" id="twig" />
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="zikula_mailer_module.api.mailer" />
+            <argument type="service" id="zikula_permissions_module.api.permission" />
         </service>
         <service id="zikula_users_module.helper.administration_actions" class="%zikula_users_module.helper.administration_actions.class%" lazy="true">
             <argument type="service" id="zikula_permissions_module.api.permission" />

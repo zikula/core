@@ -149,42 +149,39 @@ class UserAdministrationController extends AbstractController
                 $user = new UserEntity();
                 $user->merge($mapping->getUserEntityData());
                 $user->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $mapping->getMethod());
-                $registrationErrors = $this->get('zikula_users_module.helper.registration_helper')->registerNewUser(
-                    $user,
-                    $form['usernotification']->getData(),
-                    $form['adminnotification']->getData(),
-                    $passToSend
-                );
-                if (empty($registrationErrors)) {
-                    $mapping->setUid($user->getUid());
-                    if (!$authMethod->register($mapping->toArray())) {
-                        $this->addFlash('error', $this->__('The create process failed for an unknown reason.'));
-                        $this->get('zikula_users_module.user_repository')->removeAndFlush($user);
-                        $this->get('event_dispatcher')->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($user->getUid()));
-
-                        return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
-                    }
-                    $event = new GenericEvent($form->getData(), [], new ValidationProviders());
-                    $this->get('event_dispatcher')->dispatch(UserEvents::NEW_PROCESS, $event);
-                    $hook = new ProcessHook($user->getUid());
-                    $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_PROCESS, $hook);
-                    $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_SUCCEEDED, new GenericEvent($user));
-
-                    if ($user->getActivated() == UsersConstant::ACTIVATED_PENDING_REG) {
-                        $this->addFlash('status', $this->__('Done! Created new registration application.'));
-                    } elseif (null !== $user->getActivated()) {
-                        $this->addFlash('status', $this->__('Done! Created new user account.'));
-                    } else {
-                        $this->addFlash('error', $this->__('Warning! New user information has been saved, however there may have been an issue saving it properly.'));
-                    }
+                $this->get('zikula_users_module.helper.registration_helper')->registerNewUser($user);
+                if ($user->getActivated() == UsersConstant::ACTIVATED_PENDING_REG) {
+                    $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendRegistrationMail($user, $form['usernotification']->getData(), $form['adminnotification']->getData(), $passToSend);
+                } else {
+                    $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendUserMail($user, $form['usernotification']->getData(), $form['adminnotification']->getData(), $passToSend);
+                }
+                if (!empty($notificationErrors)) {
+                    $this->addFlash('error', $this->__('Errors creating user!'));
+                    $this->addFlash('error', implode('<br>', $notificationErrors));
+                }
+                $mapping->setUid($user->getUid());
+                if (!$authMethod->register($mapping->toArray())) {
+                    $this->addFlash('error', $this->__('The create process failed for an unknown reason.'));
+                    $this->get('zikula_users_module.user_repository')->removeAndFlush($user);
+                    $this->get('event_dispatcher')->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($user->getUid()));
 
                     return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
-                } else {
-                    $this->addFlash('error', $this->__('Errors creating user!'));
-                    foreach ($registrationErrors as $registrationError) {
-                        $this->addFlash('error', $registrationError);
-                    }
                 }
+                $event = new GenericEvent($form->getData(), [], new ValidationProviders());
+                $this->get('event_dispatcher')->dispatch(UserEvents::NEW_PROCESS, $event);
+                $hook = new ProcessHook($user->getUid());
+                $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_PROCESS, $hook);
+                $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_SUCCEEDED, new GenericEvent($user));
+
+                if ($user->getActivated() == UsersConstant::ACTIVATED_PENDING_REG) {
+                    $this->addFlash('status', $this->__('Done! Created new registration application.'));
+                } elseif (null !== $user->getActivated()) {
+                    $this->addFlash('status', $this->__('Done! Created new user account.'));
+                } else {
+                    $this->addFlash('error', $this->__('Warning! New user information has been saved, however there may have been an issue saving it properly.'));
+                }
+
+                return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
             }
             if ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
