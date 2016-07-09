@@ -81,20 +81,12 @@ class RegistrationController extends AbstractController
                 throw new \Exception('User already exists!');
             }
             if ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
-                $request->getSession()->set('authenticationMethodId', $authenticationMethod->getId());
+                $authenticationMethodId = $authenticationMethod->getId();
+                $request->getSession()->set('authenticationMethodId', $authenticationMethodId);
                 $userData = [
                     'uname' => $authenticationMethod->getUname(),
                     'email' => $authenticationMethod->getEmail()
                 ];
-                $userEntity = new UserEntity();
-                $userEntity->merge($userData);
-                $userEntity->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $authenticationMethod->getAlias());
-                $validationErrors = $this->get('validator')->validate($userEntity); // Symfony\Component\Validator\ConstraintViolation[]
-                $hasListeners = $this->get('event_dispatcher')->hasListeners(RegistrationEvents::NEW_FORM);
-                $hookBindings = $this->get('hook_dispatcher')->getBindingsFor('subscriber.users.ui_hooks.registration');
-                if (!$hasListeners && count($validationErrors) == 0 && count($hookBindings) == 0) {
-                    // @todo !!! process registration - no further user interaction needed
-                }
             }
         }
 
@@ -105,66 +97,78 @@ class RegistrationController extends AbstractController
         if (!$form->has('uname') || !$form->has('email')) {
             throw new InvalidAuthenticationMethodRegistrationFormException();
         }
-        $form->handleRequest($request);
+        $hasListeners = $this->get('event_dispatcher')->hasListeners(RegistrationEvents::NEW_FORM);
+        $hookBindings = $this->get('hook_dispatcher')->getBindingsFor('subscriber.users.ui_hooks.registration');
+        if ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface && !empty($userData) && !$hasListeners && count($hookBindings) == 0) {
+            // skip form display and process immediately.
+            $userData['_token'] = $this->get('security.csrf.token_manager')->getToken($form->getName())->getValue();
+            $userData['submit'] = true;
+            $form->submit($userData);
+        } else {
+            $form->handleRequest($request);
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $event = new GenericEvent($form->getData(), [], new ValidationProviders());
-            $validators = $this->get('event_dispatcher')->dispatch(RegistrationEvents::NEW_VALIDATE, $event)->getData();
+            if ($form->get('submit')->isClicked()) {
+                $event = new GenericEvent($form->getData(), [], new ValidationProviders());
+                $validators = $this->get('event_dispatcher')->dispatch(RegistrationEvents::NEW_VALIDATE, $event)->getData();
 
-            // Validate the hook
-            $hook = new ValidationHook($validators);
-            $this->get('hook_dispatcher')->dispatch(HookContainer::REGISTRATION_VALIDATE, $hook);
-            $validators = $hook->getValidators();
+                // Validate the hook
+                $hook = new ValidationHook($validators);
+                $this->get('hook_dispatcher')->dispatch(HookContainer::REGISTRATION_VALIDATE, $hook);
+                $validators = $hook->getValidators();
 
-            if ($form->get('submit')->isClicked() && !$validators->hasErrors()) {
-                $formData = $form->getData();
-                $userEntity = new UserEntity();
-                $userEntity->setUname($formData['uname']);
-                $userEntity->setEmail($formData['email']);
-                $userEntity->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $authenticationMethod->getAlias());
-                $this->get('zikula_users_module.helper.registration_helper')->registerNewUser($userEntity);
-                if ($userEntity->getActivated() == UsersConstant::ACTIVATED_PENDING_REG) {
-                    $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendRegistrationMail($userEntity);
-                } else {
-                    $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendUserMail($userEntity);
-                }
-                if (!empty($notificationErrors)) {
-                    $this->addFlash('error', implode('<br>', $notificationErrors));
-                }
+                if (!$validators->hasErrors()) {
+                    $formData = $form->getData();
+                    $userEntity = new UserEntity();
+                    $userEntity->setUname($formData['uname']);
+                    $userEntity->setEmail($formData['email']);
+                    $userEntity->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $authenticationMethod->getAlias());
+                    $this->get('zikula_users_module.helper.registration_helper')->registerNewUser($userEntity);
+                    if ($userEntity->getActivated() == UsersConstant::ACTIVATED_PENDING_REG) {
+                        $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendRegistrationMail($userEntity);
+                    } else {
+                        $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendUserMail($userEntity);
+                    }
+                    if (!empty($notificationErrors)) {
+                        $this->addFlash('error', implode('<br>', $notificationErrors));
+                    }
 
-                $formData['id'] = $authenticationMethodId;
-                $formData['uid'] = $userEntity->getUid();
-                $externalRegistrationSuccess = $authenticationMethod->register($formData);
-                if (true !== $externalRegistrationSuccess) {
-                    // revert registration
-                    $this->addFlash('error', $this->__('The registration process failed.'));
-                    $this->get('zikula_users_module.user_repository')->removeAndFlush($userEntity);
-                    $this->get('event_dispatcher')->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($userEntity->getUid()));
+                    $formData['id'] = $authenticationMethodId;
+                    $formData['uid'] = $userEntity->getUid();
+                    $externalRegistrationSuccess = $authenticationMethod->register($formData);
+                    if (true !== $externalRegistrationSuccess) {
+                        // revert registration
+                        $this->addFlash('error', $this->__('The registration process failed.'));
+                        $this->get('zikula_users_module.user_repository')->removeAndFlush($userEntity);
+                        $this->get('event_dispatcher')->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($userEntity->getUid()));
 
-                    return $this->redirectToRoute('zikulausersmodule_registration_register'); // try again.
-                }
-                $this->get('event_dispatcher')->dispatch(RegistrationEvents::NEW_PROCESS, new GenericEvent($userEntity));
-                $this->get('hook_dispatcher')->dispatch(HookContainer::REGISTRATION_PROCESS, new ProcessHook($userEntity->getUid()));
+                        return $this->redirectToRoute('zikulausersmodule_registration_register'); // try again.
+                    }
+                    $this->get('event_dispatcher')->dispatch(RegistrationEvents::NEW_PROCESS, new GenericEvent($userEntity));
+                    $this->get('hook_dispatcher')->dispatch(HookContainer::REGISTRATION_PROCESS, new ProcessHook($userEntity->getUid()));
 
-                // Register the appropriate status or error to be displayed to the user, depending on the account's activated status.
-                $canLogIn = $userEntity->getActivated() == UsersConstant::ACTIVATED_ACTIVE;
-                $autoLogIn = $this->getVar(UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN, UsersConstant::DEFAULT_REGISTRATION_AUTO_LOGIN);
-                $this->generateRegistrationFlashMessage($userEntity->getActivated(), $autoLogIn);
+                    // Register the appropriate status or error to be displayed to the user, depending on the account's activated status.
+                    $canLogIn = $userEntity->getActivated() == UsersConstant::ACTIVATED_ACTIVE;
+                    $autoLogIn = $this->getVar(UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN, UsersConstant::DEFAULT_REGISTRATION_AUTO_LOGIN);
+                    $this->generateRegistrationFlashMessage($userEntity->getActivated(), $autoLogIn);
 
-                // Notify that we are completing a registration session.
-                $event = $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_SUCCEEDED, new GenericEvent($userEntity, ['redirectUrl' => '']));
-                $redirectUrl = $event->hasArgument('redirectUrl') ? $event->getArgument('redirectUrl') : '';
+                    // Notify that we are completing a registration session.
+                    $event = $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_SUCCEEDED, new GenericEvent($userEntity, ['redirectUrl' => '']));
+                    $redirectUrl = $event->hasArgument('redirectUrl') ? $event->getArgument('redirectUrl') : '';
 
-                if ($autoLogIn && $this->get('zikula_users_module.helper.access_helper')->loginAllowed($userEntity)) {
-                    $this->get('zikula_users_module.helper.access_helper')->login($userEntity);
-                } elseif (!empty($redirectUrl)) {
-                    return $this->redirect($redirectUrl);
-                } elseif (!$canLogIn) {
-                    return $this->redirectToRoute('home');
-                } else {
-                    return $this->redirectToRoute('zikulausersmodule_access_login');
+                    if ($autoLogIn && $this->get('zikula_users_module.helper.access_helper')->loginAllowed($userEntity)) {
+                        $this->get('zikula_users_module.helper.access_helper')->login($userEntity);
+                    } elseif (!empty($redirectUrl)) {
+                        return $this->redirect($redirectUrl);
+                    } elseif (!$canLogIn) {
+                        return $this->redirectToRoute('home');
+                    } else {
+                        return $this->redirectToRoute('zikulausersmodule_access_login');
+                    }
                 }
             }
+            $request->getSession()->invalidate();
 
             return !empty($redirectUrl) ? $this->redirect($redirectUrl) : $this->redirectToRoute('home');
         }
