@@ -59,10 +59,8 @@ class AccountController extends AbstractController
                     $this->addFlash('error', $this->__('Unable to send email to the requested address. Please contact the system administrator for assistance.'));
                 }
             } elseif (count($mapping) > 1) {
-                // too many users
                 $this->addFlash('error', $this->__('There are too many users registered with that address. Please contact the system administrator for assistance.'));
             } else {
-                // no user
                 $this->addFlash('error', $this->__('Unable to send email to the requested address. Please contact the system administrator for assistance.'));
             }
         }
@@ -73,7 +71,6 @@ class AccountController extends AbstractController
     }
 
     /**
-     * @todo refactor to reduce code/simplify in this method
      * @Route("/lost-password")
      * @Template
      * @param Request $request
@@ -120,33 +117,11 @@ class AccountController extends AbstractController
                         }
                         $redirectToRoute = 'zikulausersmodule_account_menu';
                         break;
-                    case UsersConstant::ACTIVATED_PENDING_DELETE:
-                        if ($this->getVar(UsersConstant::MODVAR_LOGIN_DISPLAY_DELETE_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_DELETE_STATUS)) {
-                            $this->addFlash('error', $this->__('Sorry! Your account is marked for removal. Please contact a site administrator for more information.'));
-                        }
-                        $redirectToRoute = 'zikulausersmodule_account_menu';
-                        break;
                     case UsersConstant::ACTIVATED_PENDING_REG:
                         $displayPendingApproval = $this->getVar(UsersConstant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_APPROVAL_STATUS);
                         $displayPendingVerification = $this->getVar(UsersConstant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS);
                         if ($displayPendingApproval || $displayPendingVerification) {
-                            $registrationsModerated = $this->getVar(UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED, UsersConstant::DEFAULT_REGISTRATION_APPROVAL_REQUIRED);
-//                            if ($registrationsModerated) {
-//                                $registrationApprovalOrder = $this->getVar(UsersConstant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, UsersConstant::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE);
-//                                if (!$user->isApproved() && ($registrationApprovalOrder == UsersConstant::APPROVAL_BEFORE)) {
-//                                    $this->addFlash('error', $this->__('Sorry! Your registration request is still waiting for approval from a site administrator.'));
-//                                } elseif (!$user->isVerified() && (($registrationApprovalOrder == UsersConstant::APPROVAL_AFTER) || ($registrationApprovalOrder == UsersConstant::APPROVAL_ANY)
-//                                        || (($registrationApprovalOrder == UsersConstant::APPROVAL_BEFORE) && $user->isApproved()))
-//                                ) {
-//                                    $this->addFlash('error', $this->__('Sorry! Your registration request is still waiting for verification of your e-mail address. Check your inbox for an e-mail message from us. If you need another verification e-mail sent, please contact a site administrator.'));
-//                                } else {
-                                    $this->addFlash('error', $this->__('Sorry! Your account has not completed the registration process. Please contact a site administrator for more information.'));
-//                                }
-//                            } elseif (!$user->isVerified()) {
-//                                $this->addFlash('error', $this->__('Sorry! Your registration request is still waiting for verification of your e-mail address. Check your inbox for an e-mail message from us. If you need another verification e-mail sent, please contact a site administrator.'));
-//                            } else {
-//                                $this->addFlash('error', $this->__('Sorry! Your account has not completed the registration process. Please contact a site administrator for more information.'));
-//                            }
+                            $this->addFlash('error', $this->__('Sorry! Your account has not completed the registration process. Please contact a site administrator for more information.'));
                             $redirectToRoute = 'zikulausersmodule_account_menu';
                         } else {
                             $this->addFlash('error', $this->__('Sorry! An account could not be located with that information. Correct your entry and try again. If you have recently registered a new account with this site, we may be waiting for you to verify your e-mail address, or we might not have approved your registration request yet.'));
@@ -156,10 +131,8 @@ class AccountController extends AbstractController
                         $this->addFlash('error', $this->__('Sorry! An active account could not be located with that information. Correct your entry and try again. If you have recently registered a new account with this site, we may be waiting for you to verify your e-mail address, or we might not have approved your registration request yet.'));
                 }
             } elseif (count($mapping) > 1) {
-                // too many users
                 $this->addFlash('error', $this->__('There are too many users registered with that address. Please contact the system administrator for assistance.'));
             } else {
-                // no user
                 $this->addFlash('error', $this->__f('%s not found. Please contact the system administrator for assistance.', ['%s' => ucwords($map[$field])]));
             }
             if (!empty($redirectToRoute)) {
@@ -214,10 +187,8 @@ class AccountController extends AbstractController
                     $this->addFlash('error', $this->__('Invalid or expired code.'));
                 }
             } elseif (count($user) > 1) {
-                // too many users
                 $this->addFlash('error', $this->__('There are too many users registered with that address. Please contact the system administrator for assistance.'));
             } else {
-                // no user
                 $this->addFlash('error', $this->__f('%s not found. Please contact the system administrator for assistance.', ['%s' => ucwords($map[$field])]));
             }
         }

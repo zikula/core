@@ -7,6 +7,7 @@ CHANGELOG - ZIKULA 1.4.x
     - User block function removed.
     - Old Authentication_Method_Api system has been completely removed.
     - Due to refactoring the UsersModule, some unknown BC Breaks may have occurred.
+      - `subscriber.users.ui_hooks.login_block` hooks have been removed. use `subscriber.users.ui_hooks.login_screen`
 
  - Deprecated:
     -

@@ -56,6 +56,18 @@ required events, et al on user deletion. The providing authenticationMethod shou
 their own data.
 
 
+Hooks and Events in templates
+-----------------------------
+
+Authentication modules *must* implement hooks and events within their login and registration templates. See ZAuthModule
+for examples:
+  - src/system/ZAuthModule/Resources/views/Authentication/register.html.twig
+  - src/system/ZAuthModule/Resources/views/Authentication/EmailLogin.html.twig
+Also see:
+  - \Zikula\UsersModule\Container\HookContainer
+  - \Zikula\UsersModule\RegistrationEvents
+
+
 Installation and discoverability
 --------------------------------
 

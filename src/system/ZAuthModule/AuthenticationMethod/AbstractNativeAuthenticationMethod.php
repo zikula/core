@@ -126,7 +126,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
      */
     private function getMapping($field, $value)
     {
-        $mapping = $this->mappingRepository->findOneBy([$field => $value]); // @todo what if more than one? (e.g. by email)
+        $mapping = $this->mappingRepository->findOneBy([$field => $value]);
         if (!isset($mapping)) {
             $userEntity = $this->userRepository->findOneBy([$field => $value]);
             if ($userEntity) {

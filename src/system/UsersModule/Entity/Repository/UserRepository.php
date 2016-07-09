@@ -51,6 +51,8 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
             $this->_em->remove($user);
         }
         $this->_em->flush();
+
+        return $users;
     }
 
     /**

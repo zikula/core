@@ -56,7 +56,6 @@ class RegistrationController extends AbstractController
         $this->throwExceptionForBannedUserAgents($request);
 
         // Display the authentication method selector if required
-        // @todo see AccessController::loginAction for code duplication
         $authenticationMethodCollector = $this->get('zikula_users_module.internal.authentication_method_collector');
         $selectedMethod = $request->query->get('authenticationMethod', $request->getSession()->get('authenticationMethod', null));
         if (empty($selectedMethod) && count($authenticationMethodCollector->getActiveKeys()) > 1) {

@@ -29,6 +29,7 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
 
 /**
@@ -314,13 +315,13 @@ class UserAdministrationController extends AbstractController
             if ($valid && $deleteConfirmationForm->isValid()) {
                 // @todo add possibility to 'mark as pending deletion' UsersConstant::ACTIVATED_PENDING_DELETE ???
                 // @todo send email to 'denied' registrations. see MailHelper::sendNotification (regdeny)
-                // @todo determine if user was a 'registration' (e.g. pending) and fire RegistrationEvents::DELETE_REGISTRATION instead of UserEvents::DELETE_ACCOUNT
-                $this->get('zikula_users_module.user_repository')->removeArray($userIds);
-                $this->addFlash('success', $this->_fn('User deleted!', '%n users deleted!', count($userIds), ['%n' => count($userIds)]));
-                foreach ($userIds as $uid) {
-                    $this->get('event_dispatcher')->dispatch(UserEvents::DELETE_ACCOUNT, new GenericEvent($uid));
-                    $this->get('event_dispatcher')->dispatch(UserEvents::DELETE_PROCESS, new GenericEvent(null, ['id' => $uid]));
-                    $this->get('hook_dispatcher')->dispatch(HookContainer::DELETE_PROCESS, new ProcessHook($uid));
+                $deletedUsers = $this->get('zikula_users_module.user_repository')->removeArray($userIds);
+                $this->addFlash('success', $this->_fn('User deleted!', '%n users deleted!', count($deletedUsers), ['%n' => count($deletedUsers)]));
+                foreach ($deletedUsers as $deletedUser) {
+                    $eventName = $deletedUser->getActivated() == UsersConstant::ACTIVATED_ACTIVE ? UserEvents::DELETE_ACCOUNT : RegistrationEvents::DELETE_REGISTRATION;
+                    $this->get('event_dispatcher')->dispatch($eventName, new GenericEvent($deletedUser->getUid()));
+                    $this->get('event_dispatcher')->dispatch(UserEvents::DELETE_PROCESS, new GenericEvent(null, ['id' => $deletedUser->getUid()]));
+                    $this->get('hook_dispatcher')->dispatch(HookContainer::DELETE_PROCESS, new ProcessHook($deletedUser->getUid()));
                 }
 
                 return $this->redirectToRoute('zikulausersmodule_useradministration_list');

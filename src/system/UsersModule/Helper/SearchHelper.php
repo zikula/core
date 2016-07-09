@@ -55,7 +55,6 @@ class SearchHelper extends AbstractSearchable
         $profileModule = $this->container->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'profilemodule', '');
         $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule)); // @todo
 
-        // @todo move this to repository
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('u')
             ->from('ZikulaUsersModule:UserEntity', 'u')
