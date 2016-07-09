@@ -44,17 +44,6 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
         $this->_em->flush($user);
     }
 
-    public function removeArray(array $userIds)
-    {
-        $users = $this->query(['uid' => ['operator' => 'in', 'operand' => $userIds]]);
-        foreach ($users as $user) {
-            $this->_em->remove($user);
-        }
-        $this->_em->flush();
-
-        return $users;
-    }
-
     /**
      * {@inheritdoc}
      */

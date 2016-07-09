@@ -23,8 +23,6 @@ interface UserRepositoryInterface extends ObjectRepository, Selectable
 
     public function removeAndFlush(UserEntity $user);
 
-    public function removeArray(array $userIds);
-
     /**
      * @param UserEntity $user
      * @param $approvedOn

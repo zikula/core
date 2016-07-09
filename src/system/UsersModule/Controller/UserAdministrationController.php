@@ -314,14 +314,15 @@ class UserAdministrationController extends AbstractController
             }
             if ($valid && $deleteConfirmationForm->isValid()) {
                 // @todo send email to 'denied' registrations. see MailHelper::sendNotification (regdeny)
-                $deletedUsers = $this->get('zikula_users_module.user_repository')->removeArray($userIds);
-                $this->addFlash('success', $this->_fn('User deleted!', '%n users deleted!', count($deletedUsers), ['%n' => count($deletedUsers)]));
+                $deletedUsers = $this->get('zikula_users_module.user_repository')->query(['uid' => ['operator' => 'in', 'operand' => $userIds]]);
                 foreach ($deletedUsers as $deletedUser) {
                     $eventName = $deletedUser->getActivated() == UsersConstant::ACTIVATED_ACTIVE ? UserEvents::DELETE_ACCOUNT : RegistrationEvents::DELETE_REGISTRATION;
                     $this->get('event_dispatcher')->dispatch($eventName, new GenericEvent($deletedUser->getUid()));
                     $this->get('event_dispatcher')->dispatch(UserEvents::DELETE_PROCESS, new GenericEvent(null, ['id' => $deletedUser->getUid()]));
                     $this->get('hook_dispatcher')->dispatch(HookContainer::DELETE_PROCESS, new ProcessHook($deletedUser->getUid()));
+                    $this->get('zikula_users_module.user_repository')->removeAndFlush($deletedUser);
                 }
+                $this->addFlash('success', $this->_fn('User deleted!', '%n users deleted!', count($deletedUsers), ['%n' => count($deletedUsers)]));
 
                 return $this->redirectToRoute('zikulausersmodule_useradministration_list');
             }
