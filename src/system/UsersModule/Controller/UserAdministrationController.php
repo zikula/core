@@ -11,7 +11,6 @@
 namespace Zikula\UsersModule\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\PersistentCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -23,11 +22,11 @@ use Zikula\Bundle\HookBundle\Hook\ValidationProviders;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\UserEvents;
