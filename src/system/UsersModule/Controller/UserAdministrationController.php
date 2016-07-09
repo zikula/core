@@ -11,6 +11,7 @@
 namespace Zikula\UsersModule\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\PersistentCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -136,7 +137,8 @@ class UserAdministrationController extends AbstractController
         $form = $this->createForm('Zikula\UsersModule\Form\Type\AdminModifyUserType',
             $user, ['translator' => $this->get('translator.default')]
         );
-        $originalUser = clone $user;
+        $originalUserName = $user->getUname();
+        $originalGroups = $user->getGroups()->toArray();
         $form->handleRequest($request);
 
         $event = new GenericEvent($form->getData(), [], new ValidationProviders());
@@ -146,27 +148,17 @@ class UserAdministrationController extends AbstractController
         $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_VALIDATE, $hook);
         $validators = $hook->getValidators();
 
-        /**
-         * @todo CAH 22 Apr 2016
-         * In previous version, user was not allowed to edit certain properties if editing himself:
-         *  - group membership in 'certain system groups'
-         *     - the 'default' group
-         *     - primary admin group
-         *  - activated state
-         * The fields were disabled in the form.
-         * User was not able to delete self. (button removed from form)
-         */
-
         if ($form->isValid() && !$validators->hasErrors()) {
             if ($form->get('submit')->isClicked()) {
                 $user = $form->getData();
+                $this->checkSelf($user, $originalGroups);
                 $this->get('doctrine')->getManager()->flush($user);
                 $eventArgs = [
                     'action'    => 'setVar',
                     'field'     => 'uname',
                     'attribute' => null,
                 ];
-                $eventData = ['old_value' => $originalUser->getUname()];
+                $eventData = ['old_value' => $originalUserName];
                 $updateEvent = new GenericEvent($user, $eventArgs, $eventData);
                 $this->get('event_dispatcher')->dispatch(UserEvents::UPDATE_ACCOUNT, $updateEvent);
 
@@ -421,5 +413,34 @@ class UserAdministrationController extends AbstractController
             'translator' => $this->get('translator.default'),
             'action' => $this->generateUrl('zikulausersmodule_useradministration_mailusers')
         ]);
+    }
+
+    /**
+     * Prevent user from modifying certain aspects of self.
+     * @param UserEntity $userBeingModified
+     * @param array $originalGroups
+     */
+    private function checkSelf(UserEntity $userBeingModified, array $originalGroups)
+    {
+        $currentUserId = $this->get('zikula_users_module.current_user')->get('uid');
+        if ($currentUserId == $userBeingModified->getUid()) {
+            // current user not allowed to deactivate self
+            if (UsersConstant::ACTIVATED_ACTIVE != $userBeingModified->getActivated()) {
+                $this->addFlash('info', $this->__('You are not allowed to alter your own active state.'));
+                $userBeingModified->setActivated(UsersConstant::ACTIVATED_ACTIVE);
+            }
+            // current user not allowed to remove self from default group
+            $defaultGroup = $this->get('zikula_extensions_module.api.variable')->get('ZikulaGroupsModule', 'defaultgroup', 1);
+            if (!$userBeingModified->getGroups()->containsKey($defaultGroup)) {
+                $this->addFlash('info', $this->__('You are not allowed to remove yourself from the default group.'));
+                $userBeingModified->getGroups()->add($originalGroups[$defaultGroup]);
+            }
+            // current user not allowed to remove self from admin group if currently a member
+            $adminGroup = $this->get('zikula_extensions_module.api.variable')->get('ZikulaGroupsModule', 'primaryadmingroup', 2);
+            if (isset($originalGroups[$adminGroup]) && !$userBeingModified->getGroups()->containsKey($adminGroup)) {
+                $this->addFlash('info', $this->__('You are not allowed to remove yourself from the primary administrator group.'));
+                $userBeingModified->getGroups()->add($originalGroups[$adminGroup]);
+            }
+        }
     }
 }

@@ -13,8 +13,7 @@
         </h3>
         <div class="alert alert-warning">{{ __('The items that are marked with an asterisk (\'*\') are required entries.') }}</div>
         {% if form.vars.value.uid == currentUser.uid %}
-            {# @todo see controller for notes about editing own account #}
-            <div class="alert alert-danger">{{ __('WARNING: You appear to be editing your OWN account.') }}</div>
+            <div class="alert alert-danger">{{ __('WARNING: You appear to be editing your OWN account. You will not be able to modify active status, some group memberships or delete yourself.') }}</div>
         {% endif %}
         {{ form_start(form) }}
         {{ form_errors(form) }}
