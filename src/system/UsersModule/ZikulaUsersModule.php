@@ -41,13 +41,4 @@ namespace {
     class Users_Constant extends Zikula\UsersModule\Constant
     {
     }
-
-    /**
-     * hash method helpers
-     *
-     * @deprecated since 1.4.0 use \Zikula\UsersModule\Helper\HashMethodListHelper instead
-     */
-    class Users_Helper_HasMethodList extends \Zikula\UsersModule\Helper\HashMethodListHelper
-    {
-    }
 }
