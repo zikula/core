@@ -36,11 +36,6 @@ class RegistrationType extends AbstractType
     private $zAuthModVars;
 
     /**
-     * @var array
-     */
-    private $usersModVars;
-
-    /**
      * RegistrationType constructor.
      * @param TranslatorInterface $translator
      * @param VariableApi $variableApi
@@ -48,7 +43,6 @@ class RegistrationType extends AbstractType
     public function __construct(TranslatorInterface $translator, VariableApi $variableApi)
     {
         $this->translator = $translator;
-        $this->usersModVars = $variableApi->getAll('ZikulaUsersModule');
         $this->zAuthModVars = $variableApi->getAll('ZikulaZAuthModule');
     }
 
@@ -129,7 +123,7 @@ class RegistrationType extends AbstractType
         $resolver->setDefaults([
             'passwordReminderEnabled' => $this->zAuthModVars[ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED],
             'passwordReminderMandatory' => $this->zAuthModVars[ZAuthConstant::MODVAR_PASSWORD_REMINDER_MANDATORY],
-            'antiSpamQuestion' => $this->usersModVars[ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION],
+            'antiSpamQuestion' => $this->zAuthModVars[ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION],
         ]);
     }
 }
