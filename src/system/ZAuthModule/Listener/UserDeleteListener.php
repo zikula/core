@@ -24,6 +24,9 @@ class UserDeleteListener implements EventSubscriberInterface
      */
     private $mappingRepository;
 
+    /**
+     * @var UserVerificationRepositoryInterface
+     */
     private $verificationRepository;
 
     /**

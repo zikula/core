@@ -36,3 +36,8 @@ With passwords, security should be an immediate concern of any site admin. The p
 process and many systems have been provided to block attacks attempting to gain access to user data. The advantage of
 the new UsersModule is that ALL of this can be provided by external systems like Google or Facebook (via OAuth) and
 therefore relieve the Zikula site admin of the responsibility of password security.
+
+Events
+------
+
+See the `Events/AccessUserAndRegistrationEvents.md` document for more information on User and Registration related events.

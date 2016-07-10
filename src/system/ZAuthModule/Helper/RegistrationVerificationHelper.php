@@ -11,8 +11,6 @@
 namespace Zikula\ZAuthModule\Helper;
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Api\CurrentUserApi;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
@@ -22,8 +20,6 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 class RegistrationVerificationHelper
 {
-    use TranslatorTrait;
-
     /**
      * @var PermissionApi
      */
@@ -50,10 +46,9 @@ class RegistrationVerificationHelper
     private $userRepository;
 
     /**
-     * RegistrationHelper constructor.
+     * RegistrationVerificationHelper constructor.
      * @param PermissionApi $permissionApi
      * @param UserVerificationRepositoryInterface $userVerificationRepository
-     * @param TranslatorInterface $translator
      * @param MailHelper $mailHelper
      * @param CurrentUserApi $currentUserApi
      * @param UserRepositoryInterface $userRepository
@@ -61,22 +56,15 @@ class RegistrationVerificationHelper
     public function __construct(
         PermissionApi $permissionApi,
         UserVerificationRepositoryInterface $userVerificationRepository,
-        TranslatorInterface $translator,
         MailHelper $mailHelper,
         CurrentUserApi $currentUserApi,
         UserRepositoryInterface $userRepository
     ) {
         $this->permissionApi = $permissionApi;
         $this->userVerificationRepository = $userVerificationRepository;
-        $this->setTranslator($translator);
         $this->mailHelper = $mailHelper;
         $this->currentUserApi = $currentUserApi;
         $this->userRepository = $userRepository;
-    }
-
-    public function setTranslator($translator)
-    {
-        $this->translator = $translator;
     }
 
     /**

@@ -25,6 +25,8 @@ use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Api\CurrentUserApi;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\RegistrationEvents;
+use Zikula\UsersModule\UserEvents;
 use Zikula\UsersModule\Validator\Constraints\ValidEmail;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
@@ -251,7 +253,7 @@ class FileIOHelper
             }
             $this->entityManager->persist($user);
             $this->entityManager->flush();
-            $eventName = $importValue['activated'] ? 'user.account.create' : 'user.registration.create';
+            $eventName = $importValue['activated'] ? UserEvents::CREATE_ACCOUNT : RegistrationEvents::CREATE_REGISTRATION;
             $this->eventDispatcher->dispatch($eventName, new GenericEvent($user));
             $importValues[$k]['unHashedPass'] = $unHashedPass;
         }
