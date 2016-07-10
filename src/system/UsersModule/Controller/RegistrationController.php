@@ -182,7 +182,6 @@ class RegistrationController extends AbstractController
 
         return $this->render($templateName, [
             'form' => $form->createView(),
-            'modvars' => $this->getVars()
         ]);
     }
 

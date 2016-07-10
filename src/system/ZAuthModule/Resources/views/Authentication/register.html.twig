@@ -13,7 +13,7 @@
 
 {% if getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED')) %}
     <p class="alert alert-info">{{ __('Before you will be able to log in, you must verify your e-mail address. You will receive an e-mail asking to verify your e-mail address after submitting the information below.') }}
-{% elseif modvars.moderation %}
+{% elseif getModVar('ZikulaUsersModule', constant('Zikula\\UsersModule\\Constant::MODVAR_REGISTRATION_APPROVAL_REQUIRED')) %}
     <p class="alert alert-info">{{ __('Before you will be able to log in, an administrator must approve your registration request. You will receive an e-mail after an administrator has reviewed the information you submit below.') }}</p>
 {% endif %}
 
@@ -29,9 +29,10 @@
     </fieldset>
     <fieldset>
         <legend>{{ __('Set a password') }}</legend>
-        {{ form_row(form.pass, {'help': __f('The minimum length for user passwords is %sub% characters.', {"%sub%": modvars.minpass})}) }}
+        {{ form_row(form.pass, {'help': __f('The minimum length for user passwords is %sub% characters.', {"%sub%": getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH'))} )}) }}
         <div id="{{ form.vars.id }}_passmeter" class="col-sm-offset-3 col-sm-9"></div>
-        {% if modvars.password_reminder_enabled is defined and modvars.password_reminder_enabled %}
+        {% set passReminderEnabled = getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED')) %}
+        {% if passReminderEnabled is defined and passReminderEnabled %}
             {{ form_row(form.passreminder) }}
         {% endif %}
     </fieldset>
@@ -56,7 +57,7 @@
     </fieldset>
     {% endif %}
 
-    {% if modvars.reg_question is not empty %}
+    {% if getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION')) is not empty %}
     <fieldset>
         <legend>{{ __('Answer the security question') }}</legend>
         {{ form_row(form.antispamanswer) }}
@@ -70,7 +71,7 @@
         </div>
     </div>
 {{ form_end(form) }}
-{% if modvars.use_password_strength_meter %}
+{% if getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED')) %}
 {{ pageAddAsset('javascript', zasset('@ZikulaZAuthModule:js/Zikula.ZAuth.PassMeter.js')) }}
 <script type="text/javascript">
     (function($) {
