@@ -1063,7 +1063,7 @@ class UserUtil
                 throw new \InvalidArgumentException(__('Invalid arguments array received'));
             }
         } else {
-            $hashAlgorithmName = ModUtil::getVar('ZikulaUsersModule', 'hash_method', '');
+            $hashAlgorithmName = ModUtil::getVar('ZikulaZAuthModule', ZAuthConstant::MODVAR_HASH_METHOD, '');
             $hashMethodCode = self::getPasswordHashMethodCode($hashAlgorithmName);
             if (!$hashMethodCode) {
                 throw new \InvalidArgumentException(__('Invalid arguments array received'));
