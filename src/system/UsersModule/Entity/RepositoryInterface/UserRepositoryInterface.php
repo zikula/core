@@ -10,10 +10,10 @@
 
 namespace Zikula\UsersModule\Entity\RepositoryInterface;
 
-use Zikula\UsersModule\Entity\UserEntity;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Zikula\UsersModule\Entity\UserEntity;
 
 interface UserRepositoryInterface extends ObjectRepository, Selectable
 {

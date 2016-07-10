@@ -16,11 +16,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\UsersModule\Validator\Constraints\ValidUname;
 use Zikula\ZAuthModule\Validator\Constraints\ValidAntiSpamAnswer;
 use Zikula\ZAuthModule\Validator\Constraints\ValidEmail;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPasswordReminder;
-use Zikula\UsersModule\Validator\Constraints\ValidUname;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 class RegistrationType extends AbstractType

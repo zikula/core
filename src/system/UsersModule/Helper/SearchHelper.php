@@ -11,12 +11,12 @@
 namespace Zikula\UsersModule\Helper;
 
 use ModUtil;
-use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\UsersModule\Entity\UserEntity;
-use ZLanguage;
 use Zikula\Core\ModUrl;
+use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\SearchModule\AbstractSearchable;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Entity\UserEntity;
+use ZLanguage;
 
 class SearchHelper extends AbstractSearchable
 {

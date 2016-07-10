@@ -10,10 +10,10 @@
 
 namespace Zikula\ZAuthModule\Entity\Repository;
 
-use Zikula\Core\Doctrine\WhereFromFilterTrait;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Zikula\Core\Doctrine\WhereFromFilterTrait;
 use Zikula\OAuthModule\Entity\MappingEntity;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;

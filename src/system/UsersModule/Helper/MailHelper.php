@@ -15,8 +15,8 @@ use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\MailerModule\Api\MailerApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
-use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Entity\UserEntity;
 
 class MailHelper
 {

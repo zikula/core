@@ -10,14 +10,14 @@
 
 namespace Zikula\UsersModule\Entity\Repository;
 
-use Zikula\Core\Doctrine\WhereFromFilterTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Zikula\Core\Doctrine\WhereFromFilterTrait;
+use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
-use Zikula\UsersModule\Constant as UsersConstant;
 
 class UserRepository extends EntityRepository implements UserRepositoryInterface
 {
