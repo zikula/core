@@ -1063,7 +1063,7 @@ class UserUtil
                 throw new \InvalidArgumentException(__('Invalid arguments array received'));
             }
         } else {
-            $hashAlgorithmName = ModUtil::getVar('ZikulaZAuthModule', ZAuthConstant::MODVAR_HASH_METHOD, '');
+            $hashAlgorithmName = ModUtil::getVar('ZikulaZAuthModule', ZAuthConstant::MODVAR_HASH_METHOD, ZAuthConstant::DEFAULT_HASH_METHOD);
             $hashMethodCode = self::getPasswordHashMethodCode($hashAlgorithmName);
             if (!$hashMethodCode) {
                 throw new \InvalidArgumentException(__('Invalid arguments array received'));
@@ -1086,7 +1086,7 @@ class UserUtil
      */
     public static function generatePassword()
     {
-        $minLength = ModUtil::getVar('ZikulaUsersModule', 'minpass', 5);
+        $minLength = ModUtil::getVar('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH);
         if (!is_numeric($minLength) || ((int)$minLength != $minLength) || ($minLength < 5)) {
             $minLength = 5;
         }
