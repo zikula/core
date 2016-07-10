@@ -1107,22 +1107,7 @@ class UserUtil
      */
     public static function setPassword($unhashedPassword, $uid = -1)
     {
-        $passwordChanged = false;
-
-        // If uid is not -1 (specifies someone other than the current user) then make sure the current user
-        // is allowed to do that.
-
-        if (self::validatePassword($unhashedPassword)) {
-            $hashedPassword = self::getHashedPassword($unhashedPassword);
-
-            if ($hashedPassword) {
-                // TODO - Important! This needs to be an atomic change to the database. If pass is changed without hash_method, then the user will not be able to log in!
-                $passwordChanged = self::setVar('pass', $hashedPassword, $uid);
-            }
-            // TODO - Should we force the change of passreminder here too? If the password is changing, certainly the existing reminder is no longer valid.
-        }
-
-        return $passwordChanged;
+        @trigger_error('This method is deprecated. Update the password via the entity instead.', E_USER_DEPRECATED);
     }
 
     /**
@@ -1173,7 +1158,7 @@ class UserUtil
      * @param string  $name The name of the variable.
      * @param integer $uid  The user to delete the variable for.
      *
-     * @return boolen true on success, false on failure
+     * @return boolean true on success, false on failure
      */
     public static function delVar($name, $uid = -1)
     {
@@ -1593,7 +1578,7 @@ class UserUtil
     /**
      * Determine if the record represented by the $uid is a registration or not.
      *
-     * @param numeric $uid The uid of the record in question.
+     * @param integer $uid The uid of the record in question.
      *
      * @throws InvalidArgumentException If the uid is not valid.
      *
