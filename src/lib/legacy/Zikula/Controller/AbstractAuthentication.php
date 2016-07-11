@@ -150,7 +150,7 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
                 'skipLoginFormFieldsPage' => $authenticationMethod->getSkipLoginFormFieldsPage() && $args['form_type'] === 'registration'
             ];
 
-            $view = new Zikula_View($this->serviceManager, 'ZikulaUsersModule', Zikula_View::CACHE_ENABLED);
+            $view = Zikula_View::getInstance('ZikulaUsersModule');
             $view->assign($templateVars);
 
             $templateName = "Authentication/AuthenticationMethodSelector/{$args['form_type']}/Base.tpl";

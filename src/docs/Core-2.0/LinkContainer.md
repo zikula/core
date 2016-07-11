@@ -2,7 +2,7 @@ LinkContainer
 =============
 
 The LinkContainer system is a method to store links that the extension can utilize in various User Interfaces.
-In conjunction with the smarty plugin `{modulelinks}` @todo replace with Twig plugin
+In conjunction with the twig function `{{ moduleLinks() }}`.
 
 The LinkContainer class must be a registered Symfony service (see below) that provides a LinkContainer
 back to the core. The class can actually be named anything and located anywhere as long as the proper FQ path is
@@ -23,3 +23,36 @@ type of link can be used. For example, a module could create a `bar` type of lin
 collect them and utilize them in the module.
 
 See the LinkContainerInterface and LinkContainerCollector for more information.
+
+General link array structure
+----------------------------
+
+Links in the module's LinkContainer should be and array structured like so:
+
+    [
+        'url'   => $this->router->generate('acmefoomodule_bar_baz'),
+        'text' => $this->translator->__('link text'),
+        'icon'  => 'user'
+    ]
+
+The `icon` parameter is the 'suffix' portion of a font-awesome icon identifier (the part after `fa-`).
+
+
+AccountLinks
+------------
+
+Account links should be structured exactly like the general structure for Core-2.0 compatibility. However, some
+backward compatibility for the icon is built in if required. If the icon value contains a dot (`.`) then the system
+will attempt to resolve the full value to an image file placed in the module's `Resources/public/images` directory.
+For example:
+
+    [
+        'url'   => $this->router->generate('acmefoomodule_bar_baz'),
+        'text' => $this->translator->__('link text'),
+        'icon'  => 'myimage.png'
+    ]
+
+will resolve the icon to `FooModule/Resources/public/images/myimage.png` and render a standard `img` element. 
+Unfortunately, this will not work for non-1.4+ (bundle-based) modules, which will only display a text link.
+
+Note that in previous versions, the AccountApi used 'title' as the array key and not 'text'. 

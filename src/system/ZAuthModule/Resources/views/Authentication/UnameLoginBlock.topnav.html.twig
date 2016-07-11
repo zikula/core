@@ -1,0 +1,39 @@
+{% form_theme form with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{# every login form must implement this event and hook call #}
+{% set eventDatas = dispatchEvent(constant('Zikula\\UsersModule\\AccessEvents::LOGIN_FORM')) %}
+{% set hooks = notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::LOGIN_FORM')) %}
+{% if eventDatas is not empty or hooks is not empty %}
+    <a href="{{ path('zikulausersmodule_access_login') }}" class="btn btn-default navbar-btn">{{ __('Login') }}</a>
+{% else %}
+    {{ polyfill() }}
+    {{ form_start(form, { 'attr': {'class': 'navbar-form navbar-right'} }) }}
+    {{ form_errors(form) }}
+    {{ form_widget(form.uname) }}
+    {{ form_widget(form.pass) }}
+
+    <div class="btn-group navbar-btn btn-group-sm">
+        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">{{ __('Toggle Dropdown') }}</span>
+        </button>
+        {{ form_widget(form.submit) }}
+        <ul class="dropdown-menu">
+            {% if getModVar('ZConfig', 'seclevel') == 'high' %}
+                {{ form_row(form.rememberme, { 'attr': {'class': 'hidden-row'} }) }}
+            {% else %}
+                <li style="padding-left: 20px;">{{ form_row(form.rememberme) }}</li>
+            {% endif %}
+            <li><a href="{{ path('zikulausersmodule_access_login') }}">{{ __('Log in page') }}</a></li>
+            <li><a href="{{ path('zikulausersmodule_registration_register') }}">{{ __('Create new account') }}</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="{{ path('zikulazauthmodule_account_lostusername') }}">{{ __('Recover lost username') }}</a></li>
+            <li><a href="{{ path('zikulazauthmodule_account_lostpassword') }}">{{ __('Recover lost password') }}</a></li>
+            <li><a href="{{ path('zikulazauthmodule_account_confirmationcode') }}">{{ __('Enter recovery code') }}</a></li>
+        </ul>
+    </div>
+
+    {{ form_end(form) }}
+{% endif %}

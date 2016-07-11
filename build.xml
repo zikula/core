@@ -58,14 +58,10 @@
     system/ThemeModule/Resources/public/js/ZikulaThemeModule.Admin.View.js,
     system/ThemeModule/Resources/public/js/themeswitcher.js,
     system/UsersModule/Resources/public/js/Zikula.Users.Admin.Config.js,
-    system/UsersModule/Resources/public/js/Zikula.Users.Admin.Modify.js,
     system/UsersModule/Resources/public/js/Zikula.Users.Admin.View.js,
-    system/UsersModule/Resources/public/js/Zikula.Users.Common.UserValidation.js,
-    system/UsersModule/Resources/public/js/Zikula.Users.Login.js,
-    system/UsersModule/Resources/public/js/Zikula.Users.LoginBlock.js,
-    system/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js,
     system/UsersModule/Resources/public/js/Zikula.Users.Util.CapsLock.js,
-    system/UsersModule/Resources/public/js/ZikulaUsersModule.Admin.MailUsers.js"/>
+    system/UsersModule/Resources/public/js/ZikulaUsersModule.Admin.SearchResults.js,
+    system/ZAuthModule/Resources/public/js/Zikula.Users.PassMeter.js"/>
 
 
     <!-- need a second property since phpdoc doesn't respect wildcard patterns -->

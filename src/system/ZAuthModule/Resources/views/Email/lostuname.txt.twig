@@ -1,0 +1,13 @@
+{{ __('Hello!') }}
+
+{% if requestedByAdmin %}
+    {{ __f('The administrator at %sub% requested that you receive your user name via e-mail.', {"%sub%": getModVar('ZConfig', 'sitename')}) }}
+{% else %}
+    {{ __f('Someone with the IP address %1$s has just requested the account information at %2$s associated with this e-mail address.', {"%1$s": app.request.server.get('REMOTE_ADDR'), "%2$s": getModVar('ZConfig', 'sitename')}) }}
+{% endif %}
+
+{{ __f('The user name for your account is: %1s', {"%sub%": uname}) }}
+
+{% if not requestedByAdmin %}{{ __('If the request was not made by you then you don\'t need to take any action.') }} {% endif %}
+{{ __('You are the only recipient of this message, and your user name has not been sent to any other e-mail address.') }}
+{% if not requestedByAdmin %} {{ __('You can just delete this message.') }}{% endif %}

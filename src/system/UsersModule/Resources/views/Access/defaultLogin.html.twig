@@ -1,0 +1,32 @@
+{% form_theme form with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ polyfill() }}
+
+{{ moduleHeader('user', __('Login'), '', true) }}
+
+{{ form_start(form) }}
+{{ form_errors(form) }}
+
+    {{ form_row(form.rememberme) }}
+    {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\AccessEvents::LOGIN_FORM')) %}
+    {% for eventDisplay in eventData %}
+        {{ eventDisplay|raw }}
+    {% endfor %}
+
+    {% set hooks = notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::LOGIN_FORM')) %}
+    {% if hooks is iterable %}
+        {% for providerArea, hook in hooks %}
+            {{ hook }}
+            <div class="clearfix"></div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+            {{ form_widget(form.submit) }}
+            {{ form_widget(form.cancel) }}
+        </div>
+    </div>
+{{ form_end(form) }}

@@ -1,0 +1,15 @@
+<p>
+    {% set nummeb = _fn('%sub% registered user', '%sub% registered users', usercount, {"%sub%": usercount}, 'zikula') %}
+    {% set numanon = _fn('%sub% anonymous guest', '%sub% anonymous guests', guestcount, {"%sub%": guestcount}, 'zikula') %}
+    {{ __f('%1$s and %2$s online since %time.', {'%1$s': nummeb, '%2$s': numanon, '%time': since|date('g:i:s a')}, 'zikula') }}
+</p>
+{% if currentUser.loggedIn %}
+    <p>{{ __f('You are logged-in as <strong>%sub%</strong>.', {"%sub%": currentUser.uname}, 'zikula')|raw }}</p>
+{% else %}
+    {% set url = path('zikulausersmodule_registration_register') %}
+    <p>{{ __('You are an anonymous guest.', 'zikula') }}
+    {% if registerallowed == 1 %}
+    {{ __f('You can <a href=%sub%>register here</a>.', {"%sub%": url}, 'zikula')|raw }}
+    {% endif %}
+    </p>
+{% endif %}

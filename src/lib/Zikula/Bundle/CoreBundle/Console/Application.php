@@ -110,7 +110,7 @@ class Application extends BaseApplication
         }
 
         // login / impersonate now
-        \UserUtil::setUserByUid($adminId);
+        $this->kernel->getContainer()->get('session')->set('uid', $adminId);
 
         // check if it worked
         if (!\UserUtil::isLoggedIn()) {

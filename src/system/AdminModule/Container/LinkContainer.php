@@ -114,8 +114,8 @@ class LinkContainer implements LinkContainerInterface
         if ($this->permissionApi->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikulaadminmodule_admin_adminpanel'),
-                'title' => $this->translator->__('Administration panel'),
-                'icon' => 'admin.png' // wrench
+                'text' => $this->translator->__('Administration panel'),
+                'icon' => 'wrench'
             ];
         }
 

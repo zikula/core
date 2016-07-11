@@ -24,6 +24,7 @@ use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\Core\CoreEvents;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
  * Class AjaxInstallController
@@ -44,6 +45,7 @@ class AjaxInstallController extends AbstractController
         'ZikulaGroupsModule',
         'ZikulaBlocksModule',
         'ZikulaUsersModule',
+        'ZikulaZAuthModule',
         'ZikulaSecurityCenterModule',
         'ZikulaCategoriesModule',
         'ZikulaMailerModule',
@@ -93,6 +95,8 @@ class AjaxInstallController extends AbstractController
                 return $this->installModule('ZikulaBlocksModule');
             case "users":
                 return $this->installModule('ZikulaUsersModule');
+            case "zauth":
+                return $this->installModule('ZikulaZAuthModule');
             case "security":
                 return $this->installModule('ZikulaSecurityCenterModule');
             case "categories":
@@ -206,6 +210,7 @@ class AjaxInstallController extends AbstractController
             'ZikulaGroupsModule' => __('Users'),
             'ZikulaBlocksModule' => __('Layout'),
             'ZikulaUsersModule' => __('Users'),
+            'ZikulaZAuthModule' => __('Users'),
             'ZikulaThemeModule' => __('Layout'),
             'ZikulaSecurityCenterModule' => __('Security'),
             'ZikulaCategoriesModule' => __('Content'),
@@ -249,8 +254,10 @@ class AjaxInstallController extends AbstractController
         $em = $this->container->get('doctrine.entitymanager');
         $params = $this->decodeParameters($this->yamlManager->getParameters());
 
+        // @todo this must be updated to use ZAuth
+
         // create the password hash
-        $password = \UserUtil::getHashedPassword($params['password'], \UserUtil::getPasswordHashMethodCode(UsersConstant::DEFAULT_HASH_METHOD));
+        $password = \UserUtil::getHashedPassword($params['password'], \UserUtil::getPasswordHashMethodCode(ZAuthConstant::DEFAULT_HASH_METHOD));
 
         // prepare the data
         $username = mb_strtolower($params['username']);
@@ -279,21 +286,11 @@ class AjaxInstallController extends AbstractController
      */
     public function loginAdmin()
     {
-        $this->container->get('session')->start();
         $params = $this->decodeParameters($this->yamlManager->getParameters());
+        $user = $this->container->get('zikula_users_module.user_repository')->findOneBy(['uname' => $params['username']]);
+        $this->container->get('zikula_users_module.helper.access_helper')->login($user);
 
-        // login as admin using provided credentials
-        $authenticationInfo = [
-            'login_id'  => $params['username'],
-            'pass'      => $params['password']
-        ];
-        $authenticationMethod = [
-            'modname'   => 'ZikulaUsersModule',
-            'method'    => 'uname',
-        ];
-        $loggedIn = \UserUtil::loginUsing($authenticationMethod, $authenticationInfo);
-
-        return (bool) $loggedIn;
+        return true;
     }
 
     private function finalizeParameters()

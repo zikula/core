@@ -1,0 +1,100 @@
+{% form_theme form with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ polyfill() }}
+
+{{ adminHeader() }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-wrench"></span>
+            {{ __('Settings') }}
+        </h3>
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <fieldset>
+            <legend>{{ __('General Settings') }}</legend>
+            {{ form_row(form[constant('MODVAR_ANONYMOUS_DISPLAY_NAME', UC)]) }}
+            {{ form_row(form[constant('MODVAR_ITEMS_PER_PAGE', UC)]) }}
+            {{ form_row(form[constant('MODVAR_AVATAR_IMAGE_PATH', UC)]) }}
+            {{ form_row(form[constant('MODVAR_GRAVATARS_ENABLED', UC)]) }}
+            {{ form_row(form[constant('MODVAR_GRAVATAR_IMAGE', UC)]) }}
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Account Page Settings') }}</legend>
+            {{ form_row(form[constant('MODVAR_ACCOUNT_DISPLAY_GRAPHICS', UC)]) }}
+            {{ form_row(form[constant('MODVAR_ACCOUNT_PAGE_IMAGE_PATH', UC)]) }}
+            {{ form_row(form[constant('MODVAR_ACCOUNT_ITEMS_PER_PAGE', UC)]) }}
+            {{ form_row(form[constant('MODVAR_ACCOUNT_ITEMS_PER_ROW', UC)]) }}
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Registration Settings') }}</legend>
+            {{ form_row(form[constant('MODVAR_REGISTRATION_ENABLED', UC)]) }}
+            <div id="registration_disabled_reason" class="collapse in">
+                {{ form_row(form[constant('MODVAR_REGISTRATION_DISABLED_REASON', UC)]) }}
+            </div>
+            {{ form_row(form[constant('MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL', UC)]) }}
+            {{ form_row(form[constant('MODVAR_REGISTRATION_APPROVAL_REQUIRED', UC)]) }}
+            <div id="{{ form[constant('MODVAR_REGISTRATION_AUTO_LOGIN', UC)].vars.id }}_wrap" class="collapse in">
+                {{ form_row(form[constant('MODVAR_REGISTRATION_AUTO_LOGIN', UC)]) }}
+            </div>
+            {{ form_row(form[constant('MODVAR_REGISTRATION_ILLEGAL_UNAMES', UC)]) }}
+            {{ form_row(form[constant('MODVAR_REGISTRATION_ILLEGAL_AGENTS', UC)]) }}
+            {{ form_row(form[constant('MODVAR_REGISTRATION_ILLEGAL_DOMAINS', UC)]) }}
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('User Login Settings') }}</legend>
+            {{ form_row(form[constant('MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS', UC)]) }}
+            {{ form_row(form[constant('MODVAR_LOGIN_DISPLAY_VERIFY_STATUS', UC)]) }}
+            {{ form_row(form[constant('MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS', UC)]) }}
+        </fieldset>
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.save) }}
+                {{ form_widget(form.cancel) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+</div>
+{{ adminFooter() }}
+<script type="text/javascript">
+    (function($) {
+        /**
+         * show|hide moderation-related form elements based on selections within the form.
+         */
+        function toggleModerationItemsDisplay()
+        {
+            var autoLoginWrap = $('#{{ form[constant('MODVAR_REGISTRATION_AUTO_LOGIN', UC)].vars.id }}_wrap');
+            var isModerated = $('#{{ form[constant('MODVAR_REGISTRATION_APPROVAL_REQUIRED', UC)].vars.id }}').is(':checked');
+            if (isModerated == true) {
+                autoLoginWrap.collapse('hide');
+            } else {
+                autoLoginWrap.collapse('show');
+            }
+        }
+        /**
+         * show|hide the registration disabled notice based on enabled value
+         */
+        function toggleRegistrationDisabledDisplay()
+        {
+            if ($('#{{ form[constant('MODVAR_REGISTRATION_ENABLED', UC)].vars.id }}').is(':checked')) {
+                $('#registration_disabled_reason').collapse('hide');
+            } else {
+                $('#registration_disabled_reason').collapse('show');
+            }
+        }
+        $(document).ready(function() {
+            // set up event handlers
+            $('#{{ form[constant('MODVAR_REGISTRATION_ENABLED', UC)].vars.id }}').on('click', toggleRegistrationDisabledDisplay);
+            $('.registration-moderation-input').on('click', toggleModerationItemsDisplay);
+            // initialize form - show|hide appropriate inputs
+            toggleRegistrationDisabledDisplay();
+            toggleModerationItemsDisplay();
+        });
+    })(jQuery);
+</script>

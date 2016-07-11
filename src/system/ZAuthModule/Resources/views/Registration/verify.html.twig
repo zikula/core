@@ -1,0 +1,42 @@
+{% form_theme form with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ polyfill() }}
+{{ moduleHeader('user', __('Account verification'), '', true) }}
+{{ form_start(form) }}
+{{ form_errors(form) }}
+    <fieldset>
+        <legend>{{ __('Verification code') }}</legend>
+        {{ form_row(form.uname) }}
+        {{ form_row(form.verifycode) }}
+    </fieldset>
+    {% if form.children.pass is defined %}
+        <fieldset>
+            <legend>{{ __('Create a password') }}</legend>
+            {{ form_row(form.pass) }}
+            <div id="{{ form.vars.id }}_passmeter" class="col-sm-offset-3 col-sm-9"></div>
+            {% if form.children.passreminder is defined %}
+                {{ form_row(form.passreminder) }}
+            {% endif %}
+        </fieldset>
+    {% endif %}
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+            {{ form_widget(form.submit) }}
+        </div>
+    </div>
+{{ form_end(form) }}
+{% if modvars.use_password_strength_meter and form.pass|default %}
+{{ pageAddAsset('javascript', zasset('@ZikulaZAuthModule:js/Zikula.ZAuth.PassMeter.js')) }}
+<script type="text/javascript">
+    (function($) {
+        $(document).ready(function() {
+            ZikulaZAuthPassMeter.init('{{ form.pass.vars.id }}_first', '{{ form.vars.id }}_passmeter', {
+                username: '{{ form.uname.vars.id }}',
+                minLength: '{{ getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH') }}'
+            });
+        });
+    })(jQuery);
+</script>
+{% endif %}

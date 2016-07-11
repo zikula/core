@@ -1155,7 +1155,7 @@ class AdminApi extends \Zikula_AbstractApi
         $newmods = $this->listmodules(['state' => ModUtil::STATE_UPGRADED]);
         if (isset($newmods) && is_array($newmods) && !empty($newmods)) {
             // Sort upgrade order according to this list.
-            $priorities = ['ZikulaExtensionsModule', 'ZikulaUsersModule', 'ZikulaGroupsModule', 'ZikulaPermissionsModule', 'ZikulaAdminModule', 'ZikulaBlocksModule', 'ZikulaThemeModule', 'ZikulaSettingsModule', 'ZikulaCategoriesModule', 'ZikulaSecurityCenterModule', 'ZikulaRoutesModule'];
+            $priorities = ['ZikulaExtensionsModule', 'ZikulaUsersModule', 'ZikulaZAuthModule', 'ZikulaGroupsModule', 'ZikulaPermissionsModule', 'ZikulaAdminModule', 'ZikulaBlocksModule', 'ZikulaThemeModule', 'ZikulaSettingsModule', 'ZikulaCategoriesModule', 'ZikulaSecurityCenterModule', 'ZikulaRoutesModule'];
             $sortedList = [];
             foreach ($priorities as $priority) {
                 foreach ($newmods as $key => $modinfo) {

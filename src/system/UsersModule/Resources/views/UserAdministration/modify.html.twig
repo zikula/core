@@ -1,0 +1,62 @@
+{% form_theme form with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ polyfill() }}
+
+{{ adminHeader() }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-plus"></span>
+            {{ __f('Edit user account of %uname', {'%uname': form.vars.value.uname}) }}
+        </h3>
+        <div class="alert alert-warning">{{ __('The items that are marked with an asterisk (\'*\') are required entries.') }}</div>
+        {% if form.vars.value.uid == currentUser.uid %}
+            <div class="alert alert-danger">{{ __('WARNING: You appear to be editing your OWN account. You will not be able to modify active status, some group memberships or delete yourself.') }}</div>
+        {% endif %}
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <fieldset>
+            <legend>{{ __('Account information') }}</legend>
+            {{ form_row(form.activated) }}
+            <div class="alert alert-info col-sm-offset-3 col-sm-9">{{ __('Setting a user theme is no longer available.') }}</div>
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Group membership') }}</legend>
+            <table class="table table-bordered table-striped">
+                <thead><tr><th>{{ __('Group') }}</th><th>{{ __('Member') }}</th></tr></thead>
+                <tbody>
+                {% for group in form.groups %}
+                    <tr><td>{{ group.vars.label }}</td><td>{{ form_widget(group) }}</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </fieldset>
+        {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\UserEvents::MODIFY_FORM'), null, form.vars.value, {'id': form.vars.value.uid}) %}
+        {% for data in eventData %}
+            {{ data }}
+        {% endfor %}
+        {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::EDIT_FORM')) }}
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.submit) }}
+                {{ form_widget(form.cancel) }}
+            </div>
+        </div>
+
+        <fieldset>
+            <legend>
+                <i class="fa fa-cog"></i> {{ __f('Other actions for %s', {'%s': form.vars.value.uname}) }}
+            </legend>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <a class="btn btn-danger" href="{{ path('zikulausersmodule_useradministration_delete', {'user': form.vars.value.uid}) }}"><i class="fa fa-trash-o"></i> {{ __('Delete user account') }}</a>
+                </div>
+            </div>
+        </fieldset>
+        {{ form_end(form) }}
+    </div>
+</div>
+{{ adminFooter() }}

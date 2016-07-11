@@ -1,0 +1,16 @@
+{% for mapping in mappings %}
+    <tr>
+        <td>{{ mapping.uname }}</td>
+        <td>{{ mapping.email }}</td>
+        <td>{% if mapping.verifiedEmail %}<i class="fa fa-check text-success"></i>{% else %}<i class="fa fa-times text-danger"></i>{% endif %}</td>
+        <td>{{ mapping.uid }}</td>
+        <td>{{ mapping.method }}</td>
+        <td class="actions">
+            {% for action in actionsHelper.user(mapping) %}
+                <a class="fa fa-fw fa-{{ action.icon }} tooltips" href="{{ action.url }}" title="{{ action.text }}"></a>
+            {% endfor %}
+        </td>
+    </tr>
+{% else %}
+    <tr class="info"><td colspan="7" class="text-center">{{ __('No records found.') }}</td></tr>
+{% endfor %}
