@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the Zikula package.
  *
  * Copyright Zikula Foundation - http://zikula.org/
