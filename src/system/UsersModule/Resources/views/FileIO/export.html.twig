@@ -1,0 +1,33 @@
+{% form_theme form with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ adminHeader() }}
+<h3>
+    <span class="fa fa-download"></span>
+    {{ __('Export users') }}
+</h3>
+
+{{ form_start(form) }}
+{{ form_errors(form) }}
+<fieldset>
+    <legend>{{ __('Export options') }}</legend>
+    {{ form_row(form.title) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.user_regdate) }}
+    {{ form_row(form.lastlogin) }}
+    {{ form_row(form.groups) }}
+</fieldset>
+<fieldset>
+    <legend>{{ __('File options') }}</legend>
+    {{ form_row(form.filename) }}
+    {{ form_row(form.delimiter) }}
+</fieldset>
+<div class="form-group">
+    <div class="col-sm-offset-3 col-sm-9">
+        {{ form_widget(form.download) }}
+        {{ form_widget(form.cancel) }}
+    </div>
+</div>
+{{ form_end(form) }}
+{{ adminFooter() }}

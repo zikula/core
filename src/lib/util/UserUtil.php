@@ -9,12 +9,10 @@
  */
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Event\GenericEvent;
-use Zikula\Core\Exception\ExtensionNotAvailableException;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
  * UserUtil
@@ -159,25 +157,6 @@ class UserUtil
         }
 
         return $list;
-    }
-
-    /**
-     * Return a (string) list of user-ids which can then be used in a SQL 'IN (...)' clause.
-     *
-     * @param string $where     The where clause to use (optional).
-     * @param string $orderBy   The order by clause to use (optional).
-     * @param string $separator The field separator to use (default=",") (optional).
-     *
-     * @deprecated since 1.3.0
-     * @see    UserUtil::getUserIdList()
-     *
-     * @return string A string list of user ids.
-     */
-    public static function getPNUserIdList($where = '', $orderBy = '', $separator = ',')
-    {
-        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', [__METHOD__, 'UserUtil::getUserIdList']), E_USER_DEPRECATED);
-
-        return self::getUserIdList($where, $orderBy, $separator);
     }
 
     /**
@@ -455,522 +434,6 @@ class UserUtil
     }
 
     /**
-     * Login.
-     *
-     * @param string  $loginID             Login Id.
-     * @param string  $userEnteredPassword The Password.
-     * @param boolean $rememberme          Whether or not to remember login.
-     * @param boolean $checkPassword       Whether or not to check the password.
-     *
-     * @deprecated since 1.3.0
-     * @see        UserUtil::loginUsing()
-     *
-     * @return boolean
-     */
-    public static function login($loginID, $userEnteredPassword, $rememberme = false, $checkPassword = true)
-    {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', [__METHOD__, 'UserUtil::loginUsing()']), E_USER_DEPRECATED);
-
-        $authenticationInfo = [
-            'login_id' => $loginID,
-            'pass'     => $userEnteredPassword,
-        ];
-        $authenticationMethod = [
-            'modname'   => 'ZikulaUsersModule',
-        ];
-
-        if (ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_LOGIN_METHOD, UsersConstant::DEFAULT_LOGIN_METHOD) == UsersConstant::LOGIN_METHOD_EMAIL) {
-            $authenticationMethod['method'] = 'email';
-        } else {
-            $authenticationMethod['method'] = 'uname';
-        }
-
-        return self::loginUsing($authenticationMethod, $authenticationInfo, $rememberme, null, $checkPassword);
-    }
-
-    /**
-     * Validation method previous authentication.
-     *
-     * @param array  $authenticationMethod Auth method.
-     * @param string $reentrantURL         Reentrant URL (optional).
-     *
-     * @return true
-     *
-     * @throws InvalidArgumentException|ExtensionNotAvailableException|MethodNotAllowedHttpException
-     */
-    private static function preAuthenticationValidation(array $authenticationMethod, $reentrantURL = null)
-    {
-        if (empty($authenticationMethod) || (count($authenticationMethod) != 2)) {
-            throw new \InvalidArgumentException(__f('An invalid %1$s parameter was received.', ['authenticationMethod']));
-        }
-
-        if (!isset($authenticationMethod['modname']) || !is_string($authenticationMethod['modname']) || empty($authenticationMethod['modname'])) {
-            throw new \InvalidArgumentException(__f('An invalid %1$s parameter was received.', ['modname']));
-        } elseif (!ModUtil::getInfoFromName($authenticationMethod['modname'])) {
-            throw new \InvalidArgumentException(__f('The authentication module \'%1$s\' could not be found.', [$authenticationMethod['modname']]));
-        } elseif (!ModUtil::available($authenticationMethod['modname'])) {
-            throw new ExtensionNotAvailableException(__f('The authentication module \'%1$s\' is not available.', [$authenticationMethod['modname']]));
-        } elseif (!ModUtil::loadApi($authenticationMethod['modname'], 'Authentication')) {
-            throw new ExtensionNotAvailableException(__f('The authentication module \'%1$s\' could not be loaded.', [$authenticationMethod['modname']]));
-        }
-
-        if (!isset($authenticationMethod['method']) || !is_string($authenticationMethod['method']) || empty($authenticationMethod['method'])) {
-            throw new \InvalidArgumentException(__f('An invalid %1$s parameter was received.', ['method']));
-        } elseif (!ModUtil::apiFunc($authenticationMethod['modname'], 'Authentication', 'supportsAuthenticationMethod', ['method' => $authenticationMethod['method']], 'Zikula_Api_AbstractAuthentication')) {
-            throw new MethodNotAllowedHttpException(__f('The authentication method \'%1$s\' is not supported by the authentication module \'%2$s\'.', [$authenticationMethod['method'], $authenticationMethod['modname']]));
-        }
-
-        if (ModUtil::apiFunc($authenticationMethod['modname'], 'Authentication', 'isReentrant', null, 'Zikula_Api_AbstractAuthentication') && (!isset($reentrantURL) || empty($reentrantURL))) {
-            throw new \InvalidArgumentException(__f('The authentication module \'%1$s\' is reentrant. A %2$s is required.', [$authenticationMethod['modname'], 'reentrantURL']));
-        }
-
-        return true;
-    }
-
-    /**
-     * Authenticate a user's credentials against an authentication module, without any attempt to log the user in or look up a Zikula user account record.
-     *
-     * NOTE: Checking a password with an authentication method defined by the Users module is a special case.
-     * The password is stored along with the account information, therefore the account information has to be
-     * looked up by the checkPassword function in that module. Authentication modules other than the Users module should
-     * make no attempt to look up account information,
-     *
-     * This function is used to check that a user is who he says he is without any attempt to log the user into the
-     * Zikula system or look up his account information or status. It could be used, for example, to check the user's
-     * credentials prior to registering with an authentication method like OpenID or Google Federated Login.
-     *
-     * This function differs from {@link authenticateUserUsing()} in that it does not make any attempt to look up a Zikula account
-     * record for the user (nor should the authentication method specified).
-     *
-     * This function differs from {@link loginUsing()} in that it does not make any attempt to look up a Zikula account
-     * record for the user (nor should the authentication method specified), and additionally it makes no attempt to log the user into
-     * the Zikula system.
-     *
-     * ATTENTION: The authentication module function(s) called during this process may redirect the user to an external server
-     * to perform authorization and/or authentication. The function calling checkPasswordUsing must already have anticipated
-     * the reentrant nature of this process, must already have saved pertinent user state, must have supplied a
-     * reentrant URL pointing to a function that will handle reentry into the login process silently, and must clear
-     * any save user state immediately following the return of this function.
-     *
-     * @param array  $authenticationMethod Authentication module and method name.
-     * @param array  $authenticationInfo   Auth info array.
-     * @param string $reentrantURL         If the authentication module needs to redirect to an external authentication server (e.g., OpenID), then
-     *                                         this is the URL to return to in order to re-enter the log-in process. The pertinent user
-     *                                         state must have already been saved by the function calling checkPasswordUsing(), and the URL must
-     *                                         point to a Zikula_AbstractController function that is equipped to detect reentry, restore the
-     *                                         saved user state, and get the user back to the point where loginUsing is re-executed. This
-     *                                         is only optional if the authentication module identified by $authenticationMethod reports that it is not
-     *                                         reentrant (e.g., Users is guaranteed to not be reentrant).
-     *
-     * @return bool True if authentication info authenticates; otherwise false.
-     */
-    public static function checkPasswordUsing(array $authenticationMethod, array $authenticationInfo, $reentrantURL = null)
-    {
-        if (self::preAuthenticationValidation($authenticationMethod, $reentrantURL)) {
-            // Authenticate the loginID and userEnteredPassword against the specified authentication module.
-            // This should return the uid of the user logging in. Note that there are two routes here, both get a uid.
-            $checkPasswordArgs = [
-                'authentication_info'   => $authenticationInfo,
-                'authentication_method' => $authenticationMethod,
-                'reentrant_url'         => $reentrantURL,
-            ];
-
-            return ModUtil::apiFunc($authenticationMethod['modname'], 'Authentication', 'checkPassword', $checkPasswordArgs, 'Zikula_Api_AbstractAuthentication');
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Authenticate a user's credentials against an authentication module, without any attempt to log the user in.
-     *
-     * This function is used to check that a user is who he says he is, and that he has a valid user account with the
-     * Zikula system. No attempt is made to log the user in to the Zikula system. It could be used, for example, to check
-     * the user's credentials and Zikula system accoun status prior to performing a sensitive operation.
-     *
-     * This function differs from {@link checkPasswordUsing()} in that it attempts to look up a Zikula account
-     * record for the user, and takes the user's account status into account when returning a value.
-     *
-     * This function differs from {@link loginUsing()} in that it makes no attempt to log the user into the Zikula system.
-     *
-     * ATTENTION: The authentication module function(s) called during this process may redirect the user to an external server
-     * to perform authorization and/or authentication. The function calling authenticateUserUsing must already have anticipated
-     * the reentrant nature of this process, must already have saved pertinent user state, must have supplied a
-     * reentrant URL pointing to a function that will handle reentry into the login process silently, and must clear
-     * any save user state immediately following the return of this function.
-     *
-     * @param array  $authenticationMethod The name of the authentication module to use for authentication and the method name as defined by that module.
-     * @param array  $authenticationInfo   The information needed by the authentication module for authentication, typically a loginID and pass.
-     * @param string $reentrantURL         If the authentication module needs to redirect to an external authentication server (e.g., OpenID), then
-     *                                         this is the URL to return to in order to re-enter the log-in process. The pertinent user
-     *                                         state must have already been saved by the function calling authenticateUserUsing(), and the URL must
-     *                                         point to a Zikula_AbstractController function that is equipped to detect reentry, restore the
-     *                                         saved user state, and get the user back to the point where loginUsing is re-executed. This
-     *                                         is only optional if the authentication module identified by $authenticationMethod reports that it is not
-     *                                         reentrant (e.g., Users is guaranteed to not be reentrant).
-     *
-     * @return mixed Zikula uid if the authentication info authenticates with the authentication module; otherwise false.
-     */
-    private static function internalAuthenticateUserUsing(array $authenticationMethod, array $authenticationInfo, $reentrantURL = null)
-    {
-        $authenticatedUid = false;
-
-        if (self::preAuthenticationValidation($authenticationMethod, $reentrantURL)) {
-            $authenticateUserArgs = [
-                'authentication_info'   => $authenticationInfo,
-                'authentication_method' => $authenticationMethod,
-                'reentrant_url'         => $reentrantURL,
-            ];
-            $authenticatedUid = ModUtil::apiFunc($authenticationMethod['modname'], 'Authentication', 'authenticateUser', $authenticateUserArgs, 'Zikula_Api_AbstractAuthentication');
-        }
-
-        return $authenticatedUid;
-    }
-
-    private static function internalUserAccountValidation($uid, $reportErrors = false, $userObj = false)
-    {
-        if (!$uid || !is_numeric($uid) || ((int)$uid != $uid)) {
-            // We got something other than a uid from the authentication process.
-
-            if (!LogUtil::hasErrors() && $reportErrors) {
-                LogUtil::registerError(__('Sorry! Login failed. The information you provided was incorrect.'));
-            }
-        } else {
-            if (!$userObj) {
-                // Need to make sure the Users module stuff is loaded and available, especially if we are authenticating during
-                // an upgrade or install.
-                ModUtil::loadApi('ZikulaUsersModule', 'user', true);
-
-                // The user's credentials have authenticated with the authentication module's method, but
-                // now we have to check the account status itself. If the account status would not allow the
-                // user to log in, then we return false.
-                $userObj = self::getVars($uid);
-
-                if (!$userObj) {
-                    // Might be a registration
-                    $userObj = self::getVars($uid, false, 'uid', true);
-                }
-            }
-
-            if (!$userObj || !is_array($userObj)) {
-                // Note that we have not actually logged into anything yet, just authenticated.
-
-                throw new NotFoundHttpException(__f('A %1$s (%2$s) was returned by the authenticating module, but a user account record (or registration request record) could not be found.', ['uid', $uid]));
-            }
-
-            if (!isset($userObj['activated'])) {
-                // Provide a sane value.
-                $userObj['activated'] = UsersConstant::ACTIVATED_INACTIVE;
-            }
-
-            if ($userObj['activated'] != UsersConstant::ACTIVATED_ACTIVE) {
-                if ($reportErrors) {
-                    $displayVerifyPending = ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS);
-                    $displayApprovalPending = ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS);
-                    if (($userObj['activated'] == UsersConstant::ACTIVATED_PENDING_REG) && ($displayApprovalPending || $displayVerifyPending)) {
-                        $moderationOrder = ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, UsersConstant::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE);
-                        if (!$userObj['isverified']
-                                && (($moderationOrder == UsersConstant::APPROVAL_AFTER) || ($moderationOrder == UsersConstant::APPROVAL_ANY)
-                                        || (!empty($userObj['approved_by'])))
-                                && $displayVerifyPending
-                                ) {
-                            $message = __('Your request to register with this site is still waiting for verification of your e-mail address. Please check your inbox for a message from us.');
-                        } elseif (empty($userObj['approved_by'])
-                                && (($moderationOrder == UsersConstant::APPROVAL_BEFORE) || ($moderationOrder == UsersConstant::APPROVAL_ANY))
-                                && $displayApprovalPending
-                                ) {
-                            $message = __('Your request to register with this site is still waiting for approval from a site administrator.');
-                        }
-
-                        if (isset($message) && !empty($message)) {
-                            return LogUtil::registerError($message);
-                        }
-                        // It is a pending registration but the site admin elected to not display this to the user.
-                        // No exception here because the answer is simply "no." This will fall through to return false.
-                    } elseif (($userObj['activated'] == UsersConstant::ACTIVATED_INACTIVE) && ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_INACTIVE_STATUS)) {
-                        $message = __('Your account has been disabled. Please contact a site administrator for more information.');
-                    } elseif (($userObj['activated'] == UsersConstant::ACTIVATED_PENDING_DELETE) && ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_LOGIN_DISPLAY_DELETE_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_DELETE_STATUS)) {
-                        $message = __('Your account has been disabled and is scheduled for removal. Please contact a site administrator for more information.');
-                    } else {
-                        $message = __('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account.');
-                    }
-                    LogUtil::registerError($message);
-                }
-                $userObj = false;
-            }
-        }
-
-        return $userObj;
-    }
-
-    /**
-     * Authenticate a user's credentials against an authentication module, without any attempt to log the user in.
-     *
-     * This function is used to check that a user is who he says he is, and that he has a valid user account with the
-     * Zikula system. No attempt is made to log the user in to the Zikula system. It could be used, for example, to check
-     * the user's credentials and Zikula system accoun status prior to performing a sensitive operation.
-     *
-     * This function differs from {@link checkPasswordUsing()} in that it attempts to look up a Zikula account
-     * record for the user, and takes the user's account status into account when returning a value.
-     *
-     * This function differs from {@link loginUsing()} in that it makes no attempt to log the user into the Zikula system.
-     *
-     * ATTENTION: The authentication module function(s) called during this process may redirect the user to an external server
-     * to perform authorization and/or authentication. The function calling authenticateUserUsing must already have anticipated
-     * the reentrant nature of this process, must already have saved pertinent user state, must have supplied a
-     * reentrant URL pointing to a function that will handle reentry into the login process silently, and must clear
-     * any save user state immediately following the return of this function.
-     *
-     * @param array  $authenticationMethod The name of the authentication module to use for authentication and the method name as defined by that module.
-     * @param array  $authenticationInfo   The information needed by the authentication module for authentication, typically a loginID and pass.
-     * @param string $reentrantURL         If the authentication module needs to redirect to an external authentication server (e.g., OpenID), then
-     *                                          this is the URL to return to in order to re-enter the log-in process. The pertinent user
-     *                                          state must have already been saved by the function calling authenticateUserUsing(), and the URL must
-     *                                          point to a Zikula_AbstractController function that is equipped to detect reentry, restore the
-     *                                          saved user state, and get the user back to the point where loginUsing is re-executed. This
-     *                                          is only optional if the authentication module identified by $authenticationMethod reports that it is not
-     *                                          reentrant (e.g., Users is guaranteed to not be reentrant).
-     * @param boolean $reportErrors If true, then when validation of the account's ability to log in is performed, if errors are detected then
-     *                                          they will be reported through registering errors with Zikula's logging and error reporting system. If
-     *                                          false, then error reporting is supressed, and only the return value will indicate success or failure.
-     *
-     * @return array|bool The user account record of the user with the given credentials, if his credentials authenticate; otherwise false
-     */
-    public static function authenticateUserUsing(array $authenticationMethod, array $authenticationInfo, $reentrantURL = null, $reportErrors = false)
-    {
-        $userObj = false;
-
-        $authenticatedUid = self::internalAuthenticateUserUsing($authenticationMethod, $authenticationInfo, $reentrantURL);
-        if ($authenticatedUid) {
-            $userObj = self::internalUserAccountValidation($authenticatedUid, $reportErrors);
-        }
-
-        return $userObj;
-    }
-
-    /**
-     * Authenticate a user's credentials against an authentication module, logging him into the Zikula system.
-     *
-     * If the user is already logged in, then this function should behave as if {@link authenticateUserUsing()} was called.
-     *
-     * This function is used to check that a user is who he says he is, and that he has a valid user account with the
-     * Zikula system. If so, the user is logged in to the Zikula system (if he is not already logged in). This function
-     * should be used only to log a user into the Zikula system.
-     *
-     * This function differs from {@link checkPasswordUsing()} in that it attempts to look up a Zikula account
-     * record for the user, and takes the user's account status into account when returning a value. Additionally,
-     * the user is logged into the Zikula system if his credentials are verified with the authentication module specified.
-     *
-     * This function differs from {@link authenticateUserUsing()} in that it attempts to log the user into the Zikula system,
-     * if he is not already logged in. If he is already logged in, then it should behave similarly to authenticateUserUsing().
-     *
-     * ATTENTION: The authentication module function(s) called during this process may redirect the user to an external server
-     * to perform authorization and/or authentication. The function calling loginUsing must already have anticipated
-     * the reentrant nature of this process, must already have saved pertinent user state, must have supplied a
-     * reentrant URL pointing to a function that will handle reentry into the login process silently, and must clear
-     * any save user state immediately following the return of this function.
-     *
-     * @param array   $authenticationMethod Auth module name.
-     * @param array   $authenticationInfo   Auth info array.
-     * @param boolean $rememberMe           Whether or not to remember login.
-     * @param string  $reentrantURL         If the authentication module needs to redirect to an external authentication server (e.g., OpenID), then
-     *                                          this is the URL to return to in order to re-enter the log-in process. The pertinent user
-     *                                          state must have already been saved by the function calling loginUsing(), and the URL must
-     *                                          point to a Zikula_AbstractController function that is equipped to detect reentry, restore the
-     *                                          saved user state, and get the user back to the point where loginUsing is re-executed. This
-     *                                          is only optional if the authentication module identified by $authenticationMethod reports that it is not
-     *                                          reentrant (e.g., Users is guaranteed to not be reentrant), or if $checkPassword is false.
-     * @param boolean $checkPassword        Whether or not to check the password.
-     * @param boolean $preauthenticatedUser Whether ot not is a preauthenticated user.
-     *
-     * @return array|bool The user account record of the user that has logged in successfully, otherwise false
-     *
-     * @throws InvalidArgumentException|AccessDeniedException
-     */
-    public static function loginUsing(array $authenticationMethod, array $authenticationInfo, $rememberMe = false, $reentrantURL = null, $checkPassword = true, $preauthenticatedUser = null)
-    {
-        $userObj = false;
-
-        if (self::preAuthenticationValidation($authenticationMethod, $authenticationInfo, $reentrantURL)) {
-            // Authenticate the loginID and userEnteredPassword against the specified authentication module.
-            // This should return the uid of the user logging in. Note that there are two routes here, both get a uid.
-            // We do the authentication check first, before checking any account status information, because if the
-            // person logging in cannot supply the proper credentials, then we should not show any detailed account status
-            // to them. Instead they should just get the generic "no such user found or bad password" message.
-            if ($checkPassword) {
-                $authenticatedUid = self::internalAuthenticateUserUsing($authenticationMethod, $authenticationInfo, $reentrantURL, true);
-            } elseif (isset($preauthenticatedUser)) {
-                if (is_numeric($preauthenticatedUser)) {
-                    $authenticatedUid = $preauthenticatedUser;
-                } elseif (is_array($preauthenticatedUser)) {
-                    $authenticatedUid = $preauthenticatedUser['uid'];
-                    $userObj = $preauthenticatedUser;
-                } else {
-                    throw new \InvalidArgumentException();
-                }
-            } else {
-                $authArgs = [
-                    'authentication_info'   => $authenticationInfo,
-                    'authentication_method' => $authenticationMethod,
-                ];
-                $authenticatedUid = ModUtil::apiFunc($authenticationMethod['modname'], 'Authentication', 'getUidForAuththenticationInfo', $authArgs, 'Zikula_Api_AbstractAuthentication');
-            }
-
-            $userObj = self::internalUserAccountValidation($authenticatedUid, true, isset($userObj) ? $userObj : null);
-            if ($userObj && is_array($userObj)) {
-                // BEGIN ACTUAL LOGIN
-                // Made it through all the checks. We can actually log in now.
-
-                // Give any interested module one last chance to prevent the login from happening.
-                $eventArgs = [
-                    'authentication_method' => $authenticationMethod,
-                    'uid'                   => $userObj['uid'],
-                ];
-                $event = new GenericEvent($userObj, $eventArgs);
-                $event = EventUtil::dispatch('user.login.veto', $event);
-
-                if ($event->isPropagationStopped()) {
-                    // The login attempt has been vetoed by one or more modules.
-                    $eventData = $event->getData();
-
-                    if (isset($eventData['retry']) && $eventData['retry']) {
-                        $sessionVarName = 'Users_Controller_User_login';
-                        $sessionNamespace = 'Zikula_Users';
-                        $redirectURL = ModUtil::url('ZikulaUsersModule', 'user', 'login', ['csrftoken' => SecurityUtil::generateCsrfToken()]);
-                    } elseif (isset($eventData['redirect_func'])) {
-                        if (isset($eventData['redirect_func']['session'])) {
-                            $sessionVarName = $eventData['redirect_func']['session']['var'];
-                            $sessionNamespace = isset($eventData['redirect_func']['session']['namespace']) ? $eventData['redirect_func']['session']['namespace'] : '';
-                        }
-                        $redirectURL = ModUtil::url($eventData['redirect_func']['modname'], $eventData['redirect_func']['type'], $eventData['redirect_func']['func'], $eventData['redirect_func']['args']);
-                    }
-
-                    if (isset($redirectURL)) {
-                        if (isset($sessionVarName)) {
-                            SessionUtil::requireSession();
-
-                            $sessionVars = SessionUtil::getVar('Users_User_Controller_login', [], 'Zikula_Users', false, false);
-
-                            $sessionVars = [
-                                'returnpage'            => isset($sessionVars['returnpage']) ? $sessionVars['returnpage'] : '',
-                                'authentication_info'   => $authenticationInfo,
-                                'authentication_method' => $authenticationMethod,
-                                'rememberme'            => $rememberMe,
-                                'user_obj'              => $userObj,
-                            ];
-                            SessionUtil::setVar($sessionVarName, $sessionVars, $sessionNamespace, true, true);
-                        }
-                        $userObj = false;
-                        $response = new \Symfony\Component\HttpFoundation\RedirectResponse($redirectURL);
-                        $response->send();
-                        exit;
-                    } else {
-                        throw new AccessDeniedException();
-                    }
-                } else {
-                    // The login has not been vetoed
-                    // This is what really does the Zikula login
-                    self::setUserByUid($userObj['uid'], $rememberMe, $authenticationMethod);
-                }
-            }
-        }
-
-        return $userObj;
-    }
-
-    /**
-     * Sets the currently logged in active user to the user account for the given Users module uname.
-     *
-     * No events are fired from this function. To receive events, use {@link loginUsing()}.
-     *
-     * @param string  $uname      The user name of the user who should be logged into the system; required.
-     * @param boolean $rememberMe If the user's login should be maintained on the computer from which the user is logging in, set this to true;
-     *                                optional, defaults to false.
-     *
-     * @return void
-     *
-     * @throws InvalidArgumentException
-     */
-    public static function setUserByUname($uname, $rememberMe = false)
-    {
-        if (!isset($uname) || !is_string($uname) || empty($uname)) {
-            throw new \InvalidArgumentException(__('Attempt to set the current user with an invalid uname.'));
-        }
-
-        $uid = self::getIdFromName($uname);
-
-        $authenticationMethod = [
-            'modname' => 'ZikulaUsersModule',
-            'method'  => 'uname',
-        ];
-
-        self::setUserByUid($uid, $rememberMe, $authenticationMethod);
-    }
-
-    /**
-     * Sets the currently logged in active user to the user account for the given uid.
-     *
-     * No events are fired from this function. To receive events, use {@link loginUsing()}.
-     *
-     * @param integer $uid        The user id of the user who should be logged into the system; required.
-     * @param boolean $rememberMe If the user's login should be maintained on the computer from which the user is logging in, set this to true;
-     *                                          optional, defaults to false.
-     * @param array $authenticationMethod An array containing the authentication method used to log the user in; optional,
-     *                                          defaults to the 'ZikulaUsersModule' module 'uname' method.
-     *
-     * @return void
-     *
-     * @throws InvalidArgumentException|NotFoundHttpException|BadMethodCallException
-     */
-    public static function setUserByUid($uid, $rememberMe = false, array $authenticationMethod = null)
-    {
-        if (!isset($uid) || empty($uid) || ((string)((int)$uid) != $uid)) {
-            throw new \InvalidArgumentException(__('Attempt to set the current user with an invalid uid.'));
-        }
-
-        $userObj = self::getVars($uid);
-        if (!isset($userObj) || !is_array($userObj) || empty($userObj)) {
-            throw new NotFoundHttpException(__('Attempt to set the current user with an unknown uid.'));
-        }
-
-        if (!isset($authenticationMethod)) {
-            $authenticationMethod = [
-                'modname' => 'ZikulaUsersModule',
-                'method'  => 'uname',
-            ];
-        } elseif (empty($authenticationMethod) || !isset($authenticationMethod['modname']) || empty($authenticationMethod['modname'])
-            || !isset($authenticationMethod['method']) || empty($authenticationMethod['method'])
-            ) {
-            throw new \BadMethodCallException(__('Attempt to set the current user with an invalid authentication method.'));
-        }
-
-        // Storing Last Login date -- store it in UTC! Do not use date() function!
-        $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
-        if (!self::setVar('lastlogin', $nowUTC->format('Y-m-d H:i:s'), $userObj['uid'])) {
-            // show messages but continue
-            LogUtil::registerError(__('Error! Could not save the log-in date.'));
-        }
-
-        if (!System::isInstalling()) {
-            SessionUtil::requireSession();
-        }
-
-        // Set session variables -- this is what really does the Zikula login
-        SessionUtil::setVar('uid', $userObj['uid']);
-        SessionUtil::setVar('authentication_method', $authenticationMethod, 'Zikula_Users');
-
-        if (!empty($rememberMe)) {
-            SessionUtil::setVar('rememberme', 1);
-        }
-
-        // now that we've logged in the permissions previously calculated (if any) are invalid
-        $GLOBALS['authinfogathered'][$userObj['uid']] = 0;
-        // FC Core-2.0
-        $container = \ServiceUtil::getManager();
-        $container->get('zikula_permissions_module.api.permission')->resetPermissionsForUser($userObj['uid']);
-    }
-
-    /**
      * Log the user out.
      *
      * @return bool true if the user successfully logged out, false otherwise
@@ -1075,7 +538,7 @@ class UserUtil
                  ->where('v.newemail = :email')
                  ->andWhere('v.changetype = :chgtype')
                  ->setParameter('email', $emailAddress)
-                 ->setParameter('chgtype', UsersConstant::VERIFYCHGTYPE_EMAIL);
+                 ->setParameter('chgtype', ZAuthConstant::VERIFYCHGTYPE_EMAIL);
 
         if ($excludeUid > 1) {
             $qb->andWhere('v.uid <> :excludeUid')
@@ -1118,7 +581,7 @@ class UserUtil
                         ->where('v.uid = :uid')
                         ->andWhere('v.changetype = :changetype')
                         ->setParameter('uid', $userObj['uid'])
-                        ->setParameter('changetype', UsersConstant::VERIFYCHGTYPE_REGEMAIL)
+                        ->setParameter('changetype', ZAuthConstant::VERIFYCHGTYPE_REGEMAIL)
                         ->getQuery();
 
             $verifyChgList = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
@@ -1572,26 +1035,6 @@ class UserUtil
     }
 
     /**
-     * Determines if a given unhashed password meets the minimum criteria for use as a user password.
-     *
-     * The given password must be set, a string, not the empty string, and must have a length greater than
-     * the minimum length defined by the Users module variable 'minpass' (or 5 if that variable is not set or
-     * is misconfigured).
-     *
-     * @param string $unhashedPassword The proposed password.
-     *
-     * @return bool True if the proposed password meets the minimum criteria; otherwise false;
-     */
-    public static function validatePassword($unhashedPassword)
-    {
-        $minLength = ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, UsersConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH);
-
-        return isset($unhashedPassword)
-                && is_string($unhashedPassword)
-                && (strlen($unhashedPassword) >= $minLength);
-    }
-
-    /**
      * Given a string return it's hash and the internal integer hashing algorithm code used to hash that string.
      *
      * Note that this can be used for more than just user login passwords. If a user-readale password-like code is needed,
@@ -1620,7 +1063,7 @@ class UserUtil
                 throw new \InvalidArgumentException(__('Invalid arguments array received'));
             }
         } else {
-            $hashAlgorithmName = ModUtil::getVar('ZikulaUsersModule', 'hash_method', '');
+            $hashAlgorithmName = ModUtil::getVar('ZikulaZAuthModule', ZAuthConstant::MODVAR_HASH_METHOD, ZAuthConstant::DEFAULT_HASH_METHOD);
             $hashMethodCode = self::getPasswordHashMethodCode($hashAlgorithmName);
             if (!$hashMethodCode) {
                 throw new \InvalidArgumentException(__('Invalid arguments array received'));
@@ -1643,7 +1086,7 @@ class UserUtil
      */
     public static function generatePassword()
     {
-        $minLength = ModUtil::getVar('ZikulaUsersModule', 'minpass', 5);
+        $minLength = ModUtil::getVar('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH);
         if (!is_numeric($minLength) || ((int)$minLength != $minLength) || ($minLength < 5)) {
             $minLength = 5;
         }
@@ -1664,22 +1107,7 @@ class UserUtil
      */
     public static function setPassword($unhashedPassword, $uid = -1)
     {
-        $passwordChanged = false;
-
-        // If uid is not -1 (specifies someone other than the current user) then make sure the current user
-        // is allowed to do that.
-
-        if (self::validatePassword($unhashedPassword)) {
-            $hashedPassword = self::getHashedPassword($unhashedPassword);
-
-            if ($hashedPassword) {
-                // TODO - Important! This needs to be an atomic change to the database. If pass is changed without hash_method, then the user will not be able to log in!
-                $passwordChanged = self::setVar('pass', $hashedPassword, $uid);
-            }
-            // TODO - Should we force the change of passreminder here too? If the password is changing, certainly the existing reminder is no longer valid.
-        }
-
-        return $passwordChanged;
+        @trigger_error('This method is deprecated. Update the password via the entity instead.', E_USER_DEPRECATED);
     }
 
     /**
@@ -1730,7 +1158,7 @@ class UserUtil
      * @param string  $name The name of the variable.
      * @param integer $uid  The user to delete the variable for.
      *
-     * @return boolen true on success, false on failure
+     * @return boolean true on success, false on failure
      */
     public static function delVar($name, $uid = -1)
     {
@@ -2150,7 +1578,7 @@ class UserUtil
     /**
      * Determine if the record represented by the $uid is a registration or not.
      *
-     * @param numeric $uid The uid of the record in question.
+     * @param integer $uid The uid of the record in question.
      *
      * @throws InvalidArgumentException If the uid is not valid.
      *

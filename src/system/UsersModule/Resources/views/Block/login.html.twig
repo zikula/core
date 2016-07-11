@@ -1,0 +1,26 @@
+{% if collector.activeKeys|length > 1 %}
+<div class="dropdown{% if 'nav' in position %} navbar-right{% endif %}">
+    <button class="btn btn-default dropdown-toggle{% if 'nav' in position %} navbar-btn{% endif %}" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <i class="fa fa-key"></i> {{ __('Login with ...') }}
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        {% for method in collector.activeKeys %}
+            <li><a href="{{ path(path, {"authenticationMethod": method}) }}">{{ collector.get(method).DisplayName }}</a></li>
+        {% endfor %}
+        <li role="separator" class="divider"></li>
+        <li><a href="{{ path('zikulausersmodule_registration_register') }}">{{ __('Create a new account') }}</a></li>
+    </ul>
+</div>
+{% else %}
+<div class="btn-group{% if 'nav' in position %} navbar-btn navbar-right{% endif %}">
+    <a class="btn btn-default" href="{{ path(path, {"authenticationMethod": collector.activeKeys|first}) }}"><i class="fa fa-key"></i> {{ __('Login with') }} {{ collector.get(collector.activeKeys|first).DisplayName }}</a>
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="caret"></span>
+        <span class="sr-only">Toggle Dropdown</span>
+    </button>
+    <ul class="dropdown-menu">
+        <li><a href="{{ path('zikulausersmodule_registration_register') }}">{{ __('Create a new account') }}</a></li>
+    </ul>
+</div>
+{% endif %}

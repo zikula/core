@@ -11,12 +11,12 @@
 namespace Zikula\UsersModule\Helper;
 
 use ModUtil;
-use SecurityUtil;
-use System;
-use ZLanguage;
 use Zikula\Core\ModUrl;
+use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\SearchModule\AbstractSearchable;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Entity\UserEntity;
+use ZLanguage;
 
 class SearchHelper extends AbstractSearchable
 {
@@ -30,10 +30,8 @@ class SearchHelper extends AbstractSearchable
     public function getOptions($active, $modVars = null)
     {
         $options = '';
-
-        if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
-            $options = $this->view->assign('active', $active)
-                ->fetch('Search/options.tpl');
+        if ($this->container->get('zikula_permissions_module.api.permission')->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
+            $options = $this->getContainer()->get('templating')->renderResponse('@ZikulaUsersModule/Search/options.html.twig', ['active' => $active])->getContent();
         }
 
         return $options;
@@ -49,49 +47,48 @@ class SearchHelper extends AbstractSearchable
      */
     public function getResults(array $words, $searchType = 'AND', $modVars = null)
     {
-        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
-            return array();
+        if (!$this->container->get('zikula_permissions_module.api.permission')->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
+            return [];
         }
 
         // decide if we have to search the DUDs from the Profile module
-        $profileModule = System::getVar('profilemodule', '');
-        $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
+        $profileModule = $this->container->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'profilemodule', '');
+        $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule)); // @todo
 
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('u')
             ->from('ZikulaUsersModule:UserEntity', 'u')
             ->andWhere('u.activated <> :activated')
             ->setParameter('activated', UsersConstant::ACTIVATED_PENDING_REG);
-        $where = $this->formatWhere($qb, $words, array('u.uname'), $searchType);
+        $where = $this->formatWhere($qb, $words, ['u.uname'], $searchType);
         $qb->andWhere($where);
         if ($useProfileMod) {
-            $uids = ModUtil::apiFunc($profileModule, 'user', 'searchDynadata', array('dynadata' => array('all' => implode(' ', $words))));
+            $uids = ModUtil::apiFunc($profileModule, 'user', 'searchDynadata', ['dynadata' => ['all' => implode(' ', $words)]]);
             if (is_array($uids) && !empty($uids)) {
                 $qb->orWhere($qb->expr()->in('u.uid', $uids));
             }
         }
-        $users = $qb->getQuery()->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+        /** @var UserEntity[] $users */
+        $users = $qb->getQuery()->getResult();
 
-        $sessionId = session_id();
-
-        $results = array();
+        $results = [];
         foreach ($users as $user) {
-            if ($user['uid'] != 1 && SecurityUtil::checkPermission($this->name . '::', "$user[uname]::$user[uid]", ACCESS_READ)) {
+            if ($user->getUid() != 1 && $this->container->get('zikula_permissions_module.api.permission')->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_READ)) {
                 if ($useProfileMod) {
                     $text = $this->__("Click the user's name to view his/her complete profile.");
-                    $url = new ModUrl($profileModule, 'user', 'view', ZLanguage::getLanguageCode(), array('uid' => $user['uid']));
+                    $url = new ModUrl($profileModule, 'user', 'view', ZLanguage::getLanguageCode(), ['uid' => $user->getUid()]); // @todo
                 } else {
                     $text = null;
                     $url = null;
                 }
-                $results[] = array(
-                    'title' => $user['uname'],
+                $results[] = [
+                    'title' => $user->getUname(),
                     'text' => $text,
-                    'module' => $this->name,
-                    'created' => $user['user_regdate'],
-                    'sesid' => $sessionId,
+                    'module' => 'ZikulaUsersModule',
+                    'created' => $user->getUser_Regdate(),
+                    'sesid' => $this->container->get('session')->getId(),
                     'url' => $url
-                );
+                ];
             }
         }
 

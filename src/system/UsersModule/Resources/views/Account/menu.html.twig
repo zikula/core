@@ -1,0 +1,31 @@
+{{ moduleHeader('user', __('My account'), '', true, true) }}
+
+{% if not currentUser.loggedin %}
+    <p>{{ __('Please select one of the following:') }}</p>
+    <ul>
+        <li><a href="{{ path('zikulausersmodule_access_login') }}">{{ __('I would like to login.') }}</a></li>
+        <li><a href="{{ path('zikulausersmodule_registration_register') }}">{{ __('I would like to create a new account.') }}</a></li>
+        <li><a href="{{ path('zikulazauthmodule_account_lostusername') }}">{{ __('I have forgotten my account information (for example, my user name).') }}</a></li>
+        <li><a href="{{ path('zikulazauthmodule_account_lostpassword') }}">{{ __('I have forgotten my password.') }}</a></li>
+        <li><a href="{{ path('zikulazauthmodule_account_confirmationcode') }}">{{ __('I have received a password recovery code, and would like to enter it.') }}</a></li>
+    </ul>
+{% endif %}
+
+{% set displayGraphics = getModVar('ZikulaUsersModule', 'accountdisplaygraphics', 0) %}
+{% set width = 100/getModVar('ZikulaUsersModule', 'accountitemsperrow') %}
+{% for link in accountLinks|default %}
+    <div class="z-accountlink" style="width:{{ width|round(1, 'floor') }}%">
+        {% if displayGraphics %}
+            {% if '.' in link.icon %}
+                {% set icon = '<img title="'~link.text~'" src="'~zasset('@'~link.module~':images/'~link.icon)~'" />' %}
+            {% else %}
+                {% set icon = '<i title="'~link.text~'" class="fa fa-3x fa-'~link.icon~'"></i>' %}
+            {% endif %}
+            <a href="{{ link.url }}">{{ icon|raw }}</a><br />
+        {% endif %}
+        <a href="{{ link.url }}">{{ link.text }}</a>
+    </div>
+{% endfor %}
+<br style="clear: left" />
+
+{{ moduleFooter() }}

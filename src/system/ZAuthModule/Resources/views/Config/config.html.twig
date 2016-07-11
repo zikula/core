@@ -1,0 +1,74 @@
+{% form_theme form with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ polyfill() }}
+
+{{ adminHeader() }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-wrench"></span>
+            {{ __('Settings') }}
+        </h3>
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <fieldset>
+            <legend>{{ __('User Credential Settings') }}</legend>
+            {{ form_row(form[constant('MODVAR_PASSWORD_MINIMUM_LENGTH', ZAC)]) }}
+            {{ form_row(form[constant('MODVAR_HASH_METHOD', ZAC)]) }}
+            {{ form_row(form[constant('MODVAR_PASSWORD_STRENGTH_METER_ENABLED', ZAC)]) }}
+            {{ form_row(form[constant('MODVAR_EXPIRE_DAYS_CHANGE_EMAIL', ZAC)]) }}
+            {{ form_row(form[constant('MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD', ZAC)]) }}
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Registration Settings') }}</legend>
+            {{ form_row(form[constant('MODVAR_PASSWORD_REMINDER_ENABLED', ZAC)]) }}
+            {{ form_row(form[constant('MODVAR_PASSWORD_REMINDER_MANDATORY', ZAC)]) }}
+            {{ form_row(form[constant('MODVAR_EMAIL_VERIFICATION_REQUIRED', ZAC)]) }}
+            {{ form_row(form[constant('MODVAR_EXPIRE_DAYS_REGISTRATION', ZAC)]) }}
+            {{ form_row(form[constant('MODVAR_REGISTRATION_ANTISPAM_QUESTION', ZAC)]) }}
+            <div id="antispam_answer" class="collapse in">
+                {{ form_row(form[constant('MODVAR_REGISTRATION_ANTISPAM_ANSWER', ZAC)]) }}
+            </div>
+        </fieldset>
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.save) }}
+                {{ form_widget(form.cancel) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+</div>
+{{ adminFooter() }}
+<script type="text/javascript">
+    (function($) {
+        /**
+         * show & require or hide anti-spam answer based on question value
+         */
+        function toggleAntiSpamAnswerDisplay()
+        {
+            var antiSpamAnswerElementId = '{{ form[constant('MODVAR_REGISTRATION_ANTISPAM_ANSWER', ZAC)].vars.id }}';
+            if ($('#{{ form[constant('MODVAR_REGISTRATION_ANTISPAM_QUESTION', ZAC)].vars.id }}').val() != '') {
+                $('label[for="'+antiSpamAnswerElementId+'"]').addClass('required');
+                $('#'+antiSpamAnswerElementId).prop('required', true);
+                $('#antispam_answer').collapse('show');
+            } else {
+                $('label[for="'+antiSpamAnswerElementId+'"]').removeClass('required');
+                $('#'+antiSpamAnswerElementId).prop('required', false).val('');
+                $('#antispam_answer').collapse('hide');
+            }
+        }
+
+        $(document).ready(function() {
+            // set up event handlers
+            $('#{{ form[constant('MODVAR_REGISTRATION_ANTISPAM_QUESTION', ZAC)].vars.id }}').on('change', toggleAntiSpamAnswerDisplay);
+            // initialize form - show|hide appropriate inputs
+            toggleAntiSpamAnswerDisplay();
+        });
+    })(jQuery);
+</script>

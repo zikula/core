@@ -10,14 +10,15 @@
 
 namespace Zikula\UsersModule;
 
-use DoctrineHelper;
-use HookUtil;
+use Zikula\Core\AbstractExtensionInstaller;
+use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
- * Provides module installation and upgrade services for the Users module.
+ * Class UsersModuleInstaller
  */
-class UsersModuleInstaller extends \Zikula_AbstractInstaller
+class UsersModuleInstaller extends AbstractExtensionInstaller
 {
     /**
      * Initialise the users module.
@@ -30,14 +31,13 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
     public function install()
     {
         // create the tables
-        $classes = array(
+        $classes = [
             'Zikula\UsersModule\Entity\UserEntity',
             'Zikula\UsersModule\Entity\UserAttributeEntity',
             'Zikula\UsersModule\Entity\UserSessionEntity',
-            'Zikula\UsersModule\Entity\UserVerificationEntity'
-        );
+        ];
         try {
-            DoctrineHelper::createSchema($this->entityManager, $classes);
+            $this->schemaTool->create($classes);
         } catch (\Exception $e) {
             return false;
         }
@@ -45,10 +45,11 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
         // Set default values and modvars for module
         $this->defaultdata();
         $this->setVars($this->getDefaultModvars());
+        $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'authenticationMethodsStatus', ['native_uname' => true]);
 
         // Register hook bundles
-        HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
-        HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
+        $this->hookApi->installSubscriberHooks($this->bundle->getMetaData());
+        $this->hookApi->installProviderHooks($this->bundle->getMetaData());
 
         // Initialisation successful
         return true;
@@ -66,16 +67,14 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
      */
     public function upgrade($oldVersion)
     {
-
+        $connection = $this->entityManager->getConnection();
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '2.2.0': // version shipped with Core 1.3.5 -> current 1.3.x
                 // add new table
-                DoctrineHelper::createSchema($this->entityManager, array('Zikula\UsersModule\Entity\UserAttributeEntity'));
+                $this->schemaTool->create(['Zikula\UsersModule\Entity\UserAttributeEntity']);
                 $this->migrateAttributes();
             case '2.2.1':
-                // This is the current version: add 2.2.1 --> next when appropriate
-
                 $currentModVars = $this->getVars();
                 $defaultModVars = $this->getDefaultModvars();
 
@@ -99,11 +98,37 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
             case '2.2.3':
                 // Nothing to do.
             case '2.2.4':
-                $connection = $this->entityManager->getConnection();
                 $sql = "UPDATE users_attributes SET value='gravatar.jpg' WHERE value='gravatar.gif'";
                 $stmt = $connection->prepare($sql);
                 $stmt->execute();
             case '2.2.5':
+                $modvarsToConvertToBool = [
+                    UsersConstant::MODVAR_GRAVATARS_ENABLED,
+                    UsersConstant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS,
+                    UsersConstant::MODVAR_REGISTRATION_ENABLED,
+                    UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED,
+                    UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN,
+                    UsersConstant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS,
+                    UsersConstant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS,
+                    UsersConstant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS
+                ];
+                foreach ($modvarsToConvertToBool as $modvarToConvert) {
+                    $this->setVar($modvarToConvert, (bool) $this->getVar($modvarToConvert));
+                }
+                $this->schemaTool->update(['Zikula\UsersModule\Entity\UserEntity']);
+                $this->delVar('login_redirect');
+            case '2.2.8':
+                $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'authenticationMethodsStatus', ['native_uname' => true]);
+            case '2.2.9':
+                // migrate modvar values to ZAuth and remove from Users
+                $this->migrateModVarsToZAuth();
+                // update users table
+                $sql = "UPDATE users SET pass='' WHERE pass='NO_USERS_AUTHENTICATION'";
+                $stmt = $connection->prepare($sql);
+                $stmt->execute();
+                // expire all sessions so everyone has to login again (to force migration)
+                $this->entityManager->createQuery('DELETE FROM Zikula\UsersModule\Entity\UserSessionEntity')->execute();
+            case '3.0.0':
                 // current version
         }
 
@@ -136,45 +161,29 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
      */
     private function getDefaultModvars()
     {
-        return array(
+        return [
             UsersConstant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS              => UsersConstant::DEFAULT_ACCOUNT_DISPLAY_GRAPHICS,
             UsersConstant::MODVAR_ACCOUNT_ITEMS_PER_PAGE                => UsersConstant::DEFAULT_ACCOUNT_ITEMS_PER_PAGE,
             UsersConstant::MODVAR_ACCOUNT_ITEMS_PER_ROW                 => UsersConstant::DEFAULT_ACCOUNT_ITEMS_PER_ROW,
             UsersConstant::MODVAR_ACCOUNT_PAGE_IMAGE_PATH               => UsersConstant::DEFAULT_ACCOUNT_PAGE_IMAGE_PATH,
             UsersConstant::MODVAR_ANONYMOUS_DISPLAY_NAME                => $this->__(/* Anonymous (guest) account display name */'Guest'),
             UsersConstant::MODVAR_AVATAR_IMAGE_PATH                     => UsersConstant::DEFAULT_AVATAR_IMAGE_PATH,
-            UsersConstant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL              => UsersConstant::DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL,
-            UsersConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD           => UsersConstant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD,
-            UsersConstant::MODVAR_EXPIRE_DAYS_REGISTRATION              => UsersConstant::DEFAULT_EXPIRE_DAYS_REGISTRATION,
             UsersConstant::MODVAR_GRAVATARS_ENABLED                     => UsersConstant::DEFAULT_GRAVATARS_ENABLED,
             UsersConstant::MODVAR_GRAVATAR_IMAGE                        => UsersConstant::DEFAULT_GRAVATAR_IMAGE,
-            UsersConstant::MODVAR_HASH_METHOD                           => UsersConstant::DEFAULT_HASH_METHOD,
             UsersConstant::MODVAR_ITEMS_PER_PAGE                        => UsersConstant::DEFAULT_ITEMS_PER_PAGE,
             UsersConstant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS         => UsersConstant::DEFAULT_LOGIN_DISPLAY_APPROVAL_STATUS,
             UsersConstant::MODVAR_LOGIN_DISPLAY_DELETE_STATUS           => UsersConstant::DEFAULT_LOGIN_DISPLAY_DELETE_STATUS,
             UsersConstant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS         => UsersConstant::DEFAULT_LOGIN_DISPLAY_INACTIVE_STATUS,
             UsersConstant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS           => UsersConstant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS,
-            UsersConstant::MODVAR_LOGIN_METHOD                          => UsersConstant::DEFAULT_LOGIN_METHOD,
-            UsersConstant::MODVAR_LOGIN_WCAG_COMPLIANT                  => UsersConstant::DEFAULT_LOGIN_WCAG_COMPLIANT,
-            UsersConstant::MODVAR_MANAGE_EMAIL_ADDRESS                  => UsersConstant::DEFAULT_MANAGE_EMAIL_ADDRESS,
-            UsersConstant::MODVAR_PASSWORD_MINIMUM_LENGTH               => UsersConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH,
-            UsersConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED       => UsersConstant::DEFAULT_PASSWORD_STRENGTH_METER_ENABLED,
-            UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED             => UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED,
-            UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY           => UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY,
             UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL => '',
-            UsersConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION        => '',
-            UsersConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER          => '',
             UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED        => UsersConstant::DEFAULT_REGISTRATION_APPROVAL_REQUIRED,
-            UsersConstant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE        => UsersConstant::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE,
             UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN               => UsersConstant::DEFAULT_REGISTRATION_AUTO_LOGIN,
             UsersConstant::MODVAR_REGISTRATION_DISABLED_REASON          => $this->__(/* registration disabled reason (default value, */'Sorry! New user registration is currently disabled.'),
             UsersConstant::MODVAR_REGISTRATION_ENABLED                  => UsersConstant::DEFAULT_REGISTRATION_ENABLED,
             UsersConstant::MODVAR_REGISTRATION_ILLEGAL_AGENTS           => '',
             UsersConstant::MODVAR_REGISTRATION_ILLEGAL_DOMAINS          => '',
             UsersConstant::MODVAR_REGISTRATION_ILLEGAL_UNAMES           => $this->__(/* illegal username list */'root, webmaster, admin, administrator, nobody, anonymous, username'),
-            UsersConstant::MODVAR_REGISTRATION_VERIFICATION_MODE        => UsersConstant::DEFAULT_REGISTRATION_VERIFICATION_MODE,
-            UsersConstant::MODVAR_REQUIRE_UNIQUE_EMAIL                  => UsersConstant::DEFAULT_REQUIRE_UNIQUE_EMAIL,
-        );
+        ];
     }
 
     /**
@@ -191,7 +200,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
         $nowUTCStr = $nowUTC->format(UsersConstant::DATETIME_FORMAT);
 
         // Anonymous
-        $record = array(
+        $record = [
             'uid'           => 1,
             'uname'         => 'guest',
             'email'         => '',
@@ -203,15 +212,13 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
             'user_regdate'  => '1970-01-01 00:00:00',
             'lastlogin'     => '1970-01-01 00:00:00',
             'theme'         => '',
-            'ublockon'      => 0,
-            'ublock'        => '',
-        );
+        ];
         $user = new \Zikula\UsersModule\Entity\UserEntity();
         $user->merge($record);
         $this->entityManager->persist($user);
 
         // Admin
-        $record = array(
+        $record = [
             'uid'           => 2,
             'uname'         => 'admin',
             'email'         => '',
@@ -223,9 +230,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
             'user_regdate'  => $nowUTCStr,
             'lastlogin'     => '1970-01-01 00:00:00',
             'theme'         => '',
-            'ublockon'      => 0,
-            'ublock'        => '',
-        );
+        ];
         $user = new \Zikula\UsersModule\Entity\UserEntity();
         $user->merge($record);
         $this->entityManager->persist($user);
@@ -240,7 +245,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
     private function migrateAttributes()
     {
         $connection = $this->entityManager->getConnection();
-        $sqls = array();
+        $sqls = [];
         // copy data from objectdata_attributes to users_attributes
         $sqls[] = 'INSERT INTO users_attributes
                     (user_id, name, value)
@@ -255,5 +260,48 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
             $stmt = $connection->prepare($sql);
             $stmt->execute();
         }
+    }
+
+    /**
+     * v2.2.9 -> 3.0.0
+     * move select modvar values to ZAuthModule.
+     * change to boolean where required.
+     */
+    private function migrateModVarsToZAuth()
+    {
+        $migratedModVarNames = $this->getMigratedModVarNames();
+        foreach ($migratedModVarNames as $migratedModVarName) {
+            $value = $this->getVar($migratedModVarName);
+            $this->delVar($migratedModVarName); // removes from UsersModule
+            $migratedModVarName = ($migratedModVarName == 'reg_verifyemail') ? ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED : $migratedModVarName;
+            $value = in_array($migratedModVarName, [
+                ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED,
+                ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED,
+                ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED,
+                ZAuthConstant::MODVAR_PASSWORD_REMINDER_MANDATORY
+            ]) ? (bool) $value : $value;
+            $this->container->get('zikula_extensions_module.api.variable')->set('ZikulaZAuthModule', $migratedModVarName, $value);
+        }
+    }
+
+    /**
+     * These modvar names used to have UsersConstant values, but have been moved to ZAuthConstant and maintain their actual values.
+     * @return array
+     */
+    private function getMigratedModVarNames()
+    {
+        return [
+            ZAuthConstant::MODVAR_HASH_METHOD,
+            ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH,
+            ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED, // convert to bool
+            ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED, // convert to bool
+            ZAuthConstant::MODVAR_PASSWORD_REMINDER_MANDATORY, // convert to bool
+            ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION,
+            ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER,
+            ZAuthConstant::MODVAR_EXPIRE_DAYS_REGISTRATION,
+            ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL,
+            ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD,
+            'reg_verifyemail', // convert to bool
+        ];
     }
 }

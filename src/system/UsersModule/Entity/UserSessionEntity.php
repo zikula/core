@@ -16,7 +16,7 @@ use Zikula\Core\Doctrine\EntityAccess;
 /**
  * UserSession entity class.
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Zikula\UsersModule\Entity\Repository\UserSessionRepository")
  * @ORM\Table(name="session_info")
  *
  * Sessions Table.
@@ -127,7 +127,7 @@ class UserSessionEntity extends EntityAccess
     /**
      * get the last used datetime of the user session
      *
-     * @return datetime the user session's last used datetime
+     * @return \DateTime the user session's last used datetime
      */
     public function getLastused()
     {
@@ -137,11 +137,14 @@ class UserSessionEntity extends EntityAccess
     /**
      * set the last used datetime for the user session
      *
-     * @param datetime $lastused the user session's last used datetime
+     * @param string|\DateTime $lastused the user session's last used datetime
      */
     public function setLastused($lastused)
     {
-        $this->lastused = new \DateTime($lastused);
+        if (!($lastused instanceof \DateTime)) {
+            $lastused = new \DateTime($lastused);
+        }
+        $this->lastused = $lastused;
     }
 
     /**
@@ -167,7 +170,7 @@ class UserSessionEntity extends EntityAccess
     /**
      * get the remember status of the user session
      *
-     * @return smallint the user session's remember status
+     * @return integer the user session's remember status
      */
     public function getRemember()
     {
@@ -177,7 +180,7 @@ class UserSessionEntity extends EntityAccess
     /**
      * set the remember status for the user session
      *
-     * @param smallint $remember the user session's remember status
+     * @param integer $remember the user session's remember status
      */
     public function setRemember($remember)
     {
@@ -187,7 +190,7 @@ class UserSessionEntity extends EntityAccess
     /**
      * get the vars of the user session
      *
-     * @return text the user session's vars
+     * @return string the user session's vars
      */
     public function getVars()
     {
@@ -197,7 +200,7 @@ class UserSessionEntity extends EntityAccess
     /**
      * set the vars for the user session
      *
-     * @param text $vars the user session's vars
+     * @param string $vars the user session's vars
      */
     public function setVars($vars)
     {

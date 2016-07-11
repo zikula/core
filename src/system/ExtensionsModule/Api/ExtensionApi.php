@@ -102,6 +102,7 @@ class ExtensionApi
             'ZikulaSettingsModule',
             'ZikulaThemeModule',
             'ZikulaUsersModule',
+            'ZikulaZAuthModule',
         ]);
     }
 }

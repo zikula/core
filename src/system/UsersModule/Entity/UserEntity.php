@@ -12,14 +12,19 @@ namespace Zikula\UsersModule\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\GroupsModule\Entity\GroupEntity;
+use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Validator\Constraints as ZikulaAssert;
 
 /**
  * User entity class.
  *
  * @ORM\Entity(repositoryClass="Zikula\UsersModule\Entity\Repository\UserRepository")
  * @ORM\Table(name="users",indexes={@ORM\Index(name="uname",columns={"uname"}), @ORM\Index(name="email",columns={"email"})})
+ *
+ * @ZikulaAssert\ValidUserFields()
  *
  * Main Users table.
  * Stores core information about each user account.
@@ -36,23 +41,27 @@ class UserEntity extends EntityAccess
     private $uid;
 
     /**
-     * User Name: Primary user display name, primary log in identifier.
+     * User Name: Primary user display name.
      *
+     * @ZikulaAssert\ValidUname()
      * @ORM\Column(type="string", length=25)
      */
     private $uname;
 
     /**
-     * E-mail Address: Secondary log in identifier, user notifications.
-     * For pending registrations awaiting e-mail address verification, this will be an empty string, and the email address for the account will be found in the users_verifychg table.
-     * ("Regular" user accounts may also have e-mail addresses pending verification in the users_verifychg table, however those are the result of a request to change the account's address.)
+     * E-mail Address: For user notifications.
      *
+     * @ZikulaAssert\ValidEmail()
      * @ORM\Column(type="string", length=60)
      */
     private $email;
 
     /**
-     * Password: User's password for logging in.
+     * @deprecated at Core-1.4.3 and removed in 2.0
+     * Password: This will be blank for all new accounts and as each new user logs in, it will be removed.
+     *
+     * Old information:
+     * User's password for logging in.
      * This value is salted and hashed. The salt is stored in this field, delimited from the hash with a dollar sign character ($).
      * The hash algorithm is stored as a numeric code in the hash_method field. This field may be blank in instances
      * where the user registered with an alternative authentication module (e.g., OpenID) and did not also establish a password for his web site account.
@@ -62,15 +71,17 @@ class UserEntity extends EntityAccess
     private $pass;
 
     /**
+     * @deprecated at Core-1.4.3 and removed in 2.0
      * Password reminder: Set during registration or password changes, to remind the user what his password is.
      *
      * This field may be blank if pass is blank.
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $passreminder;
 
     /**
-     * Account State: The user's current state, see UsersConstant::ACTIVE_* for defined constants.
+     * Account State: The user's current state, see \Zikula\UsersModule\Constant::ACTIVATED_* for defined constants.
      * A state represented by a negative integer means that the user's account is in a pending state, and should not yet be considered a "real" user account.
      * For example, user accounts pending the completion of the registration process (because either moderation, e-mail verification, or both are in use)
      * will have a negative integer representing their state. If the user's registration request expires before it the process is completed, or if the administrator
@@ -79,6 +90,7 @@ class UserEntity extends EntityAccess
      * because its state never progressed beyond its pending state, and therefore normal hooks/events may not be triggered
      * (although it is possible that events regarding the pending account may be triggered).
      *
+     * @Assert\Choice(callback = "getActivatedValues")
      * @ORM\Column(type="smallint")
      */
     private $activated;
@@ -93,6 +105,7 @@ class UserEntity extends EntityAccess
      * If SQL date/time functions must be used, then care should be taken to ensure that either the function is time zone neutral,
      * or that the function and its relationship to time zone settings is completely understood.
      *
+     * @Assert\DateTime()
      * @ORM\Column(type="datetime")
      */
     private $approved_date;
@@ -102,6 +115,7 @@ class UserEntity extends EntityAccess
      * If this is the same as the user account's uid, then moderation was not in use at the time the request for a new account was made.
      * If this is -1, the the user account that approved the request has since been deleted. If this is 0, the user account has not yet been approved.
      *
+     * @Assert\Type(type="integer")
      * @ORM\Column(type="integer")
      */
     private $approved_by;
@@ -117,6 +131,7 @@ class UserEntity extends EntityAccess
      * then this will be the date and time the user made the registration request UNTIL the registration process is complete, and then it is updated as above.
      * NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NEITHER server local time nor user local time. SEE WARNING under approved_date, above.
      *
+     * @Assert\DateTime()
      * @ORM\Column(type="datetime")
      */
     private $user_regdate;
@@ -125,35 +140,25 @@ class UserEntity extends EntityAccess
      * Last Login Date/Time: Date/time user last successfully logged into the site.
      * NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NEITHER server local time nor user local time. SEE WARNING under approved_date, above.
      *
+     * @Assert\DateTime()
      * @ORM\Column(type="datetime")
      */
     private $lastlogin;
 
     /**
+     * @deprecated removal at Core-2.0
      * User's Theme: The name (identifier) of the per-user theme the user would like to use while viewing the site, when user theme switching is enabled.
      *
+     * @Assert\Type(type="string")
      * @ORM\Column(type="string", length=255)
      */
     private $theme;
 
     /**
-     * User-defined Block On?: Whether the custom user-defined block is displayed or not (1 == true == displayed)
-     *
-     * @ORM\Column(type="smallint")
-     */
-    private $ublockon;
-
-    /**
-     * User-defined Block: Custom user-defined block content.
-     *
-     * @ORM\Column(type="text")
-     */
-    private $ublock;
-
-    /**
      * User's timezone, as supported by PHP (listed at http://us2.php.net/manual/en/timezones.php), and as expressed by the Olson tz database.
      * Optional, if blank then the system default timezone should be used. [FUTURE USE]
      *
+     * @Assert\Type(type="string")
      * @ORM\Column(type="string", length=30)
      */
     private $tz;
@@ -162,15 +167,15 @@ class UserEntity extends EntityAccess
      * The user's chosen locale for i18n purposes, as defined by gettext, POSIX, and the Common Locale Data Repository;
      * Optional, if blank then the system default locale should be used. [FUTURE USE]
      *
+     * @Assert\Type(type="string")
      * @ORM\Column(type="string", length=5)
      */
     private $locale;
 
     /**
      * Additional attributes of this user
-     * @todo at Core-2.0 this property can be changed to private and the targetEntity namespace can be reduced to just `UserAttributeEntity`
      *
-     * @ORM\OneToMany(targetEntity="\Zikula\UsersModule\Entity\UserAttributeEntity",
+     * @ORM\OneToMany(targetEntity="UserAttributeEntity",
      *                mappedBy="user",
      *                cascade={"all"},
      *                orphanRemoval=true,
@@ -202,8 +207,6 @@ class UserEntity extends EntityAccess
         $this->user_regdate = new \DateTime("1970-01-01 00:00:00");
         $this->lastlogin = new \DateTime("1970-01-01 00:00:00");
         $this->theme = '';
-        $this->ublockon = 0;
-        $this->ublock = '';
         $this->tz = '';
         $this->locale = '';
 
@@ -348,7 +351,12 @@ class UserEntity extends EntityAccess
      */
     public function setApproved_Date($approved_date)
     {
-        $this->approved_date = new \DateTime($approved_date);
+        if ($approved_date instanceof \DateTime) {
+            $this->approved_date = $approved_date;
+        } else {
+            // assume $approved_date is a string.
+            $this->approved_date = new \DateTime($approved_date);
+        }
     }
 
     /**
@@ -372,6 +380,14 @@ class UserEntity extends EntityAccess
     }
 
     /**
+     * @return bool
+     */
+    public function isApproved()
+    {
+        return $this->approved_by != 0;
+    }
+
+    /**
      * get the regdate of the user
      *
      * @return \Datetime the user's regdate
@@ -388,7 +404,12 @@ class UserEntity extends EntityAccess
      */
     public function setUser_Regdate($user_regdate)
     {
-        $this->user_regdate = new \DateTime($user_regdate);
+        if ($user_regdate instanceof \DateTime) {
+            $this->user_regdate = $user_regdate;
+        } else {
+            // assume $user_regdate is a string
+            $this->user_regdate = new \DateTime($user_regdate);
+        }
     }
 
     /**
@@ -408,7 +429,12 @@ class UserEntity extends EntityAccess
      */
     public function setLastlogin($lastlogin)
     {
-        $this->lastlogin = new \DateTime($lastlogin);
+        if ($lastlogin instanceof \DateTime) {
+            $this->lastlogin = $lastlogin;
+        } else {
+            // assume $lastlogin is a string
+            $this->lastlogin = new \DateTime($lastlogin);
+        }
     }
 
     /**
@@ -429,46 +455,6 @@ class UserEntity extends EntityAccess
     public function setTheme($theme)
     {
         $this->theme = $theme;
-    }
-
-    /**
-     * get the ublockon of the user
-     *
-     * @return integer the user's ublockon
-     */
-    public function getUblockon()
-    {
-        return $this->ublockon;
-    }
-
-    /**
-     * set the ublockon for the user
-     *
-     * @param integer $ublockon the user's ublockon
-     */
-    public function setUblockon($ublockon)
-    {
-        $this->ublockon = $ublockon;
-    }
-
-    /**
-     * get the ublock of the user
-     *
-     * @return string the user's ublock
-     */
-    public function getUblock()
-    {
-        return $this->ublock;
-    }
-
-    /**
-     * set the ublock for the user
-     *
-     * @param string $ublock the user's ublock
-     */
-    public function setUblock($ublock)
-    {
-        $this->ublock = $ublock;
     }
 
     /**
@@ -514,11 +500,16 @@ class UserEntity extends EntityAccess
     /**
      * get the attributes of the user
      *
-     * @return UserAttributeEntity the user's attributes
+     * @return ArrayCollection UserAttributeEntity[] of the user's attributes
      */
     public function getAttributes()
     {
         return $this->attributes;
+    }
+
+    public function getAttributeValue($name)
+    {
+        return $this->getAttributes()->get($name)->getValue();
     }
 
     /**
@@ -566,6 +557,11 @@ class UserEntity extends EntityAccess
         return $this->groups;
     }
 
+    public function setGroups(ArrayCollection $groups)
+    {
+        $this->groups = $groups;
+    }
+
     /**
      * UserEntity is the 'Owning side'
      * @see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/association-mapping.html#owning-and-inverse-side-on-a-manytomany-association
@@ -590,5 +586,19 @@ class UserEntity extends EntityAccess
             $group->removeUser($this);
         }
         $this->groups->clear();
+    }
+
+    /**
+     * Callback function used to validate the activated value
+     * @return array
+     */
+    public static function getActivatedValues()
+    {
+        return [
+            UsersConstant::ACTIVATED_ACTIVE,
+            UsersConstant::ACTIVATED_INACTIVE,
+            UsersConstant::ACTIVATED_PENDING_DELETE,
+            UsersConstant::ACTIVATED_PENDING_REG
+        ];
     }
 }

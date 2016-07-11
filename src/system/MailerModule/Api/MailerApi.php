@@ -71,9 +71,10 @@ class MailerApi
      * @param bool                     $isInstalled     Installed flag.
      * @param TranslatorInterface      $translator      Translator service instance.
      * @param EventDispatcherInterface $eventDispatcher EventDispatcher service instance.
-     * @param DynamicConfigDumper      $configDumper    Configuration dumper for retrieving SwiftMailer configuration parameters.
-     * @param VariableApi              $variableApi     VariableApi service instance.
-     * @param PermissionApi            $permissionApi   PermissionApi service instance.
+     * @param DynamicConfigDumper $configDumper Configuration dumper for retrieving SwiftMailer configuration parameters.
+     * @param VariableApi $variableApi VariableApi service instance.
+     * @param Swift_Mailer $mailer
+     * @param PermissionApi $permissionApi PermissionApi service instance.
      */
     public function __construct(
         $isInstalled,
@@ -82,8 +83,8 @@ class MailerApi
         DynamicConfigDumper $configDumper,
         VariableApi $variableApi,
         Swift_Mailer $mailer,
-        PermissionApi $permissionApi)
-    {
+        PermissionApi $permissionApi
+        ) {
         $this->isInstalled = $isInstalled;
         $this->setTranslator($translator);
         $this->eventDispatcher = $eventDispatcher;
@@ -134,7 +135,7 @@ class MailerApi
      *
      * @return bool true if successful
      */
-    public function sendMessage(Swift_Message $message, $subject, $body, $altBody, $html, array $headers = [], array $attachments = [], array $stringAttachments = [], array $embeddedImages = [])
+    public function sendMessage(Swift_Message $message, $subject = null, $body = null, $altBody = '', $html = false, array $headers = [], array $attachments = [], array $stringAttachments = [], array $embeddedImages = [])
     {
         if (!$this->isInstalled) {
             return;
@@ -163,14 +164,27 @@ class MailerApi
         }
 
         // add message subject
-        $this->message->setSubject($subject);
+        if (isset($subject)) {
+            $this->message->setSubject($subject);
+        } else {
+            if ('' == $message->getSubject() || null == $message->getSubject()) {
+                throw new \RuntimeException('There is no subject set.');
+            }
+        }
 
         // add body with formatting
         $bodyFormat = 'text/plain';
         if (!empty($altBody) || ((bool) $html) || $this->dataValues['html']) {
             $bodyFormat = 'text/html';
         }
-        $this->message->setBody($body);
+        if (isset($body)) {
+            $this->message->setBody($body);
+        } else {
+            if ('' == $message->getBody() || null == $message->getBody()) {
+                throw new \RuntimeException('There is no message body set.');
+            }
+        }
+
         $this->message->setContentType($bodyFormat);
         if (!empty($altBody)) {
             $this->message->addPart($altBody, 'text/plain');

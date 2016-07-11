@@ -89,6 +89,7 @@ class ZikulaKernel extends Kernel
         $bundles[] = new Zikula\ThemeModule\ZikulaThemeModule();
         $bundles[] = new Zikula\UsersModule\ZikulaUsersModule();
         $bundles[] = new Zikula\RoutesModule\ZikulaRoutesModule();
+        $bundles[] = new Zikula\ZAuthModule\ZikulaZAuthModule();
 
         $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
         $boot->getPersistedBundles($this, $bundles);

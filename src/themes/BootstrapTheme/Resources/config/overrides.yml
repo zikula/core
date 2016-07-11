@@ -1,6 +1,8 @@
 ## YAML Override template
 ## original/file.tpl: override/file.tpl
 ---
-system/UsersModule/Resources/views/User/main.tpl: themes/BootstrapTheme/Resources/views/modules/ZikulaUsersModule/User/main.tpl
+#system/UsersModule/Resources/views/User/main.tpl: themes/BootstrapTheme/Resources/views/modules/ZikulaUsersModule/User/main.tpl
 system/UsersModule/Resources/views/Block/login_topnav.tpl: themes/BootstrapTheme/Resources/views/modules/ZikulaUsersModule/Block/login_topnav.tpl
 system/BlocksModule/Resources/views/Block/Extmenu/topnav.tpl: themes/BootstrapTheme/Resources/views/modules/ZikulaBlocksModule/Block/Extmenu/topnav.tpl
+system/UsersModule/Resources/views/Authentication/AuthenticationMethodSelector/loginblock/Base.tpl: themes/BootstrapTheme/Resources/views/modules/ZikulaUsersModule/Authentication/AuthenticationMethodSelector/loginblock/Base.tpl
+modules/OpenID/templates/Authentication/LoginFormFields/loginblock/Google.tpl: themes/BootstrapTheme/Resources/views/modules/OpenID/Authentication/LoginFormFields/loginblock/Google.tpl
