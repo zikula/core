@@ -61,7 +61,8 @@
     system/UsersModule/Resources/public/js/Zikula.Users.Admin.View.js,
     system/UsersModule/Resources/public/js/Zikula.Users.Util.CapsLock.js,
     system/UsersModule/Resources/public/js/ZikulaUsersModule.Admin.SearchResults.js,
-    system/ZAuthModule/Resources/public/js/Zikula.Users.PassMeter.js"/>
+    system/ZAuthModule/Resources/public/js/Zikula.ZAuth.Admin.View.js,
+    system/ZAuthModule/Resources/public/js/Zikula.ZAuth.PassMeter.js"/>
 
 
     <!-- need a second property since phpdoc doesn't respect wildcard patterns -->
