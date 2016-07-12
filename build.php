@@ -31,7 +31,7 @@ class GenerateVendorDocCommand extends Command
 
         $output->writeln('Generating output');
 
-        $typeOrder = array(
+        $typeOrder = [
             'zikula-module' => 'Zikula Modules',
             'zikula-theme' => 'Zikula Themes',
             'zikula-plugin' => 'Zikula Plugins',
@@ -40,7 +40,7 @@ class GenerateVendorDocCommand extends Command
             'library' => 'Other PHP libraries',
             'composer-installer' => 'Composer Installers',
             'composer-plugin' => 'Composer Plugins'
-        );
+        ];
         $types = array_keys($typeOrder);
         usort($packages, function ($a, $b) use ($types) {
             return array_search($a['type'], $types) - array_search($b['type'], $types);
@@ -48,7 +48,7 @@ class GenerateVendorDocCommand extends Command
 
         $content = '';
         $currentType = '';
-        $authors = array();
+        $authors = [];
         foreach ($packages as $package) {
             if ($currentType != $package['type']) {
                 if ($currentType != '') {
@@ -76,7 +76,7 @@ class GenerateVendorDocCommand extends Command
         $content .= "These are the main authors of all of the projects supporting Zikula\n";
         $content .= "-------------------------------------------------------------------\n";
 
-        $tmp = array();
+        $tmp = [];
         foreach ($authors as $k => $author) {
             if (in_array($author['name'], $tmp)) {
                 unset($authors[$k]);
@@ -140,7 +140,7 @@ class PurgeVendorsCommand extends Command
             ->ignoreVCS(false);
         $progress->advance();
 
-        $paths = array();
+        $paths = [];
         /** @var SplFileInfo $file */
         foreach ($finder as $file) {
             $paths[] = $file->getRealPath();
@@ -185,13 +185,13 @@ class FixAutoloaderCommand extends Command
     public static function fix($dir, ProgressHelper $progress)
     {
         // fix paths in composer autoloader files removing src/ from paths
-        $composerFiles = array(
+        $composerFiles = [
             'autoload_classmap.php',
             'autoload_namespaces.php',
             'autoload_real.php',
             'autoload_files.php',
             'autoload_psr4.php'
-        );
+        ];
         foreach ($composerFiles as $file) {
             $file = "$dir/composer/$file";
             $content = file_get_contents($file);
@@ -254,7 +254,7 @@ class BuildPackageCommand extends Command
         PurgeVendorsCommand::cleanVendors("$buildDir/$name/vendor", $progress);
         FixAutoloaderCommand::fix("$buildDir/$name/vendor", $progress);
 
-        $writableArray = array(
+        $writableArray = [
             "$buildDir/$name/app/cache",
             "$buildDir/$name/app/logs",
             "$buildDir/$name/userdata",
@@ -266,7 +266,7 @@ class BuildPackageCommand extends Command
             "$buildDir/$name/ztemp/Theme_compiled",
             "$buildDir/$name/ztemp/idsTmp",
             "$buildDir/$name/ztemp/purifierCache",
-        );
+        ];
         $filesystem->chmod($writableArray, 0777);
         $filesystem->chmod("$buildDir/$name/config/config.php", 0666);
         $progress->advance();
@@ -278,7 +278,7 @@ class BuildPackageCommand extends Command
             ->files()
             ->ignoreDotFiles(false);
 
-        $allFiles = array();
+        $allFiles = [];
         /** @var SplFileInfo $file */
         foreach ($finder as $file) {
             $allFiles[] = $file->getRelativePathname();

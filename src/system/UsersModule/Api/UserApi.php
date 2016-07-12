@@ -36,11 +36,11 @@ class UserApi extends \Zikula_AbstractApi
             return false;
         }
 
-        $accountlinks = array();
+        $accountlinks = [];
 
         foreach ($mods as $mod) {
             // saves 17 system checks
-            if ($mod['type'] == 3 && !in_array($mod['name'], array('ZikulaAdminModule', 'ZikulaCategoriesModule', 'ZikulaGroupsModule', 'ZikulaThemeModule', $this->name))) {
+            if ($mod['type'] == 3 && !in_array($mod['name'], ['ZikulaAdminModule', 'ZikulaCategoriesModule', 'ZikulaGroupsModule', 'ZikulaThemeModule', $this->name])) {
                 continue;
             }
 

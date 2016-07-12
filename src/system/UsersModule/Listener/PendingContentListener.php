@@ -44,9 +44,9 @@ class PendingContentListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(
-            'get.pending_content' => array('pendingContent'),
-        );
+        return [
+            'get.pending_content' => ['pendingContent'],
+        ];
     }
 
     /**

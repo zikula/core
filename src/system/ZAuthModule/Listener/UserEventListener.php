@@ -33,9 +33,9 @@ class UserEventListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(
-            AccessEvents::LOGIN_VETO => array('forcedPasswordChange'),
-        );
+        return [
+            AccessEvents::LOGIN_VETO => ['forcedPasswordChange'],
+        ];
     }
 
     public function __construct(\Zikula_Session $session, RouterInterface $router)

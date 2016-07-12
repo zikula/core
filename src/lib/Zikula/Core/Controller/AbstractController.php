@@ -201,7 +201,7 @@ abstract class AbstractController extends Controller
      *
      * @return Response A Response instance
      */
-    public function forward($controller, array $path = array(), array $query = array(), array $request = array())
+    public function forward($controller, array $path = [], array $query = [], array $request = [])
     {
         $path['_controller'] = $controller;
         $subRequest = $this->container->get('request_stack')->getCurrentRequest()->duplicate($query, $request, $path);

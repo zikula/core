@@ -21,12 +21,12 @@ class LocaleType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'choices' => \ZLanguage::getInstalledLanguageNames(),
             'label' => __('Locale'),
             'required' => false,
             'placeholder' => __('All')
-        ));
+        ]);
     }
 
     public function getName()
