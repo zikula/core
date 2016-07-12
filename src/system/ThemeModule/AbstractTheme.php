@@ -81,7 +81,7 @@ abstract class AbstractTheme extends AbstractBundle
      * @param $blockTitle
      * @return string
      */
-    public function generateThemedBlockContent($realm, $positionName, $blockContent, $blockTitle)
+    public function generateThemedBlockContent($realm, $blockType, $bid, $positionName, $blockContent, $blockTitle)
     {
         if (isset($this->config[$realm]['block']['positions'][$positionName])) {
             $template = $this->name . ':' . $this->config[$realm]['block']['positions'][$positionName];
@@ -91,6 +91,9 @@ abstract class AbstractTheme extends AbstractBundle
         }
 
         $templateParameters = [
+            'btype' => strtolower($blockType),
+            'bid' => $bid,
+            'position' => strtolower($positionName),
             'title' => $blockTitle,
             'content' => $blockContent
         ];

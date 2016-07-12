@@ -145,8 +145,11 @@ class Engine
         if (!isset($activeTheme) || !$activeTheme->isTwigBased()) {
             return false;
         }
+        
+        $bid = !empty($blockInfo['bid']) ? $blockInfo['bid'] : 'none';
+        $blockType = !empty($blockInfo['blocktype']) ? $blockInfo['blocktype'] : 'none';
         $position = !empty($blockInfo['position']) ? $blockInfo['position'] : 'none';
-        $content = $activeTheme->generateThemedBlockContent($this->getRealm(), $position, $blockInfo['content'], $blockInfo['title']);
+        $content = $activeTheme->generateThemedBlockContent($this->getRealm(), $blockType, $bid, $position, $blockInfo['content'], $blockInfo['title']);
 
         return $content;
     }
@@ -166,7 +169,7 @@ class Engine
     {
         if (!$legacy) {
             // legacy blocks are already themed at this point. @todo at Core-2.0 remove $legacy param and this check.
-            $content = $this->getTheme()->generateThemedBlockContent($this->getRealm(), $positionName, $content, $title);
+            return $this->getTheme()->generateThemedBlockContent($this->getRealm(), $blockType, $bid, $positionName, $content, $title);
         }
 
         // always wrap the block (in the previous versions this was configurable, but no longer) @todo remove comment
