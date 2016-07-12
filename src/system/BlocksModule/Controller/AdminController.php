@@ -92,12 +92,12 @@ class AdminController extends AbstractController
         $sortableColumns->addColumn(new Column('language'));
         $sortableColumns->addColumn(new Column('state'));
         $sortableColumns->setOrderBy($sortableColumns->getColumn($sortField), $currentSortDirection);
-        $sortableColumns->setAdditionalUrlParameters(array(
+        $sortableColumns->setAdditionalUrlParameters([
             'position' => isset($filterData['position']) ? $filterData['position'] : null,
             'module' => isset($filterData['module']) ? $filterData['module'] : null,
             'language' => isset($filterData['language']) ? $filterData['language'] : null,
             'status' => isset($filterData['status']) ? $filterData['status'] : null,
-        ));
+        ]);
 
         $templateParameters = [];
         $templateParameters['blocks'] = $this->getDoctrine()->getManager()->getRepository('ZikulaBlocksModule:BlockEntity')->getFilteredBlocks($filterData);

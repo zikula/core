@@ -77,8 +77,8 @@ class ValidUnameValidator extends ConstraintValidator
         // ensure not reserved/illegal
         $illegalUserNames = $this->variableApi->get('ZikulaZAuthModule', UsersConstant::MODVAR_REGISTRATION_ILLEGAL_UNAMES, '');
         if (!empty($illegalUserNames)) {
-            $pattern = array('/^(\s*,\s*|\s+)+/D', '/\b(\s*,\s*|\s+)+\b/D', '/(\s*,\s*|\s+)+$/D');
-            $replace = array('', '|', '');
+            $pattern = ['/^(\s*,\s*|\s+)+/D', '/\b(\s*,\s*|\s+)+\b/D', '/(\s*,\s*|\s+)+$/D'];
+            $replace = ['', '|', ''];
             $illegalUserNames = preg_replace($pattern, $replace, preg_quote($illegalUserNames, '/'));
             if (preg_match("/^({$illegalUserNames})/iD", $value)) {
                 $this->context->buildViolation($this->translator->__('The user name you entered is reserved. It cannot be used.'))

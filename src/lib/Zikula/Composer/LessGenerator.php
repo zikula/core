@@ -26,7 +26,7 @@ class LessGenerator
         // Also change build.xml if you change the default writeTo path here!
         $writeTo = is_string($writeTo) ? $writeTo : 'src/web/bootstrap-font-awesome.css';
         $parser = new \Less_Parser();
-        $parser->setOptions(array('relativeUrls' => false, 'compress' => true));
+        $parser->setOptions(['relativeUrls' => false, 'compress' => true]);
         $parser->parseFile('src/style/bootstrap-font-awesome.less');
 
         file_put_contents($writeTo, $parser->getCss());

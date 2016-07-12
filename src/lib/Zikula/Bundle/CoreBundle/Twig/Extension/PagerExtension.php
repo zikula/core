@@ -35,7 +35,7 @@ class PagerExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('pager', [$this, 'pager'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('pagerabc', [$this, 'pagerabc'], array('is_safe' => array('html')))
+            new \Twig_SimpleFunction('pagerabc', [$this, 'pagerabc'], ['is_safe' => ['html']])
         ];
     }
 
@@ -348,7 +348,7 @@ class PagerExtension extends \Twig_Extension
         if (!isset($params['class_numon'])) {
             $params['class_numon'] = ' ';
         }
-        $pager = array();
+        $pager = [];
         if (!empty($params['names'])) {
             if (!is_array($params['names'])) {
                 $pager['names'] = explode(';', $params['names']);
@@ -371,7 +371,7 @@ class PagerExtension extends \Twig_Extension
             // predefined abc
             if (strtolower($params['skin']) == 'hu') {
                 // Hungarian
-                $pager['names']  = $pager['values'] = array('A', '?', 'B', 'C', 'D', 'E', '?', 'F', 'G', 'H', 'I', '?', 'J', 'K', 'L', 'M', 'N', 'O', '?', '?', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', '?', '?', 'U', 'V', 'W', 'X', 'Y', 'Z');
+                $pager['names']  = $pager['values'] = ['A', '?', 'B', 'C', 'D', 'E', '?', 'F', 'G', 'H', 'I', '?', 'J', 'K', 'L', 'M', 'N', 'O', '?', '?', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', '?', '?', 'U', 'V', 'W', 'X', 'Y', 'Z'];
                 //$params['names']  = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U'    ,'V','W','X','Y','Z');
                 //$params['values'] = array('A,?','B','C','D','E,?','F','G','H','I,?','J','K','L','M','N','O,?,?,O','P','Q','R','S','T','U,?,?,U','V','W','X','Y','Z');
             } else {
@@ -388,8 +388,8 @@ class PagerExtension extends \Twig_Extension
         $pagerUrl = function ($pager) {
             return $this->container->get('router')->generate($pager['route'], $pager['args']);
         };
-        $allVars = array_merge($request->request->all(), $request->query->all(), $request->attributes->get('_route_params', array()));
-        $pager['args'] = array();
+        $allVars = array_merge($request->request->all(), $request->query->all(), $request->attributes->get('_route_params', []));
+        $pager['args'] = [];
         // If $forwardvars set, add only listed vars to query string, else add all POST and GET vars
         if (isset($params['forwardvars'])) {
             if (!is_array($params['forwardvars'])) {

@@ -38,10 +38,10 @@ class UserEventListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(
-            AccessEvents::LOGOUT_SUCCESS => array('clearUsersNamespace'),
-            KernelEvents::EXCEPTION => array('clearUsersNamespace'),
-        );
+        return [
+            AccessEvents::LOGOUT_SUCCESS => ['clearUsersNamespace'],
+            KernelEvents::EXCEPTION => ['clearUsersNamespace'],
+        ];
     }
 
     public function __construct(\Zikula_Session $session, RequestStack $requestStack, RouterInterface $router)

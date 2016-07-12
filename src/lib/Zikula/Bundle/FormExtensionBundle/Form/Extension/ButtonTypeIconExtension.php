@@ -48,9 +48,9 @@ class ButtonTypeIconExtension extends AbstractTypeExtension
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'icon' => null,
-        ));
+        ]);
     }
 
     /**

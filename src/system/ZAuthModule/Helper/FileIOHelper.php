@@ -130,7 +130,7 @@ class FileIOHelper
         if (!$lines = file($file->getPathname())) {
             return $this->__("Error! It has not been possible to read the import file.");
         }
-        $expectedFields = array('uname', 'pass', 'email', 'activated', 'sendmail', 'groups');
+        $expectedFields = ['uname', 'pass', 'email', 'activated', 'sendmail', 'groups'];
         $firstLineArray = explode($delimiter, str_replace('"', '', trim($lines[0])));
         foreach ($firstLineArray as $field) {
             if (!in_array(trim(strtolower($field)), $expectedFields)) {
