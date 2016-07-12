@@ -535,7 +535,7 @@ class UserUtil
         // count of email appearances in users verification table
         $qb = $em->createQueryBuilder()
                  ->select('count(v.uid)')
-                 ->from('ZikulaUsersModule:UserVerificationEntity', 'v')
+                 ->from('ZikulaZAuthModule:UserVerificationEntity', 'v')
                  ->where('v.newemail = :email')
                  ->andWhere('v.changetype = :chgtype')
                  ->setParameter('email', $emailAddress)
