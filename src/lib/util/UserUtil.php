@@ -578,7 +578,7 @@ class UserUtil
 
             $query = $em->createQueryBuilder()
                         ->select('v')
-                        ->from('ZikulaUsersModule:UserVerificationEntity', 'v')
+                        ->from('ZikulaZAuthModule:UserVerificationEntity', 'v')
                         ->where('v.uid = :uid')
                         ->andWhere('v.changetype = :changetype')
                         ->setParameter('uid', $userObj['uid'])
