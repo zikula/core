@@ -3,36 +3,37 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <parameters>
-        <parameter key="zikularoutesmodule.console_command_listener.class">Zikula\RoutesModule\Translation\ConsoleCommandListener</parameter>
+        <parameter key="zikula_routes_module.console_command_listener.class">Zikula\RoutesModule\Translation\ConsoleCommandListener</parameter>
         <parameter key="zikula_routes_module.route_dumper_helper.class">Zikula\RoutesModule\Helper\RouteDumperHelper</parameter>
         <parameter key="jms_i18n_routing.route_exclusion_strategy.class">Zikula\RoutesModule\Translation\DefaultRouteExclusionStrategy</parameter>
         <parameter key="jms_i18n_routing.pattern_generation_strategy.class">Zikula\RoutesModule\Translation\ZikulaPatternGenerationStrategy</parameter>
         <parameter key="jms_i18n_routing.route_translation_extractor.class">Zikula\RoutesModule\Translation\ZikulaRouteTranslationExtractor</parameter>
     </parameters>
     <services>
-        <service id="zikularoutesmodule.routing_finder" class="Zikula\RoutesModule\Routing\RouteFinder">
+        <service id="zikula_routes_module.routing_finder" class="Zikula\RoutesModule\Routing\RouteFinder">
         </service>
 
         <service id="zikula_routes_module.route_dumper_helper" class="%zikula_routes_module.route_dumper_helper.class%">
             <argument type="service" id="service_container" />
         </service>
-        <service id="zikularoutesmodule.console_command_listener" class="%zikularoutesmodule.console_command_listener.class%">
+        <service id="zikula_routes_module.console_command_listener" class="%zikula_routes_module.console_command_listener.class%">
             <tag name="kernel.event_subscriber" />
         </service>
 
-        <service id="zikularoutesmodule.routing_loader" class="Zikula\RoutesModule\Routing\RouteLoader">
+        <service id="zikula_routes_module.routing_loader" class="Zikula\RoutesModule\Routing\RouteLoader">
             <tag name="routing.loader" />
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="service_container" />
             <argument type="service" id="kernel" />
         </service>
 
-        <service id="zikularoutesmodule.installer_listener" class="Zikula\RoutesModule\Listener\InstallerListener">
+        <service id="zikula_routes_module.installer_listener" class="Zikula\RoutesModule\Listener\InstallerListener">
             <tag name="kernel.event_subscriber" />
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="zikularoutesmodule.routing_finder" />
+            <argument type="service" id="zikula_routes_module.routing_finder" />
             <argument type="service" id="zikula.cache_clearer" />
             <argument type="service" id="zikula_routes_module.route_dumper_helper" />
+            <argument type="service" id="zikula_routes_module.multilingual_routing_helper" />
         </service>
     </services>
 </container>

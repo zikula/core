@@ -22,15 +22,11 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 use DataUtil;
 use FormUtil;
-use ModUtil;
-use SecurityUtil;
+use RuntimeException;
 use ServiceUtil;
-use System;
 use UserUtil;
-use Zikula_EntityAccess;
-use Zikula_Exception;
 use Zikula_Workflow_Util;
-use ZLanguage;
+use Zikula\Core\Doctrine\EntityAccess;
 
 /**
  * Entity class that defines the entity structure and behaviours.
@@ -43,7 +39,7 @@ use ZLanguage;
  *
  * @abstract
  */
-abstract class AbstractRouteEntity extends Zikula_EntityAccess
+abstract class AbstractRouteEntity extends EntityAccess
 {
     /**
      * @var string The tablename this object maps to.
@@ -161,7 +157,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
      * @Assert\Type(type="bool")
      * @var boolean $prependBundlePrefix.
      */
-    protected $prependBundlePrefix = false;
+    protected $prependBundlePrefix = true;
     
     /**
      * @ORM\Column(type="boolean")
@@ -169,7 +165,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
      * @Assert\Type(type="bool")
      * @var boolean $translatable.
      */
-    protected $translatable = false;
+    protected $translatable = true;
     
     /**
      * @ORM\Column(length=255, nullable=true)
@@ -248,7 +244,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      * @Assert\DateTime()
-     * @var datetime $createdDate.
+     * @var \DateTime $createdDate.
      */
     protected $createdDate;
     
@@ -256,7 +252,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="update")
      * @Assert\DateTime()
-     * @var datetime $updatedDate.
+     * @var \DateTime $updatedDate.
      */
     protected $updatedDate;
     
@@ -276,7 +272,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get _object type.
+     * Gets the _object type.
      *
      * @return string
      */
@@ -286,7 +282,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set _object type.
+     * Sets the _object type.
      *
      * @param string $_objectType.
      *
@@ -298,7 +294,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get _bypass validation.
+     * Gets the _bypass validation.
      *
      * @return boolean
      */
@@ -308,7 +304,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set _bypass validation.
+     * Sets the _bypass validation.
      *
      * @param boolean $_bypassValidation.
      *
@@ -320,7 +316,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get _actions.
+     * Gets the _actions.
      *
      * @return array
      */
@@ -330,7 +326,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set _actions.
+     * Sets the _actions.
      *
      * @param array $_actions.
      *
@@ -342,7 +338,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get __ w o r k f l o w__.
+     * Gets the __ w o r k f l o w__.
      *
      * @return array
      */
@@ -352,7 +348,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set __ w o r k f l o w__.
+     * Sets the __ w o r k f l o w__.
      *
      * @param array $__WORKFLOW__.
      *
@@ -365,7 +361,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     
     
     /**
-     * Get id.
+     * Gets the id.
      *
      * @return integer
      */
@@ -375,7 +371,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set id.
+     * Sets the id.
      *
      * @param integer $id.
      *
@@ -387,7 +383,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get workflow state.
+     * Gets the workflow state.
      *
      * @return string
      */
@@ -397,7 +393,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set workflow state.
+     * Sets the workflow state.
      *
      * @param string $workflowState.
      *
@@ -409,7 +405,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get route type.
+     * Gets the route type.
      *
      * @return string
      */
@@ -419,7 +415,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set route type.
+     * Sets the route type.
      *
      * @param string $routeType.
      *
@@ -431,7 +427,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get replaced route name.
+     * Gets the replaced route name.
      *
      * @return string
      */
@@ -441,7 +437,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set replaced route name.
+     * Sets the replaced route name.
      *
      * @param string $replacedRouteName.
      *
@@ -453,7 +449,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get bundle.
+     * Gets the bundle.
      *
      * @return string
      */
@@ -463,7 +459,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set bundle.
+     * Sets the bundle.
      *
      * @param string $bundle.
      *
@@ -475,7 +471,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get controller.
+     * Gets the controller.
      *
      * @return string
      */
@@ -485,7 +481,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set controller.
+     * Sets the controller.
      *
      * @param string $controller.
      *
@@ -497,7 +493,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get action.
+     * Gets the action.
      *
      * @return string
      */
@@ -507,7 +503,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set action.
+     * Sets the action.
      *
      * @param string $action.
      *
@@ -519,7 +515,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get path.
+     * Gets the path.
      *
      * @return string
      */
@@ -529,7 +525,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set path.
+     * Sets the path.
      *
      * @param string $path.
      *
@@ -541,7 +537,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get host.
+     * Gets the host.
      *
      * @return string
      */
@@ -551,7 +547,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set host.
+     * Sets the host.
      *
      * @param string $host.
      *
@@ -563,7 +559,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get schemes.
+     * Gets the schemes.
      *
      * @return string
      */
@@ -573,7 +569,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set schemes.
+     * Sets the schemes.
      *
      * @param string $schemes.
      *
@@ -585,7 +581,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get methods.
+     * Gets the methods.
      *
      * @return string
      */
@@ -595,7 +591,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set methods.
+     * Sets the methods.
      *
      * @param string $methods.
      *
@@ -607,7 +603,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get prepend bundle prefix.
+     * Gets the prepend bundle prefix.
      *
      * @return boolean
      */
@@ -617,7 +613,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set prepend bundle prefix.
+     * Sets the prepend bundle prefix.
      *
      * @param boolean $prependBundlePrefix.
      *
@@ -631,7 +627,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get translatable.
+     * Gets the translatable.
      *
      * @return boolean
      */
@@ -641,7 +637,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set translatable.
+     * Sets the translatable.
      *
      * @param boolean $translatable.
      *
@@ -655,7 +651,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get translation prefix.
+     * Gets the translation prefix.
      *
      * @return string
      */
@@ -665,7 +661,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set translation prefix.
+     * Sets the translation prefix.
      *
      * @param string $translationPrefix.
      *
@@ -677,7 +673,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get defaults.
+     * Gets the defaults.
      *
      * @return array
      */
@@ -687,7 +683,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set defaults.
+     * Sets the defaults.
      *
      * @param array $defaults.
      *
@@ -699,7 +695,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get requirements.
+     * Gets the requirements.
      *
      * @return array
      */
@@ -709,7 +705,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set requirements.
+     * Sets the requirements.
      *
      * @param array $requirements.
      *
@@ -721,7 +717,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get condition.
+     * Gets the condition.
      *
      * @return string
      */
@@ -731,7 +727,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set condition.
+     * Sets the condition.
      *
      * @param string $condition.
      *
@@ -743,7 +739,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get description.
+     * Gets the description.
      *
      * @return string
      */
@@ -753,7 +749,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set description.
+     * Sets the description.
      *
      * @param string $description.
      *
@@ -765,7 +761,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get sort.
+     * Gets the sort.
      *
      * @return integer
      */
@@ -775,7 +771,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set sort.
+     * Sets the sort.
      *
      * @param integer $sort.
      *
@@ -787,7 +783,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get group.
+     * Gets the group.
      *
      * @return string
      */
@@ -797,7 +793,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set group.
+     * Sets the group.
      *
      * @param string $group.
      *
@@ -809,7 +805,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get created user id.
+     * Gets the created user id.
      *
      * @return integer
      */
@@ -819,7 +815,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set created user id.
+     * Sets the created user id.
      *
      * @param integer $createdUserId.
      *
@@ -831,7 +827,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get updated user id.
+     * Gets the updated user id.
      *
      * @return integer
      */
@@ -841,7 +837,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set updated user id.
+     * Sets the updated user id.
      *
      * @param integer $updatedUserId.
      *
@@ -853,9 +849,9 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get created date.
+     * Gets the created date.
      *
-     * @return datetime
+     * @return \DateTime
      */
     public function getCreatedDate()
     {
@@ -863,9 +859,9 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set created date.
+     * Sets the created date.
      *
-     * @param datetime $createdDate.
+     * @param \DateTime $createdDate.
      *
      * @return void
      */
@@ -875,9 +871,9 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get updated date.
+     * Gets the updated date.
      *
-     * @return datetime
+     * @return \DateTime
      */
     public function getUpdatedDate()
     {
@@ -885,9 +881,9 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Set updated date.
+     * Sets the updated date.
      *
-     * @param datetime $updatedDate.
+     * @param \DateTime $updatedDate.
      *
      * @return void
      */
@@ -991,6 +987,9 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
             }
         }
     
+        // workaround for ampersand problem (#692)
+        $string = str_replace('&amp;', '&', $string);
+    
         $this[$fieldName] = $string;
     }
     
@@ -1053,7 +1052,8 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         $serviceManager = ServiceUtil::getManager();
         $objectId = $this->createCompositeIdentifier();
         $logger = $serviceManager->get('logger');
-        $logger->debug('{app}: User {user} created the {entity} with id {id}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route', 'id' => $objectId]);
+        $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $serviceManager->get('zikula_users_module.current_user')->get('uname'), 'entity' => 'route', 'id' => $objectId];
+        $logger->debug('{app}: User {user} created the {entity} with id {id}.', $logArgs);
     
         $dispatcher = $serviceManager->get('event_dispatcher');
     
@@ -1091,11 +1091,10 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     
         // delete workflow for this entity
         $serviceManager = ServiceUtil::getManager();
-        $workflowHelper = $serviceManager->get('zikularoutesmodule.workflow_helper');
+        $workflowHelper = $serviceManager->get('zikula_routes_module.workflow_helper');
         $workflowHelper->normaliseWorkflowData($this);
         $workflow = $this['__WORKFLOW__'];
         if ($workflow['id'] > 0) {
-            $serviceManager = ServiceUtil::getManager();
             $entityManager = $serviceManager->get('doctrine.entitymanager');
             $result = true;
             try {
@@ -1106,9 +1105,9 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
                 $result = false;
             }
             if ($result === false) {
-                $dom = ZLanguage::getModuleDomain('ZikulaRoutesModule');
                 $session = $serviceManager->get('session');
-                $session->getFlashBag()->add('error', __('Error! Could not remove stored workflow. Deletion has been aborted.', $dom));
+                $session->getFlashBag()->add(\Zikula_Session::MESSAGE_ERROR, $serviceManager->get('translator.default')->__('Error! Could not remove stored workflow. Deletion has been aborted.'));
+    
                 return false;
             }
         }
@@ -1136,7 +1135,8 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     
     
         $logger = $serviceManager->get('logger');
-        $logger->debug('{app}: User {user} removed the {entity} with id {id}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route', 'id' => $objectId]);
+        $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $serviceManager->get('zikula_users_module.current_user')->get('uname'), 'entity' => 'route', 'id' => $objectId];
+        $logger->debug('{app}: User {user} removed the {entity} with id {id}.', $logArgs);
     
         $dispatcher = $serviceManager->get('event_dispatcher');
     
@@ -1192,7 +1192,8 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         $serviceManager = ServiceUtil::getManager();
         $objectId = $this->createCompositeIdentifier();
         $logger = $serviceManager->get('logger');
-        $logger->debug('{app}: User {user} updated the {entity} with id {id}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route', 'id' => $objectId]);
+        $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $serviceManager->get('zikula_users_module.current_user')->get('uname'), 'entity' => 'route', 'id' => $objectId];
+        $logger->debug('{app}: User {user} updated the {entity} with id {id}.', $logArgs);
     
         $dispatcher = $serviceManager->get('event_dispatcher');
     
@@ -1213,10 +1214,6 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
      */
     protected function performPreSaveCallback()
     {
-        if (!$this->validate()) {
-            return false;
-        }
-    
         $serviceManager = ServiceUtil::getManager();
         $dispatcher = $serviceManager->get('event_dispatcher');
     
@@ -1243,7 +1240,8 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         $serviceManager = ServiceUtil::getManager();
         $objectId = $this->createCompositeIdentifier();
         $logger = $serviceManager->get('logger');
-        $logger->debug('{app}: User {user} saved the {entity} with id {id}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route', 'id' => $objectId]);
+        $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $serviceManager->get('zikula_users_module.current_user')->get('uname'), 'entity' => 'route', 'id' => $objectId];
+        $logger->debug('{app}: User {user} saved the {entity} with id {id}.', $logArgs);
     
         $dispatcher = $serviceManager->get('event_dispatcher');
     
@@ -1262,7 +1260,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     public function getTitleFromDisplayPattern()
     {
         $serviceManager = ServiceUtil::getManager();
-        $listHelper = $serviceManager->get('zikularoutesmodule.listentries_helper');
+        $listHelper = $serviceManager->get('zikula_routes_module.listentries_helper');
     
         $formattedTitle = ''
                 . $this->getPath()
@@ -1281,7 +1279,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     public static function getWorkflowStateAllowedValues()
     {
         $serviceManager = ServiceUtil::getManager();
-        $helper = $serviceManager->get('zikularoutesmodule.listentries_helper');
+        $helper = $serviceManager->get('zikula_routes_module.listentries_helper');
         $listEntries = $helper->getWorkflowStateEntriesForRoute();
     
         $allowedValues = [];
@@ -1299,7 +1297,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     public static function getRouteTypeAllowedValues()
     {
         $serviceManager = ServiceUtil::getManager();
-        $helper = $serviceManager->get('zikularoutesmodule.listentries_helper');
+        $helper = $serviceManager->get('zikula_routes_module.listentries_helper');
         $listEntries = $helper->getRouteTypeEntriesForRoute();
     
         $allowedValues = [];
@@ -1316,7 +1314,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     public function isSchemesValueAllowed(ExecutionContextInterface $context)
     {
         $serviceManager = ServiceUtil::getManager();
-        $helper = $serviceManager->get('zikularoutesmodule.listentries_helper');
+        $helper = $serviceManager->get('zikula_routes_module.listentries_helper');
         $listEntries = $helper->getSchemesEntriesForRoute();
         $dom = ZLanguage::getModuleDomain('ZikulaRoutesModule');
     
@@ -1344,7 +1342,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     public function isMethodsValueAllowed(ExecutionContextInterface $context)
     {
         $serviceManager = ServiceUtil::getManager();
-        $helper = $serviceManager->get('zikularoutesmodule.listentries_helper');
+        $helper = $serviceManager->get('zikula_routes_module.listentries_helper');
         $listEntries = $helper->getMethodsEntriesForRoute();
         $dom = ZLanguage::getModuleDomain('ZikulaRoutesModule');
     
@@ -1382,7 +1380,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         $idColumn = 'id';
         
         $serviceManager = ServiceUtil::getManager();
-        $workflowHelper = $serviceManager->get('zikularoutesmodule.workflow_helper');
+        $workflowHelper = $serviceManager->get('zikula_routes_module.workflow_helper');
         
         $schemaName = $workflowHelper->getWorkflowName($this['_objectType']);
         $this['__WORKFLOW__'] = [
@@ -1398,10 +1396,8 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         if ((!in_array($currentFunc, ['index', 'view', 'display']) && empty($isReuse)) || $forceLoading) {
             $result = Zikula_Workflow_Util::getWorkflowForObject($this, $this['_objectType'], $idColumn, 'ZikulaRoutesModule');
             if (!$result) {
-                $dom = ZLanguage::getModuleDomain('ZikulaRoutesModule');
-                $serviceManager = ServiceUtil::getManager();
                 $session = $serviceManager->get('session');
-                $session->getFlashBag()->add('error', __('Error! Could not load the associated workflow.', $dom));
+                $session->getFlashBag()->add(\Zikula_Session::MESSAGE_ERROR, $serviceManager->get('translator.default')->__('Error! Could not load the associated workflow.'));
             }
         }
         
@@ -1421,7 +1417,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         $this->setWorkflowState('initial');
     
         $serviceManager = ServiceUtil::getManager();
-        $workflowHelper = $serviceManager->get('zikularoutesmodule.workflow_helper');
+        $workflowHelper = $serviceManager->get('zikula_routes_module.workflow_helper');
     
         $schemaName = $workflowHelper->getWorkflowName($this['_objectType']);
         $this['__WORKFLOW__'] = [
@@ -1437,7 +1433,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     /**
      * Start validation and raise exception if invalid data is found.
      *
-     * @return void.
+     * @return boolean Whether everything is valid or not.
      */
     public function validate()
     {
@@ -1453,7 +1449,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         if (count($errors) > 0) {
             $session = $serviceManager->get('session');
             foreach ($errors as $error) {
-                $session->getFlashBag()->add('error', $error->getMessage());
+                $session->getFlashBag()->add(\Zikula_Session::MESSAGE_ERROR, $error->getMessage());
             }
             return false;
         }
@@ -1484,46 +1480,48 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         $currentFunc = FormUtil::getPassedValue('func', 'index', 'GETPOST', FILTER_SANITIZE_STRING);
         $component = 'ZikulaRoutesModule:Route:';
         $instance = $this->id . '::';
-        $dom = ZLanguage::getModuleDomain('ZikulaRoutesModule');
+        $serviceManager = ServiceUtil::getManager();
+        $permissionHelper = $serviceManager->get('zikula_permissions_module.api.permission');
+        $translator = $serviceManager->get('translator.default');
         if ($currentLegacyControllerType == 'admin') {
             if (in_array($currentFunc, ['index', 'view'])) {
                 $this->_actions[] = [
-                    'url' => ['type' => 'route', 'func' => 'display', 'arguments' => ['lct' => 'admin', 'id' => $this['id']]],
+                    'url' => ['type' => 'route', 'func' => 'admindisplay', 'arguments' => ['id' => $this['id']]],
                     'icon' => 'eye',
                     'linkTitle' => str_replace('"', '', $this->getTitleFromDisplayPattern()),
-                    'linkText' => __('Details', $dom)
+                    'linkText' => $translator->__('Details')
                 ];
             }
             if (in_array($currentFunc, ['index', 'view', 'display'])) {
-                if (SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT)) {
+                if ($permissionHelper->hasPermission($component, $instance, ACCESS_EDIT)) {
                     $this->_actions[] = [
-                        'url' => ['type' => 'route', 'func' => 'edit', 'arguments' => ['lct' => 'admin', 'id' => $this['id']]],
+                        'url' => ['type' => 'route', 'func' => 'adminedit', 'arguments' => ['id' => $this['id']]],
                         'icon' => 'pencil-square-o',
-                        'linkTitle' => __('Edit', $dom),
-                        'linkText' => __('Edit', $dom)
+                        'linkTitle' => $translator->__('Edit'),
+                        'linkText' => $translator->__('Edit')
                     ];
                     $this->_actions[] = [
-                        'url' => ['type' => 'route', 'func' => 'edit', 'arguments' => ['lct' => 'admin', 'astemplate' => $this['id']]],
+                        'url' => ['type' => 'route', 'func' => 'adminedit', 'arguments' => ['astemplate' => $this['id']]],
                         'icon' => 'files-o',
-                        'linkTitle' => __('Reuse for new item', $dom),
-                        'linkText' => __('Reuse', $dom)
+                        'linkTitle' => $translator->__('Reuse for new item'),
+                        'linkText' => $translator->__('Reuse')
                     ];
                 }
-                if (SecurityUtil::checkPermission($component, $instance, ACCESS_DELETE)) {
+                if ($permissionHelper->hasPermission($component, $instance, ACCESS_DELETE)) {
                     $this->_actions[] = [
-                        'url' => ['type' => 'route', 'func' => 'delete', 'arguments' => ['lct' => 'admin', 'id' => $this['id']]],
+                        'url' => ['type' => 'route', 'func' => 'admindelete', 'arguments' => ['id' => $this['id']]],
                         'icon' => 'trash-o',
-                        'linkTitle' => __('Delete', $dom),
-                        'linkText' => __('Delete', $dom)
+                        'linkTitle' => $translator->__('Delete'),
+                        'linkText' => $translator->__('Delete')
                     ];
                 }
             }
             if ($currentFunc == 'display') {
                 $this->_actions[] = [
-                    'url' => ['type' => 'route', 'func' => 'view', 'arguments' => ['lct' => 'admin']],
+                    'url' => ['type' => 'route', 'func' => 'adminview', 'arguments' => []],
                     'icon' => 'reply',
-                    'linkTitle' => __('Back to overview', $dom),
-                    'linkText' => __('Back to overview', $dom)
+                    'linkTitle' => $translator->__('Back to overview'),
+                    'linkText' => $translator->__('Back to overview')
                 ];
             }
         }
@@ -1532,7 +1530,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     /**
      * Creates url arguments array for easy creation of display urls.
      *
-     * @return Array The resulting arguments list.
+     * @return array The resulting arguments list.
      */
     public function createUrlArgs()
     {
@@ -1557,6 +1555,16 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         $itemId = $this['id'];
     
         return $itemId;
+    }
+    
+    /**
+     * Determines whether this entity supports hook subscribers or not.
+     *
+     * @return boolean
+     */
+    public function supportsHookSubscribers()
+    {
+        return true;
     }
     
     /**
@@ -1599,7 +1607,6 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
      * (1) http://docs.doctrine-project.org/en/latest/cookbook/implementing-wakeup-or-clone.html
      * (2) http://www.php.net/manual/en/language.oop5.cloning.php
      * (3) http://stackoverflow.com/questions/185934/how-do-i-create-a-copy-of-an-object-in-php
-     * (4) http://www.pantovic.com/article/26/doctrine2-entity-cloning
      */
     public function __clone()
     {

@@ -12,11 +12,9 @@
 
 namespace Zikula\RoutesModule\Helper\Base;
 
-use ModUtil;
-use SecurityUtil;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Zikula\Common\Translator\Translator;
-use Zikula_ServiceManager;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Core\Doctrine\EntityAccess;
 use Zikula_Workflow_Util;
 
 /**
@@ -29,15 +27,15 @@ class WorkflowHelper
      *
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var ContainerBuilder
      */
-    private $container;
+    protected $container;
 
     /**
-     * @var Translator
+     * @var TranslatorInterface
      */
     protected $translator;
 
@@ -46,11 +44,11 @@ class WorkflowHelper
      * Initialises member vars.
      *
      * @param \Zikula_ServiceManager $serviceManager ServiceManager instance.
-     * @param Translator            $translator     Translator service instance.
+     * @param TranslatorInterface    $translator     Translator service instance.
      *
      * @return void
      */
-    public function __construct(\Zikula_ServiceManager $serviceManager, $translator)
+    public function __construct(\Zikula_ServiceManager $serviceManager, TranslatorInterface $translator)
     {
         $this->name = 'ZikulaRoutesModule';
         $this->container = $serviceManager;
@@ -58,30 +56,30 @@ class WorkflowHelper
     }
 
     /**
-     * This method returns a list of possible object states.
-     *
-     * @return array List of collected state information.
-     */
-    public function getObjectStates()
-    {
-        $states = [];
-        $states[] = [
-            'value' => 'initial',
-            'text' => $this->translator->__('Initial'),
-            'ui' => 'danger'
-        ];
-        $states[] = [
-            'value' => 'approved',
-            'text' => $this->translator->__('Approved'),
-            'ui' => 'success'
-        ];
-        $states[] = [
-            'value' => 'deleted',
-            'text' => $this->translator->__('Deleted'),
-            'ui' => 'danger'
-        ];
+      * This method returns a list of possible object states.
+      *
+      * @return array List of collected state information.
+      */
+     public function getObjectStates()
+     {
+         $states = [];
+         $states[] = [
+             'value' => 'initial',
+             'text' => $this->translator->__('Initial'),
+             'ui' => 'danger'
+         ];
+         $states[] = [
+             'value' => 'approved',
+             'text' => $this->translator->__('Approved'),
+             'ui' => 'success'
+         ];
+         $states[] = [
+             'value' => 'deleted',
+             'text' => $this->translator->__('Deleted'),
+             'ui' => 'danger'
+         ];
     
-        return $states;
+         return $states;
      }
     
     /**
@@ -146,7 +144,7 @@ class WorkflowHelper
     /**
      * Retrieve the available actions for a given entity object.
      *
-     * @param \Zikula_EntityAccess $entity The given entity instance.
+     * @param EntityAccess $entity The given entity instance.
      *
      * @return array List of available workflow actions.
      */
@@ -161,7 +159,7 @@ class WorkflowHelper
         $wfActions = Zikula_Workflow_Util::getActionsForObject($entity, $objectType, $idColumn, $this->name);
     
         // as we use the workflows for multiple object types we must maybe filter out some actions
-        $listHelper = $this->container->get('zikularoutesmodule.listentries_helper');
+        $listHelper = $this->container->get('zikula_routes_module.listentries_helper');
         $states = $listHelper->getEntries($objectType, 'workflowState');
         $allowedStates = [];
         foreach ($states as $state) {
@@ -186,6 +184,8 @@ class WorkflowHelper
      * Returns a button class for a certain action.
      *
      * @param string $actionId Id of the treated action.
+     *
+     * @return string The button class.
      */
     protected function getButtonClassForAction($actionId)
     {
@@ -214,9 +214,9 @@ class WorkflowHelper
     /**
      * Executes a certain workflow action for a given entity object.
      *
-     * @param \Zikula_EntityAccess $entity   The given entity instance.
-     * @param string               $actionId Name of action to be executed.
-     * @param bool                 $recursive true if the function called itself.  
+     * @param EntityAccess $entity   The given entity instance.
+     * @param string        $actionId Name of action to be executed.
+     * @param bool          $recursive true if the function called itself.  
      *
      * @return bool False on error or true if everything worked well.
      */
@@ -246,7 +246,7 @@ class WorkflowHelper
     /**
      * Performs a conversion of the workflow object back to an array.
      *
-     * @param \Zikula_EntityAccess $entity The given entity instance (excplicitly assigned by reference as form handlers use arrays).
+     * @param EntityAccess $entity The given entity instance (excplicitly assigned by reference as form handlers use arrays).
      *
      * @return bool False on error or true if everything worked well.
      */
@@ -254,7 +254,7 @@ class WorkflowHelper
     {
         $workflow = $entity['__WORKFLOW__'];
         if (!isset($workflow[0]) && isset($workflow['module'])) {
-            return;
+            return true;
         }
     
         if (isset($workflow[0])) {
@@ -289,7 +289,6 @@ class WorkflowHelper
     public function collectAmountOfModerationItems()
     {
         $amounts = [];
-        $modname = 'ZikulaRoutesModule';
     
         // nothing required here as no entities use enhanced workflows including approval actions
     
@@ -307,7 +306,7 @@ class WorkflowHelper
      */
     public function getAmountOfModerationItems($objectType, $state)
     {
-        $repository = $this->container->get('zikularoutesmodule.' . $objectType . '_factory')->getRepository();
+        $repository = $this->container->get('zikula_routes_module.' . $objectType . '_factory')->getRepository();
     
         $where = 'tbl.workflowState = \'' . $state . '\'';
         $parameters = ['workflowState' => $state];

@@ -346,7 +346,7 @@ class RouteLoader extends Loader
         if (0 === preg_match('#^(.*?\\\\Controller\\\\(.+)Controller)::(.+)Action$#', $controllerString, $match)) {
             return $controllerString;
         }
-            
+
         // Bundle:controller:action
         return $bundleName . ':' . $match[2] . ':' . $match[3];
     }

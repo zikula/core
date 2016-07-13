@@ -1,5 +1,3 @@
-// Copyright Zikula Foundation, licensed MIT.
-
 'use strict';
 
 function zikulaRoutesToday(format)
@@ -69,10 +67,10 @@ function zikulaRoutesValidateNoSpace(val)
 /**
  * Runs special validation rules.
  */
-function zikulaRoutesPerformCustomValidationRules(objectType, id)
+function zikulaRoutesPerformCustomValidationRules(objectType, currentEntityId)
 {
     jQuery('.validate-nospace').each( function() {
-        if (zikulaRoutesValidateNoSpace(jQuery(this).val())) {
+        if (!zikulaRoutesValidateNoSpace(jQuery(this).val())) {
             document.getElementById(jQuery(this).attr('id')).setCustomValidity(Zikula.__('This value must not contain spaces.', 'zikularoutesmodule_js'));
         } else {
             document.getElementById(jQuery(this).attr('id')).setCustomValidity('');

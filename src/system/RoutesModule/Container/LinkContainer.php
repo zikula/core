@@ -21,6 +21,9 @@ use Zikula\RoutesModule\Container\Base\LinkContainer as BaseLinkContainer;
  */
 class LinkContainer extends BaseLinkContainer
 {
+    /**
+     * {@inheritdoc}
+     */
     public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
     {
         $links = [];
@@ -34,27 +37,26 @@ class LinkContainer extends BaseLinkContainer
         }
 
         $links[] = [
-            'url' => $this->router->generate('zikularoutesmodule_route_view', ['lct' => 'admin']),
+            'url' => $this->router->generate('zikularoutesmodule_route_adminview'),
             'text' => $this->translator->__('Routes'),
             'title' => $this->translator->__('Route list')
         ];
         $links[] = [
-            'url' => $this->router->generate('zikularoutesmodule_route_reload', ['lct' => 'admin']),
+            'url' => $this->router->generate('zikularoutesmodule_route_adminreload'),
             'text' => $this->translator->__('Reload routes'),
             'title' => $this->translator->__('Reload routes')
         ];
         $links[] = [
-            'url' => $this->router->generate('zikularoutesmodule_route_renew', ['lct' => 'admin']),
+            'url' => $this->router->generate('zikularoutesmodule_route_adminrenew'),
             'text' => $this->translator->__('Reload multilingual routing settings'),
             'title' => $this->translator->__('Reload multilingual routing settings')
         ];
         $links[] = [
-            'url' => $this->router->generate('zikularoutesmodule_route_dumpjsroutes', ['lct' => 'admin']),
+            'url' => $this->router->generate('zikularoutesmodule_route_dumpjsroutes'),
             'text' => $this->translator->__('Dump exposed js routes to file'),
             'title' => $this->translator->__('Dump exposed js routes to file')
         ];
 
         return $links;
     }
-    // feel free to add own extensions here
 }

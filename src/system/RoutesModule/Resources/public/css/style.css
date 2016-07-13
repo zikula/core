@@ -4,26 +4,15 @@ div#z-maincontent.z-module-routes table tbody tr td {
 }
 
 /* display pages */
-.zikularoutesmodule-display.with-rightbox div.panel {
-    float: left;
-    width: 79%;
-}
-.zikularoutesmodule-display div.zikularoutesmodule-rightbox {
-    float: right;
-    margin: 0 1em;
-    padding: .5em;
-    width: 20%;
-    /*border: 1px solid #666;*/
-}
 
-.zikularoutesmodule-display div.zikularoutesmodule-rightbox h3 {
+.zikularoutesmodule-display div.col-sm-3 h3 {
     color: #333;
     font-weight: 400;
     border-bottom: 1px solid #ccc;
     padding-bottom: 8px;
 }
 
-.zikularoutesmodule-display div.zikularoutesmodule-rightbox p.managelink {
+.zikularoutesmodule-display div.col-sm-3 p.managelink {
     margin-left: 18px;
 }
 /* validation */

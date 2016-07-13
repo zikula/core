@@ -12,6 +12,10 @@
 
 namespace Zikula\RoutesModule\Helper;
 
+use ModUtil;
+use Symfony\Component\HttpFoundation\Request;
+use Twig_Environment;
+use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\Helper\Base\ViewHelper as BaseViewHelper;
 
 /**
@@ -19,5 +23,33 @@ use Zikula\RoutesModule\Helper\Base\ViewHelper as BaseViewHelper;
  */
 class ViewHelper extends BaseViewHelper
 {
-    // feel free to add your own convenience methods here
+    /**
+     * {@inheritdoc}
+     */
+    public function processTemplate(Twig_Environment $twig, $type, $func, Request $request, $templateParameters = [], $template = '')
+    {
+        $enrichedTemplateParameters = $templateParameters;
+
+        if ($type == 'route' && $func == 'view') {
+            $groupMessages = [
+                RouteEntity::POSITION_FIXED_TOP => $this->translator->__('Routes fixed to the top of the list:'),
+                RouteEntity::POSITION_MIDDLE => $this->translator->__('Normal routes:'),
+                RouteEntity::POSITION_FIXED_BOTTOM => $this->translator->__('Routes fixed to the bottom of the list:'),
+            ];
+            $enrichedTemplateParameters['groupMessages'] = $groupMessages;
+            $enrichedTemplateParameters['sortableGroups'] = [RouteEntity::POSITION_MIDDLE];
+
+            $configDumper = $this->container->get('zikula.dynamic_config_dumper');
+            $enrichedTemplateParameters['jms_i18n_routing'] = $configDumper->getConfigurationForHtml('jms_i18n_routing');
+        } elseif ($type == 'route' && $func == 'edit') {
+            $urlNames = [];
+            $modules = ModUtil::getModulesByState(3, 'displayname');
+            foreach ($modules as $module) {
+                $urlNames[$module['name']] = $module['url'];
+            }
+            $enrichedTemplateParameters['moduleUrlNames'] = $urlNames;
+        }
+
+        return parent::processTemplate($twig, $type, $func, $request, $enrichedTemplateParameters, $template);
+    }
 }

@@ -13,6 +13,7 @@
 namespace Zikula\RoutesModule\Entity\Factory\Base;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Factory class used to retrieve entity and repository instances.
@@ -57,7 +58,7 @@ class RouteFactory
     }
 
     /**
-     * Get class name.
+     * Gets the class name.
      *
      * @return string
      */
@@ -67,7 +68,7 @@ class RouteFactory
     }
     
     /**
-     * Set class name.
+     * Sets the class name.
      *
      * @param string $className.
      *
@@ -79,7 +80,7 @@ class RouteFactory
     }
     
     /**
-     * Get object manager.
+     * Gets the object manager.
      *
      * @return ObjectManager
      */
@@ -89,7 +90,7 @@ class RouteFactory
     }
     
     /**
-     * Set object manager.
+     * Sets the object manager.
      *
      * @param ObjectManager $objectManager.
      *
@@ -101,7 +102,7 @@ class RouteFactory
     }
     
     /**
-     * Get repository.
+     * Gets the repository.
      *
      * @return EntityRepository
      */
@@ -111,7 +112,7 @@ class RouteFactory
     }
     
     /**
-     * Set repository.
+     * Sets the repository.
      *
      * @param EntityRepository $repository.
      *

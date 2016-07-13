@@ -1,0 +1,92 @@
+{# purpose of this template: routes display view #}
+{% extends routeArea == 'admin' ? 'ZikulaRoutesModule::adminBase.html.twig' : 'ZikulaRoutesModule::base.html.twig' %}
+{% block title %}
+    {% set templateTitle = route.getTitleFromDisplayPattern()|default(__('Route')) %}
+    {{ templateTitle|notifyFilters('zikularoutesmodule.filter_hooks.routes.filter') }}
+    {% if route._actions|length > 0 %}
+        <div class="dropdown">
+            <a id="itemActions{{ route.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
+            
+            <ul class="dropdown-menu" role="menu" aria-labelledby="itemActions{{ route.id }}DropDownToggle">
+                {% for option in route._actions %}
+                    <li role="presentation"><a href="{{ option.url.type|zikularoutesmodule_actionUrl(option.url.func, option.url.arguments) }}" title="{{ option.linkTitle|e('html_attr') }}" role="menuitem" tabindex="-1" class="fa fa-{{ option.icon }}">{{ option.linkText }}</a></li>
+                    
+                {% endfor %}
+            </ul>
+        </div>
+        <script type="text/javascript">
+        /* <![CDATA[ */
+            ( function($) {
+                $(document).ready(function() {
+                    $('.dropdown-toggle').dropdown();
+                    $('a.fa-zoom-in').attr('target', '_blank');
+                });
+            })(jQuery);
+        /* ]]> */
+        </script>
+    {% endif %}
+{% endblock %}
+{% block admin_page_icon 'eye' %}
+{% block content %}
+    <div class="zikularoutesmodule-route zikularoutesmodule-display">
+
+
+    <dl>
+        <dt>{{ __('Route type') }}</dt>
+        <dd>{{ route.routeType|zikularoutesmodule_listEntry('route', 'routeType') }}</dd>
+        <dt>{{ __('Replaced route name') }}</dt>
+        <dd>{{ route.replacedRouteName }}</dd>
+        <dt>{{ __('Bundle') }}</dt>
+        <dd>{{ route.bundle }}</dd>
+        <dt>{{ __('Controller') }}</dt>
+        <dd>{{ route.controller }}</dd>
+        <dt>{{ __('Action') }}</dt>
+        <dd>{{ route.action }}</dd>
+        <dt>{{ __('Path') }}</dt>
+        <dd>{{ route.path }}</dd>
+        <dt>{{ __('Host') }}</dt>
+        <dd>{{ route.host }}</dd>
+        <dt>{{ __('Schemes') }}</dt>
+        <dd>{{ route.schemes|zikularoutesmodule_listEntry('route', 'schemes') }}</dd>
+        <dt>{{ __('Methods') }}</dt>
+        <dd>{{ route.methods|zikularoutesmodule_listEntry('route', 'methods') }}</dd>
+        <dt>{{ __('Prepend bundle prefix') }}</dt>
+        <dd>{{ route.prependBundlePrefix|yesNo(true) }}</dd>
+        <dt>{{ __('Translatable') }}</dt>
+        <dd>{{ route.translatable|yesNo(true) }}</dd>
+        <dt>{{ __('Translation prefix') }}</dt>
+        <dd>{{ route.translationPrefix }}</dd>
+        <dt>{{ __('Defaults') }}</dt>
+        <dd>{{ route.defaults|zikularoutesmodule_arrayToString }}</dd>
+        <dt>{{ __('Requirements') }}</dt>
+        <dd>{{ route.requirements|zikularoutesmodule_arrayToString }}</dd>
+        <dt>{{ __('Condition') }}</dt>
+        <dd>{{ route.condition }}</dd>
+        <dt>{{ __('Description') }}</dt>
+        <dd>{{ route.description }}</dd>
+        <dt>{{ __('Sort') }}</dt>
+        <dd>{{ route.sort }}</dd>
+        <dt>{{ __('Group') }}</dt>
+        <dd>{{ route.group }}</dd>
+        
+    </dl>
+    {{ include('@ZikulaRoutesModule/Helper/includeStandardFieldsDisplay.html.twig', { obj: route }) }}
+
+    {% if app.request.query.get('theme') != 'ZikulaPrinterTheme' %}
+        {# include display hooks #}
+        {{ block('display_hooks') }}
+    {% endif %}
+</div>
+{% endblock %}
+{% block display_hooks %}
+    {% set hooks = notifyDisplayHooks(eventName='zikularoutesmodule.ui_hooks.routes.display_view', id=route.id, urlObject=currentUrlObject) %}
+    {% for providerArea, hook in hooks %}
+        {% if providerArea != 'provider.scribite.ui_hooks.editor' %}{# fix for #664 #}
+            {{ hook }}
+        {% endif %}
+    {% endfor %}
+{% endblock %}
+{% block footer %}
+    {{ parent() }}
+
+{% endblock %}

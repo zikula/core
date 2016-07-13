@@ -30,17 +30,117 @@ class MailerListener extends BaseMailerListener
     
     /**
      * Listener for the `module.mailer.api.sendmessage` event.
+     * Occurs when a new message should be sent.
      *
-     * Invoked from `Mailer_Api_User#sendmessage`.
-     * Subject is `Mailer_Api_User` with `$args`.
+     * Invoked from `Zikula\MailerModule\Api\MailerApi#sendMessage`.
+     * Subject is `Zikula\MailerModule\Api\MailerApi` with `SwiftMessage $message` object.
      * This is a notifyUntil event so the event must `$event->stopPropagation()` and set any
      * return data into `$event->data`, or `$event->setData()`.
      *
      * @param GenericEvent $event The event instance.
      */
-    public function sendMessage(GenericEvent $event)
+    public function sendMessageStart(GenericEvent $event)
     {
-        parent::sendMessage($event);
+        parent::sendMessageStart($event);
+    
+        // you can access general data available in the event
+        
+        // the event name
+        // echo 'Event: ' . $event->getName();
+        
+        // type of current request: MASTER_REQUEST or SUB_REQUEST
+        // if a listener should only be active for the master request,
+        // be sure to check that at the beginning of your method
+        // if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+        //     // don't do anything if it's not the master request
+        //     return;
+        // }
+        
+        // kernel instance handling the current request
+        // $kernel = $event->getKernel();
+        
+        // the currently handled request
+        // $request = $event->getRequest();
+    }
+    
+    /**
+     * Listener for the `module.mailer.api.perform` event.
+     * Occurs right before a message is sent.
+     *
+     * Invoked from `Zikula\MailerModule\Api\MailerApi#sendMessage`.
+     * Subject is `Zikula\MailerModule\Api\MailerApi` with `SwiftMessage $message` object.
+     * This is a notifyUntil event so the event must `$event->stopPropagation()` and set any
+     * return data into `$event->data`, or `$event->setData()`.
+     *
+     * @param GenericEvent $event The event instance.
+     */
+    public function sendMessagePerform(GenericEvent $event)
+    {
+        parent::sendMessagePerform($event);
+    
+        // you can access general data available in the event
+        
+        // the event name
+        // echo 'Event: ' . $event->getName();
+        
+        // type of current request: MASTER_REQUEST or SUB_REQUEST
+        // if a listener should only be active for the master request,
+        // be sure to check that at the beginning of your method
+        // if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+        //     // don't do anything if it's not the master request
+        //     return;
+        // }
+        
+        // kernel instance handling the current request
+        // $kernel = $event->getKernel();
+        
+        // the currently handled request
+        // $request = $event->getRequest();
+    }
+    
+    /**
+     * Listener for the `module.mailer.api.success` event.
+     * Occurs after a message has been sent successfully.
+     *
+     * Invoked from `Zikula\MailerModule\Api\MailerApi#performSending`.
+     *
+     * @param GenericEvent $event The event instance.
+     */
+    public function sendMessageSuccess(GenericEvent $event)
+    {
+        parent::sendMessageSuccess($event);
+    
+        // you can access general data available in the event
+        
+        // the event name
+        // echo 'Event: ' . $event->getName();
+        
+        // type of current request: MASTER_REQUEST or SUB_REQUEST
+        // if a listener should only be active for the master request,
+        // be sure to check that at the beginning of your method
+        // if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+        //     // don't do anything if it's not the master request
+        //     return;
+        // }
+        
+        // kernel instance handling the current request
+        // $kernel = $event->getKernel();
+        
+        // the currently handled request
+        // $request = $event->getRequest();
+    }
+    
+    /**
+     * Listener for the `module.mailer.api.failure` event.
+     * Occurs when a message could not be sent.
+     *
+     * Invoked from `Zikula\MailerModule\Api\MailerApi#performSending`.
+     *
+     * @param GenericEvent $event The event instance.
+     */
+    public function sendMessageFailure(GenericEvent $event)
+    {
+        parent::sendMessageFailure($event);
     
         // you can access general data available in the event
         

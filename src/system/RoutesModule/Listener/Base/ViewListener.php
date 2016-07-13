@@ -13,7 +13,6 @@
 namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Core\Event\GenericEvent;
 
 /**
@@ -38,6 +37,8 @@ class ViewListener implements EventSubscriberInterface
      * Occurs just before `Zikula_View#__construct()` finishes.
      * The subject is the Zikula_View instance.
      *
+     * Note that Zikula_View is deprecated and being replaced by Twig.
+     *
      * @param GenericEvent $event The event instance.
      */
     public function init(GenericEvent $event)
@@ -51,6 +52,8 @@ class ViewListener implements EventSubscriberInterface
      * Receives `Zikula_View` instance as subject,
      * args are `['template' => $template]`,
      * $data was the result of the fetch to be filtered.
+     *
+     * Note that Zikula_View is deprecated and being replaced by Twig.
      *
      * @param GenericEvent $event The event instance.
      */

@@ -15,8 +15,8 @@ use JMS\I18nRoutingBundle\Router\PatternGenerationStrategyInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Translation\LoggingTranslator;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Translation\TranslatorBagInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * This strategy duplicates \JMS\I18nRoutingBundle\Router\DefaultPatternGenerationStrategy
@@ -29,11 +29,17 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
     const STRATEGY_CUSTOM = 'custom';
 
     private $strategy;
+
     private $translator;
+
     private $translationDomain;
+
     private $locales;
+
     private $cacheDir;
+
     private $defaultLocale;
+
     private $modUrlMap = [];
 
     public function __construct($strategy, TranslatorInterface $translator, array $locales, $cacheDir, $translationDomain = 'routes', $defaultLocale = 'en')
@@ -86,7 +92,7 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
                     } else {
                         $prefix = $untranslatedPrefix;
                     }
-                    $i18nPattern = "/" . $prefix . $i18nPattern;
+                    $i18nPattern = '/' . $prefix . $i18nPattern;
                 }
             }
 
@@ -96,7 +102,7 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
             // prefix with locale if requested
             if (self::STRATEGY_PREFIX === $this->strategy
                 || (self::STRATEGY_PREFIX_EXCEPT_DEFAULT === $this->strategy && $this->defaultLocale !== $locale)) {
-                $i18nPattern = '/'.$locale.$i18nPattern;
+                $i18nPattern = '/' . $locale . $i18nPattern;
                 if (null !== $route->getOption('i18n_prefix')) {
                     $i18nPattern = $route->getOption('i18n_prefix').$i18nPattern;
                 }
@@ -114,7 +120,7 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
     public function addResources(RouteCollection $i18nCollection)
     {
         foreach ($this->locales as $locale) {
-            if (file_exists($metadata = $this->cacheDir.'/translations/catalogue.'.$locale.'.php.meta')) {
+            if (file_exists($metadata = $this->cacheDir . '/translations/catalogue.' . $locale . '.php.meta')) {
                 foreach (unserialize(file_get_contents($metadata)) as $resource) {
                     $i18nCollection->addResource($resource);
                 }

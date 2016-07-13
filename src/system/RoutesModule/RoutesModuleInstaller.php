@@ -26,9 +26,14 @@ class RoutesModuleInstaller extends BaseRoutesModuleInstaller
     {
         switch ($oldVersion) {
             case '1.0.0':
-                $sql = "DELETE FROM zikula_routes_route WHERE userRoute = 0";
+                // routes of system modules are not stored in database anymore
+                $sql = '
+                    DELETE FROM zikula_routes_route
+                    WHERE userRoute = 0
+                ';
                 $this->entityManager->getConnection()->exec($sql);
 
+                // update table to meet entity structure
                 $this->get('zikula.doctrine.schema_tool')->update(['\Zikula\RoutesModule\Entity\RouteEntity']);
                 break;
             default:

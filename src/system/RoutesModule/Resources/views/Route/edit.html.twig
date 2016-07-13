@@ -1,0 +1,200 @@
+{# purpose of this template: build the form to edit an instance of route #}
+{% extends routeArea == 'admin' ? 'ZikulaRoutesModule::adminBase.html.twig' : 'ZikulaRoutesModule::base.html.twig' %}
+
+{% block header %}
+    {{ parent() }}
+    {{ pageAddAsset('javascript', zasset('@ZikulaRoutesModule:js/ZikulaRoutesModule.EditFunctions.js')) }}
+    {{ pageAddAsset('javascript', zasset('@ZikulaRoutesModule:js/ZikulaRoutesModule.Validation.js')) }}
+{% set customScript %}
+    <script type="text/javascript">
+        (function($) {
+            $(function() {
+                function updatePathPrefix() {
+                    var i18n = $('#zikularoutesmodule_route_translatable').prop('checked');
+                    var bundlePrefix = $('#zikularoutesmodule_route_prependBundlePrefix').prop('checked');
+                    var baseUrl = {{ zikularoutesmodule_getBaseUrl()|json_encode|raw }};
+                    var moduleUrlNames = {{ moduleUrlNames|json_encode|raw }};
+
+                    if (bundlePrefix) {
+                        var bundle = $('#zikularoutesmodule_route_bundle').val();
+                        bundlePrefix = '/' + moduleUrlNames[bundle];
+                    } else {
+                        bundlePrefix = '';
+                    }
+
+                    if (i18n) {
+                        i18n = '/{' + '{{ __('lang') }}' + '}';
+                    } else {
+                        i18n = '';
+                    }
+
+                    var pathPrefix = baseUrl + i18n + bundlePrefix;
+                    $('#pathPrefix').text(pathPrefix.replace('"', ''));
+                }
+
+                updatePathPrefix();
+                $('#zikularoutesmodule_route_bundle, #zikularoutesmodule_route_prependBundlePrefix, #zikularoutesmodule_route_translatable').change(updatePathPrefix);
+            });
+        })(jQuery)
+    </script>
+{% endset %}
+{{ pageAddAsset('header', customScript) }}
+{% endblock %}
+
+{% block title mode == 'create' ? __('Create route') : __('Edit route') %}
+{% block admin_page_icon mode == 'create' ? 'plus' : 'pencil-square-o' %}
+{% block content %}
+    <div class="zikularoutesmodule-route zikularoutesmodule-edit">
+{% form_theme form with [
+    '@ZikulaRoutesModule/Form/bootstrap_3.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ form_start(form, {attr: {id: 'routeEditForm'}}) }}
+{{ form_errors(form) }}
+<fieldset>
+    <legend>{{ __('Content') }}</legend>
+    
+    {{ form_row(form.routeType) }}
+    
+    {{ form_row(form.replacedRouteName) }}
+    
+    {{ form_row(form.bundle) }}
+    
+    {{ form_row(form.controller) }}
+    
+    {{ form_row(form.action) }}
+    
+    {{ form_row(form.path) }}
+    
+    {{ form_row(form.host) }}
+    
+    {{ form_row(form.schemes) }}
+    
+    {{ form_row(form.methods) }}
+    
+    {{ form_row(form.prependBundlePrefix) }}
+    
+    {{ form_row(form.translatable) }}
+    
+    {{ form_row(form.translationPrefix) }}
+    
+    {{ form_row(form.condition) }}
+    
+    {{ form_row(form.description) }}
+    
+    <div class="hidden">
+        {{ form_row(form.sort) }}
+
+        {{ form_row(form.group) }}
+    </div>
+</fieldset>
+
+{% if mode != 'create' %}
+    {{ include('@ZikulaRoutesModule/Helper/includeStandardFieldsEdit.html.twig', { obj: route }) }}
+{% endif %}
+
+{# include display hooks #}
+{% if mode != 'create' %}
+    {% set hookId = route.id %}
+    {% set hooks = notifyDisplayHooks(eventName='zikularoutesmodule.ui_hooks.routes.form_edit', id=hookId) %}
+{% else %}
+    {% set hooks = notifyDisplayHooks(eventName='zikularoutesmodule.ui_hooks.routes.form_edit', id=null) %}
+{% endif %}
+{% if hooks is iterable and hooks|length > 0 %}
+    {% for providerArea, hook in hooks %}
+        {% if providerArea != 'provider.scribite.ui_hooks.editor' %}{# fix for #664 #}
+            <fieldset>
+                {{ hook }}
+            </fieldset>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+
+{# include return control #}
+{% if mode == 'create' %}
+    <fieldset>
+        <legend>{{ __('Return control') }}</legend>
+        {{ form_row(form.repeatCreation) }}
+    </fieldset>
+{% endif %}
+
+{# include possible submit actions #}
+<div class="form-group form-buttons">
+    <div class="col-sm-offset-3 col-sm-9">
+        {% for action in actions %}
+            {{ form_widget(attribute(form, action.id)) }}
+        {% endfor %}
+        {{ form_widget(form.reset) }}
+        {{ form_widget(form.cancel) }}
+    </div>
+</div>
+{{ form_end(form) }}
+</div>
+{% endblock %}
+{% block footer %}
+    {{ parent() }}
+
+    {% set editImage = '<span class="fa fa-pencil-square-o"></span>' %}
+    {% set deleteImage = '<span class="fa fa-trash-o"></span>' %}
+    
+    
+    <script type="text/javascript">
+    /* <![CDATA[ */
+        
+                var formButtons;
+        
+                function executeCustomValidationConstraints()
+                {
+                    zikulaRoutesPerformCustomValidationRules('route', '{% if mode != 'create' %}{{ route.id }}{% endif %}');
+                }
+        
+                function triggerFormValidation()
+                {
+                    executeCustomValidationConstraints();
+                    if (!document.getElementById('routeEditForm').checkValidity()) {
+                        // This does not really submit the form,
+                        // but causes the browser to display the error message
+                        jQuery('#routeEditForm').find(':submit').not(jQuery('#btnDelete')).first().click();
+                    }
+                }
+        
+                function handleFormSubmit (event) {
+                    triggerFormValidation();
+                    if (!document.getElementById('routeEditForm').checkValidity()) {
+                        event.preventDefault();
+                        return false;
+                    }
+        
+                    // hide form buttons to prevent double submits by accident
+                    formButtons.each(function (index) {
+                        jQuery(this).addClass('hidden');
+                    });
+        
+                    return true;
+                }
+        
+                ( function($) {
+                    $(document).ready(function() {
+        
+                        var allFormFields = $('#routeEditForm input, #routeEditForm select, #routeEditForm textarea');
+                        allFormFields.change(executeCustomValidationConstraints);
+        
+                        formButtons = $('#routeEditForm .form-buttons input');
+                        $('#btnDelete').bind('click keypress', function (e) {
+                            if (!window.confirm('{{ __('Really delete this route?') }}')) {
+                                e.preventDefault();
+                            }
+                        });
+                        $('#routeEditForm').submit(handleFormSubmit);
+        
+                        {% if mode != 'create' %}
+                            triggerFormValidation();
+                        {% endif %}
+        
+                        $('#routeEditForm label').tooltip();
+                    });
+                })(jQuery);
+    /* ]]> */
+    </script>
+{% endblock %}

@@ -1,0 +1,51 @@
+{# purpose of this template: general base layout #}
+{% block header %}
+    {{ pageAddAsset('stylesheet', asset('bootstrap/css/bootstrap.min.css')) }}
+    {{ pageAddAsset('stylesheet', asset('bootstrap/css/bootstrap-theme.min.css')) }}
+    {{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
+    {{ pageAddAsset('javascript', asset('bootstrap/js/bootstrap.min.js')) }}
+    {#{ pageAddAsset('javascript', 'zikula') }}{# still required for Gettext #}
+    {{ pageAddAsset('stylesheet', asset('bootstrap-jqueryui/bootstrap-jqueryui.min.css')) }}
+    {{ pageAddAsset('javascript', asset('bootstrap-jqueryui/bootstrap-jqueryui.min.js')) }}
+    {{ pageAddAsset('javascript', zasset('@ZikulaRoutesModule:js/ZikulaRoutesModule.js')) }}
+    {{ polyfill(['forms', 'forms-ext']) }}
+
+    {# initialise additional gettext domain for translations within javascript #}
+    {# blocked by https://github.com/zikula/core/issues/2601 #}
+    {# commented out because not sure yet whether this is still required in 1.4.x #}
+    {# { pageAddVar('jsgettext', 'zikularoutesmodule_js:ZikulaRoutesModule') } #}
+{% endblock %}
+
+{% if app.request.query.get('theme') != 'ZikulaPrinterTheme' %}
+    {% block appTitle %}
+        <h2 class="userheader">{{ __('Routes') }}</h2>
+        {{ moduleLinks(type='user', modName='ZikulaRoutesModule') }}
+    {% endblock %}
+{% endif %}
+
+{% block titleArea %}
+    <h2>{% block title %}{% endblock %}</h2>
+{% endblock %}
+{{ pageSetVar('title', block('title')) }}
+
+{{ showflashes() }}
+
+{% block content %}{% endblock %}
+
+{% block footer %}
+    {% if app.request.query.get('theme') != 'ZikulaPrinterTheme' %}
+    {% elseif app.request.query.get('func') == 'edit' %}
+        {{ pageAddAsset('stylesheet', 'style/core.css') }}
+        {{ pageAddAsset('stylesheet', zasset('@ZikulaRoutesModule:css/style.css')) }}
+        {{ pageAddAsset('stylesheet', zasset('@ZikulaThemeModule:css/form/style.css')) }}
+        {{ pageAddAsset('stylesheet', zasset('@ZikulaAndreas08Theme:css/fluid960gs/reset.css')) }}
+        {% set pageStyles %}
+        <style type="text/css">
+            body {
+                font-size: 70%;
+            }
+        </style>
+        {% endset %}
+        {{ pageAddAsset('header', pageStyles) }}
+    {% endif %}
+{% endblock %}

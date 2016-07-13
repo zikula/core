@@ -12,76 +12,65 @@
 
 namespace Zikula\RoutesModule\Form\Handler\Route;
 
-use ModUtil;
 use Symfony\Component\Routing\RouteCollection;
 use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\Form\Handler\Route\Base\EditHandler as BaseEditHandler;
-use Zikula\RoutesModule\Routing\Util as RoutingUtil;
-use Zikula_Form_View;
 
 /**
- * This handler class handles the page events of the Form called by the zikulaRoutesModule_admin_edit() function.
+ * This handler class handles the page events of the Form called by the zikulaRoutesModule_route_edit() function.
  * It aims on the route object type.
  */
 class EditHandler extends BaseEditHandler
 {
-    public function initialize(Zikula_Form_View $view)
-    {
-        $items = [];
-        $urlNames = [];
-        $modules = ModUtil::getModulesByState(3, 'displayname');
-        foreach ($modules as $module) {
-            $items[] = [
-                'text' => $module['displayname'],
-                'value' => $module['name']
-            ];
-            $urlNames[$module['name']] = $module['url'];
-        }
-        $view->assign('modules', $items);
-        $view->assign('moduleUrlNames', $urlNames);
-
-        return parent::initialize($view);
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function applyAction(array $args = [])
     {
+        $this->sanitizeInput();
+        if ($this->hasConflicts()) {
+            return false;
+        }
+
         $return = parent::applyAction($args);
 
-        $this->checkConflicts($this->entityRef);
-
-        $cacheClearer = $this->view->getContainer()->get('zikula.cache_clearer');
-        $cacheClearer->clear("symfony.routing");
+        $cacheClearer = $this->container->get('zikula.cache_clearer');
+        $cacheClearer->clear('symfony.routing');
 
         return $return;
     }
 
-    protected function writeRelationDataToEntity(Zikula_Form_View $view, $entity, $entityData)
+    /**
+     * Ensures validity of input data.
+     */
+    private function sanitizeInput()
     {
-        $entityData = $this->sanitizeInput($entityData);
+        $entity = $this->entityRef;
 
-        return parent::writeRelationDataToEntity($view, $entity, $entityData);
+        list($controller, ) = $this->sanitizeController($entity['controller']);
+        list($action, ) = $this->sanitizeAction($entity['action']);
+
+        $entity['controller'] = $controller;
+        $entity['action'] = $action;
+        $entity['group'] = RouteEntity::POSITION_MIDDLE;
+        $entity['sort'] = 0;
+
+        $this->entityRef = $entity;
     }
 
-    private function sanitizeInput($entityData)
+    /**
+     * Checks for potential conflict.
+     *
+     * @return boolean True if a critical error occured, else false.
+     */
+    private function hasConflicts()
     {
-        list($controller, ) = $this->sanitizeController($entityData['controller']);
-        list($action, ) = $this->sanitizeAction($entityData['action']);
+        $routeEntity = $this->entityRef;
 
-        $entityData['controller'] = $controller;
-        $entityData['action'] = $action;
-        $entityData['group'] = RouteEntity::POSITION_MIDDLE;
-        $entityData['sort'] = 0;
-
-        return $entityData;
-    }
-
-    private function checkConflicts(RouteEntity $routeEntity)
-    {
         $newPath = $routeEntity->getPathWithBundlePrefix();
 
-        $router = $this->view->getContainer()->get('router');
         /** @var RouteCollection $routeCollection */
-        $routeCollection = $router->getRouteCollection();
+        $routeCollection = $this->router->getRouteCollection();
 
         $errors = [];
         foreach ($routeCollection->all() as $route) {
@@ -111,14 +100,19 @@ class EditHandler extends BaseEditHandler
             }
         }
 
+        $hasCriticalErrors = false;
+
         foreach ($errors as $error) {
             if ($error['type'] == 'SAME') {
                 $message = $this->__('It looks like you created or updated a route with a path which already exists. This is an error in most cases.');
+                $hasCriticalErrors = true;
             } else {
                 $message = $this->__f('The path of the route you created or updated looks similar to the following already existing path: %s Are you sure you haven\'t just introduced a conflict?', $error['path']);
             }
             \LogUtil::registerError($message);
         }
+
+        return $hasCriticalErrors;
     }
 
     /**

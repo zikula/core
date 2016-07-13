@@ -12,7 +12,7 @@
 
 namespace Zikula\RoutesModule\Helper\Base;
 
-use Zikula\Common\Translator\Translator;
+use Zikula\Common\Translator\TranslatorInterface;
 
 /**
  * Utility base class for list field entries related methods.
@@ -20,7 +20,7 @@ use Zikula\Common\Translator\Translator;
 class ListEntriesHelper
 {
     /**
-     * @var Translator
+     * @var TranslatorInterface
      */
     protected $translator;
 
@@ -28,11 +28,9 @@ class ListEntriesHelper
      * Constructor.
      * Initialises member vars.
      *
-     * @param Translator $translator Translator service instance.
-     *
-     * @return void
+     * @param TranslatorInterface $translator Translator service instance.
      */
-    public function __construct($translator)
+    public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }

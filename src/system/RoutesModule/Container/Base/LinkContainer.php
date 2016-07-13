@@ -12,22 +12,19 @@
 
 namespace Zikula\RoutesModule\Container\Base;
 
-use ModUtil;
-use SecurityUtil;
-use ServiceUtil;
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\Common\Translator\Translator;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
+use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\RoutesModule\Helper\ControllerHelper;
 
 /**
  * This is the link container service implementation class.
  */
 class LinkContainer implements LinkContainerInterface
 {
-    /**
-     * @var Translator
-     */
-    protected $translator;
+    use TranslatorTrait;
 
     /**
      * @var RouterInterface
@@ -35,47 +32,70 @@ class LinkContainer implements LinkContainerInterface
     protected $router;
 
     /**
+     * @var PermissionApi
+     */
+    protected $permissionApi;
+
+    /**
+     * @var ControllerHelper
+     */
+    protected $controllerHelper;
+
+    /**
      * Constructor.
      * Initialises member vars.
      *
-     * @param Translator      $translator Translator service instance.
-     * @param Routerinterface $router     The router service.
+     * @param TranslatorInterface $translator       Translator service instance.
+     * @param Routerinterface     $router           Router service instance.
+     * @param PermissionApi       $permissionApi    PermissionApi service instance.
+     * @param ControllerHelper    $controllerHelper ControllerHelper service instance.
      */
-    public function __construct($translator, RouterInterface $router)
+    public function __construct(TranslatorInterface $translator, RouterInterface $router, PermissionApi $permissionApi, ControllerHelper $controllerHelper)
+    {
+        $this->setTranslator($translator);
+        $this->router = $router;
+        $this->permissionApi = $permissionApi;
+        $this->controllerHelper = $controllerHelper;
+    }
+
+    /**
+     * Sets the translator.
+     *
+     * @param TranslatorInterface $translator Translator service instance.
+     */
+    public function setTranslator(/*TranslatorInterface */$translator)
     {
         $this->translator = $translator;
-        $this->router = $router;
     }
 
     /**
      * Returns available header links.
      *
+     * @param string $type The type to collect links for.
+     *
      * @return array Array of header links.
      */
     public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
     {
+        $utilArgs = ['api' => 'linkContainer', 'action' => 'getLinks'];
+        $allowedObjectTypes = $this->controllerHelper->getObjectTypes('api', $utilArgs);
+
+        $permLevel = LinkContainerInterface::TYPE_ADMIN == $type ? ACCESS_ADMIN : ACCESS_READ;
+
+        // Create an array of links to return
         $links = [];
-        $serviceManager = ServiceUtil::getManager();
-        $request = $serviceManager->get('request');
 
-        $controllerHelper = $serviceManager->get('zikularoutesmodule.controller_helper');
-        $utilArgs = ['api' => 'ajax', 'action' => 'getLinks'];
-        $allowedObjectTypes = $controllerHelper->getObjectTypes('api', $utilArgs);
-
-        $currentLegacyType = $request->query->filter('lct', 'user', false, FILTER_SANITIZE_STRING);
-        $permLevel = in_array('admin', [$type, $currentLegacyType]) ? ACCESS_ADMIN : ACCESS_READ;
-
-        if (!in_array('admin', [$type, $currentLegacyType])) {
-            return $links;
-        }
-
-        if (in_array('route', $allowedObjectTypes)
-            && SecurityUtil::checkPermission($this->getBundleName() . ':Route:', '::', $permLevel)) {
-            $links[] = [
-                'url' => $this->router->generate('zikularoutesmodule_route_view', ['lct' => 'admin']),
-                'text' => $this->translator->__('Routes'),
-                'title' => $this->translator->__('Route list')
-            ];
+        
+        if (LinkContainerInterface::TYPE_ADMIN == $type) {
+            
+            if (in_array('route', $allowedObjectTypes)
+                && $this->permissionApi->hasPermission($this->getBundleName() . ':Route:', '::', $permLevel)) {
+                $links[] = [
+                    'url' => $this->router->generate('zikularoutesmodule_route_adminview'),
+                     'text' => $this->translator->__('Routes'),
+                     'title' => $this->translator->__('Route list')
+                 ];
+            }
         }
 
         return $links;

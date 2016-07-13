@@ -12,7 +12,6 @@
 
 namespace Zikula\RoutesModule\Listener\Base;
 
-use ModUtil;
 use ServiceUtil;
 use UserUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -93,8 +92,6 @@ class UserListener implements EventSubscriberInterface
      */
     public function delete(GenericEvent $event)
     {
-        ModUtil::initOOModule('ZikulaRoutesModule');
-    
         $userRecord = $event->getSubject();
         $uid = $userRecord['uid'];
         $serviceManager = ServiceUtil::getManager();
@@ -108,6 +105,7 @@ class UserListener implements EventSubscriberInterface
         $repo->updateLastEditor($uid, 2);
         
         $logger = $serviceManager->get('logger');
-        $logger->notice('{app}: User {user} has been deleted, so we deleted corresponding {entities}, too.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entities' => 'routes']);
+        $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $serviceManager->get('zikula_users_module.current_user')->get('uname'), 'entities' => 'routes'];
+        $logger->notice('{app}: User {user} has been deleted, so we deleted corresponding {entities}, too.', $logArgs);
     }
 }

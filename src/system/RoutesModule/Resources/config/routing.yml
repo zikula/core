@@ -2,7 +2,7 @@ zikularoutesmodule:
     # define routing support for these controllers
     resource: "@ZikulaRoutesModule/Controller"
     # enable support for defining routes by annotations
-    type:     annotation
+    type: annotation
 
 zikularoutesmodule_redirecting_removetrailingslash:
     path: /{url}

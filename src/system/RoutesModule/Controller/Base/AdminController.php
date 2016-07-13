@@ -16,43 +16,24 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use JCSSUtil;
 use ModUtil;
-use SecurityUtil;
+use RuntimeException;
 use System;
-use UserUtil;
-use Zikula_AbstractController;
-use Zikula_View;
 use ZLanguage;
-use Zikula\Bundle\HookBundle\Hook\ProcessHook;
-use Zikula\Bundle\HookBundle\Hook\ValidationHook;
-use Zikula\Bundle\HookBundle\Hook\ValidationProviders;
+use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\RouteUrl;
 use Zikula\Core\Response\PlainResponse;
 
 /**
  * Admin controller class.
  */
-class AdminController extends Zikula_AbstractController
+class AdminController extends AbstractController
 {
-    /**
-     * Post initialise.
-     *
-     * Run after construction.
-     *
-     * @return void
-     */
-    protected function postInitialize()
-    {
-        // Set caching to false by default.
-        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
-    }
 
     /**
-     * This method is the default function handling the main area called without defining arguments.
+     * This is the default action handling the main area called without defining arguments.
      *
-     * @param Request  $request      Current request instance
-     * @param string  $ot           Treated object type.
+     * @param Request  $request      Current request instance.
      *
      * @return mixed Output.
      *
@@ -61,43 +42,17 @@ class AdminController extends Zikula_AbstractController
     public function indexAction(Request $request)
     {
         // parameter specifying which type of objects we are treating
-        $objectType = $request->query->filter('ot', 'route', false, FILTER_SANITIZE_STRING);
+        $objectType = $request->query->getAlnum('ot', 'route');
         
         $permLevel = ACCESS_ADMIN;
-        if (!SecurityUtil::checkPermission($this->name . '::', '::', $permLevel)) {
+        if (!$this->hasPermission($this->name . '::', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
         
         // redirect to view action
-        $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_' . strtolower($objectType) . '_view', ['lct' => 'admin']);
+        $routeArea = 'admin';
         
-        return new RedirectResponse(System::normalizeUrl($redirectUrl));
+        return $this->redirectToRoute('zikularoutesmodule_' . strtolower($objectType) . '_' . $routeArea . 'view');
     }
-    
 
-    /**
-     * This method cares for a redirect within an inline frame.
-     *
-     * @param string  $idPrefix    Prefix for inline window element identifier.
-     * @param string  $commandName Name of action to be performed (create or edit).
-     * @param integer $id          Id of created item (used for activating auto completion after closing the modal window).
-     *
-     * @return boolean Whether the inline redirect has been performed or not.
-     */
-    public function handleInlineRedirectAction($idPrefix, $commandName, $id = 0)
-    {
-        $id = (int) $this->request->query->filter('id', 0, false, FILTER_VALIDATE_INT);
-        $idPrefix = $this->request->query->filter('idPrefix', '', false, FILTER_SANITIZE_STRING);
-        $commandName = $this->request->query->filter('commandName', '', false, FILTER_SANITIZE_STRING);
-        if (empty($idPrefix)) {
-            return false;
-        }
-        
-        $this->view->assign('itemId', $id)
-                   ->assign('idPrefix', $idPrefix)
-                   ->assign('commandName', $commandName)
-                   ->assign('jcssConfig', JCSSUtil::getJSConfig());
-        
-        return new PlainResponse($this->view->fetch('Admin/inlineRedirectHandler.tpl'));
-    }
 }
