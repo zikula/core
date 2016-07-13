@@ -38,23 +38,23 @@ class LinkContainer extends BaseLinkContainer
 
         $links[] = [
             'url' => $this->router->generate('zikularoutesmodule_route_adminview'),
-            'text' => $this->translator->__('Routes'),
-            'title' => $this->translator->__('Route list')
+            'text' => $this->__('Routes'),
+            'title' => $this->__('Route list')
         ];
         $links[] = [
             'url' => $this->router->generate('zikularoutesmodule_route_adminreload'),
-            'text' => $this->translator->__('Reload routes'),
-            'title' => $this->translator->__('Reload routes')
+            'text' => $this->__('Reload routes'),
+            'title' => $this->__('Reload routes')
         ];
         $links[] = [
             'url' => $this->router->generate('zikularoutesmodule_route_adminrenew'),
-            'text' => $this->translator->__('Reload multilingual routing settings'),
-            'title' => $this->translator->__('Reload multilingual routing settings')
+            'text' => $this->__('Reload multilingual routing settings'),
+            'title' => $this->__('Reload multilingual routing settings')
         ];
         $links[] = [
             'url' => $this->router->generate('zikularoutesmodule_route_dumpjsroutes'),
-            'text' => $this->translator->__('Dump exposed js routes to file'),
-            'title' => $this->translator->__('Dump exposed js routes to file')
+            'text' => $this->__('Dump exposed js routes to file'),
+            'title' => $this->__('Dump exposed js routes to file')
         ];
 
         return $links;
