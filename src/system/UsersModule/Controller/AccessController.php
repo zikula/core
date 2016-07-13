@@ -79,7 +79,7 @@ class AccessController extends AbstractController
                 ]);
             }
         } elseif ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
-            $uid = $authenticationMethod->authenticate();
+            $uid = ($request->getMethod() == 'POST') ? 1 : $authenticationMethod->authenticate(); // provide temp value for uid until form gives real value.
             $hasListeners = $this->get('event_dispatcher')->hasListeners(AccessEvents::LOGIN_FORM);
             $hookBindings = $this->get('hook_dispatcher')->getBindingsFor('subscriber.users.ui_hooks.login_screen');
             if ($hasListeners || count($hookBindings) > 0) {
@@ -90,7 +90,7 @@ class AccessController extends AbstractController
                     $rememberMe = $form->get('rememberme')->getData();
                 } else {
                     return $this->render('@ZikulaUsersModule/Access/defaultLogin.html.twig', [
-                        'form' => $form,
+                        'form' => $form->createView(),
                     ]);
                 }
             }
