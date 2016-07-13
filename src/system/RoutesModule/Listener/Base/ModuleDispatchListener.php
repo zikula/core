@@ -12,9 +12,7 @@
 
 namespace Zikula\RoutesModule\Listener\Base;
 
-use ModUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Core\Event\GenericEvent;
 
 /**
@@ -52,12 +50,14 @@ class ModuleDispatchListener implements EventSubscriberInterface
      * Listener for the `module_dispatch.preexecute` event.
      *
      * Occurs in `ModUtil::exec()` before function call with the following args:
-     *     `['modname' => $modname,
-     *       'modfunc' => $modfunc,
-     *       'args' => $args,
-     *       'modinfo' => $modinfo,
-     *       'type' => $type,
-     *       'api' => $api]`
+     *     `[
+     *          'modname' => $modname,
+     *          'modfunc' => $modfunc,
+     *          'args' => $args,
+     *          'modinfo' => $modinfo,
+     *          'type' => $type,
+     *          'api' => $api
+     *      ]`
      * .
      *
      * @param GenericEvent $event The event instance.
@@ -70,12 +70,14 @@ class ModuleDispatchListener implements EventSubscriberInterface
      * Listener for the `module_dispatch.postexecute` event.
      *
      * Occurs in `ModUtil::exec()` after function call with the following args:
-     *     `['modname' => $modname,
-     *       'modfunc' => $modfunc,
-     *       'args' => $args,
-     *       'modinfo' => $modinfo,
-     *       'type' => $type,
-     *       'api' => $api]`
+     *     `[
+     *          'modname' => $modname,
+     *          'modfunc' => $modfunc,
+     *          'args' => $args,
+     *          'modinfo' => $modinfo,
+     *          'type' => $type,
+     *          'api' => $api
+     *      ]`
      * .
      * Receives the modules output with `$event->getData();`.
      * Can modify this output with `$event->setData($data);`.

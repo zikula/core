@@ -17,12 +17,10 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use DataUtil;
 use ModUtil;
-use SecurityUtil;
+use RuntimeException;
 use System;
-use UserUtil;
-use Zikula_Controller_AbstractAjax;
-use Zikula_View;
 use ZLanguage;
+use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\RouteUrl;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\Core\Response\Ajax\BadDataResponse;
@@ -34,15 +32,14 @@ use Zikula\Core\Response\PlainResponse;
 /**
  * Ajax controller class.
  */
-class AjaxController extends Zikula_Controller_AbstractAjax
+class AjaxController extends AbstractController
 {
 
 
     /**
-     * This method is the default function handling the main area called without defining arguments.
+     * This is the default action handling the main area called without defining arguments.
      *
-     * @param Request  $request      Current request instance
-     * @param string  $ot           Treated object type.
+     * @param Request  $request      Current request instance.
      *
      * @return mixed Output.
      *
@@ -51,12 +48,12 @@ class AjaxController extends Zikula_Controller_AbstractAjax
     public function indexAction(Request $request)
     {
         // parameter specifying which type of objects we are treating
-        $objectType = $request->query->filter('ot', 'route', false, FILTER_SANITIZE_STRING);
+        $objectType = $request->query->getAlnum('ot', 'route');
         
         $permLevel = ACCESS_OVERVIEW;
-        if (!SecurityUtil::checkPermission($this->name . '::', '::', $permLevel)) {
+        if (!$this->hasPermission($this->name . '::', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
     }
-    
+
 }

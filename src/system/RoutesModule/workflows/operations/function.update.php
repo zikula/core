@@ -21,15 +21,7 @@
  */
 function ZikulaRoutesModule_operation_update(&$entity, $params)
 {
-    $dom = ZLanguage::getModuleDomain('ZikulaRoutesModule');
 
-
-    // initialise the result flag
-    $result = false;
-
-    $objectType = $entity['_objectType'];
-    $currentState = $entity['workflowState'];
-    
     // get attributes read from the workflow
     if (isset($params['nextstate']) && !empty($params['nextstate'])) {
         // assign value to the data object
@@ -41,8 +33,10 @@ function ZikulaRoutesModule_operation_update(&$entity, $params)
     }
     
     // get entity manager
-    $serviceManager = ServiceUtil::getManager();
+    $serviceManager = \ServiceUtil::getManager();
     $entityManager = $serviceManager->get('doctrine.entitymanager');
+    $logger = $serviceManager->get('logger');
+    $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $serviceManager->get('zikula_users_module.current_user')->get('uname')];
     
     // save entity data
     try {
@@ -51,14 +45,10 @@ function ZikulaRoutesModule_operation_update(&$entity, $params)
         $entityManager->flush();
         //});
         $result = true;
-    
-        $logger = $serviceManager->get('logger');
-        $logger->notice('{app}: User {user} updated an entity.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname')]);
+        $logger->notice('{app}: User {user} updated an entity.', $logArgs);
     } catch (\Exception $e) {
+        $logger->error('{app}: User {user} tried to update an entity, but failed.', $logArgs);
         throw new \RuntimeException($e->getMessage());
-    
-        $logger = $serviceManager->get('logger');
-        $logger->error('{app}: User {user} tried to update an entity, but failed.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname')]);
     }
 
     // return result of this operation

@@ -22,14 +22,17 @@ class MultilingualRoutingHelper
      * @var VariableApi
      */
     private $variableApi;
+
     /**
      * @var DynamicConfigDumper
      */
     private $configDumper;
+
     /**
      * @var CacheClearer
      */
     private $cacheClearer;
+
     /**
      * @var string
      */
@@ -37,10 +40,10 @@ class MultilingualRoutingHelper
 
     /**
      * MultilingualRoutingHelper constructor.
-     * @param VariableApi $variableApi
+     * @param VariableApi         $variableApi
      * @param DynamicConfigDumper $configDumper
-     * @param CacheClearer $cacheClearer
-     * @param $locale
+     * @param CacheClearer        $cacheClearer
+     * @param string              $locale
      */
     public function __construct(VariableApi $variableApi, DynamicConfigDumper $configDumper, CacheClearer $cacheClearer, $locale)
     {
@@ -60,6 +63,7 @@ class MultilingualRoutingHelper
         $defaultLocale = $this->variableApi->get(VariableApi::CONFIG, 'language_i18n', $this->locale);
         $installedLanguages = \ZLanguage::getInstalledLanguages();
         $isRequiredLangParameter = $this->variableApi->get(VariableApi::CONFIG, 'languageurl', 0);
+
         $this->configDumper->setConfiguration('jms_i18n_routing',
             [
                 'default_locale' => $defaultLocale,

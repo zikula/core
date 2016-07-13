@@ -12,12 +12,6 @@
 
 namespace Zikula\RoutesModule\Entity;
 
-use DataUtil;
-use FormUtil;
-use Symfony\Component\Filesystem\Exception\IOException;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Routing\Route;
 use Zikula\RoutesModule\Entity\Base\AbstractRouteEntity as BaseAbstractRouteEntity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -45,6 +39,9 @@ class RouteEntity extends BaseAbstractRouteEntity
 
     const POSITION_FIXED_BOTTOM = 7;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct()
     {
         parent::__construct();
@@ -71,7 +68,7 @@ class RouteEntity extends BaseAbstractRouteEntity
 
             $modinfo = \ModUtil::getInfoFromName($bundle);
 
-            return "/" . $modinfo["url"] . $this->path;
+            return '/' . $modinfo['url'] . $this->path;
         }
 
         return $this->path;
@@ -89,9 +86,10 @@ class RouteEntity extends BaseAbstractRouteEntity
         if (php_sapi_name() == 'cli') {
             return;
         }
+
         $serviceManager = \ServiceUtil::getManager();
         $requestStack = $serviceManager->get('request_stack');
-        if ($requestStack->getCurrentRequest() === null) {
+        if (null === $requestStack->getCurrentRequest()) {
             return;
         }
 
@@ -195,5 +193,4 @@ class RouteEntity extends BaseAbstractRouteEntity
     {
         $this->performPostSaveCallback();
     }
-
 }

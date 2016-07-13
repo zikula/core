@@ -12,18 +12,18 @@
 
 namespace Zikula\RoutesModule\Base;
 
+use Doctrine\DBAL\Connection;
 use EventUtil;
-use HookUtil;
-use ModUtil;
+use RuntimeException;
 use System;
 use UserUtil;
-use Zikula_AbstractInstaller;
+use Zikula\Core\AbstractExtensionInstaller;
 use Zikula_Workflow_Util;
 
 /**
  * Installer base class.
  */
-class RoutesModuleInstaller extends Zikula_AbstractInstaller
+class RoutesModuleInstaller extends AbstractExtensionInstaller
 {
     /**
      * Install the ZikulaRoutesModule application.
@@ -34,33 +34,34 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
      */
     public function install()
     {
+        $logger = $this->container->get('logger');
+        $userName = $this->container->get('zikula_users_module.current_user')->get('uname');
+    
         // create all tables from according entity definitions
         try {
-            $this->get('zikula.doctrine.schema_tool')->create($this->listEntityClasses());
+            $this->schemaTool->create($this->listEntityClasses());
         } catch (\Exception $e) {
             if (System::isDevelopmentMode()) {
-                $this->request->getSession()->getFlashBag()->add('error', $this->__('Doctrine Exception: ') . $e->getMessage());
-                $logger = $this->serviceManager->get('logger');
-                $logger->error('{app}: User {user} could not create the database tables during installation. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'errorMessage' => $e->getMessage()]);
+                $this->addFlash(\Zikula_Session::MESSAGE_ERROR, $this->__('Doctrine Exception') . ': ' . $e->getMessage());
+                $logger->error('{app}: User {user} could not create the database tables during installation. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'user' => $userName, 'errorMessage' => $e->getMessage()]);
+    
                 return false;
             }
-            $returnMessage = $this->__f('An error was encountered while creating the tables for the %s extension.', [$this->name]);
+            $returnMessage = $this->__f('An error was encountered while creating the tables for the %s extension.', ['%s' => 'ZikulaRoutesModule']);
             if (!System::isDevelopmentMode()) {
                 $returnMessage .= ' ' . $this->__('Please enable the development mode by editing the /app/config/parameters.yml file (change the env variable to dev) in order to reveal the error details (or look into the log files at /app/logs/).');
             }
-            $this->request->getSession()->getFlashBag()->add('error', $returnMessage);
-            $logger = $this->serviceManager->get('logger');
-            $logger->error('{app}: User {user} could not create the database tables during installation. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'errorMessage' => $e->getMessage()]);
+            $this->addFlash(\Zikula_Session::MESSAGE_ERROR, $returnMessage);
+            $logger->error('{app}: User {user} could not create the database tables during installation. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'user' => $userName, 'errorMessage' => $e->getMessage()]);
+    
             return false;
         }
     
-        $categoryRegistryIdsPerEntity = [];
-    
         // create the default data
-        $this->createDefaultData($categoryRegistryIdsPerEntity);
+        $this->createDefaultData();
     
-        // register hook subscriber bundles
-        HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
+        // install subscriber hooks
+        $this->hookApi->installSubscriberHooks($this->bundle->getMetaData());
         
     
         // initialisation successful
@@ -81,6 +82,9 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
     public function upgrade($oldVersion)
     {
     /*
+        $logger = $this->container->get('logger');
+        $userName = $this->container->get('zikula_users_module.current_user')->get('uname');
+    
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '1.0.0':
@@ -88,17 +92,17 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
                 // ...
                 // update the database schema
                 try {
-                    $this->get('zikula.doctrine.schema_tool')->update($this->listEntityClasses());
+                    $this->schemaTool->update($this->listEntityClasses());
                 } catch (\Exception $e) {
                     if (System::isDevelopmentMode()) {
-                        $this->request->getSession()->getFlashBag()->add('error', $this->__('Doctrine Exception: ') . $e->getMessage());
-                        $logger = $this->serviceManager->get('logger');
-                        $logger->error('{app}: User {user} could not update the database tables during the upgrade. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'errorMessage' => $e->getMessage()]);
+                        $this->addFlash(\Zikula_Session::MESSAGE_ERROR, $this->__('Doctrine Exception') . ': ' . $e->getMessage());
+                        $logger->error('{app}: User {user} could not update the database tables during the upgrade. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'user' => $userName, 'errorMessage' => $e->getMessage()]);
+    
                         return false;
                     }
-                    $this->request->getSession()->getFlashBag()->add('error', $this->__f('An error was encountered while updating tables for the %s extension.', [$this->getName()]));
-                    $logger = $this->serviceManager->get('logger');
-                    $logger->error('{app}: User {user} could not update the database tables during the ugprade. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'errorMessage' => $e->getMessage()]);
+                    $this->addFlash(\Zikula_Session::MESSAGE_ERROR, $this->__f('An error was encountered while updating tables for the %s extension.', ['%s' => 'ZikulaRoutesModule']));
+                    $logger->error('{app}: User {user} could not update the database tables during the ugprade. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'user' => $userName, 'errorMessage' => $e->getMessage()]);
+    
                     return false;
                 }
         }
@@ -109,17 +113,11 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
         // here is a possible usage example
         // of course 1.2.3 should match the number you used for the last stable 1.3.x module version.
         /* if ($oldVersion = '1.2.3') {
-            // rename module for all modvars
-            $this->updateModVarsTo140();
-            
             // update extension information about this app
             $this->updateExtensionInfoFor140();
             
             // rename existing permission rules
             $this->renamePermissionsFor140();
-            
-            // rename existing category registries
-            $this->renameCategoryRegistriesFor140();
             
             // rename all tables
             $this->renameTablesFor140();
@@ -137,20 +135,6 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
     
         // update successful
         return true;
-    }
-    
-    /**
-     * Renames the module name for variables in the module_vars table.
-     */
-    protected function updateModVarsTo140()
-    {
-        $dbName = $this->getDbName();
-        $conn = $this->getConnection();
-    
-        $conn->executeQuery("UPDATE $dbName.module_vars
-                             SET modname = 'ZikulaRoutesModule'
-                             WHERE modname = 'Routes';
-        ");
     }
     
     /**
@@ -181,22 +165,6 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
         $conn->executeQuery("UPDATE $dbName.group_perms
                              SET component = CONCAT('ZikulaRoutesModule', SUBSTRING(component, $componentLength))
                              WHERE component LIKE 'Routes%';
-        ");
-    }
-    
-    /**
-     * Renames all category registries stored for this app.
-     */
-    protected function renameCategoryRegistriesFor140()
-    {
-        $conn = $this->getConnection();
-        $dbName = $this->getDbName();
-    
-        $componentLength = strlen('Routes') + 1;
-    
-        $conn->executeQuery("UPDATE $dbName.categories_registry
-                             SET modname = CONCAT('ZikulaRoutesModule', SUBSTRING(component, $componentLength))
-                             WHERE modname LIKE 'Routes%';
         ");
     }
     
@@ -304,10 +272,10 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
      */
     protected function getConnection()
     {
-        $em = $this->entityManager;
-        $conn = $em->getConnection();
+        $entityManager = $this->container->get('doctrine.entitymanager');
+        $connection = $entityManager->getConnection();
     
-        return $conn;
+        return $connection;
     }
     
     /**
@@ -317,7 +285,7 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
      */
     protected function getDbName()
     {
-        return $this->getContainer()->getParameter('database_name');
+        return $this->container->getParameter('database_name');
     }
     
     /**
@@ -329,32 +297,35 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
      */
     public function uninstall()
     {
+        $logger = $this->container->get('logger');
+        $userName = $this->container->get('zikula_users_module.current_user')->get('uname');
+    
         // delete stored object workflows
-        $result = Zikula_Workflow_Util::deleteWorkflowsForModule($this->getName());
+        $result = Zikula_Workflow_Util::deleteWorkflowsForModule('ZikulaRoutesModule');
         if ($result === false) {
-            $this->request->getSession()->getFlashBag()->add('error', $this->__f('An error was encountered while removing stored object workflows for the %s extension.', [$this->getName()]));
-            $logger = $this->serviceManager->get('logger');
-            $logger->error('{app}: User {user} could not remove stored object workflows during uninstallation.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname')]);
+            $this->addFlash(\Zikula_Session::MESSAGE_ERROR, $this->__f('An error was encountered while removing stored object workflows for the %s extension.', ['%s' => 'ZikulaRoutesModule']));
+            $logger->error('{app}: User {user} could not remove stored object workflows during uninstallation.', ['app' => 'ZikulaRoutesModule', 'user' => $userName]);
+    
             return false;
         }
     
         try {
-            $this->get('zikula.doctrine.schema_tool')->drop($this->listEntityClasses());
+            $this->schemaTool->drop($this->listEntityClasses());
         } catch (\Exception $e) {
             if (System::isDevelopmentMode()) {
-                $this->request->getSession()->getFlashBag()->add('error', $this->__('Doctrine Exception: ') . $e->getMessage());
-                $logger = $this->serviceManager->get('logger');
-                $logger->error('{app}: User {user} could not remove the database tables during uninstallation. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'errorMessage' => $e->getMessage()]);
+                $this->addFlash(\Zikula_Session::MESSAGE_ERROR, $this->__('Doctrine Exception') . ': ' . $e->getMessage());
+                $logger->error('{app}: User {user} could not remove the database tables during uninstallation. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'user' => $userName, 'errorMessage' => $e->getMessage()]);
+    
                 return false;
             }
-            $this->request->getSession()->getFlashBag()->add('error', $this->__f('An error was encountered while dropping tables for the %s extension.', [$this->name]));
-            $logger = $this->serviceManager->get('logger');
-            $logger->error('{app}: User {user} could not remove the database tables during uninstallation. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'errorMessage' => $e->getMessage()]);
+            $this->addFlash(\Zikula_Session::MESSAGE_ERROR, $this->__f('An error was encountered while dropping tables for the %s extension.', ['%s' => 'ZikulaRoutesModule']));
+            $logger->error('{app}: User {user} could not remove the database tables during uninstallation. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'user' => $userName, 'errorMessage' => $e->getMessage()]);
+    
             return false;
         }
     
-        // unregister hook subscriber bundles
-        HookUtil::unregisterSubscriberBundles($this->version->getHookSubscriberBundles());
+        // uninstall subscriber hooks
+        $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
         
     
         // uninstallation successful
@@ -377,13 +348,12 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
     /**
      * Create the default data for ZikulaRoutesModule.
      *
-     * @param array $categoryRegistryIdsPerEntity List of category registry ids.
-     *
      * @return void
      */
-    protected function createDefaultData($categoryRegistryIdsPerEntity)
+    protected function createDefaultData()
     {
         $entityClass = 'Zikula\RoutesModule\Entity\RouteEntity';
-        $this->entityManager->getRepository($entityClass)->truncateTable();
+        $entityManager = $this->container->get('doctrine.entitymanager');
+        $entityManager->getRepository($entityClass)->truncateTable();
     }
 }

@@ -25,7 +25,9 @@ use Symfony\Component\Routing\RouterInterface;
 class ZikulaRouteTranslationExtractor implements ExtractorInterface
 {
     private $router;
+
     private $routeExclusionStrategy;
+
     private $domain = 'routes';
 
     public function __construct(RouterInterface $router, RouteExclusionStrategyInterface $routeExclusionStrategy)
@@ -54,13 +56,13 @@ class ZikulaRouteTranslationExtractor implements ExtractorInterface
             ///////////////////////////////////////
             // Begin customizations
 
-            $meaning = "Route Controller and method: " . $route->getDefault('_controller'); // set a default value
+            $meaning = 'Route Controller and method: ' . $route->getDefault('_controller'); // set a default value
 
             // prefix with zikula module url if requested
             if ($route->hasDefault('_zkModule')) {
                 $zkNoBundlePrefix = $route->getOption('zkNoBundlePrefix');
                 if (!isset($zkNoBundlePrefix) || !$zkNoBundlePrefix) {
-                    $meaning = "This is a route from the " . $route->getDefault('_zkModule') . "Bundle and will include a translated prefix.";
+                    $meaning = 'This is a route from the ' . $route->getDefault('_zkModule') . 'Bundle and will include a translated prefix.';
                 }
             }
 

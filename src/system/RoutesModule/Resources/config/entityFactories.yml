@@ -1,0 +1,6 @@
+services:
+    # Entity factory classes
+    zikula_routes_module.route_factory:
+        class: Zikula\RoutesModule\Entity\Factory\RouteFactory
+        arguments: ["@doctrine.orm.entity_manager", Zikula\RoutesModule\Entity\RouteEntity]
+    

@@ -29,14 +29,17 @@ use Zikula\RoutesModule\Routing\Util as RoutingUtil;
  */
 class Route extends BaseRoute
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function genericBaseQueryAddOrderBy(QueryBuilder $qb, $orderBy = '')
     {
         if ($orderBy == 'sort asc') {
             $qb->addOrderBy('tbl.group', 'asc');
             $qb->addOrderBy('tbl.sort', 'asc');
             return $qb;
-        } else {
-            return parent::genericBaseQueryAddOrderBy($qb, $orderBy);
         }
+
+        return parent::genericBaseQueryAddOrderBy($qb, $orderBy);
     }
 }

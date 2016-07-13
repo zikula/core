@@ -1,0 +1,6 @@
+services:
+    # Log processor
+    zikula_routes_module.log.processor:
+        class: Monolog\Processor\PsrLogMessageProcessor
+        tags:
+            - { name: monolog.processor }

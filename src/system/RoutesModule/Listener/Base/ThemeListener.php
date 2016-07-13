@@ -13,7 +13,6 @@
 namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Core\Event\GenericEvent;
 
 /**
@@ -42,6 +41,8 @@ class ThemeListener implements EventSubscriberInterface
      * The subject is the Zikula_View_Theme instance.
      * Is useful to setup a customized theme configuration or cache_id.
      *
+     * Note that Zikula_View_Theme is deprecated and being replaced by Twig.
+     *
      * @param GenericEvent $event The event instance.
      */
     public function preInit(GenericEvent $event)
@@ -53,6 +54,8 @@ class ThemeListener implements EventSubscriberInterface
      *
      * Occurs just before `Zikula_View_Theme#__construct()` finishes.
      * The subject is the Zikula_View_Theme instance.
+     *
+     * Note that Zikula_View_Theme is deprecated and being replaced by Twig.
      *
      * @param GenericEvent $event The event instance.
      */

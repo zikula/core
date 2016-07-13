@@ -1,3 +1,2 @@
-CREDITS
-=======
+# CREDITS
 

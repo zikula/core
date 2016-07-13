@@ -191,7 +191,8 @@ class ModuleDispatchListener extends BaseModuleDispatchListener
         parent::customClassName($event);
     
         // Format data like so:
-        // $event->data[] = ['url' => ModUtil::url('ZikulaRoutesModule', 'user', 'index'), 'text' => __('Link Text')];
+        // $serviceManager = \ServiceUtil::getManager();
+        // $event->data[] = ['url' => $serviceManager->get('router')->generate('zikularoutesmodule_user_index'), 'text' => $serviceManager->get('translator.default')->__('Link text')];
     
         // you can access general data available in the event
         

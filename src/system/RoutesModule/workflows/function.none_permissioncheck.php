@@ -30,15 +30,7 @@ function ZikulaRoutesModule_workflow_none_permissioncheck($obj, $permLevel, $cur
     $component = 'ZikulaRoutesModule:' . ucfirst($objectType) . ':';
 
     // calculate the permission instance
-    $idFields = ModUtil::apiFunc('ZikulaRoutesModule', 'selection', 'getIdFields', ['ot' => $objectType]);
-    $instanceId = '';
-    foreach ($idFields as $idField) {
-        if (!empty($instanceId)) {
-            $instanceId .= '_';
-        }
-        $instanceId .= $obj[$idField];
-    }
-    $instance = $instanceId . '::';
+    $instance = $obj->createCompositeIdentifier() . '::';
 
     // now perform the permission check
     $result = SecurityUtil::checkPermission($component, $instance, $permLevel, $currentUser);
@@ -51,27 +43,32 @@ function ZikulaRoutesModule_workflow_none_permissioncheck($obj, $permLevel, $cur
  */
 function ZikulaRoutesModule_workflow_none_gettextstrings()
 {
+    $serviceManager = \ServiceUtil::getManager();
+    $translator = $serviceManager->get('translator.default');
     return [
-        'title' => no__('None workflow (no approval)'),
-        'description' => no__('This is like a non-existing workflow. Everything is online immediately after creation.'),
+        'title' => $translator->__('None workflow (no approval)'),
+        'description' => $translator->__('This is like a non-existing workflow. Everything is online immediately after creation.'),
 
         // state titles
         'states' => [
-            no__('Initial') => no__('Pseudo-state for content which is just created and not persisted yet.'),
-            no__('Approved') => no__('Content has been approved and is available online.'),
-            no__('Deleted') => no__('Pseudo-state for content which has been deleted from the database.')
+            $translator->__('Initial') => $translator->__('Pseudo-state for content which is just created and not persisted yet.'),
+            $translator->__('Approved') => $translator->__('Content has been approved and is available online.'),
+            $translator->__('Deleted') => $translator->__('Pseudo-state for content which has been deleted from the database.')
         ],
 
         // action titles and descriptions for each state
         'actions' => [
             'initial' => [
-                no__('Submit') => no__('Submit content.'),
-            ],
+                $translator->__('Submit') => $translator->__('Submit content.'),
+            ]
+            ,
             'approved' => [
-                no__('Update') => no__('Update content.'),
-                no__('Delete') => no__('Delete content permanently.')
-            ],
-            'deleted' => []
+                $translator->__('Update') => $translator->__('Update content.'),
+                $translator->__('Delete') => $translator->__('Delete content permanently.')
+            ]
+            ,
+            'deleted' => [
+            ]
         ]
     ];
 }

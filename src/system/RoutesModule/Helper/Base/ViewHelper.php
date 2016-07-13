@@ -13,18 +13,14 @@
 namespace Zikula\RoutesModule\Helper\Base;
 
 use DataUtil;
-use FormUtil;
-use ModUtil;
 use PageUtil;
-use SecurityUtil;
 use System;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Zikula\Common\Translator\Translator;
+use Twig_Environment;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Response\PlainResponse;
-use Zikula_ServiceManager;
-use Zikula_View;
 
 /**
  * Utility base class for view helper methods.
@@ -34,10 +30,10 @@ class ViewHelper
     /**
      * @var ContainerBuilder
      */
-    private $container;
+    protected $container;
 
     /**
-     * @var Translator
+     * @var TranslatorInterface
      */
     protected $translator;
 
@@ -46,11 +42,11 @@ class ViewHelper
      * Initialises member vars.
      *
      * @param \Zikula_ServiceManager $serviceManager ServiceManager instance.
-     * @param Translator            $translator     Translator service instance.
+     * @param TranslatorInterface    $translator     Translator service instance.
      *
      * @return void
      */
-    public function __construct(\Zikula_ServiceManager $serviceManager, $translator)
+    public function __construct(\Zikula_ServiceManager $serviceManager, TranslatorInterface $translator)
     {
         $this->container = $serviceManager;
         $this->translator = $translator;
@@ -59,35 +55,33 @@ class ViewHelper
     /**
      * Determines the view template for a certain method with given parameters.
      *
-     * @param Zikula_View $view    Reference to view object.
-     * @param string      $type    Current controller (name of currently treated entity).
-     * @param string      $func    Current function (index, view, ...).
-     * @param Request     $request Current request.
+     * @param Twig_Environment $twig     Reference to view object.
+     * @param string           $type    Current controller (name of currently treated entity).
+     * @param string           $func    Current function (index, view, ...).
+     * @param Request          $request Current request.
      *
      * @return string name of template file.
      */
-    public function getViewTemplate(Zikula_View $view, $type, $func, Request $request)
+    public function getViewTemplate(Twig_Environment $twig, $type, $func, Request $request)
     {
         // create the base template name
-        $template = DataUtil::formatForOS(ucfirst($type) . '/' . $func);
+        $template = '@ZikulaRoutesModule/' . ucfirst($type) . '/' . $func;
     
         // check for template extension
-        $templateExtension = $this->determineExtension($view, $type, $func, $request);
+        $templateExtension = $this->determineExtension($twig, $type, $func, $request);
     
         // check whether a special template is used
         $tpl = '';
         if ($request->isMethod('POST')) {
-            $tpl = $request->request->filter('tpl', '', false, FILTER_SANITIZE_STRING);
+            $tpl = $request->request->getAlnum('tpl', '');
         } elseif ($request->isMethod('GET')) {
-            $tpl = $request->query->filter('tpl', '', false, FILTER_SANITIZE_STRING);
+            $tpl = $request->query->getAlnum('tpl', '');
         }
     
         $templateExtension = '.' . $templateExtension;
-        if ($templateExtension != '.tpl') {
-            $templateExtension .= '.tpl';
-        }
-    
-        if (!empty($tpl) && $view->template_exists($template . '_' . DataUtil::formatForOS($tpl) . $templateExtension)) {
+        
+        // check if custom template exists
+        if (!empty($tpl)) {
             $template .= '_' . DataUtil::formatForOS($tpl);
         }
         $template .= $templateExtension;
@@ -98,59 +92,61 @@ class ViewHelper
     /**
      * Utility method for managing view templates.
      *
-     * @param Zikula_View $view     Reference to view object.
-     * @param string      $type     Current controller (name of currently treated entity).
-     * @param string      $func     Current function (index, view, ...).
-     * @param string      $template Optional assignment of precalculated template file.
-     * @param Request     $request  Current request.
+     * @param Twig_Environment $twig     Reference to view object.
+     * @param string           $type     Current controller (name of currently treated entity).
+     * @param string           $func     Current function (index, view, ...).
+     * @param Request          $request            Current request.
+     * @param array            $templateParameters Template data.
+     * @param string           $template Optional assignment of precalculated template file.
      *
      * @return mixed Output.
      */
-    public function processTemplate(Zikula_View $view, $type, $func, Request $request, $template = '')
+    public function processTemplate(Twig_Environment $twig, $type, $func, Request $request, $templateParameters = [], $template = '')
     {
-        $templateExtension = $this->determineExtension($view, $type, $func, $request);
+        $templateExtension = $this->determineExtension($twig, $type, $func, $request);
         if (empty($template)) {
-            $template = $this->getViewTemplate($view, $type, $func, $request);
+            $template = $this->getViewTemplate($twig, $type, $func, $request);
         }
     
         // look whether we need output with or without the theme
         $raw = false;
         if ($request->isMethod('POST')) {
-            $raw = (bool) $request->request->filter('raw', false, false, FILTER_VALIDATE_BOOLEAN);
+            $raw = (bool) $request->request->get('raw', false);
         } elseif ($request->isMethod('GET')) {
-            $raw = (bool) $request->query->filter('raw', false, false, FILTER_VALIDATE_BOOLEAN);
+            $raw = (bool) $request->query->get('raw', false);
         }
-        if (!$raw && $templateExtension != 'tpl') {
+        if (!$raw && $templateExtension != 'html.twig') {
             $raw = true;
         }
     
         if ($raw == true) {
             // standalone output
-            if ($templateExtension == 'pdf') {
-                $template = str_replace('.pdf', '', $template);
-                return $this->processPdf($view, $request, $template);
+            if ($templateExtension == 'pdf.twig') {
+                $template = str_replace('.pdf', '.html', $template);
+    
+                return $this->processPdf($twig, $request, $templateParameters, $template);
             } else {
-                return new PlainResponse($view->fetch($template));
+                return new PlainResponse($twig->render($template, $templateParameters));
             }
         }
     
         // normal output
-        return new Response($view->fetch($template));
+        return new Response($twig->render($template, $templateParameters));
     }
 
     /**
      * Get extension of the currently treated template.
      *
-     * @param Zikula_View $view    Reference to view object.
-     * @param string      $type    Current controller (name of currently treated entity).
-     * @param string      $func    Current function (index, view, ...).
-     * @param Request     $request Current request.
+     * @param Twig_Environment $twig     Reference to view object.
+     * @param string           $type    Current controller (name of currently treated entity).
+     * @param string           $func    Current function (index, view, ...).
+     * @param Request          $request Current request.
      *
      * @return array List of allowed template extensions.
      */
-    protected function determineExtension(Zikula_View $view, $type, $func, Request $request)
+    protected function determineExtension(Twig_Environment $twig, $type, $func, Request $request)
     {
-        $templateExtension = 'tpl';
+        $templateExtension = 'html.twig';
         if (!in_array($func, ['view', 'display'])) {
             return $templateExtension;
         }
@@ -158,7 +154,7 @@ class ViewHelper
         $extensions = $this->availableExtensions($type, $func);
         $format = $request->getRequestFormat();
         if ($format != 'html' && in_array($format, $extensions)) {
-            $templateExtension = $format;
+            $templateExtension = $format . '.twig';
         }
     
         return $templateExtension;
@@ -175,7 +171,8 @@ class ViewHelper
     public function availableExtensions($type, $func)
     {
         $extensions = [];
-        $hasAdminAccess = SecurityUtil::checkPermission('ZikulaRoutesModule:' . ucfirst($type) . ':', '::', ACCESS_ADMIN);
+        $permissionHelper = $this->container->get('zikula_permissions_module.api.permission');
+        $hasAdminAccess = $permissionHelper->hasPermission('ZikulaRoutesModule:' . ucfirst($type) . ':', '::', ACCESS_ADMIN);
         if ($func == 'view') {
             if ($hasAdminAccess) {
                 $extensions = ['kml'];
@@ -196,16 +193,17 @@ class ViewHelper
     /**
      * Processes a template file using dompdf (LGPL).
      *
-     * @param Zikula_View $view     Reference to view object.
-     * @param Request     $request  Current request.
-     * @param string      $template Name of template to use.
+     * @param Twig_Environment $twig     Reference to view object.
+     * @param Request          $request            Current request.
+     * @param array            $templateParameters Template data.
+     * @param string           $template Name of template to use.
      *
      * @return mixed Output.
      */
-    protected function processPdf(Zikula_View $view, Request $request, $template)
+    protected function processPdf(Twig_Environment $twig, Request $request, $templateParameters = [], $template)
     {
         // first the content, to set page vars
-        $output = $view->fetch($template);
+        $output = $twig->render($template, $templateParameters);
     
         // make local images absolute
         $output = str_replace('img src="/', 'img src="' . $request->server->get('DOCUMENT_ROOT') . '/', $output);
@@ -214,9 +212,9 @@ class ViewHelper
         //$output = utf8_decode($output);
     
         // then the surrounding
-        $output = $view->fetch('include_pdfheader.tpl') . $output . '</body></html>';
+        $output = $twig->render('includePdfHeader.html.twig') . $output . '</body></html>';
     
-        $controllerHelper = $this->container->get('zikularoutesmodule.controller_helper');
+        $controllerHelper = $this->container->get('zikula_routes_module.controller_helper');
         // create name of the pdf output file
         $fileTitle = $controllerHelper->formatPermalink(System::getVar('sitename'))
                    . '-'

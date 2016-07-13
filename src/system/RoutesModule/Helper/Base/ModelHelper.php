@@ -12,7 +12,6 @@
 
 namespace Zikula\RoutesModule\Helper\Base;
 
-use ModUtil;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -23,7 +22,7 @@ class ModelHelper
     /**
      * @var ContainerBuilder
      */
-    private $container;
+    protected $container;
 
     /**
      * Constructor.
@@ -51,12 +50,14 @@ class ModelHelper
      * @param string $objectType Name of treated entity type.
      *
      * @return boolean Whether a new instance can be created or not.
+     *
+     * @throws Exception If an invalid object type is used.
      */
     public function canBeCreated($objectType)
     {
-        $controllerHelper = $this->container->get('zikularoutesmodule.controller_helper');
+        $controllerHelper = $this->container->get('zikula_routes_module.controller_helper');
         if (!in_array($objectType, $controllerHelper->getObjectTypes('util', ['util' => 'model', 'action' => 'canBeCreated']))) {
-            throw new \Exception('Error! Invalid object type received.');
+            throw new Exception('Error! Invalid object type received.');
         }
     
         $result = false;
@@ -76,15 +77,17 @@ class ModelHelper
      * @param string $objectType Name of treated entity type.
      *
      * @return boolean Whether at least one instance exists or not.
+     *
+     * @throws Exception If an invalid object type is used.
      */
     protected function hasExistingInstances($objectType)
     {
-        $controllerHelper = $this->container->get('zikularoutesmodule.controller_helper');
+        $controllerHelper = $this->container->get('zikula_routes_module.controller_helper');
         if (!in_array($objectType, $controllerHelper->getObjectTypes('util', ['util' => 'model', 'action' => 'hasExistingInstances']))) {
-            throw new \Exception('Error! Invalid object type received.');
+            throw new Exception('Error! Invalid object type received.');
         }
     
-        $repository = $this->container->get('zikularoutesmodule.' . $objectType . '_factory')->getRepository();
+        $repository = $this->container->get('zikula_routes_module.' . $objectType . '_factory')->getRepository();
     
         return ($repository->selectCount() > 0);
     }

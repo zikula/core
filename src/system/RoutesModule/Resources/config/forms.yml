@@ -1,0 +1,26 @@
+services:
+    # Form types
+    
+    zikula_routes_module.form.type.routequicknav:
+        class: Zikula\RoutesModule\Form\Type\QuickNavigation\RouteQuickNavType
+        arguments: ["@translator.default", "@request_stack", "@zikula_routes_module.listentries_helper"]
+        tags:
+            - { name: form.type }
+    
+    zikula_routes_module.form.handler.route:
+        class: Zikula\RoutesModule\Form\Handler\Route\EditHandler
+        arguments: ["@service_container", "@translator.default", "@request_stack", "@router"]
+        tags:
+            - { name: form.type }
+    
+    zikula_routes_module.form.type.route:
+        class: Zikula\RoutesModule\Form\Type\RouteType
+        arguments: ["@translator.default", "@zikula_routes_module.route_factory", "@zikula_routes_module.listentries_helper"]
+        tags:
+            - { name: form.type }
+    
+    zikula_routes_module.form.type.deleteentity:
+        class: Zikula\RoutesModule\Form\DeleteEntityType
+        arguments: ["@translator.default"]
+        tags:
+            - { name: form.type }
