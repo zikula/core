@@ -36,8 +36,10 @@ class RoutesModuleInstaller extends BaseRoutesModuleInstaller
                 // update table to meet entity structure
                 $this->schemaTool->update(['\Zikula\RoutesModule\Entity\RouteEntity']);
                 break;
-            default:
-                return false;
+            case '1.0.1':
+                // nothing
+            case '1.1.0':
+                // current version
         }
 
         return true;
