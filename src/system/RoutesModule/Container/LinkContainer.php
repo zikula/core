@@ -12,7 +12,6 @@
 
 namespace Zikula\RoutesModule\Container;
 
-use SecurityUtil;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\RoutesModule\Container\Base\LinkContainer as BaseLinkContainer;
 
@@ -32,7 +31,7 @@ class LinkContainer extends BaseLinkContainer
             return $links;
         }
 
-        if (!SecurityUtil::checkPermission($this->getBundleName() . ':Route:', '::', ACCESS_ADMIN)) {
+        if (!$this->permissionApi->hasPermission($this->getBundleName() . ':Route:', '::', ACCESS_ADMIN)) {
             return $links;
         }
 

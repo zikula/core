@@ -92,8 +92,8 @@ class LinkContainer implements LinkContainerInterface
                 && $this->permissionApi->hasPermission($this->getBundleName() . ':Route:', '::', $permLevel)) {
                 $links[] = [
                     'url' => $this->router->generate('zikularoutesmodule_route_adminview'),
-                     'text' => $this->translator->__('Routes'),
-                     'title' => $this->translator->__('Route list')
+                     'text' => $this->__('Routes'),
+                     'title' => $this->__('Route list')
                  ];
             }
         }
