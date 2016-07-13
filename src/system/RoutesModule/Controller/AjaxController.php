@@ -12,13 +12,12 @@
 
 namespace Zikula\RoutesModule\Controller;
 
-use SecurityUtil;
-use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\RoutesModule\Controller\Base\AjaxController as BaseAjaxController;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Zikula\Core\Response\Ajax\AjaxResponse;
 
 /**
  * Ajax controller class providing navigation and interaction functionality.
@@ -51,16 +50,16 @@ class AjaxController extends BaseAjaxController
 
     public function sort(Request $request)
     {
-        if (!SecurityUtil::checkPermission($this->name . '::Ajax', '::', ACCESS_EDIT)) {
+        if (!$this->hasPermission($this->name . '::Ajax', '::', ACCESS_EDIT)) {
             return true;
         }
 
-        $objectType = $request->request->filter('ot', 'route', false, FILTER_SANITIZE_STRING);
+        $objectType = $request->request->getAlnum('ot', 'route');
         $sort = $request->request->get('sort', []);
 
         foreach ($sort as $position => $id) {
             $id = substr($id, 4);
-            $object = $this->entityManager->find($this->name . ":" . ucfirst($objectType) . "Entity", $id);
+            $object = $this->entityManager->find($this->name . ':' . ucfirst($objectType) . 'Entity', $id);
             $object->setSort($position);
             $this->entityManager->persist($object);
         }
@@ -68,7 +67,7 @@ class AjaxController extends BaseAjaxController
         $this->entityManager->flush();
 
         $cacheClearer = $this->get('zikula.cache_clearer');
-        $cacheClearer->clear("symfony.routing");
+        $cacheClearer->clear('symfony.routing');
 
         return new AjaxResponse([]);
     }

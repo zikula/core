@@ -104,7 +104,7 @@ class UserLoginListener extends BaseUserLoginListener
      *
      * To, instead, redirect the user back to the log-in screen (after possibly setting an error message that will
      * be displayed), then set the event data to contain an array with a single element, `retry`, having a value
-     * of true (e.g., `$event->setData(['retry' => true]);`).  This will signal the log-in process to go back 
+     * of true (e.g., `$event->setData(['retry' => true]);`). This will signal the log-in process to go back 
      * to the log-in screen for another attempt. The expectation is that the notifying event handler has set an 
      * error message, and that the user will be able to log-in if the instructions in that message are followed, 
      * or the conditions in that message can be met. 
@@ -158,7 +158,7 @@ class UserLoginListener extends BaseUserLoginListener
      *
      *     $event->stopPropagation();
      *     $event->setData([
-     *         'redirect_func'  => [
+     *         'redirect_func' => [
      *             'modname'   => 'ZikulaUsersModule',
      *             'type'      => 'user',
      *             'func'      => 'changePassword',
@@ -174,7 +174,7 @@ class UserLoginListener extends BaseUserLoginListener
      *
      *     $serviceManager = ServiceUtil::getManager();
      *     $session = $serviceManager->get('session');
-     *     $session->getFlashBag()->add('error', __("Your log-in request was not completed. You must change your web site account's password first."));
+     *     $session->getFlashBag()->add(\Zikula_Session::MESSAGE_ERROR, $serviceManager->get('translator.default')->__("Your log-in request was not completed. You must change your web site account's password first."));
      *
      * In this example, the user will be redirected to the URL pointing to the `changePassword` function. This URL is constructed by calling 
      * `ModUtil::url()` with the modname, type, func, and args specified in the above array. The `changePassword` function also needs access

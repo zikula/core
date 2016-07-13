@@ -12,18 +12,16 @@
 
 namespace Zikula\RoutesModule\Listener;
 
-use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Routing\RouteCollection;
-use Zikula\RoutesModule\Helper\RouteDumperHelper;
-use Zikula\RoutesModule\Listener\Base\InstallerListener as BaseInstallerListener;
-use Zikula\RoutesModule\Routing\RouteFinder;
-use Zikula\Core\AbstractModule;
+use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
-use Zikula\Bundle\CoreBundle\CacheClearer;
+use Zikula\RoutesModule\Helper\MultilingualRoutingHelper;
+use Zikula\RoutesModule\Helper\RouteDumperHelper;
+use Zikula\RoutesModule\Listener\Base\InstallerListener as BaseInstallerListener;
+use Zikula\RoutesModule\Routing\RouteFinder;
 
 /**
  * Event handler implementation class for module installer events.
@@ -38,6 +36,8 @@ class InstallerListener extends BaseInstallerListener
 
     private $routeDumperHelper;
 
+    private $multilingualRoutingHelper;
+
     public static function getSubscribedEvents()
     {
         // override subscription to ALL available events to only needed events.
@@ -49,12 +49,21 @@ class InstallerListener extends BaseInstallerListener
         ];
     }
 
-    public function __construct(EntityManagerInterface $em, RouteFinder $routeFinder, CacheClearer $cacheClearer, RouteDumperHelper $routeDumperHelper)
-    {
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(
+        EntityManagerInterface $em,
+        RouteFinder $routeFinder,
+        CacheClearer $cacheClearer,
+        RouteDumperHelper $routeDumperHelper,
+        MultilingualRoutingHelper $multilingualRoutingHelper
+    ) {
         $this->em = $em;
         $this->routeFinder = $routeFinder;
         $this->cacheClearer = $cacheClearer;
         $this->routeDumperHelper = $routeDumperHelper;
+        $this->multilingualRoutingHelper = $multilingualRoutingHelper;
     }
 
     /**
@@ -89,7 +98,7 @@ class InstallerListener extends BaseInstallerListener
 
         if ($module->getName() === 'ZikulaRoutesModule') {
             // Reload multilingual routing settings.
-            \ModUtil::apiFunc('ZikulaRoutesModule', 'admin', 'reloadMultilingualRoutingSettings');
+            $this->multilingualRoutingHelper->reloadMultilingualRoutingSettings();
         }
 
         $this->cacheClearer->clear('symfony.routing');
@@ -159,7 +168,7 @@ class InstallerListener extends BaseInstallerListener
         parent::moduleRemoved($event);
 
         $module = $event->getModule();
-        if ($module === null || $module->getName() == 'ZikulaRoutesModule') {
+        if (null === $module || $module->getName() == 'ZikulaRoutesModule') {
             return;
         }
 

@@ -23,14 +23,13 @@ use Symfony\Component\HttpFoundation\Request;
 class AdminController extends BaseAdminController
 {
     /**
-     * This method is the default function handling the main area called without defining arguments.
+     * This is the default action handling the main area called without defining arguments.
      *
      * @Route("/admin",
      *        methods = {"GET"}
      * )
      *
-     * @param Request  $request      Current request instance
-     * @param string  $ot           Treated object type.
+     * @param Request  $request      Current request instance.
      *
      * @return mixed Output.
      *
@@ -40,20 +39,6 @@ class AdminController extends BaseAdminController
     {
         return parent::indexAction($request);
     }
-    
 
-    /**
-     * This method cares for a redirect within an inline frame.
-     *
-     * @param string  $idPrefix    Prefix for inline window element identifier.
-     * @param string  $commandName Name of action to be performed (create or edit).
-     * @param integer $id          Id of created item (used for activating auto completion after closing the modal window).
-     *
-     * @return boolean Whether the inline redirect has been performed or not.
-     */
-    public function handleInlineRedirectAction($idPrefix, $commandName, $id = 0)
-    {
-        return parent::handleInlineRedirectAction($idPrefix, $commandName, $id);
-    }
     // feel free to add your own controller methods here
 }

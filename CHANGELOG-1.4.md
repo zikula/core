@@ -30,10 +30,11 @@ CHANGELOG - ZIKULA 1.4.x
     - MailerModule updated to Core-2.0 Spec (#2866).
     - PageLockModule updated to Core-2.0 Spec (#2862).
     - PermissionsModule updated to Core-2.0 Spec (#2896).
+    - RoutesModule updated to Core-2.0 Spec (#2921).
     - SearchModule updated to Core-2.0 Spec (#2853).
     - SecurityCenterModule updated to Core-2.0 Spec (#2890).
     - SettingsModule updated to Core-2.0 Spec (#2832).
-    - UserModule updated to Core-2.0 Spec (#2851)
+    - UsersModule updated to Core-2.0 Spec (#2851)
       - New AuthenticationMethodInterface created.
       - Functionality split into UsersModule and new system module, ZAuthModule.
 

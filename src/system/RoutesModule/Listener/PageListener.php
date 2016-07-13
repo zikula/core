@@ -45,7 +45,7 @@ class PageListener extends BasePageListener
     
         // Simply test with something like
         /*
-            if (($key = array_search('system/Users/Resources/public/js/somescript.js', $event->data)) !== false) {
+            if (($key = array_search('system/UsersModule/Resources/public/js/somescript.js', $event->data)) !== false) {
                 $event->data[$key] = 'config/javascript/myoverride.js';
             }
         */

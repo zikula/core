@@ -14,70 +14,50 @@ namespace Zikula\RoutesModule\Form\Handler\Route\Base;
 
 use Zikula\RoutesModule\Form\Handler\Common\EditHandler as BaseEditHandler;
 
-
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-
-use FormUtil;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use ModUtil;
-use SecurityUtil;
+use RuntimeException;
 use System;
 use UserUtil;
-use Zikula_Form_View;
 
 /**
  * This handler class handles the page events of editing forms.
  * It aims on the route object type.
- *
- * More documentation is provided in the parent class.
  */
 class EditHandler extends BaseEditHandler
 {
     /**
-     * Pre-initialise hook.
-     *
-     * @return void
-     */
-    public function preInitialize()
-    {
-        parent::preInitialize();
-    
-        $this->objectType = 'route';
-        $this->objectTypeCapital = 'Route';
-        $this->objectTypeLower = 'route';
-    
-        $this->hasPageLockSupport = true;
-        // array with list fields and multiple flags
-        $this->listFields = [
-            'workflowState' => false,
-            'routeType' => false,
-            'schemes' => true,
-            'methods' => true
-        ];
-    }
-
-    /**
-     * Initialize form handler.
+     * Initialise form handler.
      *
      * This method takes care of all necessary initialisation of our data and form states.
      *
-     * @param Zikula_Form_View $view The form view instance.
+     * @param array $templateParameters List of preassigned template variables.
      *
-     * @return boolean False in case of initialization errors, otherwise true.
+     * @return boolean False in case of initialisation errors, otherwise true.
      */
-    public function initialize(Zikula_Form_View $view)
+    public function processForm(array $templateParameters)
     {
-        $result = parent::initialize($view);
-        if ($result === false) {
+        $this->objectType = 'route';
+        $this->objectTypeCapital = 'Route';
+        $this->objectTypeLower = 'route';
+        
+        $this->hasPageLockSupport = true;
+    
+        $result = parent::processForm($templateParameters);
+        if (false === $result) {
             return $result;
         }
     
-        if ($this->mode == 'create') {
-            $modelHelper = $this->view->getServiceManager()->get('zikularoutesmodule.model_helper');
+        if ($this->templateParameters['mode'] == 'create') {
+            $modelHelper = $this->container->get('zikula_routes_module.model_helper');
             if (!$modelHelper->canBeCreated($this->objectType)) {
-                $logger = $this->view->getServiceManager()->get('logger');
-                $logger->notice('{app}: User {user} tried to create a new {entity}, but failed as it other items are required which must be created before.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => $this->objectType]);
+                $this->request->getSession()->getFlashBag()->add(\Zikula_Session::MESSAGE_ERROR, $this->__('Sorry, but you can not create the route yet as other items are required which must be created before!'));
+                $logger = $this->container->get('logger');
+                $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->container->get('zikula_users_module.current_user')->get('uname'), 'entity' => $this->objectType];
+                $logger->notice('{app}: User {user} tried to create a new {entity}, but failed as it other items are required which must be created before.', $logArgs);
     
-                return $this->view->redirect($this->getRedirectUrl(null));
+                return new RedirectResponse($this->getRedirectUrl(['commandName' => '']), 302);
             }
         }
     
@@ -88,38 +68,26 @@ class EditHandler extends BaseEditHandler
     
         $entityData = $entity->toArray();
     
-        if (count($this->listFields) > 0) {
-            $helper = $this->view->getServiceManager()->get('zikularoutesmodule.listentries_helper');
-    
-            foreach ($this->listFields as $listField => $isMultiple) {
-                $entityData[$listField . 'Items'] = $helper->getEntries($this->objectType, $listField);
-                if ($isMultiple) {
-                    $entityData[$listField] = $helper->extractMultiList($entityData[$listField]);
-                }
-            }
-        }
-    
         // assign data to template as array (makes translatable support easier)
-        $this->view->assign($this->objectTypeLower, $entityData);
+        $this->templateParameters[$this->objectTypeLower] = $entityData;
     
-        if ($this->mode == 'edit') {
-            // assign formatted title
-            $this->view->assign('formattedEntityTitle', $entity->getTitleFromDisplayPattern());
-        }
-    
-        // everything okay, no initialization errors occured
+        // everything okay, no initialisation errors occured
         return true;
     }
-
+    
     /**
-     * Post-initialise hook.
-     *
-     * @return void
+     * Creates the form type.
      */
-    public function postInitialize()
+    protected function createForm()
     {
-        parent::postInitialize();
+        $options = [
+            'mode' => $this->templateParameters['mode'],
+            'actions' => $this->templateParameters['actions'],
+        ];
+    
+        return $this->container->get('form.factory')->create('Zikula\RoutesModule\Form\Type\RouteType', $this->entityRef, $options);
     }
+
 
     /**
      * Get list of allowed redirect codes.
@@ -130,6 +98,7 @@ class EditHandler extends BaseEditHandler
     {
         $codes = parent::getRedirectCodes();
     
+    
         return $codes;
     }
 
@@ -137,19 +106,17 @@ class EditHandler extends BaseEditHandler
      * Get the default redirect url. Required if no returnTo parameter has been supplied.
      * This method is called in handleCommand so we know which command has been performed.
      *
-     * @param array  $args List of arguments.
+     * @param array $args List of arguments.
      *
      * @return string The default redirect url.
      */
     protected function getDefaultReturnUrl($args)
     {
-        $serviceManager = $this->view->getServiceManager();
-    
-        $legacyControllerType = $this->request->query->filter('lct', 'user', false, FILTER_SANITIZE_STRING);
+        $routeArea = array_key_exists('routeArea', $this->templateParameters) ? $this->templateParameters['routeArea'] : '';
     
         // redirect to the list of routes
-        $viewArgs = ['lct' => $legacyControllerType];
-        $url = $serviceManager->get('router')->generate('zikularoutesmodule_' . strtolower($this->objectType) . '_view', $viewArgs);
+        $viewArgs = [];
+        $url = $this->router->generate('zikularoutesmodule_' . strtolower($this->objectType) . '_' . $routeArea . 'view', $viewArgs);
     
         return $url;
     }
@@ -159,50 +126,49 @@ class EditHandler extends BaseEditHandler
      *
      * This event handler is called when a command is issued by the user.
      *
-     * @param Zikula_Form_View $view The form view instance.
-     * @param array            $args Additional arguments.
+     * @param array $args List of arguments.
      *
      * @return mixed Redirect or false on errors.
      */
-    public function handleCommand(Zikula_Form_View $view, &$args)
+    public function handleCommand(&$args)
     {
-        $result = parent::handleCommand($view, $args);
-        if ($result === false) {
+        $result = parent::handleCommand($args);
+        if (false === $result) {
             return $result;
         }
     
-        return $this->view->redirect($this->getRedirectUrl($args));
+        return new RedirectResponse($this->getRedirectUrl($args), 302);
     }
     
     /**
      * Get success or error message for default operations.
      *
-     * @param Array   $args    Arguments from handleCommand method.
+     * @param array   $args    Arguments from handleCommand method.
      * @param Boolean $success Becomes true if this is a success, false for default error.
      *
      * @return String desired status or error message.
      */
     protected function getDefaultMessage($args, $success = false)
     {
-        if ($success !== true) {
+        if (false === $success) {
             return parent::getDefaultMessage($args, $success);
         }
     
         $message = '';
         switch ($args['commandName']) {
             case 'submit':
-                        if ($this->mode == 'create') {
-                            $message = $this->__('Done! Route created.');
-                        } else {
-                            $message = $this->__('Done! Route updated.');
-                        }
-                        break;
+                if ($this->templateParameters['mode'] == 'create') {
+                    $message = $this->__('Done! Route created.');
+                } else {
+                    $message = $this->__('Done! Route updated.');
+                }
+                break;
             case 'delete':
-                        $message = $this->__('Done! Route deleted.');
-                        break;
+                $message = $this->__('Done! Route deleted.');
+                break;
             default:
-                        $message = $this->__('Done! Route updated.');
-                        break;
+                $message = $this->__('Done! Route updated.');
+                break;
         }
     
         return $message;
@@ -211,7 +177,7 @@ class EditHandler extends BaseEditHandler
     /**
      * This method executes a certain workflow action.
      *
-     * @param Array $args Arguments from handleCommand method.
+     * @param array $args Arguments from handleCommand method.
      *
      * @return bool Whether everything worked well or not.
      *
@@ -225,25 +191,26 @@ class EditHandler extends BaseEditHandler
         $action = $args['commandName'];
     
         $success = false;
+        $flashBag = $this->request->getSession()->getFlashBag();
+        $logger = $this->container->get('logger');
         try {
             // execute the workflow action
-            $workflowHelper = $this->view->getServiceManager()->get('zikularoutesmodule.workflow_helper');
+            $workflowHelper = $this->container->get('zikula_routes_module.workflow_helper');
             $success = $workflowHelper->executeAction($entity, $action);
         } catch(\Exception $e) {
-            $this->request->getSession()->getFlashBag()->add('error', $this->__f('Sorry, but an unknown error occured during the %s action. Please apply the changes again!', [$action]));
-            $logger = $this->view->getServiceManager()->get('logger');
-            $logger->error('{app}: User {user} tried to edit the {entity} with id {id}, but failed. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route', 'id' => $entity->createCompositeIdentifier(), 'errorMessage' => $e->getMessage()]);
+            $flashBag->add(\Zikula_Session::MESSAGE_ERROR, $this->__f('Sorry, but an unknown error occured during the %action% action. Please apply the changes again!', ['%action%' => $action]));
+            $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->container->get('zikula_users_module.current_user')->get('uname'), 'entity' => 'route', 'id' => $entity->createCompositeIdentifier(), 'errorMessage' => $e->getMessage()];
+            $logger->error('{app}: User {user} tried to edit the {entity} with id {id}, but failed. Error details: {errorMessage}.', $logArgs);
         }
     
         $this->addDefaultMessage($args, $success);
     
-        if ($success && $this->mode == 'create') {
+        if ($success && $this->templateParameters['mode'] == 'create') {
             // store new identifier
             foreach ($this->idFields as $idField) {
                 $this->idValues[$idField] = $entity[$idField];
             }
         }
-    
     
         return $success;
     }
@@ -251,27 +218,12 @@ class EditHandler extends BaseEditHandler
     /**
      * Get url to redirect to.
      *
-     * @param array  $args List of arguments.
+     * @param array $args List of arguments.
      *
      * @return string The redirect url.
      */
     protected function getRedirectUrl($args)
     {
-        $serviceManager = $this->view->getContainer();
-    
-        if ($this->inlineUsage == true) {
-            $urlArgs = [
-                'idPrefix'    => $this->idPrefix,
-                'commandName' => $args['commandName']
-            ];
-            foreach ($this->idFields as $idField) {
-                $urlArgs[$idField] = $this->idValues[$idField];
-            }
-    
-            // inline usage, return to special function for closing the Zikula.UI.Window instance
-            return $serviceManager->get('router')->generate('zikularoutesmodule_' . strtolower($this->objectType) . '_handleinlineredirect', $urlArgs);
-        }
-    
         if ($this->repeatCreateAction) {
             return $this->repeatReturnUrl;
         }
@@ -285,16 +237,15 @@ class EditHandler extends BaseEditHandler
         // parse given redirect code and return corresponding url
         switch ($this->returnTo) {
             case 'admin':
-                return $serviceManager->get('router')->generate('zikularoutesmodule_' . strtolower($this->objectType) . '_index', ['lct' => 'admin']);
+                return $this->router->generate('zikularoutesmodule_' . strtolower($this->objectType) . '_adminindex');
             case 'adminView':
-                return $serviceManager->get('router')->generate('zikularoutesmodule_' . strtolower($this->objectType) . '_view', ['lct' => 'admin']);
+                return $this->router->generate('zikularoutesmodule_' . strtolower($this->objectType) . '_adminview');
             case 'adminDisplay':
-                if ($args['commandName'] != 'delete' && !($this->mode == 'create' && $args['commandName'] == 'cancel')) {
+                if ($args['commandName'] != 'delete' && !($this->templateParameters['mode'] == 'create' && $args['commandName'] == 'cancel')) {
                     foreach ($this->idFields as $idField) {
                         $urlArgs[$idField] = $this->idValues[$idField];
                     }
-                    $urlArgs['lct'] = 'admin';
-                    return $serviceManager->get('router')->generate('zikularoutesmodule_' . strtolower($this->objectType) . '_display', $urlArgs);
+                    return $this->router->generate('zikularoutesmodule_' . strtolower($this->objectType) . '_admindisplay', $urlArgs);
                 }
                 return $this->getDefaultReturnUrl($args);
             default:

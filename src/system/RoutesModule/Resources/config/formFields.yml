@@ -1,0 +1,8 @@
+services:
+    # Form field types
+    
+    zikula_routes_module.form.type.field.multilist:
+        class: Zikula\RoutesModule\Form\Type\Field\MultiListType
+        arguments: ["@zikula_routes_module.listentries_helper"]
+        tags:
+            - { name: form.type }

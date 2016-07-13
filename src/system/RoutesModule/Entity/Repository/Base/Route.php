@@ -12,21 +12,20 @@
 
 namespace Zikula\RoutesModule\Entity\Repository\Base;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Sortable\Entity\Repository\SortableRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-
 use Doctrine\ORM\Tools\Pagination\Paginator;
-
+use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Component\FilterUtil\FilterUtil;
 use Zikula\Component\FilterUtil\Config as FilterConfig;
 use Zikula\Component\FilterUtil\PluginManager as FilterPluginManager;
-use FormUtil;
 use ModUtil;
 use ServiceUtil;
 use System;
-use UserUtil;
+use Zikula\RoutesModule\Entity\routeEntity;
 
 /**
  * Repository class used to implement own convenience methods for performing certain DQL queries.
@@ -81,7 +80,7 @@ class Route extends SortableRepository
     }
 
     /**
-     * Get default sorting field.
+     * Gets the default sorting field.
      *
      * @return string
      */
@@ -91,7 +90,7 @@ class Route extends SortableRepository
     }
     
     /**
-     * Set default sorting field.
+     * Sets the default sorting field.
      *
      * @param string $defaultSortingField.
      *
@@ -103,7 +102,7 @@ class Route extends SortableRepository
     }
     
     /**
-     * Get request.
+     * Gets the request.
      *
      * @return Request
      */
@@ -113,7 +112,7 @@ class Route extends SortableRepository
     }
     
     /**
-     * Set request.
+     * Sets the request.
      *
      * @param Request $request.
      *
@@ -193,23 +192,11 @@ class Route extends SortableRepository
         if ($context == 'controllerAction') {
             $serviceManager = ServiceUtil::getManager();
             if (!isset($args['action'])) {
-                $args['action'] = FormUtil::getPassedValue('func', 'index', 'GETPOST');
+                $args['action'] = $this->request->query->getAlpha('func', 'index');
             }
             if (in_array($args['action'], ['index', 'view'])) {
                 $templateParameters = $this->getViewQuickNavParameters($context, $args);
-                $listHelper = $serviceManager->get('zikularoutesmodule.listentries_helper');
-                $templateParameters['workflowStateItems'] = $listHelper->getEntries('route', 'workflowState');
-                $templateParameters['routeTypeItems'] = $listHelper->getEntries('route', 'routeType');
-                $templateParameters['schemesItems'] = $listHelper->getEntries('route', 'schemes');
-                $templateParameters['methodsItems'] = $listHelper->getEntries('route', 'methods');
-                $booleanSelectorItems = [
-                    ['value' => 'no', 'text' => __('No')],
-                    ['value' => 'yes', 'text' => __('Yes')]
-                ];
-                $templateParameters['prependBundlePrefixItems'] = $booleanSelectorItems;
-                $templateParameters['translatableItems'] = $booleanSelectorItems;
             }
-    
         }
     
         // in the concrete child class you could do something like
@@ -267,7 +254,8 @@ class Route extends SortableRepository
     
         $serviceManager = ServiceUtil::getManager();
         $logger = $serviceManager->get('logger');
-        $logger->debug('{app}: User {user} truncated the {entity} entity table.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route']);
+        $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $serviceManager->get('zikula_users_module.current_user')->get('uname'), 'entity' => 'route'];
+        $logger->debug('{app}: User {user} truncated the {entity} entity table.', $logArgs);
     }
     /**
      * Updates the creator of all objects created by a certain user.
@@ -281,10 +269,12 @@ class Route extends SortableRepository
      */
     public function updateCreator($userId, $newUserId)
     {
+        $serviceManager = ServiceUtil::getManager();
+    
         // check id parameter
         if ($userId == 0 || !is_numeric($userId)
          || $newUserId == 0 || !is_numeric($newUserId)) {
-            throw new \InvalidArgumentException(__('Invalid user identifier received.'));
+            throw new InvalidArgumentException($serviceManager->get('translator.default')->__('Invalid user identifier received.'));
         }
     
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -295,9 +285,9 @@ class Route extends SortableRepository
         $query = $qb->getQuery();
         $query->execute();
     
-        $serviceManager = ServiceUtil::getManager();
         $logger = $serviceManager->get('logger');
-        $logger->debug('{app}: User {user} updated {entities} created by user id {userid}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entities' => 'routes', 'userid' => $userId]);
+        $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $serviceManager->get('zikula_users_module.current_user')->get('uname'), 'entities' => 'routes', 'userid' => $userId];
+        $logger->debug('{app}: User {user} updated {entities} created by user id {userid}.', $logArgs);
     }
     
     /**
@@ -312,10 +302,12 @@ class Route extends SortableRepository
      */
     public function updateLastEditor($userId, $newUserId)
     {
+        $serviceManager = ServiceUtil::getManager();
+    
         // check id parameter
         if ($userId == 0 || !is_numeric($userId)
          || $newUserId == 0 || !is_numeric($newUserId)) {
-            throw new \InvalidArgumentException(__('Invalid user identifier received.'));
+            throw new InvalidArgumentException($serviceManager->get('translator.default')->__('Invalid user identifier received.'));
         }
     
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -326,9 +318,9 @@ class Route extends SortableRepository
         $query = $qb->getQuery();
         $query->execute();
     
-        $serviceManager = ServiceUtil::getManager();
         $logger = $serviceManager->get('logger');
-        $logger->debug('{app}: User {user} updated {entities} edited by user id {userid}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entities' => 'routes', 'userid' => $userId]);
+        $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $serviceManager->get('zikula_users_module.current_user')->get('uname'), 'entities' => 'routes', 'userid' => $userId];
+        $logger->debug('{app}: User {user} updated {entities} edited by user id {userid}.', $logArgs);
     }
     
     /**
@@ -342,9 +334,11 @@ class Route extends SortableRepository
      */
     public function deleteByCreator($userId)
     {
+        $serviceManager = ServiceUtil::getManager();
+    
         // check id parameter
         if ($userId == 0 || !is_numeric($userId)) {
-            throw new \InvalidArgumentException(__('Invalid user identifier received.'));
+            throw new InvalidArgumentException($serviceManager->get('translator.default')->__('Invalid user identifier received.'));
         }
     
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -355,9 +349,9 @@ class Route extends SortableRepository
     
         $query->execute();
     
-        $serviceManager = ServiceUtil::getManager();
         $logger = $serviceManager->get('logger');
-        $logger->debug('{app}: User {user} deleted {entities} created by user id {userid}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entities' => 'routes', 'userid' => $userId]);
+        $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $serviceManager->get('zikula_users_module.current_user')->get('uname'), 'entities' => 'routes', 'userid' => $userId];
+        $logger->debug('{app}: User {user} deleted {entities} created by user id {userid}.', $logArgs);
     }
     
     /**
@@ -371,9 +365,11 @@ class Route extends SortableRepository
      */
     public function deleteByLastEditor($userId)
     {
+        $serviceManager = ServiceUtil::getManager();
+    
         // check id parameter
         if ($userId == 0 || !is_numeric($userId)) {
-            throw new \InvalidArgumentException(__('Invalid user identifier received.'));
+            throw new InvalidArgumentException($serviceManager->get('translator.default')->__('Invalid user identifier received.'));
         }
     
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -384,18 +380,18 @@ class Route extends SortableRepository
     
         $query->execute();
     
-        $serviceManager = ServiceUtil::getManager();
         $logger = $serviceManager->get('logger');
-        $logger->debug('{app}: User {user} deleted {entities} edited by user id {userid}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entities' => 'routes', 'userid' => $userId]);
+        $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $serviceManager->get('zikula_users_module.current_user')->get('uname'), 'entities' => 'routes', 'userid' => $userId];
+        $logger->debug('{app}: User {user} deleted {entities} edited by user id {userid}.', $logArgs);
     }
 
     /**
      * Adds id filters to given query instance.
      *
-     * @param mixed                     $id The id (or array of ids) to use to retrieve the object.
-     * @param Doctrine\ORM\QueryBuilder $qb Query builder to be enhanced.
+     * @param mixed        $id The id (or array of ids) to use to retrieve the object.
+     * @param QueryBuilder $qb Query builder to be enhanced.
      *
-     * @return Doctrine\ORM\QueryBuilder Enriched query builder instance.
+     * @return QueryBuilder Enriched query builder instance.
      */
     protected function addIdFilter($id, QueryBuilder $qb)
     {
@@ -405,10 +401,10 @@ class Route extends SortableRepository
     /**
      * Adds an array of id filters to given query instance.
      *
-     * @param mixed                     $id The array of ids to use to retrieve the object.
-     * @param Doctrine\ORM\QueryBuilder $qb Query builder to be enhanced.
+     * @param mixed        $idList The array of ids to use to retrieve the object.
+     * @param QueryBuilder $qb     Query builder to be enhanced.
      *
-     * @return Doctrine\ORM\QueryBuilder Enriched query builder instance.
+     * @return QueryBuilder Enriched query builder instance.
      */
     protected function addIdListFilter($idList, QueryBuilder $qb)
     {
@@ -417,7 +413,8 @@ class Route extends SortableRepository
         foreach ($idList as $id) {
             // check id parameter
             if ($id == 0) {
-                throw new \InvalidArgumentException(__('Invalid identifier received.'));
+                $serviceManager = ServiceUtil::getManager();
+                throw new InvalidArgumentException($serviceManager->get('translator.default')->__('Invalid identifier received.'));
             }
     
             if (is_array($id)) {
@@ -444,13 +441,13 @@ class Route extends SortableRepository
      * @param boolean $useJoins Whether to include joining related objects (optional) (default=true).
      * @param boolean $slimMode If activated only some basic fields are selected without using any joins (optional) (default=false).
      *
-     * @return array|Zikula\RoutesModule\Entity\RouteEntity retrieved data array or Zikula\RoutesModule\Entity\RouteEntity instance
+     * @return array|routeEntity retrieved data array or routeEntity instance
      *
      * @throws InvalidArgumentException Thrown if invalid parameters are received
      */
     public function selectById($id = 0, $useJoins = true, $slimMode = false)
     {
-        $results = $this->selectByIdList([$id]);
+        $results = $this->selectByIdList([$id], $useJoins, $slimMode);
     
         return (count($results) > 0) ? $results[0] : null;
     }
@@ -458,11 +455,11 @@ class Route extends SortableRepository
     /**
      * Selects a list of objects with an array of ids
      *
-     * @param mixed   $id       The array of ids to use to retrieve the objects (optional) (default=0).
+     * @param mixed   $idList   The array of ids to use to retrieve the objects (optional) (default=0).
      * @param boolean $useJoins Whether to include joining related objects (optional) (default=true).
      * @param boolean $slimMode If activated only some basic fields are selected without using any joins (optional) (default=false).
      *
-     * @return ArrayCollection collection containing retrieved Zikula\RoutesModule\Entity\RouteEntity instances
+     * @return ArrayCollection collection containing retrieved routeEntity instances
      *
      * @throws InvalidArgumentException Thrown if invalid parameters are received
      */
@@ -481,10 +478,10 @@ class Route extends SortableRepository
     /**
      * Adds where clauses excluding desired identifiers from selection.
      *
-     * @param Doctrine\ORM\QueryBuilder $qb        Query builder to be enhanced.
-     * @param integer                   $excludeId The id (or array of ids) to be excluded from selection.
+     * @param QueryBuilder $qb        Query builder to be enhanced.
+     * @param integer      $excludeId The id (or array of ids) to be excluded from selection.
      *
-     * @return Doctrine\ORM\QueryBuilder Enriched query builder instance.
+     * @return QueryBuilder Enriched query builder instance.
      */
     protected function addExclusion(QueryBuilder $qb, $excludeId)
     {
@@ -504,7 +501,7 @@ class Route extends SortableRepository
      * @param boolean $useJoins Whether to include joining related objects (optional) (default=true).
      * @param boolean $slimMode If activated only some basic fields are selected without using any joins (optional) (default=false).
      *
-     * @return ArrayCollection collection containing retrieved Zikula\RoutesModule\Entity\RouteEntity instances
+     * @return ArrayCollection collection containing retrieved routeEntity instances
      */
     public function selectWhere($where = '', $orderBy = '', $useJoins = true, $slimMode = false)
     {
@@ -521,9 +518,9 @@ class Route extends SortableRepository
     /**
      * Returns query builder instance for retrieving a list of objects with a given where clause and pagination parameters.
      *
-     * @param Doctrine\ORM\QueryBuilder $qb             Query builder to be enhanced.
-     * @param integer                   $currentPage    Where to start selection
-     * @param integer                   $resultsPerPage Amount of items to select
+     * @param QueryBuilder $qb             Query builder to be enhanced.
+     * @param integer      $currentPage    Where to start selection
+     * @param integer      $resultsPerPage Amount of items to select
      *
      * @return array Created query instance and amount of affected items.
      */
@@ -552,7 +549,7 @@ class Route extends SortableRepository
      * @param boolean $useJoins       Whether to include joining related objects (optional) (default=true).
      * @param boolean $slimMode       If activated only some basic fields are selected without using any joins (optional) (default=false).
      *
-     * @return Array with retrieved collection and amount of total records affected by this query.
+     * @return array with retrieved collection and amount of total records affected by this query.
      */
     public function selectWherePaginated($where = '', $orderBy = '', $currentPage = 1, $resultsPerPage = 25, $useJoins = true, $slimMode = false)
     {
@@ -594,13 +591,13 @@ class Route extends SortableRepository
     /**
      * Adds quick navigation related filter options as where clauses.
      *
-     * @param Doctrine\ORM\QueryBuilder $qb Query builder to be enhanced.
+     * @param QueryBuilder $qb Query builder to be enhanced.
      *
-     * @return Doctrine\ORM\QueryBuilder Enriched query builder instance.
+     * @return QueryBuilder Enriched query builder instance.
      */
     public function addCommonViewFilters(QueryBuilder $qb)
     {
-        $currentFunc = FormUtil::getPassedValue('func', 'index', 'GETPOST');
+        $currentFunc = $this->request->query->getAlpha('func', 'index');
         if ($currentFunc == 'edit') {
             return $qb;
         }
@@ -637,7 +634,7 @@ class Route extends SortableRepository
                 } elseif ($v == 'yes' || $v == '1') {
                     $qb->andWhere('tbl.' . $k . ' = 1');
                 }
-            } else {
+            } else if (!is_array($v)) {
                 // field filter
                 if ((!is_numeric($v) && $v != '') || (is_numeric($v) && $v > 0)) {
                     if ($k == 'workflowState' && substr($v, 0, 1) == '!') {
@@ -662,15 +659,15 @@ class Route extends SortableRepository
     /**
      * Adds default filters as where clauses.
      *
-     * @param Doctrine\ORM\QueryBuilder $qb         Query builder to be enhanced.
-     * @param array                     $parameters List of determined filter options.
+     * @param QueryBuilder $qb         Query builder to be enhanced.
+     * @param array        $parameters List of determined filter options.
      *
-     * @return Doctrine\ORM\QueryBuilder Enriched query builder instance.
+     * @return QueryBuilder Enriched query builder instance.
      */
     protected function applyDefaultFilters(QueryBuilder $qb, $parameters = [])
     {
-        $currentModule = ModUtil::getName();//FormUtil::getPassedValue('module', '', 'GETPOST');
-        $currentLegacyControllerType = FormUtil::getPassedValue('lct', 'user', 'GETPOST');
+        $currentModule = ModUtil::getName();
+        $currentLegacyControllerType = $this->request->get('lct', 'user');
         if ($currentLegacyControllerType == 'admin' && $currentModule == 'ZikulaRoutesModule') {
             return $qb;
         }
@@ -695,13 +692,12 @@ class Route extends SortableRepository
      * @param integer $resultsPerPage Amount of items to select
      * @param boolean $useJoins       Whether to include joining related objects (optional) (default=true).
      *
-     * @return Array with retrieved collection and amount of total records affected by this query.
+     * @return array with retrieved collection and amount of total records affected by this query.
      */
     public function selectSearch($fragment = '', $exclude = [], $orderBy = '', $currentPage = 1, $resultsPerPage = 25, $useJoins = true)
     {
         $qb = $this->genericBaseQuery('', $orderBy, $useJoins);
         if (count($exclude) > 0) {
-            $exclude = implode(', ', $exclude);
             $qb->andWhere('tbl.id NOT IN (:excludeList)')
                ->setParameter('excludeList', $exclude);
         }
@@ -716,10 +712,10 @@ class Route extends SortableRepository
     /**
      * Adds where clause for search query.
      *
-     * @param Doctrine\ORM\QueryBuilder $qb       Query builder to be enhanced.
-     * @param string                    $fragment The fragment to search for.
+     * @param QueryBuilder $qb       Query builder to be enhanced.
+     * @param string       $fragment The fragment to search for.
      *
-     * @return Doctrine\ORM\QueryBuilder Enriched query builder instance.
+     * @return QueryBuilder Enriched query builder instance.
      */
     protected function addSearchFilter(QueryBuilder $qb, $fragment = '')
     {
@@ -798,14 +794,15 @@ class Route extends SortableRepository
     /**
      * Performs a given database selection and post-processed the results.
      *
-     * @param Doctrine\ORM\Query $query       The Query instance to be executed.
-     * @param string             $orderBy     The order-by clause to use when retrieving the collection (optional) (default='').
-     * @param boolean            $isPaginated Whether the given query uses a paginator or not (optional) (default=false).
+     * @param Query   $query       The Query instance to be executed.
+     * @param string  $orderBy     The order-by clause to use when retrieving the collection (optional) (default='').
+     * @param boolean $isPaginated Whether the given query uses a paginator or not (optional) (default=false).
      *
-     * @return Array with retrieved collection and (for paginated queries) the amount of total records affected.
+     * @return array with retrieved collection and (for paginated queries) the amount of total records affected.
      */
     public function retrieveCollectionResult(Query $query, $orderBy = '', $isPaginated = false)
     {
+        $count = 0;
         if (!$isPaginated) {
             $result = $query->getResult();
         } else {
@@ -818,7 +815,7 @@ class Route extends SortableRepository
         if (!$isPaginated) {
             return $result;
         }
-
+    
         return [$result, $count];
     }
 
@@ -828,7 +825,7 @@ class Route extends SortableRepository
      * @param string  $where    The where clause to use when retrieving the object count (optional) (default='').
      * @param boolean $useJoins Whether to include joining related objects (optional) (default=true).
      *
-     * @return Doctrine\ORM\QueryBuilder Created query builder instance.
+     * @return QueryBuilder Created query builder instance.
      * @TODO fix usage of joins; please remove the first line and test.
      */
     protected function getCountQuery($where = '', $useJoins = true)
@@ -906,7 +903,7 @@ class Route extends SortableRepository
      * @param boolean $useJoins Whether to include joining related objects (optional) (default=true).
      * @param boolean $slimMode If activated only some basic fields are selected without using any joins (optional) (default=false).
      *
-     * @return Doctrine\ORM\QueryBuilder query builder instance to be further processed
+     * @return QueryBuilder query builder instance to be further processed
      */
     public function genericBaseQuery($where = '', $orderBy = '', $useJoins = true, $slimMode = false)
     {
@@ -948,10 +945,10 @@ class Route extends SortableRepository
     /**
      * Adds WHERE clause to given query builder.
      *
-     * @param Doctrine\ORM\QueryBuilder $qb    Given query builder instance.
-     * @param string                    $where The where clause to use when retrieving the collection (optional) (default='').
+     * @param QueryBuilder $qb    Given query builder instance.
+     * @param string       $where The where clause to use when retrieving the collection (optional) (default='').
      *
-     * @return Doctrine\ORM\QueryBuilder query builder instance to be further processed
+     * @return QueryBuilder query builder instance to be further processed
      */
     protected function genericBaseQueryAddWhere(QueryBuilder $qb, $where = '')
     {
@@ -1002,9 +999,11 @@ class Route extends SortableRepository
         $filterUtil->enrichQuery();
         }
     
-        $showOnlyOwnEntries = (int) FormUtil::getPassedValue('own', ModUtil::getVar('ZikulaRoutesModule', 'showOnlyOwnEntries', 0), 'GETPOST');
+        $serviceManager = ServiceUtil::getManager();
+        $varHelper = $serviceManager->get('zikula_extensions_module.api.variable');
+        $showOnlyOwnEntries = /*$request->query->getDigits('own', */$varHelper->get('ZikulaRoutesModule', 'showOnlyOwnEntries', 0)/*)*/;
         if ($showOnlyOwnEntries == 1) {
-            $uid = UserUtil::getVar('uid');
+            $uid = $serviceManager->get('zikula_users_module.current_user')->get('uid');
             $qb->andWhere('tbl.createdUserId = :creator')
                ->setParameter('creator', $uid);
         }
@@ -1015,10 +1014,10 @@ class Route extends SortableRepository
     /**
      * Adds ORDER BY clause to given query builder.
      *
-     * @param Doctrine\ORM\QueryBuilder $qb      Given query builder instance.
-     * @param string                    $orderBy The order-by clause to use when retrieving the collection (optional) (default='').
+     * @param QueryBuilder $qb      Given query builder instance.
+     * @param string       $orderBy The order-by clause to use when retrieving the collection (optional) (default='').
      *
-     * @return Doctrine\ORM\QueryBuilder query builder instance to be further processed
+     * @return QueryBuilder query builder instance to be further processed
      */
     protected function genericBaseQueryAddOrderBy(QueryBuilder $qb, $orderBy = '')
     {
@@ -1045,9 +1044,9 @@ class Route extends SortableRepository
     /**
      * Retrieves Doctrine query from query builder, applying FilterUtil and other common actions.
      *
-     * @param Doctrine\ORM\QueryBuilder $qb Query builder instance
+     * @param QueryBuilder $qb Query builder instance
      *
-     * @return Doctrine\ORM\Query query instance to be further processed
+     * @return Query query instance to be further processed
      */
     public function getQueryFromBuilder(QueryBuilder $qb)
     {
@@ -1071,7 +1070,7 @@ class Route extends SortableRepository
     /**
      * Helper method to add joins to from clause.
      *
-     * @param Doctrine\ORM\QueryBuilder $qb query builder instance used to create the query.
+     * @param QueryBuilder $qb query builder instance used to create the query.
      *
      * @return String Enhancement for from clause.
      */

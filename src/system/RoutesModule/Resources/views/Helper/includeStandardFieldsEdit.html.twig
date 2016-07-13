@@ -1,0 +1,33 @@
+{# purpose of this template: reusable editing of standard fields #}
+{% if (obj.createdUserId is defined and obj.createdUserId) or (obj.updatedUserId is defined and obj.updatedUserId) %}
+    {% if panel|default(false) == true %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseStandardFields">{{ __('Creation and update') }}</a></h3>
+            </div>
+            <div id="collapseStandardFields" class="panel-collapse collapse in">
+                <div class="panel-body">
+    {% else %}
+        <fieldset class="standardfields">
+    {% endif %}
+        <legend>{{ __('Creation and update') }}</legend>
+        <ul>
+        {% if obj.createdUserId|default %}
+            {% set username = zikularoutesmodule_userVar('uname', obj.createdUserId) %}
+            <li>{{ __f('Created by %user', {'%user': username}) }}</li>
+            <li>{{ __f('Created on %date', {'%date': obj.createdDate|localizeddate('medium', 'short')}) }}</li>
+        {% endif %}
+        {% if obj.updatedUserId|default %}
+            {% set username = zikularoutesmodule_userVar('uname', obj.updatedUserId) %}
+            <li>{{ __f('Updated by %user', {'%user': username}) }}</li>
+            <li>{{ __f('Updated on %date', {'%date': obj.updatedDate|localizeddate('medium', 'short')}) }}</li>
+        {% endif %}
+        </ul>
+    {% if panel|default(false) == true %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        </fieldset>
+    {% endif %}
+{% endif %}

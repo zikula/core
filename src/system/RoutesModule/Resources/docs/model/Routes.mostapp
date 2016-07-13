@@ -1,152 +1,156 @@
-application Routes {
-	vendor Zikula
-	author "Zikula contributors"
-	version "1.0.1"
-	email "support@zikula.org"
-	url "http://www.zikula.org"
-	prefix routes
-	generatorSettings {
-		settingsContainer Settings
-		isSystemModule true
-		generateAccountApi false
-		generateSearchApi false
-		generateMailzApi false
-		generateListBlock false
-		generateModerationBlock false
-		generateListContentType false
-		generateDetailContentType false
-		generateNewsletterPlugin false
-		generateModerationPanel false
-		generatePendingContentSupport false
-		generateExternalControllerAndFinder false
-		generateScribitePlugins false
-		generateTagSupport false
-		generateRssTemplates false
-		generateAtomTemplates false
-		generateCsvTemplates false
-		generateXmlTemplates false
-		generateJsonTemplates false
-		generatePoweredByBacklinksIntoFooterTemplates false
-		writeModelToDocs true
-		skipFiles "
-			README.md,
-			CHANGELOG.md
-		"
-		markFiles "
-			Container/LinkContainer.php,
-			Controller/AjaxController.php,
-			Controller/RouteController.php,
-			DependencyInjection/ZikulaRoutesExtension.php,
-			Entity/RouteEntity.php,
-			Entity/Repository/Route.php,
-			Form/Handler/Route/EditHandler.php,
-			Listener/InstallerListener.php,
-			Resources/config/routing.yml,
-			Resources/views/Route/view.tpl,
-			Resources/views/Route/display.tpl,
-			Resources/views/Route/edit.tpl,
-			Resources/views/Route/reload.tpl,
-			RoutesModuleInstaller.php,
-			RoutesModuleVersion.php
-		"
-	}
-	entities {
-		entity route leading {
-			nameMultiple routes
-			displayPattern "#path# (#sort#)"
-			fields {
-				list "routeType" {
-					defaultValue "additional"
-					items {
-						default listItem "additional" ("additional"),
-						listItem "temporaryRedirect" ("temporaryRedirect"),
-						listItem "permanentRedirect" ("permanentRedirect"),
-						listItem "replace" ("replace")
-					}
-				},
-				string replacedRouteName nullable {
-					mandatory false
-				},
-				string "bundle",
-				string "controller",
-				string "action" {
-					dbName route_action
-				},
-				string path {
-					dbName route_path
-				},
-				string host nullable {
-					mandatory false
-				},
-				list "schemes" multiple {
-					defaultValue "http"
-					items {
-						default listItem http ("http"),
-						default listItem https ("https")
-					}
-				},
-				list "methods" multiple {
-					defaultValue "GET"
-					items {
-						default listItem "GET" ("GET"),
-						listItem "POST" ("POST"),
-						listItem "HEAD" ("HEAD"),
-						listItem "PUT" ("PUT"),
-						listItem "DELETE" ("DELETE"),
-						listItem "OPTIONS" ("OPTIONS")
-					}
-				},
-				boolean "prependBundlePrefix" {
-					defaultValue true
-				},
-				boolean "translatable" {
-					defaultValue true
-				},
-				string translationPrefix nullable {
-					mandatory false
-				},
-				array defaults {
-					dbName route_defaults
-				},
-				array requirements {
-					mandatory false
-				},
-				string "condition" nullable {
-					dbName route_condition
-		 	 		mandatory false
-				},
-				string description nullable {
-					mandatory false
-				},
-				integer sort sortablePosition {
-					mandatory false
-				},
-				string group sortableGroup {
-					dbName sort_group
-					mandatory false
-				}
-			}
-			actions {
-				mainAction Main,
-				viewAction View,
-				editAction Edit,
-				displayAction Display,
-				deleteAction Delete,
-				customAction reload,
-				customAction renew
-			}
-		}
-	}
-	controllers {
-		adminController Admin {
-			actions {
-				mainAction Main
-			}
-		},
-		ajaxController Ajax {
-			actions {
-				mainAction Main
-			}
-		}
-	}
+application "Routes" {
+    vendor "Zikula"
+    author "Zikula contributors"
+    email "support@zikula.org"
+    url "http://www.zikula.org"
+    version "1.1.0"
+    prefix "routes"
+    generatorSettings {
+        settingsContainer "Settings"
+        isSystemModule true
+        generateAccountApi false
+        generateSearchApi false
+        generateMailzApi false
+        generateListBlock false
+        generateModerationBlock false
+        generateListContentType false
+        generateDetailContentType false
+        generateNewsletterPlugin false
+        generateModerationPanel false
+        generatePendingContentSupport false
+        generateExternalControllerAndFinder false
+        generateScribitePlugins false
+        generateTagSupport false
+        generateRssTemplates false
+        generateAtomTemplates false
+        generateCsvTemplates false
+        generateXmlTemplates false
+        generateJsonTemplates false
+        generatePoweredByBacklinksIntoFooterTemplates false
+        writeModelToDocs true
+        skipFiles "
+            README.md,
+            CHANGELOG.md
+        "
+        markFiles "
+            Container/LinkContainer.php,
+            Controller/AjaxController.php,
+            Controller/RouteController.php,
+            DependencyInjection/ZikulaRoutesExtension.php,
+            Entity/RouteEntity.php,
+            Entity/Repository/Route.php,
+            Form/Handler/Route/EditHandler.php,
+            Form/Type/RouteType.php,
+            Helper/ViewHelper.php,
+            Listener/InstallerListener.php,
+            Resources/config/eventSubscriber.yml,
+            Resources/config/helpers.yml,
+            Resources/config/routing.yml,
+            Resources/views/Route/view.html.twig,
+            Resources/views/Route/display.html.twig,
+            Resources/views/Route/edit.html.twig,
+            RoutesModuleInstaller.php,
+            Twig/TwigExtension.php
+        "
+    }
+    entities {
+        entity "route" leading {
+            nameMultiple "routes"
+            displayPattern "#path# (#sort#)"
+            skipHookSubscribers true
+            fields {
+                list "routeType" {
+                    defaultValue "additional"
+                    items {
+                        default listItem "additional" ("additional"),
+                        listItem "temporaryRedirect" ("temporaryRedirect"),
+                        listItem "permanentRedirect" ("permanentRedirect"),
+                        listItem "replace" ("replace")
+                    }
+                },
+                string "replacedRouteName" nullable {
+                    mandatory false
+                },
+                string "bundle",
+                string "controller",
+                string "action" {
+                    dbName "route_action"
+                },
+                string "path" {
+                    dbName "route_path"
+                },
+                string "host" nullable {
+                    mandatory false
+                },
+                list "schemes" multiple {
+                    defaultValue "http"
+                    items {
+                        default listItem "http" ("http"),
+                        default listItem "https" ("https")
+                    }
+                },
+                list "methods" multiple {
+                    defaultValue "GET"
+                    items {
+                        default listItem "GET" ("GET"),
+                        listItem "POST" ("POST"),
+                        listItem "HEAD" ("HEAD"),
+                        listItem "PUT" ("PUT"),
+                        listItem "DELETE" ("DELETE"),
+                        listItem "OPTIONS" ("OPTIONS")
+                    }
+                },
+                boolean "prependBundlePrefix" {
+                    defaultValue "true"
+                },
+                boolean "translatable" {
+                    defaultValue "true"
+                },
+                string "translationPrefix" nullable {
+                    mandatory false
+                },
+                array "defaults" {
+                    dbName "route_defaults"
+                },
+                array "requirements" {
+                    mandatory false
+                },
+                string "condition" nullable {
+                    dbName "route_condition"
+                    mandatory false
+                },
+                string "description" nullable {
+                    mandatory false
+                },
+                integer "sort" sortablePosition {
+                    mandatory false
+                },
+                string "group" sortableGroup {
+                    dbName "sort_group"
+                    mandatory false
+                }
+            }
+            actions {
+                mainAction "Main",
+                viewAction "View",
+                displayAction "Display",
+                editAction "Edit",
+                deleteAction "Delete",
+                customAction "Reload",
+                customAction "Renew"
+            }
+        }
+    }
+    controllers {
+        adminController "Admin" {
+            actions {
+                mainAction "Main"
+            }
+        },
+        ajaxController "Ajax" {
+            actions {
+                mainAction "Main"
+            }
+        }
+    }
 }

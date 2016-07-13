@@ -12,46 +12,31 @@
 
 namespace Zikula\RoutesModule\Form\Handler\Common\Base;
 
-use Zikula\RoutesModule\Form\Plugin\AbstractObjectSelector;
-
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\Core\Doctrine\EntityAccess;
+use Zikula\Core\RouteUrl;
 use ModUtil;
-use SecurityUtil;
+use RuntimeException;
 use System;
 use UserUtil;
-use Zikula_Form_AbstractHandler;
-use Zikula_Form_View;
-use ZLanguage;
-use Zikula\Bundle\HookBundle\Hook\ProcessHook;
-use Zikula\Bundle\HookBundle\Hook\ValidationHook;
-use Zikula\Bundle\HookBundle\Hook\ValidationProviders;
-use Zikula\Core\RouteUrl;
 
 /**
  * This handler class handles the page events of editing forms.
  * It collects common functionality required by different object types.
- *
- * Member variables in a form handler object are persisted across different page requests. This means
- * a member variable $this->X can be set on one request and on the next request it will still contain
- * the same value.
- *
- * A form handler will be notified of various events happening during it's life-cycle.
- * When a specific event occurs then the corresponding event handler (class method) will be executed. Handlers
- * are named exactly like their events - this is how the framework knows which methods to call.
- *
- * The list of events is:
- *
- * - <b>initialize</b>: this event fires before any of the events for the plugins and can be used to setup
- *   the form handler. The event handler typically takes care of reading URL variables, access control
- *   and reading of data from the database.
- *
- * - <b>handleCommand</b>: this event is fired by various plugins on the page. Typically it is done by the
- *   Zikula_Form_Plugin_Button plugin to signal that the user activated a button.
  */
-class EditHandler extends Zikula_Form_AbstractHandler
+class EditHandler
 {
+    use TranslatorTrait;
+
     /**
      * Name of treated object type.
      *
@@ -83,9 +68,9 @@ class EditHandler extends Zikula_Form_AbstractHandler
     /**
      * Reference to treated entity instance.
      *
-     * @var Zikula_EntityAccess
+     * @var EntityAccess
      */
-    protected $entityRef = false;
+    protected $entityRef = null;
 
     /**
      * List of identifier names.
@@ -100,20 +85,6 @@ class EditHandler extends Zikula_Form_AbstractHandler
      * @var array
      */
     protected $idValues = [];
-    
-    /**
-     * List of identifiers for predefined relationships.
-     *
-     * @var mixed
-     */
-    protected $relationPresets = [];
-
-    /**
-     * One of "create" or "edit".
-     *
-     * @var string
-     */
-    protected $mode;
 
     /**
      * Code defining the redirect goal after command handling.
@@ -137,20 +108,6 @@ class EditHandler extends Zikula_Form_AbstractHandler
     protected $repeatReturnUrl = null;
 
     /**
-     * Whether this form is being used inline within a window.
-     *
-     * @var boolean
-     */
-    protected $inlineUsage = false;
-
-    /**
-     * Full prefix for related items.
-     *
-     * @var string
-     */
-    protected $idPrefix = '';
-
-    /**
      * Whether an existing item is used as template for a new one.
      *
      * @var boolean
@@ -163,114 +120,176 @@ class EditHandler extends Zikula_Form_AbstractHandler
      * @var boolean
      */
     protected $hasPageLockSupport = false;
+    /**
+     * @var ContainerBuilder
+     */
+    protected $container;
 
     /**
-     * Array with list field names and multiple flags.
+     * The current request.
+     *
+     * @var Request
+     */
+    protected $request = null;
+
+    /**
+     * The router.
+     *
+     * @var RouterInterface
+     */
+    protected $router = null;
+
+    /**
+     * The handled form type.
+     *
+     * @var AbstractType
+     */
+    protected $form = null;
+
+    /**
+     * Template parameters.
      *
      * @var array
      */
-    protected $listFields = [];
-
+    protected $templateParameters = [];
 
     /**
-     * Post construction hook.
+     * Constructor.
      *
-     * @return mixed
+     * @param \Zikula_ServiceManager $serviceManager ServiceManager instance.
+     * @param TranslatorInterface    $translator     Translator service instance.
+     * @param RequestStack           $requestStack   RequestStack service instance.
+     * @param RouterInterface        $router         Router service instance.
      */
-    public function setup()
+    public function __construct(\Zikula_ServiceManager $serviceManager, TranslatorInterface $translator, RequestStack $requestStack, RouterInterface $router)
     {
+        $this->container = $serviceManager;
+        $this->setTranslator($translator);
+        $this->request = $requestStack->getCurrentRequest();
+        $this->router = $router;
     }
 
     /**
-     * Pre-initialise hook.
+     * Sets the translator.
      *
-     * @return void
+     * @param TranslatorInterface $translator Translator service instance.
      */
-    public function preInitialize()
+    public function setTranslator(/*TranslatorInterface */$translator)
     {
+        $this->translator = $translator;
     }
 
     /**
-     * Initialize form handler.
+     * Initialise form handler.
      *
      * This method takes care of all necessary initialisation of our data and form states.
      *
-     * @param Zikula_Form_View $view The form view instance.
+     * @param array $templateParameters List of preassigned template variables.
      *
-     * @return boolean False in case of initialization errors, otherwise true.
+     * @return boolean False in case of initialisation errors, otherwise true.
      *
      * @throws NotFoundHttpException Thrown if item to be edited isn't found
      * @throws RuntimeException      Thrown if the workflow actions can not be determined
      */
-    public function initialize(Zikula_Form_View $view)
+    public function processForm(array $templateParameters)
     {
-        $this->inlineUsage = ((UserUtil::getTheme() == 'Printer') ? true : false);
-        $this->idPrefix = $this->request->query->filter('idp', '', false, FILTER_SANITIZE_STRING);
+        $this->templateParameters = $templateParameters;
+        $this->templateParameters['inlineUsage'] = UserUtil::getTheme() == 'ZikulaPrinterTheme' ? true : false;
+    
     
         // initialise redirect goal
-        $this->returnTo = $this->request->query->filter('returnTo', null, false, FILTER_SANITIZE_STRING);
+        $this->returnTo = $this->request->query->getAlnum('returnTo', null);
         // store current uri for repeated creations
         $this->repeatReturnUrl = System::getCurrentURI();
     
-        $this->permissionComponent = $this->name . ':' . $this->objectTypeCapital . ':';
+        $this->permissionComponent = 'ZikulaRoutesModule:' . $this->objectTypeCapital . ':';
     
-        $entityClass = 'ZikulaRoutesModule:' . ucfirst($this->objectType) . 'Entity';
-        $this->idFields = ModUtil::apiFunc($this->name, 'selection', 'getIdFields', ['ot' => $this->objectType]);
+        $this->idFields = ModUtil::apiFunc('ZikulaRoutesModule', 'selection', 'getIdFields', ['ot' => $this->objectType]);
     
         // retrieve identifier of the object we wish to view
-        $controllerHelper = $this->view->getServiceManager()->get('zikularoutesmodule.controller_helper');
+        $controllerHelper = $this->container->get('zikula_routes_module.controller_helper');
     
         $this->idValues = $controllerHelper->retrieveIdentifier($this->request, [], $this->objectType, $this->idFields);
         $hasIdentifier = $controllerHelper->isValidIdentifier($this->idValues);
     
         $entity = null;
-        $this->mode = ($hasIdentifier) ? 'edit' : 'create';
+        $this->templateParameters['mode'] = $hasIdentifier ? 'edit' : 'create';
     
-        if ($this->mode == 'edit') {
-            if (!SecurityUtil::checkPermission($this->permissionComponent, $this->createCompositeIdentifier() . '::', ACCESS_EDIT)) {
+        $permissionHelper = $this->container->get('zikula_permissions_module.api.permission');
+    
+        if ($this->templateParameters['mode'] == 'edit') {
+            if (!$permissionHelper->hasPermission($this->permissionComponent, $this->createCompositeIdentifier() . '::', ACCESS_EDIT)) {
                 throw new AccessDeniedException();
             }
     
-            $entity = $this->initEntityForEdit();
+            $entity = $this->initEntityForEditing();
             if (!is_object($entity)) {
                 return false;
             }
     
-            if ($this->hasPageLockSupport === true && ModUtil::available('PageLock')) {
+            if (true === $this->hasPageLockSupport && ModUtil::available('ZikulaPageLockModule')) {
                 // try to guarantee that only one person at a time can be editing this entity
-                ModUtil::apiFunc('PageLock', 'user', 'pageLock', [
-                    'lockName' => $this->name . $this->objectTypeCapital . $this->createCompositeIdentifier(),
-                    'returnUrl' => $this->getRedirectUrl(null)
-                ]);
+                $lockingApi = $this->container->get('zikula_pagelock_module.api.locking');
+                $lockName = 'ZikulaRoutesModule' . $this->objectTypeCapital . $this->createCompositeIdentifier();
+                $lockingApi->addLock($lockName, $this->getRedirectUrl(null));
             }
         } else {
-            if (!SecurityUtil::checkPermission($this->permissionComponent, '::', ACCESS_EDIT)) {
+            if (!$permissionHelper->hasPermission($this->permissionComponent, '::', ACCESS_EDIT)) {
                 throw new AccessDeniedException();
             }
     
             $entity = $this->initEntityForCreation();
         }
     
-        $this->view->assign('mode', $this->mode)
-                   ->assign('inlineUsage', $this->inlineUsage);
-    
         // save entity reference for later reuse
         $this->entityRef = $entity;
     
     
-        $workflowHelper = $this->view->getServiceManager()->get('zikularoutesmodule.workflow_helper');
+        $workflowHelper = $this->container->get('zikula_routes_module.workflow_helper');
         $actions = $workflowHelper->getActionsForObject($entity);
-        if ($actions === false || !is_array($actions)) {
-            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Could not determine workflow actions.'));
-            $logger = $this->view->getServiceManager()->get('logger');
-            $logger->error('{app}: User {user} tried to edit the {entity} with id {id}, but failed to determine available workflow actions.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => $this->objectType, 'id' => $entity->createCompositeIdentifier()]);
+        if (false === $actions || !is_array($actions)) {
+            $this->request->getSession()->getFlashBag()->add(\Zikula_Session::MESSAGE_ERROR, $this->__('Error! Could not determine workflow actions.'));
+            $logger = $this->container->get('logger');
+            $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->container->get('zikula_users_module.current_user')->get('uname'), 'entity' => $this->objectType, 'id' => $entity->createCompositeIdentifier()];
+            $logger->error('{app}: User {user} tried to edit the {entity} with id {id}, but failed to determine available workflow actions.', $logArgs);
             throw new \RuntimeException($this->__('Error! Could not determine workflow actions.'));
         }
-        // assign list of allowed actions to the view for further processing
-        $this->view->assign('actions', $actions);
     
-        // everything okay, no initialization errors occured
+        $this->templateParameters['actions'] = $actions;
+    
+        $this->form = $this->createForm();
+        if (!is_object($this->form)) {
+            return false;
+        }
+    
+        // handle form request and check validity constraints of $task
+        if ($this->form->handleRequest($this->request)->isValid()) {
+            return $this->handleCommand();
+        }
+    
+        $this->templateParameters['form'] = $this->form->createView();
+    
+        // everything okay, no initialisation errors occured
         return true;
+    }
+    
+    /**
+     * Creates the form type.
+     */
+    protected function createForm()
+    {
+        // to be customised in sub classes
+        return null;
+    }
+    
+    /**
+     * Gets the template parameters.
+     *
+     * @return array
+     */
+    public function getTemplateParameters()
+    {
+        return $this->templateParameters;
     }
     
     /**
@@ -294,14 +313,14 @@ class EditHandler extends Zikula_Form_AbstractHandler
     /**
      * Initialise existing entity for editing.
      *
-     * @return Zikula_EntityAccess desired entity instance or null
+     * @return EntityAccess|null Desired entity instance or null.
      *
      * @throws NotFoundHttpException Thrown if item to be edited isn't found
      */
-    protected function initEntityForEdit()
+    protected function initEntityForEditing()
     {
-        $entity = ModUtil::apiFunc($this->name, 'selection', 'getEntity', ['ot' => $this->objectType, 'id' => $this->idValues]);
-        if ($entity == null) {
+        $entity = ModUtil::apiFunc('ZikulaRoutesModule', 'selection', 'getEntity', ['ot' => $this->objectType, 'id' => $this->idValues]);
+        if (null === $entity) {
             throw new NotFoundHttpException($this->__('No such item.'));
         }
     
@@ -313,7 +332,7 @@ class EditHandler extends Zikula_Form_AbstractHandler
     /**
      * Initialise new entity for creation.
      *
-     * @return Zikula_EntityAccess desired entity instance or null
+     * @return EntityAccess|null Desired entity instance or null.
      *
      * @throws NotFoundHttpException Thrown if item to be cloned isn't found
      */
@@ -321,47 +340,35 @@ class EditHandler extends Zikula_Form_AbstractHandler
     {
         $this->hasTemplateId = false;
         $templateId = $this->request->query->get('astemplate', '');
+        $entity = null;
+    
         if (!empty($templateId)) {
             $templateIdValueParts = explode('_', $templateId);
-            $this->hasTemplateId = (count($templateIdValueParts) == count($this->idFields));
+            $this->hasTemplateId = count($templateIdValueParts) == count($this->idFields);
+    
+            if (true === $this->hasTemplateId) {
+                $templateIdValues = [];
+                $i = 0;
+                foreach ($this->idFields as $idField) {
+                    $templateIdValues[$idField] = $templateIdValueParts[$i];
+                    $i++;
+                }
+                // reuse existing entity
+                $entityT = ModUtil::apiFunc('ZikulaRoutesModule', 'selection', 'getEntity', ['ot' => $this->objectType, 'id' => $templateIdValues]);
+                if (null === $entityT) {
+                    throw new NotFoundHttpException($this->__('No such item.'));
+                }
+                $entity = clone $entityT;
+            }
         }
     
-        if ($this->hasTemplateId === true) {
-            $templateIdValues = [];
-            $i = 0;
-            foreach ($this->idFields as $idField) {
-                $templateIdValues[$idField] = $templateIdValueParts[$i];
-                $i++;
-            }
-            // reuse existing entity
-            $entityT = ModUtil::apiFunc($this->name, 'selection', 'getEntity', ['ot' => $this->objectType, 'id' => $templateIdValues]);
-            if ($entityT == null) {
-                throw new NotFoundHttpException($this->__('No such item.'));
-            }
-            $entity = clone $entityT;
-        } else {
-            $entityClass = 'Zikula\\RoutesModule\\Entity\\' . ucfirst($this->objectType) . 'Entity';
+        if (is_null($entity)) {
+            $factory = $this->container->get('zikula_routes_module.' . $this->objectType . '_factory');
             $createMethod = 'create' . ucfirst($this->objectType);
-            $entity = $this->view->getContainer()->get('zikularoutesmodule.' . $this->objectType . '_factory')->$createMethod();
+            $entity = $factory->$createMethod();
         }
     
         return $entity;
-    }
-
-    /**
-     * Post-initialise hook.
-     *
-     * @return void
-     */
-    public function postInitialize()
-    {
-        $repository = $this->view->getServiceManager()->get('zikularoutesmodule.' . $this->objectType . '_factory')->getRepository();
-        $utilArgs = [
-            'controller' => \FormUtil::getPassedValue('type', 'user', 'GETPOST'),
-            'action' => 'edit',
-            'mode' => $this->mode
-        ];
-        $this->view->assign($repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
     }
 
     /**
@@ -372,6 +379,7 @@ class EditHandler extends Zikula_Form_AbstractHandler
     protected function getRedirectCodes()
     {
         $codes = [];
+    
         // index page of admin area
         $codes[] = 'admin';
         // admin list of entities
@@ -387,35 +395,25 @@ class EditHandler extends Zikula_Form_AbstractHandler
     /**
      * Command event handler.
      *
-     * This event handler is called when a command is issued by the user. Commands are typically something
-     * that originates from a {@link Zikula_Form_Plugin_Button} plugin. The passed args contains different properties
-     * depending on the command source, but you should at least find a <var>$args['commandName']</var>
-     * value indicating the name of the command. The command name is normally specified by the plugin
-     * that initiated the command.
-     *
-     * @param Zikula_Form_View $view The form view instance.
-     * @param array            $args Additional arguments.
-     *
-     * @see Zikula_Form_Plugin_Button
-     * @see Zikula_Form_Plugin_ImageButton
+     * @param array $args List of arguments.
      *
      * @return mixed Redirect or false on errors.
      */
-    public function handleCommand(Zikula_Form_View $view, &$args)
+    public function handleCommand(&$args)
     {
-        $action = $args['commandName'];
-        $isRegularAction = !in_array($action, ['delete', 'cancel']);
-    
-        if ($isRegularAction) {
-            // do forms validation including checking all validators on the page to validate their input
-            if (!$this->view->isValid()) {
-                return false;
+        // build $args for BC (e.g. used by redirect handling)
+        foreach ($this->templateParameters['actions'] as $action) {
+            if ($this->form->get($action['id'])->isClicked()) {
+                $args['commandName'] = $action['id'];
             }
         }
     
-        if ($action != 'cancel') {
-            $otherFormData = $this->fetchInputData($view, $args);
-            if ($otherFormData === false) {
+        $action = $args['commandName'];
+        $isRegularAction = !in_array($action, ['delete', 'reset', 'cancel']);
+    
+        if ($isRegularAction || $action == 'delete') {
+            $unmappedFormData = $this->fetchInputData($args);
+            if (false === $unmappedFormData) {
                 return false;
             }
         }
@@ -423,56 +421,53 @@ class EditHandler extends Zikula_Form_AbstractHandler
         // get treated entity reference from persisted member var
         $entity = $this->entityRef;
     
-        $hookAreaPrefix = $entity->getHookAreaPrefix();
-        if ($action != 'cancel') {
-            $hookType = $action == 'delete' ? 'validate_delete' : 'validate_edit';
-    
+        $hookHelper = null;
+        if ($entity->supportsHookSubscribers() && !in_array($action, ['reset', 'cancel'])) {
+            $hookHelper = $this->container->get('zikula_routes_module.hook_helper');
             // Let any hooks perform additional validation actions
-            $hook = new ValidationHook(new ValidationProviders());
-            $validators = $this->dispatchHooks($hookAreaPrefix . '.' . $hookType, $hook)->getValidators();
-            if ($validators->hasErrors()) {
+            $hookType = $action == 'delete' ? 'validate_delete' : 'validate_edit';
+            $validationHooksPassed = $hookHelper->callValidationHooks($entity, $hookType);
+            if (!$validationHooksPassed) {
                 return false;
             }
         }
     
-        if ($action != 'cancel') {
+        if ($isRegularAction || $action == 'delete') {
             $success = $this->applyAction($args);
             if (!$success) {
                 // the workflow operation failed
                 return false;
             }
     
-            // Let any hooks know that we have created, updated or deleted an item
-            $hookType = $action == 'delete' ? 'process_delete' : 'process_edit';
-            $url = null;
-            if ($action != 'delete') {
-                $urlArgs = $entity->createUrlArgs();
-                $url = new RouteUrl('zikularoutesmodule_' . $this->objectType . '_display', $urlArgs);
+            if ($entity->supportsHookSubscribers()) {
+                // Let any hooks know that we have created, updated or deleted an item
+                $hookType = $action == 'delete' ? 'process_delete' : 'process_edit';
+                $url = null;
+                if ($action != 'delete') {
+                    $urlArgs = $entity->createUrlArgs();
+                    $url = new RouteUrl('zikularoutesmodule_' . $this->objectType . '_display', $urlArgs);
+                }
+                if (!is_null($hookHelper)) {
+                    $hookHelper->callProcessHooks($entity, $hookType, $url);
+                }
             }
-            $hook = new ProcessHook($entity->createCompositeIdentifier(), $url);
-            $this->dispatchHooks($hookAreaPrefix . '.' . $hookType, $hook);
-    
-            // An item was created, updated or deleted, so we clear all cached pages for this item.
-            $cacheArgs = ['ot' => $this->objectType, 'item' => $entity];
-            ModUtil::apiFunc($this->name, 'cache', 'clearItemCache', $cacheArgs);
-    
-            // clear view cache to reflect our changes
-            $this->view->clear_cache();
         }
     
-        if ($this->hasPageLockSupport === true && $this->mode == 'edit' && ModUtil::available('PageLock')) {
-            ModUtil::apiFunc('PageLock', 'user', 'releaseLock',
-                ['lockName' => $this->name . $this->objectTypeCapital . $this->createCompositeIdentifier()]);
+        if (true === $this->hasPageLockSupport && $this->templateParameters['mode'] == 'edit' && ModUtil::available('ZikulaPageLockModule')) {
+            $lockingApi = $this->container->get('zikula_pagelock_module.api.locking');
+            $lockName = 'ZikulaRoutesModule' . $this->objectTypeCapital . $this->createCompositeIdentifier();
+            $lockingApi->releaseLock($lockName);
         }
     
-        return $this->view->redirect($this->getRedirectUrl($args));
+        return new RedirectResponse($this->getRedirectUrl($args), 302);
     }
     
     /**
      * Get success or error message for default operations.
      *
-     * @param Array   $args    arguments from handleCommand method.
+     * @param array   $args    arguments from handleCommand method.
      * @param Boolean $success true if this is a success, false for default error.
+     *
      * @return String desired status or error message.
      */
     protected function getDefaultMessage($args, $success = false)
@@ -480,26 +475,26 @@ class EditHandler extends Zikula_Form_AbstractHandler
         $message = '';
         switch ($args['commandName']) {
             case 'create':
-                    if ($success === true) {
-                        $message = $this->__('Done! Item created.');
-                    } else {
-                        $message = $this->__('Error! Creation attempt failed.');
-                    }
-                    break;
+                if (true === $success) {
+                    $message = $this->__('Done! Item created.');
+                } else {
+                    $message = $this->__('Error! Creation attempt failed.');
+                }
+                break;
             case 'update':
-                    if ($success === true) {
-                        $message = $this->__('Done! Item updated.');
-                    } else {
-                        $message = $this->__('Error! Update attempt failed.');
-                    }
-                    break;
+                if (true === $success) {
+                    $message = $this->__('Done! Item updated.');
+                } else {
+                    $message = $this->__('Error! Update attempt failed.');
+                }
+                break;
             case 'delete':
-                    if ($success === true) {
-                        $message = $this->__('Done! Item deleted.');
-                    } else {
-                        $message = $this->__('Error! Deletion attempt failed.');
-                    }
-                    break;
+                if (true === $success) {
+                    $message = $this->__('Done! Item deleted.');
+                } else {
+                    $message = $this->__('Error! Deletion attempt failed.');
+                }
+                break;
         }
     
         return $message;
@@ -508,7 +503,7 @@ class EditHandler extends Zikula_Form_AbstractHandler
     /**
      * Add success or error message to session.
      *
-     * @param Array   $args    arguments from handleCommand method.
+     * @param array   $args    arguments from handleCommand method.
      * @param Boolean $success true if this is a success, false for default error.
      *
      * @throws RuntimeException Thrown if executing the workflow action fails
@@ -516,75 +511,43 @@ class EditHandler extends Zikula_Form_AbstractHandler
     protected function addDefaultMessage($args, $success = false)
     {
         $message = $this->getDefaultMessage($args, $success);
-        if (!empty($message)) {
-            $flashType = ($success === true) ? 'status' : 'error';
-            $this->request->getSession()->getFlashBag()->add($flashType, $message);
-            $logger = $this->view->getServiceManager()->get('logger');
-            if ($success === true) {
-                $logger->notice('{app}: User {user} updated the {entity} with id {id}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => $this->objectType, 'id' => $this->entityRef->createCompositeIdentifier()]);
-            } else {
-                $logger->error('{app}: User {user} tried to update the {entity} with id {id}, but failed.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => $this->objectType, 'id' => $this->entityRef->createCompositeIdentifier()]);
-            }
+        if (empty($message)) {
+            return;
+        }
+    
+        $flashType = true === $success ? \Zikula_Session::MESSAGE_STATUS : \Zikula_Session::MESSAGE_ERROR;
+        $this->request->getSession()->getFlashBag()->add($flashType, $message);
+        $logger = $this->container->get('logger');
+        $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->container->get('zikula_users_module.current_user')->get('uname'), 'entity' => $this->objectType, 'id' => $this->entityRef->createCompositeIdentifier()];
+        if (true === $success) {
+            $logger->notice('{app}: User {user} updated the {entity} with id {id}.', $logArgs);
+        } else {
+            $logger->error('{app}: User {user} tried to update the {entity} with id {id}, but failed.', $logArgs);
         }
     }
 
     /**
      * Input data processing called by handleCommand method.
      *
-     * @param Zikula_Form_View $view The form view instance.
-     * @param array            $args Additional arguments.
+     * @param array $args Additional arguments.
      *
      * @return array form data after processing.
      */
-    public function fetchInputData(Zikula_Form_View $view, &$args)
+    public function fetchInputData(&$args)
     {
         // fetch posted data input values as an associative array
-        $formData = $this->view->getValues();
-        // we want the array with our field values
-        $entityData = $formData[$this->objectTypeLower];
-        unset($formData[$this->objectTypeLower]);
+        $formData = $this->form->getData();
     
         // get treated entity reference from persisted member var
         $entity = $this->entityRef;
     
-    
-        if ($args['commandName'] != 'cancel') {
-            if (count($this->listFields) > 0) {
-                foreach ($this->listFields as $listField => $multiple) {
-                    if (!$multiple) {
-                        continue;
-                    }
-                    if (is_array($entityData[$listField])) { 
-                        $values = $entityData[$listField];
-                        $entityData[$listField] = '';
-                        if (count($values) > 0) {
-                            $entityData[$listField] = '###' . implode('###', $values) . '###';
-                        }
-                    }
-                }
-            }
+        if ($this->templateParameters['mode'] == 'create' && isset($formData['repeatCreation']) && $formData['repeatCreation']) {
+            $this->repeatCreateAction = $formData['repeatCreation'];
         }
     
-        if (isset($entityData['repeatCreation'])) {
-            if ($this->mode == 'create') {
-                $this->repeatCreateAction = $entityData['repeatCreation'];
-            }
-            unset($entityData['repeatCreation']);
+        if (isset($formData['additionalNotificationRemarks']) && $formData['additionalNotificationRemarks'] != '') {
+            $this->request->getSession()->set('ZikulaRoutesModuleAdditionalNotificationRemarks', $formData['additionalNotificationRemarks']);
         }
-        if (isset($entityData['additionalNotificationRemarks'])) {
-            $this->request->getSession()->set($this->name . 'AdditionalNotificationRemarks', $entityData['additionalNotificationRemarks']);
-            unset($entityData['additionalNotificationRemarks']);
-        }
-    
-        // search for relationship plugins to update the corresponding data
-        $entityData = $this->writeRelationDataToEntity($view, $entity, $entityData);
-    
-        // assign fetched data
-        $entity->merge($entityData);
-    
-        // we must persist related items now (after the merge) to avoid validation errors
-        // if cascades cause the main entity becoming persisted automatically, too
-        $this->persistRelationData($view);
     
         // save updated entity
         $this->entityRef = $entity;
@@ -592,72 +555,11 @@ class EditHandler extends Zikula_Form_AbstractHandler
         // return remaining form data
         return $formData;
     }
-    
-    /**
-     * Updates the entity with new relationship data.
-     *
-     * @param Zikula_Form_View    $view       The form view instance.
-     * @param Zikula_EntityAccess $entity     Reference to the updated entity.
-     * @param array               $entityData Entity related form data.
-     *
-     * @return array form data after processing.
-     */
-    protected function writeRelationDataToEntity(Zikula_Form_View $view, $entity, $entityData)
-    {
-        $entityData = $this->writeRelationDataToEntity_rec($entity, $entityData, $view->plugins);
-    
-        return $entityData;
-    }
-    
-    /**
-     * Searches for relationship plugins to write their updated values
-     * back to the given entity.
-     *
-     * @param Zikula_EntityAccess $entity     Reference to the updated entity.
-     * @param array               $entityData Entity related form data.
-     * @param array               $plugins    List of form plugin which are searched.
-     *
-     * @return array form data after processing.
-     */
-    protected function writeRelationDataToEntity_rec($entity, $entityData, $plugins)
-    {
-        foreach ($plugins as $plugin) {
-            if ($plugin instanceof AbstractObjectSelector && method_exists($plugin, 'assignRelatedItemsToEntity')) {
-                $entityData = $plugin->assignRelatedItemsToEntity($entity, $entityData);
-            }
-            $entityData = $this->writeRelationDataToEntity_rec($entity, $entityData, $plugin->plugins);
-        }
-    
-        return $entityData;
-    }
-    
-    /**
-     * Persists any related items.
-     *
-     * @param Zikula_Form_View $view The form view instance.
-     */
-    protected function persistRelationData(Zikula_Form_View $view)
-    {
-        $this->persistRelationData_rec($view->plugins);
-    }
-    
-    /**
-     * Searches for relationship plugins to persist their related items.
-     */
-    protected function persistRelationData_rec($plugins)
-    {
-        foreach ($plugins as $plugin) {
-            if ($plugin instanceof AbstractObjectSelector && method_exists($plugin, 'persistRelatedItems')) {
-                $plugin->persistRelatedItems();
-            }
-            $this->persistRelationData_rec($plugin->plugins);
-        }
-    }
 
     /**
      * This method executes a certain workflow action.
      *
-     * @param Array $args Arguments from handleCommand method.
+     * @param array $args Arguments from handleCommand method.
      *
      * @return bool Whether everything worked well or not.
      */
@@ -666,4 +568,5 @@ class EditHandler extends Zikula_Form_AbstractHandler
         // stub for subclasses
         return false;
     }
+
 }

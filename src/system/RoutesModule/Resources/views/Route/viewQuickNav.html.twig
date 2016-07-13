@@ -1,0 +1,58 @@
+{# purpose of this template: routes view filter form #}
+{% if hasPermission('ZikulaRoutesModule:Route:', '::', 'ACCESS_EDIT') %}
+    {% form_theme quickNavForm with [
+        '@ZikulaRoutesModule/Form/bootstrap_3.html.twig',
+        'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+    ] %}
+    {{ form_start(quickNavForm, {attr: {id: 'zikulaRoutesModuleRouteQuickNavForm', class: 'zikularoutesmodule-quicknav navbar-form', role: 'navigation'}}) }}
+    {{ form_errors(quickNavForm) }}
+    <fieldset>
+        <h3>{{ __('Quick navigation') }}</h3>
+        {% if workflowStateFilter is not defined or workflowStateFilter == true %}
+            {{ form_row(quickNavForm.workflowState) }}
+        {% endif %}
+        {% if routeTypeFilter is not defined or routeTypeFilter == true %}
+            {{ form_row(quickNavForm.routeType) }}
+        {% endif %}
+        {% if schemesFilter is not defined or schemesFilter == true %}
+            {{ form_row(quickNavForm.schemes) }}
+        {% endif %}
+        {% if methodsFilter is not defined or methodsFilter == true %}
+            {{ form_row(quickNavForm.methods) }}
+        {% endif %}
+        {% if searchFilter is not defined or searchFilter == true %}
+            {{ form_row(quickNavForm.q) }}
+        {% endif %}
+        {% if sorting is not defined or sorting == true %}
+            {{ form_row(quickNavForm.sort) }}
+            {{ form_row(quickNavForm.sortdir) }}
+        {% else %}
+            {{ form_row(quickNavForm.sort, {attr: {class: 'hidden'}}) }}
+            {{ form_row(quickNavForm.sortdir, {attr: {class: 'hidden'}}) }}
+        {% endif %}
+        {% if pageSizeSelector is not defined or pageSizeSelector == true %}
+            {{ form_row(quickNavForm.num) }}
+        {% endif %}
+        {% if prependBundlePrefixFilter is not defined or prependBundlePrefixFilter == true %}
+            {{ form_row(quickNavForm.prependBundlePrefix) }}
+        {% endif %}
+        {% if translatableFilter is not defined or translatableFilter == true %}
+            {{ form_row(quickNavForm.translatable) }}
+        {% endif %}
+        {{ form_widget(quickNavForm.updateview) }}
+    </fieldset>
+    {{ form_end(quickNavForm) }}
+    <script type="text/javascript">
+    /* <![CDATA[ */
+        ( function($) {
+            $(document).ready(function() {
+                zikulaRoutesInitQuickNavigation('route');
+                {% if searchFilter|default and searchFilter == false %}
+                    {# we can hide the submit button if we have no quick search field #}
+                    $('#quicknavSubmit').addClass('hidden');
+                {% endif %}
+            });
+        })(jQuery);
+    /* ]]> */
+    </script>
+{% endif %}
