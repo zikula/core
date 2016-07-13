@@ -60,10 +60,6 @@ class RoutesModuleInstaller extends AbstractExtensionInstaller
         // create the default data
         $this->createDefaultData();
     
-        // install subscriber hooks
-        $this->hookApi->installSubscriberHooks($this->bundle->getMetaData());
-        
-    
         // initialisation successful
         return true;
     }
@@ -124,9 +120,6 @@ class RoutesModuleInstaller extends AbstractExtensionInstaller
             
             // remove event handler definitions from database
             $this->dropEventHandlersFromDatabase();
-            
-            // update module name in the hook tables
-            $this->updateHookNamesFor140();
             
             // update module name in the workflows table
             $this->updateWorkflowsFor140();
@@ -205,53 +198,6 @@ class RoutesModuleInstaller extends AbstractExtensionInstaller
     }
     
     /**
-     * Updates the module name in the hook tables.
-     */
-    protected function updateHookNamesFor140()
-    {
-        $conn = $this->getConnection();
-        $dbName = $this->getDbName();
-    
-        $conn->executeQuery("UPDATE $dbName.hook_area
-                             SET owner = 'ZikulaRoutesModule'
-                             WHERE owner = 'Routes';
-        ");
-    
-        $componentLength = strlen('subscriber.routes') + 1;
-        $conn->executeQuery("UPDATE $dbName.hook_area
-                             SET areaname = CONCAT('subscriber.zikularoutesmodule', SUBSTRING(areaname, $componentLength))
-                             WHERE areaname LIKE 'subscriber.routes%';
-        ");
-    
-        $conn->executeQuery("UPDATE $dbName.hook_binding
-                             SET sowner = 'ZikulaRoutesModule'
-                             WHERE sowner = 'Routes';
-        ");
-    
-        $conn->executeQuery("UPDATE $dbName.hook_runtime
-                             SET sowner = 'ZikulaRoutesModule'
-                             WHERE sowner = 'Routes';
-        ");
-    
-        $componentLength = strlen('routes') + 1;
-        $conn->executeQuery("UPDATE $dbName.hook_runtime
-                             SET eventname = CONCAT('zikularoutesmodule', SUBSTRING(eventname, $componentLength))
-                             WHERE eventname LIKE 'routes%';
-        ");
-    
-        $conn->executeQuery("UPDATE $dbName.hook_subscriber
-                             SET owner = 'ZikulaRoutesModule'
-                             WHERE owner = 'Routes';
-        ");
-    
-        $componentLength = strlen('routes') + 1;
-        $conn->executeQuery("UPDATE $dbName.hook_subscriber
-                             SET eventname = CONCAT('zikularoutesmodule', SUBSTRING(eventname, $componentLength))
-                             WHERE eventname LIKE 'routes%';
-        ");
-    }
-    
-    /**
      * Updates the module name in the workflows table.
      */
     protected function updateWorkflowsFor140()
@@ -323,10 +269,6 @@ class RoutesModuleInstaller extends AbstractExtensionInstaller
     
             return false;
         }
-    
-        // uninstall subscriber hooks
-        $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
-        
     
         // uninstallation successful
         return true;
