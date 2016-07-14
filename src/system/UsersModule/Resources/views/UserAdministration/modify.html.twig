@@ -25,10 +25,22 @@
         <fieldset>
             <legend>{{ __('Group membership') }}</legend>
             <table class="table table-bordered table-striped">
-                <thead><tr><th>{{ __('Group') }}</th><th>{{ __('Member') }}</th></tr></thead>
+                <colgroup>
+                    <col id="cGroup" />
+                    <col id="cMember" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th id="hGroup" scope="col">{{ __('Group') }}</th>
+                        <th id="hMember" scope="col">{{ __('Member') }}</th>
+                    </tr>
+                </thead>
                 <tbody>
                 {% for group in form.groups %}
-                    <tr><td>{{ group.vars.label }}</td><td>{{ form_widget(group) }}</td></tr>
+                    <tr>
+                        <td headers="hGroup">{{ group.vars.label }}</td>
+                        <td headers="hMember">{{ form_widget(group) }}</td>
+                    </tr>
                 {% endfor %}
                 </tbody>
             </table>

@@ -17,29 +17,37 @@
     {{ form_start(deleteForm) }}
     {{ form_errors(deleteForm) }}
     <table class="table table-bordered table-striped">
+        <colgroup>
+            {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
+            <col id="cDelete" />
+            {% endif %}
+            <col id="cUser" />
+            <col id="cEmail" />
+            <col id="cActions" />
+        </colgroup>
         <thead>
             <tr>
                 {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
-                <th>&nbsp;</th>
+                <th id="hDelete" scope="col">&nbsp;</th>
                 {% endif %}
-                <th>{{ __('User name') }}</th>
-                <th>{{ __('Email address') }}</th>
-                <th class="text-right">{{ __('Actions') }}</th>
+                <th id="hUser" scope="col">{{ __('User name') }}</th>
+                <th id="hEmail" scope="col">{{ __('Email address') }}</th>
+                <th id="hActions" scope="col" class="text-right">{{ __('Actions') }}</th>
             </tr>
         </thead>
         <tbody>
             {% for user in deleteForm.users %}
                 <tr{% if user.vars.name <= 2 %} class="warning"{% endif %}>
                 {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
-                <td>{{ form_widget(user, {title:__f('Delete %n', {'%n': user.vars.label}), disabled:user.vars.name <= 2}) }}</td>
+                <td headers="hDelete">{{ form_widget(user, {title:__f('Delete %n', {'%n': user.vars.label}), disabled:user.vars.name <= 2}) }}</td>
                 {% endif %}
-                <td>{{ user.vars.label }}</td>
-                <td>
+                <td headers="hUser">{{ user.vars.label }}</td>
+                <td headers="hEmail">
                     {% if (user.parent.vars.choices[user.vars.name].data.email is defined) and (user.vars.name != 1) %}
                     {{ user.parent.vars.choices[user.vars.name].data.email }}
                     {% endif %}
                 </td>
-                <td class="actions">
+                <td headers="hActions" class="actions">
                     {% if hasPermission('ZikulaUsersModule', user.vars.label~'::'~user.vars.name, 'ACCESS_EDIT') %}
                         <a class="fa fa-pencil tooltips" href="{{ path('zikulausersmodule_useradministration_modify', {user:user.vars.name}) }}" title="{{ __f('Edit %sub%', {"%sub%": user.vars.label}) }}"></a>
                     {% endif %}

@@ -15,7 +15,7 @@ use Zikula\Core\AbstractExtensionInstaller;
 use ZLanguage;
 
 /**
- * Installation and upgrade routines for the mailer module
+ * Installation and upgrade routines for the mailer module.
  */
 class MailerModuleInstaller extends AbstractExtensionInstaller
 {

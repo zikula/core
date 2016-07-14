@@ -1,0 +1,36 @@
+{% form_theme form with [
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ adminHeader() }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-wrench"></span>
+            {{ __('Settings') }}
+        </h3>
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        <fieldset>
+            <legend>{{ __('General settings') }}</legend>
+            {{ form_row(form.userrootcat) }}
+            {{ form_row(form.allowusercatedit) }}
+            {{ form_row(form.autocreateusercat) }}
+            {{ form_row(form.autocreateuserdefaultcat) }}
+            {{ form_row(form.permissionsall) }}
+            {{ form_row(form.userdefaultcatname) }}
+        </fieldset>
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.save) }}
+                {{ form_widget(form.cancel) }}
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>
+{{ adminFooter() }}

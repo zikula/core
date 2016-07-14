@@ -347,18 +347,19 @@ class IdsLogController extends AbstractController
 
         // sanity check
         if (!is_numeric($id)) {
-            throw new \InvalidArgumentException($this->__f("Error! Received a non-numeric object ID '%s'.", $id));
+            throw new \InvalidArgumentException($this->__f("Error! Received a non-numeric object ID '%s'.", ['%s' => $id]));
         }
 
-        $intrusion = $this->entityManager->find('ZikulaSecurityCenterModule:IntrusionEntity', $id);
+        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $intrusion = $entityManager->find('ZikulaSecurityCenterModule:IntrusionEntity', $id);
 
         // check for valid object
         if (!$intrusion) {
-            $this->addFlash('error', $this->__f('Error! Invalid %s received.', "object ID [$id]"));
+            $this->addFlash('error', $this->__f('Error! Invalid %s received.', ['%s' => "object ID [$id]"]));
         } else {
             // delete object
-            $this->entityManager->remove($intrusion);
-            $this->entityManager->flush();
+            $entityManager->remove($intrusion);
+            $entityManager->flush();
         }
 
         return $this->redirectToRoute('zikulasecuritycentermodule_idslog_view');

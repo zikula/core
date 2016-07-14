@@ -3,21 +3,27 @@
 <h4>{gt text="Page configuration assignments"}</h4>
 
 <table class="table table-bordered table-striped">
+    <colgroup>
+        <col id="cName" />
+        <col id="cConfigurationFile" />
+        <col id="cImportant" />
+        <col id="cActions" />
+    </colgroup>
     <thead>
         <tr>
-            <th>{gt text="Name"}</th>
-            <th>{gt text="Configuration file"}</th>
-            <th>{gt text="Important"}</th>
-            <th class="text-right">{gt text="Actions"}</th>
+            <th id="hName" scope="col">{gt text='Name'}</th>
+            <th id="hConfigurationFile" scope="col">{gt text='Configuration file'}</th>
+            <th id="hImportant" scope="col">{gt text='Important'}</th>
+            <th id="hActions" scope="col" class="text-right">{gt text='Actions'}</th>
         </tr>
     </thead>
     <tbody>
-        {foreach from=$pageconfigurations item=filesection key=name}
+        {foreach key='name' item='filesection' from=$pageconfigurations}
         <tr>
-            <td>{$name|safetext}</td>
-            <td>{$filesection.file|safetext}</td>
-            <td>{$filesection.important|default:0|yesno}</td>
-            <td class="actions">
+            <td headers="hName">{$name|safetext}</td>
+            <td headers="hConfigurationFile">{$filesection.file|safetext}</td>
+            <td headers="hImportant">{$filesection.important|default:0|yesno}</td>
+            <td headers="hActions" class="actions">
                 <a class="fa fa-pencil" href="{route name='zikulathememodule_admin_modifypageconfigurationassignment' themename=$themename pcname=$name|urlencode}" title="{gt text='Edit'}"></a>
                 <a class="fa fa-trash-o" href="{route name='zikulathememodule_theme_deletepageconfigurationassignment' themename=$themename pcname=$name|urlencode}" title="{gt text='Delete'}"></a>
             </td>
@@ -29,19 +35,24 @@
 <h4>{gt text="Page configurations in use"}</h4>
 
 <table class="table table-bordered table-striped">
+    <colgroup>
+        <col id="cPageConfigFile" />
+        <col id="cPageConfigFileFound" />
+        <col id="cPageActions" />
+    </colgroup>
     <thead>
         <tr>
-            <th>{gt text="Configuration file"}</th>
-            <th>{gt text="Configuration file found"}</th>
-            <th class="text-right">{gt text="Actions"}</th>
+            <th id="hPageConfigFile" scope="col">{gt text='Configuration file'}</th>
+            <th id="hPageConfigFileFound" scope="col">{gt text='Configuration file found'}</th>
+            <th id="hPageActions" scope="col" class="text-right">{gt text='Actions'}</th>
         </tr>
     </thead>
     <tbody>
-        {foreach from=$pageconfigs item='fileexists' key='filename'}
+        {foreach key='filename' item='fileexists' from=$pageconfigs}
         <tr>
-            <td>{$filename|safetext}</td>
-            <td>{$fileexists|yesno}</td>
-            <td class="actions">
+            <td headers="hPageConfigFile">{$filename|safetext}</td>
+            <td headers="hPageConfigFileFound">{$fileexists|yesno}</td>
+            <td headers="hPageActions" class="actions">
                 <a class="fa fa-pencil" href="{route name='zikulathememodule_admin_modifypageconfigtemplates' themename=$themename filename=$filename}" title="{gt text='Edit'}"></a>
                 <a class="ffa-trash-osh" href="{route name='zikulathememodule_admin_variables' themename=$themename filename=$filename}" title="{gt text='Variables'}"></a>
             </td>

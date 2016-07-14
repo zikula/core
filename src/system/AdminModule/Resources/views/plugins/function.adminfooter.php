@@ -29,6 +29,7 @@ function smarty_function_adminfooter($params, \Zikula_View $view)
     } catch (\Symfony\Component\Routing\Exception\RouteNotFoundException $e) {
         return '';
     }
+
     $path = ['_controller' => 'ZikulaAdminModule:AdminInterface:footer'];
     $subRequest = $view->getRequest()->duplicate([], null, $path);
 

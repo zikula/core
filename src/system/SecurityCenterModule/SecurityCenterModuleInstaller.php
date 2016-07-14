@@ -18,12 +18,12 @@ use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\SecurityCenterModule\Util as SecurityCenterUtil;
 
 /**
- * Installation routines for the security center module
+ * Installation routines for the security center module.
  */
 class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
 {
     /**
-     * initialise the SecurityCenter module
+     * Initialise the security center module.
      *
      * @return bool true on success, false otherwise
      */

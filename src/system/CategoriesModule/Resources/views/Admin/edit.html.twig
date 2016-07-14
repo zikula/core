@@ -1,0 +1,108 @@
+{{ pageAddAsset('javascript', zasset('@ZikulaCategoriesModule:js/categories_admin_edit.js')) }}
+{{ adminHeader() }}
+{% set templateTitle = (mode == 'edit') ? __('Edit category') : __('Create new category') %}
+{% set pageIcon = (mode == 'edit') ? 'pencil' : 'plus' %}
+<h3>
+    <span class="fa fa-{{ pageIcon }}"></span>
+    {{ templateTitle }}
+</h3>
+<form class="form-horizontal" role="form" action="{{ path('zikulacategoriesmodule_adminform_' ~ ((mode == 'edit') ? 'edit' : 'newcat')) }}" method="post" enctype="application/x-www-form-urlencoded">
+    <fieldset>
+        <input type="hidden" name="csrftoken" value="{{ csrfToken }}" />
+        {% set catID = category.id|default %}
+        {% if catID %}
+        <input type="hidden" id="category_id" name="category[id]" value="{{ category.id }}" />
+        {% endif %}
+        <legend>{{ __('General settings') }}</legend>
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for="category_name">{{ __('Name') }}<span class="required"></span></label>
+            <div class="col-sm-9">
+                <input id="category_name" name="category[name]" value="{{ category.name|default|e('html_attr') }}" type="text" class="form-control" size="32" maxlength="255" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">{{ __('Parent') }}</label>
+            <div class="col-sm-9">
+                {% if catID != 1 %}
+                    {{ categorySelector|raw }}
+                {% else %}
+                    <span><strong>{{ __('No parent category.') }}</strong></span>
+                    <input type="hidden" id="category_parent_id" name="category[parent_id]" value="{{ category.parent_id }}" />
+                {% endif %}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for="category_is_locked">{{ __('Category is locked') }}</label>
+            <div class="col-sm-9">
+                <input type="checkbox" id="category_is_locked" name="category[is_locked]" value="1"{{ category.is_locked|default ? ' checked="checked"' : '' }} />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for="category_is_leaf">{{ __('Category is a leaf node') }}</label>
+            <div class="col-sm-9">
+                <input type="checkbox" id="category_is_leaf" name="category[is_leaf]" value="1"{{ category.is_leaf|default ? ' checked="checked"' : '' }} />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for="category_value">{{ __('Value') }}</label>
+            <div class="col-sm-9">
+                <input id="category_value" name="category[value]" value="{{ category.value|default|e('html_attr') }}" type="text" class="form-control" size="16" maxlength="255" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for="category_status">{{ __('Active') }}</label>
+            <div class="col-sm-9">
+                {% set catStatus = mode == 'edit' ? category.status|default : 'A' %}
+                <input id="category_status" name="category[status]" value="A" type="checkbox"{{ catStatus == 'A' ? ' checked="checked"' : '' }} />
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>{{ __('Localised output') }}</legend>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">{{ __('Name') }}<span class="required"></span></label>
+            <div class="col-sm-9">
+                {% for language in languages %}
+                    <div class="z-formlist">
+                        {% set displayName = category.display_name[language] %}
+                        <input id="category_display_name_{{ language }}" name="category[display_name][{{ language }}]" value="{{ displayName|e('html_attr') }}" type="text" class="form-control" size="50" maxlength="255" />
+                        <label for="category_display_name_{{ language }}">({{ language }})</label>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">{{ __('Description') }}</label>
+            <div class="col-sm-9">
+                {% for language in languages %}
+                    <div class="z-formlist">
+                        {% set displayDesc = category.display_desc[language] %}
+                        <textarea class="form-control" id="category_display_desc_{{ language }}" name="category[display_desc][{{ language }}]" rows="4" cols="56">{{ displayDesc }}</textarea>
+                        <label for="category_display_desc_{{ language }}">({{ language }})</label>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </fieldset>
+    {{ include('@ZikulaCategoriesModule/editAttributes.html.twig') }}
+    {% if mode == 'edit' %}
+        {{ include('@ZikulaCategoriesModule/metaData.html.twig') }}
+    {% endif %}
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+        {% if mode == 'edit' %}
+            <button class="btn btn-success" name="category_submit" value="update" title="{{ __('Save') }}"><i class="fa fa-check"></i> {{ __('Save') }}</button>
+            <button class="btn btn-default" name="category_copy" value="copy" title="{{ __('Copy') }}"><i class="fa fa-files-o"></i> {{ __('Copy') }}</button>
+            <button class="btn btn-default" name="category_move" value="move" title="{{ __('Move') }}"><i class="fa fa-scissors"></i> {{ __('Move') }}</button>
+            <button class="btn btn-danger" name="category_delete" value="delete" title="{{ __('Delete') }}"><i class="fa fa-trash-o"></i> {{ __('Delete') }}</button>
+            {% if not category.is_leaf and haveSubcategories and haveLeafSubcategories %}
+                <button class="btn btn-default" name="category_user_edit" value="edit" title="{{ __('Edit') }}"><i class="fa fa-pencil"></i> {{ __('Edit') }}</button>
+            {% endif %}
+        {% else %}
+            <button class="btn btn-success" name="category_submit" value="add" title="{{ __('Save') }}"><i class="fa fa-check"></i> {{ __('Save') }}</button>
+        {% endif %}
+        <a class="btn btn-default" href="{{ path('zikulacategoriesmodule_admin_view') }}" title="{{ __('Cancel') }}"><i class="fa fa-times"></i> {{ __('Cancel') }}</a>
+        </div>
+    </div>
+</form>
+{{ adminFooter() }}

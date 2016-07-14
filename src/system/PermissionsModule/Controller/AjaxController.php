@@ -202,7 +202,7 @@ class AjaxController extends AbstractController
             return new AjaxResponse(['pid' => $pid]);
         }
 
-        throw new FatalErrorException($this->__f('Error! Could not delete permission rule with ID %s.', $pid));
+        throw new FatalErrorException($this->__f('Error! Could not delete permission rule with ID %s.', ['%s' => $pid]));
     }
 
     /**

@@ -150,9 +150,10 @@ class AjaxController extends AbstractController
         }
 
         // update group's name
-        $group = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $group_id);
-        $group['name'] = $this->__f('Group %s', $group_id);
-        $this->entityManager->flush();
+        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $group = $entityManager->find('ZikulaGroupsModule:GroupEntity', $group_id);
+        $group['name'] = $this->__f('Group %s', ['%s' => $group_id]);
+        $entityManager->flush();
 
         // convert to array
         $group = $group->toArray();
@@ -194,7 +195,7 @@ class AjaxController extends AbstractController
         }
 
         if (true != ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'delete', ['gid' => $gid])) {
-            throw new FatalErrorException($this->__f('Error! Could not delete the \'%s\' group.', $gid));
+            throw new FatalErrorException($this->__f('Error! Could not delete the \'%s\' group.', ['%s' => $gid]));
         }
 
         return new AjaxResponse(['gid' => $gid]);

@@ -140,7 +140,7 @@ class UserController extends AbstractController
         }
 
         if ($gid < 1) {
-            throw new \InvalidArgumentException(__('Invalid Group ID received'));
+            throw new \InvalidArgumentException($this->__('Invalid Group ID received'));
         }
 
         $currentUserApi = $this->get('zikula_users_module.current_user');
@@ -212,7 +212,7 @@ class UserController extends AbstractController
                 $groupType = $formData['groupType'];
 
                 if (empty($gid) || !is_numeric($gid) || empty($action)) {
-                    throw new \InvalidArgumentException(__('Invalid arguments received'));
+                    throw new \InvalidArgumentException($this->__('Invalid arguments received'));
                 }
 
                 $applyText = '';
@@ -265,7 +265,7 @@ class UserController extends AbstractController
     public function memberslistAction($gid = 0, $startnum = 0)
     {
         if ($gid < 1) {
-            throw new \InvalidArgumentException(__('Invalid Group ID received'));
+            throw new \InvalidArgumentException($this->__('Invalid Group ID received'));
         }
 
         if (!$this->hasPermission('ZikulaGroupsModule::memberslist', '::', ACCESS_OVERVIEW)) {

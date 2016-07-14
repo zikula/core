@@ -13,6 +13,9 @@ namespace Zikula\ZAuthModule;
 
 use Zikula\Core\AbstractExtensionInstaller;
 
+/**
+ * Installation and upgrade routines for the zauth module.
+ */
 class ZAuthModuleInstaller extends AbstractExtensionInstaller
 {
     /**
@@ -34,7 +37,7 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
     public function upgrade($oldversion)
     {
         switch ($oldversion) {
-            case "1.0.0":
+            case '1.0.0':
                 // current version
         }
 

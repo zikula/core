@@ -14,12 +14,12 @@ namespace Zikula\PageLockModule;
 use Zikula\Core\AbstractExtensionInstaller;
 
 /**
- * Installation and upgrade routines for the pagelock module
+ * Installation and upgrade routines for the pagelock module.
  */
 class PageLockModuleInstaller extends AbstractExtensionInstaller
 {
     /**
-     * initialize the module
+     * Initialise the module.
      *
      * @return boolean True if initialisation successful, false otherwise.
      */

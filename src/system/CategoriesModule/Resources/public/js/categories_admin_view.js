@@ -136,12 +136,12 @@
 
         switch (data.action) {
             case 'delete':
-                treeElem.jstree("delete_node", originalNode);
+                treeElem.jstree('delete_node', originalNode);
                 break;
             case 'deleteandmovesubs':
-                var workingNode = treeElem.jstree("get_node", originalNode.attr('id'));
-                treeElem.jstree("copy_node", workingNode.children, parentNode, "last"); // use copy here to avoid move_node event
-                treeElem.jstree("delete_node", originalNode);
+                var workingNode = treeElem.jstree('get_node', originalNode.attr('id'));
+                treeElem.jstree('copy_node', workingNode.children, parentNode, 'last'); // use copy here to avoid move_node event
+                treeElem.jstree('delete_node', originalNode);
                 reinitTreeNode(parentNode, data);
                 break;
             case 'activate':
@@ -176,13 +176,13 @@
                     pars.attribute_name = [];
                     pars.attribute_value = [];
                     // special handling of potential array values
-                    $("input[name='attribute_name[]']").each(function() {
-                        if ($(this).val() == "") {
+                    $('input[name="attribute_name[]"]').each(function() {
+                        if ($(this).val() == '') {
                             return true;
                         }
                         pars.attribute_name.push($(this).val());
                     });
-                    $("input[name='attribute_value[]']").each(function() {
+                    $('input[name="attribute_value[]"]').each(function() {
                         if ($(this).val() == "") {
                             return true;
                         }
@@ -190,7 +190,7 @@
                     });
 
                     $.ajax({
-                        type: "POST",
+                        type: 'POST',
                         url: Routing.generate('zikulacategoriesmodule_ajax_save'),
                         data: pars
                     }).success(function(result) {
@@ -235,7 +235,7 @@
         var subCats = node.children.length;
         if (subCats > 0) {
             //var info = Zikula.__f('It contains %s direct sub-categories.', subCats)
-            var info = "It contains " + subCats + " direct sub-categories."
+            var info = 'It contains ' + subCats + ' direct sub-categories.'
                 + ' '
                 + /*Zikula.__(*/"Please choose what to do with this category's sub-categories."/*)*/;
             $('#deleteWithSubCatInfo').addClass('alert alert-warning').text(info);
@@ -263,7 +263,7 @@
                 case 'DeleteAndMoveSubs':
                     if (!$('#subcat_move').length) {
                         // present dialog to determine new parent
-                        $(this).prepend("<i id='button-spinner' class='fa fa-gear fa-spin fa-lg text-danger'></i> ");
+                        $(this).prepend('<i id="button-spinner" class="fa fa-gear fa-spin fa-lg text-danger"></i> ');
                         $.ajax({
                             type: 'POST',
                             url: Routing.generate('zikulacategoriesmodule_ajax_deletedialog'),

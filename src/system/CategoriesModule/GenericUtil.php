@@ -11,8 +11,10 @@
 
 namespace Zikula\CategoriesModule;
 
+use Zikula\CategoriesModule\Entity\CategoryEntity;
+
 /**
- * Helper functions for the categories module
+ * Helper functions for the categories module.
  */
 class GenericUtil
 {
@@ -29,14 +31,12 @@ class GenericUtil
      */
     public static function validateCategoryData($data)
     {
-        $view = \Zikula_View::getInstance();
-
         if (empty($data['name'])) {
             throw new \InvalidArgumentException(__('Error! You did not enter a name for the category.'));
         }
 
         if (empty($data['parent_id'])) {
-            throw new \InvalidArgumentException(('Error! You did not provide a parent for the category.'));
+            throw new \InvalidArgumentException(__('Error! You did not provide a parent for the category.'));
         }
 
         // get entity manager
@@ -48,7 +48,7 @@ class GenericUtil
         // check that we don't have another category with the same name
         // on the same level
         $qb = $em->createQueryBuilder();
-        $qb->select('count(c.id)')
+        $qb->select('COUNT(c.id)')
            ->from('ZikulaCategoriesModule:CategoryEntity', 'c')
            ->where('c.name = :name')
            ->andWhere('c.parent = :parentid')
@@ -56,14 +56,14 @@ class GenericUtil
            ->setParameter('parentid', $data['parent_id']);
 
         if (isset($data['id']) && is_numeric($data['id'])) {
-            $qb->andWhere('c.id <> :id')
+            $qb->andWhere('c.id != :id')
                ->setParameter('id', $data['id']);
         }
 
         $query = $qb->getQuery();
         $exists = (int)$query->getSingleScalarResult();
         if ($exists > 0) {
-            throw new \RuntimeException($view->__f('Category %s must be unique under parent', $data['name']));
+            throw new \RuntimeException(__f('Category %s must be unique under parent', $data['name']));
         }
 
         return true;
@@ -87,7 +87,7 @@ class GenericUtil
      *
      * @param integer $parent_id The parent_id of the category.
      *
-     * @return \Zikula\CategoriesModule\Entity\CategoryEntity the parent entity.
+     * @return CategoryEntity the parent entity.
      */
     public static function processCategoryParent($parent_id)
     {
@@ -145,9 +145,9 @@ class GenericUtil
     /**
      * Process the attributes of a category
      *
-     * @param \Zikula\CategoriesModule\Entity\CategoryEntity $category The category to set the attributes for.
-     * @param array $attrib_names                                             The attribute names.
-     * @param array $attrib_values                                            The attribute values.
+     * @param CategoryEntity $category      The category to set the attributes for.
+     * @param array          $attrib_names  The attribute names.
+     * @param array          $attrib_values The attribute values.
      *
      * @return void
      */

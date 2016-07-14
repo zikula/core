@@ -34,8 +34,10 @@ class AdminExtension extends \Twig_Extension
     private $permissionApi;
 
     /**
-     * constructor.
-     * @param FragmentHandler $handler
+     * Constructor.
+     *
+     * @param FragmentHandler $handler       FragmentHandler service instance.
+     * @param PermissionApi   $permissionApi PermissionApi service instance.
      */
     public function __construct(FragmentHandler $handler, PermissionApi $permissionApi)
     {

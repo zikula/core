@@ -20,16 +20,25 @@
 
 <div id="user-list">
     <table id="user-table" class="table table-bordered table-striped">
+        <colgroup>
+            <col id="cUserName" />
+            <col id="cId" />
+            <col id="cRegistrationDate" />
+            <col id="cLastLogin" />
+            <col id="cGroups" />
+            <col id="cStatus" />
+            <col id="cActions" />
+        </colgroup>
         <thead>
-        <tr>
-            <th><a class='{{ sort.uname.class }}' href='{{ sort.uname.url }}'>{{ __('User name') }}</a></th>
-            <th><a class='{{ sort.uid.class }}' href='{{ sort.uid.url }}'>{{ __('Internal ID') }}</a></th>
-            <th><a class='{{ sort.user_regdate.class }}' href='{{ sort.user_regdate.url }}'>{{ __('Registration date') }}</a></th>
-            <th><a class='{{ sort.lastlogin.class }}' href='{{ sort.lastlogin.url }}'>{{ __('Last login') }}</a></th>
-            <th>{{ __('Users groups') }}</th>
-            <th><a class='{{ sort.activated.class }}' href='{{ sort.activated.url }}'>{{ __('Status') }}</a></th>
-            <th>{{ __('Actions') }}</th>
-        </tr>
+            <tr>
+                <th id="hUserName" scope="col"><a class='{{ sort.uname.class }}' href='{{ sort.uname.url }}'>{{ __('User name') }}</a></th>
+                <th id="hId" scope="col"><a class='{{ sort.uid.class }}' href='{{ sort.uid.url }}'>{{ __('Internal ID') }}</a></th>
+                <th id="hRegistrationDate" scope="col"><a class='{{ sort.user_regdate.class }}' href='{{ sort.user_regdate.url }}'>{{ __('Registration date') }}</a></th>
+                <th id="hLastLogin" scope="col"><a class='{{ sort.lastlogin.class }}' href='{{ sort.lastlogin.url }}'>{{ __('Last login') }}</a></th>
+                <th id="hGroups" scope="col">{{ __('Users groups') }}</th>
+                <th id="hStatus" scope="col"><a class='{{ sort.activated.class }}' href='{{ sort.activated.url }}'>{{ __('Status') }}</a></th>
+                <th id="hActions" scope="col">{{ __('Actions') }}</th>
+            </tr>
         </thead>
         <tbody>
             {{ include('@ZikulaUsersModule/UserAdministration/userlist.html.twig') }}
@@ -40,16 +49,25 @@
 
 {# This table is for ajax search results and is hidden until needed and populated then with the results. #}
 <table id="user-search-list" class="table table-bordered table-striped hide">
+    <colgroup>
+        <col id="cSearchUserName" />
+        <col id="cSearchId" />
+        <col id="cSearchRegistrationDate" />
+        <col id="cSearchLastLogin" />
+        <col id="cSearchGroups" />
+        <col id="cSearchStatus" />
+        <col id="cSearchActions" />
+    </colgroup>
     <thead>
-    <tr>
-        <th><a class='{{ sort.uname.class }}' href='{{ sort.uname.url }}'>{{ __('User name') }}</a></th>
-        <th><a class='{{ sort.uid.class }}' href='{{ sort.uid.url }}'>{{ __('Internal ID') }}</a></th>
-        <th><a class='{{ sort.user_regdate.class }}' href='{{ sort.user_regdate.url }}'>{{ __('Registration date') }}</a></th>
-        <th><a class='{{ sort.lastlogin.class }}' href='{{ sort.lastlogin.url }}'>{{ __('Last login') }}</a></th>
-        <th>{{ __('Users groups') }}</th>
-        <th><a class='{{ sort.activated.class }}' href='{{ sort.activated.url }}'>{{ __('Status') }}</a></th>
-        <th>{{ __('Actions') }}</th>
-    </tr>
+        <tr>
+            <th id="hSearchUserName" scope="col"><a class='{{ sort.uname.class }}' href='{{ sort.uname.url }}'>{{ __('User name') }}</a></th>
+            <th id="hSearchId" scope="col"><a class='{{ sort.uid.class }}' href='{{ sort.uid.url }}'>{{ __('Internal ID') }}</a></th>
+            <th id="hSearchRegistrationDate" scope="col"><a class='{{ sort.user_regdate.class }}' href='{{ sort.user_regdate.url }}'>{{ __('Registration date') }}</a></th>
+            <th id="hSearchLastLogin" scope="col"><a class='{{ sort.lastlogin.class }}' href='{{ sort.lastlogin.url }}'>{{ __('Last login') }}</a></th>
+            <th id="hSearchGroups" scope="col">{{ __('Users groups') }}</th>
+            <th id="hSearchStatus" scope="col"><a class='{{ sort.activated.class }}' href='{{ sort.activated.url }}'>{{ __('Status') }}</a></th>
+            <th id="hSearchActions" scope="col">{{ __('Actions') }}</th>
+        </tr>
     </thead>
     <tbody>
     </tbody>

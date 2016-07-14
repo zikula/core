@@ -14,7 +14,7 @@ namespace Zikula\SettingsModule;
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 
 /**
- * Base module definition for the settings module
+ * Base module definition for the settings module.
  */
 class ZikulaSettingsModule extends AbstractCoreModule
 {

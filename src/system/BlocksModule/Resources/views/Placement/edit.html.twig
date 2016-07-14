@@ -7,7 +7,6 @@
     {{ __('Block placements') }}
 </h3>
 
-<!-- Single button -->
 <div class="btn-group">
     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Jump to position... <span class="caret"></span>
@@ -25,32 +24,41 @@
 
 {% if not positionavailable(position.name) %}<div class="alert alert-warning"><i class="fa fa-exclamation-triangle fa-2x text-danger text-left"></i> {{ __f('WARNING: The "%name%" block position is not available in the current default theme.', {'%name%':position.name}) }}</div>{% endif %}
 <table id="assignedblocklist" class="table table-bordered table-striped">
+    <colgroup>
+        <col id="cAssignedDnd" />
+        <col id="cAssignedId" />
+        <col id="cAssignedTitle" />
+        <col id="cAssignedModule" />
+        <col id="cAssignedType" />
+        <col id="cAssignedLanguage" />
+        <col id="cAssignedState" />
+    </colgroup>
     <thead>
         <tr id="assignedblocklistheader">
-            <th width="20px"></th>
-            <th>{{ __('Block ID') }}</th>
-            <th>{{ __('Title, Description') }}</th>
-            <th>{{ __('Module') }}</th>
-            <th>{{ __('Type') }}</th>
-            <th>{{ __('Language') }}</th>
-            <th>{{ __('State') }}</th>
+            <th id="hAssignedDnd" scope="col" width="20px"></th>
+            <th id="hAssignedId" scope="col">{{ __('Block ID') }}</th>
+            <th id="hAssignedTitle" scope="col">{{ __('Title, Description') }}</th>
+            <th id="hAssignedModule" scope="col">{{ __('Module') }}</th>
+            <th id="hAssignedType" scope="col">{{ __('Type') }}</th>
+            <th id="hAssignedLanguage" scope="col">{{ __('Language') }}</th>
+            <th id="hAssignedState" scope="col">{{ __('State') }}</th>
         </tr>
     </thead>
     <tbody>
-        <tr{% if assignedblocks is not empty %} style="display: none;"{% endif %} class="sortable-placeholder">
+        <tr{% if assignedblocks is not empty %} style="display: none"{% endif %} class="sortable-placeholder">
             <td class="warning" colspan="7">{{ __('No blocks placed in this position yet.') }}</td>
         </tr>
         {% for block in assignedblocks %}
-        <tr style="cursor: move;" data-bid="{{ block.bid }}">
-            <td><span class="fa fa-arrows"></span></td>
-            <td>{{ block.bid }}</td>
-            <td id="blockdrag_{{ block.bid }}">
+        <tr style="cursor: move" data-bid="{{ block.bid }}">
+            <td headers="hAssignedDnd"><span class="fa fa-arrows"></span></td>
+            <td headers="hAssignedId">{{ block.bid }}</td>
+            <td headers="hAssignedTitle" id="blockdrag_{{ block.bid }}">
                 {{ block.title|safeHtml|default('') }}{% if block.title and block.description %},&nbsp;{% endif %}{{ block.description|safeHtml }}
             </td>
-            <td>{{ block.module.name }}</td>
-            <td>{{ block.blocktype }}</td>
-            <td>{{ block.language|default('') }}</td>
-            <td>
+            <td headers="hAssignedModule">{{ block.module.name }}</td>
+            <td headers="hAssignedType">{{ block.blocktype }}</td>
+            <td headers="hAssignedLanguage">{{ block.language|default('') }}</td>
+            <td headers="hAssignedState">
                 <a class="label label-success tooltips{% if block.active == 0 %} hide{% endif %}" href="#" title="{{ __('Click to deactivate this block') }}" data-bid="{{ block.bid }}">{{ __('Active') }}</a>
                 <a class="label label-danger tooltips{% if block.active %} hide{% endif %}" href="#" title="{{ __('Click to deactivate this block') }}" data-bid="{{ block.bid }}">{{ __('Inactive') }}</a>
             </td>
@@ -61,32 +69,41 @@
 
 <h4>{{ __f("Blocks not placed in '%name%' position", {'%name%': position.name}) }}</h4>
 <table id="unassignedblocklist" class="table table-bordered table-striped">
+    <colgroup>
+        <col id="cUnassignedDnd" />
+        <col id="cUnassignedId" />
+        <col id="cUnassignedTitle" />
+        <col id="cUnassignedModule" />
+        <col id="cUnassignedType" />
+        <col id="cUnassignedLanguage" />
+        <col id="cUnassignedState" />
+    </colgroup>
     <thead>
         <tr id="unassignedblocklistheader">
-            <th width="20px"></th>
-            <th>{{ __('Block ID') }}</th>
-            <th>{{ __('Title, Description') }}</th>
-            <th>{{ __('Module') }}</th>
-            <th>{{ __('Type') }}</th>
-            <th>{{ __('Language') }}</th>
-            <th>{{ __('State') }}</th>
+            <th id="hUnassignedDnd" scope="col" width="20px"></th>
+            <th id="hUnassignedId" scope="col">{{ __('Block ID') }}</th>
+            <th id="hUnassignedTitle" scope="col">{{ __('Title, Description') }}</th>
+            <th id="hUnassignedModule" scope="col">{{ __('Module') }}</th>
+            <th id="hUnassignedType" scope="col">{{ __('Type') }}</th>
+            <th id="hUnassignedLanguage" scope="col">{{ __('Language') }}</th>
+            <th id="hUnassignedState" scope="col">{{ __('State') }}</th>
         </tr>
     </thead>
     <tbody>
-        <tr{% if unassignedblocks is not empty %} style="display: none;"{% endif %} class="sortable-placeholder">
+        <tr{% if unassignedblocks is not empty %} style="display: none"{% endif %} class="sortable-placeholder">
             <td class="warning" colspan="7">{{ __('All blocks placed.') }}</td>
         </tr>
         {% for block in unassignedblocks %}
-        <tr style="cursor: move;" data-bid="{{ block.bid }}">
-            <td><span class="fa fa-arrows"></span></td>
-            <td>{{ block.bid }}</td>
-            <td id="blockdrag_{{ block.bid }}">
+        <tr style="cursor: move" data-bid="{{ block.bid }}">
+            <td headers="hUnassignedDnd"><span class="fa fa-arrows"></span></td>
+            <td headers="hUnassignedId">{{ block.bid }}</td>
+            <td headers="hUnassignedTitle" id="blockdrag_{{ block.bid }}">
                 {{ block.title|safeHtml|default('') }}{% if block.title and block.description %},&nbsp;{% endif %}{{ block.description|safeHtml }}
             </td>
-            <td>{{ block.module.name }}</td>
-            <td>{{ block.blocktype }}</td>
-            <td>{{ block.language|default('') }}</td>
-            <td>
+            <td headers="hUnassignedModule">{{ block.module.name }}</td>
+            <td headers="hUnassignedType">{{ block.blocktype }}</td>
+            <td headers="hUnassignedLanguage">{{ block.language|default('') }}</td>
+            <td headers="hUnassignedState">
                 <a class="label label-success tooltips{% if block.active == 0 %} hide{% endif %}" href="#" title="{{ __('Click to deactivate this block') }}" data-bid="{{ block.bid }}">{{ __('Active') }}</a>
                 <a class="label label-danger tooltips{% if block.active %} hide{% endif %}" href="#" title="{{ __('Click to deactivate this block') }}" data-bid="{{ block.bid }}">{{ __('Inactive') }}</a>
             </td>

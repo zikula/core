@@ -14,7 +14,7 @@ namespace Zikula\GroupsModule;
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 
 /**
- * Base module definition for the groups module
+ * Base module definition for the groups module.
  */
 class ZikulaGroupsModule extends AbstractCoreModule
 {

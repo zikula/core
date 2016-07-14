@@ -1,0 +1,46 @@
+{{ adminHeader() }}
+<h3>
+    <span class="fa fa-trash-o"></span>
+    {{ __('Delete category') }}
+</h3>
+
+<p class="alert alert-warning">
+    {{ __('Do you really want to delete this category?') }}<br />
+    {{ __('Category') }}: <strong>{{ category.name }}</strong>
+</p>
+
+<form class="form-horizontal" role="form" action="{{ path('zikulacategoriesmodule_adminform_delete') }}" method="post" enctype="application/x-www-form-urlencoded">
+    <div>
+        <input type="hidden" name="csrftoken" value="{{ csrfToken }}" />
+        <input type="hidden" name="cid" value="{{ category.id }}" />
+        <fieldset>
+            <legend>{{ __('Confirmation prompt') }}</legend>
+            {% if numSubcats > 0 %}
+                <p class="alert alert-info">
+                    {{ __f('It contains %s direct sub-categories.', { '%s': numSubcats }) }}
+                    {{ __("Please also choose what to do with this category's sub-categories:") }}
+                </p>
+                <div class="z-formlist">
+                    <label for="subcat_action_delete">{{ __('Delete all sub-categories') }}</label>
+                    <input type="radio" id="subcat_action_delete" name="subcat_action" value="delete" checked="checked" onclick="document.getElementById('subcat_move').style.visibility='hidden';" />
+                </div>
+                <div class="z-formlist">
+                    <label for="subcat_action_move">{{ __('Move all sub-categories to next category') }}</label>
+                    <input type="radio" id="subcat_action_move" name="subcat_action" value="move" onclick="document.getElementById('subcat_move').style.visibility='visible';" />
+                    <div id="subcat_move" style="visibility: hidden">
+                        {{ categorySelector }}
+                    </div>
+                </div>
+            {% else %}
+                <input type="hidden" name="subcat_action" id="subcat_action" value="delete" />
+            {% endif %}
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <button class="btn btn-danger" title="{{ __('Delete') }}"><i class="fa fa-trash-o"></i> {{ __('Delete') }}</button>
+                    <a class="btn btn-default" href="{{ path('zikulacategoriesmodule_admin_view') }}" title="{{ __('Cancel') }}"><i class="fa fa-times"></i> {{ __('Cancel') }}</a>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</form>
+{{ adminFooter() }}

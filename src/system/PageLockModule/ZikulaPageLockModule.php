@@ -14,7 +14,7 @@ namespace Zikula\PageLockModule;
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 
 /**
- * Base module definition for the pagelock module
+ * Base module definition for the pagelock module.
  */
 class ZikulaPageLockModule extends AbstractCoreModule
 {

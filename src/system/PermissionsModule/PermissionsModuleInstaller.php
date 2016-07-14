@@ -15,12 +15,12 @@ use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\PermissionsModule\Entity\PermissionEntity;
 
 /**
- * Installation and upgrade routines for the permissions module
+ * Installation and upgrade routines for the permissions module.
  */
 class PermissionsModuleInstaller extends AbstractExtensionInstaller
 {
     /**
-     * Initialise the Permissions module.
+     * Initialise the permissions module.
      *
      * @return boolean True on success, false otherwise.
      */

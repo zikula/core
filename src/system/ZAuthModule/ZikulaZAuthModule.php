@@ -13,6 +13,9 @@ namespace Zikula\ZAuthModule;
 
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 
+/**
+ * Base module definition for the zauth module.
+ */
 class ZikulaZAuthModule extends AbstractCoreModule
 {
 }

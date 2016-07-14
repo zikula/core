@@ -16,40 +16,51 @@
 {% include 'ZikulaBlocksModule:Admin:filter_form.html.twig' %}
 
 <table id="block-list" class="table table-bordered table-striped">
+    <colgroup>
+        <col id="cBlockId" />
+        <col id="cBlockTitle" />
+        <col id="cBlockDescription" />
+        <col id="cBlockModule" />
+        <col id="cBlockType" />
+        <col id="cBlockPositions" />
+        <col id="cBlockLanguage" />
+        <col id="cBlockState" />
+        <col id="cBlockActions" />
+    </colgroup>
     <thead>
-    <tr>
-        <th><a class='{{ sort.bid.class }}' href='{{ sort.bid.url }}'>{{ __('ID') }}</a></th>
-        <th><a class='{{ sort.title.class }}' href='{{ sort.title.url }}'>{{ __('Title') }}</a></th>
-        <th>{{ __('Description') }}</th>
-        <th>{{ __('Module') }}</th>
-        <th><a class='{{ sort.blocktype.class }}' href='{{ sort.blocktype.url }}'>{{ __('Type') }}</a></th>
-        <th>{{ __('Positions') }}</th>
-        <th><a class='{{ sort.language.class }}' href='{{ sort.language.url }}'>{{ __('Language') }}</a></th>
-        <th><a class='{{ sort.state.class }}' href='{{ sort.state.url }}'>{{ __('State') }}</a></th>
-        <th class="text-right">{{ __('Actions') }}</th>
-    </tr>
+        <tr>
+            <th id="hBlockId" scope="col"><a class='{{ sort.bid.class }}' href='{{ sort.bid.url }}'>{{ __('ID') }}</a></th>
+            <th id="hBlockTitle" scope="col"><a class='{{ sort.title.class }}' href='{{ sort.title.url }}'>{{ __('Title') }}</a></th>
+            <th id="hBlockDescription" scope="col">{{ __('Description') }}</th>
+            <th id="hBlockModule" scope="col">{{ __('Module') }}</th>
+            <th id="hBlockType" scope="col"><a class='{{ sort.blocktype.class }}' href='{{ sort.blocktype.url }}'>{{ __('Type') }}</a></th>
+            <th id="hBlockPositions" scope="col">{{ __('Positions') }}</th>
+            <th id="hBlockLanguage" scope="col"><a class='{{ sort.language.class }}' href='{{ sort.language.url }}'>{{ __('Language') }}</a></th>
+            <th id="hBlockState" scope="col"><a class='{{ sort.state.class }}' href='{{ sort.state.url }}'>{{ __('State') }}</a></th>
+            <th id="hBlockActions" scope="col" class="text-right">{{ __('Actions') }}</th>
+        </tr>
     </thead>
     <tbody>
     {% for block in blocks %}
     <tr>
-        <td>{{ block.bid }}</td>
-        <td>{{ block.title|safeHtml }}</td>
-        <td>{{ block.description|safeHtml }}</td>
-        <td>{{ block.module.name }}</td>
-        <td>{{ block.blocktype }}</td>
-        <td>
+        <td headers="hBlockId">{{ block.bid }}</td>
+        <td headers="hBlockTitle">{{ block.title|safeHtml }}</td>
+        <td headers="hBlockDescription">{{ block.description|safeHtml }}</td>
+        <td headers="hBlockModule">{{ block.module.name }}</td>
+        <td headers="hBlockType">{{ block.blocktype }}</td>
+        <td headers="hBlockPositions">
             {% for position in block.positions %}
                 {% if not positionavailable(position.name) %} <i class="fa fa-exclamation-triangle text-danger tooltips" title="{{ __('Position not available in current default theme.') }}"></i>{% endif %}
                 <a href="{{ path('zikulablocksmodule_placement_edit', {pid:position.pid}) }}">{{ position.name }}</a>{% if not loop.last %}, {% endif %}
             {% endfor %}
             {% if block.filters|length > 0 %} <i class="fa fa-filter fa-lg text-success pull-right"></i>{% endif %}
         </td>
-        <td>{{ block.language|default( __('All') ) }}</td>
-        <td>
+        <td headers="hBlockLanguage">{{ block.language|default( __('All') ) }}</td>
+        <td headers="hBlockState">
             <a class="label label-success tooltips{% if not block.active %} hide{% endif %}" href="#" title="{{ __('Click to deactivate block') }}" data-bid="{{ block.bid }}">{{ __('Active') }}</a>
             <a class="label label-danger tooltips{% if block.active %} hide{% endif %}" href="#" title="{{ __('Click to activate block') }}" data-bid="{{ block.bid }}">{{ __('Inactive') }}</a>
         </td>
-        <td class="actions">
+        <td headers="hBlockActions" class="actions">
             <a class="fa fa-eye tooltips block-preview" href="{{ path('zikulablocksmodule_block_view', {bid:block.bid}) }}" data-toggle="modal" data-target="#zikulablocksmodule-block-view-modal" data-remote="false" title="preview block"></a>
             <a class="fa fa-pencil tooltips" href="{{ path('zikulablocksmodule_block_edit', {blockEntity:block.bid}) }}" title="edit block"></a>
             <a class="fa fa-trash-o tooltips" href="{{ path('zikulablocksmodule_block_delete', {bid:block.bid}) }}" title="delete block"></a>
@@ -70,33 +81,40 @@ click on the 'Edit' icon beside that particular position. To reorder the blocks 
 To delete a block position, click on the 'Delete' icon and confirm the action in the confirmation prompt that will display.") }}</p>
 
 <table class="table table-bordered table-striped">
+    <colgroup>
+        <col id="cPosName" />
+        <col id="cPosDescription" />
+        <col id="cPosSmarty" />
+        <col id="cPosTwig" />
+        <col id="cPosActions" />
+    </colgroup>
     <thead>
-    <tr>
-        <th>{{ __('Name') }}</th>
-        <th>{{ __('Description') }}</th>
-        <th>{{ __('Smarty tag') }}</th>
-        <th>{{ __('Twig tag') }}</th>
-        <th class="text-right">{{ __('Actions') }}</th>
-    </tr>
+        <tr>
+            <th id="hPosName" scope="col">{{ __('Name') }}</th>
+            <th id="hPosDescription" scope="col">{{ __('Description') }}</th>
+            <th id="hPosSmarty" scope="col">{{ __('Smarty tag') }}</th>
+            <th id="hPosTwig" scope="col">{{ __('Twig tag') }}</th>
+            <th id="hPosActions" scope="col" class="text-right">{{ __('Actions') }}</th>
+        </tr>
     </thead>
     <tbody>
     {% for position in positions %}
     <tr{% if not positionavailable(position.name) %} class="danger"{% endif %}>
-        <td>
+        <td headers="hPosName">
             {{ position.name }}
             {% if not positionavailable(position.name) %} <i class="fa fa-exclamation-triangle text-danger tooltips" title="{{ __('Position not available in current default theme.') }}"></i>{% endif %}
         </td>
-        <td>{{ position.description|slice(0, 25)|safeHtml }}</td>
-        <td><code>&#123;blockposition name='{{ position.name }}'&#125;</code></td>
-        <td><code>&#123;&#123; showblockposition('{{ position.name }}') &#125;&#125;</code></td>
-        <td class="actions">
+        <td headers="hPosDescription">{{ position.description|slice(0, 25)|safeHtml }}</td>
+        <td headers="hPosSmarty"><code>&#123;blockposition name='{{ position.name }}'&#125;</code></td>
+        <td headers="hPosTwig"><code>&#123;&#123; showblockposition('{{ position.name }}') &#125;&#125;</code></td>
+        <td headers="hPosActions" class="actions">
             <a class="fa fa-cubes tooltips" href="{{ path('zikulablocksmodule_placement_edit', {pid:position.pid}) }}" title="{{ __('Edit block placements') }}"></a>
             <a class="fa fa-pencil tooltips" href="{{ path('zikulablocksmodule_position_edit', {positionEntity:position.pid}) }}" title="{{ __('Edit block position') }}"></a>
             <a class="fa fa-trash-o tooltips" href="{{ path('zikulablocksmodule_position_delete', {pid:position.pid}) }}" title="{{ __('Delete block position') }}"></a>
         </td>
     </tr>
     {% else %}
-    <tr class="table table-borderedempty"><td colspan="4">{{ __('No items found.') }}</td></tr>
+    <tr class="table table-borderedempty"><td colspan="5">{{ __('No items found.') }}</td></tr>
     {% endfor %}
     </tbody>
 </table>

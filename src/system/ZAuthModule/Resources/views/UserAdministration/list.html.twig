@@ -20,15 +20,23 @@
 
 <div id="user-list">
     <table id="user-table" class="table table-bordered table-striped">
+        <colgroup>
+            <col id="cUser" />
+            <col id="cEmail" />
+            <col id="cVerified" />
+            <col id="cId" />
+            <col id="cMethod" />
+            <col id="cActions" />
+        </colgroup>
         <thead>
-        <tr>
-            <th><a class='{{ sort.uname.class }}' href='{{ sort.uname.url }}'>{{ __('User name') }}</a></th>
-            <th>{{ __('Email') }}</th>
-            <th>{{ __('Email verified') }}</th>
-            <th><a class='{{ sort.uid.class }}' href='{{ sort.uid.url }}'>{{ __('Internal ID') }}</a></th>
-            <th>{{ __('Method') }}</th>
-            <th>{{ __('Actions') }}</th>
-        </tr>
+            <tr>
+                <th id="hUser" scope="col"><a class='{{ sort.uname.class }}' href='{{ sort.uname.url }}'>{{ __('User name') }}</a></th>
+                <th id="hEmail" scope="col">{{ __('Email') }}</th>
+                <th id="hVerified" scope="col">{{ __('Email verified') }}</th>
+                <th id="hId" scope="col"><a class='{{ sort.uid.class }}' href='{{ sort.uid.url }}'>{{ __('Internal ID') }}</a></th>
+                <th id="hMethod" scope="col">{{ __('Method') }}</th>
+                <th id="hActions" scope="col">{{ __('Actions') }}</th>
+            </tr>
         </thead>
         <tbody>
             {{ include('@ZikulaZAuthModule/UserAdministration/userlist.html.twig') }}
@@ -39,14 +47,22 @@
 
 {# This table is for ajax search results and is hidden until needed and populated then with the results. #}
 <table id="user-search-list" class="table table-bordered table-striped hide">
+    <colgroup>
+        <col id="cSearchUser" />
+        <col id="cSearchEmail" />
+        <col id="cSearchVerified" />
+        <col id="cSearchId" />
+        <col id="cSearchMethod" />
+        <col id="cSearchActions" />
+    </colgroup>
     <thead>
     <tr>
-        <th><a class='{{ sort.uname.class }}' href='{{ sort.uname.url }}'>{{ __('User name') }}</a></th>
-        <th>{{ __('Email') }}</th>
-        <th>{{ __('Email verified') }}</th>
-        <th><a class='{{ sort.uid.class }}' href='{{ sort.uid.url }}'>{{ __('Internal ID') }}</a></th>
-        <th>{{ __('Method') }}</th>
-        <th>{{ __('Actions') }}</th>
+        <th headers="hSearchUser"><a class='{{ sort.uname.class }}' href='{{ sort.uname.url }}'>{{ __('User name') }}</a></th>
+        <th headers="hSearchEmail">{{ __('Email') }}</th>
+        <th headers="hSearchVerified">{{ __('Email verified') }}</th>
+        <th headers="hSearchId"><a class='{{ sort.uid.class }}' href='{{ sort.uid.url }}'>{{ __('Internal ID') }}</a></th>
+        <th headers="hSearchMethod">{{ __('Method') }}</th>
+        <th headers="hSearchActions">{{ __('Actions') }}</th>
     </tr>
     </thead>
     <tbody>
