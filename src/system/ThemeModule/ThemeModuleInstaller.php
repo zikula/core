@@ -15,12 +15,12 @@ use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 
 /**
- * Installation and upgrade routines for the theme module
+ * Installation and upgrade routines for the theme module.
  */
 class ThemeModuleInstaller extends AbstractExtensionInstaller
 {
     /**
-     * Initialise the Admin module.
+     * Initialise the theme module.
      *
      * @return boolean true if initialisation successful, false otherwise.
      */

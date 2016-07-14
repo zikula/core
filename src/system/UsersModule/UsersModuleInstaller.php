@@ -17,7 +17,7 @@ use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
- * Class UsersModuleInstaller
+ * Installation and upgrade routines for the users module.
  */
 class UsersModuleInstaller extends AbstractExtensionInstaller
 {

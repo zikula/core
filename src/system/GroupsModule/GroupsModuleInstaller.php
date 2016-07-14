@@ -15,7 +15,7 @@ use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\GroupsModule\Entity\GroupEntity;
 
 /**
- * Installation and upgrade routines for the groups module
+ * Installation and upgrade routines for the groups module.
  */
 class GroupsModuleInstaller extends AbstractExtensionInstaller
 {

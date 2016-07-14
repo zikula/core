@@ -10,7 +10,7 @@
  */
 
 /**
- * Base module definition for the search module
+ * Base module definition for the search module.
  */
 
 namespace Zikula\SearchModule {
@@ -18,7 +18,7 @@ namespace Zikula\SearchModule {
     use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 
     /**
-     * Base module definition for the search module
+     * Base module definition for the search module.
      */
     class ZikulaSearchModule extends AbstractCoreModule
     {
@@ -31,7 +31,7 @@ namespace Zikula\SearchModule {
 
 namespace {
     /**
-     * user api functions for the search module
+     * user api functions for the search module.
      *
      * @deprecated since 1.4.0 use \Zikula\SearchModule\Api\UserApi instead
      */

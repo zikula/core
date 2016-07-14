@@ -57,8 +57,8 @@ class ConfigController extends AbstractController
         $variableApi = $this->get('zikula_extensions_module.api.variable');
         $modVars = $variableApi->getAll('ZikulaAdminModule');
         $dataValues = $modVars;
-        $dataValues['ignoreinstallercheck'] = ($dataValues['ignoreinstallercheck'] == 1) ? true : false;
-        $dataValues['admingraphic'] = ($dataValues['admingraphic'] == 1) ? true : false;
+        $dataValues['ignoreinstallercheck'] = (bool)$dataValues['ignoreinstallercheck'];
+        $dataValues['admingraphic'] = (bool)$dataValues['admingraphic'];
 
         $modules = [];
         foreach ($adminModules as $adminModule) {
@@ -113,7 +113,7 @@ class ConfigController extends AbstractController
                     if (false == $result) {
                         /** @var $cat \Zikula\AdminModule\Entity\AdminCategoryEntity */
                         $cat = ModUtil::apiFunc($this->name, 'admin', 'getCategory', ['cid' => $category]);
-                        $this->addFlash('error', $this->__f('Error! Could not add module %1$s to module category %2$s.', [$moduleName, $cat->getName()]));
+                        $this->addFlash('error', $this->__f('Error! Could not add module %module to module category %category.', ['%module' => $moduleName, '%category' => $cat->getName()]));
                     }
                 }
 

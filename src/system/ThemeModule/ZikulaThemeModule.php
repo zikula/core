@@ -14,7 +14,7 @@ namespace Zikula\ThemeModule;
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 
 /**
- * Base module definition for the theme module
+ * Base module definition for the theme module.
  */
 class ZikulaThemeModule extends AbstractCoreModule
 {

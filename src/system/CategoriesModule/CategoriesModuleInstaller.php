@@ -12,17 +12,17 @@
 namespace Zikula\CategoriesModule;
 
 use DoctrineUtil;
-use DoctrineHelper;
-use ZLanguage;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
+use Zikula\Core\AbstractExtensionInstaller;
+use ZLanguage;
 
 /**
- * Installation and upgrade routines for the categories module
+ * Installation and upgrade routines for the categories module.
  */
-class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
+class CategoriesModuleInstaller extends AbstractExtensionInstaller
 {
     /**
-     * initialise module
+     * Initialise the categories module.
      *
      * @return bool true if successful, false otherwise
      */
@@ -36,7 +36,7 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
         ];
 
         try {
-            DoctrineHelper::createSchema($this->entityManager, $classes);
+            $this->schemaTool->create($classes);
         } catch (\Exception $e) {
             return false;
         }
@@ -47,7 +47,7 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
          * is being removed at 2.0.0
          */
         try {
-            DoctrineHelper::createSchema($this->entityManager, ['Zikula\CategoriesModule\Entity\CategoriesMapobj']);
+            $this->schemaTool->create(['Zikula\CategoriesModule\Entity\CategoriesMapobj']);
         } catch (\Exception $e) {
             return false;
         }
@@ -76,7 +76,7 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
         $this->setVar('allowusercatedit', 0);
         $this->setVar('autocreateusercat', 0);
         $this->setVar('autocreateuserdefaultcat', 0);
-        $this->setVar('userdefaultcatname', 'Default');
+        $this->setVar('userdefaultcatname', $this->__('Default'));
 
         // Initialisation successful
         return true;
@@ -102,7 +102,7 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             case '1.2.1':
             case '1.2.2':
                 try {
-                    DoctrineHelper::createSchema($this->entityManager, ['Zikula\CategoriesModule\Entity\CategoryAttributeEntity']);
+                    $this->schemaTool->create(['Zikula\CategoriesModule\Entity\CategoryAttributeEntity']);
                 } catch (\Exception $e) {
                 }
                 // rename old tablename column for Core 1.4.0
@@ -762,7 +762,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
     {
         $attributes = $this->getEntityManager()->getConnection()->fetchAll("SELECT * FROM objectdata_attributes WHERE object_type = 'categories_category'");
         foreach ($attributes as $attribute) {
-            $category = $this->getEntityManager()->getRepository('ZikulaCategoriesModule:CategoryEntity')->findOneBy(['id' => $attribute['object_id']]);
+            $category = $this->getEntityManager()->getRepository('ZikulaCategoriesModule:CategoryEntity')
+                ->findOneBy(['id' => $attribute['object_id']]);
             if (isset($category) && is_object($category)) {
                 $category->setAttribute($attribute['attribute_name'], $attribute['value']);
             }

@@ -12,19 +12,25 @@
         {{ form_start(form) }}
         {{ form_errors(form) }}
         <table class="table table-bordered table-striped">
+            <colgroup>
+                <col id="cModule" />
+                <col id="cLevel" />
+                <col id="cReason" />
+                <col id="cInstall" />
+            </colgroup>
             <thead>
                 <tr>
-                    <th>{{ __('Module name') }}</th>
-                    <th>{{ __('Level') }}</th>
-                    <th>{{ __('Reason') }}</th>
-                    <th>{{ __('Install') }}</th>
+                    <th id="hModule" scope="col">{{ __('Module name') }}</th>
+                    <th id="hLevel" scope="col">{{ __('Level') }}</th>
+                    <th id="hReason" scope="col">{{ __('Reason') }}</th>
+                    <th id="hInstall" scope="col">{{ __('Install') }}</th>
                 </tr>
             </thead>
             <tbody>
                 {% for checkbox in form.dependencies %}
                 <tr{% if checkbox.vars.data == false %} class="warning"{% endif %}>
-                    <td>{{ dependencies[checkbox.vars.name].modname }}</td>
-                    <td>
+                    <td headers="hModule">{{ dependencies[checkbox.vars.name].modname }}</td>
+                    <td headers="hLevel">
                         {% if dependencies[checkbox.vars.name].status == 1 %}
                             <span class="label label-danger">{{ __('Required') }}</span>
                         {% else %}
@@ -32,8 +38,8 @@
                             {% if checkbox.vars.data == false %} <span class="label label-danger">{{ __('Not Available in System') }}</span> {% endif %}
                         {% endif %}
                     </td>
-                    <td>{{ dependencies[checkbox.vars.name].reason }}</td>
-                    <td>{{ form_widget(checkbox, {'disabled': (dependencies[checkbox.vars.name].status == constant('ModUtil::DEPENDENCY_REQUIRED')) or (checkbox.vars.data == false)}) }}</td>
+                    <td headers="hReason">{{ dependencies[checkbox.vars.name].reason }}</td>
+                    <td headers="hInstall">{{ form_widget(checkbox, {'disabled': (dependencies[checkbox.vars.name].status == constant('ModUtil::DEPENDENCY_REQUIRED')) or (checkbox.vars.data == false)}) }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -46,6 +52,5 @@
         </div>
         {{ form_end(form) }}
     </div>
-
 </div>
 {{ adminFooter() }}

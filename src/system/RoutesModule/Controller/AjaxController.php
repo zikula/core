@@ -57,17 +57,18 @@ class AjaxController extends BaseAjaxController
         $objectType = $request->request->getAlnum('ot', 'route');
         $sort = $request->request->get('sort', []);
 
+        $entityManager = $this->get('doctrine.orm.entity_manager');
+
         foreach ($sort as $position => $id) {
             $id = substr($id, 4);
-            $object = $this->entityManager->find($this->name . ':' . ucfirst($objectType) . 'Entity', $id);
+            $object = $entityManager->find($this->name . ':' . ucfirst($objectType) . 'Entity', $id);
             $object->setSort($position);
-            $this->entityManager->persist($object);
+            $entityManager->persist($object);
         }
 
-        $this->entityManager->flush();
+        $entityManager->flush();
 
-        $cacheClearer = $this->get('zikula.cache_clearer');
-        $cacheClearer->clear('symfony.routing');
+        $this->get('zikula.cache_clearer')->clear('symfony.routing');
 
         return new AjaxResponse([]);
     }

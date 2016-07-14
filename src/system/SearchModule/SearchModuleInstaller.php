@@ -14,12 +14,12 @@ namespace Zikula\SearchModule;
 use Zikula\Core\AbstractExtensionInstaller;
 
 /**
- * installation routines for the search module
+ * Installation routines for the search module.
  */
 class SearchModuleInstaller extends AbstractExtensionInstaller
 {
     /**
-     * initialise the Search module
+     * Initialise the search module.
      *
      * This function is only ever called once during the lifetime of a particular
      * module instance

@@ -1,18 +1,25 @@
 {{ adminHeader() }}
 <table class="table table-bordered table-striped">
+    <colgroup>
+        <col id="cName" />
+        <col id="cDescription" />
+        <col id="cVersion" />
+        <col id="cState" />
+        <col id="cActions" />
+    </colgroup>
     <thead>
-    <tr>
-        <th><a class='{{ sort.displayname.class }}' href='{{ sort.displayname.url }}'>{{ __('Name') }}</a></th>
-        <th>Description</th>
-        <th>Version</th>
-        <th><a class='{{ sort.state.class }}' href='{{ sort.state.url }}'>{{ __('State') }}</a></th>
-        <th class="text-right">Actions</th>
-    </tr>
+        <tr>
+            <th id="hName" scope="col"><a class='{{ sort.displayname.class }}' href='{{ sort.displayname.url }}'>{{ __('Name') }}</a></th>
+            <th id="hDescription" scope="col">{{ __('Description') }}</th>
+            <th id="hVersion" scope="col">{{ __('Version') }}</th>
+            <th id="hState" scope="col"><a class='{{ sort.state.class }}' href='{{ sort.state.url }}'>{{ __('State') }}</a></th>
+            <th id="hActions" scope="col" class="text-right">Actions</th>
+        </tr>
     </thead>
     <tbody>
     {% for module in modules %}
         <tr>
-            <td>
+            <td headers="hName">
                 {% if module.capabilities.admin is defined and module.state == 3 %}
                     {% if module.capabilities.admin.route is defined %}
                         <a title="{{ __("Go to the module's administration panel") }}" href="{{ path(module.capabilities.admin.route) }}"><i class="fa fa-link"></i></a>
@@ -27,15 +34,15 @@
                     <li>Url root: <code>/{{ module.url }}</code></li>
                 </ul>
             </td>
-            <td style="width:50%">
+            <td headers="hDescription" style="width: 50%">
                 {% if module.name|isCoreModule %}<span class="label label-info tooltips" title="{{ __('Core Extension') }}">C</span>{% endif %}
                 {{ module.description }}
             </td>
-            <td>{{ module.version }}</td>
+            <td headers="hVersion">{{ module.version }}</td>
             <td class="nowrap">
                 {{ stateLabel(module, upgradedExtensions) }}
             </td>
-            <td class="actions">
+            <td headers="hActions" class="actions">
                 {% for action in extensionActions(module) %}
                     <a href="{{ action.url|default('#') }}" class="fa fa-{{ action.icon }} tooltips" style="color:{{ action.color }}" title="{{ action.title }}"></a>&nbsp;
                 {% endfor %}
@@ -51,7 +58,7 @@
     ( function($) {
         $(document).ready(function() {
             $('i[class*=fa-caret-]').on('click', function() {
-                $(this).toggleClass("fa-caret-down fa-caret-up");
+                $(this).toggleClass('fa-caret-down fa-caret-up');
             });
         });
     })(jQuery);

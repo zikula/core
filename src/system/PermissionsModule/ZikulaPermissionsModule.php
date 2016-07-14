@@ -14,7 +14,7 @@ namespace Zikula\PermissionsModule;
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 
 /**
- * Base module definition for the permissions module
+ * Base module definition for the permissions module.
  */
 class ZikulaPermissionsModule extends AbstractCoreModule
 {

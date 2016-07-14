@@ -5,38 +5,41 @@
 </h3>
 
 {% if themeinfo.system is defined and themeinfo.system != 1 %}
-<div class="text-center">
-    <img src="{{ getPreviewImagePath(themeinfo.name, 'large') }}" id="theme_credits_preview">
-</div>
+    <div class="text-center">
+        <img src="{{ getPreviewImagePath(themeinfo.name, 'large') }}" alt="preview" id="theme_credits_preview">
+    </div>
 {% endif %}
 
 <table class="table table-bordered table-striped">
+    <colgroup>
+        <col id="cKey" />
+        <col id="cValue" />
+    </colgroup>
     <tbody>
-        {% for key, field in themeinfo %}
-        {% if field != '' %}
+        {% for key, field in themeinfo if field != '' %}
         <tr>
-            {% if key == 'id' %}<th>{{ __('Internal ID') }}</th><td>{{ field }}</td>{% endif %}
-            {% if key == 'name' %}<th>{{ __('Name') }}</th><td>{{ field }}</td>{% endif %}
-            {% if key == 'type' %}<th>{{ __('Type') }}</th><td>{{ field }}</td>{% endif %}
-            {% if key == 'displayname' %}<th>{{ __('Display name') }}</th><td>{{ field }}</td>{% endif %}
-            {% if key == 'description' %}<th>{{ __('Description') }}</th><td>{{ field }}</td>{% endif %}
-            {% if key == 'regid' %}<th>{{ __('Registration ID') }}</th><td>{{ field }}</td>{% endif %}
-            {% if key == 'directory' %}<th>{{ __('Directory') }}</th><td>{{ field }}</td>{% endif %}
-            {% if key == 'version' %}<th>{{ __('Version') }}</th><td>{{ field }}</td>{% endif %}
-            {% if key == 'official' %}<th>{{ __('Official') }}</th><td>{{ field|yesNo }}</td>{% endif %}
-            {% if key == 'author' %}<th>{{ __('Author') }}</th><td>{{ field }}</td>{% endif %}
-            {#{% if key == 'contact' %}<th>{{ __('Contact') }}</th><td>{{ field }}</td>{% endif %}#}
-            {% if key == 'admin' %}<th>{{ __('Admin panel theme') }}</th><td>{{ field|yesNo }}</td>{% endif %}
-            {% if key == 'user' %}<th>{{ __('User theme') }}</th><td>{{ field|yesNo }}</td>{% endif %}
-            {% if key == 'system' %}<th>{{ __('System theme') }}</th><td>{{ field|yesNo }}</td>{% endif %}
-            {% if key == 'state' %}<th>{{ __('State') }}</th><td>{% if(field) and field == 1 %}<span class="label label-success">{{ __('Active') }}</span>{% else %}<span class="label label-danger">{{ __('Inactive') }}</span>{% endif %} </td>{% endif %}
-            {% if key == 'credits' %}<th>{{ __('Credits') }}</th><td>{{ field }}</td>{% endif %}
-            {% if key == 'changelog' %}<th>{{ __('Change log') }}</th><td>{{ field }}</td>{% endif %}
-            {% if key == 'help' %}<th>{{ __('Help') }}</th><td>{{ field }}</td>{% endif %}
-            {% if key == 'license' %}<th>{{ __('License') }}</th><td>{{ field }}</td>{% endif %}
-            {% if key == 'xhtml' %}<th>{{ __('XHTML-capable') }}</th><td>{{ field|yesNo }}</td>{% endif %}
+            {% if key == 'id' %}<th id="hId" scope="row">{{ __('Internal ID') }}</th><td headers="hId">{{ field }}</td>
+            {% elseif key == 'name' %}<th id="hName" scope="row">{{ __('Name') }}</th><td headers="hName">{{ field }}</td>
+            {% elseif key == 'type' %}<th id="hType" scope="row">{{ __('Type') }}</th><td headers="hType">{{ field }}</td>
+            {% elseif key == 'displayname' %}<th id="hDisplayName" scope="row">{{ __('Display name') }}</th><td headers="hDisplayName">{{ field }}</td>
+            {% elseif key == 'description' %}<th id="hDescription" scope="row">{{ __('Description') }}</th><td headers="hDescription">{{ field }}</td>
+            {% elseif key == 'regid' %}<th id="hRegistrationId" scope="row">{{ __('Registration ID') }}</th><td headers="hRegistrationId">{{ field }}</td>
+            {% elseif key == 'directory' %}<th id="hDirectory" scope="row">{{ __('Directory') }}</th><td headers="hDirectory">{{ field }}</td>
+            {% elseif key == 'version' %}<th id="hVersion" scope="row">{{ __('Version') }}</th><td headers="hVersion">{{ field }}</td>
+            {% elseif key == 'official' %}<th id="hOfficial" scope="row">{{ __('Official') }}</th><td headers="hOfficial">{{ field|yesNo }}</td>
+            {% elseif key == 'author' %}<th id="hAuthor" scope="row">{{ __('Author') }}</th><td headers="hAuthor">{{ field }}</td>
+            {#{% elseif key == 'contact' %}<th id="hContact" scope="row">{{ __('Contact') }}</th><td headers="hContact">{{ field }}</td>#}
+            {% elseif key == 'admin' %}<th id="hAdminTheme" scope="row">{{ __('Admin panel theme') }}</th><td headers="hAdminTheme">{{ field|yesNo }}</td>
+            {% elseif key == 'user' %}<th id="hUserTheme" scope="row">{{ __('User theme') }}</th><td headers="hUserTheme">{{ field|yesNo }}</td>
+            {% elseif key == 'system' %}<th id="hSystemTheme" scope="row">{{ __('System theme') }}</th><td headers="hSystemTheme">{{ field|yesNo }}</td>
+            {% elseif key == 'state' %}<th id="hState" scope="row">{{ __('State') }}</th><td headers="hState">{% if (field) and field == 1 %}<span class="label label-success">{{ __('Active') }}</span>{% else %}<span class="label label-danger">{{ __('Inactive') }}</span>{% endif %} </td>
+            {% elseif key == 'credits' %}<th id="hCredits" scope="row">{{ __('Credits') }}</th><td headers="hCredits">{{ field }}</td>
+            {% elseif key == 'changelog' %}<th id="hChangelog" scope="row">{{ __('Change log') }}</th><td headers="hChangelog">{{ field }}</td>
+            {% elseif key == 'help' %}<th id="hHelp" scope="row">{{ __('Help') }}</th><td headers="hHelp">{{ field }}</td>
+            {% elseif key == 'license' %}<th id="hLicense" scope="row">{{ __('License') }}</th><td headers="hLicense">{{ field }}</td>
+            {% elseif key == 'xhtml' %}<th id="hXhtml" scope="row">{{ __('XHTML-capable') }}</th><td headers="hXhtml">{{ field|yesNo }}</td>
+            {% endif %}
         </tr>
-        {% endif %}
         {% endfor %}
     </tbody>
 </table>

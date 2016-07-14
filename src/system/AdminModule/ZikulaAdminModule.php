@@ -14,7 +14,7 @@ namespace Zikula\AdminModule;
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 
 /**
- * Base module definition for the admin module
+ * Base module definition for the admin module.
  */
 class ZikulaAdminModule extends AbstractCoreModule
 {

@@ -734,13 +734,13 @@ class AdminController extends AbstractController
 
                 $reasonTitle = '';
                 if ($action == 'deny') {
-                    $reasonTitle = $this->__f('Concerning your %s group membership application', $group['name']);
+                    $reasonTitle = $this->__f('Concerning your %s group membership application', ['%s' => $group['name']]);
                     if (empty($reason)) {
                         // Get Default TEXT
                         $reason = $this->__('Sorry! This is a message to inform you with regret that your application for membership of the aforementioned private group has been rejected.');
                     }
                 } elseif ($action == 'accept') {
-                    $reasonTitle = $this->__f('Done! The user has been added to the %s group.', $group['name']);
+                    $reasonTitle = $this->__f('Done! The user has been added to the %s group.', ['%s' => $group['name']]);
                     if (empty($reason)) {
                         // Get Default TEXT
                         $reason = $this->__('Done! Your application has been accepted. You have been granted all the privileges assigned to the group of which you are now member.');

@@ -18,7 +18,7 @@ use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 /**
- * Installation and upgrade routines for the extensions module
+ * Installation and upgrade routines for the extensions module.
  */
 class ExtensionsModuleInstaller extends AbstractExtensionInstaller
 {

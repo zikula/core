@@ -1,15 +1,15 @@
 {% for user in users %}
     <tr class="user">
-        <td>{{ user.uname }}</td>
-        <td>{{ user.uid }}</td>
-        <td>{{ user.user_regdate|date() }}</td>
-        <td>{{ user.lastlogin|date() }}</td>
-        <td>
+        <td headers="hUserName">{{ user.uname }}</td>
+        <td headers="hId">{{ user.uid }}</td>
+        <td headers="hRegistrationDate">{{ user.user_regdate|date() }}</td>
+        <td headers="hLastLogin">{{ user.lastlogin|date() }}</td>
+        <td headers="hGroups">
             {% for group in user.groups %}
                 <div>{{ group.name }}</div>
             {% endfor %}
         </td>
-        <td class="users_activated">
+        <td headers="hStatus" class="users_activated">
             {% switch user.activated %}
             {% case constant('Zikula\\UsersModule\\Constant::ACTIVATED_ACTIVE') %}
             <span class="label label-success">{{ __('Active') }}</span>
@@ -27,7 +27,7 @@
             <span class="label label-danger">{{ __('Status unknown') }}</span>
             {% endswitch %}
         </td>
-        <td class="actions">
+        <td headers="hActions" class="actions">
             {% for action in actionsHelper.user(user) %}
                 <a class="fa fa-fw fa-{{ action.icon }} tooltips" href="{{ action.url }}" title="{{ action.text }}"></a>
             {% endfor %}

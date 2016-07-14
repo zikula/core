@@ -307,7 +307,7 @@ class AjaxController extends AbstractController
         $makeDefault = $variableApi->set('ZikulaAdminModule', 'startcategory', $cid);
         if ($makeDefault) {
             // Success
-            $output['response'] = $this->__f('Category "%s" was successfully made default.', $item['name']);
+            $output['response'] = $this->__f('Category "%s" was successfully made default.', ['%s' => $item['name']]);
 
             return new AjaxResponse($output);
         }
@@ -335,13 +335,14 @@ class AjaxController extends AbstractController
         $data = $request->request->get('admintabs');
 
         $entity = 'ZikulaAdminModule:AdminCategoryEntity';
+        $entityManager = $this->get('doctrine.orm.entity_manager');
 
         foreach ($data as $order => $cid) {
-            $item = $this->entityManager->getRepository($entity)->findOneBy(['cid' => $cid]);
+            $item = $entityManager->getRepository($entity)->findOneBy(['cid' => $cid]);
             $item->setSortorder($order);
         }
 
-        $this->entityManager->flush();
+        $entityManager->flush();
 
         return new AjaxResponse([]);
     }
@@ -365,13 +366,14 @@ class AjaxController extends AbstractController
         $data = $request->request->get('modules');
 
         $entity = 'ZikulaAdminModule:AdminModuleEntity';
+        $entityManager = $this->get('doctrine.orm.entity_manager');
 
         foreach ($data as $order => $mid) {
-            $item = $this->entityManager->getRepository($entity)->findOneBy(['mid' => $mid]);
+            $item = $entityManager->getRepository($entity)->findOneBy(['mid' => $mid]);
             $item->setSortorder($order);
         }
 
-        $this->entityManager->flush();
+        $entityManager->flush();
 
         return new AjaxResponse([]);
     }

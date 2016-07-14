@@ -18,20 +18,25 @@
             <div class="alert alert-info">{{ __f('To connect %sub% to one of the modules from the list below, click on the checkbox(es) next to the corresponding area.', {"%sub%": currentmodule}) }}</div>
 
             <table class="table table-bordered table-striped" id="subscriberslist">
+                <colgroup>
+                    <col id="cId" />
+                    <col id="cName" />
+                    <col id="cConnections" />
+                </colgroup>
                 <thead>
                     <tr>
-                        <th class="z-w05">{{ __('ID') }}</th>
-                        <th class="z-w15">{{ __('Display name') }}</th>
-                        <th class="z-w80">{{ __('Connections') }}</th>
+                        <th id="hId" scope="col" class="z-w05">{{ __('ID') }}</th>
+                        <th id="hName" scope="col" class="z-w15">{{ __('Display name') }}</th>
+                        <th id="hConnections" scope="col" class="z-w80">{{ __('Connections') }}</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for subscriber in hooksubscribers %}
                     {% if subscriber.areas is not empty %}
                     <tr>
-                        <td>{{ subscriber.id }}</td>
-                        <td>{{ subscriber.displayname|default(subscriber.name) }}</td>
-                        <td>
+                        <td headers="hId">{{ subscriber.id }}</td>
+                        <td headers="hName">{{ subscriber.displayname|default(subscriber.name) }}</td>
+                        <td headers="hConnections">
                             {% set connection_exists = false %}
 
                             {% for sarea in subscriber.areas %}{# name=loop_sareas #}

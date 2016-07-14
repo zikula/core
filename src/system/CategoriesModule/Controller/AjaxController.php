@@ -11,26 +11,24 @@
 
 namespace Zikula\CategoriesModule\Controller;
 
-use SecurityUtil;
 use CategoryUtil;
-use FormUtil;
-use ZLanguage;
-use Zikula_View;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
-use Zikula\Core\Response\Ajax\AjaxResponse;
-use Zikula\Core\Response\Ajax\NotFoundResponse;
-use Zikula\Core\Response\Ajax\ForbiddenResponse;
-use Zikula\Core\Response\Ajax\BadDataResponse;
 use Zikula\CategoriesModule\GenericUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
+use Zikula\Core\Controller\AbstractController;
+use Zikula\Core\Response\Ajax\AjaxResponse;
+use Zikula\Core\Response\Ajax\BadDataResponse;
+use Zikula\Core\Response\Ajax\ForbiddenResponse;
+use Zikula\Core\Response\Ajax\NotFoundResponse;
+use ZLanguage;
 
 /**
  * @Route("/ajax")
  *
- * Ajax controllers for the categories module
+ * Ajax controllers for the categories module.
  */
-class AjaxController extends \Zikula_Controller_AbstractAjax
+class AjaxController extends AbstractController
 {
     /**
      * @Route("/resequence", options={"expose"=true})
@@ -44,23 +42,24 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      */
     public function resequenceAction(Request $request)
     {
-        $this->checkAjaxToken();
-        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
+        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
             return new ForbiddenResponse($this->__('No permission for this action'));
         }
 
         $tree = $request->request->get('tree');
+
+        $entityManager = $this->get('doctrine.orm.entity_manager');
 
         foreach ($tree as $catData) {
             if (empty($catData)) {
                 continue;
             }
             /** @var \Zikula\CategoriesModule\Entity\CategoryEntity $category */
-            $category = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $catData['id']);
+            $category = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $catData['id']);
             $category->setSort_value($catData['lineno']);
             if (!empty($catData['parent'])) {
                 /** @var \Zikula\CategoriesModule\Entity\CategoryEntity $parent */
-                $parent = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $catData['parent']);
+                $parent = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $catData['parent']);
                 $category->setParent($parent);
                 // reset paths
                 $category->setPath(GenericUtil::processCategoryPath($parent->getPath(), $category->getName()));
@@ -70,7 +69,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             }
         }
 
-        $this->entityManager->flush();
+        $entityManager->flush();
 
         $result = [
             'response' => true
@@ -96,20 +95,22 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      */
     public function editAction(Request $request)
     {
-        $this->checkAjaxToken();
-
         $mode = $request->request->get('mode', 'new');
         $accessLevel = $mode == 'edit' ? ACCESS_EDIT : ACCESS_ADD;
-        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', $accessLevel)) {
+        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', $accessLevel)) {
             return new ForbiddenResponse($this->__('No permission for this action'));
         }
 
         $cid = $request->request->get('cid', 0);
         $parent = $request->request->get('parent', 1);
-        $validationErrors = FormUtil::getValidationErrors();
-        $editCat = '';
+        $validationErrors = [];
+        $validationErrorsInSession = $request->getSession()->get('validationErrors', '');
+        if (is_array($validationErrorsInSession)) {
+            $validationErrors = $validationErrorsInSession;
+            $request->getSession()->remove('validationErrors');
+        }
 
-        $languages = ZLanguage::getInstalledLanguages();
+        $editCat = '';
 
         // indicates that we're editing
         if ($mode == 'edit') {
@@ -128,17 +129,16 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $attributes = isset($editCat['__ATTRIBUTES__']) ? $editCat['__ATTRIBUTES__'] : [];
 
-        $this->setView();
-        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
-
-        $this->view->assign('mode', $mode)
-                   ->assign('category', $editCat)
-                   ->assign('attributes', $attributes)
-                   ->assign('languages', $languages);
+        $templateParameters = [
+            'mode' => $mode,
+            'category' => $editCat,
+            'attributes' => $attributes,
+            'languages' => ZLanguage::getInstalledLanguages()
+        ];
 
         $result = [
             'action' => $mode == 'new' ? 'add' : 'edit',
-            'result' => $this->view->fetch('Ajax/edit.tpl'),
+            'result' => $this->get('twig')->render('@ZikulaCategoriesModule/Ajax/edit.html.twig', $templateParameters),
             'validationErrors' => $validationErrors
         ];
 
@@ -161,8 +161,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      */
     public function copyAction(Request $request)
     {
-        $this->checkAjaxToken();
-        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADD)) {
+        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADD)) {
             return new ForbiddenResponse($this->__('No permission for this action'));
         }
 
@@ -176,8 +175,10 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $categories = CategoryUtil::getSubCategories($copyParent['id'], true, true, true, true, true);
 
+        $entityManager = $this->get('doctrine.orm.entity_manager');
+
         // get the last added category in the parent
-        $qb = $this->entityManager->createQueryBuilder();
+        $qb = $entityManager->createQueryBuilder();
         $category = $qb->select('c')
             ->from('Zikula\CategoriesModule\Entity\CategoryEntity', 'c')
             ->where('c.parent = :parent_id')
@@ -225,8 +226,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      */
     public function deleteAction(Request $request)
     {
-        $this->checkAjaxToken();
-        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE)) {
+        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE)) {
             return new ForbiddenResponse($this->__('No permission for this action'));
         }
 
@@ -256,8 +256,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      */
     public function deleteandmovesubsAction(Request $request)
     {
-        $this->checkAjaxToken();
-        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE)) {
+        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE)) {
             return new ForbiddenResponse($this->__('No permission for this action'));
         }
 
@@ -309,8 +308,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      */
     public function deletedialogAction(Request $request)
     {
-        $this->checkAjaxToken();
-        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE)) {
+        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE)) {
             return new ForbiddenResponse($this->__('No permission for this action'));
         }
 
@@ -319,12 +317,12 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $allCats = CategoryUtil::getSubCategories(1, true, true, true, false, true, $cid);
         $selector = CategoryUtil::getSelector_Categories($allCats, 'id', '0', 'category[parent_id]', 0, '', 0, '', false, false, true, 1, false, 'form-control');
 
-        $this->setView();
-        $this->view->setCaching(\Zikula_View::CACHE_DISABLED);
+        $templateParameters = [
+            'categorySelector' => $selector
+        ];
 
-        $this->view->assign('categorySelector', $selector);
         $result = [
-            'result' => $this->view->fetch('Ajax/delete.tpl'),
+            'result' => $this->get('twig')->render('@ZikulaCategoriesModule/Ajax/delete.html.twig', $templateParameters)
         ];
 
         return new AjaxResponse($result);
@@ -342,15 +340,16 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      */
     public function activateAction(Request $request)
     {
-        $this->checkAjaxToken();
-        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
+        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
             return new ForbiddenResponse($this->__('No permission for this action'));
         }
 
+        $entityManager = $this->get('doctrine.orm.entity_manager');
+
         $cid = $request->request->get('cid');
-        $cat = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cid);
+        $cat = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cid);
         $cat['status'] = 'A';
-        $this->entityManager->flush();
+        $entityManager->flush();
 
         $result = [
             'action' => 'activate',
@@ -373,15 +372,16 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      */
     public function deactivateAction(Request $request)
     {
-        $this->checkAjaxToken();
-        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
+        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
             return new ForbiddenResponse($this->__('No permission for this action'));
         }
 
+        $entityManager = $this->get('doctrine.orm.entity_manager');
+
         $cid = $request->request->get('cid');
-        $cat = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cid);
+        $cat = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cid);
         $cat['status'] = 'I';
-        $this->entityManager->flush();
+        $entityManager->flush();
 
         $result = [
             'action' => 'deactivate',
@@ -404,11 +404,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      */
     public function saveAction(Request $request)
     {
-        $this->checkAjaxToken();
-
         $mode = $request->request->get('mode', 'new');
         $accessLevel = $mode == 'edit' ? ACCESS_EDIT : ACCESS_ADD;
-        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', $accessLevel)) {
+        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', $accessLevel)) {
             return new ForbiddenResponse($this->__('No permission for this action'));
         }
 
@@ -427,13 +425,11 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $valid = GenericUtil::validateCategoryData($data);
         if (!$valid) {
-            $args = [
-                'cid' => (isset($data['cid']) ? $data['cid'] : 0),
-                'parent' => $data['parent_id'],
-                'mode' => $mode
-            ];
+            $request->request->set('cid', (isset($data['cid']) ? $data['cid'] : 0));
+            $request->request->set('parent', $data['parent_id']);
+            $request->request->set('mode', $mode);
 
-            return $this->editAction($args);
+            return $this->editAction($request);
         }
 
         // process name
@@ -447,15 +443,16 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $data['display_name'] = GenericUtil::processCategoryDisplayName($data['display_name'], $data['name']);
 
         // save category
+        $entityManager = $this->get('doctrine.orm.entity_manager');
         if ($mode == 'edit') {
-            $category = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $data['id']);
+            $category = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $data['id']);
         } else {
             $category = new \Zikula\CategoriesModule\Entity\CategoryEntity();
         }
         $prevCategoryName = $category['name'];
         $category->merge($data);
-        $this->entityManager->persist($category);
-        $this->entityManager->flush();
+        $entityManager->persist($category);
+        $entityManager->flush();
 
         // process path and ipath
         $category['path'] = GenericUtil::processCategoryPath($data['parent']['path'], $category['name']);
@@ -466,7 +463,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $attrib_values = $request->request->get('attribute_value', []);
         GenericUtil::processCategoryAttributes($category, $attrib_names, $attrib_values);
 
-        $this->entityManager->flush();
+        $entityManager->flush();
 
         // since a name change will change the object path, we must rebuild it here
         if ($prevCategoryName != $category['name']) {

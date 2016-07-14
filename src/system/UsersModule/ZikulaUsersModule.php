@@ -16,7 +16,7 @@ namespace Zikula\UsersModule {
     use Zikula\UsersModule\DependencyInjection\Compiler\AuthenticationMethodCollectorPass;
 
     /**
-     * Base module definition for the users module
+     * Base module definition for the users module.
      */
     class ZikulaUsersModule extends AbstractCoreModule
     {
@@ -35,7 +35,7 @@ namespace Zikula\UsersModule {
 
 namespace {
     /**
-     * constants for the users module
+     * Constants for the users module.
      *
      * @deprecated since 1.4.0 use Zikula\UsersModule\Constant instead
      */

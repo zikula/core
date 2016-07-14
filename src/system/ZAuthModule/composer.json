@@ -1,7 +1,7 @@
 {
     "name": "zikula/zauth-module",
     "version": "1.0.0",
-    "description": "Provide native zikula authentication.",
+    "description": "Native zikula authentication.",
     "type": "zikula-module",
     "license": "MIT",
     "authors": [
@@ -18,13 +18,13 @@
     },
     "extra": {
         "zikula": {
-            "core-compatibility": ">=1.4.3",
             "class": "Zikula\\ZAuthModule\\ZikulaZAuthModule",
+            "core-compatibility": ">=1.4.3",
             "displayname": "Zikula Native Authorization",
+            "url": "zauth",
             "capabilities": {
                 "admin": {"route": "zikulazauthmodule_useradministration_list"}
             },
-            "url": "zauth",
             "securityschema": {
                 "ZikulaZAuthModule::": "::"
             }

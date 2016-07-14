@@ -15,7 +15,7 @@ use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Zikula\Core\AbstractExtensionInstaller;
 
 /**
- * Installation and upgrade routines for the admin module
+ * Installation and upgrade routines for the admin module.
  */
 class AdminModuleInstaller extends AbstractExtensionInstaller
 {

@@ -13,11 +13,12 @@ namespace Zikula\CategoriesModule\Api;
 
 use CategoryUtil;
 use UserUtil;
+use Zikula_AbstractApi;
 
 /**
- * User api functions for the categories module
+ * User api functions for the categories module.
  */
-class UserApi extends \Zikula_AbstractApi
+class UserApi extends Zikula_AbstractApi
 {
     /**
      * get the root category for a user
@@ -36,6 +37,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         $returnCategory = isset($args['returnCategory']) ? $args['returnCategory'] : false;
         $returnField    = isset($args['returnField'])    ? $args['returnField']    : 'id';
+        unset($args);
 
         $userRoot = $this->getVar('userrootcat', 0);
         if (!$userRoot) {
@@ -98,9 +100,11 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function getusercategoryname($args)
     {
-        $uid   = isset($args['uid']) && $args['uid'] ? $args['uid'] : UserUtil::getVar('uid');
+        $uid = isset($args['uid']) && $args['uid'] ? $args['uid'] : UserUtil::getVar('uid');
+        unset($args);
+
         $uname = UserUtil::getVar('uname', $uid);
-        $userCatName = "$uname [$uid]";
+        $userCatName = $uname . ' [' . $uid . ']';
 
         return $userCatName;
     }

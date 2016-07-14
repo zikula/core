@@ -19,7 +19,7 @@ use Zikula\Core\AbstractExtensionInstaller;
 use ZLanguage;
 
 /**
- * Installation and upgrade routines for the blocks module
+ * Installation and upgrade routines for the blocks module.
  */
 class BlocksModuleInstaller extends AbstractExtensionInstaller
 {

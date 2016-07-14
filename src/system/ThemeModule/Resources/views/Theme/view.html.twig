@@ -9,19 +9,26 @@
 <p class="alert alert-info">{{ __f('Themes control the visual presentation of a site. Zikula ships with a small selection of themes, but many legacy themes are available from the %sub%.', {"%sub%": '<strong><a href="https://github.com/zikula/themes">' ~ __('Zikula Themes Repository') ~ '</a></strong>'})|raw }}</p>
 
 <table class="table table-bordered table-striped">
+    <colgroup>
+        <col id="cName" />
+        <col id="cDescription" />
+        <col id="cVersion" />
+        <col id="cState" />
+        <col id="cActions" />
+    </colgroup>
     <thead>
         <tr>
-            <th>{{ __('Name') }}</th>
-            <th>{{ __('Description') }}</th>
-            <th style="width: 8em;">{{ __('Version') }}</th>
-            <th>{{ __('State') }}</th>
-            <th class="text-right">{{ __('Actions') }}</th>
+            <th id="hName" scope="col">{{ __('Name') }}</th>
+            <th id="hDescription" scope="col">{{ __('Description') }}</th>
+            <th id="hVersion" scope="col" style="width: 8em">{{ __('Version') }}</th>
+            <th id="hState" scope="col">{{ __('State') }}</th>
+            <th id="hActions" scope="col" class="text-right">{{ __('Actions') }}</th>
         </tr>
     </thead>
     <tbody>
         {% for theme in themes %}
         <tr {% if theme.name|lower == currenttheme|lower %}class="success"{% endif %}>
-            <td style="white-space: nowrap;">
+            <td headers="hName" style="white-space: nowrap">
                 {% if theme.isTwigBased|default(false) %}{% set themeType = 'twig' %}{% else %}{% set themeType = 'smarty' %}{% endif %}
                 <img src="{{ zasset('@ZikulaThemeModule:images/' ~ themeType ~ '-logo.jpg') }}" title="{{ __f('Theme is %sub% based', {"%sub%": themeType}) }}" class="tooltips" />
                 {% set img = '<img src="' ~ getPreviewImagePath(theme.name) ~ '">' %}
@@ -30,16 +37,16 @@
                 </a>
                 {% if theme.name|lower == currenttheme|lower %}<span class="required"></span>{% endif %}
             </td>
-            <td>
+            <td headers="hDescription">
                 {{ theme.description|default(theme.displayname) }}
             </td>
-            <td style="white-space: nowrap;">
+            <td headers="hVersion" style="white-space: nowrap">
                 {{ theme.version }}
             </td>
-            <td style="white-space: nowrap;">
+            <td headers="hState" style="white-space: nowrap">
                 <span class="label label-{% if theme.state == 1 %}success{% else %}danger{% endif %}">{% if theme.state == 1 %}{{ __('Active') }}{% else %}{{ __('Inactive') }}{% endif %}</span>
             </td>
-            <td class="actions">
+            <td headers="hActions" class="actions">
                 {% if theme.state != 1 %}
                     <a href="{{ path('zikulathememodule_theme_activate', {"themeName":theme.name}) }}"><span class="fa fa-gear tooltips" title="{{ __f('Activate %theme%', {'%theme%': theme.displayname}) }}"></span></a>
                 {% endif %}
@@ -61,7 +68,7 @@
             </td>
         </tr>
         {% else %}
-        <tr class="table table-borderedempty"><td colspan="3">{{ __('No items found.') }}</td></tr>
+        <tr class="table table-borderedempty"><td colspan="5">{{ __('No items found.') }}</td></tr>
         {% endfor %}
     </tbody>
 </table>

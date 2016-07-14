@@ -14,7 +14,7 @@ namespace Zikula\SecurityCenterModule;
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 
 /**
- * Base module definition for the security center module
+ * Base module definition for the security center module.
  */
 class ZikulaSecurityCenterModule extends AbstractCoreModule
 {

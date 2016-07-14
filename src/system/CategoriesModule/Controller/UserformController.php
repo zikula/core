@@ -11,26 +11,26 @@
 
 namespace Zikula\CategoriesModule\Controller;
 
-use SecurityUtil;
-use System;
 use CategoryUtil;
-use Zikula\CategoriesModule\GenericUtil;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use System;
+use Zikula\CategoriesModule\GenericUtil;
+use Zikula\Core\Controller\AbstractController;
 
 /**
- * User form controllers for the categories module
+ * User form controllers for the categories module.
  */
-class UserformController extends \Zikula_AbstractController
+class UserformController extends AbstractController
 {
     /**
      * @Route("/delete")
      *
-     * delete category
+     * Deletes a category.
      *
      * @param Request $request
      *
@@ -41,12 +41,12 @@ class UserformController extends \Zikula_AbstractController
      */
     public function deleteAction(Request $request)
     {
-        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE)) {
+        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE)) {
             throw new AccessDeniedException();
         }
 
-        $cid = (int)$request->get('cid', 0);
-        $dr = (int)$request->get('dr', 0);
+        $cid = (int)$request->query->get('cid', 0);
+        $dr = (int)$request->query->get('dr', 0);
         $url = $request->server->get('HTTP_REFERER');
 
         if (!$dr) {
@@ -60,12 +60,12 @@ class UserformController extends \Zikula_AbstractController
         $category = CategoryUtil::getCategoryByID($cid);
 
         if (!$category) {
-            throw new \InvalidArgumentException($this->__f('Error! Cannot retrieve category with ID %s.', $cid));
+            throw new \InvalidArgumentException($this->__f('Error! Cannot retrieve category with ID %s.', ['%s' => $cid]));
         }
 
         if ($category['is_locked']) {
             //! %1$s is the id, %2$s is the name
-            $request->getSession()->getFlashBag()->add('error', $this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', [$cid, $category['name']]), null, $url);
+            $this->addFlash('error', $this->__f('Notice: The administrator has locked the category \'%category\' (ID \'%id\'). You cannot edit or delete it.', ['%category' => $category['name'], '%id' => $cid]));
 
             return new RedirectResponse(System::normalizeUrl($url));
         }
@@ -79,7 +79,7 @@ class UserformController extends \Zikula_AbstractController
      * @Route("/update")
      * @Method("POST")
      *
-     * update category
+     * Updates a category.
      *
      * @param Request $request
      *
@@ -91,17 +91,17 @@ class UserformController extends \Zikula_AbstractController
      */
     public function editAction(Request $request)
     {
-        $this->checkCsrfToken();
+        $this->get('zikula_core.common.csrf_token_handler')->validate($request->request->get('csrfToken'));
 
-        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
+        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
-        $dr = (int)$request->request->get('dr', 0);
+        $dr = (int)$request->request->request->get('dr', 0);
         $ref = $request->server->get('HTTP_REFERER');
 
-        $returnfunc = strpos($ref, "useredit") !== false ? 'useredit' : 'edit';
-        $url = $this->get('router')->generate("zikulacategoriesmodule_user_$returnfunc", ['dr' => $dr], RouterInterface::ABSOLUTE_URL);
+        $returnfunc = false !== strpos($ref, 'useredit') ? 'useredit' : 'edit';
+        $url = $this->get('router')->generate('zikulacategoriesmodule_user_' . $returnfunc, ['dr' => $dr], RouterInterface::ABSOLUTE_URL);
 
         if (!$dr) {
             throw new \InvalidArgumentException($this->__('Error! The document root is invalid.'));
@@ -126,14 +126,15 @@ class UserformController extends \Zikula_AbstractController
         $data['display_name'] = GenericUtil::processCategoryDisplayName($data['display_name'], $data['name']);
 
         // get existing category
-        $category = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $data['id']);
+        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $category = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $data['id']);
 
         if (!$category) {
-            throw new \InvalidArgumentException($this->__f('Error! Cannot retrieve category with ID %s.', $data['id']));
+            throw new \InvalidArgumentException($this->__f('Error! Cannot retrieve category with ID %s.', ['%s' => $data['id']]));
         }
 
         if ($category['is_locked']) {
-            $request->getSession()->getFlashBag()->add('error', $this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', [$data['id'], $category['name']]));
+            $this->addFlash('error', $this->__f('Notice: The administrator has locked the category \'%category\' (ID \'%id\'). You cannot edit or delete it.', ['%category' => $category['name'], '%id' => $data['id']]));
 
             return new RedirectResponse(System::normalizeUrl($url));
         }
@@ -142,8 +143,8 @@ class UserformController extends \Zikula_AbstractController
 
         // save category
         $category->merge($data);
-        $this->entityManager->persist($category);
-        $this->entityManager->flush();
+        $entityManager->persist($category);
+        $entityManager->flush();
 
         // process path and ipath
         $category['path'] = GenericUtil::processCategoryPath($data['parent']['path'], $category['name']);
@@ -154,14 +155,13 @@ class UserformController extends \Zikula_AbstractController
         $attrib_values = $request->request->get('attribute_value', []);
         GenericUtil::processCategoryAttributes($category, $attrib_names, $attrib_values);
 
-        $this->entityManager->flush();
+        $entityManager->flush();
 
         if ($category_old_name != $category['name']) {
             CategoryUtil::rebuildPaths('path', 'name', $category['id']);
         }
 
-        $msg = $this->__f('Done! Saved the %s category.', $category_old_name);
-        $request->getSession()->getFlashBag()->add('status', $msg);
+        $this->addFlash('status', $this->__f('Done! Saved the %s category.', ['%s' => $category_old_name]));
 
         return new RedirectResponse(System::normalizeUrl($url));
     }
@@ -170,7 +170,7 @@ class UserformController extends \Zikula_AbstractController
      * @Route("/move/{cid}/{dr}/{direction}", requirements={"cid" = "^[1-9]\d*$", "dr" = "^[1-9]\d*$", "direction" = "up|down"})
      * @Method("GET")
      *
-     * move field
+     * Moves a field.
      *
      * @param Request $request
      * @param integer $cid
@@ -183,7 +183,7 @@ class UserformController extends \Zikula_AbstractController
      */
     public function moveFieldAction(Request $request, $cid, $dr, $direction = null)
     {
-        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
+        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
@@ -194,9 +194,11 @@ class UserformController extends \Zikula_AbstractController
 
         $sort_values = [];
 
+        $entityManager = $this->get('doctrine.orm.entity_manager');
+
         $ak = array_keys($cats1);
         foreach ($ak as $k) {
-            $obj = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cats1[$k]['id']);
+            $obj = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cats1[$k]['id']);
             $obj['sort_value'] = $cats2[$k]['sort_value'];
             $sort_values[] = [
                 'id' => $obj['id'],
@@ -204,9 +206,9 @@ class UserformController extends \Zikula_AbstractController
             ];
         }
 
-        $this->entityManager->flush();
+        $entityManager->flush();
 
-        $obj = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cid);
+        $obj = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cid);
 
         for ($i = 0; $i < count($sort_values); $i++) {
             if ($sort_values[$i]['id'] == $cid) {
@@ -222,7 +224,7 @@ class UserformController extends \Zikula_AbstractController
             }
         }
 
-        $this->entityManager->flush();
+        $entityManager->flush();
 
         return new RedirectResponse(System::normalizeUrl($url));
     }
@@ -231,7 +233,7 @@ class UserformController extends \Zikula_AbstractController
      * @Route("/new")
      * @Method("POST")
      *
-     * create category
+     * Creates a new category.
      *
      * @param Request $request
      *
@@ -242,9 +244,9 @@ class UserformController extends \Zikula_AbstractController
      */
     public function newcatAction(Request $request)
     {
-        $this->checkCsrfToken();
+        $this->get('zikula_core.common.csrf_token_handler')->validate($request->request->get('csrfToken'));
 
-        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADD)) {
+        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADD)) {
             throw new AccessDeniedException();
         }
 
@@ -260,7 +262,7 @@ class UserformController extends \Zikula_AbstractController
 
         $valid = GenericUtil::validateCategoryData($data);
         if (!$valid) {
-            return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_user_edit', ['dr' => $dr], RouterInterface::ABSOLUTE_URL));
+            return $this->redirectToRoute('zikulacategoriesmodule_user_edit', ['dr' => $dr]);
         }
 
         // process name
@@ -277,10 +279,11 @@ class UserformController extends \Zikula_AbstractController
         $data['sort_value'] = 0;
 
         // save category
+        $entityManager = $this->get('doctrine.orm.entity_manager');
         $category = new \Zikula\CategoriesModule\Entity\CategoryEntity();
         $category->merge($data);
-        $this->entityManager->persist($category);
-        $this->entityManager->flush();
+        $entityManager->persist($category);
+        $entityManager->flush();
 
         // process path and ipath
         $category['path'] = GenericUtil::processCategoryPath($data['parent']['path'], $category['name']);
@@ -291,10 +294,9 @@ class UserformController extends \Zikula_AbstractController
         $attrib_values = $request->request->get('attribute_value', []);
         GenericUtil::processCategoryAttributes($category, $attrib_names, $attrib_values);
 
-        $this->entityManager->flush();
+        $entityManager->flush();
 
-        $msg = $this->__f('Done! Inserted the %s category.', $data['name']);
-        $request->getSession()->getFlashBag()->add('status', $msg);
+        $this->addFlash('status', $this->__f('Done! Inserted the %s category.', ['%s' => $data['name']]));
 
         return new RedirectResponse(System::normalizeUrl($url));
     }
@@ -303,7 +305,7 @@ class UserformController extends \Zikula_AbstractController
      * @Route("/resequence/{dr}", requirements={"dr" = "^[1-9]\d*$"})
      * @Method("GET")
      *
-     * resequence categories
+     * Resequences categories.
      *
      * @param Request $request
      * @param integer $dr
@@ -314,7 +316,7 @@ class UserformController extends \Zikula_AbstractController
      */
     public function resequenceAction(Request $request, $dr)
     {
-        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
+        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
@@ -323,13 +325,15 @@ class UserformController extends \Zikula_AbstractController
         $cats1 = CategoryUtil::getSubCategories($dr, false, false, false, false);
         $cats2 = CategoryUtil::resequence($cats1, 10);
 
+        $entityManager = $this->get('doctrine.orm.entity_manager');
+
         $ak = array_keys($cats1);
         foreach ($ak as $k) {
-            $obj = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cats1[$k]['id']);
+            $obj = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cats1[$k]['id']);
             $obj['sort_value'] = $cats2[$k]['sort_value'];
         }
 
-        $this->entityManager->flush();
+        $entityManager->flush();
 
         return new RedirectResponse(System::normalizeUrl($url));
     }

@@ -11,16 +11,20 @@
         <input type="hidden" name="themename" value="{$themename|safetext}" />
         <input type="hidden" name="filename" value="{$filename|safetext}" />
         <table class="table table-bordered table-striped">
+            <colgroup>
+                <col id="cName" />
+                <col id="cValue" />
+            </colgroup>
             <thead>
                 <tr>
-                    <th>{gt text="Name"}</th>
-                    <th>{gt text="Value"}</th>
+                    <th id="hName" scope="col">{gt text='Name'}</th>
+                    <th id="hValue" scope="col">{gt text='Value'}</th>
                 </tr>
             </thead>
             <tbody>
-                {foreach from=$variables.variables key=name item=value}
+                {foreach key='name' item='value' from=$variables.variables}
                 <tr>
-                    <td>
+                    <td headers="hName">
                         {if isset($variables.$name.editable)}
                         <input type="text" class="form-control" name="variablesnames[{$name|safetext}]" value="{$name|safetext}" />
                         {else}
@@ -32,7 +36,7 @@
                         {/if}
                         {/if}
                     </td>
-                    <td>
+                    <td headers="hValue">
                         {if $variables.$name.type|default:'' eq 'yesno'}
                         <input type="radio" name="variablesvalues[{$name|safetext}]" value="1"{if $value eq 1} checked="checked"{/if} />&nbsp;{gt text="Yes"}&nbsp;
                         <input type="radio" name="variablesvalues[{$name|safetext}]" value="0"{if $value eq 0} checked="checked"{/if} />&nbsp;{gt text="No"}
@@ -46,7 +50,7 @@
                     </td>
                 </tr>
                 {foreachelse}
-                <tr class="table table-borderedempty"><td colspan="2">{gt text="No items found."}</td></tr>
+                <tr class="table table-borderedempty"><td colspan="2">{gt text='No items found.'}</td></tr>
                 {/foreach}
             </tbody>
         </table>

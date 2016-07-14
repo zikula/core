@@ -16,7 +16,7 @@ use Zikula\ExtensionsModule\Api\VariableApi;
 use ZLanguage;
 
 /**
- * Installation and upgrade routines for the settings module
+ * Installation and upgrade routines for the settings module.
  *
  * PLEASE NOTE CAREFULLY.  The use of System::get/set/delVar() is deliberate
  * we cannot use $this->get/set/delVar() because the keys will be incorrectly

@@ -29,7 +29,7 @@
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <tag name="kernel.event_subscriber" />
         </service>
-        <!-- to be removed in 2.0 -->
+        <!-- TODO check if this can be removed in 2.0 -->
         <service id="zikulaadminmodule.module_event_listener" alias="zikula_admin_module.module_event_listener" class="%zikula_admin_module.module_event_listener.class%">
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <tag name="kernel.event_subscriber" />
@@ -39,7 +39,7 @@
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="request_stack" />
         </service>
-        <!-- to be removed in 2.0 -->
+        <!-- TODO check if this can be removed in 2.0 -->
         <service id="zikulaadminmodule.update_check_helper" alias="zikula_admin_module.update_check_helper" class="%zikula_admin_module.update_check_helper.class%">
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="request_stack" />
