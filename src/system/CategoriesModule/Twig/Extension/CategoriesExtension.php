@@ -128,7 +128,7 @@ class CategoriesExtension extends \Twig_Extension
      *
      * @return string
      */
-    function moduleTableSelector($modname = null, $name = null, $selectedValue = 0, $defaultValue = 0, $defaultText = '')
+    public function moduleTableSelector($modname = null, $name = null, $selectedValue = 0, $defaultValue = 0, $defaultText = '')
     {
         return \HtmlUtil::getSelector_ModuleTables($modname, $name, $selectedValue, $defaultValue, $defaultText);
     }
@@ -150,7 +150,7 @@ class CategoriesExtension extends \Twig_Extension
      *
      * @return string
      */
-    function categorySelector($category = 0, $field = 'id', $name = null, $selectedValue = 0, $defaultValue = 0, $defaultText = '',
+    public function categorySelector($category = 0, $field = 'id', $name = null, $selectedValue = 0, $defaultValue = 0, $defaultText = '',
         $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true)
     {
         $lang = ZLanguage::getLanguageCode();
