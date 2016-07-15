@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the Zikula package.
  *
  * Copyright Zikula Foundation - http://zikula.org/
@@ -36,8 +37,8 @@ class YamlDumper
     /**
      * Sets a parameter.
      *
-     * @param string $name  The parameter's name.
-     * @param bool   $value The parameter's value.
+     * @param string $name  The parameter's name
+     * @param bool   $value The parameter's value
      */
     public function setParameter($name, $value)
     {
@@ -48,7 +49,7 @@ class YamlDumper
     }
 
     /**
-     * Set all the parameters
+     * Set all the parameters.
      *
      * @param $params
      */
@@ -65,9 +66,9 @@ class YamlDumper
     /**
      * Returns a parameter.
      *
-     * @param string $name The requested parameter's name.
+     * @param string $name The requested parameter's name
      *
-     * @return mixed The parameter value.
+     * @return mixed The parameter value
      */
     public function getParameter($name)
     {
@@ -81,7 +82,7 @@ class YamlDumper
     }
 
     /**
-     * Return all the parameters
+     * Return all the parameters.
      *
      * @return array
      */
@@ -98,7 +99,7 @@ class YamlDumper
     /**
      * Deletes a parameter.
      *
-     * @param string $name The parameter's name.
+     * @param string $name The parameter's name
      */
     public function delParameter($name)
     {
@@ -111,8 +112,8 @@ class YamlDumper
     /**
      * Sets a configuration.
      *
-     * @param string $name  The configuration's name.
-     * @param mixed $value The configuration's value.
+     * @param string $name  The configuration's name
+     * @param mixed $value The configuration's value
      */
     public function setConfiguration($name, $value)
     {
@@ -125,9 +126,9 @@ class YamlDumper
     /**
      * Returns a configuration.
      *
-     * @param string $name The requested configuration's name.
+     * @param string $name The requested configuration's name
      *
-     * @return mixed The configuration value.
+     * @return mixed The configuration value
      */
     public function getConfiguration($name)
     {
@@ -143,7 +144,7 @@ class YamlDumper
     /**
      * Deletes a configuration.
      *
-     * @param string $name The configuration's name.
+     * @param string $name The configuration's name
      */
     public function delConfiguration($name)
     {
@@ -156,9 +157,9 @@ class YamlDumper
     /**
      * Returns configuration in html format.
      *
-     * @param string $name         The requested configuration's name.
+     * @param string $name         The requested configuration's name
      * @param bool   $fetchDefault Whether or not to return the values specified in the dynamic_config_default.yml file
-     *                             if no configuration is set in the dynamic_config.yml file.
+     *                             if no configuration is set in the dynamic_config.yml file
      *
      * @return string
      */
@@ -201,7 +202,7 @@ class YamlDumper
     /**
      * Parses a Yaml file and return a configuration array.
      *
-     * @return array The configuration array.
+     * @return array The configuration array
      */
     protected function parseFile()
     {
@@ -215,7 +216,7 @@ class YamlDumper
     /**
      * Dump configuration into dynamic configuration file.
      *
-     * @param array $configuration The configuration array to dump.
+     * @param array $configuration The configuration array to dump
      */
     protected function dumpFile($configuration)
     {
@@ -226,10 +227,10 @@ class YamlDumper
     /**
      * Validates that the configuration / parameter name is correct.
      *
-     * @param string $name        The requested configuration / parameter name.
-     * @param bool   $isParameter Whether or not a parameter is requested.
+     * @param string $name        The requested configuration / parameter name
+     * @param bool   $isParameter Whether or not a parameter is requested
      *
-     * @throws \InvalidArgumentException Thrown if the configuration / parameter is invalid.
+     * @throws \InvalidArgumentException Thrown if the configuration / parameter is invalid
      */
     protected function validateName($name, $isParameter)
     {

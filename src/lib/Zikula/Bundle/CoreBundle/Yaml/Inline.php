@@ -11,9 +11,6 @@
 
 namespace Zikula\Bundle\CoreBundle\Yaml;
 
-use Symfony\Component\Yaml\Exception\ParseException;
-use Symfony\Component\Yaml\Exception\DumpException;
-
 /**
  * Inline implements a YAML parser/dumper for the YAML inline syntax.
  *
@@ -23,8 +20,6 @@ use Symfony\Component\Yaml\Exception\DumpException;
  */
 class Inline extends \Symfony\Component\Yaml\Inline
 {
-    const REGEX_QUOTED_STRING = '(?:"([^"\\\\]*(?:\\\\.[^"\\\\]*)*)"|\'([^\']*(?:\'\'[^\']*)*)\')';
-
     /**
      * {@inheritdoc}
      */

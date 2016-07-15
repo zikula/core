@@ -11,8 +11,6 @@
 
 namespace Zikula\Bundle\CoreBundle\Yaml;
 
-use Symfony\Component\Yaml\Exception\ParseException;
-
 /**
  * Yaml offers convenience methods to load and dump YAML.
  *

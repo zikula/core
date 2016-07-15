@@ -39,7 +39,7 @@ class DynamicConfigDumper extends YamlDumper
     }
 
     /**
-     * Dump configuration into dynamic configuration file.
+     * Dump configuration into dynamic configuration file
      *
      * @param array $configuration The configuration array to dump.
      */
