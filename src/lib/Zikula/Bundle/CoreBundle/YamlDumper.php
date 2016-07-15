@@ -11,7 +11,7 @@
 namespace Zikula\Bundle\CoreBundle;
 
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Yaml\Yaml;
+use Zikula\Bundle\CoreBundle\Yaml\Yaml;
 
 /**
  * Class ConfigDumper.
@@ -179,18 +179,18 @@ class YamlDumper
      */
     protected function formatValue($value)
     {
-        if ($value === null) {
-            return "<i>null</i>";
+        if (null === $value) {
+            return '<i>null</i>';
         }
 
-        $html = "";
+        $html = '';
 
         foreach ($value as $key => $val) {
-            $html .= "<li><strong>" . \DataUtil::formatForDisplay($key) . ":</strong>";
+            $html .= '<li><strong>' . \DataUtil::formatForDisplay($key) . ':</strong>';
             if (is_array($val)) {
                 $html .= $this->formatValue($val) . "</li>\n";
             } else {
-                $val = !empty($val) ? \DataUtil::formatForDisplay($val) : "<em>null</em>";
+                $val = !empty($val) ? \DataUtil::formatForDisplay($val) : '<em>null</em>';
                 $html .= " " . $val . "</li>\n";
             }
         }
