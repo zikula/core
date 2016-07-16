@@ -72,7 +72,7 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
      *
      * @return string The charset
      */
-    private function getCharset()
+    private function getCharSet()
     {
         $charSet = \ZLanguage::getDBCharset();
 
