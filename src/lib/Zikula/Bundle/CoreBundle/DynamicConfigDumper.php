@@ -12,7 +12,7 @@
 namespace Zikula\Bundle\CoreBundle;
 
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Yaml\Yaml;
+use Zikula\Bundle\CoreBundle\Yaml\Yaml;
 
 /**
  * Class DynamicConfigDumper.
@@ -22,6 +22,9 @@ class DynamicConfigDumper extends YamlDumper
     const CONFIG_GENERATED = 'dynamic/generated.yml';
     const CONFIG_DEFAULT = 'dynamic/default.yml';
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct($configDir)
     {
         $this->fullPath = $configDir . DIRECTORY_SEPARATOR . self::CONFIG_GENERATED;
@@ -38,7 +41,7 @@ class DynamicConfigDumper extends YamlDumper
     /**
      * Dump configuration into dynamic configuration file.
      *
-     * @param array $configuration The configuration array to dump.
+     * @param array $configuration The configuration array to dump
      */
     protected function dumpFile($configuration)
     {
