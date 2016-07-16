@@ -42,7 +42,7 @@ abstract class Zikula_Form_AbstractStyledPlugin extends Zikula_Form_AbstractPlug
     /**
      * Retrieve the styles added programatically.
      *
-     * @return array The styles.
+     * @return array The styles
      */
     public function getStyleAttributes()
     {
@@ -52,7 +52,7 @@ abstract class Zikula_Form_AbstractStyledPlugin extends Zikula_Form_AbstractPlug
     /**
      * Render attributes.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
      * @return string
      */

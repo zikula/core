@@ -34,8 +34,8 @@ class ClassProperties
     /**
      * Load all keys from properties to resepective properties using set{$key}.
      *
-     * @param object $object     The object to act upon.
-     * @param array  $properties The associative array of properties.
+     * @param object $object     The object to act upon
+     * @param array  $properties The associative array of properties
      *
      * @return void
      */

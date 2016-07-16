@@ -68,8 +68,8 @@ class Zikula_Workflow
     /**
      * Constructor.
      *
-     * @param string $schema Schema.
-     * @param string $module Module name.
+     * @param string $schema Schema
+     * @param string $module Module name
      */
     public function __construct($schema, $module)
     {
@@ -88,8 +88,8 @@ class Zikula_Workflow
     /**
      * Register workflow by $metaId.
      *
-     * @param array  &$obj    Data object.
-     * @param string $stateID State Id.
+     * @param array  &$obj    Data object
+     * @param string $stateID State Id
      *
      * @return boolean
      */
@@ -134,8 +134,8 @@ class Zikula_Workflow
     /**
      * Update workflow state.
      *
-     * @param string $stateID State Id.
-     * @param string $debug   Debug string.
+     * @param string $stateID State Id
+     * @param string $debug   Debug string
      *
      * @return boolean
      */
@@ -167,11 +167,11 @@ class Zikula_Workflow
     /**
      * Execute workflow action.
      *
-     * @param string $actionID Action Id.
-     * @param array  &$obj     Data object.
-     * @param string $stateID State Id.
+     * @param string $actionID Action Id
+     * @param array  &$obj     Data object
+     * @param string $stateID State Id
      *
-     * @return mixed Array or false.
+     * @return mixed Array or false
      */
     public function executeAction($actionID, &$obj, $stateID = 'initial')
     {
@@ -243,9 +243,9 @@ class Zikula_Workflow
     /**
      * Execute workflow operation within action.
      *
-     * @param string $operation Operation name.
-     * @param array  &$obj       Data object.
-     * @param string &$nextState Next state.
+     * @param string $operation Operation name
+     * @param array  &$obj       Data object
+     * @param string &$nextState Next state
      *
      * @return mixed|false
      */

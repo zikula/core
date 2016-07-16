@@ -38,7 +38,7 @@ class SecurityUtil
     /**
      * Retrieve the security schemas.
      *
-     * @return array The security schemas.
+     * @return array The security schemas
      */
     public static function getSchemas()
     {
@@ -48,7 +48,7 @@ class SecurityUtil
     /**
      * Set the security schemas array.
      *
-     * @param array $schemas The security schemas.
+     * @param array $schemas The security schemas
      *
      * @return void
      */
@@ -61,8 +61,8 @@ class SecurityUtil
      * Generate a security token.
      * @deprecated remove at Core-2.0
      *
-     * @param Zikula_ServiceManager $serviceManager ServiceManager (default = null).
-     * @param boolean               $forceUnique    Force a unique token regardless of system settings.
+     * @param Zikula_ServiceManager $serviceManager ServiceManager (default = null)
+     * @param boolean               $forceUnique    Force a unique token regardless of system settings
      *
      * @return string
      */
@@ -79,8 +79,8 @@ class SecurityUtil
      * Validate a given security token.
      * @deprecated remove at Core-2.0
      *
-     * @param string                $token          Token to be validated.
-     * @param Zikula_ServiceManager $serviceManager ServiceManager default = null.
+     * @param string                $token          Token to be validated
+     * @param Zikula_ServiceManager $serviceManager ServiceManager default = null
      *
      * @return boolean
      */
@@ -96,10 +96,10 @@ class SecurityUtil
     /**
      * Check permissions
      *
-     * @param string   $component Component.
-     * @param string   $instance  Instance.
-     * @param constant $level     Level.
-     * @param integer  $user      User Id.
+     * @param string   $component Component
+     * @param string   $instance  Instance
+     * @param constant $level     Level
+     * @param integer  $user      User Id
      *
      * @return boolean
      */
@@ -130,8 +130,8 @@ class SecurityUtil
     /**
      * Register a permission schema.
      *
-     * @param string $component Component.
-     * @param string $schema    Schema.
+     * @param string $component Component
+     * @param string $schema    Schema
      *
      * @return boolean
      */
@@ -149,8 +149,8 @@ class SecurityUtil
     /**
      * Confirm auth key.
      *
-     * @param string $modname Module name.
-     * @param string $varname Variable name.
+     * @param string $modname Module name
+     * @param string $varname Variable name
      *
      * @deprecated since 1.3.0
      *
@@ -225,11 +225,11 @@ class SecurityUtil
     /**
      * Generate auth key.
      *
-     * @param string $modname Module name.
+     * @param string $modname Module name
      *
      * @deprecated since 1.3.0
      *
-     * @return string An encrypted key for use in authorisation of operations.
+     * @return string An encrypted key for use in authorisation of operations
      */
     public static function generateAuthKey($modname = '')
     {
@@ -285,9 +285,9 @@ class SecurityUtil
     /**
      * Get auth info.
      *
-     * @param integer $user User Id.
+     * @param integer $user User Id
      *
-     * @return array Two element array of user and group permissions.
+     * @return array Two element array of user and group permissions
      */
     public static function getAuthInfo($user = null)
     {
@@ -374,11 +374,11 @@ class SecurityUtil
     /**
      * Get security Level
      *
-     * @param array  $perms     Array of permissions.
-     * @param string $component Component.
-     * @param string $instance  Instance.
+     * @param array  $perms     Array of permissions
+     * @param string $component Component
+     * @param string $instance  Instance
      *
-     * @return integer Matching security level.
+     * @return integer Matching security level
      */
     public static function getSecurityLevel($perms, $component, $instance)
     {
@@ -483,7 +483,7 @@ class SecurityUtil
     /**
      * Fix security string.
      *
-     * @param string $string String.
+     * @param string $string String
      *
      * @return string
      */
@@ -506,9 +506,9 @@ class SecurityUtil
     /**
      * Sign data object leaving data clearly visible.
      *
-     * @param array $data Data object.
+     * @param array $data Data object
      *
-     * @return string Serialized string of signed data.
+     * @return string Serialized string of signed data
      */
     public static function signData($data)
     {
@@ -523,9 +523,9 @@ class SecurityUtil
     /**
      * Verify signed data object.
      *
-     * @param string $data String of serialized $data.
+     * @param string $data String of serialized $data
      *
-     * @return mixed Array or string of data if true or bool false if false.
+     * @return mixed Array or string of data if true or bool false if false
      */
     public static function checkSignedData($data)
     {
@@ -542,16 +542,16 @@ class SecurityUtil
     /**
      * Hashes the data with the specified salt value and returns a string containing the hash method, salt and hash.
      *
-     * @param string $unhashedData         The data to be salted and hashed.
-     * @param string $hashMethodName       Any value returned by hash_algo().
-     * @param string $saltStr              Any valid string, including the empty string, with which to salt the unhashed data before hashing.
+     * @param string $unhashedData         The data to be salted and hashed
+     * @param string $hashMethodName       Any value returned by hash_algo()
+     * @param string $saltStr              Any valid string, including the empty string, with which to salt the unhashed data before hashing
      * @param array  $hashMethodNameToCode An array indexed by algorithm names (from hash_algos()) used to encode the hashing algorithm
      *                                         name and include it on the salted hash string; optional, if not specified, then the
-     *                                         algorithm name is included in the string returned (which could be considered less than secure!).
-     * @param string $saltDelimeter The delimiter between the salt and the hash, must be a single character.
+     *                                         algorithm name is included in the string returned (which could be considered less than secure!)
+     * @param string $saltDelimeter The delimiter between the salt and the hash, must be a single character
      *
      * @return string|bool The algorithm name (or code if $hashMethodNameToCode specified), salt and hashed data separated by the salt delimiter;
-     *                      false if an error occured.
+     *                      false if an error occured
      */
     public static function buildSaltedHash($unhashedData, $hashMethodName, $saltStr, array $hashMethodNameToCode = [], $saltDelimeter = self::SALT_DELIM)
     {
@@ -577,16 +577,16 @@ class SecurityUtil
     /**
      * Hashes the data with a random salt value and returns a string containing the hash method, salt and hash.
      *
-     * @param string $unhashedData         The data to be salted and hashed.
-     * @param string $hashMethodName       Any value returned by hash_algo().
+     * @param string $unhashedData         The data to be salted and hashed
+     * @param string $hashMethodName       Any value returned by hash_algo()
      * @param array  $hashMethodNameToCode An array indexed by algorithm names (from hash_algos()) used to encode the hashing algorithm
      *                                         name and include it on the salted hash string; optional, if not specified, then the
-     *                                         algorithm name is included in the string returned (which could be considered less than secure!).
-     * @param int    $saltLength    The number of random characters to use in the salt.
-     * @param string $saltDelimeter The delimiter between the salt and the hash, must be a single character.
+     *                                         algorithm name is included in the string returned (which could be considered less than secure!)
+     * @param int    $saltLength    The number of random characters to use in the salt
+     * @param string $saltDelimeter The delimiter between the salt and the hash, must be a single character
      *
      * @return string|bool The algorithm name (or code if $hashMethodNameToCode specified), salt and hashed data separated by the salt delimiter;
-     *                      false if an error occured.
+     *                      false if an error occured
      */
     public static function getSaltedHash($unhashedData, $hashMethodName, array $hashMethodNameToCode = [], $saltLength = 5, $saltDelimeter = self::SALT_DELIM)
     {
@@ -599,15 +599,15 @@ class SecurityUtil
     /**
      * Checks the given data against the given salted hash to see if they match.
      *
-     * @param string $unhashedData         The data to be salted and hashed.
-     * @param string $saltedHash           The salted hash.
+     * @param string $unhashedData         The data to be salted and hashed
+     * @param string $saltedHash           The salted hash
      * @param array  $hashMethodCodeToName An array indexed by algorithm names (from hash_algos()) used to encode the hashing algorithm
      *                                         name and include it on the salted hash string; optional, if not specified, then the
-     *                                         algorithm name is included in the string returned (which could be considered less than secure!).
-     * @param string $saltDelimeter The delimiter between the salt and the hash, must be a single character.
+     *                                         algorithm name is included in the string returned (which could be considered less than secure!)
+     * @param string $saltDelimeter The delimiter between the salt and the hash, must be a single character
      *
      * @return integer|bool If the data matches the salted hash, then 1; If the data does not match, then 0; false if an error occured (Note:
-     *                      both 0 and false evaluate to false in boolean expressions--use strict comparisons to differentiate).
+     *                      both 0 and false evaluate to false in boolean expressions--use strict comparisons to differentiate)
      */
     public static function checkSaltedHash($unhashedData, $saltedHash, array $hashMethodCodeToName = [], $saltDelimeter = self::SALT_DELIM)
     {
@@ -646,9 +646,9 @@ class SecurityUtil
      *
      * Translate level -> name
      *
-     * @param constant $level Access level.
+     * @param constant $level Access level
      *
-     * @return string Translated access level name.
+     * @return string Translated access level name
      */
     public static function accesslevelname($level)
     {

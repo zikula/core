@@ -39,8 +39,8 @@ class Zikula_Doctrine_Query extends Doctrine_Query
      *
      * The queried doctrine model must have the Zikula_Doctrine_Template_Categorisable behavoir.
      *
-     * @param array   $categories  Array of category ids or an associative array of property name => category id(s).
-     * @param boolean $joinWithAnd True to join properties with AND instead with OR.
+     * @param array   $categories  Array of category ids or an associative array of property name => category id(s)
+     * @param boolean $joinWithAnd True to join properties with AND instead with OR
      *
      * @return Zikula_Doctrine_Query
      */

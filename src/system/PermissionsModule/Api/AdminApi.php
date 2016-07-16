@@ -33,7 +33,7 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type int $pid the ID of the permission to increment.
      *                    }
      *
-     * @return bool true on success, false if the permission rule doesn't exist.
+     * @return bool true on success, false if the permission rule doesn't exist
      *
      * @throws AccessDeniedException Thrown if the user doesn't admin acces over the permission rule
      * @throws \InvalidArgumentException Thrown if the pid parameter is not set or not numeric
@@ -263,10 +263,10 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return bool true if successful
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access over the permission rule.
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access over the permission rule
      * @throws \InvalidArgumentException Thrown if any of id, insseq or level are not set or not numeric or
-     *                                          if any of realm, component or instance are not set.
-     * @throws \RuntimeException Thrown if the permission rule couldn't be saved.
+     *                                          if any of realm, component or instance are not set
+     * @throws \RuntimeException Thrown if the permission rule couldn't be saved
      */
     public function create($args)
     {
@@ -360,7 +360,7 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Get the maximum sequence number in permissions table.
      *
-     * @return int the maximum sequence number.
+     * @return int the maximum sequence number
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
@@ -523,7 +523,7 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Get all security permissions schemas.
      *
-     * @return array array if permission schema values.
+     * @return array array if permission schema values
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */

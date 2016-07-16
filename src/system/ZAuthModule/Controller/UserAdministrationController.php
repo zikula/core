@@ -358,7 +358,7 @@ class UserAdministrationController extends AbstractController
      * @Theme("admin")
      * @Template
      * @param Request $request
-     * @param UserEntity $user // note: this is intentionally left as UserEntity instead of mapping because of need to access attributes.
+     * @param UserEntity $user // note: this is intentionally left as UserEntity instead of mapping because of need to access attributes
      * @return array|RedirectResponse
      */
     public function togglePasswordChangeAction(Request $request, UserEntity $user)

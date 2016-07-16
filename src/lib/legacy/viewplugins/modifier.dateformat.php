@@ -25,13 +25,13 @@ require_once $smarty->_get_plugin_filepath('shared', 'make_timestamp');
 /**
  * Zikula_View modifier to format datestamps via strftime according to locale setting in Zikula.
  *
- * @param string $string       Input date string.
- * @param string $format       Strftime format for output.
- * @param string $default_date Default date if $string is empty.
+ * @param string $string       Input date string
+ * @param string $format       Strftime format for output
+ * @param string $default_date Default date if $string is empty
  *
  * @uses smarty_make_timestamp()
  *
- * @return string The modified output.
+ * @return string The modified output
  */
 function smarty_modifier_dateformat($string, $format = 'datebrief', $default_date = null)
 {

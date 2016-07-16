@@ -42,7 +42,7 @@ abstract class AbstractPlugin
      *
      * Argument $config may contain
      *
-     * @param Config $config Configuration.
+     * @param Config $config Configuration
      */
     public function setConfig(Config $config)
     {
@@ -52,7 +52,7 @@ abstract class AbstractPlugin
     /**
      * Sets the plugin id.
      *
-     * @param int $id Plugin ID.
+     * @param int $id Plugin ID
      *
      * @return void
      */

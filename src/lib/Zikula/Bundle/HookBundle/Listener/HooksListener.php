@@ -54,7 +54,7 @@ class HooksListener implements EventSubscriberInterface
      * @deprecated remove at Core-2.0
      * move logic to linkCollectorResponder
      *
-     * @param \Zikula_Event $event The event handler.
+     * @param \Zikula_Event $event The event handler
      * @return void
      */
     public function addHooksLink(\Zikula_Event $event)

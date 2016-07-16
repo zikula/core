@@ -17,15 +17,15 @@ use SecurityUtil;
 
 /**
  * @deprecated
- * The system-level and database-level functions for user-initiated actions for the Users module.
+ * The system-level and database-level functions for user-initiated actions for the Users module
  */
 class UserApi extends \Zikula_AbstractApi
 {
     /**
      * @deprecated
-     * Retrieve the account links for each user module.
+     * Retrieve the account links for each user module
      *
-     * @return array An array of links for the user account page.
+     * @return array An array of links for the user account page
      */
     public function accountLinks()
     {

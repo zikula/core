@@ -27,8 +27,8 @@
  *
  *  <samp>{useravatar uid=$author}</samp>
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the {@link Zikula_View} object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the {@link Zikula_View} object
  *
  * @return void
  */

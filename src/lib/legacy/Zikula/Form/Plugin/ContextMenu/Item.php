@@ -97,8 +97,8 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view Reference to Form render object.
-     * @param array            &$params Parameters passed from the Smarty plugin function.
+     * @param Zikula_Form_View $view Reference to Form render object
+     * @param array            &$params Parameters passed from the Smarty plugin function
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
@@ -110,7 +110,7 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
     /**
      * Render event handler.
      *
-     * @param Zikula_Form_View $view Reference to Form render object.
+     * @param Zikula_Form_View $view Reference to Form render object
      *
      * @return string The rendered output
      */
@@ -157,10 +157,10 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
     /**
      * Renders the confirmation action.
      *
-     * @param Zikula_Form_View $view   Reference to Form render object.
-     * @param string           $script JavaScript code to run.
+     * @param Zikula_Form_View $view   Reference to Form render object
+     * @param string           $script JavaScript code to run
      *
-     * @return string The rendered output.
+     * @return string The rendered output
      */
     public function renderConfirm(Zikula_Form_View $view, $script)
     {
@@ -176,8 +176,8 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
     /**
      * Called by Forms framework due to the use of getPostBackEventReference() above.
      *
-     * @param Zikula_Form_View $view          Reference to Form render object.
-     * @param string           $eventArgument The event argument.
+     * @param Zikula_Form_View $view          Reference to Form render object
+     * @param string           $eventArgument The event argument
      *
      * @return void
      */
@@ -199,7 +199,7 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
     /**
      * Get parent context menu.
      *
-     * @return Zikula_Form_Block_ContextMenu Parent context menu.
+     * @return Zikula_Form_Block_ContextMenu Parent context menu
      */
     public function getParentContextMenu()
     {

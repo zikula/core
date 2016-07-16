@@ -26,7 +26,7 @@ class Zikula_Translate implements Zikula_TranslatableInterface
     /**
      * Constructor.
      *
-     * @param string $domain Gettext domain.
+     * @param string $domain Gettext domain
      */
     private function __construct($domain = null)
     {
@@ -36,7 +36,7 @@ class Zikula_Translate implements Zikula_TranslatableInterface
     /**
      * Set the translation domain.
      *
-     * @param string $domain Gettext domain.
+     * @param string $domain Gettext domain
      *
      * @return void
      */
@@ -58,7 +58,7 @@ class Zikula_Translate implements Zikula_TranslatableInterface
     /**
      * singular translation for modules.
      *
-     * @param string $msg Message.
+     * @param string $msg Message
      *
      * @return string
      */
@@ -70,9 +70,9 @@ class Zikula_Translate implements Zikula_TranslatableInterface
     /**
      * Plural translations for modules.
      *
-     * @param string  $m1 Singular.
-     * @param string  $m2 Plural.
-     * @param integer $n  Count.
+     * @param string  $m1 Singular
+     * @param string  $m2 Plural
+     * @param integer $n  Count
      *
      * @return string
      */
@@ -84,8 +84,8 @@ class Zikula_Translate implements Zikula_TranslatableInterface
     /**
      * Format translations for modules.
      *
-     * @param string       $msg   Message.
-     * @param string|array $param Format parameters.
+     * @param string       $msg   Message
+     * @param string|array $param Format parameters
      *
      * @return string
      */
@@ -97,10 +97,10 @@ class Zikula_Translate implements Zikula_TranslatableInterface
     /**
      * Format pural translations for modules.
      *
-     * @param string       $m1    Singular.
-     * @param string       $m2    Plural.
-     * @param integer      $n     Count.
-     * @param string|array $param Format parameters.
+     * @param string       $m1    Singular
+     * @param string       $m2    Plural
+     * @param integer      $n     Count
+     * @param string|array $param Format parameters
      *
      * @return string
      */

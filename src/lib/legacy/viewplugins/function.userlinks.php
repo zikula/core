@@ -20,12 +20,12 @@
  *  end       End delimiter
  *  seperator Seperator
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
  * @see    function.userlinks.php::smarty_function_userlinks()
  *
- * @return string User links.
+ * @return string User links
  */
 function smarty_function_userlinks($params, Zikula_View $view)
 {

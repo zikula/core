@@ -84,11 +84,11 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
     /**
      * Removes a record from the users_verifychg table for a specified uid and changetype.
      *
-     * @param integer $uid The uid of the verifychg record to remove. Required.
+     * @param integer $uid The uid of the verifychg record to remove. Required
      * @param int|array $types The changetype(s) of the verifychg record to remove. If more
      *                         than one type is to be removed, use an array. Optional. If
      *                         not specifed, all verifychg records for the user will be
-     *                         removed. Note: specifying an empty array will remove none.
+     *                         removed. Note: specifying an empty array will remove none
      * @return array
      */
     public function resetVerifyChgFor($uid, $types = null)
@@ -122,7 +122,7 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
      * @param integer $uid
      * @param int $changeType
      * @param null $email
-     * @return string new confirmation code.
+     * @return string new confirmation code
      */
     public function setVerificationCode($uid, $changeType = ZAuthConstant::VERIFYCHGTYPE_PWD, $email = null)
     {

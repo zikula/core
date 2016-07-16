@@ -19,7 +19,7 @@ interface Zikula_TranslatableInterface
     /**
      * singular translation for modules.
      *
-     * @param string $msg Message.
+     * @param string $msg Message
      *
      * @return string
      */
@@ -28,9 +28,9 @@ interface Zikula_TranslatableInterface
     /**
      * Plural translations for modules.
      *
-     * @param string  $m1 Singular.
-     * @param string  $m2 Plural.
-     * @param integer $n  Count.
+     * @param string  $m1 Singular
+     * @param string  $m2 Plural
+     * @param integer $n  Count
      *
      * @return string
      */
@@ -39,8 +39,8 @@ interface Zikula_TranslatableInterface
     /**
      * Format translations for modules.
      *
-     * @param string       $msg   Message.
-     * @param string|array $param Format parameters.
+     * @param string       $msg   Message
+     * @param string|array $param Format parameters
      *
      * @return string
      */
@@ -49,10 +49,10 @@ interface Zikula_TranslatableInterface
     /**
      * Format pural translations for modules.
      *
-     * @param string       $m1    Singular.
-     * @param string       $m2    Plural.
-     * @param integer      $n     Count.
-     * @param string|array $param Format parameters.
+     * @param string       $m1    Singular
+     * @param string       $m2    Plural
+     * @param integer      $n     Count
+     * @param string|array $param Format parameters
      *
      * @return string
      */

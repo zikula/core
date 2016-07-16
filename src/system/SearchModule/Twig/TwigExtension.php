@@ -28,7 +28,7 @@ class TwigExtension extends \Twig_Extension
     /**
      * TwigExtension constructor.
      *
-     * @param VariableApi $variableApi VariableApi service instance.
+     * @param VariableApi $variableApi VariableApi service instance
      */
     public function __construct(VariableApi $variableApi)
     {
@@ -65,11 +65,11 @@ class TwigExtension extends \Twig_Extension
      * for hidden form fields from a nested array set
      *
      * @param array|string $data            The data that should be stored in hidden fields (nested arrays allowed).
-     *                                      If an empty string is given and $isRecursiveCall is false the module vars are used by default.
-     * @param string       $prefix          Optional prefix.
-     * @param bool         $isRecursiveCall Flag to determine whether this method has been called recursively.
+     *                                      If an empty string is given and $isRecursiveCall is false the module vars are used by default
+     * @param string       $prefix          Optional prefix
+     * @param bool         $isRecursiveCall Flag to determine whether this method has been called recursively
      *
-     * @return array List of hidden form fields.
+     * @return array List of hidden form fields
      */
     public function searchVarToFieldNames($data = '', $prefix = 'modvar', $isRecursiveCall = false)
     {
@@ -98,7 +98,7 @@ class TwigExtension extends \Twig_Extension
     /**
      * Legacy bridging method for arbitrary module urls.
      *
-     * @param string $moduleName Name of target module.
+     * @param string $moduleName Name of target module
      *
      * @return string
      */
@@ -110,9 +110,9 @@ class TwigExtension extends \Twig_Extension
     /**
      * Highlights case insensitive google search phrase.
      *
-     * @param string  $text         The string to operate on.
-     * @param string  $searchPhrase The search phrase.
-     * @param integer $contextSize  The number of chars shown as context around the search phrase.
+     * @param string  $text         The string to operate on
+     * @param string  $searchPhrase The search phrase
+     * @param integer $contextSize  The number of chars shown as context around the search phrase
      *
      * @return string
      */

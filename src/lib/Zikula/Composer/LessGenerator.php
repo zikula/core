@@ -19,7 +19,7 @@ class LessGenerator
     /**
      * This function generates from the customized bootstrap.less und font-awesome.less a combined css file
      *
-     * @param string|null $writeTo Where to dump the generated file.
+     * @param string|null $writeTo Where to dump the generated file
      */
     public static function generateCombinedBootstrapFontAwesomeCSS($writeTo = null)
     {

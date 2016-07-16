@@ -50,8 +50,8 @@ class Zikula_Form_Plugin_LanguageSelector extends Zikula_Form_Plugin_DropdownLis
     /**
      * Load event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
-     * @param array            &$params Parameters passed from the Smarty plugin function.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
+     * @param array            &$params Parameters passed from the Smarty plugin function
      *
      * @return void
      */

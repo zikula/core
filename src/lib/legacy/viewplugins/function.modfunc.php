@@ -28,12 +28,12 @@
  * Example
  * {modfunc modname='News' type='user' func='view'}
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
  * @see    function.ModUtil::apiFunc.php::smarty_function_modapifunc()
  *
- * @return string The results of the module function.
+ * @return string The results of the module function
  */
 function smarty_function_modfunc($params, Zikula_View $view)
 {

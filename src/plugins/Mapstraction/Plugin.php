@@ -17,7 +17,7 @@ class SystemPlugin_Mapstraction_Plugin extends Zikula_AbstractPlugin implements 
     /**
      * Get plugin meta data.
      *
-     * @return array Meta data.
+     * @return array Meta data
      */
     protected function getMeta()
     {

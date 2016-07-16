@@ -18,11 +18,11 @@
  *
  *   {$myVar|xslt:'your_xsl_file.xsl'}
  *
- * @param array  $string   The contents to transform.
- * @param string $styleurl Url to XSL file.
+ * @param array  $string   The contents to transform
+ * @param string $styleurl Url to XSL file
  *
  * @see    modifier.xslt.php::smarty_modifier_xslt
- * @return string The modified output.
+ * @return string The modified output
  */
 function smarty_modifier_xslt($string, $styleurl)
 {

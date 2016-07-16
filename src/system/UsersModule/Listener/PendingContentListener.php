@@ -58,7 +58,7 @@ class PendingContentListener implements EventSubscriberInterface
      * assumed as a {@link PendingContentCollectible} and added to the event
      * subject's collection.
      *
-     * @param GenericEvent $event The event that was fired, a 'get_pending_content' event.
+     * @param GenericEvent $event The event that was fired, a 'get_pending_content' event
      *
      * @return void
      */

@@ -152,9 +152,9 @@ class Zikula_Form_View extends Zikula_View
      *
      * Use FormUtil::newForm() instead of instantiating Zikula_Form_View directly.
      *
-     * @param Zikula_ServiceManager $serviceManager ServiceManager.
-     * @param string                $module         Module name.
-     * @param integer               $caching        Caching flag (not used - just for e_strict).
+     * @param Zikula_ServiceManager $serviceManager ServiceManager
+     * @param string                $module         Module name
+     * @param integer               $caching        Caching flag (not used - just for e_strict)
      */
     public function __construct(Zikula_ServiceManager $serviceManager, $module, $caching = null)
     {
@@ -195,7 +195,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Set the form Id.
      *
-     * @param string $formId Form ID.
+     * @param string $formId Form ID
      *
      * @return void
      */
@@ -217,7 +217,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Set entitymanager.
      *
-     * @param object $entityManager Entity manager to set.
+     * @param object $entityManager Entity manager to set
      *
      * @return void
      */
@@ -231,10 +231,10 @@ class Zikula_Form_View extends Zikula_View
      *
      * This is the function to call instead of the normal $view->fetch(...).
      *
-     * @param boolean                     $template     Name of template file.
-     * @param Zikula_Form_AbstractHandler $eventHandler Instance of object that inherits from Zikula_Form_AbstractHandler.
+     * @param boolean                     $template     Name of template file
+     * @param Zikula_Form_AbstractHandler $eventHandler Instance of object that inherits from Zikula_Form_AbstractHandler
      *
-     * @return mixed False on errors, true on redirects, and otherwise it returns the HTML output for the page.
+     * @return mixed False on errors, true on redirects, and otherwise it returns the HTML output for the page
      */
     public function execute($template, Zikula_Form_AbstractHandler $eventHandler)
     {
@@ -332,13 +332,13 @@ class Zikula_Form_View extends Zikula_View
      *
      * See also all the function.formXXX.php plugins for examples.
      *
-     * @param string $pluginName Full class name of the plugin to register.
-     * @param array   &$params    Parameters passed from the Smarty plugin function.
-     * @param boolean $isBlock Indicates whether the plugin is a Smarty block or a Smarty function (internal).
+     * @param string $pluginName Full class name of the plugin to register
+     * @param array   &$params    Parameters passed from the Smarty plugin function
+     * @param boolean $isBlock Indicates whether the plugin is a Smarty block or a Smarty function (internal)
      *
-     * @return string Returns what the render() method of the plugin returns.
+     * @return string Returns what the render() method of the plugin returns
      *
-     * @throws InvalidArgumentException Thrown if the plugin is not an instance of Zikula_Form_AbstractPlugin.
+     * @throws InvalidArgumentException Thrown if the plugin is not an instance of Zikula_Form_AbstractPlugin
      */
     public function registerPlugin($pluginName, &$params, $isBlock = false)
     {
@@ -428,11 +428,11 @@ class Zikula_Form_View extends Zikula_View
      * }
      * </code>
      *
-     * @param string $pluginName Full class name of the plugin to register.
-     * @param array  &$params    Parameters passed from the Smarty block function.
-     * @param string &$content   Content passed from the Smarty block function.
+     * @param string $pluginName Full class name of the plugin to register
+     * @param array  &$params    Parameters passed from the Smarty block function
+     * @param string &$content   Content passed from the Smarty block function
      *
-     * @return string The rendered content.
+     * @return string The rendered content
      */
     public function registerBlock($pluginName, &$params, &$content)
     {
@@ -446,8 +446,8 @@ class Zikula_Form_View extends Zikula_View
     /**
      * RegisterBlockBegin.
      *
-     * @param string $pluginName Full class name of the plugin to register.
-     * @param array  &$params    Parameters passed from the block function.
+     * @param string $pluginName Full class name of the plugin to register
+     * @param array  &$params    Parameters passed from the block function
      *
      * @internal
      * @return void
@@ -462,12 +462,12 @@ class Zikula_Form_View extends Zikula_View
     /**
      * RegisterBlockEnd.
      *
-     * @param string $pluginName Full class name of the plugin to register.
-     * @param array  &$params    Parameters passed from the block function.
-     * @param string $content The block content.
+     * @param string $pluginName Full class name of the plugin to register
+     * @param array  &$params    Parameters passed from the block function
+     * @param string $content The block content
      *
      * @internal
-     * @return string The rendered content.
+     * @return string The rendered content
      */
     public function registerBlockEnd($pluginName, &$params, $content)
     {
@@ -488,10 +488,10 @@ class Zikula_Form_View extends Zikula_View
     /**
      * GetPluginId.
      *
-     * @param array &$params Parameters passed from the block function.
+     * @param array &$params Parameters passed from the block function
      *
      * @internal
-     * @return string The plugin ID.
+     * @return string The plugin ID
      */
     public function getPluginId(&$params)
     {
@@ -505,7 +505,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Get Plugin by id.
      *
-     * @param integer $id Plugin ID.
+     * @param integer $id Plugin ID
      *
      * @return Zikula_Form_AbstractPlugin|null
      */
@@ -528,8 +528,8 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Get Plugin By Id_rec.
      *
-     * @param object  $plugin Plugin.
-     * @param integer $id     Plugin ID.
+     * @param object  $plugin Plugin
+     * @param integer $id     Plugin ID
      *
      * @return Zikula_Form_AbstractPlugin|null
      */
@@ -566,7 +566,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Form Die.
      *
-     * @param string $msg Message to echo.
+     * @param string $msg Message to echo
      *
      * @return void
      */
@@ -579,10 +579,10 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Translate For Display.
      *
-     * @param string  $txt      Text to translate for display.
-     * @param boolean $doEncode True to formatForDisplay.
+     * @param string  $txt      Text to translate for display
+     * @param boolean $doEncode True to formatForDisplay
      *
-     * @return string Text.
+     * @return string Text
      */
     public function translateForDisplay($txt, $doEncode = true)
     {
@@ -598,7 +598,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Add Validator.
      *
-     * @param object $validator Validator to add.
+     * @param object $validator Validator to add
      *
      * @return void
      */
@@ -612,7 +612,7 @@ class Zikula_Form_View extends Zikula_View
      *
      * Then returns true if all validators pass.
      *
-     * @return boolean True if all validators are valid.
+     * @return boolean True if all validators are valid
      */
     public function isValid()
     {
@@ -626,7 +626,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Get validators.
      *
-     * @return array Array of all Validators.
+     * @return array Array of all Validators
      */
     public function &getValidators()
     {
@@ -671,9 +671,9 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Sets a state.
      *
-     * @param string $region  State region.
-     * @param string $varName State variable name.
-     * @param mixed  &$varValue State variable value.
+     * @param string $region  State region
+     * @param string $varName State variable name
+     * @param mixed  &$varValue State variable value
      *
      * @return void
      */
@@ -689,10 +689,10 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Get a state.
      *
-     * @param string $region  State region.
-     * @param string $varName State variable name.
+     * @param string $region  State region
+     * @param string $varName State variable name
      *
-     * @return mixed State variable value.
+     * @return mixed State variable value
      */
     public function &getState($region, $varName)
     {
@@ -713,9 +713,9 @@ class Zikula_Form_View extends Zikula_View
      * }
      * </code>
      *
-     * @param string $id        Plugin identifier.
-     * @param string $msg       Error message.
-     * @param array  $newvalues New values to set on the plugin object (optional).
+     * @param string $id        Plugin identifier
+     * @param string $msg       Error message
+     * @param array  $newvalues New values to set on the plugin object (optional)
      *
      * @return false
      */
@@ -748,7 +748,7 @@ class Zikula_Form_View extends Zikula_View
      * }
      * </code>
      *
-     * @param string $msg Error message.
+     * @param string $msg Error message
      *
      * @return false
      */
@@ -762,7 +762,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Returns registered error.
      *
-     * @return string Error string.
+     * @return string Error string
      */
     public function getErrorMsg()
     {
@@ -798,7 +798,7 @@ class Zikula_Form_View extends Zikula_View
      * }
      * </code>
      *
-     * @param mixed $dummy Just a dummy variable.
+     * @param mixed $dummy Just a dummy variable
      *
      * @return false
      */
@@ -814,9 +814,9 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Redirect.
      *
-     * @param Zikula\Core\ModUrl|string $url Url.
+     * @param Zikula\Core\ModUrl|string $url Url
      *
-     * @return boolean True if redirected successfully, otherwise false.
+     * @return boolean True if redirected successfully, otherwise false
      */
     public function redirect($url)
     {
@@ -837,7 +837,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Redirect status check.
      *
-     * @return boolean True if redirected, otherwise false.
+     * @return boolean True if redirected, otherwise false
      */
     public function isRedirected()
     {
@@ -872,8 +872,8 @@ class Zikula_Form_View extends Zikula_View
      * }
      * </code>
      *
-     * @param object $plugin      Reference to the plugin that should receive the postback event.
-     * @param string $commandName Command name to pass to the event handler.
+     * @param object $plugin      Reference to the plugin that should receive the postback event
+     * @param string $commandName Command name to pass to the event handler
      *
      * @return string
      */
@@ -889,8 +889,8 @@ class Zikula_Form_View extends Zikula_View
      * It is usually called from a plugin to signal that something in that
      * plugin needs attention.
      *
-     * @param string $eventHandlerName The event handler method name.
-     * @param mixed  $args             The event arguments.
+     * @param string $eventHandlerName The event handler method name
+     * @param mixed  $args             The event arguments
      *
      * @return boolean
      */
@@ -924,7 +924,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Get the includes as text.
      *
-     * @return string Encoded includes.
+     * @return string Encoded includes
      */
     public function getIncludesText()
     {
@@ -934,7 +934,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Save includes to session.
      *
-     * @return string Empty string.
+     * @return string Empty string
      */
     public function getIncludesHTML()
     {
@@ -969,7 +969,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * CSRF protection
      *
-     * @return string HTML input field.
+     * @return string HTML input field
      */
     public function getCsrfTokenHtml()
     {
@@ -994,9 +994,9 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Get a data field or all the persistent data.
      *
-     * @param string $key Key field to be retrieved.
+     * @param string $key Key field to be retrieved
      *
-     * @return mixed One or all the persistent data.
+     * @return mixed One or all the persistent data
      */
     public function getStateData($key = null)
     {
@@ -1010,8 +1010,8 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Set a persistent data field.
      *
-     * @param string $key   ID of the value to set in the state data array.
-     * @param mixed  $value Data to set.
+     * @param string $key   ID of the value to set in the state data array
+     * @param mixed  $value Data to set
      *
      * @return $this
      */
@@ -1027,7 +1027,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Save data to session.
      *
-     * @return string Empty string.
+     * @return string Empty string
      */
     public function getStateDataHTML()
     {
@@ -1064,7 +1064,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Get saved states as text.
      *
-     * @return text Encoded states.
+     * @return text Encoded states
      */
     public function getStateText()
     {
@@ -1077,7 +1077,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Get plugin states.
      *
-     * @return array States.
+     * @return array States
      */
     public function getPluginState()
     {
@@ -1090,9 +1090,9 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Recursive helper method for self::getPluginState.
      *
-     * @param array $plugins Array of Form plugins.
+     * @param array $plugins Array of Form plugins
      *
-     * @return array Plugin states.
+     * @return array Plugin states
      */
     public function getPluginState_rec($plugins)
     {
@@ -1125,7 +1125,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Get states as HTML
      *
-     * @return text State HTML input field.
+     * @return text State HTML input field
      */
     public function getStateHTML()
     {
@@ -1158,7 +1158,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Decode plugin state.
      *
-     * @return array decoded states.
+     * @return array decoded states
      */
     public function &decodePluginState()
     {
@@ -1171,9 +1171,9 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Recursive helper method for self::decodePluginState.
      *
-     * @param array &$state Plugin states.
+     * @param array &$state Plugin states
      *
-     * @return array Decoded plugin states.
+     * @return array Decoded plugin states
      */
     public function &decodePluginState_rec(&$state)
     {
@@ -1228,7 +1228,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Recursive helper method for self::initializePlugins().
      *
-     * @param array $plugins Array of Form plugins.
+     * @param array $plugins Array of Form plugins
      *
      * @return void
      */
@@ -1259,7 +1259,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Recursive helper method for self::decodePlugins.
      *
-     * @param array $plugins Array of Form plugins.
+     * @param array $plugins Array of Form plugins
      *
      * @return void
      */
@@ -1294,7 +1294,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Recursive helper method for self::decodePostBackEvent().
      *
-     * @param array $plugins Array of Form plugins.
+     * @param array $plugins Array of Form plugins
      *
      * @return void
      */
@@ -1321,7 +1321,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Recursive helper method for self::postRender().
      *
-     * @param array $plugins Array of Form plugins.
+     * @param array $plugins Array of Form plugins
      *
      * @return void
      */
@@ -1386,8 +1386,8 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Recursive helper method for self::getValues().
      *
-     * @param array $plugins Array of Form plugins.
-     * @param array &$result Result array.
+     * @param array $plugins Array of Form plugins
+     * @param array &$result Result array
      *
      * @return void
      */
@@ -1409,8 +1409,8 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Sets values.
      *
-     * @param array  &$values Values to set.
-     * @param string $group Group name.
+     * @param array  &$values Values to set
+     * @param string $group Group name
      *
      * @return boolean
      */
@@ -1424,9 +1424,9 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Helper method for self::setValues().
      *
-     * @param array  &$values Values to set.
-     * @param string $group   Group name.
-     * @param array  $plugins Array of Form plugins.
+     * @param array  &$values Values to set
+     * @param string $group   Group name
+     * @param array  $plugins Array of Form plugins
      *
      * @return boolean
      */
@@ -1444,9 +1444,9 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Recursive helper method for self::setValues().
      *
-     * @param array  &$values Values to set.
-     * @param string $group   Group name.
-     * @param array  $plugins Array of Form plugins.
+     * @param array  &$values Values to set
+     * @param string $group   Group name
+     * @param array  $plugins Array of Form plugins
      *
      * @return void
      */
@@ -1468,8 +1468,8 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Dump plugins.
      *
-     * @param string $msg     Message.
-     * @param array  $plugins Not in use.
+     * @param string $msg     Message
+     * @param array  $plugins Not in use
      *
      * @return void
      */
@@ -1484,7 +1484,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Recursive helper method for self::dumpPlugins().
      *
-     * @param array $plugins Array of Form plugins.
+     * @param array $plugins Array of Form plugins
      *
      * @return void
      */

@@ -54,11 +54,11 @@ class PendingContentCollectible
     /**
      * Constructor.
      *
-     * @param string  $type        Type of collectible item.
-     * @param string  $description Description of aggregate.
-     * @param integer $number      Number of items in aggregate.
-     * @param string  $route       Route id (to view action).
-     * @param array   $args        Arguments for method.
+     * @param string  $type        Type of collectible item
+     * @param string  $description Description of aggregate
+     * @param integer $number      Number of items in aggregate
+     * @param string  $route       Route id (to view action)
+     * @param array   $args        Arguments for method
      */
     public function __construct($type, $description, $number, $route, array $args = [])
     {

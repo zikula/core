@@ -48,7 +48,7 @@ class Zikula_Form_Plugin_ImageButton extends Zikula_Form_Plugin_Button
     /**
      * Render event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
      * @return string The rendered output
      */
@@ -77,7 +77,7 @@ class Zikula_Form_Plugin_ImageButton extends Zikula_Form_Plugin_Button
     /**
      * Decode event handler for actions that generate a postback event.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
      * @return boolean
      */

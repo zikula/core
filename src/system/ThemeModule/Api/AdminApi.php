@@ -243,7 +243,7 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type string $themename the name of the theme the page configuration belongs to
      *                       }
      *
-     * @return bool true if successful, false on failure.
+     * @return bool true if successful, false on failure
      *
      * @throws \InvalidArgumentException Thrown if either the themename or pcname parameters aren't provided
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the theme

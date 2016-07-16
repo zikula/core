@@ -24,10 +24,10 @@
  *  menufirst  If set to true, menu is first, then title
  *  putimage   If set to true, module image is also displayed next to title
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
- * @return string A formatted string containing navigation for the module admin panel.
+ * @return string A formatted string containing navigation for the module admin panel
  */
 function smarty_function_moduleheader($params, $view)
 {

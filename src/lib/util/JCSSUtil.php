@@ -62,8 +62,8 @@ class JCSSUtil
      * Returns an array with two arrays, containing list of js and css files
      * ready to embedded in the HTML HEAD.
      *
-     * @param bool   $combine   Should files be combined.
-     * @param string $cache_dir Path to cache directory.
+     * @param bool   $combine   Should files be combined
+     * @param string $cache_dir Path to cache directory
      * @param array  $themeinfo array of info on current theme
      * @param bool   $isAdminController
      *
@@ -122,7 +122,7 @@ class JCSSUtil
     /**
      * Procedure for managinig stylesheets.
      *
-     * @param array   $stylesheets List of demanded stylesheets.
+     * @param array   $stylesheets List of demanded stylesheets
      * @param array   $themeinfo   array of info on current theme
      * @param boolean $isAdminController
      *
@@ -182,7 +182,7 @@ class JCSSUtil
      * Verify demanded files, translate script aliases to real paths, resolve dependencies.
      * Check if gettext is needed and if so add to list file with translations.
      *
-     * @param array $javascripts List of javascript files.
+     * @param array $javascripts List of javascript files
      *
      * @return array List of javascript files
      */
@@ -258,8 +258,8 @@ class JCSSUtil
     /**
      * Method to resolve scripts dependencies basing on scripts map from JCSSUtil: scriptsMap.
      *
-     * @param array $javascripts List of javascript files to verify.
-     * @param array &$resolved   List of already resolved scripts.
+     * @param array $javascripts List of javascript files to verify
+     * @param array &$resolved   List of already resolved scripts
      *
      * @return array List of javascript files
      */
@@ -291,7 +291,7 @@ class JCSSUtil
      * If this is the core script is returning it's alias.
      * This method also hanldes all legacy for script paths.
      *
-     * @param string $script Script path or alias to verify.
+     * @param string $script Script path or alias to verify
      *
      * @return string Script path or alias
      */
@@ -317,7 +317,7 @@ class JCSSUtil
     /**
      * Internal procedure for managing legacy script paths.
      *
-     * @param string $script Script path to check.
+     * @param string $script Script path to check
      *
      * @return string Verified script path
      */
@@ -551,9 +551,9 @@ class JCSSUtil
     /**
      * Save combined pagevars.
      *
-     * @param array  $files     Files.
-     * @param string $ext       Extention.
-     * @param string $cache_dir Cache directory.
+     * @param array  $files     Files
+     * @param string $ext       Extention
+     * @param string $cache_dir Cache directory
      *
      * @return array Array of file with combined pagevars file and remote files
      */
@@ -636,9 +636,9 @@ class JCSSUtil
      *
      * This function includes the content of all "@import" statements (recursive).
      *
-     * @param array  &$contents Array to save content to.
-     * @param string $file      Path to file.
-     * @param string $ext       Can be 'css' or 'js'.
+     * @param array  &$contents Array to save content to
+     * @param string $file      Path to file
+     * @param string $ext       Can be 'css' or 'js'
      *
      * @return void
      */
@@ -774,8 +774,8 @@ class JCSSUtil
     /**
      * Fix paths in CSS files.
      *
-     * @param string $line     CSS file line.
-     * @param string $filepath Path to original file.
+     * @param string $line     CSS file line
+     * @param string $filepath Path to original file
      *
      * @return string
      */

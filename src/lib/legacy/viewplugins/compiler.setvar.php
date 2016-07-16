@@ -42,8 +42,8 @@
  *
  *  <samp>{setvar var='bar' keys='a-b-c' values='1-2-3' delim='-'}</samp>
  *
- * @param array           $params   All attributes passed to this function from the template.
- * @param Smarty_Compiler $compiler Reference to the {@link Zikula_View} object.
+ * @param array           $params   All attributes passed to this function from the template
+ * @param Smarty_Compiler $compiler Reference to the {@link Zikula_View} object
  *
  * @return void
  */

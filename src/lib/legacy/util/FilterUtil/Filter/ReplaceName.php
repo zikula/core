@@ -32,7 +32,7 @@ class FilterUtil_Filter_ReplaceName extends FilterUtil_AbstractPlugin implements
      * Argument $config may contain:
      *  pair: array of replace pairs in form old => new.
      *
-     * @param array $config Configuration.
+     * @param array $config Configuration
      */
     public function __construct($config)
     {
@@ -46,7 +46,7 @@ class FilterUtil_Filter_ReplaceName extends FilterUtil_AbstractPlugin implements
     /**
      * Add new replace pair (fieldname => replace with).
      *
-     * @param mixed $pair Replace pair.
+     * @param mixed $pair Replace pair
      *
      * @return void
      */
@@ -64,11 +64,11 @@ class FilterUtil_Filter_ReplaceName extends FilterUtil_AbstractPlugin implements
     /**
      * Replace field's value.
      *
-     * @param string $field Field name.
-     * @param string $op    Filter operator.
-     * @param string $value Filter value.
+     * @param string $field Field name
+     * @param string $op    Filter operator
+     * @param string $value Filter value
      *
-     * @return array New filter set.
+     * @return array New filter set
      */
     public function replace($field, $op, $value)
     {

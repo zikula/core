@@ -142,7 +142,7 @@ class HookApi
     /**
      * Register Provider Hook handlers with persistence layer.
      *
-     * @param array $bundles Module's bundles object.
+     * @param array $bundles Module's bundles object
      *
      * @return void
      */
@@ -158,7 +158,7 @@ class HookApi
      *
      * This cascades to remove all bindings by any subscribers to the providers in these bundles.
      *
-     * @param array $bundles Module's bundles object.
+     * @param array $bundles Module's bundles object
      *
      * @return void
      */
@@ -172,7 +172,7 @@ class HookApi
     /**
      * Register Subscribers with persistence layer.
      *
-     * @param array $bundles Module's bundles object.
+     * @param array $bundles Module's bundles object
      *
      * @return void
      */
@@ -188,7 +188,7 @@ class HookApi
      *
      * This cascades to remove all event handlers, sorting data and update bindings table.
      *
-     * @param array $bundles Module's bundles object.
+     * @param array $bundles Module's bundles object
      *
      * @return void
      */

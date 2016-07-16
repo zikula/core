@@ -63,7 +63,7 @@ class CsrfTokenHandler
     /**
      * Validate a Csrf token.
      *
-     * @param string $token The token, if not set, will pull from $_POST['csrftoken'].
+     * @param string $token The token, if not set, will pull from $_POST['csrftoken']
      * @param bool $invalidateSessionOnFailure
      */
     public function validate($token = null, $invalidateSessionOnFailure = false)
@@ -93,7 +93,7 @@ class CsrfTokenHandler
     /**
      * Generate a Csrf token.
      *
-     * @param boolean $forceUnique Force a unique token regardless of system settings.
+     * @param boolean $forceUnique Force a unique token regardless of system settings
      *
      * @return string
      */

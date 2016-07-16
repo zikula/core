@@ -22,7 +22,7 @@ class ThemeModuleInstaller extends AbstractExtensionInstaller
     /**
      * Initialise the theme module.
      *
-     * @return boolean true if initialisation successful, false otherwise.
+     * @return boolean true if initialisation successful, false otherwise
      */
     public function install()
     {

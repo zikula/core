@@ -28,7 +28,7 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
      *
      * Both the getUidForAuthenticationInfo() function and the logout() function must NEVER be reentrant.
      *
-     * @return bool True if the authentication module is reentrant; otherwise false.
+     * @return bool True if the authentication module is reentrant; otherwise false
      */
     abstract public function isReentrant();
 
@@ -39,11 +39,11 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
      * ---------------------------
      * string 'method' The name of the authentication method for which support is enquired.
      *
-     * @param array $args All arguments passed to this function, see above.
+     * @param array $args All arguments passed to this function, see above
      *
-     * @return boolean True if the indicated authentication method is supported by this module; otherwise false.
+     * @return boolean True if the indicated authentication method is supported by this module; otherwise false
      *
-     * @throws FatalErrorException Thrown if invalid parameters are sent in $args.
+     * @throws FatalErrorException Thrown if invalid parameters are sent in $args
      */
     abstract public function supportsAuthenticationMethod(array $args);
 
@@ -54,11 +54,11 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
      * ---------------------------
      * string 'method' The name of the authentication method for which support is enquired.
      *
-     * @param array $args All arguments passed to this function, see above.
+     * @param array $args All arguments passed to this function, see above
      *
-     * @return boolean True if the indicated authentication method is enabled by this module; otherwise false.
+     * @return boolean True if the indicated authentication method is enabled by this module; otherwise false
      *
-     * @throws FatalErrorException Thrown if invalid parameters are sent in $args.
+     * @throws FatalErrorException Thrown if invalid parameters are sent in $args
      */
     abstract public function isEnabledForAuthentication(array $args);
 
@@ -70,11 +70,11 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
      * integer 'filter' Either {@link FILTER_ENABLED} (value 1), {@link FILTER_NONE} (value 0), or not present; allows the result to be filtered.
      *                      If this argument is FILTER_ENABLED, then only those authentication methods that are also enabled are returned.
      *
-     * @param array $args All arguments passed to this function.
+     * @param array $args All arguments passed to this function
      *
-     * @return array An array containing the authentication methods defined by this module, possibly filtered by only those that are enabled.
+     * @return array An array containing the authentication methods defined by this module, possibly filtered by only those that are enabled
      *
-     * @throws FatalErrorException Thrown if invalid parameters are sent in $args.
+     * @throws FatalErrorException Thrown if invalid parameters are sent in $args
      */
     abstract public function getAuthenticationMethods(array $args = null);
 
@@ -85,11 +85,11 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
      * ---------------------------
      * string 'method' The name of the authentication method.
      *
-     * @param array $args All arguments passed to this function.
+     * @param array $args All arguments passed to this function
      *
-     * @return array An array containing the authentication method requested.
+     * @return array An array containing the authentication method requested
      *
-     * @throws FatalErrorException Thrown if invalid parameters are sent in $args.
+     * @throws FatalErrorException Thrown if invalid parameters are sent in $args
      */
     abstract public function getAuthenticationMethod(array $args);
 
@@ -110,13 +110,13 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
      * numeric 'uid'                   The user id of the user account record or registration request to associate with the authentication method and
      *                                      authentication information.
      *
-     * @param array $args All parameters passed to this function.
+     * @param array $args All parameters passed to this function
      *
      * @return boolean True if the user account or registration request was successfully associated with the authentication method and
-     *                      authentication information; otherwise false.
+     *                      authentication information; otherwise false
      *
      * @throws FatalErrorException Thrown if the arguments array is invalid, or the user id, authentication method, or authentication information
-     *                                      is invalid.
+     *                                      is invalid
      */
     abstract public function register(array $args);
 
@@ -141,9 +141,9 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
      * Zikula user account. It does not return a Zikula user id (uid).
      *
      * @param array $args All arguments passed to this function.
-     *                      array   authenticationInfo  The authentication info needed for this authentication module, including any user-entered password.
+     *                      array   authenticationInfo  The authentication info needed for this authentication module, including any user-entered password
      *
-     * @return boolean True if the authentication info authenticates with the source; otherwise false on authentication failure or error.
+     * @return boolean True if the authentication info authenticates with the source; otherwise false on authentication failure or error
      */
     abstract public function checkPassword(array $args);
 
@@ -182,14 +182,14 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
      * -------------------------------------
      * array authentication_info The authentication info needed for this authmodule, including any user-entered password.
      *
-     * @param array $args All arguments passed to this function.
+     * @param array $args All arguments passed to this function
      *
      * @return array|boolean If the authentication info authenticates with the source, then an array is returned containing the user's authentication
      *                          information and any additional optional registration information that is passed back by the authentication method.
-     *                          The optional registration information can be used to pre-fill the registration form.
+     *                          The optional registration information can be used to pre-fill the registration form
      *
      * @throws FatalErrorException Thrown if the authentication method does not support registration, or if the arguments array or any of the
-     *                                  arguments are invalid.
+     *                                  arguments are invalid
      */
     public function checkPasswordForRegistration(array $args)
     {
@@ -210,10 +210,10 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
      * the user's account.
      *
      * @param array $args All arguments passed to this function.
-     *                      array   authenticationInfo  The authentication information uniquely associated with a user.
+     *                      array   authenticationInfo  The authentication information uniquely associated with a user
      *
      * @return integer|boolean The integer Zikula uid uniquely associated with the given authentication info;
-     *                         otherwise false if user not found or error.
+     *                         otherwise false if user not found or error
      */
     abstract public function getUidForAuthenticationInfo(array $args);
 
@@ -229,10 +229,10 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
      * provided would otherwise authenticate with the authenticating authority.
      *
      * @param array $args All arguments passed to this function.
-     *                      array   authenticationInfo  The authentication info needed for this authentication module, including any user-entered password.
+     *                      array   authenticationInfo  The authentication info needed for this authentication module, including any user-entered password
      *
      * @return integer|boolean If the authentication info authenticates with the source, then the Zikula uid associated with that login ID;
-     *                         otherwise false on authentication failure or error.
+     *                         otherwise false on authentication failure or error
      */
     abstract public function authenticateUser(array $args);
 
@@ -268,9 +268,9 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
      * ------------------------------------
      * numeric 'uid' The user id of the user for which account recovery information should be retrieved.
      *
-     * @param array $args All parameters passed to this function.
+     * @param array $args All parameters passed to this function
      *
-     * @return An array of account recovery information.
+     * @return An array of account recovery information
      */
     abstract public function getAccountRecoveryInfoForUid(array $args);
 }

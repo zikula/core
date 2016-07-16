@@ -29,8 +29,8 @@
  *  prefix      Optional prefix for class names (defaults to PN) (in DBObject mode)
  *  assign      Name of the returned object
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
  * @return void
  */

@@ -18,13 +18,13 @@ class CookieUtil
     /**
      * Set a cookie value.
      *
-     * @param string  $name    Name of cookie.
-     * @param string  $value   Value.
-     * @param integer $expires Unix epoch date for expiry.
-     * @param string  $path    Cookie path.
-     * @param string  $domain  Domain must be at least .domain.tld.
-     * @param boolean $secure  To set if cookie must only be set over existing https connection.
-     * @param boolean $signed  Override system setting to use signatures.
+     * @param string  $name    Name of cookie
+     * @param string  $value   Value
+     * @param integer $expires Unix epoch date for expiry
+     * @param string  $path    Cookie path
+     * @param string  $domain  Domain must be at least .domain.tld
+     * @param boolean $secure  To set if cookie must only be set over existing https connection
+     * @param boolean $signed  Override system setting to use signatures
      *
      * @return boolean
      */
@@ -49,11 +49,11 @@ class CookieUtil
     /**
      * Get a cookie.
      *
-     * @param string  $name    Name of cookie.
-     * @param boolean $signed  Override system setting to use signatures.
-     * @param boolean $default Default value.
+     * @param string  $name    Name of cookie
+     * @param boolean $signed  Override system setting to use signatures
+     * @param boolean $default Default value
      *
-     * @return mixed Cookie value as string or bool false.
+     * @return mixed Cookie value as string or bool false
      */
     public static function getCookie($name, $signed = true, $default = '')
     {
@@ -77,7 +77,7 @@ class CookieUtil
      * Can be called multiple times, but must be called before any output
      * is sent to browser or it wont work.
      *
-     * @param string $name Name of cookie.
+     * @param string $name Name of cookie
      *
      * @return boolean
      */

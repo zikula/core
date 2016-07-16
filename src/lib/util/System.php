@@ -46,10 +46,10 @@ class System
      * @see \Zikula\ExtensionsModule\Api\VariableApi::get()
      * @see service zikula_extensions_module.api.variable
      *
-     * @param string $name    The name of the variable.
-     * @param mixed  $default The default value to return if the requested param is not set.
+     * @param string $name    The name of the variable
+     * @param mixed  $default The default value to return if the requested param is not set
      *
-     * @return mixed Value of the variable, or false on failure.
+     * @return mixed Value of the variable, or false on failure
      */
     public static function getVar($name, $default = null)
     {
@@ -82,10 +82,10 @@ class System
      * @see \Zikula\ExtensionsModule\Api\VariableApi::set()
      * @see service zikula_extensions_module.api.variable
      *
-     * @param string $name  The name of the variable.
-     * @param mixed  $value The value of the variable.
+     * @param string $name  The name of the variable
+     * @param mixed  $value The value of the variable
      *
-     * @return boolean True on success, false on failure.
+     * @return boolean True on success, false on failure
      */
     public static function setVar($name, $value = '')
     {
@@ -115,9 +115,9 @@ class System
      * @see \Zikula\ExtensionsModule\Api\VariableApi::del()
      * @see service zikula_extensions_module.api.variable
      *
-     * @param string $name The name of the variable.
+     * @param string $name The name of the variable
      *
-     * @return mixed Value of deleted config var or false on failure.
+     * @return mixed Value of deleted config var or false on failure
      */
     public static function delVar($name)
     {
@@ -150,7 +150,7 @@ class System
      * Stripslashes on multidimensional arrays.
      * Used in conjunction with FormUtil::getPassedValue.
      *
-     * @param mixed &$value Variables or arrays to be stripslashed.
+     * @param mixed &$value Variables or arrays to be stripslashed
      *
      * @return void
      */
@@ -170,12 +170,12 @@ class System
     /**
      * Validate a Zikula variable.
      *
-     * @param mixed  $var  The variable to validate.
-     * @param string $type The type of the validation to perform (email, url etc.).
+     * @param mixed  $var  The variable to validate
+     * @param string $type The type of the validation to perform (email, url etc.)
      *
      * @deprecated since 1.4.0
      *
-     * @return boolean True if the validation was successful, false otherwise.
+     * @return boolean True if the validation was successful, false otherwise
      */
     public static function varValidate($var, $type)
     {
@@ -298,7 +298,7 @@ class System
      * @deprecated since 1.4.0
      * @see Request::getBasePath()
      *
-     * @return string Base URI for Zikula.
+     * @return string Base URI for Zikula
      */
     public static function getBaseUri()
     {
@@ -336,7 +336,7 @@ class System
      * @deprecated since 1.4.0
      * @see Request::getBaseUrl()
      *
-     * @return string Base URL for Zikula.
+     * @return string Base URL for Zikula
      */
     public static function getBaseUrl()
     {
@@ -358,7 +358,7 @@ class System
     /**
      * Get homepage URL for Zikula.
      *
-     * @return string Homepage URL for Zikula.
+     * @return string Homepage URL for Zikula
      */
     public static function getHomepageUrl()
     {
@@ -389,9 +389,9 @@ class System
     /**
      * Carry out a redirect.
      *
-     * @param string  $redirecturl       URL to redirect to.
-     * @param array   $additionalheaders Array of header strings to send with redirect.
-     * @param integer $type              Number type of the redirect.
+     * @param string  $redirecturl       URL to redirect to
+     * @param array   $additionalheaders Array of header strings to send with redirect
+     * @param integer $type              Number type of the redirect
      * @param mixed   $response          unused
      *
      * @deprecated since 1.4.0 - from a controller, return RedirectResponse
@@ -443,9 +443,9 @@ class System
     /**
      * Check to see if this is a local referral.
      *
-     * @param boolean $strict Strict checking ensures that a referer must be set as well as local.
+     * @param boolean $strict Strict checking ensures that a referer must be set as well as local
      *
-     * @return boolean True if locally referred, false if not.
+     * @return boolean True if locally referred, false if not
      */
     public static function localReferer($strict = false)
     {
@@ -470,17 +470,17 @@ class System
      *
      * E-mail messages should now be sent with a ModUtil::apiFunc call to the mailer module.
      *
-     * @param string  $to      Recipient of the email.
-     * @param string  $subject Title of the email.
-     * @param string  $message Body of the email.
-     * @param string  $headers Extra headers for the email.
-     * @param integer $html    Message is html formatted.
-     * @param integer $debug   If 1, echo mail content.
-     * @param string  $altbody Alternative body.
+     * @param string  $to      Recipient of the email
+     * @param string  $subject Title of the email
+     * @param string  $message Body of the email
+     * @param string  $headers Extra headers for the email
+     * @param integer $html    Message is html formatted
+     * @param integer $debug   If 1, echo mail content
+     * @param string  $altbody Alternative body
      *
      * @deprecated
      *
-     * @return boolean True if the email was sent, false if not.
+     * @return boolean True if the email was sent, false if not
      */
     public static function mail($to, $subject, $message = '', $headers = '', $html = 0, $debug = 0, $altbody = '')
     {
@@ -514,13 +514,13 @@ class System
      * {@link http://www.php.net/manual/en/reserved.variables.html#reserved.variables.server PHP manual}.
      * If the server variable doesn't exist void is returned.
      *
-     * @param string $name    The name of the variable.
-     * @param mixed  $default The default value to return if the requested param is not set.
+     * @param string $name    The name of the variable
+     * @param mixed  $default The default value to return if the requested param is not set
      *
      * @deprecated
      * @see Request->server->get()
      *
-     * @return mixed Value of the variable.
+     * @return mixed Value of the variable
      */
     public static function serverGetVar($name, $default = null)
     {
@@ -540,7 +540,7 @@ class System
      *
      * @deprecated since 1.4.0 use Request::getHttpHost()
      *
-     * @return string HTTP host name.
+     * @return string HTTP host name
      */
     public static function getHost()
     {
@@ -561,11 +561,11 @@ class System
     /**
      * Get current URI (and optionally add/replace some parameters).
      *
-     * @param array $args Additional parameters to be added to/replaced in the URI (e.g. theme, ...).
+     * @param array $args Additional parameters to be added to/replaced in the URI (e.g. theme, ...)
      *
      * @deprecated since 1.4.0 use Request::getUri()
      *
-     * @return string Current URI.
+     * @return string Current URI
      */
     public static function getCurrentUri($args = [])
     {
@@ -637,7 +637,7 @@ class System
      *
      * @deprecated since 1.4.0 use Request::getScheme()
      *
-     * @return string Current HTTP protocol.
+     * @return string Current HTTP protocol
      */
     public static function serverGetProtocol()
     {
@@ -654,11 +654,11 @@ class System
     /**
      * Get current URL.
      *
-     * @param array $args Additional parameters to be added to/replaced in the URL (e.g. theme, ...).
+     * @param array $args Additional parameters to be added to/replaced in the URL (e.g. theme, ...)
      *
      * @deprecated since 1.4.0 use Request::getUri()
      *
-     * @return string Current URL.
+     * @return string Current URL
      */
     public static function getCurrentUrl($args = [])
     {
@@ -971,10 +971,10 @@ class System
      * Really the _GET superglobal.
      * This API also adds the variable to the _REQUEST superglobal for consistency.
      *
-     * @param string $name  Name of the variable to set.
-     * @param mixed  $value Value to set.
+     * @param string $name  Name of the variable to set
+     * @param mixed  $value Value to set
      *
-     * @return bool True if successful, false otherwise.
+     * @return bool True if successful, false otherwise
      */
     public static function queryStringSetVar($name, $value, Request $request = null)
     {
@@ -1027,7 +1027,7 @@ class System
      * Gracefully shut down the framework (traps all exit and die calls),
      * Function halts execution.
      *
-     * @param mixed $exit_param String or integer params to pass to the exit function.
+     * @param mixed $exit_param String or integer params to pass to the exit function
      *
      * @return void
      */
@@ -1069,7 +1069,7 @@ class System
     /**
      * Check if upgrader is running.
      *
-     * @return boolean True if upgrade.php is running, otherwise false.
+     * @return boolean True if upgrade.php is running, otherwise false
      */
     public static function isUpgrading()
     {
@@ -1114,9 +1114,9 @@ class System
     /**
      * Get a system error template.
      *
-     * @param string $templateFile File name of the system error template.
+     * @param string $templateFile File name of the system error template
      *
-     * @return string Template file path.
+     * @return string Template file path
      */
     public static function getSystemErrorTemplate($templateFile)
     {

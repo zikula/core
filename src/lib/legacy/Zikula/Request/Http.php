@@ -152,7 +152,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
     /**
      * Set session.
      *
-     * @param Zikula_Session $session Session to set.
+     * @param Zikula_Session $session Session to set
      *
      * @return void
      */

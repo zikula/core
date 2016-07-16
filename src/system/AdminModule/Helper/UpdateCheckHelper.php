@@ -69,8 +69,8 @@ class UpdateCheckHelper
     /**
      * UpdateCheckHelper constructor.
      *
-     * @param VariableApi  $variableApi  VariableApi service instance.
-     * @param RequestStack $requestStack RequestStack service instance.
+     * @param VariableApi  $variableApi  VariableApi service instance
+     * @param RequestStack $requestStack RequestStack service instance
      */
     public function __construct(VariableApi $variableApi, RequestStack $requestStack)
     {

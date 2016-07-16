@@ -21,7 +21,7 @@ class Zikula_Response_Ajax_Json extends AbstractBaseResponse
     /**
      * Constructor.
      *
-     * @param string $payload Payload data.
+     * @param string $payload Payload data
      */
     public function __construct($payload)
     {

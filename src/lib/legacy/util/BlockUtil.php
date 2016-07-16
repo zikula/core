@@ -20,11 +20,11 @@ class BlockUtil
     /**
      * Display all blocks in a block position.
      *
-     * @param string $side     Block position to render.
-     * @param boolean $echo    Whether or not to echo output directly.
-     * @param boolean $implode Whether or not to implode lines by \n.
+     * @param string $side     Block position to render
+     * @param boolean $echo    Whether or not to echo output directly
+     * @param boolean $implode Whether or not to implode lines by \n
      *
-     * @return void|string The rendered output.
+     * @return void|string The rendered output
      */
     public static function displayPosition($side, $echo = true, $implode = true)
     {
@@ -168,11 +168,11 @@ class BlockUtil
     /**
      * Show a block.
      *
-     * @param string $modname Module name.
-     * @param string $blockname Name of the block.
-     * @param array $blockinfo Information parameters.
+     * @param string $modname Module name
+     * @param string $blockname Name of the block
+     * @param array $blockinfo Information parameters
      * @param null $blockEntity
-     * @return mixed Blockinfo array or null.
+     * @return mixed Blockinfo array or null
      */
     public static function show($modname, $blockname, $blockinfo = [], $blockEntity = null)
     {
@@ -197,9 +197,9 @@ class BlockUtil
     /**
      * Display a block based on the current theme.
      *
-     * @param array $blockinfo Block info.
+     * @param array $blockinfo Block info
      *
-     * @return string The rendered output.
+     * @return string The rendered output
      */
     public static function themeBlock($blockinfo)
     {
@@ -271,11 +271,11 @@ class BlockUtil
     /**
      * Load a block.
      *
-     * @param string $modname Module name.
-     * @param string $block   Name of the block.
+     * @param string $modname Module name
+     * @param string $block   Name of the block
      *
-     * @throws LogicException Uf OO-Block is not a Zikula_Controller_AbstractBlock object.
-     * @return bool           True on successful load, false otherwise.
+     * @throws LogicException Uf OO-Block is not a Zikula_Controller_AbstractBlock object
+     * @return bool           True on successful load, false otherwise
      */
     public static function load($modname, $block)
     {
@@ -344,7 +344,7 @@ class BlockUtil
     /**
      * Load all blocks.
      *
-     * @return array Array of blocks.
+     * @return array Array of blocks
      */
     public static function loadAll()
     {
@@ -356,7 +356,7 @@ class BlockUtil
     /**
      * Extract an array of config variables out of the content field of a block.
      *
-     * @param string $content The content from the db.
+     * @param string $content The content from the db
      *
      * @return array
      */
@@ -369,9 +369,9 @@ class BlockUtil
     /**
      * Put an array of config variables in the content field of a block.
      *
-     * @param array $vars The config vars array, in key->value form.
+     * @param array $vars The config vars array, in key->value form
      *
-     * @return string The config var string.
+     * @return string The config var string
      */
     public static function varsToContent($vars)
     {
@@ -385,7 +385,7 @@ class BlockUtil
      * Checks if the user has a state set for a current block.
      * Sets the default state for that block if not present.
      *
-     * @param array $blockinfo Block info.
+     * @param array $blockinfo Block info
      *
      * @return boolean
      */
@@ -414,7 +414,7 @@ class BlockUtil
     /**
      * Get block information.
      *
-     * @return array Array of block information.
+     * @return array Array of block information
      */
     public static function getBlocksInfo()
     {
@@ -424,10 +424,10 @@ class BlockUtil
     /**
      * Get block information.
      *
-     * @param string $value    The value to search for.
-     * @param string $assocKey The field in which we look for the value (optional) (default='bid').
+     * @param string $value    The value to search for
+     * @param string $assocKey The field in which we look for the value (optional) (default='bid')
      *
-     * @return array Array of block information.
+     * @return array Array of block information
      */
     public static function getBlockInfo($value, $assocKey = 'bid')
     {
@@ -452,9 +452,9 @@ class BlockUtil
     /**
      * Get block information.
      *
-     * @param string $title The block title.
+     * @param string $title The block title
      *
-     * @return array Array of block information.
+     * @return array Array of block information
      */
     public static function getInfoByTitle($title)
     {
@@ -464,9 +464,9 @@ class BlockUtil
     /**
      * Alias to pnBlockDisplayPosition.
      *
-     * @param string $side Block position to render.
+     * @param string $side Block position to render
      *
-     * @return string The rendered output.
+     * @return string The rendered output
      */
     public static function blocks($side)
     {
@@ -476,9 +476,9 @@ class BlockUtil
     /**
      * Alias to pnBlockDisplayPosition.
      *
-     * @param array $blockinfo Block info.
+     * @param array $blockinfo Block info
      *
-     * @return string The rendered output.
+     * @return string The rendered output
      */
     public static function themesideblock($blockinfo)
     {

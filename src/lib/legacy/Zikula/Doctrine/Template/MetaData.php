@@ -33,7 +33,7 @@ class Zikula_Doctrine_Template_MetaData extends Doctrine_Template
      * This setter is required to get Doctrine_Record->merge() work.
      * DO NOT RENAME THIS METHOD!
      *
-     * @param array $value Value.
+     * @param array $value Value
      *
      * @return void
      */

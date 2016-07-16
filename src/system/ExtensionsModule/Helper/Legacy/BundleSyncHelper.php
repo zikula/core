@@ -17,7 +17,7 @@ use Zikula\ExtensionsModule\Util as ExtensionsUtil;
  * @deprecated remove at Core-2.0
  * Class BundleSyncHelper
  *
- * A class to assist in the syncronization of legacy modules.
+ * A class to assist in the syncronization of legacy modules
  */
 class BundleSyncHelper
 {

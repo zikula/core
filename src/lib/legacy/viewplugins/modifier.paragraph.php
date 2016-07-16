@@ -18,10 +18,10 @@
  *         - string: input block of text
  *         - br: change single \n to 'br' or not
  *
- * @param string  $string The contents to transform.
- * @param integer $br     Change single \n to 'br' or not.
+ * @param string  $string The contents to transform
+ * @param integer $br     Change single \n to 'br' or not
  *
- * @return string The modified output.
+ * @return string The modified output
  */
 function smarty_modifier_paragraph($string, $br = false)
 {

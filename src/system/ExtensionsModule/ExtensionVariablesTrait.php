@@ -24,7 +24,7 @@ trait ExtensionVariablesTrait
     private $variableApi;
 
     /**
-     * @var string the name of the extension in use.
+     * @var string the name of the extension in use
      */
     private $extensionName;
 

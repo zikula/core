@@ -70,9 +70,9 @@ class Generator
     /**
      * Constructor.
      *
-     * @param StorageInterface $storage     Storage driver.
-     * @param string           $secret      Secret to sign tokens with.
-     * @param integer          $maxLifetime Max lifetime for a token.
+     * @param StorageInterface $storage     Storage driver
+     * @param string           $secret      Secret to sign tokens with
+     * @param integer          $maxLifetime Max lifetime for a token
      */
     public function __construct(StorageInterface $storage, $secret, $maxLifetime = 3600)
     {
@@ -120,7 +120,7 @@ class Generator
      * they should be generated with the same unique ID and validated with
      * delete = false leaving storage expire/GC to remove the token.
      *
-     * @param string  $id        Token ID.
+     * @param string  $id        Token ID
      * @param integer $timestamp Create with this timestamp (defaults null = now)
      *
      * @return Generator
@@ -138,7 +138,7 @@ class Generator
     /**
      * Decode a token.
      *
-     * @param string $token Token.
+     * @param string $token Token
      *
      * @return array
      */

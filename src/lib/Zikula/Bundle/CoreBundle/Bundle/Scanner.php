@@ -50,7 +50,7 @@ class Scanner
     /**
      * Decodes a json string.
      *
-     * @param string $file Path to json file.
+     * @param string $file Path to json file
      *
      * @return bool|mixed
      */

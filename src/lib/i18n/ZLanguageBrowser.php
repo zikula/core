@@ -24,7 +24,7 @@ class ZLanguageBrowser
     /**
      * Constructor.
      *
-     * @param array $langList Available languages.
+     * @param array $langList Available languages
      */
     public function __construct($langList)
     {

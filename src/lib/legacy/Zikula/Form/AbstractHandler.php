@@ -94,7 +94,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Setter for view property.
      *
-     * @param Zikula_Form_View $view Zikula_Form_View.
+     * @param Zikula_Form_View $view Zikula_Form_View
      *
      * @return void
      */
@@ -116,7 +116,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Set domain property.
      *
-     * @param string $domain Domain.
+     * @param string $domain Domain
      *
      * @return void
      */
@@ -138,7 +138,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Set name property.
      *
-     * @param string $name Name.
+     * @param string $name Name
      *
      * @return void
      */
@@ -150,7 +150,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Set the request.
      *
-     * @param Zikula_Request_Http $request Request to set.
+     * @param Zikula_Request_Http $request Request to set
      *
      * @return void
      */
@@ -172,7 +172,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Set entitymanager.
      *
-     * @param object $entityManager Entity manager to set.
+     * @param object $entityManager Entity manager to set
      *
      * @return void
      */
@@ -203,11 +203,11 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
      * }
      * </code>
      *
-     * @param Zikula_Form_View $view Reference to Form render object.
+     * @param Zikula_Form_View $view Reference to Form render object
      *
      * @return bool False in case of initialization errors, otherwise true. If false is returned then the
      * framework assumes that {@link Zikula_Form_View::setErrorMsg()} has been called with a suitable
-     * error message.
+     * error message
      */
     public function initialize(Zikula_Form_View $view)
     {
@@ -241,8 +241,8 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
      * value indicating the name of the command. The command name is normally specified by the plugin
      * that initiated the command.
      *
-     * @param Zikula_Form_View $view Reference to Form render object.
-     * @param array            &$args Arguments of the command.
+     * @param Zikula_Form_View $view Reference to Form render object
+     * @param array            &$args Arguments of the command
      *
      * @see    Zikula_Form_Plugin_Button, Zikula_Form_Plugin_ImageButton
      * @return void
@@ -254,9 +254,9 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Notify any hookable events.
      *
-     * @param Zikula\Bundle\HookBundle\Hook\Hook $hook Hook interface.
+     * @param Zikula\Bundle\HookBundle\Hook\Hook $hook Hook interface
      *
-     * @return mixed Notification result.
+     * @return mixed Notification result
      */
     public function notifyHooks(Hook $hook)
     {
@@ -266,7 +266,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Dispatch hooks.
      *
-     * @param Zikula\Bundle\HookBundle\Hook\Hook $hook Hook interface.
+     * @param Zikula\Bundle\HookBundle\Hook\Hook $hook Hook interface
      *
      * @return Zikula\Bundle\HookBundle\Hook\Hook
      */
@@ -278,10 +278,10 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Convenience Module SetVar.
      *
-     * @param string $key   Key.
-     * @param mixed  $value Value, default empty.
+     * @param string $key   Key
+     * @param mixed  $value Value, default empty
      *
-     * @return object This.
+     * @return object This
      */
     public function setVar($key, $value = '')
     {
@@ -293,9 +293,9 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Convenience Module SetVars.
      *
-     * @param array $vars Array of key => value.
+     * @param array $vars Array of key => value
      *
-     * @return object This.
+     * @return object This
      */
     public function setVars(array $vars)
     {
@@ -307,8 +307,8 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Convenience Module GetVar.
      *
-     * @param string  $key     Key.
-     * @param boolean $default Default, false if not found.
+     * @param string  $key     Key
+     * @param boolean $default Default, false if not found
      *
      * @return mixed
      */
@@ -330,9 +330,9 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Convenience Module DelVar.
      *
-     * @param string $key Key.
+     * @param string $key Key
      *
-     * @return object This.
+     * @return object This
      */
     public function delVar($key)
     {
@@ -344,7 +344,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Convenience Module DelVar for all keys for this module.
      *
-     * @return object This.
+     * @return object This
      */
     public function delVars()
     {
@@ -356,7 +356,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Translate.
      *
-     * @param string $msgid String to be translated.
+     * @param string $msgid String to be translated
      *
      * @return string
      */
@@ -368,8 +368,8 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Translate with sprintf().
      *
-     * @param string       $msgid  String to be translated.
-     * @param string|array $params Args for sprintf().
+     * @param string       $msgid  String to be translated
+     * @param string|array $params Args for sprintf()
      *
      * @return string
      */
@@ -381,11 +381,11 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Translate plural string.
      *
-     * @param string $singular Singular instance.
-     * @param string $plural   Plural instance.
-     * @param string $count    Object count.
+     * @param string $singular Singular instance
+     * @param string $plural   Plural instance
+     * @param string $count    Object count
      *
-     * @return string Translated string.
+     * @return string Translated string
      */
     public function _n($singular, $plural, $count)
     {
@@ -395,10 +395,10 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Translate plural string with sprintf().
      *
-     * @param string       $sin    Singular instance.
-     * @param string       $plu    Plural instance.
-     * @param string       $n      Object count.
-     * @param string|array $params Sprintf() arguments.
+     * @param string       $sin    Singular instance
+     * @param string       $plu    Plural instance
+     * @param string       $n      Object count
+     * @param string|array $params Sprintf() arguments
      *
      * @return string
      */

@@ -24,7 +24,7 @@ trait TranslatorTrait
     /**
      * singular translation for modules.
      *
-     * @param string $msg Message.
+     * @param string $msg Message
      * @param string|null $domain
      * @param string|null $locale
      * @return string
@@ -37,9 +37,9 @@ trait TranslatorTrait
     /**
      * Plural translations for modules.
      *
-     * @param string $m1 Singular.
-     * @param string $m2 Plural.
-     * @param integer $n Count.
+     * @param string $m1 Singular
+     * @param string $m2 Plural
+     * @param integer $n Count
      * @param string|null $domain
      * @param string| null $locale
      * @return string
@@ -52,8 +52,8 @@ trait TranslatorTrait
     /**
      * Format translations for modules.
      *
-     * @param string $msg Message.
-     * @param string|array $param Format parameters.
+     * @param string $msg Message
+     * @param string|array $param Format parameters
      * @param string|null $domain
      * @param string|null $locale
      * @return string
@@ -66,10 +66,10 @@ trait TranslatorTrait
     /**
      * Format plural translations for modules.
      *
-     * @param string $m1 Singular.
-     * @param string $m2 Plural.
-     * @param integer $n Count.
-     * @param string|array $param Format parameters.
+     * @param string $m1 Singular
+     * @param string $m2 Plural
+     * @param integer $n Count
+     * @param string|array $param Format parameters
      * @param string|null $domain
      * @param string|null $locale
      * @return string

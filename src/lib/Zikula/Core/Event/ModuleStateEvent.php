@@ -30,12 +30,12 @@ class ModuleStateEvent extends Event
 
     /**
      * @var null|AbstractModule The module instance. Null for non-Symfony styled modules
-     *   or when Module object is not available.
+     *   or when Module object is not available
      */
     private $module;
 
     /**
-     * @param null|AbstractModule $module The module instance.
+     * @param null|AbstractModule $module The module instance
      * @param null|array $modinfo
      */
     public function __construct(AbstractModule $module = null, $modinfo = null)

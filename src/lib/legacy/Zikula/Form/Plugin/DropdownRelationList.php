@@ -125,8 +125,8 @@ class Zikula_Form_Plugin_DropdownRelationList extends Zikula_Form_Plugin_Dropdow
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
-     * @param array            &$params Parameters passed from the Smarty plugin function.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
+     * @param array            &$params Parameters passed from the Smarty plugin function
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
@@ -229,8 +229,8 @@ class Zikula_Form_Plugin_DropdownRelationList extends Zikula_Form_Plugin_Dropdow
     /**
      * Load event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
-     * @param array            &$params Parameters passed from the Smarty plugin function.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
+     * @param array            &$params Parameters passed from the Smarty plugin function
      *
      * @return void
      */

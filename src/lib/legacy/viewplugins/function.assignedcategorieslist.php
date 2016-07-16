@@ -26,13 +26,13 @@
  * <samp>{assignedcategorieslist item=$myVar}</samp>
  * <samp>{assignedcategorieslist categories=$myCategories doctrine2=true}</samp>
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the {@link Zikula_View} object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the {@link Zikula_View} object
  *
  * @return string The HTML code for an unordered list containing the item's
  *                assigned categories. If no categories are assigned to the
  *                item, then the list will contain a single list-item (<li>)
- *                with a message to that effect.
+ *                with a message to that effect
  */
 function smarty_function_assignedcategorieslist($params, Zikula_View $view)
 {

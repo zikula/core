@@ -210,8 +210,8 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
      * - instance of SystemPlugin_Imagine_Preset with custom preset
      * - only with data as "anonymous" preset (it name will be set to width + x + height)
      *
-     * @param SystemPlugin_Imagine_Preset|string|array  $preset Preset instance, preset name or preset data as array.
-     * @param array                                     $data   Preset data.
+     * @param SystemPlugin_Imagine_Preset|string|array  $preset Preset instance, preset name or preset data as array
+     * @param array                                     $data   Preset data
      *
      * @return SystemPlugin_Imagine_Manager
      */
@@ -401,7 +401,7 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
      * @param SystemPlugin_Imagine_Image  $image    Base image for thumbnail
      * @param SystemPlugin_Imagine_Preset $preset   Preset with options
      *
-     * @throws Exception Rethrows Imagine exception on thumbnail creation failure.
+     * @throws Exception Rethrows Imagine exception on thumbnail creation failure
      *
      * @return SystemPlugin_Imagine_Image
      */

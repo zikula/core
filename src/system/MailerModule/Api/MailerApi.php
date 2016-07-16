@@ -69,13 +69,13 @@ class MailerApi
     /**
      * MailerApi constructor.
      *
-     * @param bool                     $isInstalled     Installed flag.
-     * @param TranslatorInterface      $translator      Translator service instance.
-     * @param EventDispatcherInterface $eventDispatcher EventDispatcher service instance.
-     * @param DynamicConfigDumper $configDumper Configuration dumper for retrieving SwiftMailer configuration parameters.
-     * @param VariableApi $variableApi VariableApi service instance.
+     * @param bool                     $isInstalled     Installed flag
+     * @param TranslatorInterface      $translator      Translator service instance
+     * @param EventDispatcherInterface $eventDispatcher EventDispatcher service instance
+     * @param DynamicConfigDumper $configDumper Configuration dumper for retrieving SwiftMailer configuration parameters
+     * @param VariableApi $variableApi VariableApi service instance
      * @param Swift_Mailer $mailer
-     * @param PermissionApi $permissionApi PermissionApi service instance.
+     * @param PermissionApi $permissionApi PermissionApi service instance
      */
     public function __construct(
         $isInstalled,
@@ -104,7 +104,7 @@ class MailerApi
     /**
      * Sets the translator.
      *
-     * @param TranslatorInterface $translator Translator service instance.
+     * @param TranslatorInterface $translator Translator service instance
      */
     public function setTranslator(/*TranslatorInterface */$translator)
     {
@@ -115,7 +115,7 @@ class MailerApi
      * API function to send e-mail message.
      * It is assumed that basic parameters for sender and recipient(s) have already been set.
      *
-     * @param Swift_Message $message The message object.
+     * @param Swift_Message $message The message object
      * @param string        $subject message subject
      * @param string        $body message body, if altbody is provided then
      *                            this is the HTML version of the body
@@ -236,7 +236,7 @@ class MailerApi
     /**
      * Adds given attachments to the current message object.
      *
-     * @param array $attachments List of attachments to add.
+     * @param array $attachments List of attachments to add
      */
     private function addAttachments(array $attachments)
     {
@@ -256,7 +256,7 @@ class MailerApi
     /**
      * Adds given string attachments to the current message object.
      *
-     * @param array $attachments List of string attachments to add.
+     * @param array $attachments List of string attachments to add
      */
     private function addStringAttachments(array $attachments)
     {
@@ -270,7 +270,7 @@ class MailerApi
     /**
      * Adds given embedded images to the current message object.
      *
-     * @param array $embeddedImages List of embedded images to add.
+     * @param array $embeddedImages List of embedded images to add
      */
     private function addEmbeddedImages(array $embeddedImages)
     {

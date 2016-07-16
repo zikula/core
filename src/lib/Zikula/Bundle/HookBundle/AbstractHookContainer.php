@@ -51,7 +51,7 @@ abstract class AbstractHookContainer
     /**
      * Register a hook subscriber bundle.
      *
-     * @param SubscriberBundle $bundle HookBundle.
+     * @param SubscriberBundle $bundle HookBundle
      *
      * @return AbstractHookContainer
      */
@@ -69,7 +69,7 @@ abstract class AbstractHookContainer
     /**
      * Register a hook subscriber bundle.
      *
-     * @param ProviderBundle $bundle HookProviderBundle.
+     * @param ProviderBundle $bundle HookProviderBundle
      *
      * @return AbstractHookContainer
      */
@@ -111,9 +111,9 @@ abstract class AbstractHookContainer
     /**
      * Get hook subscriber bundle for a given area.
      *
-     * @param string $area Area.
+     * @param string $area Area
      *
-     * @throws \InvalidArgumentException If the area specified is not registered.
+     * @throws \InvalidArgumentException If the area specified is not registered
      *
      * @return SubscriberBundle
      */
@@ -129,9 +129,9 @@ abstract class AbstractHookContainer
     /**
      * Get hook provider bundle for a given area.
      *
-     * @param string $area Area.
+     * @param string $area Area
      *
-     * @throws \InvalidArgumentException If the area specified is not registered.
+     * @throws \InvalidArgumentException If the area specified is not registered
      *
      * @return ProviderBundle
      */

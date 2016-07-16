@@ -20,11 +20,11 @@ class Zikula_Bag_ParameterBag extends \Symfony\Component\HttpFoundation\Paramete
      * @deprecated as of Core 1.4.0
      * @see \Symfony\Component\HttpFoundation\ParameterBag::filter
      *
-     * @param string $key     Key.
-     * @param mixed  $default Default = null.
-     * @param bool   $deep    Default = false.
-     * @param int    $filter  FILTER_* constant.
-     * @param mixed  $options Filter options.
+     * @param string $key     Key
+     * @param mixed  $default Default = null
+     * @param bool   $deep    Default = false
+     * @param int    $filter  FILTER_* constant
+     * @param mixed  $options Filter options
      *
      * @see http://php.net/manual/en/function.filter-var.php
      *

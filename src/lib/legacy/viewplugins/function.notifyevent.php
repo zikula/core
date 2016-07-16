@@ -34,12 +34,12 @@ use Zikula\Core\Event\GenericEvent;
  *  {notifyevent eventname='module.event.name' arg1=$arg1 arg2=arg2 assign=$data}
  *  {notifyevent eventobject=$eventObject}
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
  * @see    smarty_function_notifyevent()
  *
- * @return void The results must be assigned to variable in assigned.
+ * @return void The results must be assigned to variable in assigned
  */
 function smarty_function_notifyevent($params, Zikula_View $view)
 {

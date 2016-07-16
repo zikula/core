@@ -56,10 +56,10 @@ class FrontControllerListener implements EventSubscriberInterface
     /**
      * FrontControllerListener constructor.
      *
-     * @param RouterInterface $router         RouterInterface service instance.
-     * @param PermissionApi   $permissionApi  PermissionApi service instance.
-     * @param VariableApi     $variableApi    VariableApi service instance.
-     * @param AssetBag        $headerAssetBag AssetBag service instance for header code.
+     * @param RouterInterface $router         RouterInterface service instance
+     * @param PermissionApi   $permissionApi  PermissionApi service instance
+     * @param VariableApi     $variableApi    VariableApi service instance
+     * @param AssetBag        $headerAssetBag AssetBag service instance for header code
      */
     public function __construct(RouterInterface $router, PermissionApi $permissionApi, VariableApi $variableApi, AssetBag $headerAssetBag)
     {

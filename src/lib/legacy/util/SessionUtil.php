@@ -18,13 +18,13 @@ class SessionUtil
     /**
      * Get a session variable
      *
-     * @param string  $name                 Name of the session variable to get.
-     * @param string  $default              The default value to return if the requested session variable is not set.
-     * @param string  $path                 Path.
-     * @param boolean $autocreate           Whether or not to autocreate the supplied path (optional) (default=true).
-     * @param boolean $overwriteExistingVar Whether or not to overwrite existing/set variable entries which the given path requires to be arrays (optional) (default=false).
+     * @param string  $name                 Name of the session variable to get
+     * @param string  $default              The default value to return if the requested session variable is not set
+     * @param string  $path                 Path
+     * @param boolean $autocreate           Whether or not to autocreate the supplied path (optional) (default=true)
+     * @param boolean $overwriteExistingVar Whether or not to overwrite existing/set variable entries which the given path requires to be arrays (optional) (default=false)
      *
-     * @return string Session variable requested.
+     * @return string Session variable requested
      */
     public static function getVar($name, $default = false, $path = '/', $autocreate = true, $overwriteExistingVar = false)
     {
@@ -36,13 +36,13 @@ class SessionUtil
     /**
      * Set a session variable.
      *
-     * @param string  $name                 Name of the session variable to set.
-     * @param string  $value                Value to set the named session variable.
-     * @param string  $path                 Path to traverse to reach the element we wish to return (optional) (default='/').
-     * @param boolean $autocreate           Whether or not to autocreate the supplied path (optional) (default=true).
-     * @param boolean $overwriteExistingVar Whether or not to overwrite existing/set variable entries which the given path requires to be arrays (optional) (default=false).
+     * @param string  $name                 Name of the session variable to set
+     * @param string  $value                Value to set the named session variable
+     * @param string  $path                 Path to traverse to reach the element we wish to return (optional) (default='/')
+     * @param boolean $autocreate           Whether or not to autocreate the supplied path (optional) (default=true)
+     * @param boolean $overwriteExistingVar Whether or not to overwrite existing/set variable entries which the given path requires to be arrays (optional) (default=false)
      *
-     * @return boolean true upon success, false upon failure.
+     * @return boolean true upon success, false upon failure
      */
     public static function setVar($name, $value, $path = '/', $autocreate = true, $overwriteExistingVar = false)
     {
@@ -58,11 +58,11 @@ class SessionUtil
     /**
      * Delete a session variable.
      *
-     * @param string $name    Name of the session variable to delete.
-     * @param mixed  $default The default value to return if the requested session variable is not set.
-     * @param string $path    Path to traverse to reach the element we wish to return (optional) (default='/').
+     * @param string $name    Name of the session variable to delete
+     * @param mixed  $default The default value to return if the requested session variable is not set
+     * @param string $path    Path to traverse to reach the element we wish to return (optional) (default='/')
      *
-     * @return mixed The value of the session variable being deleted, or the value provided in $default if the variable is not set.
+     * @return mixed The value of the session variable being deleted, or the value provided in $default if the variable is not set
      */
     public static function delVar($name, $default = false, $path = '/')
     {
@@ -124,7 +124,7 @@ class SessionUtil
     /**
      * Regerate session id.
      *
-     * @param boolean $force Force regeneration, default: false.
+     * @param boolean $force Force regeneration, default: false
      *
      * @return void
      */

@@ -42,9 +42,9 @@ class Zikula_Doctrine_Hydrator_SingleScalarArray extends Doctrine_Hydrator_Abstr
     /**
      * Hydrates the select results.
      *
-     * @param mixed $stmt Doctrine statement.
+     * @param mixed $stmt Doctrine statement
      *
-     * @return array Hydration result (never null).
+     * @return array Hydration result (never null)
      */
     public function hydrateResultSet($stmt)
     {

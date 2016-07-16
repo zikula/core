@@ -39,11 +39,11 @@ class ZLoader
     /**
      * Add new autoloader to the stack.
      *
-     * @param string $namespace Namespace.
+     * @param string $namespace Namespace
      * @param string $paths
-     * @param string $separator Separator, _ or \\.
+     * @param string $separator Separator, _ or \\
      *
-     * @internal param string $path Path.
+     * @internal param string $path Path
      * @return void
      */
     public static function addAutoloader($namespace, $paths = '', $separator = '_')
@@ -66,7 +66,7 @@ class ZLoader
     /**
      * Simple PEAR autoloader and handling for non-PEAR classes.
      *
-     * @param string $class Class name.
+     * @param string $class Class name
      *
      * @return boolean
      */

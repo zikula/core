@@ -15,9 +15,9 @@
  * Example:
  *   {$myString|formatpermalink}
  *
- * @param string $string         The contents to transform.
+ * @param string $string         The contents to transform
  *
- * @return string The modified output.
+ * @return string The modified output
  */
 function smarty_modifier_formatpermalink($string)
 {

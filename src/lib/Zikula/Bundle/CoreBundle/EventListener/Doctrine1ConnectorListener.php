@@ -60,7 +60,7 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
      * boolean 'lazy'  - lazy connect.
      * string 'name' - connection name.
      *
-     * @param Zikula_Event $event Event.
+     * @param Zikula_Event $event Event
      *
      * @throws \PDOException
      *
@@ -164,7 +164,7 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
      * Listens for 'doctrine.configure' events.
      * Subject is expected to be the Doctrine_Manager.
      *
-     * @param Zikula_Event $event Event.
+     * @param Zikula_Event $event Event
      *
      * @return void
      */
@@ -203,7 +203,7 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
      * Listens for 'doctrine.configure' events.
      * Subject is either Doctrine_Manager, Doctrine_Connection or Doctrine_Table.
      *
-     * @param Zikula_Event $event Event.
+     * @param Zikula_Event $event Event
      *
      * @throws \Exception
      *

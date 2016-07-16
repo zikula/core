@@ -27,7 +27,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
      * This function is only ever called once during the lifetime of a particular
      * module instance. This function MUST exist in the pninit file for a module.
      *
-     * @return bool True on success, false otherwise.
+     * @return bool True on success, false otherwise
      */
     public function install()
     {
@@ -62,9 +62,9 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
      * This function must consider all the released versions of the module!
      * If the upgrade fails at some point, it returns the last upgraded version.
      *
-     * @param string $oldVersion Version number string to upgrade from.
+     * @param string $oldVersion Version number string to upgrade from
      *
-     * @return bool|string True on success, last valid version string or false if fails.
+     * @return bool|string True on success, last valid version string or false if fails
      */
     public function upgrade($oldVersion)
     {
@@ -158,7 +158,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
     /**
      * Build and return an array of all current module variables, with their default values.
      *
-     * @return array An array of all current module variables, with their default values, suitable for {@link setVars()}.
+     * @return array An array of all current module variables, with their default values, suitable for {@link setVars()}
      */
     private function getDefaultModvars()
     {

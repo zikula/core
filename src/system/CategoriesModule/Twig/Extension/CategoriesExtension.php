@@ -58,10 +58,10 @@ class CategoriesExtension extends \Twig_Extension
      * page's category and assign it to the template variable $catsortvalue:
      * <samp>{% set catSortValue = categoryPath(page.categoryId, 'sort_value') %}</samp>
      *
-     * @param int|string $id       The category identifier.
-     * @param string     $idColumn Field name used for identification.
-     * @param string     $field    Desired output field.
-     * @param bool       $html     If set, return HTML (optional, default: false).
+     * @param int|string $id       The category identifier
+     * @param string     $idColumn Field name used for identification
+     * @param string     $field    Desired output field
+     * @param bool       $html     If set, return HTML (optional, default: false)
      *
      * @return string
      */
@@ -118,13 +118,13 @@ class CategoriesExtension extends \Twig_Extension
 
     /**
      * Generates a module table selector.
-     * @todo Temporary solution, to be removed after migration to Symfony Forms has been completed.
+     * @todo Temporary solution, to be removed after migration to Symfony Forms has been completed
      *
-     * @param string     $modname       The module name.
-     * @param string     $name          The form field name.
-     * @param string|int $selectedValue The selected value.
-     * @param string|int $defaultValue  The default option's value.
-     * @param string     $defaultText   The default option's text.
+     * @param string     $modname       The module name
+     * @param string     $name          The form field name
+     * @param string|int $selectedValue The selected value
+     * @param string|int $defaultValue  The default option's value
+     * @param string     $defaultText   The default option's text
      *
      * @return string
      */
@@ -135,18 +135,18 @@ class CategoriesExtension extends \Twig_Extension
 
     /**
      * Generates a category selector.
-     * @todo Temporary solution, to be removed after migration to Symfony Forms has been completed.
+     * @todo Temporary solution, to be removed after migration to Symfony Forms has been completed
      *
-     * @param int        $category      The parent category id.
-     * @param string     $field         The category field to use.
-     * @param string     $name          The form field name.
-     * @param string|int $selectedValue The selected value.
-     * @param string|int $defaultValue  The default option's value.
-     * @param string     $defaultText   The default option's text.
-     * @param bool       $recurse       Whether recurse into sub levels or not.
-     * @param bool       $relative      Whether to use relative pathes or not.
-     * @param bool       $includeRoot   Whether to include root category or not.
-     * @param bool       $includeLeaf   Whether to include leaf categories or not.
+     * @param int        $category      The parent category id
+     * @param string     $field         The category field to use
+     * @param string     $name          The form field name
+     * @param string|int $selectedValue The selected value
+     * @param string|int $defaultValue  The default option's value
+     * @param string     $defaultText   The default option's text
+     * @param bool       $recurse       Whether recurse into sub levels or not
+     * @param bool       $relative      Whether to use relative pathes or not
+     * @param bool       $includeRoot   Whether to include root category or not
+     * @param bool       $includeLeaf   Whether to include leaf categories or not
      *
      * @return string
      */

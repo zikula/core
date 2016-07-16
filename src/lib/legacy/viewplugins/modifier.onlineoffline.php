@@ -16,9 +16,9 @@
  *
  *   {$myVar|onlineoffline|safetext} returns Online if $myVar = 1 and Offline if $myVar = 0
  *
- * @param mixed $string The contents to transform.
+ * @param mixed $string The contents to transform
  *
- * @return string The modified output.
+ * @return string The modified output
  */
 function smarty_modifier_onlineoffline($string)
 {

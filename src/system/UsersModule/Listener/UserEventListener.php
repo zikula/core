@@ -59,7 +59,7 @@ class UserEventListener implements EventSubscriberInterface
      * if it detects session variables containing authentication information which might make it think
      * that a re-attempt is in progress.
      *
-     * @param GenericEvent $event The event that triggered this handler.
+     * @param GenericEvent $event The event that triggered this handler
      *
      * @return void
      */

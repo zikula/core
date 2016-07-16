@@ -50,11 +50,11 @@ class Zikula_Workflow_Parser
     /**
      * parse xml
      *
-     * @param string $xmldata    XML data.
-     * @param string $schemaName Schema name.
-     * @param string $module     Module name.
+     * @param string $xmldata    XML data
+     * @param string $schemaName Schema name
+     * @param string $module     Module name
      *
-     * @return mixed Associative array of workflow or false.
+     * @return mixed Associative array of workflow or false
      */
     public function parse($xmldata, $schemaName, $module)
     {
@@ -164,9 +164,9 @@ class Zikula_Workflow_Parser
     /**
      * XML start element handler.
      *
-     * @param object $parser  Parser object.
-     * @param string $name    Element name.
-     * @param array  $attribs Element attributes.
+     * @param object $parser  Parser object
+     * @param string $name    Element name
+     * @param array  $attribs Element attributes
      *
      * @return void
      */
@@ -288,8 +288,8 @@ class Zikula_Workflow_Parser
     /**
      * XML end element handler.
      *
-     * @param object $parser Parser object.
-     * @param string $name   Element name.
+     * @param object $parser Parser object
+     * @param string $name   Element name
      *
      * @return void
      */
@@ -379,10 +379,10 @@ class Zikula_Workflow_Parser
     /**
      * XML data element handler.
      *
-     * @param object $parser Parser object.
-     * @param string $data   Character data.
+     * @param object $parser Parser object
+     * @param string $data   Character data
      *
-     * @return boolean True.
+     * @return boolean True
      */
     public function characterData($parser, $data)
     {
@@ -395,8 +395,8 @@ class Zikula_Workflow_Parser
     /**
      * Hander for unexpected XML errors.
      *
-     * @param string $name  Tag name.
-     * @param string $state Workflow state.
+     * @param string $name  Tag name
+     * @param string $state Workflow state
      *
      * @return string
      */

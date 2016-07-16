@@ -146,7 +146,7 @@ class FilterUtil
     /**
      * Get filter string.
      *
-     * @return string $filter Filter string.
+     * @return string $filter Filter string
      */
     public function getFilter()
     {
@@ -167,7 +167,7 @@ class FilterUtil
     /**
      * Set filterstring.
      *
-     * @param mixed $filter Filter string or array.
+     * @param mixed $filter Filter string or array
      *
      * @return void
      */
@@ -188,7 +188,7 @@ class FilterUtil
      * Adds a filter or an array of filters.
      * If filter does not begin with "," or "*" append it as "and".
      *
-     * @param mixed $filter Filter string or array.
+     * @param mixed $filter Filter string or array
      *
      * @return void
      */
@@ -208,7 +208,7 @@ class FilterUtil
     /**
      * Add filter string with "AND".
      *
-     * @param mixed $filter Filter string or array.
+     * @param mixed $filter Filter string or array
      *
      * @return void
      */
@@ -230,7 +230,7 @@ class FilterUtil
     /**
      * Add filter string with "OR".
      *
-     * @param mixed $filter Filter string or array.
+     * @param mixed $filter Filter string or array
      *
      * @return void
      */
@@ -252,9 +252,9 @@ class FilterUtil
     /**
      * Create a condition object out of a string.
      *
-     * @param string $filter Condition string.
+     * @param string $filter Condition string
      *
-     * @return array Condition object.
+     * @return array Condition object
      */
     private function makeCondition($filter)
     {
@@ -313,11 +313,11 @@ class FilterUtil
     /**
      * Help function to generate an object out of a string.
      *
-     * @param string $filter Filter string.
+     * @param string $filter Filter string
      *
      * @throws \InvalidArgumentException
      *
-     * @return array Filter[] object.
+     * @return array Filter[] object
      */
     private function genFilterExprRecursive($filter)
     {

@@ -19,9 +19,9 @@ class AjaxResponse extends AbstractBaseResponse
     /**
      * Constructor.
      *
-     * @param mixed $payload Application data.
-     * @param mixed $message Response status/error message, may be string or array.
-     * @param array $options Options.
+     * @param mixed $payload Application data
+     * @param mixed $message Response status/error message, may be string or array
+     * @param array $options Options
      */
     public function __construct($payload, $message = null, array $options = [])
     {

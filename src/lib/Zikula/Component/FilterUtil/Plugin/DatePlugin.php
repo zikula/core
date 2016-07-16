@@ -22,7 +22,7 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
     /**
      * Returns the operators the plugin can handle.
      *
-     * @return array Operators.
+     * @return array Operators
      */
     public function availableOperators()
     {
@@ -32,11 +32,11 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
     /**
      * Replace field's value.
      *
-     * @param string $field Field name.
-     * @param string $op    Filter operator.
-     * @param string $value Filter value.
+     * @param string $field Field name
+     * @param string $op    Filter operator
+     * @param string $value Filter value
      *
-     * @return array New filter set.
+     * @return array New filter set
      */
     public function replace($field, $op, $value)
     {
@@ -57,7 +57,7 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
     /**
      * Convert the date to a more useful format.
      *
-     * @param string $date Date string.
+     * @param string $date Date string
      *
      * @return string Converted date
      */
@@ -95,10 +95,10 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
      * min/minute: That minute.
      * Returns an array [from, to].
      *
-     * @param string $date Date string.
-     * @param string $type Period type.
+     * @param string $date Date string
+     * @param string $type Period type
      *
-     * @return array Start and end of the period.
+     * @return array Start and end of the period
      */
     private function makePeriod($date, $type)
     {
@@ -159,9 +159,9 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
     /**
      * Get the Doctrine expression object
      *
-     * @param string $field Field name.
-     * @param string $op    Operator.
-     * @param string $value Value.
+     * @param string $field Field name
+     * @param string $op    Operator
+     * @param string $value Value
      *
      * @return BaseExpr Doctrine expression
      */

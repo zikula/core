@@ -90,8 +90,8 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractStyledPlugin
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
-     * @param array            &$params Parameters passed from the Zikula_View plugin function.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
+     * @param array            &$params Parameters passed from the Zikula_View plugin function
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
@@ -105,8 +105,8 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractStyledPlugin
     /**
      * DataBound event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
-     * @param array            &$params Parameters passed from the Zikula_View plugin function.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
+     * @param array            &$params Parameters passed from the Zikula_View plugin function
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
@@ -120,7 +120,7 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractStyledPlugin
     /**
      * RenderBegin event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
      * @return string The rendered output
      */
@@ -141,7 +141,7 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractStyledPlugin
     /**
      * RenderEnd event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
      * @return string The rendered output
      */
@@ -159,7 +159,7 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractStyledPlugin
     /**
      * Check if it's the first time.
      *
-     * @param boolean $doSet Whether or not to set the check variable.
+     * @param boolean $doSet Whether or not to set the check variable
      *
      * @return boolean
      */

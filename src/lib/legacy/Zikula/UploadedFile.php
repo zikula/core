@@ -21,9 +21,9 @@ class Zikula_UploadedFile extends \Symfony\Component\HttpFoundation\File\Uploade
      * @deprecated at 1.4.0
      * Whether a offset exists
      * @param mixed $offset
-     * An offset to check for.
+     * An offset to check for
      *
-     * @return boolean true on success or false on failure.
+     * @return boolean true on success or false on failure
      */
     public function offsetExists($offset)
     {
@@ -36,8 +36,8 @@ class Zikula_UploadedFile extends \Symfony\Component\HttpFoundation\File\Uploade
      * @deprecated at 1.4.0
      * Offset to retrieve
      * @param mixed $offset
-     * The offset to retrieve.
-     * @return mixed Can return all value types.
+     * The offset to retrieve
+     * @return mixed Can return all value types
      */
     public function offsetGet($offset)
     {
@@ -70,9 +70,9 @@ class Zikula_UploadedFile extends \Symfony\Component\HttpFoundation\File\Uploade
      * @deprecated at 1.4.0
      * Offset to set
      * @param mixed $offset
-     * The offset to assign the value to.
+     * The offset to assign the value to
      * @param mixed $value
-     * The value to set.
+     * The value to set
      * @throws \Exception
      */
     public function offsetSet($offset, $value)
@@ -84,7 +84,7 @@ class Zikula_UploadedFile extends \Symfony\Component\HttpFoundation\File\Uploade
      * @deprecated at 1.4.0
      * Offset to unset
      * @param mixed $offset
-     * The offset to unset.
+     * The offset to unset
      * @throws \Exception
      */
     public function offsetUnset($offset)

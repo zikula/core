@@ -19,8 +19,8 @@ class Zikula_Doctrine_Template_Listener_Logging extends Zikula_Doctrine_Template
     /**
      * Creates a new logging instance.
      *
-     * @param Doctrine_Event $event  Event.
-     * @param int            $opType I/U/D for Insert/Update/Delete.
+     * @param Doctrine_Event $event  Event
+     * @param int            $opType I/U/D for Insert/Update/Delete
      *
      * @return void
      */
@@ -62,7 +62,7 @@ class Zikula_Doctrine_Template_Listener_Logging extends Zikula_Doctrine_Template
     /**
      * Creates an log for an insert.
      *
-     * @param Doctrine_Event $event Event.
+     * @param Doctrine_Event $event Event
      *
      * @return void
      */
@@ -74,7 +74,7 @@ class Zikula_Doctrine_Template_Listener_Logging extends Zikula_Doctrine_Template
     /**
      * Creates an log for an udpate.
      *
-     * @param Doctrine_Event $event Event.
+     * @param Doctrine_Event $event Event
      *
      * @return void
      */
@@ -86,7 +86,7 @@ class Zikula_Doctrine_Template_Listener_Logging extends Zikula_Doctrine_Template
     /**
      * Creates an log for an delete.
      *
-     * @param Doctrine_Event $event Event.
+     * @param Doctrine_Event $event Event
      *
      * @return void
      */

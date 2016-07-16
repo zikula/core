@@ -17,9 +17,9 @@
  * {browserhack condition="if lte IE 8" assign="var"}something goes here{/browserhack}
  *
  * @param array       $params  Array with keys 'condition' whatever goes in the browserhack,
- *                             and 'assign' to assign rather than display.
- * @param string      $content Content of the block.
- * @param Zikula_View $view    Instance of Zikula_View object.
+ *                             and 'assign' to assign rather than display
+ * @param string      $content Content of the block
+ * @param Zikula_View $view    Instance of Zikula_View object
  *
  * @return string|void
  */

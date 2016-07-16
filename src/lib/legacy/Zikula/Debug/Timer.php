@@ -35,7 +35,7 @@ class Zikula_Debug_Timer
     /**
      * Constructor.
      *
-     * @param string $name The name of the timer.
+     * @param string $name The name of the timer
      */
     public function __construct($name = '')
     {
@@ -47,7 +47,7 @@ class Zikula_Debug_Timer
     /**
      * Reset the timer.
      *
-     * @param string $name The name of the timer.
+     * @param string $name The name of the timer
      *
      * @return void
      */
@@ -61,7 +61,7 @@ class Zikula_Debug_Timer
     /**
      * Return the current microtime.
      *
-     * @return float The current microtime.
+     * @return float The current microtime
      */
     public function get_microtime()
     {
@@ -81,7 +81,7 @@ class Zikula_Debug_Timer
     /**
      * Stop the timer.
      *
-     * @param boolean $insertNewRecord Whether to insert a new record.
+     * @param boolean $insertNewRecord Whether to insert a new record
      *
      * @return array Statistics
      */
@@ -169,7 +169,7 @@ class Zikula_Debug_Timer
     /**
      * Take a snapshot while continuing the timing run.
      *
-     * @param boolean $doStats Whether to return statistics or not.
+     * @param boolean $doStats Whether to return statistics or not
      *
      * @return array|void
      */

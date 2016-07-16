@@ -41,10 +41,10 @@ class IdsLogFilterType extends AbstractType
     /**
      * Adds a choice field for filtering by a certain IDS log field.
      *
-     * @param FormBuilderInterface $builder   The form builder.
-     * @param array                $options   Form type options.
-     * @param string               $fieldName Name of field to select.
-     * @param string               $label     Label for the form field.
+     * @param FormBuilderInterface $builder   The form builder
+     * @param array                $options   Form type options
+     * @param string               $fieldName Name of field to select
+     * @param string               $label     Label for the form field
      */
     private function addFilterField($builder, array $options, $fieldName, $label)
     {

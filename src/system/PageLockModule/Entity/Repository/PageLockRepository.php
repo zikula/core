@@ -25,8 +25,8 @@ class PageLockRepository extends EntityRepository
     /**
      * Returns amount of active locks.
      *
-     * @param string $lockName  Name of lock.
-     * @param string $sessionId Identifier of current session.
+     * @param string $lockName  Name of lock
+     * @param string $sessionId Identifier of current session
      *
      * @return integer
      *
@@ -53,8 +53,8 @@ class PageLockRepository extends EntityRepository
     /**
      * Returns active locks.
      *
-     * @param string $lockName  Name of lock.
-     * @param string $sessionId Identifier of current session.
+     * @param string $lockName  Name of lock
+     * @param string $sessionId Identifier of current session
      *
      * @return array
      *
@@ -84,9 +84,9 @@ class PageLockRepository extends EntityRepository
     /**
      * Updates the expire date of affected lock.
      *
-     * @param string    $lockName   Name of lock to be updated.
-     * @param string    $sessionId  Identifier of current session.
-     * @param \DateTime $expireDate The new expire date.
+     * @param string    $lockName   Name of lock to be updated
+     * @param string    $sessionId  Identifier of current session
+     * @param \DateTime $expireDate The new expire date
      *
      * @return void
      *
@@ -127,8 +127,8 @@ class PageLockRepository extends EntityRepository
     /**
      * Deletes a lock for a given name.
      *
-     * @param string $lockName  Name of lock to be deleted.
-     * @param string $sessionId Identifier of current session.
+     * @param string $lockName  Name of lock to be deleted
+     * @param string $sessionId Identifier of current session
      *
      * @return void
      *
@@ -156,11 +156,11 @@ class PageLockRepository extends EntityRepository
     /**
      * Adds common filters to the given query builder.
      *
-     * @param QueryBuilder $qb The current query builder instance.
-     * @param string $lockName  Name of lock.
-     * @param string $sessionId Identifier of current session.
+     * @param QueryBuilder $qb The current query builder instance
+     * @param string $lockName  Name of lock
+     * @param string $sessionId Identifier of current session
      *
-     * @return QueryBuilder The enriched query builder.
+     * @return QueryBuilder The enriched query builder
      */
     private function addCommonFilters(QueryBuilder $qb, $lockName, $sessionId)
     {

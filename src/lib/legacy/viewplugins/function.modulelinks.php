@@ -28,10 +28,10 @@
  *  class     CSS class (optional).
  *  returnAsArray     return results as array, not as formatted html - MUST set assign
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
- * @return string A formatted string containing navigation for the module admin panel.
+ * @return string A formatted string containing navigation for the module admin panel
  */
 function smarty_function_modulelinks($params, Zikula_View $view)
 {

@@ -79,12 +79,12 @@ class FilterListener implements EventSubscriberInterface
     /**
      * FilterListener constructor.
      *
-     * @param bool                   $isInstalled    Installed flag.
-     * @param VariableApi            $variableApi    VariableApi service instance.
-     * @param SessionInterface       $session        Session service instance.
-     * @param EntityManagerInterface $em             Doctrine entity manager.
-     * @param CurrentUserApi         $currentUserApi CurrentUserApi service instance.
-     * @param MailerApi              $mailer         MailerApi service instance.
+     * @param bool                   $isInstalled    Installed flag
+     * @param VariableApi            $variableApi    VariableApi service instance
+     * @param SessionInterface       $session        Session service instance
+     * @param EntityManagerInterface $em             Doctrine entity manager
+     * @param CurrentUserApi         $currentUserApi CurrentUserApi service instance
+     * @param MailerApi              $mailer         MailerApi service instance
      */
     public function __construct($isInstalled, VariableApi $variableApi, SessionInterface $session, EntityManagerInterface $em, CurrentUserApi $currentUserApi, MailerApi $mailer)
     {
@@ -188,7 +188,7 @@ class FilterListener implements EventSubscriberInterface
     /**
      * Retrieves configuration array for PHPIDS.
      *
-     * @return array IDS configuration settings.
+     * @return array IDS configuration settings
      */
     private function getIdsConfig()
     {
@@ -259,8 +259,8 @@ class FilterListener implements EventSubscriberInterface
     /**
      * Process results from IDS scan.
      *
-     * @param IdsInit   $init   PHPIDS init object reference.
-     * @param IdsReport $result The result object from PHPIDS.
+     * @param IdsInit   $init   PHPIDS init object reference
+     * @param IdsReport $result The result object from PHPIDS
      *
      * @return void
      */
@@ -423,10 +423,10 @@ class FilterListener implements EventSubscriberInterface
     /**
      * Returns a system var.
      *
-     * @param string $variableName The variable name.
-     * @param mixed  $default      The default value.
+     * @param string $variableName The variable name
+     * @param mixed  $default      The default value
      *
-     * @return mixed Result returned by variable api call.
+     * @return mixed Result returned by variable api call
      */
     private function getSystemVar($variableName, $default = false)
     {

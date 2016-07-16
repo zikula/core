@@ -59,12 +59,12 @@ class Zikula_Provider_AggregateItem
     /**
      * Constructor.
      *
-     * @param string  $type        Type of aggregate item.
-     * @param string  $description Description of aggregate.
-     * @param integer $number      Number of items in aggregate.
-     * @param string  $controller  Name of controller (to view action).
-     * @param string  $method      Name of method in controller (to view action).
-     * @param array   $args        Arguments for method.
+     * @param string  $type        Type of aggregate item
+     * @param string  $description Description of aggregate
+     * @param integer $number      Number of items in aggregate
+     * @param string  $controller  Name of controller (to view action)
+     * @param string  $method      Name of method in controller (to view action)
+     * @param array   $args        Arguments for method
      */
     public function __construct($type, $description, $number, $controller, $method, array $args = [])
     {

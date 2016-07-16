@@ -34,7 +34,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return int the id of the new group
      *
      * @throws \InvalidArgumentException Thrown if the name parameter is provided
-     * @throws AccessDeniedException Thrown if the current user does not have add access.
+     * @throws AccessDeniedException Thrown if the current user does not have add access
      */
     public function create($args)
     {
@@ -87,10 +87,10 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @todo call permissions API to remove group permissions associated with the group
      *
-     * @return boolean true if successful, false on failure.
+     * @return boolean true if successful, false on failure
      *
      * @throws \InvalidArgumentException Thrown if the gid parameter isn't provided
-     * @throws AccessDeniedException Thrown if the current user does not have delete access for the group.
+     * @throws AccessDeniedException Thrown if the current user does not have delete access for the group
      * @throws \RuntimeException Thrown if the requested group is either the default users group or primary admins group
      */
     public function delete($args)
@@ -155,10 +155,10 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type string $name the new name of the item
      *                      }
      *
-     * @return bool true if successful, false on failure.
+     * @return bool true if successful, false on failure
      *
      * @throws \InvalidArgumentException Thrown if either the gid or name parameters are not provided
-     * @throws AccessDeniedException Thrown if the current user does not have edit access to the group.
+     * @throws AccessDeniedException Thrown if the current user does not have edit access to the group
      */
     public function update($args)
     {
@@ -217,10 +217,10 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type int $uid the ID of the user
      *                    }
      *
-     * @return bool true if successful, false on failure.
+     * @return bool true if successful, false on failure
      *
      * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
-     * @throws AccessDeniedException Thrown if the current user does not have edit access to the group.
+     * @throws AccessDeniedException Thrown if the current user does not have edit access to the group
      */
     public function adduser($args)
     {
@@ -261,10 +261,10 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type int $uid the ID of the user
      *                    }
      *
-     * @return bool true if successful, false on failure.
+     * @return bool true if successful, false on failure
      *
      * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
-     * @throws AccessDeniedException Thrown if the current user does not have edit access to the group.
+     * @throws AccessDeniedException Thrown if the current user does not have edit access to the group
      */
     public function removeuser($args)
     {
@@ -306,7 +306,7 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type int    $checkgid optional gid of the group
      *                      }
      *
-     * @return int|bool item, or false on failure.
+     * @return int|bool item, or false on failure
      *
      * @throws \InvalidArgumentException Thrown if the name parameter isn't provided
      */
@@ -357,9 +357,9 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type int $gid id of group item to get
      *                      }
      *
-     * @return string|bool item, or false on failure.
+     * @return string|bool item, or false on failure
      *
-     * @throws \InvalidArgumentException Thrown if the id parameter isn't provided.
+     * @throws \InvalidArgumentException Thrown if the id parameter isn't provided
      */
     public function getnamebygid($args)
     {
@@ -396,7 +396,7 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Get applications.
      *
-     * @return array|bool array of group applications or false if no group applications are found.
+     * @return array|bool array of group applications or false if no group applications are found
      */
     public function getapplications()
     {
@@ -439,7 +439,7 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type int $userid user id
      *                    }
      *
-     * @return array|bool False if no application is found.
+     * @return array|bool False if no application is found
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
@@ -508,7 +508,7 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Utility function to count the number of items held by this module.
      *
-     * @return int number of items held by this module.
+     * @return int number of items held by this module
      */
     public function countitems()
     {

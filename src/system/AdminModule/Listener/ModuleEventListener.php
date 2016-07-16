@@ -34,7 +34,7 @@ class ModuleEventListener implements EventSubscriberInterface
     /**
      * UpdateCheckHelper constructor.
      *
-     * @param VariableApi $variableApi VariableApi service instance.
+     * @param VariableApi $variableApi VariableApi service instance
      */
     public function __construct(VariableApi $variableApi)
     {

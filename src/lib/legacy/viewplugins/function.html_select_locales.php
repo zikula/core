@@ -23,10 +23,10 @@
  * Example
  *   {html_select_locales name=locale selected=en}
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
- * @return string The value of the last status message posted, or void if no status message exists.
+ * @return string The value of the last status message posted, or void if no status message exists
  */
 function smarty_function_html_select_locales($params, Zikula_View $view)
 {

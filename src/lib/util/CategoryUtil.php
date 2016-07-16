@@ -17,12 +17,12 @@ class CategoryUtil
     /**
      * Return a category object by ID
      *
-     * @param string $rootPath    The path of the parent category.
-     * @param string $name        The name of the category.
-     * @param string $value       The value of the category (optional) (default=null).
-     * @param string $displayname The displayname of the category (optional) (default=null, uses $name).
-     * @param string $description The description of the category (optional) (default=null, uses $name).
-     * @param string $attributes  The attributes array to bind to the category (optional) (default=null).
+     * @param string $rootPath    The path of the parent category
+     * @param string $name        The name of the category
+     * @param string $value       The value of the category (optional) (default=null)
+     * @param string $displayname The displayname of the category (optional) (default=null, uses $name)
+     * @param string $description The description of the category (optional) (default=null, uses $name)
+     * @param string $attributes  The attributes array to bind to the category (optional) (default=null)
      *
      * @return array|boolean resulting folder object
      */
@@ -86,7 +86,7 @@ class CategoryUtil
     /**
      * Return a category object by ID.
      *
-     * @param integer $cid The category-ID to retrieve.
+     * @param integer $cid The category-ID to retrieve
      *
      * @return array resulting object or empty array if not found
      */
@@ -126,12 +126,12 @@ class CategoryUtil
     /**
      * Return an array of categories objects according the specified where-clause and sort criteria.
      *
-     * @param string  $where                  The where clause to use in the select (optional) (default='').
-     * @param string  $sort                   The order-by clause to use in the select (optional) (default='').
-     * @param string  $assocKey               The field to use as the associated array key (optional) (default='').
-     * @param array   $columnArray            Array of columns to select (optional) (default=null).
+     * @param string  $where                  The where clause to use in the select (optional) (default='')
+     * @param string  $sort                   The order-by clause to use in the select (optional) (default='')
+     * @param string  $assocKey               The field to use as the associated array key (optional) (default='')
+     * @param array   $columnArray            Array of columns to select (optional) (default=null)
      *
-     * @return array resulting folder object array.
+     * @return array resulting folder object array
      */
     public static function getCategories($where = '', $sort = '', $assocKey = '', $columnArray = null)
     {
@@ -180,8 +180,8 @@ class CategoryUtil
     /**
      * Return a folder object by it's path
      *
-     * @param string $apath The path to retrieve by (simple path or array of paths).
-     * @param string $field The (path) field we search for (either path or ipath) (optional) (default='path').
+     * @param string $apath The path to retrieve by (simple path or array of paths)
+     * @param string $field The (path) field we search for (either path or ipath) (optional) (default='path')
      *
      * @return array resulting folder object
      */
@@ -208,7 +208,7 @@ class CategoryUtil
     /**
      * Return an array of categories by the registry info.
      *
-     * @param array $registry The registered categories to retrieve.
+     * @param array $registry The registered categories to retrieve
      *
      * @return array resulting folder object array
      */
@@ -240,12 +240,12 @@ class CategoryUtil
     /**
      * Return the direct subcategories of the specified category
      *
-     * @param integer $id         The folder id to retrieve.
-     * @param string  $sort       The order-by clause (optional) (default='').
-     * @param boolean $relative   Whether or not to also generate relative paths (optional) (default=false).
-     * @param boolean $all        Whether or not to return all (or only active) categories (optional) (default=false).
-     * @param string  $assocKey   The field to use as the associated array key (optional) (default='').
-     * @param array   $attributes The associative array of attribute field names to filter by (optional) (default=null).
+     * @param integer $id         The folder id to retrieve
+     * @param string  $sort       The order-by clause (optional) (default='')
+     * @param boolean $relative   Whether or not to also generate relative paths (optional) (default=false)
+     * @param boolean $all        Whether or not to return all (or only active) categories (optional) (default=false)
+     * @param string  $assocKey   The field to use as the associated array key (optional) (default='')
+     * @param array   $attributes The associative array of attribute field names to filter by (optional) (default=null)
      *
      * @return array resulting folder object
      */
@@ -278,8 +278,8 @@ class CategoryUtil
     /**
      * Return all parent categories starting from id.
      *
-     * @param integer        $id       The (leaf) folder id to retrieve.
-     * @param string|boolean $assocKey Whether or not to return an associative array (optional) (default='id').
+     * @param integer        $id       The (leaf) folder id to retrieve
+     * @param string|boolean $assocKey Whether or not to return an associative array (optional) (default='id')
      *
      * @return array resulting folder object array
      */
@@ -308,15 +308,15 @@ class CategoryUtil
     /**
      * Return an array of category objects by path without the root category
      *
-     * @param string  $apath       The path to retrieve categories by.
-     * @param string  $sort        The sort field (optional) (default='').
-     * @param string  $field       The the (path) field to use (path or ipath) (optional) (default='ipath').
-     * @param boolean $includeLeaf Whether or not to also return leaf nodes (optional) (default=true).
-     * @param boolean $all         Whether or not to return all (or only active) categories (optional) (default=false).
-     * @param string  $exclPath    The path to exclude from the retrieved categories (optional) (default='').
-     * @param string  $assocKey    The field to use to build an associative key (optional) (default='').
-     * @param array   $attributes  The associative array of attribute field names to filter by (optional) (default=null).
-     * @param array   $columnArray The list of columns to fetch (optional) (default=null).
+     * @param string  $apath       The path to retrieve categories by
+     * @param string  $sort        The sort field (optional) (default='')
+     * @param string  $field       The the (path) field to use (path or ipath) (optional) (default='ipath')
+     * @param boolean $includeLeaf Whether or not to also return leaf nodes (optional) (default=true)
+     * @param boolean $all         Whether or not to return all (or only active) categories (optional) (default=false)
+     * @param string  $exclPath    The path to exclude from the retrieved categories (optional) (default='')
+     * @param string  $assocKey    The field to use to build an associative key (optional) (default='')
+     * @param array   $attributes  The associative array of attribute field names to filter by (optional) (default=null)
+     * @param array   $columnArray The list of columns to fetch (optional) (default=null)
      *
      * @return array resulting folder object array
      */
@@ -350,17 +350,17 @@ class CategoryUtil
     /**
      * Return an array of Subcategories for the specified folder
      *
-     * @param integer $cid         The root-category category-id.
-     * @param boolean $recurse     Whether or not to generate a recursive subcategory result set (optional) (default=true).
-     * @param boolean $relative    Whether or not to generate relative path indexes (optional) (default=true).
-     * @param boolean $includeRoot Whether or not to include the root folder in the result set (optional) (default=false).
-     * @param boolean $includeLeaf Whether or not to also return leaf nodes (optional) (default=true).
-     * @param boolean $all         Whether or not to include all (or only active) folders in the result set (optional) (default=false).
-     * @param integer $excludeCid  CategoryID (root folder) to exclude from the result set (optional) (default='').
-     * @param string  $assocKey    The field to use as the associated array key (optional) (default='').
-     * @param array   $attributes  The associative array of attribute field names to filter by (optional) (default=null).
-     * @param string  $sortField   The field to sort the resulting category array by (optional) (default='sort_value').
-     * @param array   $columnArray The list of columns to fetch (optional) (default=null).
+     * @param integer $cid         The root-category category-id
+     * @param boolean $recurse     Whether or not to generate a recursive subcategory result set (optional) (default=true)
+     * @param boolean $relative    Whether or not to generate relative path indexes (optional) (default=true)
+     * @param boolean $includeRoot Whether or not to include the root folder in the result set (optional) (default=false)
+     * @param boolean $includeLeaf Whether or not to also return leaf nodes (optional) (default=true)
+     * @param boolean $all         Whether or not to include all (or only active) folders in the result set (optional) (default=false)
+     * @param integer $excludeCid  CategoryID (root folder) to exclude from the result set (optional) (default='')
+     * @param string  $assocKey    The field to use as the associated array key (optional) (default='')
+     * @param array   $attributes  The associative array of attribute field names to filter by (optional) (default=null)
+     * @param string  $sortField   The field to sort the resulting category array by (optional) (default='sort_value')
+     * @param array   $columnArray The list of columns to fetch (optional) (default=null)
      *
      * @return array the resulting folder object array
      */
@@ -388,19 +388,19 @@ class CategoryUtil
     /**
      * Return an array of Subcategories for the specified folder
      *
-     * @param string  $apath       The path to get categories by.
-     * @param string  $field       The (path) field we match by (either path or ipath) (optional) (default='ipath').
-     * @param boolean $recurse     Whether or not to generate a recursive subcategory result set (optional) (default=true).
-     * @param boolean $relative    Whether or not to generate relative path indexes (optional) (default=true).
-     * @param boolean $includeRoot Whether or not to include the root folder in the result set (optional) (default=false).
-     * @param boolean $includeLeaf Whether or not to also return leaf nodes (optional) (default=true).
-     * @param boolean $all         Whether or not to include all (or only active) folders in the result set (optional) (default=false).
-     * @param integer $excludeCid  CategoryID (root folder) to exclude from the result set (optional) (default='').
-     * @param string  $assocKey    The field to use as the associated array key (optional) (default='').
-     * @param array   $attributes  The associative array of attribute field names to filter by (optional) (default=null).
-     * @param string  $sortField   The field to sort the resulting category array by (optional) (default='sort_value').
+     * @param string  $apath       The path to get categories by
+     * @param string  $field       The (path) field we match by (either path or ipath) (optional) (default='ipath')
+     * @param boolean $recurse     Whether or not to generate a recursive subcategory result set (optional) (default=true)
+     * @param boolean $relative    Whether or not to generate relative path indexes (optional) (default=true)
+     * @param boolean $includeRoot Whether or not to include the root folder in the result set (optional) (default=false)
+     * @param boolean $includeLeaf Whether or not to also return leaf nodes (optional) (default=true)
+     * @param boolean $all         Whether or not to include all (or only active) folders in the result set (optional) (default=false)
+     * @param integer $excludeCid  CategoryID (root folder) to exclude from the result set (optional) (default='')
+     * @param string  $assocKey    The field to use as the associated array key (optional) (default='')
+     * @param array   $attributes  The associative array of attribute field names to filter by (optional) (default=null)
+     * @param string  $sortField   The field to sort the resulting category array by (optional) (default='sort_value')
      *
-     * @return array resulting folder object array.
+     * @return array resulting folder object array
      */
     public static function getSubCategoriesByPath($apath, $field = 'ipath', $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCid = '', $assocKey = '', $attributes = null, $sortField = 'sort_value')
     {
@@ -426,19 +426,19 @@ class CategoryUtil
     /**
      * Return an array of Subcategories by for the given category
      *
-     * @param array   $category    The root category to retrieve.
-     * @param boolean $recurse     Whether or not to recurse (if false, only direct subfolders are retrieved) (optional) (default=true).
-     * @param boolean $relative    Whether or not to also generate relative paths (optional) (default=true).
-     * @param boolean $includeRoot Whether or not to include the root folder in the result set (optional) (default=false).
-     * @param boolean $includeLeaf Whether or not to also return leaf nodes (optional) (default=true).
-     * @param boolean $all         Whether or not to return all (or only active) categories (optional) (default=false).
-     * @param string  $excludeCat  The root category of the hierarchy to exclude from the result set (optional) (default='').
-     * @param string  $assocKey    The field to use as the associated array key (optional) (default='').
-     * @param array   $attributes  The associative array of attribute field names to filter by (optional) (default=null).
-     * @param string  $sortField   The field to sort the resulting category array by (optional) (default='sort_value').
-     * @param array   $columnArray The list of columns to fetch (optional) (default=null).
+     * @param array   $category    The root category to retrieve
+     * @param boolean $recurse     Whether or not to recurse (if false, only direct subfolders are retrieved) (optional) (default=true)
+     * @param boolean $relative    Whether or not to also generate relative paths (optional) (default=true)
+     * @param boolean $includeRoot Whether or not to include the root folder in the result set (optional) (default=false)
+     * @param boolean $includeLeaf Whether or not to also return leaf nodes (optional) (default=true)
+     * @param boolean $all         Whether or not to return all (or only active) categories (optional) (default=false)
+     * @param string  $excludeCat  The root category of the hierarchy to exclude from the result set (optional) (default='')
+     * @param string  $assocKey    The field to use as the associated array key (optional) (default='')
+     * @param array   $attributes  The associative array of attribute field names to filter by (optional) (default=null)
+     * @param string  $sortField   The field to sort the resulting category array by (optional) (default='sort_value')
+     * @param array   $columnArray The list of columns to fetch (optional) (default=null)
      *
-     * @return array resulting folder object array.
+     * @return array resulting folder object array
      */
     public static function getSubCategoriesForCategory($category, $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCat = null, $assocKey = '', $attributes = null, $sortField = 'sort_value', $columnArray = null)
     {
@@ -484,7 +484,7 @@ class CategoryUtil
     /**
      * Delete a category by it's ID
      *
-     * @param integer $cid The categoryID to delete.
+     * @param integer $cid The categoryID to delete
      *
      * @return void
      */
@@ -506,8 +506,8 @@ class CategoryUtil
     /**
      * Delete categories by Path
      *
-     * @param string $apath The path we wish to delete.
-     * @param string $field The (path) field we delete from (either path or ipath) (optional) (default='ipath').
+     * @param string $apath The path we wish to delete
+     * @param string $field The (path) field we delete from (either path or ipath) (optional) (default='ipath')
      *
      * @return boolean|void
      */
@@ -532,8 +532,8 @@ class CategoryUtil
     /**
      * Move categories by ID (recursive move).
      *
-     * @param integer $cid          The categoryID we wish to move.
-     * @param integer $newparent_id The categoryID of the new parent category.
+     * @param integer $cid          The categoryID we wish to move
+     * @param integer $newparent_id The categoryID of the new parent category
      *
      * @return boolean
      */
@@ -557,9 +557,9 @@ class CategoryUtil
     /**
      * Move SubCategories by Path (recurisve move).
      *
-     * @param string  $apath        The path to move from.
-     * @param integer $newparent_id The categoryID of the new parent category.
-     * @param string  $field        The field to use for the path reference (optional) (default='ipath').
+     * @param string  $apath        The path to move from
+     * @param integer $newparent_id The categoryID of the new parent category
+     * @param string  $field        The field to use for the path reference (optional) (default='ipath')
      *
      * @return boolean
      */
@@ -571,10 +571,10 @@ class CategoryUtil
     /**
      * Move Categories by Path (recursive move).
      *
-     * @param string  $apath        The path to move from.
-     * @param integer $newparent_id The categoryID of the new parent category.
-     * @param string  $field        The field to use for the path reference (optional) (default='ipath').
-     * @param boolean $includeRoot  Whether or not to also move the root folder  (optional) (default=true).
+     * @param string  $apath        The path to move from
+     * @param integer $newparent_id The categoryID of the new parent category
+     * @param string  $field        The field to use for the path reference (optional) (default='ipath')
+     * @param boolean $includeRoot  Whether or not to also move the root folder  (optional) (default=true)
      *
      * @return boolean
      */
@@ -637,8 +637,8 @@ class CategoryUtil
     /**
      * Copy categories by ID (recursive copy).
      *
-     * @param integer $cid          The categoryID we wish to copy.
-     * @param integer $newparent_id The categoryID of the new parent category.
+     * @param integer $cid          The categoryID we wish to copy
+     * @param integer $newparent_id The categoryID of the new parent category
      *
      * @return boolean
      */
@@ -656,9 +656,9 @@ class CategoryUtil
     /**
      * Copy SubCategories by Path (recurisve copy).
      *
-     * @param string  $apath        The path to copy from.
-     * @param integer $newparent_id The categoryID of the new parent category.
-     * @param string  $field        The field to use for the path reference (optional) (default='ipath').
+     * @param string  $apath        The path to copy from
+     * @param integer $newparent_id The categoryID of the new parent category
+     * @param string  $field        The field to use for the path reference (optional) (default='ipath')
      *
      * @return boolean
      */
@@ -670,10 +670,10 @@ class CategoryUtil
     /**
      * Copy Categories by Path (recursive copy).
      *
-     * @param string  $apath        The path to copy from.
-     * @param integer $newparent_id The categoryID of the new parent category.
-     * @param string  $field        The field to use for the path reference (optional) (default='ipath').
-     * @param boolean $includeRoot  Whether or not to also move the root folder (optional) (default=true).
+     * @param string  $apath        The path to copy from
+     * @param integer $newparent_id The categoryID of the new parent category
+     * @param string  $field        The field to use for the path reference (optional) (default='ipath')
+     * @param boolean $includeRoot  Whether or not to also move the root folder (optional) (default=true)
      *
      * @return boolean
      */
@@ -787,8 +787,8 @@ class CategoryUtil
     /**
      * Check whether $cid is a direct subcategory of $root_id.
      *
-     * @param integer $root_id The root/parent ID.
-     * @param integer $cid     The categoryID we wish to check for subcategory-ness.
+     * @param integer $root_id The root/parent ID
+     * @param integer $cid     The categoryID we wish to check for subcategory-ness
      *
      * @return boolean
      */
@@ -810,8 +810,8 @@ class CategoryUtil
     /**
      * Check whether $cid is a direct subcategory of $root_id.
      *
-     * @param array $rootCat The root/parent category.
-     * @param array $cat     The category we wish to check for subcategory-ness.
+     * @param array $rootCat The root/parent category
+     * @param array $cat     The category we wish to check for subcategory-ness
      *
      * @return boolean
      */
@@ -823,8 +823,8 @@ class CategoryUtil
     /**
      * Check whether $cid is a subcategory of $root_id.
      *
-     * @param integer $root_id The ID of the root category we wish to check from.
-     * @param integer $cid     The category-id we wish to check for subcategory-ness.
+     * @param integer $root_id The ID of the root category we wish to check from
+     * @param integer $cid     The category-id we wish to check for subcategory-ness
      *
      * @return boolean
      */
@@ -847,8 +847,8 @@ class CategoryUtil
     /**
      * Check whether $cat is a subcategory of $rootCat.
      *
-     * @param array $rootCat The root/parent category.
-     * @param array $cat     The category we wish to check for subcategory-ness.
+     * @param array $rootCat The root/parent category
+     * @param array $cat     The category we wish to check for subcategory-ness
      *
      * @return boolean
      */
@@ -863,9 +863,9 @@ class CategoryUtil
     /**
      * Check whether the category $cid has subcategories (optional checks for leafe ).
      *
-     * @param integer $cid       The parent category.
-     * @param boolean $countOnly Whether or not to explicitly check for leaf nodes in the subcategories.
-     * @param boolean $all       Whether or not to return all (or only active) subcategories.
+     * @param integer $cid       The parent category
+     * @param boolean $countOnly Whether or not to explicitly check for leaf nodes in the subcategories
+     * @param boolean $all       Whether or not to return all (or only active) subcategories
      *
      * @return boolean
      */
@@ -893,12 +893,12 @@ class CategoryUtil
     /**
      * Get the java-script for the tree menu.
      *
-     * @param array   $cats             The categories array to represent in the tree.
-     * @param boolean $doReplaceRootCat Whether or not to replace the root category with a localized string (optional) (default=true).
-     * @param boolean $sortable         Sets the zikula tree option sortable (optional) (default=false).
-     * @param array   $options          Options array for Zikula_Tree.
+     * @param array   $cats             The categories array to represent in the tree
+     * @param boolean $doReplaceRootCat Whether or not to replace the root category with a localized string (optional) (default=true)
+     * @param boolean $sortable         Sets the zikula tree option sortable (optional) (default=false)
+     * @param array   $options          Options array for Zikula_Tree
      *
-     * @return string generated tree JS text.
+     * @return string generated tree JS text
      */
     public static function getCategoryTreeJS($cats, $doReplaceRootCat = true, $sortable = false, array $options = [])
     {
@@ -930,12 +930,12 @@ class CategoryUtil
     /**
      * Get the java-script for the tree menu using jQuery.
      *
-     * @param array   $cats             The categories array to represent in the tree.
-     * @param boolean $doReplaceRootCat Whether or not to replace the root category with a localized string (optional) (default=true).
-     * @param boolean $sortable         Sets the zikula tree option sortable (optional) (default=false).
-     * @param array   $options          Options array for Zikula_Tree.
+     * @param array   $cats             The categories array to represent in the tree
+     * @param boolean $doReplaceRootCat Whether or not to replace the root category with a localized string (optional) (default=true)
+     * @param boolean $sortable         Sets the zikula tree option sortable (optional) (default=false)
+     * @param array   $options          Options array for Zikula_Tree
      *
-     * @return string generated tree JS text.
+     * @return string generated tree JS text
      */
     public static function getCategoryTreeJqueryJS($cats, $doReplaceRootCat = true, $sortable = false, array $options = [])
     {
@@ -1012,9 +1012,9 @@ class CategoryUtil
     /**
      * Prepare category for the tree menu.
      *
-     * @param array $category Category data.
+     * @param array $category Category data
      *
-     * @return array Prepared category data.
+     * @return array Prepared category data
      */
     public static function getCategoryTreeJSNode($category)
     {
@@ -1092,11 +1092,11 @@ class CategoryUtil
      * $tree[name] = array of children
      * $tree[name]['_/_'] = branch/leaf data.
      *
-     * @param array  &$tree       Tree or branch.
-     * @param array  $entry       The entry to insert.
-     * @param string $currentpath The current path to use (optional) (default=$entry['ipath']).
+     * @param array  &$tree       Tree or branch
+     * @param array  $entry       The entry to insert
+     * @param string $currentpath The current path to use (optional) (default=$entry['ipath'])
      *
-     * @return array Tree.
+     * @return array Tree
      */
     public static function _tree_insert(&$tree, $entry, $currentpath = null)
     {
@@ -1122,8 +1122,8 @@ class CategoryUtil
     /**
      * make a list, sorted on each level, from a tree.
      *
-     * @param array $tree Nested array from _tree_insert.
-     * @param array &$cats List of categories (initially empty array).
+     * @param array $tree Nested array from _tree_insert
+     * @param array &$cats List of categories (initially empty array)
      *
      * @return void
      */
@@ -1160,8 +1160,8 @@ class CategoryUtil
      * It is supposed to compate integer items numerically and string items as strings,
      * so integers will be before strings (unlike SORT_REGULAR flag for array sort functions).
      *
-     * @param string $a The first value.
-     * @param string $b The second value.
+     * @param string $a The first value
+     * @param string $b The second value
      *
      * @return int 0 if $a and $b are equal, 1 ir $a is greater then $b, -1 if $a is less than $b
      */
@@ -1180,11 +1180,11 @@ class CategoryUtil
     /**
      * Take a raw list of category data, return it sorted on each level.
      *
-     * @param array  $cats      List of categories (arrays).
-     * @param string $sortField The sort field (optional).
-     * @param string $assocKey  Key of category arrays (optional).
+     * @param array  $cats      List of categories (arrays)
+     * @param string $sortField The sort field (optional)
+     * @param string $assocKey  Key of category arrays (optional)
      *
-     * @return array list of categories, sorted on each level.
+     * @return array list of categories, sorted on each level
      */
     public static function sortCategories($cats, $sortField = '', $assocKey = '')
     {
@@ -1222,9 +1222,9 @@ class CategoryUtil
     /**
      * Return an array of folders the user has at least access/view rights to.
      *
-     * @param array $cats List of categories.
+     * @param array $cats List of categories
      *
-     * @return array The resulting folder path array.
+     * @return array The resulting folder path array
      * @deprecated
      */
     public static function getCategoryTreeStructure($cats)
@@ -1271,19 +1271,19 @@ class CategoryUtil
     /**
      * Return the HTML selector code for the given category hierarchy.
      *
-     * @param array        $cats             The category hierarchy to generate a HTML selector for.
-     * @param string       $field            The field value to return (optional) (default='id').
-     * @param string|array $selectedValue    The selected category (optional) (default=0).
-     * @param string       $name             The name of the selector field to generate (optional) (default='category[parent_id]').
-     * @param integer      $defaultValue     The default value to present to the user (optional) (default=0).
-     * @param string       $defaultText      The default text to present to the user (optional) (default='').
-     * @param integer      $allValue         The value to assign to the "all" option (optional) (default=0).
-     * @param string       $allText          The text to assign to the "all" option (optional) (default='').
-     * @param boolean      $submit           Whether or not to submit the form upon change (optional) (default=false).
-     * @param boolean      $displayPath      If false, the path is simulated, if true, the full path is shown (optional) (default=false).
-     * @param boolean      $doReplaceRootCat Whether or not to replace the root category with a localized string (optional) (default=true).
-     * @param integer      $multipleSize     If > 1, a multiple selector box is built, otherwise a normal/single selector box is build (optional) (default=1).
-     * @param boolean      $fieldIsAttribute True if the field is attribute (optional) (default=false).
+     * @param array        $cats             The category hierarchy to generate a HTML selector for
+     * @param string       $field            The field value to return (optional) (default='id')
+     * @param string|array $selectedValue    The selected category (optional) (default=0)
+     * @param string       $name             The name of the selector field to generate (optional) (default='category[parent_id]')
+     * @param integer      $defaultValue     The default value to present to the user (optional) (default=0)
+     * @param string       $defaultText      The default text to present to the user (optional) (default='')
+     * @param integer      $allValue         The value to assign to the "all" option (optional) (default=0)
+     * @param string       $allText          The text to assign to the "all" option (optional) (default='')
+     * @param boolean      $submit           Whether or not to submit the form upon change (optional) (default=false)
+     * @param boolean      $displayPath      If false, the path is simulated, if true, the full path is shown (optional) (default=false)
+     * @param boolean      $doReplaceRootCat Whether or not to replace the root category with a localized string (optional) (default=true)
+     * @param integer      $multipleSize     If > 1, a multiple selector box is built, otherwise a normal/single selector box is build (optional) (default=1)
+     * @param boolean      $fieldIsAttribute True if the field is attribute (optional) (default=false)
      *
      * @return string The HTML selector code for the given category hierarchy
      */
@@ -1374,10 +1374,10 @@ class CategoryUtil
     /**
      * Compare function for ML name field.
      *
-     * @param array $catA First category.
-     * @param array $catB Second category.
+     * @param array $catA First category
+     * @param array $catB Second category
      *
-     * @return The resulting compare value.
+     * @return The resulting compare value
      */
     public static function cmpName($catA, $catB)
     {
@@ -1397,8 +1397,8 @@ class CategoryUtil
     /**
      * Compare function for ML description field
      *
-     * @param array $catA First category.
-     * @param array $catB Second category.
+     * @param array $catA First category
+     * @param array $catB Second category
      *
      * @return The resulting compare value
      */
@@ -1418,8 +1418,8 @@ class CategoryUtil
      *
      *  The resulting sorted category array $cats updated by reference nothing is returned.
      *
-     * @param array  &$cats The categories array.
-     * @param string $func Which compare function to use (determines field to be used for comparison) (optional) (defaylt='cmpName').
+     * @param array  &$cats The categories array
+     * @param string $func Which compare function to use (determines field to be used for comparison) (optional) (defaylt='cmpName')
      *
      * @return void
      */
@@ -1433,10 +1433,10 @@ class CategoryUtil
     /**
      * Resequence the sort fields for the given category.
      *
-     * @param array   $cats The categories array.
-     * @param integer $step The counting step/interval (optional) (default=1).
+     * @param array   $cats The categories array
+     * @param integer $step The counting step/interval (optional) (default=1)
      *
-     * @return true if something was done, false if an emtpy $cats was passed in.
+     * @return true if something was done, false if an emtpy $cats was passed in
      */
     public static function resequence($cats, $step = 1)
     {
@@ -1461,11 +1461,11 @@ class CategoryUtil
      * with the Property-Names too), return an (identically indexed) array
      * of category-paths based on the given field (name or id make sense).
      *
-     * @param array $rootCatIDs The root/parent categories ID.
-     * @param array   &$cats       The associative categories object array.
-     * @param boolean $includeRoot If true, the root portion of the path is preserved.
+     * @param array $rootCatIDs The root/parent categories ID
+     * @param array   &$cats       The associative categories object array
+     * @param boolean $includeRoot If true, the root portion of the path is preserved
      *
-     * @return The resulting folder path array (which is also altered in place).
+     * @return The resulting folder path array (which is also altered in place)
      */
     public static function buildRelativePaths($rootCatIDs, &$cats, $includeRoot = false)
     {
@@ -1489,11 +1489,11 @@ class CategoryUtil
      *
      * Return an (idenically indexed) array of category-paths based on the given field (name or id make sense).
      *
-     * @param integer|array $rootCategory The root/parent category.
-     * @param array         &$cat         The category to process.
-     * @param boolean $includeRoot If true, the root portion of the path is preserved.
+     * @param integer|array $rootCategory The root/parent category
+     * @param array         &$cat         The category to process
+     * @param boolean $includeRoot If true, the root portion of the path is preserved
      *
-     * @return The resulting folder path array (which is also altered in place).
+     * @return The resulting folder path array (which is also altered in place)
      */
     public static function buildRelativePathsForCategory($rootCategory, &$cat, $includeRoot = false)
     {
@@ -1546,10 +1546,10 @@ class CategoryUtil
      * the keys of the array), return an (idenically indexed) array
      * of category-paths based on the given field (name or id make sense).
      *
-     * @param array  $cats  The associative categories object array.
-     * @param string $field Which field to use the building the path (optional) (default='name').
+     * @param array  $cats  The associative categories object array
+     * @param string $field Which field to use the building the path (optional) (default='name')
      *
-     * @return The resulting folder path array.
+     * @return The resulting folder path array
      */
     public static function buildPaths($cats, $field = 'name')
     {
@@ -1580,9 +1580,9 @@ class CategoryUtil
      *
      * Note that field and sourceField go in pairs (that is, if you want sensical results)!.
      *
-     * @param string  $field       The field which we wish to populate (optional) (default='path').
-     * @param string  $sourceField The field we use to build the path with (optional) (default='name').
-     * @param integer $leaf_id     The leaf-category category-id (ie: we'll rebuild the path of this category and all it's parents) (optional) (default=0).
+     * @param string  $field       The field which we wish to populate (optional) (default='path')
+     * @param string  $sourceField The field we use to build the path with (optional) (default='name')
+     * @param integer $leaf_id     The leaf-category category-id (ie: we'll rebuild the path of this category and all it's parents) (optional) (default=0)
      *
      * @return void
      */
@@ -1618,8 +1618,8 @@ class CategoryUtil
      * Check is done as "ZikulaCategoriesModule:Property:$propertyName", "$cat[id]::"
      *
      * @param array   $categories Array of category data
-     * @param string  $module     Not Used!.
-     * @param integer $permLevel  Required permision level.
+     * @param string  $module     Not Used!
+     * @param integer $permLevel  Required permision level
      *
      * @return bool True if access is allowed to at least one of the categories
      */

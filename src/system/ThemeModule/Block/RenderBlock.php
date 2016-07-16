@@ -40,7 +40,7 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
     /**
      * Set view property.
      *
-     * @param Zikula_View $view Default null means new Render instance for this module name.
+     * @param Zikula_View $view Default null means new Render instance for this module name
      *
      * @return \Zikula_AbstractController
      */

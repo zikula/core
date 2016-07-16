@@ -193,7 +193,7 @@ class Zikula_Core
     /**
      * Constructor.
      *
-     * @param string $handlerDir Directory where handlers are located.
+     * @param string $handlerDir Directory where handlers are located
      */
     public function __construct($handlerDir = 'lib/EventHandlers')
     {
@@ -209,7 +209,7 @@ class Zikula_Core
     /**
      * Boot Zikula.
      *
-     * @throws LogicException If already booted.
+     * @throws LogicException If already booted
      *
      * @return void
      */
@@ -288,7 +288,7 @@ class Zikula_Core
     /**
      * Loader for custom handlers.
      *
-     * @param string $dir Path to the folder holding the eventhandler classes.
+     * @param string $dir Path to the folder holding the eventhandler classes
      *
      * @return void
      */
@@ -338,9 +338,9 @@ class Zikula_Core
      *
      * Loads event handlers that extend Zikula_AbstractEventHandler
      *
-     * @param string $className The name of the class.
+     * @param string $className The name of the class
      *
-     * @throws LogicException If class is not instance of Zikula_AbstractEventHandler.
+     * @throws LogicException If class is not instance of Zikula_AbstractEventHandler
      *
      * @return void
      */
@@ -393,10 +393,10 @@ class Zikula_Core
      * Carries out a number of initialisation tasks to get Zikula up and
      * running.
      *
-     * @param integer             $stage Stage to load.
+     * @param integer             $stage Stage to load
      * @param Zikula_Request_Http $request
      *
-     * @return boolean True initialisation successful false otherwise.
+     * @return boolean True initialisation successful false otherwise
      */
     public function init($stage, Request $request)
     {

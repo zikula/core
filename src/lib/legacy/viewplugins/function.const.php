@@ -20,10 +20,10 @@
  *   assign    The smarty variable to assign the resulting menu HTML to.
  *   noprocess If set the resulting string constant is not processed.
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
- * @return string The language constant.
+ * @return string The language constant
  */
 function smarty_function_const($params, Zikula_View $view)
 {

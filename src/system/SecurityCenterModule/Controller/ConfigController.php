@@ -541,7 +541,7 @@ class ConfigController extends AbstractController
      *
      * @param Request $request
      *
-     * @return Response symfony response object.
+     * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
@@ -591,8 +591,8 @@ class ConfigController extends AbstractController
     /**
      * Helper function to set a system var.
      *
-     * @param string $variableName The variable name.
-     * @param mixed  $value        The new value.
+     * @param string $variableName The variable name
+     * @param mixed  $value        The new value
      */
     private function setSystemVar($variableName, $value)
     {

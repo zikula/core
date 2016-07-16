@@ -38,7 +38,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
      *  fields:   Set of fields to use, see setFields().
      *  ops:      Operators to enable, see activateOperators().
      *
-     * @param array $config Configuration.
+     * @param array $config Configuration
      */
     public function __construct($config)
     {
@@ -58,7 +58,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
     /**
      * Returns the operators the plugin can handle.
      *
-     * @return array Operators.
+     * @return array Operators
      */
     public function availableOperators()
     {
@@ -68,7 +68,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
     /**
      * Activates the requested Operators.
      *
-     * @param mixed $op Operators to activate.
+     * @param mixed $op Operators to activate
      *
      * @return void
      */
@@ -86,7 +86,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
     /**
      * Adds fields to list in common way.
      *
-     * @param mixed $fields Fields to add.
+     * @param mixed $fields Fields to add
      *
      * @return void
      */
@@ -104,7 +104,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
     /**
      * Returns the fields.
      *
-     * @return array List of fields.
+     * @return array List of fields
      */
     public function getFields()
     {
@@ -134,11 +134,11 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
     /**
      * Replace field's value.
      *
-     * @param string $field Field name.
-     * @param string $op    Filter operator.
-     * @param string $value Filter value.
+     * @param string $field Field name
+     * @param string $op    Filter operator
+     * @param string $value Filter value
      *
-     * @return array New filter set.
+     * @return array New filter set
      */
     public function replace($field, $op, $value)
     {
@@ -159,7 +159,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
     /**
      * Convert the date to a more useful format.
      *
-     * @param string $date Date string.
+     * @param string $date Date string
      *
      * @return string Converted date
      */
@@ -190,10 +190,10 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
      *   min/minute: That minute.
      * Returns an array [from, to].
      *
-     * @param string $date Date string.
-     * @param string $type Period type.
+     * @param string $date Date string
+     * @param string $type Period type
      *
-     * @return array Start and end of the period.
+     * @return array Start and end of the period
      */
     private function makePeriod($date, $type)
     {
@@ -240,11 +240,11 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
     /**
      * Returns SQL code.
      *
-     * @param string $field Field name.
-     * @param string $op    Operator.
-     * @param string $value Test value.
+     * @param string $field Field name
+     * @param string $op    Operator
+     * @param string $value Test value
      *
-     * @return array SQL code array.
+     * @return array SQL code array
      */
     public function getSQL($field, $op, $value)
     {
@@ -318,11 +318,11 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
     /**
      * Returns DQL code.
      *
-     * @param string $field Field name.
-     * @param string $op    Operator.
-     * @param string $value Test value.
+     * @param string $field Field name
+     * @param string $op    Operator
+     * @param string $value Test value
      *
-     * @return array Doctrine Query where clause and parameters.
+     * @return array Doctrine Query where clause and parameters
      */
     public function getDql($field, $op, $value)
     {

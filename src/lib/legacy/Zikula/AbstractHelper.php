@@ -68,7 +68,7 @@ abstract class Zikula_AbstractHelper implements Zikula_TranslatableInterface
      *      // do extra required stuff
      *  }
      *
-     * @param object $object Object.
+     * @param object $object Object
      */
     public function __construct($object)
     {
@@ -81,7 +81,7 @@ abstract class Zikula_AbstractHelper implements Zikula_TranslatableInterface
      * Generally helpers are instaciated with new Zikula_AbstractHelper($this), but it
      * will accept most Zikula classes, and override this method.
      *
-     * @param object $object Zikula_AbstractBase, Zikula_ServiceManager, Zikula_EventManager, Zikula_AbstractEventHandler, Zikula_Hook_AbstractHandler, or other.
+     * @param object $object Zikula_AbstractBase, Zikula_ServiceManager, Zikula_EventManager, Zikula_AbstractEventHandler, Zikula_Hook_AbstractHandler, or other
      *
      * @return void
      */
@@ -108,7 +108,7 @@ abstract class Zikula_AbstractHelper implements Zikula_TranslatableInterface
     /**
      * Translate.
      *
-     * @param string $msgid String to be translated.
+     * @param string $msgid String to be translated
      *
      * @return string
      */
@@ -120,8 +120,8 @@ abstract class Zikula_AbstractHelper implements Zikula_TranslatableInterface
     /**
      * Translate with sprintf().
      *
-     * @param string       $msgid  String to be translated.
-     * @param string|array $params Args for sprintf().
+     * @param string       $msgid  String to be translated
+     * @param string|array $params Args for sprintf()
      *
      * @return string
      */
@@ -133,11 +133,11 @@ abstract class Zikula_AbstractHelper implements Zikula_TranslatableInterface
     /**
      * Translate plural string.
      *
-     * @param string $singular Singular instance.
-     * @param string $plural   Plural instance.
-     * @param string $count    Object count.
+     * @param string $singular Singular instance
+     * @param string $plural   Plural instance
+     * @param string $count    Object count
      *
-     * @return string Translated string.
+     * @return string Translated string
      */
     public function _n($singular, $plural, $count)
     {
@@ -147,10 +147,10 @@ abstract class Zikula_AbstractHelper implements Zikula_TranslatableInterface
     /**
      * Translate plural string with sprintf().
      *
-     * @param string       $sin    Singular instance.
-     * @param string       $plu    Plural instance.
-     * @param string       $n      Object count.
-     * @param string|array $params Sprintf() arguments.
+     * @param string       $sin    Singular instance
+     * @param string       $plu    Plural instance
+     * @param string       $n      Object count
+     * @param string|array $params Sprintf() arguments
      *
      * @return string
      */

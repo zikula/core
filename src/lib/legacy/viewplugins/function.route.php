@@ -27,10 +27,10 @@
  * Create a route to the News 'view' function with parameters 'sid' set to 3
  *   <a href="{route name='zikulanewsmodule_user_display' sid='3'}">Link</a>
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
- * @return string The route or empty.
+ * @return string The route or empty
  */
 function smarty_function_route($params, Zikula_View $view)
 {

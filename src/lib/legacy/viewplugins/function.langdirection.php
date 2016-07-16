@@ -15,8 +15,8 @@
  * Example
  * <html dir="{langdirection}">
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
  * @return   string   the language direction
  */

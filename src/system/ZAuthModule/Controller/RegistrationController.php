@@ -41,7 +41,7 @@ class RegistrationController extends AbstractController
      * then he is prompted for it at this time. This function also processes the results of
      * that form, setting the registration record to verified (if appropriate), saving the password
      * (if provided) and if the registration record is also approved (or does not require it)
-     * then a new user account is created.
+     * then a new user account is created
      *
      * @return array
      */

@@ -79,7 +79,7 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_AbstractPlugin implements Filt
      * table is the table of the mn-relationship.
      * comparefield is the field to compare with in the table.
      *
-     * @param array $config Plugin configuration.
+     * @param array $config Plugin configuration
      */
     public function __construct($config)
     {
@@ -99,7 +99,7 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_AbstractPlugin implements Filt
     /**
      * Returns the operators the plugin can handle.
      *
-     * @return array Operators.
+     * @return array Operators
      */
     public function availableOperators()
     {
@@ -116,7 +116,7 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_AbstractPlugin implements Filt
      * table is the table of the mn-relationship.
      * comparefield is the field to compare with in the table.
      *
-     * @param mixed $fields Fields to add.
+     * @param mixed $fields Fields to add
      *
      * @return void
      */
@@ -132,7 +132,7 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_AbstractPlugin implements Filt
     /**
      * Activates the requested Operators.
      *
-     * @param mixed $op Operators to activate.
+     * @param mixed $op Operators to activate
      *
      * @return void
      */
@@ -152,7 +152,7 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_AbstractPlugin implements Filt
     /**
      * Returns the fields.
      *
-     * @return array List of fields.
+     * @return array List of fields
      */
     public function getFields()
     {
@@ -162,7 +162,7 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_AbstractPlugin implements Filt
     /**
      * Get activated operators.
      *
-     * @return array Set of Operators and Arrays.
+     * @return array Set of Operators and Arrays
      */
     public function getOperators()
     {
@@ -182,8 +182,8 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_AbstractPlugin implements Filt
     /**
      * Set the n:m-Table.
      *
-     * @param string $name  Filter field name.
-     * @param string $table Table name.
+     * @param string $name  Filter field name
+     * @param string $table Table name
      *
      * @return void
      */
@@ -198,8 +198,8 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_AbstractPlugin implements Filt
     /**
      * Set the Compare field.
      *
-     * @param string $name  Filter field name.
-     * @param string $field Field name.
+     * @param string $name  Filter field name
+     * @param string $field Field name
      *
      * @return void
      */
@@ -213,11 +213,11 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_AbstractPlugin implements Filt
     /**
      * Returns SQL code.
      *
-     * @param string $field Field name.
-     * @param string $op    Operator.
-     * @param string $value Test value.
+     * @param string $field Field name
+     * @param string $op    Operator
+     * @param string $value Test value
      *
-     * @return array SQL code array.
+     * @return array SQL code array
      */
     public function getSQL($field, $op, $value)
     {

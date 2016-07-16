@@ -32,10 +32,10 @@
  * Example
  *   {sortlink __linktext='Column name' sort='colname' currentsort=$sort sortdir=$sortdir modname='ModName' type='admin' func='view'}
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
- * @return string The link output.
+ * @return string The link output
  */
 function smarty_function_sortlink($params, Zikula_View $view)
 {

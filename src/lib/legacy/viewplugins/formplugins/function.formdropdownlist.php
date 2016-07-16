@@ -89,10 +89,10 @@
  * See {@link Zikula_Form_Plugin_LanguageSelector} for a good example of how this
  * can be done.
  *
- * @param array            $params Parameters passed in the block tag.
- * @param Zikula_Form_View $view   Reference to Zikula_Form_View object.
+ * @param array            $params Parameters passed in the block tag
+ * @param Zikula_Form_View $view   Reference to Zikula_Form_View object
  *
- * @return string The rendered output.
+ * @return string The rendered output
  */
 function smarty_function_formdropdownlist($params, $view)
 {

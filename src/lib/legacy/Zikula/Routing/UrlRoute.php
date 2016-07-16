@@ -68,9 +68,9 @@ class Zikula_Routing_UrlRoute
     /**
      * Constructor.
      *
-     * @param string $urlPattern   Pattern for url scheme.
-     * @param array  $defaults     Default values for parameters.
-     * @param array  $requirements Input requirement checks for regex.
+     * @param string $urlPattern   Pattern for url scheme
+     * @param array  $defaults     Default values for parameters
+     * @param array  $requirements Input requirement checks for regex
      */
     public function __construct($urlPattern, array $defaults, array $requirements)
     {
@@ -97,11 +97,11 @@ class Zikula_Routing_UrlRoute
     /**
      * Create url for given arguments.
      *
-     * @param array $params Argument values for url parameters in this route.
+     * @param array $params Argument values for url parameters in this route
      *
-     * @throws InvalidArgumentException If required params are missing.
+     * @throws InvalidArgumentException If required params are missing
      *
-     * @return string Url.
+     * @return string Url
      */
     public function generate($params)
     {
@@ -162,9 +162,9 @@ class Zikula_Routing_UrlRoute
     /**
      * Parse a given url and return the params read out of it.
      *
-     * @param string $url Input url.
+     * @param string $url Input url
      *
-     * @return mixed array Eith determined params or false on error.
+     * @return mixed array Eith determined params or false on error
      */
     public function matchesUrl($url)
     {
@@ -212,9 +212,9 @@ class Zikula_Routing_UrlRoute
     /**
      * Checks if this route can treat a given set of parameters.
      *
-     * @param array $params The arguments which should be processed.
+     * @param array $params The arguments which should be processed
      *
-     * @return boolean Whether this route matches the given set of parameters or not.
+     * @return boolean Whether this route matches the given set of parameters or not
      */
     public function matchParameters($params)
     {
@@ -260,9 +260,9 @@ class Zikula_Routing_UrlRoute
     /**
      * Compiles the url pattern including creation of regex and collecting tokens as well as variables.
      *
-     * @throws InvalidArgumentException With invalid pattern.
+     * @throws InvalidArgumentException With invalid pattern
      *
-     * @return boolean True.
+     * @return boolean True
      */
     protected function compile()
     {

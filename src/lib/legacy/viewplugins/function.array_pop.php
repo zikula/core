@@ -32,10 +32,10 @@
  *
  *  And display later the remaining ones with a foreach.
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the {@link Zikula_View} object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the {@link Zikula_View} object
  *
- * @return mixed False on failure, void if the value is assigned, or the value extracted itself.
+ * @return mixed False on failure, void if the value is assigned, or the value extracted itself
  */
 function smarty_function_array_pop($params, Zikula_View $view)
 {

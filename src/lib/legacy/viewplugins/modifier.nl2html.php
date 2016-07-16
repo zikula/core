@@ -16,9 +16,9 @@
  *
  *   {$myVar|nl2html}
  *
- * @param string $string The string to operate on.
+ * @param string $string The string to operate on
  *
- * @return string The converted string.
+ * @return string The converted string
  */
 function smarty_modifier_nl2html($string)
 {

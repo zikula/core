@@ -33,7 +33,7 @@ interface Zikula_Session_StorageInterface
     /**
      * Regenerate session.
      *
-     * @param boolean $delete Whether to delete the session or leave it to GC.
+     * @param boolean $delete Whether to delete the session or leave it to GC
      *
      * @return boolean
      */
@@ -42,8 +42,8 @@ interface Zikula_Session_StorageInterface
     /**
      * Open session.
      *
-     * @param string $savePath    Save path.
-     * @param string $sessionName Session Name.
+     * @param string $savePath    Save path
+     * @param string $sessionName Session Name
      *
      * @return boolean
      */
@@ -59,7 +59,7 @@ interface Zikula_Session_StorageInterface
     /**
      * Read session.
      *
-     * @param string $sessionId Session ID.
+     * @param string $sessionId Session ID
      *
      * @return boolean
      */
@@ -68,8 +68,8 @@ interface Zikula_Session_StorageInterface
     /**
      * Commit session to storage.
      *
-     * @param string $sessionId Session ID.
-     * @param mixed  $vars      Variables to write.
+     * @param string $sessionId Session ID
+     * @param mixed  $vars      Variables to write
      *
      * @return boolean
      */
@@ -78,7 +78,7 @@ interface Zikula_Session_StorageInterface
     /**
      * Destroy this session.
      *
-     * @param string $sessionId Session ID.
+     * @param string $sessionId Session ID
      *
      * @return void
      */
@@ -87,7 +87,7 @@ interface Zikula_Session_StorageInterface
     /**
      * Garbage collection for storage.
      *
-     * @param integer $lifetime Max lifetime to keep session stored.
+     * @param integer $lifetime Max lifetime to keep session stored
      *
      * @return boolean
      */

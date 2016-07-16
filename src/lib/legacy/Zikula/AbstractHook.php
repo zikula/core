@@ -52,7 +52,7 @@ class Zikula_AbstractHook extends Hook
     /**
      * Set caller.
      *
-     * @param string $caller Caller name.
+     * @param string $caller Caller name
      *
      * @return Zikula_AbstractHook
      */
@@ -86,7 +86,7 @@ class Zikula_AbstractHook extends Hook
     /**
      * Set subscriber area id.
      *
-     * @param string $areaId ID of the area.
+     * @param string $areaId ID of the area
      *
      * @return Zikula_DisplayHook
      */

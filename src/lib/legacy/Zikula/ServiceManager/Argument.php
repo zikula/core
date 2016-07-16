@@ -22,7 +22,7 @@ class Zikula_ServiceManager_Argument extends \Symfony\Component\DependencyInject
     /**
      * Get id property.
      *
-     * @return string Argument id.
+     * @return string Argument id
      */
     public function getId()
     {

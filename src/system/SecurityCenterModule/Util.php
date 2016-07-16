@@ -31,7 +31,7 @@ class Util
      *      @type bool $forcedefault true to force return of default config / false to auto detect
      *                    }
      *
-     * @return array HTML Purifier configuration settings.
+     * @return array HTML Purifier configuration settings
      */
     public static function getpurifierconfig($args)
     {
@@ -65,7 +65,7 @@ class Util
      *
      * @staticvar array $purifier The HTMLPurifier instance.
      *
-     * @return HTMLPurifier The HTMLPurifier instance, returned by reference.
+     * @return HTMLPurifier The HTMLPurifier instance, returned by reference
      */
     public static function getpurifier($args = null)
     {
@@ -88,7 +88,7 @@ class Util
     /**
      * Retrieves default configuration array for HTML Purifier.
      *
-     * @return array HTML Purifier default configuration settings.
+     * @return array HTML Purifier default configuration settings
      */
     private static function getPurifierDefaultConfig()
     {

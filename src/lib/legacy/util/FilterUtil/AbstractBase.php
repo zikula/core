@@ -29,7 +29,7 @@ abstract class FilterUtil_AbstractBase
      *
      * Sets the configuration object.
      *
-     * @param FilterUtil_Config $config FilterUtil configuration object.
+     * @param FilterUtil_Config $config FilterUtil configuration object
      */
     public function __construct(FilterUtil_Config $config)
     {
@@ -39,7 +39,7 @@ abstract class FilterUtil_AbstractBase
     /**
      * Get configuration.
      *
-     * @return FilterUtil_Config Configuration object.
+     * @return FilterUtil_Config Configuration object
      */
     public function getConfig()
     {
@@ -49,9 +49,9 @@ abstract class FilterUtil_AbstractBase
     /**
      * Field exists checker.
      *
-     * @param string $field Field name.
+     * @param string $field Field name
      *
-     * @return bool True if the field exists, false if not.
+     * @return bool True if the field exists, false if not
      */
     protected function fieldExists($field)
     {
@@ -66,9 +66,9 @@ abstract class FilterUtil_AbstractBase
     /**
      * Get field by alias.
      *
-     * @param string $alias Field alias.
+     * @param string $alias Field alias
      *
-     * @return string Field name.
+     * @return string Field name
      */
     protected function getColumn($alias)
     {
@@ -78,7 +78,7 @@ abstract class FilterUtil_AbstractBase
     /**
      * Adds common config variables to config array.
      *
-     * @param array &$config Config array.
+     * @param array &$config Config array
      *
      * @return void
      */

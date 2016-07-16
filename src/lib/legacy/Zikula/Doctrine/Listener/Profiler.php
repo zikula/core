@@ -23,7 +23,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     /**
      * Executed prior to a query.
      *
-     * @param Doctrine_Event $event The Doctrine event instance.
+     * @param Doctrine_Event $event The Doctrine event instance
      *
      * @return void
      */
@@ -35,7 +35,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     /**
      * Executed following a query.
      *
-     * @param Doctrine_Event $event The Doctrine event instance.
+     * @param Doctrine_Event $event The Doctrine event instance
      *
      * @return void
      */
@@ -52,7 +52,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     /**
      * Executed prior to a Doctrine exec query.
      *
-     * @param Doctrine_Event $event The Doctrine event instance.
+     * @param Doctrine_Event $event The Doctrine event instance
      *
      * @return void
      */
@@ -64,7 +64,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     /**
      * Executed following a Doctrine exec query.
      *
-     * @param Doctrine_Event $event The Doctrine event instance.
+     * @param Doctrine_Event $event The Doctrine event instance
      *
      * @return void
      */
@@ -81,7 +81,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     /**
      * Executed prior to a Doctrine statement exec query.
      *
-     * @param Doctrine_Event $event The Doctrine event instance.
+     * @param Doctrine_Event $event The Doctrine event instance
      *
      * @return void
      */
@@ -93,7 +93,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     /**
      * Executed following a Doctrine statement exec query.
      *
-     * @param Doctrine_Event $event The Doctrine event instance.
+     * @param Doctrine_Event $event The Doctrine event instance
      *
      * @return void
      */
@@ -110,7 +110,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     /**
      * Transactons are not intercepted.
      *
-     * @param Doctrine_Event $event The Doctrine event instance.
+     * @param Doctrine_Event $event The Doctrine event instance
      *
      * @return void
      */
@@ -121,7 +121,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     /**
      * Transactons are not intercepted.
      *
-     * @param Doctrine_Event $event The Doctrine event instance.
+     * @param Doctrine_Event $event The Doctrine event instance
      *
      * @return void
      */
@@ -132,7 +132,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     /**
      * Transactons are not intercepted.
      *
-     * @param Doctrine_Event $event The Doctrine event instance.
+     * @param Doctrine_Event $event The Doctrine event instance
      *
      * @return void
      */
@@ -143,7 +143,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     /**
      * Transactons are not intercepted.
      *
-     * @param Doctrine_Event $event The Doctrine event instance.
+     * @param Doctrine_Event $event The Doctrine event instance
      *
      * @return void
      */
@@ -154,7 +154,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     /**
      * Transactons are not intercepted.
      *
-     * @param Doctrine_Event $event The Doctrine event instance.
+     * @param Doctrine_Event $event The Doctrine event instance
      *
      * @return void
      */
@@ -165,7 +165,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     /**
      * Transactons are not intercepted.
      *
-     * @param Doctrine_Event $event The Doctrine event instance.
+     * @param Doctrine_Event $event The Doctrine event instance
      *
      * @return void
      */
@@ -176,7 +176,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     /**
      * Connections are not intercepted.
      *
-     * @param Doctrine_Event $event The Doctrine event instance.
+     * @param Doctrine_Event $event The Doctrine event instance
      *
      * @return void
      */
@@ -187,7 +187,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     /**
      * Connections are not intercepted.
      *
-     * @param Doctrine_Event $event The Doctrine event instance.
+     * @param Doctrine_Event $event The Doctrine event instance
      *
      * @return void
      */
@@ -198,7 +198,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     /**
      * Doctrine errors are not intercepted.
      *
-     * @param Doctrine_Event $event The Doctrine event instance.
+     * @param Doctrine_Event $event The Doctrine event instance
      *
      * @return void
      */
@@ -209,7 +209,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     /**
      * Doctrine errors are not intercepted.
      *
-     * @param Doctrine_Event $event The Doctrine event instance.
+     * @param Doctrine_Event $event The Doctrine event instance
      *
      * @return void
      */
@@ -220,7 +220,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     /**
      * Doctrine fetches are not intercepted.
      *
-     * @param Doctrine_Event $event The Doctrine event instance.
+     * @param Doctrine_Event $event The Doctrine event instance
      *
      * @return void
      */
@@ -231,7 +231,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     /**
      * Doctrine fetches are not intercepted.
      *
-     * @param Doctrine_Event $event The Doctrine event instance.
+     * @param Doctrine_Event $event The Doctrine event instance
      *
      * @return void
      */
@@ -242,7 +242,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     /**
      * Doctrine fetches are not intercepted.
      *
-     * @param Doctrine_Event $event The Doctrine event instance.
+     * @param Doctrine_Event $event The Doctrine event instance
      *
      * @return void
      */
@@ -253,7 +253,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     /**
      * Doctrine fetches are not intercepted.
      *
-     * @param Doctrine_Event $event The Doctrine event instance.
+     * @param Doctrine_Event $event The Doctrine event instance
      *
      * @return void
      */
@@ -264,7 +264,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     /**
      * Doctrine statement prepares are not intercepted.
      *
-     * @param Doctrine_Event $event The Doctrine event instance.
+     * @param Doctrine_Event $event The Doctrine event instance
      *
      * @return void
      */
@@ -275,7 +275,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     /**
      * Doctrine statement prepares are not intercepted.
      *
-     * @param Doctrine_Event $event The Doctrine event instance.
+     * @param Doctrine_Event $event The Doctrine event instance
      *
      * @return void
      */

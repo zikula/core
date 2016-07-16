@@ -53,7 +53,7 @@ class CommonHelper extends \Zikula_AbstractHelper
      *
      * @staticvar array $gtypeLabels The array of standard group type labels.
      *
-     * @return array An associative array of group type labels indexed by group type constants.
+     * @return array An associative array of group type labels indexed by group type constants
      */
     public function gtypeLabels()
     {
@@ -75,7 +75,7 @@ class CommonHelper extends \Zikula_AbstractHelper
      *
      * @staticvar array $stateLabels The array of standard state labels.
      *
-     * @return array An associative array of state labels indexed by state constants.
+     * @return array An associative array of state labels indexed by state constants
      */
     public function stateLabels()
     {

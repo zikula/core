@@ -19,7 +19,7 @@ class Zikula_Doctrine_Template_Listener_MetaData extends Zikula_Doctrine_Templat
     /**
      * Load meta data after an select.
      *
-     * @param Doctrine_Event $event Event.
+     * @param Doctrine_Event $event Event
      *
      * @return void
      */
@@ -42,7 +42,7 @@ class Zikula_Doctrine_Template_Listener_MetaData extends Zikula_Doctrine_Templat
     /**
      * Save all attributes after an insert.
      *
-     * @param Doctrine_Event $event Event.
+     * @param Doctrine_Event $event Event
      *
      * @return void
      */
@@ -70,7 +70,7 @@ class Zikula_Doctrine_Template_Listener_MetaData extends Zikula_Doctrine_Templat
     /**
      * Update all attributes after an update.
      *
-     * @param Doctrine_Event $event Event.
+     * @param Doctrine_Event $event Event
      *
      * @return void
      */
@@ -115,7 +115,7 @@ class Zikula_Doctrine_Template_Listener_MetaData extends Zikula_Doctrine_Templat
     /**
      * Delete all attribtes after an delete.
      *
-     * @param Doctrine_Event $event Event.
+     * @param Doctrine_Event $event Event
      *
      * @return void
      */

@@ -26,13 +26,13 @@
  *   {img src='profile.gif' assign=profile}
  *   {$username|profilelinkbyuname:'classname':$profile}
  *
- * @param string  $string    The users name.
- * @param string  $class     The class name for the link (optional).
+ * @param string  $string    The users name
+ * @param string  $class     The class name for the link (optional)
  * @param mixed   $image     The image to show instead of the username (optional).
- *                              May be an array as created by pnimg.
- * @param integer $maxLength If set then user names are truncated to x chars.
+ *                              May be an array as created by pnimg
+ * @param integer $maxLength If set then user names are truncated to x chars
  *
- * @return string The output.
+ * @return string The output
  */
 function smarty_modifier_profilelinkbyuname($uname, $class = '', $image = '', $maxLength = 0)
 {

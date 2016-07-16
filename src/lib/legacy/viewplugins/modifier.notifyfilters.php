@@ -18,10 +18,10 @@
  * Example
  *   {$foo|notifyfilters:'news.filterhook.articles'}
  *
- * @param string      $content   The contents to filter.
- * @param string      $eventName Hook event name.
+ * @param string      $content   The contents to filter
+ * @param string      $eventName Hook event name
  *
- * @return string The modified output.
+ * @return string The modified output
  */
 function smarty_modifier_notifyfilters($content, $eventName)
 {

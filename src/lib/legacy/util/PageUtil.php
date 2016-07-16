@@ -68,9 +68,9 @@ class PageUtil
      * legacy compatibility mode, 'rawtext' is not reserved and will not be rendered
      * to the page output by the page variable output filter.)
      *
-     * @param string  $varname    The name of the new page variable.
-     * @param boolean $multivalue To define a single or a multi valued variable.
-     * @param string  $default    To set the default value. This value is assigned to the variable at registration time.
+     * @param string  $varname    The name of the new page variable
+     * @param boolean $multivalue To define a single or a multi valued variable
+     * @param string  $default    To set the default value. This value is assigned to the variable at registration time
      *
      * @return boolean success or not
      */
@@ -119,9 +119,9 @@ class PageUtil
      * All values assigned by addVar() or setVar()
      * will get lost.
      *
-     * @param string $varname The name of the page variable.
+     * @param string $varname The name of the page variable
      *
-     * @return boolean true On success, false of the page variable is not registered.
+     * @return boolean true On success, false of the page variable is not registered
      */
     public static function resetVar($varname)
     {
@@ -175,8 +175,8 @@ class PageUtil
      * a mulit valued variable, this is an array containing all assigned
      * values.
      *
-     * @param string $varname The name of the page variable.
-     * @param mixed  $default Default return value.
+     * @param string $varname The name of the page variable
+     * @param mixed  $default Default return value
      *
      * @return mixed Contents of the variable
      */
@@ -238,11 +238,11 @@ class PageUtil
      * will get lost. If you want to add a value to a multi valued
      * page variable, use PageUtil::addVar.
      *
-     * @param string $varname The name of the page variable.
-     * @param mixed  $value   The new value.
+     * @param string $varname The name of the page variable
+     * @param mixed  $value   The new value
      *
      * @see    PageUtil::addVar
-     * @return boolean true On success, false of the page variable is not registered.
+     * @return boolean true On success, false of the page variable is not registered
      */
     public static function setVar($varname, $value)
     {
@@ -294,11 +294,11 @@ class PageUtil
     /**
      * Converts the <1.3.5 location of jQuery themes to the new one as of 1.4.0.
      *
-     * @param array|string $path The path to check for a replacement. This is recursive array-safe.
+     * @param array|string $path The path to check for a replacement. This is recursive array-safe
      *
-     * @return string The changed path.
+     * @return string The changed path
      *
-     * @todo Remove in 1.5.0.
+     * @todo Remove in 1.5.0
      */
     private static function fixJQueryThemesPath($path)
     {
@@ -320,12 +320,12 @@ class PageUtil
      * Adds a new vaule to a page variable. In the case of a single
      * page variable, this functions acts exactly like PageUtil::setVar.
      *
-     * @param string $varname  The name of the page variable.
-     * @param mixed  $value    The new value.
-     * @param string $features The feature(s) to load via polyfill.
+     * @param string $varname  The name of the page variable
+     * @param mixed  $value    The new value
+     * @param string $features The feature(s) to load via polyfill
      *
      * @see    PageUtil::setVar
-     * @return boolean true On success, false of the page variable is not registered.
+     * @return boolean true On success, false of the page variable is not registered
      */
     public static function addVar($varname, $value, $features = 'forms')
     {
@@ -394,7 +394,7 @@ class PageUtil
     /**
      * Check if the current page is the homepage.
      *
-     * @return boolean true if it is the homepage, false if it is not the homepage.
+     * @return boolean true if it is the homepage, false if it is not the homepage
      */
     public static function isHomepage()
     {

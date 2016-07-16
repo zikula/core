@@ -38,11 +38,11 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
     /**
      * Constructor.
      *
-     * @param string       $modname  Module name of the entity.
+     * @param string       $modname  Module name of the entity
      * @param array        $property Set of registry properties to use, see setProperty()
-     * @param array|string $fields   Set of fields to use, see setFields() (optional) (default='category').
-     * @param array        $ops      Operators to enable, see activateOperators() (optional) (default=null).
-     * @param bool         $default  set the plugin to default (optional) (default=false).
+     * @param array|string $fields   Set of fields to use, see setFields() (optional) (default='category')
+     * @param array        $ops      Operators to enable, see activateOperators() (optional) (default=null)
+     * @param bool         $default  set the plugin to default (optional) (default=false)
      */
     public function __construct($modname = null, $property = null, $fields = 'category', $ops = [], $default = false)
     {
@@ -55,7 +55,7 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
     /**
      * Returns the operators the plugin can handle.
      *
-     * @return array Operators.
+     * @return array Operators
      */
     public function availableOperators()
     {
@@ -79,7 +79,7 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
     /**
      * Sets the category registry.
      *
-     * @param mixed $property Category Property.
+     * @param mixed $property Category Property
      *
      * @see CategoryUtil
      */
@@ -122,9 +122,9 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
     /**
      * Get the Doctrine expression object
      *
-     * @param string $field Field name.
-     * @param string $op    Operator.
-     * @param string $value Value.
+     * @param string $field Field name
+     * @param string $op    Operator
+     * @param string $value Value
      *
      * @return BaseExpr Doctrine expression
      */

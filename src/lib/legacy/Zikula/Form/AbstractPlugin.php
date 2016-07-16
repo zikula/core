@@ -236,8 +236,8 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
     /**
      * Constructor.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
-     * @param array            &$params Parameters passed from the Smarty plugin function.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
+     * @param array            &$params Parameters passed from the Smarty plugin function
      */
     public function __construct(Zikula_Form_View $view, &$params)
     {
@@ -267,7 +267,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
     /**
      * Set translation domain.
      *
-     * @param string $domain The translation domain.
+     * @param string $domain The translation domain
      *
      * @return void
      */
@@ -279,7 +279,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
     /**
      * Retrieve the Zikula_Form_View property.
      *
-     * @return Zikula_Form_View The Zikula_Form_View property.
+     * @return Zikula_Form_View The Zikula_Form_View property
      */
     public function getView()
     {
@@ -289,7 +289,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
     /**
      * Retrieve the plugin identifier (see {@link $id}).
      *
-     * @return string The id.
+     * @return string The id
      */
     public function getId()
     {
@@ -299,7 +299,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
     /**
      * Indicates whether or not this plugin should be rendered.
      *
-     * @return boolean True if this plugin should be rendered, otherwise false.
+     * @return boolean True if this plugin should be rendered, otherwise false
      */
     public function getVisible()
     {
@@ -309,7 +309,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
     /**
      * Retrieve the reference to the parent plugin if this is a sub-plugin used inside a block.
      *
-     * @return FormHandler The parent plugin.
+     * @return FormHandler The parent plugin
      */
     public function getParentPlugin()
     {
@@ -319,7 +319,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
     /**
      * Retrieve the HTML attributes.
      *
-     * @return array An associative array of attributes to add to the plugin.
+     * @return array An associative array of attributes to add to the plugin
      */
     public function getAttributes()
     {
@@ -329,7 +329,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
     /**
      * Retrieve the name of function to call in form event handler when plugin is loaded (see {@link $onDataBound}).
      *
-     * @return string The name of the onDataBound function.
+     * @return string The name of the onDataBound function
      */
     public function getOnDataBound()
     {
@@ -342,7 +342,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      * This variable contains an array of references to sub-plugins when this plugin is
      * a block plugin containing other plugins.
      *
-     * @return array The reference to sub-plugins.
+     * @return array The reference to sub-plugins
      */
     public function getPlugins()
     {
@@ -352,7 +352,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
     /**
      * Retrieves the temporary storage of the output from renderBegin in blocks.
      *
-     * @return string The temporary output storage contents.
+     * @return string The temporary output storage contents
      */
     public function getBlockBeginOutput()
     {
@@ -362,7 +362,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
     /**
      * Retrieves the volatile indicator (if true, state management in sub-plugins is disabled).
      *
-     * @return boolean The volatile indicator.
+     * @return boolean The volatile indicator
      */
     public function getVolatile()
     {
@@ -376,8 +376,8 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      * or attributes (all unknown parameters go into the "attribues" array).
      * You can override this for special situations.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
-     * @param array            &$params Parameters passed from the Smarty plugin function.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
+     * @param array            &$params Parameters passed from the Smarty plugin function
      *
      * @return void
      */
@@ -409,8 +409,8 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      * This fires once, immediately <i>after</i> member variables have been populated from Smarty parameters
      * (in {@link readParameters()}). Default action is to do nothing.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
-     * @param array            &$params Parameters passed from the Smarty plugin function.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
+     * @param array            &$params Parameters passed from the Smarty plugin function
      *
      * @see    Zikula_Form_View::registerPlugin()
      *
@@ -425,8 +425,8 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      *
      * This fires once, immediately <i>after</i> the create event. Default action is to do nothing.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
-     * @param array            &$params Parameters passed from the Smarty plugin function.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
+     * @param array            &$params Parameters passed from the Smarty plugin function
      *
      * @see    Zikula_Form_View::registerPlugin()
      *
@@ -441,7 +441,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      *
      * Default action is to do nothing. Typically used to add self as validator.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
      * @return void
      */
@@ -476,7 +476,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      *
      * Default action is to do nothing.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
      * @return void
      */
@@ -490,7 +490,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      * Default action is to do nothing. Usefull for buttons that should generate events
      * after the plugins have decoded their normal values.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
      * @return void
      */
@@ -503,8 +503,8 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      *
      * Default action is to call onDataBound handler in form event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
-     * @param array            &$params Parameters passed from the Smarty plugin function.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
+     * @param array            &$params Parameters passed from the Smarty plugin function
      *
      * @return void
      */
@@ -521,9 +521,9 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      *
      * Default action is to do render all attributes in form name="value".
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
-     * @return string The rendered output.
+     * @return string The rendered output
      */
     public function renderAttributes(Zikula_Form_View $view)
     {
@@ -540,9 +540,9 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      *
      * Default action is to return an empty string.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
-     * @return string The rendered output.
+     * @return string The rendered output
      */
     public function render(Zikula_Form_View $view)
     {
@@ -554,9 +554,9 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      *
      * Default action is to return an empty string.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
-     * @return string The rendered output.
+     * @return string The rendered output
      */
     public function renderBegin(Zikula_Form_View $view)
     {
@@ -568,10 +568,10 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      *
      * Default action is to return the content unmodified.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param string           $content The content to handle.
+     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object
+     * @param string           $content The content to handle
      *
-     * @return string The (optionally) modified content.
+     * @return string The (optionally) modified content
      */
     public function renderContent(Zikula_Form_View $view, $content)
     {
@@ -583,9 +583,9 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      *
      * Default action is to return an empty string.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
-     * @return string The rendered output.
+     * @return string The rendered output
      */
     public function renderEnd(Zikula_Form_View $view)
     {
@@ -597,7 +597,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      *
      * Default action is to do nothing.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
      * @return void
      */
@@ -610,8 +610,8 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      *
      * Default action is to add the plugin to $this->plugins.
      *
-     * @param Zikula_Form_View   $view   Reference to Zikula_Form_View object.
-     * @param Zikula_Form_Plugin $plugin A Form plugin to add.
+     * @param Zikula_Form_View   $view   Reference to Zikula_Form_View object
+     * @param Zikula_Form_Plugin $plugin A Form plugin to add
      *
      * @return void
      */
@@ -630,9 +630,9 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      * This function ignores automatically created IDs (those named "plgNNN") and will
      * return an empty string for these.
      *
-     * @param string $id The ID of the item.
+     * @param string $id The ID of the item
      *
-     * @return string The generated HTML.
+     * @return string The generated HTML
      */
     public function getIdHtml($id = null)
     {
@@ -650,7 +650,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
     /**
      * Translate.
      *
-     * @param string $msgid String to be translated.
+     * @param string $msgid String to be translated
      *
      * @return string
      */
@@ -662,8 +662,8 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
     /**
      * Translate with sprintf().
      *
-     * @param string       $msgid  String to be translated.
-     * @param string|array $params Args for sprintf().
+     * @param string       $msgid  String to be translated
+     * @param string|array $params Args for sprintf()
      *
      * @return string
      */
@@ -675,11 +675,11 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
     /**
      * Translate plural string.
      *
-     * @param string $singular Singular instance.
-     * @param string $plural   Plural instance.
-     * @param string $count    Object count.
+     * @param string $singular Singular instance
+     * @param string $plural   Plural instance
+     * @param string $count    Object count
      *
-     * @return string Translated string.
+     * @return string Translated string
      */
     public function _n($singular, $plural, $count)
     {
@@ -689,10 +689,10 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
     /**
      * Translate plural string with sprintf().
      *
-     * @param string       $sin    Singular instance.
-     * @param string       $plu    Plural instance.
-     * @param string       $n      Object count.
-     * @param string|array $params Sprintf() arguments.
+     * @param string       $sin    Singular instance
+     * @param string       $plu    Plural instance
+     * @param string       $n      Object count
+     * @param string|array $params Sprintf() arguments
      *
      * @return string
      */

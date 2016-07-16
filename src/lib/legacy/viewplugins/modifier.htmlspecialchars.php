@@ -16,9 +16,9 @@
  *
  *   {$myVar|htmlspecialchars}
  *
- * @param mixed $string The contents to transform.
+ * @param mixed $string The contents to transform
  *
- * @return string The modified output.
+ * @return string The modified output
  */
 function smarty_modifier_htmlspecialchars($string)
 {

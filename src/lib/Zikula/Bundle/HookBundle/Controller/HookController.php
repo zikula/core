@@ -411,10 +411,10 @@ class HookController extends Controller
     /**
      * @todo move this to AbstractController
      * Check the CSRF token.
-     * Checks will fall back to $token check if automatic checking fails.
+     * Checks will fall back to $token check if automatic checking fails
      *
-     * @param string $token Token, default null.
-     * @throws AccessDeniedException If the CSFR token fails.
+     * @param string $token Token, default null
+     * @throws AccessDeniedException If the CSFR token fails
      * @throws \Exception if request is not an XmlHttpRequest
      * @return void
      */

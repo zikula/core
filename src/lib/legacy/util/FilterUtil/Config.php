@@ -92,7 +92,7 @@ class FilterUtil_Config
      *   join: The join array.
      *   alias: Alias to use with the main table.
      *
-     * @param array $args Arguments as listed above.
+     * @param array $args Arguments as listed above
      */
     public function __construct($args)
     {
@@ -128,9 +128,9 @@ class FilterUtil_Config
     /**
      * Sets Module.
      *
-     * @param string $module Module name.
+     * @param string $module Module name
      *
-     * @return bool true on success, false otherwise.
+     * @return bool true on success, false otherwise
      */
     public function setModule($module)
     {
@@ -150,7 +150,7 @@ class FilterUtil_Config
     /**
      * Gets Module.
      *
-     * @return string Module name.
+     * @return string Module name
      */
     public function getModule()
     {
@@ -160,9 +160,9 @@ class FilterUtil_Config
     /**
      * Sets table.
      *
-     * @param string $table Table name.
+     * @param string $table Table name
      *
-     * @return bool true on success, false otherwise.
+     * @return bool true on success, false otherwise
      */
     public function setTable($table)
     {
@@ -186,7 +186,7 @@ class FilterUtil_Config
     /**
      * Gets table.
      *
-     * @return string Table name.
+     * @return string Table name
      */
     public function getTable()
     {
@@ -196,9 +196,9 @@ class FilterUtil_Config
     /**
      * Sets Doctrine table.
      *
-     * @param Doctrine_Table $table Doctrine_Table object.
+     * @param Doctrine_Table $table Doctrine_Table object
      *
-     * @return bool true on success, false otherwise.
+     * @return bool true on success, false otherwise
      */
     public function setDoctrineTable(Doctrine_Table $table)
     {
@@ -213,10 +213,10 @@ class FilterUtil_Config
     /**
      * Gets the columns of a Doctrine table.
      *
-     * @param Doctrine_Table $table   Doctrine_Table object.
-     * @param array          $dynaMap Array of dynamic aliasses.
+     * @param Doctrine_Table $table   Doctrine_Table object
+     * @param array          $dynaMap Array of dynamic aliasses
      *
-     * @return array Columns of the table with keys as alias and values as columns.
+     * @return array Columns of the table with keys as alias and values as columns
      */
     public function getDoctrineTableColumns(Doctrine_Table $table, $dynaMap = null)
     {
@@ -234,7 +234,7 @@ class FilterUtil_Config
     /**
      * Gets Doctrine table.
      *
-     * @return Doctrine_Table Doctrine_Table object.
+     * @return Doctrine_Table Doctrine_Table object
      */
     public function getDoctrineTable()
     {
@@ -244,7 +244,7 @@ class FilterUtil_Config
     /**
      * Reset columns.
      *
-     * @return boolean True.
+     * @return boolean True
      */
     public function resetColumns()
     {
@@ -268,7 +268,7 @@ class FilterUtil_Config
     /**
      * Get columns.
      *
-     * @return array Column set.
+     * @return array Column set
      */
     public function getColumns()
     {
@@ -278,9 +278,9 @@ class FilterUtil_Config
     /**
      * Get single column.
      *
-     * @param string $alias Alias.
+     * @param string $alias Alias
      *
-     * @return string Column name.
+     * @return string Column name
      */
     public function getColumn($alias)
     {
@@ -294,7 +294,7 @@ class FilterUtil_Config
     /**
      * Sets alias.
      *
-     * @param string $alias Table alias.
+     * @param string $alias Table alias
      *
      * @return void
      */
@@ -321,7 +321,7 @@ class FilterUtil_Config
     /**
      * Gets alias.
      *
-     * @return string Table alias.
+     * @return string Table alias
      */
     public function getAlias()
     {
@@ -333,7 +333,7 @@ class FilterUtil_Config
      *
      * Sets a reference to a join array for right column names.
      *
-     * @param array &$join Join array.
+     * @param array &$join Join array
      *
      * @return void
      */
@@ -420,8 +420,8 @@ class FilterUtil_Config
      *
      * Set the Doctrine Query Object and expand configuration with it's information.
      *
-     * @param Doctrine_Query $query  Doctrine Query Object.
-     * @param array          $filter Filter object to be processed to enrich the Query.
+     * @param Doctrine_Query $query  Doctrine Query Object
+     * @param array          $filter Filter object to be processed to enrich the Query
      *
      * @return void
      */
@@ -465,10 +465,10 @@ class FilterUtil_Config
      *
      * Defined to be a join with an ExternalTable:field.
      *
-     * @param array &$joins Empty array to store the result in.
-     * @param array $obj Filter object to be processed to enrich the Query.
+     * @param array &$joins Empty array to store the result in
+     * @param array $obj Filter object to be processed to enrich the Query
      *
-     * @return array Columns defined as join with an external table.
+     * @return array Columns defined as join with an external table
      */
     private function _getFilterRelations(&$joins, $obj)
     {
@@ -504,7 +504,7 @@ class FilterUtil_Config
     /**
      * Gets the Doctrine Query object.
      *
-     * @return Doctrine_Query Doctrine Query Object.
+     * @return Doctrine_Query Doctrine Query Object
      */
     public function getDoctrineQuery()
     {
@@ -514,7 +514,7 @@ class FilterUtil_Config
     /**
      * Load the table objects from the "from" info.
      *
-     * @return array Array of Doctrine_Table objects.
+     * @return array Array of Doctrine_Table objects
      */
     private function _getTableInformation()
     {
@@ -571,10 +571,10 @@ class FilterUtil_Config
     /**
      * Enrich doctrine tables with it's aliasses.
      *
-     * @param array $tables   Array of doctrine table information.
-     * @param array $aliasMap Array of aliasses.
+     * @param array $tables   Array of doctrine table information
+     * @param array $aliasMap Array of aliasses
      *
-     * @return array Enriched array.
+     * @return array Enriched array
      */
     private function _enrichTablesWithAlias($tables, $aliasMap)
     {
@@ -599,8 +599,8 @@ class FilterUtil_Config
     /**
      * Set column array from Doctrine_Table object array.
      *
-     * @param array $tables  Array of Doctrine_Table objects.
-     * @param array $dynaMap Array of dynamic aliasses.
+     * @param array $tables  Array of Doctrine_Table objects
+     * @param array $dynaMap Array of dynamic aliasses
      *
      * @return void
      */
@@ -634,7 +634,7 @@ class FilterUtil_Config
      *
      * Get whether we're using Doctrine or old tables.
      *
-     * @return constant Identifier constant.
+     * @return constant Identifier constant
      */
     public function getTableMode()
     {

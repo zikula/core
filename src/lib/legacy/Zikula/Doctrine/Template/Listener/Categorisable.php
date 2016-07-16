@@ -19,7 +19,7 @@ class Zikula_Doctrine_Template_Listener_Categorisable extends Doctrine_Record_Li
     /**
      * Adds categories relation specific joins.
      *
-     * @param Doctrine_Event $event Event.
+     * @param Doctrine_Event $event Event
      *
      * @return void
      */

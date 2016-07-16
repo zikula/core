@@ -22,7 +22,7 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
     /**
      * Install the ZikulaMailerModule application.
      *
-     * @return boolean True on success, or false.
+     * @return boolean True on success, or false
      *
      * @throws RuntimeException Thrown if database tables can not be created or another error occurs
      */
@@ -42,9 +42,9 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
      *
      * If the upgrade fails at some point, it returns the last upgraded version.
      *
-     * @param string $oldVersion Version to upgrade from.
+     * @param string $oldVersion Version to upgrade from
      *
-     * @return boolean True on success, false otherwise.
+     * @return boolean True on success, false otherwise
      *
      * @throws RuntimeException Thrown if database tables can not be updated
      */
@@ -120,7 +120,7 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
     /**
      * Uninstall ZikulaMailerModule.
      *
-     * @return boolean True on success, false otherwise.
+     * @return boolean True on success, false otherwise
      *
      * @throws RuntimeException Thrown if database tables or stored workflows can not be removed
      */

@@ -19,7 +19,7 @@ interface Zikula_CollectionInterface extends ArrayAccess, Countable, IteratorAgg
     /**
      * Add an item to the collection without a key.
      *
-     * @param mixed $value The value to add.
+     * @param mixed $value The value to add
      *
      * @return mixed
      */
@@ -28,8 +28,8 @@ interface Zikula_CollectionInterface extends ArrayAccess, Countable, IteratorAgg
     /**
      * Add an item to the collection with a key.
      *
-     * @param mixed $key   The key to the item within the collection.
-     * @param mixed $value The value of the item.
+     * @param mixed $key   The key to the item within the collection
+     * @param mixed $value The value of the item
      *
      * @return mixed
      */
@@ -38,7 +38,7 @@ interface Zikula_CollectionInterface extends ArrayAccess, Countable, IteratorAgg
     /**
      * Retrieve an item from the collection by its key.
      *
-     * @param mixed $key The key to the item within the collection to retrieve.
+     * @param mixed $key The key to the item within the collection to retrieve
      *
      * @return mixed
      */
@@ -47,7 +47,7 @@ interface Zikula_CollectionInterface extends ArrayAccess, Countable, IteratorAgg
     /**
      * Remove an item from the collection.
      *
-     * @param mixed $key The key to the item within the collection.
+     * @param mixed $key The key to the item within the collection
      *
      * @return mixed
      */
@@ -56,23 +56,23 @@ interface Zikula_CollectionInterface extends ArrayAccess, Countable, IteratorAgg
     /**
      * Indicates whether the specified key is set within the collection.
      *
-     * @param mixed $key The key to the item within the collection.
+     * @param mixed $key The key to the item within the collection
      *
-     * @return boolean True if the item with the specified key is set, otherwise false.
+     * @return boolean True if the item with the specified key is set, otherwise false
      */
     public function has($key);
 
     /**
      * Indicates whether the collection is set.
      *
-     * @return boolean True if set, otherwise false.
+     * @return boolean True if set, otherwise false
      */
     public function hasCollection();
 
     /**
      * Retrieve the internal collection container.
      *
-     * @return mixed The collection.
+     * @return mixed The collection
      */
     public function getCollection();
 }

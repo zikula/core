@@ -47,7 +47,7 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
      *            As in DBUtil categoryFilter. See setProperty().
      *  ops:      Operators to enable, see activateOperators().
      *
-     * @param array $config Configuration.
+     * @param array $config Configuration
      */
     public function __construct($config)
     {
@@ -73,7 +73,7 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
     /**
      * Returns the operators the plugin can handle.
      *
-     * @return array Operators.
+     * @return array Operators
      */
     public function availableOperators()
     {
@@ -83,7 +83,7 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
     /**
      * Adds fields to list in common way.
      *
-     * @param mixed $fields Fields to add.
+     * @param mixed $fields Fields to add
      *
      * @return void
      */
@@ -102,7 +102,7 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
     /**
      * Returns the fields.
      *
-     * @return array List of fields.
+     * @return array List of fields
      */
     public function getFields()
     {
@@ -112,7 +112,7 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
     /**
      * Adds operators.
      *
-     * @param mixed $op Operators to activate.
+     * @param mixed $op Operators to activate
      *
      * @return void
      */
@@ -130,7 +130,7 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
     /**
      * Get operators
      *
-     * @return array Set of Operators and Arrays.
+     * @return array Set of Operators and Arrays
      */
     public function getOperators()
     {
@@ -150,7 +150,7 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
     /**
      * Sets the category property.
      *
-     * @param mixed $property Category Property.
+     * @param mixed $property Category Property
      *
      * @see    CategoryUtil
      * @return void
@@ -163,11 +163,11 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
     /**
      * Returns SQL code.
      *
-     * @param string $field Field name.
-     * @param string $op    Operator.
-     * @param string $value Test value.
+     * @param string $field Field name
+     * @param string $op    Operator
+     * @param string $value Test value
      *
-     * @return array SQL code array.
+     * @return array SQL code array
      */
     public function getSQL($field, $op, $value)
     {

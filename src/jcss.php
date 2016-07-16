@@ -88,7 +88,7 @@ class SecurityUtil
      *
      * This is a fake function.
      *
-     * @return boolean true.
+     * @return boolean true
      */
     public function checkPermission()
     {

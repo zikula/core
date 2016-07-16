@@ -19,10 +19,10 @@
  * You can also use all of the features from the Zikula_Form_Plugin_TextInput plugin since the date input
  * inherits from it.
  *
- * @param array            $params Parameters passed in the block tag.
- * @param Zikula_Form_View $view   Reference to Zikula_Form_View object.
+ * @param array            $params Parameters passed in the block tag
+ * @param Zikula_Form_View $view   Reference to Zikula_Form_View object
  *
- * @return string The rendered output.
+ * @return string The rendered output
  */
 function smarty_function_formdateinput($params, $view)
 {

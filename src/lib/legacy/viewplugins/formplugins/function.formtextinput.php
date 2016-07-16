@@ -23,10 +23,10 @@
  * The Zikula_Form_Plugin_TextInput plugin supports basic CSS styling through attributes like "width", "color" and "font_weight". See
  * {@link Zikula_Form_StyledPlugin} for more info.
  *
- * @param array            $params Parameters passed in the block tag.
- * @param Zikula_Form_View $view   Reference to Zikula_Form_View object.
+ * @param array            $params Parameters passed in the block tag
+ * @param Zikula_Form_View $view   Reference to Zikula_Form_View object
  *
- * @return string The rendered output.
+ * @return string The rendered output
  */
 function smarty_function_formtextinput($params, $view)
 {

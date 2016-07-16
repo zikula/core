@@ -23,7 +23,7 @@ class MenutreeTree extends \Zikula_Tree
     /**
      * Constructor.
      *
-     * @param array $config Config array.
+     * @param array $config Config array
      *
      * @return void
      */
@@ -43,7 +43,7 @@ class MenutreeTree extends \Zikula_Tree
     /**
      * Parse data
      *
-     * @return array Tree data.
+     * @return array Tree data
      */
     protected function _parseData()
     {
@@ -124,7 +124,7 @@ class MenutreeTree extends \Zikula_Tree
     /**
      * Get decoded, structured data
      *
-     * @return string HTML output.
+     * @return string HTML output
      */
     public function getData()
     {
@@ -134,7 +134,7 @@ class MenutreeTree extends \Zikula_Tree
     /**
      * Get HTML output
      *
-     * @return string HTML output.
+     * @return string HTML output
      */
     public function getHTML()
     {

@@ -32,10 +32,10 @@
  *  template Specify different debug template, default zdebug.tpl,
  *              must be stored in system/Theme/templates.
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
- * @return string Debug output.
+ * @return string Debug output
  */
 function smarty_function_zdebug($params, Zikula_View $view)
 {

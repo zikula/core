@@ -54,7 +54,7 @@ class Zikula_Form_Plugin_LinkButton extends Zikula_Form_AbstractStyledPlugin
     /**
      * Name of command event handler method.
      *
-     * @var string Default is "handleCommand".
+     * @var string Default is "handleCommand"
      */
     public $onCommand = 'handleCommand';
 
@@ -108,7 +108,7 @@ class Zikula_Form_Plugin_LinkButton extends Zikula_Form_AbstractStyledPlugin
     /**
      * Render event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
      * @return string The rendered output
      */
@@ -168,8 +168,8 @@ class Zikula_Form_Plugin_LinkButton extends Zikula_Form_AbstractStyledPlugin
     /**
      * Called by Zikula_Form_View framework due to the use of getPostBackEventReference() above.
      *
-     * @param Zikula_Form_View $view          Reference to Zikula_Form_View object.
-     * @param string           $eventArgument The event argument.
+     * @param Zikula_Form_View $view          Reference to Zikula_Form_View object
+     * @param string           $eventArgument The event argument
      *
      * @return void
      */

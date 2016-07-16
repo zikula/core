@@ -33,9 +33,9 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
     /**
      * Constructor.
      *
-     * @param array $fields  Set of fields to use, see setFields() (optional) (default=null).
-     * @param array $ops     Operators to enable, see activateOperators() (optional) (default=null).
-     * @param bool  $default set the plugin to default (optional) (default=false).
+     * @param array $fields  Set of fields to use, see setFields() (optional) (default=null)
+     * @param array $ops     Operators to enable, see activateOperators() (optional) (default=null)
+     * @param bool  $default set the plugin to default (optional) (default=false)
      */
     public function __construct($fields = null, array $ops = [], $default = false)
     {
@@ -47,7 +47,7 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
     /**
      * Adds fields to list in common way.
      *
-     * @param mixed $fields Fields to add.
+     * @param mixed $fields Fields to add
      *
      * @return void
      */
@@ -65,7 +65,7 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
     /**
      * Returns the fields.
      *
-     * @return array List of fields.
+     * @return array List of fields
      */
     public function getFields()
     {
@@ -75,7 +75,7 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
     /**
      * Activates the requested Operators.
      *
-     * @param mixed $op Operators to activate.
+     * @param mixed $op Operators to activate
      *
      * @return void
      */
@@ -97,7 +97,7 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
     /**
      * Get activated operators.
      *
-     * @return array Set of Operators and Arrays.
+     * @return array Set of Operators and Arrays
      */
     public function getOperators()
     {
@@ -117,7 +117,7 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
     /**
      * Returns the operators the plugin can handle.
      *
-     * @return array Operators.
+     * @return array Operators
      */
     abstract protected function availableOperators();
 }

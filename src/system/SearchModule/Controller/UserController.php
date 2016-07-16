@@ -315,9 +315,9 @@ class UserController extends AbstractController
      * Forwards the request to another action of this controller.
      *
      * @param Request $request
-     * @param         $action  The action to forwards to.
-     * @param array   $get     Array of GET parameters.
-     * @param array   $post    Array of POST parameters.
+     * @param         $action  The action to forwards to
+     * @param array   $get     Array of GET parameters
+     * @param array   $post    Array of POST parameters
      *
      * @return mixed
      */

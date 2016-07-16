@@ -114,7 +114,7 @@ abstract class Zikula_AbstractThemeVersion implements ArrayAccess
      * Return certain data elements from this class as an array.
      *
      * @return array An array containing the name, description, display name, url, version, capabilities, dependencies,
-     *                  type, directory and security schema.
+     *                  type, directory and security schema
      */
     public function toArray()
     {
@@ -136,9 +136,9 @@ abstract class Zikula_AbstractThemeVersion implements ArrayAccess
     /**
      * Translate a string using gettext.
      *
-     * @param string $msgid The string to translate.
+     * @param string $msgid The string to translate
      *
-     * @return string The translated string.
+     * @return string The translated string
      */
     public function __($msgid)
     {
@@ -148,10 +148,10 @@ abstract class Zikula_AbstractThemeVersion implements ArrayAccess
     /**
      * Translate a string using the sprintf version of gettext.
      *
-     * @param string $msgid  The string to translate.
-     * @param array  $params The parameters to substitute into the string.
+     * @param string $msgid  The string to translate
+     * @param array  $params The parameters to substitute into the string
      *
-     * @return string The translated string with variables substituted.
+     * @return string The translated string with variables substituted
      */
     public function __f($msgid, $params)
     {
@@ -161,7 +161,7 @@ abstract class Zikula_AbstractThemeVersion implements ArrayAccess
     /**
      * Retrieve the module base directory.
      *
-     * @return string The directory.
+     * @return string The directory
      */
     public function getBaseDir()
     {
@@ -171,7 +171,7 @@ abstract class Zikula_AbstractThemeVersion implements ArrayAccess
     /**
      * Retrieve the module name.
      *
-     * @return string The name of the module.
+     * @return string The name of the module
      */
     public function getName()
     {
@@ -181,7 +181,7 @@ abstract class Zikula_AbstractThemeVersion implements ArrayAccess
     /**
      * Retrieve the display name for the module.
      *
-     * @return string The display name.
+     * @return string The display name
      */
     public function getDisplayName()
     {
@@ -191,7 +191,7 @@ abstract class Zikula_AbstractThemeVersion implements ArrayAccess
     /**
      * Set the module's display name.
      *
-     * @param string $displayName The display name.
+     * @param string $displayName The display name
      *
      * @return void
      */
@@ -203,7 +203,7 @@ abstract class Zikula_AbstractThemeVersion implements ArrayAccess
     /**
      * Retrieve the module's brief description.
      *
-     * @return string The description.
+     * @return string The description
      */
     public function getDescription()
     {
@@ -213,7 +213,7 @@ abstract class Zikula_AbstractThemeVersion implements ArrayAccess
     /**
      * Set a brief description of the module.
      *
-     * @param string $description The description.
+     * @param string $description The description
      *
      * @return void
      */
@@ -225,7 +225,7 @@ abstract class Zikula_AbstractThemeVersion implements ArrayAccess
     /**
      * Retrieve the module's version number.
      *
-     * @return string The version.
+     * @return string The version
      */
     public function getVersion()
     {
@@ -235,11 +235,11 @@ abstract class Zikula_AbstractThemeVersion implements ArrayAccess
     /**
      * Set the module's version.
      *
-     * @param string $version The version string, in the format a.b.c where a, b and c are digit sequences.
+     * @param string $version The version string, in the format a.b.c where a, b and c are digit sequences
      *
      * @return void
      *
-     * @throws InvalidArgumentException Thrown if $version does not match the regular expression #\d+\.\d+\.\d+#.
+     * @throws InvalidArgumentException Thrown if $version does not match the regular expression #\d+\.\d+\.\d+#
      */
     public function setVersion($version)
     {
@@ -408,9 +408,9 @@ abstract class Zikula_AbstractThemeVersion implements ArrayAccess
     /**
      * Returns the value at the specified offset (see {@link ArrayAccess::offsetGet()}).
      *
-     * @param mixed $key The offset to retrieve.
+     * @param mixed $key The offset to retrieve
      *
-     * @return mixed The value at the specified offset.
+     * @return mixed The value at the specified offset
      */
     public function offsetGet($key)
     {
@@ -420,8 +420,8 @@ abstract class Zikula_AbstractThemeVersion implements ArrayAccess
     /**
      * Set the value at the specified offset (see {@link ArrayAccess::offsetSet()}).
      *
-     * @param mixed $key   The offset to retrieve.
-     * @param mixed $value The value to set at the specified offset.
+     * @param mixed $key   The offset to retrieve
+     * @param mixed $value The value to set at the specified offset
      *
      * @return void
      */
@@ -433,9 +433,9 @@ abstract class Zikula_AbstractThemeVersion implements ArrayAccess
     /**
      * Indicate whether the specified offset is set (see {@link ArrayAccess::offsetExists()}).
      *
-     * @param mixed $key The offset to check.
+     * @param mixed $key The offset to check
      *
-     * @return boolean True if the offset is set, otherwise false.
+     * @return boolean True if the offset is set, otherwise false
      */
     public function offsetExists($key)
     {
@@ -445,7 +445,7 @@ abstract class Zikula_AbstractThemeVersion implements ArrayAccess
     /**
      * Unset the specified offset (see {@link ArrayAccess::offsetUnset()}).
      *
-     * @param mixed $key The offset to unset.
+     * @param mixed $key The offset to unset
      *
      * @return void
      */

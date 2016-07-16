@@ -14,10 +14,10 @@
  *
  * This plugin shows a summary of the validation result.
  *
- * @param array            $params Parameters passed in the block tag.
- * @param Zikula_Form_View $view   Reference to Form render object.
+ * @param array            $params Parameters passed in the block tag
+ * @param Zikula_Form_View $view   Reference to Form render object
  *
- * @return string The rendered output.
+ * @return string The rendered output
  */
 function smarty_function_formvalidationsummary($params, $view)
 {

@@ -12,8 +12,8 @@
 /**
  * Zikula_View function provide {continue} in templates.
  *
- * @param string          $content  The content.
- * @param Smarty_Compiler $compiler Compiler object.
+ * @param string          $content  The content
+ * @param Smarty_Compiler $compiler Compiler object
  *
  * @return string 'continue;'
  */

@@ -12,10 +12,10 @@
 /**
  * Zikula_View function to display the available workflow actions for the current item state.
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
- * @return string HTML code with the available workflow actions for the current item state.
+ * @return string HTML code with the available workflow actions for the current item state
  */
 function smarty_function_workflow_getactionsbystate($params, Zikula_View $view)
 {

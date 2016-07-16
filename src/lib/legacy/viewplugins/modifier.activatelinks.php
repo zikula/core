@@ -12,7 +12,7 @@
 /**
  * Plugin to replace URLs found within a string into HTML links.
  *
- * @param string $text Text to apply modifier on.
+ * @param string $text Text to apply modifier on
  *
  * @return string
  */

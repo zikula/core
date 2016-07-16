@@ -190,7 +190,7 @@ class RegistrationController extends AbstractController
      * Throw an exception if the user agent has been banned in the UserModule settings.
      *
      * @param Request $request
-     * @throws AccessDeniedException if User Agent is banned.
+     * @throws AccessDeniedException if User Agent is banned
      */
     private function throwExceptionForBannedUserAgents(Request $request)
     {

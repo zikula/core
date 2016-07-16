@@ -14,10 +14,10 @@
  *
  * This plugin creates a context menu reference.
  *
- * @param array            $params Parameters passed in the block tag.
- * @param Zikula_Form_View $view   Reference to Form render object.
+ * @param array            $params Parameters passed in the block tag
+ * @param Zikula_Form_View $view   Reference to Form render object
  *
- * @return string The rendered output.
+ * @return string The rendered output
  */
 function smarty_function_formcontextmenureference($params, $view)
 {

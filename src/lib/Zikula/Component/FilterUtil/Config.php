@@ -153,9 +153,9 @@ class Config
     /**
      * Sets Entity.
      *
-     * @param string $entityName Table name.
+     * @param string $entityName Table name
      *
-     * @return bool true on success, false otherwise.
+     * @return bool true on success, false otherwise
      */
     public function setEntityName($entityName)
     {
@@ -165,7 +165,7 @@ class Config
     /**
      * Gets entity name.
      *
-     * @return string Entity name.
+     * @return string Entity name
      */
     public function getEntityName()
     {
@@ -185,7 +185,7 @@ class Config
     /**
      * Sets alias.
      *
-     * @param string $alias Entity alias.
+     * @param string $alias Entity alias
      *
      * @return void
      */
@@ -197,7 +197,7 @@ class Config
     /**
      * Gets alias.
      *
-     * @return string Entity alias.
+     * @return string Entity alias
      */
     public function getAlias()
     {

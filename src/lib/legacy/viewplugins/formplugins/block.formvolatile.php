@@ -44,11 +44,11 @@
  * You don't need the volatile block if you can guarantee that the number of elements will
  * be the same always.
  *
- * @param array            $params  Parameters passed in the block tag.
- * @param string           $content Content of the block.
- * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+ * @param array            $params  Parameters passed in the block tag
+ * @param string           $content Content of the block
+ * @param Zikula_Form_View $view    Reference to Zikula_Form_View object
  *
- * @return string The rendered output.
+ * @return string The rendered output
  */
 function smarty_block_formvolatile($params, $content, $view)
 {

@@ -39,7 +39,7 @@ class AjaxController extends AbstractController
      * @return ForbiddenResponse on perm check failure
      * @return NotFoundResponse if module name cannot be found
      * @return FatalResponse if cannot add module to category
-     * @return AjaxResponse Ajax response containing the moduleid on success.
+     * @return AjaxResponse Ajax response containing the moduleid on success
      */
     public function changeModuleCategoryAction(Request $request)
     {
@@ -324,7 +324,7 @@ class AjaxController extends AbstractController
      * @param Request $request
      *
      * @return ForbiddenResponse on perm check failure
-     * @return AjaxResponse Ajax response containing a null array on success.
+     * @return AjaxResponse Ajax response containing a null array on success
      */
     public function sortCategoriesAction(Request $request)
     {
@@ -355,7 +355,7 @@ class AjaxController extends AbstractController
      * @param Request $request
      *
      * @return ForbiddenResponse on perm check failure
-     * @return AjaxResponse Ajax response containing a null array on success.
+     * @return AjaxResponse Ajax response containing a null array on success
      */
     public function sortModulesAction(Request $request)
     {

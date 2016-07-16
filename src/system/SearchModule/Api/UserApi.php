@@ -268,7 +268,7 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Utility function to count the number of previous search queries.
      *
-     * @return integer number of items held by this module.
+     * @return integer number of items held by this module
      */
     public function countitems()
     {
@@ -348,8 +348,8 @@ class UserApi extends \Zikula_AbstractApi
      * This function is ported 'as is' from the old, nonAPI, module
      * it is called from each plugin so we can't delete it or change it's name
      *
-     * @param string $q          the string to parse and split.
-     * @param bool   $dbWildcard whether to wrap each word in a DB wildcard character (%).
+     * @param string $q          the string to parse and split
+     * @param bool   $dbWildcard whether to wrap each word in a DB wildcard character (%)
      *
      * @return array an array of words optionally surrounded by '%'
      */

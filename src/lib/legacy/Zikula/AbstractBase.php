@@ -121,7 +121,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Constructor.
      *
-     * @param Zikula_ServiceManager $serviceManager ServiceManager instance.
+     * @param Zikula_ServiceManager $serviceManager ServiceManager instance
      * @param AbstractModule        $bundle
      */
     public function __construct(Zikula_ServiceManager $serviceManager, AbstractModule $bundle = null)
@@ -225,7 +225,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Get name.
      *
-     * @return string Name.
+     * @return string Name
      */
     public function getName()
     {
@@ -328,7 +328,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Translate.
      *
-     * @param string $msgid String to be translated.
+     * @param string $msgid String to be translated
      *
      * @return string
      */
@@ -340,8 +340,8 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Translate with sprintf().
      *
-     * @param string       $msgid  String to be translated.
-     * @param string|array $params Args for sprintf().
+     * @param string       $msgid  String to be translated
+     * @param string|array $params Args for sprintf()
      *
      * @return string
      */
@@ -353,11 +353,11 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Translate plural string.
      *
-     * @param string $singular Singular instance.
-     * @param string $plural   Plural instance.
-     * @param string $count    Object count.
+     * @param string $singular Singular instance
+     * @param string $plural   Plural instance
+     * @param string $count    Object count
      *
-     * @return string Translated string.
+     * @return string Translated string
      */
     public function _n($singular, $plural, $count)
     {
@@ -367,10 +367,10 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Translate plural string with sprintf().
      *
-     * @param string       $sin    Singular instance.
-     * @param string       $plu    Plural instance.
-     * @param string       $n      Object count.
-     * @param string|array $params Sprintf() arguments.
+     * @param string       $sin    Singular instance
+     * @param string       $plu    Plural instance
+     * @param string       $n      Object count
+     * @param string|array $params Sprintf() arguments
      *
      * @return string
      */
@@ -384,11 +384,11 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * Used to immediately halt execution.
      *
-     * @param string       $message Default ''.
-     * @param integer       $code    Default 0.
-     * @param string|array $debug   Debug information.
+     * @param string       $message Default ''
+     * @param integer       $code    Default 0
+     * @param string|array $debug   Debug information
      *
-     * @throws Exception\NotFoundHttpException exception.
+     * @throws Exception\NotFoundHttpException exception
      * @deprecated since 1.4.0
      *
      * @return void
@@ -403,12 +403,12 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * Used to immediately halt execution if $condition.
      *
-     * @param bool         $condition Condition.
-     * @param string       $message   Default ''.
-     * @param integer       $code      Default 0.
-     * @param string|array $debug     Debug information.
+     * @param bool         $condition Condition
+     * @param string       $message   Default ''
+     * @param integer       $code      Default 0
+     * @param string|array $debug     Debug information
      *
-     * @throws Exception\NotFoundHttpException Exception.
+     * @throws Exception\NotFoundHttpException Exception
      * @deprecated since 1.4.0
      * @return void
      */
@@ -424,12 +424,12 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * Used to immediately halt execution unless $condition.
      *
-     * @param bool         $condition Condition.
-     * @param string       $message   Default ''.
-     * @param integer       $code      Default 0.
-     * @param string|array $debug     Debug information.
+     * @param bool         $condition Condition
+     * @param string       $message   Default ''
+     * @param integer       $code      Default 0
+     * @param string|array $debug     Debug information
      *
-     * @throws Exception\NotFoundHttpException Exception.
+     * @throws Exception\NotFoundHttpException Exception
      * @deprecated since 1.4.0
      *
      * @return void
@@ -446,11 +446,11 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * Used to immediately halt execution.
      *
-     * @param string       $message Default ''.
-     * @param integer       $code    Default 0.
-     * @param string|array $debug   Debug information.
+     * @param string       $message Default ''
+     * @param integer       $code    Default 0
+     * @param string|array $debug   Debug information
      *
-     * @throws AccessDeniedException Exception.
+     * @throws AccessDeniedException Exception
      * @deprecated since 1.4.0
      *
      * @return void
@@ -465,12 +465,12 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * Used to immediately halt execution if condition.
      *
-     * @param bool         $condition Condition.
-     * @param string       $message   Default ''.
-     * @param integer       $code      Default 0.
-     * @param string|array $debug     Debug information.
+     * @param bool         $condition Condition
+     * @param string       $message   Default ''
+     * @param integer       $code      Default 0
+     * @param string|array $debug     Debug information
      *
-     * @throws AccessDeniedException Exception.
+     * @throws AccessDeniedException Exception
      *
      * @return void
      */
@@ -486,12 +486,12 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * Used to immediately halt execution unless condition.
      *
-     * @param bool         $condition Condition.
-     * @param string       $message   Default ''.
-     * @param integer       $code      Default 0.
-     * @param string|array $debug     Debug information.
+     * @param bool         $condition Condition
+     * @param string       $message   Default ''
+     * @param integer       $code      Default 0
+     * @param string|array $debug     Debug information
      *
-     * @throws AccessDeniedException Exception.
+     * @throws AccessDeniedException Exception
      * @deprecated since 1.4.0
      *
      * @return void
@@ -506,10 +506,10 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Cause redirect by throwing exception which passes to front controller.
      *
-     * @param string  $url  Url to redirect to.
+     * @param string  $url  Url to redirect to
      * @param integer $type Redirect code, 302 default.
      *
-     * sends RedirectResponse Causing redirect.
+     * sends RedirectResponse Causing redirect
      * @deprecated since 1.4.0 return a RedirectResponse instead!
      *
      * @return void
@@ -524,11 +524,11 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Cause redirect if $condition by throwing exception which passes to front controller.
      *
-     * @param boolean $condition Condition.
-     * @param string  $url       Url to redirect to.
+     * @param boolean $condition Condition
+     * @param string  $url       Url to redirect to
      * @param integer $type      Redirect code, 302 default.
      *
-     * sends RedirectResponse Causing redirect.
+     * sends RedirectResponse Causing redirect
      *
      * @return void
      */
@@ -542,11 +542,11 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Cause redirect unless $condition by throwing exception which passes to front controller.
      *
-     * @param boolean $condition Condition.
-     * @param string  $url       Url to redirect to.
+     * @param boolean $condition Condition
+     * @param string  $url       Url to redirect to
      * @param integer $type      Redirect code, 302 default.
      *
-     * sends RedirectResponse Causing redirect.
+     * sends RedirectResponse Causing redirect
      *
      * @return void
      */
@@ -562,13 +562,13 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * Causes a status message to be stored in the session and displayed next pageload.
      *
-     * @param string $message Message.
+     * @param string $message Message
      *
      * @deprecated since 1.4.0
      *
-     * @throws Zikula_Exception If no message is set.
+     * @throws Zikula_Exception If no message is set
      *
-     * @return object This object.
+     * @return object This object
      */
     protected function registerStatus($message)
     {
@@ -586,14 +586,14 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * Causes a status message to be stored in the session and displayed next pageload.
      *
-     * @param boolean $condition Condition.
-     * @param string  $message   Message.
+     * @param boolean $condition Condition
+     * @param string  $message   Message
      *
-     * @throws Zikula_Exception If no message is set.
+     * @throws Zikula_Exception If no message is set
      *
      * @deprecated since 1.4.0
      *
-     * @return object This object.
+     * @return object This object
      */
     protected function registerStatusIf($condition, $message)
     {
@@ -609,14 +609,14 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * Causes a status message to be stored in the session and displayed next pageload.
      *
-     * @param boolean $condition Condition.
-     * @param string  $message   Message.
+     * @param boolean $condition Condition
+     * @param string  $message   Message
      *
      * @deprecated since 1.4.0
      *
-     * @throws Zikula_Exception If no message is set.
+     * @throws Zikula_Exception If no message is set
      *
-     * @return object This object.
+     * @return object This object
      */
     protected function registerStatusUnless($condition, $message)
     {
@@ -632,15 +632,15 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * Causes a error message to be stored in the session and displayed next pageload.
      *
-     * @param string  $message Message.
-     * @param integer $type    Type.
-     * @param mixed   $debug   Debug.
+     * @param string  $message Message
+     * @param integer $type    Type
+     * @param mixed   $debug   Debug
      *
      * @deprecated since 1.4.0
      *
-     * @throws Zikula_Exception If no message is set.
+     * @throws Zikula_Exception If no message is set
      *
-     * @return object This object.
+     * @return object This object
      */
     protected function registerError($message, $type = null, $debug = null)
     {
@@ -658,14 +658,14 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * Causes a error message to be stored in the session and displayed next pageload.
      *
-     * @param boolean $condition Condition.
-     * @param string  $message   Message.
-     * @param integer $type      Type.
-     * @param mixed   $debug     Debug.
+     * @param boolean $condition Condition
+     * @param string  $message   Message
+     * @param integer $type      Type
+     * @param mixed   $debug     Debug
      *
-     * @throws Zikula_Exception If no message is set.
+     * @throws Zikula_Exception If no message is set
      *
-     * @return object This object.
+     * @return object This object
      */
     protected function registerErrorIf($condition, $message, $type = null, $debug = null)
     {
@@ -681,16 +681,16 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * Causes a error message to be stored in the session and displayed next pageload.
      *
-     * @param boolean $condition Condition.
-     * @param string  $message   Message.
-     * @param integer $type      Type.
-     * @param mixed   $debug     Debug.
+     * @param boolean $condition Condition
+     * @param string  $message   Message
+     * @param integer $type      Type
+     * @param mixed   $debug     Debug
      *
      * @deprecated since 1.4.0
      *
-     * @throws Zikula_Exception If no message is set.
+     * @throws Zikula_Exception If no message is set
      *
-     * @return object This object.
+     * @return object This object
      */
     protected function registerErrorUnless($condition, $message, $type = null, $debug = null)
     {
@@ -704,10 +704,10 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Convenience Module SetVar.
      *
-     * @param string $key   Key.
-     * @param mixed  $value Value, default empty.
+     * @param string $key   Key
+     * @param mixed  $value Value, default empty
      *
-     * @return object This.
+     * @return object This
      */
     public function setVar($key, $value = '')
     {
@@ -719,9 +719,9 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Convenience Module SetVars.
      *
-     * @param array $vars Array of key => value.
+     * @param array $vars Array of key => value
      *
-     * @return object This.
+     * @return object This
      */
     public function setVars(array $vars)
     {
@@ -733,8 +733,8 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Convenience Module GetVar.
      *
-     * @param string  $key     Key.
-     * @param boolean $default Default, false if not found.
+     * @param string  $key     Key
+     * @param boolean $default Default, false if not found
      *
      * @return mixed
      */
@@ -756,9 +756,9 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Convenience Module DelVar.
      *
-     * @param string $key Key.
+     * @param string $key Key
      *
-     * @return object This.
+     * @return object This
      */
     public function delVar($key)
     {
@@ -770,7 +770,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Convenience Module DelVar for all keys for this module.
      *
-     * @return object This.
+     * @return object This
      */
     public function delVars()
     {
@@ -782,9 +782,9 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Check Csrf token.
      *
-     * @param string $token The token, if not set, will pull from $_POST['csrftoken'].
+     * @param string $token The token, if not set, will pull from $_POST['csrftoken']
      *
-     * @throws AccessDeniedException If check fails.
+     * @throws AccessDeniedException If check fails
      *
      * @return void
      */
@@ -800,8 +800,8 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      *     throw $this->createAccessDeniedException();
      *
-     * @param string     $message  A message.
-     * @param \Exception $previous The previous exception.
+     * @param string     $message  A message
+     * @param \Exception $previous The previous exception
      *
      * @return AccessDeniedException
      */
@@ -815,9 +815,9 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Convenience to get a service.
      *
-     * @param string $id Service Name.
+     * @param string $id Service Name
      *
-     * @return mixed Service or null.
+     * @return mixed Service or null
      */
     protected function get($id)
     {
@@ -827,11 +827,11 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Convenience to get a service.
      *
-     * @param string $id Service Name.
+     * @param string $id Service Name
      *
      * @deprecated since 1.4.0
      *
-     * @return mixed Service or null.
+     * @return mixed Service or null
      */
     protected function getService($id)
     {
@@ -850,7 +850,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Convenience hasService shortcut.
      *
-     * @param string $id Service name.
+     * @param string $id Service name
      *
      * @deprecated since 1.4.0
      *
@@ -864,7 +864,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Convenience hasService shortcut.
      *
-     * @param string $id Service name.
+     * @param string $id Service name
      *
      * @return boolean
      */

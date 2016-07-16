@@ -34,10 +34,10 @@ class Zikula_Routing_UrlRouter
     /**
      * Generate a short url for given arguments.
      *
-     * @param string $name   Optional name of route to be used (if not set the route will be selected based on given params).
-     * @param array  $params The arguments to be processed by the created url.
+     * @param string $name   Optional name of route to be used (if not set the route will be selected based on given params)
+     * @param array  $params The arguments to be processed by the created url
      *
-     * @return mixed string With created url or false on error.
+     * @return mixed string With created url or false on error
      */
     public function generate($name = '', array $params = [])
     {
@@ -83,11 +83,11 @@ class Zikula_Routing_UrlRouter
     /**
      * Parse a given url and return the params read out of it.
      *
-     * @param string $url The input url.
+     * @param string $url The input url
      *
-     * @throws InvalidArgumentException If the Url is empty.
+     * @throws InvalidArgumentException If the Url is empty
      *
-     * @return mixed array With determined params or false on error.
+     * @return mixed array With determined params or false on error
      */
     public function parse($url = '')
     {
@@ -128,10 +128,10 @@ class Zikula_Routing_UrlRouter
     /**
      * Set (or add) a certain route to this router instance.
      *
-     * @param string                  $name  Storage name for the route.
-     * @param Zikula_Routing_UrlRoute $route The actual route instance.
+     * @param string                  $name  Storage name for the route
+     * @param Zikula_Routing_UrlRoute $route The actual route instance
      *
-     * @throws InvalidArgumentException If name is empty.
+     * @throws InvalidArgumentException If name is empty
      *
      * @return void
      */

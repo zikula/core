@@ -41,7 +41,7 @@ class Inline extends \Symfony\Component\Yaml\Inline
         // array
         // HACK for #2889
         if (/*$value && */!self::isHash($value)) {
-            $output = array();
+            $output = [];
             foreach ($value as $val) {
                 $output[] = self::dump($val, $exceptionOnInvalidType, $objectSupport);
             }
@@ -50,7 +50,7 @@ class Inline extends \Symfony\Component\Yaml\Inline
         }
 
         // hash
-        $output = array();
+        $output = [];
         foreach ($value as $key => $val) {
             $output[] = sprintf('%s: %s', self::dump($key, $exceptionOnInvalidType, $objectSupport), self::dump($val, $exceptionOnInvalidType, $objectSupport));
         }

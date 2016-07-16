@@ -235,7 +235,7 @@ class BlockController extends AbstractController
     /**
      * Get the html output from the block's `modify` method.
      *
-     * @deprecated Remove at Core-2.0.
+     * @deprecated Remove at Core-2.0
      * @param $blockClassInstance
      * @param BlockEntity $blockEntity
      * @return mixed|string
@@ -255,7 +255,7 @@ class BlockController extends AbstractController
     /**
      * Handle modification of blocks with form_content = true
      *
-     * @deprecated This option is no longer allowed in Core-2.0. Blocks must provide their own properties handling.
+     * @deprecated This option is no longer allowed in Core-2.0. Blocks must provide their own properties handling
      * @param Request $request
      * @param BlockEntity $blockEntity
      * @return mixed|string

@@ -35,10 +35,10 @@ class ThemeUtil
      * @see \Zikula\ExtensionsModule\Api\VariableApi::get()
      * @see service zikula_extensions_module.api.variable
      *
-     * @param string $name    Variable name.
-     * @param mixed  $default Default return value.
+     * @param string $name    Variable name
+     * @param mixed  $default Default return value
      *
-     * @return mixed Theme variable value.
+     * @return mixed Theme variable value
      */
     public static function getVar($name = null, $default = null)
     {
@@ -64,8 +64,8 @@ class ThemeUtil
      * @see \Zikula\ExtensionsModule\Api\VariableApi::set()
      * @see service zikula_extensions_module.api.variable
      *
-     * @param string $name  Variable name.
-     * @param mixed  $value Value to set.
+     * @param string $name  Variable name
+     * @param mixed  $value Value to set
      *
      * @return void
      */
@@ -88,11 +88,11 @@ class ThemeUtil
      * self::FILTER_SYSTEM - get system themes
      * self::FILTER_ADMIN - get admin themes
      *
-     * @param integer $filter Filter list of returned themes by type.
-     * @param integer $state  Theme state.
-     * @param integer $type   Theme type.
+     * @param integer $filter Filter list of returned themes by type
+     * @param integer $state  Theme state
+     * @param integer $type   Theme type
      *
-     * @return array Available themes.
+     * @return array Available themes
      */
     public static function getAllThemes($filter = self::FILTER_ALL, $state = self::STATE_ACTIVE, $type = self::TYPE_ALL)
     {
@@ -153,9 +153,9 @@ class ThemeUtil
     /**
      * Get themeID given its name.
      *
-     * @param string $theme The name of the theme.
+     * @param string $theme The name of the theme
      *
-     * @return integer Theme ID.
+     * @return integer Theme ID
      */
     public static function getIDFromName($theme)
     {
@@ -202,9 +202,9 @@ class ThemeUtil
     /**
      * Returns information about a theme.
      *
-     * @param string $themeid Id of the theme.
+     * @param string $themeid Id of the theme
      *
-     * @return array The theme information.
+     * @return array The theme information
      * */
     public static function getInfo($themeid)
     {
@@ -236,7 +236,7 @@ class ThemeUtil
      *
      * Small wrapper function to avoid duplicate sql.
      *
-     * @return array Modules table.
+     * @return array Modules table
      */
     public static function getThemesTable()
     {
@@ -259,10 +259,10 @@ class ThemeUtil
     /**
      * Get the modules stylesheet from several possible sources.
      *
-     * @param string $modname    The modules name (optional, defaults to top level module).
-     * @param string $stylesheet The stylesheet file (optional).
+     * @param string $modname    The modules name (optional, defaults to top level module)
+     * @param string $stylesheet The stylesheet file (optional)
      *
-     * @return string Path of the stylesheet file, relative to PN root folder.
+     * @return string Path of the stylesheet file, relative to PN root folder
      */
     public static function getModuleStylesheet($modname = '', $stylesheet = '')
     {

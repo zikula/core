@@ -60,7 +60,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @param $args array arguments passed to function
      *
-     * @return integer count of intrusion items in the database.
+     * @return integer count of intrusion items in the database
      */
     public function countAllIntrusions($args)
     {
@@ -82,7 +82,7 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Purge IDS Log.
      *
-     * @return bool true if successful, false otherwise.
+     * @return bool true if successful, false otherwise
      */
     public function purgeidslog()
     {

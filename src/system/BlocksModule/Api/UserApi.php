@@ -33,7 +33,7 @@ class UserApi extends \Zikula_AbstractApi
      *      @type  int     active_status       filter by active status (0=all, 1=active, 2=inactive).
      *                       }
      *
-     * @return array|bool array of items, or false on failure.
+     * @return array|bool array of items, or false on failure
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
@@ -161,7 +161,7 @@ class UserApi extends \Zikula_AbstractApi
      *
      * This function gets all block position entries from the database.
      *
-     * @return array array of items, or false on failure.
+     * @return array array of items, or false on failure
      */
     public function getallpositions()
     {
@@ -190,7 +190,7 @@ class UserApi extends \Zikula_AbstractApi
      *
      * This function gets all block placements entries from the database.
      *
-     * @return array array of items, or false on failure.
+     * @return array array of items, or false on failure
      */
     public function getallplacements()
     {
@@ -207,7 +207,7 @@ class UserApi extends \Zikula_AbstractApi
      *      @type int $args['pid'] position id.
      *                     }
      *
-     * @return array|bool item array, or false on failure.
+     * @return array|bool item array, or false on failure
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
@@ -232,7 +232,7 @@ class UserApi extends \Zikula_AbstractApi
      *      @type int $args['pid'] position id.
      *                     }
      *
-     * @return array|bool item array, or false on failure.
+     * @return array|bool item array, or false on failure
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
@@ -256,7 +256,7 @@ class UserApi extends \Zikula_AbstractApi
      *      @type int $args['bid'] block id.
      *                     }
      *
-     * @return array|bool item array, or false on failure.
+     * @return array|bool item array, or false on failure
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
@@ -278,7 +278,7 @@ class UserApi extends \Zikula_AbstractApi
      *
      * @param string $url the input url
      *
-     * @return string Decoded url.
+     * @return string Decoded url
      */
     public function encodebracketurl($url)
     {

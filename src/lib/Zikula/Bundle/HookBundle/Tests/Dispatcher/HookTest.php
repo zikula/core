@@ -43,7 +43,7 @@ class HookTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers {className}::{origMethodName}
-     * @todo Implement testGetCaller().
+     * @todo Implement testGetCaller()
      */
     public function testGetCaller()
     {
@@ -55,7 +55,7 @@ class HookTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers {className}::{origMethodName}
-     * @todo Implement testSetCaller().
+     * @todo Implement testSetCaller()
      */
     public function testSetCaller()
     {
@@ -67,7 +67,7 @@ class HookTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers {className}::{origMethodName}
-     * @todo Implement testGetId().
+     * @todo Implement testGetId()
      */
     public function testGetId()
     {
@@ -79,7 +79,7 @@ class HookTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers {className}::{origMethodName}
-     * @todo Implement testGetAreaId().
+     * @todo Implement testGetAreaId()
      */
     public function testGetAreaId()
     {
@@ -91,7 +91,7 @@ class HookTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers {className}::{origMethodName}
-     * @todo Implement testSetAreaId().
+     * @todo Implement testSetAreaId()
      */
     public function testSetAreaId()
     {

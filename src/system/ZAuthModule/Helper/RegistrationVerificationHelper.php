@@ -72,7 +72,7 @@ class RegistrationVerificationHelper
      * Creates, saves and sends a registration e-mail address verification code.
      *
      * @param AuthenticationMappingEntity $mapping
-     * @return bool True on success; otherwise false.
+     * @return bool True on success; otherwise false
      */
     public function sendVerificationCode(AuthenticationMappingEntity $mapping)
     {

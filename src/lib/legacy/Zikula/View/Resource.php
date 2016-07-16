@@ -26,8 +26,8 @@ class Zikula_View_Resource
     /**
      * Dynamic loader of plugins under cache.
      *
-     * @param string $method    Method called.
-     * @param array  $arguments Array of arguments.
+     * @param string $method    Method called
+     * @param array  $arguments Array of arguments
      */
     public function __call($method, $arguments)
     {
@@ -55,7 +55,7 @@ class Zikula_View_Resource
     /**
      * Get an instance of this class.
      *
-     * @return Zikula_View_Resource This instance.
+     * @return Zikula_View_Resource This instance
      */
     public static function getInstance()
     {
@@ -76,9 +76,9 @@ class Zikula_View_Resource
      *
      * For more information about parameters see http://smarty.php.net/manual/en/template.resources.php.
      *
-     * @param string $resource Template name.
-     * @param string      &$tpl_source Template source.
-     * @param Zikula_View $view Reference to Smarty instance.
+     * @param string $resource Template name
+     * @param string      &$tpl_source Template source
+     * @param Zikula_View $view Reference to Smarty instance
      *
      * @return boolean
      */
@@ -106,9 +106,9 @@ class Zikula_View_Resource
     /**
      * Get the timestamp of the last change of the $tpl_name file.
      *
-     * @param string $tpl_name Template name.
-     * @param string      &$tpl_timestamp Template timestamp.
-     * @param Zikula_View $view Reference to Smarty instance.
+     * @param string $tpl_name Template name
+     * @param string      &$tpl_timestamp Template timestamp
+     * @param Zikula_View $view Reference to Smarty instance
      *
      * @return boolean
      */
@@ -129,8 +129,8 @@ class Zikula_View_Resource
     /**
      * Checks whether or not a template is secure.
      *
-     * @param string      $tpl_name Template name.
-     * @param Zikula_View $view     Reference to Smarty instance.
+     * @param string      $tpl_name Template name
+     * @param Zikula_View $view     Reference to Smarty instance
      *
      * @return boolean
      */
@@ -143,8 +143,8 @@ class Zikula_View_Resource
     /**
      * Whether or not the template is trusted.
      *
-     * @param string      $tpl_name Template name.
-     * @param Zikula_View $view     Reference to Smarty instance.
+     * @param string      $tpl_name Template name
+     * @param Zikula_View $view     Reference to Smarty instance
      *
      * @return void
      */
@@ -158,9 +158,9 @@ class Zikula_View_Resource
     /**
      * Smarty block function to prevent template parts from being cached
      *
-     * @param array       $params  Tag parameters.
-     * @param string      $content Block content.
-     * @param Zikula_View $view    Reference to smarty instance.
+     * @param array       $params  Tag parameters
+     * @param string      $content Block content
+     * @param Zikula_View $view    Reference to smarty instance
      *
      * @return string
      */
@@ -174,9 +174,9 @@ class Zikula_View_Resource
     /**
      * Resource function to determine correct path for insert inclusion.
      *
-     * @param string $insert Template name.
-     * @param string      &$tpl_source Template source.
-     * @param Zikula_View $view Reference to Smarty instance.
+     * @param string $insert Template name
+     * @param string      &$tpl_source Template source
+     * @param Zikula_View $view Reference to Smarty instance
      *
      * @return boolean
      */
@@ -199,12 +199,12 @@ class Zikula_View_Resource
     /**
      * Resource function to register a resource.
      *
-     * @param Zikula_View $view         Reference to Smarty instance.
-     * @param string      $type         Type of the resource.
-     * @param string      $name         Name of the resource.
-     * @param boolean     $delayed_load Whether to register the plugin with lazy load or not (default: true).
-     * @param boolean     $cacheable    Flag to register the resource as cacheable (default: false).
-     * @param mixed       $cache_attrs  Array of parameters to be cached with the plugin/block call.
+     * @param Zikula_View $view         Reference to Smarty instance
+     * @param string      $type         Type of the resource
+     * @param string      $name         Name of the resource
+     * @param boolean     $delayed_load Whether to register the plugin with lazy load or not (default: true)
+     * @param boolean     $cacheable    Flag to register the resource as cacheable (default: false)
+     * @param mixed       $cache_attrs  Array of parameters to be cached with the plugin/block call
      *
      * @return boolean
      */
@@ -224,9 +224,9 @@ class Zikula_View_Resource
     /**
      * Resource function to load a resource located inside the plugins folders.
      *
-     * @param Zikula_View $view Reference to Smarty instance.
-     * @param string      $type Type of the resource.
-     * @param string      $name Name of the resource.
+     * @param Zikula_View $view Reference to Smarty instance
+     * @param string      $type Type of the resource
+     * @param string      $name Name of the resource
      *
      * @return boolean
      */

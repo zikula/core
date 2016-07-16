@@ -55,11 +55,11 @@ class MailHelper
     /**
      * Sends a notification e-mail of a specified type to a user or registrant.
      *
-     * @param string $toAddress The destination e-mail address.
+     * @param string $toAddress The destination e-mail address
      * @param string $notificationType The type of notification, converted to the name of a template
-     *                                     in the form users_userapi_{type}mail.tpl and/or .txt.
-     * @param array $templateArgs One or more arguments to pass to the renderer for use in the template.
-     * @param string $subject The e-mail subject, overriding the template's subject.
+     *                                     in the form users_userapi_{type}mail.tpl and/or .txt
+     * @param array $templateArgs One or more arguments to pass to the renderer for use in the template
+     * @param string $subject The e-mail subject, overriding the template's subject
      * @return bool
      */
     public function sendNotification($toAddress, $notificationType = '', array $templateArgs = [], $subject = '')

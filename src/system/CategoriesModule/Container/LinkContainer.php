@@ -48,11 +48,11 @@ class LinkContainer implements LinkContainerInterface
     /**
      * LinkContainer constructor.
      *
-     * @param Translator      $translator    Translator service instance.
-     * @param RouterInterface $router        RouterInterface service instance.
-     * @param PermissionApi   $permissionApi PermissionApi service instance.
-     * @param VariableApi     $variableApi   VariableApi service instance.
-     * @param RequestStack    $requestStack  RequestStack service instance.
+     * @param Translator      $translator    Translator service instance
+     * @param RouterInterface $router        RouterInterface service instance
+     * @param PermissionApi   $permissionApi PermissionApi service instance
+     * @param VariableApi     $variableApi   VariableApi service instance
+     * @param RequestStack    $requestStack  RequestStack service instance
      */
     public function __construct($translator, RouterInterface $router, PermissionApi $permissionApi, VariableApi $variableApi, RequestStack $requestStack)
     {

@@ -19,7 +19,7 @@ class Zikula_Doctrine_Template_Listener_Attributable extends Zikula_Doctrine_Tem
     /**
      * Load all attributes after an select.
      *
-     * @param Doctrine_Event $event Event.
+     * @param Doctrine_Event $event Event
      *
      * @return void
      */
@@ -42,7 +42,7 @@ class Zikula_Doctrine_Template_Listener_Attributable extends Zikula_Doctrine_Tem
     /**
      * Save all attributes after an insert.
      *
-     * @param Doctrine_Event $event Event.
+     * @param Doctrine_Event $event Event
      *
      * @return void
      */
@@ -70,7 +70,7 @@ class Zikula_Doctrine_Template_Listener_Attributable extends Zikula_Doctrine_Tem
     /**
      * Update all attributes after an update.
      *
-     * @param Doctrine_Event $event Event.
+     * @param Doctrine_Event $event Event
      *
      * @return void
      */
@@ -98,7 +98,7 @@ class Zikula_Doctrine_Template_Listener_Attributable extends Zikula_Doctrine_Tem
     /**
      * Delete all attribtes after an delete.
      *
-     * @param Doctrine_Event $event Event.
+     * @param Doctrine_Event $event Event
      *
      * @return void
      */

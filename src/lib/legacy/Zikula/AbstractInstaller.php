@@ -75,9 +75,9 @@ abstract class Zikula_AbstractInstaller extends Zikula_AbstractBase
     /**
      * Upgrade interface.
      *
-     * @param string $oldversion Old version number.
+     * @param string $oldversion Old version number
      *
-     * @return boolean|string $args True, false or last successful version number upgrade.
+     * @return boolean|string $args True, false or last successful version number upgrade
      */
     abstract public function upgrade($oldversion);
 

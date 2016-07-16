@@ -79,10 +79,10 @@ class Zikula_Form_Block_TabbedPanelSet extends Zikula_Form_AbstractPlugin
     /**
      * RenderContent event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param string           $content The content to handle.
+     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object
+     * @param string           $content The content to handle
      *
-     * @return string The (optionally) modified content.
+     * @return string The (optionally) modified content
      */
     public function renderContent(Zikula_Form_View $view, $content)
     {
@@ -116,9 +116,9 @@ class Zikula_Form_Block_TabbedPanelSet extends Zikula_Form_AbstractPlugin
      *
      * Called by child panels to register themselves.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
-     * @param Zikula_Form_Plugin_TabbedPanel &$panel Panel object.
-     * @param string $title Panel title.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
+     * @param Zikula_Form_Plugin_TabbedPanel &$panel Panel object
+     * @param string $title Panel title
      *
      * @return void
      */
@@ -137,7 +137,7 @@ class Zikula_Form_Block_TabbedPanelSet extends Zikula_Form_AbstractPlugin
     /**
      * Decode event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
      * @return void
      */
