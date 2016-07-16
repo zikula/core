@@ -16,11 +16,11 @@
  *
  *   {$mythemetype|themetype}
  *
- * @param array $string The contents to transform.
+ * @param array $string The contents to transform
  *
  * @see    modifier.safetext.php::smarty_modifier_safetext
  *
- * @return string The modified output.
+ * @return string The modified output
  */
 function smarty_modifier_themetype($string)
 {

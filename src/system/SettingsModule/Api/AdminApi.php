@@ -25,7 +25,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * This function simply calls the theme and renderer modules to refresh the entire site.
      *
-     * @return boolean true.
+     * @return boolean true
      */
     public function clearallcompiledcaches()
     {

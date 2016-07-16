@@ -41,7 +41,7 @@ class ServiceUtil
     /**
      * Get manager instance.
      *
-     * @param Zikula_Core $core Core instance (optional).
+     * @param Zikula_Core $core Core instance (optional)
      *
      * @return Zikula_ServiceManager
      */
@@ -69,7 +69,7 @@ class ServiceUtil
     /**
      * Convenience shortcut to get a service.
      *
-     * @param string $id Service name.
+     * @param string $id Service name
      *
      * @deprecated since 1.4.0
      * @see get()
@@ -84,7 +84,7 @@ class ServiceUtil
     /**
      * Convenience shortcut to get a service.
      *
-     * @param string $id Service name.
+     * @param string $id Service name
      *
      * @return object
      */
@@ -98,9 +98,9 @@ class ServiceUtil
      *
      * This will be loaded into ServiceManager at runtime.
      *
-     * @param string                           $id         Service ID.
-     * @param Zikula_ServiceManager_Definition $definition Class definition.
-     * @param boolean                          $shared     Shared service or not.
+     * @param string                           $id         Service ID
+     * @param Zikula_ServiceManager_Definition $definition Class definition
+     * @param boolean                          $shared     Shared service or not
      *
      * @return void
      */
@@ -119,7 +119,7 @@ class ServiceUtil
      *
      * This will be loaded into ServiceManager at runtime.
      *
-     * @param string $id Service ID.
+     * @param string $id Service ID
      *
      * @return void
      */

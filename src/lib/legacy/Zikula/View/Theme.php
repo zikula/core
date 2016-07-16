@@ -111,7 +111,7 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Whether or not the user is logged in.
      *
-     * @var boolean.
+     * @var boolean
      */
     public $isloggedin;
 
@@ -148,8 +148,8 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Constructor.
      *
-     * @param Zikula_ServiceManager $serviceManager ServiceManager.
-     * @param string                $themeName      Theme name.
+     * @param Zikula_ServiceManager $serviceManager ServiceManager
+     * @param string                $themeName      Theme name
      */
     public function __construct(Zikula_ServiceManager $serviceManager, $themeName)
     {
@@ -270,11 +270,11 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Get Theme instance.
      *
-     * @param string       $themeName Theme name.
-     * @param integer|null $caching   Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
-     * @param string       $cache_id  Cache Id.
+     * @param string       $themeName Theme name
+     * @param integer|null $caching   Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null)
+     * @param string       $cache_id  Cache Id
      *
-     * @return Zikula_View_Theme This instance.
+     * @return Zikula_View_Theme This instance
      */
     public static function getInstance($themeName = '', $caching = null, $cache_id = null)
     {
@@ -351,9 +351,9 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Display a block.
      *
-     * @param array $block Block information.
+     * @param array $block Block information
      *
-     * @return string The rendered output.
+     * @return string The rendered output
      */
     public function themesidebox($block)
     {
@@ -415,9 +415,9 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Checks which path to use for required template.
      *
-     * @param string $template The template name.
+     * @param string $template The template name
      *
-     * @return string Template path.
+     * @return string Template path
      */
     public function get_template_path($template)
     {
@@ -518,10 +518,10 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Clears the cache for a specific cache_id's in all active themes.
      *
-     * @param string $cache_ids Array of given cache ID's for which to clear theme cache.
-     * @param string $themes    Array of theme objects for which to clear theme cache, defaults to all active themes.
+     * @param string $cache_ids Array of given cache ID's for which to clear theme cache
+     * @param string $themes    Array of theme objects for which to clear theme cache, defaults to all active themes
      *
-     * @return boolean True on success.
+     * @return boolean True on success
      */
     public function clear_cacheid_allthemes($cache_ids, $themes = null)
     {
@@ -549,11 +549,11 @@ class Zikula_View_Theme extends Zikula_View
      * Generates a filename path like: Theme / auto_id [/ source_dir / filename-l{lang}.ext]
      * the final part gets generated only if $auto_source is specified.
      *
-     * @param string $path        The base path.
-     * @param string $auto_source The file name (optional).
-     * @param string $auto_id     The ID (optional).
+     * @param string $path        The base path
+     * @param string $auto_source The file name (optional)
+     * @param string $auto_id     The ID (optional)
      *
-     * @return string The concrete path and file name to the content.
+     * @return string The concrete path and file name to the content
      */
     public function _get_auto_filename($path, $auto_source = null, $auto_id = null, $themedir = null)
     {
@@ -680,7 +680,7 @@ class Zikula_View_Theme extends Zikula_View
      *
      * Used on the page cache_id and the pageassignments keys.
      *
-     * @return string Custom arguments string.
+     * @return string Custom arguments string
      */
     private function _get_customargs()
     {
@@ -837,7 +837,7 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Template override handler for 'zikula_view.template_override'.
      *
-     * @param Zikula_Event $event Event handler.
+     * @param Zikula_Event $event Event handler
      *
      * @return void
      */
@@ -879,7 +879,7 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Clears the Theme configuration located on the temporary directory.
      *
-     * @return boolean True on success, false otherwise.
+     * @return boolean True on success, false otherwise
      */
     public function clear_theme_config()
     {
@@ -891,7 +891,7 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Retrieve the name of the theme.
      *
-     * @return string The name.
+     * @return string The name
      */
     public function getName()
     {
@@ -911,7 +911,7 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Retrieve the theme's version string.
      *
-     * @return string The version of the theme.
+     * @return string The version of the theme
      */
     public function getVersion()
     {
@@ -928,7 +928,7 @@ class Zikula_View_Theme extends Zikula_View
      *   <li>ThemeUtil::STATE_ALL</li>
      * </ul>
      *
-     * @return integer The theme's state.
+     * @return integer The theme's state
      */
     public function getState()
     {
@@ -938,7 +938,7 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Indicates whether the theme is an XHTML-based theme or an HTML-based theme.
      *
-     * @return integer 1 for XHTML-capable, otherwise HTML.
+     * @return integer 1 for XHTML-capable, otherwise HTML
      */
     public function getXhtml()
     {
@@ -948,7 +948,7 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Retrieve the path to the theme.
      *
-     * @return string The path to the theme.
+     * @return string The path to the theme
      */
     public function getThemePath()
     {
@@ -958,7 +958,7 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Retrieve the path to the theme's images.
      *
-     * @return string The path to the theme's images.
+     * @return string The path to the theme's images
      */
     public function getImagePath()
     {
@@ -968,7 +968,7 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Retrieve the path to the theme's language-specific images.
      *
-     * @return string The path to the theme's language-specific images.
+     * @return string The path to the theme's language-specific images
      */
     public function getImageLangPath()
     {
@@ -978,7 +978,7 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Retrieve the path to the theme's stylesheets.
      *
-     * @return string The path to the theme's stylesheets.
+     * @return string The path to the theme's stylesheets
      */
     public function getStylePath()
     {
@@ -988,7 +988,7 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Retrieve the path to the theme's javascript files.
      *
-     * @return string The path to the theme's javascript files.
+     * @return string The path to the theme's javascript files
      */
     public function getScriptPath()
     {
@@ -998,7 +998,7 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Retrieve the theme configuration.
      *
-     * @return array The contents of the theme configuration (or the master configuration).
+     * @return array The contents of the theme configuration (or the master configuration)
      */
     public function getThemeConfig()
     {
@@ -1008,7 +1008,7 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Indicates whether this is a home page or not.
      *
-     * @return boolean True if this is a home page (module name is empty), otherwise false.
+     * @return boolean True if this is a home page (module name is empty), otherwise false
      */
     public function isHomePage()
     {
@@ -1018,7 +1018,7 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Retrieve the current user's uid.
      *
-     * @return numeric The current user's uid.
+     * @return numeric The current user's uid
      */
     public function getUid()
     {
@@ -1028,7 +1028,7 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Indicates whether the current user is logged in.
      *
-     * @return boolean True if the current user is logged in, false if the current user is anonymous (a guest).
+     * @return boolean True if the current user is logged in, false if the current user is anonymous (a guest)
      */
     public function getIsLoggedIn()
     {
@@ -1038,7 +1038,7 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * The current page's type.
      *
-     * @return string One of 'module', 'admin' or 'home'.
+     * @return string One of 'module', 'admin' or 'home'
      */
     public function getPageType()
     {
@@ -1048,7 +1048,7 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Retrieve the query string for the current page request.
      *
-     * @return string The query string for the current request.
+     * @return string The query string for the current request
      */
     public function getQstring()
     {
@@ -1058,7 +1058,7 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Retrieve the current page's request URI.
      *
-     * @return string The current page's request URI.
+     * @return string The current page's request URI
      */
     public function getRequestUri()
     {
@@ -1068,7 +1068,7 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Set the current cache ID.
      *
-     * @param string $cache_id Cache ID to set.
+     * @param string $cache_id Cache ID to set
      *
      * @return void
      */
@@ -1080,7 +1080,7 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Set the theme configuration.
      *
-     * @param array $themeconfig Theme configuration array to set.
+     * @param array $themeconfig Theme configuration array to set
      *
      * @return void
      */

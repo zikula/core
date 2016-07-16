@@ -22,8 +22,8 @@ class Zikula_Workflow_Util
     /**
      * Load xml workflow.
      *
-     * @param string $schema Name of workflow scheme.
-     * @param string $module Name of module.
+     * @param string $schema Name of workflow scheme
+     * @param string $module Name of module
      *
      * @return mixed string of XML, or false
      */
@@ -77,8 +77,8 @@ class Zikula_Workflow_Util
     /**
      * Find the path of the file by searching overrides and the module location.
      *
-     * @param string $file   Name of file to find (can include relative path).
-     * @param string $module Module name.
+     * @param string $file   Name of file to find (can include relative path)
+     * @param string $module Module name
      *
      * @return mixed string of path or bool false
      */
@@ -134,12 +134,12 @@ class Zikula_Workflow_Util
     /**
      * Execute action.
      *
-     * @param string $schema Name of workflow schema.
-     * @param array  &$obj     Data object.
-     * @param string $actionID Action to perform.
-     * @param string $table    Table where data will be stored (default = null).
-     * @param string $module   Name of module (defaults calling module).
-     * @param string $idcolumn ID column of table.
+     * @param string $schema Name of workflow schema
+     * @param array  &$obj     Data object
+     * @param string $actionID Action to perform
+     * @param string $table    Table where data will be stored (default = null)
+     * @param string $module   Name of module (defaults calling module)
+     * @param string $idcolumn ID column of table
      *
      * @return mixed
      */
@@ -176,7 +176,7 @@ class Zikula_Workflow_Util
      /**
       * Delete workflows for module (used module uninstall time).
       *
-      * @param string $module Module name.
+      * @param string $module Module name
       *
       * @return boolean
       */
@@ -202,7 +202,7 @@ class Zikula_Workflow_Util
     /**
      * Delete a workflow and associated data.
      *
-     * @param array $obj Data object.
+     * @param array $obj Data object
      *
      * @return boolean
      */
@@ -231,12 +231,12 @@ class Zikula_Workflow_Util
      *
      * Returns allowed action data for given state.
      *
-     * @param string $schemaName Schema name.
-     * @param string $module     Module name.
-     * @param string $state      State name, default = 'initial'.
-     * @param array  $obj        Data object.
+     * @param string $schemaName Schema name
+     * @param string $module     Module name
+     * @param string $state      State name, default = 'initial'
+     * @param array  $obj        Data object
      *
-     * @return mixed Array $action.id => $action or bool false.
+     * @return mixed Array $action.id => $action or bool false
      */
     public static function getActionsByState($schemaName, $module = null, $state = 'initial', $obj = [])
     {
@@ -266,12 +266,12 @@ class Zikula_Workflow_Util
      *
      * Returns allowed action ids and titles only, for given state.
      *
-     * @param string $schemaName Schema name.
-     * @param string $module     Module name.
-     * @param string $state      State, default = 'initial'.
-     * @param array  $obj        Array object.
+     * @param string $schemaName Schema name
+     * @param string $module     Module name
+     * @param string $state      State, default = 'initial'
+     * @param array  $obj        Array object
      *
-     * @return mixed Array $action.id => $action.title or bool false.
+     * @return mixed Array $action.id => $action.title or bool false
      */
     public static function getActionTitlesByState($schemaName, $module = null, $state = 'initial', $obj = [])
     {
@@ -291,13 +291,13 @@ class Zikula_Workflow_Util
      *
      * Returns allowed action data for given state.
      *
-     * @param string $schemaName Schema name.
-     * @param string $module     Module name.
-     * @param string $state      State, default = 'initial'.
-     * @param array  $obj        Array object.
+     * @param string $schemaName Schema name
+     * @param string $module     Module name
+     * @param string $state      State, default = 'initial'
+     * @param array  $obj        Array object
      *
      * @deprecated 1.3.0
-     * @return mixed Array or bool false.
+     * @return mixed Array or bool false
      */
     public static function getActionsByStateArray($schemaName, $module = null, $state = 'initial', $obj = [])
     {
@@ -307,12 +307,12 @@ class Zikula_Workflow_Util
     /**
      * Get possible actions for a given item of data in it's current workflow state.
      *
-     * @param array  &$obj     Array object.
-     * @param string $dbTable  Database table.
-     * @param string $idcolumn Id field, default = 'id'.
-     * @param string $module   Module name (defaults to current module).
+     * @param array  &$obj     Array object
+     * @param string $dbTable  Database table
+     * @param string $idcolumn Id field, default = 'id'
+     * @param string $module   Module name (defaults to current module)
      *
-     * @return mixed Array of actions or bool false.
+     * @return mixed Array of actions or bool false
      */
     public static function getActionsForObject(&$obj, $dbTable, $idcolumn = 'id', $module = null)
     {
@@ -344,10 +344,10 @@ class Zikula_Workflow_Util
      *
      * Will attach array '__WORKFLOW__' to the object.
      *
-     * @param array  &$obj     Array object.
-     * @param string $dbTable  Database table.
-     * @param string $idcolumn Id field, default = 'id'.
-     * @param string $module   Module name (defaults to current module).
+     * @param array  &$obj     Array object
+     * @param string $dbTable  Database table
+     * @param string $idcolumn Id field, default = 'id'
+     * @param string $module   Module name (defaults to current module)
      *
      * @return boolean
      */
@@ -420,12 +420,12 @@ class Zikula_Workflow_Util
     /**
      * get workflow state of object
      *
-     * @param array  &$obj     Array object.
-     * @param string $table    Table name.
-     * @param string $idcolumn Id field, default = 'id'.
-     * @param string $module   Module name (defaults to current module).
+     * @param array  &$obj     Array object
+     * @param string $table    Table name
+     * @param string $idcolumn Id field, default = 'id'
+     * @param string $module   Module name (defaults to current module)
      *
-     * @return mixed String workflow state name or false.
+     * @return mixed String workflow state name or false
      */
     public static function getWorkflowState(&$obj, $table, $idcolumn = 'id', $module = null)
     {
@@ -447,11 +447,11 @@ class Zikula_Workflow_Util
     /**
      * Check permission of action
      *
-     * @param string  $module    Module name.
-     * @param string  $schema    Schema name.
-     * @param array   $obj       Array object.
-     * @param string  $permLevel Permission level.
-     * @param integer $actionId  Action Id.
+     * @param string  $module    Module name
+     * @param string  $schema    Schema name
+     * @param array   $obj       Array object
+     * @param string  $permLevel Permission level
+     * @param integer $actionId  Action Id
      *
      * @return boolean
      */
@@ -497,9 +497,9 @@ class Zikula_Workflow_Util
     /**
      * translates workflow permission to pn permission define
      *
-     * @param string $permission Permission string.
+     * @param string $permission Permission string
      *
-     * @return mixed Permission constant or false.
+     * @return mixed Permission constant or false
      */
     public static function translatePermission($permission)
     {

@@ -43,7 +43,7 @@ class DisplayHook extends Hook
      *
      * @param DisplayHookResponse $response
      *
-     * @return mixed Data property.
+     * @return mixed Data property
      */
     public function setResponse(DisplayHookResponse $response)
     {

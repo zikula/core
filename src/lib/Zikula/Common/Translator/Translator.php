@@ -151,7 +151,7 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
      * Set the translation domain.
      *
      * @param string $domain
-     *            Gettext domain.
+     *            Gettext domain
      * @return void
      */
     public function setDomain($domain = null)
@@ -217,7 +217,7 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
     /**
      * singular translation for modules.
      *
-     * @param string $msg Message.
+     * @param string $msg Message
      * @param null $domain
      * @param null $locale
      * @return string
@@ -230,9 +230,9 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
     /**
      * Plural translations for modules.
      *
-     * @param string $m1 Singular.
-     * @param string $m2 Plural.
-     * @param integer $n Count.
+     * @param string $m1 Singular
+     * @param string $m2 Plural
+     * @param integer $n Count
      * @param null $domain
      * @param null $locale
      * @return string
@@ -247,8 +247,8 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
     /**
      * Format translations for modules.
      *
-     * @param string $msg Message.
-     * @param array $param Format parameters.
+     * @param string $msg Message
+     * @param array $param Format parameters
      * @param null $domain
      * @param null $locale
      * @return string
@@ -261,10 +261,10 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
     /**
      * Format plural translations for modules.
      *
-     * @param string $m1 Singular.
-     * @param string $m2 Plural.
-     * @param integer $n Count.
-     * @param array $param Format parameters.
+     * @param string $m1 Singular
+     * @param string $m2 Plural
+     * @param integer $n Count
+     * @param array $param Format parameters
      * @param null $domain
      * @param null $locale
      * @return string
@@ -279,9 +279,9 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
     /**
      * Choose message if no translation catalogue
      *
-     * @param string $m1 Singular.
-     * @param string $m2 Plural.
-     * @param integer $n Count.
+     * @param string $m1 Singular
+     * @param string $m2 Plural
+     * @param integer $n Count
      * @param string|null $domain
      * @return string
      */

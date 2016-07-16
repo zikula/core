@@ -25,7 +25,7 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
     use ExtensionVariablesTrait;
 
     /**
-     * @var string the bundle name.
+     * @var string the bundle name
      */
     protected $name;
 

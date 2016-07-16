@@ -21,9 +21,9 @@ class GenericEvent extends \Zikula_Event
     /**
      * Encapsulate an event with $subject, $args, and $data.
      *
-     * @param mixed  $subject Usually an object or other PHP callable.
-     * @param array  $args    Arguments to store in the event.
-     * @param mixed  $data    Convenience argument of data for optional processing.
+     * @param mixed  $subject Usually an object or other PHP callable
+     * @param array  $args    Arguments to store in the event
+     * @param mixed  $data    Convenience argument of data for optional processing
      */
     public function __construct($subject = null, array $args = [], $data = null)
     {

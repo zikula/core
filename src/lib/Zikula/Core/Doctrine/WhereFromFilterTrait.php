@@ -25,7 +25,7 @@ trait WhereFromFilterTrait
      * when value is not an array, operator is assumed to be '='
      *
      * @param QueryBuilder $qb
-     * @param array $filter The filter, see getAll() and countAll().
+     * @param array $filter The filter, see getAll() and countAll()
      * @param string $exprType default 'and'
      * @param string $alias table alias e.g. SELECT * from tableName u WHERE u.uname ...
      * @return Composite

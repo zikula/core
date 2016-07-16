@@ -19,16 +19,16 @@ class ValidationUtil
     /**
      * Validate a specific field using the supplied control parameters
      *
-     * @param string   $objectType The string object type.
-     * @param array    $object     The object to validate.
-     * @param string   $field      The field to validate.
-     * @param boolean  $required   Whether or not the field is required.
-     * @param string   $cmp_op     The compare operation to perform.
-     * @param string   $cmp_value  The value to compare the supplied field value to. If the value starts with a ':', the argument is used as an object access key.
-     * @param string   $err_msg    The error message to use if the validation fails.
-     * @param callable $callback   Callback, any PHP callable.
+     * @param string   $objectType The string object type
+     * @param array    $object     The object to validate
+     * @param string   $field      The field to validate
+     * @param boolean  $required   Whether or not the field is required
+     * @param string   $cmp_op     The compare operation to perform
+     * @param string   $cmp_value  The value to compare the supplied field value to. If the value starts with a ':', the argument is used as an object access key
+     * @param string   $err_msg    The error message to use if the validation fails
+     * @param callable $callback   Callback, any PHP callable
      *
-     * @return boolean A true/false value indicating whether the field validation passed or failed.
+     * @return boolean A true/false value indicating whether the field validation passed or failed
      */
     public static function validateField($objectType, $object, $field, $required, $cmp_op, $cmp_value, $err_msg, $callback = null)
     {
@@ -126,10 +126,10 @@ class ValidationUtil
      *
      * The noop value for the cmp_op field is only valid if the field is not required.
      *
-     * @param array $object            The object to validate.
-     * @param array $validationControl The structured validation control array.
+     * @param array $object            The object to validate
+     * @param array $validationControl The structured validation control array
      *
-     * @return boolean A true/false value indicating whether the field validation passed or failed.
+     * @return boolean A true/false value indicating whether the field validation passed or failed
      */
     public static function validateFieldByArray($object, $validationControl)
     {
@@ -157,11 +157,11 @@ class ValidationUtil
      *
      * The noop value for the cmp_op field is only valid if the field is not required.
      *
-     * @param string $objectType         The string object type.
-     * @param array  $object             The object to validate.
-     * @param array  $validationControls The array of structured validation control arrays.
+     * @param string $objectType         The string object type
+     * @param array  $object             The object to validate
+     * @param array  $validationControls The array of structured validation control arrays
      *
-     * @return boolean A true/false value indicating whether the object validation passed or resulted in errors.
+     * @return boolean A true/false value indicating whether the object validation passed or resulted in errors
      */
     public static function validateObject($objectType, $object, $validationControls)
     {
@@ -192,11 +192,11 @@ class ValidationUtil
      *
      * The noop value for the cmp_op field is only valid if the field is not required.
      *
-     * @param string $objectType      The string object type.
-     * @param array  $object          The object to validate.
-     * @param array  $validationArray The plain (numerically indexed) validation array.
+     * @param string $objectType      The string object type
+     * @param array  $object          The object to validate
+     * @param array  $validationArray The plain (numerically indexed) validation array
      *
-     * @return boolean A true/false value indicating whether the object validation passed or failed.
+     * @return boolean A true/false value indicating whether the object validation passed or failed
      */
     public static function validateObjectPlain($objectType, $object, $validationArray)
     {

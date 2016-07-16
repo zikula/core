@@ -110,7 +110,7 @@ echo json_encode($translations);
 /**
  * Validate get parameters, and die with bad request.
  *
- * @param string $value The value to validate.
+ * @param string $value The value to validate
  *
  * @return void
  */

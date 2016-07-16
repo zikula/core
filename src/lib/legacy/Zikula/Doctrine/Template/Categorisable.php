@@ -20,7 +20,7 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
      * Adds an one-to-many relationship named Categories to Zikula_Doctrine_Model_EntityCategory.
      *
      * @return void
-     * @throws Exception Throws when the record uses Categorisable template AND a composite primary key.
+     * @throws Exception Throws when the record uses Categorisable template AND a composite primary key
      */
     public function setUp()
     {
@@ -54,11 +54,11 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
     /**
      * Generates an subclass of the Zikula_Doctrine_Model_EntityCategory class and caches the generated class in a file.
      *
-     * @param string $module     Name of the Module to that the model belongs to.
-     * @param string $modelClass Classname of the model.
+     * @param string $module     Name of the Module to that the model belongs to
+     * @param string $modelClass Classname of the model
      *
      * @return void
-     * @throws Exception Throws when the create of the cache directory fails.
+     * @throws Exception Throws when the create of the cache directory fails
      */
     private static function _generateSubclassForCategorisableTemplate($module, $modelClass)
     {
@@ -89,7 +89,7 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
     /**
      * Allows to sets multiple categories with one call.
      *
-     * @param array $categories Array of property => Category id or Category Object.
+     * @param array $categories Array of property => Category id or Category Object
      *
      * @return void
      */
@@ -103,11 +103,11 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
     /**
      * Set/adds an category to requested property.
      *
-     * @param string $prop     Property name as definied in the registry.
-     * @param string $category Category id or Object.
+     * @param string $prop     Property name as definied in the registry
+     * @param string $category Category id or Object
      *
      * @return void
-     * @throws Exception If this table has not the property $prop.
+     * @throws Exception If this table has not the property $prop
      */
     public function setCategory($prop, $category)
     {

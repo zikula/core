@@ -23,7 +23,7 @@ interface TranslatorInterface extends SymfonyTranslatorInterface
     /**
      * singular translation for modules.
      *
-     * @param string $msg Message.
+     * @param string $msg Message
      * @param null $domain
      * @param null $locale
      * @return string
@@ -33,9 +33,9 @@ interface TranslatorInterface extends SymfonyTranslatorInterface
     /**
      * Plural translations for modules.
      *
-     * @param string $m1 Singular.
-     * @param string $m2 Plural.
-     * @param integer $n Count.
+     * @param string $m1 Singular
+     * @param string $m2 Plural
+     * @param integer $n Count
      * @param null $domain
      * @param null $locale
      * @return string
@@ -45,8 +45,8 @@ interface TranslatorInterface extends SymfonyTranslatorInterface
     /**
      * Format translations for modules.
      *
-     * @param string $msg Message.
-     * @param array $param Format parameters.
+     * @param string $msg Message
+     * @param array $param Format parameters
      * @param null $domain
      * @param null $locale
      * @return string
@@ -56,10 +56,10 @@ interface TranslatorInterface extends SymfonyTranslatorInterface
     /**
      * Format plural translations for modules.
      *
-     * @param string $m1 Singular.
-     * @param string $m2 Plural.
-     * @param integer $n Count.
-     * @param array $param Format parameters.
+     * @param string $m1 Singular
+     * @param string $m2 Plural
+     * @param integer $n Count
+     * @param array $param Format parameters
      * @param null $domain
      * @param null $locale
      * @return string

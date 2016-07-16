@@ -38,7 +38,7 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type string $content     the new content of the block
      *                       }
      *
-     * @return bool true on success, false on failure.
+     * @return bool true on success, false on failure
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      * @throws AccessDeniedException Thrown if the user doesn't have permission to update the block
@@ -106,7 +106,7 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type string $language    the language of the block
      *      @type int    $bkey        the key of the block
      *
-     * @return int|bool block id on success, false on failure.
+     * @return int|bool block id on success, false on failure
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      * @throws AccessDeniedException Thrown if the user doesn't have permission to create the block
@@ -170,7 +170,7 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type int $bid the ID of the block to deactivate
      *                      }
      *
-     * @return bool true on success, false on failure.
+     * @return bool true on success, false on failure
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      * @throws AccessDeniedException Thrown if the user doesn't have permission to update the block
@@ -204,7 +204,7 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type int $bid the ID of the block to deactivate
      *                     }
      *
-     * @return bool true on success, false on failure.
+     * @return bool true on success, false on failure
      *
      * @throws \RuntimeException Thrown if block cannot be deactivated
      */
@@ -227,7 +227,7 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type int $bid the ID of the block to activate.
      *                     }
      *
-     * @return bool true on success, false on failure.
+     * @return bool true on success, false on failure
      *
      * @throws \RuntimeException Thrown if the block cannot be activated
      */
@@ -250,7 +250,7 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type int $args ['bid'] the ID of the block to delete
      *                     </ul>
      *
-     * @return bool true on success, false on failure.
+     * @return bool true on success, false on failure
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      * @throws AccessDeniedException Thrown if the user doesn't have permission to delete the block
@@ -295,7 +295,7 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type string $description description of the position
      *                        </ul>
      *
-     * @return int|bool position ID on success, false on failure.
+     * @return int|bool position ID on success, false on failure
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      * @throws AccessDeniedException Thrown if the user doesn't have permission to create the block position
@@ -341,7 +341,7 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type string $description description of the block position
      *                       }
      *
-     * @return bool true if successful, false otherwise.
+     * @return bool true if successful, false otherwise
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      * @throws AccessDeniedException Thrown if the user doesn't have permission to update the block position
@@ -393,7 +393,7 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type int $pid ID of the position
      *                     }
      *
-     * @return bool true on success, false on failure.
+     * @return bool true on success, false on failure
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      * @throws AccessDeniedException Thrown if the user doesn't have permission to delete the block position

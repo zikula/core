@@ -19,12 +19,12 @@ class Zikula_Doctrine_Template_Filter_MetaData extends Doctrine_Record_Filter
     /**
      * Filters write access to the unknown property __META__.
      *
-     * @param Doctrine_Record $record Record.
-     * @param string          $name   Name of the unkown property.
-     * @param mixed           $value  Value of to set.
+     * @param Doctrine_Record $record Record
+     * @param string          $name   Name of the unkown property
+     * @param mixed           $value  Value of to set
      *
      * @return void
-     * @throws Doctrine_Record_UnknownPropertyException If $name is not __META__.
+     * @throws Doctrine_Record_UnknownPropertyException If $name is not __META__
      */
     public function filterSet(Doctrine_Record $record, $name, $value)
     {
@@ -41,11 +41,11 @@ class Zikula_Doctrine_Template_Filter_MetaData extends Doctrine_Record_Filter
     /**
      * Filters read access to the unknown property __META__.
      *
-     * @param Doctrine_Record $record Record.
-     * @param string          $name   Name of the unkown property.
+     * @param Doctrine_Record $record Record
+     * @param string          $name   Name of the unkown property
      *
      * @return mixed
-     * @throws Doctrine_Record_UnknownPropertyException If $name is not __META__.
+     * @throws Doctrine_Record_UnknownPropertyException If $name is not __META__
      */
     public function filterGet(Doctrine_Record $record, $name)
     {

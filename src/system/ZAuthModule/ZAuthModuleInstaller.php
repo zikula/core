@@ -52,7 +52,7 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
     }
 
     /**
-     * @return array An array of all current module variables, with their default values, suitable for {@link setVars()}.
+     * @return array An array of all current module variables, with their default values, suitable for {@link setVars()}
      */
     private function getDefaultModvars()
     {

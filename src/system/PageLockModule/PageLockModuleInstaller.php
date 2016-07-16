@@ -21,7 +21,7 @@ class PageLockModuleInstaller extends AbstractExtensionInstaller
     /**
      * Initialise the module.
      *
-     * @return boolean True if initialisation successful, false otherwise.
+     * @return boolean True if initialisation successful, false otherwise
      */
     public function install()
     {

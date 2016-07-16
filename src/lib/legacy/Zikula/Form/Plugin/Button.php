@@ -50,7 +50,7 @@ class Zikula_Form_Plugin_Button extends Zikula_Form_AbstractStyledPlugin
     /**
      * Name of command event handler method.
      *
-     * @var string Default is "handleCommand".
+     * @var string Default is "handleCommand"
      */
     public $onCommand = 'handleCommand';
 
@@ -104,7 +104,7 @@ class Zikula_Form_Plugin_Button extends Zikula_Form_AbstractStyledPlugin
     /**
      * Render event handler.
      *
-     * @param Zikula_Form_View $view Reference to Form render object.
+     * @param Zikula_Form_View $view Reference to Form render object
      *
      * @return string The rendered output
      */
@@ -134,7 +134,7 @@ class Zikula_Form_Plugin_Button extends Zikula_Form_AbstractStyledPlugin
     /**
      * Decode event handler for actions that generate a postback event.
      *
-     * @param Zikula_Form_View $view Reference to Form render object.
+     * @param Zikula_Form_View $view Reference to Form render object
      *
      * @return boolean
      */

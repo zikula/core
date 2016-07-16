@@ -24,10 +24,10 @@
  *   {getcurrenturi}
  *   {getcurrenturi lang='de'}
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
- * @return string The current URI.
+ * @return string The current URI
  */
 function smarty_function_getcurrenturi($params, Zikula_View $view)
 {

@@ -55,8 +55,8 @@
  * This will generate:
  *  <img src="thumb/path" widht="100" height="100" alt="Alt text, gettext prefix may be used" class="image-class" />
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the {@link Zikula_View} object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the {@link Zikula_View} object
  *
  * @return string thumb path
  */

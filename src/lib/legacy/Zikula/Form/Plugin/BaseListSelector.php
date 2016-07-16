@@ -137,8 +137,8 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view Reference to Form render object.
-     * @param array            &$params Parameters passed from the Smarty plugin function.
+     * @param Zikula_Form_View $view Reference to Form render object
+     * @param array            &$params Parameters passed from the Smarty plugin function
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
@@ -160,7 +160,7 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
     /**
      * Initialize event handler.
      *
-     * @param Zikula_Form_View $view Reference to Form render object.
+     * @param Zikula_Form_View $view Reference to Form render object
      *
      * @return void
      */
@@ -172,8 +172,8 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
     /**
      * Load event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
-     * @param array            &$params Parameters passed from the Smarty plugin function.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
+     * @param array            &$params Parameters passed from the Smarty plugin function
      *
      * @return void
      */
@@ -188,7 +188,7 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
     /**
      * Sets an error message.
      *
-     * @param string $msg Error message.
+     * @param string $msg Error message
      *
      * @return void
      */
@@ -201,7 +201,7 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
     /**
      * Clears the validation data.
      *
-     * @param Zikula_Form_View $view Reference to Form render object.
+     * @param Zikula_Form_View $view Reference to Form render object
      *
      * @return void
      */
@@ -217,8 +217,8 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
      * Called by the render when doing $render->getValues()
      * Uses the group parameter to decide where to store data.
      *
-     * @param Zikula_Form_View $view Reference to Form render object.
-     * @param array            &$data Data object.
+     * @param Zikula_Form_View $view Reference to Form render object
+     * @param array            &$data Data object
      *
      * @return void
      */
@@ -242,8 +242,8 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
      * Called internally by the plugin itself to load values from the render.
      * Can also by called when some one is calling the render object's Zikula_Form_View::setValues.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
-     * @param array            &$values Values to load.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
+     * @param array            &$values Values to load
      *
      * @return void
      */
@@ -283,7 +283,7 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
      *
      * To be implemented by extending class.
      *
-     * @param mixed $value Selected value.
+     * @param mixed $value Selected value
      *
      * @return boolean
      */
@@ -297,7 +297,7 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
      *
      * To be implemented by extending class.
      *
-     * @return mixed The selected value.
+     * @return mixed The selected value
      */
     public function getSelectedValue()
     {
@@ -307,8 +307,8 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
     /**
      * Add item to list.
      *
-     * @param string $text  The text of the item.
-     * @param string $value The value of the item.
+     * @param string $text  The text of the item
+     * @param string $value The value of the item
      *
      * @return void
      */
@@ -328,7 +328,7 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
      * Quicker than copying the items one by one.
      * If addItem() does som special logic in the future then call that for each element in $items.
      *
-     * @param array $items List of items.
+     * @param array $items List of items
      *
      * @return void
      */

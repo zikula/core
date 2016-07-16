@@ -39,7 +39,7 @@ class EventUtil
     /**
      * Get EventManager instance.
      *
-     * @param Zikula_Core $core Core instance.
+     * @param Zikula_Core $core Core instance
      *
      * @return Zikula_EventManager
      */
@@ -57,7 +57,7 @@ class EventUtil
     /**
      * Notify event.
      *
-     * @param Zikula_Event $event Event.
+     * @param Zikula_Event $event Event
      *
      * @deprecated since 1.4.0
      * @see dispatch()
@@ -72,8 +72,8 @@ class EventUtil
     /**
      * dispatch event.
      *
-     * @param string       $name  Event name.
-     * @param Zikula_Event $event Event.
+     * @param string       $name  Event name
+     * @param Zikula_Event $event Event
      *
      * @return Zikula_Event
      */
@@ -85,8 +85,8 @@ class EventUtil
     /**
      * Attach listener.
      *
-     * @param string       $name    Name of event.
-     * @param array|string $handler PHP Callable.
+     * @param string       $name    Name of event
+     * @param array|string $handler PHP Callable
      *
      * @return void
      */
@@ -98,8 +98,8 @@ class EventUtil
     /**
      * Detach listener.
      *
-     * @param string       $name    Name of listener.
-     * @param array|string $handler PHP callable.
+     * @param string       $name    Name of listener
+     * @param array|string $handler PHP callable
      *
      * @return void
      */
@@ -111,7 +111,7 @@ class EventUtil
     /**
      * Loader for custom handlers.
      *
-     * @param string $dir Path to the folder holding the eventhandler classes.
+     * @param string $dir Path to the folder holding the eventhandler classes
      *
      * @return void
      */
@@ -125,7 +125,7 @@ class EventUtil
      *
      * Loads event handlers that extend Zikula_AbstractEventHandler
      *
-     * @param string $className The name of the class.
+     * @param string $className The name of the class
      *
      * @return void
      */
@@ -138,16 +138,16 @@ class EventUtil
     /**
      * Register a static persistent event for a module.
      *
-     * @param string       $moduleName Module name.
-     * @param string       $eventName  Event name.
-     * @param string|array $callable   PHP static callable.
-     * @param integer      $weight     Weight of handler, default = 10.
+     * @param string       $moduleName Module name
+     * @param string       $eventName  Event name
+     * @param string|array $callable   PHP static callable
+     * @param integer      $weight     Weight of handler, default = 10
      *
-     * @throws InvalidArgumentException If the callable given is not callable.
+     * @throws InvalidArgumentException If the callable given is not callable
      *
      * @return void
      *
-     * Note: If the exact same handler is already registered, this function does nothing.
+     * Note: If the exact same handler is already registered, this function does nothing
      */
     public static function registerPersistentModuleHandler($moduleName, $eventName, $callable, $weight = 10)
     {
@@ -193,10 +193,10 @@ class EventUtil
     /**
      * Unregister a static persistent event handler for a module.
      *
-     * @param string       $moduleName Module name.
-     * @param string       $eventName  Event name.
-     * @param string|array $callable   PHP static callable.
-     * @param integer      $weight     Weight.
+     * @param string       $moduleName Module name
+     * @param string       $eventName  Event name
+     * @param string|array $callable   PHP static callable
+     * @param integer      $weight     Weight
      *
      * @return void
      */
@@ -218,14 +218,14 @@ class EventUtil
     /**
      * Register a Zikula_AbstractEventHandler as a persistent handler.
      *
-     * @param string $moduleName Module name.
-     * @param string $className  Class name (subclass of Zikula_AbstractEventHandler).
+     * @param string $moduleName Module name
+     * @param string $className  Class name (subclass of Zikula_AbstractEventHandler)
      *
-     * @throws InvalidArgumentException If class is not available or not a subclass of Zikula_AbstractEventHandler.
+     * @throws InvalidArgumentException If class is not available or not a subclass of Zikula_AbstractEventHandler
      *
      * @return void
      *
-     * Note: If the exact same handler is already registered, this function does nothing.
+     * Note: If the exact same handler is already registered, this function does nothing
      */
     public static function registerPersistentEventHandlerClass($moduleName, $className)
     {
@@ -264,8 +264,8 @@ class EventUtil
     /**
      * Unregister a Zikula_AbstractEventHandler event handler.
      *
-     * @param string $moduleName Module name.
-     * @param string $className  Class name (subclass of Zikula_AbstractEventHandler).
+     * @param string $moduleName Module name
+     * @param string $className  Class name (subclass of Zikula_AbstractEventHandler)
      *
      * @return void
      */
@@ -287,7 +287,7 @@ class EventUtil
     /**
      * Unregister all persisten event handlers for a given module.
      *
-     * @param string $moduleName Module name.
+     * @param string $moduleName Module name
      *
      * @return void
      */
@@ -345,7 +345,7 @@ class EventUtil
     /**
      * Resolve the correct callable for a handler.
      *
-     * @param array $handler Handler.
+     * @param array $handler Handler
      *
      * @return array|Zikula_ServiceHandler
      */

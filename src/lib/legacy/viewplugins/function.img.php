@@ -63,10 +63,10 @@
  * 261
  * <img src="modules/Example/images/en/heading.gif" alt="" width="261" height="69"  />
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
- * @return string|void The img tag, null if $params['nostoponerror'] true and there is an error.
+ * @return string|void The img tag, null if $params['nostoponerror'] true and there is an error
  */
 function smarty_function_img($params, Zikula_View $view)
 {

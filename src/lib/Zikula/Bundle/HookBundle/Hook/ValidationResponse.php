@@ -40,8 +40,8 @@ class ValidationResponse
     /**
      * Constructor.
      *
-     * @param string       $key    Key.
-     * @param array|object $object Object to be validated.
+     * @param string       $key    Key
+     * @param array|object $object Object to be validated
      */
     public function __construct($key, $object)
     {
@@ -82,8 +82,8 @@ class ValidationResponse
     /**
      * Add error.
      *
-     * @param string $field   Field/property name of validation object.
-     * @param string $message Error message.
+     * @param string $field   Field/property name of validation object
+     * @param string $message Error message
      *
      * @return void
      */

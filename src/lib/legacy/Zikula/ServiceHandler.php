@@ -36,8 +36,8 @@ class Zikula_ServiceHandler
     /**
      * ServiceHandler constructor.
      *
-     * @param string $id         The identifier of a service manageg by ServiceManager.
-     * @param string $methodName The method that handles event.
+     * @param string $id         The identifier of a service manageg by ServiceManager
+     * @param string $methodName The method that handles event
      */
     public function __construct($id, $methodName)
     {
@@ -48,7 +48,7 @@ class Zikula_ServiceHandler
     /**
      * Getter for id property.
      *
-     * @return string Service ID.
+     * @return string Service ID
      */
     public function getId()
     {
@@ -58,7 +58,7 @@ class Zikula_ServiceHandler
     /**
      * Getter for methodName property.
      *
-     * @return string The name of the method that handles the event.
+     * @return string The name of the method that handles the event
      */
     public function getMethodName()
     {

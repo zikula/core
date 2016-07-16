@@ -40,7 +40,7 @@ class StreamReader_File extends StreamReader_Abstract
     /**
      * Constructor.
      *
-     * @param string $filename Filename.
+     * @param string $filename Filename
      */
     public function __construct($filename)
     {
@@ -59,7 +59,7 @@ class StreamReader_File extends StreamReader_Abstract
     /**
      * Read file.
      *
-     * @param integer $bytes Num of bytes to read.
+     * @param integer $bytes Num of bytes to read
      *
      * @return string
      */
@@ -87,9 +87,9 @@ class StreamReader_File extends StreamReader_Abstract
     /**
      * Seek to position.
      *
-     * @param integer $pos Position.
+     * @param integer $pos Position
      *
-     * @return integer Position.
+     * @return integer Position
      */
     public function seekto($pos)
     {

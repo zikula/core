@@ -12,11 +12,11 @@
 /**
  * Smarty function to create a tabbed panel.
  *
- * @param array            $params  Parameters passed in the block tag.
- * @param string           $content Content of the block.
- * @param Zikula_Form_View $render  Reference to Form render object.
+ * @param array            $params  Parameters passed in the block tag
+ * @param string           $content Content of the block
+ * @param Zikula_Form_View $render  Reference to Form render object
  *
- * @return string The rendered output.
+ * @return string The rendered output
  */
 function smarty_block_formtabbedpanel($params, $content, $render)
 {

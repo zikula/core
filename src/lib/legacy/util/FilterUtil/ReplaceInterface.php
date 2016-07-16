@@ -20,9 +20,9 @@ interface FilterUtil_ReplaceInterface
     /**
      * Replace whatever the plugin has to replace.
      *
-     * @param string $field Field name.
-     * @param string $op    Operator.
-     * @param string $value Value.
+     * @param string $field Field name
+     * @param string $op    Operator
+     * @param string $value Value
      *
      * @return array ($field, $op, $value)
      */

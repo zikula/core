@@ -31,13 +31,13 @@ use Zikula\ExtensionsModule\Api\VariableApi;
  * required page assets and variables and then sends the resulting Response to the browser. e.g.
  *     Request -> Controller -> CapturedResponse -> Filter -> ThemedResponse
  *
- * In this altered Symfony Request/Response cycle, the theme can be altered by the Controller Action through Annotation.
+ * In this altered Symfony Request/Response cycle, the theme can be altered by the Controller Action through Annotation
  * @see \Zikula\ThemeModule\Engine\Annotation\Theme
  * The annotation only excepts defined values.
  *
- * Themes are fully-qualified Symfony bundles with specific requirements.
+ * Themes are fully-qualified Symfony bundles with specific requirements
  * @see https://github.com/zikula/SpecTheme
- * Themes can define 'realms' which determine specific templates based on Request.
+ * Themes can define 'realms' which determine specific templates based on Request
  */
 class Engine
 {
@@ -194,7 +194,7 @@ class Engine
 
     /**
      * @deprecated This will not be needed >=2.0 (when Smarty is removed)
-     * may consider leaving this present and public in 2.0 (unsure).
+     * may consider leaving this present and public in 2.0 (unsure)
      * @return string
      */
     public function getThemeName()
@@ -376,7 +376,7 @@ class Engine
      *  3) the default system theme
      * @param string|null $newThemeName
      * @return mixed
-     * kernel::getTheme() @throws \InvalidArgumentException if theme is invalid.
+     * kernel::getTheme() @throws \InvalidArgumentException if theme is invalid
      */
     private function setActiveTheme($newThemeName = null)
     {

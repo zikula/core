@@ -25,23 +25,23 @@ abstract class Zikula_Controller_AbstractBlock extends Zikula_AbstractController
     /**
      * Get info interface.
      *
-     * @return array Blockinfo.
+     * @return array Blockinfo
      */
     abstract public function info();
 
     /**
      * Display block.
      *
-     * @param array $blockinfo Blockinfo.
+     * @param array $blockinfo Blockinfo
      *
-     * @return array Blockinfo.
+     * @return array Blockinfo
      */
     abstract public function display($blockinfo);
 
     /**
      * Modify block interface.
      *
-     * @param array $blockinfo Block info.
+     * @param array $blockinfo Block info
      *
      * @return string
      */
@@ -53,9 +53,9 @@ abstract class Zikula_Controller_AbstractBlock extends Zikula_AbstractController
     /**
      * Update block interface.
      *
-     * @param array $blockinfo Block info.
+     * @param array $blockinfo Block info
      *
-     * @return array Blockinfo.
+     * @return array Blockinfo
      */
     public function update($blockinfo)
     {
@@ -65,12 +65,12 @@ abstract class Zikula_Controller_AbstractBlock extends Zikula_AbstractController
     /**
      * Magic method to for method_not_found events.
      *
-     * @param string $method Method invoked.
-     * @param array  $args   Arguments.
+     * @param string $method Method invoked
+     * @param array  $args   Arguments
      *
-     * @throws BadMethodCallException If no event responds.
+     * @throws BadMethodCallException If no event responds
      *
-     * @return string Data.
+     * @return string Data
      */
     public function __call($method, $args)
     {

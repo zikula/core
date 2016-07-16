@@ -20,7 +20,7 @@ interface FilterUtil_BuildInterface
     /**
      * Adds fields to list in common way.
      *
-     * @param mixed $fields Fields to add.
+     * @param mixed $fields Fields to add
      *
      * @return void
      */
@@ -29,14 +29,14 @@ interface FilterUtil_BuildInterface
     /**
      * Get fields in list.
      *
-     * @return mixed Fields in list.
+     * @return mixed Fields in list
      */
     public function getFields();
 
     /**
      * Activates/Enables operators.
      *
-     * @param mixed $op Operators to activate.
+     * @param mixed $op Operators to activate
      *
      * @return void
      */
@@ -57,9 +57,9 @@ interface FilterUtil_BuildInterface
      *
      * Return SQL WHERE and DBUtil JOIN array as array('where' => , 'join' =>).
      *
-     * @param string $field Field name.
-     * @param string $op    Operator.
-     * @param string $value Value.
+     * @param string $field Field name
+     * @param string $op    Operator
+     * @param string $value Value
      *
      * @return array $where
      */
@@ -70,9 +70,9 @@ interface FilterUtil_BuildInterface
      *
      * Return DQL WHERE and it's params as array('where' => , 'params' =>).
      *
-     * @param string $field Field name.
-     * @param string $op    Operator.
-     * @param string $value Value.
+     * @param string $field Field name
+     * @param string $op    Operator
+     * @param string $value Value
      *
      * @return array $where
      */

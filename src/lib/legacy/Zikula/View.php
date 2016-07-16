@@ -163,9 +163,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Constructor.
      *
-     * @param Zikula_ServiceManager $serviceManager ServiceManager.
-     * @param string                $moduleName     Module name ("zikula" for system plugins).
-     * @param integer|null          $caching        Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
+     * @param Zikula_ServiceManager $serviceManager ServiceManager
+     * @param string                $moduleName     Module name ("zikula" for system plugins)
+     * @param integer|null          $caching        Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null)
      */
     public function __construct(Zikula_ServiceManager $serviceManager, $moduleName = '', $caching = null)
     {
@@ -424,11 +424,11 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Setup the current instance of the Zikula_View class and return it back to the module.
      *
-     * @param string       $module   Module name.
-     * @param integer|null $caching  Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
-     * @param string       $cache_id Cache Id.
+     * @param string       $module   Module name
+     * @param integer|null $caching  Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null)
+     * @param string       $cache_id Cache Id
      *
-     * @return Zikula_View This instance.
+     * @return Zikula_View This instance
      */
     public static function getInstance($module = null, $caching = null, $cache_id = null)
     {
@@ -497,12 +497,12 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Get module plugin Zikula_View_Plugin instance.
      *
-     * @param string       $modName    Module name.
-     * @param string       $pluginName Plugin name.
-     * @param integer|null $caching    Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
-     * @param string       $cache_id   Cache Id.
+     * @param string       $modName    Module name
+     * @param string       $pluginName Plugin name
+     * @param integer|null $caching    Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null)
+     * @param string       $cache_id   Cache Id
      *
-     * @return Zikula_View_Plugin The plugin instance.
+     * @return Zikula_View_Plugin The plugin instance
      */
     public static function getModulePluginInstance($modName, $pluginName, $caching = null, $cache_id = null)
     {
@@ -512,11 +512,11 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Get system plugin Zikula_View_Plugin instance.
      *
-     * @param string       $pluginName Plugin name.
-     * @param integer|null $caching    Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
-     * @param string       $cache_id   Cache Id.
+     * @param string       $pluginName Plugin name
+     * @param integer|null $caching    Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null)
+     * @param string       $cache_id   Cache Id
      *
-     * @return Zikula_View_Plugin The plugin instance.
+     * @return Zikula_View_Plugin The plugin instance
      */
     public static function getSystemPluginInstance($pluginName, $caching = null, $cache_id = null)
     {
@@ -607,7 +607,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Checks whether requested template exists.
      *
-     * @param string $template Template name.
+     * @param string $template Template name
      *
      * @return boolean
      */
@@ -619,9 +619,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Checks which path to use for required template.
      *
-     * @param string $template Template name.
+     * @param string $template Template name
      *
-     * @return string Template path.
+     * @return string Template path
      */
     public function get_template_path($template)
     {
@@ -786,13 +786,13 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * As an optional second parameter, you can pass a cache id.
      * As an optional third parameter, you can pass a compile id.
      *
-     * @param string  $template   The name of the template.
-     * @param string  $cache_id   The cache ID (optional).
-     * @param string  $compile_id The compile ID (optional).
-     * @param boolean $display    Whether or not to display directly (optional).
-     * @param boolean $reset      Reset singleton defaults (optional). deprecated.
+     * @param string  $template   The name of the template
+     * @param string  $cache_id   The cache ID (optional)
+     * @param string  $compile_id The compile ID (optional)
+     * @param boolean $display    Whether or not to display directly (optional)
+     * @param boolean $reset      Reset singleton defaults (optional). deprecated
      *
-     * @return string The template output.
+     * @return string The template output
      */
     public function fetch($template, $cache_id = null, $compile_id = null, $display = false, $reset = true)
     {
@@ -829,9 +829,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * As an optional second parameter, you can pass a cache id.
      * As an optional third parameter, you can pass a compile id.
      *
-     * @param string $template   The name of the template.
-     * @param string $cache_id   The cache ID (optional).
-     * @param string $compile_id The compile ID (optional).
+     * @param string $template   The name of the template
+     * @param string $cache_id   The cache ID (optional)
+     * @param string $compile_id The compile ID (optional)
      *
      * @return boolean
      */
@@ -845,10 +845,10 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Returns an auto_id for auto-file-functions.
      *
-     * @param string $cache_id   The cache ID (optional).
-     * @param string $compile_id The compile ID (optional).
+     * @param string $cache_id   The cache ID (optional)
+     * @param string $compile_id The compile ID (optional)
      *
-     * @return string|null The auto_id, or null if neither $cache_id nor $compile_id are set.
+     * @return string|null The auto_id, or null if neither $cache_id nor $compile_id are set
      */
     public function _get_auto_id($cache_id = null, $compile_id = null)
     {
@@ -869,7 +869,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * utility method to filter the IDs of not desired chars.
      *
-     * @param string &$id Cache or compile ID to filter.
+     * @param string &$id Cache or compile ID to filter
      *
      * @return void
      */
@@ -886,11 +886,11 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Get a concrete filename for automagically created content.
      *
-     * @param string $path        The base path.
-     * @param string $auto_source The file name (optional).
-     * @param string $auto_id     The ID (optional).
+     * @param string $path        The base path
+     * @param string $auto_source The file name (optional)
+     * @param string $auto_id     The ID (optional)
      *
-     * @return string The concrete path and file name to the content.
+     * @return string The concrete path and file name to the content
      */
     public function _get_auto_filename($path, $auto_source = null, $auto_id = null, $themedir = null)
     {
@@ -960,9 +960,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * This returns true if there is a valid cache for this template.
      *
-     * @param string $template   The name of the template.
-     * @param string $cache_id   The cache ID (optional).
-     * @param string $compile_id The compile ID (optional).
+     * @param string $template   The name of the template
+     * @param string $cache_id   The cache ID (optional)
+     * @param string $compile_id The compile ID (optional)
      *
      * @return boolean
      */
@@ -982,9 +982,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Internal function to delete cache of templates.
      *
-     * @param string  $tplpath  Relative template path.
-     * @param string  $template Template partial filename.
-     * @param integer $expire   Expire limit of the cached templates.
+     * @param string  $tplpath  Relative template path
+     * @param string  $template Template partial filename
+     * @param integer $expire   Expire limit of the cached templates
      *
      * @return boolean True on success, false otherwise
      */
@@ -1018,11 +1018,11 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Internal function to delete cache directories and files.
      *
-     * @param string  $dirname Relative cache directory path.
-     * @param integer $expire  Expire limit of the cached templates.
-     * @param boolean $rmbase  Remove the passed directory too (default: true).
+     * @param string  $dirname Relative cache directory path
+     * @param integer $expire  Expire limit of the cached templates
+     * @param boolean $rmbase  Remove the passed directory too (default: true)
      *
-     * @return boolean True on success, false otherwise.
+     * @return boolean True on success, false otherwise
      */
     protected function rmdir($dirname, $expire = null, $rmbase = true)
     {
@@ -1061,10 +1061,10 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * This returns true if the operation was successful.
      *
-     * @param string $tmpdir   Name of the temporary folder to clear.
-     * @param string $auto_id  The cache and compile ID.
-     * @param string $template The name of the template.
-     * @param string $expire   Minimum age in sec. the cache file must be before it will get cleared (optional).
+     * @param string $tmpdir   Name of the temporary folder to clear
+     * @param string $auto_id  The cache and compile ID
+     * @param string $template The name of the template
+     * @param string $expire   Minimum age in sec. the cache file must be before it will get cleared (optional)
      *
      * @return boolean
      */
@@ -1088,12 +1088,12 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Clears the cache for a specific template or cache_id.
      *
-     * @param string $template   The name of the template.
-     * @param string $cache_id   The cache ID (optional).
-     * @param string $compile_id The compile ID (optional).
-     * @param string $expire     Minimum age in sec. the cache file must be before it will get cleared (optional).
+     * @param string $template   The name of the template
+     * @param string $cache_id   The cache ID (optional)
+     * @param string $compile_id The compile ID (optional)
+     * @param string $expire     Minimum age in sec. the cache file must be before it will get cleared (optional)
      *
-     * @return boolean True on success, false otherwise.
+     * @return boolean True on success, false otherwise
      */
     public function clear_cache($template = null, $cache_id = null, $compile_id = null, $expire = null, $themedir = null)
     {
@@ -1109,7 +1109,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Clears all view cache for a module.
      *
-     * @return boolean True on success, false otherwise.
+     * @return boolean True on success, false otherwise
      */
     public function clear_cache_module($moduledir = null)
     {
@@ -1125,7 +1125,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * Needs to clear the cache too as non cached plugins information will need regeneration too.
      *
-     * @return boolean True if success, false otherwise.
+     * @return boolean True if success, false otherwise
      */
     public function clear_compiled()
     {
@@ -1139,9 +1139,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Clear all cached templates.
      *
-     * @param string $expire Expire time.
+     * @param string $expire Expire time
      *
-     * @return boolean Results of clear_cache with null parameters.
+     * @return boolean Results of clear_cache with null parameters
      */
     public function clear_all_cache($expire = null)
     {
@@ -1154,7 +1154,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * This function sets the template and the config path according
      * to where the template is found (Theme or Module directory)
      *
-     * @param string $template The template name.
+     * @param string $template The template name
      *
      * @return void
      */
@@ -1171,10 +1171,10 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * Avoids adding duplicates.
      *
-     * @param string  $dir  The directory to add.
-     * @param boolean $push Whether to push the new dir to the bottom of the stack (default: true).
+     * @param string  $dir  The directory to add
+     * @param boolean $push Whether to push the new dir to the bottom of the stack (default: true)
      *
-     * @return Zikula_View This instance.
+     * @return Zikula_View This instance
      */
     public function addPluginDir($dir, $push = true)
     {
@@ -1197,7 +1197,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * This function takes  module name and adds two path two the plugins_dir array
      * when existing
      *
-     * @param string $module Well known module name.
+     * @param string $module Well known module name
      *
      * @return void
      */
@@ -1227,11 +1227,11 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Execute a template override event.
      *
-     * @param string $template Path to template.
+     * @param string $template Path to template
      *
-     * @throws InvalidArgumentException If event handler returns a non-existent template.
+     * @throws InvalidArgumentException If event handler returns a non-existent template
      *
-     * @return mixed String if found, false if no override present.
+     * @return mixed String if found, false if no override present
      */
     public static function getTemplateOverride($template)
     {
@@ -1253,8 +1253,8 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Assign variable to template.
      *
-     * @param string $key   Variable name.
-     * @param mixed  $value Value.
+     * @param string $key   Variable name
+     * @param mixed  $value Value
      *
      * @return Zikula_View
      */
@@ -1269,8 +1269,8 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Assign variable to template by reference.
      *
-     * @param string $key Variable name.
-     * @param mixed  &$value Value.
+     * @param string $key Variable name
+     * @param mixed  &$value Value
      *
      * @return Zikula_View
      */
@@ -1285,7 +1285,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Prevent certain variables from being overwritten.
      *
-     * @param string $key The protected variable key.
+     * @param string $key The protected variable key
      *
      * @return void
      */
@@ -1317,9 +1317,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Translate.
      *
-     * @param string $msgid String to be translated.
+     * @param string $msgid String to be translated
      *
-     * @return string The $msgid translated by gettext.
+     * @return string The $msgid translated by gettext
      */
     public function __($msgid)
     {
@@ -1329,10 +1329,10 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Translate with sprintf().
      *
-     * @param string       $msgid  String to be translated.
-     * @param string|array $params Args for sprintf().
+     * @param string       $msgid  String to be translated
+     * @param string|array $params Args for sprintf()
      *
-     * @return string The $msgid translated by gettext.
+     * @return string The $msgid translated by gettext
      */
     public function __f($msgid, $params)
     {
@@ -1342,11 +1342,11 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Translate plural string.
      *
-     * @param string $singular Singular instance.
-     * @param string $plural   Plural instance.
-     * @param string $count    Object count.
+     * @param string $singular Singular instance
+     * @param string $plural   Plural instance
+     * @param string $count    Object count
      *
-     * @return string Translated string.
+     * @return string Translated string
      */
     public function _n($singular, $plural, $count)
     {
@@ -1356,12 +1356,12 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Translate plural string with sprintf().
      *
-     * @param string       $sin    Singular instance.
-     * @param string       $plu    Plural instance.
-     * @param string       $n      Object count.
-     * @param string|array $params Sprintf() arguments.
+     * @param string       $sin    Singular instance
+     * @param string       $plu    Plural instance
+     * @param string       $n      Object count
+     * @param string|array $params Sprintf() arguments
      *
-     * @return string The $sin or $plu translated by gettext, based on $n.
+     * @return string The $sin or $plu translated by gettext, based on $n
      */
     public function _fn($sin, $plu, $n, $params)
     {
@@ -1373,7 +1373,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * If the module is a system module this is not set.
      *
-     * @return string The gettext domain for the module, or null for system modules.
+     * @return string The gettext domain for the module, or null for system modules
      */
     public function getDomain()
     {
@@ -1383,7 +1383,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve an array of module information, indexed by module name.
      *
-     * @return array An array containing the module info, indexed by module name.
+     * @return array An array containing the module info, indexed by module name
      */
     public function getModule()
     {
@@ -1393,7 +1393,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the module info array for the top-level module (or the module specified in the constructor).
      *
-     * @return array The module info array.
+     * @return array The module info array
      */
     public function getModInfo()
     {
@@ -1403,7 +1403,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the name of the top-level module.
      *
-     * @return string The name of the top-level module.
+     * @return string The name of the top-level module
      */
     public function getTopLevelModule()
     {
@@ -1413,7 +1413,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve module name.
      *
-     * @return string Module name.
+     * @return string Module name
      */
     public function getModuleName()
     {
@@ -1423,7 +1423,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrive the name of the controller type.
      *
-     * @return string The name of the controller type.
+     * @return string The name of the controller type
      */
     public function getType()
     {
@@ -1433,7 +1433,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrive the name of the controller function.
      *
-     * @return string The name of the controller function.
+     * @return string The name of the controller function
      */
     public function getFunc()
     {
@@ -1443,7 +1443,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the current language code.
      *
-     * @return string The current language code.
+     * @return string The current language code
      */
     public function getLanguage()
     {
@@ -1453,7 +1453,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the name of the current theme.
      *
-     * @return string The name of the current theme.
+     * @return string The name of the current theme
      */
     public function getTheme()
     {
@@ -1463,9 +1463,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the theme info array for the current theme.
      *
-     * @param string $key Field to retrieve of the theme info.
+     * @param string $key Field to retrieve of the theme info
      *
-     * @return array The theme info array.
+     * @return array The theme info array
      */
     public function getThemeInfo($key = null)
     {
@@ -1479,8 +1479,8 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set a value or all the theme info array.
      *
-     * @param mixed  $value Value to assign.
-     * @param string $key   Field to set on the theme info.
+     * @param mixed  $value Value to assign
+     * @param string $key   Field to set on the theme info
      *
      * @return void
      */
@@ -1498,7 +1498,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * The value returned is the same as {@link System::getBaseUrl()}.
      *
-     * @return string The base URL.
+     * @return string The base URL
      */
     public function getBaseUrl()
     {
@@ -1510,7 +1510,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * The value returned is the same as {@link System::getBaseUri()}.
      *
-     * @return string The base URI.
+     * @return string The base URI
      */
     public function getBaseUri()
     {
@@ -1523,7 +1523,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * @deprecated since 1.4.0
      * @see getContainer()
      *
-     * @return Zikula_ServiceManager The service manager.
+     * @return Zikula_ServiceManager The service manager
      */
     public function getServiceManager()
     {
@@ -1533,7 +1533,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Get ServiceManager.
      *
-     * @return Zikula_ServiceManager The service manager.
+     * @return Zikula_ServiceManager The service manager
      */
     public function getContainer()
     {
@@ -1546,7 +1546,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * @deprecated since 1.4.0
      * @see getDispatcher()
      *
-     * @return Zikula_Eventmanager The event manager.
+     * @return Zikula_Eventmanager The event manager
      */
     public function getEventManager()
     {
@@ -1556,7 +1556,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Get EventManager.
      *
-     * @return Zikula_Eventmanager The event manager.
+     * @return Zikula_Eventmanager The event manager
      */
     public function getDispatcher()
     {
@@ -1586,7 +1586,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set the controller property.
      *
-     * @param Zikula_AbstractController $controller Controller to set.
+     * @param Zikula_AbstractController $controller Controller to set
      *
      * @return void
      */
@@ -1598,7 +1598,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the current setting for the 'render_expose_template' Theme module variable.
      *
-     * @return boolean True if The 'render_expose_template' Theme module template is true.
+     * @return boolean True if The 'render_expose_template' Theme module template is true
      */
     public function getExposeTemplate()
     {
@@ -1620,7 +1620,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the name of the directory where templates are located.
      *
-     * @return string The directory name.
+     * @return string The directory name
      */
     public function getTemplateDir()
     {
@@ -1630,7 +1630,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the template variables array ({@link Smarty::$_tpl_vars}).
      *
-     * @return array The template variables array.
+     * @return array The template variables array
      */
     public function getTplVars()
     {
@@ -1640,7 +1640,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Get a template variable.
      *
-     * @param string $key Key of assigned template variable.
+     * @param string $key Key of assigned template variable
      *
      * @return mixed
      */
@@ -1656,7 +1656,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the compile ID used to compile different sets of compiled files for the same templates.
      *
-     * @return string|null The compile id, or null if none.
+     * @return string|null The compile id, or null if none
      */
     public function getCompileId()
     {
@@ -1670,7 +1670,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * Instead of creating separate sets of templates per language, you
      * set different compile_ids like 'en' and 'de'.
      *
-     * @param string|null $compile_id The compile id, or null.
+     * @param string|null $compile_id The compile id, or null
      *
      * @return $this
      */
@@ -1684,7 +1684,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the directory where compiled templates are located.
      *
-     * @return string The directory name.
+     * @return string The directory name
      */
     public function getCompileDir()
     {
@@ -1694,7 +1694,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set the directory where compiled templates are located.
      *
-     * @param string $compile_dir The directory name.
+     * @param string $compile_dir The directory name
      *
      * @return $this
      */
@@ -1711,7 +1711,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * Recompiling does not need to happen unless a template or config file is changed.
      * Typically you enable this during development, and disable for production.
      *
-     * @return boolean True if checked, otherwise false.
+     * @return boolean True if checked, otherwise false
      */
     public function getCompileCheck()
     {
@@ -1721,7 +1721,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set compile check.
      *
-     * @param boolean $doCompileCheck If true, checks for compile will be performed.
+     * @param boolean $doCompileCheck If true, checks for compile will be performed
      *
      * @return $this
      */
@@ -1735,7 +1735,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve whether templates are forced to be compiled.
      *
-     * @return boolean True if templates are forced to be compiled, otherwise false.
+     * @return boolean True if templates are forced to be compiled, otherwise false
      */
     public function getForceCompile()
     {
@@ -1745,7 +1745,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set whether templates are forced to be compiled.
      *
-     * @param boolean $force_compile True to force compilation, otherwise false.
+     * @param boolean $force_compile True to force compilation, otherwise false
      *
      * @return $this
      */
@@ -1759,7 +1759,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve whether caching is enabled.
      *
-     * @return integer A code indicating whether caching is enabled.
+     * @return integer A code indicating whether caching is enabled
      */
     public function getCaching()
     {
@@ -1776,7 +1776,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *  <li>2 = use cache_lifetime in cache file</li>
      * </ul>
      *
-     * @param integer $caching Cache value to set.
+     * @param integer $caching Cache value to set
      *
      * @return $this
      */
@@ -1790,7 +1790,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the current cache ID.
      *
-     * @return string The current cache ID.
+     * @return string The current cache ID
      */
     public function getCacheId()
     {
@@ -1800,7 +1800,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set cache ID.
      *
-     * @param string $id Cache ID.
+     * @param string $id Cache ID
      *
      * @return $this
      */
@@ -1820,7 +1820,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *  <li>-1 = never expires</li>
      * </ul>
      *
-     * @return integer The number of seconds cached content will persist.
+     * @return integer The number of seconds cached content will persist
      */
     public function getCacheLifetime()
     {
@@ -1830,7 +1830,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set cache lifetime.
      *
-     * @param integer $time Lifetime in seconds.
+     * @param integer $time Lifetime in seconds
      *
      * @return $this
      */
@@ -1844,7 +1844,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the name of the directory for cache files.
      *
-     * @return string The name of the cache file directory.
+     * @return string The name of the cache file directory
      */
     public function getCacheDir()
     {
@@ -1854,7 +1854,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set the name of the directory for cache files.
      *
-     * @param string $cache_dir The name of the cache file directory.
+     * @param string $cache_dir The name of the cache file directory
      *
      * @return $this
      */
@@ -1873,7 +1873,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * This way repeated hits to a cached page do not send the entire page to the
      * client every time.
      *
-     * @return boolean True if If-Modified-Since headers are respected, otherwise false.
+     * @return boolean True if If-Modified-Since headers are respected, otherwise false
      */
     public function getCacheModifiedCheck()
     {
@@ -1888,7 +1888,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * This way repeated hits to a cached page do not send the entire page to the
      * client every time.
      *
-     * @param boolean $cache_modified_check True to respect If-Modified-Since headers, otherwise false.
+     * @param boolean $cache_modified_check True to respect If-Modified-Since headers, otherwise false
      *
      * @return $this
      */
@@ -1902,7 +1902,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the directgory where config files are located.
      *
-     * @return string The directory name.
+     * @return string The directory name
      */
     public function getConfigDir()
     {
@@ -1912,7 +1912,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set the directgory where config files are located.
      *
-     * @param string $config_dir The directory name.
+     * @param string $config_dir The directory name
      *
      * @return $this
      */
@@ -1926,7 +1926,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the directories that are searched for plugins.
      *
-     * @return array An array of directory names.
+     * @return array An array of directory names
      */
     public function getPluginsDir()
     {
@@ -1936,7 +1936,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set an array of directories that are searched for plugins.
      *
-     * @param array $plugins_dir An array of directory names.
+     * @param array $plugins_dir An array of directory names
      *
      * @return $this
      */
@@ -1950,7 +1950,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve whether debugging mode is enabled or disabled.
      *
-     * @return boolean True if enabled, otherwise false.
+     * @return boolean True if enabled, otherwise false
      */
     public function getDebugging()
     {
@@ -1963,7 +1963,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * If debugging is enabled, a debug console window will display when the page loads (make sure your browser
      * allows unrequested popup windows)
      *
-     * @param boolean $debugging True to enable, otherwise false.
+     * @param boolean $debugging True to enable, otherwise false
      *
      * @return $this
      */
@@ -1979,7 +1979,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * @see    error_reporting()
      *
-     * @return integer The PHP error reporting level.
+     * @return integer The PHP error reporting level
      */
     public function getErrorReporting()
     {
@@ -1989,7 +1989,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set the PHP error reporting level to be used for this class.
      *
-     * @param integer $error_reporting The PHP error reporting level.
+     * @param integer $error_reporting The PHP error reporting level
      *
      * @see    error_reporting()
      *
@@ -2007,7 +2007,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * If empty, the default template is used.
      *
-     * @return string The custom path to the debug console template.
+     * @return string The custom path to the debug console template
      */
     public function getDebugTpl()
     {
@@ -2019,7 +2019,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * If empty, the default template is used.
      *
-     * @param string $debug_tpl The custom path to the debug console template.
+     * @param string $debug_tpl The custom path to the debug console template
      *
      * @return $this
      */
@@ -2039,7 +2039,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *  <li>URL => enable debugging when SMARTY_DEBUG is found in the URL.</li>
      * </ul>
      *
-     * @return string Either 'NONE' or 'URL'.
+     * @return string Either 'NONE' or 'URL'
      */
     public function getDebuggingCtrl()
     {
@@ -2057,7 +2057,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * http://www.example.com/index.php?SMARTY_DEBUG
      *
-     * @param string $debugging_ctrl Either 'NONE' or 'URL'.
+     * @param string $debugging_ctrl Either 'NONE' or 'URL'
      *
      * @return $this
      */
@@ -2079,7 +2079,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *  <li>SMARTY_PHP_ALLOW    -> execute php tags</li>
      * </ul>
      *
-     * @return integer A code indicating how php tags in templates are handled.
+     * @return integer A code indicating how php tags in templates are handled
      */
     public function getPhpHandling()
     {
@@ -2097,7 +2097,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *  <li>SMARTY_PHP_ALLOW    -> execute php tags</li>
      * </ul>
      *
-     * @param integer $php_handling A code indicating how php tags in templates are to be handled.
+     * @param integer $php_handling A code indicating how php tags in templates are to be handled
      *
      * @return $this
      */
@@ -2115,7 +2115,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * untrusted parties are editing templates and you want a reasonable level of security.
      * (no direct execution of PHP in templates for example)
      *
-     * @return boolean True if enabled, otherwise false.
+     * @return boolean True if enabled, otherwise false
      */
     public function getSecurity()
     {
@@ -2129,7 +2129,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * untrusted parties are editing templates and you want a reasonable level of security.
      * (no direct execution of PHP in templates for example)
      *
-     * @param boolean $security True to enable, otherwise false.
+     * @param boolean $security True to enable, otherwise false
      *
      * @return $this
      */
@@ -2143,7 +2143,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the list of template directories that are considered secure.
      *
-     * @return array An array of secure template directories.
+     * @return array An array of secure template directories
      */
     public function getSecureDir()
     {
@@ -2156,7 +2156,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * This is used only if template security enabled (see {@link setSecurity()}). One directory per array
      * element.  The template directory (see {@link setTemplateDir()}) is in this list implicitly.
      *
-     * @param array $secure_dir An array of secure template directories.
+     * @param array $secure_dir An array of secure template directories
      *
      * @return $this
      */
@@ -2170,7 +2170,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve an array of security settings, only used if template security is enabled (see {@link setSecurity()}).
      *
-     * @return array An array of security settings.
+     * @return array An array of security settings
      */
     public function getSecuritySettings()
     {
@@ -2180,7 +2180,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set an array of security settings, only used if template security is enabled (see {@link setSecurity()}).
      *
-     * @param array $security_settings An array of security settings.
+     * @param array $security_settings An array of security settings
      *
      * @return $this
      */
@@ -2194,7 +2194,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve an array of directories where trusted php scripts reside.
      *
-     * @return array An array of trusted directories.
+     * @return array An array of trusted directories
      */
     public function getTrustedDir()
     {
@@ -2206,7 +2206,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * Template security (see @link setSecurity()) is disabled during their inclusion/execution.
      *
-     * @param array $trusted_dir An array of trusted directories.
+     * @param array $trusted_dir An array of trusted directories
      *
      * @return $this
      */
@@ -2220,7 +2220,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the left delimiter used for template tags.
      *
-     * @return string The delimiter.
+     * @return string The delimiter
      */
     public function getLeftDelimiter()
     {
@@ -2230,7 +2230,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set the left delimiter used for template tags.
      *
-     * @param string $left_delimiter The delimiter.
+     * @param string $left_delimiter The delimiter
      *
      * @return $this
      */
@@ -2244,7 +2244,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the right delimiter used for template tags.
      *
-     * @return string The delimiter.
+     * @return string The delimiter
      */
     public function getRightDelimiter()
     {
@@ -2254,7 +2254,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set the right delimiter used for template tags.
      *
-     * @param string $right_delimiter The delimiter.
+     * @param string $right_delimiter The delimiter
      *
      * @return $this
      */
@@ -2270,7 +2270,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * E = Environment, G = GET, P = POST, C = Cookies, S = Server
      *
-     * @return string The string indicating the order, e.g., 'EGPCS'.
+     * @return string The string indicating the order, e.g., 'EGPCS'
      */
     public function getRequestVarsOrder()
     {
@@ -2282,7 +2282,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * E = Environment, G = GET, P = POST, C = Cookies, S = Server
      *
-     * @param string $request_vars_order A string indicating the order, e.g., 'EGPCS'.
+     * @param string $request_vars_order A string indicating the order, e.g., 'EGPCS'
      *
      * @return $this
      */
@@ -2296,7 +2296,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve whether $HTTP_*_VARS[] (request_use_auto_globals=false) are used as request-vars or $_*[]-vars.
      *
-     * @return boolean True if auto globals are used, otherwise false.
+     * @return boolean True if auto globals are used, otherwise false
      */
     public function getRequestUseAutoGlobals()
     {
@@ -2309,7 +2309,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * Note: if request_use_auto_globals is true, then $request_vars_order has
      * no effect, but the php-ini-value "gpc_order"
      *
-     * @param boolean $request_use_auto_globals True to use auto globals, otherwise false.
+     * @param boolean $request_use_auto_globals True to use auto globals, otherwise false
      *
      * @return $this
      */
@@ -2323,7 +2323,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve whether or not sub dirs in the cache/ and templates_c/ directories are used.
      *
-     * @return boolean True if sub dirs are used, otherwise false.
+     * @return boolean True if sub dirs are used, otherwise false
      */
     public function getUseSubDirs()
     {
@@ -2335,7 +2335,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * Sub directories better organized, but may not work well with PHP safe mode enabled.
      *
-     * @param boolean $use_sub_dirs True to use sub dirs, otherwise false.
+     * @param boolean $use_sub_dirs True to use sub dirs, otherwise false
      *
      * @return $this
      */
@@ -2349,7 +2349,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve a list of the modifiers applied to all template variables.
      *
-     * @return array An array of default modifiers.
+     * @return array An array of default modifiers
      */
     public function getDefaultModifiers()
     {
@@ -2362,7 +2362,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * Put each modifier in a separate array element in the order you want
      * them applied. example: <code>['escape:"htmlall"'];</code>
      *
-     * @param array $default_modifiers An array of default modifiers.
+     * @param array $default_modifiers An array of default modifiers
      *
      * @return $this
      */
@@ -2376,7 +2376,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the resource type used when not specified at the beginning of the resource path (see {@link Smarty::$default_resource_type}).
      *
-     * @return string The resource type used.
+     * @return string The resource type used
      */
     public function getDefaultResourceType()
     {
@@ -2386,7 +2386,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set the resource type to be used when not specified at the beginning of the resource path (see {@link Smarty::$default_resource_type}).
      *
-     * @param string $default_resource_type The resource type to use.
+     * @param string $default_resource_type The resource type to use
      *
      * @return $this
      */
@@ -2402,7 +2402,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * If not set, built-in caching is used.
      *
-     * @return string|null The name of the function, or null if built-in caching is used.
+     * @return string|null The name of the function, or null if built-in caching is used
      */
     public function getCacheHandlerFunc()
     {
@@ -2414,7 +2414,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * If not set, built-in caching is used.
      *
-     * @param string|null $cache_handler_func The name of the function, or null to use built-in caching.
+     * @param string|null $cache_handler_func The name of the function, or null to use built-in caching
      *
      * @return $this
      */
@@ -2428,7 +2428,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve whether filters are automatically loaded or not.
      *
-     * @return boolean True if automatically loaded, otherwise false.
+     * @return boolean True if automatically loaded, otherwise false
      */
     public function getAutoloadFilters()
     {
@@ -2438,7 +2438,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set whether filters are automatically loaded or not.
      *
-     * @param boolean $autoload_filters True to automatically load, otherwise false.
+     * @param boolean $autoload_filters True to automatically load, otherwise false
      *
      * @return $this
      */
@@ -2452,7 +2452,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve if config file vars of the same name overwrite each other or not.
      *
-     * @return boolean True if overwritten, otherwise false.
+     * @return boolean True if overwritten, otherwise false
      */
     public function getConfigOverwrite()
     {
@@ -2464,7 +2464,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * If disabled, same name variables are accumulated in an array.
      *
-     * @param boolean $config_overwrite True to overwrite, otherwise false.
+     * @param boolean $config_overwrite True to overwrite, otherwise false
      *
      * @return $this
      */
@@ -2481,7 +2481,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * If enabled, then the strings "on", "true", and "yes" are treated as boolean
      * true, and "off", "false" and "no" are treated as boolean false.
      *
-     * @return boolean True if config variables are booleanized, otherwise false.
+     * @return boolean True if config variables are booleanized, otherwise false
      */
     public function getConfigBooleanize()
     {
@@ -2494,7 +2494,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * If enabled, then the strings "on", "true", and "yes" are treated as boolean
      * true, and "off", "false" and "no" are treated as boolean false.
      *
-     * @param boolean $config_booleanize True to booleanize, otherwise false.
+     * @param boolean $config_booleanize True to booleanize, otherwise false
      *
      * @return $this
      */
@@ -2508,7 +2508,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve whether hidden sections [.foobar] in config files are readable from the tempalates or not.
      *
-     * @return boolean True if hidden sections readable, otherwise false.
+     * @return boolean True if hidden sections readable, otherwise false
      */
     public function getConfigReadHidden()
     {
@@ -2521,7 +2521,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * Normally you would never allow this since that is the point behind hidden sections: the application can access
      * them, but the templates cannot.
      *
-     * @param boolean $config_read_hidden True to make hidden sections readable, otherwise false.
+     * @param boolean $config_read_hidden True to make hidden sections readable, otherwise false
      *
      * @return $this
      */
@@ -2538,7 +2538,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * This indicates whether or not automatically fix newlines in config files.
      * It basically converts \r (mac) or \r\n (dos) to \n
      *
-     * @return boolean True if automatically fixed, otherwise false.
+     * @return boolean True if automatically fixed, otherwise false
      */
     public function getConfigFixNewlines()
     {
@@ -2551,7 +2551,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * This indicates whether or not automatically fix newlines in config files.
      * It basically converts \r (mac) or \r\n (dos) to \n
      *
-     * @param boolean $config_fix_newlines True to automatically fix, otherwise false.
+     * @param boolean $config_fix_newlines True to automatically fix, otherwise false
      *
      * @return $this
      */
@@ -2565,7 +2565,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the name of the PHP function that will be called if a template cannot be found.
      *
-     * @return string The name of the PHP function called if a template cannot be found.
+     * @return string The name of the PHP function called if a template cannot be found
      */
     public function getDefaultTemplateHandlerFunc()
     {
@@ -2575,7 +2575,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set the name of the PHP function that will be called if a template cannot be found.
      *
-     * @param string $default_template_handler_func The name of the PHP function to call if a template cannot be found.
+     * @param string $default_template_handler_func The name of the PHP function to call if a template cannot be found
      *
      * @return $this
      */
@@ -2594,7 +2594,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      * @see    Smarty::$compiler_file
      * @see    setCompilerClass()
      *
-     * @return string The name of the file that contains the compiler class.
+     * @return string The name of the file that contains the compiler class
      */
     public function getCompilerFile()
     {
@@ -2606,7 +2606,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * This can a full pathname, or relative to the php_include path.
      *
-     * @param string $compiler_file The name of the file that contains the compiler class.
+     * @param string $compiler_file The name of the file that contains the compiler class
      *
      * @see    Smarty::$compiler_file
      * @see    setCompilerClass()
@@ -2623,7 +2623,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the name of the class used to compile templates.
      *
-     * @return string The name of the class used to compile templates.
+     * @return string The name of the class used to compile templates
      */
     public function getCompilerClass()
     {
@@ -2633,7 +2633,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set the name of the class that will be used to compile templates.
      *
-     * @param string $compiler_class The name of the class used to compile templates.
+     * @param string $compiler_class The name of the class used to compile templates
      *
      * @return $this
      */
@@ -2647,7 +2647,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the info that makes up a cache file ({@link Smarty::$_cache_info}).
      *
-     * @return array Array of info that makes up a cache file.
+     * @return array Array of info that makes up a cache file
      */
     public function getCacheInfo()
     {
@@ -2657,7 +2657,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set the info that makes up a cache file ({@link Smarty::$_cache_info}).
      *
-     * @param array $_cache_info Array of info that makes up a cache file.
+     * @param array $_cache_info Array of info that makes up a cache file
      *
      * @return $this
      */
@@ -2671,7 +2671,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the file permissions ({@link Smarty::$_file_perms}).
      *
-     * @return int File permissions.
+     * @return int File permissions
      */
     public function getFilePerms()
     {
@@ -2681,7 +2681,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set the file permissions ({@link Smarty::$_file_perms}).
      *
-     * @param int $_file_perms File permissions; use an octal number, e.g. set_file_perms(0664).
+     * @param int $_file_perms File permissions; use an octal number, e.g. set_file_perms(0664)
      *
      * @return $this
      */
@@ -2695,7 +2695,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the directory permissions ({@link Smarty::$_dir_perms}).
      *
-     * @return int Directory permissions.
+     * @return int Directory permissions
      */
     public function getDirPerms()
     {
@@ -2705,7 +2705,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set the directory permissions ({@link Smarty::$_dir_perms}).
      *
-     * @param int $_dir_perms Directory permissions; use an octal number, e.g. set_dir_perms(0771).
+     * @param int $_dir_perms Directory permissions; use an octal number, e.g. set_dir_perms(0771)
      *
      * @return $this
      */
@@ -2719,7 +2719,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the {@link Smarty::$_reg_objects} registered objects.
      *
-     * @return array Registered objects array.
+     * @return array Registered objects array
      */
     public function getRegObjects()
     {
@@ -2729,7 +2729,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set the {@link Smarty::$_reg_objects} registered objects.
      *
-     * @param array $_reg_objects Registered objects.
+     * @param array $_reg_objects Registered objects
      *
      * @return $this
      */
@@ -2743,7 +2743,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the array keeping track of plugins (see {@link Smarty::$_plugins}).
      *
-     * @return array An array of plugins by type.
+     * @return array An array of plugins by type
      */
     public function getPlugins()
     {
@@ -2753,7 +2753,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set the array keeping track of plugins (see {@link Smarty::$_plugins}).
      *
-     * @param array $_plugins An array of plugins by type.
+     * @param array $_plugins An array of plugins by type
      *
      * @return $this
      */
@@ -2767,7 +2767,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the value of {@link Smarty::$_cache_serials}.
      *
-     * @return array Cache serials.
+     * @return array Cache serials
      */
     public function getCacheSerials()
     {
@@ -2777,7 +2777,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Setter for {@link Smarty::$_cache_serials}
      *
-     * @param array $_cache_serials Cache serials.
+     * @param array $_cache_serials Cache serials
      *
      * @return $this
      */
@@ -2791,7 +2791,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the value of {@link Smarty::$_cache_include}.
      *
-     * @return string Name of optional cache include file.
+     * @return string Name of optional cache include file
      */
     public function getCacheInclude()
     {
@@ -2801,7 +2801,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Setter for {@link Smarty::$_cache_include}.
      *
-     * @param string $_cache_include Name of optional cache include file.
+     * @param string $_cache_include Name of optional cache include file
      *
      * @return $this
      */
@@ -2815,7 +2815,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Retrieve the value of {@link Smarty::$_cache_including}.
      *
-     * @return boolean True if the current code is used in a compiled include, otherwise false.
+     * @return boolean True if the current code is used in a compiled include, otherwise false
      */
     public function getCacheIncluding()
     {
@@ -2825,7 +2825,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Setter for {@link Smarty::$_cache_including}.
      *
-     * @param boolean $_cache_including Indicate if the current code is used in a compiled include.
+     * @param boolean $_cache_including Indicate if the current code is used in a compiled include
      *
      * @return $this
      */
@@ -2839,7 +2839,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Disable or enable add the module wrapper.
      *
-     * @param boolean $wrap False to disable wrapper, true to enable it.
+     * @param boolean $wrap False to disable wrapper, true to enable it
      *
      * @return $this
      */
@@ -2855,12 +2855,12 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Smarty override to customize the core.process_cached_inserts
      *
-     * @param string  $template   The name of the template.
-     * @param string  $cache_id   The cache ID (optional).
-     * @param string  $compile_id The compile ID (optional).
-     * @param boolean $display    Whether or not to display directly (optional).
+     * @param string  $template   The name of the template
+     * @param string  $cache_id   The cache ID (optional)
+     * @param string  $compile_id The compile ID (optional)
+     * @param boolean $display    Whether or not to display directly (optional)
      *
-     * @return string The template output.
+     * @return string The template output
      */
     public function _fetch($resource_name, $cache_id = null, $compile_id = null, $display = false)
     {
@@ -3070,9 +3070,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
  * Allows the use of {{ and }} as delimiters within certain tags,
  * even if they use { and } as block delimiters.
  *
- * @param array $matches The $matches array from preg_replace_callback, containing the matched groups.
+ * @param array $matches The $matches array from preg_replace_callback, containing the matched groups
  *
- * @return string The replacement string for the match.
+ * @return string The replacement string for the match
  */
 function z_prefilter_add_literal_callback($matches)
 {
@@ -3095,10 +3095,10 @@ function z_prefilter_add_literal_callback($matches)
  *
  * Tags affected: <script> and <style>.
  *
- * @param string      $tpl_source The template's source prior to prefiltering.
- * @param Zikula_View $view       A reference to the Zikula_View object.
+ * @param string      $tpl_source The template's source prior to prefiltering
+ * @param Zikula_View $view       A reference to the Zikula_View object
  *
- * @return string The prefiltered template contents.
+ * @return string The prefiltered template contents
  */
 function z_prefilter_add_literal($tpl_source, $view)
 {
@@ -3108,10 +3108,10 @@ function z_prefilter_add_literal($tpl_source, $view)
 /**
  * Prefilter for gettext parameters.
  *
- * @param string      $tpl_source The template's source prior to prefiltering.
- * @param Zikula_View $view       A reference to the Zikula_View object.
+ * @param string      $tpl_source The template's source prior to prefiltering
+ * @param Zikula_View $view       A reference to the Zikula_View object
  *
- * @return string The prefiltered template contents.
+ * @return string The prefiltered template contents
  */
 function z_prefilter_gettext_params($tpl_source, $view)
 {

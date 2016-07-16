@@ -38,9 +38,9 @@
  *   {/pageaddvarblock}
  * </code>
  *
- * @param array       $params  All attributes passed to this function from the template.
- * @param string      $content The content of the block.
- * @param Zikula_View $view    Reference to the Zikula_View object.
+ * @param array       $params  All attributes passed to this function from the template
+ * @param string      $content The content of the block
+ * @param Zikula_View $view    Reference to the Zikula_View object
  *
  * @return string
  */

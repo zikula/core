@@ -30,7 +30,7 @@ class Zikula_Doctrine_Template_StandardFields extends Doctrine_Template
      * Options:
      *   oldColumnPrefix: all columns will be prefixed this string e.g. z_
      *
-     * @param array $options Options.
+     * @param array $options Options
      */
     public function __construct(array $options = [])
     {

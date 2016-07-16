@@ -21,9 +21,9 @@ class GenericUtil
     /**
      * Validate the data for a category
      *
-     * @param array $data The data for the category.
+     * @param array $data The data for the category
      *
-     * @return boolean true/false Whether the provided data is valid.
+     * @return boolean true/false Whether the provided data is valid
      *
      * @throws \InvalidArgumentException Thrown if no category name is provided or
      *                                          if no parent is defined for the category
@@ -72,9 +72,9 @@ class GenericUtil
     /**
      * Process the name of a category
      *
-     * @param array $name The name of the category.
+     * @param array $name The name of the category
      *
-     * @return string the processed name.
+     * @return string the processed name
      */
     public static function processCategoryName($name)
     {
@@ -85,9 +85,9 @@ class GenericUtil
     /**
      * Process the parent of a category
      *
-     * @param integer $parent_id The parent_id of the category.
+     * @param integer $parent_id The parent_id of the category
      *
-     * @return CategoryEntity the parent entity.
+     * @return CategoryEntity the parent entity
      */
     public static function processCategoryParent($parent_id)
     {
@@ -99,10 +99,10 @@ class GenericUtil
     /**
      * Process the display name of a category
      *
-     * @param array $displayname The display name of the category.
-     * @param array $name        The name of the category.
+     * @param array $displayname The display name of the category
+     * @param array $name        The name of the category
      *
-     * @return array the processed display name.
+     * @return array the processed display name
      */
     public static function processCategoryDisplayName($displayname, $name)
     {
@@ -119,10 +119,10 @@ class GenericUtil
     /**
      * Process the path of a category
      *
-     * @param string $parent_path   The path of the parent category.
-     * @param string $category_name The name of the category.
+     * @param string $parent_path   The path of the parent category
+     * @param string $category_name The name of the category
      *
-     * @return string the category path.
+     * @return string the category path
      */
     public static function processCategoryPath($parent_path, $category_name)
     {
@@ -132,10 +132,10 @@ class GenericUtil
     /**
      * Process the ipath of a category
      *
-     * @param string $parent_ipath  The ipath of the parent category.
-     * @param string $category_id   The id of the category.
+     * @param string $parent_ipath  The ipath of the parent category
+     * @param string $category_id   The id of the category
      *
-     * @return string the category path.
+     * @return string the category path
      */
     public static function processCategoryIPath($parent_ipath, $category_id)
     {
@@ -145,9 +145,9 @@ class GenericUtil
     /**
      * Process the attributes of a category
      *
-     * @param CategoryEntity $category      The category to set the attributes for.
-     * @param array          $attrib_names  The attribute names.
-     * @param array          $attrib_values The attribute values.
+     * @param CategoryEntity $category      The category to set the attributes for
+     * @param array          $attrib_names  The attribute names
+     * @param array          $attrib_values The attribute values
      *
      * @return void
      */

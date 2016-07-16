@@ -32,8 +32,8 @@ class TwigExtension extends \Twig_Extension
     /**
      * TwigExtension constructor.
      *
-     * @param bool        $isInstalled Installed flag.
-     * @param VariableApi $variableApi VariableApi service instance.
+     * @param bool        $isInstalled Installed flag
+     * @param VariableApi $variableApi VariableApi service instance
      */
     public function __construct($isInstalled, VariableApi $variableApi)
     {

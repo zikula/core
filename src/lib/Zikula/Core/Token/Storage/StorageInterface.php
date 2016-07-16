@@ -16,7 +16,7 @@ interface StorageInterface
     /**
      * Get token by ID.
      *
-     * @param string $id Id.
+     * @param string $id Id
      *
      * @return string
      */
@@ -25,9 +25,9 @@ interface StorageInterface
     /**
      * Save token.
      *
-     * @param string $id        Id.
-     * @param string $token     Token to be saved.
-     * @param string $timestamp Timestamp of token.
+     * @param string $id        Id
+     * @param string $token     Token to be saved
+     * @param string $timestamp Timestamp of token
      *
      * @return void
      */
@@ -36,7 +36,7 @@ interface StorageInterface
     /**
      * Delete token by ID.
      *
-     * @param string $id Id.
+     * @param string $id Id
      *
      * @return void
      */

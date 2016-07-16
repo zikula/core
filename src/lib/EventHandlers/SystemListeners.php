@@ -35,7 +35,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Listen on 'core.init' module.
      *
-     * @param Zikula_Event $event Event.
+     * @param Zikula_Event $event Event
      *
      * @return void
      */
@@ -54,7 +54,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * Implements 'core.init' event when Zikula_Core::STAGE_SESSIONS.
      *
-     * @param Zikula_Event $event The event handler.
+     * @param Zikula_Event $event The event handler
      *
      * @return void
      */
@@ -75,7 +75,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * Implements 'session.require'.
      *
-     * @param Zikula_Event $event The event handler.
+     * @param Zikula_Event $event The event handler
      *
      * @return void
      */
@@ -106,7 +106,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * Implements 'core.preinit' event
      *
-     * @param Zikula_Event $event The event handler.
+     * @param Zikula_Event $event The event handler
      *
      * @return void
      */
@@ -123,7 +123,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * Implements 'core.init' event when Zikula_Core::STAGE_TABLES.
      *
-     * @param Zikula_Event $event The event handler.
+     * @param Zikula_Event $event The event handler
      *
      * @return void
      */
@@ -143,7 +143,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * Implements 'core.init' events when Zikula_Core::STAGE_CONFIG.
      *
-     * @param Zikula_Event $event Event.
+     * @param Zikula_Event $event Event
      *
      * @return void
      */
@@ -159,7 +159,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * Listens for the 'installer.module.uninstalled' event.
      *
-     * @param Zikula_Event $event Event.
+     * @param Zikula_Event $event Event
      *
      * @return void
      */
@@ -188,7 +188,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * Implements 'pageutil.addvar_filter' event.
      *
-     * @param Zikula_Event $event The event handler.
+     * @param Zikula_Event $event The event handler
      *
      * @return void
      */

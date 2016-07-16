@@ -14,11 +14,11 @@
  *
  * This plugin represents a menu item.
  *
- * @param array            $params Parameters passed in the block tag.
- * @param Zikula_Form_View $view   Reference to Form render object.
+ * @param array            $params Parameters passed in the block tag
+ * @param Zikula_Form_View $view   Reference to Form render object
  *
  * @see    Zikula_Form_Plugin_ContextMenu
- * @return string The rendered output.
+ * @return string The rendered output
  */
 function smarty_function_formcontextmenuitem($params, $view)
 {

@@ -16,9 +16,9 @@
  *
  *   {$myVar|activeinactive|safetext} returns Active if $myVar = 1 and Inactive if $myVar = 0
  *
- * @param string $string The contents to transform.
+ * @param string $string The contents to transform
  *
- * @return string The modified output.
+ * @return string The modified output
  */
 function smarty_modifier_activeinactive($string)
 {

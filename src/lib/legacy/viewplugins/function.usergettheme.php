@@ -15,10 +15,10 @@
  * Available parameters:
  *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
- * @return string The variables content.
+ * @return string The variables content
  */
 function smarty_function_usergettheme($params, Zikula_View $view)
 {

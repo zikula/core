@@ -31,9 +31,9 @@ abstract class StreamReader_Abstract
     /**
      * Read.
      *
-     * @param string $bytes Bytes.
+     * @param string $bytes Bytes
      *
-     * @return string Of bytes.
+     * @return string Of bytes
      */
     abstract public function read($bytes);
 
@@ -42,16 +42,16 @@ abstract class StreamReader_Abstract
      *
      * Should return new position
      *
-     * @param integer $position Position.
+     * @param integer $position Position
      *
-     * @return integer Position.
+     * @return integer Position
      */
     abstract public function seekto($position);
 
     /**
      * Return the current position.
      *
-     * @return integer The current position.
+     * @return integer The current position
      */
     abstract public function currentpos();
 
@@ -60,14 +60,14 @@ abstract class StreamReader_Abstract
      *
      * Returns length of entire stream (limit for seekto()s).
      *
-     * @return integer The length.
+     * @return integer The length
      */
     abstract public function length();
 
     /**
      * Set error property.
      *
-     * @param string $error The error.
+     * @param string $error The error
      *
      * @return void
      */
@@ -79,7 +79,7 @@ abstract class StreamReader_Abstract
     /**
      * Get error.
      *
-     * @return string The error.
+     * @return string The error
      */
     public function getError()
     {

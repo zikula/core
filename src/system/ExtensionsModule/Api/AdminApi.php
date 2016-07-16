@@ -1142,7 +1142,7 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Upgrade all modules.
      *
-     * @return array An array of upgrade results, indexed by module name.
+     * @return array An array of upgrade results, indexed by module name
      */
     public function upgradeall()
     {
@@ -1191,7 +1191,7 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type int    $state  Filter the count by the module state; optional
      *                       }
      *
-     * @return integer The number of items held by this module.
+     * @return integer The number of items held by this module
      */
     public function countitems($args)
     {
@@ -1251,9 +1251,9 @@ class AdminApi extends \Zikula_AbstractApi
      * @deprecated since 1.4.0 use getalldependencies instead
      * @todo remove in 1.5.0
      *
-     * @see $this->getalldependencies instead.
+     * @see $this->getalldependencies instead
      *
-     * @return array Array of dependencies.
+     * @return array Array of dependencies
      */
     public function getdallependencies()
     {
@@ -1263,7 +1263,7 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Get all module dependencies.
      *
-     * @return array Array of dependencies.
+     * @return array Array of dependencies
      */
     public function getalldependencies()
     {
@@ -1302,7 +1302,7 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type int $modid Id of module to get dependants for
      *                     }
      *
-     * @return array|boolean Array of dependents; false otherwise.
+     * @return array|boolean Array of dependents; false otherwise
      *
      * @throws \InvalidArgumentException Thrown if the modid paramter is not set, empty or not numeric
      */
@@ -1400,7 +1400,7 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type string $modulename The name of the module to check.
      *                        }
      *
-     * @return boolean True if it's a core module; otherwise false.
+     * @return boolean True if it's a core module; otherwise false
      */
     public function iscoremodule($args)
     {

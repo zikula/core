@@ -147,9 +147,9 @@ class ConfigType extends AbstractType
     /**
      * Returns a list of choices for the admin theme selection.
      *
-     * @param Translator $translator Translator service instance.
+     * @param Translator $translator Translator service instance
      *
-     * @return array Choices list.
+     * @return array Choices list
      */
     private function getAdminThemeChoices($translator)
     {

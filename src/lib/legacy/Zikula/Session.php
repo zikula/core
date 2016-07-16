@@ -128,8 +128,8 @@ class Zikula_Session extends Session
     /**
      * Add session message to the stack for a given type.
      *
-     * @param string $type  Type.
-     * @param mixed  $value Value.
+     * @param string $type  Type
+     * @param mixed  $value Value
      *
      * @return void
      */
@@ -141,8 +141,8 @@ class Zikula_Session extends Session
     /**
      * Get special attributes by type.
      *
-     * @param string $type    Type.
-     * @param mixed  $default Default value to return (default = []).
+     * @param string $type    Type
+     * @param mixed  $default Default value to return (default = [])
      *
      * @return mixed
      */
@@ -154,7 +154,7 @@ class Zikula_Session extends Session
     /**
      * Has attributes of type.
      *
-     * @param string $type Type.
+     * @param string $type Type
      *
      * @return boolean
      */
@@ -166,7 +166,7 @@ class Zikula_Session extends Session
     /**
      * Clear messages of type.
      *
-     * @param string $type Type.
+     * @param string $type Type
      *
      * @return void
      */
@@ -178,11 +178,11 @@ class Zikula_Session extends Session
     /**
      * Set session variable.
      *
-     * @param string $key       Key.
-     * @param mixed  $default   Default = null.
-     * @param string $namespace Namespace.
+     * @param string $key       Key
+     * @param mixed  $default   Default = null
+     * @param string $namespace Namespace
      *
-     * @throws InvalidArgumentException If illegal namespace received.
+     * @throws InvalidArgumentException If illegal namespace received
      *
      * @return mixed
      */
@@ -194,11 +194,11 @@ class Zikula_Session extends Session
     /**
      * Set a session variable.
      *
-     * @param string $key       Key.
-     * @param mixed  $value     Value.
-     * @param string $namespace Namespace.
+     * @param string $key       Key
+     * @param mixed  $value     Value
+     * @param string $namespace Namespace
      *
-     * @throws InvalidArgumentException If illegal namespace received.
+     * @throws InvalidArgumentException If illegal namespace received
      *
      * @return void
      */
@@ -210,10 +210,10 @@ class Zikula_Session extends Session
     /**
      * Delete session variable by key.
      *
-     * @param string $key       Key.
-     * @param string $namespace Namespace.
+     * @param string $key       Key
+     * @param string $namespace Namespace
      *
-     * @throws InvalidArgumentException If illegal namespace received.
+     * @throws InvalidArgumentException If illegal namespace received
      *
      * @return void
      */
@@ -225,10 +225,10 @@ class Zikula_Session extends Session
     /**
      * Check if session variable key exists.
      *
-     * @param string $key       Key.
-     * @param string $namespace Namespace.
+     * @param string $key       Key
+     * @param string $namespace Namespace
      *
-     * @throws InvalidArgumentException If illegal namespace received.
+     * @throws InvalidArgumentException If illegal namespace received
      *
      * @return boolean
      */
@@ -242,11 +242,11 @@ class Zikula_Session extends Session
      *
      * Use with caution, and only if you know that no other code makes use of the namespace.
      *
-     * @param string $namespace Namespace.
+     * @param string $namespace Namespace
      *
      * @deprecated
      *
-     * @throws InvalidArgumentException If illegal namespace received.
+     * @throws InvalidArgumentException If illegal namespace received
      *
      * @return void
      */

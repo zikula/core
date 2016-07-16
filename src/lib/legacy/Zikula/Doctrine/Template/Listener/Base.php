@@ -19,10 +19,10 @@ abstract class Zikula_Doctrine_Template_Listener_Base extends Doctrine_Record_Li
     /**
      * Extracts the Doctrine_Table instance from an event.
      *
-     * @param Doctrine_Event $event Event.
+     * @param Doctrine_Event $event Event
      *
      * @return Doctrine_Table Table
-     * @throws LogicException If this method is unable to extract the Table instance.
+     * @throws LogicException If this method is unable to extract the Table instance
      */
     protected function getTableFromEvent(Doctrine_Event $event)
     {
@@ -41,7 +41,7 @@ abstract class Zikula_Doctrine_Template_Listener_Base extends Doctrine_Record_Li
     /**
      * Extracts the table name from an event.
      *
-     * @param Doctrine_Event $event Event.
+     * @param Doctrine_Event $event Event
      *
      * @return string Table name
      */
@@ -56,7 +56,7 @@ abstract class Zikula_Doctrine_Template_Listener_Base extends Doctrine_Record_Li
     /**
      * Returns the column name of the primary key of the table from an event.
      *
-     * @param Doctrine_Event $event Event.
+     * @param Doctrine_Event $event Event
      *
      * @return string Column name of the primary key
      */

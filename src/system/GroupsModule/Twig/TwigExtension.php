@@ -31,9 +31,9 @@ class TwigExtension extends \Twig_Extension
     /**
      * Returns a link to the user's profile.
      *
-     * @param int     $uid       The user's id (optional).
-     * @param string  $class     The class name for the link (optional).
-     * @param integer $maxLength If set then user names are truncated to x chars.
+     * @param int     $uid       The user's id (optional)
+     * @param string  $class     The class name for the link (optional)
+     * @param integer $maxLength If set then user names are truncated to x chars
      *
      * @return string
      */

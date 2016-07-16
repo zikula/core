@@ -31,12 +31,12 @@
  *   {modapifunc modname='foobar' type='user' func='getfoo' id='1' assign='myfoo'}
  *   {$myfoo.title}
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
  * @see    function.modfunc.php::smarty_function_modfunc()
  *
- * @return string The results of the module API function.
+ * @return string The results of the module API function
  */
 function smarty_function_modapifunc($params, Zikula_View $view)
 {

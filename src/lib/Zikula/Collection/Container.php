@@ -33,8 +33,8 @@ class Zikula_Collection_Container implements CollectionInterface
     /**
      * Construct a new Zikula_Collection.
      *
-     * @param string      $name       The name of the collection.
-     * @param ArrayObject $collection The collection (optional).
+     * @param string      $name       The name of the collection
+     * @param ArrayObject $collection The collection (optional)
      */
     public function __construct($name, ArrayObject $collection = null)
     {
@@ -45,7 +45,7 @@ class Zikula_Collection_Container implements CollectionInterface
     /**
      * Retrieve the collection.
      *
-     * @return ArrayObject The collection.
+     * @return ArrayObject The collection
      */
     public function getCollection()
     {
@@ -55,7 +55,7 @@ class Zikula_Collection_Container implements CollectionInterface
     /**
      * Set the collection.
      *
-     * @param ArrayObject $collection The collection.
+     * @param ArrayObject $collection The collection
      *
      * @return void
      */
@@ -67,7 +67,7 @@ class Zikula_Collection_Container implements CollectionInterface
     /**
      * Retrieve the name of the collection.
      *
-     * @return string The name.
+     * @return string The name
      */
     public function getName()
     {
@@ -77,7 +77,7 @@ class Zikula_Collection_Container implements CollectionInterface
     /**
      * Append a value to the collection without an index.
      *
-     * @param mixed $value The value to append.
+     * @param mixed $value The value to append
      *
      * @return void
      */
@@ -89,8 +89,8 @@ class Zikula_Collection_Container implements CollectionInterface
     /**
      * Set the value of the specified item in the collection.
      *
-     * @param mixed $key   The index of the item for which the value should be set.
-     * @param mixed $value The value of the item.
+     * @param mixed $key   The index of the item for which the value should be set
+     * @param mixed $value The value of the item
      *
      * @return void
      */
@@ -102,7 +102,7 @@ class Zikula_Collection_Container implements CollectionInterface
     /**
      * Retrieve the specified item from the collection.
      *
-     * @param mixed $key The index of the item to retrieve.
+     * @param mixed $key The index of the item to retrieve
      *
      * @return mixed
      */
@@ -114,9 +114,9 @@ class Zikula_Collection_Container implements CollectionInterface
     /**
      * Indicates whether the element indexed by the $key is set.
      *
-     * @param mixed $key The index to check.
+     * @param mixed $key The index to check
      *
-     * @return boolean True if the collection contains the item identified by $key; otherwise false.
+     * @return boolean True if the collection contains the item identified by $key; otherwise false
      */
     public function has($key)
     {
@@ -126,7 +126,7 @@ class Zikula_Collection_Container implements CollectionInterface
     /**
      * Remove the specified item from the collection.
      *
-     * @param mixed $key The index of the item to remove.
+     * @param mixed $key The index of the item to remove
      *
      * @return void
      */
@@ -142,7 +142,7 @@ class Zikula_Collection_Container implements CollectionInterface
     /**
      * Retrieve an external iterator (see {@link IteratorAggregate}).
      *
-     * @return Traversable The iterator instance.
+     * @return Traversable The iterator instance
      */
     public function getIterator()
     {
@@ -154,7 +154,7 @@ class Zikula_Collection_Container implements CollectionInterface
     /**
      * Count the number of elements in the collection.
      *
-     * @return integer The number of elements in the collection.
+     * @return integer The number of elements in the collection
      */
     public function count()
     {
@@ -164,7 +164,7 @@ class Zikula_Collection_Container implements CollectionInterface
     /**
      * Indicates whether this collection is initialized or not.
      *
-     * @return boolean True if the instance has a collection, otherwise false.
+     * @return boolean True if the instance has a collection, otherwise false
      */
     public function hasCollection()
     {
@@ -176,11 +176,11 @@ class Zikula_Collection_Container implements CollectionInterface
     /**
      * Returns the value at the specified offset (see {@link ArrayAccess::offsetGet()}).
      *
-     * @param mixed $key The offset to retrieve.
+     * @param mixed $key The offset to retrieve
      *
-     * @return mixed The value at the specified offset.
+     * @return mixed The value at the specified offset
      *
-     * @throws InvalidArgumentException Thrown if the key does not exist in the collection.
+     * @throws InvalidArgumentException Thrown if the key does not exist in the collection
      */
     public function offsetGet($key)
     {
@@ -193,8 +193,8 @@ class Zikula_Collection_Container implements CollectionInterface
     /**
      * Set the value at the specified offset (see {@link ArrayAccess::offsetSet()}).
      *
-     * @param mixed $key   The offset to retrieve.
-     * @param mixed $value The value to set at the specified offset.
+     * @param mixed $key   The offset to retrieve
+     * @param mixed $value The value to set at the specified offset
      *
      * @return mixed
      */
@@ -206,9 +206,9 @@ class Zikula_Collection_Container implements CollectionInterface
     /**
      * Indicate whether the specified offset is set (see {@link ArrayAccess::offsetExists()}).
      *
-     * @param mixed $key The offset to check.
+     * @param mixed $key The offset to check
      *
-     * @return boolean True if the offset is set, otherwise false.
+     * @return boolean True if the offset is set, otherwise false
      */
     public function offsetExists($key)
     {
@@ -218,7 +218,7 @@ class Zikula_Collection_Container implements CollectionInterface
     /**
      * Unset the specified offset (see {@link ArrayAccess::offsetUnset()}).
      *
-     * @param mixed $key The offset to unset.
+     * @param mixed $key The offset to unset
      *
      * @return void
      */

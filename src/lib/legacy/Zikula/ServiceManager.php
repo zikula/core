@@ -23,16 +23,16 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
     /**
      * Attach an existing service.
      *
-     * @param string  $id      The ID of the service.
-     * @param object  $service An already existing object.
-     * @param boolean $shared  True if this is a single instance (default).
+     * @param string  $id      The ID of the service
+     * @param object  $service An already existing object
+     * @param boolean $shared  True if this is a single instance (default)
      *
      * @deprecated since 1.4.0
      * @see \Symfony\Component\DependencyInjection\ContainerBuilder::set()
      *
-     * @throws InvalidArgumentException If the service is already registered.
+     * @throws InvalidArgumentException If the service is already registered
      *
-     * @return object $service.
+     * @return object $service
      */
     public function attachService($id, $service, $shared = true)
     {
@@ -47,12 +47,12 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      *
      * Alias for unregister service
      *
-     * @param string $id Service ID.
+     * @param string $id Service ID
      *
      * @deprecated since 1.4.0
      * @see \Symfony\Component\DependencyInjection\ContainerBuilder::remove()
      *
-     * @throws Exception If the $id isn't registered.
+     * @throws Exception If the $id isn't registered
      *
      * @return void
      */
@@ -66,14 +66,14 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      *
      * This will register the definition as a service.
      *
-     * @param string                           $id         Service Id.
-     * @param Zikula_ServiceManager_Definition $definition Service definition.
-     * @param boolean                          $shared     Shared type.
+     * @param string                           $id         Service Id
+     * @param Zikula_ServiceManager_Definition $definition Service definition
+     * @param boolean                          $shared     Shared type
      *
      * @deprecated since 1.4.0
      * @see \Symfony\Component\DependencyInjection\ContainerBuilder::setDefinition()
      *
-     * @throws InvalidArgumentException If service ID is already registered.
+     * @throws InvalidArgumentException If service ID is already registered
      *
      * @return void
      */
@@ -91,12 +91,12 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
     /**
      * Unregisters a service.
      *
-     * @param string $id The service identifier.
+     * @param string $id The service identifier
      *
      * @deprecated since 1.4.0
      * @see \Symfony\Component\DependencyInjection\ContainerBuilder::removeDefinition()
      *
-     * @throws InvalidArgumentException If the $id isn't registered.
+     * @throws InvalidArgumentException If the $id isn't registered
      *
      * @return void
      */
@@ -123,14 +123,14 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      * a new service will be instanciated each time it is requested.  If the service
      * exists already it will be returned.
      *
-     * @param string $id The service identifier.
+     * @param string $id The service identifier
      *
      * @deprecated since 1.4.0
      * @see \Symfony\Component\DependencyInjection\ContainerBuilder::get()
      *
-     * @throws InvalidArgumentException If no identifier exists.
+     * @throws InvalidArgumentException If no identifier exists
      *
-     * @return object The service.
+     * @return object The service
      */
     public function getService($id)
     {
@@ -140,7 +140,7 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
     /**
      * True if we have the service $id registered.
      *
-     * @param string $id True if the service is registered.
+     * @param string $id True if the service is registered
      *
      * @deprecated since 1.4.0
      * @see \Symfony\Component\DependencyInjection\ContainerBuilder::has()
@@ -155,9 +155,9 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
     /**
      * Return an array of service IDs registered.
      *
-     * @param string $prefix Filter service list by prefix, default = '' for no filtering.
+     * @param string $prefix Filter service list by prefix, default = '' for no filtering
      *
-     * @return array Non associative array of service IDs.
+     * @return array Non associative array of service IDs
      */
     public function listServices($prefix = '')
     {
@@ -187,7 +187,7 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
     /**
      * Setter for arguments property.
      *
-     * @param array $array Array of id=>value.
+     * @param array $array Array of id=>value
      *
      * @deprecated since 1.4.0
      * @see \Symfony\Component\DependencyInjection\ContainerBuilder::setParameter()
@@ -205,7 +205,7 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
     /**
      * Has argument.
      *
-     * @param string $id Id.
+     * @param string $id Id
      *
      * @deprecated since 1.4.0
      * @see \Symfony\Component\DependencyInjection\ContainerBuilder::hasParameter()
@@ -220,8 +220,8 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
     /**
      * Set one argument.
      *
-     * @param string $id    Argument id.
-     * @param string $value Argument value.
+     * @param string $id    Argument id
+     * @param string $value Argument value
      *
      * @deprecated since 1.4.0
      * @see \Symfony\Component\DependencyInjection\ContainerBuilder::setParameter()
@@ -236,12 +236,12 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
     /**
      * Get argument.
      *
-     * @param string $id Argument id.
+     * @param string $id Argument id
      *
      * @deprecated since 1.4.0
      * @see \Symfony\Component\DependencyInjection\ContainerBuilder::getParameter()
      *
-     * @throws InvalidArgumentException If id is not set.
+     * @throws InvalidArgumentException If id is not set
      *
      * @return mixed
      */
@@ -253,7 +253,7 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
     /**
      * Load multiple arguments.
      *
-     * @param array $array Array of id=>$value.
+     * @param array $array Array of id=>$value
      *
      * @deprecated since 1.4.0
      * @see \Symfony\Component\DependencyInjection\ContainerBuilder::setParameters()
@@ -268,9 +268,9 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
     /**
      * Getter for ArrayAccess interface.
      *
-     * @param string $id Argument id.
+     * @param string $id Argument id
      *
-     * @return mixed Argument value.
+     * @return mixed Argument value
      */
     public function offsetGet($id)
     {
@@ -280,8 +280,8 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
     /**
      * Setter for ArrayAccess interface.
      *
-     * @param string $id    Argument id.
-     * @param mixed  $value Argument value.
+     * @param string $id    Argument id
+     * @param mixed  $value Argument value
      *
      * @return void
      */
@@ -293,7 +293,7 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
     /**
      * Has() method on argument property for ArrayAccess interface.
      *
-     * @param string $id Argument id.
+     * @param string $id Argument id
      *
      * @return boolean
      */
@@ -305,7 +305,7 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
     /**
      * Unset argument by id, implementation for ArrayAccess.
      *
-     * @param string $id Id.
+     * @param string $id Id
      *
      * @return void
      */

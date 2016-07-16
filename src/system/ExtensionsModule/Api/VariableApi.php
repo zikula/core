@@ -98,10 +98,10 @@ class VariableApi
      * Checks to see if an extension variable is set.
      * @api Core-2.0
      *
-     * @param string $extensionName The name of the extension.
-     * @param string $variableName The name of the variable.
+     * @param string $extensionName The name of the extension
+     * @param string $variableName The name of the variable
      *
-     * @return boolean True if the variable exists in the database, false if not.
+     * @return boolean True if the variable exists in the database, false if not
      */
     public function has($extensionName, $variableName)
     {
@@ -119,9 +119,9 @@ class VariableApi
      * Get an extension variable.
      * @api Core-2.0
      *
-     * @param string $extensionName The name of the extension or pseudo-extension (e.g., 'ZikulaUsersModule', 'ZConfig', '/EventHandlers').
-     * @param string $variableName The name of the variable.
-     * @param mixed $default The value to return if the requested var is not set.
+     * @param string $extensionName The name of the extension or pseudo-extension (e.g., 'ZikulaUsersModule', 'ZConfig', '/EventHandlers')
+     * @param string $variableName The name of the variable
+     * @param mixed $default The value to return if the requested var is not set
      *
      * @return mixed - extension variable value
      */
@@ -164,11 +164,11 @@ class VariableApi
      * Set an extension variable.
      * @api Core-2.0
      *
-     * @param string $extensionName The name of the extension.
-     * @param string $variableName The name of the variable.
-     * @param string $value The value of the variable.
+     * @param string $extensionName The name of the extension
+     * @param string $variableName The name of the variable
+     * @param string $value The value of the variable
      *
-     * @return boolean True if successful, false otherwise.
+     * @return boolean True if successful, false otherwise
      */
     public function set($extensionName, $variableName, $value = '')
     {
@@ -205,10 +205,10 @@ class VariableApi
      * The setAll method sets multiple extension variables.
      * @api Core-2.0
      *
-     * @param string $extensionName The name of the extension.
-     * @param array $vars An associative array of varnames/varvalues.
+     * @param string $extensionName The name of the extension
+     * @param array $vars An associative array of varnames/varvalues
      *
-     * @return boolean True if successful, false otherwise.
+     * @return boolean True if successful, false otherwise
      */
     public function setAll($extensionName, array $vars)
     {
@@ -224,10 +224,10 @@ class VariableApi
      * Delete an extension variable.
      * @api Core-2.0
      *
-     * @param string $extensionName The name of the extension.
-     * @param string $variableName The name of the variable.
+     * @param string $extensionName The name of the extension
+     * @param string $variableName The name of the variable
      *
-     * @return boolean True if successful (or var didn't exist), false otherwise.
+     * @return boolean True if successful (or var didn't exist), false otherwise
      */
     public function del($extensionName, $variableName)
     {

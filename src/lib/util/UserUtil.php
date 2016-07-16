@@ -40,15 +40,15 @@ class UserUtil
     /**
      * Return a hash structure mapping uid to username.
      *
-     * @param array   $where        Array of field values to filter by (optional, default=[]).
-     * @param array   $orderBy      Array fields to sort by (optional, default=[]).
-     * @param integer $limitOffset  The select-limit offset (optional, default=null).
-     * @param integer $limitNumRows The number of rows to fetch (optional, default=null).
-     * @param string  $assocKey     The associative key to apply (optional) (default='uid').
+     * @param array   $where        Array of field values to filter by (optional, default=[])
+     * @param array   $orderBy      Array fields to sort by (optional, default=[])
+     * @param integer $limitOffset  The select-limit offset (optional, default=null)
+     * @param integer $limitNumRows The number of rows to fetch (optional, default=null)
+     * @param string  $assocKey     The associative key to apply (optional) (default='uid')
      *
      * @deprecated since 1.3.0
      *
-     * @return array An array mapping uid to username.
+     * @return array An array mapping uid to username
      */
     public static function getUsers(array $where = [], array $orderBy = [], $limitOffset = null, $limitNumRows = null, $assocKey = 'uid')
     {
@@ -79,11 +79,11 @@ class UserUtil
     /**
      * Return a group object.
      *
-     * @param integer $gid The groupID to retrieve.
+     * @param integer $gid The groupID to retrieve
      *
      * @todo   Decouple UserUtil and Groups?
      *
-     * @return array The resulting group object.
+     * @return array The resulting group object
      */
     public static function getGroup($gid)
     {
@@ -93,13 +93,13 @@ class UserUtil
     /**
      * Return a hash structure mapping gid to groupname.
      *
-     * @param string  $where        The where clause to use (optional) (default=[]).
-     * @param string  $orderBy      The order by clause to use (optional) (default=[]).
-     * @param integer $limitOffset  The select-limit offset (optional) (default=null).
-     * @param integer $limitNumRows The number of rows to fetch (optional) (default=null).
-     * @param string  $assocKey     The associative key to apply (optional) (default='gid').
+     * @param string  $where        The where clause to use (optional) (default=[])
+     * @param string  $orderBy      The order by clause to use (optional) (default=[])
+     * @param integer $limitOffset  The select-limit offset (optional) (default=null)
+     * @param integer $limitNumRows The number of rows to fetch (optional) (default=null)
+     * @param string  $assocKey     The associative key to apply (optional) (default='gid')
      *
-     * @return array An array mapping gid to groupname.
+     * @return array An array mapping gid to groupname
      */
     public static function getGroups(array $where = [], array $orderBy = [], $limitOffset = null, $limitNumRows = null, $assocKey = 'gid')
     {
@@ -117,11 +117,11 @@ class UserUtil
     /**
      * Return a (string) list of user-ids which can then be used in a SQL 'IN (...)' clause.
      *
-     * @param string $where     The where clause to use (optional).
-     * @param string $orderBy   The order by clause to use (optional).
-     * @param string $separator The field separator to use (default=",") (optional).
+     * @param string $where     The where clause to use (optional)
+     * @param string $orderBy   The order by clause to use (optional)
+     * @param string $separator The field separator to use (default=",") (optional)
      *
-     * @return string A string list of user ids.
+     * @return string A string list of user ids
      */
     public static function getUserIdList($where = '', $orderBy = '', $separator = ',')
     {
@@ -140,11 +140,11 @@ class UserUtil
     /**
      * Return a (string) list of group-ids which can then be used in a SQL 'IN (...)' clause.
      *
-     * @param string $where     The where clause to use (optional) (default=[]).
-     * @param string $orderBy   The order by clause to use (optional) (default=[]).
-     * @param string $separator The field separator to use (default=",") (optional).
+     * @param string $where     The where clause to use (optional) (default=[])
+     * @param string $orderBy   The order by clause to use (optional) (default=[])
+     * @param string $separator The field separator to use (default=",") (optional)
      *
-     * @return string A string list of group ids.
+     * @return string A string list of group ids
      */
     public static function getGroupIdList(array $where = [], array $orderBy = [], $separator = ',')
     {
@@ -163,9 +163,9 @@ class UserUtil
     /**
      * Return an array of group-ids for the specified user.
      *
-     * @param integer $uid The user ID for which we want the groups.
+     * @param integer $uid The user ID for which we want the groups
      *
-     * @return array An array of group IDs.
+     * @return array An array of group IDs
      */
     public static function getGroupsForUser($uid)
     {
@@ -179,10 +179,10 @@ class UserUtil
     /**
      * Return a string list of group-ids for the specified user.
      *
-     * @param integer $uid       The user ID for which we want the groups.
-     * @param string  $separator The field separator to use (default=",") (optional).
+     * @param integer $uid       The user ID for which we want the groups
+     * @param string  $separator The field separator to use (default=",") (optional)
      *
-     * @return string A string list of group ids.
+     * @return string A string list of group ids
      */
     public static function getGroupListForUser($uid = null, $separator = ',')
     {
@@ -211,9 +211,9 @@ class UserUtil
     /**
      * Return a string list of user-ids for the specified group.
      *
-     * @param integer $gid The group ID for which we want the users.
+     * @param integer $gid The group ID for which we want the users
      *
-     * @return array An array of user IDs.
+     * @return array An array of user IDs
      */
     public static function getUsersForGroup($gid)
     {
@@ -240,9 +240,9 @@ class UserUtil
      * String ready to be used as part of the CacheID of the output views.
      * Useful when there aren't another user-based access privilegies, just group permissions.
      *
-     * @param integer $uid User ID to get the group memberships from. Default: current user.
+     * @param integer $uid User ID to get the group memberships from. Default: current user
      *
-     * @return string Cache GIDs string to use on Zikula_View.
+     * @return string Cache GIDs string to use on Zikula_View
      */
     public static function getGidCacheString($uid = null)
     {
@@ -257,9 +257,9 @@ class UserUtil
      * String ready to be used as part of the CacheID of the output views.
      * Useful for user-based access privilegies.
      *
-     * @param integer $uid User ID to get string from. Default: current user.
+     * @param integer $uid User ID to get string from. Default: current user
      *
-     * @return string Cache UID string to use on Zikula_View.
+     * @return string Cache UID string to use on Zikula_View
      */
     public static function getUidCacheString($uid = null)
     {
@@ -271,7 +271,7 @@ class UserUtil
     /**
      * Return the defined dynamic user data fields.
      *
-     * @return array An array of dynamic data field definitions.
+     * @return array An array of dynamic data field definitions
      */
     public static function getDynamicDataFields()
     {
@@ -288,13 +288,13 @@ class UserUtil
     /**
      * Return a array structure for the user group selector.
      *
-     * @param mixed  $defaultValue The default value of the selector (default=0) (optional).
-     * @param string $defaultText  The text of the default value (optional).
-     * @param array  $ignore       An array of keys to ignore (optional).
-     * @param mixed  $includeAll   Whether to include an "All" choice (optional).
-     * @param string $allText      The text to display for the "All" choice (optional).
+     * @param mixed  $defaultValue The default value of the selector (default=0) (optional)
+     * @param string $defaultText  The text of the default value (optional)
+     * @param array  $ignore       An array of keys to ignore (optional)
+     * @param mixed  $includeAll   Whether to include an "All" choice (optional)
+     * @param string $allText      The text to display for the "All" choice (optional)
      *
-     * @return array The array structure for the user group selector.
+     * @return array The array structure for the user group selector
      */
     public static function getSelectorData_Group($defaultValue = 0, $defaultText = '', $ignore = [], $includeAll = 0, $allText = '')
     {
@@ -338,14 +338,14 @@ class UserUtil
     /**
      * Return a array strcuture for the user dropdown box.
      *
-     * @param mixed  $defaultValue The default value of the selector (optional) (default=0).
-     * @param string $defaultText  The text of the default value (optional) (default='').
-     * @param array  $ignore       An array of keys to ignore (optional) (default=[]).
-     * @param mixed  $includeAll   Whether to include an "All" choice (optional) (default=0).
-     * @param string $allText      The text to display for the "All" choice (optional) (default='').
-     * @param string $exclude      An SQL IN-LIST string to exclude specified uids.
+     * @param mixed  $defaultValue The default value of the selector (optional) (default=0)
+     * @param string $defaultText  The text of the default value (optional) (default='')
+     * @param array  $ignore       An array of keys to ignore (optional) (default=[])
+     * @param mixed  $includeAll   Whether to include an "All" choice (optional) (default=0)
+     * @param string $allText      The text to display for the "All" choice (optional) (default='')
+     * @param string $exclude      An SQL IN-LIST string to exclude specified uids
      *
-     * @return array The array structure for the user group selector.
+     * @return array The array structure for the user group selector
      */
     public static function getSelectorData_User($defaultValue = 0, $defaultText = '', array $ignore = [], $includeAll = 0, $allText = '', $exclude = '')
     {
@@ -395,11 +395,11 @@ class UserUtil
      * Retrieve the account recovery information for a user from the various authentication modules.
      *
      * @param integer $uid The user id of the user for which account recovery information should be retrieved; optional, defaults to the
-     *                          currently logged in user (an exception occurs if the current user is not logged in).
+     *                          currently logged in user (an exception occurs if the current user is not logged in)
      *
-     * @return array An array of account recovery information.
+     * @return array An array of account recovery information
      *
-     * @throws InvalidArgumentException If the $uid parameter is not valid.
+     * @throws InvalidArgumentException If the $uid parameter is not valid
      * @throws NotFoundHttpException If the user is not logged in
      */
     public static function getUserAccountRecoveryInfo($uid = -1)
@@ -464,10 +464,10 @@ class UserUtil
     /**
      * Counts how many times a user name has been used by user accounts in the system.
      *
-     * @param string $uname      The e-mail address in question (required).
-     * @param int    $excludeUid The uid to exclude from the check, used when checking modifications.
+     * @param string $uname      The e-mail address in question (required)
+     * @param int    $excludeUid The uid to exclude from the check, used when checking modifications
      *
-     * @return integer|boolean The count, or false on error.
+     * @return integer|boolean The count, or false on error
      */
     public static function getUnameUsageCount($uname, $excludeUid = 0)
     {
@@ -500,10 +500,10 @@ class UserUtil
     /**
      * Counts how many times an e-mail address has been used by user accounts in the system.
      *
-     * @param string $emailAddress The e-mail address in question (required).
-     * @param int    $excludeUid   The uid to exclude from the check, used when checking modifications.
+     * @param string $emailAddress The e-mail address in question (required)
+     * @param int    $excludeUid   The uid to exclude from the check, used when checking modifications
      *
-     * @return integer|boolean the count, or false on error.
+     * @return integer|boolean the count, or false on error
      */
     public static function getEmailUsageCount($emailAddress, $excludeUid = 0)
     {
@@ -557,9 +557,9 @@ class UserUtil
      * When getting a registration record, this function calculates several fields needed for registration state.
      *
      * @param array &$userObj The user object array created by UserUtil::getVars(). NOTE: this parameter is passed by
-     *                          reference, and therefore will be updated by the actions of this function.
+     *                          reference, and therefore will be updated by the actions of this function
      *
-     * @return array The updated $userObj.
+     * @return array The updated $userObj
      */
     public static function postProcessGetRegistration(&$userObj)
     {
@@ -603,18 +603,18 @@ class UserUtil
     /**
      * Get all user variables, maps new style attributes to old style user data.
      *
-     * @param integer $id              The user id of the user (required).
-     * @param boolean $force           True to force loading from database and ignore the cache.
-     * @param string  $idfield         Field to use as id (possible values: uid, uname or email).
+     * @param integer $id              The user id of the user (required)
+     * @param boolean $force           True to force loading from database and ignore the cache
+     * @param string  $idfield         Field to use as id (possible values: uid, uname or email)
      * @param bool    $getRegistration Indicates whether a "regular" user record or a pending registration
      *                                      is to be returned. False (default) for a user record and true
      *                                      for a registration. If false and the user record is a pending
      *                                      registration, then the record is not returned and false is returned
      *                                      instead; likewise, if true and the user record is not a registration,
-     *                                      then false is returned; (Defaults to false).
+     *                                      then false is returned; (Defaults to false)
      *
      * @return array|bool An associative array with all variables for a user (or pending registration);
-     *                      false on error.
+     *                      false on error
      */
     public static function getVars($id, $force = false, $idfield = '', $getRegistration = false)
     {
@@ -724,17 +724,17 @@ class UserUtil
     /**
      * Get a user variable.
      *
-     * @param string  $name            The name of the variable.
-     * @param integer $uid             The user to get the variable for.
-     * @param mixed   $default         The default value to return if the specified variable doesn't exist.
+     * @param string  $name            The name of the variable
+     * @param integer $uid             The user to get the variable for
+     * @param mixed   $default         The default value to return if the specified variable doesn't exist
      * @param bool    $getRegistration Indicates whether the variable should be retrieved from a "regular"
      *                                      user record or from a pending registration. False (default) for a
      *                                      user record and true for a registration. If false and the uid refers
      *                                      to a pending registration, then the variable is not returned and
      *                                      null is returned instead; likewise, if true and the user record is
-     *                                      not a registration, then null is returned. (Defaults to false).
+     *                                      not a registration, then null is returned. (Defaults to false)
      *
-     * @return mixed The value of the user variable if successful, null otherwise.
+     * @return mixed The value of the user variable if successful, null otherwise
      */
     public static function getVar($name, $uid = -1, $default = false, $getRegistration = false)
     {
@@ -777,9 +777,9 @@ class UserUtil
     /**
      * Maps the old DUD names to new attribute names.
      *
-     * @param string $name The name of the field.
+     * @param string $name The name of the field
      *
-     * @return string|bool The attribute name corresponding to the DUD name, or false if the parameter is not a DUD name.
+     * @return string|bool The attribute name corresponding to the DUD name, or false if the parameter is not a DUD name
      */
     private static function convertOldDynamicUserDataAlias($name)
     {
@@ -846,9 +846,9 @@ class UserUtil
      *
      * This function does not allow you to set uid or uname.
      *
-     * @param string  $name  The name of the variable.
-     * @param mixed   $value The value of the variable.
-     * @param integer $uid   The user to set the variable for.
+     * @param string  $name  The name of the variable
+     * @param mixed   $value The value of the variable
+     * @param integer $uid   The user to set the variable for
      *
      * @return bool true if the set was successful, false otherwise
      */
@@ -954,10 +954,10 @@ class UserUtil
      *
      * @param bool $reverse If false, then return an array of codes indexed by name (e.g. given $name, then $code = $methods[$name]);
      *                          if true, return an array of names indexed by code (e.g. given $code, then $name = $methods[$code]);
-     *                          optional, default = false.
+     *                          optional, default = false
      *
      * @return array Depending on the value of $reverse, an array of codes indexed by name or an
-     *                  array of names indexed by code.
+     *                  array of names indexed by code
      */
     public static function getPasswordHashMethods($reverse = false)
     {
@@ -992,9 +992,9 @@ class UserUtil
     /**
      * For a given password hash algorithm name, return its internal integer code.
      *
-     * @param string $hashAlgorithmName The name of a hash algorithm suitable for hashing user passwords.
+     * @param string $hashAlgorithmName The name of a hash algorithm suitable for hashing user passwords
      *
-     * @return integer|bool The internal integer code corresponding to the given algorithm name; false if the name is not valid.
+     * @return integer|bool The internal integer code corresponding to the given algorithm name; false if the name is not valid
      */
     public static function getPasswordHashMethodCode($hashAlgorithmName)
     {
@@ -1015,9 +1015,9 @@ class UserUtil
     /**
      * For a given internal password hash algorithm code, return its name suitable for use with the hash() function.
      *
-     * @param int $hashAlgorithmCode The internal code representing a hashing algorithm suitable for hashing user passwords.
+     * @param int $hashAlgorithmCode The internal code representing a hashing algorithm suitable for hashing user passwords
      *
-     * @return string|bool The hashing algorithm name corresponding to that code, suitable for use with hash(); false if the code is invalid.
+     * @return string|bool The hashing algorithm name corresponding to that code, suitable for use with hash(); false if the code is invalid
      */
     public static function getPasswordHashMethodName($hashAlgorithmCode)
     {
@@ -1042,16 +1042,16 @@ class UserUtil
      * then this method may be suitable.
      *
      * @param string $unhashedPassword An unhashed password, as might be entered by a user or generated by the system, that meets
-     *                                  all of the constraints of a valid password for a user account.
+     *                                  all of the constraints of a valid password for a user account
      * @param int $hashMethodCode An internal code identifying one of the valid user password hashing methods; optional, leave this
      *                                  unset (null) when creating a new password for a user to get the currently configured system
      *                                  hashing method, otherwise to hash a password for comparison, specify the method used to hash
-     *                                  the original password.
+     *                                  the original password
      *
      * @return array|bool An array containing two elements: 'hash' containing the hashed password, and 'hashMethodCode' containing the
      *                      internal integer hashing algorithm code used to hash the password; false if the password does not meet the
      *                      constraints of a valid password, or if the hashing method (stored in the Users module 'hash_method' var) is
-     *                      not valid.
+     *                      not valid
      */
     public static function getHashedPassword($unhashedPassword, $hashMethodCode = null)
     {
@@ -1083,7 +1083,7 @@ class UserUtil
     /**
      * Create a system-generated password or password-like code, meeting the configured constraints for a password.
      *
-     * @return string The generated (unhashed) password-like string.
+     * @return string The generated (unhashed) password-like string
      */
     public static function generatePassword()
     {
@@ -1100,11 +1100,11 @@ class UserUtil
     /**
      * Change the specified user's password to the one provided, defaulting to the current user if a uid is not specified.
      *
-     * @param string $unhashedPassword The new password for the current user.
-     * @param int    $uid              The user ID of the user for whom the password should be set; optional; defaults to current user.
+     * @param string $unhashedPassword The new password for the current user
+     * @param int    $uid              The user ID of the user for whom the password should be set; optional; defaults to current user
      *
      * @return bool True if the password was successfully saved; otherwise false if the password is empty,
-     *                  invalid (too short), or if the password was not successfully saved.
+     *                  invalid (too short), or if the password was not successfully saved
      */
     public static function setPassword($unhashedPassword, $uid = -1)
     {
@@ -1117,11 +1117,11 @@ class UserUtil
      * Note that this is not limited only to use for user login passwords, but can be used where ever a human-readable
      * password-like code is needed.
      *
-     * @param string $unhashedPassword The password-like code entered by the user.
-     * @param string $hashedPassword   The hashed password-like code that the entered password-like code is to be compared to.
+     * @param string $unhashedPassword The password-like code entered by the user
+     * @param string $hashedPassword   The hashed password-like code that the entered password-like code is to be compared to
      *
      * @return bool True if the $unhashedPassword matches the $hashedPassword with the given hashing method; false if they do not
-     *                  match, or if there was an error (such as an empty password or invalid code).
+     *                  match, or if there was an error (such as an empty password or invalid code)
      */
     public static function passwordsMatch($unhashedPassword, $hashedPassword)
     {
@@ -1156,8 +1156,8 @@ class UserUtil
      * It does not allow the deletion of uid, email, uname, pass (password), as these are mandatory
      * fields in the users table.
      *
-     * @param string  $name The name of the variable.
-     * @param integer $uid  The user to delete the variable for.
+     * @param string  $name The name of the variable
+     * @param integer $uid  The user to delete the variable for
      *
      * @return boolean true on success, false on failure
      */
@@ -1267,10 +1267,10 @@ class UserUtil
      *  - user
      *  - system
      *
-     * @param boolean $force True to ignore the cache.
+     * @param boolean $force True to ignore the cache
      *
      * @return string           the name of the user's theme
-     * @throws RuntimeException If this function was unable to calculate theme name.
+     * @throws RuntimeException If this function was unable to calculate theme name
      */
     public static function getTheme($force = false)
     {
@@ -1432,8 +1432,8 @@ class UserUtil
     /**
      * Filter results for a given getTheme() type.
      *
-     * @param string $themeName Theme name.
-     * @param string $type      Event type.
+     * @param string $themeName Theme name
+     * @param string $type      Event type
      *
      * @return string Theme name
      */
@@ -1447,16 +1447,16 @@ class UserUtil
     /**
      * Get a list of user information.
      *
-     * @param string  $sortbyfield   Sort by field.
-     * @param string  $sortorder     Sort by order.
-     * @param integer $limit         Select limit.
-     * @param integer $startnum      Select offset.
-     * @param string  $activated     Activated value.
-     * @param string  $regexpfield   Field for regexfilter.
-     * @param string  $regexpression Regex expression.
-     * @param string  $where         Where clause.
+     * @param string  $sortbyfield   Sort by field
+     * @param string  $sortorder     Sort by order
+     * @param integer $limit         Select limit
+     * @param integer $startnum      Select offset
+     * @param string  $activated     Activated value
+     * @param string  $regexpfield   Field for regexfilter
+     * @param string  $regexpression Regex expression
+     * @param string  $where         Where clause
      *
-     * @return array Array of users.
+     * @return array Array of users
      */
     public static function getAll($sortbyfield = 'uname', $sortorder = 'ASC', $limit = null, $offset = null, $activated = '', $field = '', $expression = '', $where = '')
     {
@@ -1517,10 +1517,10 @@ class UserUtil
     /**
      * Get the uid of a user from the username.
      *
-     * @param string $uname           The username.
-     * @param bool   $forRegistration Get the id for a pending registration (default = false).
+     * @param string $uname           The username
+     * @param bool   $forRegistration Get the id for a pending registration (default = false)
      *
-     * @return integer|boolean The uid if found, false if not.
+     * @return integer|boolean The uid if found, false if not
      */
     public static function getIdFromName($uname, $forRegistration = false)
     {
@@ -1532,10 +1532,10 @@ class UserUtil
     /**
      * Get the uid of a user from the email (case for unique emails).
      *
-     * @param string $email           The user email.
-     * @param bool   $forRegistration Get the id for a pending registration (default = false).
+     * @param string $email           The user email
+     * @param bool   $forRegistration Get the id for a pending registration (default = false)
      *
-     * @return integer|boolean The uid if found, false if not.
+     * @return integer|boolean The uid if found, false if not
      */
     public static function getIdFromEmail($email, $forRegistration = false)
     {
@@ -1549,7 +1549,7 @@ class UserUtil
      *
      * This should be removed if we ever go fully dynamic
      *
-     * @param string $label The alias of the field to check.
+     * @param string $label The alias of the field to check
      *
      * @return true if found, false if not, void upon error
      */
@@ -1579,9 +1579,9 @@ class UserUtil
     /**
      * Determine if the record represented by the $uid is a registration or not.
      *
-     * @param integer $uid The uid of the record in question.
+     * @param integer $uid The uid of the record in question
      *
-     * @throws InvalidArgumentException If the uid is not valid.
+     * @throws InvalidArgumentException If the uid is not valid
      *
      * @return boolean True if it is a registration record, otherwise false;
      */

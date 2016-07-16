@@ -138,8 +138,8 @@ abstract class AbstractBaseResponse extends PlainResponse
     /**
      * Add options.
      *
-     * @param string $key   Option key.
-     * @param mixed  $value Value.
+     * @param string $key   Option key
+     * @param mixed  $value Value
      *
      * @return void
      */

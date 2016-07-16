@@ -75,8 +75,8 @@ class HookDispatcher implements HookDispatcherInterface
     /**
      * Dispatch hook listeners.
      *
-     * @param string $name Hook event name.
-     * @param Hook   $hook Hook instance.
+     * @param string $name Hook event name
+     * @param Hook   $hook Hook instance
      *
      * @return Hook
      */
@@ -154,7 +154,7 @@ class HookDispatcher implements HookDispatcherInterface
      *
      * Area names are unique so you can specify subscriber or provider area.
      *
-     * @param string $areaName Areaname.
+     * @param string $areaName Areaname
      *
      * @return array
      */
@@ -218,7 +218,7 @@ class HookDispatcher implements HookDispatcherInterface
      * area name.
      *
      * @param string $subscriberAreaName
-     * @param array  $providerAreas      Array of provider area names.
+     * @param array  $providerAreas      Array of provider area names
      */
     public function setBindOrder($subscriberAreaName, array $providerAreas)
     {

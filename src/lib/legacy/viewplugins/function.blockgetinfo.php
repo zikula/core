@@ -26,11 +26,11 @@
  *                          (optional if the name attribute is set, otherwise
  *                          required)
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the {@link Zikula_View} object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the {@link Zikula_View} object
  *
  * @return mixed the value of the block variable specified by the name attribute,
- *               or an array containing the full block information.
+ *               or an array containing the full block information
  */
 function smarty_function_blockgetinfo($params, Zikula_View $view)
 {

@@ -52,9 +52,9 @@ class Zikula_ServiceManager_Service
      *
      * Setup the identifier of this service.
      *
-     * @param string                           $id         Unique identifier.
-     * @param Zikula_ServiceManager_Definition $definition Optional instance of Definition class.
-     * @param boolean                          $shared     True if the service will be single instance only.
+     * @param string                           $id         Unique identifier
+     * @param Zikula_ServiceManager_Definition $definition Optional instance of Definition class
+     * @param boolean                          $shared     True if the service will be single instance only
      */
     public function __construct($id, Zikula_ServiceManager_Definition $definition = null, $shared = true)
     {
@@ -76,7 +76,7 @@ class Zikula_ServiceManager_Service
     /**
      * Getter for definition property.
      *
-     * @return object Definition stored in property.
+     * @return object Definition stored in property
      */
     public function getDefinition()
     {
@@ -86,7 +86,7 @@ class Zikula_ServiceManager_Service
     /**
      * Reports if this service has an attached definition.
      *
-     * @return boolean True if Definition instance is stored.
+     * @return boolean True if Definition instance is stored
      */
     public function hasDefinition()
     {
@@ -96,7 +96,7 @@ class Zikula_ServiceManager_Service
     /**
      * Reports if this a shared service.
      *
-     * @return boolean Returns true if the service is a single instance (shared) service.
+     * @return boolean Returns true if the service is a single instance (shared) service
      */
     public function isShared()
     {
@@ -106,7 +106,7 @@ class Zikula_ServiceManager_Service
     /**
      * Getter for the service property.
      *
-     * @return object|null The object or null if none exists.
+     * @return object|null The object or null if none exists
      */
     public function getService()
     {
@@ -116,7 +116,7 @@ class Zikula_ServiceManager_Service
     /**
      * Setter for service property.
      *
-     * @param object $service Instanciated object.
+     * @param object $service Instanciated object
      *
      * @return void
      */

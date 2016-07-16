@@ -29,10 +29,10 @@
  *   {modgetinfo info='all' assign='gimmeeverything'}
  *   {modgetinfo modname='anyymodname' info='all' assign='gimmeeverything'}
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
- * @return string The module variable.
+ * @return string The module variable
  */
 function smarty_function_modgetinfo($params, Zikula_View $view)
 {

@@ -55,7 +55,7 @@ class PluginManager
     /**
      * Constructor.
      *
-     * @param Config $config FilterUtil Configuration object.
+     * @param Config $config FilterUtil Configuration object
      * @param array  $plugins
      * @param array  $restrictions
      */
@@ -69,7 +69,7 @@ class PluginManager
     /**
      * Get configuration.
      *
-     * @return Config Configuration object.
+     * @return Config Configuration object
      */
     public function getConfig()
     {
@@ -79,7 +79,7 @@ class PluginManager
     /**
      * Loads plugins.
      *
-     * @param array $plugins Array of plugin information in form "plugin name => config array".
+     * @param array $plugins Array of plugin information in form "plugin name => config array"
      */
     public function loadPlugins(array $plugins)
     {
@@ -99,10 +99,10 @@ class PluginManager
      *
      * @param AbstractPlugin $plugin
      *
-     * @internal param string $name Plugin name.
-     * @internal param array $config Plugin config.
+     * @internal param string $name Plugin name
+     * @internal param array $config Plugin config
      *
-     * @return boolean true if the plugin is the default plugin.
+     * @return boolean true if the plugin is the default plugin
      */
     public function loadPlugin(AbstractPlugin $plugin)
     {
@@ -121,7 +121,7 @@ class PluginManager
      *
      * Check what type the plugin is from and register it.
      *
-     * @param int $k The Plugin ID -> Key in the $this->plugin array.
+     * @param int $k The Plugin ID -> Key in the $this->plugin array
      */
     private function registerPlugin($k)
     {
@@ -156,7 +156,7 @@ class PluginManager
      * Loads restrictions.
      *
      * @param array $restrictions Array of allowed operators per field in the form
-     *                            field's name => operator array.
+     *                            field's name => operator array
      */
     public function loadRestrictions(array $restrictions)
     {
@@ -172,11 +172,11 @@ class PluginManager
     /**
      * Runs replace plugins and return condition set.
      *
-     * @param string $field Field name.
-     * @param string $op    Operator.
-     * @param string $value Value.
+     * @param string $field Field name
+     * @param string $op    Operator
+     * @param string $value Value
      *
-     * @return array condition set.
+     * @return array condition set
      */
     public function replace($field, $op, $value)
     {
@@ -197,9 +197,9 @@ class PluginManager
     /**
      * Get the Doctrine expression object
      *
-     * @param string $field Field name.
-     * @param string $op    Operator.
-     * @param string $value Value.
+     * @param string $field Field name
+     * @param string $op    Operator
+     * @param string $value Value
      *
      * @throws \InvalidArgumentException
      *

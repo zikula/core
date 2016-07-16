@@ -60,7 +60,7 @@ class SearchBlock extends AbstractBlockHandler
     /**
      * Returns the fully qualified class name of the block's form class.
      *
-     * @return string Template path.
+     * @return string Template path
      */
     public function getFormClassName()
     {
@@ -70,7 +70,7 @@ class SearchBlock extends AbstractBlockHandler
     /**
      * Returns any array of form options.
      *
-     * @return array Options array.
+     * @return array Options array
      */
     public function getFormOptions()
     {
@@ -83,7 +83,7 @@ class SearchBlock extends AbstractBlockHandler
     /**
      * Returns the template used for rendering the editing form.
      *
-     * @return string Template path.
+     * @return string Template path
      */
     public function getFormTemplate()
     {

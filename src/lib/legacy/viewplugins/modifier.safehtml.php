@@ -30,11 +30,11 @@
  *
  *   {$myVar|safehtml}
  *
- * @param mixed $string The contents to transform.
+ * @param mixed $string The contents to transform
  *
  * @see    modifier.safehtml.php::smarty_modifier_DataUtil::formatForDisplay()
  *
- * @return string The modified output.
+ * @return string The modified output
  */
 function smarty_modifier_safehtml($string)
 {

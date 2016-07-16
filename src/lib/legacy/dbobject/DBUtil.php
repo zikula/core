@@ -33,7 +33,7 @@ class DBUtil
     /**
      * Check whether the object cache should be used for a specific query/operation.
      *
-     * @param string $tablename The Zikula tablename.
+     * @param string $tablename The Zikula tablename
      *
      * @return true/false
      */
@@ -49,10 +49,10 @@ class DBUtil
     /**
      * Get the cache.
      *
-     * @param string $table Table name.
-     * @param string $key   Key choise.
+     * @param string $table Table name
+     * @param string $key   Key choise
      *
-     * @return mixed Return the cache.
+     * @return mixed Return the cache
      */
     public static function getCache($table, $key)
     {
@@ -72,9 +72,9 @@ class DBUtil
     /**
      * Set the cache.
      *
-     * @param string $table  Table name.
-     * @param string $key    Key choise.
-     * @param string $fields Fields to cache.
+     * @param string $table  Table name
+     * @param string $key    Key choise
+     * @param string $fields Fields to cache
      *
      * @return void
      */
@@ -93,7 +93,7 @@ class DBUtil
     /**
      * Flush the cache.
      *
-     * @param string $table Table name.
+     * @param string $table Table name
      *
      * @return void
      */
@@ -111,7 +111,7 @@ class DBUtil
     /**
      * Return server information.
      *
-     * @return array Array of server info.
+     * @return array Array of server info
      */
     public static function serverInfo()
     {
@@ -127,11 +127,11 @@ class DBUtil
     /**
      * Create database.
      *
-     * @param string  $dbname       The database name.
-     * @param boolean $optionsarray The options array.
+     * @param string  $dbname       The database name
+     * @param boolean $optionsarray The options array
      *
      * @return boolean
-     * @throws Exception If the dbname is empty.
+     * @throws Exception If the dbname is empty
      */
     public static function createDatabase($dbname, $optionsarray = false)
     {
@@ -157,7 +157,7 @@ class DBUtil
     /**
      * Get a list of databases available on the server.
      *
-     * @return array Array of databases.
+     * @return array Array of databases
      */
     public static function metaDatabases()
     {
@@ -167,11 +167,11 @@ class DBUtil
     /**
      * Get a list of tables in the currently connected database.
      *
-     * @param boolean $ttype      Type of 'tables' to get.
-     * @param boolean $showSchema Add the schema name to the table.
-     * @param boolean $mask       Mask to apply to return result set.
+     * @param boolean $ttype      Type of 'tables' to get
+     * @param boolean $showSchema Add the schema name to the table
+     * @param boolean $mask       Mask to apply to return result set
      *
-     * @return array Array of tables.
+     * @return array Array of tables
      */
     public static function metaTables($ttype = false, $showSchema = false, $mask = false)
     {
@@ -194,7 +194,7 @@ class DBUtil
      * This allows the default table options to be set in a modules's tables.php without
      * causing a circular dependency.
      *
-     * @return array Return the default table options.
+     * @return array Return the default table options
      */
     public static function getDefaultTableOptions()
     {
@@ -224,9 +224,9 @@ class DBUtil
      * @param string $table Optional, string with table name.
      * If $table param is set and there is a set of options configured
      * for this table via tables.php then we return these options,
-     * the default options are returned otherwise.
+     * the default options are returned otherwise
      *
-     * @return array Return the table options.
+     * @return array Return the table options
      */
     public static function getTableOptions($table = '')
     {
@@ -243,14 +243,14 @@ class DBUtil
     /**
      * Execute SQL, check for errors and return result. Uses Doctrine's DBAL to generate DB-portable paging code.
      *
-     * @param string  $sql          The SQL statement to execute.
-     * @param integer $limitOffset  The lower limit bound (optional) (default=-1).
-     * @param integer $limitNumRows The upper limit bound (optional) (default=-1).
-     * @param boolean $exitOnError  Whether to exit on error (default=true) (optional).
-     * @param boolean $verbose      Whether to be verbose (default=true) (optional).
+     * @param string  $sql          The SQL statement to execute
+     * @param integer $limitOffset  The lower limit bound (optional) (default=-1)
+     * @param integer $limitNumRows The upper limit bound (optional) (default=-1)
+     * @param boolean $exitOnError  Whether to exit on error (default=true) (optional)
+     * @param boolean $verbose      Whether to be verbose (default=true) (optional)
      *
-     * @return mixed     The result set of the successfully executed query or false on error.
-     * @throws Exception No SQL statment.
+     * @return mixed     The result set of the successfully executed query or false on error
+     * @throws Exception No SQL statment
      */
     public static function executeSQL($sql, $limitOffset = -1, $limitNumRows = -1, $exitOnError = true, $verbose = true)
     {
@@ -318,12 +318,12 @@ class DBUtil
      * Transform a value for DB-storage-safe formatting, taking into account the columnt type.
      * Numeric values are not enclosed in single-quotes, anything else is.
      *
-     * @param string $table   The treated table reference.
+     * @param string $table   The treated table reference
      * @param string $field   The table field the value needs to be stored in
      * @param array  $value   The value which needs to be stored
      *
-     * @return string    The generated sql string.
-     * @throws Exception If invalid table key retreived or empty query generated.
+     * @return string    The generated sql string
+     * @throws Exception If invalid table key retreived or empty query generated
      */
     public static function _typesafeQuotedValue($table, $field, $value)
     {
@@ -355,11 +355,11 @@ class DBUtil
     /**
      * Same as Api function but without AS aliasing.
      *
-     * @param string $table       The treated table reference.
-     * @param array  $columnArray The columns to marshall into the resulting object (optional) (default=null).
+     * @param string $table       The treated table reference
+     * @param array  $columnArray The columns to marshall into the resulting object (optional) (default=null)
      *
-     * @return string    The generated sql string.
-     * @throws Exception If invalid table key retreived or empty query generated.
+     * @return string    The generated sql string
+     * @throws Exception If invalid table key retreived or empty query generated
      */
     public static function _getAllColumns($table, $columnArray = null)
     {
@@ -386,12 +386,12 @@ class DBUtil
     /**
      * Same as Api function but returns fully qualified fieldnames.
      *
-     * @param string $table       The treated table reference.
-     * @param string $tablealias  The SQL table alias to use in the SQL statement.
-     * @param array  $columnArray The columns to marshall into the resulting object (optional) (default=null).
+     * @param string $table       The treated table reference
+     * @param string $tablealias  The SQL table alias to use in the SQL statement
+     * @param array  $columnArray The columns to marshall into the resulting object (optional) (default=null)
      *
      * @return The       generated sql string
-     * @throws Exception If invalid table key retreived or empty query generated.
+     * @throws Exception If invalid table key retreived or empty query generated
      */
     public static function _getAllColumnsQualified($table, $tablealias, $columnArray = null)
     {
@@ -425,11 +425,11 @@ class DBUtil
     /**
      * Return the column array for the given table.
      *
-     * @param string $table       The treated table reference.
-     * @param array  $columnArray The columns to marshall into the resulting object (optional) (default=null).
+     * @param string $table       The treated table reference
+     * @param array  $columnArray The columns to marshall into the resulting object (optional) (default=null)
      *
-     * @return The       column array for the given table.
-     * @throws Exception If empty query generated.
+     * @return The       column array for the given table
+     * @throws Exception If empty query generated
      */
     public static function getColumnsArray($table, $columnArray = null)
     {
@@ -464,13 +464,13 @@ class DBUtil
      * This adds all joined fields to the column array by their alias defined in $joinInfo.
      * Also it adds the field's table alias to avoid ambiguous queries.
      *
-     * @param array $columns  Column array.
-     * @param array $joinInfo JoinInfo array.
+     * @param array $columns  Column array
+     * @param array $joinInfo JoinInfo array
      *
-     * @return array Expanded column array.
+     * @return array Expanded column array
      * @deprecated
      * @see    Doctrine_Record
-     * @throws Exception If invalid join information retrieved (an alias already exists).
+     * @throws Exception If invalid join information retrieved (an alias already exists)
      */
     public static function expandColumnsWithJoinInfo($columns, $joinInfo)
     {
@@ -507,13 +507,13 @@ class DBUtil
     /**
      * Rename column(s) in a table.
      *
-     * @param string $table      The treated table reference.
-     * @param string $oldcolumn  The existing name of the column (full database name of column).
-     * @param string $newcolumn  The new name of the column from the pntables array.
-     * @param string $definition Field specific options (optional) (default=null).
+     * @param string $table      The treated table reference
+     * @param string $oldcolumn  The existing name of the column (full database name of column)
+     * @param string $newcolumn  The new name of the column from the pntables array
+     * @param string $definition Field specific options (optional) (default=null)
      *
      * @return boolean
-     * @throws Exception If parameters are empty.
+     * @throws Exception If parameters are empty
      */
     public static function renameColumn($table, $oldcolumn, $newcolumn, $definition = null)
     {
@@ -560,12 +560,12 @@ class DBUtil
     /**
      * Add column(s) to a table.
      *
-     * @param string $table  The treated table reference.
-     * @param array  $fields Fields to add from the table.
+     * @param string $table  The treated table reference
+     * @param array  $fields Fields to add from the table
      *
      * @return boolean
-     * @throws Exception                If parameters are empty.
-     * @throws InvalidArgumentException If field does not exist in table definition.
+     * @throws Exception                If parameters are empty
+     * @throws InvalidArgumentException If field does not exist in table definition
      */
     public static function addColumn($table, array $fields)
     {
@@ -608,11 +608,11 @@ class DBUtil
     /**
      * Drop column(s) from a table.
      *
-     * @param string $table  The treated table reference.
-     * @param array  $fields Fields to drop from the table.
+     * @param string $table  The treated table reference
+     * @param array  $fields Fields to drop from the table
      *
      * @return boolean
-     * @throws Exception If parameters are empty.
+     * @throws Exception If parameters are empty
      */
     public static function dropColumn($table, $fields)
     {
@@ -653,9 +653,9 @@ class DBUtil
      *
      * Special handling for integers and booleans (the last is required for MySQL 5 strict mode).
      *
-     * @param integer|boolean $value The value to format.
+     * @param integer|boolean $value The value to format
      *
-     * @return string string ready to add to SQL statement.
+     * @return string string ready to add to SQL statement
      */
     public static function _formatForStore($value)
     {
@@ -675,18 +675,18 @@ class DBUtil
     /**
      * Generate and execute an insert SQL statement for the given object.
      *
-     * @param array   &$object  The object we wish to insert.
-     * @param string  $table    The treated table reference.
-     * @param string  $idfield  The column which stores the primary key (optional) (default='id').
-     * @param boolean $preserve Whether or not to preserve existing/set standard fields (optional) (default=false).
-     * @param boolean $force    Whether or not to insert empty values as NULL (optional) (default=false).
+     * @param array   &$object  The object we wish to insert
+     * @param string  $table    The treated table reference
+     * @param string  $idfield  The column which stores the primary key (optional) (default='id')
+     * @param boolean $preserve Whether or not to preserve existing/set standard fields (optional) (default=false)
+     * @param boolean $force    Whether or not to insert empty values as NULL (optional) (default=false)
      *
-     * @return The result set from the update operation. The object is updated with the newly generated ID.
+     * @return The result set from the update operation. The object is updated with the newly generated ID
      * @deprecated
      * @see    Doctrine_Record::save()
      * @deprecated
      * @see    Doctrine_Table
-     * @throws Exception If column or column_def is not an array or cant find anything to insert into object.
+     * @throws Exception If column or column_def is not an array or cant find anything to insert into object
      */
     public static function insertObject(array &$object, $table, $idfield = 'id', $preserve = false, $force = false)
     {
@@ -805,17 +805,17 @@ class DBUtil
     /**
      * Generate and execute an update SQL statement for the given object.
      *
-     * @param array   &$object  The object we wish to update.
-     * @param string  $table    The treated table reference.
-     * @param string  $where    The where clause (optional) (default='').
-     * @param string  $idfield  The column which stores the primary key (optional) (default='id').
-     * @param boolean $force    Whether or not to insert empty values as NULL (optional) (default=false).
-     * @param boolean $updateid Allow primary key to be updated (default=false).
+     * @param array   &$object  The object we wish to update
+     * @param string  $table    The treated table reference
+     * @param string  $where    The where clause (optional) (default='')
+     * @param string  $idfield  The column which stores the primary key (optional) (default='id')
+     * @param boolean $force    Whether or not to insert empty values as NULL (optional) (default=false)
+     * @param boolean $updateid Allow primary key to be updated (default=false)
      *
      * @return integer The result set from the update operation
      * @deprecated
      * @see    Doctrine_Record::save()
-     * @throws Exception If parameters not set or column or column_def not in array.
+     * @throws Exception If parameters not set or column or column_def not in array
      */
     public static function updateObject(array &$object, $table, $where = '', $idfield = 'id', $force = false, $updateid = false)
     {
@@ -915,13 +915,13 @@ class DBUtil
     /**
      * Loop through the array and feed it to self::insertObject().
      *
-     * @param array   &$objects The objectArray we wish to insert.
-     * @param string  $table    The treated table reference.
-     * @param string  $idfield  The column which stores the primary key (optional) (default='id').
-     * @param boolean $preserve Whether or not to preserve existing/set standard fields (optional) (default=false).
-     * @param boolean $force    Whether or not to insert empty values as NULL (optional) (default=false).
+     * @param array   &$objects The objectArray we wish to insert
+     * @param string  $table    The treated table reference
+     * @param string  $idfield  The column which stores the primary key (optional) (default='id')
+     * @param boolean $preserve Whether or not to preserve existing/set standard fields (optional) (default=false)
+     * @param boolean $force    Whether or not to insert empty values as NULL (optional) (default=false)
      *
-     * @return integer The result set from the last insert operation. The objects are updated with the newly generated ID.
+     * @return integer The result set from the last insert operation. The objects are updated with the newly generated ID
      *
      * @deprecated
      * @see    Doctrine_Table
@@ -942,12 +942,12 @@ class DBUtil
     /**
      * Loop through the array and feed it to self::updateObject().
      *
-     * @param array   &$objects The objectArray we wish to insert.
-     * @param string  $table   The treated table reference.
-     * @param string  $idfield The column which stores the primary key.
-     * @param boolean $force   Whether or not to insert empty values as NULL.
+     * @param array   &$objects The objectArray we wish to insert
+     * @param string  $table   The treated table reference
+     * @param string  $idfield The column which stores the primary key
+     * @param boolean $force   Whether or not to insert empty values as NULL
      *
-     * @return integer The result set from the last update operation.
+     * @return integer The result set from the last update operation
      */
     public static function updateObjectArray(array &$objects, $table, $idfield = 'id', $force = false)
     {
@@ -970,15 +970,15 @@ class DBUtil
      * and meta data) to the database and the optionally creating an
      * entry in the object-log table.
      *
-     * @param mixed   $object  The object wehave just saved.
-     * @param string  $table   The treated table reference.
-     * @param integer $idfield The id column for the object/table combination.
-     * @param boolean $update  Whether or not this was an update (default=false, signifies operation was an insert).
+     * @param mixed   $object  The object wehave just saved
+     * @param string  $table   The treated table reference
+     * @param integer $idfield The id column for the object/table combination
+     * @param boolean $update  Whether or not this was an update (default=false, signifies operation was an insert)
      *
-     * @return mixed The object.
+     * @return mixed The object
      * @deprecated
      * @see    CategorisableListener, AttributableListener, MetaDataListener, LoggableListener
-     * @throws Exception If invalid idfield received.
+     * @throws Exception If invalid idfield received
      */
     private static function _savePostProcess($object, $table, $idfield, $update = false)
     {
@@ -1042,13 +1042,13 @@ class DBUtil
     /**
      * Increment a field by the given increment.
      *
-     * @param string  $table    The treated table reference.
-     * @param string  $incfield The column which stores the field to increment.
-     * @param integer $id       The ID value of the object holding the field we wish to increment.
-     * @param string  $idfield  The idfield to use (optional) (default='id').
-     * @param integer $inccount The amount by which to increment the field (optional) (default=1).
+     * @param string  $table    The treated table reference
+     * @param string  $incfield The column which stores the field to increment
+     * @param integer $id       The ID value of the object holding the field we wish to increment
+     * @param string  $idfield  The idfield to use (optional) (default='id')
+     * @param integer $inccount The amount by which to increment the field (optional) (default=1)
      *
-     * @return The result from the increment operation.
+     * @return The result from the increment operation
      */
     public static function incrementObjectFieldByID($table, $incfield, $id, $idfield = 'id', $inccount = 1)
     {
@@ -1075,13 +1075,13 @@ class DBUtil
     /**
      * Decrement a field by the given decrement.
      *
-     * @param string  $table    The treated table reference.
-     * @param string  $decfield The column which stores the field to decrement.
-     * @param integer $id       The ID value of the object holding the field we wish to increment.
-     * @param string  $idfield  The idfield to use (optional) (default='id').
-     * @param integer $deccount The amount by which to decrement the field (optional) (default=1).
+     * @param string  $table    The treated table reference
+     * @param string  $decfield The column which stores the field to decrement
+     * @param integer $id       The ID value of the object holding the field we wish to increment
+     * @param string  $idfield  The idfield to use (optional) (default='id')
+     * @param integer $deccount The amount by which to decrement the field (optional) (default=1)
      *
-     * @return integer The result from the decrement operation.
+     * @return integer The result from the decrement operation
      */
     public static function decrementObjectFieldByID($table, $decfield, $id, $idfield = 'id', $deccount = 1)
     {
@@ -1091,15 +1091,15 @@ class DBUtil
     /**
      * Generate and execute a delete SQL statement for the given object.
      *
-     * @param array  $object  The object we wish to delete.
-     * @param string $table   The treated table reference.
-     * @param string $where   The where clause to use (optional) (default='').
-     * @param string $idfield The column which contains the ID field (optional) (default='id').
+     * @param array  $object  The object we wish to delete
+     * @param string $table   The treated table reference
+     * @param string $where   The where clause to use (optional) (default='')
+     * @param string $idfield The column which contains the ID field (optional) (default='id')
      *
-     * @return The result from the delete operation.
+     * @return The result from the delete operation
      * @deprecated
      * @see    CategorisableListener, AttributableListener, MetaDataListener, LoggableListener
-     * @throws Exception Cant specify both object and whereclause or either are missing.
+     * @throws Exception Cant specify both object and whereclause or either are missing
      */
     public static function deleteObject(array $object, $table, $where = '', $idfield = 'id')
     {
@@ -1146,9 +1146,9 @@ class DBUtil
     /**
      * Generate and execute a delete SQL statement.
      *
-     * @param array  $keyarray The KeyArray todelete.
-     * @param mixed  $table    The treated table reference.
-     * @param string $field    The field to use.
+     * @param array  $keyarray The KeyArray todelete
+     * @param mixed  $table    The treated table reference
+     * @param string $field    The field to use
      *
      * @return mixed
      */
@@ -1180,9 +1180,9 @@ class DBUtil
     /**
      * Delete an object by its ID.
      *
-     * @param string  $table       The treated table reference.
-     * @param integer $id          The ID of the object to delete.
-     * @param string  $idFieldName The column which contains the ID field (optional) (default='id').
+     * @param string  $table       The treated table reference
+     * @param integer $id          The ID of the object to delete
+     * @param string  $idFieldName The column which contains the ID field (optional) (default='id')
      *
      * @return integer The result from the delete operation
      */
@@ -1197,10 +1197,10 @@ class DBUtil
     /**
      * Delete (an) object(s) via a where clause.
      *
-     * @param string $table The treated table reference.
-     * @param string $where The where-clause to use.
+     * @param string $table The treated table reference
+     * @param string $where The where-clause to use
      *
-     * @return mixed The result from the delete operation.
+     * @return mixed The result from the delete operation
      */
     public static function deleteWhere($table, $where)
     {
@@ -1223,9 +1223,9 @@ class DBUtil
      * and meta data) from the database and the optionally creating an
      * entry in the object-log table.
      *
-     * @param mixed   $object  The object wehave just saved.
-     * @param string  $table   The treated table reference.
-     * @param integer $idfield The id column for the object/table combination.
+     * @param mixed   $object  The object wehave just saved
+     * @param string  $table   The treated table reference
+     * @param integer $idfield The id column for the object/table combination
      *
      * @deprecated
      * @see    CategorisableListener, AttributableListener, MetaDataListener, LoggableListener
@@ -1279,9 +1279,9 @@ class DBUtil
     /**
      * Convenience function to ensure that the where-clause starts with "WHERE".
      *
-     * @param string $where The original where clause.
+     * @param string $where The original where clause
      *
-     * @return string The value held by the global counter.
+     * @return string The value held by the global counter
      */
     public static function _checkWhereClause($where)
     {
@@ -1301,10 +1301,10 @@ class DBUtil
     /**
      * Convenience function to ensure that the order-by-clause starts with "ORDER BY".
      *
-     * @param string $orderby The original order-by clause.
+     * @param string $orderby The original order-by clause
      * @param string $table   The table reference
      *
-     * @return string The (potentially) altered order-by-clause.
+     * @return string The (potentially) altered order-by-clause
      */
     public static function _checkOrderByClause($orderby, $table)
     {
@@ -1431,10 +1431,10 @@ class DBUtil
      * Ensures that the field to be used as ORDER BY
      * is not a CLOB/BLOB when using Oracle
      *
-     * @param string $table The treated table reference.
-     * @param string $field The field name to be used for order by.
+     * @param string $table The treated table reference
+     * @param string $field The field name to be used for order by
      *
-     * @return string The order-by-clause to be used, may be ''.
+     * @return string The order-by-clause to be used, may be ''
      */
     public static function _checkOrderByField($table = '', $field = '')
     {
@@ -1470,13 +1470,13 @@ class DBUtil
     /**
      * Build a basic select clause for the specified table with the specified where and orderBy clause.
      *
-     * @param string $table       The treated table reference.
-     * @param string $where       The original where clause (optional) (default='').
-     * @param string $orderBy     The original order-by clause (optional) (default='').
-     * @param array  $columnArray The columns to marshall into the resulting object (optional) (default=null).
-     * @param string $distinct    Set if a "SELECT DISTINCT" should be performed.
+     * @param string $table       The treated table reference
+     * @param string $where       The original where clause (optional) (default='')
+     * @param string $orderBy     The original order-by clause (optional) (default='')
+     * @param array  $columnArray The columns to marshall into the resulting object (optional) (default=null)
+     * @param string $distinct    Set if a "SELECT DISTINCT" should be performed
      *
-     * @return string The select clause built.
+     * @return string The select clause built
      */
     public static function _getSelectAllColumnsFrom($table, $where = '', $orderBy = '', $columnArray = null, $distinct = false)
     {
@@ -1502,7 +1502,7 @@ class DBUtil
      * This function is workaround for PHP4 limitations when passing default arguments by reference.
      * Returns nothing, the global variable is assigned counter.
      *
-     * @param integer $count The value to set the object marhsall counter to.
+     * @param integer $count The value to set the object marhsall counter to
      *
      * @return void
      */
@@ -1519,7 +1519,7 @@ class DBUtil
      *
      * This function is workaround for PHP4 limitations when passing default arguments by reference.
      *
-     * @return integer The value held by the global.
+     * @return integer The value held by the global
      * @deprecated
      */
     public static function _getFetchedObjectCount()
@@ -1535,13 +1535,13 @@ class DBUtil
     /**
      * Transform a result set into an array of field values.
      *
-     * @param mixed   $result         The result set we wish to marshall.
-     * @param boolean $closeResultSet Whether or not to close the supplied result set (optional) (default=true).
-     * @param string  $assocKey       The key field to use to build the associative index (optional) (default='').
-     * @param boolean $clean          Whether or not to clean up the marshalled data (optional) (default=true).
+     * @param mixed   $result         The result set we wish to marshall
+     * @param boolean $closeResultSet Whether or not to close the supplied result set (optional) (default=true)
+     * @param string  $assocKey       The key field to use to build the associative index (optional) (default='')
+     * @param boolean $clean          Whether or not to clean up the marshalled data (optional) (default=true)
      *
-     * @return The       resulting field array.
-     * @throws Exception If empty result parameter.
+     * @return The       resulting field array
+     * @throws Exception If empty result parameter
      */
     public static function marshallFieldArray($result, $closeResultSet = true, $assocKey = '', $clean = true)
     {
@@ -1568,16 +1568,16 @@ class DBUtil
     /**
      * Transform a SQL query result set into an object/array, optionally applying an permission filter.
      *
-     * @param mixed   $result           The result set we wish to marshall.
-     * @param array   $objectColumns    The column array to map onto the result set, default null = don't use.
-     * @param boolean $closeResultSet   Whether or not to close the supplied result set (optional) (default=true).
-     * @param string  $assocKey         The key field to use to build the associative index (optional) (default='').
-     * @param boolean $clean            Whether or not to clean up the marshalled data (optional) (default=true).
-     * @param string  $permissionFilter The permission structure to use for permission checking (optional) (default=null).
-     * @param string  $tablename        The tablename.
+     * @param mixed   $result           The result set we wish to marshall
+     * @param array   $objectColumns    The column array to map onto the result set, default null = don't use
+     * @param boolean $closeResultSet   Whether or not to close the supplied result set (optional) (default=true)
+     * @param string  $assocKey         The key field to use to build the associative index (optional) (default='')
+     * @param boolean $clean            Whether or not to clean up the marshalled data (optional) (default=true)
+     * @param string  $permissionFilter The permission structure to use for permission checking (optional) (default=null)
+     * @param string  $tablename        The tablename
      *
-     * @return array     The marshalled array of objects.
-     * @throws Exception If empty parameters. or if permissionfilter is not an array.
+     * @return array     The marshalled array of objects
+     * @throws Exception If empty parameters. or if permissionfilter is not an array
      */
     public static function marshallObjects($result, $objectColumns = null, $closeResultSet = true, $assocKey = '', $clean = true, $permissionFilter = null, $tablename = null)
     {
@@ -1690,11 +1690,11 @@ class DBUtil
      *
      * Mostly useful for places where you want to do a "select count(*)" or similar scalar selection.
      *
-     * @param string  $sql         Sql string.
-     * @param boolean $exitOnError Exit on error.
+     * @param string  $sql         Sql string
+     * @param boolean $exitOnError Exit on error
      *
-     * @return mixed     selected value.
-     * @throws Exception If rowcount or results count is empty.
+     * @return mixed     selected value
+     * @throws Exception If rowcount or results count is empty
      */
     public static function selectScalar($sql, $exitOnError = true)
     {
@@ -1726,11 +1726,11 @@ class DBUtil
     /**
      * Select & return a field.
      *
-     * @param string $table The treated table reference.
-     * @param string $field The name of the field we wish to marshall.
-     * @param string $where The where clause (optional) (default='').
+     * @param string $table The treated table reference
+     * @param string $field The name of the field we wish to marshall
+     * @param string $where The where clause (optional) (default='')
      *
-     * @return The resulting field array.
+     * @return The resulting field array
      */
     public static function selectField($table, $field, $where = '')
     {
@@ -1746,12 +1746,12 @@ class DBUtil
     /**
      * Select & return a field by an ID-field value.
      *
-     * @param string  $tableName The treated table reference.
-     * @param string  $field     The field we wish to select.
-     * @param integer $id        The ID value we wish to select with.
-     * @param string  $idfield   The idfield to use (optional) (default='id').
+     * @param string  $tableName The treated table reference
+     * @param string  $field     The field we wish to select
+     * @param integer $id        The ID value we wish to select with
+     * @param string  $idfield   The idfield to use (optional) (default='id')
      *
-     * @return mixed The resulting field value.
+     * @return mixed The resulting field value
      */
     public static function selectFieldByID($tableName, $field, $id, $idfield = 'id')
     {
@@ -1767,16 +1767,16 @@ class DBUtil
     /**
      * Select & return a field array.
      *
-     * @param string  $table        The treated table reference.
-     * @param string  $field        The name of the field we wish to marshall.
-     * @param string  $where        The where clause (optional) (default='').
-     * @param string  $orderby      The orderby clause (optional) (default='').
-     * @param boolean $distinct     Whether or not to add a 'DISTINCT' clause (optional) (default=false).
-     * @param string  $assocKey     The key field to use to build the associative index (optional) (default='').
-     * @param integer $limitOffset  The lower limit bound (optional) (default=-1).
-     * @param integer $limitNumRows The upper limit bound (optional) (default=-1).
+     * @param string  $table        The treated table reference
+     * @param string  $field        The name of the field we wish to marshall
+     * @param string  $where        The where clause (optional) (default='')
+     * @param string  $orderby      The orderby clause (optional) (default='')
+     * @param boolean $distinct     Whether or not to add a 'DISTINCT' clause (optional) (default=false)
+     * @param string  $assocKey     The key field to use to build the associative index (optional) (default='')
+     * @param integer $limitOffset  The lower limit bound (optional) (default=-1)
+     * @param integer $limitNumRows The upper limit bound (optional) (default=-1)
      *
-     * @return array The resulting field array.
+     * @return array The resulting field array
      */
     public static function selectFieldArray($table, $field, $where = '', $orderby = '', $distinct = false, $assocKey = '', $limitOffset = -1, $limitNumRows = -1)
     {
@@ -1832,17 +1832,17 @@ class DBUtil
     /**
      * Select & return an array of field by an ID-field value.
      *
-     * @param string $tableName     The treated table reference.
-     * @param string $field         The field we wish to select.
-     * @param string $id            The ID value we wish to select with.
-     * @param string $idfield       The idfield to use (optional) (default='id').
-     * @param string  $orderby      The orderby clause (optional) (default='').
-     * @param boolean $distinct     Whether or not to add a 'DISTINCT' clause (optional) (default=false).
-     * @param string  $assocKey     The key field to use to build the associative index (optional) (default='').
-     * @param integer $limitOffset  The lower limit bound (optional) (default=-1).
-     * @param integer $limitNumRows The upper limit bound (optional) (default=-1).
+     * @param string $tableName     The treated table reference
+     * @param string $field         The field we wish to select
+     * @param string $id            The ID value we wish to select with
+     * @param string $idfield       The idfield to use (optional) (default='id')
+     * @param string  $orderby      The orderby clause (optional) (default='')
+     * @param boolean $distinct     Whether or not to add a 'DISTINCT' clause (optional) (default=false)
+     * @param string  $assocKey     The key field to use to build the associative index (optional) (default='')
+     * @param integer $limitOffset  The lower limit bound (optional) (default=-1)
+     * @param integer $limitNumRows The upper limit bound (optional) (default=-1)
      *
-     * @return mixed The resulting field value.
+     * @return mixed The resulting field value
      */
     public static function selectFieldArrayByID($tableName, $field, $id, $idfield = 'id', $orderby = '', $distinct = false, $assocKey = '', $limitOffset = -1, $limitNumRows = -1)
     {
@@ -1858,12 +1858,12 @@ class DBUtil
     /**
      * Select & return the max/min value of a field.
      *
-     * @param string $table  The treated table reference.
-     * @param string $field  The name of the field we wish to marshall.
-     * @param string $option MIN, MAX, SUM or COUNT (optional) (default='MAX').
-     * @param string $where  The where clause (optional) (default='').
+     * @param string $table  The treated table reference
+     * @param string $field  The name of the field we wish to marshall
+     * @param string $option MIN, MAX, SUM or COUNT (optional) (default='MAX')
+     * @param string $where  The where clause (optional) (default='')
      *
-     * @return mixed The resulting min/max value.
+     * @return mixed The resulting min/max value
      */
     public static function selectFieldMax($table, $field, $option = 'MAX', $where = '')
     {
@@ -1893,13 +1893,13 @@ class DBUtil
     /**
      * Select & return the max/min array of a field grouped by the associated key.
      *
-     * @param string $table    The treated table reference.
-     * @param string $field    The name of the field we wish to marshall.
-     * @param string $option   MIN, MAX, SUM or COUNT (optional) (default='MAX').
-     * @param string $where    The where clause (optional) (default='').
-     * @param string $assocKey The key field to use to build the associative index (optional) (default='' which defaults to the primary key).
+     * @param string $table    The treated table reference
+     * @param string $field    The name of the field we wish to marshall
+     * @param string $option   MIN, MAX, SUM or COUNT (optional) (default='MAX')
+     * @param string $where    The where clause (optional) (default='')
+     * @param string $assocKey The key field to use to build the associative index (optional) (default='' which defaults to the primary key)
      *
-     * @return array The resulting min/max value.
+     * @return array The resulting min/max value
      */
     public static function selectFieldMaxArray($table, $field, $option = 'MAX', $where = '', $assocKey = '')
     {
@@ -1934,11 +1934,11 @@ class DBUtil
     /**
      * Build a list of objects which are mapped to the specified categories.
      *
-     * @param string  $tablename      Treated table reference.
-     * @param string  $categoryFilter The category list to use for filtering.
-     * @param boolean $returnArray    Whether or not to return an array (optional) (default=false).
+     * @param string  $tablename      Treated table reference
+     * @param string  $categoryFilter The category list to use for filtering
+     * @param boolean $returnArray    Whether or not to return an array (optional) (default=false)
      *
-     * @return mixed The resulting string or array.
+     * @return mixed The resulting string or array
      */
     private static function _generateCategoryFilter($tablename, $categoryFilter, $returnArray = false)
     {
@@ -2022,13 +2022,13 @@ class DBUtil
     /**
      * Append the approriate category filter where-clause to the given where clause.
      *
-     * @param string  $table          The treated table reference.
-     * @param string  $where          The where clause (optional) (default='').
-     * @param string  $categoryFilter The category list to use for filtering.
-     * @param boolean $returnArray    Whether or not to return an array (optional) (default=false).
-     * @param boolean $useJoins       Whether a join is used (if yes, then a prefix is prepended to the column name) (optional) (default=false).
+     * @param string  $table          The treated table reference
+     * @param string  $where          The where clause (optional) (default='')
+     * @param string  $categoryFilter The category list to use for filtering
+     * @param boolean $returnArray    Whether or not to return an array (optional) (default=false)
+     * @param boolean $useJoins       Whether a join is used (if yes, then a prefix is prepended to the column name) (optional) (default=false)
      *
-     * @return mixed The resulting string or array.
+     * @return mixed The resulting string or array
      */
     public static function generateCategoryFilterWhere($table, $where, $categoryFilter, $returnArray = false, $useJoins = false)
     {
@@ -2050,12 +2050,12 @@ class DBUtil
     /**
      * Select & return a specific object using the given sql statement.
      *
-     * @param string $sql              The sql statement to execute for the selection.
-     * @param string $table            The treated table reference.
-     * @param array  $columnArray      The columns to marshall into the resulting object (optional) (default=null).
-     * @param string $permissionFilter The permission filter to use for permission checking (optional) (default=null).
+     * @param string $sql              The sql statement to execute for the selection
+     * @param string $table            The treated table reference
+     * @param array  $columnArray      The columns to marshall into the resulting object (optional) (default=null)
+     * @param string $permissionFilter The permission filter to use for permission checking (optional) (default=null)
      *
-     * @return array The resulting object.
+     * @return array The resulting object
      */
     public static function selectObjectSQL($sql, $table, $columnArray = null, $permissionFilter = null)
     {
@@ -2082,13 +2082,13 @@ class DBUtil
     /**
      * Select & return a specific object based on a table definition.
      *
-     * @param string $table            The treated table reference.
-     * @param string $where            The where clause (optional) (default='').
-     * @param array  $columnArray      The columns to marshall into the resulting object (optional) (default=null).
-     * @param string $permissionFilter The permission filter to use for permission checking (optional) (default=null).
-     * @param string $categoryFilter   The category list to use for filtering (optional) (default=null).
+     * @param string $table            The treated table reference
+     * @param string $where            The where clause (optional) (default='')
+     * @param array  $columnArray      The columns to marshall into the resulting object (optional) (default=null)
+     * @param string $permissionFilter The permission filter to use for permission checking (optional) (default=null)
+     * @param string $categoryFilter   The category list to use for filtering (optional) (default=null)
      *
-     * @return mixed The resulting object.
+     * @return mixed The resulting object
      */
     public static function selectObject($table, $where = '', $columnArray = null, $permissionFilter = null, $categoryFilter = null)
     {
@@ -2120,19 +2120,19 @@ class DBUtil
     /**
      * Select & return a specific object by using the ID field.
      *
-     * @param string  $table            The treated table reference.
-     * @param integer $id               The object ID to query.
-     * @param string  $field            The field key which holds the ID value (optional) (default='id').
-     * @param array   $columnArray      The columns to marshall into the resulting object (optional) (default=null).
-     * @param string  $permissionFilter The permission structure to use for permission checking (optional) (default=null).
-     * @param string  $categoryFilter   The category list to use for filtering (optional) (default=null).
-     * @param boolean $cacheObject      If true returns a cached object if available (optional) (default=true).
-     * @param boolean $transformFunc    Transformation function to apply to $id (optional) (default=null).
+     * @param string  $table            The treated table reference
+     * @param integer $id               The object ID to query
+     * @param string  $field            The field key which holds the ID value (optional) (default='id')
+     * @param array   $columnArray      The columns to marshall into the resulting object (optional) (default=null)
+     * @param string  $permissionFilter The permission structure to use for permission checking (optional) (default=null)
+     * @param string  $categoryFilter   The category list to use for filtering (optional) (default=null)
+     * @param boolean $cacheObject      If true returns a cached object if available (optional) (default=true)
+     * @param boolean $transformFunc    Transformation function to apply to $id (optional) (default=null)
      *
-     * @return mixed The resulting object.
+     * @return mixed The resulting object
      * @deprecated
      * @see    Doctrine_Table::find*
-     * @throws Exception If id parameter is empty or non-numeric.
+     * @throws Exception If id parameter is empty or non-numeric
      */
     public static function selectObjectByID($table, $id, $field = 'id', $columnArray = null, $permissionFilter = null, $categoryFilter = null, $cacheObject = true, $transformFunc = null)
     {
@@ -2159,18 +2159,18 @@ class DBUtil
     /**
      * Select & return an object array based on a table definition.
      *
-     * @param string  $table            The treated table reference.
-     * @param string  $where            The where clause (optional) (default='').
-     * @param string  $orderby          The order by clause (optional) (default='').
-     * @param integer $limitOffset      The lower limit bound (optional) (default=-1).
-     * @param integer $limitNumRows     The upper limit bound (optional) (default=-1).
-     * @param string  $assocKey         The key field to use to build the associative index (optional) (default='').
-     * @param string  $permissionFilter The permission filter to use for permission checking (optional) (default=null).
-     * @param string  $categoryFilter   The category list to use for filtering (optional) (default=null).
-     * @param array   $columnArray      The columns to marshall into the resulting object (optional) (default=null).
-     * @param string  $distinct         Set if a "SELECT DISTINCT" should be performed.
+     * @param string  $table            The treated table reference
+     * @param string  $where            The where clause (optional) (default='')
+     * @param string  $orderby          The order by clause (optional) (default='')
+     * @param integer $limitOffset      The lower limit bound (optional) (default=-1)
+     * @param integer $limitNumRows     The upper limit bound (optional) (default=-1)
+     * @param string  $assocKey         The key field to use to build the associative index (optional) (default='')
+     * @param string  $permissionFilter The permission filter to use for permission checking (optional) (default=null)
+     * @param string  $categoryFilter   The category list to use for filtering (optional) (default=null)
+     * @param array   $columnArray      The columns to marshall into the resulting object (optional) (default=null)
+     * @param string  $distinct         Set if a "SELECT DISTINCT" should be performed
      *
-     * @return array The resulting object array.
+     * @return array The resulting object array
      */
     public static function selectObjectArray($table, $where = '', $orderby = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = '', $permissionFilter = null, $categoryFilter = null, $columnArray = null, $distinct = '')
     {
@@ -2242,15 +2242,15 @@ class DBUtil
      * }
      * </code>
      *
-     * @param string   $table          The treated table reference.
-     * @param string   $where          The where clause (optional) (default='').
-     * @param string   $orderby        The order by clause (optional) (default='').
-     * @param integer  $limitOffset    The lower limit bound (optional) (default=-1).
-     * @param integer  $limitNumRows   The upper limit bound (optional) (default=-1).
-     * @param string   $assocKey       The key field to use to build the associative index (optional) (default='').
-     * @param callback $filterCallback The filter callback object.
-     * @param array    $categoryFilter The category list to use for filtering.
-     * @param array    $columnArray    The columns to marshall into the resulting object (optional) (default=null).
+     * @param string   $table          The treated table reference
+     * @param string   $where          The where clause (optional) (default='')
+     * @param string   $orderby        The order by clause (optional) (default='')
+     * @param integer  $limitOffset    The lower limit bound (optional) (default=-1)
+     * @param integer  $limitNumRows   The upper limit bound (optional) (default=-1)
+     * @param string   $assocKey       The key field to use to build the associative index (optional) (default='')
+     * @param callback $filterCallback The filter callback object
+     * @param array    $categoryFilter The category list to use for filtering
+     * @param array    $columnArray    The columns to marshall into the resulting object (optional) (default=null)
      *
      * @return array The resulting object array
      */
@@ -2303,13 +2303,13 @@ class DBUtil
     /**
      * Return the sum of a column.
      *
-     * @param string $table          The treated table reference.
-     * @param string $column         The column to place in the sum phrase.
-     * @param string $where          The where clause (optional) (default='').
-     * @param string $categoryFilter The category list to use for filtering (optional) (default=null).
-     * @param string $subquery       The subquery to the apply to the operatioin (optional) default=null).
+     * @param string $table          The treated table reference
+     * @param string $column         The column to place in the sum phrase
+     * @param string $where          The where clause (optional) (default='')
+     * @param string $categoryFilter The category list to use for filtering (optional) (default=null)
+     * @param string $subquery       The subquery to the apply to the operatioin (optional) default=null)
      *
-     * @return integer The resulting column sum.
+     * @return integer The resulting column sum
      */
     public static function selectObjectSum($table, $column, $where = '', $categoryFilter = null, $subquery = null)
     {
@@ -2351,14 +2351,14 @@ class DBUtil
     /**
      * Return the number of rows affected.
      *
-     * @param string  $table          The treated table reference.
-     * @param string  $where          The where clause (optional) (default='').
-     * @param string  $column         The column to place in the count phrase (optional) (default='*').
-     * @param boolean $distinct       Whether or not to count distinct entries (optional) (default='false').
-     * @param string  $categoryFilter The category list to use for filtering (optional) (default=null).
-     * @param string  $subquery       The subquery to the apply to the operatioin (optional) default=null).
+     * @param string  $table          The treated table reference
+     * @param string  $where          The where clause (optional) (default='')
+     * @param string  $column         The column to place in the count phrase (optional) (default='*')
+     * @param boolean $distinct       Whether or not to count distinct entries (optional) (default='false')
+     * @param string  $categoryFilter The category list to use for filtering (optional) (default=null)
+     * @param string  $subquery       The subquery to the apply to the operatioin (optional) default=null)
      *
-     * @return integer The resulting object count.
+     * @return integer The resulting object count
      */
     public static function selectObjectCount($table, $where = '', $column = '1', $distinct = false, $categoryFilter = null, $subquery = null)
     {
@@ -2412,13 +2412,13 @@ class DBUtil
     /**
      * Select an object count by ID.
      *
-     * @param string  $table         The treated table reference.
-     * @param integer $id            The id value to match.
-     * @param string  $field         The field to match the ID against (optional) (default='id').
-     * @param string  $transformFunc Transformation function to apply to $id (optional) (default=null).
+     * @param string  $table         The treated table reference
+     * @param integer $id            The id value to match
+     * @param string  $field         The field to match the ID against (optional) (default='id')
+     * @param string  $transformFunc Transformation function to apply to $id (optional) (default=null)
      *
-     * @return The       resulting object count.
-     * @throws Exception If id paramerter is empty or non-numeric.
+     * @return The       resulting object count
+     * @throws Exception If id paramerter is empty or non-numeric
      */
     public static function selectObjectCountByID($table, $id, $field = 'id', $transformFunc = '')
     {
@@ -2447,11 +2447,11 @@ class DBUtil
     /**
      * Construct and execute a select statement from a nested set of expressions
      *
-     * @param string  $table              The treated table reference.
+     * @param string  $table              The treated table reference
      * @param string  $sqlExpressionArray An array of expressions
      * @param string  $columns            The column array we use to marshall the result set
      * @param integer $id                 The id value to match (optional) (default=1)
-     * @param string  $field              The field to match the ID against (optional) (default='id').
+     * @param string  $field              The field to match the ID against (optional) (default='id')
      *
      * @return integer The resulting object
      */
@@ -2493,18 +2493,18 @@ class DBUtil
     /**
      * Select & return an expanded field array.
      *
-     * @param string  $table            The treated table reference.
-     * @param array   $joinInfo         The array containing the extended join information.
-     * @param string  $field            The name of the field we wish to marshall.
-     * @param string  $where            The where clause (optional) (default='').
-     * @param string  $orderby          The orderby clause (optional) (default='').
-     * @param boolean $distinct         Whether or not to add a 'DISTINCT' clause (optional) (default=false).
-     * @param string  $assocKey         The key field to use to build the associative index (optional) (default='').
-     * @param string  $permissionFilter The permission filter to use for permission checking (optional) (default=null).
-     * @param integer $limitOffset      The lower limit bound (optional) (default=-1).
-     * @param integer $limitNumRows     The upper limit bound (optional) (default=-1).
+     * @param string  $table            The treated table reference
+     * @param array   $joinInfo         The array containing the extended join information
+     * @param string  $field            The name of the field we wish to marshall
+     * @param string  $where            The where clause (optional) (default='')
+     * @param string  $orderby          The orderby clause (optional) (default='')
+     * @param boolean $distinct         Whether or not to add a 'DISTINCT' clause (optional) (default=false)
+     * @param string  $assocKey         The key field to use to build the associative index (optional) (default='')
+     * @param string  $permissionFilter The permission filter to use for permission checking (optional) (default=null)
+     * @param integer $limitOffset      The lower limit bound (optional) (default=-1)
+     * @param integer $limitNumRows     The upper limit bound (optional) (default=-1)
      *
-     * @return The resulting field array.
+     * @return The resulting field array
      */
     public static function selectExpandedFieldArray($table, $joinInfo, $field, $where = '', $orderby = '', $distinct = false, $assocKey = '', $permissionFilter = null, $limitOffset = -1, $limitNumRows = -1)
     {
@@ -2549,14 +2549,14 @@ class DBUtil
     /**
      * Select & return a object with it's left join fields filled in.
      *
-     * @param string $table            The treated table reference.
-     * @param array  $joinInfo         The array containing the extended join information.
-     * @param string $where            The where clause (optional).
-     * @param array  $columnArray      The columns to marshall into the resulting object (optional) (default=null).
-     * @param string $permissionFilter The permission structure to use for permission checking (optional) (default=null).
-     * @param string $categoryFilter   The category list to use for filtering (optional) (default=null).
+     * @param string $table            The treated table reference
+     * @param array  $joinInfo         The array containing the extended join information
+     * @param string $where            The where clause (optional)
+     * @param array  $columnArray      The columns to marshall into the resulting object (optional) (default=null)
+     * @param string $permissionFilter The permission structure to use for permission checking (optional) (default=null)
+     * @param string $categoryFilter   The category list to use for filtering (optional) (default=null)
      *
-     * @return array The resulting object.
+     * @return array The resulting object
      */
     public static function selectExpandedObject($table, $joinInfo, $where = '', $columnArray = null, $permissionFilter = null, $categoryFilter = null)
     {
@@ -2572,16 +2572,16 @@ class DBUtil
     /**
      * Select & return an object by it's ID  with it's left join fields filled in.
      *
-     * @param string  $table            The treated table reference.
-     * @param array   $joinInfo         The array containing the extended join information.
-     * @param integer $id               The ID value to use for object retrieval.
-     * @param string  $field            The field key which holds the ID value (optional) (default='id').
-     * @param array   $columnArray      The columns to marshall into the resulting object (optional) (default=null).
-     * @param string  $permissionFilter The permission structure to use for permission checking (optional) (default=null).
-     * @param string  $categoryFilter   The category list to use for filtering (optional) (default=null).
-     * @param string  $transformFunc    Transformation function to apply to $id (optional) (default=null).
+     * @param string  $table            The treated table reference
+     * @param array   $joinInfo         The array containing the extended join information
+     * @param integer $id               The ID value to use for object retrieval
+     * @param string  $field            The field key which holds the ID value (optional) (default='id')
+     * @param array   $columnArray      The columns to marshall into the resulting object (optional) (default=null)
+     * @param string  $permissionFilter The permission structure to use for permission checking (optional) (default=null)
+     * @param string  $categoryFilter   The category list to use for filtering (optional) (default=null)
+     * @param string  $transformFunc    Transformation function to apply to $id (optional) (default=null)
      *
-     * @return array The resulting object.
+     * @return array The resulting object
      */
     public static function selectExpandedObjectByID($table, $joinInfo, $id, $field = 'id', $columnArray = null, $permissionFilter = null, $categoryFilter = null, $transformFunc = null)
     {
@@ -2603,19 +2603,19 @@ class DBUtil
     /**
      * Select & return an array of objects with it's left join fields filled in.
      *
-     * @param string  $table            The treated table reference.
-     * @param array   $joinInfo         The array containing the extended join information.
-     * @param string  $where            The where clause (optional) (default='').
-     * @param string  $orderby          The order by clause (optional) (default='').
-     * @param integer $limitOffset      The lower limit bound (optional) (default=-1).
-     * @param integer $limitNumRows     The upper limit bound (optional) (default=-1).
-     * @param string  $assocKey         The key field to use to build the associative index (optional) (default='').
-     * @param string  $permissionFilter The permission filter to use for permission checking (optional) (default=null).
-     * @param string  $categoryFilter   The category filter (optional) (default=null).
-     * @param array   $columnArray      The columns to marshall into the resulting object (optional) (default=null).
-     * @param string  $distinct         Set if a "SELECT DISTINCT" should be performed.  default false.
+     * @param string  $table            The treated table reference
+     * @param array   $joinInfo         The array containing the extended join information
+     * @param string  $where            The where clause (optional) (default='')
+     * @param string  $orderby          The order by clause (optional) (default='')
+     * @param integer $limitOffset      The lower limit bound (optional) (default=-1)
+     * @param integer $limitNumRows     The upper limit bound (optional) (default=-1)
+     * @param string  $assocKey         The key field to use to build the associative index (optional) (default='')
+     * @param string  $permissionFilter The permission filter to use for permission checking (optional) (default=null)
+     * @param string  $categoryFilter   The category filter (optional) (default=null)
+     * @param array   $columnArray      The columns to marshall into the resulting object (optional) (default=null)
+     * @param string  $distinct         Set if a "SELECT DISTINCT" should be performed.  default false
      *
-     * @return array The resulting object.
+     * @return array The resulting object
      */
     public static function selectExpandedObjectArray($table, $joinInfo, $where = '', $orderby = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = '', $permissionFilter = null, $categoryFilter = null, $columnArray = null, $distinct = false)
     {
@@ -2753,13 +2753,13 @@ class DBUtil
     /**
      * Return the number of rows affected.
      *
-     * @param string  $table          The treated table reference.
-     * @param array   $joinInfo       The array containing the extended join information.
-     * @param string  $where          The where clause (optional) (default='').
-     * @param boolean $distinct       Whether or not to count distinct entries (optional) (default='false') turned off as fix for http://code.zikula.org/core/ticket/49, not supported in SQL).
-     * @param string  $categoryFilter The category list to use for filtering (optional) (default=null).
+     * @param string  $table          The treated table reference
+     * @param array   $joinInfo       The array containing the extended join information
+     * @param string  $where          The where clause (optional) (default='')
+     * @param boolean $distinct       Whether or not to count distinct entries (optional) (default='false') turned off as fix for http://code.zikula.org/core/ticket/49, not supported in SQL)
+     * @param string  $categoryFilter The category list to use for filtering (optional) (default=null)
      *
-     * @return integer The resulting object count.
+     * @return integer The resulting object count
      */
     public static function selectExpandedObjectCount($table, $joinInfo, $where = '', $distinct = false, $categoryFilter = null)
     {
@@ -2802,12 +2802,12 @@ class DBUtil
      * fields from joined tables defined by a joinInfo array described
      * at the top of this class.
      *
-     * @param string $table       The treated table reference.
-     * @param array  $joinInfo    The array containing the extended join information.
-     * @param array  $columnArray The columns to marshall into the resulting object (optional) (default=null).
-     * @param string $alias       The alias to use a starting point for joined tables passed as a reference!!! (optional) (default=null).
+     * @param string $table       The treated table reference
+     * @param array  $joinInfo    The array containing the extended join information
+     * @param array  $columnArray The columns to marshall into the resulting object (optional) (default=null)
+     * @param string $alias       The alias to use a starting point for joined tables passed as a reference!!! (optional) (default=null)
      *
-     * @return array $sqlJoin, $sqlJoinFieldList, $ca, $sqlJoinFieldArray.
+     * @return array $sqlJoin, $sqlJoinFieldList, $ca, $sqlJoinFieldArray
      * @deprecated
      * @see    Doctrine_Record
      */
@@ -2890,11 +2890,11 @@ class DBUtil
      * This routine is responsible for reading the 'extra' data
      * (attributes, categories, and meta data) from the database and inserting the relevant sub-objects into the object.
      *
-     * @param array   $objects     The object-array or the object we just selected.
-     * @param string  $table       The treated table reference.
-     * @param integer $idFieldName The id column for the object/table combination.
+     * @param array   $objects     The object-array or the object we just selected
+     * @param string  $table       The treated table reference
+     * @param integer $idFieldName The id column for the object/table combination
      *
-     * @return array the object with it's relevant sub-objects set.
+     * @return array the object with it's relevant sub-objects set
      *
      * @deprecated
      * @see    CategorisableListener, AttributableListener, MetaDataListener
@@ -2957,14 +2957,14 @@ class DBUtil
     /**
      * Select & return an object array based on a table definition using the given SQL statement.
      *
-     * @param string  $sql              The sql statement to execute for the selection.
-     * @param string  $table            The treated table reference.
-     * @param array   $columnArray      The columns to marshall into the resulting object (optional) (default=null).
-     * @param string  $permissionFilter The permission filter to use for permission checking (optional) (default=null).
-     * @param integer $limitOffSet      The lower limit bound (optional) (default=-1).
-     * @param integer $limitNumRows     The upper limit bound (optional) (default=-1).
+     * @param string  $sql              The sql statement to execute for the selection
+     * @param string  $table            The treated table reference
+     * @param array   $columnArray      The columns to marshall into the resulting object (optional) (default=null)
+     * @param string  $permissionFilter The permission filter to use for permission checking (optional) (default=null)
+     * @param integer $limitOffSet      The lower limit bound (optional) (default=-1)
+     * @param integer $limitNumRows     The upper limit bound (optional) (default=-1)
      *
-     * @return array The resulting object array.
+     * @return array The resulting object array
      */
     public static function selectObjectArraySQL($sql, $table, $columnArray = null, $permissionFilter = null, $limitOffSet = -1, $limitNumRows = -1)
     {
@@ -2989,13 +2989,13 @@ class DBUtil
     /**
      * Returns the last inserted ID.
      *
-     * @param string  $table       The treated table reference.
-     * @param string  $field       The field to use.
-     * @param boolean $exitOnError Exit on error.
-     * @param boolean $verbose     Verbose mode.
+     * @param string  $table       The treated table reference
+     * @param string  $field       The field to use
+     * @param boolean $exitOnError Exit on error
+     * @param boolean $verbose     Verbose mode
      *
-     * @return integer   The result ID.
-     * @throws Exception IF table does not point to valid table definition, or field does not point to valif field def.
+     * @return integer   The result ID
+     * @throws Exception IF table does not point to valid table definition, or field does not point to valif field def
      */
     public static function getInsertID($table, $field = 'id', $exitOnError = true, $verbose = true)
     {
@@ -3032,11 +3032,11 @@ class DBUtil
      * Get the table definition for a database table. Convert the representation
      * from ADODB Datadict to Doctrine
      *
-     * @param string $table Table to get adodb sql string for.
+     * @param string $table Table to get adodb sql string for
      *
-     * @return array                    The table definition.
-     * @throws Exception                If table parameter is empty.
-     * @throws InvalidArgumentException If error in table definition.
+     * @return array                    The table definition
+     * @throws Exception                If table parameter is empty
+     * @throws InvalidArgumentException If error in table definition
      */
     public static function getTableDefinition($table)
     {
@@ -3202,10 +3202,10 @@ class DBUtil
     /**
      * Get the table definition for a database table.
      *
-     * @param string $table Table to get adodb sql string for.
+     * @param string $table Table to get adodb sql string for
      *
      * @return string
-     * @throws Exception If the table parameter is empty.
+     * @throws Exception If the table parameter is empty
      */
     public static function _getTableDefinition($table)
     {
@@ -3243,10 +3243,10 @@ class DBUtil
     /**
      * Get the constraints for a given table.
      *
-     * @param string $table Treated table.
+     * @param string $table Treated table
      *
-     * @return string    Return string to get table constraints.
-     * @throws Exception If the table parameter is empty or does not point to a valid table definition.
+     * @return string    Return string to get table constraints
+     * @throws Exception If the table parameter is empty or does not point to a valid table definition
      */
     public static function getTableConstraints($table)
     {
@@ -3295,9 +3295,9 @@ class DBUtil
      * minus the prefix and seperating _
      * e.g. getTablePrefix returns z for tables z_modules with getTablePrefix('modules');
      *
-     * @param string $table Table name.
+     * @param string $table Table name
      *
-     * @return string Database prefix.
+     * @return string Database prefix
      */
     public static function getTablePrefix($table)
     {
@@ -3311,10 +3311,10 @@ class DBUtil
     /**
      * Verify that column and column_def definition match.
      *
-     * @param string $table The treated table reference.
+     * @param string $table The treated table reference
      *
      * @return boolean
-     * @throws Exception If the table parameter is empty or cannot retrieve table/column def for $table.
+     * @throws Exception If the table parameter is empty or cannot retrieve table/column def for $table
      */
     public static function verifyTableDefinitionConsistency($table)
     {
@@ -3369,13 +3369,13 @@ class DBUtil
     /**
      * Create a database table.
      *
-     * @param string $table      Tablename key for the tables structure.
-     * @param array  $definition Doctrine table definition array.
-     * @param array  $tabopt     Table options specific to this table (optional).
+     * @param string $table      Tablename key for the tables structure
+     * @param array  $definition Doctrine table definition array
+     * @param array  $tabopt     Table options specific to this table (optional)
      *
-     * @throws Exception On error.
+     * @throws Exception On error
      *
-     * @return boolean True on success, false of failure.
+     * @return boolean True on success, false of failure
      */
     public static function createTable($table, $definition = null, $tabopt = null)
     {
@@ -3444,13 +3444,13 @@ class DBUtil
      * can then be copied to the new columns, before calling the method again with
      * $dropColumns = true to cleanup the old columns.
      *
-     * @param string  $table       Table key in pntables.
-     * @param array   $definition  Table definition (default = null).
-     * @param array   $tabopt      Table options.
-     * @param booleam $dropColumns Drop columns if they don't exist in new schema (default = false).
+     * @param string  $table       Table key in pntables
+     * @param array   $definition  Table definition (default = null)
+     * @param array   $tabopt      Table options
+     * @param booleam $dropColumns Drop columns if they don't exist in new schema (default = false)
      *
      * @return boolean
-     * @throws Exception If the $table parameter is empty or failed consistency check.
+     * @throws Exception If the $table parameter is empty or failed consistency check
      */
     public static function changeTable($table, $definition = null, $tabopt = null, $dropColumns = false)
     {
@@ -3563,10 +3563,10 @@ class DBUtil
     /**
      * Truncate database table.
      *
-     * @param string $table Table a tablename key for the tables structure.
+     * @param string $table Table a tablename key for the tables structure
      *
      * @return boolean
-     * @throws Exception If the $table param is empty or does not point to a valid table definition.
+     * @throws Exception If the $table param is empty or does not point to a valid table definition
      */
     public static function truncateTable($table)
     {
@@ -3596,11 +3596,11 @@ class DBUtil
     /**
      * Rename a database table.
      *
-     * @param string $table    Table a tablename key for the tables structure.
-     * @param string $newTable NewTable a tablename key for the tables structure.
+     * @param string $table    Table a tablename key for the tables structure
+     * @param string $newTable NewTable a tablename key for the tables structure
      *
      * @return boolean
-     * @throws Exception If the $table or $newTable parameter is empty, or do not point to valid definitons.
+     * @throws Exception If the $table or $newTable parameter is empty, or do not point to valid definitons
      */
     public static function renameTable($table, $newTable)
     {
@@ -3637,10 +3637,10 @@ class DBUtil
     /**
      * Delete a database table.
      *
-     * @param string $table Table a tablename key for the tables structure.
+     * @param string $table Table a tablename key for the tables structure
      *
      * @return boolean
-     * @throws Exception If the $table parameter is empty or does not point to valid table definition.
+     * @throws Exception If the $table parameter is empty or does not point to valid table definition
      */
     public static function dropTable($table)
     {
@@ -3670,13 +3670,13 @@ class DBUtil
     /**
      * Create index on table.
      *
-     * @param string       $idxname     Name of index.
-     * @param string       $table       The treated table reference.
-     * @param array|string $flds        String field name, or non-associative array of field names.
-     * @param array        $idxoptarray Array of UNIQUE=true.
+     * @param string       $idxname     Name of index
+     * @param string       $table       The treated table reference
+     * @param array|string $flds        String field name, or non-associative array of field names
+     * @param array        $idxoptarray Array of UNIQUE=true
      *
      * @return boolean
-     * @throws Exception If $idxname, $table, or $flds paramters are empty.
+     * @throws Exception If $idxname, $table, or $flds paramters are empty
      */
     public static function createIndex($idxname, $table, $flds, $idxoptarray = false)
     {
@@ -3745,11 +3745,11 @@ class DBUtil
     /**
      * Drop index on table.
      *
-     * @param string $idxname Index name.
-     * @param string $table   The treated table reference.
+     * @param string $idxname Index name
+     * @param string $table   The treated table reference
      *
      * @return boolean
-     * @throws Exception If any parameter is empty, table does not point to a valid definition.
+     * @throws Exception If any parameter is empty, table does not point to a valid definition
      */
     public static function dropIndex($idxname, $table)
     {
@@ -3780,11 +3780,11 @@ class DBUtil
     /**
      * Get a list of columns in a table.
      *
-     * @param string  $table            The treated table reference.
-     * @param boolean $assoc            Associative meta column names?.
-     * @param boolean $notcasesensitive Normalize case of table name.
+     * @param string  $table            The treated table reference
+     * @param boolean $assoc            Associative meta column names?
+     * @param boolean $notcasesensitive Normalize case of table name
      *
-     * @return array of column objects.
+     * @return array of column objects
      */
     public static function metaColumns($table, $assoc = false, $notcasesensitive = true)
     {
@@ -3804,11 +3804,11 @@ class DBUtil
     /**
      * Get a list of column names in a table.
      *
-     * @param string  $table        Table The treated table reference.
-     * @param boolean $numericIndex Use numeric keys.
+     * @param string  $table        Table The treated table reference
+     * @param boolean $numericIndex Use numeric keys
      *
-     * @return array     Array of column names.
-     * @throws Exception If the table param is empty or does not point to a valid table definition.
+     * @return array     Array of column names
+     * @throws Exception If the table param is empty or does not point to a valid table definition
      */
     public static function metaColumnNames($table, $numericIndex = false)
     {
@@ -3839,11 +3839,11 @@ class DBUtil
     /**
      * Get a list of indexes for a table.
      *
-     * @param string  $table   The treated table reference.
-     * @param boolean $primary Show only primary keys.
+     * @param string  $table   The treated table reference
+     * @param boolean $primary Show only primary keys
      *
-     * @return array     Array of column names.
-     * @throws Exception If the table parameter is empty or does not point to a valid table definition.
+     * @return array     Array of column names
+     * @throws Exception If the table parameter is empty or does not point to a valid table definition
      */
     public static function metaIndexes($table, $primary = false)
     {
@@ -3875,11 +3875,11 @@ class DBUtil
      * We use this function as a central point to shorten table name (there might be restrictions in ' other RDBMS too). If the resulting tablename is
      * empty we will show an error. In this case the prefix is too long.
      *
-     * @param string $table        The treated table reference.
-     * @param string $dbDriverName The driver used for this DB (optional).
+     * @param string $table        The treated table reference
+     * @param string $dbDriverName The driver used for this DB (optional)
      *
      * @deprecated
-     * @see    Doctrines DBAL layer.
+     * @see    Doctrines DBAL layer
      *
      * @return boolean
      */
@@ -3922,10 +3922,10 @@ class DBUtil
     /**
      * Build a Doctrine Model class dynamically to allow pntable based modules to use DQL
      *
-     * @param string $table     Table to use.
-     * @param string $className Name of the class to load (default=null which generates {$table}_DBUtilRecord).
+     * @param string $table     Table to use
+     * @param string $className Name of the class to load (default=null which generates {$table}_DBUtilRecord)
      *
-     * @return string The model class.
+     * @return string The model class
      */
     public static function buildDoctrineModuleClass($table, $className = null)
     {
@@ -3979,8 +3979,8 @@ class {$className}Table extends Doctrine_Table {}
     /**
      * Include dynamically created Doctrine Model class into runtime environment
      *
-     * @param string $table     The table.
-     * @param string $className Name of the class to load (default=null which generates {$table}_DBUtilRecord).
+     * @param string $table     The table
+     * @param string $className Name of the class to load (default=null which generates {$table}_DBUtilRecord)
      *
      * @return void
      */

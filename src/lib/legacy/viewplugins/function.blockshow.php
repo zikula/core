@@ -21,10 +21,10 @@
  *  - assign    (string)    If set, the results are assigned to the corresponding
  *                          template variable instead of being returned to the template (optional)
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the {@link Zikula_View} object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the {@link Zikula_View} object
  *
- * @return string The rendered output of the specified block.
+ * @return string The rendered output of the specified block
  */
 function smarty_function_blockshow($params, Zikula_View $view)
 {

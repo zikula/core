@@ -22,7 +22,7 @@ class ContainerBuilder extends BaseContainerBuilder implements \ArrayAccess
     /**
      * Setter for arguments property.
      *
-     * @param array $array Array of id=>value.
+     * @param array $array Array of id=>value
      *
      * @return void
      */
@@ -35,7 +35,7 @@ class ContainerBuilder extends BaseContainerBuilder implements \ArrayAccess
     /**
      * Load multiple arguments.
      *
-     * @param array $array Array of id=>$value.
+     * @param array $array Array of id=>$value
      *
      * @return void
      */
@@ -49,9 +49,9 @@ class ContainerBuilder extends BaseContainerBuilder implements \ArrayAccess
     /**
      * Getter for \ArrayAccess interface.
      *
-     * @param string $id Argument id.
+     * @param string $id Argument id
      *
-     * @return mixed Argument value.
+     * @return mixed Argument value
      */
     public function offsetGet($id)
     {
@@ -61,8 +61,8 @@ class ContainerBuilder extends BaseContainerBuilder implements \ArrayAccess
     /**
      * Setter for \ArrayAccess interface.
      *
-     * @param string $id    Argument id.
-     * @param mixed  $value Argument value.
+     * @param string $id    Argument id
+     * @param mixed  $value Argument value
      *
      * @return void
      */
@@ -74,7 +74,7 @@ class ContainerBuilder extends BaseContainerBuilder implements \ArrayAccess
     /**
      * Has() method on argument property for \ArrayAccess interface.
      *
-     * @param string $id Argument id.
+     * @param string $id Argument id
      *
      * @return boolean
      */
@@ -86,7 +86,7 @@ class ContainerBuilder extends BaseContainerBuilder implements \ArrayAccess
     /**
      * Unset argument by id, implementation for \ArrayAccess.
      *
-     * @param string $id Id.
+     * @param string $id Id
      *
      * @return void
      */

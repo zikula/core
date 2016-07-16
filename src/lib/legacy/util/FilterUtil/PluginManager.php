@@ -55,8 +55,8 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
     /**
      * Constructor.
      *
-     * @param FilterUtil_Config $config FilterUtil Configuration object.
-     * @param array             $plgs   Plugins to load in form "plugin name => config array".
+     * @param FilterUtil_Config $config FilterUtil Configuration object
+     * @param array             $plgs   Plugins to load in form "plugin name => config array"
      */
     public function __construct(FilterUtil_Config $config, $plgs = null)
     {
@@ -74,9 +74,9 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
     /**
      * Loads plugins.
      *
-     * @param array $plgs Array of plugin informations in form "plugin's name => config array".
+     * @param array $plgs Array of plugin informations in form "plugin's name => config array"
      *
-     * @return bool true on success, false otherwise.
+     * @return bool true on success, false otherwise
      */
     public function loadPlugins($plgs)
     {
@@ -92,7 +92,7 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
     /**
      * Loads restrictions.
      *
-     * @param array $rest Array of allowed operators per field in the form "field's name => operator array".
+     * @param array $rest Array of allowed operators per field in the form "field's name => operator array"
      *
      * @return void
      */
@@ -114,7 +114,7 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
     /**
      * Available plugins list.
      *
-     * @return array List of the available plugins.
+     * @return array List of the available plugins
      */
     public static function getPluginsAvailable()
     {
@@ -140,10 +140,10 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
     /**
      * Loads a single plugin.
      *
-     * @param string $name   Plugin's name.
-     * @param array  $config Plugin's config.
+     * @param string $name   Plugin's name
+     * @param array  $config Plugin's config
      *
-     * @return integer The plugin's id.
+     * @return integer The plugin's id
      */
     public function loadPlugin($name, $config = [])
     {
@@ -178,10 +178,10 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
     /**
      * Loads a single plugin.
      *
-     * @param string $name   Plugin's name.
-     * @param array  $config Plugin's config.
+     * @param string $name   Plugin's name
+     * @param array  $config Plugin's config
      *
-     * @return integer The plugin's id.
+     * @return integer The plugin's id
      */
     public function loadPluginLegacy($name, $config = [])
     {
@@ -235,7 +235,7 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
      *
      * Check what type the plugin is from and register it.
      *
-     * @param int $k The Plugin's ID -> Key in the $this->_plg array.
+     * @param int $k The Plugin's ID -> Key in the $this->_plg array
      *
      * @return void
      */
@@ -271,9 +271,9 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
      *
      * FIXME What's about this function? $name is not unique!
      *
-     * @param string $name Plugin's name.
+     * @param string $name Plugin's name
      *
-     * @return object Plugin's configuration object.
+     * @return object Plugin's configuration object
      */
     public function getPluginConfig($name)
     {
@@ -289,9 +289,9 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
      *
      * FIXME What's about this function? $name is not unique!
      *
-     * @param string $name Plugin's name.
+     * @param string $name Plugin's name
      *
-     * @return bool true if the plugin is loaded, false otherwise.
+     * @return bool true if the plugin is loaded, false otherwise
      */
     public function isLoaded($name)
     {
@@ -305,11 +305,11 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
     /**
      * Runs replace plugins and return condition set.
      *
-     * @param string $field Fieldname.
-     * @param string $op    Operator.
-     * @param string $value Value.
+     * @param string $field Fieldname
+     * @param string $op    Operator
+     * @param string $value Value
      *
-     * @return array condition set.
+     * @return array condition set
      */
     public function replace($field, $op, $value)
     {
@@ -330,11 +330,11 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
     /**
      * Returns SQL code.
      *
-     * @param string $field Field name.
-     * @param string $op    Operator.
-     * @param string $value Test value.
+     * @param string $field Field name
+     * @param string $op    Operator
+     * @param string $value Test value
      *
-     * @return string Sql set.
+     * @return string Sql set
      */
     public function getSQL($field, $op, $value)
     {
@@ -354,11 +354,11 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
     /**
      * Returns DQL code.
      *
-     * @param string $field Field name.
-     * @param string $op    Operator.
-     * @param string $value Test value.
+     * @param string $field Field name
+     * @param string $op    Operator
+     * @param string $value Test value
      *
-     * @return string Doctrine Query where clause and parameters.
+     * @return string Doctrine Query where clause and parameters
      */
     public function getDql($field, $op, $value)
     {

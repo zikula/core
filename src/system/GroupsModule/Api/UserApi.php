@@ -35,7 +35,7 @@ class UserApi extends \Zikula_AbstractApi
      *      @type int $numitems  number of items to get
      *                     }
      *
-     * @return array|bool array of group items, false if none are found.
+     * @return array|bool array of group items, false if none are found
      */
     public function getall($args)
     {
@@ -90,7 +90,7 @@ class UserApi extends \Zikula_AbstractApi
      *      @type int  $uid              ID of user
      *                     }
      *
-     * @return array|bool item array, or false on failure.
+     * @return array|bool item array, or false on failure
      *
      * @throws \InvalidArgumentException Thrown if the gid parameter isn't provided
      */
@@ -185,7 +185,7 @@ class UserApi extends \Zikula_AbstractApi
      *      @type int $gid id of group item to get
      *                     }
      *
-     * @return int number of items held by this module.
+     * @return int number of items held by this module
      *
      * @throws \InvalidArgumentException Thrown if the gid parameter isn't provided or isn't numeric
      */
@@ -209,7 +209,7 @@ class UserApi extends \Zikula_AbstractApi
      *      @type int $clean flag to return an array of GIDs
      *                     }
      *
-     * @return array|bool array of group items, false if no group memberships are found for the input user id.
+     * @return array|bool array of group items, false if no group memberships are found for the input user id
      *
      * @throws \InvalidArgumentException Thrown if the gid parameter isn't provided or isn't numeric
      */
@@ -247,7 +247,7 @@ class UserApi extends \Zikula_AbstractApi
      *      @type int $numitems  number of items to get
      *                     }
      *
-     * @return array|bool array of groups, false if no groups are found.
+     * @return array|bool array of groups, false if no groups are found
      */
     public function getallgroups($args)
     {
@@ -378,10 +378,10 @@ class UserApi extends \Zikula_AbstractApi
      *      @type int $gid group id
      *                     }
      *
-     * @return bool true if successful, false if the group isn't found.
+     * @return bool true if successful, false if the group isn't found
      *
      * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
-     * @throws AccessDeniedException Thrown if the current user does not have read access to the group.
+     * @throws AccessDeniedException Thrown if the current user does not have read access to the group
      * @throws \RuntimeException Thrown if the user has already applied for this group
      */
     public function saveapplication($args)
@@ -493,7 +493,7 @@ class UserApi extends \Zikula_AbstractApi
      *
      * @throws \InvalidArgumentException Thrown if either gtype or gid are not set or not numeric or
      *                                          if action isn't set or one of 'subscribe', 'unsubscribe' or 'cancel'
-     * @throws AccessDeniedException Thrown if the user is not logged in.
+     * @throws AccessDeniedException Thrown if the user is not logged in
      * @throws \RuntimeException Thrown if the user couldn't be added to the group,
      *                                  if the application to the group couldn't be cancelled, or
      *                                  if the user couldn't be removed from the group
@@ -572,10 +572,10 @@ class UserApi extends \Zikula_AbstractApi
      *      @type int $uid the ID of the user
      *                     }
      *
-     * @return bool true if successful, false otherwise.
+     * @return bool true if successful, false otherwise
      *
      * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
-     * @throws AccessDeniedException Thrown if the current user does not have read access to the group.
+     * @throws AccessDeniedException Thrown if the current user does not have read access to the group
      */
     public function adduser($args)
     {
@@ -629,10 +629,10 @@ class UserApi extends \Zikula_AbstractApi
      *      @type int $uid the ID of the user
      *                     }
      *
-     * @return bool true if successful, false otherwise.
+     * @return bool true if successful, false otherwise
      *
      * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
-     * @throws AccessDeniedException Thrown if the current user does not have read access tp the group.
+     * @throws AccessDeniedException Thrown if the current user does not have read access tp the group
      */
     public function removeuser($args)
     {
@@ -697,7 +697,7 @@ class UserApi extends \Zikula_AbstractApi
      *      @type int $gid group id
      *                     }
      *
-     * @return boolean true if member of a group, false otherwise.
+     * @return boolean true if member of a group, false otherwise
      *
      * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
      */

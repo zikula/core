@@ -31,7 +31,7 @@ class TwigExtension extends \Twig_Extension
     /**
      * The zikulamailermodule_hasProcessControlFunctions function determines whether the proc_* functions are available.
      *
-     * @return boolean True if proc_* functions are available, false otherwise.
+     * @return boolean True if proc_* functions are available, false otherwise
      */
     public function hasProcessControlFunctions()
     {

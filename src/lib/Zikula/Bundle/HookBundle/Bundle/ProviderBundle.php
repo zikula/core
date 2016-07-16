@@ -61,10 +61,10 @@ class ProviderBundle
     /**
      * Constructor.
      *
-     * @param string $owner    Owner.
-     * @param string $area     Area ID, this should be a unique string.
-     * @param string $category Area category.
-     * @param string $title    Title.
+     * @param string $owner    Owner
+     * @param string $area     Area ID, this should be a unique string
+     * @param string $category Area category
+     * @param string $title    Title
      */
     public function __construct($owner, $area, $category, $title)
     {
@@ -151,9 +151,9 @@ class ProviderBundle
     /**
      * Add a static class::method() handler to this hundle.
      *
-     * @param string $hookType  Hook type.
-     * @param string $className Class Name.
-     * @param string $method    Static method name.
+     * @param string $hookType  Hook type
+     * @param string $className Class Name
+     * @param string $method    Static method name
      *
      * @return ProviderBundle
      */
@@ -165,10 +165,10 @@ class ProviderBundle
     /**
      * Add servicehandler as hook handler to this bundle.
      *
-     * @param string $hookType  Hook type.
-     * @param string $className Class name.
-     * @param string $method    Method name.
-     * @param string $serviceId Service Id.
+     * @param string $hookType  Hook type
+     * @param string $className Class name
+     * @param string $method    Method name
+     * @param string $serviceId Service Id
      *
      * @return ProviderBundle
      */
@@ -180,10 +180,10 @@ class ProviderBundle
     /**
      * Add a hook handler with this bundle.
      *
-     * @param string $hookType  Hook type.
-     * @param string $className Class.
-     * @param string $method    Method name.
-     * @param string $serviceId Service ID if this is NOT a static class method.
+     * @param string $hookType  Hook type
+     * @param string $className Class
+     * @param string $method    Method name
+     * @param string $serviceId Service ID if this is NOT a static class method
      *
      * @return ProviderBundle
      */

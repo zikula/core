@@ -14,7 +14,7 @@
  * @deprecated remove at Core-2.0
  *
  * In the context of Zikula, unfortunately we need to maintain the HookDispatcher
- * since it's not convenient to pass around using dependency injection.
+ * since it's not convenient to pass around using dependency injection
  */
 class HookUtil
 {
@@ -67,7 +67,7 @@ class HookUtil
     /**
      * Is a module is provider capable.
      *
-     * @param string $module Module name.
+     * @param string $module Module name
      *
      * @return boolean
      */
@@ -81,7 +81,7 @@ class HookUtil
      * @see \Zikula\ExtensionsModule\Api\CapabilityApi::isCapable(CapabilityApiInterface::HOOK_SUBSCRIBE_OWN)
      * @see service zikula_extensions_module.api.capability
      *
-     * @param string $module Module name.
+     * @param string $module Module name
      *
      * @return boolean
      */
@@ -99,7 +99,7 @@ class HookUtil
     /**
      * Is a module subscriber capable.
      *
-     * @param string $module Module name.
+     * @param string $module Module name
      *
      * @return boolean
      */
@@ -113,7 +113,7 @@ class HookUtil
      * @see \Zikula\Bundle\HookBundle\Api\HookApi::registerProviderBundles
      * @see service zikula_hook_bundle.api.hook
      *
-     * @param array $bundles Module's bundles object.
+     * @param array $bundles Module's bundles object
      *
      * @return void
      */
@@ -130,9 +130,9 @@ class HookUtil
      * @see \Zikula\Bundle\HookBundle\Api\HookApi::unregisterProviderBundles
      * @see service zikula_hook_bundle.api.hook
      *
-     * This cascades to remove all bindings by any subscribers to the providers in these bundles.
+     * This cascades to remove all bindings by any subscribers to the providers in these bundles
      *
-     * @param array $bundles Module's bundles object.
+     * @param array $bundles Module's bundles object
      *
      * @return void
      */
@@ -149,7 +149,7 @@ class HookUtil
      * @see \Zikula\Bundle\HookBundle\Api\HookApi::registerSubscriberBundles
      * @see service zikula_hook_bundle.api.hook
      *
-     * @param array $bundles Module's bundles object.
+     * @param array $bundles Module's bundles object
      *
      * @return void
      */
@@ -166,9 +166,9 @@ class HookUtil
      * @see \Zikula\Bundle\HookBundle\Api\HookApi::unregisterSubscriberBundles
      * @see service zikula_hook_bundle.api.hook
      *
-     * This cascades to remove all event handlers, sorting data and update bindings table.
+     * This cascades to remove all event handlers, sorting data and update bindings table
      *
-     * @param array $bundles Module's bundles object.
+     * @param array $bundles Module's bundles object
      *
      * @return void
      */

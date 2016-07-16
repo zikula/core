@@ -399,7 +399,7 @@ class UserApi extends \Zikula_AbstractApi
      * @return bool true if successful
      *
      * @throws \InvalidArgumentException Thrown if either the theme or file parameters aren't provided or are empty
-     * @throws \RuntimeException Thrown if the file cannot be opened or written to.
+     * @throws \RuntimeException Thrown if the file cannot be opened or written to
      */
     public function writeinifile($args)
     {

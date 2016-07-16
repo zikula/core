@@ -39,7 +39,7 @@ class Zikula_Form_View_Plugin extends Zikula_Form_View
     /**
      * Plugin name getter.
      *
-     * @return string The plugin name.
+     * @return string The plugin name
      */
     public function getPluginName()
     {
@@ -49,12 +49,12 @@ class Zikula_Form_View_Plugin extends Zikula_Form_View
     /**
      * Setup the current instance of the Zikula_View class and return it back to the module.
      *
-     * @param string       $moduleName Module name.
-     * @param string       $pluginName Plugin name.
-     * @param integer|null $caching    Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
-     * @param string       $cache_id   Cache Id.
+     * @param string       $moduleName Module name
+     * @param string       $pluginName Plugin name
+     * @param integer|null $caching    Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null)
+     * @param string       $cache_id   Cache Id
      *
-     * @return Zikula_View_Plugin instance.
+     * @return Zikula_View_Plugin instance
      */
     public static function getPluginInstance($moduleName, $pluginName, $caching = null, $cache_id = null)
     {
@@ -99,8 +99,8 @@ class Zikula_Form_View_Plugin extends Zikula_Form_View
     /**
      * Add a plugins dir to _plugin_dir property array.
      *
-     * @param string $module Module name.
-     * @param string $plugin Plugin name.
+     * @param string $module Module name
+     * @param string $plugin Plugin name
      *
      * @return void
      */
@@ -133,9 +133,9 @@ class Zikula_Form_View_Plugin extends Zikula_Form_View
     /**
      * Checks which path to use for required template.
      *
-     * @param string $template Template name.
+     * @param string $template Template name
      *
-     * @return string Template path.
+     * @return string Template path
      */
     public function get_template_path($template)
     {

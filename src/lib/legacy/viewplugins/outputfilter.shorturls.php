@@ -16,8 +16,8 @@
  * Type:      outputfilter
  * Name:      shorturls
  *
- * @param string      $source Output source.
- * @param Zikula_View $view   Reference to Zikula_View instance.
+ * @param string      $source Output source
+ * @param Zikula_View $view   Reference to Zikula_View instance
  *
  * @return string
  */

@@ -27,7 +27,7 @@ class SystemPlugin_Imagine_Configuration extends Zikula_Controller_AbstractPlugi
     /**
      * Fetch and render the configuration template.
      *
-     * @return string The rendered template.
+     * @return string The rendered template
      */
     public function configure()
     {

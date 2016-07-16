@@ -44,7 +44,7 @@ class SubscriberBundleTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers {className}::{origMethodName}
-     * @todo Implement testGetEvents().
+     * @todo Implement testGetEvents()
      */
     public function testGetEvents()
     {
@@ -56,7 +56,7 @@ class SubscriberBundleTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers {className}::{origMethodName}
-     * @todo Implement testGetTitle().
+     * @todo Implement testGetTitle()
      */
     public function testGetTitle()
     {
@@ -68,7 +68,7 @@ class SubscriberBundleTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers {className}::{origMethodName}
-     * @todo Implement testGetArea().
+     * @todo Implement testGetArea()
      */
     public function testGetArea()
     {
@@ -80,7 +80,7 @@ class SubscriberBundleTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers {className}::{origMethodName}
-     * @todo Implement testGetCategory().
+     * @todo Implement testGetCategory()
      */
     public function testGetCategory()
     {
@@ -92,7 +92,7 @@ class SubscriberBundleTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers {className}::{origMethodName}
-     * @todo Implement testGetOwner().
+     * @todo Implement testGetOwner()
      */
     public function testGetOwner()
     {
@@ -104,7 +104,7 @@ class SubscriberBundleTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers {className}::{origMethodName}
-     * @todo Implement testGetSubOwner().
+     * @todo Implement testGetSubOwner()
      */
     public function testGetSubOwner()
     {
@@ -116,7 +116,7 @@ class SubscriberBundleTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers {className}::{origMethodName}
-     * @todo Implement testSetSubOwner().
+     * @todo Implement testSetSubOwner()
      */
     public function testSetSubOwner()
     {
@@ -128,7 +128,7 @@ class SubscriberBundleTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers {className}::{origMethodName}
-     * @todo Implement testAddEvent().
+     * @todo Implement testAddEvent()
      */
     public function testAddEvent()
     {

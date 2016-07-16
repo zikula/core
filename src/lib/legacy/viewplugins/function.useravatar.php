@@ -28,10 +28,10 @@ use Zikula\UsersModule\Constant as UsersConstant;
  * {useravatar uid="2" width=80 height=80}
  * {useravatar uid="2" size=80 rating=g}
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
- * @return string A formatted string containing the avatar image.
+ * @return string A formatted string containing the avatar image
  */
 
 function smarty_function_useravatar($params, Zikula_View $view)

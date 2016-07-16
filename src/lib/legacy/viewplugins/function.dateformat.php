@@ -17,8 +17,8 @@
  *  datetime The datetime we wish to convert.
  *  assign   The smarty variable we wish to assign the result to (optional).
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
  * @return string
  */

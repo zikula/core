@@ -21,9 +21,9 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
      *
      * Convenience access to the api function of the same name from within the controller.
      *
-     * @param string $methodName The name of the authentication method.
+     * @param string $methodName The name of the authentication method
      *
-     * @return boolean True if the method is supported by this module; otherwise false.
+     * @return boolean True if the method is supported by this module; otherwise false
      */
     protected function supportsAuthenticationMethod($methodName)
     {
@@ -35,9 +35,9 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
      *
      * Convenience access to the api function of the same name from within the controller.
      *
-     * @param string $methodName The name of the authentication method.
+     * @param string $methodName The name of the authentication method
      *
-     * @return boolean True if the method is enabled for use; otherwise false.
+     * @return boolean True if the method is enabled for use; otherwise false
      */
     protected function authenticationMethodIsEnabled($methodName)
     {
@@ -52,11 +52,11 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
     /**
      * Render and return the portion of the HTML log-in form containing the fields needed by this authentication module in order to log in.
      *
-     * @param array $args All parameters passed to this function.
+     * @param array $args All parameters passed to this function
      *
-     * @todo In 1.5.0, throw exception here and do not allow the "getLoginFormFields" method.
+     * @todo In 1.5.0, throw exception here and do not allow the "getLoginFormFields" method
      *
-     * @return string the rendered HTML fragment containing the authentication module fields for the login form or block.
+     * @return string the rendered HTML fragment containing the authentication module fields for the login form or block
      */
     public function getLoginFormFieldsAction(array $args)
     {
@@ -66,7 +66,7 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
     /**
      * @param array $args
      *
-     * @deprecated Use "getLoginFormFieldsAction" instead.
+     * @deprecated Use "getLoginFormFieldsAction" instead
      *
      * @return string
      */
@@ -84,11 +84,11 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
      * - string $args['form_action'] The URL to which the selector form should submit.
      * - string $args['method']      The authentication method for which a selector should be returned.
      *
-     * @param array $args All parameters passed to this function.
+     * @param array $args All parameters passed to this function
      *
-     * @todo In 1.5.0, move content from "getAuthenticationMethodSelector" method to here.
+     * @todo In 1.5.0, move content from "getAuthenticationMethodSelector" method to here
      *
-     * @return string The rendered authentication method selector for the login page or block.
+     * @return string The rendered authentication method selector for the login page or block
      */
     public function getAuthenticationMethodSelectorAction(array $args)
     {
@@ -98,7 +98,7 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
     /**
      * @param array $args
      *
-     * @deprecated Use "getAuthenticationMethodSelectorAction" instead.
+     * @deprecated Use "getAuthenticationMethodSelectorAction" instead
      *
      * @return string
      *
@@ -200,12 +200,12 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
      *                                          if the authentication method does not perform external third-party authentication
      *                                          via a federated authentication service).
      *
-     * @param array $args The parameters for this function.
+     * @param array $args The parameters for this function
      *
      * @return boolean True if the authentication information (the user's credentials) pass initial user-interface level validation;
-     *                  otherwise false and an error status message is set.
+     *                  otherwise false and an error status message is set
      *
-     * @todo In 1.5.0, throw exception here and do not allow the "validateAuthenticationInformation" method.
+     * @todo In 1.5.0, throw exception here and do not allow the "validateAuthenticationInformation" method
      */
     public function validateAuthenticationInformationAction(array $args)
     {
@@ -215,7 +215,7 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
     /**
      * @param array $args
      *
-     * @deprecated Use "validateAuthenticationInformationAction" instead.
+     * @deprecated Use "validateAuthenticationInformationAction" instead
      *
      * @return bool
      *

@@ -46,8 +46,8 @@
  *  optimize           Only deliver page links which are actually displayed to the template (default: true)
  *  includePostVars    Whether or not to include the POST variables as GET variables in the pager URLs (default: true)
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
  * @return string
  */

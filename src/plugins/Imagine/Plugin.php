@@ -24,7 +24,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
     /**
      * Get plugin meta data.
      *
-     * @return array Meta data.
+     * @return array Meta data
      */
     protected function getMeta()
     {
@@ -297,7 +297,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
     /**
      * Stores preset in Imagine vars.
      *
-     * @param SystemPlugin_Imagine_Preset $preset   Preset to store.
+     * @param SystemPlugin_Imagine_Preset $preset   Preset to store
      *
      * @return SystemPlugin_Imagine_Plugin
      */
@@ -340,10 +340,10 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
     /**
      * Convenience Module SetVar.
      *
-     * @param string $key   Key.
-     * @param mixed  $value Value, default empty.
+     * @param string $key   Key
+     * @param mixed  $value Value, default empty
      *
-     * @return object This.
+     * @return object This
      */
     public function setVar($key, $value = '')
     {
@@ -355,9 +355,9 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
     /**
      * Convenience Module SetVars.
      *
-     * @param array $vars Array of key => value.
+     * @param array $vars Array of key => value
      *
-     * @return object This.
+     * @return object This
      */
     public function setVars(array $vars)
     {
@@ -369,8 +369,8 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
     /**
      * Convenience Module GetVar.
      *
-     * @param string  $key     Key.
-     * @param boolean $default Default, false if not found.
+     * @param string  $key     Key
+     * @param boolean $default Default, false if not found
      *
      * @return mixed
      */
@@ -392,9 +392,9 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
     /**
      * Convenience Module DelVar.
      *
-     * @param string $key Key.
+     * @param string $key Key
      *
-     * @return object This.
+     * @return object This
      */
     public function delVar($key)
     {
@@ -406,7 +406,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
     /**
      * Convenience Module DelVar for all keys for this module.
      *
-     * @return object This.
+     * @return object This
      */
     public function delVars()
     {

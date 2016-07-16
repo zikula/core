@@ -42,7 +42,7 @@ class Validator
     /**
      * Constructor.
      *
-     * @param Generator $tokenGenerator Token generator.
+     * @param Generator $tokenGenerator Token generator
      */
     public function __construct(Generator $tokenGenerator)
     {
@@ -58,9 +58,9 @@ class Validator
      * with a unique ID each time.  If the are per-session, then they should be
      * generated with the same unique ID and not deleted when validated here.
      *
-     * @param string  $token       Token to validate.
-     * @param boolean $delete      Whether to delete the token if valid.
-     * @param boolean $checkExpire Whether to check for token expiry.
+     * @param string  $token       Token to validate
+     * @param boolean $delete      Whether to delete the token if valid
+     * @param boolean $checkExpire Whether to check for token expiry
      *
      * @return boolean
      */

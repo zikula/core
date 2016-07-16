@@ -33,10 +33,10 @@ class DisplayHookResponse
     /**
      * Constructor.
      *
-     * @param string $area Name of this response.
-     * @param string|Zikula_View $view string or Zikula View instance.
+     * @param string $area Name of this response
+     * @param string|Zikula_View $view string or Zikula View instance
      * @param string $template Template, in the context of the Zikula_View. @deprecated argument
-     *   The third argument in the method will be removed in Core-2.0.
+     *   The third argument in the method will be removed in Core-2.0
      */
     public function __construct($area, $view, $template = null)
     {

@@ -36,10 +36,10 @@ class Zikula_Event extends GenericEvent
     /**
      * Encapsulate an event called with $subject.
      *
-     * @param string $name    Event name.
-     * @param mixed  $subject Usually and object or other PHP callable.
-     * @param array  $args    Arguments to store in the event.
-     * @param mixed  $data    Convenience argument of data for optional processing.
+     * @param string $name    Event name
+     * @param mixed  $subject Usually and object or other PHP callable
+     * @param array  $args    Arguments to store in the event
+     * @param mixed  $data    Convenience argument of data for optional processing
      */
     public function __construct($name, $subject = null, array $args = [], $data = null)
     {
@@ -78,8 +78,8 @@ class Zikula_Event extends GenericEvent
     /**
      * Add argument to event.
      *
-     * @param string $key   Argument name.
-     * @param mixed  $value Value.
+     * @param string $key   Argument name
+     * @param mixed  $value Value
      *
      * @deprecated since 1.4.0
      * @see Symfony\Component\EventDispatcher\GenericEvent::setArgument()
@@ -94,7 +94,7 @@ class Zikula_Event extends GenericEvent
     /**
      * Set args property.
      *
-     * @param array $args Arguments.
+     * @param array $args Arguments
      *
      * @deprecated since 1.4.0
      * @see Symfony\Component\EventDispatcher\GenericEvent::setArguments()
@@ -109,14 +109,14 @@ class Zikula_Event extends GenericEvent
     /**
      * Get argument by key.
      *
-     * @param string $key Key.
+     * @param string $key Key
      *
      * @deprecated since 1.4.0
      * @see Symfony\Component\EventDispatcher\GenericEvent::getArgument()
      *
-     * @throws InvalidArgumentException If key is not found.
+     * @throws InvalidArgumentException If key is not found
      *
-     * @return mixed Contents of array key.
+     * @return mixed Contents of array key
      */
     public function getArg($key)
     {
@@ -153,7 +153,7 @@ class Zikula_Event extends GenericEvent
     /**
      * Getter for Data property.
      *
-     * @return mixed Data property.
+     * @return mixed Data property
      */
     public function getData()
     {
@@ -163,7 +163,7 @@ class Zikula_Event extends GenericEvent
     /**
      * Has argument.
      *
-     * @param string $key Key of arguments array.
+     * @param string $key Key of arguments array
      *
      * @deprecated since 1.4.0
      * @see Symfony\Component\EventDispatcher\GenericEvent::hasArgument()
@@ -178,7 +178,7 @@ class Zikula_Event extends GenericEvent
     /**
      * Get exception.
      *
-     * @throws RuntimeException If no exeception was set.
+     * @throws RuntimeException If no exeception was set
      *
      * @return Exception
      */
@@ -198,7 +198,7 @@ class Zikula_Event extends GenericEvent
      * instead you can store it here then stop() execution.
      * This can then be rethrown or handled politely.
      *
-     * @param Exception $exception Exception.
+     * @param Exception $exception Exception
      *
      * @return void
      */

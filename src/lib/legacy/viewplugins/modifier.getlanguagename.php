@@ -15,9 +15,9 @@
  * Example:
  *   {$language|getlanguagename}
  *
- * @param string $langcode The language to process.
+ * @param string $langcode The language to process
  *
- * @return string The language name.
+ * @return string The language name
  */
 function smarty_modifier_getlanguagename($langcode)
 {

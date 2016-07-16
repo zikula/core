@@ -67,7 +67,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
     /**
      * Set view property.
      *
-     * @param Zikula_View $view Default null means new Render instance for this module name.
+     * @param Zikula_View $view Default null means new Render instance for this module name
      *
      * @return Zikula_AbstractController
      */
@@ -95,7 +95,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
     /**
      * Notify any hookable events.
      *
-     * @param Hook $hook Hook interface.
+     * @param Hook $hook Hook interface
      *
      * @deprecated since 1.4.0
      * @see self::dispatchHooks()
@@ -110,7 +110,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
     /**
      * Dispatch hooks.
      *
-     * @param Hook $hook Hook interface.
+     * @param Hook $hook Hook interface
      *
      * @return Zikula\Bundle\HookBundle\Hook\Hook
      */
@@ -136,12 +136,12 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
     /**
      * Magic method for method_not_found events.
      *
-     * @param string $method Method name called.
-     * @param array  $args   Arguments passed to method call.
+     * @param string $method Method name called
+     * @param array  $args   Arguments passed to method call
      *
      * @throws Zikula_Exception_NotFound If method handler cannot be found..
      *
-     * @return mixed Data.
+     * @return mixed Data
      */
     public function __call($method, $args)
     {
@@ -194,8 +194,8 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      *
      *     throw $this->createNotFoundException();
      *
-     * @param string     $message  A message.
-     * @param \Exception $previous The previous exception.
+     * @param string     $message  A message
+     * @param \Exception $previous The previous exception
      *
      * @return NotFoundHttpException
      */

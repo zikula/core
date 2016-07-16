@@ -27,7 +27,7 @@ class SearchBlockType extends AbstractType
     /**
      * SearchBlockType constructor.
      *
-     * @param TranslatorInterface $translator Translator service instance.
+     * @param TranslatorInterface $translator Translator service instance
      */
     public function __construct(TranslatorInterface $translator)
     {
@@ -37,7 +37,7 @@ class SearchBlockType extends AbstractType
     /**
      * Sets the translator.
      *
-     * @param TranslatorInterface $translator Translator service instance.
+     * @param TranslatorInterface $translator Translator service instance
      */
     public function setTranslator(/*TranslatorInterface */$translator)
     {

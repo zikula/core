@@ -59,7 +59,7 @@ abstract class Zikula_AbstractEventHandler
     /**
      * Constructor.
      *
-     * @param Zikula_EventManager $eventManager EventManager.
+     * @param Zikula_EventManager $eventManager EventManager
      */
     public function __construct(EventDispatcherInterface $eventManager)
     {
@@ -98,11 +98,11 @@ abstract class Zikula_AbstractEventHandler
     /**
      * Add Event definition to handler.
      *
-     * @param string  $name   Name of event.
-     * @param string  $method Method to invoke when called.
-     * @param integer $weight Handler weight, defaults to 10.
+     * @param string  $name   Name of event
+     * @param string  $method Method to invoke when called
+     * @param integer $weight Handler weight, defaults to 10
      *
-     * @throws InvalidArgumentException If method specified is invalid.
+     * @throws InvalidArgumentException If method specified is invalid
      *
      * @return void
      */

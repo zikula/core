@@ -12,11 +12,11 @@
 /**
  * Smarty function to wrap Zikula_Form_View generated form controls with suitable form tags.
  *
- * @param array            $params  Parameters passed in the block tag.
- * @param string           $content Content of the block.
- * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+ * @param array            $params  Parameters passed in the block tag
+ * @param string           $content Content of the block
+ * @param Zikula_Form_View $view    Reference to Zikula_Form_View object
  *
- * @return string The rendered output.
+ * @return string The rendered output
  */
 function smarty_block_form($params, $content, $view)
 {

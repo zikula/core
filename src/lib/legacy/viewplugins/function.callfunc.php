@@ -29,10 +29,10 @@
  * {callfunc x_class='Foo' x_method='Bar' name='Jane'}
  * {callfunc x_method='Something' age=21 name='Jane'}
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
- * @return mixed The results of the callable.
+ * @return mixed The results of the callable
  */
 function smarty_function_callfunc($params, Zikula_View $view)
 {

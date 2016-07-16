@@ -59,8 +59,8 @@ class Zikula_Form_Block_TabbedPanel extends Zikula_Form_AbstractPlugin
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
-     * @param array            &$params Parameters passed from the Smarty plugin function.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
+     * @param array            &$params Parameters passed from the Smarty plugin function
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
@@ -73,9 +73,9 @@ class Zikula_Form_Block_TabbedPanel extends Zikula_Form_AbstractPlugin
     /**
      * RenderBegin event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
-     * @return string The rendered output.
+     * @return string The rendered output
      */
     public function renderBegin(Zikula_Form_View $view)
     {
@@ -100,9 +100,9 @@ class Zikula_Form_Block_TabbedPanel extends Zikula_Form_AbstractPlugin
     /**
      * RenderEnd event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
-     * @return string The rendered output.
+     * @return string The rendered output
      */
     public function renderEnd(Zikula_Form_View $view)
     {

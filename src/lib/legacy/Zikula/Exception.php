@@ -26,9 +26,9 @@ class Zikula_Exception extends Exception
     /**
      * Constructor.
      *
-     * @param string  $message Default ''.
-     * @param integer $code    Code.
-     * @param mixed   $debug   Debug.
+     * @param string  $message Default ''
+     * @param integer $code    Code
+     * @param mixed   $debug   Debug
      */
     public function __construct($message = '', $code = 0, $debug = null)
     {
@@ -39,7 +39,7 @@ class Zikula_Exception extends Exception
     /**
      * Get debug.
      *
-     * @return array.
+     * @return array
      */
     public function getDebug()
     {

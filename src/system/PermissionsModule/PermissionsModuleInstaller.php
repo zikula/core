@@ -22,7 +22,7 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
     /**
      * Initialise the permissions module.
      *
-     * @return boolean True on success, false otherwise.
+     * @return boolean True on success, false otherwise
      */
     public function install()
     {

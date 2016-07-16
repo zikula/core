@@ -29,10 +29,10 @@ class Zikula_ServiceManager_Definition extends \Symfony\Component\DependencyInje
      *
      * To avoid confusion, use the setters constructArgs() and addMethod().
      *
-     * @param string $className       Name of the class (with full namespace if applicable).
-     * @param array  $constructorArgs Non associative array of parameters.
+     * @param string $className       Name of the class (with full namespace if applicable)
+     * @param array  $constructorArgs Non associative array of parameters
      * @param array  $methods         Associative array of [$method => [0 => [$param1, $param2...],
-     *                                                                  1 => [$param1, $param2...]].
+     *                                                                  1 => [$param1, $param2...]]
      */
     public function __construct($className, array $constructorArgs = [], array $methods = [])
     {
@@ -66,7 +66,7 @@ class Zikula_ServiceManager_Definition extends \Symfony\Component\DependencyInje
     /**
      * Configure the constructor arguments.
      *
-     * @param array $args Non associative array of arguments, [] means none.
+     * @param array $args Non associative array of arguments, [] means none
      *
      * @return void
      */
@@ -99,7 +99,7 @@ class Zikula_ServiceManager_Definition extends \Symfony\Component\DependencyInje
      * Setter for methods property.
      *
      * @param array $methods Associative array of [$method => [0 => [$param1, $param2...],
-     *                                                         1 => [$param1, $param2...]].
+     *                                                         1 => [$param1, $param2...]]
      *
      * @return void
      */
@@ -116,8 +116,8 @@ class Zikula_ServiceManager_Definition extends \Symfony\Component\DependencyInje
      * Note $args must be a non-associative array of arguments
      * or [] for none.
      *
-     * @param string $method Method to be called.
-     * @param array  $args   Default = [] meaning no args are passed, else array of args.
+     * @param string $method Method to be called
+     * @param array  $args   Default = [] meaning no args are passed, else array of args
      *
      * @return void
      */
@@ -129,7 +129,7 @@ class Zikula_ServiceManager_Definition extends \Symfony\Component\DependencyInje
     /**
      * Are there any methods that need to be called after creating this service.
      *
-     * @return boolean True or false.
+     * @return boolean True or false
      */
     public function hasMethods()
     {

@@ -12,8 +12,8 @@
 /**
  * Zikula_View outputfilter to add a title to all admin pages
  *
- * @param string            $source Output source.
- * @param Zikula_View_Theme $view   Reference to Zikula_View_Theme instance.
+ * @param string            $source Output source
+ * @param Zikula_View_Theme $view   Reference to Zikula_View_Theme instance
  *
  * @return string
  */

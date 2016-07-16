@@ -25,7 +25,7 @@ class AdminModuleInstaller extends AbstractExtensionInstaller
      * This function is only ever called once during the lifetime of a particular
      * module instance
      *
-     * @return boolean True if initialisation successful, false otherwise.
+     * @return boolean True if initialisation successful, false otherwise
      */
     public function install()
     {

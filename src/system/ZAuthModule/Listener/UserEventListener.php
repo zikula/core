@@ -53,7 +53,7 @@ class UserEventListener implements EventSubscriberInterface
      * Account or an OpenID, and never established a Users password), then this handler
      * will not trigger a change of password.
      *
-     * @param GenericEvent $event The event that triggered this handler.
+     * @param GenericEvent $event The event that triggered this handler
      *
      * @see \Zikula\ZAuthModule\Controller\AccountController::changePasswordAction
      */

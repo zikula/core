@@ -59,7 +59,7 @@ class Zikula_Doctrine_Model_EntityCategory extends Doctrine_Record
     /**
      * Sets the value of the Registry Relation.
      *
-     * @param Doctrine_Event $event Event.
+     * @param Doctrine_Event $event Event
      *
      * @return void
      */

@@ -17,8 +17,8 @@
  * the HTML comment <!-- pagevars --> to the page template. Note that this must always be in
  * the header for the output to function correctly.
  *
- * @param string      $source Output source.
- * @param Zikula_View $view   Reference to Zikula_View instance.
+ * @param string      $source Output source
+ * @param Zikula_View $view   Reference to Zikula_View instance
  *
  * @return string
  */

@@ -269,7 +269,7 @@ class AdminController extends AbstractController
      *
      * Decrement a permission.
      *
-     * @param int 'pid' permissions id.
+     * @param int 'pid' permissions id
      *
      * @return RedirectResponse
      *
@@ -384,12 +384,12 @@ class AdminController extends AbstractController
      *
      * Update.
      *
-     * @param int 'pid' permissions id.
-     * @param int 'id' group or user id.
-     * @param int 'realm' realm to which the permission belongs.
-     * @param string 'component' component string.
-     * @param string 'instance' instance string.
-     * @param int 'level' permission level.
+     * @param int 'pid' permissions id
+     * @param int 'id' group or user id
+     * @param int 'realm' realm to which the permission belongs
+     * @param string 'component' component string
+     * @param string 'instance' instance string
+     * @param int 'level' permission level
      *
      * @return RedirectResponse
      *
@@ -452,11 +452,11 @@ class AdminController extends AbstractController
      *
      * Create a new permission.
      *
-     * @param int 'id' group.
-     * @param int 'realm' realm to which the permission belongs.
-     * @param string 'component' component string.
-     * @param string 'instance' instance string.
-     * @param int 'level' permission level.
+     * @param int 'id' group
+     * @param int 'realm' realm to which the permission belongs
+     * @param string 'component' component string
+     * @param string 'instance' instance string
+     * @param int 'level' permission level
      *
      * @return RedirectResponse
      *
@@ -517,8 +517,8 @@ class AdminController extends AbstractController
      * Delete a permission.
      *
      * @param Request $request
-     * @param int     $pid     permissions id.
-     * @param int     $permgrp permissions group filter.
+     * @param int     $pid     permissions id
+     * @param int     $permgrp permissions group filter
      *
      * @return Response
      *

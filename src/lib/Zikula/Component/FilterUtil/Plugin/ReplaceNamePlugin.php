@@ -42,7 +42,7 @@ class ReplaceNamePlugin extends FilterUtil\AbstractPlugin implements FilterUtil\
     /**
      * Add new replace pair (fieldname => replace with).
      *
-     * @param mixed $pair Replace pair.
+     * @param mixed $pair Replace pair
      *
      * @return void
      */
@@ -60,11 +60,11 @@ class ReplaceNamePlugin extends FilterUtil\AbstractPlugin implements FilterUtil\
     /**
      * Replace field's value.
      *
-     * @param string $field Field name.
-     * @param string $op    Filter operator.
-     * @param string $value Filter value.
+     * @param string $field Field name
+     * @param string $op    Filter operator
+     * @param string $value Filter value
      *
-     * @return array New filter set.
+     * @return array New filter set
      */
     public function replace($field, $op, $value)
     {

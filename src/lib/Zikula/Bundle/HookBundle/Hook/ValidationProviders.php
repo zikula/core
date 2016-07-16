@@ -21,8 +21,8 @@ class ValidationProviders extends Container
     /**
      * Constructor.
      *
-     * @param string       $name       The name of the collection.
-     * @param \ArrayObject $collection The collection (optional).
+     * @param string       $name       The name of the collection
+     * @param \ArrayObject $collection The collection (optional)
      */
     public function __construct($name = 'validation', \ArrayObject $collection = null)
     {
@@ -32,8 +32,8 @@ class ValidationProviders extends Container
     /**
      * Set response.
      *
-     * @param string             $name     Name.
-     * @param ValidationResponse $response Validation response.
+     * @param string             $name     Name
+     * @param ValidationResponse $response Validation response
      *
      * @return void
      */

@@ -59,9 +59,9 @@ abstract class Zikula_Request_AbstractRequest extends Request
      *
      * @deprecated since 1.4.0
      *
-     * @param string $module     Module controller name.
-     * @param string $controller Controller type.
-     * @param string $action     Action name.
+     * @param string $module     Module controller name
+     * @param string $controller Controller type
+     * @param string $action     Action name
      *
      * @return void
      */
@@ -79,7 +79,7 @@ abstract class Zikula_Request_AbstractRequest extends Request
      *
      * @deprecated since 1.4.0
      *
-     * @return object ArrayIterator.
+     * @return object ArrayIterator
      */
     public function getRequests()
     {
@@ -101,7 +101,7 @@ abstract class Zikula_Request_AbstractRequest extends Request
     /**
      * Setter for args property.
      *
-     * @param array $args Array of args.
+     * @param array $args Array of args
      *
      * @deprecated since 1.4.0
      *
@@ -115,8 +115,8 @@ abstract class Zikula_Request_AbstractRequest extends Request
     /**
      * Get arg by key.
      *
-     * @param string $key     Key to get.
-     * @param string $default Default if not set.
+     * @param string $key     Key to get
+     * @param string $default Default if not set
      *
      * @deprecated since 1.4.0
      *
@@ -130,8 +130,8 @@ abstract class Zikula_Request_AbstractRequest extends Request
     /**
      * Set single key in args property.
      *
-     * @param string $key   Key.
-     * @param mixed  $value Value.
+     * @param string $key   Key
+     * @param mixed  $value Value
      *
      * @deprecated since 1.4.0
      *
@@ -145,7 +145,7 @@ abstract class Zikula_Request_AbstractRequest extends Request
     /**
      * Check if args has $key.
      *
-     * @param string $key Key.
+     * @param string $key Key
      *
      * @deprecated since 1.4.0
      *
@@ -159,7 +159,7 @@ abstract class Zikula_Request_AbstractRequest extends Request
     /**
      * Unset $key from args property.
      *
-     * @param string $key Key.
+     * @param string $key Key
      *
      * @deprecated since 1.4.0
      *

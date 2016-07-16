@@ -23,16 +23,16 @@ class FormUtil
      *
      * This method is based on FormUtil::getPassedValue but array-safe.
      *
-     * @param string $key        The field to return.
-     * @param mixed  $default    The value to return if the requested field is not found (optional) (default=false).
-     * @param string $source     The source field to get a parameter from.
-     * @param string $filter     The filter directive to apply.
-     * @param array  $args       The filter processing args to apply.
-     * @param string $objectType The object access path we're getting; used to assign validation errors .
+     * @param string $key        The field to return
+     * @param mixed  $default    The value to return if the requested field is not found (optional) (default=false)
+     * @param string $source     The source field to get a parameter from
+     * @param string $filter     The filter directive to apply
+     * @param array  $args       The filter processing args to apply
+     * @param string $objectType The object access path we're getting; used to assign validation errors
      *
-     * @deprecated since 1.3.0, use request object instead.
+     * @deprecated since 1.3.0, use request object instead
      *
-     * @return mixed The requested input key or the specified default.
+     * @return mixed The requested input key or the specified default
      */
     public static function getPassedValue($key, $default = null, $source = null, $filter = null, array $args = [], $objectType = null)
     {
@@ -123,10 +123,10 @@ class FormUtil
     /**
      * Return a boolean indicating whether the specified field is required.
      *
-     * @param array  $validationInfo The plain (non-structured) validation array.
-     * @param string $field          The fieldname.
+     * @param array  $validationInfo The plain (non-structured) validation array
+     * @param string $field          The fieldname
      *
-     * @return boolean A boolean indicating whether or not the specified field is required.
+     * @return boolean A boolean indicating whether or not the specified field is required
      */
     public static function isRequiredField($validationInfo, $field)
     {
@@ -150,10 +150,10 @@ class FormUtil
     /**
      * Get the required field marker (or nothing) for the specified field.
      *
-     * @param array  $validationInfo The plain (non-structured) validation array.
-     * @param string $field          The fieldname.
+     * @param array  $validationInfo The plain (non-structured) validation array
+     * @param string $field          The fieldname
      *
-     * @return string The required field marker or an empty string.
+     * @return string The required field marker or an empty string
      */
     public static function getRequiredFieldMarker($validationInfo, $field)
     {
@@ -167,7 +167,7 @@ class FormUtil
     /**
      * Clear the validation error array.
      *
-     * @param string $objectType The (string) object type.
+     * @param string $objectType The (string) object type
      *
      * @return void
      */
@@ -187,7 +187,7 @@ class FormUtil
     /**
      * Clear the objects which failed validation.
      *
-     * @param string $objectType The (string) object type.
+     * @param string $objectType The (string) object type
      *
      * @return void
      */
@@ -207,7 +207,7 @@ class FormUtil
     /**
      * Get the validation errors.
      *
-     * @return array The validation error array or null.
+     * @return array The validation error array or null
      */
     public static function getValidationErrors()
     {
@@ -228,9 +228,9 @@ class FormUtil
     /**
      * Return the objects which failed validation.
      *
-     * @param string $objectType The object type.
+     * @param string $objectType The object type
      *
-     * @return array The validation error array or null.
+     * @return array The validation error array or null
      */
     public static function getFailedValidationObjects($objectType = null)
     {
@@ -257,10 +257,10 @@ class FormUtil
     /**
      * Return a boolean indicating whether or not the specified field failed validation.
      *
-     * @param string $objectType The (string) object type.
-     * @param string $field      The fieldname.
+     * @param string $objectType The (string) object type
+     * @param string $field      The fieldname
      *
-     * @return boolean A boolean indicating whether or not the specified field failed validation.
+     * @return boolean A boolean indicating whether or not the specified field failed validation
      */
     public static function hasValidationErrors($objectType, $field = null)
     {
@@ -283,10 +283,10 @@ class FormUtil
     /**
      * Get the required field marker (or nothing) for the specified field.
      *
-     * @param string $objectType The (string) object type.
-     * @param string $field      The fieldname.
+     * @param string $objectType The (string) object type
+     * @param string $field      The fieldname
      *
-     * @return string The validation error marker or an empty string.
+     * @return string The validation error marker or an empty string
      */
     public static function getValidationFieldMarker($objectType, $field)
     {
@@ -300,10 +300,10 @@ class FormUtil
     /**
      * Get the validation error for the specified field.
      *
-     * @param string $objectType The (string) object type.
-     * @param string $field      The fieldname to get the error for.
+     * @param string $objectType The (string) object type
+     * @param string $field      The fieldname to get the error for
      *
-     * @return string The validation error or an empty string.
+     * @return string The validation error or an empty string
      */
     public static function getValidationError($objectType, $field)
     {
@@ -323,11 +323,11 @@ class FormUtil
     /**
      * Get the appropriate field marker.
      *
-     * @param string $objectType     The (string) object type.
-     * @param array  $validationInfo The plain (non-structured) validation array.
-     * @param string $field          The fieldname.
+     * @param string $objectType     The (string) object type
+     * @param array  $validationInfo The plain (non-structured) validation array
+     * @param string $field          The fieldname
      *
-     * @return string The a marker string or an '&nbsp;'.
+     * @return string The a marker string or an '&nbsp;'
      */
     public static function getFieldMarker($objectType, $validationInfo, $field)
     {
@@ -343,11 +343,11 @@ class FormUtil
     /**
      * Return a newly created Zikula Form instance with the given name.
      *
-     * @param string                    $name       Module or plugin name.
-     * @param Zikula_AbstractController $controller Controller.
-     * @param string                    $className  Optionally instanciate a child of Zikula_Form_View.
+     * @param string                    $name       Module or plugin name
+     * @param Zikula_AbstractController $controller Controller
+     * @param string                    $className  Optionally instanciate a child of Zikula_Form_View
      *
-     * @return Zikula_Form_View The newly created Form_View instance.
+     * @return Zikula_Form_View The newly created Form_View instance
      */
     public static function newForm($name, Zikula_AbstractController $controller = null, $className = null)
     {

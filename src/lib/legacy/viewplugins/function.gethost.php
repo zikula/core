@@ -24,10 +24,10 @@
  * Example
  *   {gethost}
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
- * @return string The base URL of the site.
+ * @return string The base URL of the site
  */
 function smarty_function_gethost($params, Zikula_View $view)
 {

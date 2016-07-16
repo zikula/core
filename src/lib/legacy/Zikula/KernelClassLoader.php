@@ -36,11 +36,11 @@ class Zikula_KernelClassLoader
     /**
      * Register namespace on stack.
      *
-     * @param string $namespace Namespace.
-     * @param string $path      Path to the class namespace.
-     * @param string $separator Namespace separator.
+     * @param string $namespace Namespace
+     * @param string $path      Path to the class namespace
+     * @param string $separator Namespace separator
      *
-     * @throws LogicException If already registered.
+     * @throws LogicException If already registered
      *
      * @return void
      */
@@ -62,9 +62,9 @@ class Zikula_KernelClassLoader
     /**
      * Unregister namespace from autoloader.
      *
-     * @param string $namespace Namespace.
+     * @param string $namespace Namespace
      *
-     * @throws LogicException If not registered.
+     * @throws LogicException If not registered
      *
      * @return void
      */
@@ -80,7 +80,7 @@ class Zikula_KernelClassLoader
     /**
      * Has autoloader check.
      *
-     * @param string $namespace Namespace.
+     * @param string $namespace Namespace
      *
      * @return boolean
      */
@@ -92,7 +92,7 @@ class Zikula_KernelClassLoader
     /**
      * Register this autoloader in the SPL autoload stack.
      *
-     * @throws LogicException If already registered.
+     * @throws LogicException If already registered
      *
      * @return void
      */
@@ -109,7 +109,7 @@ class Zikula_KernelClassLoader
     /**
      * Register this autoloader in the SPL autoload stack.
      *
-     * @throws LogicException If not registered.
+     * @throws LogicException If not registered
      *
      * @return void
      */
@@ -126,11 +126,11 @@ class Zikula_KernelClassLoader
     /**
      * Get class include path.
      *
-     * @param string $namespace The class name to autoload.
-     * @param array  $array     Metadata about this namespace.
-     * @param string $class     Class name.
+     * @param string $namespace The class name to autoload
+     * @param array  $array     Metadata about this namespace
+     * @param string $class     Class name
      *
-     * @return string|boolean $file Path or boolean false if this loader does apply.
+     * @return string|boolean $file Path or boolean false if this loader does apply
      */
     public function getClassIncludePath($namespace, array $array, $class)
     {
@@ -160,7 +160,7 @@ class Zikula_KernelClassLoader
     /**
      * Autoloader.
      *
-     * @param string $class Class to load.
+     * @param string $class Class to load
      *
      * @return void
      */

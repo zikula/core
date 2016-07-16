@@ -17,7 +17,7 @@ class DataUtil
     /**
      * Clean a variable, remove slashes. This method is recursive array safe.
      *
-     * @param string $var The variable to clean.
+     * @param string $var The variable to clean
      *
      * @return string formatted variable
      */
@@ -40,9 +40,9 @@ class DataUtil
     /**
      * Decode a character a previously encoded character.
      *
-     * @param string $value The value we wish to encode.
+     * @param string $value The value we wish to encode
      *
-     * @return string decoded value.
+     * @return string decoded value
      */
     public static function decode($value)
     {
@@ -52,11 +52,11 @@ class DataUtil
     /**
      * Take a name-value-pair string and convert it to an associative array, optionally urldecoding the response.
      *
-     * @param string  $nvpstr    Name-value-pair String.
-     * @param string  $separator Separator used in the NVP string.
-     * @param boolean $urldecode Whether to urldecode the NVP fields.
+     * @param string  $nvpstr    Name-value-pair String
+     * @param string  $separator Separator used in the NVP string
+     * @param boolean $urldecode Whether to urldecode the NVP fields
      *
-     * @return array Assoc is associative array.
+     * @return array Assoc is associative array
      */
     public static function decodeNVP($nvpstr, $separator = '&', $urldecode = true)
     {
@@ -75,13 +75,13 @@ class DataUtil
     /**
      * Decrypt the given value using the mcrypt library function.
      *
-     * @param string  $value   The value we wish to decrypt.
-     * @param string  $key     The encryption key to use (optional) (default=null).
-     * @param string  $alg     The encryption algorithm to use (only used with mcrypt functions) (optional) (default=null, signifies MCRYPT_RIJNDAEL_128).
-     * @param boolean $encoded Whether or not the value is base64 encoded (optional) (default=true).
+     * @param string  $value   The value we wish to decrypt
+     * @param string  $key     The encryption key to use (optional) (default=null)
+     * @param string  $alg     The encryption algorithm to use (only used with mcrypt functions) (optional) (default=null, signifies MCRYPT_RIJNDAEL_128)
+     * @param boolean $encoded Whether or not the value is base64 encoded (optional) (default=true)
      *
      * @throws RuntimeException
-     * @return string The decrypted value.
+     * @return string The decrypted value
      */
     public static function decrypt($value, $key = null, $alg = null, $encoded = true)
     {
@@ -102,9 +102,9 @@ class DataUtil
     /**
      * Encode a character sting such that it's 8-bit clean. It maps to base64_encode().
      *
-     * @param string $value The value we wish to encode.
+     * @param string $value The value we wish to encode
      *
-     * @return string The encoded value.
+     * @return string The encoded value
      */
     public static function encode($value)
     {
@@ -114,12 +114,12 @@ class DataUtil
     /**
      * Take a key and value and encode them into an NVP-string entity.
      *
-     * @param string  $key          The key to encode.
-     * @param string  $value        The value to encode.
-     * @param string  $separator    The Separator to use in the NVP string.
-     * @param boolean $includeEmpty Whether to also include empty values.
+     * @param string  $key          The key to encode
+     * @param string  $value        The value to encode
+     * @param string  $separator    The Separator to use in the NVP string
+     * @param boolean $includeEmpty Whether to also include empty values
      *
-     * @return string String-encoded NVP or an empty string.
+     * @return string String-encoded NVP or an empty string
      */
     public static function encodeNVP($key, $value, $separator = '&', $includeEmpty = true)
     {
@@ -136,11 +136,11 @@ class DataUtil
     /**
      * Take an array and encode it as a NVP string.
      *
-     * @param string  $nvps         The array of name-value paris.
-     * @param string  $separator    The Separator to use in the NVP string.
-     * @param boolean $includeEmpty Whether to also include empty values.
+     * @param string  $nvps         The array of name-value paris
+     * @param string  $separator    The Separator to use in the NVP string
+     * @param boolean $includeEmpty Whether to also include empty values
      *
-     * @return string String-encoded NVP or an empty string.
+     * @return string String-encoded NVP or an empty string
      */
     public static function encodeNVPArray($nvps, $separator = '&', $includeEmpty = true)
     {
@@ -158,13 +158,13 @@ class DataUtil
     /**
      * Encrypt the given value using the mcrypt library function.
      *
-     * @param string  $value   The value we wish to decrypt.
-     * @param string  $key     The encryption key to use (optional) (default=null).
-     * @param string  $alg     The encryption algorithm to use (only used with mcrypt functions) (optional) (default=null, signifies MCRYPT_RIJNDAEL_128).
-     * @param boolean $encoded Whether or not the value is base64 encoded (optional) (default=true).
+     * @param string  $value   The value we wish to decrypt
+     * @param string  $key     The encryption key to use (optional) (default=null)
+     * @param string  $alg     The encryption algorithm to use (only used with mcrypt functions) (optional) (default=null, signifies MCRYPT_RIJNDAEL_128)
+     * @param boolean $encoded Whether or not the value is base64 encoded (optional) (default=true)
      *
      * @throws RuntimeException
-     * @return string The encrypted value.
+     * @return string The encrypted value
      */
     public static function encrypt($value, $key = null, $alg = null, $encoded = true)
     {
@@ -184,9 +184,9 @@ class DataUtil
     /**
      * Format a variable for display. This method is recursive array safe.
      *
-     * @param string $var The variable to format.
+     * @param string $var The variable to format
      *
-     * @return string The formatted variable.
+     * @return string The formatted variable
      */
     public static function formatForDisplay($var)
     {
@@ -213,9 +213,9 @@ class DataUtil
     /**
      * Format a variable for HTML display. This method is recursive array safe.
      *
-     * @param string $var The variable to format.
+     * @param string $var The variable to format
      *
-     * @return string The formatted variable.
+     * @return string The formatted variable
      */
     public static function formatForDisplayHTML($var)
     {
@@ -291,10 +291,10 @@ class DataUtil
     /**
      * Function formatForDisplayHTML callback.
      *
-     * @param array $m String to format.
+     * @param array $m String to format
      *
      *
-     * @return mixed The formatted string, or null on empty.
+     * @return mixed The formatted string, or null on empty
      */
     public static function formatForDisplayHTML_callback($m)
     {
@@ -309,13 +309,13 @@ class DataUtil
     /**
      * Format a variable for DB-storage. This method is recursive array safe.
      *
-     * @param string $var The variable to format.
+     * @param string $var The variable to format
      *
      * @deprecated since 1.4.0
      *
-     * This API is insanely unsafe. Always prepare and bind variables in SQL statements.
+     * This API is insanely unsafe. Always prepare and bind variables in SQL statements
      *
-     * @return string The formatted variable.
+     * @return string The formatted variable
      */
     public static function formatForStore($var)
     {
@@ -338,10 +338,10 @@ class DataUtil
     /**
      * Format a variable for operating-system usage. This method is recursive array safe.
      *
-     * @param string  $var      The variable to format.
-     * @param boolean $absolute Allow absolute paths (default=false) (optional).
+     * @param string  $var      The variable to format
+     * @param boolean $absolute Allow absolute paths (default=false) (optional)
      *
-     * @return string The formatted variable.
+     * @return string The formatted variable
      */
     public static function formatForOS($var, $absolute = true)
     {
@@ -408,9 +408,9 @@ class DataUtil
     /**
      * Format a variable for URL usage.
      *
-     * @param string $var The variable to format.
+     * @param string $var The variable to format
      *
-     * @return string The formatted variable for URL usage.
+     * @return string The formatted variable for URL usage
      */
     public static function formatForURL($var)
     {
@@ -420,9 +420,9 @@ class DataUtil
     /**
      * Format a variable for permalink usage.
      *
-     * @param string $var The variable to format.
+     * @param string $var The variable to format
      *
-     * @return string The formatted variable for permalink usage.
+     * @return string The formatted variable for permalink usage
      */
     public static function formatPermalink($var)
     {
@@ -447,9 +447,9 @@ class DataUtil
     /**
      * Transliterate a variable.
      *
-     * @param string $var The variable to format.
+     * @param string $var The variable to format
      *
-     * @return string The formatted variable.
+     * @return string The formatted variable
      */
     public static function formatTransliterate($var)
     {
@@ -472,8 +472,8 @@ class DataUtil
      *
      * Perform SHA1 or SHA256 hashing on a string using native PHP functions if available and if not uses own classes.
      *
-     * @param string $string String to be hashed.
-     * @param string $type   String element of hash_algos() (default=sha1).
+     * @param string $string String to be hashed
+     * @param string $type   String element of hash_algos() (default=sha1)
      *
      * @deprecated
      * @see    hash()
@@ -494,7 +494,7 @@ class DataUtil
      * Properly converted input values are: 'off', 'on', 'false', 'true', '0', '1'
      * If the ini_value doesn't match any of those, the value is returned as-is.
      *
-     * @param string $ini_key The ini_key you need the value of.
+     * @param string $ini_key The ini_key you need the value of
      *
      * @return boolean|mixed
      */
@@ -528,8 +528,8 @@ class DataUtil
     /**
      * Check for serialization.
      *
-     * @param string  $string  String to check.
-     * @param boolean $checkmb True or false.
+     * @param string  $string  String to check
+     * @param boolean $checkmb True or false
      *
      * @return boolean
      */
@@ -552,7 +552,7 @@ class DataUtil
      * Will unserialise serialised data that was previously encoded as iso and converted to utf8
      * This generally not required.
      *
-     * @param string $string Serialised data.
+     * @param string $string Serialised data
      *
      * @return mixed
      */
@@ -567,7 +567,7 @@ class DataUtil
      *
      * Note this is still a private method although we have to use public visibility.
      *
-     * @param string $match String to use.
+     * @param string $match String to use
      *
      * @return string
      */
@@ -583,9 +583,9 @@ class DataUtil
      *
      * Converts a string or an array (recursivly) to utf-8.
      *
-     * @param mixed $input String or array to convert to utf-8.
+     * @param mixed $input String or array to convert to utf-8
      *
-     * @return mixed Converted string or array.
+     * @return mixed Converted string or array
      */
     public static function convertToUTF8($input = '')
     {
@@ -612,9 +612,9 @@ class DataUtil
     /**
      * Convert a string from utf-8.
      *
-     * @param mixed $input String or array to convert from utf-8.
+     * @param mixed $input String or array to convert from utf-8
      *
-     * @return mixed Converted string.
+     * @return mixed Converted string
      */
     public static function convertFromUTF8($input = '')
     {
@@ -641,7 +641,7 @@ class DataUtil
     /**
      * Take user input and transform to a number according to locale.
      *
-     * @param mixed $number Number to transform.
+     * @param mixed $number Number to transform
      *
      * @return mixed
      */
@@ -655,7 +655,7 @@ class DataUtil
     /**
      * Transform a currency to an internal number according to locale.
      *
-     * @param mixed $number Number to transform.
+     * @param mixed $number Number to transform
      *
      * @return mixed
      */
@@ -669,7 +669,7 @@ class DataUtil
     /**
      * Format a number to currency according to locale.
      *
-     * @param mixed $number Number to format.
+     * @param mixed $number Number to format
      *
      * @return unknown_type
      */
@@ -683,8 +683,8 @@ class DataUtil
     /**
      * Format a number for display in locale.
      *
-     * @param mixed $number         Number to format.
-     * @param mixed $decimal_points Desc : null=default locale, false=precision, int=precision.
+     * @param mixed $number         Number to format
+     * @param mixed $decimal_points Desc : null=default locale, false=precision, int=precision
      *
      * @return mixed
      */
@@ -698,12 +698,12 @@ class DataUtil
     /**
      * Parse ini file.
      *
-     * @param string  $iniFile          The file name of the ini file to parse.
-     * @param boolean $process_sections If true, a multidimensional array is returned with section names included.
+     * @param string  $iniFile          The file name of the ini file to parse
+     * @param boolean $process_sections If true, a multidimensional array is returned with section names included
      *
      * @deprecated since 1.3.0,  see {@link parse_ini_file()}
      *
-     * @return array|boolean An associative array of ini file settings, or false on failure.
+     * @return array|boolean An associative array of ini file settings, or false on failure
      */
     public static function parseIniFile($iniFile, $process_sections = true)
     {
@@ -715,8 +715,8 @@ class DataUtil
     /**
      * Encode json data to url safe format.
      *
-     * @param mixed   $data Data to encode.
-     * @param boolean $json Should data be also encode to json.
+     * @param mixed   $data Data to encode
+     * @param boolean $json Should data be also encode to json
      *
      * @return string Encoded data
      */
@@ -732,10 +732,10 @@ class DataUtil
     /**
      * Decode json data from url safe format.
      *
-     * @param string  $data Data to encode.
-     * @param boolean $json Should data be also encode to json.
+     * @param string  $data Data to encode
+     * @param boolean $json Should data be also encode to json
      *
-     * @return mixed Decoded data.
+     * @return mixed Decoded data
      */
     public static function urlsafeJsonDecode($data, $json = true)
     {

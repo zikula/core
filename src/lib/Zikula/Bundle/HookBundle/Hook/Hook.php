@@ -52,7 +52,7 @@ class Hook extends Event
     /**
      * Set caller.
      *
-     * @param string $caller Caller name.
+     * @param string $caller Caller name
      *
      * @return Hook
      */
@@ -86,7 +86,7 @@ class Hook extends Event
     /**
      * Set subscriber area id.
      *
-     * @param string $areaId ID of the area.
+     * @param string $areaId ID of the area
      *
      * @return Hook
      */

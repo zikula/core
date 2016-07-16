@@ -21,11 +21,11 @@ class LogUtil
     /**
      * Returns an array of status messages.
      *
-     * @param boolean $delete   Whether to delete error messages (optional) (default=true).
-     * @param boolean $override Whether to override status messages with error messages (optional) (default=true).
-     * @param boolean $reverse  Whether to reverse order of messages (optional) (default=true).
+     * @param boolean $delete   Whether to delete error messages (optional) (default=true)
+     * @param boolean $override Whether to override status messages with error messages (optional) (default=true)
+     * @param boolean $reverse  Whether to reverse order of messages (optional) (default=true)
      *
-     * @return array of messages.
+     * @return array of messages
      */
     public static function getStatusMessages($delete = true, $override = true, $reverse = true)
     {
@@ -54,11 +54,11 @@ class LogUtil
     /**
      * Returns a string of the available status messages, separated by the given delimeter.
      *
-     * @param string  $delimiter The string to use as the delimeter between the array of messages.
-     * @param boolean $delete    True to delete.
-     * @param boolean $override  Whether to override status messages with error messages.
+     * @param string  $delimiter The string to use as the delimeter between the array of messages
+     * @param boolean $delete    True to delete
+     * @param boolean $override  Whether to override status messages with error messages
      *
-     * @return string the generated error message.
+     * @return string the generated error message
      */
     public static function getStatusMessagesText($delimiter = '<br />', $delete = true, $override = true)
     {
@@ -70,11 +70,11 @@ class LogUtil
     /**
      * Returns an array of warning messages.
      *
-     * @param boolean $delete   Whether to delete warning messages (optional) (default=true).
-     * @param boolean $override Whether to override warning messages with error messages (optional) (default=true).
-     * @param boolean $reverse  Whether to reverse order of messages (optional) (default=true).
+     * @param boolean $delete   Whether to delete warning messages (optional) (default=true)
+     * @param boolean $override Whether to override warning messages with error messages (optional) (default=true)
+     * @param boolean $reverse  Whether to reverse order of messages (optional) (default=true)
      *
-     * @return array of messages.
+     * @return array of messages
      */
     public static function getWarningMessages($delete = true, $override = true, $reverse = true)
     {
@@ -101,11 +101,11 @@ class LogUtil
     /**
      * Returns a string of the available warning messages, separated by the given delimeter.
      *
-     * @param string  $delimiter The string to use as the delimeter between the array of messages.
-     * @param boolean $delete    True to delete.
-     * @param boolean $override  Whether to override warning messages with error messages.
+     * @param string  $delimiter The string to use as the delimeter between the array of messages
+     * @param boolean $delete    True to delete
+     * @param boolean $override  Whether to override warning messages with error messages
      *
-     * @return string the generated error message.
+     * @return string the generated error message
      */
     public static function getWarningMessagesText($delimiter = '<br />', $delete = true, $override = true)
     {
@@ -117,8 +117,8 @@ class LogUtil
     /**
      * Get an array of error messages.
      *
-     * @param boolean $delete  True to delete error messages (optional)(default=true).
-     * @param boolean $reverse True to reverse error messages (optional)(default=true).
+     * @param boolean $delete  True to delete error messages (optional)(default=true)
+     * @param boolean $reverse True to reverse error messages (optional)(default=true)
      *
      * @return array of messages
      */
@@ -142,10 +142,10 @@ class LogUtil
     /**
      * Get an error message text.
      *
-     * @param string  $delimeter The string to use as the delimeter between the array of messages.
-     * @param boolean $delete    True to delete.
+     * @param string  $delimeter The string to use as the delimeter between the array of messages
+     * @param boolean $delete    True to delete
      *
-     * @return string the generated error message.
+     * @return string the generated error message
      */
     public static function getErrorMessagesText($delimeter = '<br />', $delete = true)
     {
@@ -157,7 +157,7 @@ class LogUtil
     /**
      * get the error type.
      *
-     * @return int error type.
+     * @return int error type
      */
     public static function getErrorType()
     {
@@ -167,7 +167,7 @@ class LogUtil
     /**
      * check if errors.
      *
-     * @return int error type.
+     * @return int error type
      */
     public static function hasErrors()
     {
@@ -179,10 +179,10 @@ class LogUtil
     /**
      * Set an status message text.
      *
-     * @param string $message String the error message.
-     * @param string $url     The url to redirect to (optional) (default=null).
+     * @param string $message String the error message
+     * @param string $url     The url to redirect to (optional) (default=null)
      *
-     * @return true, or redirect if url.
+     * @return true, or redirect if url
      */
     public static function registerStatus($message, $url = null)
     {
@@ -201,10 +201,10 @@ class LogUtil
     /**
      * Set a warning message text.
      *
-     * @param string $message String the warning message.
-     * @param string $url     The url to redirect to (optional) (default=null).
+     * @param string $message String the warning message
+     * @param string $url     The url to redirect to (optional) (default=null)
      *
-     * @return true, or redirect if url.
+     * @return true, or redirect if url
      */
     public static function registerWarning($message, $url = null)
     {
@@ -223,11 +223,11 @@ class LogUtil
     /**
      * Add a popup status message.
      *
-     * @param string $message The status message.
+     * @param string $message The status message
      *
      * @return void
      *
-     * @throws InvalidArgumentException Thrown if the type provided to the internal function _addPopup is invalid.
+     * @throws InvalidArgumentException Thrown if the type provided to the internal function _addPopup is invalid
      */
     public static function addStatusPopup($message)
     {
@@ -238,11 +238,11 @@ class LogUtil
     /**
      * Add a popup warning message.
      *
-     * @param string $message The warning message.
+     * @param string $message The warning message
      *
      * @return void
      *
-     * @throws InvalidArgumentException Thrown if the type provided to the internal function _addPopup is invalid.
+     * @throws InvalidArgumentException Thrown if the type provided to the internal function _addPopup is invalid
      */
     public static function addWarningPopup($message)
     {
@@ -253,11 +253,11 @@ class LogUtil
     /**
      * Add a popup error message.
      *
-     * @param string $message The error message.
+     * @param string $message The error message
      *
      * @return void
      *
-     * @throws InvalidArgumentException Thrown if the type provided to the internal function _addPopup is invalid.
+     * @throws InvalidArgumentException Thrown if the type provided to the internal function _addPopup is invalid
      */
     public static function addErrorPopup($message)
     {
@@ -268,10 +268,10 @@ class LogUtil
     /**
      * Add popup message to the status or error messages.
      *
-     * @param string  $message The message.
-     * @param integer $type    The message type.
+     * @param string  $message The message
+     * @param integer $type    The message type
      *
-     * @throws InvalidArgumentException Thrown if the $type is invalid.
+     * @throws InvalidArgumentException Thrown if the $type is invalid
      *
      * @return void
      */
@@ -296,9 +296,9 @@ class LogUtil
      *
      * This method calls registerError and then redirects back to the specified URL.
      *
-     * @param string $url The URL to redirect to (optional) (default=null).
+     * @param string $url The URL to redirect to (optional) (default=null)
      *
-     * @return false.
+     * @return false
      */
     public static function registerAuthidError($url = null)
     {
@@ -310,8 +310,8 @@ class LogUtil
      *
      * This method calls registerError and then logs the failed permission check so that it can be analyzed later.
      *
-     * @param string  $url      The URL to redirect to (optional) (default=null).
-     * @param boolean $redirect Whether to redirect not logged in users to the login form (default=true).
+     * @param string  $url      The URL to redirect to (optional) (default=null)
+     * @param boolean $redirect Whether to redirect not logged in users to the login form (default=true)
      *
      * @return false
      */
@@ -339,11 +339,11 @@ class LogUtil
      *
      * Also adds method, file and line where the error occured.
      *
-     * @param string  $message The error message.
-     * @param integer $type    The type of error (numeric and corresponding to a HTTP status code) (optional) (default=null).
-     * @param string  $url     The url to redirect to (optional) (default=null).
+     * @param string  $message The error message
+     * @param integer $type    The type of error (numeric and corresponding to a HTTP status code) (optional) (default=null)
+     * @param string  $url     The url to redirect to (optional) (default=null)
      *
-     * @return false or system redirect if url is set.
+     * @return false or system redirect if url is set
      */
     public static function registerError($message, $type = 500, $url = null)
     {
@@ -366,9 +366,9 @@ class LogUtil
     /**
      * Register a failed method call due to a failed validation on the parameters passed.
      *
-     * @param string $url Url to redirect to.
+     * @param string $url Url to redirect to
      *
-     * @return false.
+     * @return false
      */
     public static function registerArgsError($url = null)
     {
@@ -380,7 +380,7 @@ class LogUtil
     /**
      * Get the default message for an authid error.
      *
-     * @return string error message.
+     * @return string error message
      */
     public static function getErrorMsgAuthid()
     {
@@ -390,7 +390,7 @@ class LogUtil
     /**
      * Get the default message for a permission error.
      *
-     * @return string error message.
+     * @return string error message
      */
     public static function getErrorMsgPermission()
     {
@@ -400,7 +400,7 @@ class LogUtil
     /**
      * Get the default message for an argument error.
      *
-     * @return string error message.
+     * @return string error message
      */
     public static function getErrorMsgArgs()
     {
@@ -410,8 +410,8 @@ class LogUtil
     /**
      * Log the given message under the given level
      *
-     * @param string $msg   The message to log.
-     * @param string $level The log to log this message under(optional)(default='DEFAULT').
+     * @param string $msg   The message to log
+     * @param string $level The log to log this message under(optional)(default='DEFAULT')
      *
      * @return void
      */

@@ -14,12 +14,12 @@
  *
  * Example {timezoneselect selected='Timezone'}.
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   The Zikula_View.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   The Zikula_View
  *
- * @see   function.timezoneselect.php::smarty_function_timezoneselect().
+ * @see   function.timezoneselect.php::smarty_function_timezoneselect()
  *
- * @return string The results of the module function.
+ * @return string The results of the module function
  */
 function smarty_function_timezoneselect($params, Zikula_View $view)
 {

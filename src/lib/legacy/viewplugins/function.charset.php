@@ -20,10 +20,10 @@
  *
  * <samp><meta http-equiv="Content-Type" content="text/html; charset={charset}"></samp>
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the {@link Zikula_View} object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the {@link Zikula_View} object
  *
- * @return string The value of the charset.
+ * @return string The value of the charset
  */
 function smarty_function_charset($params, Zikula_View $view)
 {

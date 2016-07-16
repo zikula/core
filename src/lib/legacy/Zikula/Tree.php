@@ -47,7 +47,7 @@ class Zikula_Tree
     /**
      * Constructor.
      *
-     * @param array $config Config array.
+     * @param array $config Config array
      */
     public function __construct(array $config = [])
     {
@@ -86,8 +86,8 @@ class Zikula_Tree
     /**
      * Set option.
      *
-     * @param string $key   Key.
-     * @param mixed  $value Value.
+     * @param string $key   Key
+     * @param mixed  $value Value
      *
      * @return void
      */
@@ -99,7 +99,7 @@ class Zikula_Tree
     /**
      * Set option array.
      *
-     * @param array $array Options.
+     * @param array $array Options
      *
      * @return void
      */
@@ -113,7 +113,7 @@ class Zikula_Tree
     /**
      * Load array data.
      *
-     * @param array $menuArray Array data.
+     * @param array $menuArray Array data
      *
      * @return void
      */
@@ -126,7 +126,7 @@ class Zikula_Tree
     /**
      * Load string data.
      *
-     * @param string $menuString Data string.
+     * @param string $menuString Data string
      *
      * @return void
      */
@@ -139,7 +139,7 @@ class Zikula_Tree
     /**
      * Set tree data. Given array must be already proper structured tree data.
      *
-     * @param array $treeArray Data array.
+     * @param array $treeArray Data array
      *
      * @return void
      */
@@ -151,7 +151,7 @@ class Zikula_Tree
     /**
      * Get HTML output
      *
-     * @return string HTML output.
+     * @return string HTML output
      */
     public function getHTML()
     {
@@ -187,7 +187,7 @@ class Zikula_Tree
     /**
      * Get HTML output using jQuery
      *
-     * @return string HTML output.
+     * @return string HTML output
      */
     public function getJqueryHtml()
     {
@@ -210,7 +210,7 @@ class Zikula_Tree
     /**
      * Get configuration for script.
      *
-     * @param boolean $encode Whether or not to json encode the configuration.
+     * @param boolean $encode Whether or not to json encode the configuration
      *
      * @return string|array
      */
@@ -234,9 +234,9 @@ class Zikula_Tree
     /**
      * Parse string.
      *
-     * @param string $menuString Data string.
+     * @param string $menuString Data string
      *
-     * @return array Data array.
+     * @return array Data array
      */
     protected function _parseString($menuString)
     {
@@ -260,7 +260,7 @@ class Zikula_Tree
     /**
      * Parse data
      *
-     * @return array Tree data.
+     * @return array Tree data
      */
     protected function _parseData()
     {
@@ -337,12 +337,12 @@ class Zikula_Tree
     /**
      * Convert tree data to HTML.
      *
-     * @param array   $tree        Tree data.
-     * @param integer $indentLevel Level of indent to use.
-     * @param string  $treeId      Tree Id.
-     * @param boolean $root        Is this root level.
+     * @param array   $tree        Tree data
+     * @param integer $indentLevel Level of indent to use
+     * @param string  $treeId      Tree Id
+     * @param boolean $root        Is this root level
      *
-     * @return string HTML output.
+     * @return string HTML output
      */
     protected function _toHTML($tree, $indentLevel = 0, $treeId = null, $root = false)
     {
@@ -377,12 +377,12 @@ class Zikula_Tree
     /**
      * Parse single tree node to HTML
      *
-     * @param int     $id          Node id.
-     * @param array   $tab         Node data.
-     * @param int     $size        Tree size.
-     * @param int     $i           Current node index.
-     * @param string  $nodeSub     HTML code for subnodes if node has such, default null.
-     * @param integer $indentLevel Level of indent to use.
+     * @param int     $id          Node id
+     * @param array   $tab         Node data
+     * @param int     $size        Tree size
+     * @param int     $i           Current node index
+     * @param string  $nodeSub     HTML code for subnodes if node has such, default null
+     * @param integer $indentLevel Level of indent to use
      *
      * @return string Node HTML code
      */

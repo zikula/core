@@ -227,7 +227,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
      * Return certain data elements from this class as an array.
      *
      * @return array An array containing the name, description, display name, url, version, capabilities, dependencies,
-     *                  type, directory and security schema.
+     *                  type, directory and security schema
      */
     public function toArray()
     {
@@ -253,9 +253,9 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Translate a string using gettext.
      *
-     * @param string $msgid The string to translate.
+     * @param string $msgid The string to translate
      *
-     * @return string The translated string.
+     * @return string The translated string
      */
     public function __($msgid)
     {
@@ -265,10 +265,10 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Translate a string using the sprintf version of gettext.
      *
-     * @param string $msgid  The string to translate.
-     * @param array  $params The parameters to substitute into the string.
+     * @param string $msgid  The string to translate
+     * @param array  $params The parameters to substitute into the string
      *
-     * @return string The translated string with variables substituted.
+     * @return string The translated string with variables substituted
      */
     public function __f($msgid, $params)
     {
@@ -278,7 +278,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Retrieve the module base directory.
      *
-     * @return string The directory.
+     * @return string The directory
      */
     public function getBaseDir()
     {
@@ -288,7 +288,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Return the base directory for the module's libraries.
      *
-     * @return string The directory.
+     * @return string The directory
      */
     public function getLibBaseDir()
     {
@@ -298,7 +298,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Return the system base directory.
      *
-     * @return string The directory.
+     * @return string The directory
      */
     public function getSystemBaseDir()
     {
@@ -308,7 +308,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Retrieve the module name.
      *
-     * @return string The name of the module.
+     * @return string The name of the module
      */
     public function getName()
     {
@@ -318,7 +318,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Retrieve the display name for the module.
      *
-     * @return string The display name.
+     * @return string The display name
      */
     public function getDisplayName()
     {
@@ -328,7 +328,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Set the module's display name.
      *
-     * @param string $displayName The display name.
+     * @param string $displayName The display name
      *
      * @return void
      */
@@ -340,7 +340,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Return the string used in the module's URL.
      *
-     * @return string The URL fragment.
+     * @return string The URL fragment
      */
     public function getUrl()
     {
@@ -350,7 +350,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Set the string used in URLs to access the module.
      *
-     * @param string $url The URL fragment.
+     * @param string $url The URL fragment
      *
      * @return void
      */
@@ -362,7 +362,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Retrieve the module's brief description.
      *
-     * @return string The description.
+     * @return string The description
      */
     public function getDescription()
     {
@@ -372,7 +372,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Set a brief description of the module.
      *
-     * @param string $description The description.
+     * @param string $description The description
      *
      * @return void
      */
@@ -384,7 +384,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Retrieve the module's version number.
      *
-     * @return string The version.
+     * @return string The version
      */
     public function getVersion()
     {
@@ -394,11 +394,11 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Set the module's version.
      *
-     * @param string $version The version string, in the format a.b.c where a, b and c are digit sequences.
+     * @param string $version The version string, in the format a.b.c where a, b and c are digit sequences
      *
      * @return void
      *
-     * @throws InvalidArgumentException Thrown if $version does not match the regular expression #\d+\.\d+\.\d+#.
+     * @throws InvalidArgumentException Thrown if $version does not match the regular expression #\d+\.\d+\.\d+#
      */
     public function setVersion($version)
     {
@@ -411,7 +411,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Retrieve the security schema.
      *
-     * @return array The security schema.
+     * @return array The security schema
      */
     public function getSecuritySchema()
     {
@@ -429,7 +429,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
      * ]);
      * </code>
      *
-     * @param array $securitySchema The schema.
+     * @param array $securitySchema The schema
      *
      * @return void
      */
@@ -441,7 +441,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Retrieve the module dependencies.
      *
-     * @return array The dependency array.
+     * @return array The dependency array
      */
     public function getDependencies()
     {
@@ -451,7 +451,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Set the dependencies on other modules.
      *
-     * @param array $dependencies Teh dependencies.
+     * @param array $dependencies Teh dependencies
      *
      * @return void
      */
@@ -463,7 +463,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Retrieve the module's advertised capabilities.
      *
-     * @return array The capabilities of the module.
+     * @return array The capabilities of the module
      */
     public function getCapabilities()
     {
@@ -483,11 +483,11 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
      * $moduleVersion->setCapabilities($capabilities);
      * </code>
      *
-     * @param array $capabilities The module's advertised capabilities.
+     * @param array $capabilities The module's advertised capabilities
      *
      * @return void
      *
-     * @throws InvalidArgumentException Thrown if $capabilities does not conform to the specified structure.
+     * @throws InvalidArgumentException Thrown if $capabilities does not conform to the specified structure
      */
     public function setCapabilities($capabilities)
     {
@@ -510,7 +510,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Retrieve the minimum core version string.
      *
-     * @return string The minimum acceptable core version.
+     * @return string The minimum acceptable core version
      */
     public function getCore_min()
     {
@@ -520,7 +520,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Set the minimum acceptable core version for this module version.
      *
-     * @param string $core_min The minimum version.
+     * @param string $core_min The minimum version
      *
      * @return void
      */
@@ -532,7 +532,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Retrieve the highest core version this module version will operate with.
      *
-     * @return string The highest acceptable core version.
+     * @return string The highest acceptable core version
      */
     public function getCore_max()
     {
@@ -542,7 +542,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Set the maximum acceptable core version with which this module version will operate.
      *
-     * @param string $core_max The maximum core version.
+     * @param string $core_max The maximum core version
      *
      * @return void
      */
@@ -554,7 +554,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Retrieve this module's prior names.
      *
-     * @return array The module's former names.
+     * @return array The module's former names
      */
     public function getOldnames()
     {
@@ -564,7 +564,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Set the list of names this module was once known as.
      *
-     * @param array $oldnames The former names.
+     * @param array $oldnames The former names
      *
      * @return void
      */
@@ -587,7 +587,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
      *   <li>ModUtil::STATE_INVALID</li>
      * </ul>
      *
-     * @return integer The state of the module.
+     * @return integer The state of the module
      */
     public function getState()
     {
@@ -608,7 +608,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
      *   <li>ModUtil::STATE_INVALID</li>
      * </ul>
      *
-     * @param integer $state The state of the module.
+     * @param integer $state The state of the module
      *
      * @return void
      */
@@ -620,9 +620,9 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Returns the value at the specified offset (see {@link ArrayAccess::offsetGet()}).
      *
-     * @param mixed $key The offset to retrieve.
+     * @param mixed $key The offset to retrieve
      *
-     * @return mixed The value at the specified offset.
+     * @return mixed The value at the specified offset
      */
     public function offsetGet($key)
     {
@@ -632,8 +632,8 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Set the value at the specified offset (see {@link ArrayAccess::offsetSet()}).
      *
-     * @param mixed $key   The offset to retrieve.
-     * @param mixed $value The value to set at the specified offset.
+     * @param mixed $key   The offset to retrieve
+     * @param mixed $value The value to set at the specified offset
      *
      * @return void
      */
@@ -645,9 +645,9 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Indicate whether the specified offset is set (see {@link ArrayAccess::offsetExists()}).
      *
-     * @param mixed $key The offset to check.
+     * @param mixed $key The offset to check
      *
-     * @return boolean True if the offset is set, otherwise false.
+     * @return boolean True if the offset is set, otherwise false
      */
     public function offsetExists($key)
     {
@@ -657,7 +657,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Unset the specified offset (see {@link ArrayAccess::offsetUnset()}).
      *
-     * @param mixed $key The offset to unset.
+     * @param mixed $key The offset to unset
      *
      * @return void
      */
@@ -678,7 +678,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Register a hook subscriber bundle.
      *
-     * @param SubscriberBundle $bundle HookBundle.
+     * @param SubscriberBundle $bundle HookBundle
      *
      * @return Zikula_AbstractVersion
      */
@@ -696,7 +696,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Register a hook subscriber bundle.
      *
-     * @param ProviderBundle $bundle HookProviderBundle.
+     * @param ProviderBundle $bundle HookProviderBundle
      *
      * @return Zikula_AbstractVersion
      */
@@ -738,9 +738,9 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Get hook subscriber bundle for a given area.
      *
-     * @param string $area Area.
+     * @param string $area Area
      *
-     * @throws InvalidArgumentException If the area specified is not registered.
+     * @throws InvalidArgumentException If the area specified is not registered
      *
      * @return SubscriberBundle
      */
@@ -756,9 +756,9 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Get hook provider bundle for a given area.
      *
-     * @param string $area Area.
+     * @param string $area Area
      *
-     * @throws InvalidArgumentException If the area specified is not registered.
+     * @throws InvalidArgumentException If the area specified is not registered
      *
      * @return ProviderBundle
      */

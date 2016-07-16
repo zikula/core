@@ -32,8 +32,8 @@ class PluginUtil
     /**
      * Get plugin state.
      *
-     * @param string $name    Plugin name.
-     * @param mixed  $default Default return value.
+     * @param string $name    Plugin name
+     * @param mixed  $default Default return value
      *
      * @return mixed
      */
@@ -45,7 +45,7 @@ class PluginUtil
     /**
      * Delete plugin state.
      *
-     * @param string $name Plugin name.
+     * @param string $name Plugin name
      *
      * @return boolean
      */
@@ -57,8 +57,8 @@ class PluginUtil
     /**
      * Set plugin state.
      *
-     * @param string   $name  Plugin name.
-     * @param constant $value Plugin state.
+     * @param string   $name  Plugin name
+     * @param constant $value Plugin state
      *
      * @return boolean
      */
@@ -80,10 +80,10 @@ class PluginUtil
     /**
      * Load all plugins in path.
      *
-     * @param string $path      Path.
-     * @param string $namespace Namespace.
+     * @param string $path      Path
+     * @param string $namespace Namespace
      *
-     * @throws RuntimeException If file does not exist.
+     * @throws RuntimeException If file does not exist
      * @return void
      */
     public static function loadPlugins($path, $namespace)
@@ -129,10 +129,10 @@ class PluginUtil
     /**
      * Load an initialise plugin.
      *
-     * @param string $className Class name.
+     * @param string $className Class name
      *
-     * @throws LogicException        If Plugin class is not a Zikula_AbstractPlugin.
-     * @return Zikula_AbstractPlugin Plugin class.
+     * @throws LogicException        If Plugin class is not a Zikula_AbstractPlugin
+     * @return Zikula_AbstractPlugin Plugin class
      */
     public static function loadPlugin($className)
     {
@@ -167,7 +167,7 @@ class PluginUtil
     /**
      * Get plugin object.
      *
-     * @param string $className Class name.
+     * @param string $className Class name
      *
      * @return Zikula_AbstractPlugin
      */
@@ -193,7 +193,7 @@ class PluginUtil
     /**
      * Discover all module plugins.
      *
-     * @return array Array of plugins paths.
+     * @return array Array of plugins paths
      */
     public static function getAllModulePlugins()
     {
@@ -217,7 +217,7 @@ class PluginUtil
     /**
      * Discover all system plugins.
      *
-     * @return array Array of plugin paths.
+     * @return array Array of plugin paths
      */
     public static function getAllSystemPlugins()
     {
@@ -227,7 +227,7 @@ class PluginUtil
     /**
      * Load all plugins.
      *
-     * @return array Array of class names.
+     * @return array Array of class names
      */
     public static function loadAllPlugins()
     {
@@ -237,7 +237,7 @@ class PluginUtil
     /**
      * Load all system plugins.
      *
-     * @return array Array of class names.
+     * @return array Array of class names
      */
     public static function loadAllSystemPlugins()
     {
@@ -259,7 +259,7 @@ class PluginUtil
     /**
      * Load all module plugins.
      *
-     * @return array Array of class names.
+     * @return array Array of class names
      */
     public static function loadAllModulePlugins()
     {
@@ -283,9 +283,9 @@ class PluginUtil
     /**
      * Include plugin file.
      *
-     * @param string $plugin Plugin path.
+     * @param string $plugin Plugin path
      *
-     * @throws RuntimeException If plugin file does not exist.
+     * @throws RuntimeException If plugin file does not exist
      * @return void
      */
     private static function _includeFile($plugin)
@@ -300,9 +300,9 @@ class PluginUtil
     /**
      * Check's if a module has plugins or not.
      *
-     * @param string $modulename Name of an module.
+     * @param string $modulename Name of an module
      *
-     * @return boolean true when the module has plugins.
+     * @return boolean true when the module has plugins
      */
     public static function hasModulePlugins($modulename)
     {
@@ -324,9 +324,9 @@ class PluginUtil
     /**
      * Install plugin.
      *
-     * @param string $className Plugin class name.
+     * @param string $className Plugin class name
      *
-     * @throws LogicException If plugin is already installed.
+     * @throws LogicException If plugin is already installed
      * @return boolean
      */
     public static function install($className)
@@ -358,10 +358,10 @@ class PluginUtil
     /**
      * Upgrade plugin.
      *
-     * @param string $className Plugin class name.
+     * @param string $className Plugin class name
      *
-     * @throws LogicException If plugin is not installed.
-     * @throws LogicException If installed version and plugin version are equal.
+     * @throws LogicException If plugin is not installed
+     * @throws LogicException If installed version and plugin version are equal
      * @return boolean
      */
     public static function upgrade($className)
@@ -390,9 +390,9 @@ class PluginUtil
     /**
      * Uninstall plugin.
      *
-     * @param string $className Plugin class name.
+     * @param string $className Plugin class name
      *
-     * @throws LogicException If plugin is not installed.
+     * @throws LogicException If plugin is not installed
      * @return boolean
      */
     public static function uninstall($className)
@@ -416,9 +416,9 @@ class PluginUtil
     /**
      * Disable plugin.
      *
-     * @param string $className Plugin class name.
+     * @param string $className Plugin class name
      *
-     * @throws LogicException If plugin is not installed.
+     * @throws LogicException If plugin is not installed
      * @return boolean
      */
     public static function disable($className)
@@ -439,9 +439,9 @@ class PluginUtil
     /**
      * Enable plugin.
      *
-     * @param string $className Plugin class name.
+     * @param string $className Plugin class name
      *
-     * @throws LogicException If plugin is not installed.
+     * @throws LogicException If plugin is not installed
      * @return boolean
      */
     public static function enable($className)
@@ -462,7 +462,7 @@ class PluginUtil
     /**
      * Is plugin available (by service id).
      *
-     * @param string $id Service Id, normalized classname, e.g. systemplugin.zend.plugin.
+     * @param string $id Service Id, normalized classname, e.g. systemplugin.zend.plugin
      *
      * @return boolean
      */
@@ -484,9 +484,9 @@ class PluginUtil
     /**
      * Calculates plugin service id from Plugin class name.
      *
-     * @param string $className Plugin class name.
+     * @param string $className Plugin class name
      *
-     * @return string ServiceID.
+     * @return string ServiceID
      */
     public static function getServiceId($className)
     {

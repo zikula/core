@@ -20,8 +20,8 @@ class StringUtil
      * Why is this function here? PHP has a builtin substr_count()
      * to do the same.
      *
-     * @param string $haystack The string to search.
-     * @param string $needle   The needle to search for and count.
+     * @param string $haystack The string to search
+     * @param string $needle   The needle to search for and count
      *
      * @return integer The numer of instances of needle in string
      */
@@ -33,11 +33,11 @@ class StringUtil
     /**
      * Truncate a string to a certain length
      *
-     * @param string  $string     The string to operate on.
-     * @param integer $limit      The maximum number of characters displayed (optional) (default=80).
-     * @param boolean $appendDots Whether or not to append '...' to the maximum number of characters displayed (optional) (default=80).
+     * @param string  $string     The string to operate on
+     * @param integer $limit      The maximum number of characters displayed (optional) (default=80)
+     * @param boolean $appendDots Whether or not to append '...' to the maximum number of characters displayed (optional) (default=80)
      *
-     * @return string The potentially truncated string.
+     * @return string The potentially truncated string
      */
     public static function getTruncatedString($string, $limit = 80, $appendDots = true)
     {
@@ -60,9 +60,9 @@ class StringUtil
      * This function is necessary as inputted strings will contain
      * "\n\r" instead of just "\n".
      *
-     * @param string $string The string to operate on.
+     * @param string $string The string to operate on
      *
-     * @return string The converted string.
+     * @return string The converted string
      */
     public static function nl2html($string)
     {
@@ -77,11 +77,11 @@ class StringUtil
      *
      * This function just wraps explode to provide a more java-similar syntax.
      *
-     * @param string  $string    The string to tokenize.
-     * @param string  $delimeter The delimeter to use.
-     * @param integer $max       The maximal number of tokens to generate (optional) (default=999999).
+     * @param string  $string    The string to tokenize
+     * @param string  $delimeter The delimeter to use
+     * @param integer $max       The maximal number of tokens to generate (optional) (default=999999)
      *
-     * @return array The token array.
+     * @return array The token array
      */
     public static function tokenize($string, $delimeter, $max = 999999)
     {
@@ -91,11 +91,11 @@ class StringUtil
     /**
      * Case-Insensitive version of strpos (standard only available in PHP 5)
      *
-     * @param string  $haystack The string to search.
-     * @param string  $needle   The string to search for.
-     * @param integer $offset   The search start offset position (optional) (default=0).
+     * @param string  $haystack The string to search
+     * @param string  $needle   The string to search for
+     * @param integer $offset   The search start offset position (optional) (default=0)
      *
-     * @return array The token array.
+     * @return array The token array
      */
     public static function stripos($haystack, $needle, $offset = 0)
     {
@@ -107,10 +107,10 @@ class StringUtil
      *
      * If the string is longer than x, the whole string is returned.
      *
-     * @param string  $string The string to operate on.
-     * @param integer $left   The number of chars to return.
+     * @param string  $string The string to operate on
+     * @param integer $left   The number of chars to return
      *
-     * @return string A part of the supplied string.
+     * @return string A part of the supplied string
      */
     public static function left($string, $left = 0)
     {
@@ -127,10 +127,10 @@ class StringUtil
      *
      * If the string is longer than x, the whole string is returned.
      *
-     * @param string  $string The string to operate on.
-     * @param integer $right  The number of chars to return.
+     * @param string  $string The string to operate on
+     * @param integer $right  The number of chars to return
      *
-     * @return string A part of the supplied string.
+     * @return string A part of the supplied string
      */
     public static function right($string, $right = 0)
     {
@@ -147,11 +147,11 @@ class StringUtil
      *
      * Shorten text appropriate to view in hitlist.
      *
-     * @param string  $text        The string to operate on.
-     * @param string  $wordStr     The search phrase.
-     * @param integer $contextSize The number of chars shown as context around the search phrase.
+     * @param string  $text        The string to operate on
+     * @param string  $wordStr     The search phrase
+     * @param integer $contextSize The number of chars shown as context around the search phrase
      *
-     * @return string A part of the supplied string.
+     * @return string A part of the supplied string
      */
     public static function highlightWords($text, $wordStr, $contextSize = 200)
     {
@@ -216,8 +216,8 @@ class StringUtil
     /**
      * Camelize string.
      *
-     * @param string $string    String to operate on.
-     * @param string $separator Seperator.
+     * @param string $string    String to operate on
+     * @param string $separator Seperator
      *
      * @return string
      */

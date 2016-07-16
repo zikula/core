@@ -62,7 +62,7 @@ class PagerExtension extends \Twig_Extension
      *  optimize           Only deliver page links which are actually displayed to the template (default: true)
      *  includePostVars    Whether or not to include the POST variables as GET variables in the pager URLs (default: true)
      *
-     * @param array $params All attributes passed to this function from the template.
+     * @param array $params All attributes passed to this function from the template
      * @return string
      */
     public function pager($params)
@@ -315,7 +315,7 @@ class PagerExtension extends \Twig_Extension
      *  values         Optional parameter for the previous names (array or cvs)
      *  skin           Use predefined values (hu - hungarian ABC)
      *
-     * @param array       $params All attributes passed to this function from the template.
+     * @param array       $params All attributes passed to this function from the template
      *
      * @return string
      */

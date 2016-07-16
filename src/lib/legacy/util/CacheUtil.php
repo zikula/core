@@ -18,9 +18,9 @@ class CacheUtil
     /**
      * Get the location of the local cache directory.
      *
-     * @param string $dir The name of the directory to get.
+     * @param string $dir The name of the directory to get
      *
-     * @return string Location of the cache directory.
+     * @return string Location of the cache directory
      */
     public static function getLocalDir($dir = null)
     {
@@ -40,11 +40,11 @@ class CacheUtil
     /**
      * Create a directory below zikula's local cache directory.
      *
-     * @param string $dir      The name of the directory to create.
-     * @param mixed  $mode     The (UNIX) mode we wish to create the files with.
-     * @param bool   $absolute Whether to process the passed dir as an absolute path or not.
+     * @param string $dir      The name of the directory to create
+     * @param mixed  $mode     The (UNIX) mode we wish to create the files with
+     * @param bool   $absolute Whether to process the passed dir as an absolute path or not
      *
-     * @return boolean true if successful, false otherwise.
+     * @return boolean true if successful, false otherwise
      */
     public static function createLocalDir($dir, $mode = 0777, $absolute = true)
     {
@@ -62,10 +62,10 @@ class CacheUtil
     /**
      * Remove a directory from zikula's local cache directory.
      *
-     * @param string $dir      The name of the directory to remove.
-     * @param bool   $absolute Whether to process the passed dir as an absolute path or not.
+     * @param string $dir      The name of the directory to remove
+     * @param bool   $absolute Whether to process the passed dir as an absolute path or not
      *
-     * @return boolean true if successful, false otherwise.
+     * @return boolean true if successful, false otherwise
      */
     public static function removeLocalDir($dir, $absolute = false)
     {
@@ -77,7 +77,7 @@ class CacheUtil
     /**
      * Clear the contents of a directory from zikula's local cache directory.
      *
-     * @param string $dir The name of the directory to remove.
+     * @param string $dir The name of the directory to remove
      *
      * @return void
      */

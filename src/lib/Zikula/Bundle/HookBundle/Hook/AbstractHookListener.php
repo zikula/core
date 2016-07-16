@@ -58,7 +58,7 @@ abstract class AbstractHookListener implements Zikula_TranslatableInterface
     /**
      * Constructor.
      *
-     * @param EventDispatcher $dispatcher ServiceManager.
+     * @param EventDispatcher $dispatcher ServiceManager
      */
     public function __construct(EventDispatcherInterface $dispatcher)
     {
@@ -104,7 +104,7 @@ abstract class AbstractHookListener implements Zikula_TranslatableInterface
     /**
      * Translate.
      *
-     * @param string $msgid String to be translated.
+     * @param string $msgid String to be translated
      *
      * @return string
      */
@@ -116,8 +116,8 @@ abstract class AbstractHookListener implements Zikula_TranslatableInterface
     /**
      * Translate with sprintf().
      *
-     * @param string       $msgid  String to be translated.
-     * @param string|array $params Args for sprintf().
+     * @param string       $msgid  String to be translated
+     * @param string|array $params Args for sprintf()
      *
      * @return string
      */
@@ -129,11 +129,11 @@ abstract class AbstractHookListener implements Zikula_TranslatableInterface
     /**
      * Translate plural string.
      *
-     * @param string $singular Singular instance.
-     * @param string $plural   Plural instance.
-     * @param string $count    Object count.
+     * @param string $singular Singular instance
+     * @param string $plural   Plural instance
+     * @param string $count    Object count
      *
-     * @return string Translated string.
+     * @return string Translated string
      */
     public function _n($singular, $plural, $count)
     {
@@ -143,10 +143,10 @@ abstract class AbstractHookListener implements Zikula_TranslatableInterface
     /**
      * Translate plural string with sprintf().
      *
-     * @param string       $sin    Singular instance.
-     * @param string       $plu    Plural instance.
-     * @param string       $n      Object count.
-     * @param string|array $params Sprintf() arguments.
+     * @param string       $sin    Singular instance
+     * @param string       $plu    Plural instance
+     * @param string       $n      Object count
+     * @param string|array $params Sprintf() arguments
      *
      * @return string
      */

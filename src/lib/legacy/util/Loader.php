@@ -165,7 +165,7 @@ class Loader
      *
      * @param module        The module to load from
      * @param base_obj_type The base object type for which to load the class
-     * @param array         If true, load the array class instead of the single-object class.
+     * @param array         If true, load the array class instead of the single-object class
      * @param exitOnError   whether or not exit upon error (optional) (default=true)
      * @param prefix        Override parameter for the default PN prefix (default=PN)
      *
@@ -253,7 +253,7 @@ class Loader
      * Internal include_once
      *
      * @deprecated since 1.3.0
-     * @return bool True if file was included - false if not found or included before.
+     * @return bool True if file was included - false if not found or included before
      */
     public static function includeOnce($file)
     {

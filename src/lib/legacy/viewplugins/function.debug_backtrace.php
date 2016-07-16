@@ -16,10 +16,10 @@
  *   - fulltrace        include parts of stack trace after the call to the error handler -
  *                        by default these are excluded as they're not relevant.
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
- * @return string The URL.
+ * @return string The URL
  */
 function smarty_function_debug_backtrace($params, Zikula_View $view)
 {

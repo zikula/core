@@ -23,10 +23,10 @@
  * {themegetvar name='themepath'}
  * {themegetvar name='scriptpath' assign='scriptpath'}
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
- * @return string The colour definition.
+ * @return string The colour definition
  */
 function smarty_function_themegetvar($params, Zikula_View $view)
 {

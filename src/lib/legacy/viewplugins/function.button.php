@@ -67,11 +67,11 @@
  *
  * <samp>{button src='button_cancel.png' set='medium' mode='input' value='cancel' id='cancelbutton'}</samp>
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the {@link Zikula_View} object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the {@link Zikula_View} object
  *
  * @return string The rendered <button ...><img ...></button> or <input ...>
- *                element for the form button.
+ *                element for the form button
  */
 function smarty_function_button($params, Zikula_View $view)
 {

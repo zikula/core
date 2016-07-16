@@ -15,7 +15,7 @@
  * @deprecated since 1.4.0
  * @see Zikula\Core\FilterUtil
  *
- * Operator "sub" can filter for a category and all its subcategories.
+ * Operator "sub" can filter for a category and all its subcategories
  */
 class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements FilterUtil_BuildInterface
 {
@@ -41,7 +41,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
      *  ops:     Enabled Operators.
      *  default: This plugin is the default plugin for all fields?
      *
-     * @param array $config Configuration.
+     * @param array $config Configuration
      */
     public function __construct($config)
     {
@@ -65,7 +65,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
     /**
      * Adds fields to list in common way.
      *
-     * @param mixed $fields Fields to add.
+     * @param mixed $fields Fields to add
      *
      * @return void
      */
@@ -83,7 +83,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
     /**
      * Returns the fields.
      *
-     * @return array List of fields.
+     * @return array List of fields
      */
     public function getFields()
     {
@@ -93,7 +93,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
     /**
      * Activates the requested Operators.
      *
-     * @param mixed $op Operators to activate.
+     * @param mixed $op Operators to activate
      *
      * @return void
      */
@@ -111,7 +111,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
     /**
      * Get activated operators.
      *
-     * @return array Set of Operators and Arrays.
+     * @return array Set of Operators and Arrays
      */
     public function getOperators()
     {
@@ -131,7 +131,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
     /**
      * Returns the operators the plugin can handle.
      *
-     * @return array Operators.
+     * @return array Operators
      */
     public function availableOperators()
     {
@@ -141,11 +141,11 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
     /**
      * Returns SQL code.
      *
-     * @param string $field Field name.
-     * @param string $op    Operator.
-     * @param string $value Test value.
+     * @param string $field Field name
+     * @param string $op    Operator
+     * @param string $value Test value
      *
-     * @return array SQL code array.
+     * @return array SQL code array
      */
     public function getSQL($field, $op, $value)
     {
@@ -186,11 +186,11 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
     /**
      * Returns DQL code.
      *
-     * @param string $field Field name.
-     * @param string $op    Operator.
-     * @param string $value Test value.
+     * @param string $field Field name
+     * @param string $op    Operator
+     * @param string $value Test value
      *
-     * @return array Doctrine Query where clause and parameters.
+     * @return array Doctrine Query where clause and parameters
      */
     public function getDql($field, $op, $value)
     {

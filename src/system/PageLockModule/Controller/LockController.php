@@ -63,7 +63,7 @@ class LockController extends AbstractController
      *
      * @param Request $request
      *
-     * @return array Lock information data.
+     * @return array Lock information data
      */
     private function getLockInfo(Request $request)
     {

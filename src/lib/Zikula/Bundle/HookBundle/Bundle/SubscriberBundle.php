@@ -61,10 +61,10 @@ class SubscriberBundle
     /**
      * Constructor.
      *
-     * @param string $owner    Owner.
-     * @param string $area     Area ID, this should be a unique string.
-     * @param string $category Category.
-     * @param string $title    Title.
+     * @param string $owner    Owner
+     * @param string $area     Area ID, this should be a unique string
+     * @param string $category Category
+     * @param string $title    Title
      */
     public function __construct($owner, $area, $category, $title)
     {
@@ -151,8 +151,8 @@ class SubscriberBundle
     /**
      * Add a subscriber hook type event to this bundle.
      *
-     * @param string $type      Hook type.
-     * @param string $eventName Event name.
+     * @param string $type      Hook type
+     * @param string $eventName Event name
      *
      * @return SubscriberBundle
      */

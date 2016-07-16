@@ -32,7 +32,7 @@ class Zikula_Form_Plugin_ContextMenu_Separator extends Zikula_Form_AbstractPlugi
     /**
      * Render event handler.
      *
-     * @param Zikula_Form_View $view Reference to Form render object.
+     * @param Zikula_Form_View $view Reference to Form render object
      *
      * @return string The rendered output
      */

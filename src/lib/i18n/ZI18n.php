@@ -38,7 +38,7 @@ class ZI18n
     /**
      * Sign position number.
      *
-     * @var integer.
+     * @var integer
      */
     private $sign_posn;
 
@@ -59,7 +59,7 @@ class ZI18n
     /**
      * Constructor.
      *
-     * @param ZLocale $locale Locale.
+     * @param ZLocale $locale Locale
      */
     public function __construct(ZLocale $locale)
     {
@@ -69,9 +69,9 @@ class ZI18n
     /**
      * Get Singleton instance.
      *
-     * @param string $locale Locale.
+     * @param string $locale Locale
      *
-     * @return ZI18n object instance.
+     * @return ZI18n object instance
      */
     public static function getInstance($locale = null)
     {
@@ -88,7 +88,7 @@ class ZI18n
     /**
      * Transform a given currency into an internal number.
      *
-     * @param string $number Number.
+     * @param string $number Number
      *
      * @return float
      */
@@ -106,7 +106,7 @@ class ZI18n
     /**
      * Transform a number into internal form with . as decimal.
      *
-     * @param string $number Number.
+     * @param string $number Number
      *
      * @return float
      */
@@ -123,8 +123,8 @@ class ZI18n
     /**
      * Format a number for display.
      *
-     * @param mixed $number         Number.
-     * @param mixed $decimal_points Null=default locale, false=precision, int=precision.
+     * @param mixed $number         Number
+     * @param mixed $decimal_points Null=default locale, false=precision, int=precision
      *
      * @return string
      */
@@ -165,7 +165,7 @@ class ZI18n
     /**
      * Format a number in monetary terms.
      *
-     * @param mixed $number Number.
+     * @param mixed $number Number
      *
      * @return integer|string
      */
@@ -202,7 +202,7 @@ class ZI18n
     /**
      * Process the positive or negative sign for a number.
      *
-     * @param mixed $number Number.
+     * @param mixed $number Number
      *
      * @return void
      */

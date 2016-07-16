@@ -29,9 +29,9 @@ abstract class Zikula_Controller_AbstractAjax extends Zikula_AbstractController
      *
      * Checks will fall back to $token check if automatic checking fails.
      *
-     * @param string $token Token, default null.
+     * @param string $token Token, default null
      *
-     * @throws AccessDeniedException If the CSFR token fails.
+     * @throws AccessDeniedException If the CSFR token fails
      *
      * @return void
      */

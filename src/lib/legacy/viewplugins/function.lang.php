@@ -18,10 +18,10 @@
  * Example
  * <html lang="{lang}">
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
- * @return string|void The language, null if params['assign'] is true.
+ * @return string|void The language, null if params['assign'] is true
  */
 function smarty_function_lang($params, Zikula_View $view)
 {

@@ -26,7 +26,7 @@ class DoctrineUtil
     /**
      * Constructor.
      *
-     * @throws Exception DoctrineUtil can't be instanciated directly.
+     * @throws Exception DoctrineUtil can't be instanciated directly
      */
     public function __construct()
     {
@@ -36,8 +36,8 @@ class DoctrineUtil
     /**
      * Create Tables from models for given module.
      *
-     * @param string $modname Module name.
-     * @param string $path    Optional force path to Model directory (used by plugins).
+     * @param string $modname Module name
+     * @param string $path    Optional force path to Model directory (used by plugins)
      *
      * @return void
      */
@@ -64,7 +64,7 @@ class DoctrineUtil
      *
      * In general, this method is NOT required.
      *
-     * @param string $modname Module name to load models for.
+     * @param string $modname Module name to load models for
      *
      * @return void
      */
@@ -120,7 +120,7 @@ class DoctrineUtil
     /**
      * Use result cache.
      *
-     * @param Doctrine_Query $query Doctrine query object.
+     * @param Doctrine_Query $query Doctrine query object
      *
      * @return Doctrine_Query
      */
@@ -136,7 +136,7 @@ class DoctrineUtil
     /**
      * Decorates table name with prefix.
      *
-     * @param string $tableName Table name.
+     * @param string $tableName Table name
      *
      * @return string decorated table name
      */
@@ -148,9 +148,9 @@ class DoctrineUtil
     /**
      * Create table.
      *
-     * @param string $tableName Table name.
-     * @param array  $columns   Column array.
-     * @param array  $options   Options.
+     * @param string $tableName Table name
+     * @param array  $columns   Column array
+     * @param array  $options   Options
      *
      * @return void
      */
@@ -163,7 +163,7 @@ class DoctrineUtil
     /**
      * Drop table.
      *
-     * @param string $tableName Table name.
+     * @param string $tableName Table name
      *
      * @return void
      */
@@ -176,9 +176,9 @@ class DoctrineUtil
     /**
      * Rename a table.
      *
-     * @param string  $oldTableName Old table name.
-     * @param string  $newTableName New table name.
-     * @param boolean $check        Validate request only, default: false.
+     * @param string  $oldTableName Old table name
+     * @param string  $newTableName New table name
+     * @param boolean $check        Validate request only, default: false
      *
      * @return void
      */
@@ -192,10 +192,10 @@ class DoctrineUtil
     /**
      * Add a column to table.
      *
-     * @param string  $tableName  Table name.
-     * @param string  $columnName Column name.
-     * @param array   $options    Options.
-     * @param boolean $check      Verifies request only, default: false.
+     * @param string  $tableName  Table name
+     * @param string  $columnName Column name
+     * @param array   $options    Options
+     * @param boolean $check      Verifies request only, default: false
      *
      * @return void
      */
@@ -208,9 +208,9 @@ class DoctrineUtil
     /**
      * Drop column from table.
      *
-     * @param string  $tableName  Table name.
-     * @param string  $columnName Column name.
-     * @param boolean $check      Verifies request only, default: false.
+     * @param string  $tableName  Table name
+     * @param string  $columnName Column name
+     * @param boolean $check      Verifies request only, default: false
      *
      * @return void
      */
@@ -223,10 +223,10 @@ class DoctrineUtil
     /**
      *  Rename column in table.
      *
-     * @param string  $tableName     Table name.
-     * @param string  $oldColumnName Old column name.
-     * @param string  $newColumnName New column name.
-     * @param boolean $check         Verifies request only, default: false.
+     * @param string  $tableName     Table name
+     * @param string  $oldColumnName Old column name
+     * @param string  $newColumnName New column name
+     * @param boolean $check         Verifies request only, default: false
      *
      * @return void
      */
@@ -255,10 +255,10 @@ class DoctrineUtil
     /**
      * Modify a column.
      *
-     * @param string  $tableName  Table name.
-     * @param string  $columnName Column name.
-     * @param array   $options    Column options.
-     * @param boolean $check      Verifies request only, default: false.
+     * @param string  $tableName  Table name
+     * @param string  $columnName Column name
+     * @param array   $options    Column options
+     * @param boolean $check      Verifies request only, default: false
      *
      * @return void
      */
@@ -274,9 +274,9 @@ class DoctrineUtil
     /**
      * Create index.
      *
-     * @param string $tableName  Table name.
-     * @param string $index      Index name.
-     * @param array  $definition Definition.
+     * @param string $tableName  Table name
+     * @param string $index      Index name
+     * @param array  $definition Definition
      *
      * @return void
      */
@@ -289,8 +289,8 @@ class DoctrineUtil
     /**
      * Drop index.
      *
-     * @param string $tableName Table name.
-     * @param string $indexName Index name.
+     * @param string $tableName Table name
+     * @param string $indexName Index name
      *
      * @return void
      */
@@ -303,9 +303,9 @@ class DoctrineUtil
     /**
      * Create constraint.
      *
-     * @param string $tableName      Table name.
-     * @param string $constraintName Constraint name.
-     * @param array  $definition     Definition.
+     * @param string $tableName      Table name
+     * @param string $constraintName Constraint name
+     * @param array  $definition     Definition
      *
      * @return void
      */
@@ -318,9 +318,9 @@ class DoctrineUtil
     /**
      * Drop constraint.
      *
-     * @param string $tableName      Table name.
-     * @param string $constraintName Constraint name.
-     * @param array  $definition     Definition.
+     * @param string $tableName      Table name
+     * @param string $constraintName Constraint name
+     * @param array  $definition     Definition
      *
      * @return void
      */
@@ -333,8 +333,8 @@ class DoctrineUtil
     /**
      * Create foreign key.
      *
-     * @param string $tableName  Table name.
-     * @param array  $definition Definition.
+     * @param string $tableName  Table name
+     * @param array  $definition Definition
      *
      * @return void
      */
@@ -347,8 +347,8 @@ class DoctrineUtil
     /**
      * Drop Foreign Key.
      *
-     * @param string $tableName  Table name.
-     * @param array  $definition Definition.
+     * @param string $tableName  Table name
+     * @param array  $definition Definition
      *
      * @return void
      */
@@ -366,10 +366,10 @@ class DoctrineUtil
      * can then be copied to the new columns, before calling the method again with
      * $dropColumns = true to cleanup the old columns.
      *
-     * @param string  $className   Class name.
-     * @param boolean $dropColumns Drops unused columns (default=false).
+     * @param string  $className   Class name
+     * @param boolean $dropColumns Drops unused columns (default=false)
      *
-     * @throws InvalidArgumentException If $className does not exist.
+     * @throws InvalidArgumentException If $className does not exist
      *
      * @return boolean
      */

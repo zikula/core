@@ -16,10 +16,10 @@
  *
  *   {$var|gt:$zikula_view}
  *
- * @param string      $string The contents to transform.
- * @param Zikula_View $view   This Zikula_View object (available as $renderObject in templates).
+ * @param string      $string The contents to transform
+ * @param Zikula_View $view   This Zikula_View object (available as $renderObject in templates)
  *
- * @return string The modified output.
+ * @return string The modified output
  */
 function smarty_modifier_gt($string, $view)
 {

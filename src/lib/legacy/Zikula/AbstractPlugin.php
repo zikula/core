@@ -131,9 +131,9 @@ abstract class Zikula_AbstractPlugin extends Zikula_AbstractEventHandler impleme
     /**
      * Constructor.
      *
-     * @param Zikula_ServiceManager $serviceManager ServiceManager.
+     * @param Zikula_ServiceManager $serviceManager ServiceManager
      *
-     * @throws InvalidArgumentException If getMeta() is not implemented correctly.
+     * @throws InvalidArgumentException If getMeta() is not implemented correctly
      */
     public function __construct(Zikula_ServiceManager $serviceManager)
     {
@@ -187,7 +187,7 @@ abstract class Zikula_AbstractPlugin extends Zikula_AbstractEventHandler impleme
     /**
      * Internal setup.
      *
-     * @throws LogicException If plugin is not named correctly.
+     * @throws LogicException If plugin is not named correctly
      *
      * @return void
      */
@@ -310,7 +310,7 @@ abstract class Zikula_AbstractPlugin extends Zikula_AbstractEventHandler impleme
     /**
      * Translate.
      *
-     * @param string $msgid String to be translated.
+     * @param string $msgid String to be translated
      *
      * @return string
      */
@@ -322,8 +322,8 @@ abstract class Zikula_AbstractPlugin extends Zikula_AbstractEventHandler impleme
     /**
      * Translate with sprintf().
      *
-     * @param string       $msgid  String to be translated.
-     * @param string|array $params Args for sprintf().
+     * @param string       $msgid  String to be translated
+     * @param string|array $params Args for sprintf()
      *
      * @return string
      */
@@ -335,11 +335,11 @@ abstract class Zikula_AbstractPlugin extends Zikula_AbstractEventHandler impleme
     /**
      * Translate plural string.
      *
-     * @param string $singular Singular instance.
-     * @param string $plural   Plural instance.
-     * @param string $count    Object count.
+     * @param string $singular Singular instance
+     * @param string $plural   Plural instance
+     * @param string $count    Object count
      *
-     * @return string Translated string.
+     * @return string Translated string
      */
     public function _n($singular, $plural, $count)
     {
@@ -349,10 +349,10 @@ abstract class Zikula_AbstractPlugin extends Zikula_AbstractEventHandler impleme
     /**
      * Translate plural string with sprintf().
      *
-     * @param string       $sin    Singular instance.
-     * @param string       $plu    Plural instance.
-     * @param string       $n      Object count.
-     * @param string|array $params Sprintf() arguments.
+     * @param string       $sin    Singular instance
+     * @param string       $plu    Plural instance
+     * @param string       $n      Object count
+     * @param string|array $params Sprintf() arguments
      *
      * @return string
      */
@@ -561,7 +561,7 @@ abstract class Zikula_AbstractPlugin extends Zikula_AbstractEventHandler impleme
     /**
      * Pre upgrade handler.
      *
-     * @param string $oldversion Old version.
+     * @param string $oldversion Old version
      *
      * @return boolean
      */
@@ -573,7 +573,7 @@ abstract class Zikula_AbstractPlugin extends Zikula_AbstractEventHandler impleme
     /**
      * Upgrade
      *
-     * @param string $oldversion Old version.
+     * @param string $oldversion Old version
      *
      * @return boolean
      */

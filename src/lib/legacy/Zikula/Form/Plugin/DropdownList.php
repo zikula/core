@@ -193,8 +193,8 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
-     * @param array            &$params Parameters passed from the Smarty plugin function.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
+     * @param array            &$params Parameters passed from the Smarty plugin function
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
@@ -209,8 +209,8 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
     /**
      * Load event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
-     * @param array            &$params Parameters passed from the Smarty plugin function.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
+     * @param array            &$params Parameters passed from the Smarty plugin function
      *
      * @return void
      */
@@ -232,7 +232,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
     /**
      * Render event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
      * @return string The rendered output
      */
@@ -320,8 +320,8 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
     /**
      * Called by Zikula_Form_View framework due to the use of getPostBackEventReference() above.
      *
-     * @param Zikula_Form_View $view          Reference to Zikula_Form_View object.
-     * @param string           $eventArgument The event argument.
+     * @param Zikula_Form_View $view          Reference to Zikula_Form_View object
+     * @param string           $eventArgument The event argument
      *
      * @return void
      */
@@ -339,7 +339,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
     /**
      * Decode event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
      * @return void
      */
@@ -370,7 +370,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
     /**
      * Validates the input.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
      * @return void
      */
@@ -388,7 +388,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
     /**
      * Set the selected value.
      *
-     * @param mixed $value Selected value.
+     * @param mixed $value Selected value
      *
      * @return void
      */
@@ -434,7 +434,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
     /**
      * Get the selected value.
      *
-     * @return mixed The selected value.
+     * @return mixed The selected value
      */
     public function getSelectedValue()
     {
@@ -453,7 +453,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
     /**
      * Set the selected item by index.
      *
-     * @param int $index Selected index.
+     * @param int $index Selected index
      *
      * @return void
      */
@@ -468,7 +468,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
     /**
      * Get the selected index.
      *
-     * @return integer The selected index.
+     * @return integer The selected index
      */
     public function getSelectedIndex()
     {

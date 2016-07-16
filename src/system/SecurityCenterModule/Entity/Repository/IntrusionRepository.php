@@ -25,7 +25,7 @@ class IntrusionRepository extends EntityRepository
     /**
      * Returns amount of intrusions for given arguments.
      *
-     * @param array $filters Optional array with filters.
+     * @param array $filters Optional array with filters
      *
      * @return integer
      */
@@ -46,10 +46,10 @@ class IntrusionRepository extends EntityRepository
     /**
      * Returns intrusions for given arguments.
      *
-     * @param array   $filters Optional array with filters.
-     * @param array   $sorting Optional array with sorting criteria.
-     * @param integer $limit   Optional limitation for amount of retrieved objects.
-     * @param integer $offset  Optional start offset of retrieved objects.
+     * @param array   $filters Optional array with filters
+     * @param array   $sorting Optional array with sorting criteria
+     * @param integer $limit   Optional limitation for amount of retrieved objects
+     * @param integer $offset  Optional start offset of retrieved objects
      *
      * @return array
      */
@@ -92,10 +92,10 @@ class IntrusionRepository extends EntityRepository
     /**
      * Adds common filters to the given query builder.
      *
-     * @param QueryBuilder $qb      The current query builder instance.
-     * @param array        $filters Optional array with filters.
+     * @param QueryBuilder $qb      The current query builder instance
+     * @param array        $filters Optional array with filters
      *
-     * @return QueryBuilder The enriched query builder.
+     * @return QueryBuilder The enriched query builder
      */
     private function addCommonFilters(QueryBuilder $qb, $filters = [])
     {
@@ -128,7 +128,7 @@ class IntrusionRepository extends EntityRepository
     /**
      * Selects a list of distinct values for a given field.
      *
-     * @param string $fieldName Name of field to select.
+     * @param string $fieldName Name of field to select
      *
      * @return array
      *

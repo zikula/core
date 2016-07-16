@@ -22,7 +22,7 @@ class ComparePlugin extends FilterUtil\AbstractBuildPlugin
     /**
      * Returns the operators the plugin can handle.
      *
-     * @return array Operators.
+     * @return array Operators
      */
     public function availableOperators()
     {
@@ -45,9 +45,9 @@ class ComparePlugin extends FilterUtil\AbstractBuildPlugin
     /**
      * Get the Doctrine expression object
      *
-     * @param string $field Field name.
-     * @param string $op    Operator.
-     * @param string $value Value.
+     * @param string $field Field name
+     * @param string $op    Operator
+     * @param string $value Value
      *
      * @return BaseExpr Doctrine expression
      */

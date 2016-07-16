@@ -38,9 +38,9 @@ abstract class Zikula_Controller_AbstractPlugin extends Zikula_AbstractControlle
     /**
      * Constructor.
      *
-     * @param Zikula_ServiceManager $serviceManager ServiceManager.
-     * @param Zikula_AbstractPlugin $plugin         Plugin.
-     * @param array                 $options        Options.
+     * @param Zikula_ServiceManager $serviceManager ServiceManager
+     * @param Zikula_AbstractPlugin $plugin         Plugin
+     * @param array                 $options        Options
      */
     public function __construct(Zikula_ServiceManager $serviceManager, Zikula_AbstractPlugin $plugin, array $options = [])
     {
@@ -78,7 +78,7 @@ abstract class Zikula_Controller_AbstractPlugin extends Zikula_AbstractControlle
     /**
      * Set view property.
      *
-     * @param Zikula_View $view Default null means new Render instance for this module name.
+     * @param Zikula_View $view Default null means new Render instance for this module name
      *
      * @return Zikula_Controller_AbstractPlugin
      */
@@ -106,7 +106,7 @@ abstract class Zikula_Controller_AbstractPlugin extends Zikula_AbstractControlle
     /**
      * Set plugin for this controller.
      *
-     * @param Zikula_AbstractPlugin $plugin Plugin instance.
+     * @param Zikula_AbstractPlugin $plugin Plugin instance
      *
      * @return void
      */

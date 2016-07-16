@@ -74,15 +74,15 @@ class MailHelper
      * @param UserEntity $userEntity
      * @param bool   $userNotification       Whether the user should be notified of the new registration or not; however
      *                                       if the user's password was created for him, then he will receive at
-     *                                       least that mail without regard to this setting.
+     *                                       least that mail without regard to this setting
      * @param bool   $adminNotification      Whether the configured administrator mail e-mail address should be
-     *                                       sent mail of the new registration.
+     *                                       sent mail of the new registration
      * @param string $passwordCreatedForUser The password that was created for the user either automatically or by an
-     *                                       administrator (but not by the user himself).
+     *                                       administrator (but not by the user himself)
      *
-     * @return array of errors created from the mail process.
+     * @return array of errors created from the mail process
      *
-     * @throws \InvalidArgumentException Thrown if invalid parameters are received.
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received
      * @throws \RuntimeException Thrown if the registration couldn't be saved
      */
     public function createAndSendRegistrationMail(UserEntity $userEntity, $userNotification = true, $adminNotification = true, $passwordCreatedForUser = '')
@@ -119,16 +119,16 @@ class MailHelper
      * @param UserEntity $userEntity
      * @param bool  $userNotification        Whether the user should be notified of the new registration or not;
      *                                       however if the user's password was created for him, then he will
-     *                                       receive at least that mail without regard to this setting.
+     *                                       receive at least that mail without regard to this setting
      * @param bool $adminNotification        Whether the configured administrator mail e-mail address should
-     *                                       be sent mail of the new registration.
+     *                                       be sent mail of the new registration
      * @param string $passwordCreatedForUser The password that was created for the user either automatically or by
-     *                                       an administrator (but not by the user himself).
+     *                                       an administrator (but not by the user himself)
      *
      * @return array of mail errors
      *
-     * @throws \InvalidArgumentException Thrown if invalid parameters are received.
-     * @throws AccessDeniedException Thrown if the current user does not have overview access.
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received
+     * @throws AccessDeniedException Thrown if the current user does not have overview access
      * @throws \RuntimeException Thrown if the user couldn't be added to the relevant user groups or
      *                                  if the registration couldn't be saved
      */
@@ -206,11 +206,11 @@ class MailHelper
     /**
      * Sends a notification e-mail of a specified type to a user or registrant.
      *
-     * @param string $toAddress The destination e-mail address.
+     * @param string $toAddress The destination e-mail address
      * @param string $notificationType The type of notification, converted to the name of a template
-     *                                     in the form users_userapi_{type}mail.tpl and/or .txt.
-     * @param array $templateArgs One or more arguments to pass to the renderer for use in the template.
-     * @param string $subject The e-mail subject, overriding the template's subject.
+     *                                     in the form users_userapi_{type}mail.tpl and/or .txt
+     * @param array $templateArgs One or more arguments to pass to the renderer for use in the template
+     * @param string $subject The e-mail subject, overriding the template's subject
      * @return bool
      */
     public function sendNotification($toAddress, $notificationType = '', array $templateArgs = [], $subject = '')

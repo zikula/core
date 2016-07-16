@@ -56,9 +56,9 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
      * This function must consider all the released versions of the module!
      * If the upgrade fails at some point, it returns the last upgraded version.
      *
-     * @param string $oldversion Version number string to upgrade from.
+     * @param string $oldversion Version number string to upgrade from
      *
-     * @return  boolean|string True on success, last valid version string or false if fails.
+     * @return  boolean|string True on success, last valid version string or false if fails
      */
     public function upgrade($oldVersion)
     {

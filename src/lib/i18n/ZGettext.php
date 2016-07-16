@@ -68,7 +68,7 @@ class ZGettext
     /**
      * GetInstance of ZL10n singleton.
      *
-     * @return ZGettext Instance.
+     * @return ZGettext Instance
      */
     public static function getInstance()
     {
@@ -82,10 +82,10 @@ class ZGettext
     /**
      * Set locale.
      *
-     * @param integer $category LC_CONSTANT.
-     * @param string  $locale   Locale.
+     * @param integer $category LC_CONSTANT
+     * @param string  $locale   Locale
      *
-     * @return string $locale.
+     * @return string $locale
      */
     public function setLocale($category, $locale)
     {
@@ -121,7 +121,7 @@ class ZGettext
     /**
      * Translate LC_CONSTANTS to internal form.
      *
-     * @param constant $lc LC_CONSTANT.
+     * @param constant $lc LC_CONSTANT
      *
      * @return string LC_CONSTANT
      */
@@ -133,8 +133,8 @@ class ZGettext
     /**
      * Bind text domain.
      *
-     * @param string $domain Text domain.
-     * @param string $path   Domain path.
+     * @param string $domain Text domain
+     * @param string $path   Domain path
      *
      * @return void
      */
@@ -152,8 +152,8 @@ class ZGettext
     /**
      * Bind text domain codeset.
      *
-     * @param string $domain  Domain.
-     * @param string $codeset Codeset.
+     * @param string $domain  Domain
+     * @param string $codeset Codeset
      *
      * @return void
      */
@@ -167,7 +167,7 @@ class ZGettext
     /**
      * Set default domain.
      *
-     * @param string $domain Default domain.
+     * @param string $domain Default domain
      *
      * @return void
      */
@@ -179,11 +179,11 @@ class ZGettext
     /**
      * Get reader for translation
      *
-     * @param string   $domain   Domain.
-     * @param constant $category A LC_CONSTANT.
-     * @param boolean  $cache    Whether or not to cache the reader.
+     * @param string   $domain   Domain
+     * @param constant $category A LC_CONSTANT
+     * @param boolean  $cache    Whether or not to cache the reader
      *
-     * @return ZMO Reader object.
+     * @return ZMO Reader object
      */
     public static function getReader($domain = null, $category = null, $cache = true)
     {

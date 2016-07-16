@@ -80,9 +80,9 @@ class ConfigType extends AbstractType
     /**
      * Builds the choices for search plugin selection.
      *
-     * @param array $plugins List of available plugins.
+     * @param array $plugins List of available plugins
      *
-     * @return array Plugin choices array.
+     * @return array Plugin choices array
      */
     private function getPluginChoices(array $plugins = [])
     {

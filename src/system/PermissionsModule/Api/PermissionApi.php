@@ -71,10 +71,10 @@ class PermissionApi
 
     /**
      * PermissionApi constructor.
-     * @param PermissionRepositoryInterface $permRepository Permission repository.
+     * @param PermissionRepositoryInterface $permRepository Permission repository
      * @param UserRepositoryInterface       $userRepository User repository
-     * @param SessionInterface              $session        Session service instance.
-     * @param TranslatorInterface           $translator     Translator service instance.
+     * @param SessionInterface              $session        Session service instance
+     * @param TranslatorInterface           $translator     Translator service instance
      */
     public function __construct(PermissionRepositoryInterface $permRepository, UserRepositoryInterface $userRepository, SessionInterface $session, TranslatorInterface $translator)
     {
@@ -88,10 +88,10 @@ class PermissionApi
      * Check permissions
      * @api Core-2.0
      *
-     * @param string $component Component.
-     * @param string $instance Instance.
-     * @param integer $level Level.
-     * @param integer $user User Id.
+     * @param string $component Component
+     * @param string $instance Instance
+     * @param integer $level Level
+     * @param integer $user User Id
      *
      * @return boolean
      */
@@ -118,7 +118,7 @@ class PermissionApi
     /**
      * Get auth info.
      *
-     * @param integer $user User Id.
+     * @param integer $user User Id
      */
     private function setGroupPermsForUser($user)
     {
@@ -158,11 +158,11 @@ class PermissionApi
     /**
      * Get security Level
      *
-     * @param array $perms Array of permissions.
-     * @param string $component Component.
-     * @param string $instance Instance.
+     * @param array $perms Array of permissions
+     * @param string $component Component
+     * @param string $instance Instance
      *
-     * @return integer Matching security level.
+     * @return integer Matching security level
      */
     private function getSecurityLevel($perms, $component, $instance)
     {
@@ -266,7 +266,7 @@ class PermissionApi
     /**
      * Fix security string.
      *
-     * @param string $string String.
+     * @param string $string String
      *
      * @return string
      */
@@ -291,9 +291,9 @@ class PermissionApi
      * Translate level -> name
      * @api Core-2.0
      *
-     * @param integer $level Access level.
+     * @param integer $level Access level
      *
-     * @return string Translated access level name.
+     * @return string Translated access level name
      */
     public function accessLevelNames($level = null)
     {

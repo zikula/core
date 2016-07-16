@@ -37,8 +37,8 @@ class ServiceFactory
     /**
      * Constructor.
      *
-     * @param ContainerBuilder $container ContainerBuilder.
-     * @param string           $serviceId ID of service to inject, (usually the event dispatcher).
+     * @param ContainerBuilder $container ContainerBuilder
+     * @param string           $serviceId ID of service to inject, (usually the event dispatcher)
      */
     public function __construct(ContainerBuilder $container, $serviceId)
     {

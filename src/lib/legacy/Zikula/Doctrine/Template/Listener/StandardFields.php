@@ -34,7 +34,7 @@ class Zikula_Doctrine_Template_Listener_StandardFields extends Doctrine_Record_L
     /**
      * Updates the standard fields before inserting new record.
      *
-     * @param Doctrine_Event $event Event.
+     * @param Doctrine_Event $event Event
      *
      * @return void
      */
@@ -49,7 +49,7 @@ class Zikula_Doctrine_Template_Listener_StandardFields extends Doctrine_Record_L
     /**
      * Updates the standard fields before updating a record.
      *
-     * @param Doctrine_Event $event Event.
+     * @param Doctrine_Event $event Event
      *
      * @return void
      */

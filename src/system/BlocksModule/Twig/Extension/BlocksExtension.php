@@ -86,7 +86,7 @@ class BlocksExtension extends \Twig_Extension
 
     /**
      * Show all the blocks in a position by name.
-     * @todo at Core-2.0 remove all $legacy use and other checks.
+     * @todo at Core-2.0 remove all $legacy use and other checks
      * @param string $positionName
      * @param bool|true $implode
      * @return array|string

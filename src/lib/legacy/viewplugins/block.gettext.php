@@ -29,11 +29,11 @@
  * String replacement follows the rules at http://php.net/sprintf but please note Smarty seems to pass
  * all variables as strings so %s and %n$s are mostly used.
  *
- * @param array       $params  All attributes passed to this function from the template.
- * @param string      $content The block content.
- * @param Zikula_View $view    Reference to the Zikula_View object.
+ * @param array       $params  All attributes passed to this function from the template
+ * @param string      $content The block content
+ * @param Zikula_View $view    Reference to the Zikula_View object
  *
- * @return string Translation if it was available.
+ * @return string Translation if it was available
  */
 function smarty_block_gettext($params, $content, Zikula_View $view)
 {

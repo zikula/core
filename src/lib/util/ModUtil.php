@@ -169,10 +169,10 @@ class ModUtil
      * @see \Zikula\ExtensionsModule\Api\VariableApi::has()
      * @see service zikula_extensions_module.api.variable
      *
-     * @param string $modname The name of the module.
-     * @param string $name    The name of the variable.
+     * @param string $modname The name of the module
+     * @param string $name    The name of the variable
      *
-     * @return boolean True if the variable exists in the database, false if not.
+     * @return boolean True if the variable exists in the database, false if not
      */
     public static function hasVar($modname, $name)
     {
@@ -207,17 +207,17 @@ class ModUtil
      * If the name parameter is included then method returns the
      * module variable value.
      * if the name parameter is ommitted then method returns a multi
-     * dimentional array of the keys and values for the module vars.
+     * dimentional array of the keys and values for the module vars
      *
-     * @param string  $modname The name of the module or pseudo-module (e.g., 'Users', 'ZConfig', '/EventHandlers').
-     * @param string  $name    The name of the variable.
-     * @param mixed   $default The value to return if the requested modvar is not set.
+     * @param string  $modname The name of the module or pseudo-module (e.g., 'Users', 'ZConfig', '/EventHandlers')
+     * @param string  $name    The name of the variable
+     * @param mixed   $default The value to return if the requested modvar is not set
      *
      * @return string|array If the name parameter is included then method returns
      *          string - module variable value
      *          if the name parameter is ommitted then method returns
      *          array - multi dimentional array of the keys
-     *                  and values for the module vars.
+     *                  and values for the module vars
      */
     public static function getVar($modname, $name = '', $default = false)
     {
@@ -265,11 +265,11 @@ class ModUtil
      * @see \Zikula\ExtensionsModule\Api\VariableApi::set()
      * @see service zikula_extensions_module.api.variable
      *
-     * @param string $modname The name of the module.
-     * @param string $name    The name of the variable.
-     * @param string $value   The value of the variable.
+     * @param string $modname The name of the module
+     * @param string $name    The name of the variable
+     * @param string $value   The value of the variable
      *
-     * @return boolean True if successful, false otherwise.
+     * @return boolean True if successful, false otherwise
      */
     public static function setVar($modname, $name, $value = '')
     {
@@ -310,10 +310,10 @@ class ModUtil
      * @see \Zikula\ExtensionsModule\Api\VariableApi::setAll()
      * @see service zikula_extensions_module.api.variable
      *
-     * @param string $modname The name of the module.
-     * @param array  $vars    An associative array of varnames/varvalues.
+     * @param string $modname The name of the module
+     * @param array  $vars    An associative array of varnames/varvalues
      *
-     * @return boolean True if successful, false otherwise.
+     * @return boolean True if successful, false otherwise
      */
     public static function setVars($modname, array $vars)
     {
@@ -333,12 +333,12 @@ class ModUtil
      * @see service zikula_extensions_module.api.variable
      *
      * Delete a module variables. If the optional name parameter is not supplied all variables
-     * for the module 'modname' are deleted.
+     * for the module 'modname' are deleted
      *
-     * @param string $modname The name of the module.
-     * @param string $name    The name of the variable (optional).
+     * @param string $modname The name of the module
+     * @param string $name    The name of the variable (optional)
      *
-     * @return boolean True if successful, false otherwise.
+     * @return boolean True if successful, false otherwise
      */
     public static function delVar($modname, $name = '')
     {
@@ -394,9 +394,9 @@ class ModUtil
     /**
      * Get Module meta info.
      *
-     * @param string $module Module name.
+     * @param string $module Module name
      *
-     * @return array|boolean Module information array or false.
+     * @return array|boolean Module information array or false
      */
     public static function getInfoFromName($module)
     {
@@ -406,9 +406,9 @@ class ModUtil
     /**
      * The getIdFromName method gets module ID given its name.
      *
-     * @param string $module The name of the module.
+     * @param string $module The name of the module
      *
-     * @return integer module ID.
+     * @return integer module ID
      */
     public static function getIdFromName($module)
     {
@@ -465,9 +465,9 @@ class ModUtil
      *
      * Return array of module information or false if core ( id = 0 ).
      *
-     * @param integer $modid The module ID.
+     * @param integer $modid The module ID
      *
-     * @return array|boolean Module information array or false.
+     * @return array|boolean Module information array or false
      */
     public static function getInfo($modid = 0)
     {
@@ -502,7 +502,7 @@ class ModUtil
      *
      * @deprecated see {@link ModUtil::getModulesCapableOf()}
      *
-     * @return array An array of module information arrays.
+     * @return array An array of module information arrays
      */
     public static function getUserMods()
     {
@@ -514,7 +514,7 @@ class ModUtil
      *
      * @deprecated see {@link ModUtil::getModulesCapableOf()}
      *
-     * @return array An array of module information arrays.
+     * @return array An array of module information arrays
      */
     public static function getProfileMods()
     {
@@ -524,7 +524,7 @@ class ModUtil
     /**
      * The getMessageMods method gets a list of message modules.
      *
-     * @return array An array of module information arrays.
+     * @return array An array of module information arrays
      */
     public static function getMessageMods()
     {
@@ -536,7 +536,7 @@ class ModUtil
      *
      * @deprecated see {@link ModUtil::getModulesCapableOf()}
      *
-     * @return array An array of module information arrays.
+     * @return array An array of module information arrays
      */
     public static function getAdminMods()
     {
@@ -549,9 +549,9 @@ class ModUtil
      * @see \Zikula\ExtensionsModule\Api\CapabilityApi::getExtensionsCapableOf()
      * @see service zikula_extensions_module.api.capability
      *
-     * @param string $capability The module type to get (either 'user' or 'admin') (optional) (default='user').
+     * @param string $capability The module type to get (either 'user' or 'admin') (optional) (default='user')
      *
-     * @return array An array of module information arrays.
+     * @return array An array of module information arrays
      */
     public static function getModulesCapableOf($capability = 'user')
     {
@@ -575,11 +575,11 @@ class ModUtil
     /**
      * Get mod types.
      *
-     * @param string $type The module type, roughly equivalent, now, to a capability.
+     * @param string $type The module type, roughly equivalent, now, to a capability
      *
      * @deprecated see {@link ModUtil::getModulesCapableOf()}
      *
-     * @return array An array of module information arrays.
+     * @return array An array of module information arrays
      */
     public static function getTypeMods($type = 'user')
     {
@@ -592,10 +592,10 @@ class ModUtil
      * @see \Zikula\ExtensionsModule\Api\CapabilityApi::isCapable()
      * @see service zikula_extensions_module.api.capability
      *
-     * @param string $module     The name of the module.
-     * @param string $capability The name of the advertised capability.
+     * @param string $module     The name of the module
+     * @param string $capability The name of the advertised capability
      *
-     * @return boolean True if the specified module advertises that it has the specified capability, otherwise false.
+     * @return boolean True if the specified module advertises that it has the specified capability, otherwise false
      */
     public static function isCapable($module, $capability)
     {
@@ -613,9 +613,9 @@ class ModUtil
      * @see \Zikula\ExtensionsModule\Api\CapabilityApi::getCapabilitiesOf()
      * @see service zikula_extensions_module.api.capability
      *
-     * @param string $module The module name.
+     * @param string $module The module name
      *
-     * @return array|boolean The capabilities array, false if the module does not advertise any capabilities.
+     * @return array|boolean The capabilities array, false if the module does not advertise any capabilities
      */
     public static function getCapabilitiesOf($module)
     {
@@ -630,7 +630,7 @@ class ModUtil
     /**
      * The getAllMods method gets a list of all modules.
      *
-     * @return array An array of module information arrays.
+     * @return array An array of module information arrays
      */
     public static function getAllMods()
     {
@@ -656,11 +656,11 @@ class ModUtil
     /**
      * Loads database definition for a module.
      *
-     * @param string  $modname   The name of the module to load database definition for.
-     * @param string  $directory Directory that module is in (if known).
-     * @param boolean $force     Force table information to be reloaded.
+     * @param string  $modname   The name of the module to load database definition for
+     * @param string  $directory Directory that module is in (if known)
+     * @param boolean $force     Force table information to be reloaded
      *
-     * @return boolean True if successful, false otherwise.
+     * @return boolean True if successful, false otherwise
      */
     public static function dbInfoLoad($modname, $directory = '', $force = false)
     {
@@ -782,11 +782,11 @@ class ModUtil
     /**
      * Loads a module.
      *
-     * @param string  $modname The name of the module.
-     * @param string  $type    The type of functions to load.
-     * @param boolean $force   Determines to load Module even if module isn't active.
+     * @param string  $modname The name of the module
+     * @param string  $type    The type of functions to load
+     * @param boolean $force   Determines to load Module even if module isn't active
      *
-     * @return string|boolean Name of module loaded, or false on failure.
+     * @return string|boolean Name of module loaded, or false on failure
      */
     public static function load($modname, $type = 'user', $force = false)
     {
@@ -800,11 +800,11 @@ class ModUtil
     /**
      * Load an API module.
      *
-     * @param string  $modname The name of the module.
-     * @param string  $type    The type of functions to load.
-     * @param boolean $force   Determines to load Module even if module isn't active.
+     * @param string  $modname The name of the module
+     * @param string  $type    The type of functions to load
+     * @param boolean $force   Determines to load Module even if module isn't active
      *
-     * @return string|boolean Name of module loaded, or false on failure.
+     * @return string|boolean Name of module loaded, or false on failure
      */
     public static function loadApi($modname, $type = 'user', $force = false)
     {
@@ -824,12 +824,12 @@ class ModUtil
      * For OO style modules this means registering the main module autoloader,
      * and binding any language domain.
      *
-     * @param string  $modname The name of the module.
-     * @param string  $type    The type of functions to load.
-     * @param boolean $force   Determines to load Module even if module isn't active.
-     * @param boolean $api     Whether or not to load an API (or regular) module.
+     * @param string  $modname The name of the module
+     * @param string  $type    The type of functions to load
+     * @param boolean $force   Determines to load Module even if module isn't active
+     * @param boolean $api     Whether or not to load an API (or regular) module
      *
-     * @return string|boolean Name of module loaded, or false on failure.
+     * @return string|boolean Name of module loaded, or false on failure
      */
     public static function loadGeneric($modname, $type = 'user', $force = false, $api = false)
     {
@@ -917,9 +917,9 @@ class ModUtil
      * TODO: figure out how to determine if a userapi belongs to a hook module and load the
      *       corresponding css, perhaps with a new entry in modules table?
      *
-     * @param string  $modname Module name.
-     * @param boolean $api     Whether or not it's a api load.
-     * @param string  $type    Type.
+     * @param string  $modname Module name
+     * @param boolean $api     Whether or not it's a api load
+     * @param string  $type    Type
      *
      * @return void
      */
@@ -940,12 +940,12 @@ class ModUtil
     /**
      * Get module class.
      *
-     * @param string  $modname Module name.
-     * @param string  $type    Type.
-     * @param boolean $api     Whether or not to get the api class.
-     * @param boolean $force   Whether or not to force load.
+     * @param string  $modname Module name
+     * @param string  $type    Type
+     * @param boolean $api     Whether or not to get the api class
+     * @param boolean $force   Whether or not to force load
      *
-     * @return boolean|string Class name.
+     * @return boolean|string Class name
      */
     public static function getClass($modname, $type, $api = false, $force = false)
     {
@@ -992,8 +992,8 @@ class ModUtil
     /**
      * Checks if module has the given controller.
      *
-     * @param string $modname Module name.
-     * @param string $type    Controller type.
+     * @param string $modname Module name
+     * @param string $type    Controller type
      *
      * @return boolean
      */
@@ -1005,8 +1005,8 @@ class ModUtil
     /**
      * Checks if module has the given API class.
      *
-     * @param string $modname Module name.
-     * @param string $type    API type.
+     * @param string $modname Module name
+     * @param string $type    API type
      *
      * @return boolean
      */
@@ -1018,10 +1018,10 @@ class ModUtil
     /**
      * Get class object.
      *
-     * @param string $className Class name.
+     * @param string $className Class name
      * @param string $modname
      *
-     * @return object Module object.
+     * @return object Module object
      */
     public static function getObject($className, $modname)
     {
@@ -1063,11 +1063,11 @@ class ModUtil
     /**
      * Get info if callable.
      *
-     * @param string  $modname Module name.
-     * @param string  $type    Type.
-     * @param string  $func    Function.
-     * @param boolean $api     Whether or not this is an api call.
-     * @param boolean $force   Whether or not force load.
+     * @param string  $modname Module name
+     * @param string  $type    Type
+     * @param string  $func    Function
+     * @param boolean $api     Whether or not this is an api call
+     * @param boolean $force   Whether or not force load
      *
      * @return mixed
      */
@@ -1094,17 +1094,17 @@ class ModUtil
     /**
      * Run a module function.
      *
-     * @param string  $modname    The name of the module.
-     * @param string  $type       The type of function to run.
-     * @param string  $func       The specific function to run.
-     * @param array   $args       The arguments to pass to the function.
-     * @param boolean $api        Whether or not to execute an API (or regular) function.
-     * @param string  $instanceof Perform instanceof checking of target class.
+     * @param string  $modname    The name of the module
+     * @param string  $type       The type of function to run
+     * @param string  $func       The specific function to run
+     * @param array   $args       The arguments to pass to the function
+     * @param boolean $api        Whether or not to execute an API (or regular) function
+     * @param string  $instanceof Perform instanceof checking of target class
      *
-     * @throws Zikula_Exception_NotFound If method was not found.
-     * @throws InvalidArgumentException  If the controller is not an instance of the class specified in $instanceof.
+     * @throws Zikula_Exception_NotFound If method was not found
+     * @throws InvalidArgumentException  If the controller is not an instance of the class specified in $instanceof
      *
-     * @return mixed.
+     * @return mixed
      */
     public static function exec($modname, $type = 'user', $func = 'main', $args = [], $api = false, $instanceof = null)
     {
@@ -1259,13 +1259,13 @@ class ModUtil
     /**
      * Run a module function.
      *
-     * @param string $modname    The name of the module.
-     * @param string $type       The type of function to run.
-     * @param string $func       The specific function to run.
-     * @param array  $args       The arguments to pass to the function.
-     * @param string $instanceof Perform instanceof checking of target class.
+     * @param string $modname    The name of the module
+     * @param string $type       The type of function to run
+     * @param string $func       The specific function to run
+     * @param array  $args       The arguments to pass to the function
+     * @param string $instanceof Perform instanceof checking of target class
      *
-     * @return mixed.
+     * @return mixed
      */
     public static function func($modname, $type = 'user', $func = 'main', $args = [], $instanceof = null)
     {
@@ -1275,13 +1275,13 @@ class ModUtil
     /**
      * Run an module API function.
      *
-     * @param string $modname    The name of the module.
-     * @param string $type       The type of function to run.
-     * @param string $func       The specific function to run.
-     * @param array  $args       The arguments to pass to the function.
-     * @param string $instanceof Perform instanceof checking of target class.
+     * @param string $modname    The name of the module
+     * @param string $type       The type of function to run
+     * @param string $func       The specific function to run
+     * @param array  $args       The arguments to pass to the function
+     * @param string $instanceof Perform instanceof checking of target class
      *
-     * @return mixed.
+     * @return mixed
      */
     public static function apiFunc($modname, $type = 'user', $func = 'main', $args = [], $instanceof = null)
     {
@@ -1361,18 +1361,18 @@ class ModUtil
      * a) $func is ignored.
      * b) $type=admin will generate admin.php?module=... and $type=user will generate index.php?name=...
      *
-     * @param string       $modname The name of the module.
-     * @param string       $type    The type of function to run.
-     * @param string       $func    The specific function to run.
-     * @param array        $args    The array of arguments to put on the URL.
+     * @param string       $modname The name of the module
+     * @param string       $type    The type of function to run
+     * @param string       $func    The specific function to run
+     * @param array        $args    The array of arguments to put on the URL
      * @param boolean|null $ssl     Set to constant null,true,false $ssl = true not $ssl = 'true'  null - leave the current status untouched,
-     *                                     true - create a ssl url, false - create a non-ssl url.
-     * @param string         $fragment     The framgment to target within the URL.
-     * @param boolean|null   $fqurl        Fully Qualified URL. True to get full URL, eg for Redirect, else gets root-relative path unless SSL.
-     * @param boolean        $forcelongurl Force ModUtil::url to not create a short url even if the system is configured to do so.
-     * @param boolean|string $forcelang    Force the inclusion of the $forcelang or default system language in the generated url.
+     *                                     true - create a ssl url, false - create a non-ssl url
+     * @param string         $fragment     The framgment to target within the URL
+     * @param boolean|null   $fqurl        Fully Qualified URL. True to get full URL, eg for Redirect, else gets root-relative path unless SSL
+     * @param boolean        $forcelongurl Force ModUtil::url to not create a short url even if the system is configured to do so
+     * @param boolean|string $forcelang    Force the inclusion of the $forcelang or default system language in the generated url
      *
-     * @return string Absolute URL for call.
+     * @return string Absolute URL for call
      */
     public static function url($modname, $type = null, $func = null, $args = [], $ssl = null, $fragment = null, $fqurl = null, $forcelongurl = false, $forcelang = false)
     {
@@ -1587,10 +1587,10 @@ class ModUtil
     /**
      * Check if a module is available.
      *
-     * @param string  $modname The name of the module.
-     * @param boolean $force   Force.
+     * @param string  $modname The name of the module
+     * @param boolean $force   Force
      *
-     * @return boolean True if the module is available, false if not.
+     * @return boolean True if the module is available, false if not
      */
     public static function available($modname = null, $force = false)
     {
@@ -1632,7 +1632,7 @@ class ModUtil
     /**
      * Get name of current top-level module.
      *
-     * @return string The name of the current top-level module, false if not in a module.
+     * @return string The name of the current top-level module, false if not in a module
      */
     public static function getName()
     {
@@ -1708,9 +1708,9 @@ class ModUtil
      * This allows you to say:
      * include(ModUtil::getBaseDir() . '/includes/private_functions.php');.
      *
-     * @param string $modname Name of module to that you want the base directory of.
+     * @param string $modname Name of module to that you want the base directory of
      *
-     * @return string The path from the root directory to the specified module.
+     * @return string The path from the root directory to the specified module
      */
     public static function getBaseDir($modname = '')
     {
@@ -1738,7 +1738,7 @@ class ModUtil
      *
      * Small wrapper function to avoid duplicate sql.
      *
-     * @return array An array modules table.
+     * @return array An array modules table
      */
     public static function getModsTable()
     {
@@ -1783,10 +1783,10 @@ class ModUtil
      * Only modules in the module table are returned
      * which means that new/unscanned modules will not be returned.
      *
-     * @param string $where The where clause to use for the select.
-     * @param string $sort  The sort to use.
+     * @param string $where The where clause to use for the select
+     * @param string $sort  The sort to use
      *
-     * @return array The resulting module object array.
+     * @return array The resulting module object array
      */
     public static function getModules($where = [], $sort = 'displayname')
     {
@@ -1806,10 +1806,10 @@ class ModUtil
      * Only modules in the module table are returned
      * which means that new/unscanned modules will not be returned.
      *
-     * @param integer $state The module state (optional) (defaults = active state).
-     * @param string  $sort  The sort to use.
+     * @param integer $state The module state (optional) (defaults = active state)
+     * @param string  $sort  The sort to use
      *
-     * @return array The resulting module object array.
+     * @return array The resulting module object array
      */
     public static function getModulesByState($state = self::STATE_ACTIVE, $sort = 'displayname')
     {
@@ -1823,7 +1823,7 @@ class ModUtil
     /**
      * Initialize object oriented module.
      *
-     * @param string $moduleName Module name.
+     * @param string $moduleName Module name
      *
      * @return boolean
      */
@@ -1870,7 +1870,7 @@ class ModUtil
     /**
      * Checks whether a OO module is initialized.
      *
-     * @param string $moduleName Module name.
+     * @param string $moduleName Module name
      *
      * @return boolean
      */
@@ -1882,7 +1882,7 @@ class ModUtil
     /**
      * Checks whether a module is object oriented.
      *
-     * @param string $moduleName Module name.
+     * @param string $moduleName Module name
      *
      * @deprecated
      *
@@ -1912,9 +1912,9 @@ class ModUtil
      * since we ship core with fixed system modules, there is no need to calculate
      * this from the database over and over.
      *
-     * @param string $moduleName Module name.
+     * @param string $moduleName Module name
      *
-     * @return string Returns 'system' if system module, and 'modules' if not.
+     * @return string Returns 'system' if system module, and 'modules' if not
      */
     public static function getModuleBaseDir($moduleName)
     {
@@ -1933,9 +1933,9 @@ class ModUtil
      * This function searches for the admin image of a module at several places.
      * If no image is found, a default image path is returned.
      *
-     * @param string $moduleName Module name.
+     * @param string $moduleName Module name
      *
-     * @return string Returns module admin image path.
+     * @return string Returns module admin image path
      */
     public static function getModuleImagePath($moduleName)
     {

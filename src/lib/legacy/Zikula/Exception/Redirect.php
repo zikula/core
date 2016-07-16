@@ -35,8 +35,8 @@ class Zikula_Exception_Redirect extends Zikula_Exception
      *
      * @deprecated since 1.4.0 return a Symfony\Component\HttpFoundation\RedirectResponse instead
      *
-     * @param string  $url  Url.
-     * @param integer $type Default 302.
+     * @param string  $url  Url
+     * @param integer $type Default 302
      */
     public function __construct($url, $type = 302)
     {

@@ -18,10 +18,10 @@
  *  - uname       the username return the id for
  *  - assign      if set, the language will be assigned to this variable
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
- * @return string The user ID.
+ * @return string The user ID
  */
 function smarty_function_usergetidfromname($params, Zikula_View $view)
 {

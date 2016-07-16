@@ -19,7 +19,7 @@ class StreamReader_CachedFile extends StreamReader_String
     /**
      * Constructor.
      *
-     * @param string $filename Filename.
+     * @param string $filename Filename
      */
     public function __construct($filename)
     {

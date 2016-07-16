@@ -65,7 +65,7 @@ class UserEntity extends EntityAccess
      * User's password for logging in.
      * This value is salted and hashed. The salt is stored in this field, delimited from the hash with a dollar sign character ($).
      * The hash algorithm is stored as a numeric code in the hash_method field. This field may be blank in instances
-     * where the user registered with an alternative authentication module (e.g., OpenID) and did not also establish a password for his web site account.
+     * where the user registered with an alternative authentication module (e.g., OpenID) and did not also establish a password for his web site account
      *
      * @ORM\Column(type="string", length=138)
      */
@@ -75,7 +75,7 @@ class UserEntity extends EntityAccess
      * @deprecated at Core-1.4.3 and removed in 2.0
      * Password reminder: Set during registration or password changes, to remind the user what his password is.
      *
-     * This field may be blank if pass is blank.
+     * This field may be blank if pass is blank
      *
      * @ORM\Column(type="string", length=255)
      */
@@ -148,7 +148,7 @@ class UserEntity extends EntityAccess
 
     /**
      * @deprecated removal at Core-2.0
-     * User's Theme: The name (identifier) of the per-user theme the user would like to use while viewing the site, when user theme switching is enabled.
+     * User's Theme: The name (identifier) of the per-user theme the user would like to use while viewing the site, when user theme switching is enabled
      *
      * @Assert\Type(type="string")
      * @ORM\Column(type="string", length=255)

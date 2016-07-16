@@ -34,7 +34,7 @@ class FilterUtil_AbstractPlugin extends FilterUtil_AbstractBase
     /**
      * Constructor.
      *
-     * @param array $config Array with the config key.
+     * @param array $config Array with the config key
      */
     public function __construct($config)
     {
@@ -44,7 +44,7 @@ class FilterUtil_AbstractPlugin extends FilterUtil_AbstractBase
     /**
      * Sets the plugin id.
      *
-     * @param int $id Plugin ID.
+     * @param int $id Plugin ID
      *
      * @return void
      */
@@ -58,11 +58,11 @@ class FilterUtil_AbstractPlugin extends FilterUtil_AbstractBase
      *
      * Fallback for build plugins without SQL capabilities.
      *
-     * @param string $field Field name.
-     * @param string $op    Operator.
-     * @param string $value Test value.
+     * @param string $field Field name
+     * @param string $op    Operator
+     * @param string $value Test value
      *
-     * @return string emtpy.
+     * @return string emtpy
      */
     public function getSQL($field, $op, $value)
     {
@@ -74,11 +74,11 @@ class FilterUtil_AbstractPlugin extends FilterUtil_AbstractBase
      *
      * Fallback for build plugins without DQL capabilities.
      *
-     * @param string $field Field name.
-     * @param string $op    Operator.
-     * @param string $value Test value.
+     * @param string $field Field name
+     * @param string $op    Operator
+     * @param string $value Test value
      *
-     * @return string empty.
+     * @return string empty
      */
     public function getDql($field, $op, $value)
     {

@@ -120,8 +120,8 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
      * Get a AuthenticationMappingEntity if it exists. If not, check for existing UserEntity and
      * migrate data from UserEntity to AuthenticationMappingEntity and return that.
      * @todo The migration from UserEntity parts of this method must be removed at Core-2.0
-     * @param string $field the field to perform lookup by.
-     * @param string $value the value of that field.
+     * @param string $field the field to perform lookup by
+     * @param string $value the value of that field
      * @return null|AuthenticationMappingEntity
      * @throws \Exception
      */

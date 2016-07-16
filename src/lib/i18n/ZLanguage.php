@@ -245,7 +245,7 @@ class ZLanguage
     /**
      * Register an error.
      *
-     * @param string $msg Error message.
+     * @param string $msg Error message
      *
      * @return void
      */
@@ -275,8 +275,8 @@ class ZLanguage
     /**
      * Set locale.
      *
-     * @param string   $locale Locale.
-     * @param integer  $lc     LC_CONSTANT.
+     * @param string   $locale Locale
+     * @param integer  $lc     LC_CONSTANT
      *
      * @return void
      */
@@ -355,8 +355,8 @@ class ZLanguage
     /**
      * Bind domain.
      *
-     * @param string $domain Gettext domain.
-     * @param string $path   Domain path.
+     * @param string $domain Gettext domain
+     * @param string $path   Domain path
      *
      * @return boolean
      */
@@ -418,7 +418,7 @@ class ZLanguage
     /**
      * Bind theme domain.
      *
-     * @param string $themeName Theme name.
+     * @param string $themeName Theme name
      *
      * @return boolean
      */
@@ -439,7 +439,7 @@ class ZLanguage
     /**
      * Bind module domain.
      *
-     * @param string $modName Module name.
+     * @param string $modName Module name
      *
      * @return boolean
      */
@@ -471,8 +471,8 @@ class ZLanguage
     /**
      * Bind module plugin domain.
      *
-     * @param string $moduleName Module name.
-     * @param string $pluginName Plugin name.
+     * @param string $moduleName Module name
+     * @param string $pluginName Plugin name
      *
      * @return boolean
      */
@@ -498,7 +498,7 @@ class ZLanguage
     /**
      * Bind system plugin domain.
      *
-     * @param string $pluginName Plugin name.
+     * @param string $pluginName Plugin name
      *
      * @return boolean
      */
@@ -530,8 +530,8 @@ class ZLanguage
     /**
      * Search overrides.
      *
-     * @param string $domain Gettext domain name.
-     * @param string $path   Domain path.
+     * @param string $domain Gettext domain name
+     * @param string $path   Domain path
      *
      * @return string
      */
@@ -546,7 +546,7 @@ class ZLanguage
     /**
      * Get module domain.
      *
-     * @param string $name Module name.
+     * @param string $name Module name
      *
      * @return string
      */
@@ -560,8 +560,8 @@ class ZLanguage
     /**
      * Get module plugin domain.
      *
-     * @param string $modName    Module name.
-     * @param string $pluginName Plugin name.
+     * @param string $modName    Module name
+     * @param string $pluginName Plugin name
      *
      * @return string
      */
@@ -573,7 +573,7 @@ class ZLanguage
     /**
      * Get system plugin domain.
      *
-     * @param string $pluginName Plugin name.
+     * @param string $pluginName Plugin name
      *
      * @return string
      */
@@ -585,7 +585,7 @@ class ZLanguage
     /**
      * Get theme domain.
      *
-     * @param string $name Theme name.
+     * @param string $name Theme name
      *
      * @return string
      */
@@ -719,7 +719,7 @@ class ZLanguage
     /**
      * Whether or not the given string is a language parameter.
      *
-     * @param string $lang Language to test.
+     * @param string $lang Language to test
      *
      * @return boolean
      */
@@ -750,9 +750,9 @@ class ZLanguage
     /**
      * Lookup the legacy language code.
      *
-     * @param string $lookup Language code.
+     * @param string $lookup Language code
      *
-     * @return string Legacy language code.
+     * @return string Legacy language code
      */
     public static function lookupLegacyCode($lookup)
     {
@@ -766,7 +766,7 @@ class ZLanguage
      *
      * TODO D [deprecate along with self::handleLegacy() when language defines deprecate] (drak).
      *
-     * @param string $code Legacy language $code.
+     * @param string $code Legacy language $code
      *
      * @return string language code
      */
@@ -780,7 +780,7 @@ class ZLanguage
     /**
      * Transform for internal usage.
      *
-     * @param string $m String to transform.
+     * @param string $m String to transform
      *
      * @return string
      */
@@ -792,7 +792,7 @@ class ZLanguage
     /**
      * Transform for file system.
      *
-     * @param string $m String to transform.
+     * @param string $m String to transform
      *
      * @return string
      */
@@ -807,7 +807,7 @@ class ZLanguage
     /**
      * Get legacy language name.
      *
-     * @param string $language Language code.
+     * @param string $language Language code
      *
      * @return string
      */
@@ -825,7 +825,7 @@ class ZLanguage
     /**
      * Get country name.
      *
-     * @param string $country Country code.
+     * @param string $country Country code
      *
      * @return string
      */
@@ -845,7 +845,7 @@ class ZLanguage
     /**
      * Get language name.
      *
-     * @param string $language Language code.
+     * @param string $language Language code
      *
      * @return string
      */

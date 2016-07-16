@@ -194,7 +194,7 @@ class AdminController extends AbstractController
      *
      * @param Request $request
      *
-     * @return Response symfony response object.
+     * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have add access to the module
      */
@@ -258,7 +258,7 @@ class AdminController extends AbstractController
      * @param Request $request
      * @param integer $gid     the id of the group to be modified
      *
-     * @return Response symfony response object.
+     * @return Response symfony response object
      *
      * @throws NotFoundHttpException Thrown if the requested group isn't found
      * @throws AccessDeniedException Thrown if the user doesn't have edit access to the group
@@ -687,9 +687,9 @@ class AdminController extends AbstractController
      * display a list of group applications
      *
      * @param Request $request
-     * @param string  $action  Name of desired action.
-     * @param int     $userid  Id of the user.
-     * @param int     $gid     Id of the group.
+     * @param string  $action  Name of desired action
+     * @param int     $userid  Id of the user
+     * @param int     $gid     Id of the group
      *
      * @return Response symfony response object
      *

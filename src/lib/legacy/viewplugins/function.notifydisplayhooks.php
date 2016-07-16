@@ -25,12 +25,12 @@
  *  {notifydisplayhooks eventname='news.ui_hooks.item.display_view' id=$id urlobject=$urlObject}
  *  {notifydisplayhooks eventname='news.ui_hooks.item.display_view' id=$id urlobject=$urlObject assign='displayhooks'}
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
  * @see    smarty_function_notifydisplayhooks()
  *
- * @return string|void if the results are assigned to variable in assigned.
+ * @return string|void if the results are assigned to variable in assigned
  */
 function smarty_function_notifydisplayhooks($params, Zikula_View $view)
 {

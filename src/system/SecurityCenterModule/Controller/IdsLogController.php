@@ -39,7 +39,7 @@ class IdsLogController extends AbstractController
      *
      * @param Request $request
      *
-     * @return Response symfony response object.
+     * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */

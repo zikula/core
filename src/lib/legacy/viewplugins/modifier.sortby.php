@@ -16,8 +16,8 @@
  * taken from http://au.php.net/function.uasort
  * modified by cablehead, messju and pscs at http://www.phpinsider.com/smarty-forum
  *
- * @param array  &$data  The array to sort.
- * @param string $sortby Fields to sort by seperated by comma.
+ * @param array  &$data  The array to sort
+ * @param string $sortby Fields to sort by seperated by comma
  *
  * @return void
  */
@@ -54,8 +54,8 @@ function array_sort_by_fields(&$data, $sortby)
 /**
  * Modifier: sortby - allows arrays of named arrays to be sorted by a given field.
  *
- * @param array  $arrData    The array to sort.
- * @param string $sortfields Fields to sort by seperated by comma.
+ * @param array  $arrData    The array to sort
+ * @param string $sortfields Fields to sort by seperated by comma
  *
  * @return array
  */

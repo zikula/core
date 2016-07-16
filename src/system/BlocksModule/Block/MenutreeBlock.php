@@ -638,10 +638,10 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
     /**
      * Callback function for uasort() which allows a MenuTree array to be sorted by line number.
      *
-     * @param array $a The first element to be compared, an array containing a MenuTree item definition (indexed by language).
-     * @param array $b The second element to be compared, an array containing a MenuTree item definition (indexed by language).
+     * @param array $a The first element to be compared, an array containing a MenuTree item definition (indexed by language)
+     * @param array $b The second element to be compared, an array containing a MenuTree item definition (indexed by language)
      *
-     * @return int 0 if the two operands are equal, -1 if $a's line number is less than $b's, 1 if $a's line number is greater than $b's.
+     * @return int 0 if the two operands are equal, -1 if $a's line number is less than $b's, 1 if $a's line number is greater than $b's
      */
     private function sort_menu($a, $b)
     {

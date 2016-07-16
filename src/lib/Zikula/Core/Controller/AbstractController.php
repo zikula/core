@@ -137,9 +137,9 @@ abstract class AbstractController extends Controller
      * throw $this->createNotFoundException();
      *
      * @param string $message
-     *            A message.
+     *            A message
      * @param \Exception $previous
-     *            The previous exception.
+     *            The previous exception
      * @return NotFoundHttpException
      */
     public function createNotFoundException($message = null, \Exception $previous = null)
@@ -155,9 +155,9 @@ abstract class AbstractController extends Controller
      * throw $this->createAccessDeniedException();
      *
      * @param string $message
-     *            A message.
+     *            A message
      * @param \Exception $previous
-     *            The previous exception.
+     *            The previous exception
      * @return AccessDeniedException
      */
     public function createAccessDeniedException($message = null, \Exception $previous = null)

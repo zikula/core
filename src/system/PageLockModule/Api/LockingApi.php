@@ -90,15 +90,15 @@ class LockingApi
     /**
      * LockingApi constructor.
      *
-     * @param Twig_Environment   $twig           Twig service instance.
-     * @param RequestStack       $requestStack   RequestStack service instance.
-     * @param PageLockRepository $repository     PageLockRepository service instance.
-     * @param CurrentUserApi     $currentUserApi CurrentUserApi service instance.
-     * @param AssetBag           $jsAssetBag     AssetBag service instance for JS files.
-     * @param AssetBag           $cssAssetBag    AssetBag service instance for CSS files.
-     * @param AssetBag           $footerAssetBag AssetBag service instance for footer code.
-     * @param Asset              $assetHelper    Asset helper service instance.
-     * @param string             $tempDir        Directory for temporary files.
+     * @param Twig_Environment   $twig           Twig service instance
+     * @param RequestStack       $requestStack   RequestStack service instance
+     * @param PageLockRepository $repository     PageLockRepository service instance
+     * @param CurrentUserApi     $currentUserApi CurrentUserApi service instance
+     * @param AssetBag           $jsAssetBag     AssetBag service instance for JS files
+     * @param AssetBag           $cssAssetBag    AssetBag service instance for CSS files
+     * @param AssetBag           $footerAssetBag AssetBag service instance for footer code
+     * @param Asset              $assetHelper    Asset helper service instance
+     * @param string             $tempDir        Directory for temporary files
      */
     public function __construct(
         Twig_Environment $twig,
@@ -167,9 +167,9 @@ class LockingApi
     /**
      * Generate a lock on a page
      *
-     * @param string $lockName      The name of the page to create/update a lock on.
-     * @param string $lockedByTitle Name of user owning the current lock.
-     * @param string $lockedByIPNo  Ip address of user owning the current lock.
+     * @param string $lockName      The name of the page to create/update a lock on
+     * @param string $lockedByTitle Name of user owning the current lock
+     * @param string $lockedByIPNo  Ip address of user owning the current lock
      * @param string $sessionId     The ID of the session owning the lock (optional) (default: current session ID)
      *
      * @return ['haslock' => true if this user has a lock, false otherwise,

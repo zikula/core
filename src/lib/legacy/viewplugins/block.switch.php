@@ -31,16 +31,16 @@
  * {/switch}
  * </pre>.
  *
- * @param array       $params  All attributes passed to this function from the template.
- * @param string      $content The content between the block tags.
- * @param Zikula_View $view    Reference to the {@link Zikula_View} object.
- * @param mixed       &$pages  Pages?.
+ * @param array       $params  All attributes passed to this function from the template
+ * @param string      $content The content between the block tags
+ * @param Zikula_View $view    Reference to the {@link Zikula_View} object
+ * @param mixed       &$pages  Pages?
  *
- * @see    smarty_block_case.
+ * @see    smarty_block_case
  *
- * @todo   Document the &$pages parameter, or correct it (possibly &$repeat?).
+ * @todo   Document the &$pages parameter, or correct it (possibly &$repeat?)
  *
- * @return string The content of the matching case.
+ * @return string The content of the matching case
  */
 function smarty_block_switch($params, $content, Zikula_View $view, &$pages)
 {

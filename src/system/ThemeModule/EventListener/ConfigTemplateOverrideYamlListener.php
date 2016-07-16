@@ -17,7 +17,7 @@ use Zikula\Core\Event\GenericEvent;
 
 /**
  * @deprecated remove at Core-2.0
- * Event handler to override templates.
+ * Event handler to override templates
  */
 class ConfigTemplateOverrideYamlListener implements EventSubscriberInterface
 {
@@ -40,7 +40,7 @@ class ConfigTemplateOverrideYamlListener implements EventSubscriberInterface
     /**
      * Listens for 'zikula_view.template_override' events.
      *
-     * @param GenericEvent $event Event handler.
+     * @param GenericEvent $event Event handler
      *
      * @return void
      */

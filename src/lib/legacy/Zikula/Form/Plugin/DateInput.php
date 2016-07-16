@@ -89,8 +89,8 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
-     * @param array            &$params Parameters passed from the Smarty plugin function.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
+     * @param array            &$params Parameters passed from the Smarty plugin function
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
@@ -115,7 +115,7 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
     /**
      * Render event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
      * @return string The rendered output
      */
@@ -274,10 +274,10 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
     /**
      * Parses a value.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
-     * @param string           $text Text.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
+     * @param string           $text Text
      *
-     * @return string Parsed Text.
+     * @return string Parsed Text
      */
     public function parseValue(Zikula_Form_View $view, $text)
     {
@@ -291,7 +291,7 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
     /**
      * Validates the input string.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
      * @return void
      */
@@ -322,10 +322,10 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
     /**
      * Format the value to specific format.
      *
-     * @param Zikula_Form_View $view  Reference to Zikula_Form_View object.
-     * @param string           $value The value to format.
+     * @param Zikula_Form_View $view  Reference to Zikula_Form_View object
+     * @param string           $value The value to format
      *
-     * @return string Formatted value.
+     * @return string Formatted value
      */
     public function formatValue(Zikula_Form_View $view, $value)
     {

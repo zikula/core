@@ -71,7 +71,7 @@ class EntityAccess implements \ArrayAccess
     /**
      * Returns an array representation of this entity.
      *
-     * @return array An array containing properties of this entity.
+     * @return array An array containing properties of this entity
      */
     public function toArray()
     {
@@ -117,9 +117,9 @@ class EntityAccess implements \ArrayAccess
     /**
      * Returns the accessor's method name for retrieving a certain property.
      *
-     * @param string $name Name of property to be retrieved.
+     * @param string $name Name of property to be retrieved
      *
-     * @return string Name of method to be used as accessor for the given property.
+     * @return string Name of method to be used as accessor for the given property
      */
     private function getGetterForProperty($name)
     {

@@ -25,11 +25,11 @@ class Zikula_EventManager extends EventDispatcher
     /**
      * Attach an event handler to the stack.
      *
-     * @param string  $name     Name of handler.
-     * @param mixed   $handler  Callable handler or instance of ServiceHandler.
-     * @param integer $priority Priority to control notification order, (default = 10).
+     * @param string  $name     Name of handler
+     * @param mixed   $handler  Callable handler or instance of ServiceHandler
+     * @param integer $priority Priority to control notification order, (default = 10)
      *
-     * @throws InvalidArgumentException If Handler is not callable or an instance of ServiceHandler.
+     * @throws InvalidArgumentException If Handler is not callable or an instance of ServiceHandler
      *
      * @deprecated since 1.4.0
      *
@@ -53,8 +53,8 @@ class Zikula_EventManager extends EventDispatcher
     /**
      * Removed a handler from the stack.
      *
-     * @param string   $name    Handler name.
-     * @param callable $handler Callable handler.
+     * @param string   $name    Handler name
+     * @param callable $handler Callable handler
      *
      * @deprecated since 1.4.0
      *
@@ -68,7 +68,7 @@ class Zikula_EventManager extends EventDispatcher
     /**
      * Notify all handlers for given event name but stop if signalled.
      *
-     * @param string $name  Event name.
+     * @param string $name  Event name
      * @param Event  $event Event object, null creates new Event
      *
      * @deprecated since 1.4.0
@@ -113,11 +113,11 @@ class Zikula_EventManager extends EventDispatcher
     /**
      * Getter for the serviceManager property.
      *
-     * @throws LogicException If no ServiceManager exists.
+     * @throws LogicException If no ServiceManager exists
      *
      * @deprecated since 1.4.0
      *
-     * @return Zikula_ServiceManager instance.
+     * @return Zikula_ServiceManager instance
      */
     public function getServiceManager()
     {

@@ -61,8 +61,8 @@
  *     {helplink popup='1' width='400' height='300' filename='help.txt' title='Help' icon_type='help' icon_size='extrasmall' icon_class='my_class'}
  * </div>
  *
- * @param array       $params All attributes passed to this function from the template.
- * @param Zikula_View $view   Reference to the Zikula_View object.
+ * @param array       $params All attributes passed to this function from the template
+ * @param Zikula_View $view   Reference to the Zikula_View object
  *
  * @return string|void
  */

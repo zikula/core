@@ -152,9 +152,9 @@ class SystemPlugin_Imagine_Image extends SplFileInfo
     /**
      * Generates hash part of thumbnail file name
      *
-     * @param bool $pattern True to get hash as pattern.
+     * @param bool $pattern True to get hash as pattern
      *
-     * @return string Generated hash for thumbnail name.
+     * @return string Generated hash for thumbnail name
      */
     private function getThumbHash($pattern = false)
     {
