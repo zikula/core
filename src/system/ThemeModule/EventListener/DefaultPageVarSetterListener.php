@@ -44,6 +44,7 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
 
     /**
      * Add default pagevar settings to every page
+     *
      * @param GetResponseEvent $event
      */
     public function setDefaultPageVars(GetResponseEvent $event)
@@ -59,11 +60,27 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
         $this->pageVars->set('lang', \ZLanguage::getLanguageCode());
         $this->pageVars->set('langdirection', \ZLanguage::getDirection());
         $this->pageVars->set('title', $this->variableApi->get(VariableApi::CONFIG, 'defaultpagetitle'));
-        $this->pageVars->set('meta.charset', \ZLanguage::getDBCharset());
+        $this->pageVars->set('meta.charset', $this->getCharSet());
         $this->pageVars->set('meta.description', $this->variableApi->get(VariableApi::CONFIG, 'defaultmetadescription'));
         $this->pageVars->set('meta.keywords', $this->variableApi->get(VariableApi::CONFIG, 'metakeywords'));
         $this->pageVars->set('homepath', $this->router->generate('home'));
         $this->pageVars->set('coredata', ['version' => \Zikula_Core::VERSION_NUM]); // @todo
+    }
+
+    /**
+     * Returns the output charset to be used.
+     *
+     * @return string The charset
+     */
+    private function getCharset()
+    {
+        $charSet = \ZLanguage::getDBCharset();
+
+        if ($charSet == 'utf8') {
+            $charSet = 'utf-8';
+        }
+
+        return $charSet;
     }
 
     public static function getSubscribedEvents()
