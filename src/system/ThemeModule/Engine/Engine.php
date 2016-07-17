@@ -145,7 +145,7 @@ class Engine
         if (!isset($activeTheme) || !$activeTheme->isTwigBased()) {
             return false;
         }
-        
+
         $bid = !empty($blockInfo['bid']) ? $blockInfo['bid'] : 'none';
         $blockType = !empty($blockInfo['blocktype']) ? $blockInfo['blocktype'] : 'none';
         $position = !empty($blockInfo['position']) ? $blockInfo['position'] : 'none';
