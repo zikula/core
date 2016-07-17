@@ -63,12 +63,12 @@ abstract class AbstractTheme extends AbstractBundle
     public function generateThemedResponse($realm, Response $response, $moduleName = null)
     {
         $template = $this->config[$realm]['page'];
-        
+
         $templateParameters = [
             'realm' => (isset($realm) ? $realm : ''),
             'modulename' => (isset($moduleName) ? $moduleName : ''),
             'maincontent' => $response->getContent()
-        ];        
+            ];
 
         return $this->getContainer()->get('templating')->renderResponse($this->name . ':' . $template, $templateParameters);
     }
