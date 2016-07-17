@@ -143,7 +143,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
             if (!empty($this->params['zikula.stylesheet.bootstrap.min.path'])) {
                 // Core-2.0 Site method
                 $overrideBootstrapPath = $this->params['zikula.stylesheet.bootstrap.min.path'];
-            } elseif (!empty($this->themeEngine->getTheme()) && !empty($this->themeEngine->getTheme()->getConfig()['bootstrapPath'])) {
+            } elseif (null !== $this->themeEngine->getTheme() && !empty($this->themeEngine->getTheme()->getConfig()['bootstrapPath'])) {
                 // Core-2.0 Theme method
                 $overrideBootstrapPath = $this->themeEngine->getTheme()->getConfig()['bootstrapPath'];
             } else {
