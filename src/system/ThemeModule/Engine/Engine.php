@@ -172,13 +172,13 @@ class Engine
             return $this->getTheme()->generateThemedBlockContent($this->getRealm(), $blockType, $bid, $positionName, $content, $title);
         }
 
-        // always wrap the block (in the previous versions this was configurable, but no longer) @todo remove comment
+        // @deprecated always wrap the block (in the previous versions this was configurable, but no longer) BC for legacy
         return $this->wrapBlockContentWithUniqueDiv($content, $positionName, $blockType, $bid);
     }
 
     /**
      * Enclose themed block content in a unique div which is useful in applying styling.
-     *
+     * @deprecated
      * @param string $content
      * @param string $positionName
      * @param string $blockType
