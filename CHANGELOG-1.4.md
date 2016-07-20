@@ -42,6 +42,7 @@ CHANGELOG - ZIKULA 1.4.x
  - Vendor updates:
     - font awesome updated from 4.5.0 to 4.6.3
     - jms translation bundle updated from 1.2.1 to 1.2.3
+    - js routing bundle updated from 1.5.x to 1.6.0
     - jstree updated from 3.3.0 to 3.3.1
     - monolog updated from 1.18.1 to 1.20.0
     - php-markdown updated from 1.5.0 to 1.6.0
@@ -50,6 +51,7 @@ CHANGELOG - ZIKULA 1.4.x
     - symfony updated to from 2.8.4 to 2.8.8
     - swiftmailer updated from 5.4.1 to 5.4.3
     - components/jquery-ui updated from 1.11.4 to 1.12.0
+    - beberlei/doctrine-extensions updated from 0.3 to 1.0.11
     - gedmo/doctrine-extensions updated from 2.4.13 to 2.4.15
 
 * 1.4.2 (2016-03-28)

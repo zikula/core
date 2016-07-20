@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "be5c71cbaf4a13d292eaa053e11d99e3",
-    "content-hash": "36bd1fdac2a62d091f22d83c6f39277d",
+    "hash": "d814749dfbb42cb148f1cce87ba235b2",
+    "content-hash": "92c39be4e4fb2a3af7445e9cf7cf1aef",
     "packages": [
         {
             "name": "abeautifulsite/jquery-minicolors",
@@ -44,68 +44,6 @@
             "time": "2016-07-11 14:36:29"
         },
         {
-            "name": "acasademont/i18n-routing-bundle",
-            "version": "2.0.0",
-            "target-dir": "JMS/I18nRoutingBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/acasademont/JMSI18nRoutingBundle.git",
-                "reference": "75e3d5be45033d4ee6c90ea5e2f5183097e21c78"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/acasademont/JMSI18nRoutingBundle/zipball/75e3d5be45033d4ee6c90ea5e2f5183097e21c78",
-                "reference": "75e3d5be45033d4ee6c90ea5e2f5183097e21c78",
-                "shasum": ""
-            },
-            "require": {
-                "symfony/framework-bundle": "~2.3|~3.0"
-            },
-            "require-dev": {
-                "jms/di-extra-bundle": "*",
-                "phpunit/phpunit": "~4",
-                "sensio/framework-extra-bundle": "*",
-                "symfony/browser-kit": "*",
-                "symfony/css-selector": "*",
-                "symfony/expression-language": "*",
-                "symfony/form": "*",
-                "symfony/twig-bundle": "*",
-                "symfony/validator": "*",
-                "symfony/yaml": "*"
-            },
-            "suggest": {
-                "jms/translation-bundle": "If you want to use the RouteTranslation extractor"
-            },
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-0": {
-                    "JMS\\I18nRoutingBundle": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache2"
-            ],
-            "authors": [
-                {
-                    "name": "Johannes M. Schmitt",
-                    "email": "schmittjoh@gmail.com"
-                },
-                {
-                    "name": "Albert Casademont",
-                    "email": "albertcasademont@gmail.com"
-                }
-            ],
-            "description": "This bundle allows you to create i18n routes. Fork of the jms/i18n-routing-bundle",
-            "homepage": "http://jmsyst.com/bundles/JMSI18nRoutingBundle",
-            "keywords": [
-                "multilanguage",
-                "routing",
-                "translation"
-            ],
-            "time": "2015-09-16 10:16:11"
-        },
-        {
             "name": "afarkas/html5shiv",
             "version": "3.7.3",
             "source": {
@@ -138,38 +76,65 @@
         },
         {
             "name": "beberlei/DoctrineExtensions",
-            "version": "v0.3.0",
+            "version": "v1.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/DoctrineExtensions.git",
-                "reference": "90a82c62f4513d580e1be6f0256889d85f278aa9"
+                "reference": "6dbe65e469e8bdcfe165ea16636b7049af479a24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/DoctrineExtensions/zipball/90a82c62f4513d580e1be6f0256889d85f278aa9",
-                "reference": "90a82c62f4513d580e1be6f0256889d85f278aa9",
+                "url": "https://api.github.com/repos/beberlei/DoctrineExtensions/zipball/6dbe65e469e8bdcfe165ea16636b7049af479a24",
+                "reference": "6dbe65e469e8bdcfe165ea16636b7049af479a24",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2"
             },
             "require-dev": {
-                "doctrine/orm": "<2.2",
+                "doctrine/orm": "~2.1",
+                "nesbot/carbon": "*",
                 "phpunit/phpunit": "~4.5",
+                "symfony/yaml": "~2.6",
                 "zf1/zend-date": "~1.12",
                 "zf1/zend-registry": "~1.12"
             },
             "suggest": {
+                "nesbot/carbon": "Alternative to DateTime",
                 "zf1/zend-date": "Alternative to DateTime"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
             "autoload": {
-                "psr-0": {
-                    "DoctrineExtensions": "lib/"
+                "psr-4": {
+                    "DoctrineExtensions\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2015-03-15 12:15:09"
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de"
+                },
+                {
+                    "name": "Steve Lacey",
+                    "email": "steve@stevelacey.net"
+                }
+            ],
+            "description": "A set of extensions to Doctrine 2 that add support for additional query functions available in MySQL and Oracle.",
+            "keywords": [
+                "database",
+                "doctrine",
+                "orm"
+            ],
+            "time": "2016-07-06 17:12:30"
         },
         {
             "name": "behat/transliterator",
@@ -422,16 +387,16 @@
         },
         {
             "name": "components/jqueryui",
-            "version": "1.12.0",
+            "version": "1.12.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/jqueryui.git",
-                "reference": "51d123ace890e283c7a6471c14ac14ad34ba988b"
+                "reference": "2c9359a9d199da254dd278bef3d4ced047d6581c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/jqueryui/zipball/51d123ace890e283c7a6471c14ac14ad34ba988b",
-                "reference": "51d123ace890e283c7a6471c14ac14ad34ba988b",
+                "url": "https://api.github.com/repos/components/jqueryui/zipball/2c9359a9d199da254dd278bef3d4ced047d6581c",
+                "reference": "2c9359a9d199da254dd278bef3d4ced047d6581c",
                 "shasum": ""
             },
             "require": {
@@ -503,7 +468,7 @@
                 }
             ],
             "description": "jQuery UI is a curated set of user interface interactions, effects, widgets, and themes built on top of the jQuery JavaScript Library. Whether you're building highly interactive web applications or you just need to add a date picker to a form control, jQuery UI is the perfect choice.",
-            "time": "2016-07-11 06:39:17"
+            "time": "2016-07-19 06:02:37"
         },
         {
             "name": "composer/installers",
@@ -1510,12 +1475,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "0166c3728b30446f2ed63204f2e4278275c9ecff"
+                "reference": "d0c392f77d2f2a3dcf7fcb79e2a1e2b8804e75b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/0166c3728b30446f2ed63204f2e4278275c9ecff",
-                "reference": "0166c3728b30446f2ed63204f2e4278275c9ecff",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d0c392f77d2f2a3dcf7fcb79e2a1e2b8804e75b2",
+                "reference": "d0c392f77d2f2a3dcf7fcb79e2a1e2b8804e75b2",
                 "shasum": ""
             },
             "require": {
@@ -1546,31 +1511,31 @@
             "keywords": [
                 "html"
             ],
-            "time": "2016-07-01 20:04:11"
+            "time": "2016-07-16 12:58:58"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
-            "version": "1.5.4",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git",
-                "reference": "539a6ac0c1fb6b010f92a1c877426a4caa5abba1"
+                "reference": "2f52d924692647db02bbcb27c159fef03bf000c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSJsRoutingBundle/zipball/539a6ac0c1fb6b010f92a1c877426a4caa5abba1",
-                "reference": "539a6ac0c1fb6b010f92a1c877426a4caa5abba1",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSJsRoutingBundle/zipball/2f52d924692647db02bbcb27c159fef03bf000c9",
+                "reference": "2f52d924692647db02bbcb27c159fef03bf000c9",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2",
-                "symfony/console": "~2.0",
-                "symfony/framework-bundle": "~2.0",
-                "symfony/serializer": "~2.0",
+                "symfony/console": "~2.0|3.*",
+                "symfony/framework-bundle": "~2.0|3.*",
+                "symfony/serializer": "~2.0|3.*",
                 "willdurand/jsonp-callback-validator": "~1.0"
             },
             "require-dev": {
-                "symfony/expression-language": "~2.4"
+                "symfony/expression-language": "~2.4|3.*"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -1604,20 +1569,20 @@
                 "javascript",
                 "routing"
             ],
-            "time": "2015-01-23 02:44:26"
+            "time": "2015-10-28 15:08:39"
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v2.4.15",
+            "version": "v2.4.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Atlantic18/DoctrineExtensions.git",
-                "reference": "8f172af78138ee3ea12e87be431dec3da0c2f4a9"
+                "reference": "c453c7d695da0dd1c3e713a27ec71a05da355662"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/8f172af78138ee3ea12e87be431dec3da0c2f4a9",
-                "reference": "8f172af78138ee3ea12e87be431dec3da0c2f4a9",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/c453c7d695da0dd1c3e713a27ec71a05da355662",
+                "reference": "c453c7d695da0dd1c3e713a27ec71a05da355662",
                 "shasum": ""
             },
             "require": {
@@ -1683,7 +1648,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2016-07-08 05:48:13"
+            "time": "2016-07-19 06:08:11"
         },
         {
             "name": "imagine/imagine",
@@ -1833,6 +1798,62 @@
                 "sql"
             ],
             "time": "2014-01-12 16:20:24"
+        },
+        {
+            "name": "jms/i18n-routing-bundle",
+            "version": "2.0.0",
+            "target-dir": "JMS/I18nRoutingBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/schmittjoh/JMSI18nRoutingBundle.git",
+                "reference": "9e87d4da564069ffe67234c4326e138236519fc2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/schmittjoh/JMSI18nRoutingBundle/zipball/9e87d4da564069ffe67234c4326e138236519fc2",
+                "reference": "9e87d4da564069ffe67234c4326e138236519fc2",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/framework-bundle": "~2.3|~3.0"
+            },
+            "require-dev": {
+                "jms/di-extra-bundle": "~1.1",
+                "phpunit/phpunit": "~4",
+                "sensio/framework-extra-bundle": "*",
+                "symfony/symfony": "~2.3|~3.0"
+            },
+            "suggest": {
+                "jms/translation-bundle": "If you want to use the RouteTranslation extractor"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "JMS\\I18nRoutingBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache2"
+            ],
+            "authors": [
+                {
+                    "name": "Johannes M. Schmitt",
+                    "email": "schmittjoh@gmail.com"
+                },
+                {
+                    "name": "Albert Casademont",
+                    "email": "albertcasademont@gmail.com"
+                }
+            ],
+            "description": "This bundle allows you to create i18n routes. Fork of the jms/i18n-routing-bundle",
+            "homepage": "http://jmsyst.com/bundles/JMSI18nRoutingBundle",
+            "keywords": [
+                "multilanguage",
+                "routing",
+                "translation"
+            ],
+            "time": "2015-12-01 23:14:47"
         },
         {
             "name": "jms/translation-bundle",
@@ -4308,12 +4329,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "f5d61cae334e437eb2f645052df6a8546fbcf84c"
+                "reference": "5769d7b9e7276c80f1bcbcf40a8add716bbfbc2b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/f5d61cae334e437eb2f645052df6a8546fbcf84c",
-                "reference": "f5d61cae334e437eb2f645052df6a8546fbcf84c",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/5769d7b9e7276c80f1bcbcf40a8add716bbfbc2b",
+                "reference": "5769d7b9e7276c80f1bcbcf40a8add716bbfbc2b",
                 "shasum": ""
             },
             "require": {
@@ -4344,7 +4365,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2015-04-18 15:04:52"
+            "time": "2016-07-12 14:09:59"
         },
         {
             "name": "zikula/profile-module",

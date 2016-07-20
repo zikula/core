@@ -53,10 +53,10 @@
         "zikula/generator-bundle": "dev-master",
 
 
-        "acasademont/i18n-routing-bundle": "2.0.0",
-        "jms/translation-bundle": "~1.2.0",
+        "jms/i18n-routing-bundle": "2.0.0",
+        "jms/translation-bundle": "1.2.*",
         "nikic/php-parser": "~1.4.0",
-        "friendsofsymfony/jsrouting-bundle": "1.5.*",
+        "friendsofsymfony/jsrouting-bundle": "1.6.*",
 
 
         "doctrine/orm": "2.5.*",
@@ -87,7 +87,7 @@
 
 
         "ramsey/array_column": "1.1.*",
-        "beberlei/DoctrineExtensions": "v0.3",
+        "beberlei/DoctrineExtensions": "v1.0.*",
         "drak/doctrine1": "dev-master",
         "drak/smarty": "dev-master",
 
