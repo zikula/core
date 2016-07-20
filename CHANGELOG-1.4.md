@@ -4,6 +4,7 @@ CHANGELOG - ZIKULA 1.4.x
 * 1.4.3 (?)
 
  - BC Breaks:
+    - Assetic Bundle has been removed (#2939).
     - User block function removed.
     - Old Authentication_Method_Api system has been completely removed.
     - Due to refactoring the UsersModule, some unknown BC Breaks may have occurred.
