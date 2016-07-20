@@ -87,7 +87,7 @@
 
 
         "ramsey/array_column": "1.1.*",
-        "beberlei/DoctrineExtensions": "v1.0.*",
+        "beberlei/DoctrineExtensions": "v0.3",
         "drak/doctrine1": "dev-master",
         "drak/smarty": "dev-master",
 

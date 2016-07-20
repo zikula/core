@@ -51,7 +51,6 @@ CHANGELOG - ZIKULA 1.4.x
     - symfony updated to from 2.8.4 to 2.8.8
     - swiftmailer updated from 5.4.1 to 5.4.3
     - components/jquery-ui updated from 1.11.4 to 1.12.0
-    - beberlei/doctrine-extensions updated from 0.3 to 1.0.11
     - gedmo/doctrine-extensions updated from 2.4.13 to 2.4.15
 
 * 1.4.2 (2016-03-28)
