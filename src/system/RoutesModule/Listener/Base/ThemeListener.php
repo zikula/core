@@ -43,7 +43,7 @@ class ThemeListener implements EventSubscriberInterface
      *
      * Note that Zikula_View_Theme is deprecated and being replaced by Twig.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function preInit(GenericEvent $event)
     {
@@ -57,7 +57,7 @@ class ThemeListener implements EventSubscriberInterface
      *
      * Note that Zikula_View_Theme is deprecated and being replaced by Twig.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function init(GenericEvent $event)
     {
@@ -69,7 +69,7 @@ class ThemeListener implements EventSubscriberInterface
      * Runs just before `Theme#load_config()` completed.
      * Subject is the Theme instance.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function loadConfig(GenericEvent $event)
     {
@@ -82,7 +82,7 @@ class ThemeListener implements EventSubscriberInterface
      * The event subject is `$this` (Theme instance) and has $maincontent as the event data
      * which you can modify with `$event->setData()` in the event handler.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function preFetch(GenericEvent $event)
     {
@@ -95,7 +95,7 @@ class ThemeListener implements EventSubscriberInterface
      * The event subject is `$this` (Theme instance) and the event data is the rendered
      * output which you can modify with `$event->setData()` in the event handler.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function postFetch(GenericEvent $event)
     {

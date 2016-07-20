@@ -29,7 +29,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class KernelListener implements EventSubscriberInterface
 {
-    
     /**
      * Makes our handlers known to the event system.
      */
@@ -57,7 +56,7 @@ class KernelListener implements EventSubscriberInterface
      *
      * Example from Symfony: the RouterListener determines controller and information about arguments.
      *
-     * @param GetResponseEvent $event The event instance.
+     * @param GetResponseEvent $event The event instance
      */
     public function onRequest(GetResponseEvent $event)
     {
@@ -73,7 +72,7 @@ class KernelListener implements EventSubscriberInterface
      *
      * Example from Symfony: the ParamConverterListener performs reflection and type conversion.
      *
-     * @param FilterControllerEvent $event The event instance.
+     * @param FilterControllerEvent $event The event instance
      */
     public function onController(FilterControllerEvent $event)
     {
@@ -90,7 +89,7 @@ class KernelListener implements EventSubscriberInterface
      *
      * Example from Symfony: TemplateListener renders Twig templates with returned arrays.
      *
-     * @param GetResponseForControllerResultEvent $event The event instance.
+     * @param GetResponseForControllerResultEvent $event The event instance
      */
     public function onView(GetResponseForControllerResultEvent $event)
     {
@@ -112,7 +111,7 @@ class KernelListener implements EventSubscriberInterface
      *    - WebDebugToolbarListener: injects the web debug toolbar
      *    - ResponseListener: updates the content type according to the request format
      *
-     * @param FilterResponseEvent $event The event instance.
+     * @param FilterResponseEvent $event The event instance
      */
     public function onResponse(FilterResponseEvent $event)
     {
@@ -126,7 +125,7 @@ class KernelListener implements EventSubscriberInterface
      *
      * You can cleanup things here which are not directly related to the response.
      *
-     * @param FinishRequestEvent $event The event instance.
+     * @param FinishRequestEvent $event The event instance
      */
     public function onFinishRequest(FinishRequestEvent $event)
     {
@@ -143,7 +142,7 @@ class KernelListener implements EventSubscriberInterface
      * Example from Symfony: SwiftmailerBundle with memory spooling activates an
      * EmailSenderListener which delivers emails created during the request.
      *
-     * @param PostResponseEvent $event The event instance.
+     * @param PostResponseEvent $event The event instance
      */
     public function onTerminate(PostResponseEvent $event)
     {
@@ -157,7 +156,7 @@ class KernelListener implements EventSubscriberInterface
      *
      * You can inject custom error handling for specific error types.
      *
-     * @param GetResponseForExceptionEvent $event The event instance.
+     * @param GetResponseForExceptionEvent $event The event instance
      */
     public function onException(GetResponseForExceptionEvent $event)
     {

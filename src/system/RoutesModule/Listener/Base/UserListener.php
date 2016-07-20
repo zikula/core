@@ -13,10 +13,11 @@
 namespace Zikula\RoutesModule\Listener\Base;
 
 use ServiceUtil;
-use UserUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use UserUtil;
 use Zikula\Core\Event\GenericEvent;
+use Zikula\UsersModule\UserEvents;
 
 /**
  * Event handler base class for user-related events.
@@ -29,10 +30,10 @@ class UserListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'user.gettheme'       => ['getTheme', 5],
-            'user.account.create' => ['create', 5],
-            'user.account.update' => ['update', 5],
-            'user.account.delete' => ['delete', 5]
+            'user.gettheme'            => ['getTheme', 5],
+            UserEvents::CREATE_ACCOUNT => ['create', 5],
+            UserEvents::UPDATE_ACCOUNT => ['update', 5],
+            UserEvents::DELETE_ACCOUNT => ['delete', 5]
         ];
     }
     
@@ -44,7 +45,7 @@ class UserListener implements EventSubscriberInterface
      * and the $themeName in the $event->data which can be modified.
      * Must $event->stopPropagation() if handler performs filter.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function getTheme(GenericEvent $event)
     {
@@ -59,7 +60,7 @@ class UserListener implements EventSubscriberInterface
      * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
      * The subject of the event is set to the user record that was created.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function create(GenericEvent $event)
     {
@@ -73,7 +74,7 @@ class UserListener implements EventSubscriberInterface
      * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
      * The subject of the event is set to the user record, with the updated values.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function update(GenericEvent $event)
     {
@@ -82,18 +83,15 @@ class UserListener implements EventSubscriberInterface
     /**
      * Listener for the `user.account.delete` event.
      *
-     * Occurs after a user is deleted from the system.
-     * All handlers are notified.
-     * The full user record deleted is available as the subject.
+     * Occurs after the deletion of a user account. Subject is $uid.
      * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
-     * The subject of the event is set to the user record that is being deleted.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function delete(GenericEvent $event)
     {
-        $userRecord = $event->getSubject();
-        $uid = $userRecord['uid'];
+        $uid = $event->getSubject();
+
         $serviceManager = ServiceUtil::getManager();
         $entityManager = $serviceManager->get('doctrine.entitymanager');
         

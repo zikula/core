@@ -21,7 +21,7 @@ use Zikula\Core\Event\GenericEvent;
 class PageListener extends BasePageListener
 {
     /**
-     * Makes our handlers known to the event system.
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
@@ -29,15 +29,7 @@ class PageListener extends BasePageListener
     }
     
     /**
-     * Listener for the `pageutil.addvar_filter` event.
-     *
-     * Used to override things like system or module stylesheets or javascript.
-     * Subject is the `$varname`, and `$event->data` an array of values to be modified by the filter.
-     *
-     * This single filter can be used to override all css or js scripts or any other var types
-     * sent to `PageUtil::addVar()`.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function pageutilAddvarFilter(GenericEvent $event)
     {
@@ -71,11 +63,7 @@ class PageListener extends BasePageListener
     }
     
     /**
-     * Listener for the `system.outputfilter` event.
-     *
-     * Filter type event for output filter HTML sanitisation.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function systemOutputFilter(GenericEvent $event)
     {

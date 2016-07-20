@@ -21,7 +21,6 @@ use Zikula\Core\Event\GenericEvent;
  */
 class CoreListener implements EventSubscriberInterface
 {
-    
     /**
      * Makes our handlers known to the event system.
      */
@@ -47,7 +46,7 @@ class CoreListener implements EventSubscriberInterface
      * Must exit if $event['method'] does not match whatever the handler expects.
      * Modify $event->data and $event->stopPropagation().
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function apiMethodNotFound(GenericEvent $event)
     {
@@ -58,7 +57,7 @@ class CoreListener implements EventSubscriberInterface
      *
      * Occurs after the config.php is loaded.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function preInit(GenericEvent $event)
     {
@@ -70,7 +69,7 @@ class CoreListener implements EventSubscriberInterface
      * Occurs after each `System::init()` stage, `$event['stage']` contains the stage.
      * To check if the handler should execute, do `if($event['stage'] & System::CORE_STAGES_*)`.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function init(GenericEvent $event)
     {
@@ -81,7 +80,7 @@ class CoreListener implements EventSubscriberInterface
      *
      * Occurs just before System::init() exits from normal execution.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function postInit(GenericEvent $event)
     {
@@ -98,7 +97,7 @@ class CoreListener implements EventSubscriberInterface
      * Must exit if `$event['method']` does not match whatever the handler expects.
      * Modify `$event->data` and `$event->stopPropagation()`.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function controllerMethodNotFound(GenericEvent $event)
     {

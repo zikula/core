@@ -14,6 +14,7 @@ namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Core\Event\GenericEvent;
+use Zikula\UsersModule\RegistrationEvents;
 
 /**
  * Event handler base class for user registration events.
@@ -26,12 +27,14 @@ class UserRegistrationListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'module.users.ui.registration.started'   => ['started', 5],
-            'module.users.ui.registration.succeeded' => ['succeeded', 5],
-            'module.users.ui.registration.failed'    => ['failed', 5],
-            'user.registration.create'               => ['create', 5],
-            'user.registration.update'               => ['update', 5],
-            'user.registration.delete'               => ['delete', 5]
+            RegistrationEvents::REGISTRATION_STARTED        => ['started', 5],
+            RegistrationEvents::FULL_USER_CREATE_VETO       => ['createVeto', 5],
+            RegistrationEvents::REGISTRATION_SUCCEEDED      => ['succeeded', 5],
+            RegistrationEvents::REGISTRATION_FAILED         => ['failed', 5],
+            RegistrationEvents::CREATE_REGISTRATION         => ['create', 5],
+            RegistrationEvents::UPDATE_REGISTRATION         => ['update', 5],
+            RegistrationEvents::DELETE_REGISTRATION         => ['delete', 5],
+            RegistrationEvents::FORCE_REGISTRATION_APPROVAL => ['forceApproval', 5]
         ];
     }
     
@@ -40,9 +43,36 @@ class UserRegistrationListener implements EventSubscriberInterface
      *
      * Occurs at the beginning of the registration process, before the registration form is displayed to the user.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function started(GenericEvent $event)
+    {
+    }
+    
+    /**
+     * Listener for the `full.user.create.veto` event.
+     *
+     * Occurs when the Registration process is determining whether to create a 'registration' or a 'full user'.
+     *
+     * The subject of the event is the UserEntity. There are no arguments or data. If the User hasn't been persisted, then
+     * there will be no Uid.
+     *
+     * A handler that needs to veto a registration should call `stopPropagation()`. This will prevent other handlers
+     * from receiving the event, will return to the registration process, and will prevent the registration from
+     * creating a 'full user' record.
+     *
+     * For example an authentication method may veto a registration attempt if it requires a user to verify some
+     * registration data by email.
+     *
+     * It is assumed that the authentication method will have notified the user of required steps to prevent future
+     * vetoes. And provide the methods to correct the issue and process the steps.
+     *
+     * Because this event will not necessarily notify ALL listeners (if propagation is stopped) it CANNOT be relied upon
+     * to effect change of any kind with regard to the entity.
+     *
+     * @param GenericEvent $event The event instance
+     */
+    public function createVeto(GenericEvent $event)
     {
     }
     
@@ -51,9 +81,8 @@ class UserRegistrationListener implements EventSubscriberInterface
      *
      * Occurs after a user has successfully registered a new account in the system. It will follow either a `user.registration.create`
      * event, or a `user.account.create` event, depending on the result of the registration process, the information provided by the user,
-     * and several configuration options set in the Users module. The resultant record might
-     * be a fully activated user record, or it might be a registration record pending approval, e-mail verification,
-     * or both.
+     * and several configuration options set in the Users module. The resultant record might be a fully activated user record,
+     * or it might be a registration record pending approval, e-mail verification, or both.
      *
      * If the registration record is a fully activated user, and the Users module is configured for automatic log-in,
      * then the system's next step (without any interaction from the user) will be the log-in process. All the customary
@@ -61,7 +90,7 @@ class UserRegistrationListener implements EventSubscriberInterface
      * `module.users.ui.login.veto` (which might result in the user having to perform some action in order to proceed with the 
      * log-in process), `module.users.ui.login.succeeded`, and/or `module.users.ui.login.failed`.
      *
-     * The event's subject is set to the registration record (which might be a full user record).
+     * The event's subject is set to the UserEntity.
      * The event's arguments are as follows:
      *     `'returnurl'` A URL to which the user is redirected at the very end of the registration process.
      *
@@ -70,21 +99,9 @@ class UserRegistrationListener implements EventSubscriberInterface
      * things: first, whether the result of the registration process is a registration request record or is a full user record,
      * and second, if the record is a full user record then whether automatic log-in is enabled or not.
      *
-     * If the result of the registration process is a registration request record, then the default action is to direct the
-     * user to a status display screen that informs him that the registration process has been completed, and also tells 
-     * him what next steps are required in order to convert that request into a full user record. (The steps to be
-     * taken may be out of the user's control--for example, the administrator must approve the request. The steps to
-     * be taken might be within the user's control--for example, the user must verify his e-mail address. The steps might
-     * be some combination of both within and outside the user's control.
-     *
-     * If the result of the registration process is a full user record, then one of two actions will happen by default. Either 
-     * the user will be directed to the log-in screen, or the user will be automatically logged in. Which of these two occurs
-     * is dependent on a module variable setting in the Users module. During the login process, one or more additional events may
-     * fire.
-     *
-     * If a `'redirecturl'` is specified by any entity intercepting and processing the `module.users.ui.registration.succeeded` event, then
+     * If a `'redirectUrl'` is specified by any entity intercepting and processing the `user.registration.succeeded` event, then
      * how that redirect URL is handled depends on whether the registration process produced a registration request or a full user
-     * account record, and if a full user account record was produced then it depends on whether automatic log-in is enabled or 
+     * account record, and if a full user account record was produced then it depends on whether automatic log-in is enabled or
      * not.
      *
      * If the result of the registration process is a registration request record, then by specifying a redirect URL on the event
@@ -109,10 +126,9 @@ class UserRegistrationListener implements EventSubscriberInterface
      *
      * An event handler should carefully consider whether changing the `'redirecturl'` argument is appropriate. First, the user may 
      * be expecting to return to the log-in screen . Being redirected to a different page might be disorienting to the user. Second, 
-     * all event handlers are being notified of this event. This is not a `notify()` event. An event handler that was notified 
-     * prior to the current handler may already have changed the `'redirecturl'`.
+     * an event handler that was notified prior to the current handler may already have changed the `'redirectUrl'`.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function succeeded(GenericEvent $event)
     {
@@ -129,19 +145,16 @@ class UserRegistrationListener implements EventSubscriberInterface
      * is redirected following the failed login.
      *
      * __The `'redirecturl'` argument__ controls where the user will be directed following a failed log-in attempt.
-     * Initially, it will be an empty string, indicating that the user will be redirected to a page
-     * that displays status and error information.
+     * Initially, it will be an empty string, indicating that the user will be redirected to the home page.
      *
      * If a `'redirecturl'` is specified by any entity intercepting and processing the `user.login.failed` event, then
      * the user will be redirected to the URL provided, instead of being redirected to the status/error display page.
      * An event handler should carefully consider whether changing the `'redirecturl'` argument is appropriate.
      * First, the user may be expecting to be directed to a page containing information on why the registration failed.
-     * Being redirected to a different page might be disorienting to the user.
-     * Second, all event handlers are being notified of this event.
-     * This is not a `notify()` event.
-     * An event handler that was notified prior to the current handler may already have changed the `'redirecturl'`.
+     * Being redirected to a different page might be disorienting to the user. Second, an event handler that was notified
+     * prior to the current handler may already have changed the `'redirectUrl'`.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function failed(GenericEvent $event)
     {
@@ -154,9 +167,10 @@ class UserRegistrationListener implements EventSubscriberInterface
      * administration panel for the Users module. This event will not fire if the result of the registration process is a
      * full user record. Instead, a `user.account.create` event will fire.
      * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
-     * The subject of the event is set to the registration record that was created.
+     * The subject of the event is set to the UserEntity that was created.
+     * This event occurs before the $authenticationMethod->register() method is called.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function create(GenericEvent $event)
     {
@@ -167,9 +181,10 @@ class UserRegistrationListener implements EventSubscriberInterface
      *
      * Occurs after a registration record is updated (likely through the admin panel, but not guaranteed).
      * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
-     * The subject of the event is set to the registration record, with the updated values.
+     * The subject of the event is set to the UserEntity, with the updated values. The event data contains the
+     * original UserEntity in an array `['oldValue' => $originalUser]`.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function update(GenericEvent $event)
     {
@@ -182,10 +197,22 @@ class UserRegistrationListener implements EventSubscriberInterface
      * through the approval/denial process, or it could happen because the registration request expired. This event
      * will not fire if a registration record is converted to a full user account record. Instead, a `user.account.create`
      * event will fire. This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
+     * The subject of the event is set to the Uid being deleted.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function delete(GenericEvent $event)
+    {
+    }
+
+    /**
+     * Listener for the `force.registration.approval` event.
+     *
+     * Occurs when an administrator approves a registration. The UserEntity is the subject.
+     *
+     * @param GenericEvent $event The event instance
+     */
+    public function forceApproval(GenericEvent $event)
     {
     }
 }

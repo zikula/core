@@ -40,7 +40,7 @@ class ModuleDispatchListener implements EventSubscriberInterface
      * Called after a module api or controller has been loaded.
      * Receives the args `['modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api]`.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function postLoadGeneric(GenericEvent $event)
     {
@@ -60,7 +60,7 @@ class ModuleDispatchListener implements EventSubscriberInterface
      *      ]`
      * .
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function preExecute(GenericEvent $event)
     {
@@ -82,7 +82,7 @@ class ModuleDispatchListener implements EventSubscriberInterface
      * Receives the modules output with `$event->getData();`.
      * Can modify this output with `$event->setData($data);`.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function postExecute(GenericEvent $event)
     {
@@ -97,7 +97,7 @@ class ModuleDispatchListener implements EventSubscriberInterface
      * Receives no subject, args of `['modname' => $modname, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api]`
      * and 'event data' of `$className`. This can be altered by setting `$event->setData()` followed by `$event->stopPropagation()`.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function customClassname(GenericEvent $event)
     {
@@ -110,7 +110,7 @@ class ModuleDispatchListener implements EventSubscriberInterface
      * Adds sublinks to a Services menu that is appended to all modules if populated.
      * Triggered by module_dispatch.postexecute in bootstrap.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function serviceLinks(GenericEvent $event)
     {

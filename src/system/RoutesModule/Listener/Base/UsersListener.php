@@ -14,6 +14,7 @@ namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Core\Event\GenericEvent;
+use Zikula\UsersModule\UserEvents;
 
 /**
  * Event handler base class for events of the Users module.
@@ -26,7 +27,7 @@ class UsersListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'module.users.config.updated' => ['configUpdated', 5]
+            UserEvents::CONFIG_UPDATED => ['configUpdated', 5]
         ];
     }
     
@@ -36,7 +37,9 @@ class UsersListener implements EventSubscriberInterface
      * Occurs after the Users module configuration has been
      * updated via the administration interface.
      *
-     * @param GenericEvent $event The event instance.
+     * Event data is populated by the new values.
+     *
+     * @param GenericEvent $event The event instance
      */
     public function configUpdated(GenericEvent $event)
     {
