@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "be5c71cbaf4a13d292eaa053e11d99e3",
-    "content-hash": "36bd1fdac2a62d091f22d83c6f39277d",
+    "hash": "1833806a86e38645c22cc1407dc925e2",
+    "content-hash": "e33d7bc5742d4a3c0ca3206399b13d04",
     "packages": [
         {
             "name": "abeautifulsite/jquery-minicolors",
@@ -422,16 +422,16 @@
         },
         {
             "name": "components/jqueryui",
-            "version": "1.12.0",
+            "version": "1.12.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/jqueryui.git",
-                "reference": "51d123ace890e283c7a6471c14ac14ad34ba988b"
+                "reference": "2c9359a9d199da254dd278bef3d4ced047d6581c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/jqueryui/zipball/51d123ace890e283c7a6471c14ac14ad34ba988b",
-                "reference": "51d123ace890e283c7a6471c14ac14ad34ba988b",
+                "url": "https://api.github.com/repos/components/jqueryui/zipball/2c9359a9d199da254dd278bef3d4ced047d6581c",
+                "reference": "2c9359a9d199da254dd278bef3d4ced047d6581c",
                 "shasum": ""
             },
             "require": {
@@ -503,7 +503,7 @@
                 }
             ],
             "description": "jQuery UI is a curated set of user interface interactions, effects, widgets, and themes built on top of the jQuery JavaScript Library. Whether you're building highly interactive web applications or you just need to add a date picker to a form control, jQuery UI is the perfect choice.",
-            "time": "2016-07-11 06:39:17"
+            "time": "2016-07-19 06:02:37"
         },
         {
             "name": "composer/installers",
@@ -1510,12 +1510,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "0166c3728b30446f2ed63204f2e4278275c9ecff"
+                "reference": "d0c392f77d2f2a3dcf7fcb79e2a1e2b8804e75b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/0166c3728b30446f2ed63204f2e4278275c9ecff",
-                "reference": "0166c3728b30446f2ed63204f2e4278275c9ecff",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d0c392f77d2f2a3dcf7fcb79e2a1e2b8804e75b2",
+                "reference": "d0c392f77d2f2a3dcf7fcb79e2a1e2b8804e75b2",
                 "shasum": ""
             },
             "require": {
@@ -1546,7 +1546,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2016-07-01 20:04:11"
+            "time": "2016-07-16 12:58:58"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -1608,16 +1608,16 @@
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v2.4.15",
+            "version": "v2.4.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Atlantic18/DoctrineExtensions.git",
-                "reference": "8f172af78138ee3ea12e87be431dec3da0c2f4a9"
+                "reference": "c453c7d695da0dd1c3e713a27ec71a05da355662"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/8f172af78138ee3ea12e87be431dec3da0c2f4a9",
-                "reference": "8f172af78138ee3ea12e87be431dec3da0c2f4a9",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/c453c7d695da0dd1c3e713a27ec71a05da355662",
+                "reference": "c453c7d695da0dd1c3e713a27ec71a05da355662",
                 "shasum": ""
             },
             "require": {
@@ -1683,7 +1683,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2016-07-08 05:48:13"
+            "time": "2016-07-19 06:08:11"
         },
         {
             "name": "imagine/imagine",
@@ -3991,9 +3991,7 @@
             "authors": [
                 {
                     "name": "Karma Dordrak",
-                    "email": "drak@zikula.org",
-                    "homepage": "http://zikula.org",
-                    "role": "OO & PSR-4 migration"
+                    "email": "drak@zikula.org"
                 },
                 {
                     "name": "Kyle Giovannetti",
@@ -4243,12 +4241,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "f5d61cae334e437eb2f645052df6a8546fbcf84c"
+                "reference": "5769d7b9e7276c80f1bcbcf40a8add716bbfbc2b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/f5d61cae334e437eb2f645052df6a8546fbcf84c",
-                "reference": "f5d61cae334e437eb2f645052df6a8546fbcf84c",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/5769d7b9e7276c80f1bcbcf40a8add716bbfbc2b",
+                "reference": "5769d7b9e7276c80f1bcbcf40a8add716bbfbc2b",
                 "shasum": ""
             },
             "require": {
@@ -4279,7 +4277,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2015-04-18 15:04:52"
+            "time": "2016-07-12 14:09:59"
         },
         {
             "name": "zikula/profile-module",
