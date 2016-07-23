@@ -100,7 +100,6 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
                 // new column used in doctrine categorisable template
                 DoctrineUtil::createColumn('categories_mapobj', 'reg_property', ['type' => 'string', 'length' => 60], false);
             case '1.2.1':
-            case '1.2.2':
                 try {
                     $this->schemaTool->create(['Zikula\CategoriesModule\Entity\CategoryAttributeEntity']);
                 } catch (\Exception $e) {
@@ -111,7 +110,9 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
                 $connection->executeQuery($sql);
 
                 $this->migrateAttributesFromObjectData();
+            case '1.2.2':
             case '1.2.3':
+            case '1.3.0':
                 // future
         }
 
