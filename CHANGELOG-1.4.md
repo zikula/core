@@ -43,6 +43,7 @@ CHANGELOG - ZIKULA 1.4.x
  - Vendor updates:
     - font awesome updated from 4.5.0 to 4.6.3
     - jms translation bundle updated from 1.2.1 to 1.2.3
+    - js routing bundle updated from 1.5.x to 1.6.0
     - jstree updated from 3.3.0 to 3.3.1
     - monolog updated from 1.18.1 to 1.20.0
     - php-markdown updated from 1.5.0 to 1.6.0
