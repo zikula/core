@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1833806a86e38645c22cc1407dc925e2",
-    "content-hash": "e33d7bc5742d4a3c0ca3206399b13d04",
+    "hash": "92d056bad7bf6a9831aeab34c98b5402",
+    "content-hash": "84368d2a583b553f134a5fdd0a8f0f25",
     "packages": [
         {
             "name": "abeautifulsite/jquery-minicolors",
