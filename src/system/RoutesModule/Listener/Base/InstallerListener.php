@@ -45,7 +45,7 @@ class InstallerListener implements EventSubscriberInterface
      * Called after a module has been successfully installed.
      * Receives `$modinfo` as args.
      *
-     * @param ModuleStateEvent $event The event instance.
+     * @param ModuleStateEvent $event The event instance
      */
     public function moduleInstalled(ModuleStateEvent $event)
     {
@@ -57,7 +57,7 @@ class InstallerListener implements EventSubscriberInterface
      * Called after a module has been installed (on reload of the extensions view).
      * Receives `$modinfo` as args.
      *
-     * @param ModuleStateEvent $event The event instance.
+     * @param ModuleStateEvent $event The event instance
      */
     public function modulePostInstalled(ModuleStateEvent $event)
     {
@@ -69,7 +69,7 @@ class InstallerListener implements EventSubscriberInterface
      * Called after a module has been successfully upgraded.
      * Receives `$modinfo` as args.
      *
-     * @param ModuleStateEvent $event The event instance.
+     * @param ModuleStateEvent $event The event instance
      */
     public function moduleUpgraded(ModuleStateEvent $event)
     {
@@ -81,7 +81,7 @@ class InstallerListener implements EventSubscriberInterface
      * Called after a module has been successfully enabled.
      * Receives `$modinfo` as args.
      *
-     * @param ModuleStateEvent $event The event instance.
+     * @param ModuleStateEvent $event The event instance
      */
     public function moduleEnabled(ModuleStateEvent $event)
     {
@@ -93,7 +93,7 @@ class InstallerListener implements EventSubscriberInterface
      * Called after a module has been successfully disabled.
      * Receives `$modinfo` as args.
      *
-     * @param ModuleStateEvent $event The event instance.
+     * @param ModuleStateEvent $event The event instance
      */
     public function moduleDisabled(ModuleStateEvent $event)
     {
@@ -105,7 +105,7 @@ class InstallerListener implements EventSubscriberInterface
      * Called after a module has been successfully removed.
      * Receives `$modinfo` as args.
      *
-     * @param ModuleStateEvent $event The event instance.
+     * @param ModuleStateEvent $event The event instance
      */
     public function moduleRemoved(ModuleStateEvent $event)
     {
@@ -117,7 +117,7 @@ class InstallerListener implements EventSubscriberInterface
      * Called after a hook subscriber area has been unregistered.
      * Receives args['areaid'] as the areaId. Use this to remove orphan data associated with this area.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function subscriberAreaUninstalled(GenericEvent $event)
     {

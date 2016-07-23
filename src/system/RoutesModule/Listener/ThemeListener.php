@@ -21,7 +21,7 @@ use Zikula\Core\Event\GenericEvent;
 class ThemeListener extends BaseThemeListener
 {
     /**
-     * Makes our handlers known to the event system.
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
@@ -29,15 +29,7 @@ class ThemeListener extends BaseThemeListener
     }
     
     /**
-     * Listener for the `theme.preinit` event.
-     *
-     * Occurs on the startup of the `Zikula_View_Theme#__construct()`.
-     * The subject is the Zikula_View_Theme instance.
-     * Is useful to setup a customized theme configuration or cache_id.
-     *
-     * Note that Zikula_View_Theme is deprecated and being replaced by Twig.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function preInit(GenericEvent $event)
     {
@@ -64,14 +56,7 @@ class ThemeListener extends BaseThemeListener
     }
     
     /**
-     * Listener for the `theme.init` event.
-     *
-     * Occurs just before `Zikula_View_Theme#__construct()` finishes.
-     * The subject is the Zikula_View_Theme instance.
-     *
-     * Note that Zikula_View_Theme is deprecated and being replaced by Twig.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function init(GenericEvent $event)
     {
@@ -98,12 +83,7 @@ class ThemeListener extends BaseThemeListener
     }
     
     /**
-     * Listener for the `theme.load_config` event.
-     *
-     * Runs just before `Theme#load_config()` completed.
-     * Subject is the Theme instance.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function loadConfig(GenericEvent $event)
     {
@@ -130,13 +110,7 @@ class ThemeListener extends BaseThemeListener
     }
     
     /**
-     * Listener for the `theme.prefetch` event.
-     *
-     * Occurs in `Theme::themefooter()` just after getting the `$maincontent`.
-     * The event subject is `$this` (Theme instance) and has $maincontent as the event data
-     * which you can modify with `$event->setData()` in the event handler.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function preFetch(GenericEvent $event)
     {
@@ -163,13 +137,7 @@ class ThemeListener extends BaseThemeListener
     }
     
     /**
-     * Listener for the `theme.postfetch` event.
-     *
-     * Occurs in `Theme::themefooter()` just after rendering the theme.
-     * The event subject is `$this` (Theme instance) and the event data is the rendered
-     * output which you can modify with `$event->setData()` in the event handler.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function postFetch(GenericEvent $event)
     {

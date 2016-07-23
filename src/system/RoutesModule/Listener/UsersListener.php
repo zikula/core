@@ -21,7 +21,7 @@ use Zikula\Core\Event\GenericEvent;
 class UsersListener extends BaseUsersListener
 {
     /**
-     * Makes our handlers known to the event system.
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
@@ -29,12 +29,7 @@ class UsersListener extends BaseUsersListener
     }
     
     /**
-     * Listener for the `module.users.config.updated` event.
-     *
-     * Occurs after the Users module configuration has been
-     * updated via the administration interface.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function configUpdated(GenericEvent $event)
     {

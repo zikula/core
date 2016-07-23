@@ -21,7 +21,7 @@ use Zikula\Core\Event\GenericEvent;
 class ViewListener extends BaseViewListener
 {
     /**
-     * Makes our handlers known to the event system.
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
@@ -29,14 +29,7 @@ class ViewListener extends BaseViewListener
     }
     
     /**
-     * Listener for the `view.init` event.
-     *
-     * Occurs just before `Zikula_View#__construct()` finishes.
-     * The subject is the Zikula_View instance.
-     *
-     * Note that Zikula_View is deprecated and being replaced by Twig.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function init(GenericEvent $event)
     {
@@ -63,16 +56,7 @@ class ViewListener extends BaseViewListener
     }
     
     /**
-     * Listener for the `view.postfetch` event.
-     *
-     * Filter of result of a fetch.
-     * Receives `Zikula_View` instance as subject,
-     * args are `['template' => $template]`,
-     * $data was the result of the fetch to be filtered.
-     *
-     * Note that Zikula_View is deprecated and being replaced by Twig.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function postFetch(GenericEvent $event)
     {

@@ -44,7 +44,7 @@ class MailerListener implements EventSubscriberInterface
      * This is a notifyUntil event so the event must `$event->stopPropagation()` and set any
      * return data into `$event->data`, or `$event->setData()`.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function sendMessageStart(GenericEvent $event)
     {
@@ -59,7 +59,7 @@ class MailerListener implements EventSubscriberInterface
      * This is a notifyUntil event so the event must `$event->stopPropagation()` and set any
      * return data into `$event->data`, or `$event->setData()`.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function sendMessagePerform(GenericEvent $event)
     {
@@ -71,7 +71,7 @@ class MailerListener implements EventSubscriberInterface
      *
      * Invoked from `Zikula\MailerModule\Api\MailerApi#performSending`.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function sendMessageSuccess(GenericEvent $event)
     {
@@ -83,7 +83,7 @@ class MailerListener implements EventSubscriberInterface
      *
      * Invoked from `Zikula\MailerModule\Api\MailerApi#performSending`.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function sendMessageFailure(GenericEvent $event)
     {

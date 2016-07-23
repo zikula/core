@@ -21,7 +21,7 @@ use Zikula\Core\Event\GenericEvent;
 class MailerListener extends BaseMailerListener
 {
     /**
-     * Makes our handlers known to the event system.
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
@@ -29,15 +29,7 @@ class MailerListener extends BaseMailerListener
     }
     
     /**
-     * Listener for the `module.mailer.api.sendmessage` event.
-     * Occurs when a new message should be sent.
-     *
-     * Invoked from `Zikula\MailerModule\Api\MailerApi#sendMessage`.
-     * Subject is `Zikula\MailerModule\Api\MailerApi` with `SwiftMessage $message` object.
-     * This is a notifyUntil event so the event must `$event->stopPropagation()` and set any
-     * return data into `$event->data`, or `$event->setData()`.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function sendMessageStart(GenericEvent $event)
     {
@@ -64,15 +56,7 @@ class MailerListener extends BaseMailerListener
     }
     
     /**
-     * Listener for the `module.mailer.api.perform` event.
-     * Occurs right before a message is sent.
-     *
-     * Invoked from `Zikula\MailerModule\Api\MailerApi#sendMessage`.
-     * Subject is `Zikula\MailerModule\Api\MailerApi` with `SwiftMessage $message` object.
-     * This is a notifyUntil event so the event must `$event->stopPropagation()` and set any
-     * return data into `$event->data`, or `$event->setData()`.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function sendMessagePerform(GenericEvent $event)
     {
@@ -99,12 +83,7 @@ class MailerListener extends BaseMailerListener
     }
     
     /**
-     * Listener for the `module.mailer.api.success` event.
-     * Occurs after a message has been sent successfully.
-     *
-     * Invoked from `Zikula\MailerModule\Api\MailerApi#performSending`.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function sendMessageSuccess(GenericEvent $event)
     {
@@ -131,12 +110,7 @@ class MailerListener extends BaseMailerListener
     }
     
     /**
-     * Listener for the `module.mailer.api.failure` event.
-     * Occurs when a message could not be sent.
-     *
-     * Invoked from `Zikula\MailerModule\Api\MailerApi#performSending`.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function sendMessageFailure(GenericEvent $event)
     {

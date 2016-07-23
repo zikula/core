@@ -20,9 +20,8 @@ use Zikula\Core\Event\GenericEvent;
  */
 class CoreListener extends BaseCoreListener
 {
-    
     /**
-     * Makes our handlers known to the event system.
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
@@ -30,17 +29,7 @@ class CoreListener extends BaseCoreListener
     }
     
     /**
-     * Listener for the `api.method_not_found` event.
-     *
-     * Called in instances of Zikula_Api from __call().
-     * Receives arguments from __call($method, argument) as $args.
-     *     $event['method'] is the method which didn't exist in the main class.
-     *     $event['args'] is the arguments that were passed.
-     * The event subject is the class where the method was not found.
-     * Must exit if $event['method'] does not match whatever the handler expects.
-     * Modify $event->data and $event->stopPropagation().
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function apiMethodNotFound(GenericEvent $event)
     {
@@ -67,11 +56,7 @@ class CoreListener extends BaseCoreListener
     }
     
     /**
-     * Listener for the `core.preinit` event.
-     *
-     * Occurs after the config.php is loaded.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function preInit(GenericEvent $event)
     {
@@ -98,12 +83,7 @@ class CoreListener extends BaseCoreListener
     }
     
     /**
-     * Listener for the `core.init` event.
-     *
-     * Occurs after each `System::init()` stage, `$event['stage']` contains the stage.
-     * To check if the handler should execute, do `if($event['stage'] & System::CORE_STAGES_*)`.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function init(GenericEvent $event)
     {
@@ -130,11 +110,7 @@ class CoreListener extends BaseCoreListener
     }
     
     /**
-     * Listener for the `core.postinit` event.
-     *
-     * Occurs just before System::init() exits from normal execution.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function postInit(GenericEvent $event)
     {
@@ -161,17 +137,7 @@ class CoreListener extends BaseCoreListener
     }
     
     /**
-     * Listener for the `controller.method_not_found` event.
-     *
-     * Called in instances of `Zikula_Controller` from `__call()`.
-     * Receives arguments from `__call($method, argument)` as `$args`.
-     *    `$event['method']` is the method which didn't exist in the main class.
-     *    `$event['args']` is the arguments that were passed.
-     * The event subject is the class where the method was not found.
-     * Must exit if `$event['method']` does not match whatever the handler expects.
-     * Modify `$event->data` and `$event->stopPropagation()`.
-     *
-     * @param GenericEvent $event The event instance.
+     * {@inheritdoc}
      */
     public function controllerMethodNotFound(GenericEvent $event)
     {

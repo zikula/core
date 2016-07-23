@@ -40,7 +40,7 @@ class PageListener implements EventSubscriberInterface
      * This single filter can be used to override all css or js scripts or any other var types
      * sent to `PageUtil::addVar()`.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function pageutilAddvarFilter(GenericEvent $event)
     {
@@ -51,7 +51,7 @@ class PageListener implements EventSubscriberInterface
      *
      * Filter type event for output filter HTML sanitisation.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function systemOutputFilter(GenericEvent $event)
     {

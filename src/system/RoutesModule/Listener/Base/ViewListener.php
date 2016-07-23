@@ -39,7 +39,7 @@ class ViewListener implements EventSubscriberInterface
      *
      * Note that Zikula_View is deprecated and being replaced by Twig.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function init(GenericEvent $event)
     {
@@ -55,7 +55,7 @@ class ViewListener implements EventSubscriberInterface
      *
      * Note that Zikula_View is deprecated and being replaced by Twig.
      *
-     * @param GenericEvent $event The event instance.
+     * @param GenericEvent $event The event instance
      */
     public function postFetch(GenericEvent $event)
     {
