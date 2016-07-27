@@ -41,6 +41,7 @@ CHANGELOG - ZIKULA 1.4.x
       - Functionality split into UsersModule and new system module, ZAuthModule.
 
  - Vendor updates:
+    - bootstrap updated from 3.3.6 to 3.3.7
     - font awesome updated from 4.5.0 to 4.6.3
     - jms translation bundle updated from 1.2.1 to 1.2.3
     - js routing bundle updated from 1.5.x to 1.6.0
