@@ -14,7 +14,7 @@
  *
  * @deprecated this file is required by old modules using categories with DBUtil though
  *
- * @return array Array of informations related to the Categories module tables.
+ * @return array Array of information related to the Categories module tables
  */
 function ZikulaCategoriesModule_tables()
 {
