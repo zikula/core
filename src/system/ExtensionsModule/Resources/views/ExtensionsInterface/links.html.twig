@@ -3,7 +3,7 @@
         {% if link.links is defined %}
             <li class="dropdown{% if menu_css.menuItemClass is not empty %} {{ menu_css.menuItemClass }}{% endif %}{% if current_path == link.url %} active{% endif %}">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="{{ link.title|default('') }}">
-                    <i class="fa fa-{{ link.icon }}"> </i>
+                    {% if link.icon|default %}<i class="fa fa-{{ link.icon }}"> </i>{% endif %}
                     {{ link.text }}
                     <span class="caret"></span></a>
                 <ul id="submenu_{{ menu_css.menuId }}" class="dropdown-menu">
