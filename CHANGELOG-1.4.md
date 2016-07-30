@@ -50,9 +50,9 @@ CHANGELOG - ZIKULA 1.4.x
     - php-markdown updated from 1.5.0 to 1.6.0
     - php-parser updated from 1.4.1 to 2.0.1
     - sensio distribution bundle updated from 5.0.5 to 5.0.7
-    - symfony updated to from 2.8.4 to 2.8.8
+    - symfony updated to from 2.8.4 to 2.8.9
     - swiftmailer updated from 5.4.1 to 5.4.3
-    - components/jquery-ui updated from 1.11.4 to 1.12.0
+    - components/jquery-ui updated from 1.11.4 to 1.12.0.1
     - gedmo/doctrine-extensions updated from 2.4.13 to 2.4.19
 
 * 1.4.2 (2016-03-28)
