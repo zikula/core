@@ -171,7 +171,7 @@ class BlockUtil
      * @param string $modname Module name
      * @param string $blockname Name of the block
      * @param array $blockinfo Information parameters
-     * @param null $blockEntity
+     * @param \Zikula\BlocksModule\Entity\BlockEntity $blockEntity
      * @return mixed Blockinfo array or null
      */
     public static function show($modname, $blockname, $blockinfo = [], $blockEntity = null)
@@ -181,7 +181,14 @@ class BlockUtil
         $blockInstance = self::load($modname, $blockname);
         $displayfunc = [$blockInstance, 'display'];
         $blockEntity = isset($blockEntity) ? $blockEntity : ServiceUtil::get('doctrine.entitymanager')->find('Zikula\BlocksModule\Entity\BlockEntity', $blockinfo['bid']);
-        $instanceArgs = ($blockInstance instanceof BlockHandlerInterface) ? $blockEntity->getContent() : $blockinfo;
+        if ($blockInstance instanceof BlockHandlerInterface) {
+            $instanceArgs = $blockEntity->getContent();
+            $instanceArgs['bid'] = $blockEntity->getBid();
+            $instanceArgs['title'] = $blockEntity->getTitle();
+            $instanceArgs['position'] = $blockinfo['position'];
+        } else {
+            $instanceArgs = $blockinfo;
+        }
         if (is_callable($displayfunc)) {
             $content =  call_user_func($displayfunc, $instanceArgs);
         }
