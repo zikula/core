@@ -3,6 +3,8 @@
 <h3>{{ title }}</h3>
 {% endif %}
 <div class="sbCenterContent">
-    {{ content|raw }}
+    <div class="z-block z-blockposition-{{ position|lower }} z-bkey-{{ btype|lower }} z-bid-{{ bid }}">
+        {{ content|raw }}
+    </div>
 </div>
 <!--  End Center Block  -->

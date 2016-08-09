@@ -3,6 +3,8 @@
 <h3 class="blocktitle">{{ title }}</h3>
 {% endif %}
 <div class="sbRightContent">
-    {{ content|raw }}
+    <div class="z-block z-blockposition-{{ position|lower }} z-bkey-{{ btype|lower }} z-bid-{{ bid }}">
+        {{ content|raw }}
+    </div>
 </div>
 <!-- End Right Block -->
