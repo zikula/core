@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Bundle\CoreBundle\YamlDumper;
+use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 
 /**
  * Class AjaxUpgradeController
@@ -138,7 +139,16 @@ class AjaxUpgradeController extends AbstractController
     private function regenerateThemes()
     {
         // regenerate the themes list
-        return $this->container->get('zikula_theme_module.helper.bundle_sync_helper')->regenerate();
+        $this->container->get('zikula_theme_module.helper.bundle_sync_helper')->regenerate();
+        // set all themes as active @todo this is probably overkill
+        $themes = $this->container->get('zikula_theme_module.theme_entity.repository')->findAll();
+        /** @var \Zikula\ThemeModule\Entity\ThemeEntity $theme */
+        foreach ($themes as $theme) {
+            $theme->setState(ThemeEntityRepository::STATE_ACTIVE);
+        }
+        $this->container->get('doctrine')->getManager()->flush();
+
+        return true;
     }
 
     private function from140to141()
