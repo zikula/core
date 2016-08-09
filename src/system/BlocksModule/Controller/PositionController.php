@@ -47,7 +47,9 @@ class PositionController extends AbstractController
             $positionEntity = new BlockPositionEntity(); // sets defaults in constructor
         }
 
-        $form = $this->createForm('Zikula\BlocksModule\Form\Type\BlockPositionType', $positionEntity);
+        $form = $this->createForm('Zikula\BlocksModule\Form\Type\BlockPositionType', $positionEntity, [
+            'translator' => $this->getTranslator()
+        ]);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
