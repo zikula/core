@@ -125,12 +125,12 @@ Underscore.js 1.4.3
     Location in Zikula: javascript/underscore
     Patch details: none
 
-jQuery.mmenu 5.0.3
+jQuery.mmenu 5.6.3
 
     Vendor website: http://mmenu.frebsite.nl/
     Downloaded from: http://mmenu.frebsite.nl/
     License: MIT
-    Location in Zikula: system/AdminModule/Resources/public/js/jQuery.mmenu-5.5.1
+    Location in Zikula: system/AdminModule/Resources/public/js/jQuery.mmenu-5.6.3
     Patch details: none
 
 ICON LIBRARIES
