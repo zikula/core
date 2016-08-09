@@ -88,6 +88,11 @@ abstract class Zikula_Controller_AbstractBlock extends Zikula_AbstractController
         // default to the ClassName without the `Block` suffix
         // note: This string is intentionally left untranslated.
         $fqCn = get_class($this);
+        if ($pos = strrpos($fqCn, '_')) {
+            // PEAR naming
+            return substr($fqCn, $pos + 1);
+        }
+        // else standard namespace classname
         $pos = strrpos($fqCn, '\\');
 
         return substr($fqCn, $pos + 1, -5);
