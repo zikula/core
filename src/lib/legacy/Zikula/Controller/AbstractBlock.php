@@ -85,6 +85,11 @@ abstract class Zikula_Controller_AbstractBlock extends Zikula_AbstractController
 
     public function getType()
     {
-        return $this->info()['text_type'];
+        // default to the ClassName without the `Block` suffix
+        // note: This string is intentionally left untranslated.
+        $fqCn = get_class($this);
+        $pos = strrpos($fqCn, '\\');
+
+        return substr($fqCn, $pos + 1, -5);
     }
 }
