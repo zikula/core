@@ -2,5 +2,7 @@
 <h3 class="theme_blocktitle">{{ title }}</h3>
 {% endif %}
 <div class="theme_blockcontent">
-    {{ content|raw }}
+    <div class="z-block z-blockposition-{{ position|lower }} z-bkey-{{ btype|lower }} z-bid-{{ bid }}">
+        {{ content|raw }}
+    </div>
 </div>
