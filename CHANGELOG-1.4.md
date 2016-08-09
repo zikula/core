@@ -4,6 +4,8 @@ CHANGELOG - ZIKULA 1.4.x
 * 1.4.3 (?)
 
  - BC Breaks:
+    - Blocks are no longer wrapped in helper div for Core 2.0 type themes (#2920)
+        - This behaviour was moved to templates. See Andreas08Theme and SeaBreezeTheme for usage examples.
     - Assetic Bundle has been removed (#2939).
     - User block function removed. It is going to be added to the Profile module instead.
     - Old Authentication_Method_Api system has been completely removed.
