@@ -117,6 +117,9 @@ abstract class AbstractTheme extends AbstractBundle
     public function getThemeVars()
     {
         $dbVars = \ModUtil::getVar($this->name);
+        if (empty($dbVars) && !is_array($dbVars)) {
+            $dbVars = [];
+        }
         $defaultVars = $this->getDefaultThemeVars();
         $combinedVars = array_merge($defaultVars, $dbVars);
         if (array_keys($dbVars) != array_keys($combinedVars)) {
