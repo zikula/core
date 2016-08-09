@@ -167,6 +167,8 @@ class AjaxUpgradeController extends AbstractController
         \SessionUtil::delVar('interactive_init');
         \SessionUtil::delVar('interactive_remove');
         \SessionUtil::delVar('interactive_upgrade');
+
+        return true;
     }
 
     private function finalizeParameters()
