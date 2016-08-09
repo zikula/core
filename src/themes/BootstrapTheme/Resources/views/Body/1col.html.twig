@@ -1,3 +1,5 @@
 <div class="container">
-    {{ maincontent|raw }}
+    <div id="z-maincontent" class="{% if realm == 'home' %}z-homepage{% endif %} z-module-{{ modulename|lower }}">    
+        {{ maincontent|raw }}
+    </div>
 </div>

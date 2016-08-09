@@ -13,7 +13,9 @@
         </div>
         <div class="col-sm-4">
             {{ showflashes() }}
-            {{ maincontent|raw }}
+            <div id="z-maincontent" class="{% if realm == 'home' %}z-homepage{% endif %} z-module-{{ modulename|lower }}">    
+                {{ maincontent|raw }}
+            </div>
         </div>
         <div class="col-sm-4">
             {{ showblockposition('right') }}
