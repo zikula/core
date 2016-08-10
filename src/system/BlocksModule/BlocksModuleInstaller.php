@@ -102,18 +102,19 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 // make all content fields of blocks serialized.
                 $sql = "SELECT * FROM blocks";
                 $blocks = $this->entityManager->getConnection()->fetchAll($sql);
+                $oldContent = [];
                 foreach ($blocks as $block) {
-                    if (!\DataUtil::is_serialized($block['content'])) {
-                        $serializedContent = addslashes(serialize($block['content']));
-                        $this->entityManager->getConnection()->executeQuery("UPDATE blocks SET content = '$serializedContent' WHERE bid = $block[bid]");
-                    }
+                    $block['content'] = !empty($block['content']) ? $block['content'] : '';
+                    $oldContent[$block['bid']] = \DataUtil::is_serialized($block['content']) ? unserialize($block['content']) : ['content' => $block['content']];
                 }
                 $this->schemaTool->update($this->entities);
+                $this->entityManager->getConnection()->executeQuery("UPDATE blocks SET properties='a:0:{}'");
 
                 $blocks = $this->entityManager->getRepository('ZikulaBlocksModule:BlockEntity')->findAll();
                 $installerHelper = new InstallerHelper();
                 /** @var \Zikula\BlocksModule\Entity\BlockEntity $block */
                 foreach ($blocks as $block) {
+                    $block->setProperties(unserialize($oldContent[$block->getBid()]));
                     $block->setFilters($installerHelper->upgradeFilterArray($block->getFilters()));
                     $block->setBlocktype(preg_match('/.*Block$/', $block->getBkey()) ? substr($block->getBkey(), 0, -5) : $block->getBkey());
                     $block->setBkey($installerHelper->upgradeBkeyToFqClassname($this->container->get('kernel'), $block));
