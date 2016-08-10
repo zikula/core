@@ -93,6 +93,8 @@ CHANGELOG - ZIKULA 1.4.x
     - Fix post installation login (#2187)
     - Improved compatibility of zikula-specific bootstrap overrides with respect to navbars.
     - Improved handling of 'utility' themes via GET and add ability to restrict access via permissions on a more granular level.
+    - Correct method arguments provided by BC block method when displaying block. (#2934)
+    - Fix block module upgrade (#2957, #2835)
  - Features:
     - Add new advanced block filtering based on a combination of any query parameter or request attributes.
     - Add core routing for all legacy urls (both normal and 'shorturls').
