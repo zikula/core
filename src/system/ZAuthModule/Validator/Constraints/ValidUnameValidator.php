@@ -21,7 +21,6 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Constant as UsersConstant;
 
 class ValidUnameValidator extends ConstraintValidator
@@ -42,22 +41,15 @@ class ValidUnameValidator extends ConstraintValidator
     private $validator;
 
     /**
-     * @var PermissionApi
-     */
-    private $permissionApi;
-
-    /**
      * @param VariableApi $variableApi
      * @param TranslatorInterface $translator
      * @param ValidatorInterface $validator
-     * @param PermissionApi $permissionApi
      */
-    public function __construct(VariableApi $variableApi, TranslatorInterface $translator, ValidatorInterface $validator, PermissionApi $permissionApi)
+    public function __construct(VariableApi $variableApi, TranslatorInterface $translator, ValidatorInterface $validator)
     {
         $this->variableApi = $variableApi;
         $this->translator = $translator;
         $this->validator = $validator;
-        $this->permissionApi = $permissionApi;
     }
 
     public function validate($value, Constraint $constraint)
@@ -79,19 +71,6 @@ class ValidUnameValidator extends ConstraintValidator
             foreach ($errors as $error) {
                 // this method forces the error to appear at the form input location instead of at the top of the form
                 $this->context->buildViolation($error->getMessage())->addViolation();
-            }
-        }
-
-        // ensure not reserved/illegal (unless performed by Admin)
-        $illegalUserNames = $this->variableApi->get('ZikulaZAuthModule', UsersConstant::MODVAR_REGISTRATION_ILLEGAL_UNAMES, '');
-        if (!empty($illegalUserNames) && !$this->permissionApi->hasPermission('ZikulaZAuthModule::', '::', ACCESS_ADMIN)) {
-            $pattern = ['/^(\s*,\s*|\s+)+/D', '/\b(\s*,\s*|\s+)+\b/D', '/(\s*,\s*|\s+)+$/D'];
-            $replace = ['', '|', ''];
-            $illegalUserNames = preg_replace($pattern, $replace, preg_quote($illegalUserNames, '/'));
-            if (preg_match("/^({$illegalUserNames})/iD", $value)) {
-                $this->context->buildViolation($this->translator->__('The user name you entered is reserved. It cannot be used.'))
-                    ->setParameter('%string%', $value)
-                    ->addViolation();
             }
         }
     }

@@ -21,6 +21,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Constant as UsersConstant;
 
 class ValidUnameValidator extends ConstraintValidator
@@ -41,15 +42,21 @@ class ValidUnameValidator extends ConstraintValidator
     private $validator;
 
     /**
+     * @var PermissionApi
+     */
+    private $permissionApi;
+
+    /**
      * @param VariableApi $variableApi
      * @param TranslatorInterface $translator
      * @param ValidatorInterface $validator
      */
-    public function __construct(VariableApi $variableApi, TranslatorInterface $translator, ValidatorInterface $validator)
+    public function __construct(VariableApi $variableApi, TranslatorInterface $translator, ValidatorInterface $validator, PermissionApi $permissionApi)
     {
         $this->variableApi = $variableApi;
         $this->translator = $translator;
         $this->validator = $validator;
+        $this->permissionApi = $permissionApi;
     }
 
     public function validate($value, Constraint $constraint)
@@ -74,9 +81,9 @@ class ValidUnameValidator extends ConstraintValidator
             }
         }
 
-        // ensure not reserved/illegal
+        // ensure not reserved/illegal (unless performed by Admin)
         $illegalUserNames = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ILLEGAL_UNAMES, '');
-        if (!empty($illegalUserNames)) {
+        if (!empty($illegalUserNames) && !$this->permissionApi->hasPermission('ZikulaZAuthModule::', '::', ACCESS_ADMIN)) {
             $pattern = ['/^(\s*,\s*|\s+)+/D', '/\b(\s*,\s*|\s+)+\b/D', '/(\s*,\s*|\s+)+$/D'];
             $replace = ['', '|', ''];
             $illegalUserNames = preg_replace($pattern, $replace, preg_quote($illegalUserNames, '/'));

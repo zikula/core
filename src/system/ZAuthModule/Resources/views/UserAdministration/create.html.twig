@@ -52,47 +52,52 @@
 
 </div>
 {{ adminFooter() }}
+<script type="text/javascript">
+    (function($) {
+        $(document).ready(function() {
+            var setPassEle = $("#{{ form.setpass.vars.id }}");
+            var setPassAlert = setPassEle.parent().find('.alert');
+            var setPassWrap = $('#{{ form.setpass.vars.id }}_wrap');
+            var passFirst = $('#{{ form.pass.vars.id }}_first');
+            var passSecond = $('#{{ form.pass.vars.id }}_second');
+            var showPasswordsRequired = function() {
+                passFirst.prop('required', true);
+                passFirst.parents('.form-group').find('label').addClass('required');
+                passSecond.prop('required', true);
+                passSecond.parents('.form-group').find('label').addClass('required');
+            };
+            var showPasswordsOptional = function() {
+                passFirst.prop('required', false);
+                passFirst.parents('.form-group').find('label').removeClass('required');
+                passSecond.prop('required', false);
+                passSecond.parents('.form-group').find('label').removeClass('required');
+            };
+            setPassAlert.addClass('collapse in');
+            // ensure wrap is shown on form re-draw
+            if (setPassEle.is(':checked')) {
+                setPassWrap.collapse('show');
+                setPassAlert.collapse('hide');
+                showPasswordsRequired();
+            }
+            // add/remove required UI for password fields
+            setPassWrap.on('show.bs.collapse', function() {
+                setPassAlert.collapse('hide');
+                showPasswordsRequired();
+            }).on('hide.bs.collapse', function() {
+                setPassAlert.collapse('show');
+                showPasswordsOptional();
+            });
+        });
+    })(jQuery);
+</script>
 {% if getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED')) %}
     {{ pageAddAsset('javascript', zasset('@ZikulaZAuthModule:js/Zikula.ZAuth.PassMeter.js')) }}
     <script type="text/javascript">
         (function($) {
             $(document).ready(function() {
-                var setPassEle = $("#{{ form.setpass.vars.id }}");
-                var setPassAlert = setPassEle.parent().find('.alert');
-                var setPassWrap = $('#{{ form.setpass.vars.id }}_wrap');
-                var passFirst = $('#{{ form.pass.vars.id }}_first');
-                var passSecond = $('#{{ form.pass.vars.id }}_second');
-                var showPasswordsRequired = function() {
-                    passFirst.prop('required', true);
-                    passFirst.parents('.form-group').find('label').addClass('required');
-                    passSecond.prop('required', true);
-                    passSecond.parents('.form-group').find('label').addClass('required');
-                };
-                var showPasswordsOptional = function() {
-                    passFirst.prop('required', false);
-                    passFirst.parents('.form-group').find('label').removeClass('required');
-                    passSecond.prop('required', false);
-                    passSecond.parents('.form-group').find('label').removeClass('required');
-                };
-                setPassAlert.addClass('collapse in');
-
                 ZikulaZAuthPassMeter.init(passFirst.attr('id'), '{{ form.vars.id }}_passmeter', {
                     username: '{{ form.uname.vars.id }}',
                     minLength: '{{ getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH')) }}'
-                });
-                // ensure wrap is shown on form re-draw
-                if (setPassEle.is(':checked')) {
-                    setPassWrap.collapse('show');
-                    setPassAlert.collapse('hide');
-                    showPasswordsRequired();
-                }
-                // add/remove required UI for password fields
-                setPassWrap.on('show.bs.collapse', function() {
-                    setPassAlert.collapse('hide');
-                    showPasswordsRequired();
-                }).on('hide.bs.collapse', function() {
-                    setPassAlert.collapse('show');
-                    showPasswordsOptional();
                 });
             });
         })(jQuery);

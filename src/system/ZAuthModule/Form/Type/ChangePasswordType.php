@@ -15,10 +15,10 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
-use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPasswordChange;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPasswordReminder;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 class ChangePasswordType extends AbstractType
 {
@@ -77,8 +77,8 @@ class ChangePasswordType extends AbstractType
     {
         $resolver->setDefaults([
             'translator' => null,
-            'passwordReminderEnabled' => UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED,
-            'passwordReminderMandatory' => UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY,
+            'passwordReminderEnabled' => ZAuthConstant::DEFAULT_PASSWORD_REMINDER_ENABLED,
+            'passwordReminderMandatory' => ZAuthConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY,
             'constraints' => [new ValidPasswordChange()],
         ]);
     }

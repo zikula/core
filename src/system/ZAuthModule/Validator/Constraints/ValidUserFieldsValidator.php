@@ -15,7 +15,6 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
@@ -34,7 +33,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
     private $translator;
 
     /**
-     * @var UserRepositoryInterface
+     * @var AuthenticationMappingRepositoryInterface
      */
     private $mappingRepository;
 
@@ -104,7 +103,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
             ->where('m.email = :email')
             ->andWhere('m.method IN (:methods)')
             ->setParameter('email', $authenticationMappingEntity->getEmail())
-            ->setParameter('methods', [ZAuthConstant::AUTHENTICATION_METHOD_EITHER, 'native_email'])
+            ->setParameter('methods', [ZAuthConstant::AUTHENTICATION_METHOD_EITHER, ZAuthConstant::AUTHENTICATION_METHOD_EMAIL])
         ;
         // when updating an existing User, the existing Uid must be excluded.
         if (null !== $authenticationMappingEntity->getUid()) {
