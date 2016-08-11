@@ -28,11 +28,11 @@
  */
 function smarty_function_blockshow($params, Zikula_View $view)
 {
-    $module    = isset($params['module'])    ? $params['module']    : null;
+    $module    = isset($params['module']) ? $params['module'] : null;
     $blockname = isset($params['blockname']) ? $params['blockname'] : null;
-    $block     = isset($params['block'])     ? $params['block']     : null;
-    $position  = isset($params['position'])  ? $params['position']  : null;
-    $assign    = isset($params['assign'])    ? $params['assign']    : null;
+    $block     = isset($params['block']) ? $params['block'] : null;
+    $position  = isset($params['position']) ? $params['position'] : null;
+    $assign    = isset($params['assign']) ? $params['assign'] : null;
 
     if (!$module) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['blockshow', 'module']));

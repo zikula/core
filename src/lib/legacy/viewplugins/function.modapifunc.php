@@ -40,10 +40,10 @@
  */
 function smarty_function_modapifunc($params, Zikula_View $view)
 {
-    $assign  = isset($params['assign'])                  ? $params['assign']  : null;
-    $func    = isset($params['func']) && $params['func'] ? $params['func']    : 'index';
-    $modname = isset($params['modname'])                 ? $params['modname'] : null;
-    $type    = isset($params['type']) && $params['type'] ? $params['type']    : 'user';
+    $assign  = isset($params['assign']) ? $params['assign'] : null;
+    $func    = isset($params['func']) && $params['func'] ? $params['func'] : 'index';
+    $modname = isset($params['modname']) ? $params['modname'] : null;
+    $type    = isset($params['type']) && $params['type'] ? $params['type'] : 'user';
 
     // avoid passing these to ModUtil::apiFunc
     unset($params['modname']);

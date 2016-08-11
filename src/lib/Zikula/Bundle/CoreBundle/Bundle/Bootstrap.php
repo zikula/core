@@ -119,7 +119,7 @@ class Bootstrap
             if (isset($this->extensionStateMap[$extensionName])) {
                 $state = $this->extensionStateMap[$extensionName];
             } else {
-                $state = ['state' => ($type == 'T') ?  \ThemeUtil::STATE_INACTIVE : \ModUtil::STATE_UNINITIALISED];
+                $state = ['state' => ($type == 'T') ? \ThemeUtil::STATE_INACTIVE : \ModUtil::STATE_UNINITIALISED];
             }
         }
 

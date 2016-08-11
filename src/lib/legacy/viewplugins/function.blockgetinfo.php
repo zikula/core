@@ -34,9 +34,9 @@
  */
 function smarty_function_blockgetinfo($params, Zikula_View $view)
 {
-    $bid    = isset($params['bid'])    ? (int)$params['bid'] : 0;
-    $name   = isset($params['name'])   ? $params['name']     : null;
-    $assign = isset($params['assign']) ? $params['assign']   : null;
+    $bid    = isset($params['bid']) ? (int)$params['bid'] : 0;
+    $name   = isset($params['name']) ? $params['name'] : null;
+    $assign = isset($params['assign']) ? $params['assign'] : null;
 
     if (!$bid) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['blockgetinfo', 'bid']));

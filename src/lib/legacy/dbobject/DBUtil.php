@@ -2828,8 +2828,8 @@ class DBUtil
             $jf = $joinInfo[$k]['join_field'];
             $ofn = $joinInfo[$k]['object_field_name'];
             $cft = isset($joinInfo[$k]['compare_field_table']) ? $joinInfo[$k]['compare_field_table'] : null;
-            $cfj = isset($joinInfo[$k]['compare_field_join'])  ? $joinInfo[$k]['compare_field_join']  : null;
-            $jw  = isset($joinInfo[$k]['join_where'])          ? $joinInfo[$k]['join_where']          : null;
+            $cfj = isset($joinInfo[$k]['compare_field_join']) ? $joinInfo[$k]['compare_field_join'] : null;
+            $jw  = isset($joinInfo[$k]['join_where']) ? $joinInfo[$k]['join_where'] : null;
 
             $joinMethod = 'LEFT JOIN';
             if (isset($joinInfo[$k]['join_method']) && in_array(strtoupper($joinInfo[$k]['join_method']), $allowedJoinMethods)) {

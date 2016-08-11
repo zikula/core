@@ -27,23 +27,23 @@
 
 function smarty_function_selector_user_category($params, Zikula_View $view)
 {
-    $field            = isset($params['field'])            ? $params['field']            : 'id';
-    $selectedValue    = isset($params['selectedValue'])    ? $params['selectedValue']    : 0;
-    $defaultValue     = isset($params['defaultValue'])     ? $params['defaultValue']     : 0;
-    $defaultText      = isset($params['defaultText'])      ? $params['defaultText']      : '';
-    $lang             = isset($params['lang'])             ? $params['lang']             : ZLanguage::getLanguageCode();
-    $name             = isset($params['name'])             ? $params['name']             : 'defautlselectorname';
-    $recurse          = isset($params['recurse'])          ? $params['recurse']          : true;
-    $relative         = isset($params['relative'])         ? $params['relative']         : true;
-    $includeRoot      = isset($params['includeRoot'])      ? $params['includeRoot']      : false;
-    $includeLeaf      = isset($params['includeLeaf'])      ? $params['includeLeaf']      : true;
-    $all              = isset($params['all'])              ? $params['all']              : false;
-    $displayPath      = isset($params['displayPath'])      ? $params['displayPath']      : false;
-    $attributes       = isset($params['attributes'])       ? $params['attributes']       : null;
-    $assign           = isset($params['assign'])           ? $params['assign']           : null;
-    $editLink         = isset($params['editLink'])         ? $params['editLink']         : true;
-    $submit           = isset($params['submit'])           ? $params['submit']           : false;
-    $multipleSize     = isset($params['multipleSize'])     ? $params['multipleSize']     : 1;
+    $field            = isset($params['field']) ? $params['field'] : 'id';
+    $selectedValue    = isset($params['selectedValue']) ? $params['selectedValue'] : 0;
+    $defaultValue     = isset($params['defaultValue']) ? $params['defaultValue'] : 0;
+    $defaultText      = isset($params['defaultText']) ? $params['defaultText'] : '';
+    $lang             = isset($params['lang']) ? $params['lang'] : ZLanguage::getLanguageCode();
+    $name             = isset($params['name']) ? $params['name'] : 'defautlselectorname';
+    $recurse          = isset($params['recurse']) ? $params['recurse'] : true;
+    $relative         = isset($params['relative']) ? $params['relative'] : true;
+    $includeRoot      = isset($params['includeRoot']) ? $params['includeRoot'] : false;
+    $includeLeaf      = isset($params['includeLeaf']) ? $params['includeLeaf'] : true;
+    $all              = isset($params['all']) ? $params['all'] : false;
+    $displayPath      = isset($params['displayPath']) ? $params['displayPath'] : false;
+    $attributes       = isset($params['attributes']) ? $params['attributes'] : null;
+    $assign           = isset($params['assign']) ? $params['assign'] : null;
+    $editLink         = isset($params['editLink']) ? $params['editLink'] : true;
+    $submit           = isset($params['submit']) ? $params['submit'] : false;
+    $multipleSize     = isset($params['multipleSize']) ? $params['multipleSize'] : 1;
     $doReplaceRootCat = false;
 
     $userCats = ModUtil::apiFunc('ZikulaCategoriesModule', 'user', 'getusercategories', ['returnCategory' => 1, 'relative' => $relative]);

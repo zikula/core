@@ -34,10 +34,10 @@
  */
 function smarty_function_sessionsetvar($params, Zikula_View $view)
 {
-    $assign  = isset($params['assign'])  ? $params['assign']  : null;
-    $name    = isset($params['name'])    ? $params['name']    : null;
-    $value   = isset($params['value'])   ? $params['value']   : null;
-    $path    = isset($params['path'])    ? $params['path']    : '/';
+    $assign  = isset($params['assign']) ? $params['assign'] : null;
+    $name    = isset($params['name']) ? $params['name'] : null;
+    $value   = isset($params['value']) ? $params['value'] : null;
+    $path    = isset($params['path']) ? $params['path'] : '/';
 
     if (!$name) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['sessionsetvar', 'name']));

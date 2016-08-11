@@ -52,11 +52,11 @@
  */
 function smarty_function_block($params, Zikula_View $view)
 {
-    $bid      = isset($params['bid'])      ? (int)$params['bid'] : 0;
-    $name     = isset($params['name'])     ? $params['name']     : null;
-    $title    = isset($params['title'])    ? $params['title']    : null;
+    $bid      = isset($params['bid']) ? (int)$params['bid'] : 0;
+    $name     = isset($params['name']) ? $params['name'] : null;
+    $title    = isset($params['title']) ? $params['title'] : null;
     $position = isset($params['position']) ? $params['position'] : null;
-    $assign   = isset($params['assign'])   ? $params['assign']   : null;
+    $assign   = isset($params['assign']) ? $params['assign'] : null;
 
     // unset the variables for the function, leaving the ones for the block
     unset($params['bid']);

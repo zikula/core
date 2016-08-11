@@ -36,11 +36,11 @@
  */
 function smarty_function_modgetinfo($params, Zikula_View $view)
 {
-    $assign  = isset($params['assign'])  ? $params['assign']     : null;
-    $info    = isset($params['info'])    ? $params['info']       : null;
-    $modid   = isset($params['modid'])   ? (int)$params['modid'] : 0;
-    $modname = isset($params['modname']) ? $params['modname']    : null;
-    $default = isset($params['default']) ? $params['default']    : false;
+    $assign  = isset($params['assign']) ? $params['assign'] : null;
+    $info    = isset($params['info']) ? $params['info'] : null;
+    $modid   = isset($params['modid']) ? (int)$params['modid'] : 0;
+    $modname = isset($params['modname']) ? $params['modname'] : null;
+    $default = isset($params['default']) ? $params['default'] : false;
 
     if (!$modid) {
         $modname = $modname ? $modname : ModUtil::getName();

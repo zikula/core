@@ -19,35 +19,35 @@
  */
 function smarty_function_selector_category($params, Zikula_View $view)
 {
-    $categoryRegistryModule   = isset($params['categoryRegistryModule'])   ? $params['categoryRegistryModule']   : '';
-    $categoryRegistryTable    = isset($params['categoryRegistryTable'])    ? $params['categoryRegistryTable']    : '';
+    $categoryRegistryModule   = isset($params['categoryRegistryModule']) ? $params['categoryRegistryModule'] : '';
+    $categoryRegistryTable    = isset($params['categoryRegistryTable']) ? $params['categoryRegistryTable'] : '';
     $categoryRegistryProperty = isset($params['categoryRegistryProperty']) ? $params['categoryRegistryProperty'] : '';
 
-    $category         = isset($params['category'])         ? $params['category']         : 0;
-    $path             = isset($params['path'])             ? $params['path']             : '';
-    $pathfield        = isset($params['pathfield'])        ? $params['pathfield']        : 'path';
-    $field            = isset($params['field'])            ? $params['field']            : 'id';
+    $category         = isset($params['category']) ? $params['category'] : 0;
+    $path             = isset($params['path']) ? $params['path'] : '';
+    $pathfield        = isset($params['pathfield']) ? $params['pathfield'] : 'path';
+    $field            = isset($params['field']) ? $params['field'] : 'id';
     $fieldIsAttribute = isset($params['fieldIsAttribute']) ? $params['fieldIsAttribute'] : null;
-    $selectedValue    = isset($params['selectedValue'])    ? $params['selectedValue']    : 0;
-    $defaultValue     = isset($params['defaultValue'])     ? $params['defaultValue']     : 0;
-    $defaultText      = isset($params['defaultText'])      ? $params['defaultText']      : '';
-    $allValue         = isset($params['allValue'])         ? $params['allValue']         : 0;
-    $allText          = isset($params['allText'])          ? $params['allText']          : '';
-    $name             = isset($params['name'])             ? $params['name']             : 'defaultselectorname';
-    $submit           = isset($params['submit'])           ? $params['submit']           : false;
-    $recurse          = isset($params['recurse'])          ? $params['recurse']          : true;
-    $relative         = isset($params['relative'])         ? $params['relative']         : true;
-    $includeRoot      = isset($params['includeRoot'])      ? $params['includeRoot']      : false;
-    $includeLeaf      = isset($params['includeLeaf'])      ? $params['includeLeaf']      : true;
-    $all              = isset($params['all'])              ? $params['all']              : false;
-    $displayPath      = isset($params['displayPath'])      ? $params['displayPath']      : false;
-    $attributes       = isset($params['attributes'])       ? $params['attributes']       : null;
-    $assign           = isset($params['assign'])           ? $params['assign']           : null;
-    $editLink         = isset($params['editLink'])         ? $params['editLink']         : true;
-    $multipleSize     = isset($params['multipleSize'])     ? $params['multipleSize']     : 1;
-    $sortField        = isset($params['sortField'])        ? $params['sortField']        : 'sort_value';
+    $selectedValue    = isset($params['selectedValue']) ? $params['selectedValue'] : 0;
+    $defaultValue     = isset($params['defaultValue']) ? $params['defaultValue'] : 0;
+    $defaultText      = isset($params['defaultText']) ? $params['defaultText'] : '';
+    $allValue         = isset($params['allValue']) ? $params['allValue'] : 0;
+    $allText          = isset($params['allText']) ? $params['allText'] : '';
+    $name             = isset($params['name']) ? $params['name'] : 'defaultselectorname';
+    $submit           = isset($params['submit']) ? $params['submit'] : false;
+    $recurse          = isset($params['recurse']) ? $params['recurse'] : true;
+    $relative         = isset($params['relative']) ? $params['relative'] : true;
+    $includeRoot      = isset($params['includeRoot']) ? $params['includeRoot'] : false;
+    $includeLeaf      = isset($params['includeLeaf']) ? $params['includeLeaf'] : true;
+    $all              = isset($params['all']) ? $params['all'] : false;
+    $displayPath      = isset($params['displayPath']) ? $params['displayPath'] : false;
+    $attributes       = isset($params['attributes']) ? $params['attributes'] : null;
+    $assign           = isset($params['assign']) ? $params['assign'] : null;
+    $editLink         = isset($params['editLink']) ? $params['editLink'] : true;
+    $multipleSize     = isset($params['multipleSize']) ? $params['multipleSize'] : 1;
+    $sortField        = isset($params['sortField']) ? $params['sortField'] : 'sort_value';
     $doReplaceRootCat = isset($params['doReplaceRootCat']) ? $params['doReplaceRootCat'] : null;
-    $cssClass         = isset($params['cssClass'])         ? $params['cssClass']         : '';
+    $cssClass         = isset($params['cssClass']) ? $params['cssClass'] : '';
 
     if (isset($params['lang'])) {
         $lang = $params['lang'];

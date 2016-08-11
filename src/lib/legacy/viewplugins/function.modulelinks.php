@@ -35,12 +35,12 @@
  */
 function smarty_function_modulelinks($params, Zikula_View $view)
 {
-    $menuLinks          = isset($params['links'])       ? $params['links'] : '';
-    $menuId             = isset($params['menuid'])      ? $params['menuid'] : '';
-    $menuClass          = isset($params['menuclass'])   ? $params['menuclass'] : 'navbar-nav';
-    $menuItemClass      = isset($params['itemclass'])   ? $params['itemclass'] : '';
-    $menuItemFirst      = isset($params['first'])       ? $params['first'] : '';
-    $menuItemLast       = isset($params['last'])        ? $params['last'] : '';
+    $menuLinks          = isset($params['links']) ? $params['links'] : '';
+    $menuId             = isset($params['menuid']) ? $params['menuid'] : '';
+    $menuClass          = isset($params['menuclass']) ? $params['menuclass'] : 'navbar-nav';
+    $menuItemClass      = isset($params['itemclass']) ? $params['itemclass'] : '';
+    $menuItemFirst      = isset($params['first']) ? $params['first'] : '';
+    $menuItemLast       = isset($params['last']) ? $params['last'] : '';
     $returnAsArray      = isset($params['returnAsArray']) ? (bool) $params['returnAsArray'] : false;
 
     if (empty($menuLinks)) {

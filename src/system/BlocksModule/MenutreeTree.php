@@ -184,7 +184,7 @@ class MenutreeTree extends \Zikula_Tree
         $toggle = $indent.'<img class="'.$this->config['toggler'].'" alt="" src="'.$this->config['imagesDir'].$this->config['minus'].'" />';
 
         $iconImage = !empty($item[$reflang]['icon']) ? $item[$reflang]['icon'] : $this->config['item'];
-        $iconImage = !empty($tab['nodes']) ?  $this->config['parentOpen'] : $iconImage;
+        $iconImage = !empty($tab['nodes']) ? $this->config['parentOpen'] : $iconImage;
         $icon      = $indent.'<img class="'.$this->config['icon'].'" alt="" src="'.$this->config['imagesDir'].$iconImage.'" />';
 
         $links = [];
@@ -204,7 +204,7 @@ class MenutreeTree extends \Zikula_Tree
 
         $liId    = !empty($this->config['nodePrefix']) ? ' id="'.$this->config['nodePrefix'].$id.'"' : '';
         $liClass = [];
-        $liClass[] = $isDynamic ?  $this->config['dynamicClass'] : '';
+        $liClass[] = $isDynamic ? $this->config['dynamicClass'] : '';
         $liClass[] = $size == 1 ? $this->config['nodeSingle'] : '';
         $liClass[] = ($i == 1 && $size > 1) ? $this->config['nodeFirst'] : '';
         $liClass[] = ($i == $size && $size > 1) ? $this->config['nodeLast'] : '';

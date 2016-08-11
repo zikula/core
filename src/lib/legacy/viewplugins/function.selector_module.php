@@ -27,16 +27,16 @@
  */
 function smarty_function_selector_module($params, Zikula_View $view)
 {
-    $name          = isset($params['name'])          ? $params['name']          : 'defaultselectorname';
-    $field         = isset($params['field'])         ? $params['field']         : 'name';
+    $name          = isset($params['name']) ? $params['name'] : 'defaultselectorname';
+    $field         = isset($params['field']) ? $params['field'] : 'name';
     $selectedValue = isset($params['selectedValue']) ? $params['selectedValue'] : 0;
-    $defaultValue  = isset($params['defaultValue'])  ? $params['defaultValue']  : 0;
-    $defaultText   = isset($params['defaultText'])   ? $params['defaultText']   : null;
-    $allValue      = isset($params['allValue'])      ? $params['allValue']      : false;
-    $allText       = isset($params['allText'])       ? $params['allText']       : null;
-    $submit        = isset($params['submit'])        ? $params['submit']        : false;
-    $disabled      = isset($params['disabled'])      ? $params['disabled']      : false;
-    $multipleSize  = isset($params['multipleSize'])  ? $params['multipleSize']  : 1;
+    $defaultValue  = isset($params['defaultValue']) ? $params['defaultValue'] : 0;
+    $defaultText   = isset($params['defaultText']) ? $params['defaultText'] : null;
+    $allValue      = isset($params['allValue']) ? $params['allValue'] : false;
+    $allText       = isset($params['allText']) ? $params['allText'] : null;
+    $submit        = isset($params['submit']) ? $params['submit'] : false;
+    $disabled      = isset($params['disabled']) ? $params['disabled'] : false;
+    $multipleSize  = isset($params['multipleSize']) ? $params['multipleSize'] : 1;
 
     return HtmlUtil::getSelector_Module($name, $selectedValue, $defaultValue, $defaultText, $allValue, $allText,
                                            $submit, $disabled, $multipleSize, $field);

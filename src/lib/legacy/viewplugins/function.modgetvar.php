@@ -35,11 +35,11 @@
  */
 function smarty_function_modgetvar($params, Zikula_View $view)
 {
-    $assign  = isset($params['assign'])  ? $params['assign']     : null;
-    $default = isset($params['default']) ? $params['default']    : null;
-    $module  = isset($params['module'])  ? $params['module']     : null;
-    $html    = isset($params['html'])    ? (bool)$params['html'] : false;
-    $name    = isset($params['name'])    ? $params['name']       : null;
+    $assign  = isset($params['assign']) ? $params['assign'] : null;
+    $default = isset($params['default']) ? $params['default'] : null;
+    $module  = isset($params['module']) ? $params['module'] : null;
+    $html    = isset($params['html']) ? (bool)$params['html'] : false;
+    $name    = isset($params['name']) ? $params['name'] : null;
 
     if (!$module) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['modgetvar', 'module']));

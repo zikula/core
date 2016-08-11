@@ -33,10 +33,10 @@
  */
 function smarty_function_usergetvar($params, Zikula_View $view)
 {
-    $assign  = isset($params['assign'])  ? $params['assign']   : null;
-    $default = isset($params['default']) ? $params['default']  : null;
-    $name    = isset($params['name'])    ? $params['name']     : null;
-    $uid     = isset($params['uid'])     ? (int)$params['uid'] : null;
+    $assign  = isset($params['assign']) ? $params['assign'] : null;
+    $default = isset($params['default']) ? $params['default'] : null;
+    $name    = isset($params['name']) ? $params['name'] : null;
+    $uid     = isset($params['uid']) ? (int)$params['uid'] : null;
 
     if (!$name) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['usergetvar', 'name']));

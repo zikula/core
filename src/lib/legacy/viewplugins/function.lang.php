@@ -25,7 +25,7 @@
  */
 function smarty_function_lang($params, Zikula_View $view)
 {
-    $assign = isset($params['assign']) ? $params['assign']  : null;
+    $assign = isset($params['assign']) ? $params['assign'] : null;
     $fs     = isset($params['fs']) ? $params['fs'] : false;
 
     $result = ($fs ? ZLanguage::transformFS(ZLanguage::getLanguageCode()) : ZLanguage::getLanguageCode());

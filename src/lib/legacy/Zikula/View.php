@@ -859,7 +859,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             $this->_filter_auto_id($compile_id);
         }
 
-        $auto_id = $cache_id . (!empty($compile_id) ? '/'.$compile_id  : '');
+        $auto_id = $cache_id . (!empty($compile_id) ? '/'.$compile_id : '');
 
         $auto_id = trim($auto_id, '/');
 

@@ -23,9 +23,9 @@
 function smarty_function_tree($params, Zikula_View $view)
 {
     $menuString = isset($params['menustring']) ? $params['menustring'] : null;
-    $menuArray  = isset($params['menuarray'])  ? $params['menuarray']  : null;
-    $treeArray  = isset($params['treearray'])  ? $params['treearray']  : null;
-    $config     = isset($params['config'])     ? $params['config']     : [];
+    $menuArray  = isset($params['menuarray']) ? $params['menuarray'] : null;
+    $treeArray  = isset($params['treearray']) ? $params['treearray'] : null;
+    $config     = isset($params['config']) ? $params['config'] : [];
 
     if (!isset($menuString) && !isset($menuArray) && !isset($treeArray)) {
         $view->trigger_error(__f('Error! in %1$s: %2$s, %3$s or %4$s parameter must be specified.', ['smarty_function_tree', 'menustring', 'menuarray', 'treearray']));

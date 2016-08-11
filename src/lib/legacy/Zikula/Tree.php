@@ -393,7 +393,7 @@ class Zikula_Tree
 
         $toggle = $indent.'<img class="'.$this->config['toggler'].'" alt="" src="'.$this->config['imagesDir'].$this->config['minus'].'" />';
 
-        $iconImage = !empty($item['icon']) ? $item['icon'] : (!empty($tab['nodes']) ?  $this->config['parentOpen'] : $this->config['item']);
+        $iconImage = !empty($item['icon']) ? $item['icon'] : (!empty($tab['nodes']) ? $this->config['parentOpen'] : $this->config['item']);
         $icon      = $indent.'<img class="'.$this->config['icon'].'" alt="" src="'.$this->config['imagesDir'].$iconImage.'" />';
 
         $linkClass = $item['active'] == 1 ? $item['class'] : $this->config['nodeUnactive'].' '.$item['class'];

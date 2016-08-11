@@ -55,11 +55,11 @@
  */
 function smarty_function_category_path($params, Zikula_View $view)
 {
-    $assign    = isset($params['assign'])   ? $params['assign']   : null;
-    $id        = isset($params['id'])       ? $params['id']       : 0;
+    $assign    = isset($params['assign']) ? $params['assign'] : null;
+    $id        = isset($params['id']) ? $params['id'] : 0;
     $idcolumn  = isset($params['idcolumn']) ? $params['idcolumn'] : (is_numeric($id) ? 'id' : 'path');
-    $field     = isset($params['field'])    ? $params['field']    : 'path';
-    $html      = isset($params['html'])     ? $params['html']     : false;
+    $field     = isset($params['field']) ? $params['field'] : 'path';
+    $html      = isset($params['html']) ? $params['html'] : false;
 
     if (!$id) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['category_path', 'id']));

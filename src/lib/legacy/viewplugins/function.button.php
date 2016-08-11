@@ -83,8 +83,8 @@ function smarty_function_button($params, Zikula_View $view)
 
         return false;
     }
-    $type = isset($params['type'])    ? $params['type'] : 'submit';
-    $mode = isset($params['mode'])    ? $params['mode'] : 'button';
+    $type = isset($params['type']) ? $params['type'] : 'submit';
+    $mode = isset($params['mode']) ? $params['mode'] : 'button';
     if (isset($params['name'])) {
         $name = ' name="'.DataUtil::formatForDisplay($params['name']).'"';
     } else {

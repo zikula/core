@@ -96,18 +96,18 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
      */
     public static function loadParameters($list, $includeEmptyElement, $params)
     {
-        $all            = isset($params['all'])         ? $params['all']         : false;
-        $lang           = isset($params['lang'])        ? $params['lang']        : ZLanguage::getLanguageCode();
-        $list->category = isset($params['category'])    ? $params['category']    : 0;
-        $list->editLink = isset($params['editLink'])    ? $params['editLink']    : true;
+        $all            = isset($params['all']) ? $params['all'] : false;
+        $lang           = isset($params['lang']) ? $params['lang'] : ZLanguage::getLanguageCode();
+        $list->category = isset($params['category']) ? $params['category'] : 0;
+        $list->editLink = isset($params['editLink']) ? $params['editLink'] : true;
         $includeLeaf    = isset($params['includeLeaf']) ? $params['includeLeaf'] : true;
         $includeRoot    = isset($params['includeRoot']) ? $params['includeRoot'] : false;
-        $path           = isset($params['path'])        ? $params['path']        : '';
-        $pathfield      = isset($params['pathfield'])   ? $params['pathfield']   : 'path';
-        $recurse        = isset($params['recurse'])     ? $params['recurse']     : true;
-        $relative       = isset($params['relative'])    ? $params['relative']    : true;
-        $sortField      = isset($params['sortField'])   ? $params['sortField']   : 'sort_value';
-        $catField       = isset($params['catField'])    ? $params['catField']    : 'id';
+        $path           = isset($params['path']) ? $params['path'] : '';
+        $pathfield      = isset($params['pathfield']) ? $params['pathfield'] : 'path';
+        $recurse        = isset($params['recurse']) ? $params['recurse'] : true;
+        $relative       = isset($params['relative']) ? $params['relative'] : true;
+        $sortField      = isset($params['sortField']) ? $params['sortField'] : 'sort_value';
+        $catField       = isset($params['catField']) ? $params['catField'] : 'id';
 
         $allCats = [];
 

@@ -37,11 +37,11 @@
  */
 function smarty_function_modfunc($params, Zikula_View $view)
 {
-    $assign  = isset($params['assign'])                  ? $params['assign']  : null;
-    $func    = isset($params['func']) && $params['func'] ? $params['func']    : 'index';
-    $modname = isset($params['modname'])                 ? $params['modname'] : null;
-    $type    = isset($params['type']) && $params['type'] ? $params['type']    : 'user';
-    $return  = isset($params['return'])                  ? $params['return']  : null;
+    $assign  = isset($params['assign']) ? $params['assign'] : null;
+    $func    = isset($params['func']) && $params['func'] ? $params['func'] : 'index';
+    $modname = isset($params['modname']) ? $params['modname'] : null;
+    $type    = isset($params['type']) && $params['type'] ? $params['type'] : 'user';
+    $return  = isset($params['return']) ? $params['return'] : null;
 
     // avoid passing these to ModUtil::func
     unset($params['modname']);

@@ -45,9 +45,9 @@
  */
 function smarty_function_pagegetvar($params, Zikula_View $view)
 {
-    $assign = isset($params['assign']) ? $params['assign']     : null;
-    $html   = isset($params['html'])   ? (bool)$params['html'] : false;
-    $name   = isset($params['name'])   ? $params['name']       : null;
+    $assign = isset($params['assign']) ? $params['assign'] : null;
+    $html   = isset($params['html']) ? (bool)$params['html'] : false;
+    $name   = isset($params['name']) ? $params['name'] : null;
 
     if (!$name) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['pagegetvar', 'name']));
