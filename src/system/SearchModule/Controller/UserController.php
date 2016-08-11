@@ -308,7 +308,7 @@ class UserController extends AbstractController
             'hasAdultContent' => $variableApi->get('ZikulaSearchModule', 'opensearch_adult_content', false)
         ];
 
-        return new PlainResponse($this->renderView('@ZikulaSearchModule/User/opensearch.xml', $templateParameters), Response::HTTP_OK, ['Content-Type' => 'text/xml']);
+        return new PlainResponse($this->renderView('@ZikulaSearchModule/User/opensearch.xml.twig', $templateParameters), Response::HTTP_OK, ['Content-Type' => 'text/xml']);
     }
 
     /**
