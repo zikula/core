@@ -114,7 +114,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 $installerHelper = new InstallerHelper();
                 /** @var \Zikula\BlocksModule\Entity\BlockEntity $block */
                 foreach ($blocks as $block) {
-                    $block->setProperties(unserialize($oldContent[$block->getBid()]));
+                    $block->setProperties($oldContent[$block->getBid()]);
                     $block->setFilters($installerHelper->upgradeFilterArray($block->getFilters()));
                     $block->setBlocktype(preg_match('/.*Block$/', $block->getBkey()) ? substr($block->getBkey(), 0, -5) : $block->getBkey());
                     $block->setBkey($installerHelper->upgradeBkeyToFqClassname($this->container->get('kernel'), $block));
