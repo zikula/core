@@ -33,6 +33,9 @@ install:
     - cd src
     - php app/console zikula:install:start -n --database_user=root --database_name=zk_test --password=12345678 --email=admin@example.com --router:request_context:host=localhost
     - php app/console zikula:install:finish -vvv
+    # attempt to create an upgrade database
+    - mysql -e 'create database zk_upgrade_140;'
+    - mysql -u root --password='' zk_upgrade_140 < ../core14.sql
     - cd ..
 
 # We cannot install Apache2 for now, because this requires sudo mode in which composer takes too long to install the depencencies.

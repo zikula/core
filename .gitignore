@@ -29,3 +29,5 @@
 /src/ztemp/
 
 /.vagrant
+
+!/core14.sql
