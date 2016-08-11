@@ -166,7 +166,7 @@ class MenutreeApi extends \Zikula_AbstractApi
                         'state'     => 1,
                         'lang'      => $lang,
                         'lineno'    => ($flag['category']) ? $catinfo[$cid]['no']++ : $lineno++,
-                        'parent'    => ($flag['category']) ? $catinfo[$cid]['id']   : $parentNode
+                        'parent'    => ($flag['category']) ? $catinfo[$cid]['id'] : $parentNode
                     ]
                 ];
             }

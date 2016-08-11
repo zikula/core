@@ -219,7 +219,7 @@ class CoreExtension extends \Twig_Extension
             return $string;
         }
 
-        return (bool)$string ? __('Yes') :  __('No');
+        return (bool)$string ? __('Yes') : __('No');
     }
 
     /**

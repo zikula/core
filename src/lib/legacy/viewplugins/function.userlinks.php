@@ -29,8 +29,8 @@
  */
 function smarty_function_userlinks($params, Zikula_View $view)
 {
-    $start     = isset($params['start'])     ? $params['start']    : '[';
-    $end       = isset($params['end'])       ? $params['end']      : ']';
+    $start     = isset($params['start']) ? $params['start'] : '[';
+    $end       = isset($params['end']) ? $params['end'] : ']';
     $seperator = isset($params['seperator']) ? $params['seperator'] : '|';
 
     if (UserUtil::isLoggedIn()) {

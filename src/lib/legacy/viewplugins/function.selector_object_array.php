@@ -19,24 +19,24 @@
  */
 function smarty_function_selector_object_array($params, Zikula_View $view)
 {
-    $selectedValue  = (isset($params['selectedValue'])  ? $params['selectedValue']  : 0);
-    $defaultValue   = (isset($params['defaultValue'])   ? $params['defaultValue']   : 0);
-    $defaultText    = (isset($params['defaultText'])    ? $params['defaultText']    : '');
-    $allValue       = (isset($params['allValue'])       ? $params['allValue']       : 0);
-    $allText        = (isset($params['allText'])        ? $params['allText']        : '');
-    $field          = (isset($params['field'])          ? $params['field']          : 'id');
-    $displayField   = (isset($params['displayField'])   ? $params['displayField']   : 'name');
-    $displayField2  = (isset($params['displayField2'])  ? $params['displayField2']  : '');
+    $selectedValue  = (isset($params['selectedValue']) ? $params['selectedValue'] : 0);
+    $defaultValue   = (isset($params['defaultValue']) ? $params['defaultValue'] : 0);
+    $defaultText    = (isset($params['defaultText']) ? $params['defaultText'] : '');
+    $allValue       = (isset($params['allValue']) ? $params['allValue'] : 0);
+    $allText        = (isset($params['allText']) ? $params['allText'] : '');
+    $field          = (isset($params['field']) ? $params['field'] : 'id');
+    $displayField   = (isset($params['displayField']) ? $params['displayField'] : 'name');
+    $displayField2  = (isset($params['displayField2']) ? $params['displayField2'] : '');
     $fieldSeparator = (isset($params['fieldSeparator']) ? $params['fieldSeparator'] : ', ');
-    $name           = (isset($params['name'])           ? $params['name']           : 'selector');
-    $class          = (isset($params['class'])          ? $params['class']          : '');
-    $where          = (isset($params['where'])          ? $params['where']          : '');
-    $sort           = (isset($params['sort'])           ? $params['sort']           : '');
-    $modname        = (isset($params['modname'])        ? $params['modname']        : '');
-    $submit         = (isset($params['submit'])         ? $params['submit']         : false);
-    $disabled       = (isset($params['disabled'])       ? $params['disabled']       : false);
-    $multipleSize   = (isset($params['multipleSize'])   ? $params['multipleSize']   : 1);
-    $entity         = (isset($params['entity'])         ? true                      : false);
+    $name           = (isset($params['name']) ? $params['name'] : 'selector');
+    $class          = (isset($params['class']) ? $params['class'] : '');
+    $where          = (isset($params['where']) ? $params['where'] : '');
+    $sort           = (isset($params['sort']) ? $params['sort'] : '');
+    $modname        = (isset($params['modname']) ? $params['modname'] : '');
+    $submit         = (isset($params['submit']) ? $params['submit'] : false);
+    $disabled       = (isset($params['disabled']) ? $params['disabled'] : false);
+    $multipleSize   = (isset($params['multipleSize']) ? $params['multipleSize'] : 1);
+    $entity         = (isset($params['entity']) ? true : false);
 
     $method = $entity ? 'getSelector_EntityArray' : 'getSelector_ObjectArray';
 

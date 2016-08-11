@@ -48,13 +48,13 @@
  */
 function smarty_function_menutree($params, $smarty)
 {
-    $treeArray          = isset($params['data'])       ? $params['data'] : '';
-    $treeId             = isset($params['id'])         ? $params['id'] : '';
-    $treeClass          = isset($params['class'])      ? $params['class'] : '';
+    $treeArray          = isset($params['data']) ? $params['data'] : '';
+    $treeId             = isset($params['id']) ? $params['id'] : '';
+    $treeClass          = isset($params['class']) ? $params['class'] : '';
     $treeNodePrefix     = isset($params['nodeprefix']) ? $params['nodeprefix'] : '';
     $treeClassPrefix    = isset($params['classprefix']) ? $params['classprefix'] : '';
-    $extended           = isset($params['ext'])        ? $params['ext'] : false;
-    $extendedOpt        = isset($params['extopt'])     ? $params['extopt'] : '';
+    $extended           = isset($params['ext']) ? $params['ext'] : false;
+    $extendedOpt        = isset($params['extopt']) ? $params['extopt'] : '';
     $bootstrap          = !empty($params['bootstrap']) ? true : false;
     if ($extended) {
         $ext_tmp = explode(',', $extendedOpt);

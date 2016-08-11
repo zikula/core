@@ -22,7 +22,7 @@
  */
 function smarty_function_usergettheme($params, Zikula_View $view)
 {
-    $assign = isset($params['assign'])  ? $params['assign']  : null;
+    $assign = isset($params['assign']) ? $params['assign'] : null;
 
     $result = UserUtil::getTheme();
 

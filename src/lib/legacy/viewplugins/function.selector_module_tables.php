@@ -31,16 +31,16 @@
  */
 function smarty_function_selector_module_tables($params, Zikula_View $view)
 {
-    $modname       = isset($params['modname'])       ? $params['modname']        : null;
-    $name          = isset($params['name'])          ? $params['name']           : null;
-    $selectedValue = isset($params['selectedValue']) ? $params['selectedValue']  : 0;
-    $defaultValue  = isset($params['defaultValue'])  ? $params['defaultValue']   : 0;
-    $defaultText   = isset($params['defaultText'])   ? $params['defaultText']    : '';
-    $remove        = isset($params['remove'])        ? $params['remove']         : false;
-    $nStripChars   = isset($params['nStripChars'])   ? $params['nStripChars']    : 0;
-    $submit        = isset($params['submit'])        ? $params['submit']         : false;
-    $disabled      = isset($params['disabled'])      ? $params['disabled']       : false;
-    $multipleSize  = isset($params['multipleSize'])  ? $params['multipleSize']   : 1;
+    $modname       = isset($params['modname']) ? $params['modname'] : null;
+    $name          = isset($params['name']) ? $params['name'] : null;
+    $selectedValue = isset($params['selectedValue']) ? $params['selectedValue'] : 0;
+    $defaultValue  = isset($params['defaultValue']) ? $params['defaultValue'] : 0;
+    $defaultText   = isset($params['defaultText']) ? $params['defaultText'] : '';
+    $remove        = isset($params['remove']) ? $params['remove'] : false;
+    $nStripChars   = isset($params['nStripChars']) ? $params['nStripChars'] : 0;
+    $submit        = isset($params['submit']) ? $params['submit'] : false;
+    $disabled      = isset($params['disabled']) ? $params['disabled'] : false;
+    $multipleSize  = isset($params['multipleSize']) ? $params['multipleSize'] : 1;
 
     return HtmlUtil::getSelector_ModuleTables($modname, $name, $selectedValue, $defaultValue, $defaultText,
                                                $submit, $remove, $disabled, $nStripChars, $multipleSize);

@@ -65,7 +65,7 @@ abstract class AbstractTheme extends AbstractBundle
         $template = $this->config[$realm]['page'];
         $content = '<div id="z-maincontent" class="'
             . ($realm == 'home' ? 'z-homepage' : '')
-            . (isset($moduleName) ? ' z-module-' . strtolower($moduleName)  : '') . '">'
+            . (isset($moduleName) ? ' z-module-' . strtolower($moduleName) : '') . '">'
             . $response->getContent()
             . '</div>';
         $response->setContent($content);

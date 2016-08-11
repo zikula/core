@@ -25,7 +25,7 @@
 function smarty_function_checkpermission($params, Zikula_View $view)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
-    $level  = isset($params['level'])  ? $params['level']  : null;
+    $level  = isset($params['level']) ? $params['level'] : null;
 
     if (isset($params['component'])) {
         $comp = $params['component'];

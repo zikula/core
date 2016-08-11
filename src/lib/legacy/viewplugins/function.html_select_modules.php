@@ -76,8 +76,8 @@ function smarty_function_html_select_modules($params, Zikula_View $view)
     $output = smarty_function_html_options([
         'options'   => $moduleslist,
         'selected'  => isset($params['selected']) ? $params['selected'] : null,
-        'name'      => isset($params['name'])     ? $params['name']     : null,
-        'id'        => isset($params['id'])       ? $params['id']       : null
+        'name'      => isset($params['name']) ? $params['name'] : null,
+        'id'        => isset($params['id']) ? $params['id'] : null
     ], $view);
     if (isset($params['assign']) && !empty($params['assign'])) {
         $view->assign($params['assign'], $output);

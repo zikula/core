@@ -36,7 +36,7 @@ class UserApi extends Zikula_AbstractApi
     public function getuserrootcat($args)
     {
         $returnCategory = isset($args['returnCategory']) ? $args['returnCategory'] : false;
-        $returnField    = isset($args['returnField'])    ? $args['returnField']    : 'id';
+        $returnField    = isset($args['returnField']) ? $args['returnField'] : 'id';
         unset($args);
 
         $userRoot = $this->getVar('userrootcat', 0);

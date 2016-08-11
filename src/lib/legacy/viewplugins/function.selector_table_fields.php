@@ -27,13 +27,13 @@
  */
 function smarty_function_selector_table_fields($params, Zikula_View $view)
 {
-    $modname        = (isset($params['modname'])        ? $params['modname']        : '');
-    $tablename      = (isset($params['tablename'])      ? $params['tablename']      : '');
-    $name           = (isset($params['name'])           ? $params['name']           : '');
-    $selectedValue  = (isset($params['selectedValue'])  ? $params['selectedValue']  : 0);
-    $defaultValue   = (isset($params['defaultValue'])   ? $params['defaultValue']   : 0);
-    $defaultText    = (isset($params['defaultText'])    ? $params['defaultText']    : '');
-    $submit         = (isset($params['submit'])         ? $params['submit']         : false);
+    $modname        = (isset($params['modname']) ? $params['modname'] : '');
+    $tablename      = (isset($params['tablename']) ? $params['tablename'] : '');
+    $name           = (isset($params['name']) ? $params['name'] : '');
+    $selectedValue  = (isset($params['selectedValue']) ? $params['selectedValue'] : 0);
+    $defaultValue   = (isset($params['defaultValue']) ? $params['defaultValue'] : 0);
+    $defaultText    = (isset($params['defaultText']) ? $params['defaultText'] : '');
+    $submit         = (isset($params['submit']) ? $params['submit'] : false);
 
     return HtmlUtil::getSelector_TableFields($modname, $tablename, $name, $selectedValue, $defaultValue, $defaultText, $submit);
 }
