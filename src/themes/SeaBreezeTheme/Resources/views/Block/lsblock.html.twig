@@ -1,9 +1,9 @@
 <!-- Start Left Block Start -->
-{% if title is not empty  %}
-<h3 class="blocktitle">{{ title }}</h3>
-{% endif %}
-<div class="sbLeftContent">
-    <div class="z-block z-blockposition-{{ position|lower }} z-bkey-{{ btype|lower }} z-bid-{{ bid }}">
+<div class="z-block z-blockposition-{{ position|lower }} z-bkey-{{ btype|lower }} z-bid-{{ bid }}">
+    {% if title is not empty  %}
+        <h3 class="blocktitle">{{ title }}</h3>
+    {% endif %}
+    <div class="sbLeftContent">
         {{ content|raw }}
     </div>
 </div>
