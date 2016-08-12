@@ -31,5 +31,6 @@ class ZikulaCoreInstallerExtension extends Extension
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+        $loader->load('validators.xml');
     }
 }

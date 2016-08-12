@@ -37,7 +37,7 @@ install:
     - mysql -e 'create database zk_upgrade_140;'
     - mysql -u root --password='' zk_upgrade_140 < ../core14.sql -v -v -v
     ## run the upgrade from the 140 db
-    - php app/console zikula:upgrade --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='' -vvv
+    - php app/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='' -vvv
     - cd ..
 
 # We cannot install Apache2 for now, because this requires sudo mode in which composer takes too long to install the depencencies.
