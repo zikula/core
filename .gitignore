@@ -30,4 +30,4 @@
 
 /.vagrant
 
-!/core14.sql
+!/test_dbs/*.sql
