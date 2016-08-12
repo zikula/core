@@ -14,10 +14,10 @@ namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
+use Zikula\Bundle\CoreInstallerBundle\Validator\Constraints\ValidPdoConnection;
 
 class DbCredsType extends AbstractType
 {
@@ -113,10 +113,8 @@ class DbCredsType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        // add a constraint to the entire form
-        // thanks to @Matt Daum : http://shout.setfive.com/2013/06/27/symfony2-forms-without-an-entity-and-with-a-conditional-validator/
         $resolver->setDefaults([
-            'constraints' => new Callback(['callback' => ['Zikula\Bundle\CoreInstallerBundle\Validator\CoreInstallerValidator', 'validatePdoConnection']]),
+            'constraints' => new ValidPdoConnection(),
             'csrf_protection' => false,
 //                'csrf_field_name' => '_token',
 //                // a unique key to help generate the secret token
