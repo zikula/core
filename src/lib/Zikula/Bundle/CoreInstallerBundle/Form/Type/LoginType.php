@@ -14,7 +14,6 @@ namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Zikula\Bundle\CoreInstallerBundle\Validator\Constraints\AuthenticateAdminLogin;
 
