@@ -33,10 +33,12 @@ install:
     - cd src
     - php app/console zikula:install:start -n --database_user=root --database_name=zk_test --password=12345678 --email=admin@example.com --router:request_context:host=localhost
     - php app/console zikula:install:finish -vvv
-    # attempt to create an upgrade database for 140
-    - mysql -e 'create database zk_upgrade_140;'
-    - mysql -u root --password='' zk_upgrade_140 < ../core14.sql -v -v -v
-    ## run the upgrade from the 140 db
+    # drop the install test db
+    - mysql -u root --password='' -e 'drop database zk_test'
+    # create an upgrade db for 140
+    - mysql -e 'create database zk_test;'
+    - mysql -u root --password='' zk_test < ../core14.sql -v -v -v
+    # run the upgrade from the 140 db
     - php app/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/' -vvv
     - cd ..
 
