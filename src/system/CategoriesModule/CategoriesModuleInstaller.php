@@ -761,14 +761,14 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
      */
     private function migrateAttributesFromObjectData()
     {
-        $attributes = $this->getEntityManager()->getConnection()->fetchAll("SELECT * FROM objectdata_attributes WHERE object_type = 'categories_category'");
+        $attributes = $this->entityManager->getConnection()->fetchAll("SELECT * FROM objectdata_attributes WHERE object_type = 'categories_category'");
         foreach ($attributes as $attribute) {
-            $category = $this->getEntityManager()->getRepository('ZikulaCategoriesModule:CategoryEntity')
+            $category = $this->entityManager->getRepository('ZikulaCategoriesModule:CategoryEntity')
                 ->findOneBy(['id' => $attribute['object_id']]);
             if (isset($category) && is_object($category)) {
                 $category->setAttribute($attribute['attribute_name'], $attribute['value']);
             }
         }
-        $this->getEntityManager()->flush();
+        $this->entityManager->flush();
     }
 }
