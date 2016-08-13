@@ -40,7 +40,7 @@ install:
     - mysql -e 'drop database zk_test'
     # create an upgrade db for 1310
     - mysql -e 'create database zk_test;'
-    - mysql zk_test < ../test_dbs/core1310.sql -v -v -v
+    - mysql zk_test < ../test_dbs/core1310.sql
     # run the upgrade from the 1310 db
     - php app/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/' -vvv
 
@@ -48,7 +48,7 @@ install:
     - mysql -e 'drop database zk_test'
     # create an upgrade db for 140
     - mysql -e 'create database zk_test;'
-    - mysql zk_test < ../test_dbs/core140.sql -v -v -v
+    - mysql zk_test < ../test_dbs/core140.sql
     # run the upgrade from the 140 db
     - php app/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/' -vvv
 
@@ -56,7 +56,7 @@ install:
     - mysql -e 'drop database zk_test'
     # create an upgrade db for 141
     - mysql -e 'create database zk_test;'
-    - mysql zk_test < ../test_dbs/core141.sql -v -v -v
+    - mysql zk_test < ../test_dbs/core141.sql
     # run the upgrade from the 141 db
     - php app/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/' -vvv
 
@@ -64,7 +64,7 @@ install:
     - mysql -e 'drop database zk_test'
     # create an upgrade db for 142
     - mysql -e 'create database zk_test;'
-    - mysql zk_test < ../test_dbs/core142.sql -v -v -v
+    - mysql zk_test < ../test_dbs/core142.sql
     # run the upgrade from the 142 db
     - php app/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/' -vvv
 
