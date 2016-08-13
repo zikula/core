@@ -43,6 +43,9 @@ apt-get -y install php5 apache2 libapache2-mod-php5 php5-curl php5-gd php5-mcryp
 echo -e "\n--- Enabling mod-rewrite ---\n"
 a2enmod rewrite > /dev/null 2>&1
 
+echo -e "\n--- Disabling /javascript override ---\n"
+a2disconf javascript-common
+
 echo -e "\n--- Allowing Apache override to all ---\n"
 sed -i "s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
 
