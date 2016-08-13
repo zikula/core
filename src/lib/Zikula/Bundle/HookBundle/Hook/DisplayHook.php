@@ -42,10 +42,12 @@ class DisplayHook extends Hook
      * Add response.
      *
      * @param DisplayHookResponse $response
+     * 
+     * @return DisplayHookResponse
      */
     public function setResponse(DisplayHookResponse $response)
     {
-        $this->responses[$response->getArea()] = $response;
+        return $this->responses[$response->getArea()] = $response;
     }
 
     /**
