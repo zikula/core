@@ -133,22 +133,7 @@ class InitStage implements StageInterface, InjectContainerInterface
 
     private function upgradeUsersModule()
     {
-        // $oldModuleInfo = \ModUtil::getInfoFromName('ZikulaUsersModule');
         $usersModuleEntity = $this->container->get('zikula_extensions_module.extension_repository')->findOneBy(['name' => 'ZikulaUsersModule']);
         $this->container->get('zikula_extensions_module.extension_helper')->upgrade($usersModuleEntity);
-//        /** @var \Zikula\Core\AbstractBundle $module */
-//        $module = $this->container->get('kernel')->getModule('ZikulaUsersModule');
-//        $installerClass = $module->getInstallerClass();
-//        /** @var \Zikula\Core\AbstractExtensionInstaller $installerInstance */
-//        $installerInstance = new $installerClass();
-//        $installerInstance->setBundle($module);
-//        $installerInstance->setContainer($this->container);
-//        $installerInstance->upgrade($oldModuleInfo['version']);
-//        $versionInstance = new \Zikula\UsersModule\UsersModuleVersion($module);
-//        $metaData = $versionInstance->getMetaData();
-//        $item = $this->container->get('doctrine.entitymanager')->getRepository(\Zikula\ExtensionsModule\Api\AdminApi::EXTENSION_ENTITY)->find($oldModuleInfo['id']);
-//        $item['version'] = $metaData['version'];
-//        $item['state'] = \ModUtil::STATE_ACTIVE;
-//        $this->container->get('doctrine.entitymanager')->flush();
     }
 }
