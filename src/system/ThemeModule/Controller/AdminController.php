@@ -39,23 +39,6 @@ use Zikula\Core\Controller\AbstractController;
 class AdminController extends AbstractController
 {
     /**
-     * the theme container
-     */
-    protected $container;
-
-    /**
-     * Post initialise.
-     *
-     * @return void
-     */
-    protected function postInitialize()
-    {
-        // In this controller we do not want caching.
-        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
-        $this->container = $this->getContainer();
-    }
-
-    /**
      * @Route("")
      *
      * the main admin function
@@ -108,15 +91,15 @@ class AdminController extends AbstractController
             if (!file_exists($zpath) || is_writable($zpath)) {
                 ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'createrunningconfig', ['themename' => $themeinfo['name']]);
 
-                $this->addFlash('status', $this->__f('Notice: The changes made via Admin Panel will be saved on \'%1$s\' because it seems that the .ini files on \'%2$s\' are not writable.', [$zpath, $tpath]));
+                $this->addFlash('status', $this->__f('Notice: The changes made via Admin Panel will be saved on \'%zpath%\' because it seems that the .ini files on \'%tpath%\' are not writable.', ['%zpath%' => $zpath, '%tpath%' => $tpath]));
             } else {
-                $this->addFlash('error', $this->__f('Error! Cannot write any configuration changes. Make sure that the .ini files on \'%1$s\' or \'%2$s\', and the folder itself, are writable.', [$tpath, $zpath]));
+                $this->addFlash('error', $this->__f('Error! Cannot write any configuration changes. Make sure that the .ini files on \'%tpath%\' or \'%zpath%\', and the folder itself, are writable.', ['%tpath%' => $tpath, '%zpath%' => $zpath]));
             }
         } else {
-            $this->addFlash('status', $this->__f('Notice: Seems that your %1$s\'s .ini files are writable. Be sure that there are no .ini files on \'%2$s\' because if so, the Theme Engine will consider them and not your %1$s\'s ones.', [$themeinfo['name'], $zpath]));
+            $this->addFlash('status', $this->__f('Notice: Seems that your %theme%\'s .ini files are writable. Be sure that there are no .ini files on \'%zpath%\' because if so, the Theme Engine will consider them and not your %theme%\'s ones.', ['%theme%' => $themeinfo['name'], '%zpath%' => $zpath]));
         }
 
-        $this->addFlash('status', $this->__f("If the system cannot write on any .ini file, the changes will be saved on '%s' and the Theme Engine will use it.", $zpath));
+        $this->addFlash('status', $this->__f('If the system cannot write on any .ini file, the changes will be saved on \'%zpath%\' and the Theme Engine will use it.', ['%zpath%' => $zpath]));
     }
 
     /**
@@ -145,10 +128,14 @@ class AdminController extends AbstractController
         // check that we have writable files
         $this->checkRunningConfig($request, $themeinfo);
 
+        $legacyView = Zikula_View::getInstance('ZikulaThemeModule');
+
         return new Response(
-                $this->view->assign('themename', $themename)
-                    ->assign('themeinfo', $themeinfo)
-                    ->fetch('Admin/modify.tpl'));
+            $legacyView
+                ->assign('themename', $themename)
+                ->assign('themeinfo', $themeinfo)
+                ->fetch('Admin/modify.tpl')
+        );
     }
 
     /**
@@ -240,11 +227,16 @@ class AdminController extends AbstractController
         // check that we have writable files
         $this->checkRunningConfig($request, $themeinfo);
 
-        return new Response($this->view->assign('variables', $variables)
+        $legacyView = Zikula_View::getInstance('ZikulaThemeModule');
+
+        return new Response(
+            $legacyView
+                ->assign('variables', $variables)
                 ->assign('themename', $themename)
                 ->assign('themeinfo', $themeinfo)
                 ->assign('filename', $filename)
-                ->fetch('Admin/variables.tpl'));
+                ->fetch('Admin/variables.tpl')
+        );
     }
 
     /**
@@ -363,12 +355,15 @@ class AdminController extends AbstractController
         // check that we have writable files
         $this->checkRunningConfig($request, $themeinfo);
 
+        $legacyView = Zikula_View::getInstance('ZikulaThemeModule');
+
         // assign palettes, themename, themeinfo and return output
         return new Response(
-            $this->view->assign('palettes', ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpalettes', ['theme' => $themename]))
-                       ->assign('themename', $themename)
-                       ->assign('themeinfo', $themeinfo)
-                       ->fetch('Admin/palettes.tpl')
+            $legacyView
+                ->assign('palettes', ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpalettes', ['theme' => $themename]))
+                ->assign('themename', $themename)
+                ->assign('themeinfo', $themeinfo)
+                ->fetch('Admin/palettes.tpl')
         );
     }
 
@@ -517,7 +512,7 @@ class AdminController extends AbstractController
             // checks for non-standard pagetypes
             if (strpos($name, '*') === 0 && !isset($pagetypes[$name])) {
                 //! Pages inside a specific Controller type (editor, moderator, user)
-                $pagetypes[$name] = $this->__f('%s type pages', ucfirst(substr($name, 1)));
+                $pagetypes[$name] = $this->__f('%s type pages', ['%s' => ucfirst(substr($name, 1))]);
             }
             // check if the file exists
             if (isset($theme) && ($exists = file_exists($theme->getConfigPath() . "/$pageconfiguration[file]"))) {
@@ -535,8 +530,11 @@ class AdminController extends AbstractController
         // check that we have writable files
         $this->checkRunningConfig($request, $themeinfo);
 
+        $legacyView = Zikula_View::getInstance('ZikulaThemeModule');
+
         // assign the output vars
-        $this->view->assign('themename', $themename)
+        $legacyView
+            ->assign('themename', $themename)
             ->assign('themeinfo', $themeinfo)
             ->assign('pagetypes', $pagetypes)
             ->assign('modules', $mods)
@@ -544,7 +542,7 @@ class AdminController extends AbstractController
             ->assign('pageconfigs', $pageconfigfiles)
             ->assign('existingconfigs', $existingconfigs);
 
-        return new Response($this->view->fetch('Admin/pageconfigurations.tpl'));
+        return new Response($legacyView->fetch('Admin/pageconfigurations.tpl'));
     }
 
     /**
@@ -634,9 +632,11 @@ class AdminController extends AbstractController
             $pageconfiguration['filters']['postfilters'] = '';
         }
 
-        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
+        $legacyView = Zikula_View::getInstance('ZikulaThemeModule', false);
 
-        return new Response($this->view->assign('filename', $filename)
+        return new Response(
+            $legacyView
+                ->assign('filename', $filename)
                 ->assign('themename', $themename)
                 ->assign('themeinfo', $themeinfo)
                 ->assign('moduletemplates', ModUtil::apiFunc('ZikulaThemeModule', 'user', 'gettemplates', ['theme' => $themename]))
@@ -646,7 +646,8 @@ class AdminController extends AbstractController
                 ->assign('allblocks', $allblocks)
                 ->assign('blocks', $blocks)
                 ->assign('pageconfiguration', $pageconfiguration)
-                ->fetch('Admin/modifypageconfigtemplates.tpl'));
+                ->fetch('Admin/modifypageconfigtemplates.tpl')
+        );
     }
 
     /**
@@ -754,12 +755,14 @@ class AdminController extends AbstractController
             return $filters;
         }
 
+        $legacyView = Zikula_View::getInstance('ZikulaThemeModule');
+
         $ostype = DataUtil::formatForOS($type);
 
         $filters = explode(',', $filters);
         $newfilters = [];
         foreach ($filters as $filter) {
-            foreach ($this->view->plugins_dir as $plugindir) {
+            foreach ($legacyView->plugins_dir as $plugindir) {
                 if (file_exists($plugindir .'/'. $ostype .'.'. DataUtil::formatForOS($filter) .'.php')) {
                     $newfilters[] = $filter;
                     break;
@@ -769,7 +772,7 @@ class AdminController extends AbstractController
 
         $leftover = array_diff($filters, $newfilters);
         if (count($leftover) > 0) {
-            throw new \RuntimeException($this->__f('Error! Removed unknown \'%1$s\': \'%2$s\'.', [DataUtil::formatForDisplay($type), DataUtil::formatForDisplay(implode(',', $leftover))]));
+            throw new \RuntimeException($this->__f('Error! Removed unknown \'%type%\': \'%leftovers%\'.', ['%type%' => DataUtil::formatForDisplay($type), '%leftovers%' => DataUtil::formatForDisplay(implode(',', $leftover))]));
         }
 
         return implode(',', $newfilters);
@@ -825,7 +828,7 @@ class AdminController extends AbstractController
         foreach ($pageconfigurations as $name => $pageconfiguration) {
             if (strpos($name, '*') === 0 && !isset($pagetypes[$name])) {
                 //! Pages inside a specific Controller type (editor, moderator, user)
-                $pagetypes[$name] = $this->__f('%s type pages', ucfirst(substr($name, 1)));
+                $pagetypes[$name] = $this->__f('%s type pages', ['%s' => ucfirst(substr($name, 1))]);
             }
         }
 
@@ -851,8 +854,11 @@ class AdminController extends AbstractController
         // gets the available page configurations on the theme
         $existingconfigs = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getconfigurations', ['theme' => $themename]);
 
+        $legacyView = Zikula_View::getInstance('ZikulaThemeModule');
+
         // assign the page config assignment name, theme name and theme info
-        $this->view->assign($pageconfigassignment)
+        $legacyView
+            ->assign($pageconfigassignment)
             ->assign('existingconfigs', $existingconfigs)
             ->assign('pcname', $pcname)
             ->assign('themename', $themename)
@@ -861,7 +867,7 @@ class AdminController extends AbstractController
             ->assign('modules', $mods)
             ->assign('filename', $pageconfigurations[$pcname]['file']);
 
-        return new Response($this->view->fetch('Admin/modifypageconfigurationassignment.tpl'));
+        return new Response($legacyView->fetch('Admin/modifypageconfigurationassignment.tpl'));
     }
 
     /**
@@ -991,16 +997,18 @@ class AdminController extends AbstractController
             throw new AccessDeniedException();
         }
 
+        $legacyView = Zikula_View::getInstance('ZikulaThemeModule');
+
         // Check for confirmation.
         if (empty($confirmation)) {
             // No confirmation yet
             // Assign the theme info
-            $this->view->assign($themeinfo);
+            $legacyView->assign($themeinfo);
 
             // Assign the page configuration name
-            $this->view->assign('pcname', $pcname);
+            $legacyView->assign('pcname', $pcname);
 
-            return new Response($this->view->fetch('Admin/deletepageconfigurationassignment.tpl'));
+            return new Response($legacyView->fetch('Admin/deletepageconfigurationassignment.tpl'));
         }
 
         // If we get here it means that the user has confirmed the action
