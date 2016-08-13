@@ -69,10 +69,10 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 $this->hookApi->installSubscriberHooks($this->bundle->getMetaData());
             case '3.8.2':
             case '3.9.0':
-                $blocks = $this->entityManager->getRepository('ZikulaBlocksModule:BlockEntity')->findAll();
-                /** @var \Zikula\BlocksModule\Entity\BlockEntity $block */
+                $sql = "SELECT * FROM blocks";
+                $blocks = $this->entityManager->getConnection()->fetchAll($sql);
                 foreach ($blocks as $block) {
-                    $content = $block->getContent();
+                    $content = $block['content'];
                     if (\DataUtil::is_serialized($content)) {
                         $content = unserialize($content);
                         foreach ($content as $k => $item) {
@@ -86,10 +86,9 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                                 }
                             }
                         }
-                        $block->setContent(serialize($content));
+                        $this->entityManager->getConnection()->executeUpdate("UPDATE blocks SET content=? WHERE bid=?", [serialize($content), $block['bid']]);
                     }
                 }
-                $this->entityManager->flush();
 
                 // check if request is available (#2073)
                 $templateWarning = $this->__('Warning: Block template locations modified, you may need to fix your template overrides if you have any.');
