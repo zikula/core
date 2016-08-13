@@ -155,6 +155,9 @@ class AjaxUpgradeController extends AbstractController
 
     private function from140to141()
     {
+        if (version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, '1.4.1', '>=')) {
+            return true;
+        }
         // perform the following SQL
 //ALTER TABLE categories_category ADD CONSTRAINT FK_D0B2B0F88304AF18 FOREIGN KEY (cr_uid) REFERENCES users (uid);
 //ALTER TABLE categories_category ADD CONSTRAINT FK_D0B2B0F8C072C1DD FOREIGN KEY (lu_uid) REFERENCES users (uid);
@@ -175,6 +178,9 @@ class AjaxUpgradeController extends AbstractController
 
     private function from141to142()
     {
+        if (version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, '1.4.2', '>=')) {
+            return true;
+        }
         // do some clean up
         \SessionUtil::delVar('interactive_init');
         \SessionUtil::delVar('interactive_remove');
@@ -185,6 +191,9 @@ class AjaxUpgradeController extends AbstractController
 
     private function from142to143()
     {
+        if (version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, '1.4.3', '>=')) {
+            return true;
+        }
         // install ZAuth
         $kernel = $this->container->get('kernel');
         $zAuthModuleName = 'ZikulaZAuthModule';
@@ -229,10 +238,6 @@ class AjaxUpgradeController extends AbstractController
             \System::setVar('system_identifier', str_replace('.', '', uniqid(rand(1000000000, 9999999999), true)));
         }
 
-        // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
-        \System::setVar('Version_Num', \Zikula_Core::VERSION_NUM);
-        \System::setVar('language_i18n', \ZLanguage::getLanguageCode());
-
         // add new configuration parameters
         $params = $this->yamlManager->getParameters();
         unset($params['username'], $params['password']);
@@ -248,6 +253,12 @@ class AjaxUpgradeController extends AbstractController
         $params['router.request_context.scheme'] = isset($params['router.request_context.scheme']) ? $params['router.request_context.scheme'] : 'http';
         $params['router.request_context.base_url'] = isset($params['router.request_context.base_url']) ? $params['router.request_context.base_url'] : $this->container->get('request')->getBasePath();
         $this->yamlManager->setParameters($params);
+
+        // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
+        \System::setVar('Version_Num', \Zikula_Core::VERSION_NUM);
+        \System::setVar('Version_ID', \Zikula_Core::VERSION_ID);
+        \System::setVar('Version_Sub', \Zikula_Core::VERSION_SUB);
+        \System::setVar('language_i18n', \ZLanguage::getLanguageCode());
 
         return true;
     }
