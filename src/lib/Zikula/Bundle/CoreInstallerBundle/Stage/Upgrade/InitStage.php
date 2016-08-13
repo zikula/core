@@ -133,8 +133,8 @@ class InitStage implements StageInterface, InjectContainerInterface
 
     private function upgradeUsersModule()
     {
-//        $oldModuleInfo = \ModUtil::getInfoFromName('ZikulaUsersModule');
-        $usersModuleEntity = $this->container->get('zikula_extensions_module.extension_repository')->findBy(['name' => 'ZikulaUsersModule']);
+        // $oldModuleInfo = \ModUtil::getInfoFromName('ZikulaUsersModule');
+        $usersModuleEntity = $this->container->get('zikula_extensions_module.extension_repository')->findOneBy(['name' => 'ZikulaUsersModule']);
         $this->container->get('zikula_extensions_module.extension_helper')->upgrade($usersModuleEntity);
 //        /** @var \Zikula\Core\AbstractBundle $module */
 //        $module = $this->container->get('kernel')->getModule('ZikulaUsersModule');
