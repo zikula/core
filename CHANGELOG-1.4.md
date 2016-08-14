@@ -15,6 +15,7 @@ CHANGELOG - ZIKULA 1.4.x
 
  - Fixes:
     - Fix error on creation of new ExtendedMenublock.
+    - Fix display of blocks using theme overrides (#2872).
 
  - Features:
     - Add help text, alert text and input groups to forms utilizing the provided form themes (#2846, #2847).
