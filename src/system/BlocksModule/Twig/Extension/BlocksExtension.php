@@ -41,18 +41,30 @@ class BlocksExtension extends \Twig_Extension
     private $extensionApi;
 
     /**
+     * @var \Twig_Loader_Filesystem
+     */
+    private $loader;
+
+    /**
      * BlocksExtension constructor.
      * @param BlockApi $blockApi
      * @param BlockFilterApi $blockFilterApi
      * @param Engine $themeEngine
      * @param ExtensionApi $extensionApi
+     * @param \Twig_Loader_Filesystem $loader
      */
-    public function __construct(BlockApi $blockApi, BlockFilterApi $blockFilterApi, Engine $themeEngine, ExtensionApi $extensionApi)
-    {
+    public function __construct(
+        BlockApi $blockApi,
+        BlockFilterApi $blockFilterApi,
+        Engine $themeEngine,
+        ExtensionApi $extensionApi,
+        \Twig_Loader_Filesystem $loader
+    ) {
         $this->blockApi = $blockApi;
         $this->blockFilter = $blockFilterApi;
         $this->themeEngine = $themeEngine;
         $this->extensionApi = $extensionApi;
+        $this->loader = $loader;
     }
 
     /**
@@ -121,6 +133,21 @@ class BlocksExtension extends \Twig_Extension
             || (!$block->getActive())
             || (!$this->blockFilter->isDisplayable($block))) {
             return '';
+        }
+
+        // add theme path to twig loader for theme overrides using namespace notation (e.g. @BundleName/foo)
+        // this duplicates functionality from \Zikula\ThemeModule\EventListener\TemplatePathOverrideListener::setUpThemePathOverrides
+        // but because blockHandlers don't call (and are not considered) a controller, that listener doesn't get called.
+        $theme = $this->themeEngine->getTheme();
+        $bundleName = $block->getModule()->getName();
+        if ($theme) {
+            $overridePath = $theme->getPath() . '/Resources/' . $bundleName . '/views';
+            if (is_readable($overridePath)) {
+                $paths = $this->loader->getPaths($bundleName);
+                // inject themeOverridePath before the original path in the array
+                array_splice($paths, count($paths) - 1, 0, [$overridePath]);
+                $this->loader->setPaths($paths, $bundleName);
+            }
         }
 
         $blockInstance = $this->blockApi->createInstanceFromBKey($block->getBkey());
