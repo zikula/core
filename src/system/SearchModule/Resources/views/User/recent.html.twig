@@ -16,7 +16,7 @@
         <tr>
             <td><a href="{{ path('zikulasearchmodule_user_search', { q: recentSearch.search }) }}">{{ recentSearch.search|replace({' ': ', '}) }}</a></td>
             <td>{{ recentSearch.count }}</td>
-            <td>{{ recentSearch.date->getTimestamp()|localizeddate('short', 'none') }}</td>
+            <td>{{ recentSearch.date.timestamp|localizeddate('short', 'none') }}</td>
         </tr>
         {% else %}
             <tr class="table table-borderedempty"><td colspan="3">{{ __('No items found.') }}</td></tr>
