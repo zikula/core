@@ -11,7 +11,7 @@
 
 use Zikula_Request_Http as Request;
 
-include 'lib/bootstrap.php';
+require 'lib/bootstrap.php';
 
 $request = Request::createFromGlobals();
 

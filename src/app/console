@@ -3,42 +3,33 @@
 
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Debug\Debug;
-use Symfony\Component\Yaml\Yaml;
 use Zikula\Bundle\CoreBundle\Console\Application;
 
-date_default_timezone_set(date_default_timezone_get()); // force tz to be set
 set_time_limit(0);
 
-$loader = require __DIR__.'/autoload.php';
+require __DIR__.'/../lib/zikula.php';
 
-$kernelConfig = Yaml::parse(file_get_contents(__DIR__.'/../app/config/parameters.yml'));
+$getZikulaEnv = function(ArgvInput $input) {
+    $defaultEnv = $input->getParameterOption(['--env', '-e'], getenv('ZIKULA_ENV') ?: 'dev');
+    // prefer install and upgrade commands default to prod environment
+    $isInstallUpgradeCommand = ((strpos($input->getFirstArgument(), 'zikula:install') !== false)
+        || (strpos($input->getFirstArgument(), 'zikula:upgrade') !== false));
+    $env = $isInstallUpgradeCommand ? 'prod' : $defaultEnv;
+    return $env;
+};
 
-if (is_readable($file = __DIR__.'/../app/config/custom_parameters.yml')) {
-    $kernelConfig = array_merge($kernelConfig, Yaml::parse(file_get_contents($file)));
-}
+$input = new ArgvInput();
+$env = $getZikulaEnv($input);
+$debug = getenv('ZIKULA_DEBUG') !== '0' && !$input->hasParameterOption(['--no-debug', '']) && 'prod' !== $env;
 
-$kernelConfig = $kernelConfig['parameters'];
-
-if ('prod' !== $kernelConfig['env']) {
+if ($debug) {
     Debug::enable();
 }
 
-if ((isset($kernelConfig['umask'])) && (!is_null($kernelConfig['umask']))) {
-    umask($kernelConfig['umask']);
-}
-
-require_once __DIR__.'/ZikulaKernel.php';
-
-$input = new ArgvInput();
-$defaultEnv = $input->getParameterOption(['--env', '-e'], getenv('ZIKULA_ENV') ?: 'dev');
-// prefer install and upgrade commands default to prod environment
-$isInstallUpgradeCommand = ((strpos($input->getFirstArgument(), 'zikula:install') !== false)
-    || (strpos($input->getFirstArgument(), 'zikula:upgrade') !== false));
-$env = $isInstallUpgradeCommand ? 'prod' : $defaultEnv;
-
-$debug = getenv('ZIKULA_DEBUG') !== '0' && !$input->hasParameterOption(['--no-debug', '']) && 'prod' !== $env;
-
 $kernel = new ZikulaKernel($env, $debug);
+$kernel->boot();
+
+require __DIR__.'/../lib/core.php';
 
 $application = new Application($kernel);
 $application->run($input);
