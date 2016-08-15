@@ -25,7 +25,6 @@ Vagrant.configure(2) do |config|
   # information on available options.
   config.vm.provider :virtualbox do |v|
       v.memory = 2048
-      v.name = "Zikula Core"
       v.cpus = 1
   end
 
