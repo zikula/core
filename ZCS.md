@@ -5,14 +5,14 @@ Communicate!
 ------------
 
 Be sure to join the Slack channel (#zcs) and communicate about what you are working on. We don't want people to double
-up and work on the same problems. Good communication will help make the Sprint more efficient and effective.
+up and work on the same problems. Good communication will help make the Sprint more efficient and effective. Slack is a communication software used by Zikula contributors, you can find it at https://slack.com
 
 
 How can I help?
 ---------------
 
  - Install Zikula Core-1.4.3. Download the latest build here: http://ci.zikula.org/job/Zikula_Core-1.4.3/
- - Follow the instuctions to install. Evaluate the instructions. Accurate?
+ - Follow the instructions to install. Evaluate the instructions. Accurate?
  - Following successful installation, click on **every** link you can find. Are the results what you expect?
  - Find and submit **every** form you can find in the core. Are the results what you expect?
  - Perform an upgrade from an existing DB. Did it work? Issues? Again - instructions clear?
