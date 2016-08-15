@@ -288,6 +288,10 @@ class PageUtil
             $_pageVars[$varname]['contents'] = $value;
         }
 
+        // provide new value to Twig theme engine
+        $themePageVars = ServiceUtil::get('zikula_core.common.theme.pagevars');
+        $themePageVars->set($varname, $_pageVars[$varname]['contents']);
+
         return true;
     }
 
@@ -387,6 +391,10 @@ class PageUtil
         } else {
             $_pageVars[$varname]['contents'] = $value;
         }
+
+        // provide new value to Twig theme engine
+        $themePageVars = ServiceUtil::get('zikula_core.common.theme.pagevars');
+        $themePageVars->set($varname, $_pageVars[$varname]['contents']);
 
         return true;
     }
