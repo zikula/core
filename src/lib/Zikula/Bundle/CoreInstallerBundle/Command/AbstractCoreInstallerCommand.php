@@ -92,29 +92,9 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
         ]
     ];
 
-    protected function bootstrap($disableSessions = true, $loadZikulaCore = true, $fakeRequest = true)
+    protected function bootstrap($disableSessions = true, $fakeRequest = true)
     {
         define('_ZINSTALLVER', \Zikula_Core::VERSION_NUM);
-        $kernel = $this->getContainer()->get('kernel');
-        $loader = require $kernel->getRootDir() . '/autoload.php';
-        \ZLoader::register($loader);
-
-        if ($loadZikulaCore && !$this->getContainer()->has('zikula')) {
-            $core = new Zikula_Core();
-            $core->setKernel($kernel);
-            $core->boot();
-
-            foreach ($GLOBALS['ZConfig'] as $config) {
-                $core->getContainer()->loadArguments($config);
-            }
-            $GLOBALS['ZConfig']['System']['temp'] = $core->getContainer()->getParameter('temp_dir');
-            $GLOBALS['ZConfig']['System']['datadir'] = $core->getContainer()->getParameter('datadir');
-            $GLOBALS['ZConfig']['System']['system.chmod_dir'] = $core->getContainer()->getParameter('system.chmod_dir');
-
-            \ServiceUtil::getManager($core);
-            \EventUtil::getManager($core);
-        }
-
         if ($disableSessions) {
             // Disable sessions.
             $this->getContainer()->set('session.storage', new MockArraySessionStorage());
