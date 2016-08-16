@@ -7,7 +7,8 @@ use Zikula\Bundle\CoreBundle\Console\Application;
 
 set_time_limit(0);
 
-require __DIR__.'/../lib/autoload.php';
+require __DIR__.'/autoload.php';
+require __DIR__.'/ZikulaKernel.php';
 
 $getZikulaEnv = function(ArgvInput $input) {
     $defaultEnv = $input->getParameterOption(['--env', '-e'], getenv('ZIKULA_ENV') ?: 'dev');

@@ -12,7 +12,8 @@
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\Yaml\Yaml;
 
-require __DIR__.'/autoload.php';
+require __DIR__.'/../app/autoload.php';
+require __DIR__.'/../app/ZikulaKernel.php';
 
 $kernelConfig = Yaml::parse(file_get_contents(__DIR__.'/../app/config/parameters.yml'));
 if (is_readable($file = __DIR__.'/../app/config/custom_parameters.yml')) {
