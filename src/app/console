@@ -7,7 +7,7 @@ use Zikula\Bundle\CoreBundle\Console\Application;
 
 set_time_limit(0);
 
-require __DIR__.'/../lib/zikula.php';
+require __DIR__.'/../lib/autoload.php';
 
 $getZikulaEnv = function(ArgvInput $input) {
     $defaultEnv = $input->getParameterOption(['--env', '-e'], getenv('ZIKULA_ENV') ?: 'dev');
@@ -29,6 +29,7 @@ if ($debug) {
 $kernel = new ZikulaKernel($env, $debug);
 $kernel->boot();
 
+// legacy handling
 require __DIR__.'/../lib/core.php';
 
 $application = new Application($kernel);

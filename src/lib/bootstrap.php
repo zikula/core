@@ -12,7 +12,7 @@
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\Yaml\Yaml;
 
-require __DIR__.'/zikula.php';
+require __DIR__.'/autoload.php';
 
 $kernelConfig = Yaml::parse(file_get_contents(__DIR__.'/../app/config/parameters.yml'));
 if (is_readable($file = __DIR__.'/../app/config/custom_parameters.yml')) {
@@ -30,4 +30,5 @@ if ((isset($kernelConfig['umask'])) && (!is_null($kernelConfig['umask']))) {
 $kernel = new ZikulaKernel($kernelConfig['env'], $kernelConfig['debug']);
 $kernel->boot();
 
+// legacy handling
 require __DIR__.'/core.php';
