@@ -30,7 +30,7 @@ class UserSessionEntity extends EntityAccess
      * Session ID: Primary identifier
      *
      * @ORM\Id
-     * @ORM\Column(type="string", length=40)
+     * @ORM\Column(type="string", length=60)
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $sessid;

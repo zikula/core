@@ -130,6 +130,8 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
                 // expire all sessions so everyone has to login again (to force migration)
                 $this->entityManager->createQuery('DELETE FROM Zikula\UsersModule\Entity\UserSessionEntity')->execute();
             case '3.0.0':
+                $this->schemaTool->update(['Zikula\UsersModule\Entity\UserSessionEntity']);
+            case '3.0.1':
                 // current version
         }
 
