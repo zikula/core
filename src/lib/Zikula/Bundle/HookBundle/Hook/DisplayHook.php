@@ -42,7 +42,7 @@ class DisplayHook extends Hook
      * Add response.
      *
      * @param DisplayHookResponse $response
-     * 
+     *
      * @return DisplayHookResponse
      */
     public function setResponse(DisplayHookResponse $response)
