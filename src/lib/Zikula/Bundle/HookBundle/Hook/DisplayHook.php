@@ -21,7 +21,7 @@ class DisplayHook extends Hook
     /**
      * Responses.
      *
-     * @var array
+     * @var DisplayHookResponse[]
      */
     private $responses = [];
 
@@ -43,7 +43,7 @@ class DisplayHook extends Hook
      *
      * @param DisplayHookResponse $response
      *
-     * @return mixed Data property
+     * @return DisplayHookResponse
      */
     public function setResponse(DisplayHookResponse $response)
     {
@@ -51,9 +51,9 @@ class DisplayHook extends Hook
     }
 
     /**
-     * Set data.
+     * Get responses.
      *
-     * @return array of DisplayHookResponse
+     * @return DisplayHookResponse[]
      */
     public function getResponses()
     {

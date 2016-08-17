@@ -26,28 +26,27 @@ class DisplayHookResponse
     protected $area;
 
     /**
-     * @var string The rendered response
+     * @var string The response content
      */
-    protected $view;
+    protected $content;
 
     /**
      * Constructor.
      *
      * @param string $area Name of this response
-     * @param string|Zikula_View $view string or Zikula View instance
+     * @param string|Zikula_View $content Response content (or Zikula View instance @deprecated)
      * @param string $template Template, in the context of the Zikula_View. @deprecated argument
      *   The third argument in the method will be removed in Core-2.0
      */
-    public function __construct($area, $view, $template = null)
+    public function __construct($area, $content, $template = null)
     {
-        $this->area = $area;
-        if (is_object($view) && ($view instanceof Zikula_View) && !empty($template)) {
+        if (is_object($content) && ($content instanceof Zikula_View) && !empty($template)) {
             // This is a BC layer to allow old construction methods to work.
-            // remove this check in Core-2.0 and simply set the view
-            $this->view = $view->fetch($template);
-        } else {
-            $this->view = $view;
+            // remove this if condition in Core-2.0
+            $content = $content->fetch($template);
         }
+        $this->content = $content;
+        $this->area = $area;
     }
 
     /**
@@ -61,12 +60,12 @@ class DisplayHookResponse
     }
 
     /**
-     * Render the hook's output.
+     * Get the response content.
      *
      * @return string
      */
     public function __toString()
     {
-        return $this->view;
+        return $this->content;
     }
 }
