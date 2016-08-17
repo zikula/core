@@ -18,13 +18,12 @@
 <a href="#zikula-admin-hiddenpanel-menu"><i class="fa fa-bars" title="{{ __("Show administration panel") }}"></i></a>
 <nav id="zikula-admin-hiddenpanel-menu">
     <div class="text-left">
-        <h2><img src="{{ asset('bundles/core/images/logo.gif') }}" style="height: 28px"
-                 alt="{{ __('Administration') }}"> {{ __('Administration') }}</h2>
+        <h2><img src="{{ asset('bundles/core/images/logo.gif') }}" style="height: 28px" alt="{{ __('Administration') }}"> {{ __('Administration') }}</h2>
         <ul>
             {% for module in adminMenu %}
                 <li{% if caller._zkModule == module.modname %} class="selected"{% endif %}>
                     <a href="{{ module.menutexturl }}">
-                        <img src="{{ module.icon }}" style="height:18px;"/> {{ module.menutext }}
+                        <img src="{{ module.icon }}" alt="{{ module.menutext|e('html_attr') }}" style="height: 18px" /> {{ module.menutext }}
                     </a>
                     {% if module.links|length > 0 %}
                         <ul class="text-left">

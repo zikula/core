@@ -24,8 +24,7 @@
         {% for category in adminMenu %}
             <li class="dropdown droppable nowrap{% if caller.category.id == category.cid %} active{% endif %}"
                 data-catid="{{ category.cid }}">
-                <a class="dropdown-toggle" href="#" data-toggle="dropdown"><span
-                            class="fa fa-arrows admintabs-lock"></span>
+                <a class="dropdown-toggle" href="#" data-toggle="dropdown"><span class="fa fa-arrows admintabs-lock"></span>
                     <span>{{ category.title }}</span> <span class="fa fa-caret-down"></span></a>
                 <ul class="dropdown-menu">
                     <li class="admintabs-lock admintabs-makedefault{% if caller.category.id == category.cid %} hide{% endif %}">
@@ -40,25 +39,20 @@
                     </li>
                     <li class="divider admintabs-lock"></li>
                     <li>
-                        <a href="{{ category.url }}"><span
-                                    class="fa fa-th-large fa-bluelight fa-fw"></span> {{ __('Overview') }}</a>
+                        <a href="{{ category.url }}"><span class="fa fa-th-large fa-bluelight fa-fw"></span> {{ __('Overview') }}</a>
                     </li>
                     {% if category.modules|length > 0 %}
                         <li class="divider"></li>
                         {% for item in category.modules %}
-                            {% set modname=item.modname %}
-                            <li><a href="{{ item.menutexturl }}"><img src="{{ item.icon }}" width=15 height=15
-                                                                      style="margin-right:6px"
-                                                                      alt="{{ item.menutext }}">{{ item.menutext }}</a>
-                            </li>
+                            {% set modname = item.modname %}
+                            <li><a href="{{ item.menutexturl }}"><img src="{{ item.icon }}" width="15" height="15" alt="{{ item.menutext|e('html_attr') }}" style="margin-right: 6px">{{ item.menutext }}</a></li>
                         {% endfor %}
                     {% endif %}
                 </ul>
             </li>
         {% endfor %}
         <li id="admintabs-locker">
-            <a href="#" title="{{ __('Lock/Unlock editing') }}" data-placement="top"
-               class="tooltips tooltips-bottom"><span class="fa fa-lock fa-fw"></span></a>
+            <a href="#" title="{{ __('Lock/Unlock editing') }}" data-placement="top" class="tooltips tooltips-bottom"><span class="fa fa-lock fa-fw"></span></a>
         </li>
         <li class="admintabs-add admintabs-lock">
             <a href="{{ path('zikulaadminmodule_admin_newcat') }}" title="{{ __('New module category') }}"
