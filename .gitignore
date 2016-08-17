@@ -23,10 +23,6 @@
 !/src/app/Resources/locale/zikula.pot
 !/src/app/Resources/locale/zikula_js.pot
 /src/plugins/
-!/src/plugins/Imagine
-!/src/plugins/Mapstraction
-!/src/plugins/README
-!/src/plugins/.htaccess
 /src/userdata/
 /src/vendor/
 /src/web/*
