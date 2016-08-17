@@ -28,7 +28,16 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
 
     public function install()
     {
-        $this->schemaTool->create($this->entities);
+        foreach ($this->entities as $entity) {
+            try {
+                $this->schemaTool->create([$entity]);
+            } catch (\Exception $e) {
+                if ($entity != 'Zikula\ZAuthModule\Entity\UserVerificationEntity') {
+                    throw $e;
+                }
+                // silently fail. This is because on core upgrade the UserVerificationEntity already exists from the UsersModule.
+            }
+        }
         $this->setVars($this->getDefaultModvars());
 
         return true;

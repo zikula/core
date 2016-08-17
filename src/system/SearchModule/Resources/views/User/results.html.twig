@@ -21,7 +21,7 @@
     </dt>
     <dd>
         {{ result.text|zikulasearchmodule_highlightGoogleKeywords(q, limitSummary)|truncate(limitSummary, false, '&hellip;') }}
-        {% if result.created not empty %}
+        {% if result.created is not empty %}
             <div class="search_created">{{ __f('Created on %s.', { '%s': result.created|localizeddate('long', 'none') }) }}</div>
         {% endif %}
     </dd>

@@ -1176,8 +1176,6 @@ class AdminApi extends \Zikula_AbstractApi
                     $upgradeResults[$mod['name']] = false;
                 }
             }
-
-            System::setVar('Version_Num', Zikula_Core::VERSION_NUM);
         }
 
         return $upgradeResults;

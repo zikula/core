@@ -47,7 +47,6 @@
     system/PageLockModule/Resources/public/js/PageLock.js,
     system/PermissionsModule/Resources/public/js/Zikula.Permission.Admin.View.js,
     system/RoutesModule/Resources/public/js/ZikulaRoutesModule.EditFunctions.js,
-    system/RoutesModule/Resources/public/js/ZikulaRoutesModule.Finder.js,
     system/RoutesModule/Resources/public/js/ZikulaRoutesModule.js,
     system/RoutesModule/Resources/public/js/ZikulaRoutesModule.Validation.js,
     system/SearchModule/Resources/public/js/ZikulaSearchModule.User.Form.js,
@@ -72,9 +71,9 @@
     <target name="clean">
         <echo msg="Clean..."/>
         <delete dir="${builddir}" includeemptydirs="true"/>
-        <delete dir="${sourcedir}/src/vendor" includeemptydirs="true"/>
+        <!--<delete dir="${sourcedir}/src/vendor" includeemptydirs="true"/>-->
         <!--<delete file="${workspace}/source/composer.lock"/>-->
-        <delete file="${workspace}/source/composer.phar"/>
+        <!--<delete file="${workspace}/source/composer.phar"/>-->
     </target>
 
     <target name="prepare">

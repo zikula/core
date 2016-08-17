@@ -130,11 +130,6 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
      */
     public function upgrade($oldversion)
     {
-        // always ensure that the version info is upgraded
-        $this->setSystemVar('Version_Num', \Zikula_Core::VERSION_NUM);
-        $this->setSystemVar('Version_ID', \Zikula_Core::VERSION_ID);
-        $this->setSystemVar('Version_Sub', \Zikula_Core::VERSION_SUB);
-
         // Upgrade dependent on old version number
         switch ($oldversion) {
             case '2.9.7':

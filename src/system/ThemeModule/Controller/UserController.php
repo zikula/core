@@ -16,6 +16,7 @@ use ModUtil;
 use System;
 use ThemeUtil;
 use UserUtil;
+use Zikula_View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -90,18 +91,19 @@ class UserController extends AbstractController
 
         $previewThemes = array_slice($previewThemes, $startnum - 1, $itemsPerPage);
 
-        $this->view->assign('currentthemepic', $currentthemepic)
-                   ->assign('currenttheme', $currenttheme)
-                   ->assign('themes', $previewThemes)
-                   ->assign('defaulttheme', ThemeUtil::getInfo(ThemeUtil::getIDFromName($variableApi->get(VariableApi::CONFIG, 'Default_Theme'))));
+        $legacyView = Zikula_View::getInstance('ZikulaThemeModule');
 
-        // assign the values for the pager plugin
-        $this->view->assign('pager', [
-            'numitems' => count($allthemes),
-            'itemsperpage' => $itemsPerPage
-        ]);
+        $legacyView
+            ->assign('currentthemepic', $currentthemepic)
+            ->assign('currenttheme', $currenttheme)
+            ->assign('themes', $previewThemes)
+            ->assign('defaulttheme', ThemeUtil::getInfo(ThemeUtil::getIDFromName($variableApi->get(VariableApi::CONFIG, 'Default_Theme'))))
+            ->assign('pager', [
+                'numitems' => count($allthemes),
+                'itemsperpage' => $itemsPerPage
+            ]);
 
-        return new Response($this->view->fetch('User/main.tpl'));
+        return new Response($legacyView->fetch('User/main.tpl'));
     }
 
     /**

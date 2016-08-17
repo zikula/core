@@ -29,9 +29,9 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
     private $selectedSettings = [
         'username',
         'password',
-        'router.request_context.host',
-        'router.request_context.scheme',
-        'router.request_context.base_url'
+        'router:request_context:host',
+        'router:request_context:scheme',
+        'router:request_context:base_url'
     ];
 
     protected function configure()
