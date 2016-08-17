@@ -83,6 +83,7 @@ The following process should be followed for all upgrades even small point relea
 
   - Backup all your files and database. Keep a note of your database settings from `config.php` (or
     `personal_config.php`)
+  - Make a note of your 'startpage' settings as they must be cleared in the upgrade process.
   - Before uploading the new files, delete **all files** in your web root (typically `public_html` or `httpdocs`).
   - Upload the new package.
     - Remark for Windows/FTP users: Take care about copying all files. If there are some files you are not able to transfer 

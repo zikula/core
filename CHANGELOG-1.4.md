@@ -17,6 +17,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Fix error on creation of new ExtendedMenublock.
     - Fix display of blocks using theme overrides (#2872).
     - The legacy \Zikula_Core is now booted even if you use the Symfony Console.
+    - Lengthen SesssionId column in session table (#2840).
 
  - Features:
     - Add help text, alert text and input groups to forms utilizing the provided form themes (#2846, #2847).

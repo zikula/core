@@ -190,13 +190,15 @@ class FixAutoloaderCommand extends Command
             'autoload_namespaces.php',
             'autoload_real.php',
             'autoload_files.php',
-            'autoload_psr4.php'
+            'autoload_psr4.php',
+            'autoload_static.php'
         ];
         foreach ($composerFiles as $file) {
             $file = "$dir/composer/$file";
             $content = file_get_contents($file);
             $content = str_replace("baseDir . '/src/", "baseDir . '/", $content);
             $content = str_replace('dirname(dirname($vendorDir))', 'dirname($vendorDir)', $content);
+            $content = str_replace("__DIR__ . '/../../..' . '/src", "__DIR__ . '/../..' . '", $content);
             file_put_contents($file, $content);
             $progress->advance();
         }

@@ -16,8 +16,10 @@
 {% for link in accountLinks|default %}
     <div class="z-accountlink" style="width:{{ width|round(1, 'floor') }}%">
         {% if displayGraphics %}
-            {% if '.' in link.icon %}
+            {% if '.' in link.icon and accountLink.module.name|default %}
                 {% set icon = '<img title="'~link.text~'" src="'~zasset('@'~link.module~':images/'~link.icon)~'" />' %}
+            {% elseif '.' in link.icon %}
+                {% set icon = '<img title="'~accountLink.text~'" src="'~app.request.basepath~'/modules/'~accountLink.module~'/images/'~accountLink.icon~'" />' %}
             {% else %}
                 {% set icon = '<i title="'~link.text~'" class="fa fa-3x fa-'~link.icon~'"></i>' %}
             {% endif %}

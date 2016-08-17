@@ -260,6 +260,12 @@ class AjaxUpgradeController extends AbstractController
         \System::setVar('Version_Sub', \Zikula_Core::VERSION_SUB);
         \System::setVar('language_i18n', \ZLanguage::getLanguageCode());
 
+        // set the 'start' page information to empty to avoid missing module errors.
+        \System::setVar('startpage', '');
+        \System::setVar('starttype', '');
+        \System::setVar('startfunc', '');
+        \System::setVar('startargs', '');
+
         return true;
     }
 

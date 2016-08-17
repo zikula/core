@@ -24,6 +24,9 @@ class InstallerHelper
             'ftype' => '_zkType',
             'fname' => '_zkFunc',
             'fargs' => 'fargs',
+            'type' => '_zkType', // core-1.3.x
+            'functions' => '_zkFunc', // core-1.3.x
+            'customargs' => 'fargs' // core-1.3.x
         ];
         if (count($filters) <= 1) {
             foreach ($filters as $filter) {
@@ -41,9 +44,11 @@ class InstallerHelper
         } else {
             $parameterValues = [];
             foreach ($filters as $filter) {
-                foreach ($filter as $parameter => $value) {
-                    // re-map values to array
-                    $parameterValues[$legacyFieldMap[$parameter]][] = $value;
+                if (is_array($filter)) {
+                    foreach ($filter as $parameter => $value) {
+                        // re-map values to array
+                        $parameterValues[$legacyFieldMap[$parameter]][] = $value;
+                    }
                 }
             }
             foreach ($parameterValues as $parameter => $valueArray) {
