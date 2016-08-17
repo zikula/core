@@ -27,12 +27,6 @@ framework:
         handler_id: session.handler.legacy
         storage_id: session.storage.legacy
         cookie_httponly: false
-        cookie_path: %router.request_context.base_url%
-        # @todo - these settings from DB not respected
-        # cookie_lifetime:
-        # gc_divisor:
-        # gc_maxlifetime:
-        # gc_probability:
     fragments:       ~
 
 # Twig Configuration
