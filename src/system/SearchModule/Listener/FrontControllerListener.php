@@ -11,10 +11,9 @@
 
 namespace Zikula\SearchModule\Listener;
 
-use DataUtil;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use System;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
@@ -47,8 +46,8 @@ class FrontControllerListener implements EventSubscriberInterface
     {
         return [
             // Make sure to load the handler *every time* and *before* the routing listeners are running (32).
-            KernelEvents::REQUEST => [
-                ['pageLoad', 40]
+            KernelEvents::RESPONSE => [
+                ['addOpenSearchHeader', -1]
             ]
         ];
     }
@@ -72,11 +71,11 @@ class FrontControllerListener implements EventSubscriberInterface
     /**
      * Handle page load event KernelEvents::REQUEST.
      *
-     * @param GetResponseEvent $event
+     * @param FilterResponseEvent $event
      *
      * @return void
      */
-    public function pageLoad(GetResponseEvent $event)
+    public function addOpenSearchHeader(FilterResponseEvent $event)
     {
         if (!$event->isMasterRequest()) {
             return;
@@ -94,8 +93,8 @@ class FrontControllerListener implements EventSubscriberInterface
 
         // The current user has the rights to search the page.
         $linkType = 'application/opensearchdescription+xml';
-        $siteName = DataUtil::formatForDisplay(System::getVar('sitename'));
-        $searchUrl = DataUtil::formatForDisplay($this->router->generate('zikulasearchmodule_user_opensearch'));
+        $siteName = htmlspecialchars($this->variableApi->get(VariableApi::CONFIG, 'sitename'));
+        $searchUrl = htmlspecialchars($this->router->generate('zikulasearchmodule_user_opensearch'));
 
         $headerCode = '<link rel="search" type="' . $linkType . '" title="' . $siteName . '" href="' . $searchUrl . '" />';
         $this->headerAssetBag->add($headerCode);

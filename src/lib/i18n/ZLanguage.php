@@ -135,7 +135,7 @@ class ZLanguage
      */
     public function __construct()
     {
-        $this->langSession = SessionUtil::getVar('language', null);
+        $this->langSession = (ServiceUtil::get('session')->hasStarted()) ? SessionUtil::getVar('language', null) : null;
         $this->langSystemDefault = System::getVar('language_i18n', 'en');
         $this->languageCode = $this->langSystemDefault;
         $this->langFixSession = preg_replace('#[^a-z-].#', '', FormUtil::getPassedValue('setsessionlanguage', null, 'POST'));

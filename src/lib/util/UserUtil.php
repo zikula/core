@@ -458,7 +458,7 @@ class UserUtil
      */
     public static function isLoggedIn()
     {
-        return (bool)SessionUtil::getVar('uid');
+        return (ServiceUtil::get('session')->hasStarted()) && (bool)SessionUtil::getVar('uid');
     }
 
     /**
@@ -748,7 +748,7 @@ class UserUtil
         }
 
         if ($uid == -1) {
-            $uid = SessionUtil::getVar('uid');
+            $uid = (ServiceUtil::get('session')->hasStarted()) ? SessionUtil::getVar('uid') : null;
         }
         if (empty($uid)) {
             return null;
