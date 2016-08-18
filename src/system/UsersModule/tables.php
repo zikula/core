@@ -16,9 +16,9 @@
  * loaded. It delivers the table information to the core.
  * It can be loaded explicitly using the ModUtil::dbInfoLoad() API function.
  *
- * @param string $forVersion The module version number for which db information should be returned.
+ * @param string $forVersion The module version number for which db information should be returned
  *
- * @return array The table information.
+ * @return array The table information
  */
 function ZikulaUsersModule_tables($forVersion = null)
 {
@@ -52,12 +52,12 @@ function ZikulaUsersModule_tables($forVersion = null)
  * loaded. It delivers the table information to the core.
  * It can be loaded explicitly using the ModUtil::dbInfoLoad() API function.
  *
- * @return array The table information.
+ * @return array The table information
  */
 function Users_tables_for_220()
 {
     // Initialise table array
-    $dbinfo = array();
+    $dbinfo = [];
 
     // Main Users table
     // Version 2.2.0 through current(inclusive)
@@ -129,7 +129,7 @@ function Users_tables_for_220()
     //                      optional, if blank then the system default locale should be used. [FUTURE USE]
     //
     $dbinfo['users'] = 'users';
-    $dbinfo['users_column'] = array(
+    $dbinfo['users_column'] = [
         'uid'           => 'uid',
         'uname'         => 'uname',
         'email'         => 'email',
@@ -145,8 +145,8 @@ function Users_tables_for_220()
         'ublock'        => 'ublock',
         'tz'            => 'tz',
         'locale'        => 'locale',
-    );
-    $dbinfo['users_column_def'] = array(
+    ];
+    $dbinfo['users_column_def'] = [
         'uid'           => "I PRIMARY AUTO",
         'uname'         => "C(25) NOTNULL DEFAULT ''",
         'email'         => "C(60) NOTNULL DEFAULT ''",
@@ -162,12 +162,12 @@ function Users_tables_for_220()
         'ublock'        => "X NOTNULL DEFAULT ''",
         'tz'            => "C(30) NOTNULL DEFAULT ''",
         'locale'        => "C(5) NOTNULL DEFAULT ''",
-    );
+    ];
 
-    $dbinfo['users_column_idx'] = array(
+    $dbinfo['users_column_idx'] = [
         'uname' => 'uname',
         'email' => 'email'
-    );
+    ];
 
     $dbinfo['users_db_extra_enable_attribution'] = true;
     $dbinfo['users_primary_key_column'] = 'uid';
@@ -192,23 +192,23 @@ function Users_tables_for_220()
     //                      used to expire the record.
     $dbinfo['users_verifychg'] = 'users_verifychg';
 
-    $dbinfo['users_verifychg_column'] = array(
+    $dbinfo['users_verifychg_column'] = [
         'id'            => 'id',
         'changetype'    => 'changetype',
         'uid'           => 'uid',
         'newemail'      => 'newemail',
         'verifycode'    => 'verifycode',
         'created_dt'    => 'created_dt',
-    );
+    ];
 
-    $dbinfo['users_verifychg_column_def'] = array(
+    $dbinfo['users_verifychg_column_def'] = [
         'id'            => "I PRIMARY AUTO",
         'changetype'    => "I1 NOTNULL DEFAULT '0'",
         'uid'           => "I NOTNULL DEFAULT 0",
         'newemail'      => "C(60) NOTNULL DEFAULT ''",
         'verifycode'    => "C(138) NOTNULL DEFAULT ''",
         'created_dt'    => "T DEFAULT NULL",
-    );
+    ];
 
     // Sessions Table
     // Version 1.11 through current(inclusive)
@@ -229,23 +229,23 @@ function Users_tables_for_220()
     // vars             - Session Variables: Per-user/per-session variables. (Serialized)
     //
     $dbinfo['session_info'] = 'session_info';
-    $dbinfo['session_info_column'] = array(
+    $dbinfo['session_info_column'] = [
         'sessid'    => 'sessid',
         'ipaddr'    => 'ipaddr',
         'lastused'  => 'lastused',
         'uid'       => 'uid',
         'remember'  => 'remember',
         'vars'      => 'vars'
-    );
+    ];
 
-    $dbinfo['session_info_column_def'] = array(
+    $dbinfo['session_info_column_def'] = [
         'sessid'    => "C(60) PRIMARY NOTNULL DEFAULT ''",
         'ipaddr'    => "C(32) NOTNULL DEFAULT ''",
         'lastused'  => "T DEFAULT '1970-01-01 00:00:00'",
         'uid'       => "I DEFAULT '0'",
         'remember'  => "I1 NOTNULL DEFAULT '0'",
         'vars'      => "XL NOTNULL"
-    );
+    ];
 
     // Return the table information
     return $dbinfo;
@@ -258,12 +258,12 @@ function Users_tables_for_220()
  * loaded. It delivers the table information to the core.
  * It can be loaded explicitly using the ModUtil::dbInfoLoad() API function.
  *
- * @return array The table information.
+ * @return array The table information
  */
 function Users_tables_for_113()
 {
     // Initialise table array
-    $dbinfo = array();
+    $dbinfo = [];
 
     // Main Users table
     // Version 1.11 through 1.13 (inclusive)
@@ -306,7 +306,7 @@ function Users_tables_for_113()
     //                      Failure to maintain consistency between the pass field and this field will prevent users from being able
     //                      to successfully log in!
     $dbinfo['users'] = 'users';
-    $dbinfo['users_column'] = array(
+    $dbinfo['users_column'] = [
         'uid'             => 'uid',
         'uname'           => 'uname',
         'email'           => 'email',
@@ -324,8 +324,8 @@ function Users_tables_for_113()
         'validfrom'       => 'validfrom',
         'validuntil'      => 'validuntil',
         'hash_method'     => 'hash_method',
-    );
-    $dbinfo['users_column_def'] = array(
+    ];
+    $dbinfo['users_column_def'] = [
         'uid'             => "I4 PRIMARY AUTO",
         'uname'           => "C(25) NOTNULL DEFAULT ''",
         'email'           => "C(60) NOTNULL DEFAULT ''",
@@ -343,12 +343,12 @@ function Users_tables_for_113()
         'validfrom'       => "I4 NOTNULL DEFAULT '0'",
         'validuntil'      => "I4 NOTNULL DEFAULT '0'",
         'hash_method'     => "I1 NOTNULL DEFAULT '8'",
-    );
+    ];
 
-    $dbinfo['users_column_idx'] = array(
+    $dbinfo['users_column_idx'] = [
         'uname' => 'uname',
         'email' => 'email'
-    );
+    ];
 
     $dbinfo['users_db_extra_enable_attribution'] = true;
     $dbinfo['users_primary_key_column'] = 'uid';
@@ -395,7 +395,7 @@ function Users_tables_for_113()
 
     // Version 1.11 through 1.13 (inclusive)
     $dbinfo['users_temp'] = 'users_temp';
-    $dbinfo['users_temp_column'] = array(
+    $dbinfo['users_temp_column'] = [
         'tid'          => 'tid',
         'uname'        => 'uname',
         'email'        => 'email',
@@ -406,8 +406,8 @@ function Users_tables_for_113()
         'type'         => 'type',
         'tag'          => 'tag',
         'hash_method'  => 'hash_method'
-    );
-    $dbinfo['users_temp_column_def'] = array(
+    ];
+    $dbinfo['users_temp_column_def'] = [
         'tid'          => "I4 PRIMARY AUTO",
         'uname'        => "C(25) NOTNULL DEFAULT ''",
         'email'        => "C(60) NOTNULL DEFAULT ''",
@@ -418,7 +418,7 @@ function Users_tables_for_113()
         'type'         => "I1 NOTNULL DEFAULT '0'",
         'tag'          => "I1 NOTNULL DEFAULT '0'",
         'hash_method'  => "I1 NOTNULL DEFAULT '8'"
-    );
+    ];
     $dbinfo['users_temp_db_extra_enable_attribution'] = true;
     $dbinfo['users_temp_primary_key_column'] = 'tid';
 
@@ -440,23 +440,23 @@ function Users_tables_for_113()
     // vars             - Session Variables: Per-user/per-session variables. (Serialized)
     //
     $dbinfo['session_info'] = 'session_info';
-    $dbinfo['session_info_column'] = array(
+    $dbinfo['session_info_column'] = [
         'sessid'    => 'sessid',
         'ipaddr'    => 'ipaddr',
         'lastused'  => 'lastused',
         'uid'       => 'uid',
         'remember'  => 'remember',
         'vars'      => 'vars'
-    );
+    ];
 
-    $dbinfo['session_info_column_def'] = array(
+    $dbinfo['session_info_column_def'] = [
         'sessid'    => "C(40) PRIMARY NOTNULL DEFAULT ''",
         'ipaddr'    => "C(32) NOTNULL DEFAULT ''",
         'lastused'  => "T DEFAULT '1970-01-01 00:00:00'",
         'uid'       => "I DEFAULT '0'",
         'remember'  => "I1 NOTNULL DEFAULT '0'",
         'vars'      => "XL NOTNULL"
-    );
+    ];
 
     // Return the table information
     return $dbinfo;
