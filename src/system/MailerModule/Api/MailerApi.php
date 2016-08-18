@@ -11,8 +11,8 @@
 
 namespace Zikula\MailerModule\Api;
 
-use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Swift_Attachment;
 use Swift_DependencyContainer;
 use Swift_Mailer;
@@ -62,11 +62,6 @@ class MailerApi
     protected $dataValues;
 
     /**
-     * @var PermissionApi
-     */
-    private $permissionApi;
-
-    /**
      * MailerApi constructor.
      *
      * @param bool                     $isInstalled     Installed flag
@@ -83,14 +78,12 @@ class MailerApi
         EventDispatcherInterface $eventDispatcher,
         DynamicConfigDumper $configDumper,
         VariableApi $variableApi,
-        Swift_Mailer $mailer,
-        PermissionApi $permissionApi
-        ) {
+        Swift_Mailer $mailer
+    ) {
         $this->isInstalled = $isInstalled;
         $this->setTranslator($translator);
         $this->eventDispatcher = $eventDispatcher;
         $this->mailer = $mailer;
-        $this->permissionApi = $permissionApi;
 
         if (!$this->isInstalled) {
             return;
@@ -301,11 +294,7 @@ class MailerApi
 
             $this->eventDispatcher->dispatch(MailerEvents::SEND_MESSAGE_FAILURE, $event);
 
-            if ($this->permissionApi->hasPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
-                throw new \RuntimeException($this->__f('Error! Could not send mail to: %s.', ['%s' => $emailList]));
-            } else {
-                throw new \RuntimeException($this->__('Error! A problem occurred while sending the e-mail message.'));
-            }
+            throw new \RuntimeException($this->__('Error! A problem occurred while sending the e-mail message.'));
         }
 
         if ($this->dataValues['enableLogging']) {

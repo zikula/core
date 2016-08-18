@@ -13,6 +13,7 @@ namespace Zikula\SecurityCenterModule\Listener;
 
 use CacheUtil;
 use DateUtil;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use System;
 use Doctrine\ORM\EntityManagerInterface;
 use IDS\Init as IdsInit;
@@ -20,14 +21,13 @@ use IDS\Monitor as IdsMonitor;
 use IDS\Report as IdsReport;
 use Swift_Message;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\MailerModule\Api\MailerApi;
+use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
-use Zikula\UsersModule\Api\CurrentUserApi;
 use ZLanguage;
 
 /**
@@ -48,19 +48,9 @@ class FilterListener implements EventSubscriberInterface
     private $variableApi;
 
     /**
-     * @var SessionInterface
-     */
-    private $session;
-
-    /**
      * @var EntityManagerInterface
      */
     private $em;
-
-    /**
-     * @var CurrentUserApi
-     */
-    private $currentUserApi;
 
     /**
      * @var MailerApi
@@ -81,18 +71,14 @@ class FilterListener implements EventSubscriberInterface
      *
      * @param bool                   $isInstalled    Installed flag
      * @param VariableApi            $variableApi    VariableApi service instance
-     * @param SessionInterface       $session        Session service instance
      * @param EntityManagerInterface $em             Doctrine entity manager
-     * @param CurrentUserApi         $currentUserApi CurrentUserApi service instance
      * @param MailerApi              $mailer         MailerApi service instance
      */
-    public function __construct($isInstalled, VariableApi $variableApi, SessionInterface $session, EntityManagerInterface $em, CurrentUserApi $currentUserApi, MailerApi $mailer)
+    public function __construct($isInstalled, VariableApi $variableApi, EntityManagerInterface $em, MailerApi $mailer)
     {
         $this->isInstalled = $isInstalled;
         $this->variableApi = $variableApi;
-        $this->session = $session;
         $this->em = $em;
-        $this->currentUserApi = $currentUserApi;
         $this->mailer = $mailer;
     }
 
@@ -175,7 +161,8 @@ class FilterListener implements EventSubscriberInterface
             // analyze the results
             if (!$result->isEmpty()) {
                 // process the IdsReport object
-                $this->processIdsResult($init, $result);
+                $session = $event->getRequest()->hasSession() ? $event->getRequest()->getSession() : null;
+                $this->processIdsResult($init, $result, $session);
             } else {
                 // no attack detected
             }
@@ -264,7 +251,7 @@ class FilterListener implements EventSubscriberInterface
      *
      * @return void
      */
-    private function processIdsResult(IdsInit $init, IdsReport $result)
+    private function processIdsResult(IdsInit $init, IdsReport $result, SessionInterface $session = null)
     {
         // $result contains any suspicious fields enriched with additional info
 
@@ -278,8 +265,12 @@ class FilterListener implements EventSubscriberInterface
         }
 
         // update total session impact to track an attackers activity for some time
-        $sessionImpact = $this->session->get('idsImpact', 0) + $requestImpact;
-        $this->session->set('idsImpact', $sessionImpact);
+        if (!empty($session)) {
+            $sessionImpact = $session->get('idsImpact', 0) + $requestImpact;
+            $session->set('idsImpact', $sessionImpact);
+        } else {
+            $sessionImpact = $requestImpact;
+        }
 
         // let's see which impact mode we are using
         $idsImpactMode = $this->getSystemVar('idsimpactmode', 1);
@@ -310,10 +301,7 @@ class FilterListener implements EventSubscriberInterface
             $ipAddress = ($_HTTP_X_FORWARDED_FOR) ? $_HTTP_X_FORWARDED_FOR : $_REMOTE_ADDR;
 
             $currentPage = System::getCurrentUri();
-            $currentUid = $this->currentUserApi->get('uid');
-            if (!$currentUid) {
-                $currentUid = 1;
-            }
+            $currentUid = !empty($session) ? $session->get('uid', PermissionApi::UNREGISTERED_USER) : PermissionApi::UNREGISTERED_USER;
             $currentUser = $this->em->getReference('ZikulaUsersModule:UserEntity', $currentUid);
 
             $intrusionItems = [];
@@ -401,7 +389,7 @@ class FilterListener implements EventSubscriberInterface
             $message->setTo([$adminMail => 'Site Administrator']);
 
             $subject = __('Intrusion attempt detected by PHPIDS');
-            $rc = $this->mailer->sendMessage($message, $formData['subject'], $mailBody);
+            $rc = $this->mailer->sendMessage($message, $subject, $mailBody);
         }
 
         if ($usedImpact > $impactThresholdThree) {

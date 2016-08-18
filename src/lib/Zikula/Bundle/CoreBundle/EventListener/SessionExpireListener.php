@@ -20,7 +20,7 @@ class SessionExpireListener implements EventSubscriberInterface
 {
     public function onKernelRequestSessionExpire(GetResponseEvent $event)
     {
-        if ($event->getRequest()->hasPreviousSession() && $event->getRequest()->getSession()->get('session_expired', false)) {
+        if ($event->getRequest()->hasSession() && $event->getRequest()->getSession()->get('session_expired', false)) {
             // Session has expired, display warning
             $response = new Response('Session expired.', 403);
             $this->setResponse($event, $response);

@@ -7,7 +7,7 @@
     {% set q = '{searchTerms}' %}
     {% set page = '{startPage?}' %}
     {% set url = url('zikulasearchmodule_user_form', { q: 'QUERY', page: '999' }) %}
-    <Url type="text/html" template="{{ url|e('html_attr')|replace({'QUERY': q, '999': page }) }}"/>
+    <Url type="text/html" template="{{ url|replace({'QUERY': q, '999': page }) }}"/>
     <LongName>{{ siteName }} {{ __('Search') }}</LongName>
     <Attribution>{{ __f('Search data copyright %s, all rights reserved.', { '%s': siteName }) }}</Attribution>
     <SyndicationRight>open</SyndicationRight>

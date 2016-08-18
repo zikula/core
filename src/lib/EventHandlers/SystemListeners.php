@@ -81,24 +81,24 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function requireSession(Zikula_Event $event)
     {
-        $session = $this->serviceManager->get('session');
-        try {
-            $request = ServiceUtil::get('request');
-            $request->setSession($session);
-        } catch (Exception $e) {
-            // ignore silently (for CLI)
-        }
-
-        try {
-            if (!$session->start()) {
-                throw new RuntimeException('Failed to start session');
-            }
-        } catch (Exception $e) {
-            // session initialization failed so display templated error
-            header('HTTP/1.1 503 Service Unavailable');
-            require_once System::getSystemErrorTemplate('sessionfailed.tpl');
-            System::shutdown();
-        }
+//        $session = $this->serviceManager->get('session');
+//        try {
+//            $request = ServiceUtil::get('request');
+//            $request->setSession($session);
+//        } catch (Exception $e) {
+//            // ignore silently (for CLI)
+//        }
+//
+//        try {
+//            if (!$session->start()) {
+//                throw new RuntimeException('Failed to start session');
+//            }
+//        } catch (Exception $e) {
+//            // session initialization failed so display templated error
+//            header('HTTP/1.1 503 Service Unavailable');
+//            require_once System::getSystemErrorTemplate('sessionfailed.tpl');
+//            System::shutdown();
+//        }
     }
 
     /**
