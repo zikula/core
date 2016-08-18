@@ -49,6 +49,7 @@
             <argument type="service" id="router" />
             <argument type="service" id="templating" />
             <argument type="service" id="markdown_extra_parser" />
+            <argument type="service" id="translator.default" />
         </service>
 
     </services>

@@ -17,6 +17,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Michelf\MarkdownExtra;
+use Zikula\Common\Translator\TranslatorInterface;
 
 /**
  * Class DocController
@@ -35,6 +36,8 @@ class DocController
 
     private $basePath;
 
+    private $translator;
+
     /**
      * Constructor.
      *
@@ -43,12 +46,13 @@ class DocController
      * @param EngineInterface $templatingService
      * @param MarkdownExtra $parser
      */
-    public function __construct(KernelInterface $kernel, RouterInterface $router, EngineInterface $templatingService, MarkdownExtra $parser)
+    public function __construct(KernelInterface $kernel, RouterInterface $router, EngineInterface $templatingService, MarkdownExtra $parser, TranslatorInterface $translator)
     {
         $this->kernel = $kernel;
         $this->router = $router;
         $this->templatingService = $templatingService;
         $this->parser = $parser;
+        $this->translator = $translator;
         $this->locale = \ZLanguage::getLanguageCode();
     }
 
@@ -68,7 +72,7 @@ class DocController
         if (file_exists($this->basePath . "/$name")) {
             $content = file_get_contents($this->basePath . "/$name");
         } else {
-            $content = __f('The file you requested (%s) could not be found.', "$name");
+            $content = $this->translator->__f('The file you requested (%s) could not be found.', ['%s' => "$name"]);
         }
         $content = $this->parser->defaultTransform($content);
         $templateParams = [

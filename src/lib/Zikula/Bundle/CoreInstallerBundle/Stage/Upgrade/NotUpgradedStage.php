@@ -12,6 +12,7 @@
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Component\Wizard\AbortStageException;
 use Zikula\Component\Wizard\StageInterface;
 use Zikula\Component\Wizard\InjectContainerInterface;
@@ -24,9 +25,15 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
      */
     private $container;
 
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+        $this->translator = $this->container->get('translator.default');
     }
 
     public function getName()
@@ -42,7 +49,7 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
     public function isNecessary()
     {
         if (version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<=')) {
-            throw new AbortStageException(__f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', [ZIKULACORE_CURRENT_INSTALLED_VERSION, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
+            throw new AbortStageException($this->translator->__f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', ['%1$s' => ZIKULACORE_CURRENT_INSTALLED_VERSION, '%2$s' => UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
         }
         // make sure selected language is installed
         $DBLocale = $this->fetchDBLocale();
@@ -78,6 +85,6 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
             return unserialize($serializedValue);
         }
 
-        throw new AbortStageException(__('The installed language could not be detected.'));
+        throw new AbortStageException($this->translator->__('The installed language could not be detected.'));
     }
 }
