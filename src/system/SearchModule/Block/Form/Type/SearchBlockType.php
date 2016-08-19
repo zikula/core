@@ -49,23 +49,19 @@ class SearchBlockType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('displaySearchBtn', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
-            'label' => $this->__('Show \'Search now\' button'),
-            'required' => false
-        ]);
-
-        /**
-         * TODO: reenable custom form options from other modules
-         * $searchModules = [];
-         * if (is_array($options['plugins']) && count($options['plugins'])) {
-         *     foreach ($options['plugins'] as $module) {
-         *         $searchModules[] = [
-         *             'module' => ModUtil::apiFunc($module['title'], 'search', 'options', $vars)
-         *         ];
-         *     }
-         * }
-         * // add field array with name "active"
-         */
+        $builder
+            ->add('displaySearchBtn', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+                'label' => $this->__('Show \'Search now\' button'),
+                'required' => false
+            ])
+            ->add('active', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+                'required' => false,
+                'expanded' => true,
+                'multiple' => true,
+                'choices_as_values' => true,
+                'choices' => $options['activeModules'],
+            ])
+        ;
     }
 
     /**
@@ -82,7 +78,8 @@ class SearchBlockType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'plugins' => []
+            'displaySearchBtn' => true,
+            'activeModules' => []
         ]);
     }
 }

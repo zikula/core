@@ -1,6 +1,8 @@
 {{ form_row(form.displaySearchBtn) }}
 <fieldset>
-    {{ __('Search options') }}
-    {# TODO: reenable custom form options from other modules #}
-    {# { form_row(form.active) } #}
+    <legend>{{ __('Active modules') }}</legend>
+    {{ form_row(form.active) }}
+    {% if form.active is empty %}
+        <div class="col-sm-offset-3 col-sm-9 alert alert-danger">{{ __f('There are no active modules to search. Please activate at %link', {'%link':'<a href="'~path('zikulasearchmodule_config_config')~'">Search Config</a>'})|raw }}</div>
+    {% endif %}
 </fieldset>
