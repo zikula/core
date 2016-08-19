@@ -5,10 +5,11 @@ CHANGELOG - ZIKULA 1.4.x
 
  - BC Breaks:
     - Assetic Bundle has been removed (#2939).
-    - User block function removed.
+    - User block function removed. It is going to be added to the Profile module instead.
     - Old Authentication_Method_Api system has been completely removed.
     - Due to refactoring the UsersModule, some unknown BC Breaks may have occurred.
       - `subscriber.users.ui_hooks.login_block` hooks have been removed. use `subscriber.users.ui_hooks.login_screen`
+    - Option for having no session for anonymous users has been removed. In Symfony every request has a session.
 
  - Deprecated:
     -
