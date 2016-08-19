@@ -24,7 +24,7 @@ For more information visit http://zikula.org/
 Requirements
 ------------
 Before installing Zikula it's important to ensure that the hosting server environment meets the requirements
-of the new core release. Zikula Core 1.4.0 has the following requirements:
+of the new core release. Zikula Core 1.4.x has the following requirements:
 
 |               | Minimum       | Recommended  |
 | ------------- |:-------------:| :-----------:|
