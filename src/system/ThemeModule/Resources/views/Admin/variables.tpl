@@ -57,9 +57,9 @@
         <fieldset>
             <legend>
                 {if !$filename}
-                {gt text="Add new theme variable"}
+                    {gt text='Add new theme variable'}
                 {else}
-                {gt text="Add new page variable"}
+                    {gt text='Add new page variable'}
                 {/if}
             </legend>
             <div class="form-group">

@@ -75,8 +75,8 @@
                 <div class="col-sm-9">
                 <select class="form-control" id="theme_pagemodule" name="pagemodule">
                     <option value="">&nbsp;</option>
-                    {foreach from=$pagetypes key='pagevalue' item='pagetext'}
-                    <option value="{$pagevalue}">{$pagetext}</option>
+                    {foreach key='pagevalue' item='pagetext' from=$pagetypes}
+                        <option value="{$pagevalue}">{$pagetext}</option>
                     {/foreach}
                     {html_options options=$modules}
                 </select>
@@ -116,11 +116,11 @@
                 <em class="help-block sub">{gt text="Any match with this assignment will be consider over the following others."}</em>
             </div>
             <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
+                <div class="col-sm-offset-3 col-sm-9">
                     <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
                     <a class="btn btn-danger" href="{route name='zikulathememodule_theme_view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
                 </div>
-        </div>
+            </div>
         </div>
         </fieldset>
     </div>
