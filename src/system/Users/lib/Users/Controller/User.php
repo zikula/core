@@ -1794,14 +1794,14 @@ class Users_Controller_User extends Zikula_AbstractController
         $mid = ModUtil::getIdFromName($this->name);
         $found = false;
         foreach ($blocks as $block) {
-            if ($block['mid'] == $mid && $block['bkey'] == 'user') {
+            if ($block['mid'] == $mid && $block['bkey'] == 'User') {
                 $found = true;
                 break;
             }
         }
 
         if (!$found) {
-            throw new Zikual_Exception_Fatal();
+            throw new Zikula_Exception_Fatal();
         }
 
         return $this->view->assign(UserUtil::getVars(UserUtil::getVar('uid')))
@@ -1836,7 +1836,7 @@ class Users_Controller_User extends Zikula_AbstractController
         $mid = ModUtil::getIdFromName($this->name);
         $found = false;
         foreach ($blocks as $block) {
-            if ($block['mid'] == $mid && $block['bkey'] == 'user') {
+            if ($block['mid'] == $mid && $block['bkey'] == 'User') {
                 $found = true;
                 break;
             }
