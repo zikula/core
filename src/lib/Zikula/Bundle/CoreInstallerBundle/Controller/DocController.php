@@ -61,11 +61,11 @@ class DocController
      * @param string $name
      * @return Response
      */
-    public function displayAction(Request $request, $name = 'INSTALL-1.4.0.md')
+    public function displayAction(Request $request, $name = 'INSTALL-1.4.md')
     {
         // @TODO this is temporary method of restricting the user input
-        if (!in_array($name, ['INSTALL-1.4.0.md', 'UPGRADE-1.4.md', 'CHANGELOG.md', 'README.md'])) {
-            $name = 'INSTALL-1.4.0.md';
+        if (!in_array($name, ['INSTALL-1.4.md', 'UPGRADE-1.4.md', 'CHANGELOG.md', 'README.md'])) {
+            $name = 'INSTALL-1.4.md';
         }
         $this->setBasePath();
 

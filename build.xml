@@ -193,6 +193,7 @@
 
     <target name="build_patch">
         <echo msg="Making patches...."/>
+        <!-- TODO this needs an overhaul as it is still using SVN -->
         <!-- get diffs for releases and save in ${tmpdir}/CHANGES file -->
         <!-- ATTN urls require manual edit -->
         <exec escape="false"

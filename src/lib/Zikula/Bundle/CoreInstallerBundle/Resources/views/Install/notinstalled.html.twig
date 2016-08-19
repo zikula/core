@@ -12,7 +12,7 @@
                 <p>
                     {{ __f('You are seeing this message because Zikula is not yet installed. You can install Zikula by clicking
                     on the install button, but before doing so please read the %inst%. Further information can be found in the %docs%.',
-                    {'%inst%': '<a href="%url%" onclick="window.open(this.href);return false;">%text%</a>' | replace({'%url%': path('doc', {'name': 'INSTALL-1.4.0.md'}), '%text%': __('installation instructions') }),
+                    {'%inst%': '<a href="%url%" onclick="window.open(this.href);return false;">%text%</a>' | replace({'%url%': path('doc', {'name': 'INSTALL-1.4.md'}), '%text%': __('installation instructions') }),
                      '%docs%': '<a href="%url%" onclick="window.open(this.href);return false;">%text%</a>' | replace({'%url%': 'http://www.zikula.org', '%text%': __('online documentation') }) } ) | raw }}
                 </p>
                 <noscript><p class="alert alert-warning">{{ __('You have JavaScript disabled. Please activate it to proceed or use the CLI script instead.') }}</p></noscript>
