@@ -38,7 +38,7 @@ class UserSessionEntity extends EntityAccess
     /**
      * IP Address: The user's IP address for the session.
      *
-     * @ORM\Column(type="string", length=32)
+     * @ORM\Column(type="string", length=40)
      */
     private $ipaddr;
 
