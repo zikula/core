@@ -95,7 +95,9 @@ class VariableApi
         $lang = \ZLanguage::getLanguageCode();
         $items = ['sitename', 'slogan', 'metakeywords', 'defaultpagetitle', 'defaultmetadescription'];
         foreach ($items as $item) {
-            $this->variables[self::CONFIG][$item] = isset($this->variables[self::CONFIG][$item . '_' . $lang]) ? $this->variables[self::CONFIG][$item . '_' . $lang] : $this->variables[self::CONFIG][$item . '_en'];
+            if (isset($this->variables[self::CONFIG][$item . '_en'])) {
+                $this->variables[self::CONFIG][$item] = isset($this->variables[self::CONFIG][$item . '_' . $lang]) ? $this->variables[self::CONFIG][$item . '_' . $lang] : $this->variables[self::CONFIG][$item . '_en'];
+            }
         }
 
         $this->isInitialized = true;
