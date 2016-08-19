@@ -136,6 +136,18 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             case '3.9.3':
                 $this->schemaTool->drop(['Zikula\BlocksModule\Entity\UserBlockEntity']);
             case '3.9.4':
+                // convert integer values to boolean for search block settings
+                $searchBlocks = $this->entityManager->getRepository('ZikulaBlocksModule:BlockEntity')->findBy(['blocktype' => 'Search']);
+                foreach ($searchBlocks as $searchBlock) {
+                    $properties = $searchBlock->getProperties();
+                    $properties['displaySearchBtn'] = (bool) $properties['displaySearchBtn'];
+                    foreach ($properties['active'] as $module => $active) {
+                        $properties['active'][$module] = (bool) $active;
+                    }
+                    $searchBlock->setProperties($properties);
+                }
+                $this->entityManager->flush();
+            case '3.9.5':
                 // future upgrade routines
         }
 
