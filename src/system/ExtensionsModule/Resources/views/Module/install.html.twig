@@ -6,7 +6,9 @@
 <div class="container-fluid">
     <div class="row">
         <h3>
-            <span class="fa fa-plus"></span> {{ __('Install Module') }} '{{ extension.displayname }}'
+            <span class="fa fa-plus"></span>
+            {{ __('Install module') }} '{{ extension.displayname }}'
+            {{ pageSetVar('title', __('Install module')) }}
         </h3>
 
         {{ form_start(form) }}

@@ -6,6 +6,7 @@
 <h3>
     <span class="fa fa-user"></span>
     {{ __f('Confirm verification code is to be sent to %sub%', {"%sub%": mapping.uname}) }}
+    {{ pageSetVar('title', __('Confirm verification code')) }}
 </h3>
 
 <div class="well">
@@ -19,5 +20,4 @@
     </div>
     {{ form_end(form) }}
 </div>
-
 {{ adminFooter() }}

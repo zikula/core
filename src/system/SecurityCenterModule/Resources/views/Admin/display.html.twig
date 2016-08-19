@@ -1,19 +1,20 @@
-{adminheader}
-<h3>{$title|safetext}</h3>
+{{ adminHeader() }}
+<h3>{{ title }}</h3>
+{{ pageSetVar('title', title) }}
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th>{gt text='Variable'}</th>
-            <th>{gt text='Variable value'}</th>
+            <th>{{ __('Variable') }}</th>
+            <th>{{ __('Variable value') }}</th>
         </tr>
     </thead>
     <tbody>
-        {section name='arrayvariables' loop=$arrayvariables}
+        {% for variable in arrayvariables %}
         <tr>
-            <td>{$arrayvariables[arrayvariables].key|safetext}</td>
-            <td>{$arrayvariables[arrayvariables].value|safetext}</td>
+            <td>{{ variable.key }}</td>
+            <td>{{ variable.value }}</td>
         </tr>
-        {/section}
+        {% endfor %}
     </tbody>
 </table>
-{adminfooter}
+{{ adminFooter() }}

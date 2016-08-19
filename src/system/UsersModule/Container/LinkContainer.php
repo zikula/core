@@ -129,7 +129,7 @@ class LinkContainer implements LinkContainerInterface
             ];
             $links[] = [
                 'url' => $this->router->generate('zikulausersmodule_config_authenticationmethods'),
-                'text' => $this->translator->__('Authentication Methods'),
+                'text' => $this->translator->__('Authentication methods'),
                 'icon' => 'lock'
             ];
         }

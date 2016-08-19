@@ -7,6 +7,7 @@
     <div class="row">
         <h3>
             <span class="fa fa-trash-o"></span> {{ __('Delete Block') }} '{{ block.title }}'
+            {{ pageSetVar('title', __('Delete block')) }}
         </h3>
 
         <p class="alert alert-warning">{{ __f("Do you really want to delete block '%title%'?", {'%title%': block.title}) }}</p>

@@ -6,7 +6,9 @@
 <div class="container-fluid">
     <div class="row">
         <h3>
-            <span class="fa fa-trash-o"></span> {{ __('Uninstall Module') }} '{{ extension.displayname }}'
+            <span class="fa fa-trash-o"></span>
+            {{ __('Uninstall module') }} '{{ extension.displayname }}'
+            {{ pageSetVar('title', __('Uninstall module')) }}
         </h3>
 
         <p class="alert alert-warning">{{ __f("Do you really want to uninstall '%title%'?", {'%title%': extension.displayname}) }}</p>

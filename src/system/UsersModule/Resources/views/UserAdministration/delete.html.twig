@@ -6,6 +6,7 @@
 <h3>
     <span class="fa fa-trash-o"></span>
     {{ __('Delete confirmation') }}
+    {{ pageSetVar('title', __('Delete confirmation')) }}
 </h3>
 {% for user in users %}
 <p class="alert alert-danger">{{ __f('Are you sure you want to delete the user (%un)?', {'%un': user.uname}) }}</p>

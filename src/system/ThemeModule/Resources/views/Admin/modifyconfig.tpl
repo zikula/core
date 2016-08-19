@@ -3,7 +3,9 @@
 
 <h3>
     <span class="fa fa-wrench"></span>
-    {gt text="Settings"}
+    {gt text='Settings'}
+    {gt text='Theme settings' assign='templateTitle'}
+    {pagesetvar name='title' value=$templateTitle}
 </h3>
 
 <form class="form-horizontal" role="form" action="{route name='zikulathememodule_admin_updateconfig'}" method="post" enctype="application/x-www-form-urlencoded">

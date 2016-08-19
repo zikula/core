@@ -6,7 +6,8 @@
 <div class="container-fluid">
     <div class="row">
         <h3>
-            <span class="fa fa-trash-o"></span> {{ __('Delete Position') }} '{{ position.name }}'
+            <span class="fa fa-trash-o"></span> {{ __('Delete block position') }} '{{ position.name }}'
+            {{ pageSetVar('title', __('Delete block position')) }}
         </h3>
 
         <p class="alert alert-warning">{{ __f("Do you really want to delete position '%name%'?", {'%name%': position.name}) }}</p>

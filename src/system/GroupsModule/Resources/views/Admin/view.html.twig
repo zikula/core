@@ -3,6 +3,7 @@
 <h3>
     <span class="fa fa-list"></span>
     {{ __('Groups list') }}
+    {{ pageSetVar('title', __('Groups list')) }}
 </h3>
 {% if hasPermission('ZikulaGroupsModule::', '::', 'ACCESS_ADD') %}
     <br />

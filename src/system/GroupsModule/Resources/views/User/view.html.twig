@@ -1,4 +1,5 @@
 {% if nogroups == true %}
+    {{ pageSetVar('title', __('Groups')) }}
     <p class="alert alert-warning">{{ __('There are currently no groups that can be joined.') }}</p>
 {% else %}
     {% set templateTitle = __('Groups manager') %}

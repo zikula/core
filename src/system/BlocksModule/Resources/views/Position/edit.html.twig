@@ -2,12 +2,11 @@
 'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
 'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
-
 {{ adminHeader() }}
 
 <p class="alert alert-info">
     {% if form.vars.value.pid is empty %}
-    {{ __('After creating this block position, blocks can be assigned to it and the order they are to be displayed can be adjusted.') }}<br />
+        {{ __('After creating this block position, blocks can be assigned to it and the order they are to be displayed can be adjusted.') }}<br />
     {% endif %}
     {{ __('The theme in use must implement the block position or the assigned blocks will never be displayed.') }}
 </p>
@@ -16,7 +15,13 @@
     <div class="row">
         <h3>
             <span class="fa fa-edit"></span>
-            {% if form.vars.value.pid %}{{ __('Modify position') }}{% else %}{{ __('Create position') }}{% endif %}
+            {% if form.vars.value.pid %}
+                {{ __('Modify block position') }}
+                {{ pageSetVar('title', __('Modify block position')) }}
+            {% else %}
+                {{ __('Create block position') }}
+                {{ pageSetVar('title', __('Create block position')) }}
+            {% endif %}
         </h3>
         {{ showflashes() }}
         {{ form_start(form) }}

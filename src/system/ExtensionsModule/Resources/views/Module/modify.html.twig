@@ -8,7 +8,8 @@
     <div class="row">
         <h3>
             <span class="fa fa-wrench"></span>
-            {{ __('Settings') }}
+            {{ __('Module settings') }}
+            {{ pageSetVar('title', __('Module settings')) }}
         </h3>
         {{ form_start(form) }}
         {{ form_errors(form) }}

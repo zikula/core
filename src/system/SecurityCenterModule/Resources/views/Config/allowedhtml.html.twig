@@ -5,6 +5,7 @@
         <h3>
             <span class="fa fa-list"></span>
             {{ __('Allowed HTML settings') }}
+            {{ pageSetVar('title', __('Allowed HTML settings')) }}
         </h3>
 
         <p class="alert alert-info">{{ __('Filtering of allowed HTML occurs when a template string or variable is modified with the \'safehtml\' modifier, or when a module asks for similar processing from within its functions.') }}</p>

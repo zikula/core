@@ -2,9 +2,9 @@
 <h3>
     <span class="fa fa-table"></span>
     {if $systemplugins}
-    {gt text='System plugins'}
+        {gt text='System plugins'}
     {else}
-    {gt text='Plugins list'}
+        {gt text='Plugins list'}
     {/if}
 </h3>
 

@@ -5,12 +5,12 @@
 {{ polyfill() }}
 
 {{ adminHeader() }}
-
 <div class="container-fluid">
     <div class="row">
         <h3>
             <span class="fa fa-lock"></span>
-            {{ __('Authentication Methods') }}
+            {{ __('Authentication methods') }}
+            {{ pageSetVar('title', __('Authentication methods')) }}
         </h3>
         {{ form_start(form) }}
         {{ form_errors(form) }}

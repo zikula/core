@@ -5,6 +5,7 @@
 <h3>
     <span class="fa fa-{{ pageIcon }}"></span>
     {{ templateTitle }}
+    {{ pageSetVar('title', templateTitle) }}
 </h3>
 <form class="form-horizontal" role="form" action="{{ path('zikulacategoriesmodule_adminform_' ~ ((mode == 'edit') ? 'edit' : 'newcat')) }}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset>

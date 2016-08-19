@@ -6,6 +6,7 @@
 <h3>
     <span class="fa fa-trash-o"></span>
     {{ __f('Remove theme %sub%', {"%sub%": themeName}) }}
+    {{ pageSetVar('title', __('Remove theme')) }}
 </h3>
 
 <p class="alert alert-danger">{{ __f('Do you really want to remove the %name% theme?', {"%name%": themeName}) }}</p>

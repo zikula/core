@@ -3,7 +3,8 @@
 'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
 {{ polyfill() }}
-<h2>{{ __('User Login') }}</h2>
+<h2>{{ __('User login') }}</h2>
+{{ pageSetVar('title', __('User login')) }}
 
 <div class="well">
     {{ form_start(form) }}

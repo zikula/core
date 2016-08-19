@@ -8,7 +8,13 @@
     <div class="row">
         <h3>
             <span class="fa fa-edit"></span>
-            {% if form.vars.value.bid %}{{ __('Modify block') }}{% else %}{{ __('Create block') }}{% endif %}
+            {% if form.vars.value.bid %}
+                {{ __('Modify block') }}
+                {{ pageSetVar('title', __('Modify block')) }}
+            {% else %}
+                {{ __('Create block') }}
+                {{ pageSetVar('title', __('Create block')) }}
+            {% endif %}
         </h3>
         {{ showflashes() }}
         {{ form_start(form) }}

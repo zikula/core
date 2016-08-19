@@ -6,6 +6,7 @@
         <span class="fa fa-pencil"></span>
     {% endif %}
     {{ title }}
+    {{ pageSetVar('title', title) }}
 </h3>
 
 {% if action == 'insert' or action == 'modify' or action == 'add' %}

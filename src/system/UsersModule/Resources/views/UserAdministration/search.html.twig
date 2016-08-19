@@ -10,6 +10,7 @@
         <h3>
             <span class="fa fa-search"></span>
             {{ __('Find users') }}
+            {{ pageSetVar('title', __('Find users')) }}
         </h3>
         {{ form_start(form) }}
         {{ form_errors(form) }}
@@ -34,7 +35,6 @@
         </div>
         {{ form_end(form) }}
     </div>
-
 </div>
 {{ adminFooter() }}
 
