@@ -15,6 +15,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ThemeModule\Engine\Engine;
 use Zikula_View_Theme;
 
@@ -28,9 +29,12 @@ class CreateThemedResponseListener implements EventSubscriberInterface
 {
     private $themeEngine;
 
-    public function __construct(Engine $themeEngine)
+    private $variableApi;
+
+    public function __construct(Engine $themeEngine, VariableApi $variableApi)
     {
         $this->themeEngine = $themeEngine;
+        $this->variableApi = $variableApi;
     }
 
     public function createThemedResponse(FilterResponseEvent $event)
@@ -58,11 +62,66 @@ class CreateThemedResponseListener implements EventSubscriberInterface
         // all responses are assumed to be themed. PlainResponse will have already returned.
         $twigThemedResponse = $this->themeEngine->wrapResponseInTheme($response);
         if ($twigThemedResponse) {
+            $trimWhitespace = $this->variableApi->get('ZikulaThemeModule', 'trimwhitespace', false);
+            if ($trimWhitespace) {
+                $this->trimWhitespace($twigThemedResponse);
+            }
             $event->setResponse($twigThemedResponse);
         } else {
             // theme is not a twig based theme, revert to smarty
             $smartyThemedResponse = Zikula_View_Theme::getInstance()->themefooter($response);
             $event->setResponse($smartyThemedResponse);
+        }
+    }
+
+    private function trimWhitespace(Response $response)
+    {
+        $content = $response->getContent();
+
+        // Pull out the script blocks
+        preg_match_all("!<script[^>]*?>.*?</script>!is", $content, $match);
+        $scriptBlocks = $match[0];
+        $content = preg_replace("!<script[^>]*?>.*?</script>!is",
+                            '@@@TWIG:TRIM:SCRIPT@@@', $content);
+
+        // Pull out the pre blocks
+        preg_match_all("!<pre[^>]*?>.*?</pre>!is", $content, $match);
+        $preBlocks = $match[0];
+        $content = preg_replace("!<pre[^>]*?>.*?</pre>!is",
+                            '@@@TWIG:TRIM:PRE@@@', $content);
+
+        // Pull out the textarea blocks
+        preg_match_all("!<textarea[^>]*?>.*?</textarea>!is", $content, $match);
+        $textareaBlocks = $match[0];
+        $content = preg_replace("!<textarea[^>]*?>.*?</textarea>!is",
+                            '@@@TWIG:TRIM:TEXTAREA@@@', $content);
+
+        // remove all leading spaces, tabs and carriage returns NOT
+        // preceeded by a php close tag.
+        $content = trim(preg_replace('/((?<!\?>)\n)[\s]+/m', '\1', $content));
+
+        // replace textarea blocks
+        $this->readdUntrimmedBlocks('@@@TWIG:TRIM:TEXTAREA@@@', $textareaBlocks, $content);
+
+        // replace pre blocks
+        $this->readdUntrimmedBlocks('@@@TWIG:TRIM:PRE@@@', $preBlocks, $content);
+
+        // replace script blocks
+        $this->readdUntrimmedBlocks('@@@TWIG:TRIM:SCRIPT@@@', $scriptBlocks, $content);
+
+        $response->setContent($content);
+    }
+
+    private function readdUntrimmedBlocks($search, $replace, &$subject)
+    {
+        $len = strlen($search);
+        $pos = 0;
+        for ($i = 0, $count = count($replace); $i < $count; $i++) {
+            if (false !== ($pos = strpos($subject, $search, $pos))) {
+                $subject = substr_replace($subject, $replace[$i], $pos, $len);
+            } else {
+                break;
+            }
         }
     }
 

@@ -1,7 +1,7 @@
 {adminheader}
-{include file="Admin/modifymenu.tpl"}
+{include file='Admin/modifymenu.tpl'}
 
-<h4>{gt text="Colour palettes"}</h4>
+<h4>{gt text='Colour palettes'}</h4>
 
 {pageaddvar name="javascript" value="web/jquery-minicolors/jquery.minicolors.min.js"}
 {pageaddvar name="stylesheet" value="web/jquery-minicolors/jquery.minicolors.css"}
@@ -13,7 +13,7 @@
     </div>
 
     {if $palettes}
-        {foreach from=$palettes item=palette key=palettename}
+        {foreach key='palettename' item='palette' from=$palettes}
             <fieldset>
                 <legend>{$palettename|safetext}</legend>
                 {foreach from=$palette item=color key=name}
@@ -29,7 +29,7 @@
     {/if}
 
     <fieldset>
-        <legend>{gt text="Create new palette"}</legend>
+        <legend>{gt text='Create new palette'}</legend>
         <div class="form-group">
             <label class="col-xs-3 control-label" for="theme_palettename"><strong>{gt text="Name"}</strong></label>
             <div class="col-xs-9">
