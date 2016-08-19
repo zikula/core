@@ -74,7 +74,8 @@ class CreateThemedResponseListener implements EventSubscriberInterface
         }
     }
 
-    private function trimWhitespace(Response $response) {
+    private function trimWhitespace(Response $response)
+    {
         $content = $response->getContent();
 
         // Pull out the script blocks
@@ -88,7 +89,7 @@ class CreateThemedResponseListener implements EventSubscriberInterface
         $preBlocks = $match[0];
         $content = preg_replace("!<pre[^>]*?>.*?</pre>!is",
                             '@@@TWIG:TRIM:PRE@@@', $content);
-        
+
         // Pull out the textarea blocks
         preg_match_all("!<textarea[^>]*?>.*?</textarea>!is", $content, $match);
         $textareaBlocks = $match[0];
@@ -111,7 +112,8 @@ class CreateThemedResponseListener implements EventSubscriberInterface
         $response->setContent($content);
     }
 
-    private function readdUntrimmedBlocks($search, $replace, &$subject) {
+    private function readdUntrimmedBlocks($search, $replace, &$subject)
+    {
         $len = strlen($search);
         $pos = 0;
         for ($i = 0, $count = count($replace); $i < $count; $i++) {
