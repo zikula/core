@@ -71,6 +71,7 @@ class VariableApi
             \EventUtil::HANDLERS => [],
             \ServiceUtil::HANDLERS => [],
             'ZikulaSettingsModule' => [],
+            self::CONFIG => [],
         ];
 
         // Load all variables into the variables property.
@@ -88,6 +89,14 @@ class VariableApi
         foreach ($this->kernel->getBundles() as $bundle) {
             if (!array_key_exists($bundle->getName(), $this->variables)) {
                 $this->variables[$bundle->getName()] = [];
+            }
+        }
+        // reformat localized variables to primary key for certain system vars.
+        $lang = \ZLanguage::getLanguageCode();
+        $items = ['sitename', 'slogan', 'metakeywords', 'defaultpagetitle', 'defaultmetadescription'];
+        foreach ($items as $item) {
+            if (isset($this->variables[self::CONFIG][$item . '_en'])) {
+                $this->variables[self::CONFIG][$item] = isset($this->variables[self::CONFIG][$item . '_' . $lang]) ? $this->variables[self::CONFIG][$item . '_' . $lang] : $this->variables[self::CONFIG][$item . '_en'];
             }
         }
 
