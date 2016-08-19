@@ -112,7 +112,6 @@ class AccessHelper
         $user->setLastlogin($nowUTC);
         $this->userRepository->persistAndFlush($user);
         $this->session->clear();
-        $this->session->start();
         $this->session->set('uid', $user->getUid());
         if ($rememberMe) {
             $this->session->set('rememberme', 1);

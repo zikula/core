@@ -129,7 +129,7 @@ class CreateThemedResponseListener implements EventSubscriberInterface
     {
         return [
             KernelEvents::RESPONSE => [
-                ['createThemedResponse']
+                ['createThemedResponse', -2]
             ]
         ];
     }
