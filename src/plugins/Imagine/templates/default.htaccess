@@ -1,9 +1,27 @@
-# ----------------------------------------------------------------------
-# Purpose of file: block any web access to not allowed files
+# ------------------------------------------------------------------
+# Purpose of file: block any web access to unallowed files
 #                  stored under the imagine thumbnails directory
-# ----------------------------------------------------------------------
-deny from all
+# ------------------------------------------------------------------
+
+# Apache 2.2
+<IfModule !mod_authz_core.c>
+    Deny from all
+</IfModule>
+
+# Apache 2.4
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+
 <FilesMatch "(?i)\.(png|gif|jpg|jpeg)$">
-order allow,deny
-allow from all
-</filesmatch>
+    # Apache 2.2
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Allow from all
+    </IfModule>
+
+    # Apache 2.4
+    <IfModule mod_authz_core.c>
+        Require all granted
+    </IfModule>
+</FilesMatch>
