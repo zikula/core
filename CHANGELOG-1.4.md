@@ -19,7 +19,6 @@ CHANGELOG - ZIKULA 1.4.x
     - Fix display of blocks using theme overrides (#2872).
     - The legacy \Zikula_Core is now booted even if you use the Symfony Console.
     - Lengthen sesssionId column in session table (#2840).
-    - Lengthen ip address fields for IPv6 support (#2893).
     - Added whitespace trimming functionality for Twig themes (#2911).
 
  - Features:
@@ -30,6 +29,7 @@ CHANGELOG - ZIKULA 1.4.x
       - MailerEvents::SEND_MESSAGE_PERFORM - Occurs right before a message is sent.
       - MailerEvents::SEND_MESSAGE_SUCCESS - Occurs after a message has been sent successfully.
       - MailerEvents::SEND_MESSAGE_FAILURE - Occurs when a message could not be sent.
+    - Lengthen ip address fields for IPv6 support (#2893).
 
  - Core-2.0 Features:
     - AdminModule updated to Core-2.0 Spec (#2856, #2860).
