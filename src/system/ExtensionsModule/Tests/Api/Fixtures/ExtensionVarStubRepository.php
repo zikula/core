@@ -11,6 +11,7 @@
 
 namespace Zikula\ExtensionsModule\Tests\Api\Fixtures;
 
+use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionVarRepositoryInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
 
@@ -39,6 +40,26 @@ class ExtensionVarStubRepository implements ExtensionVarRepositoryInterface
             ['modname' => 'BarExtension',
                 'name' => 'string',
                 'value' => 'xyz',
+            ],
+            ['modname' => VariableApi::CONFIG,
+                'name' => 'sitename_en',
+                'value' => 'sitename_foo',
+            ],
+            ['modname' => VariableApi::CONFIG,
+                'name' => 'slogan_en',
+                'value' => 'slogan_foo',
+            ],
+            ['modname' => VariableApi::CONFIG,
+                'name' => 'metakeywords_en',
+                'value' => ['metakeywords_foo'],
+            ],
+            ['modname' => VariableApi::CONFIG,
+                'name' => 'defaultpagetitle_en',
+                'value' => 'defaultpagetitle_foo',
+            ],
+            ['modname' => VariableApi::CONFIG,
+                'name' => 'defaultmetadescription_en',
+                'value' => 'defaultmetadescription_foo',
             ],
         ];
         foreach ($datas as $data) {
