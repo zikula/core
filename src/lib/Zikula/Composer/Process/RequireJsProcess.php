@@ -1,11 +1,11 @@
 <?php
 
 /*
- * This file is part of Component Installer.
+ * This file is part of the Zikula package.
  *
- * (c) Rob Loach (http://robloach.net)
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * For the full copyright and license information, please view the LICENSE.md
+ * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
@@ -55,7 +55,7 @@ class RequireJsProcess extends Process
         // Attempt to write the require.config.js file.
         $destination = $this->componentDir . '/require.config.js';
         $this->fs->ensureDirectoryExists(dirname($destination));
-        if (file_put_contents($destination, $requireConfig) === FALSE) {
+        if (file_put_contents($destination, $requireConfig) === false) {
             $this->io->write('<error>Error writing require.config.js</error>');
 
             return false;
@@ -73,7 +73,7 @@ class RequireJsProcess extends Process
         $assets->add(new StringAsset($requireConfig));
 
         // Append the config to the require.js and write it.
-        if (file_put_contents($this->componentDir . '/require.js', $assets->dump()) === FALSE) {
+        if (file_put_contents($this->componentDir . '/require.js', $assets->dump()) === false) {
             $this->io->write('<error>Error writing require.js to the components directory</error>');
 
             return false;
@@ -86,29 +86,29 @@ class RequireJsProcess extends Process
      * Creates a require.js configuration from an array of packages.
      *
      * @param $packages
-     *   An array of packages from the composer.lock file.
+     *   An array of packages from the composer.lock file
      *
      * @return array
-     *   The built JSON array.
+     *   The built JSON array
      */
     public function requireJson(array $packages)
     {
-        $json = array();
+        $json = [];
 
         // Construct the packages configuration.
         foreach ($packages as $package) {
             // Retrieve information from the extra options.
-            $extra = isset($package['extra']) ? $package['extra'] : array();
-            $options = isset($extra['component']) ? $extra['component'] : array();
+            $extra = isset($package['extra']) ? $package['extra'] : [];
+            $options = isset($extra['component']) ? $extra['component'] : [];
 
             // Construct the base details.
             $name = $this->getComponentName($package['name'], $extra);
-            $component = array(
+            $component = [
                 'name' => $name,
-            );
+            ];
 
             // Build the "main" directive.
-            $scripts = isset($options['scripts']) ? $options['scripts'] : array();
+            $scripts = isset($options['scripts']) ? $options['scripts'] : [];
             if (!empty($scripts)) {
                 // Put all scripts into a build.js file.
                 $result = $this->aggregateScripts($package, $scripts, $name.DIRECTORY_SEPARATOR.$name.'-built.js');
@@ -123,13 +123,13 @@ class RequireJsProcess extends Process
             }
 
             // Add the shim definition for the package.
-            $shim = isset($options['shim']) ? $options['shim'] : array();
+            $shim = isset($options['shim']) ? $options['shim'] : [];
             if (!empty($shim)) {
                 $json['shim'][$name] = $shim;
             }
 
             // Add the config definition for the package.
-            $packageConfig = isset($options['config']) ? $options['config'] : array();
+            $packageConfig = isset($options['config']) ? $options['config'] : [];
             if (!empty($packageConfig)) {
                 $json['config'][$name] = $packageConfig;
             }
@@ -187,12 +187,12 @@ class RequireJsProcess extends Process
      * Constructs the require.js file from the provided require.js JSON array.
      *
      * @param $json
-     *   The require.js JSON configuration.
+     *   The require.js JSON configuration
      *
      * @return string
-     *   The RequireJS JavaScript configuration.
+     *   The RequireJS JavaScript configuration
      */
-    public function requireJs(array $json = array())
+    public function requireJs(array $json = [])
     {
         // Encode the array to a JSON array.
         $js = JsonFile::encode($json);
@@ -229,13 +229,12 @@ EOT;
         $merged = $array1;
 
         foreach ($array2 as $key => &$value) {
-            if(is_numeric($key)){
+            if (is_numeric($key)){
                 $merged[] = $value;
             } else {
                 if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
                     $merged[$key] = $this->arrayMergeRecursiveDistinct($merged[$key], $value);
-                }
-                else {
+                } else {
                     $merged[$key] = $value;
                 }
             }

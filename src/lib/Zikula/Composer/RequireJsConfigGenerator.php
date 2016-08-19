@@ -24,8 +24,7 @@ class RequireJsConfigGenerator
      * @param string|null Where to dump the generated file
      */
     public static function regenerateRequireJs(Event $event)
-    {
-            
+    {     
         // Retrieve basic information about the environment and present a
         // message to the user.
         $composer = $event->getComposer();
@@ -33,20 +32,16 @@ class RequireJsConfigGenerator
         $io->write('<info>Compiling component files</info>');
 
         // Set up all the processes.
-        $processes = array(
-            // Copy the assets to the Components directory.
-//            "ComponentInstaller\\Process\\CopyProcess",
+        $processes = [
             // Build the require.js file.
             "Zikula\\Composer\\Process\\RequireJsProcess",
-            // Build the require.css file.
-//            "ComponentInstaller\\Process\\RequireCssProcess",
             // Compile the require-built.js file.
             "ComponentInstaller\\Process\\BuildJsProcess",
-        );
+        ];
 
         // Initialize and execute each process in sequence.
         foreach ($processes as $class) {
-            if(!class_exists($class)){
+            if (!class_exists($class)){
                 $io->write("<warning>Process class '$class' not found, skipping this process</warning>");
                 continue;
             }
@@ -60,6 +55,5 @@ class RequireJsConfigGenerator
             }
             $process->process();
         }
-        
     }
 }
