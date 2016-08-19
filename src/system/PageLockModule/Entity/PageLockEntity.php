@@ -82,7 +82,7 @@ class PageLockEntity
      *
      * @var string
      *
-     * @ORM\Column(name="ipno", type="string", length=30, nullable=false)
+     * @ORM\Column(name="ipno", type="string", length=40, nullable=false)
      */
     private $ipno;
 

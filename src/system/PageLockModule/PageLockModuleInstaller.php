@@ -45,6 +45,14 @@ class PageLockModuleInstaller extends AbstractExtensionInstaller
      */
     public function upgrade($oldVersion)
     {
+        // Upgrade dependent on old version number
+        switch ($oldVersion) {
+            case '1.1.1':
+                $this->schemaTool->update(['Zikula\PageLockModule\Entity\PageLockEntity']);
+            case '2.0.0':
+                // current version
+        }
+
         return true;
     }
 
