@@ -24,7 +24,8 @@ class RequireJsConfigGenerator
      * @param string|null Where to dump the generated file
      */
     public static function regenerateRequireJs(Event $event)
-    {     
+    {
+
         // Retrieve basic information about the environment and present a
         // message to the user.
         $composer = $event->getComposer();
@@ -41,7 +42,7 @@ class RequireJsConfigGenerator
 
         // Initialize and execute each process in sequence.
         foreach ($processes as $class) {
-            if (!class_exists($class)){
+            if (!class_exists($class)) {
                 $io->write("<warning>Process class '$class' not found, skipping this process</warning>");
                 continue;
             }

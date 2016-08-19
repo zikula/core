@@ -229,7 +229,7 @@ EOT;
         $merged = $array1;
 
         foreach ($array2 as $key => &$value) {
-            if (is_numeric($key)){
+            if (is_numeric($key)) {
                 $merged[] = $value;
             } else {
                 if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
