@@ -2,9 +2,6 @@
 # This file is required for short urls to function.
 # ----------------------------------------------------------------------
 
-# security options if they work in your environment. If you get a 500 error then they wont.
-# These settings are best turned off in php.ini and will be on modern hosting environemnts.
-
 <IfModule mod_rewrite.c>
     # Turn the rewriting engine on
     RewriteEngine On
