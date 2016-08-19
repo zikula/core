@@ -93,14 +93,8 @@ class SessionUtil
     public static function expire()
     {
         if (self::getVar('uid') == '0') {
-            // no need to do anything for guests without sessions
-            if (System::getVar('anonymoussessions') == '0' && !session_id()) {
-                return;
-            }
-
             // no need to display expiry for anon users with sessions since it's invisible anyway
             // handle expired sessions differently
-
             self::regenerate(true);
 
             return;

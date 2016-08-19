@@ -159,9 +159,6 @@ class ConfigController extends AbstractController
                 $sessionCsrfTokenOneTime = isset($formData['sessioncsrftokenonetime']) ? $formData['sessioncsrftokenonetime'] : 1;
                 $this->setSystemVar('sessioncsrftokenonetime', $sessionCsrfTokenOneTime);
 
-                $anonymousSessions = isset($formData['anonymoussessions']) ? $formData['anonymoussessions'] : 1;
-                $this->setSystemVar('anonymoussessions', $anonymousSessions);
-
                 $sessionRandRegenerate = isset($formData['sessionrandregenerate']) ? $formData['sessionrandregenerate'] : 1;
                 $this->setSystemVar('sessionrandregenerate', $sessionRandRegenerate);
 

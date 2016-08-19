@@ -159,17 +159,6 @@ class ConfigType extends AbstractType
                 'multiple' => false,
                 'alert' => [$translator->__('One time CSRF protection may affect the browser back button but is more secure.') => 'info']
             ])
-            ->add('anonymoussessions', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $translator->__('Use sessions for anonymous guests'),
-                'empty_data' => 1,
-                'choices' => [
-                    $translator->__('Yes') => 1,
-                    $translator->__('No') => 0
-                ],
-                'choices_as_values' => true,
-                'expanded' => true,
-                'multiple' => false
-            ])
             ->add('sessionrandregenerate', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Periodically regenerate session ID'),
                 'empty_data' => 1,
