@@ -286,7 +286,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/opensearch", options={"i18n"=false})
+     * @Route("/opensearch.xml", options={"i18n"=false})
      *
      * Generate xml for opensearch syndication
      *
