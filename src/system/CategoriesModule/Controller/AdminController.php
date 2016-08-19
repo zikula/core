@@ -22,6 +22,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
+use Zikula\CategoriesModule\GenericUtil;
 use Zikula\Core\Controller\AbstractController;
 use ZLanguage;
 
@@ -378,6 +379,19 @@ class AdminController extends AbstractController
         $subCats = CategoryUtil::getSubCategories($cid, false, false);
         $allCats = CategoryUtil::getSubCategories($root_id, true, true, true, false, true, $cid);
         $selector = CategoryUtil::getSelector_Categories($allCats);
+
+        if ($op == 'delete' || $op == 'move') {
+            // prevent deletion or move if category is already used
+            if (!GenericUtil::mayCategoryBeDeletedOrMoved($category)) {
+                if ($op == 'delete') {
+                    $this->addFlash('error', $this->__f('Error! Category %s can not be deleted, because it is already used.', ['%s' => $category['name']]));
+                } elseif ($op == 'move') {
+                    $this->addFlash('error', $this->__f('Error! Category %s can not be moved, because it is already used.', ['%s' => $category['name']]));
+                }
+
+                return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
+            }
+        }
 
         $templateParameters = [
             'category' => $category,

@@ -131,6 +131,9 @@
     }
 
     function performCategoryContextMenuActionCallback(data) {
+        if (null == data) {
+            return;
+        }
         var originalNode = $('#node_' + data.cid);
         var parentNode = $('#node_' + data.parent);
 

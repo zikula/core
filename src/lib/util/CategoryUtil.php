@@ -53,10 +53,10 @@ class CategoryUtil
         $checkCat = self::getCategoryByPath("$rootPath/$name");
         if (!$checkCat) {
             $cat = new \Zikula\CategoriesModule\Entity\CategoryEntity();
-            $em = ServiceUtil::get('doctrine.entitymanager');
-            $em->persist($cat);
+            $entityManager = ServiceUtil::get('doctrine.entitymanager');
+            $entityManager->persist($cat);
             $data = [];
-            $data['parent'] = $em->getReference('ZikulaCategoriesModule:CategoryEntity', $rootCat['id']);
+            $data['parent'] = $entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $rootCat['id']);
             $data['name'] = $name;
             $data['display_name'] = [$lang => $displayname];
             $data['display_desc'] = [$lang => $description];
@@ -67,7 +67,7 @@ class CategoryUtil
             $data['path'] = "$rootPath/$name";
 
             $cat->merge($data);
-            $em->flush();
+            $entityManager->flush();
             $cat['ipath'] = "$rootCat[ipath]/$cat[id]";
             if ($attributes && is_array($attributes)) {
                 foreach ($attributes as $key => $value) {
@@ -75,7 +75,7 @@ class CategoryUtil
                 }
             }
 
-            $em->flush();
+            $entityManager->flush();
 
             return $cat->getId();
         }
@@ -97,11 +97,11 @@ class CategoryUtil
         }
 
         // get entity manager
-        /** @var $em \Doctrine\ORM\EntityManager */
-        $em = \ServiceUtil::get('doctrine.entitymanager');
+        /** @var $entityManager \Doctrine\ORM\EntityManager */
+        $entityManager = ServiceUtil::get('doctrine.entitymanager');
 
         // get category
-        $category = $em->find('ZikulaCategoriesModule:CategoryEntity', $cid);
+        $category = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cid);
 
         if (!isset($category)) {
             return [];
@@ -153,10 +153,10 @@ class CategoryUtil
             $columns = 'c';
         }
 
-        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $entityManager = ServiceUtil::get('doctrine.entitymanager');
 
         $dql = "SELECT $columns FROM Zikula\CategoriesModule\Entity\CategoryEntity c $where $sort";
-        $query = $em->createQuery($dql);
+        $query = $entityManager->createQuery($dql);
         $categories = $query->getResult();
 
         $cats = [];
@@ -289,8 +289,8 @@ class CategoryUtil
             return false;
         }
 
-        $em = \ServiceUtil::get('doctrine.entitymanager');
-        $cat = $em->find('ZikulaCategoriesModule:CategoryEntity', $id);
+        $entityManager = ServiceUtil::get('doctrine.entitymanager');
+        $cat = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $id);
 
         $cats = [];
         if (!$cat) {
@@ -490,17 +490,15 @@ class CategoryUtil
      */
     public static function deleteCategoryByID($cid)
     {
-        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $entityManager = ServiceUtil::get('doctrine.entitymanager');
 
-        $dql = "DELETE FROM Zikula\CategoriesModule\Entity\CategoryEntity c WHERE c.id = :cid";
-        $query = $em->createQuery($dql);
-        $query->setParameter('cid', $cid);
-        $query->getResult();
+        $category = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cid);
+        if (!isset($category)) {
+            return;
+        }
 
-        $dql = "DELETE FROM Zikula\CategoriesModule\Entity\CategoryAttributeEntity a WHERE a.category = :cid";
-        $query = $em->createQuery($dql);
-        $query->setParameter('cid', $cid);
-        $query->getResult();
+        $entityManager->remove($category);
+        $entityManager->flush();
     }
 
     /**
@@ -517,10 +515,10 @@ class CategoryUtil
             return false;
         }
 
-        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $entityManager = ServiceUtil::get('doctrine.entitymanager');
 
         $dql = "SELECT c.id FROM Zikula\CategoriesModule\Entity\CategoryEntity c WHERE c.$field LIKE :apath";
-        $query = $em->createQuery($dql);
+        $query = $entityManager->createQuery($dql);
         $query->setParameter('apath', "{$apath}%");
         $categories = $query->getResult();
 
@@ -602,13 +600,13 @@ class CategoryUtil
         $fpath = 'path';
         $fipath = 'ipath';
 
-        $em = ServiceUtil::get('doctrine.entitymanager');
+        $entityManager = ServiceUtil::get('doctrine.entitymanager');
 
         $dql = "
             SELECT c
             FROM Zikula\CategoriesModule\Entity\CategoryEntity c
             WHERE c.$pathField = :apath OR c.$pathField LIKE :apathwc";
-        $query = $em->createQuery($dql);
+        $query = $entityManager->createQuery($dql);
         $query->setParameter('apath', $apath);
         $query->setParameter('apathwc', "{$apath}/%");
         $categories = $query->getResult();
@@ -618,7 +616,7 @@ class CategoryUtil
             $category[$fipath] = mb_ereg_replace($oldParentIPath, $newParentIPath, $category[$fipath]);
         }
 
-        $em->flush();
+        $entityManager->flush();
 
         $pid = $cats[0]['id'];
         if ($includeRoot) {
@@ -626,7 +624,7 @@ class CategoryUtil
         } else {
             $dql = "UPDATE Zikula\CategoriesModule\Entity\CategoryEntity c SET c.parent = :newparent WHERE c.parent = :pid";
         }
-        $query = $em->createQuery($dql);
+        $query = $entityManager->createQuery($dql);
         $query->setParameter('newparent', $newparent_id);
         $query->setParameter('pid', $pid);
         $query->getResult();
@@ -737,10 +735,10 @@ class CategoryUtil
             }
         }
 
-        $em = ServiceUtil::get('doctrine.entitymanager');
+        $entityManager = ServiceUtil::get('doctrine.entitymanager');
 
         $oldToNewID = [];
-        $oldToNewID[$cats[0]['parent']['id']] = $em->getReference('ZikulaCategoriesModule:CategoryEntity', $newParent['id']);
+        $oldToNewID[$cats[0]['parent']['id']] = $entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $newParent['id']);
 
         // since array_shift() resets numeric array indexes, we remove the leading element like this
         if (!$includeRoot) {
@@ -763,17 +761,17 @@ class CategoryUtil
 
             $oldID = $cat['id'];
             $cat['id'] = '';
-            $cat['parent'] = isset($oldToNewID[$cat['parent']['id']]) ? $oldToNewID[$cat['parent']['id']] : $em->getReference('ZikulaCategoriesModule:CategoryEntity', $newParent['id']);
+            $cat['parent'] = isset($oldToNewID[$cat['parent']['id']]) ? $oldToNewID[$cat['parent']['id']] : $entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $newParent['id']);
 
             $catObj = new Zikula\CategoriesModule\Entity\CategoryEntity();
             $catObj->merge($cat);
-            $em->persist($catObj);
-            $em->flush();
+            $entityManager->persist($catObj);
+            $entityManager->flush();
 
-            $oldToNewID[$oldID] = $em->getReference('ZikulaCategoriesModule:CategoryEntity', $catObj['id']);
+            $oldToNewID[$oldID] = $entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $catObj['id']);
         }
 
-        $em->flush();
+        $entityManager->flush();
 
         // rebuild iPath since now we have all new PathIDs
         self::rebuildPaths('ipath', 'id');
@@ -1597,12 +1595,12 @@ class CategoryUtil
         $paths = self::buildPaths($cats, $sourceField);
 
         if ($cats && $paths) {
-            $em = \ServiceUtil::get('doctrine.entitymanager');
+            $entityManager = ServiceUtil::get('doctrine.entitymanager');
 
             foreach ($cats as $k => $v) {
                 if (isset($v[$field]) && isset($paths[$k]) && ($v[$field] != $paths[$k])) {
                     $dql = "UPDATE Zikula\CategoriesModule\Entity\CategoryEntity c SET c.$field = :path WHERE c.id = :id";
-                    $query = $em->createQuery($dql);
+                    $query = $entityManager->createQuery($dql);
                     $query->setParameter('path', $paths[$k]);
                     $query->setParameter('id', $k);
                     $query->getResult();

@@ -233,6 +233,11 @@ class AjaxController extends AbstractController
         $cid = $request->request->get('cid');
         $cat = CategoryUtil::getCategoryByID($cid);
 
+        // prevent deletion if category is already used
+        if (!GenericUtil::mayCategoryBeDeletedOrMoved($cat)) {
+            return new BadDataResponse($this->__f('Error! Category %s can not be deleted, because it is already used.', ['%s' => $cat['name']]));
+        }
+
         CategoryUtil::deleteCategoriesByPath($cat['ipath']);
 
         $result = [
@@ -264,6 +269,11 @@ class AjaxController extends AbstractController
         $parent = $request->request->get('parent');
 
         $cat = CategoryUtil::getCategoryByID($cid);
+
+        // prevent deletion if category is already used
+        if (!GenericUtil::mayCategoryBeDeletedOrMoved($cat)) {
+            return new BadDataResponse($this->__f('Error! Category %s can not be deleted, because it is already used.', ['%s' => $cat['name']]));
+        }
 
         CategoryUtil::moveSubCategoriesByPath($cat['ipath'], $parent);
         CategoryUtil::deleteCategoryByID($cat['id']);

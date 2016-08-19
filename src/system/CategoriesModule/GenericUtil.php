@@ -11,6 +11,7 @@
 
 namespace Zikula\CategoriesModule;
 
+use Symfony\Component\Finder\Finder;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 
 /**
@@ -40,14 +41,14 @@ class GenericUtil
         }
 
         // get entity manager
-        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $entityManager = \ServiceUtil::get('doctrine.entitymanager');
 
         // process name
         $data['name'] = self::processCategoryName($data['name']);
 
         // check that we don't have another category with the same name
         // on the same level
-        $qb = $em->createQueryBuilder();
+        $qb = $entityManager->createQueryBuilder();
         $qb->select('COUNT(c.id)')
            ->from('ZikulaCategoriesModule:CategoryEntity', 'c')
            ->where('c.name = :name')
@@ -91,9 +92,9 @@ class GenericUtil
      */
     public static function processCategoryParent($parent_id)
     {
-        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $entityManager = \ServiceUtil::get('doctrine.entitymanager');
 
-        return $em->getReference('ZikulaCategoriesModule:CategoryEntity', $parent_id);
+        return $entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $parent_id);
     }
 
     /**
@@ -168,5 +169,73 @@ class GenericUtil
                 $category->setAttribute($attrib_name, $attrib_values[$attrib_key]);
             }
         }
+    }
+
+    /**
+     * Checks whether a category may be deleted or moved.
+     * For this all registries are checked for if the given category is contained in the corresponding subtree.
+     * If yes, the mapping table of the corresponding module is checked for if it contains the given category.
+     *
+     * @param CategoryEntity $category The category to process
+     *
+     * @return boolean true if category may be deleted or moved, false otherwise
+     */
+    public static function mayCategoryBeDeletedOrMoved($category)
+    {
+        // get entity manager
+        $entityManager = \ServiceUtil::get('doctrine.entitymanager');
+
+        // check legacy table first (as this is quickly done)
+        $legacyMappings = $entityManager->getRepository('ZikulaCategoriesModule:CategoriesMapobj')
+            ->findBy(['categoryId' => $category['id']]);
+        if (count($legacyMappings) > 0) {
+            return false;
+        }
+
+        // fetch registries
+        $registries = $entityManager->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')
+            ->findAll();
+
+        $kernel = \ServiceUtil::get('kernel');
+
+        // iterate over all registries
+        foreach ($registries as $registry) {
+            // check if the registry subtree contains our category
+            $isContained = \CategoryUtil::isSubCategory($registry['category_id'], $category);
+            if (!$isContained) {
+                continue;
+            }
+
+            // get information about responsible module
+            $module = $kernel->getModule($registry['modname']);
+            $moduleClass = get_class($module);
+            $moduleClassLevels = explode('\\', get_class($module));
+            unset($moduleClassLevels[count($moduleClassLevels) - 1]);
+            $moduleNamespace = implode('\\', $moduleClassLevels);
+
+            // collect module entities
+            $entityPath = $module->getRelativePath() . '/Entity/';
+            $finder = new Finder();
+            $finder->files()->name('*.php')->in($entityPath);
+            foreach ($finder as $file) {
+                // check if this entity implements category assignments
+                include_once $file;
+                $entityName = basename($file->getRelativePathname(), '.php');
+                $entityClass = $moduleNamespace . '\\Entity\\' . $entityName;
+                if (!is_subclass_of($entityClass, 'Zikula\\CategoriesModule\\Entity\\AbstractCategoryAssignment')) {
+                    continue;
+                }
+
+                // check if this mapping table contains a reference to the given category
+                $mappings = $entityManager->getRepository($registry['modname'] . ':' . $entityName)
+                    ->findBy(['category' => $category['id']]);
+                if (count($mappings) > 0) {
+                    // existing reference found
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }
