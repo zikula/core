@@ -10,6 +10,7 @@
         <h3>
             <span class="fa fa-plus"></span>
             {{ __('Create new user') }}
+            {{ pageSetVar('title', __('Create new user')) }}
         </h3>
         <div class="alert alert-warning">{{ __('The items that are marked with an asterisk (\'*\') are required entries.') }}</div>
         {{ form_start(form) }}
@@ -55,7 +56,7 @@
 <script type="text/javascript">
     (function($) {
         $(document).ready(function() {
-            var setPassEle = $("#{{ form.setpass.vars.id }}");
+            var setPassEle = $('#{{ form.setpass.vars.id }}');
             var setPassAlert = setPassEle.parent().find('.alert');
             var setPassWrap = $('#{{ form.setpass.vars.id }}_wrap');
             var passFirst = $('#{{ form.pass.vars.id }}_first');

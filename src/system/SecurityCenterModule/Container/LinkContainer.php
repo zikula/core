@@ -97,20 +97,20 @@ class LinkContainer implements LinkContainerInterface
         ];
         $links[] = [
             'url' => $this->router->generate('zikulasecuritycentermodule_idslog_view'),
-            'text' => $this->translator->__('View IDS Log'),
+            'text' => $this->translator->__('View IDS log'),
             'icon' => 'align-justify',
             'links' => [
                 [
                     'url' => $this->router->generate('zikulasecuritycentermodule_idslog_view'),
-                    'text' => $this->translator->__('View IDS Log')
+                    'text' => $this->translator->__('View IDS log')
                 ],
                 [
                     'url' => $this->router->generate('zikulasecuritycentermodule_idslog_export'),
-                    'text' => $this->translator->__('Export IDS Log')
+                    'text' => $this->translator->__('Export IDS log')
                 ],
                 [
                     'url' => $this->router->generate('zikulasecuritycentermodule_idslog_purge'),
-                    'text' => $this->translator->__('Purge IDS Log')
+                    'text' => $this->translator->__('Purge IDS log')
                 ]
             ]
         ];

@@ -7,7 +7,8 @@
     <div class="row">
         <h3>
             <span class="fa fa-wrench"></span>
-            {{ themeName }} {{ __('Theme Config') }}
+            {{ themeName }} {{ __('Theme config') }}
+            {{ pageSetVar('title', __('Theme configuration')) }}
         </h3>
         {{ showflashes() }}
         {{ form_start(form) }}

@@ -8,7 +8,8 @@
     <div class="row">
         <h3>
             <span class="fa fa-plus-square"></span>
-            {{ __('Create') }} {{ __('Block') }}
+            {{ __('Create block') }}
+            {{ pageSetVar('title', __('Create block')) }}
         </h3>
         {{ showflashes() }}
         {{ form_start(form) }}

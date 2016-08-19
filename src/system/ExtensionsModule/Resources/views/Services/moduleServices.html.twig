@@ -7,7 +7,8 @@
     {#{moduleheader modname=$currentmodule type='admin' title=$displayName putimage=true image=$image}<h3>#}
     <h3>
         <span class="fa fa-paperclip"></span>
-        {{ __('Module Services') }}
+        {{ __('Module services') }}
+        {{ pageSetVar('title', __('Module services')) }}
     </h3>
 
 <p class="alert alert-info">{{ __('Module Services are functions provided by the core or other modules for this module.') }}</p>

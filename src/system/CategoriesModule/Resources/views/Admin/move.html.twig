@@ -2,6 +2,7 @@
 <h3>
     <span class="fa fa-scissors"></span>
     {{ __('Move category') }}
+    {{ pageSetVar('title', __('Move category')) }}
 </h3>
 
 <form class="form-horizontal" role="form" action="{{ path('zikulacategoriesmodule_adminform_move') }}" method="post" enctype="application/x-www-form-urlencoded">

@@ -3,6 +3,7 @@
 <h3>
     <span class="fa fa-list"></span>
     {{ __('Users list') }}
+    {{ pageSetVar('title', __('Users list')) }}
 </h3>
 
 <div id="user-search-container" class="form hide">
@@ -11,7 +12,6 @@
         <span class="input-group-addon"><i class="fa fa-times pointer" id="user-search-discard"></i></span>
     </div>
 </div>
-
 <div id="user-search-min-char" class="hide">{{ __('Please enter at least 3 characters') }}</div>
 
 <p id="users-alphafilter">

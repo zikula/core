@@ -1,6 +1,7 @@
 {{ menu|raw }}
 <div id="z-admincontainer" class="z-admin-content">
     <h2>{{ category.name }}</h2>
+    {{ pageSetVar('title', category.name ~ ' - ' ~ category.description) }}
     <div class="z-admincategorydescription">{{ category.description }}</div>
 
     {% if adminLinks is not empty %}

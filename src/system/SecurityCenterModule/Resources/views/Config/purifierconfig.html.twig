@@ -4,7 +4,8 @@
     <div class="row">
         <h3>
             <span class="fa fa-wrench"></span>
-            {{ __('HTMLPurifier Settings') }}
+            {{ __('HTMLPurifier settings') }}
+            {{ pageSetVar('title', __('HTMLPurifier settings')) }}
         </h3>
 
         <p class="alert alert-info">{{ __('HTMLPurifier filtering occurs when a template string or variable is modified with the \'safehtml\' modifier, or when a module asks for similar processing from within its functions.') }}</p>

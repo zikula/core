@@ -10,6 +10,7 @@
         <h3>
             <span class="fa fa-plus"></span>
             {{ __f('Edit user account of %uname', {'%uname': form.vars.value.uname}) }}
+            {{ pageSetVar('title', __('Edit user account')) }}
         </h3>
         <div class="alert alert-warning">{{ __('The items that are marked with an asterisk (\'*\') are required entries.') }}</div>
         {% if form.vars.value.uid == currentUser.uid %}
