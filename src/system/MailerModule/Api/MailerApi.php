@@ -24,7 +24,6 @@ use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\MailerModule\MailerEvents;
-use Zikula\PermissionsModule\Api\PermissionApi;
 
 /**
  * Class MailerApi.
