@@ -492,12 +492,13 @@ class CategoryUtil
     {
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
-        $dql = "DELETE FROM Zikula\CategoriesModule\Entity\CategoryEntity c WHERE c.id = :cid";
+        // delete attributes first to avoid error about foreign key constraints
+        $dql = "DELETE FROM Zikula\CategoriesModule\Entity\CategoryAttributeEntity a WHERE a.category = :cid";
         $query = $em->createQuery($dql);
         $query->setParameter('cid', $cid);
         $query->getResult();
 
-        $dql = "DELETE FROM Zikula\CategoriesModule\Entity\CategoryAttributeEntity a WHERE a.category = :cid";
+        $dql = "DELETE FROM Zikula\CategoriesModule\Entity\CategoryEntity c WHERE c.id = :cid";
         $query = $em->createQuery($dql);
         $query->setParameter('cid', $cid);
         $query->getResult();

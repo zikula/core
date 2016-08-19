@@ -16,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use System;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
@@ -35,11 +36,13 @@ class AdminformController extends AbstractController
      *
      * Updates a category.
      *
+     * @param Request $request
+     *
      * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
-    public function editAction()
+    public function editAction(Request $request)
     {
         $this->get('zikula_core.common.csrf_token_handler')->validate($request->request->get('csrfToken'));
 
@@ -48,7 +51,7 @@ class AdminformController extends AbstractController
         }
 
         // get data from post
-        $data = $this->request->request->get('category', null);
+        $data = $request->request->get('category', null);
 
         if (!isset($data['is_locked'])) {
             $data['is_locked'] = 0;
@@ -62,28 +65,28 @@ class AdminformController extends AbstractController
 
         $args = [];
 
-        if ($this->request->request->get('category_copy', null)) {
+        if ($request->request->get('category_copy', null)) {
             $args['op'] = 'copy';
             $args['cid'] = (int)$data['id'];
 
             return $this->redirectToRoute('zikulacategoriesmodule_admin_op', $args);
         }
 
-        if ($this->request->request->get('category_move', null)) {
+        if ($request->request->get('category_move', null)) {
             $args['op'] = 'move';
             $args['cid'] = (int)$data['id'];
 
             return $this->redirectToRoute('zikulacategoriesmodule_admin_op', $args);
         }
 
-        if ($this->request->request->get('category_delete', null)) {
+        if ($request->request->get('category_delete', null)) {
             $args['op'] = 'delete';
             $args['cid'] = (int)$data['id'];
 
             return $this->redirectToRoute('zikulacategoriesmodule_admin_op', $args);
         }
 
-        if ($this->request->request->get('category_user_edit', null)) {
+        if ($request->request->get('category_user_edit', null)) {
             $_SESSION['category_referer'] = System::serverGetVar('HTTP_REFERER');
             $args['dr'] = (int)$data['id'];
 
@@ -125,8 +128,8 @@ class AdminformController extends AbstractController
         $category['ipath'] = GenericUtil::processCategoryIPath($data['parent']['ipath'], $category['id']);
 
         // process category attributes
-        $attrib_names = $this->request->request->get('attribute_name', []);
-        $attrib_values = $this->request->request->get('attribute_value', []);
+        $attrib_names = $request->request->get('attribute_name', []);
+        $attrib_values = $request->request->get('attribute_value', []);
         GenericUtil::processCategoryAttributes($category, $attrib_names, $attrib_values);
 
         $entityManager->flush();
@@ -147,11 +150,13 @@ class AdminformController extends AbstractController
      *
      * Creates a category.
      *
+     * @param Request $request
+     *
      * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have permission to add a category
      */
-    public function newcatAction()
+    public function newcatAction(Request $request)
     {
         $this->get('zikula_core.common.csrf_token_handler')->validate($request->request->get('csrfToken'));
 
@@ -160,7 +165,7 @@ class AdminformController extends AbstractController
         }
 
         // get data from post
-        $data = $this->request->request->get('category', null);
+        $data = $request->request->get('category', null);
 
         $valid = GenericUtil::validateCategoryData($data);
         if (!$valid) {
@@ -189,8 +194,8 @@ class AdminformController extends AbstractController
         $category['ipath'] = GenericUtil::processCategoryIPath($data['parent']['ipath'], $category['id']);
 
         // process category attributes
-        $attrib_names = $this->request->request->get('attribute_name', []);
-        $attrib_values = $this->request->request->get('attribute_value', []);
+        $attrib_names = $request->request->get('attribute_name', []);
+        $attrib_values = $request->request->get('attribute_value', []);
         GenericUtil::processCategoryAttributes($category, $attrib_names, $attrib_values);
 
         $entityManager->flush();
@@ -206,11 +211,13 @@ class AdminformController extends AbstractController
      *
      * Deletes a category.
      *
+     * @param Request $request
+     *
      * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have permission to delete a category
      */
-    public function deleteAction()
+    public function deleteAction(Request $request)
     {
         $this->get('zikula_core.common.csrf_token_handler')->validate($request->request->get('csrfToken'));
 
@@ -218,20 +225,27 @@ class AdminformController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        if ($this->request->request->get('category_cancel', null)) {
+        if ($request->request->get('category_cancel', null)) {
             return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
         }
 
-        $cid = $this->request->request->get('cid', null);
+        $cid = $request->request->get('cid', null);
 
         $cat = CategoryUtil::getCategoryByID($cid);
 
+        // prevent deletion if category is already used
+        if (!GenericUtil::mayCategoryBeDeletedOrMoved($cat)) {
+            $this->addFlash('error', $this->__f('Error! Category %s can not be deleted, because it is already used.', ['%s' => $cat['name']]));
+
+            return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
+        }
+
         // delete subdirectories
-        if ($this->request->request->get('subcat_action') == 'delete') {
+        if ($request->request->get('subcat_action') == 'delete') {
             CategoryUtil::deleteCategoriesByPath($cat['ipath']);
-        } elseif ($this->request->request->get('subcat_action') == 'move') {
+        } elseif ($request->request->get('subcat_action') == 'move') {
             // move subdirectories
-            $data = $this->request->request->get('category', null);
+            $data = $request->request->get('category', null);
             if ($data['parent_id']) {
                 CategoryUtil::moveSubCategoriesByPath($cat['ipath'], $data['parent_id']);
                 CategoryUtil::deleteCategoryByID($cid);
@@ -249,11 +263,13 @@ class AdminformController extends AbstractController
      *
      * Copies a category.
      *
+     * @param Request $request
+     *
      * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have permission to add a category
      */
-    public function copyAction()
+    public function copyAction(Request $request)
     {
         $this->get('zikula_core.common.csrf_token_handler')->validate($request->request->get('csrfToken'));
 
@@ -261,14 +277,14 @@ class AdminformController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        if ($this->request->request->get('category_cancel', null)) {
+        if ($request->request->get('category_cancel', null)) {
             return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
         }
 
-        $cid = $this->request->request->get('cid', null);
+        $cid = $request->request->get('cid', null);
         $cat = CategoryUtil::getCategoryByID($cid);
 
-        $data = $this->request->request->get('category', null);
+        $data = $request->request->get('category', null);
 
         CategoryUtil::copyCategoriesByPath($cat['ipath'], $data['parent_id']);
 
@@ -283,11 +299,13 @@ class AdminformController extends AbstractController
      *
      * Moves a category.
      *
+     * @param Request $request
+     *
      * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have permission to edit a category
      */
-    public function moveAction()
+    public function moveAction(Request $request)
     {
         $this->get('zikula_core.common.csrf_token_handler')->validate($request->request->get('csrfToken'));
 
@@ -295,14 +313,21 @@ class AdminformController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        if ($this->request->request->get('category_cancel', null)) {
+        if ($request->request->get('category_cancel', null)) {
             return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
         }
 
-        $cid = $this->request->request->get('cid', null);
+        $cid = $request->request->get('cid', null);
         $cat = CategoryUtil::getCategoryByID($cid);
 
-        $data = $this->request->request->get('category', null);
+        // prevent move if category is already used
+        if (!GenericUtil::mayCategoryBeDeletedOrMoved($cat)) {
+            $this->addFlash('error', $this->__f('Error! Category %s can not be moved, because it is already used.', ['%s' => $cat['name']]));
+
+            return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
+        }
+
+        $data = $request->request->get('category', null);
 
         CategoryUtil::moveCategoriesByPath($cat['ipath'], $data['parent_id']);
 
@@ -340,11 +365,13 @@ class AdminformController extends AbstractController
      *
      * Creates, updates or deletes a category registry.
      *
+     * @param Request $request
+     *
      * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
-    public function editregistryAction()
+    public function editregistryAction(Request $request)
     {
         $this->get('zikula_core.common.csrf_token_handler')->validate($request->request->get('csrfToken'));
 
@@ -355,8 +382,8 @@ class AdminformController extends AbstractController
         $entityManager = $this->get('doctrine.orm.entity_manager');
 
         // delete registry
-        if ($this->request->request->get('mode', null) == 'delete') {
-            $id = $this->request->get('id', 0);
+        if ($request->request->get('mode', null) == 'delete') {
+            $id = $request->get('id', 0);
             $obj = $entityManager->find('ZikulaCategoriesModule:CategoryRegistryEntity', $id);
             $entityManager->remove($obj);
             $entityManager->flush();
@@ -366,18 +393,17 @@ class AdminformController extends AbstractController
             return $this->redirectToRoute('zikulacategoriesmodule_admin_editregistry');
         }
 
-        $args = [];
-
-        if (!$this->request->request->get('category_submit', null)) {
+        if (!$request->request->get('category_submit', null)) {
             // got here through selector auto-submit
-            $data = $this->request->request->get('category_registry', null);
-            $args['category_registry'] = $data;
+            $routeArgs = [
+                'category_registry' => $request->request->get('category_registry', null)
+            ];
 
-            return $this->redirectToRoute('zikulacategoriesmodule_admin_editregistry', $args);
+            return $this->redirectToRoute('zikulacategoriesmodule_admin_editregistry', $routeArgs);
         }
 
         // get data from post
-        $data = $this->request->request->get('category_registry', null);
+        $data = $request->request->get('category_registry', null);
 
         // do some validation
         $valid = true;
