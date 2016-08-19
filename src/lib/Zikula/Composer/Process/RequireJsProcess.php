@@ -49,9 +49,8 @@ class RequireJsProcess extends Process
         // Construct the require.js and stick it in the destination.
         $json = $this->requireJson($this->packages, $this->config);
         $requireConfig = $this->requireJs($json);
-        $thisPath = dirname(__DIR__);
-        $vendorPath = str_replace("lib/Zikula/Composer", "vendor/robloach/component-installer/src/ComponentInstaller", $thisPath);
-        //var_dump($vendorPath);
+        $vendorPath = str_replace("lib/Zikula/Composer", "vendor/robloach/component-installer/src/ComponentInstaller", dirname(__DIR__));
+
         // Attempt to write the require.config.js file.
         $destination = $this->componentDir . '/require.config.js';
         $this->fs->ensureDirectoryExists(dirname($destination));
@@ -60,7 +59,7 @@ class RequireJsProcess extends Process
 
             return false;
         }
-        //var_dump($vendorPath. '/Resources/require.js');
+
         // Read in require.js to prepare the final require.js.
         if (!file_exists($vendorPath . '/Resources/require.js')) {
             $this->io->write('<error>Error reading in require.js</error>');
