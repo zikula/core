@@ -21,6 +21,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Lengthen sessionId column in session table (#2840).
     - Added whitespace trimming functionality for Twig themes (#2911).
     - Fixed getPluralOffset in Zikula.js to return numbers instead of boolean values (#3011)
+    - Corrected issue with hook admin url and legacy modules (#2999).
 
  - Features:
     - Add help text, alert text and input groups to forms utilizing the provided form themes (#2846, #2847).
