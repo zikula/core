@@ -45,7 +45,7 @@ class ConfigType extends AbstractType
                 'max_length' => 5
             ])
             ->add('plugins', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $translator->__('Enabled plugins'),
+                'label' => $translator->__('Disabled plugins'),
                 'empty_data' => [],
                 'choices' => $this->getPluginChoices($options['plugins']),
                 'choices_as_values' => true,
