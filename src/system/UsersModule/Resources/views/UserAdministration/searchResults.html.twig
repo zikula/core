@@ -38,9 +38,12 @@
         </thead>
         <tbody>
             {% for user in deleteForm.users %}
-                <tr{% if user.vars.name <= 2 %} class="warning"{% endif %}>
+                {% set excluded = user.vars.name <= 2 ? true : false %}
+                <tr{% if excluded %} class="warning"{% endif %}>
                 {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
-                <td headers="hDelete">{{ form_widget(user, {title:__f('Delete %n', {'%n': user.vars.label}), disabled:user.vars.name <= 2}) }}</td>
+                <td headers="hDelete">
+                    {{ form_widget(user, {title:__f('Delete %n', {'%n': user.vars.label}), disabled:excluded}) }}
+                </td>
                 {% endif %}
                 <td headers="hUser">{{ user.vars.label }}</td>
                 <td headers="hEmail">
@@ -49,10 +52,10 @@
                     {% endif %}
                 </td>
                 <td headers="hActions" class="actions">
-                    {% if hasPermission('ZikulaUsersModule', user.vars.label~'::'~user.vars.name, 'ACCESS_EDIT') %}
+                    {% if hasPermission('ZikulaUsersModule', user.vars.label~'::'~user.vars.name, 'ACCESS_EDIT') and user.vars.name > 1 %}
                         <a class="fa fa-pencil tooltips" href="{{ path('zikulausersmodule_useradministration_modify', {user:user.vars.name}) }}" title="{{ __f('Edit %sub%', {"%sub%": user.vars.label}) }}"></a>
                     {% endif %}
-                    {% if currentUser.uid != user.vars.name and hasPermission('ZikulaUsersModule', user.vars.label~'::'~user.vars.name, 'ACCESS_DELETE') %}
+                    {% if not excluded and currentUser.uid != user.vars.name and hasPermission('ZikulaUsersModule', user.vars.label~'::'~user.vars.name, 'ACCESS_DELETE') %}
                         <a class="fa fa-trash-o fa-fw tooltips" href="{{ path('zikulausersmodule_useradministration_delete', {user:user.vars.name}) }}" title="{{ __f('Delete %sub%', {"%sub%": user.vars.label}) }}"></a>
                     {% endif %}
                 </td>
