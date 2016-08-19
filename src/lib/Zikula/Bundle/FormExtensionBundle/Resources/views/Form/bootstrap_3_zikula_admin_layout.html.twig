@@ -29,8 +29,8 @@ col-sm-9
 
 {% block checkbox_widget -%}
     {% set parent_label_class = parent_label_class|default('') -%}
-    {% if 'checkbox-inline' in parent_label_class %}
-        {{- form_label(form, null, { widget: parent() }) -}}
+    {% if 'checkbox-inline' not in parent_label_class %}
+        {{ parent() }}
     {% else -%}
         <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
     {%- endif %}

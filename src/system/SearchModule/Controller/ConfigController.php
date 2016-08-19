@@ -55,13 +55,23 @@ class ConfigController extends AbstractController
             $plugins[] = ['title' => $searchableModule['name']];
         }
 
+        $disabledPlugins = [];
+
         // get the disabled state
         foreach ($plugins as $key => $plugin) {
             if (!isset($plugin['title'])) {
                 continue;
             }
-            $plugins[$key]['disabled'] = $this->getVar('disable_' . $plugin['title']);
+            $modVarKey = 'disable_' . $plugin['title'];
+            if (!isset($modVars[$modVarKey])) {
+                continue;
+            }
+            if ($modVars[$modVarKey]) {
+                $disabledPlugins[] = $plugin['title'];
+            }
+            unset($modVars[$modVarKey]);
         }
+        $modVars['plugins'] = $disabledPlugins;
 
         $form = $this->createForm('Zikula\SearchModule\Form\Type\ConfigType',
             $modVars, [
@@ -82,11 +92,11 @@ class ConfigController extends AbstractController
 
                 // loop round the plugins
                 foreach ($plugins as $searchPlugin) {
-                    if (!isset($plugin['title'])) {
+                    if (!isset($searchPlugin['title'])) {
                         continue;
                     }
                     // set the disabled flag
-                    $disabledFlag = isset($formData['disable_' . $plugin['title']]) ? $formData['disable_' . $plugin['title']] : false;
+                    $disabledFlag = in_array($searchPlugin['title'], $formData['plugins']);
                     $this->setVar('disable_' . $searchPlugin['title'], $disabledFlag);
                 }
 
