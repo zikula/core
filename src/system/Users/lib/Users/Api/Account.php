@@ -58,7 +58,7 @@ class Users_Api_Account extends Zikula_AbstractApi
         $found = false;
         if (is_array($blocks)) {
             foreach ($blocks as $block) {
-                if (($block['mid'] == $usersModuleID) && ($block['bkey'] == 'user')) {
+                if (($block['mid'] == $usersModuleID) && ($block['bkey'] == 'User')) {
                     $found = true;
                     break;
                 }
