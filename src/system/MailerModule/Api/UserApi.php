@@ -102,8 +102,8 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // if replytoname and replytoaddress have been provided use them else use the fromname and fromaddress built earlier
-        $args['replytoname'] = (!isset($args['replytoname']) || empty($args['replytoname'])) ? $fromname : $args['replytoname'];
-        $args['replytoaddress'] = (!isset($args['replytoaddress'])  || empty($args['replytoaddress'])) ? $fromaddress : $args['replytoaddress'];
+        $args['replytoname'] = (!isset($args['replytoname']) || empty($args['replytoname'])) ? $fromName : $args['replytoname'];
+        $args['replytoaddress'] = (!isset($args['replytoaddress'])  || empty($args['replytoaddress'])) ? $fromAddress : $args['replytoaddress'];
         $message->setReplyTo([$args['replytoaddress'] => $args['replytoname']]);
 
         // add any cc addresses
@@ -128,16 +128,20 @@ class UserApi extends \Zikula_AbstractApi
             }
         }
 
-        return $mailer->sendMessage(
-            $message,
-            $args['subject'],
-            $args['body'],
-            isset($args['altbody']) ? $args['altbody'] : '',
-            isset($args['html']) ? $args['html'] : '',
-            isset($args['headers']) ? (is_array($args['headers']) ? $args['headers'] : [$args['headers']]) : [],
-            isset($args['attachments']) ? $args['attachments'] : [],
-            isset($args['stringattachments']) ? $args['stringattachments'] : [],
-            isset($args['embeddedimages']) ? $args['embeddedimages'] : []
-        );
+        try {
+            return $mailer->sendMessage(
+                $message,
+                $args['subject'],
+                $args['body'],
+                isset($args['altbody']) ? $args['altbody'] : '',
+                isset($args['html']) ? $args['html'] : '',
+                isset($args['headers']) ? (is_array($args['headers']) ? $args['headers'] : [$args['headers']]) : [],
+                isset($args['attachments']) ? $args['attachments'] : [],
+                isset($args['stringattachments']) ? $args['stringattachments'] : [],
+                isset($args['embeddedimages']) ? $args['embeddedimages'] : []
+            );
+        } catch (\RuntimeException $e) {
+            return false;
+        }
     }
 }
