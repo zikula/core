@@ -868,6 +868,13 @@ Zikula.Gettext = Class.create(/** @lends Zikula.Gettext.prototype */{
             eq = this.defaults.pluralForms;
             eval(eq);
         }
+        
+        if(plural === false){
+            plural = 0;
+        }else{
+            plural = 1;
+        }
+        
         if (plural >= nplurals) {
             plural = nplurals - 1;
         }
