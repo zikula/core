@@ -18,16 +18,6 @@ use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterf
 
 class ExtensionRepository extends EntityRepository implements ExtensionRepositoryInterface
 {
-    public function findAll()
-    {
-        return parent::findAll();
-    }
-
-    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
-    {
-        return parent::findBy($criteria, $orderBy, $limit, $offset);
-    }
-
     /**
      * @param $name
      * @return ExtensionEntity

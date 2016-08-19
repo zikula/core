@@ -18,6 +18,7 @@ use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\Core\Response\Ajax\UnavailableResponse;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
 
 /**
@@ -47,13 +48,21 @@ class LegacyController
     private $permissionApi;
 
     /**
+     * @var ExtensionRepositoryInterface
+     */
+    private $extensionRespository;
+
+    /**
      * MainController constructor.
      * @param VariableApi $variableApi
+     * @param PermissionApi $permissionApi
+     * @param ExtensionRepositoryInterface $extensionRepository
      */
-    public function __construct(VariableApi $variableApi, PermissionApi $permissionApi)
+    public function __construct(VariableApi $variableApi, PermissionApi $permissionApi, ExtensionRepositoryInterface $extensionRepository)
     {
         $this->variableApi = $variableApi;
         $this->permissionApi = $permissionApi;
+        $this->extensionRespository = $extensionRepository;
     }
 
     /**
@@ -64,7 +73,9 @@ class LegacyController
      */
     public function legacyAction(Request $request)
     {
-        $module = $request->query->get('module');
+        $moduleUrl = $request->query->get('module');
+        $moduleEntity = $this->extensionRespository->findOneBy(['url' => $moduleUrl]);
+        $module = $moduleEntity->getName();
         $type = $request->query->get('type');
         $func = $request->query->get('func');
         $arguments = $request->query->all();
