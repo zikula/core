@@ -210,7 +210,7 @@ class GenericUtil
             $module = $kernel->getModule($registry['modname']);
             $moduleClass = get_class($module);
             $moduleClassLevels = explode('\\', get_class($module));
-            unset($moduleClassLevels[count($moduleClassLevels)-1]);
+            unset($moduleClassLevels[count($moduleClassLevels) - 1]);
             $moduleNamespace = implode('\\', $moduleClassLevels);
 
             // collect module entities
