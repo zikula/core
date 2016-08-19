@@ -10,15 +10,15 @@
         <b>Zikula</b>
         {#<span>{{ collector.version }}</span>#}
     </div>
-        <div class="sf-toolbar-info-piece">
-            <b>Theme name</b>{{ collector.themeEngine.theme|default('') }}
-        </div>
-        <div class="sf-toolbar-info-piece">
-            <b>Theme realm</b>{{ collector.themeEngine.realm|default('') }}
-        </div>
-        <div class="sf-toolbar-info-piece">
-            <b>Theme annotation</b>{{ collector.themeEngine.annotation|default('') }}
-        </div>
+    <div class="sf-toolbar-info-piece">
+        <b>Theme name</b>{{ collector.themeEngine.theme }}
+    </div>
+    <div class="sf-toolbar-info-piece">
+        <b>Theme realm</b>{{ collector.themeEngine.realm }}
+    </div>
+    <div class="sf-toolbar-info-piece">
+        <b>Theme annotation</b>{{ collector.themeEngine.annotation }}
+    </div>
     <div class="sf-toolbar-info-piece">
         <a href="{{ collector.ghZikulaCoreUrl }}">GitHub Core Repository</a>
     </div>

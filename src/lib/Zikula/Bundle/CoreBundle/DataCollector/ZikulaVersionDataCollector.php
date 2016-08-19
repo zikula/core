@@ -46,6 +46,12 @@ class ZikulaVersionDataCollector extends DataCollector
                 'realm' => $this->themeEngine->getRealm(),
                 'annotation' => $this->themeEngine->getAnnotationValue(),
             ];
+        } else {
+            $this->data['themeEngine'] = [
+                'theme' => '',
+                'realm' => '',
+                'annotation' => '',
+            ];
         }
     }
 
