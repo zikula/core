@@ -155,7 +155,8 @@ class AdminController extends AbstractController
      */
     public function updatesettingsAction(Request $request)
     {
-        $this->checkCsrfToken();
+        $token = $request->request->get('csrftoken', null);
+        $this->get('zikula_core.common.csrf_token_handler')->validate($token);
 
         // get our input
         $themeinfo = $request->request->get('themeinfo', null);
@@ -260,7 +261,8 @@ class AdminController extends AbstractController
      */
     public function updatevariablesAction(Request $request)
     {
-        $this->checkCsrfToken();
+        $token = $request->request->get('csrftoken', null);
+        $this->get('zikula_core.common.csrf_token_handler')->validate($token);
 
         // get our input
         $variablesnames = $request->request->get('variablesnames', null);
@@ -397,7 +399,8 @@ class AdminController extends AbstractController
      */
     public function updatepalettesAction(Request $request)
     {
-        $this->checkCsrfToken();
+        $token = $request->request->get('csrftoken', null);
+        $this->get('zikula_core.common.csrf_token_handler')->validate($token);
 
         // get our input
         $palettes = $request->request->get('palettes', null);
@@ -677,7 +680,8 @@ class AdminController extends AbstractController
      */
     public function updatepageconfigtemplatesAction(Request $request)
     {
-        $this->checkCsrfToken();
+        $token = $request->request->get('csrftoken', null);
+        $this->get('zikula_core.common.csrf_token_handler')->validate($token);
 
         // get our input
         $themename = $request->request->get('themename', null);
@@ -892,7 +896,8 @@ class AdminController extends AbstractController
      */
     public function updatepageconfigurationassignmentAction(Request $request)
     {
-        $this->checkCsrfToken();
+        $token = $request->request->get('csrftoken', null);
+        $this->get('zikula_core.common.csrf_token_handler')->validate($token);
 
         // get our input
         $themename = $request->request->get('themename', null);
@@ -1012,7 +1017,8 @@ class AdminController extends AbstractController
         }
 
         // If we get here it means that the user has confirmed the action
-        $this->checkCsrfToken();
+        $token = $request->request->get('csrftoken', null);
+        $this->get('zikula_core.common.csrf_token_handler')->validate($token);
 
         // Delete the admin message
         // The return value of the function is checked
@@ -1114,7 +1120,8 @@ class AdminController extends AbstractController
      */
     public function updateconfigAction(Request $request)
     {
-        $this->checkCsrfToken();
+        $token = $request->request->get('csrftoken', null);
+        $this->get('zikula_core.common.csrf_token_handler')->validate($token);
 
         // security check
         if (!$this->hasPermission('ZikulaThemeModule::', '::', ACCESS_EDIT)) {
@@ -1240,8 +1247,8 @@ class AdminController extends AbstractController
      */
     public function clearCompiledAction(Request $request)
     {
-        $csrftoken = $request->query->get('csrftoken');
-        $this->checkCsrfToken($csrftoken);
+        $token = $request->query->get('csrftoken', null);
+        $this->get('zikula_core.common.csrf_token_handler')->validate($token);
 
         // Security check
         if (!$this->hasPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
@@ -1277,8 +1284,8 @@ class AdminController extends AbstractController
      */
     public function clearCacheAction(Request $request)
     {
-        $csrftoken = $request->query->get('csrftoken');
-        $this->checkCsrfToken($csrftoken);
+        $token = $request->query->get('csrftoken', null);
+        $this->get('zikula_core.common.csrf_token_handler')->validate($token);
 
         // Security check
         if (!$this->hasPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
@@ -1332,8 +1339,8 @@ class AdminController extends AbstractController
      */
     public function clearCssjscombinecacheAction(Request $request)
     {
-        $csrftoken = $request->query->get('csrftoken');
-        $this->checkCsrfToken($csrftoken);
+        $token = $request->query->get('csrftoken', null);
+        $this->get('zikula_core.common.csrf_token_handler')->validate($token);
 
         // Security check
         if (!$this->hasPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
@@ -1365,8 +1372,8 @@ class AdminController extends AbstractController
      */
     public function clearConfigAction(Request $request)
     {
-        $csrftoken = $request->query->get('csrftoken');
-        $this->checkCsrfToken($csrftoken);
+        $token = $request->query->get('csrftoken', null);
+        $this->get('zikula_core.common.csrf_token_handler')->validate($token);
 
         // Security check
         if (!$this->hasPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
@@ -1402,8 +1409,8 @@ class AdminController extends AbstractController
      */
     public function renderClearCompiledAction(Request $request)
     {
-        $csrftoken = $request->query->get('csrftoken');
-        $this->checkCsrfToken($csrftoken);
+        $token = $request->query->get('csrftoken', null);
+        $this->get('zikula_core.common.csrf_token_handler')->validate($token);
 
         // Security check
         if (!$this->hasPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
@@ -1439,8 +1446,8 @@ class AdminController extends AbstractController
      */
     public function renderClearCacheAction(Request $request)
     {
-        $csrftoken = $request->query->get('csrftoken');
-        $this->checkCsrfToken($csrftoken);
+        $token = $request->query->get('csrftoken', null);
+        $this->get('zikula_core.common.csrf_token_handler')->validate($token);
 
         // Security check
         if (!$this->hasPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
