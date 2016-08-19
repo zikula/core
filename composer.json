@@ -97,13 +97,15 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Zikula\\Composer\\LessGenerator::generateCombinedBootstrapFontAwesomeCSS"
+            "Zikula\\Composer\\LessGenerator::generateCombinedBootstrapFontAwesomeCSS",
+            "Zikula\\Composer\\RequireJsConfigGenerator::regenerateRequireJs"
         ],
         "post-update-cmd": [
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Zikula\\Composer\\LessGenerator::generateCombinedBootstrapFontAwesomeCSS"
+            "Zikula\\Composer\\LessGenerator::generateCombinedBootstrapFontAwesomeCSS",
+            "Zikula\\Composer\\RequireJsConfigGenerator::regenerateRequireJs"
         ]
     },
     "config": {
