@@ -12,6 +12,8 @@
 /**
  * Populate tables array for Categories module.
  *
+ * TODO remove for 2.0
+ *
  * @deprecated this file is required by old modules using categories with DBUtil though
  *
  * @return array Array of information related to the Categories module tables

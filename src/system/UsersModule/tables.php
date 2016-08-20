@@ -240,7 +240,7 @@ function Users_tables_for_220()
 
     $dbinfo['session_info_column_def'] = [
         'sessid'    => "C(60) PRIMARY NOTNULL DEFAULT ''",
-        'ipaddr'    => "C(32) NOTNULL DEFAULT ''",
+        'ipaddr'    => "C(40) NOTNULL DEFAULT ''",
         'lastused'  => "T DEFAULT '1970-01-01 00:00:00'",
         'uid'       => "I DEFAULT '0'",
         'remember'  => "I1 NOTNULL DEFAULT '0'",
