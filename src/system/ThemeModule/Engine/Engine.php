@@ -171,7 +171,7 @@ class Engine
         $themeConfig = $this->getTheme()->getConfig();
         $wrap = isset($themeConfig['blockWrapping']) ? $themeConfig['blockWrapping'] : true;
 
-        return $wrap ? $this->getTheme()->wrapBlockContentWithUniqueDiv($content, $positionName, $blockType, $bid): $content;
+        return $wrap ? $this->getTheme()->wrapBlockContentWithUniqueDiv($content, $positionName, $blockType, $bid) : $content;
     }
 
     /**
