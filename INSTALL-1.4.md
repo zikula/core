@@ -69,7 +69,7 @@ Another option can be to download the tar.gz directly from the ci server: e.g.
 `wget http://ci.zikula.org/job/Zikula_Core-1.4.0/588/artifact/build/archive/Zikula_Core-1.4.0.build588.tar.gz`. 
 Again, change the filename/url to match the correct filename from the ci server.
 
-Remark for Windows/FTP users: Take care about copying all files. If there are some files you are not able to transfer 
+Windows/FTP users: Take care about copying all files. If there are some files you are not able to transfer 
 to the server check if your longest path length is longer than Windows/FTP-Software allows (more than 256 characters).
 
 ###Set file permissions (Critical)

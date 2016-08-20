@@ -10,6 +10,7 @@ Upgrading Zikula
 
 
 <a name="introduction"></a>
+
 Introduction
 ------------
 
@@ -19,10 +20,11 @@ before proceeding with this upgrade proces.
 Zikula Core 1.4 introduces a lot of forward compatibility for new features that will come in Zikula 2.0.0.
 
 For more information visit http://zikula.org/ and read our
-[user manual](https://github.com/zikula/zikula-docs/tree/master/Users%20Manual).
+[documentation](https://github.com/zikula/core/tree/1.4/src/docs).
 
 
 <a name="requirements"></a>
+
 Requirements
 ------------
 
@@ -47,6 +49,7 @@ of the new core release. Zikula Core 1.4.0 has the following requirements
 
 
 <a name="testenv"></a>
+
 Test Environment
 ----------------
 
@@ -55,45 +58,67 @@ changes including upgrades are tested on before application to the live site.
 
 
 <a name="beforeupgrading"></a>
+
 Before upgrading
 ----------------
 
-***Prior to any upgrade ensure that a reliable backup of all files and the database is taken.***
+***Prior to any upgrade ensure that you have created a reliable backup of all files and the database.***
 
-###If you obtained Zikula 1.4 from cloning the repo at Github
-
-*note: This method is not recommended for non-developers*
+#### FOR DEVELOPERS ONLY: Clone Zikula/Core from the repo at Github. Use the 1.4 branch.
 
 Zikula makes use of [composer](http://getcomposer.org/) to manage and download all dependencies.
-Composer must be run prior to installing a site using Zikula. Run `composer self-update` and `composer update`.
+Composer must be run prior to installing or upgrading a site using Zikula. Run `composer self-update` and `composer update`.
 
 If you store Composer in the root of the Zikula Core checkout, please rename it from `composer.phar` to
 `composer` to avoid your IDE reading the package contents.
 
-###If you obtained Zikula 1.4 from the CI server or zikula.org
+####FOR NORMAL USERS: Download the current release from [http://www.zikula.org/](http://www.zikula.org/)
 
-All the dependencies and requirements are included in this package, so there is no need to use composer at all.
+All the dependencies and requirements are included in this package, simply unpack the archive.
 
 
 <a name="upgrading"></a>
+
 Upgrading
 ---------
 
 The following process should be followed for all upgrades even small point releases (e.g. `1.4.x`).
 
-  - Backup all your files and database. Keep a note of your database settings from `config.php` (or
-    `personal_config.php`)
+  - Backup all your files and database. Keep a note of your database settings from `config.php` or
+    `personal_config.php`.
   - Make a note of your 'startpage' settings as they must be cleared in the upgrade process.
   - Before uploading the new files, delete **all files** in your web root (typically `public_html` or `httpdocs`).
   - Upload the new package.
-    - Remark for Windows/FTP users: Take care about copying all files. If there are some files you are not able to transfer 
-to the server check if your longest path length is longer than Windows/FTP-Software allows (more than 256 characters).
-  - Make a copy of `config/config.php` and rename it to `config/personal_config.php` -- update the values of this file with your database settings taken from your old 'config.php' file. * NOTE: you should now have both 'config.php' AND `personal_config.php` in your 'config/' folder. Make sure to set permissions on 'config.php' to 400
-  - Make a copy of `app/config/parameters.yml` and rename it to `app/config/custom_parameters.yml` -- update the values of this file with your database settings. Also set `installed` to `true` (all instances of "~" should be replaced with their proper values) -- In most cases, 'database_port', 'database_path', and 'database_socket' should be 'null'. for ``url_secret`` you have to type a long random pass phrase -- * NOTE: you should now have both "parameters.yml" AND `custom_parameters.yml` in your 'app/config/' folder. The upgrade will not work unless both of these files are present. 
-  - Make `app/cache` and `app/logs` writable. (**Zikula WILL NOT install without this critical step**)
-  - copy from your backup ``/userdata``, ``/modules`` and your theme to your new upload. The folders of your modules and themes should be at the exact same place like your backup.
+    - It is most reliable to upload the archive and the unpack the archive on the server instead of FTP thousands
+      of small files.
+    - Windows/FTP users: Take care about copying all files. If there are some files you are not able to
+      transfer to the server check if your longest path length is longer than Windows/FTP-Software allows (more than 
+      256 characters).
+
+#### If upgrading from Core-1.3.x:
+
+  - Make a copy of `config/config.php` and rename it to `config/personal_config.php` -- update the database settings 
+    values of this file with yours taken from your old 'config.php' file. * NOTE: you should now have both 'config.php
+    AND `personal_config.php` in your 'config/' folder. Make sure to set permissions on 'config.php' to 400.
+  - Make a copy of `app/config/parameters.yml` and rename it to `app/config/custom_parameters.yml` -- update the values
+    of this file with your database settings. Set `installed:true`. All database values of "~" should be replaced  with
+    their proper values -- In most cases, 'database_port', 'database_path', and 'database_socket' should be left
+    as '~'.
+    * NOTE: you should now have both `parameters.yml` AND `custom_parameters.yml` in your `app/config/` folder.
+    The upgrade will not work unless both of these files are present.
+
+#### If upgrading from Core-1.4.x:
+
+  - Copy your existing `config/personal_config.php` and `app/config/custom_parameters.yml` to their same respective
+    locations in your new installation. There is no need to update any values within these files.
+
+#### Continue:
+
+  - Make `app/cache` and `app/logs` directories writable. (**Zikula WILL NOT install without this critical step**)
+  - Copy your backup `/userdata` and your **theme** to your new installation. The folders of your theme should be
+    in the exact same place as your backup.
   - **Upgrade: (do one or the other)**
-    - Via Web: launch `http://yoursiteurl/upgrade` and follow any on-screen prompts.
+    - Via Web: launch `http://yoursiteurl/` (you will be redirected to `/upgrade`) and follow any on-screen prompts.
     - Via CLI:
       - Access your main zikula directory (`/src` if a Github clone) and run this command:
 
@@ -102,13 +127,16 @@ to the server check if your longest path length is longer than Windows/FTP-Softw
          ```
 
       - Follow the prompts and complete that step. When you are finished, Open your browser and login!
-  - Return any 1.3.x-compatible modules, themes and plugins to the appropriate directory and run each
-    upgrade independently.
+  - After upgrade successfully completes, return any 1.3.x-compatible modules to the appropriate directory and run each
+    upgrade independently. **DO NOT include the old Profile and Legal module** when copying them into your new 
+    installation, as new versions of these are provided (and their location may differ).
 
 
 <a name="notes"></a>
+
 Notes
 -----
 
   - As of 1.4.0 `ztemp` is now located in the `app/cache/<kernel-mode>/ztemp` location automatically.
-  - the old `upgrade.php` has been replaced by simply `/upgrade`
+  - the old `upgrade.php` has been replaced by simply `/upgrade` but you should be automatically redirected to this
+    url when visiting your main page.
