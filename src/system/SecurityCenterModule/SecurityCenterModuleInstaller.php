@@ -58,6 +58,7 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         System::setVar('sessionsavepath', '');
         System::setVar('gc_probability', 100);
         System::setVar('sessioncsrftokenonetime', 1);  // 1 means use same token for entire session
+        System::setVar('anonymoussessions', 1); // @deprecated
         System::setVar('sessionrandregenerate', 1);
         System::setVar('sessionregenerate', 1);
         System::setVar('sessionregeneratefreq', 10);
@@ -238,7 +239,6 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
     {
         switch ($oldVersion) {
             case '1.4.4':
-            System::delVar('anonymoussessions');
             // future upgrade routines
         }
 
