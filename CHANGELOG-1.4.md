@@ -20,7 +20,7 @@ CHANGELOG - ZIKULA 1.4.x
     - The legacy \Zikula_Core is now booted even if you use the Symfony Console.
     - Lengthen sessionId column in session table (#2840).
     - Added whitespace trimming functionality for Twig themes (#2911).
-    - Fixed getPluralOffset to return numbers instead of boolean values (#3011)
+    - Fixed getPluralOffset in Zikula.js to return numbers instead of boolean values (#3011)
 
  - Features:
     - Add help text, alert text and input groups to forms utilizing the provided form themes (#2846, #2847).
