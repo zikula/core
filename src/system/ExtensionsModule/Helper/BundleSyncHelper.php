@@ -202,21 +202,21 @@ class BundleSyncHelper
         // check for duplicate names or display names
         foreach ($extensions as $dir => $modinfo) {
             if (isset($modulenames[strtolower($modinfo['name'])])) {
-                throw new FatalErrorException($this->translator->__('Fatal Error: Two extensions share the same name. [%ext1%] and [%ext2%]', [
+                throw new FatalErrorException($this->translator->__f('Fatal Error: Two extensions share the same name. [%ext1%] and [%ext2%]', [
                     '%ext1%' => $modinfo['name'],
                     '%ext2%' => $modulenames[strtolower($modinfo['name'])]
                 ]));
             }
 
             if (isset($displaynames[strtolower($modinfo['displayname'])])) {
-                throw new FatalErrorException($this->translator->__('Fatal Error: Two extensions share the same displayname. [%ext1%] and [%ext2%]', [
+                throw new FatalErrorException($this->translator->__f('Fatal Error: Two extensions share the same displayname. [%ext1%] and [%ext2%]', [
                     '%ext1%' => $modinfo['displayname'],
                     '%ext2%' => $modulenames[strtolower($modinfo['displayname'])]
                 ]));
             }
 
             if (isset($displaynames[strtolower($modinfo['url'])])) {
-                throw new FatalErrorException($this->translator->__('Fatal Error: Two extensions share the same url. [%ext1%] and [%ext2%]', [
+                throw new FatalErrorException($this->translator->__f('Fatal Error: Two extensions share the same url. [%ext1%] and [%ext2%]', [
                     '%ext1%' => $modinfo['url'],
                     '%ext2%' => $modulenames[strtolower($modinfo['url'])]
                 ]));
@@ -267,17 +267,19 @@ class BundleSyncHelper
     private function syncUpdatedExtensions(array $extensionsFromFile, array &$extensionsFromDB, $forceDefaults = false)
     {
         foreach ($extensionsFromFile as $name => $extensionFromFile) {
-            if (!empty($extensionFromFile['oldnames'])) {
-                foreach ($extensionsFromDB as $dbname => $extensionFromDB) {
-                    if (isset($extensionFromDB['name']) && in_array($extensionFromDB['name'], (array)$extensionFromFile['oldnames'])) {
-                        // migrate its modvars
-                        $this->extensionVarRepository->updateName($dbname, $name);
-                        // rename the module register
-                        $this->extensionRepository->updateName($dbname, $name);
-                        // replace the old module with the new one in the $extensionsFromDB array
-                        $extensionsFromDB[$name] = $extensionFromDB;
-                        unset($extensionsFromDB[$dbname]);
-                    }
+            if (empty($extensionFromFile['oldnames'])) {
+                continue;
+            }
+
+            foreach ($extensionsFromDB as $dbname => $extensionFromDB) {
+                if (isset($extensionFromDB['name']) && in_array($extensionFromDB['name'], (array)$extensionFromFile['oldnames'])) {
+                    // migrate its modvars
+                    $this->extensionVarRepository->updateName($dbname, $name);
+                    // rename the module register
+                    $this->extensionRepository->updateName($dbname, $name);
+                    // replace the old module with the new one in the $extensionsFromDB array
+                    $extensionsFromDB[$name] = $extensionFromDB;
+                    unset($extensionsFromDB[$dbname]);
                 }
             }
 
@@ -334,30 +336,32 @@ class BundleSyncHelper
     private function syncLostExtensions(array $extensionsFromFile, array &$extensionsFromDB)
     {
         foreach ($extensionsFromDB as $name => $unusedVariable) {
-            if (!array_key_exists($name, $extensionsFromFile)) {
-                $lostModule = $this->extensionRepository->get($name); // must obtain Entity because value from $extensionsFromDB is only an array
-                if (!$lostModule) {
-                    throw new \RuntimeException($this->translator->__f('Error! Could not load data for module %s.', [$name]));
-                }
-                $lostModuleState = $lostModule->getState();
-                if (($lostModuleState == ExtensionApi::STATE_INVALID)
-                    || ($lostModuleState == ExtensionApi::STATE_INVALID + ExtensionApi::INCOMPATIBLE_CORE_SHIFT)) {
-                    // extension was invalid and subsequently removed from file system,
-                    // or extension was incompatible with core and subsequently removed, delete it
-                    $this->extensionRepository->removeAndFlush($lostModule);
-                } elseif (($lostModuleState == ExtensionApi::STATE_UNINITIALISED)
-                    || ($lostModuleState == ExtensionApi::STATE_UNINITIALISED + ExtensionApi::INCOMPATIBLE_CORE_SHIFT)) {
-                    // extension was uninitialised and subsequently removed from file system, delete it
-                    $this->extensionRepository->removeAndFlush($lostModule);
-                } else {
-                    // Set state of module to 'missing'
-                    // This state cannot be reached in with an ACTIVE bundle. - ACTIVE bundles are part of the pre-compiled Kernel.
-                    // extensions that are inactive can be marked as missing.
-                    $this->extensionStateHelper->updateState($lostModule->getId(), ExtensionApi::STATE_MISSING);
-                }
-
-                unset($extensionsFromDB[$name]);
+            if (array_key_exists($name, $extensionsFromFile)) {
+                continue;
             }
+
+            $lostModule = $this->extensionRepository->get($name); // must obtain Entity because value from $extensionsFromDB is only an array
+            if (!$lostModule) {
+                throw new \RuntimeException($this->translator->__f('Error! Could not load data for module %s.', [$name]));
+            }
+            $lostModuleState = $lostModule->getState();
+            if (($lostModuleState == ExtensionApi::STATE_INVALID)
+                || ($lostModuleState == ExtensionApi::STATE_INVALID + ExtensionApi::INCOMPATIBLE_CORE_SHIFT)) {
+                // extension was invalid and subsequently removed from file system,
+                // or extension was incompatible with core and subsequently removed, delete it
+                $this->extensionRepository->removeAndFlush($lostModule);
+            } elseif (($lostModuleState == ExtensionApi::STATE_UNINITIALISED)
+                || ($lostModuleState == ExtensionApi::STATE_UNINITIALISED + ExtensionApi::INCOMPATIBLE_CORE_SHIFT)) {
+                // extension was uninitialised and subsequently removed from file system, delete it
+                $this->extensionRepository->removeAndFlush($lostModule);
+            } else {
+                // Set state of module to 'missing'
+                // This state cannot be reached in with an ACTIVE bundle. - ACTIVE bundles are part of the pre-compiled Kernel.
+                // extensions that are inactive can be marked as missing.
+                $this->extensionStateHelper->updateState($lostModule->getId(), ExtensionApi::STATE_MISSING);
+            }
+
+            unset($extensionsFromDB[$name]);
         }
     }
 
@@ -463,6 +467,6 @@ class BundleSyncHelper
         $coreMin = !empty($coreMin) ? $coreMin : '1.4.0';
         $coreMax = !empty($coreMax) ? $coreMax : '2.9.99';
 
-        return $coreMin . " - " . $coreMax;
+        return $coreMin . ' - ' . $coreMax;
     }
 }
