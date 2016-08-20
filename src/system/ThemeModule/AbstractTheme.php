@@ -63,14 +63,13 @@ abstract class AbstractTheme extends AbstractBundle
     public function generateThemedResponse($realm, Response $response, $moduleName = null)
     {
         $template = $this->config[$realm]['page'];
-        $content = '<div id="z-maincontent" class="'
-            . ($realm == 'home' ? 'z-homepage' : '')
-            . (isset($moduleName) ? ' z-module-' . strtolower($moduleName) : '') . '">'
-            . $response->getContent()
-            . '</div>';
-        $response->setContent($content);
+        $classes = $realm == 'home' ? 'z-homepage' : '' . (empty($classes) ? '' : ' ') . (isset($moduleName) ? 'z-module-' . $moduleName : '');
+        $content = $this->getContainer()->get('templating')->render('CoreBundle:Default:maincontent.html.twig', [
+            'classes' => $classes,
+            'maincontent' => $response->getContent()
+        ]);
 
-        return $this->getContainer()->get('templating')->renderResponse($this->name . ':' . $template, ['maincontent' => $response->getContent()]);
+        return $this->getContainer()->get('templating')->renderResponse($this->name . ':' . $template, ['maincontent' => $content]);
     }
 
     /**
@@ -94,10 +93,29 @@ abstract class AbstractTheme extends AbstractBundle
             'title' => $blockTitle,
             'content' => $blockContent
         ];
-        // @todo add collapsable block code see \BlockUtil::themeBlock
-        // @todo including check for `isCollapsed` like \BlockUtil::checkUserBlock
 
         return $this->getContainer()->get('templating')->render($template, $templateParameters);
+    }
+
+    /**
+     * Enclose themed block content in a unique div which is useful in applying styling.
+     *
+     * @param string $content
+     * @param string $positionName
+     * @param string $blockType
+     * @param integer $bid
+     * @return string
+     */
+    public function wrapBlockContentWithUniqueDiv($content, $positionName, $blockType, $bid)
+    {
+        $templateParams = [
+            'position' => $positionName,
+            'type' => $blockType,
+            'bid' => $bid,
+            'content' => $content
+        ];
+
+        return $this->getContainer()->get('templating')->render('CoreBundle:Default:blockwrapper.html.twig', $templateParams);
     }
 
     /**

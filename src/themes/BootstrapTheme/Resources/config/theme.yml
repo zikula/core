@@ -25,3 +25,4 @@ master:
       center: "Block:block.html.twig"
       topnav: "Block:topnavblock.html.twig"
 bootstrapPath: themes/BootstrapTheme/Resources/public/css/cerulean.min.css
+#blockWrapping: false
