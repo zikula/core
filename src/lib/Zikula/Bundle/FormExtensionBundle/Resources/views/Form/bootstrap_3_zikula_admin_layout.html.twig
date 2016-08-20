@@ -28,11 +28,14 @@ col-sm-9
 {%- endblock form_group_class %}
 
 {% block checkbox_widget -%}
-    {% set parent_label_class = parent_label_class|default('') -%}
-    {% if 'checkbox-inline' not in parent_label_class %}
+    {%- set parent_label_class = parent_label_class|default('') -%}
+    {% if 'checkbox-inline' in parent_label_class %}
+        {#{- form_label(form, null, { widget: parent() }) -}#}
         {{ parent() }}
     {% else -%}
-        <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+        <div class="checkbox">
+            <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+        </div>
     {%- endif %}
 {%- endblock checkbox_widget %}
 

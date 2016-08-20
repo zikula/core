@@ -46,6 +46,7 @@ class ConfigType extends AbstractType
             ])
             ->add('plugins', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Disabled plugins'),
+                'label_attr' => ['class' => 'checkbox-inline'],
                 'empty_data' => [],
                 'choices' => $this->getPluginChoices($options['plugins']),
                 'choices_as_values' => true,
