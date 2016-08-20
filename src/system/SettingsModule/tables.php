@@ -47,11 +47,13 @@ function ZikulaSettingsModule_tables()
 
     $table = 'objectdata_log';
     $dbtables['objectdata_log'] = $table;
-    $columns = array ('id'           => 'id',
-                      'object_type'  => 'object_type',
-                      'object_id'    => 'object_id',
-                      'op'           => 'op',
-                      'diff'         => 'diff');
+    $columns = [
+        'id'           => 'id',
+        'object_type'  => 'object_type',
+        'object_id'    => 'object_id',
+        'op'           => 'op',
+        'diff'         => 'diff'
+    ];
     ObjectUtil::addStandardFieldsToTableDefinition($columns);
     $dbtables['objectdata_log_column'] = $columns;
 
@@ -67,31 +69,33 @@ function ZikulaSettingsModule_tables()
 
     $table = 'objectdata_meta';
     $dbtables['objectdata_meta'] = $table;
-    $columns = array ('id'             => 'id',
-                      'module'         => 'module',
-                      'table'          => 'tablename',
-                      'idcolumn'       => 'idcolumn',
-                      'obj_id'         => 'obj_id',
-                      'permissions'    => 'permissions',
-                      'dc_title'       => 'dc_title',
-                      'dc_author'      => 'dc_author',
-                      'dc_subject'     => 'dc_subject',
-                      'dc_keywords'    => 'dc_keywords',
-                      'dc_description' => 'dc_description',
-                      'dc_publisher'   => 'dc_publisher',
-                      'dc_contributor' => 'dc_contributor',
-                      'dc_startdate'   => 'dc_startdate',
-                      'dc_enddate'     => 'dc_enddate',
-                      'dc_type'        => 'dc_type',
-                      'dc_format'      => 'dc_format',
-                      'dc_uri'         => 'dc_uri',
-                      'dc_source'      => 'dc_source',
-                      'dc_language'    => 'dc_language',
-                      'dc_relation'    => 'dc_relation',
-                      'dc_coverage'    => 'dc_coverage',
-                      'dc_entity'      => 'dc_entity',
-                      'dc_comment'     => 'dc_comment',
-                      'dc_extra'       => 'dc_extra');
+    $columns = [
+        'id'             => 'id',
+        'module'         => 'module',
+        'table'          => 'tablename',
+        'idcolumn'       => 'idcolumn',
+        'obj_id'         => 'obj_id',
+        'permissions'    => 'permissions',
+        'dc_title'       => 'dc_title',
+        'dc_author'      => 'dc_author',
+        'dc_subject'     => 'dc_subject',
+        'dc_keywords'    => 'dc_keywords',
+        'dc_description' => 'dc_description',
+        'dc_publisher'   => 'dc_publisher',
+        'dc_contributor' => 'dc_contributor',
+        'dc_startdate'   => 'dc_startdate',
+        'dc_enddate'     => 'dc_enddate',
+        'dc_type'        => 'dc_type',
+        'dc_format'      => 'dc_format',
+        'dc_uri'         => 'dc_uri',
+        'dc_source'      => 'dc_source',
+        'dc_language'    => 'dc_language',
+        'dc_relation'    => 'dc_relation',
+        'dc_coverage'    => 'dc_coverage',
+        'dc_entity'      => 'dc_entity',
+        'dc_comment'     => 'dc_comment',
+        'dc_extra'       => 'dc_extra'
+    ];
     ObjectUtil::addStandardFieldsToTableDefinition($columns);
     $dbtables['objectdata_meta_column'] = $columns;
 
