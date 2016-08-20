@@ -450,6 +450,7 @@ class Zikula_Core
         if ($stage & self::STAGE_TABLES) {
             // Initialise dbtables
             ModUtil::initCoreVars();
+            ModUtil::dbInfoLoad('ZikulaSettingsModule', 'ZikulaSettingsModule');
             ModUtil::dbInfoLoad('ZikulaUsersModule', 'ZikulaUsersModule');
             ModUtil::dbInfoLoad('ZikulaGroupsModule', 'ZikulaGroupsModule');
             ModUtil::dbInfoLoad('ZikulaPermissionsModule', 'ZikulaPermissionsModule');
