@@ -75,6 +75,7 @@ var FormContextMenu = {};
     {
         var commandArgument = $('#' + commandArgumentId).val();
         url = url.replace(/\{commandArgument\}/, commandArgument);
+        url = url.replace(/%7BcommandArgument%7D/, commandArgument);
         window.location = url;
     }
 })(jQuery);
