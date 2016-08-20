@@ -54,7 +54,7 @@ abstract class AbstractTheme extends AbstractBundle
 
     /**
      * generate a response wrapped in the theme
-     *   wrap the maincontent in a unique div.
+     *
      * @param string $realm
      * @param Response $response
      * @param string $moduleName
@@ -63,14 +63,14 @@ abstract class AbstractTheme extends AbstractBundle
     public function generateThemedResponse($realm, Response $response, $moduleName = null)
     {
         $template = $this->config[$realm]['page'];
-        $content = '<div id="z-maincontent" class="'
-            . ($realm == 'home' ? 'z-homepage' : '')
-            . (isset($moduleName) ? ' z-module-' . strtolower($moduleName) : '') . '">'
-            . $response->getContent()
-            . '</div>';
-        $response->setContent($content);
 
-        return $this->getContainer()->get('templating')->renderResponse($this->name . ':' . $template, ['maincontent' => $response->getContent()]);
+        $templateParameters = [
+            'realm' => (isset($realm) ? $realm : ''),
+            'modulename' => (isset($moduleName) ? $moduleName : ''),
+            'maincontent' => $response->getContent()
+            ];
+
+        return $this->getContainer()->get('templating')->renderResponse($this->name . ':' . $template, $templateParameters);
     }
 
     /**
@@ -81,7 +81,7 @@ abstract class AbstractTheme extends AbstractBundle
      * @param $blockTitle
      * @return string
      */
-    public function generateThemedBlockContent($realm, $positionName, $blockContent, $blockTitle)
+    public function generateThemedBlockContent($realm, $blockType, $bid, $positionName, $blockContent, $blockTitle)
     {
         if (isset($this->config[$realm]['block']['positions'][$positionName])) {
             $template = $this->name . ':' . $this->config[$realm]['block']['positions'][$positionName];
@@ -91,6 +91,9 @@ abstract class AbstractTheme extends AbstractBundle
         }
 
         $templateParameters = [
+            'btype' => strtolower($blockType),
+            'bid' => $bid,
+            'position' => strtolower($positionName),
             'title' => $blockTitle,
             'content' => $blockContent
         ];

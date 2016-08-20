@@ -1,6 +1,8 @@
+<div class="z-block z-blockposition-{{ position|lower }} z-bkey-{{ btype|lower }} z-bid-{{ bid }}">
 {% if title is not empty %}
 <h3 class="theme_blocktitle">{{ title }}</h3>
 {% endif %}
 <div class="theme_blockcontent">
-    {{ content|raw }}
+        {{ content|raw }}
+</div>
 </div>

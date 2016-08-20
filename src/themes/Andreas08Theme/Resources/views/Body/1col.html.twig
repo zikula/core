@@ -1,5 +1,7 @@
 <div id="theme_content" class="clearfix">
     <div id="theme_maincontent" class="col-xs-12">
-        {{ maincontent|raw }}
+        <div id="z-maincontent" class="{% if realm == 'home' %}z-homepage{% endif %} z-module-{{ modulename|lower }}">    
+            {{ maincontent|raw }}
+        </div>
     </div>
 </div>
