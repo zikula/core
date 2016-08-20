@@ -1291,8 +1291,6 @@ class UserUtil
 
         $theme = FormUtil::getPassedValue('theme', null, 'GETPOST');
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($theme));
-        $ck1 = SecurityUtil::checkPermission('ZikulaThemeModule::ThemeChange', ':' . $themeinfo['name'] . ':', ACCESS_COMMENT);
-        $ck2 = SecurityUtil::checkPermission('ZikulaThemeModule::ThemeChange', ':' . $themeinfo['displayname'] . ':', ACCESS_COMMENT);
         if (!empty($theme) && (
                 SecurityUtil::checkPermission('ZikulaThemeModule::ThemeChange', ':' . $themeinfo['name'] . ':', ACCESS_COMMENT) ||
                 SecurityUtil::checkPermission('ZikulaThemeModule::ThemeChange', ':' . $themeinfo['displayname'] . ':', ACCESS_COMMENT))
