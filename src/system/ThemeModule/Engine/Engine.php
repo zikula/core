@@ -152,7 +152,7 @@ class Engine
     }
 
     /**
-     * Wrap the block content in the theme block template and wrap that with a unique div.
+     * Wrap the block content in the theme block template and wrap that with a unique div if required.
      * @api Core-2.0
      * @param string $content
      * @param string $title
@@ -168,28 +168,10 @@ class Engine
             // legacy blocks are already themed at this point. @todo at Core-2.0 remove $legacy param and this check.
             $content = $this->getTheme()->generateThemedBlockContent($this->getRealm(), $positionName, $content, $title);
         }
+        $themeConfig = $this->getTheme()->getConfig();
+        $wrap = isset($themeConfig['blockWrapping']) ? $themeConfig['blockWrapping'] : true;
 
-        // always wrap the block (in the previous versions this was configurable, but no longer) @todo remove comment
-        return $this->wrapBlockContentWithUniqueDiv($content, $positionName, $blockType, $bid);
-    }
-
-    /**
-     * Enclose themed block content in a unique div which is useful in applying styling.
-     *
-     * @param string $content
-     * @param string $positionName
-     * @param string $blockType
-     * @param integer $bid
-     * @return string
-     */
-    private function wrapBlockContentWithUniqueDiv($content, $positionName, $blockType, $bid)
-    {
-        return '<div class="z-block '
-            . 'z-blockposition-' . strtolower($positionName)
-            .' z-bkey-' . strtolower($blockType)
-            . ' z-bid-' . $bid . '">' . "\n"
-            . $content
-            . "</div>\n";
+        return $wrap ? $this->getTheme()->wrapBlockContentWithUniqueDiv($content, $positionName, $blockType, $bid) : $content;
     }
 
     /**
