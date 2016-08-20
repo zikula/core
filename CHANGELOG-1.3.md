@@ -4,7 +4,7 @@ CHANGELOG - ZIKULA 1.3.11
 - Load correct theme in case Mobile theme is enabled and Mobile detect is enabled (#2583)
 - Add filter parameter to Menutree in order to work better with Clip (#2597)
 - Fixed user block is not shown and not editable (#2891)
-- Fixed getPluralOffset to return numbers instead of boolean values (#2798)
+- Fixed getPluralOffset to return numbers instead of boolean values (#3010)
 
 
 CHANGELOG - ZIKULA 1.3.10
