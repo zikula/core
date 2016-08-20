@@ -30,6 +30,7 @@ CHANGELOG - ZIKULA 1.4.x
       - MailerEvents::SEND_MESSAGE_SUCCESS - Occurs after a message has been sent successfully.
       - MailerEvents::SEND_MESSAGE_FAILURE - Occurs when a message could not be sent.
     - Lengthen ip address fields for IPv6 support (#2893).
+    - More intelligent handling of missing mail transport options (#2148).
 
  - Core-2.0 Features:
     - AdminModule updated to Core-2.0 Spec (#2856, #2860).

@@ -11,13 +11,6 @@
             {{ pageSetVar('title', __('Mailer settings')) }}
         </h3>
 
-        {# http://swiftmailer.org/docs/sending.html #}
-        {% if zikulamailermodule_hasProcessControlFunctions() != true %}
-            <div class='alert alert-danger'>
-                <h3>{gt text='WARNING'}</h3>
-                <p>{{ __f('The PHP functions, %s, that support SMTP and SENDMAIL do not appear to be functioning on this PHP installation. Please compile them and restart your server.', {'%s': '<code>proc_*</code>'}) }}</p>
-            </div>
-        {% endif %}
         <p class="alert alert-info">
             {{ __f('Mailer relies on %swiftmailer', {'%swiftmailer': '<a href="http://symfony.com/doc/current/reference/configuration/swiftmailer.html"><i class="fa fa-external-link"></i> SwiftMailer configuration</a>'})|raw }}
         </p>

@@ -6,7 +6,6 @@
 
     <parameters>
         <parameter key="zikula_mailer_module.container.link_container.class">Zikula\MailerModule\Container\LinkContainer</parameter>
-        <parameter key="twig.extension.zikula_mailer_module.class">Zikula\MailerModule\Twig\TwigExtension</parameter>
         <parameter key="zikula_mailer_module.api.mailer.class">Zikula\MailerModule\Api\MailerApi</parameter>
     </parameters>
 
@@ -16,10 +15,6 @@
             <argument type="service" id="jms_i18n_routing.router" />
             <argument type="service" id="zikula_permissions_module.api.permission" />
             <tag name="zikula.link_container"/>
-        </service>
-
-        <service id="twig.extension.zikula_mailer_module" class="%twig.extension.zikula_mailer_module.class%" public="false">
-            <tag name="twig.extension" />
         </service>
 
         <service id="zikula_mailer_module.api.mailer" class="%zikula_mailer_module.api.mailer.class%">
