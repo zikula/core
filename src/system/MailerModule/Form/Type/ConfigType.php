@@ -27,19 +27,37 @@ class ConfigType extends AbstractType
     {
         $translator = $options['translator'];
 
+        $transportChoices = [
+            $translator->__('Internal PHP `mail()` function') => 'mail',
+            $translator->__('Sendmail message transfer agent') => 'sendmail',
+            $translator->__('Google gmail') => 'gmail',
+            $translator->__('SMTP mail transfer protocol') => 'smtp',
+            $translator->__('Development/debug mode (Do not send any email)') => 'test'/*'null'*/
+        ];
+        $transportAlert = null;
+
+        // see http://swiftmailer.org/docs/sending.html
+        if (!function_exists('proc_open')) {
+            $transportChoices = [
+                $translator->__('Internal PHP `mail()` function') => 'mail',
+                $translator->__('Google gmail') => 'gmail',
+                $translator->__('Development/debug mode (Do not send any email)') => 'test'/*'null'*/
+            ];
+            $transportAlert = [
+                $translator->__('Mail transport mechanisms SMTP and SENDMAIL were disabled because your PHP does not allow the "proc_*" function. Either you need to remove it from the "disabled_functions" directive in your "php.ini" file or recompile your PHP entirely. Afterwards restart your webserver.') => 'warning'
+            ];
+        }
+
+        $transportOptions = [
+            'label' => $translator->__('Mail transport'),
+            'empty_data' => 'mail',
+            'choices' => $transportChoices,
+            'choices_as_values' => true,
+            'alert' => $transportAlert
+        ];
+
         $builder
-            ->add('transport', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $translator->__('Mail transport'),
-                'empty_data' => 'mail',
-                'choices' => [
-                    $translator->__('Internal PHP `mail()` function') => 'mail',
-                    $translator->__('Sendmail message transfer agent') => 'sendmail',
-                    $translator->__('Google gmail') => 'gmail',
-                    $translator->__('SMTP mail transfer protocol') => 'smtp',
-                    $translator->__('Development/debug mode (Do not send any email)') => 'test'/*'null'*/
-                ],
-                'choices_as_values' => true
-            ])
+            ->add('transport', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', $transportOptions)
             ->add('charset', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $translator->__('Character set'),
                 'empty_data' => \ZLanguage::getEncoding(),
