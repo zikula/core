@@ -11,6 +11,7 @@
 
 namespace Zikula\ExtensionsModule\Tests\Api\Fixtures;
 
+use Doctrine\Common\Collections\Criteria;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
@@ -118,6 +119,18 @@ class ExtensionStubRepository implements ExtensionRepositoryInterface
     }
 
     public function removeAndFlush($entity)
+    {
+    }
+
+    public function find($id)
+    {
+    }
+
+    public function getClassName()
+    {
+    }
+
+    public function matching(Criteria $criteria)
     {
     }
 }

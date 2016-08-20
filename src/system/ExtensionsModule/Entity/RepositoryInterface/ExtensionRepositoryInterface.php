@@ -11,31 +11,12 @@
 
 namespace Zikula\ExtensionsModule\Entity\RepositoryInterface;
 
+use Doctrine\Common\Collections\Selectable;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
-interface ExtensionRepositoryInterface
+interface ExtensionRepositoryInterface extends ObjectRepository, Selectable
 {
-    /**
-     * @return ExtensionEntity[]
-     */
-    public function findAll();
-
-    /**
-     * @param array $criteria
-     * @param array|null $orderBy
-     * @param null $limit
-     * @param null $offset
-     * @return ExtensionEntity[]
-     */
-    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null);
-
-    /**
-     * @param array $criteria
-     * @param array|null $orderBy
-     * @return ExtensionEntity
-     */
-    public function findOneBy(array $criteria, array $orderBy = null);
-
     /**
      * @param $name
      * @return ExtensionEntity
