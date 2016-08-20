@@ -29,7 +29,6 @@
             <argument type="service" id="zikula.dynamic_config_dumper" />
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="mailer" />
-            <argument type="service" id="zikula_permissions_module.api.permission" />
         </service>
     </services>
 

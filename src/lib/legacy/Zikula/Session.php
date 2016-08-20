@@ -39,58 +39,6 @@ class Zikula_Session extends Session
      */
     const MESSAGE_ERROR = 'error';
 
-    public function start()
-    {
-        $config = [
-            'gc_probability' => System::getVar('gc_probability'),
-            'gc_divisor' => 10000,
-            'gc_maxlifetime' => System::getVar('secinactivemins'),
-        ];
-
-        $path = System::getBaseUri();
-        if (empty($path)) {
-            $path = '/';
-        } elseif (substr($path, -1, 1) != '/') {
-            $path .= '/';
-        }
-
-        $config['cookie_path'] = $path;
-
-        $host = System::serverGetVar('HTTP_HOST');
-
-        if (($pos = strpos($host, ':')) !== false) {
-            $host = substr($host, 0, $pos);
-        }
-
-        // PHP configuration variables
-        // Set lifetime of session cookie
-        $seclevel = System::getVar('seclevel');
-        switch ($seclevel) {
-            case 'High':
-                // Session lasts duration of browser
-                $lifetime = 0;
-                // Referer check
-                // ini_set('session.referer_check', $host.$path);
-                $config['referer_check'] = $host;
-                break;
-            case 'Medium':
-                // Session lasts set number of days
-                $lifetime = System::getVar('secmeddays') * 86400;
-                break;
-            case 'Low':
-            default:
-                // (Currently set to 1 year)
-                $lifetime = 31536000;
-                break;
-        }
-
-        $config['cookie_lifetime'] = $lifetime;
-
-        $this->storage->setOptions($config);
-
-        return parent::start();
-    }
-
     /**
      * Check if session has started.
      *
