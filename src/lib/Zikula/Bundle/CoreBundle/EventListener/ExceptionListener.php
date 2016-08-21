@@ -91,7 +91,7 @@ class ExceptionListener implements EventSubscriberInterface
             $message = ($message == 'Access Denied') ? __('You do not have permission. You must login first.') : $message;
             $event->getRequest()->getSession()->getFlashBag()->add('error', $message);
 
-            $params = ['returnUrl' => urlencode($event->getRequest()->getSchemeAndHttpHost() . $event->getRequest()->getRequestUri())];
+            $params = ['returnUrl' => urlencode($event->getRequest()->getRequestUri())];
             // redirect to login page
             $route = $this->router->generate('zikulausersmodule_access_login', $params, RouterInterface::ABSOLUTE_URL);
         } else {
