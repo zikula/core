@@ -1,7 +1,7 @@
 <div id="z-adminwarning">
     <h2>{{ __('Stop!') }}</h2>
     <ul>
-        {% if zrcExists eq true %}
+        {% if zrcExists == true %}
             <li>{{ __("The Zikula recovery console tool (file 'zrc.php') is present in the site webroot, but must be removed before you can access the site admin panel.") }}</li>
         {% endif %}
     </ul>

@@ -12,7 +12,7 @@ to match the (1) path, (2) route id, or (3) the module name. The realms are matc
 first match (case-insensitive). Therefore, more specific definitions must be higher than general definitions.
 
 Two additional 'alias' realms may be defined and neither requires a pattern:
-  1) Defining an 'admin' realm will be used when @Theme('admin') annotation is detected in the method
+  1) Defining an 'admin' realm will be used when `@Theme('admin')` controller method annotation is detected in the method
   2) Defining a 'home' realm will be used when the path = `/`
 
 Any block positions in the page's template must be defined here.

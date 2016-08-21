@@ -52,13 +52,13 @@
                 {% endif %}
             </td>
             <td headers="hType" id="groupgtype_{{ group.gid }}" class="zikulagroupsmodule-edit ">
-                <span>{{ __(group.gtypelbl) }}</span>
+                <span>{{ group.gtypelbl }}</span>
             </td>
             <td headers="hDescription" id="groupdescription_{{ group.gid }}">
                 {{ group.description }}&nbsp;
             </td>
             <td headers="hState" id="groupstate_{{ group.gid }}">
-                {{ __(group.statelbl) }}
+                {{ group.statelbl }}
             </td>
             <td headers="hMembers" id="groupnbuser_{{ group.gid }}" class="text-center">
                 {{ group.nbuser }}

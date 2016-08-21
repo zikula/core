@@ -283,12 +283,12 @@ class RouteType extends AbstractType
     {
         foreach ($options['actions'] as $action) {
             $builder->add($action['id'], 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $this->__($action['title']),
+                'label' => $this->__(/** @ignore */$action['title']),
                 'icon' => ($action['id'] == 'delete' ? 'fa-trash-o' : ''),
                 'attr' => [
                     'id' => 'btn' . ucfirst($action['id']),
                     'class' => $action['buttonClass'],
-                    'title' => $this->__($action['description'])
+                    'title' => $this->__(/** @ignore */$action['description'])
                 ]
             ]);
         }

@@ -1,6 +1,6 @@
 <div>
     <ul>
-        {% for adminCategory in adminCategories if adminCategory.url is not empty '' %}
+        {% for adminCategory in adminCategories if adminCategory.url is not empty %}
             <li><a href="{{ adminCategory.url|e('html_attr') }}">{{ adminCategory.title }}</a></li>
             <li class="list-unstyled">
                 <ul>
