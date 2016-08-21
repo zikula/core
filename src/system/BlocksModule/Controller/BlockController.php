@@ -282,7 +282,6 @@ class BlockController extends AbstractController
 
     /**
      * @Route("/view/{bid}", requirements={"bid" = "^[1-9]\d*$"}, options={"expose"=true})
-     * @Method("GET")
      *
      * Display a block.
      *
