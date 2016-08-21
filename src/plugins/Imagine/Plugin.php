@@ -236,6 +236,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
         foreach ($engines as $engine) {
             try {
                 $class = "Imagine\\$engine\\Imagine";
+
                 return new $class();
             } catch (RuntimeException $e) {
             }
