@@ -13,7 +13,7 @@
 
 <p class="alert alert-info">{{ __('Module Services are functions provided by the core or other modules for this module.') }}</p>
 
-{% if count(sublinks) > 0 %}
+{% if sublinks|length > 0 %}
 <ul class="list-unstyled">
     {% for sublink in sublinks %}
     <li><a href="{{ sublink.url }}" class="fa fa-cog">{{ sublink.text }}</a></li>

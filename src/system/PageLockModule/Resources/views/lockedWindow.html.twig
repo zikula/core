@@ -23,7 +23,7 @@
 /* <![CDATA[ */
     ( function($) {
         $(document).ready(function() {
-            {% if lockName not empty %}
+            {% if lockName is not empty %}
                 {% if hasLock %}
                     $(document).ready(PageLock.UnlockedPage);
                 {% else %}

@@ -18,7 +18,7 @@ use Doctrine\Common\Annotations\Annotation;
  * Class Theme
  *
  * This annotation is used in a Controller Action Method.
- *  like so: @Theme('admin')
+ *  like so: @Theme("admin")
  * Possible values are:
  *  - 'admin'
  *  - 'print'

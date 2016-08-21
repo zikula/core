@@ -32,7 +32,7 @@
                 {{ form_row(filterForm.impact) }}
 
                 {% if filter.uid or filter.name or filter.tag or filter.value or filter.page or filter.ip or filter.impact %}
-                    <a href="{{ path('zikulasecuritycentermodule_idslog_view'}" title="{{ __('Clear filter') }}><i class="fa fa-times"></i></a>
+                    <a href="{{ path('zikulasecuritycentermodule_idslog_view') }}" title="{{ __('Clear filter') }}"><i class="fa fa-times"></i></a>
                 {% endif %}
             </fieldset>
 
