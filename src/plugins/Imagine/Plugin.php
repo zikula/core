@@ -232,17 +232,16 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
      */
     public function getImagineEngine()
     {
-        $imagine = null;
-        $engines = ['Imagick', 'Gmagick', 'Gd'];
+        $engines = array('Imagick', 'Gmagick', 'Gd');
         foreach ($engines as $engine) {
             try {
                 $class = "\\Imagine\\{$engine}\\Imagine";
-                $imagine = new $class();
+                return new $class();
             } catch (RuntimeException $e) {
             }
         }
 
-        return $imagine;
+        return null;
     }
 
     /**
