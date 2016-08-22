@@ -24,7 +24,8 @@ class ZikulaRequirements
     public function runSymfonyChecks()
     {
         try {
-            require __DIR__.'/../../../../../app/SymfonyRequirements.php';
+            $path = realpath(__DIR__.'/../../../../../app/SymfonyRequirements.php');
+            require $path;
             $symfonyRequirements = new \SymfonyRequirements();
             foreach ($symfonyRequirements->getRequirements() as $req) {
                 if ($helpText = $this->getErrorMessage($req)) {
