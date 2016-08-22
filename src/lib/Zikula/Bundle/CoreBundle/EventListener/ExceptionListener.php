@@ -99,7 +99,7 @@ class ExceptionListener implements EventSubscriberInterface
             $event->getRequest()->getSession()->getFlashBag()->add('error', $message);
 
             // redirect to previous page
-            $route = $event->getRequest()->server->get('HTTP_REFERER', \System::getHomepageUrl());
+            $route = $event->getRequest()->server->get('HTTP_REFERER', $this->router->generate('home'));
         }
         // optionally add logging action here
 
