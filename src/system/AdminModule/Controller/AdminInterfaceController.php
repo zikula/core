@@ -301,11 +301,13 @@ class AdminInterfaceController extends AbstractController
             // url
             $menuTextUrl = isset($adminModule['capabilities']['admin']['route']) ? $this->get('router')->generate($adminModule['capabilities']['admin']['route']) : $adminModule['capabilities']['admin']['url'];
 
-            $linkCollection = $this->get('zikula.link_container_collector')->getLinks($adminModule['name'], 'admin');
-            $links = (false == $linkCollection)
-                ? (array) ModUtil::apiFunc($adminModule['name'], 'admin', 'getLinks')
-                : $linkCollection
-                ;
+            $links = $this->get('zikula.link_container_collector')->getLinks($adminModule['name'], 'admin');
+            if ($links == false) {
+                $links = \ModUtil::apiFunc($adminModule['name'], 'admin', 'getLinks');
+                if ($links == false) {
+                    $links = [];
+                }
+            }
 
             $module = [
                 'menutexturl' => $menuTextUrl,
