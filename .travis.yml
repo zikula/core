@@ -31,8 +31,6 @@ before_install:
 install:
     - composer install -o
     - cd src
-    # file required during install & upgrade
-    - cp vendor/sensio/distribution-bundle/Resources/skeleton/app/SymfonyRequirements.php app
 
     # test the installer
     - php app/console zikula:install:start -n --database_user=root --database_name=zk_test --password=12345678 --email=admin@example.com --router:request_context:host=localhost

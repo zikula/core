@@ -94,6 +94,7 @@
     },
     "scripts": {
         "post-install-cmd": [
+            "Zikula\\Composer\\CopyRequirementsFile::copy",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
@@ -101,6 +102,7 @@
             "Zikula\\Composer\\RequireJsConfigGenerator::regenerateRequireJs"
         ],
         "post-update-cmd": [
+            "Zikula\\Composer\\CopyRequirementsFile::copy",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",

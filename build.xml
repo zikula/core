@@ -120,9 +120,6 @@
         <exec command="${workspace}/source/build.php build:purge_vendors --vendor-dir ${packagepath}/vendor" checkreturn="true" passthru="true"/>
         <exec command="${workspace}/source/build.php build:fix_autoloader --vendor-dir ${packagepath}/vendor" checkreturn="true" passthru="true"/>
 
-        <!-- copy requirement check files to our app directory -->
-        <copy file="${packagepath}/vendor/sensio/distribution-bundle/Resources/skeleton/app/SymfonyRequirements.php" tofile="{packagepath}/app" overwrite="true"/>
-
         <!-- install assets -->
         <!--<exec command="php ${packagepath}/app/console assets:install ${packagepath}/web" checkreturn="true" passthru="true"/>-->
 
