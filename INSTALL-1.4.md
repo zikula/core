@@ -107,7 +107,7 @@ automatically redirected to the installer.
 ###Command Line Installer
 
 *Note 1:* One common issue when installing is that the app/cache and app/logs directories must be writable both by the 
-web server and the command line user. See Symfony's [Setting up Permissions](http://symfony.com/doc/current/book/installation.html#book-installation-permissions) 
+web server and the command line user. See Symfony's [Setting up or Fixing File Permissions](http://symfony.com/doc/2.8/setup/file_permissions.html) 
 to see potential solutions to this problem when installing from the CLI.
 
 *Note 2:* If you have `mod_suexec` installed for Apache the CLI will run into permission problems. (If you are not sure 
