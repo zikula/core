@@ -121,7 +121,6 @@
         <exec command="${workspace}/source/build.php build:fix_autoloader --vendor-dir ${packagepath}/vendor" checkreturn="true" passthru="true"/>
 
         <!-- copy requirement check files to our app directory -->
-        <copy file="${packagepath}/vendor/sensio/distribution-bundle/Resources/skeleton/app/check.php" tofile="{packagepath}/app" overwrite="true"/>
         <copy file="${packagepath}/vendor/sensio/distribution-bundle/Resources/skeleton/app/SymfonyRequirements.php" tofile="{packagepath}/app" overwrite="true"/>
 
         <!-- install assets -->

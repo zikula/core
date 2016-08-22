@@ -47,7 +47,9 @@ class Application extends BaseApplication
         $this->bootstrap();
         if ($this->kernel->getContainer()->getParameter('installed') === true) {
             // don't attempt to login if the Core needs an upgrade
+            // @todo at Core-2.0 replace ZIKULACORE_CURRENT_INSTALLED_VERSION with $this->kernel->getContainer()->getParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM);
             VersionUtil::defineCurrentInstalledCoreVersion($this->kernel->getContainer());
+            // @todo login is pointless for CLI isn't it?
             if (defined('ZIKULACORE_CURRENT_INSTALLED_VERSION') && version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, \Zikula_Core::VERSION_NUM, '==')) {
                 try {
                     $this->loginAsAdministrator();

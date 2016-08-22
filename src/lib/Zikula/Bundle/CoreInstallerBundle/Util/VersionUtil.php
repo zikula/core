@@ -21,9 +21,19 @@ class VersionUtil
      * @param ContainerInterface $container
      * @return string
      * @throws \Exception
+     * @deprecated at Core-1.4.3 scheduled for removal in Core-2.0
      */
     public static function defineCurrentInstalledCoreVersion($container)
     {
+        // first attempt to set the current version by the parameter if set.
+        // this is a BC measure for Core-1.4.0 -> 1.4.3
+        $currentVersionParam = $container->hasParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM) ? $container->getParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM) : null;
+        if (isset($currentVersionParam)) {
+            define('ZIKULACORE_CURRENT_INSTALLED_VERSION', $currentVersionParam);
+
+            return;
+        }
+
         $moduleTable = 'module_vars';
         try {
             $stmt = $container->get('doctrine.dbal.default_connection')->executeQuery("SELECT value FROM $moduleTable WHERE modname = 'ZConfig' AND name = 'Version_Num'");

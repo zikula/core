@@ -89,6 +89,7 @@ class AjaxUpgradeController extends AbstractController
 
     private function installRoutesModule()
     {
+        // @todo at Core-2.0 replace ZIKULACORE_CURRENT_INSTALLED_VERSION with $this->container->getParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM);
         if (version_compare(\Zikula_Core::VERSION_NUM, '1.4.0', '>') && version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, '1.4.0', '>=')) {
             // this stage is not necessary to upgrade from 1.4.0 -> 1.4.x
             return true;
@@ -155,6 +156,7 @@ class AjaxUpgradeController extends AbstractController
 
     private function from140to141()
     {
+        // @todo at Core-2.0 replace ZIKULACORE_CURRENT_INSTALLED_VERSION with $this->container->getParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM);
         if (version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, '1.4.1', '>=')) {
             return true;
         }
@@ -178,6 +180,7 @@ class AjaxUpgradeController extends AbstractController
 
     private function from141to142()
     {
+        // @todo at Core-2.0 replace ZIKULACORE_CURRENT_INSTALLED_VERSION with $this->container->getParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM);
         if (version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, '1.4.2', '>=')) {
             return true;
         }
@@ -191,6 +194,7 @@ class AjaxUpgradeController extends AbstractController
 
     private function from142to143()
     {
+        // @todo at Core-2.0 replace ZIKULACORE_CURRENT_INSTALLED_VERSION with $this->container->getParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM);
         if (version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, '1.4.3', '>=')) {
             return true;
         }
@@ -252,6 +256,10 @@ class AjaxUpgradeController extends AbstractController
         $params['router.request_context.host'] = isset($params['router.request_context.host']) ? $params['router.request_context.host'] : $this->container->get('request')->getHost();
         $params['router.request_context.scheme'] = isset($params['router.request_context.scheme']) ? $params['router.request_context.scheme'] : 'http';
         $params['router.request_context.base_url'] = isset($params['router.request_context.base_url']) ? $params['router.request_context.base_url'] : $this->container->get('request')->getBasePath();
+
+        // set currently installed version into parameters
+        $params[\Zikula_Core::CORE_INSTALLED_VERSION_PARAM] = \Zikula_Core::VERSION_NUM;
+
         $this->yamlManager->setParameters($params);
 
         // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from

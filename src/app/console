@@ -3,12 +3,14 @@
 
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Debug\Debug;
+use Symfony\Component\Yaml\Yaml;
 use Zikula\Bundle\CoreBundle\Console\Application;
 
 set_time_limit(0);
 
 require __DIR__.'/autoload.php';
 require __DIR__.'/ZikulaKernel.php';
+require __DIR__.'/../lib/requirementCheck.php';
 
 $getZikulaEnv = function(ArgvInput $input) {
     $defaultEnv = $input->getParameterOption(['--env', '-e'], getenv('ZIKULA_ENV') ?: 'dev');
@@ -26,6 +28,13 @@ $debug = getenv('ZIKULA_DEBUG') !== '0' && !$input->hasParameterOption(['--no-de
 if ($debug) {
     Debug::enable();
 }
+
+// on install or upgrade, check if system requirements are met.
+$kernelConfig = Yaml::parse(file_get_contents(__DIR__.'/config/parameters.yml'));
+if (is_readable($file = __DIR__.'/config/custom_parameters.yml')) {
+    $kernelConfig = array_merge($kernelConfig, Yaml::parse(file_get_contents($file)));
+}
+requirementCheck($kernelConfig['parameters']);
 
 $kernel = new ZikulaKernel($env, $debug);
 $kernel->boot();
