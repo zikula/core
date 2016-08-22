@@ -295,7 +295,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             'description' => $this->__('Login block'),
             'position' => $positions['topnav'],
             'order' => 1,
-            'filter' => [[
+            'filters' => [[
                 'attribute' => '_route',
                 'queryParameter' => null,
                 'comparator' => '!=',
