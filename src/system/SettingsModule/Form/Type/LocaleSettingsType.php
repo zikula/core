@@ -30,7 +30,8 @@ class LocaleSettingsType extends AbstractType
 
         $builder
             ->add('multilingual', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
-                'label' => $translator->__('Activate multilingual features')
+                'label' => $translator->__('Activate multilingual features'),
+                'required' => false
             ])
             ->add('languageurl', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Prepend language to URL'),
@@ -42,6 +43,7 @@ class LocaleSettingsType extends AbstractType
             ])
             ->add('language_detect', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $translator->__('Automatically detect language from browser settings'),
+                'required' => false,
                 'help' => $translator->__('If this is checked, Zikula tries to serve the language requested by browser (if that language available and allowed by the multi-lingual settings). If users set their personal language preference, then this setting will be overriden by their personal preference.')
             ])
             ->add('language_i18n', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
