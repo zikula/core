@@ -35,7 +35,9 @@ class LoginBlock extends AbstractBlockHandler
                 if (count($authenticationMethodCollector->getActiveKeys()) == 1) {
                     $selectedMethod = $authenticationMethodCollector->getActiveKeys()[0];
                     $request->getSession()->set('authenticationMethod', $selectedMethod);
-                    $request->getSession()->set('returnUrl', $request->isMethod('GET') ? $request->getUri() : '');
+                    if (!$request->getSession()->has('returnUrl')) {
+                        $request->getSession()->set('returnUrl', $request->isMethod('GET') ? $request->getUri() : '');
+                    }
                     $authenticationMethod = $authenticationMethodCollector->get($selectedMethod);
                     if ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface) {
                         $form = $this->get('form.factory')->create($authenticationMethod->getLoginFormClassName(), [], [

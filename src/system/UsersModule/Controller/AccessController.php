@@ -56,7 +56,9 @@ class AccessController extends AbstractController
                 $selectedMethod = $authenticationMethodCollector->getActiveKeys()[0];
             }
             $request->getSession()->set('authenticationMethod', $selectedMethod); // save method to session for reEntrant needs
-            $request->getSession()->set('returnUrl', $returnUrl); // save returnUrl to session for reEntrant needs
+            if (!empty($returnUrl)) {
+                $request->getSession()->set('returnUrl', $returnUrl);
+            } // save returnUrl to session for reEntrant needs
         }
         $authenticationMethod = $authenticationMethodCollector->get($selectedMethod);
         $rememberMe = false;
@@ -111,8 +113,9 @@ class AccessController extends AbstractController
                     $event = new GenericEvent($user, ['authenticationMethod' => $selectedMethod]);
                     $this->get('event_dispatcher')->dispatch(AccessEvents::LOGIN_VETO, $event);
                     if (!$event->isPropagationStopped()) {
+                        $returnUrlFromSession = urldecode($request->getSession()->get('returnUrl', $returnUrl));
                         $this->get('zikula_users_module.helper.access_helper')->login($user, $rememberMe);
-                        $returnUrl = $this->dispatchLoginSuccessEvent($user, $selectedMethod, urldecode($request->getSession()->get('returnUrl', $returnUrl)));
+                        $returnUrl = $this->dispatchLoginSuccessEvent($user, $selectedMethod, $returnUrlFromSession);
                     } else {
                         $returnUrl = $event->getArgument('returnUrl');
                     }

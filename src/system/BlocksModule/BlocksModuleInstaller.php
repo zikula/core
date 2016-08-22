@@ -148,6 +148,19 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 }
                 $this->entityManager->flush();
             case '3.9.5':
+                $loginBlocks = $this->entityManager->getRepository('ZikulaBlocksModule:BlockEntity')->findBy(['blocktype' => 'Login']);
+                foreach ($loginBlocks as $loginBlock) {
+                    $filters = $loginBlock->getFilters();
+                    $filters[] = [
+                        'attribute' => '_route',
+                        'queryParameter' => null,
+                        'comparator' => '!=',
+                        'value' => 'zikulausersmodule_access_login'
+                    ];
+                    $loginBlock->setFilters($filters);
+                }
+                $this->entityManager->flush();
+            case '3.9.6':
                 // future upgrade routines
         }
 
@@ -281,7 +294,13 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             'title' => $this->__('User log-in'),
             'description' => $this->__('Login block'),
             'position' => $positions['topnav'],
-            'order' => 1
+            'order' => 1,
+            'filter' => [[
+                'attribute' => '_route',
+                'queryParameter' => null,
+                'comparator' => '!=',
+                'value' => 'zikulausersmodule_access_login'
+            ]]
         ];
 
         foreach ($blocks as $block) {
