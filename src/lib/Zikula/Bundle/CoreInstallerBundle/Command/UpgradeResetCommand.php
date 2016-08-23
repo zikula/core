@@ -36,6 +36,6 @@ class UpgradeResetCommand extends ContainerAwareCommand
         $version = $input->getArgument('version');
         $yamlManager = new YamlDumper($this->getContainer()->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
         $yamlManager->setParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM, $version);
-        $output->write(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM . 'parameter reset to ' . $version);
+        $output->writeln(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM . 'parameter reset to ' . $version);
     }
 }
