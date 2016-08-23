@@ -12,11 +12,12 @@
 namespace Zikula\Bundle\CoreInstallerBundle\Util;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Zikula\Bundle\CoreBundle\YamlDumper;
 
 class VersionUtil
 {
     /**
-     * Get current installed version number
+     * Ensures current installed version number is written to `custom_parameters.yml`
      *
      * @param ContainerInterface $container
      * @return string
@@ -25,27 +26,21 @@ class VersionUtil
      */
     public static function defineCurrentInstalledCoreVersion($container)
     {
-        // first attempt to set the current version by the parameter if set.
-        // this is a BC measure for Core-1.4.0 -> 1.4.3
-        $currentVersionParam = $container->hasParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM) ? $container->getParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM) : null;
-        if (isset($currentVersionParam) && !defined('ZIKULACORE_CURRENT_INSTALLED_VERSION')) {
-            define('ZIKULACORE_CURRENT_INSTALLED_VERSION', $currentVersionParam);
-
+        // already set?
+        if ($container->hasParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM)) {
             return;
         }
 
-        $moduleTable = 'module_vars';
+        // only required when core < 1.4.3
         try {
-            $stmt = $container->get('doctrine.dbal.default_connection')->executeQuery("SELECT value FROM $moduleTable WHERE modname = 'ZConfig' AND name = 'Version_Num'");
-            $result = $stmt->fetch(\PDO::FETCH_NUM);
-            $version = unserialize($result[0]);
-            if ((!defined('ZIKULACORE_CURRENT_INSTALLED_VERSION')) || ($version !== ZIKULACORE_CURRENT_INSTALLED_VERSION)) {
-                define('ZIKULACORE_CURRENT_INSTALLED_VERSION', $version);
-            }
+            $conn = $container->get('doctrine.dbal.default_connection');
+            $version = unserialize($conn->fetchColumn("SELECT value FROM module_vars WHERE modname = 'ZConfig' AND name = 'Version_Num'"));
+
+            $yamlManager = new YamlDumper($container->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
+            $container->setParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM, $version);
+            $yamlManager->setParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM, $version); // writes to file
         } catch (\Doctrine\DBAL\Exception\TableNotFoundException $e) {
-            throw new \Exception("ERROR: Could not find $moduleTable table. Maybe you forgot to copy it to your server, or you left a custom_parameters.yml file in place with installed: true in it.");
-        } catch (\Exception $e) {
-            // now what? @todo
+            throw new \Exception("ERROR: Could not find module_vars table. Maybe you forgot to copy it to your server, or you left a custom_parameters.yml file in place with installed: true in it.");
         }
     }
 }

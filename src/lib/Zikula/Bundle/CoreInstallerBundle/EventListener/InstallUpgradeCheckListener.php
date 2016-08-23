@@ -36,11 +36,9 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
         $request = $this->container->get('request');
         // create several booleans to test condition of request regarding install/upgrade
         $installed = $this->container->getParameter('installed');
-        if ($installed) {
-            // @todo at Core-2.0 replace with $this->container->getParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM);
-            VersionUtil::defineCurrentInstalledCoreVersion($this->container);
-        }
-        $requiresUpgrade = $installed && version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, \Zikula_Core::VERSION_NUM, '<');
+        VersionUtil::defineCurrentInstalledCoreVersion($this->container);
+        $currentVersion = $this->container->getParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM);
+        $requiresUpgrade = $installed && version_compare($currentVersion, \Zikula_Core::VERSION_NUM, '<');
 
         // can't use $request->get('_route') to get any of the following
         // all these routes are hard-coded in xml files
