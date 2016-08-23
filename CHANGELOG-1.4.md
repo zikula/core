@@ -24,6 +24,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Corrected issue with hook admin url and legacy modules (#2999).
     - Imagine: Use Imagick or Gmagick in favour of Gd (#3016)
     - Add filter to LoginBlock so it doesn't appear on login page (#3021).
+    - Improved Installer and Upgrader to check installation requirements before running (#2235, #3023).
 
  - Features:
     - Add help text, alert text and input groups to forms utilizing the provided form themes (#2846, #2847).
