@@ -14,6 +14,7 @@ use Symfony\Component\Yaml\Yaml;
 
 require __DIR__.'/../app/autoload.php';
 require __DIR__.'/../app/ZikulaKernel.php';
+require __DIR__.'/../lib/requirementCheck.php';
 
 $kernelConfig = Yaml::parse(file_get_contents(__DIR__.'/../app/config/parameters.yml'));
 if (is_readable($file = __DIR__.'/../app/config/custom_parameters.yml')) {
@@ -27,6 +28,9 @@ if ($kernelConfig['debug'] == true) {
 if ((isset($kernelConfig['umask'])) && (!is_null($kernelConfig['umask']))) {
     umask($kernelConfig['umask']);
 }
+
+// on install or upgrade, check if system requirements are met.
+requirementCheck($kernelConfig);
 
 $kernel = new ZikulaKernel($kernelConfig['env'], $kernelConfig['debug']);
 $kernel->boot();

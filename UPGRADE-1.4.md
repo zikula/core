@@ -25,11 +25,11 @@ For more information visit http://zikula.org/ and read our
 
 <a name="requirements"></a>
 
-Requirements
-------------
+Server/Environment Requirements
+-------------------------------
 
 Before upgrading Zikula it's important to ensure that the hosting server environment meets the requirements
-of the new core release. Zikula Core 1.4.0 has the following requirements
+of the new core release. Zikula Core 1.4.x has the following requirements
 
 |               | Minimum       | Recommended  |
 | ------------- |:-------------:| :-----------:|
@@ -74,7 +74,7 @@ If you store Composer in the root of the Zikula Core checkout, please rename it 
 
 ####FOR NORMAL USERS: Download the current release from [http://www.zikula.org/](http://www.zikula.org/)
 
-All the dependencies and requirements are included in this package, simply unpack the archive.
+All the dependencies and requirements are included in this package.
 
 
 <a name="upgrading"></a>
@@ -88,12 +88,14 @@ The following process should be followed for all upgrades even small point relea
     `personal_config.php`.
   - Make a note of your 'startpage' settings as they must be cleared in the upgrade process.
   - Before uploading the new files, delete **all files** in your web root (typically `public_html` or `httpdocs`).
-  - Upload the new package.
-    - It is most reliable to upload the archive and the unpack the archive on the server instead of FTP thousands
-      of small files.
-    - Windows/FTP users: Take care about copying all files. If there are some files you are not able to
-      transfer to the server check if your longest path length is longer than Windows/FTP-Software allows (more than 
-      256 characters).
+  - Upload the new package and unpack the archive.
+    - **Please read** the [INSTALL docs](INSTALL-1.4.md#upload) for detailed information on proper uploading.
+    - Note 1: One common issue when installing is that the app/cache and app/logs directories must be writable both by the 
+      web server and the command line user. See Symfony's [Setting up or Fixing File Permissions](http://symfony.com/doc/2.8/setup/file_permissions.html) 
+      to see potential solutions to this problem when installing from the CLI.
+    - Note 2: If you have `mod_suexec` installed for Apache the CLI will run into permission problems. (If you are not sure 
+      check your phpinfo.) `mod_suexec` often is used in shared hosting environments. In this case, the CLI installer is not 
+      recommended, please use the Web Installer.
 
 #### If upgrading from Core-1.3.x:
 
@@ -110,11 +112,10 @@ The following process should be followed for all upgrades even small point relea
 #### If upgrading from Core-1.4.x:
 
   - Copy your existing `config/personal_config.php` and `app/config/custom_parameters.yml` to their same respective
-    locations in your new installation. There is no need to update any values within these files.
+    locations in your new installation. **There is no need to update any values within these files.**
 
 #### Continue:
 
-  - Make `app/cache` and `app/logs` directories writable. (**Zikula WILL NOT install without this critical step**)
   - Copy your backup `/userdata` and your **theme** to your new installation. The folders of your theme should be
     in the exact same place as your backup.
   - **Upgrade: (do one or the other)**

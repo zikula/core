@@ -56,6 +56,11 @@ class Zikula_Core
      */
     const PHP_MINIMUM_VERSION = '5.4.1';
 
+    /**
+     * The parameter name identifying the currently installed version of the core.
+     */
+    const CORE_INSTALLED_VERSION_PARAM = 'core_installed_version';
+
     const STAGE_NONE = 0;
     const STAGE_PRE = 1;
     const STAGE_POST = 2;

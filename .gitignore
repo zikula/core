@@ -2,6 +2,7 @@
 /composer.phar
 /bin/
 /src/app/bootstrap.php.cache
+/src/app/SymfonyRequirements.php
 /src/app/cache/
 /src/app/config/custom_*.yml
 /src/app/config/dynamic/*

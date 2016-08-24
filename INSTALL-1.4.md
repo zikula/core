@@ -9,7 +9,8 @@ Zikula Installation Instructions
 
 
 <a name="zikula"></a>
-1. Zikula
+
+Zikula
 ---------
 
 Zikula is an open source, open development application framework for dynamic
@@ -27,8 +28,9 @@ to open an issue at the GitHub Core Repository and we will try to fix any proble
 
 
 <a name="requirements"></a>
-2. Server Consideration
------------------------
+
+Server/Environment Requirements
+-------------------------------
 
 Before upgrading Zikula it's important to ensure that the hosting server environment meets the requirements
 of the new core release. Zikula Core 1.4 has the following requirements:
@@ -51,8 +53,9 @@ of the new core release. Zikula Core 1.4 has the following requirements:
 
 
 <a name="upload"></a>
-3. Upload and Prepare
----------------------
+
+Upload and Prepare
+------------------
 
 ###Upload
 
@@ -88,8 +91,17 @@ the permission settings as they were set correctly by the development team, if y
 
 
 <a name="install"></a>
-4. New Installation
--------------------
+
+New Installation
+----------------
+
+*Note 1:* One common issue when installing is that the app/cache and app/logs directories must be writable both by the 
+web server and the command line user. See Symfony's [Setting up or Fixing File Permissions](http://symfony.com/doc/2.8/setup/file_permissions.html) 
+to see potential solutions to this problem when installing from the CLI.
+
+*Note 2:* If you have `mod_suexec` installed for Apache the CLI will run into permission problems. (If you are not sure 
+check your phpinfo.) `mod_suexec` often is used in shared hosting environments. In this case, the CLI installer is not 
+recommended, please use the Web Installer. 
 
 ###Create the Database
 
@@ -98,21 +110,15 @@ Create a database on your server. Take note of the database **name** as well as 
 database, but this is not recommended unless Zikula will be the only application using that database. In this case,
 remove all existing tables from the existing database.
 
-###Web Installer
+###Install by the Web installer or Command Line (not both!):
+
+####Web Installer
 
 To begin the installer, simply visit the root directory with your browser, e.g. `http://www.example.com/`.
 If you installed Zikula into a subdirectory 'foo' the URL would be `http://www.example.com/foo/`. You will be
 automatically redirected to the installer.
 
-###Command Line Installer
-
-*Note 1:* One common issue when installing is that the app/cache and app/logs directories must be writable both by the 
-web server and the command line user. See Symfony's [Setting up Permissions](http://symfony.com/doc/current/book/installation.html#book-installation-permissions) 
-to see potential solutions to this problem when installing from the CLI.
-
-*Note 2:* If you have `mod_suexec` installed for Apache the CLI will run into permission problems. (If you are not sure 
-check your phpinfo.) `mod_suexec` often is used in shared hosting environments. In this case, the CLI installer is not 
-recommended, please use the Web Installer. 
+####Command Line Installer
 
 Via CLI, access your main zikula directory (`/src` if a Github clone) and run this command:
 ```Shell
@@ -126,8 +132,9 @@ Open your browser and login!
 
 
 <a name="final"></a>
-5. Final Note
--------------
+
+Final Note
+----------
 
 Modifications to the Zikula core system code or database are not supported. Doing so can cause extensive
 problems when upgrading the system in the future and therefore these *hacks* are not recommended. Zikula

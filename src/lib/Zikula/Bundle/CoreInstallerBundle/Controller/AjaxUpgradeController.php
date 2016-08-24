@@ -27,10 +27,16 @@ class AjaxUpgradeController extends AbstractController
      */
     private $yamlManager;
 
+    /**
+     * @var string the currently installed core version
+     */
+    private $currentVersion;
+
     public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
         $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
+        $this->currentVersion = $this->container->getParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM);
     }
 
     public function ajaxAction(Request $request)
@@ -89,7 +95,7 @@ class AjaxUpgradeController extends AbstractController
 
     private function installRoutesModule()
     {
-        if (version_compare(\Zikula_Core::VERSION_NUM, '1.4.0', '>') && version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, '1.4.0', '>=')) {
+        if (version_compare(\Zikula_Core::VERSION_NUM, '1.4.0', '>') && version_compare($this->currentVersion, '1.4.0', '>=')) {
             // this stage is not necessary to upgrade from 1.4.0 -> 1.4.x
             return true;
         }
@@ -155,7 +161,7 @@ class AjaxUpgradeController extends AbstractController
 
     private function from140to141()
     {
-        if (version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, '1.4.1', '>=')) {
+        if (version_compare($this->currentVersion, '1.4.1', '>=')) {
             return true;
         }
         // perform the following SQL
@@ -178,7 +184,7 @@ class AjaxUpgradeController extends AbstractController
 
     private function from141to142()
     {
-        if (version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, '1.4.2', '>=')) {
+        if (version_compare($this->currentVersion, '1.4.2', '>=')) {
             return true;
         }
         // do some clean up
@@ -191,7 +197,7 @@ class AjaxUpgradeController extends AbstractController
 
     private function from142to143()
     {
-        if (version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, '1.4.3', '>=')) {
+        if (version_compare($this->currentVersion, '1.4.3', '>=')) {
             return true;
         }
         // install ZAuth
@@ -252,6 +258,10 @@ class AjaxUpgradeController extends AbstractController
         $params['router.request_context.host'] = isset($params['router.request_context.host']) ? $params['router.request_context.host'] : $this->container->get('request')->getHost();
         $params['router.request_context.scheme'] = isset($params['router.request_context.scheme']) ? $params['router.request_context.scheme'] : 'http';
         $params['router.request_context.base_url'] = isset($params['router.request_context.base_url']) ? $params['router.request_context.base_url'] : $this->container->get('request')->getBasePath();
+
+        // set currently installed version into parameters
+        $params[\Zikula_Core::CORE_INSTALLED_VERSION_PARAM] = \Zikula_Core::VERSION_NUM;
+
         $this->yamlManager->setParameters($params);
 
         // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from

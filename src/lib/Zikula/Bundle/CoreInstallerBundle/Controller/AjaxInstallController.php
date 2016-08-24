@@ -397,6 +397,9 @@ class AjaxInstallController extends AbstractController
         // set installed = true
         $params = $this->yamlManager->getParameters();
         $params['installed'] = true;
+        // set currently installed version into parameters
+        $params[\Zikula_Core::CORE_INSTALLED_VERSION_PARAM] = \Zikula_Core::VERSION_NUM;
+
         $this->yamlManager->setParameters($params);
         // clear the cache
         $this->container->get('zikula.cache_clearer')->clear('symfony.config');

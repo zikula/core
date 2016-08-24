@@ -45,9 +45,6 @@ class ControllerUtil
     public function initPhp()
     {
         $warnings = [];
-        if (!function_exists('mb_get_info')) {
-            $warnings[] = __('mbstring is not installed in PHP.  Zikula cannot install or upgrade without this extension.');
-        }
         if (version_compare(\PHP_VERSION, '5.6.0', '<') && false === ini_set('mbstring.internal_encoding', 'UTF-8')) {
             // mbstring.internal_encoding is deprecated in php 5.6.0
             $currentSetting = ini_get('mbstring.internal_encoding');
@@ -79,25 +76,22 @@ class ControllerUtil
 
     public function requirementsMet(ContainerInterface $container)
     {
+        // several other requirements are checked before Symfony is loaded.
+        // @see app/SymfonyRequirements.php
+        // @see \Zikula\Bundle\CoreInstallerBundle\Util\ZikulaRequirements::runSymfonyChecks
         $results = [];
 
         $x = explode('.', str_replace('-', '.', phpversion()));
         $phpVersion = "$x[0].$x[1].$x[2]";
         $results['phpsatisfied'] = version_compare($phpVersion, \Zikula_Core::PHP_MINIMUM_VERSION, ">=");
 
-        $results['datetimezone'] = ini_get('date.timezone');
         $results['pdo'] = extension_loaded('pdo');
-        $results['phptokens'] = function_exists('token_get_all');
-        $results['mbstring'] = function_exists('mb_get_info');
         $isEnabled = @preg_match('/^\p{L}+$/u', 'TheseAreLetters');
         $results['pcreUnicodePropertiesEnabled'] = (isset($isEnabled) && (bool)$isEnabled);
-        $results['json_encode'] = function_exists('json_encode');
         $datadir = $container->getParameter('datadir');
         $directories = [
-            '/cache/',
             '/config/',
             '/config/dynamic',
-            '/logs/',
             "/../$datadir/",
             '/../config/',
         ];
