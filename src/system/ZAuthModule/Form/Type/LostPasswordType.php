@@ -80,7 +80,7 @@ class LostPasswordType extends AbstractType
             'translator' => null,
             'includeCode' => false,
             'constraints' => new Callback(['callback' => function ($data, ExecutionContextInterface $context) use ($resolver) {
-                if (empty($data['uname'] && empty($data['email']))) {
+                if (empty($data['uname']) && empty($data['email'])) {
                     $context->buildViolation(__('Error! You must enter either your username or email address.'))
                         ->addViolation();
                 }
