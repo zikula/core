@@ -12,6 +12,7 @@
 namespace Zikula\Composer;
 
 use Composer\Script\Event;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * A class to rewrite RequireJS configuration
@@ -25,6 +26,7 @@ class CopyRequirementsFile
      */
     public static function copy(Event $event)
     {
-        copy('src/vendor/sensio/distribution-bundle/Resources/skeleton/app/SymfonyRequirements.php', 'src/app/SymfonyRequirements.php');
+        $fs = new Filesystem();
+        $fs->copy(__DIR__.'/../../../vendor/sensio/distribution-bundle/Resources/skeleton/app/SymfonyRequirements.php', __DIR__.'/../../../app/SymfonyRequirements.php');
     }
 }

@@ -27,11 +27,6 @@ class ZikulaRequirements
             $path = realpath(__DIR__.'/../../../../../app/SymfonyRequirements.php');
             require $path;
             $symfonyRequirements = new \SymfonyRequirements();
-            $symfonyRequirements->addRequirement(
-                function_exists('mb_get_info'),
-                'mbstring is not installed in PHP.  Zikula cannot install or upgrade without this extension.',
-                'Install and enable the <strong>mbstring</strong> extension'
-            );
             foreach ($symfonyRequirements->getRequirements() as $req) {
                 if ($helpText = $this->getErrorMessage($req)) {
                     $this->requirementsErrors[] = $helpText;

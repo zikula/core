@@ -86,7 +86,6 @@ class ControllerUtil
         $results['phpsatisfied'] = version_compare($phpVersion, \Zikula_Core::PHP_MINIMUM_VERSION, ">=");
 
         $results['pdo'] = extension_loaded('pdo');
-        $results['mbstring'] = function_exists('mb_get_info');
         $isEnabled = @preg_match('/^\p{L}+$/u', 'TheseAreLetters');
         $results['pcreUnicodePropertiesEnabled'] = (isset($isEnabled) && (bool)$isEnabled);
         $datadir = $container->getParameter('datadir');
