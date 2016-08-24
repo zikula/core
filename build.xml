@@ -124,7 +124,7 @@
         <!--<exec command="php ${packagepath}/app/console assets:install ${packagepath}/web" checkreturn="true" passthru="true"/>-->
 
         <!-- create route translation dummy file -->
-        <exec command="php ${packagepath}/app/console translation:extract template --output-format=po --output-dir=${packagepath}/app/Resources/translations --enable-extractor=jms_i18n_routing --dir={packagepath}/system --dir=${packagepath}/lib/Zikula/Bundle" checkreturn="true" passthru="true" />
+        <exec command="php ${packagepath}/app/console translation:extract template --output-format=po --output-dir=${packagepath}/app/Resources/translations --enable-extractor=jms_i18n_routing --dir=${packagepath}/system --dir=${packagepath}/lib/Zikula/Bundle" checkreturn="true" passthru="true" />
         <!-- Clear cache and log directories filled by the console command above -->
         <delete includeEmptyDirs="true">
             <fileset dir="${packagepath}/app/cache" defaultexcludes="false">
