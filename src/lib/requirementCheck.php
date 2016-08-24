@@ -25,8 +25,11 @@ function requirementCheck($parameters)
         $versionChecker = new ZikulaRequirements();
         $versionChecker->runSymfonyChecks();
         if (!empty($versionChecker->requirementsErrors)) {
+            // formatting for both HTML and CLI display
+            echo 'The following errors were discovered when checking the' .PHP_EOL. 'Zikula Core system/environment requirements:' . PHP_EOL;
+            echo '******************************************************' . PHP_EOL . PHP_EOL;
             foreach ($versionChecker->requirementsErrors as $error) {
-                echo $error . '<br/>';
+                echo $error . PHP_EOL;
             }
             die();
         }
