@@ -289,7 +289,10 @@ class AjaxInstallController extends AbstractController
     {
         $params = $this->decodeParameters($this->yamlManager->getParameters());
         $user = $this->container->get('zikula_users_module.user_repository')->findOneBy(['uname' => $params['username']]);
-        $this->container->get('zikula_users_module.helper.access_helper')->login($user, true);
+        $request = $this->container->has('request') ? $this->container->get('request') : null;
+        if (isset($request) && $request->hasSession()) {
+            $this->container->get('zikula_users_module.helper.access_helper')->login($user, true);
+        }
 
         return true;
     }
