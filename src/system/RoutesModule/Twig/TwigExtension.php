@@ -135,4 +135,32 @@ class TwigExtension extends BaseTwigExtension
 
         return $prefix . '<strong>' . $path . '</strong>';
     }
+
+    public function getObjectState($state = 'initial', $uiFeedback = true)
+    {
+    }
+
+    public function templateHeaders($contentType, $asAttachment = false, $fileName = '')
+    {
+    }
+
+    public function getObjectTypeSelector()
+    {
+    }
+
+    public function getTemplateSelector()
+    {
+    }
+
+    public function getUserAvatar($uid, $width = 0, $height = 0, $size = 0, $rating = '')
+    {
+    }
+
+    public function getImageThumb($params)
+    {
+    }
+
+    public function profileLink($uid, $class = '', $maxLength = 0)
+    {
+    }
 }
