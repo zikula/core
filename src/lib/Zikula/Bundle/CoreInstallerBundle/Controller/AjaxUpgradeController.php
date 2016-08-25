@@ -188,10 +188,11 @@ class AjaxUpgradeController extends AbstractController
             return true;
         }
         // do some clean up
-        if ($this->container->get('request_stack')->getCurrentRequest() && $this->container->get('request_stack')->getCurrentRequest()->hasSession()) {
-            $this->container->get('request_stack')->getCurrentRequest()->getSession()->remove('interactive_init');
-            $this->container->get('request_stack')->getCurrentRequest()->getSession()->remove('interactive_remove');
-            $this->container->get('request_stack')->getCurrentRequest()->getSession()->remove('interactive_upgrade');
+        $request = $this->container->get('request_stack')->getCurrentRequest();
+        if (isset($request) && $request->hasSession()) {
+            $request->getSession()->remove('interactive_init');
+            $request->getSession()->remove('interactive_remove');
+            $request->getSession()->remove('interactive_upgrade');
         }
 
         return true;
