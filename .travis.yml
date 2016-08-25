@@ -6,12 +6,14 @@ php:
   - 5.4
   - 5.5
   - 5.6
+  - 7.0
   - hhvm
   - nightly
 
 matrix:
   fast_finish: true
   allow_failures:
+    - php: 7.0
     - php: hhvm
     - php: nightly
 
@@ -72,8 +74,6 @@ install:
     # run the upgrade from the 142 db
     - php app/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/' -vvv
 
-    - cd ..
-
 # We cannot install Apache2 for now, because this requires sudo mode in which composer takes too long to install the depencencies.
 #before_script:
 #    - sudo apt-get update
@@ -89,6 +89,13 @@ install:
 #    - sudo service apache2 restart
 #
 script:
+  - php app/console lint:yaml app/config/
+  - php app/console lint:yaml system/
+  - php app/console lint:yaml themes/
+  - php app/console lint:yaml lib/Zikula/
+  - php app/console lint:twig system/ lib/Zikula/
+  # twig linting in themes won't work because the themes are not active bundles
+  - cd ..
   - phpunit
 #     - echo "Nothing to do.. yet!"
 #    - wget -dO - localhost/src
