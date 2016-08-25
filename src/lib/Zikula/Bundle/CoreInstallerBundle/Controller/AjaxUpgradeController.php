@@ -54,6 +54,7 @@ class AjaxUpgradeController extends AbstractController
 
     public function commandLineAction($stage)
     {
+        $this->container->setParameter('upgrading', true);
         return $this->executeStage($stage);
     }
 
