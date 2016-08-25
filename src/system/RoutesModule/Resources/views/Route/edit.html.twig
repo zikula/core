@@ -12,7 +12,7 @@
                 function updatePathPrefix() {
                     var i18n = $('#zikularoutesmodule_route_translatable').prop('checked');
                     var bundlePrefix = $('#zikularoutesmodule_route_prependBundlePrefix').prop('checked');
-                    var baseUrl = {{ zikularoutesmodule_getBaseUrl()|json_encode|raw }};
+                    var baseUrl = {{ app.request.baseUrl|json_encode }};
                     var moduleUrlNames = {{ moduleUrlNames|json_encode|raw }};
 
                     if (bundlePrefix) {
@@ -53,35 +53,35 @@
 {{ form_errors(form) }}
 <fieldset>
     <legend>{{ __('Content') }}</legend>
-    
+
     {{ form_row(form.routeType) }}
-    
+
     {{ form_row(form.replacedRouteName) }}
-    
+
     {{ form_row(form.bundle) }}
-    
+
     {{ form_row(form.controller) }}
-    
+
     {{ form_row(form.action) }}
-    
+
     {{ form_row(form.path) }}
-    
+
     {{ form_row(form.host) }}
-    
+
     {{ form_row(form.schemes) }}
-    
+
     {{ form_row(form.methods) }}
-    
+
     {{ form_row(form.prependBundlePrefix) }}
-    
+
     {{ form_row(form.translatable) }}
-    
+
     {{ form_row(form.translationPrefix) }}
-    
+
     {{ form_row(form.condition) }}
-    
+
     {{ form_row(form.description) }}
-    
+
     <div class="hidden">
         {{ form_row(form.sort) }}
 
@@ -137,18 +137,18 @@
 
     {% set editImage = '<span class="fa fa-pencil-square-o"></span>' %}
     {% set deleteImage = '<span class="fa fa-trash-o"></span>' %}
-    
-    
+
+
     <script type="text/javascript">
     /* <![CDATA[ */
-        
+
                 var formButtons;
-        
+
                 function executeCustomValidationConstraints()
                 {
                     zikulaRoutesPerformCustomValidationRules('route', '{% if mode != 'create' %}{{ route.id }}{% endif %}');
                 }
-        
+
                 function triggerFormValidation()
                 {
                     executeCustomValidationConstraints();
@@ -158,28 +158,28 @@
                         jQuery('#routeEditForm').find(':submit').not(jQuery('#btnDelete')).first().click();
                     }
                 }
-        
+
                 function handleFormSubmit (event) {
                     triggerFormValidation();
                     if (!document.getElementById('routeEditForm').checkValidity()) {
                         event.preventDefault();
                         return false;
                     }
-        
+
                     // hide form buttons to prevent double submits by accident
                     formButtons.each(function (index) {
                         jQuery(this).addClass('hidden');
                     });
-        
+
                     return true;
                 }
-        
+
                 ( function($) {
                     $(document).ready(function() {
-        
+
                         var allFormFields = $('#routeEditForm input, #routeEditForm select, #routeEditForm textarea');
                         allFormFields.change(executeCustomValidationConstraints);
-        
+
                         formButtons = $('#routeEditForm .form-buttons input');
                         $('#btnDelete').bind('click keypress', function (e) {
                             if (!window.confirm('{{ __('Really delete this route?') }}')) {
@@ -187,11 +187,11 @@
                             }
                         });
                         $('#routeEditForm').submit(handleFormSubmit);
-        
+
                         {% if mode != 'create' %}
                             triggerFormValidation();
                         {% endif %}
-        
+
                         $('#routeEditForm label').tooltip();
                     });
                 })(jQuery);
