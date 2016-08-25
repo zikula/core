@@ -89,6 +89,7 @@ install:
 #    - sudo service apache2 restart
 #
 script:
+  - php app/console lint:yaml app/config/
   - php app/console lint:yaml system/
   - php app/console lint:yaml themes/
   - php app/console lint:yaml lib/Zikula/
