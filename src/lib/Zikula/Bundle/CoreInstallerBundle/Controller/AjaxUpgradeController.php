@@ -55,6 +55,7 @@ class AjaxUpgradeController extends AbstractController
     public function commandLineAction($stage)
     {
         $this->container->setParameter('upgrading', true);
+
         return $this->executeStage($stage);
     }
 
@@ -62,8 +63,6 @@ class AjaxUpgradeController extends AbstractController
     {
         switch ($stageName) {
             case "loginadmin":
-                $this->yamlManager->setParameter('upgrading', true);
-
                 return $this->container->get('core_installer.controller.ajaxinstall')->loginAdmin();
             case "upgrademodules":
                 $result = $this->upgradeModules();
@@ -189,9 +188,11 @@ class AjaxUpgradeController extends AbstractController
             return true;
         }
         // do some clean up
-        \SessionUtil::delVar('interactive_init');
-        \SessionUtil::delVar('interactive_remove');
-        \SessionUtil::delVar('interactive_upgrade');
+        if ($this->container->get('request')->hasSession()) {
+            $this->container->get('request')->getSession()->remove('interactive_init');
+            $this->container->get('request')->getSession()->remove('interactive_remove');
+            $this->container->get('request')->getSession()->remove('interactive_upgrade');
+        }
 
         return true;
     }
