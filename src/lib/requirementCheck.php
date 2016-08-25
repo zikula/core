@@ -26,10 +26,16 @@ function requirementCheck($parameters)
         $versionChecker->runSymfonyChecks();
         if (!empty($versionChecker->requirementsErrors)) {
             // formatting for both HTML and CLI display
+            if (isset($_SERVER['HTTP_HOST'])) {
+                echo "<html><body><pre>";
+            }
             echo 'The following errors were discovered when checking the' .PHP_EOL. 'Zikula Core system/environment requirements:' . PHP_EOL;
             echo '******************************************************' . PHP_EOL . PHP_EOL;
             foreach ($versionChecker->requirementsErrors as $error) {
                 echo $error . PHP_EOL;
+            }
+            if (isset($_SERVER['HTTP_HOST'])) {
+                echo "</pre></body></html>";
             }
             die();
         }
