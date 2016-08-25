@@ -6,12 +6,14 @@ php:
   - 5.4
   - 5.5
   - 5.6
+  - 7.0
   - hhvm
   - nightly
 
 matrix:
   fast_finish: true
   allow_failures:
+    - php: 7.0
     - php: hhvm
     - php: nightly
 
@@ -89,6 +91,9 @@ install:
 #    - sudo service apache2 restart
 #
 script:
+  - php app/console lint:yaml system/
+  - php app/console lint:yaml lib/Zikula/
+  - php app/console lint:twig system/ lib/Zikula
   - phpunit
 #     - echo "Nothing to do.. yet!"
 #    - wget -dO - localhost/src
