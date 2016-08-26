@@ -238,7 +238,7 @@ class BundleSyncHelper
         // Get all extensions in DB, indexed by name
         $extensionsFromDB = $this->extensionRepository->getIndexedArrayCollection('name');
 
-        // see if any extensions have changed name since last regeneration
+        // see if any extensions have changed since last regeneration
         $this->syncUpdatedExtensions($extensionsFromFile, $extensionsFromDB, $forceDefaults);
 
         // See if any extensions have been lost since last sync
@@ -267,10 +267,6 @@ class BundleSyncHelper
     private function syncUpdatedExtensions(array $extensionsFromFile, array &$extensionsFromDB, $forceDefaults = false)
     {
         foreach ($extensionsFromFile as $name => $extensionFromFile) {
-            if (empty($extensionFromFile['oldnames'])) {
-                continue;
-            }
-
             foreach ($extensionsFromDB as $dbname => $extensionFromDB) {
                 if (isset($extensionFromDB['name']) && in_array($extensionFromDB['name'], (array)$extensionFromFile['oldnames'])) {
                     // migrate its modvars
