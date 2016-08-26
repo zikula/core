@@ -15,6 +15,7 @@
         <parameter key="zikula_extensions_module.extension_dependency_repository.class">Zikula\ExtensionsModule\Entity\Repository\ExtensionDependencyRepository</parameter>
         <parameter key="twig.extension.zikula_extensions_module.class">Zikula\ExtensionsModule\Twig\Extension\ExtensionsExtension</parameter>
         <parameter key="twig.extension.zikula_extensions_module.user_interface.class">Zikula\ExtensionsModule\Twig\Extension\UserInterfaceExtension</parameter>
+        <parameter key="twig.extension.routing.class">Zikula\ExtensionsModule\Twig\Extension\RoutingExtension</parameter>
         <parameter key="zikula_extensions_module.bundle_sync_helper.class">Zikula\ExtensionsModule\Helper\BundleSyncHelper</parameter>
         <parameter key="zikula_extensions_module.extension_state_helper.class">Zikula\ExtensionsModule\Helper\ExtensionStateHelper</parameter>
         <parameter key="zikula_extensions_module.extension_helper.class">Zikula\ExtensionsModule\Helper\ExtensionHelper</parameter>
