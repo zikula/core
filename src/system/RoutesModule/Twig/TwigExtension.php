@@ -28,11 +28,9 @@ class TwigExtension extends BaseTwigExtension
      */
     public function getFunctions()
     {
-        $functions = parent::getFunctions();
-
-        $functions[] = new \Twig_SimpleFunction('zikularoutesmodule_getBaseUrl', [$this, 'getBaseUrl']);
-
-        return $functions;
+        return [
+            new \Twig_SimpleFunction('zikularoutesmodule_userVar', [$this, 'getUserVar']), // from Base class
+        ];
     }
 
     /**
@@ -40,24 +38,12 @@ class TwigExtension extends BaseTwigExtension
      */
     public function getFilters()
     {
-        $filters = parent::getFilters();
-
-        $filters[] = new \Twig_SimpleFilter('zikularoutesmodule_arrayToString', [$this, 'displayArrayAsString']);
-        $filters[] = new \Twig_SimpleFilter('zikularoutesmodule_pathToString', [$this, 'displayPathAsString']);
-
-        return $filters;
-    }
-
-    /**
-     * The zikularoutesmodule_getBaseUrl function returns the site base url prepared for usage in JS.
-     *
-     * @return string The output of the plugin.
-     */
-    public function getBaseUrl()
-    {
-        $baseUrl = System::getBaseUrl();
-
-        return rtrim($baseUrl, '/');
+        return [
+            new \Twig_SimpleFilter('zikularoutesmodule_actionUrl', [$this, 'buildActionUrl']), // from Base class
+            new \Twig_SimpleFilter('zikularoutesmodule_listEntry', [$this, 'getListEntry']), // from Base class
+            new \Twig_SimpleFilter('zikularoutesmodule_arrayToString', [$this, 'displayArrayAsString']),
+            new \Twig_SimpleFilter('zikularoutesmodule_pathToString', [$this, 'displayPathAsString'])
+        ];
     }
 
     /**

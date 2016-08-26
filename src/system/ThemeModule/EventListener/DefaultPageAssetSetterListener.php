@@ -148,7 +148,9 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
                 $overrideBootstrapPath = $this->themeEngine->getTheme()->getConfig()['bootstrapPath'];
             } else {
                 // Core-1.4 method @deprecated
-                $overrideBootstrapPath = \ThemeUtil::getVar('bootstrapPath', '');
+                if (!$this->themeEngine->getTheme()->isTwigBased()) {
+                    $overrideBootstrapPath = \ThemeUtil::getVar('bootstrapPath', '');
+                }
             }
         }
         $path = realpath($this->rootdir . '/../') . "/$overrideBootstrapPath";

@@ -176,7 +176,7 @@ class AdminApi extends \Zikula_AbstractApi
         $items = [];
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_READ)) {
+        if (!System::isUpgrading() && !SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_READ)) {
             return $items;
         }
 
