@@ -30,7 +30,6 @@ class TwigExtension extends BaseTwigExtension
     {
         return [
             new \Twig_SimpleFunction('zikularoutesmodule_userVar', [$this, 'getUserVar']), // from Base class
-//            new \Twig_SimpleFunction('zikularoutesmodule_userAvatar', [$this, 'getUserAvatar']), // from Base class
         ];
     }
 
