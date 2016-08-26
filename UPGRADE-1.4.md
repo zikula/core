@@ -33,7 +33,7 @@ of the new core release. Zikula Core 1.4.x has the following requirements
 
 |               | Minimum       | Recommended  |
 | ------------- |:-------------:| :-----------:|
-| PHP           | 5.4.1         | 5.5          |
+| PHP           | 5.4.1         | >=5.5 <7     |
 
  - Zikula requires more memory than typical to install. You should set your memory limit in `php.ini`
    to 128 MB for the installation process.
@@ -53,7 +53,7 @@ of the new core release. Zikula Core 1.4.x has the following requirements
 Test Environment
 ----------------
 
-The Zikula team strongly recommend having a duplicate testing environment of the live site in which all
+The Zikula team strongly recommends having a duplicate testing environment of the live site in which all
 changes including upgrades are tested on before application to the live site.
 
 
@@ -100,19 +100,19 @@ The following process should be followed for all upgrades even small point relea
 #### If upgrading from Core-1.3.x:
 
   - Make a copy of `config/config.php` and rename it to `config/personal_config.php` -- update the database settings 
-    values of this file with yours taken from your old 'config.php' file. * NOTE: you should now have both 'config.php
-    AND `personal_config.php` in your 'config/' folder. Make sure to set permissions on 'config.php' to 400.
+    values of this file with yours taken from your old 'config.php' file. * NOTE: you should now have both `config.php`
+    AND `personal_config.php` in your `config/` folder. Make sure to set permissions on `config.php` to 400.
   - Make a copy of `app/config/parameters.yml` and rename it to `app/config/custom_parameters.yml` -- update the values
-    of this file with your database settings. Set `installed:true`. All database values of "~" should be replaced  with
-    their proper values -- In most cases, 'database_port', 'database_path', and 'database_socket' should be left
+    of this file with your **database settings**. Set `installed:true`. All database values of "~" should be replaced
+    with their proper values -- In most cases, 'database_port', 'database_path', and 'database_socket' should be left
     as '~'.
     * NOTE: you should now have both `parameters.yml` AND `custom_parameters.yml` in your `app/config/` folder.
     The upgrade will not work unless both of these files are present.
 
 #### If upgrading from Core-1.4.x:
 
-  - Copy your existing `config/personal_config.php` and `app/config/custom_parameters.yml` to their same respective
-    locations in your new installation. **There is no need to update any values within these files.**
+  - Copy your previous installation's `config/personal_config.php` and `app/config/custom_parameters.yml` to their same
+    respective locations in your new installation. **There is no need to update any values within these files.**
 
 #### Continue:
 
@@ -128,9 +128,9 @@ The following process should be followed for all upgrades even small point relea
          ```
 
       - Follow the prompts and complete that step. When you are finished, Open your browser and login!
-  - After upgrade successfully completes, return any 1.3.x-compatible modules to the appropriate directory and run each
-    upgrade independently. **DO NOT include the old Profile and Legal module** when copying them into your new 
-    installation, as new versions of these are provided (and their location may differ).
+  - After upgrade successfully completes, return any 1.3.x-compatible modules **one at a time** to the appropriate
+    directory and run each upgrade independently. **DO NOT include the old Profile and Legal module** when copying them
+    into your new installation, as new versions of these are provided (and their location may differ).
 
 
 <a name="notes"></a>

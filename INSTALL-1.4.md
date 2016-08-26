@@ -13,14 +13,13 @@ Zikula Installation Instructions
 Zikula
 ---------
 
-Zikula is an open source, open development application framework for dynamic
-websites. The core system includes a complete API on which third party developers
-can build. Zikula is built with other major open-source components like Symfony, Doctrine, Bootstrap
-and jQuery among others. This means more power for the developer and more reliable code for
+Zikula is an open source, open development application framework for dynamic websites. The core system includes a
+complete API on which third party developers can build. Zikula is built with other major open-source components like
+Symfony, Doctrine, Bootstrap and jQuery among others. This means more power for the developer and more reliable code for
 everyone involved.
 
-Zikula can be extended with modules, plugins and themes which can add functionality to your
-website. These are available at http://www.zikula.org/library
+Zikula can be extended with modules, plugins and themes which can add functionality to your website.
+These are available at http://www.zikula.org/library
 
 Zikula Core 1.4 maintains backward-compatibility with Zikula Core 1.3 and runs all 1.3.x-compatible
 modules, plugins and themes without changes. If a module doesn't work with 1.4 but worked with 1.3, feel free
@@ -37,7 +36,7 @@ of the new core release. Zikula Core 1.4 has the following requirements:
 
 |               | Minimum       | Recommended  |
 | ------------- |:-------------:| :-----------:|
-| PHP           | 5.4.1         | 5.5          |
+| PHP           | 5.4.1         | >=5.5 <7     |
 
  - Zikula requires more memory than typical to install. You should set your memory limit in `php.ini`
    to 128 MB for the installation process.
@@ -64,9 +63,9 @@ instructions. This is **not recommended for non-developers**.
 
 If you obtained Zikula Core from zikula.org or the CI server, then you can upload the entire archive (`.zip`
 or `.tgz` file) to your server and then `unzip` them there. (This is faster and much more reliable than 
-uploading files via FTP). **Make sure to include the `-p` flag if you extract from `.tgz` to keep the
-correct permissions (`tar -xpzvf Zikula_Core-1.4.0.build123.tar.gz`) change the filename to match the current download.** 
-Copy all the files and directories to your webroot (typically `public_html` or `httpdocs`).
+uploading many small files via FTP). **Make sure to include the `-p` flag if you extract from `.tgz` to keep the
+correct permissions (for example: `tar -xpzvf Zikula_Core-1.4.0.build123.tar.gz`) change the filename to match the
+current download.**  Copy all the files and directories to your webroot (typically `public_html` or `httpdocs`).
 
 Another option can be to download the tar.gz directly from the ci server: e.g. 
 `wget http://ci.zikula.org/job/Zikula_Core-1.4.0/588/artifact/build/archive/Zikula_Core-1.4.0.build588.tar.gz`. 
