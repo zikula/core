@@ -73,7 +73,8 @@ class BundleSyncHelper
                         if (isset($modversion['message']) && $modversion['message']) {
                             $modversion['capabilities']['message'] = '1.0';
                         }
-                    } elseif ($oomod) {
+                    }
+                    if ($oomod) {
                         // Work out if admin-capable
                         if (file_exists("$rootdir/$dir/lib/$dir/Controller/Admin.php")) {
                             $caps = $modversion['capabilities'];
@@ -92,6 +93,7 @@ class BundleSyncHelper
                             $modversion['capabilities'] = $caps;
                         }
                     }
+                    $capabilities = serialize($modversion['capabilities']);
 
                     $version = $modversion['version'];
                     $description = $modversion['description'];
@@ -101,8 +103,6 @@ class BundleSyncHelper
                     } else {
                         $displayname = $modversion['name'];
                     }
-
-                    $capabilities = serialize($modversion['capabilities']);
 
                     // bc for urls
                     if (isset($modversion['url']) && !empty($modversion['url'])) {
