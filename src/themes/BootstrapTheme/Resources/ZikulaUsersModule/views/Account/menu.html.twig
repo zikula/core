@@ -23,7 +23,7 @@
                     {% elseif '.' in link.icon %}
                         {% set icon = '<img title="'~link.text~'" src="'~app.request.basepath~'/modules/'~link.module~'/images/'~link.icon~'" />' %}
                     {% else %}
-                        {% set icon = '<i title="'~link.text~'" class="fa fa-3x fa-'~link.icon~'"></i>' %}
+                        {% set icon = '<i title="'~link.text~'" class="fa fa-3x fa-fw fa-'~link.icon~'"></i>' %}
                     {% endif %}
                     {{ icon|raw }}
                 {% endif %}
