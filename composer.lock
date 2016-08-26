@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9b8cac200cab6a9c87014dddce296a2e",
+    "hash": "34093d8aee2ba34387bf9f40016dbfbf",
     "content-hash": "ee38fe17ccc6f5345359ad8ae2cc2e92",
     "packages": [
         {
@@ -3987,9 +3987,7 @@
             "authors": [
                 {
                     "name": "Karma Dordrak",
-                    "email": "drak@zikula.org",
-                    "homepage": "http://zikula.org",
-                    "role": "OO & PSR-4 migration"
+                    "email": "drak@zikula.org"
                 },
                 {
                     "name": "Kyle Giovannetti",
@@ -4239,12 +4237,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "5769d7b9e7276c80f1bcbcf40a8add716bbfbc2b"
+                "reference": "0debf14e274db92356acf9bde1dc2c3b67945490"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/5769d7b9e7276c80f1bcbcf40a8add716bbfbc2b",
-                "reference": "5769d7b9e7276c80f1bcbcf40a8add716bbfbc2b",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/0debf14e274db92356acf9bde1dc2c3b67945490",
+                "reference": "0debf14e274db92356acf9bde1dc2c3b67945490",
                 "shasum": ""
             },
             "require": {
@@ -4272,10 +4270,10 @@
             ],
             "description": "Provides an interface for managing the site's legal documents.",
             "support": {
-                "source": "https://github.com/zikula-modules/Legal/tree/master",
+                "source": "https://github.com/zikula-modules/Legal/tree/2.1.1",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2016-07-12 14:09:59"
+            "time": "2016-08-26 15:28:32"
         },
         {
             "name": "zikula/profile-module",
@@ -4283,12 +4281,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "59ef3bf47d95a1b9f831cc9e25a95a31a065e1d6"
+                "reference": "8424f6468d69ad156c2aa912c8a7bfc2b4ac8c95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/59ef3bf47d95a1b9f831cc9e25a95a31a065e1d6",
-                "reference": "59ef3bf47d95a1b9f831cc9e25a95a31a065e1d6",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/8424f6468d69ad156c2aa912c8a7bfc2b4ac8c95",
+                "reference": "8424f6468d69ad156c2aa912c8a7bfc2b4ac8c95",
                 "shasum": ""
             },
             "require": {
@@ -4316,10 +4314,10 @@
             ],
             "description": "Extends Zikula's user management.",
             "support": {
-                "source": "https://github.com/zikula-modules/Profile/tree/master",
+                "source": "https://github.com/zikula-modules/Profile/tree/2.0.1",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2016-06-14 14:10:00"
+            "time": "2016-08-26 15:25:24"
         },
         {
             "name": "zikula/wizard",
