@@ -35,7 +35,7 @@
 
 {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\UserEvents::DISPLAY_VIEW'), null, user, {id:user.uid}) %}
 {% for data in eventData %}
-    {{ data }}
+    {{ data|raw }}
 {% endfor %}
 {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::REGISTRATION_DISPLAY'), user.uid) }}
 
