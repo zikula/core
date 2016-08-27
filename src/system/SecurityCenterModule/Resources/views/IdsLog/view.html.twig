@@ -7,10 +7,12 @@
             {{ pageSetVar('title', __('View IDS log')) }}
         </h3>
 
-        <ul class="navbar navbar-default navbar-modulelinks">
-            <li><a href="{{ path('zikulasecuritycentermodule_idslog_export') }}" title="{{ __('Download the entire log to a CSV file.') }}" class="fa fa-arrow-circle-o-down"> {{ __('Export IDS Log') }}</a></li>
-            <li><a href="{{ path('zikulasecuritycentermodule_idslog_purge') }}" title="{{ __('Delete the entire log.') }}" class="fa fa-trash-o"> {{ __('Purge IDS Log') }}</a></li>
-        </ul>
+        <div class="navbar navbar-default navbar-modulelinks">
+            <ul class="navbar-nav">
+                <li><a href="{{ path('zikulasecuritycentermodule_idslog_export') }}" title="{{ __('Download the entire log to a CSV file.') }}" class="fa fa-arrow-circle-o-down"> {{ __('Export IDS Log') }}</a></li>
+                <li><a href="{{ path('zikulasecuritycentermodule_idslog_purge') }}" title="{{ __('Delete the entire log.') }}" class="fa fa-trash-o"> {{ __('Purge IDS Log') }}</a></li>
+            </ul>
+        </div>
 
         {% if logEntries|length > 0 %}
             {% form_theme filterForm with [

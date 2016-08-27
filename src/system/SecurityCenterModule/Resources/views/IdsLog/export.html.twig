@@ -11,10 +11,12 @@
             {{ pageSetVar('title', __('Export IDS log')) }}
         </h3>
 
-        <ul class="navbar navbar-default navbar-modulelinks">
-            <li class="active"><span class="fa fa-download"> {{ __('Export IDS Log') }}</span></li>
-            <li><a href="{{ path('zikulasecuritycentermodule_idslog_purge') }}" title="{{ __('Delete the entire log') }}" class="fa fa-trash-o"> {{ __('Purge IDS Log') }}</a></li>
-        </ul>
+        <div class="navbar navbar-default navbar-modulelinks">
+            <ul class="navbar-nav">
+                <li class="active"><span class="fa fa-download"> {{ __('Export IDS Log') }}</span></li>
+                <li><a href="{{ path('zikulasecuritycentermodule_idslog_purge') }}" title="{{ __('Delete the entire log') }}" class="fa fa-trash-o"> {{ __('Purge IDS Log') }}</a></li>
+            </ul>
+        </div>
 
         {{ form_start(form) }}
         {{ form_errors(form) }}

@@ -51,7 +51,7 @@ class IdsLogController extends AbstractController
         }
 
         // sorting
-        $sort = $request->query->getAlpha('sort', 'date DESC');
+        $sort = $request->query->get('sort', 'date DESC');
         $sort_exp = explode(' ', $sort);
         $sortField = $sort_exp[0];
         $sortDirection = isset($sort_exp[1]) ? $sort_exp[1] : 'ASC';
