@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "34093d8aee2ba34387bf9f40016dbfbf",
+    "hash": "9b8cac200cab6a9c87014dddce296a2e",
     "content-hash": "ee38fe17ccc6f5345359ad8ae2cc2e92",
     "packages": [
         {
@@ -3987,7 +3987,9 @@
             "authors": [
                 {
                     "name": "Karma Dordrak",
-                    "email": "drak@zikula.org"
+                    "email": "drak@zikula.org",
+                    "homepage": "http://zikula.org",
+                    "role": "OO & PSR-4 migration"
                 },
                 {
                     "name": "Kyle Giovannetti",
@@ -4237,12 +4239,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "0debf14e274db92356acf9bde1dc2c3b67945490"
+                "reference": "46845407054548c7df5848703788968e8e4d0b68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/0debf14e274db92356acf9bde1dc2c3b67945490",
-                "reference": "0debf14e274db92356acf9bde1dc2c3b67945490",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/46845407054548c7df5848703788968e8e4d0b68",
+                "reference": "46845407054548c7df5848703788968e8e4d0b68",
                 "shasum": ""
             },
             "require": {
@@ -4270,10 +4272,10 @@
             ],
             "description": "Provides an interface for managing the site's legal documents.",
             "support": {
-                "source": "https://github.com/zikula-modules/Legal/tree/2.1.1",
+                "source": "https://github.com/zikula-modules/Legal/tree/2.1.2",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2016-08-26 15:28:32"
+            "time": "2016-08-27 20:20:32"
         },
         {
             "name": "zikula/profile-module",
