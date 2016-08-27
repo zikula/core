@@ -142,7 +142,7 @@ class ExtensionHelper
         $newVersion = $bundle->getMetaData()->getVersion();
         if (empty($newVersion)) {
             // @todo remove this legacy at Core-2.0
-            $newVersion = \Zikula\ExtensionsModule\Util::getVersionMeta($extension->getName())->getVersion();
+            $newVersion = \Zikula\ExtensionsModule\Util::getVersionMeta($extension->getName(), 'modules', $bundle)->getVersion();
         }
 
         $extension->setVersion($newVersion);
