@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9b8cac200cab6a9c87014dddce296a2e",
+    "hash": "34093d8aee2ba34387bf9f40016dbfbf",
     "content-hash": "ee38fe17ccc6f5345359ad8ae2cc2e92",
     "packages": [
         {
@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/claviska/jquery-minicolors.git",
-                "reference": "8c9bc9f91b2a614e30c82e456bd9b7ae5aa2d683"
+                "reference": "20aa90976f5f29c6886658553a0fa2ed18f86e2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/claviska/jquery-minicolors/zipball/8c9bc9f91b2a614e30c82e456bd9b7ae5aa2d683",
-                "reference": "8c9bc9f91b2a614e30c82e456bd9b7ae5aa2d683",
+                "url": "https://api.github.com/repos/claviska/jquery-minicolors/zipball/20aa90976f5f29c6886658553a0fa2ed18f86e2c",
+                "reference": "20aa90976f5f29c6886658553a0fa2ed18f86e2c",
                 "shasum": ""
             },
             "type": "component",
@@ -41,7 +41,7 @@
             ],
             "description": "jQuery MiniColors Plugin",
             "homepage": "http://www.abeautifulsite.net/",
-            "time": "2016-08-08 17:22:07"
+            "time": "2016-08-28 01:56:24"
         },
         {
             "name": "afarkas/html5shiv",
@@ -1546,16 +1546,16 @@
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v2.4.21",
+            "version": "v2.4.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Atlantic18/DoctrineExtensions.git",
-                "reference": "dcaab46a25e1baeb5142c3e25d5b6fd495ced504"
+                "reference": "b8188801bafc420b86908ee5229a5e92143ce514"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/dcaab46a25e1baeb5142c3e25d5b6fd495ced504",
-                "reference": "dcaab46a25e1baeb5142c3e25d5b6fd495ced504",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/b8188801bafc420b86908ee5229a5e92143ce514",
+                "reference": "b8188801bafc420b86908ee5229a5e92143ce514",
                 "shasum": ""
             },
             "require": {
@@ -1621,7 +1621,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2016-08-17 16:52:00"
+            "time": "2016-08-30 18:42:36"
         },
         {
             "name": "imagine/imagine",
@@ -3987,9 +3987,7 @@
             "authors": [
                 {
                     "name": "Karma Dordrak",
-                    "email": "drak@zikula.org",
-                    "homepage": "http://zikula.org",
-                    "role": "OO & PSR-4 migration"
+                    "email": "drak@zikula.org"
                 },
                 {
                     "name": "Kyle Giovannetti",
