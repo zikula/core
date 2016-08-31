@@ -14,14 +14,14 @@ namespace Zikula\ZAuthModule\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 
 class ValidPasswordChangeValidator extends ConstraintValidator
 {
     /**
-     * @var UserRepositoryInterface
+     * @var AuthenticationMappingRepositoryInterface
      */
-    private $userRepository;
+    private $repository;
 
     /**
      * @var TranslatorInterface
@@ -30,17 +30,18 @@ class ValidPasswordChangeValidator extends ConstraintValidator
 
     /**
      * ValidPasswordChangeValidator constructor.
-     * @param UserRepositoryInterface $userRepository
+     * @param AuthenticationMappingRepositoryInterface $repository
+     * @param TranslatorInterface $translator
      */
-    public function __construct(UserRepositoryInterface $userRepository, TranslatorInterface $translator)
+    public function __construct(AuthenticationMappingRepositoryInterface $repository, TranslatorInterface $translator)
     {
-        $this->userRepository = $userRepository;
+        $this->repository = $repository;
         $this->translator = $translator;
     }
 
     public function validate($data, Constraint $constraint)
     {
-        $userEntity = $this->userRepository->find($data['uid']);
+        $userEntity = $this->repository->findOneBy(['uid' => $data['uid']]);
         if ($userEntity) {
             $currentPass = $userEntity->getPass();
             // is oldpass correct?

@@ -60,7 +60,7 @@
             <tag name="validator.constraint_validator" alias="zikula.zauth.registration_verification.validator" />
         </service>
         <service id="zikula_zauth_module.validator.constraints.valid_password_change_validator" class="%zikula_zauth_module.validator.constraints.valid_password_change_validator.class%">
-            <argument type="service" id="zikula_users_module.user_repository" />
+            <argument type="service" id="zikula_zauth_module.authentication_mapping_repository" />
             <argument type="service" id="translator.default" />
             <tag name="validator.constraint_validator" alias="zikula.zauth.password_change.validator" />
         </service>
