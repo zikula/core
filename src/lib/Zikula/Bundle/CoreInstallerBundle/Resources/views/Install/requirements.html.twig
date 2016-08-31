@@ -14,14 +14,7 @@
                 {% endif %}
                 {% set checks = array_unset(checks, 'phpsatisfied') %}
                 {% set checks = array_unset(checks, 'phpversion') %}
-
-                {# PHP 5.3.0 or greater requires date.timezone to be set in php.ini #}
-                {% if checks.datetimezone %}
-                <li><span class="fa fa-fw fa-check text-success"></span> {{ __f("php.ini: date.timezone is set to %s", {'%s': checks.datetimezone }) }}</li>
-                {% else %}
-                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __("date.timezone is currently not set.  It needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin.") }}</li>
-                {% endif %}
-                {% set checks = array_unset(checks, 'datetimezone') %}
+                {% set checks = array_unset(checks, 'phpcoreminversion') %}
 
                 {% if checks.pdo %}
                 <li><span class="fa fa-fw fa-check text-success"></span> {{ __("PDO extension loaded.") }}</li>
@@ -30,33 +23,12 @@
                 {% endif %}
                 {% set checks = array_unset(checks, 'pdo') %}
 
-                {% if checks.phptokens %}
-                <li><span class="fa fa-fw fa-check text-success"></span> {{ __("Your PHP installation has the necessary token functions available.") }}</li>
-                {% else %}
-                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __("You have got a problem! Your PHP installation does not have the token functions available, but they are necessary for Zikula's output system.") }}</li>
-                {% endif %}
-                {% set checks = array_unset(checks, 'phptokens') %}
-
-                {% if checks.mbstring %}
-                <li><span class="fa fa-fw fa-check text-success"></span> {{ __("Your PHP installation has the multi-byte string functions available.") }}</li>
-                {% else %}
-                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __("Your PHP installation does not have the multi-byte string functions available. Zikula needs this to handle multi-byte character sets.") }}</li>
-                {% endif %}
-                {% set checks = array_unset(checks, 'mbstring') %}
-
                 {% if checks.pcreUnicodePropertiesEnabled %}
                 <li><span class="fa fa-fw fa-check text-success"></span> {{ __("Your PHP installation's PCRE library has Unicode property support enabled.") }}</li>
                 {% else %}
                 <li><span class="fa fa-fw fa-times text-danger"></span> {{ __("Your PHP installation's PCRE library does not have Unicode property support enabled. Zikula needs this to handle multi-byte character sets in regular expressions. The PCRE library used with PHP must be compiled with the '--enable-unicode-properties' option.") }}</li>
                 {% endif %}
                 {% set checks = array_unset(checks, 'pcreUnicodePropertiesEnabled') %}
-
-                {% if checks.json_encode %}
-                <li><span class="fa fa-fw fa-check text-success"></span> {{ __("Your PHP installation has the JSON functions available.") }}</li>
-                {% else %}
-                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __("Your PHP installation does not have the JSON functions available. Zikula needs this to handle AJAX requests.") }}</li>
-                {% endif %}
-                {% set checks = array_unset(checks, 'json_encode') %}
             </ul>
         </fieldset>
 
