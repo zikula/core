@@ -23,7 +23,7 @@ function requirementCheck($parameters)
         || (!empty($parameters[\Zikula_Core::CORE_INSTALLED_VERSION_PARAM])
             && version_compare($parameters[\Zikula_Core::CORE_INSTALLED_VERSION_PARAM], \Zikula_Core::VERSION_NUM, '<'))) {
         $versionChecker = new ZikulaRequirements();
-        $versionChecker->runSymfonyChecks();
+        $versionChecker->runSymfonyChecks($parameters);
         if (!empty($versionChecker->requirementsErrors)) {
             // formatting for both HTML and CLI display
             if (isset($_SERVER['HTTP_HOST'])) {

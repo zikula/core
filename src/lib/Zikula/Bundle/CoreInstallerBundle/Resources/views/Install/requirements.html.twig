@@ -12,57 +12,18 @@
                 {% else %}
                 <li><span class="fa fa-fw fa-times text-danger"></span> {{ __f("You have got a problem! Your PHP version is %s, which does not satisfy the Zikula system requirement of version %phpmin or later.", {'%s': checks.phpversion, '%phpmin': checks.phpcoreminversion }) }}</li>
                 {% endif %}
-                {% set checks = array_unset(checks, 'phpsatisfied') %}
-                {% set checks = array_unset(checks, 'phpversion') %}
-                {% set checks = array_unset(checks, 'phpcoreminversion') %}
 
                 {% if checks.pdo %}
                 <li><span class="fa fa-fw fa-check text-success"></span> {{ __("PDO extension loaded.") }}</li>
                 {% else %}
                 <li><span class="fa fa-fw fa-times text-danger"></span> {{ __("Your PHP installation doesn't have the PDO extension loaded.") }}</li>
                 {% endif %}
-                {% set checks = array_unset(checks, 'pdo') %}
 
                 {% if checks.pcreUnicodePropertiesEnabled %}
                 <li><span class="fa fa-fw fa-check text-success"></span> {{ __("Your PHP installation's PCRE library has Unicode property support enabled.") }}</li>
                 {% else %}
                 <li><span class="fa fa-fw fa-times text-danger"></span> {{ __("Your PHP installation's PCRE library does not have Unicode property support enabled. Zikula needs this to handle multi-byte character sets in regular expressions. The PCRE library used with PHP must be compiled with the '--enable-unicode-properties' option.") }}</li>
                 {% endif %}
-                {% set checks = array_unset(checks, 'pcreUnicodePropertiesEnabled') %}
-            </ul>
-        </fieldset>
-
-        {% if checks.personal_config is defined and checks.custom_parameters is defined %}
-        <fieldset>
-            <legend>{{ __("Configuration files") }}</legend>
-            <ul class="systemrequirements text-left">
-                {% if checks.personal_config == true %}
-                <li><span class="fa fa-fw fa-check text-success"></span> {{ __f("%s is present and writeable.  This is correct.", {'%s': "<code>config/personal_config.php</code>" }) | raw }}</li>
-                {% else %}
-                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __f("%s is either not present or not writable. This is not correct! Please read the upgrade instructions.", {'%s': "<code>config/personal_config.php</code>" }) | raw }}</li>
-                {% endif %}
-                {% set checks = array_unset(checks, 'personal_config') %}
-                {% if checks.custom_parameters == true %}
-                <li><span class="fa fa-fw fa-check text-success"></span> {{ __f("%s is present and writeable.  This is correct.", {'%s': "<code>app/config/custom_parameters.yml</code>" }) | raw }}</li>
-                {% else %}
-                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __f("%s is either not present or not writable. This is not correct! Please read the upgrade instructions.", {'%s': "<code>app/config/custom_parameters.yml</code>" }) | raw }}</li>
-                {% endif %}
-                {% set checks = array_unset(checks, 'custom_parameters') %}
-            </ul>
-        </fieldset>
-        {% endif %}
-
-        <fieldset>
-            <legend>{{ __("File system permissions") }}</legend>
-            <ul class="systemrequirements text-left">
-                {# remaining array values should all be files #}
-                {% for file, isWritable in checks %}
-                {% if isWritable %}
-                <li><span class="fa fa-fw fa-check text-success"></span> {{ __f("%s is writeable.", {'%s': "<code>" ~ file ~ "</code>" }) | raw }}</li>
-                {% else %}
-                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __f("You have a problem! '%s' is not writeable. Please ensure that the permissions are set correctly for the installation process.", {'%s': "<code>" ~ file ~ "</code>" }) | raw }}</li>
-                {% endif %}
-                {% endfor %}
             </ul>
         </fieldset>
 
