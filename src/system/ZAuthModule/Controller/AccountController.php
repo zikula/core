@@ -310,7 +310,7 @@ class AccountController extends AbstractController
             $login = false;
             $uid = $currentUser->get('uid');
         }
-        $userEntity = $this->get('zikula_users_module.user_repository')->find($uid);
+        $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->findOneBy(['uid' => $uid]);
 
         $form = $this->createForm('Zikula\ZAuthModule\Form\Type\ChangePasswordType', [
             'uid' => $uid,
@@ -324,10 +324,13 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $userEntity->setPass(\UserUtil::getHashedPassword($data['pass']));
-            $userEntity->setPassreminder($data['passreminder']);
+            $mapping->setPass(\UserUtil::getHashedPassword($data['pass']));
+            if (isset($data['passreminder'])) {
+                $mapping->setPassreminder($data['passreminder']);
+            }
+            $userEntity = $this->get('zikula_users_module.user_repository')->find($mapping->getUid());
             $userEntity->delAttribute(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY);
-            $this->get('zikula_users_module.user_repository')->persistAndFlush($userEntity);
+            $this->get('zikula_zauth_module.authentication_mapping_repository')->persistAndFlush($mapping);
             $this->addFlash('success', $this->__('Password successfully changed.'));
             if ($login) {
                 $this->get('zikula_users_module.helper.access_helper')->login($userEntity);
@@ -339,7 +342,7 @@ class AccountController extends AbstractController
         return [
             'login' => $login,
             'form' => $form->createView(),
-            'user' => $userEntity,
+            'user' => $mapping,
             'modvars' => $this->getVars(),
         ];
     }
