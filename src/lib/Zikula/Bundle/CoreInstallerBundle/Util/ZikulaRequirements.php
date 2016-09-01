@@ -74,18 +74,5 @@ class ZikulaRequirements
             'config/ directory must be writable',
             'Change the permissions of "<strong>config/</strong>" directory so that the web server can write into it.'
         );
-        if (isset($parameters['upgrading']) && $parameters['upgrading']) {
-            $symfonyRequirements->addRequirement(
-                is_writable($src . '/app/config/custom_parameters.yml'),
-                'config/custom_parameters.yml must be writable',
-                'Change the permissions of "<strong>config/custom_parameters.yml</strong>" so that the web server can write into it.'
-            );
-            // @todo @deprecated
-            $symfonyRequirements->addRequirement(
-                is_writable($src . '/config/personal_config.php'),
-                'config/personal_config.php must be writable',
-                'Change the permissions of "<strong>config/personal_config.php</strong>" so that the web server can write into it.'
-            );
-        }
     }
 }

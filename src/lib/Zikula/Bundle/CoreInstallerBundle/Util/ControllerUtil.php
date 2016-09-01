@@ -88,6 +88,21 @@ class ControllerUtil
         $results['pdo'] = extension_loaded('pdo');
         $isEnabled = @preg_match('/^\p{L}+$/u', 'TheseAreLetters');
         $results['pcreUnicodePropertiesEnabled'] = (isset($isEnabled) && (bool)$isEnabled);
+        $rootDir = $container->get('kernel')->getRootDir();
+        if ($container->hasParameter('upgrading') && $container->getParameter('upgrading') === true) {
+            $files = [
+                'personal_config' => '/../config/personal_config.php',
+                'custom_parameters' => '/config/custom_parameters.yml'
+            ];
+            foreach ($files as $key => $file) {
+                $path = realpath($rootDir . $file);
+                if ($path === false) {
+                    $results[$key] = false;
+                } else {
+                    $results[$key] = is_writable($path);
+                }
+            }
+        }
         $requirementsMet = true;
         foreach ($results as $check) {
             if (!$check) {

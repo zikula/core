@@ -27,6 +27,26 @@
             </ul>
         </fieldset>
 
+        {% if checks.personal_config is defined and checks.custom_parameters is defined %}
+            <fieldset>
+                <legend>{{ __("Configuration files") }}</legend>
+                <ul class="systemrequirements text-left">
+                    {% if checks.personal_config == true %}
+                        <li><span class="fa fa-fw fa-check text-success"></span> {{ __f("%s is present and writeable.  This is correct.", {'%s': "<code>config/personal_config.php</code>" }) | raw }}</li>
+                    {% else %}
+                        <li><span class="fa fa-fw fa-times text-danger"></span> {{ __f("%s is either not present or not writable. This is not correct! Please read the upgrade instructions.", {'%s': "<code>config/personal_config.php</code>" }) | raw }}</li>
+                    {% endif %}
+                    {% set checks = array_unset(checks, 'personal_config') %}
+                    {% if checks.custom_parameters == true %}
+                        <li><span class="fa fa-fw fa-check text-success"></span> {{ __f("%s is present and writeable.  This is correct.", {'%s': "<code>app/config/custom_parameters.yml</code>" }) | raw }}</li>
+                    {% else %}
+                        <li><span class="fa fa-fw fa-times text-danger"></span> {{ __f("%s is either not present or not writable. This is not correct! Please read the upgrade instructions.", {'%s': "<code>app/config/custom_parameters.yml</code>" }) | raw }}</li>
+                    {% endif %}
+                    {% set checks = array_unset(checks, 'custom_parameters') %}
+                </ul>
+            </fieldset>
+        {% endif %}
+
         {# Use the current path as the link here, because this template is used both in the installer and the upgrader with a different route. #}
         <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" class="btn btn-danger btn-lg"><i class="fa fa-fw fa-repeat"></i> {{ __("Check requirements again") }}</a>
 
