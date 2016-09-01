@@ -141,8 +141,10 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 foreach ($searchBlocks as $searchBlock) {
                     $properties = $searchBlock->getProperties();
                     $properties['displaySearchBtn'] = (bool) $properties['displaySearchBtn'];
-                    foreach ($properties['active'] as $module => $active) {
-                        $properties['active'][$module] = (bool) $active;
+                    if (isset($properties['active'])) {
+                        foreach ($properties['active'] as $module => $active) {
+                            $properties['active'][$module] = (bool) $active;
+                        }
                     }
                     $searchBlock->setProperties($properties);
                 }
