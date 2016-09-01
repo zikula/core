@@ -1,23 +1,6 @@
 CHANGELOG - ZIKULA 1.4.x
 ------------------------
 
-* 1.4.4
-
- - BC Breaks:
-    -
-
- - Deprecated:
-    -
-
- - Features:
-    -
-
- - Core-2.0 Features:
-
- - Vendor updates:
-    - gedmo/doctrine-extensions updated from 2.4.21 to 2.4.22
-
-
 * 1.4.3 (?)
 
  - BC Breaks:
@@ -83,7 +66,7 @@ CHANGELOG - ZIKULA 1.4.x
     - symfony updated to from 2.8.4 to 2.8.9
     - swiftmailer updated from 5.4.1 to 5.4.3
     - components/jquery-ui updated from 1.11.4 to 1.12.0.1
-    - gedmo/doctrine-extensions updated from 2.4.13 to 2.4.21
+    - gedmo/doctrine-extensions updated from 2.4.13 to 2.4.22
 
 * 1.4.2 (2016-03-28)
 
