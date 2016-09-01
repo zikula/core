@@ -88,24 +88,7 @@ class ControllerUtil
         $results['pdo'] = extension_loaded('pdo');
         $isEnabled = @preg_match('/^\p{L}+$/u', 'TheseAreLetters');
         $results['pcreUnicodePropertiesEnabled'] = (isset($isEnabled) && (bool)$isEnabled);
-        $datadir = $container->getParameter('datadir');
-        $directories = [
-            '/config/',
-            '/config/dynamic',
-            "/../$datadir/",
-            '/../config/',
-        ];
         $rootDir = $container->get('kernel')->getRootDir();
-        foreach ($directories as $directory) {
-            $path = realpath($rootDir . $directory);
-            if ($path === false) {
-                $key = strpos($directory, '..') === false ? "app{$directory}" : substr($directory, 3);
-                $results[$key] = false;
-            } else {
-                $key = $path;
-                $results[$key] = is_writable($path);
-            }
-        }
         if ($container->hasParameter('upgrading') && $container->getParameter('upgrading') === true) {
             $files = [
                 'personal_config' => '/../config/personal_config.php',
@@ -120,7 +103,6 @@ class ControllerUtil
                 }
             }
         }
-        // no longer a need to check config/config.php nor parameters.yml because those files are always copied to be used.
         $requirementsMet = true;
         foreach ($results as $check) {
             if (!$check) {

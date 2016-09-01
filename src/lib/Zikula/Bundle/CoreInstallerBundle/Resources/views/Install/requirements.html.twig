@@ -12,87 +12,40 @@
                 {% else %}
                 <li><span class="fa fa-fw fa-times text-danger"></span> {{ __f("You have got a problem! Your PHP version is %s, which does not satisfy the Zikula system requirement of version %phpmin or later.", {'%s': checks.phpversion, '%phpmin': checks.phpcoreminversion }) }}</li>
                 {% endif %}
-                {% set checks = array_unset(checks, 'phpsatisfied') %}
-                {% set checks = array_unset(checks, 'phpversion') %}
-
-                {# PHP 5.3.0 or greater requires date.timezone to be set in php.ini #}
-                {% if checks.datetimezone %}
-                <li><span class="fa fa-fw fa-check text-success"></span> {{ __f("php.ini: date.timezone is set to %s", {'%s': checks.datetimezone }) }}</li>
-                {% else %}
-                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __("date.timezone is currently not set.  It needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin.") }}</li>
-                {% endif %}
-                {% set checks = array_unset(checks, 'datetimezone') %}
 
                 {% if checks.pdo %}
                 <li><span class="fa fa-fw fa-check text-success"></span> {{ __("PDO extension loaded.") }}</li>
                 {% else %}
                 <li><span class="fa fa-fw fa-times text-danger"></span> {{ __("Your PHP installation doesn't have the PDO extension loaded.") }}</li>
                 {% endif %}
-                {% set checks = array_unset(checks, 'pdo') %}
-
-                {% if checks.phptokens %}
-                <li><span class="fa fa-fw fa-check text-success"></span> {{ __("Your PHP installation has the necessary token functions available.") }}</li>
-                {% else %}
-                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __("You have got a problem! Your PHP installation does not have the token functions available, but they are necessary for Zikula's output system.") }}</li>
-                {% endif %}
-                {% set checks = array_unset(checks, 'phptokens') %}
-
-                {% if checks.mbstring %}
-                <li><span class="fa fa-fw fa-check text-success"></span> {{ __("Your PHP installation has the multi-byte string functions available.") }}</li>
-                {% else %}
-                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __("Your PHP installation does not have the multi-byte string functions available. Zikula needs this to handle multi-byte character sets.") }}</li>
-                {% endif %}
-                {% set checks = array_unset(checks, 'mbstring') %}
 
                 {% if checks.pcreUnicodePropertiesEnabled %}
                 <li><span class="fa fa-fw fa-check text-success"></span> {{ __("Your PHP installation's PCRE library has Unicode property support enabled.") }}</li>
                 {% else %}
                 <li><span class="fa fa-fw fa-times text-danger"></span> {{ __("Your PHP installation's PCRE library does not have Unicode property support enabled. Zikula needs this to handle multi-byte character sets in regular expressions. The PCRE library used with PHP must be compiled with the '--enable-unicode-properties' option.") }}</li>
                 {% endif %}
-                {% set checks = array_unset(checks, 'pcreUnicodePropertiesEnabled') %}
-
-                {% if checks.json_encode %}
-                <li><span class="fa fa-fw fa-check text-success"></span> {{ __("Your PHP installation has the JSON functions available.") }}</li>
-                {% else %}
-                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __("Your PHP installation does not have the JSON functions available. Zikula needs this to handle AJAX requests.") }}</li>
-                {% endif %}
-                {% set checks = array_unset(checks, 'json_encode') %}
             </ul>
         </fieldset>
 
         {% if checks.personal_config is defined and checks.custom_parameters is defined %}
-        <fieldset>
-            <legend>{{ __("Configuration files") }}</legend>
-            <ul class="systemrequirements text-left">
-                {% if checks.personal_config == true %}
-                <li><span class="fa fa-fw fa-check text-success"></span> {{ __f("%s is present and writeable.  This is correct.", {'%s': "<code>config/personal_config.php</code>" }) | raw }}</li>
-                {% else %}
-                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __f("%s is either not present or not writable. This is not correct! Please read the upgrade instructions.", {'%s': "<code>config/personal_config.php</code>" }) | raw }}</li>
-                {% endif %}
-                {% set checks = array_unset(checks, 'personal_config') %}
-                {% if checks.custom_parameters == true %}
-                <li><span class="fa fa-fw fa-check text-success"></span> {{ __f("%s is present and writeable.  This is correct.", {'%s': "<code>app/config/custom_parameters.yml</code>" }) | raw }}</li>
-                {% else %}
-                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __f("%s is either not present or not writable. This is not correct! Please read the upgrade instructions.", {'%s': "<code>app/config/custom_parameters.yml</code>" }) | raw }}</li>
-                {% endif %}
-                {% set checks = array_unset(checks, 'custom_parameters') %}
-            </ul>
-        </fieldset>
+            <fieldset>
+                <legend>{{ __("Configuration files") }}</legend>
+                <ul class="systemrequirements text-left">
+                    {% if checks.personal_config == true %}
+                        <li><span class="fa fa-fw fa-check text-success"></span> {{ __f("%s is present and writeable.  This is correct.", {'%s': "<code>config/personal_config.php</code>" }) | raw }}</li>
+                    {% else %}
+                        <li><span class="fa fa-fw fa-times text-danger"></span> {{ __f("%s is either not present or not writable. This is not correct! Please read the upgrade instructions.", {'%s': "<code>config/personal_config.php</code>" }) | raw }}</li>
+                    {% endif %}
+                    {% set checks = array_unset(checks, 'personal_config') %}
+                    {% if checks.custom_parameters == true %}
+                        <li><span class="fa fa-fw fa-check text-success"></span> {{ __f("%s is present and writeable.  This is correct.", {'%s': "<code>app/config/custom_parameters.yml</code>" }) | raw }}</li>
+                    {% else %}
+                        <li><span class="fa fa-fw fa-times text-danger"></span> {{ __f("%s is either not present or not writable. This is not correct! Please read the upgrade instructions.", {'%s': "<code>app/config/custom_parameters.yml</code>" }) | raw }}</li>
+                    {% endif %}
+                    {% set checks = array_unset(checks, 'custom_parameters') %}
+                </ul>
+            </fieldset>
         {% endif %}
-
-        <fieldset>
-            <legend>{{ __("File system permissions") }}</legend>
-            <ul class="systemrequirements text-left">
-                {# remaining array values should all be files #}
-                {% for file, isWritable in checks %}
-                {% if isWritable %}
-                <li><span class="fa fa-fw fa-check text-success"></span> {{ __f("%s is writeable.", {'%s': "<code>" ~ file ~ "</code>" }) | raw }}</li>
-                {% else %}
-                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __f("You have a problem! '%s' is not writeable. Please ensure that the permissions are set correctly for the installation process.", {'%s': "<code>" ~ file ~ "</code>" }) | raw }}</li>
-                {% endif %}
-                {% endfor %}
-            </ul>
-        </fieldset>
 
         {# Use the current path as the link here, because this template is used both in the installer and the upgrader with a different route. #}
         <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" class="btn btn-danger btn-lg"><i class="fa fa-fw fa-repeat"></i> {{ __("Check requirements again") }}</a>

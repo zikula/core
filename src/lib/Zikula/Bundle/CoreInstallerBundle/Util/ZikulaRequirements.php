@@ -21,12 +21,14 @@ class ZikulaRequirements
 {
     public $requirementsErrors = [];
 
-    public function runSymfonyChecks()
+    public function runSymfonyChecks($parameters = [])
     {
         try {
             $path = realpath(__DIR__.'/../../../../../app/SymfonyRequirements.php');
             require $path;
             $symfonyRequirements = new \SymfonyRequirements();
+            $this->addZikulaPathRequirements($symfonyRequirements, $parameters);
+
             foreach ($symfonyRequirements->getRequirements() as $req) {
                 if ($helpText = $this->getErrorMessage($req)) {
                     $this->requirementsErrors[] = $helpText;
@@ -46,5 +48,31 @@ class ZikulaRequirements
         $errorMessage .= '   > '.wordwrap($requirement->getHelpText(), $lineSize - 5, PHP_EOL.'   > ').PHP_EOL;
 
         return $errorMessage;
+    }
+
+    private function addZikulaPathRequirements(\SymfonyRequirements $symfonyRequirements, $parameters)
+    {
+        $src = realpath(__DIR__ . '/../../../../../');
+        $symfonyRequirements->addRequirement(
+            is_writable($src . '/app/config'),
+            'app/config/ directory must be writable',
+            'Change the permissions of "<strong>app/config/</strong>" directory so that the web server can write into it.'
+        );
+        $symfonyRequirements->addRequirement(
+            is_writable($src . '/app/config/dynamic'),
+            'app/config/dynamic/ directory must be writable',
+            'Change the permissions of "<strong>app/config/dynamic/</strong>" directory so that the web server can write into it.'
+        );
+        $symfonyRequirements->addRequirement(
+            is_writable($src . '/' . $parameters['datadir']),
+            $parameters['datadir'] . '/ directory must be writable',
+            'Change the permissions of "<strong>' . $parameters['datadir']. '</strong>" directory so that the web server can write into it.'
+        );
+        // @todo @deprecated
+        $symfonyRequirements->addRequirement(
+            is_writable($src . '/config'),
+            'config/ directory must be writable',
+            'Change the permissions of "<strong>config/</strong>" directory so that the web server can write into it.'
+        );
     }
 }
