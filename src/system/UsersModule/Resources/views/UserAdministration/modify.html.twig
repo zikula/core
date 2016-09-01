@@ -48,7 +48,7 @@
         </fieldset>
         {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\UserEvents::MODIFY_FORM'), null, form.vars.value, {'id': form.vars.value.uid}) %}
         {% for data in eventData %}
-            {{ data }}
+            {{ data|raw }}
         {% endfor %}
         {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::EDIT_FORM')) }}
 
