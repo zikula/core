@@ -15,7 +15,7 @@ Zikula Core - Application Framework
 Introduction
 ------------
 
-Zikula Core is a web based application framework, fully extensible by modules, plugins and themes.
+Zikula Core-1.4 is based on Symfony 2.8.x as a foundation and includes other technologies including a dynamic modular development paradigm and Twig-based theming system which allows for quick expansion of Symfony.
 
 For more information visit http://zikula.org/
 
