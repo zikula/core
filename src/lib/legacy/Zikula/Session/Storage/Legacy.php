@@ -10,6 +10,8 @@
  */
 
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
+use Symfony\Component\HttpFoundation\Session\Storage\MetadataBag;
+use Zikula\ExtensionsModule\Api\VariableApi;
 
 /**
  * Legacy session storage class.
@@ -21,6 +23,24 @@ use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
  */
 class Zikula_Session_Storage_Legacy extends NativeSessionStorage
 {
+    /**
+     * @var VariableApi
+     */
+    private $variableApi;
+
+    /**
+     * Zikula_Session_Storage_Legacy constructor.
+     * @param array $options
+     * @param null $handler
+     * @param MetadataBag $metaBag
+     * @param VariableApi $variableApi
+     */
+    public function __construct(array $options = array(), $handler = null, MetadataBag $metaBag = null, VariableApi $variableApi)
+    {
+        parent::__construct($options, $handler, $metaBag);
+        $this->variableApi = $variableApi;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -38,13 +58,13 @@ class Zikula_Session_Storage_Legacy extends NativeSessionStorage
         if (parent::start()) {
             // check if session has expired or not
             $now = time();
-            $inactive = ($now - (int)(System::getVar('secinactivemins') * 60));
-            $daysold = ($now - (int)(System::getVar('secmeddays') * 86400));
+            $inactive = ($now - (int)($this->variableApi->get(VariableApi::CONFIG, 'secinactivemins') * 60));
+            $daysold = ($now - (int)($this->variableApi->get(VariableApi::CONFIG, 'secmeddays') * 86400));
             $lastused = $this->getMetadataBag()->getLastUsed();
-            $rememberme = SessionUtil::getVar('rememberme');
+            $rememberme = $this->getBag('attributes')->get('rememberme');
             $uid = $this->getBag('attributes')->get('uid');
 
-            switch (System::getVar('seclevel')) {
+            switch ($this->variableApi->get(VariableApi::CONFIG, 'seclevel')) {
                 case 'Low':
                     // Low security - users stay logged in permanently
                     //                no special check necessary

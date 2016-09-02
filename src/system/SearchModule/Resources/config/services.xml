@@ -44,6 +44,7 @@
             <argument type="service" id="router" />
             <argument type="service" id="zikula_permissions_module.api.permission" />
             <argument type="service" id="zikula_core.common.theme.assets_header" />
+            <argument type="expression">container.hasParameter('upgrading') ? parameter('upgrading') : false</argument>
         </service>
         <service id="zikula_search_module.module_event_listener" class="%zikula_search_module.module_event_listener.class%">
             <tag name="kernel.event_subscriber" />

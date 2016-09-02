@@ -76,17 +76,16 @@ class AdminController extends AbstractController
         $itemsPerPage = $this->getVar('itemsperpage');
 
         $categories = [];
-        $items = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getall', [
-            'startnum' => $startnum,
-            'numitems' => $itemsPerPage
-        ]);
+        $items = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminCategoryEntity')->findBy([], ['sortorder' => 'ASC'], $itemsPerPage, $startnum);
+
         foreach ($items as $item) {
             if ($this->hasPermission('ZikulaAdminModule::', $item['name'] . '::' . $item['cid'], ACCESS_READ)) {
                 $categories[] = $item;
             }
         }
 
-        $amountOfItems = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'countitems');
+        // @todo convert to Doctrine Paginator above and use here
+        $amountOfItems = count($items); //ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'countitems');
 
         return [
             'categories' => $categories,

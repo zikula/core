@@ -134,7 +134,7 @@ abstract class AbstractTheme extends AbstractBundle
      */
     public function getThemeVars()
     {
-        $dbVars = \ModUtil::getVar($this->name);
+        $dbVars = $this->container->get('zikula_extensions_module.api.variable')->getAll($this->name);
         if (empty($dbVars) && !is_array($dbVars)) {
             $dbVars = [];
         }

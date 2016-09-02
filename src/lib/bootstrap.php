@@ -37,3 +37,6 @@ $kernel->boot();
 
 // legacy handling
 require __DIR__.'/core.php';
+//ServiceUtil::setContainer($kernel->getContainer());
+//EventUtil::setManager($kernel->getContainer()->get('event_dispatcher'));
+//ModUtil::initCoreVars();

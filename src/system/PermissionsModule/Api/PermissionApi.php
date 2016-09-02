@@ -103,8 +103,10 @@ class PermissionApi
         if (isset($user) and !is_numeric($user)) {
             throw new \InvalidArgumentException('User argument must be an integer.');
         }
-        if (!isset($user)) {
+        if (!isset($user) && $this->session->isStarted()) {
             $user = $this->session->get('uid', self::UNREGISTERED_USER);
+        } else {
+            $user = self::UNREGISTERED_USER;
         }
         if (!isset($this->groupPermsByUser[$user]) || $this->groupPermsByUser[$user] === false) {
             $this->setGroupPermsForUser($user);

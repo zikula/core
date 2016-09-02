@@ -82,6 +82,11 @@
         </service>
 
         <service id="zikula.site_off_listener" class="%zikula.site_off_listener.class%">
+            <argument type="service" id="zikula_extensions_module.api.variable" />
+            <argument type="service" id="zikula_permissions_module.api.permission" />
+            <argument type="service" id="zikula_users_module.current_user" />
+            <argument type="service" id="templating" />
+            <argument type="service" id="form.factory" />
             <tag name="kernel.event_subscriber" />
         </service>
 
@@ -96,13 +101,16 @@
             <argument type="service" id="router" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="zikula.cache_clearer" />
+            <argument type="service" id="zikula_users_module.current_user" />
         </service>
 
         <service id="zikula.output_compression_listener" class="%zikula.output_compression_listener.class%">
+            <argument type="service" id="zikula_extensions_module.api.variable" />
             <tag name="kernel.event_subscriber" />
         </service>
 
         <service id="zikula.strip_front_controller_listener" class="%zikula.strip_front_controller_listener.class%">
+            <argument type="service" id="zikula_extensions_module.api.variable" />
             <tag name="kernel.event_subscriber" />
         </service>
 

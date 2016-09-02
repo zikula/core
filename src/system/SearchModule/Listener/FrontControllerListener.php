@@ -43,6 +43,8 @@ class FrontControllerListener implements EventSubscriberInterface
      */
     private $headerAssetBag;
 
+    private $isUpgrading;
+
     public static function getSubscribedEvents()
     {
         return [
@@ -61,12 +63,13 @@ class FrontControllerListener implements EventSubscriberInterface
      * @param VariableApi     $variableApi    VariableApi service instance
      * @param AssetBag        $headerAssetBag AssetBag service instance for header code
      */
-    public function __construct(RouterInterface $router, PermissionApi $permissionApi, VariableApi $variableApi, AssetBag $headerAssetBag)
+    public function __construct(RouterInterface $router, PermissionApi $permissionApi, VariableApi $variableApi, AssetBag $headerAssetBag, $isUpgrading = false)
     {
         $this->router = $router;
         $this->permissionApi = $permissionApi;
         $this->variableApi = $variableApi;
         $this->headerAssetBag = $headerAssetBag;
+        $this->isUpgrading = $isUpgrading;
     }
 
     /**
@@ -81,7 +84,7 @@ class FrontControllerListener implements EventSubscriberInterface
         if (!$event->isMasterRequest()) {
             return;
         }
-        if (System::isInstalling() || System::isUpgrading()) {
+        if (System::isInstalling() || $this->isUpgrading) {
             return;
         }
         $openSearchEnabled = $this->variableApi->get('ZikulaSearchModule', 'opensearch_enabled');
@@ -94,7 +97,7 @@ class FrontControllerListener implements EventSubscriberInterface
 
         // The current user has the rights to search the page.
         $linkType = 'application/opensearchdescription+xml';
-        $siteName = DataUtil::formatForDisplay(System::getVar('sitename'));
+        $siteName = DataUtil::formatForDisplay($this->variableApi->get(VariableApi::CONFIG, 'sitename'));
         $searchUrl = DataUtil::formatForDisplay($this->router->generate('zikulasearchmodule_user_opensearch'));
 
         $headerCode = '<link rel="search" type="' . $linkType . '" title="' . $siteName . '" href="' . $searchUrl . '" />';

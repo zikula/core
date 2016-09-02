@@ -34,6 +34,7 @@
         <service id="zikula_securitycenter_module.filter_listener" class="%zikula_securitycenter_module.filter_listener.class%">
             <tag name="kernel.event_subscriber" />
             <argument>%installed%</argument>
+            <argument type="expression">container.hasParameter('upgrading') ? parameter('upgrading') : false</argument>
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="zikula_mailer_module.api.mailer" />

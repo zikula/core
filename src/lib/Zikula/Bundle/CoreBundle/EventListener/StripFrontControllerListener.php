@@ -15,12 +15,24 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Zikula\ExtensionsModule\Api\VariableApi;
 
 /**
  * Strips the front controller (index.php) from the URI.
  */
 class StripFrontControllerListener implements EventSubscriberInterface
 {
+    private $variableApi;
+
+    /**
+     * OutputCompressionListener constructor.
+     * @param $variableApi
+     */
+    public function __construct(VariableApi $variableApi)
+    {
+        $this->variableApi = $variableApi;
+    }
+
     public static function getSubscribedEvents()
     {
         return [
@@ -48,8 +60,8 @@ class StripFrontControllerListener implements EventSubscriberInterface
             return;
         }
         $requestUri = $event->getRequest()->getRequestUri();
-        $frontController = \System::getVar('entrypoint', 'index.php');
-        $stripEntryPoint = (bool) \System::getVar('shorturlsstripentrypoint', false);
+        $frontController = $this->variableApi->get(VariableApi::CONFIG, 'entrypoint', 'index.php');
+        $stripEntryPoint = (bool) $this->variableApi->get(VariableApi::CONFIG, 'shorturlsstripentrypoint', false);
         $containsFrontController = (strpos($requestUri, "$frontController") !== false);
 
         if ($containsFrontController && $stripEntryPoint) {

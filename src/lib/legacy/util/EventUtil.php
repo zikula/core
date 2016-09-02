@@ -54,6 +54,11 @@ class EventUtil
         return self::$eventManager;
     }
 
+    public static function setManager($manager)
+    {
+        self::$eventManager = $manager;
+    }
+
     /**
      * Notify event.
      *

@@ -22,6 +22,7 @@
         <parameter key="zikula_core.common.theme.assets.footer.class">Zikula\ThemeModule\Engine\AssetBag</parameter>
         <parameter key="zikula_core.common.theme.pagevars.class">Zikula\ThemeModule\Engine\ParameterBag</parameter>
         <parameter key="zikula_core.internal.theme_filter.class">Zikula\ThemeModule\Engine\Filter</parameter>
+        <parameter key="zikula_core.internal.theme.jsconfig.class">Zikula\ThemeModule\Engine\JSConfig</parameter>
         <parameter key="zikula_core.common.theme.themevars.class">Zikula\ThemeModule\Engine\ParameterBag</parameter>
         <parameter key="zikula_core.common.theme.asset_helper.class">Zikula\ThemeModule\Engine\Asset</parameter>
         <parameter key="zikula_core.internal.theme.js_resolver.class">Zikula\ThemeModule\Engine\Asset\JsResolver</parameter>
@@ -55,6 +56,7 @@
             <argument type="service" id="router" />
             <argument type="service" id="zikula_core.common.theme_engine" />
             <argument>%kernel.root_dir%</argument>
+            <argument>%compat_layer%</argument>
             <call method="setParameters">
                 <argument type="service" id="service_container" />
             </call>
@@ -126,6 +128,15 @@
         <service id="zikula_core.common.theme.asset_helper" class="%zikula_core.common.theme.asset_helper.class%">
             <argument type="service" id="kernel" strict="false" />
             <argument type="service" id="assets.packages" />
+        </service>
+
+        <service id="zikula_core.internal.theme.jsconfig" class="%zikula_core.internal.theme.jsconfig.class%">
+            <argument type="service" id="zikula_extensions_module.api.variable" />
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="zikula_users_module.current_user" />
+            <argument type="service" id="templating.engine.twig" />
+            <argument type="service" id="zikula_core.common.theme.themevars" />
+            <argument>%compat_layer%</argument>
         </service>
 
         <!-- Alias for services. These service names are @deprecated and will be removed in Core-2.0 -->

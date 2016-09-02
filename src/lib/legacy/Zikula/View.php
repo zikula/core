@@ -304,9 +304,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $this->register_block('nocache', ['Zikula_View_Resource', 'block_nocache'], false);
 
         // For ajax requests we use the short urls filter to 'fix' relative paths
-        if (($this->serviceManager->get('zikula')->getStage() & Zikula_Core::STAGE_AJAX) && System::getVar('shorturls')) {
+//        if (($this->serviceManager->get('zikula')->getStage() & Zikula_Core::STAGE_AJAX) && System::getVar('shorturls')) {
             $this->load_filter('output', 'shorturls');
-        }
+//        }
 
         // register prefilters
         $this->register_prefilter('z_prefilter_add_literal');
@@ -356,7 +356,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         // add ServiceManager, EventManager and others to all templates
         parent::assign('serviceManager', $this->serviceManager);
         parent::assign('eventManager', $this->eventManager);
-        parent::assign('zikula_core', $this->serviceManager->get('zikula'));
+//        parent::assign('zikula_core', $this->serviceManager->get('zikula'));
         parent::assign('request', $this->request);
         $modvars = ModUtil::getModvars(); // Get all modvars from any modules that have accessed their modvars at least once.
         // provide compatibility 'alias' array keys

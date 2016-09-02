@@ -14,9 +14,21 @@ namespace Zikula\Bundle\CoreBundle\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Zikula\ExtensionsModule\Api\VariableApi;
 
 class OutputCompressionListener implements EventSubscriberInterface
 {
+    private $variableApi;
+
+    /**
+     * OutputCompressionListener constructor.
+     * @param $variableApi
+     */
+    public function __construct(VariableApi $variableApi)
+    {
+        $this->variableApi = $variableApi;
+    }
+
     public function onKernelRequest(GetResponseEvent $event)
     {
         if (!$event->isMasterRequest()) {
@@ -27,7 +39,7 @@ class OutputCompressionListener implements EventSubscriberInterface
         }
 
         // Check if compression is desired
-        if (\System::getVar('UseCompression') != 1) {
+        if ($this->variableApi->get(VariableApi::CONFIG, 'UseCompression') != 1) {
             return;
         }
 

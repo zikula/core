@@ -11,13 +11,15 @@
 
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Gedmo\Blameable\BlameableListener;
-use ServiceUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use UserUtil;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Zikula\PermissionsModule\Api\PermissionApi;
 
 /**
  * Class BlameListener overrides Stof\DoctrineExtensionsBundle\EventListener\BlameListener
@@ -25,13 +27,30 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class BlameListener implements EventSubscriberInterface
 {
     /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
      * @var BlameableListener
      */
     private $blameableListener;
 
-    public function __construct(BlameableListener $blameableListener, $tokenStorage = null, AuthorizationCheckerInterface $authorizationChecker = null)
-    {
+    /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    public function __construct(
+        BlameableListener $blameableListener,
+        $tokenStorage = null,
+        AuthorizationCheckerInterface $authorizationChecker = null,
+        EntityManagerInterface $entityManager,
+        SessionInterface $session
+    ) {
         $this->blameableListener = $blameableListener;
+        $this->entityManager = $entityManager;
+        $this->session = $session;
     }
 
     /**
@@ -39,14 +58,13 @@ class BlameListener implements EventSubscriberInterface
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        $em = ServiceUtil::get('doctrine.entitymanager');
         try {
             if (\System::isInstalling()) {
                 $uid = 2;
             } else {
-                $uid = UserUtil::getVar('uid');
+                $uid = $this->session->isStarted() ? $this->session->get('uid', PermissionApi::UNREGISTERED_USER) : PermissionApi::UNREGISTERED_USER;
             }
-            $user = $em->getReference('ZikulaUsersModule:UserEntity', $uid);
+            $user = $this->entityManager->getReference('ZikulaUsersModule:UserEntity', $uid);
             $this->blameableListener->setUserValue($user);
         } catch (\Exception $e) {
             // silently fail - likely installing and tables not available

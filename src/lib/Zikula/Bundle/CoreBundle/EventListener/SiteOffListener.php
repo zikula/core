@@ -11,15 +11,52 @@
 
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\Core\Response\PlainResponse;
+use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\UsersModule\Api\CurrentUserApi;
 
 class SiteOffListener implements EventSubscriberInterface
 {
+    private $variableApi;
+
+    private $permissionApi;
+
+    private $currentUserApi;
+
+    private $templating;
+
+    private $formFactory;
+
+    /**
+     * OutputCompressionListener constructor.
+     * @param VariableApi $variableApi
+     * @param PermissionApi $permissionApi
+     * @param CurrentUserApi $currentUserApi
+     * @param EngineInterface $templating
+     * @param FormFactory $formFactory
+     */
+    public function __construct(
+        VariableApi $variableApi,
+        PermissionApi $permissionApi,
+        CurrentUserApi $currentUserApi,
+        EngineInterface $templating,
+        FormFactory $formFactory
+    ) {
+        $this->variableApi = $variableApi;
+        $this->permissionApi = $permissionApi;
+        $this->currentUserApi = $currentUserApi;
+        $this->templating = $templating;
+        $this->formFactory = $formFactory;
+    }
+
     public function onKernelRequestSiteOff(GetResponseEvent $event)
     {
         if (!$event->isMasterRequest()) {
@@ -40,26 +77,26 @@ class SiteOffListener implements EventSubscriberInterface
         $module = strtolower($request->query->get('module'));
         $type = strtolower($request->query->get('type'));
         $func = strtolower($request->query->get('func'));
-        $siteOff = (bool)\System::getVar('siteoff');
-        $hasAdminPerms = \SecurityUtil::checkPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN);
+        $siteOff = (bool)$this->variableApi->get(VariableApi::CONFIG, 'siteoff');
+        $hasAdminPerms = $this->permissionApi->hasPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN);
         $urlParams = ($module == 'users' && $type == 'user' && $func == 'siteofflogin'); // params are lowercase
-        $versionCheck = (\Zikula_Core::VERSION_NUM != \System::getVar('Version_Num'));
+        $versionCheck = (\Zikula_Core::VERSION_NUM != $this->variableApi->get(VariableApi::CONFIG, 'Version_Num'));
 
         // Check for site closed
         if (($siteOff && !$hasAdminPerms && !$urlParams) || $versionCheck) {
-            $hasOnlyOverviewAccess = \SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_OVERVIEW);
-            if ($hasOnlyOverviewAccess && \UserUtil::isLoggedIn()) {
-                \UserUtil::logout();
+            $hasOnlyOverviewAccess = $this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_OVERVIEW);
+            if ($hasOnlyOverviewAccess && $this->currentUserApi->isLoggedIn()) {
+                $request->getSession()->invalidate(); // logout
             }
 
-            // initialise the language system to enable translations (#1764)
-            $lang = \ZLanguage::getInstance();
-            $lang->setup($request);
-
+            $form = $this->formFactory->create('Zikula\ZAuthModule\Form\Type\UnameLoginType');
             $response = new Response();
             $response->headers->add(['HTTP/1.1 503 Service Unavailable']);
             $response->setStatusCode(503);
-            $content = require_once \System::getSystemErrorTemplate('siteoff.tpl'); // move to CoreBundle and use Twig
+            $content = $this->templating->render('@CoreBundle/System/sitoff.html.twig', [
+                'versionsEqual' => !$versionCheck,
+                'form' => $form->createView()
+            ]);
             $response->setContent($content);
             $event->setResponse($response);
             $event->stopPropagation();

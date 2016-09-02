@@ -88,9 +88,7 @@ class AdminInterfaceController extends AbstractController
                 'mid' => $caller['info']['id']
             ]);
         }
-        $caller['category'] = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', [
-            'cid' => $cid
-        ]);
+        $caller['category'] = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminCategoryEntity')->find($cid);
 
         return $this->render('@ZikulaAdminModule/AdminInterface/breadCrumbs.html.twig', [
             'caller' => $caller
@@ -265,9 +263,7 @@ class AdminInterfaceController extends AbstractController
                 'mid' => $caller['info']['id']
             ]);
         }
-        $caller['category'] = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', [
-            'cid' => $cid
-        ]);
+        $caller['category'] = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminCategoryEntity')->findOneBy(['cid' => $cid]);
         // mode requested
         $mode = $currentRequest->attributes->has('mode') ? $currentRequest->attributes->get('mode') : 'categories';
         $mode = in_array($mode, ['categories', 'modules']) ? $mode : 'categories';
@@ -290,14 +286,11 @@ class AdminInterfaceController extends AbstractController
                 continue;
             }
 
+            $categoryAssignment = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $adminModule['id']]);
             // cat
-            $catid = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodcategory', [
-                'mid' => $adminModule['id']
-            ]);
+            $catid = $categoryAssignment->getCid();
             // order
-            $order = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getSortOrder', [
-                'mid' => ModUtil::getIdFromName($adminModule['name'])
-            ]);
+            $order = $categoryAssignment->getSortorder();
             // url
             $menuTextUrl = isset($adminModule['capabilities']['admin']['route']) ? $this->get('router')->generate($adminModule['capabilities']['admin']['route']) : $adminModule['capabilities']['admin']['url'];
 
@@ -308,6 +301,12 @@ class AdminInterfaceController extends AbstractController
                     $links = [];
                 }
             }
+            try {
+                $adminIconPath = $this->get('zikula_core.common.theme.asset_helper')->resolve('@' . $adminModule['name'] . ':images/admin.png');
+            } catch (\Exception $e) {
+                // @todo add BC method to get admin image from non-bundle
+                $adminIconPath = ''; //$masterRequest->getBasePath() . '/' . ModUtil::getModuleImagePath($adminModule['name'])
+            }
 
             $module = [
                 'menutexturl' => $menuTextUrl,
@@ -317,7 +316,7 @@ class AdminInterfaceController extends AbstractController
                 'order' => $order,
                 'id' => $adminModule['id'],
                 'links' => $links,
-                'icon' => $masterRequest->getBasePath() . '/' . ModUtil::getModuleImagePath($adminModule['name'])
+                'icon' => $adminIconPath
             ];
 
             $menuModules[$adminModule['name']] = $module;

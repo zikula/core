@@ -32,7 +32,7 @@ class JCSSUtil
             'uid' => (int)UserUtil::getVar('uid')
         ];
 
-        $polyfill_features = PageUtil::getVar('polyfill_features');
+        $polyfill_features = PageUtil::getVar('polyfill_features', []);
         // merge in features added via twig
         $featuresFromTwig = ServiceUtil::get('zikula_core.common.theme.pagevars')->get('polyfill_features', []);
         $polyfill_features = array_unique(array_merge($polyfill_features, $featuresFromTwig));
@@ -189,6 +189,7 @@ class JCSSUtil
     public static function prepareJavascripts($javascripts)
     {
         $sm = ServiceUtil::getManager();
+        $javascripts = is_array($javascripts) ? $javascripts : [];
         array_unshift($javascripts, 'jquery', $sm->getParameter('zikula.javascript.bootstrap.min.path'), 'javascript/helpers/bootstrap-zikula.js');
         if ($sm->getParameter('env') == 'prod' && file_exists(realpath('web/js/fos_js_routes.js'))) {
             array_unshift($javascripts, 'web/bundles/fosjsrouting/js/router.js', 'web/js/fos_js_routes.js');
