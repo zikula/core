@@ -32,6 +32,8 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
                 'Zikula\PermissionsModule\Entity\PermissionEntity'
             ]);
         } catch (\Exception $e) {
+            $this->addFlash('error', $e->getMessage());
+
             return false;
         }
 

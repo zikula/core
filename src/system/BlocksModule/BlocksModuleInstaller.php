@@ -42,6 +42,8 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         try {
             $this->schemaTool->create($this->entities);
         } catch (\Exception $e) {
+            $this->addFlash('error', $e->getMessage());
+
             return false;
         }
 

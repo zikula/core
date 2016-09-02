@@ -32,6 +32,8 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
                 'Zikula\GroupsModule\Entity\GroupApplicationEntity'
             ]);
         } catch (\Exception $e) {
+            $this->addFlash('error', $e->getMessage());
+
             return false;
         }
 

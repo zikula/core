@@ -36,6 +36,8 @@ class AdminModuleInstaller extends AbstractExtensionInstaller
                 'Zikula\AdminModule\Entity\AdminModuleEntity',
             ]);
         } catch (\Exception $e) {
+            $this->addFlash('error', $e->getMessage());
+
             return false;
         }
 

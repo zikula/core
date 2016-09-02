@@ -40,6 +40,8 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
         try {
             $this->schemaTool->create($classes);
         } catch (\Exception $e) {
+            $this->addFlash('error', $e->getMessage());
+
             return false;
         }
 

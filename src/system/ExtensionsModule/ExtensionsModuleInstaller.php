@@ -29,7 +29,6 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
      */
     public function install()
     {
-        // create tables
         $entities = [
             'Zikula\ExtensionsModule\Entity\ExtensionEntity',
             'Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity',
@@ -39,6 +38,8 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
         try {
             $this->schemaTool->create($entities);
         } catch (\Exception $e) {
+            $this->addFlash('error', $e->getMessage());
+
             return false;
         }
 

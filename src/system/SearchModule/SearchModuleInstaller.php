@@ -19,6 +19,14 @@ use Zikula\Core\AbstractExtensionInstaller;
 class SearchModuleInstaller extends AbstractExtensionInstaller
 {
     /**
+     * @var array
+     */
+    private $entities = [
+        'Zikula\SearchModule\Entity\SearchResultEntity',
+        'Zikula\SearchModule\Entity\SearchStatEntity',
+    ];
+
+    /**
      * Initialise the search module.
      *
      * This function is only ever called once during the lifetime of a particular
@@ -30,11 +38,10 @@ class SearchModuleInstaller extends AbstractExtensionInstaller
     {
         // create schema
         try {
-            $this->schemaTool->create([
-                'Zikula\SearchModule\Entity\SearchResultEntity',
-                'Zikula\SearchModule\Entity\SearchStatEntity',
-            ]);
+            $this->schemaTool->create($this->entities);
         } catch (\Exception $e) {
+            $this->addFlash('error', $e->getMessage());
+
             return false;
         }
 
@@ -106,11 +113,10 @@ class SearchModuleInstaller extends AbstractExtensionInstaller
     public function uninstall()
     {
         try {
-            $this->schemaTool->drop([
-                'Zikula\SearchModule\Entity\SearchResultEntity',
-                'Zikula\SearchModule\Entity\SearchStatEntity',
-            ]);
+            $this->schemaTool->drop($this->entities);
         } catch (\Exception $e) {
+            $this->addFlash('error', $e->getMessage());
+
             return false;
         }
 
