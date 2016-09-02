@@ -1,7 +1,9 @@
 CHANGELOG - ZIKULA 1.4.x
 ------------------------
 
-* 1.4.3 (?)
+* 1.4.4 (?)
+ 
+* 1.4.3 (2016-09-02)
 
  - BC Breaks:
     - Assetic Bundle has been removed (#2939).
