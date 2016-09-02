@@ -114,8 +114,6 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                 'Zikula\SettingsModule\Entity\ObjectdataMeta',
             ]);
         } catch (\Exception $e) {
-            $this->addFlash('error', $e->getMessage());
-
             return false;
         }
 

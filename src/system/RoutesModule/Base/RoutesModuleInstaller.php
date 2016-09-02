@@ -41,16 +41,10 @@ class RoutesModuleInstaller extends AbstractExtensionInstaller
             $this->schemaTool->create($this->listEntityClasses());
         } catch (\Exception $e) {
             if (System::isDevelopmentMode()) {
-                $this->addFlash(\Zikula_Session::MESSAGE_ERROR, $this->__('Doctrine Exception') . ': ' . $e->getMessage());
                 $logger->error('{app}: Could not create the database tables during installation. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'errorMessage' => $e->getMessage()]);
 
                 return false;
             }
-            $returnMessage = $this->__f('An error was encountered while creating the tables for the %s extension.', ['%s' => 'ZikulaRoutesModule']);
-            if (!System::isDevelopmentMode()) {
-                $returnMessage .= ' ' . $this->__('Please enable the development mode by editing the /app/config/parameters.yml file (change the env variable to dev) in order to reveal the error details (or look into the log files at /app/logs/).');
-            }
-            $this->addFlash(\Zikula_Session::MESSAGE_ERROR, $returnMessage);
             $logger->error('{app}: Could not create the database tables during installation. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'errorMessage' => $e->getMessage()]);
 
             return false;
@@ -89,12 +83,10 @@ class RoutesModuleInstaller extends AbstractExtensionInstaller
                     $this->schemaTool->update($this->listEntityClasses());
                 } catch (\Exception $e) {
                     if (System::isDevelopmentMode()) {
-                        $this->addFlash(\Zikula_Session::MESSAGE_ERROR, $this->__('Doctrine Exception') . ': ' . $e->getMessage());
                         $logger->error('{app}: Could not update the database tables during the upgrade. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'errorMessage' => $e->getMessage()]);
 
                         return false;
                     }
-                    $this->addFlash(\Zikula_Session::MESSAGE_ERROR, $this->__f('An error was encountered while updating tables for the %s extension.', ['%s' => 'ZikulaRoutesModule']));
                     $logger->error('{app}: Could not update the database tables during the ugprade. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'errorMessage' => $e->getMessage()]);
 
                     return false;
@@ -246,7 +238,6 @@ class RoutesModuleInstaller extends AbstractExtensionInstaller
         // delete stored object workflows
         $result = Zikula_Workflow_Util::deleteWorkflowsForModule('ZikulaRoutesModule');
         if ($result === false) {
-            $this->addFlash(\Zikula_Session::MESSAGE_ERROR, $this->__f('An error was encountered while removing stored object workflows for the %s extension.', ['%s' => 'ZikulaRoutesModule']));
             $logger->error('{app}: Could not remove stored object workflows during uninstallation.', ['app' => 'ZikulaRoutesModule']);
 
             return false;
@@ -256,12 +247,10 @@ class RoutesModuleInstaller extends AbstractExtensionInstaller
             $this->schemaTool->drop($this->listEntityClasses());
         } catch (\Exception $e) {
             if (System::isDevelopmentMode()) {
-                $this->addFlash(\Zikula_Session::MESSAGE_ERROR, $this->__('Doctrine Exception') . ': ' . $e->getMessage());
                 $logger->error('{app}: Could not remove the database tables during uninstallation. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'errorMessage' => $e->getMessage()]);
 
                 return false;
             }
-            $this->addFlash(\Zikula_Session::MESSAGE_ERROR, $this->__f('An error was encountered while dropping tables for the %s extension.', ['%s' => 'ZikulaRoutesModule']));
             $logger->error('{app}: Could not remove the database tables during uninstallation. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'errorMessage' => $e->getMessage()]);
 
             return false;

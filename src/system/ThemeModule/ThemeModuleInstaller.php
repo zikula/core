@@ -30,8 +30,6 @@ class ThemeModuleInstaller extends AbstractExtensionInstaller
         try {
             $this->schemaTool->create(['Zikula\ThemeModule\Entity\ThemeEntity']);
         } catch (\Exception $e) {
-            $this->addFlash('error', $e->getMessage());
-
             return false;
         }
 

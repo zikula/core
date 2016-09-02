@@ -37,8 +37,6 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         try {
             $this->schemaTool->create($entities);
         } catch (\Exception $e) {
-            $this->addFlash('error', $e->getMessage());
-
             return false;
         }
 
@@ -50,8 +48,6 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         try {
             $this->schemaTool->create(['Zikula\CategoriesModule\Entity\CategoriesMapobj']);
         } catch (\Exception $e) {
-            $this->addFlash('error', $e->getMessage());
-
             return false;
         }
 

@@ -35,8 +35,6 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
                 'Zikula\SecurityCenterModule\Entity\IntrusionEntity'
             ]);
         } catch (\Exception $e) {
-            $this->addFlash('error', $e->getMessage());
-
             return false;
         }
 

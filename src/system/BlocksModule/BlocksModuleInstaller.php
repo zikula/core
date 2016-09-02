@@ -42,8 +42,6 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         try {
             $this->schemaTool->create($this->entities);
         } catch (\Exception $e) {
-            $this->addFlash('error', $e->getMessage());
-
             return false;
         }
 
@@ -95,7 +93,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 // check if request is available (#2073)
                 $templateWarning = $this->__('Warning: Block template locations modified, you may need to fix your template overrides if you have any.');
                 if (is_object($this->container->get('request')) && method_exists($this->container->get('request'), 'getSession') && is_object($this->container->get('request')->getSession())) {
-                    $this->addFlash(\Zikula_Session::MESSAGE_WARNING, $templateWarning);
+                    $this->addFlash('warning', $templateWarning);
                 } else {
                     \LogUtil::registerWarning($templateWarning);
                 }
