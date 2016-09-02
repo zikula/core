@@ -114,14 +114,14 @@ class LinkContainer implements LinkContainerInterface
     {
         $links = [];
 
-        if ($this->permissionApi->hasPermission("ZikulaUsersModule::", '::', ACCESS_MODERATE)) {
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_MODERATE)) {
             $links[] = [
                 'url' => $this->router->generate('zikulausersmodule_useradministration_list'),
                 'text' => $this->translator->__('Users list'),
                 'icon' => 'list'
             ];
         }
-        if ($this->permissionApi->hasPermission("ZikulaUsersModule::", '::', ACCESS_ADMIN)) {
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikulausersmodule_config_config'),
                 'text' => $this->translator->__('Settings'),
@@ -133,7 +133,7 @@ class LinkContainer implements LinkContainerInterface
                 'icon' => 'lock'
             ];
         }
-        if ($this->permissionApi->hasPermission("ZikulaUsersModule::", '::', ACCESS_MODERATE)) {
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_MODERATE)) {
             $links[] = [
                 'url' => $this->router->generate('zikulausersmodule_fileio_export'),
                 'text' => $this->translator->__('Export users'),
@@ -168,7 +168,7 @@ class LinkContainer implements LinkContainerInterface
 
             ];
 
-            if ($this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ENABLED)) {
+            if ($this->variableApi->get($this->getBundleName(), UsersConstant::MODVAR_REGISTRATION_ENABLED)) {
                 $links[] = [
                     'icon' => 'plus',
                     'text'  => $this->translator->__('New account'),

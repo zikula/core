@@ -73,7 +73,7 @@ class LinkContainer implements LinkContainerInterface
     {
         $links = [];
 
-        if (!$this->permissionApi->hasPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
+        if (!$this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             return $links;
         }
 

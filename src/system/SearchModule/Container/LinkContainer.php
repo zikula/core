@@ -11,6 +11,7 @@
 
 namespace Zikula\SearchModule\Container;
 
+use ModUtil;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\Translator;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
@@ -87,7 +88,7 @@ class LinkContainer implements LinkContainerInterface
             'icon' => 'search'
         ];
 
-        if ($this->permissionApi->hasPermission('ZikulaSearchModule::', '::', ACCESS_ADMIN)) {
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikulasearchmodule_config_config'),
                 'text' => $this->translator->__('Settings'),
@@ -107,7 +108,7 @@ class LinkContainer implements LinkContainerInterface
     {
         $links = [];
 
-        if ($this->permissionApi->hasPermission('ZikulaSearchModule::', '::', ACCESS_ADMIN)) {
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikulasearchmodule_config_config'),
                 'text' => $this->translator->__('Backend'),
@@ -115,14 +116,14 @@ class LinkContainer implements LinkContainerInterface
             ];
         }
 
-        if ($this->permissionApi->hasPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
             $links[] = [
                 'url' => $this->router->generate('zikulasearchmodule_user_form'),
                 'text' => $this->translator->__('New search'),
                 'icon' => 'search'
             ];
             if ($this->currentUserApi->isLoggedIn()) {
-                $searchModules = \ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins');
+                $searchModules = ModUtil::apiFunc($this->getBundleName(), 'user', 'getallplugins');
                 if (count($searchModules) > 0) {
                     $links[] = [
                         'url' => $this->router->generate('zikulasearchmodule_user_recent'),

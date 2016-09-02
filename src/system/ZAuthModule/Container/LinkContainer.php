@@ -26,10 +26,12 @@ class LinkContainer implements LinkContainerInterface
      * @var TranslatorInterface
      */
     private $translator;
+
     /**
      * @var RouterInterface
      */
     private $router;
+
     /**
      * @var PermissionApi
      */
@@ -101,7 +103,7 @@ class LinkContainer implements LinkContainerInterface
     private function getAdmin()
     {
         $links = [];
-        if ($this->permissionApi->hasPermission('ZikulaZAuthModule::', '::', ACCESS_ADMIN)) {
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikulazauthmodule_useradministration_list'),
                 'text' => $this->translator->__('Users list'),
@@ -115,7 +117,7 @@ class LinkContainer implements LinkContainerInterface
             } else {
                 $createUserAccessLevel = ACCESS_ADMIN;
             }
-            if ($this->permissionApi->hasPermission("ZikulaZAuthModule::", '::', $createUserAccessLevel)) {
+            if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', $createUserAccessLevel)) {
                 $submenulinks[] = [
                     'url' => $this->router->generate('zikulazauthmodule_useradministration_create'),
                     'text' => $this->translator->__('Create new user'),

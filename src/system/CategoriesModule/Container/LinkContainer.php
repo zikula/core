@@ -89,21 +89,21 @@ class LinkContainer implements LinkContainerInterface
     {
         $links = [];
 
-        if ($this->permissionApi->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_READ)) {
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
             $links[] = [
                 'url' => $this->router->generate('zikulacategoriesmodule_admin_view'),
                 'text' => $this->translator->__('Categories list'),
                 'icon' => 'list'
             ];
         }
-        if ($this->permissionApi->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADD)) {
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADD)) {
             $links[] = [
                 'url' => $this->router->generate('zikulacategoriesmodule_admin_newcat'),
                 'text' => $this->translator->__('Create new category'),
                 'icon' => 'plus'
             ];
         }
-        if ($this->permissionApi->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikulacategoriesmodule_admin_editregistry'),
                 'text' => $this->translator->__('Category registry'),
@@ -133,7 +133,7 @@ class LinkContainer implements LinkContainerInterface
     {
         $links = [];
 
-        if ($this->permissionApi->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT) && $this->variableApi->get('ZikulaCategoriesModule', 'allowusercatedit', 0)) {
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_EDIT) && $this->variableApi->get($this->getBundleName(), 'allowusercatedit', 0)) {
             $request = $this->requestStack->getCurrentRequest();
             $referer = $request->headers->get('referer');
             if (false === strpos($referer, 'categories')) {

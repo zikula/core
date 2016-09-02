@@ -73,21 +73,21 @@ class LinkContainer implements LinkContainerInterface
     {
         $links = [];
 
-        if ($this->permissionApi->hasPermission('ZikulaAdminModule::', '::', ACCESS_READ)) {
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
             $links[] = [
                 'url' => $this->router->generate('zikulaadminmodule_admin_view'),
                 'text' => $this->translator->__('Module categories list'),
                 'icon' => 'list'
             ];
         }
-        if ($this->permissionApi->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADD)) {
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADD)) {
             $links[] = [
                 'url' => $this->router->generate('zikulaadminmodule_admin_newcat'),
                 'text' => $this->translator->__('Create new module category'),
                 'icon' => 'plus'
             ];
         }
-        if ($this->permissionApi->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikulaadminmodule_admin_help'),
                 'text' => $this->translator->__('Help'),
@@ -112,7 +112,7 @@ class LinkContainer implements LinkContainerInterface
     {
         $links = [];
 
-        if ($this->permissionApi->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikulaadminmodule_admin_adminpanel'),
                 'text' => $this->translator->__('Administration panel'),

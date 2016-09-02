@@ -74,14 +74,14 @@ class LinkContainer implements LinkContainerInterface
     {
         $links = [];
 
-        if ($this->permissionApi->hasPermission('ZikulaGroupsModule::', '::', ACCESS_READ)) {
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
             $links[] = [
                 'url' => $this->router->generate('zikulagroupsmodule_admin_view'),
                 'text' => $this->translator->__('Groups list'),
                 'icon' => 'list'
             ];
         }
-        if ($this->permissionApi->hasPermission('ZikulaGroupsModule::', '::', ACCESS_ADMIN)) {
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikulagroupsmodule_config_config'),
                 'text' => $this->translator->__('Settings'),
@@ -102,11 +102,10 @@ class LinkContainer implements LinkContainerInterface
         $links = [];
 
         // Check if there is at least one group to show
-        $groups = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getallgroups');
+        $groups = ModUtil::apiFunc($this->getBundleName(), 'user', 'getallgroups');
         if ($groups) {
             $links[] = [
                 'url' => $this->router->generate('zikulagroupsmodule_user_view'),
-                'url' => ModUtil::url('ZikulaGroupsModule', 'user', 'index'),
                 'text' => $this->__('Groups manager'),
                 'icon' => 'group'
             ];
