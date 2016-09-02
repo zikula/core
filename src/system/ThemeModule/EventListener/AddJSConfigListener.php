@@ -9,24 +9,26 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\ThemeModule\Engine;
+namespace Zikula\ThemeModule\EventListener;
 
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ThemeModule\Engine\AssetBag;
+use Zikula\ThemeModule\Engine\ParameterBag;
 use Zikula\UsersModule\Api\CurrentUserApi;
 
-class JSConfig
+/**
+ * Class AddJSConfigListener
+ */
+class AddJSConfigListener implements EventSubscriberInterface
 {
     /**
      * @var VariableApi
      */
     private $variableApi;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
 
     /**
      * @var CurrentUserApi
@@ -44,6 +46,11 @@ class JSConfig
     private $pageVars;
 
     /**
+     * @var AssetBag
+     */
+    private $headers;
+
+    /**
      * @var string|bool
      */
     private $compat;
@@ -51,42 +58,47 @@ class JSConfig
     /**
      * JSConfig constructor.
      * @param VariableApi $variableApi
-     * @param RequestStack $requestStack
      * @param CurrentUserApi $currentUserApi
      * @param EngineInterface $templating
      * @param ParameterBag $pageVars
+     * @param AssetBag $headers
      * @param bool $compat
      */
     public function __construct(
         VariableApi $variableApi,
-        RequestStack $requestStack,
         CurrentUserApi $currentUserApi,
         EngineInterface $templating,
         ParameterBag $pageVars,
+        AssetBag $headers,
         $compat = false
     ) {
         $this->variableApi = $variableApi;
-        $this->requestStack = $requestStack;
         $this->currentUserApi = $currentUserApi;
         $this->templating = $templating;
         $this->pageVars = $pageVars;
+        $this->headers = $headers;
         $this->compat = $compat;
     }
 
     /**
-     * Generate a configuration for javascript and return script tag to embed in HTML HEAD.
-     *
-     * @return string HTML code with script tag
+     * Generate a configuration for javascript and add script to headers.
      */
-    public function generate()
+    public function addJSConfig(FilterResponseEvent $event)
     {
+        if (!$event->isMasterRequest()) {
+            return;
+        }
+        if (\System::isInstalling()) {
+            return;
+        }
+
         $config = [
             'entrypoint' => $this->variableApi->get(VariableApi::CONFIG, 'entrypoint', 'index.php'),
-            'baseURL' => $this->requestStack->getMasterRequest()->getBaseUrl(),
-            'baseURI' => $this->requestStack->getMasterRequest()->getBasePath(),
+            'baseURL' => $event->getRequest()->getBaseUrl(),
+            'baseURI' => $event->getRequest()->getBasePath(),
             'ajaxtimeout' => (int)$this->variableApi->get(VariableApi::CONFIG, 'ajaxtimeout', 5000),
-            'lang' => $this->requestStack->getMasterRequest()->getLocale(),
-            'sessionName' => $this->requestStack->getMasterRequest()->getSession()->getName(),
+            'lang' => $event->getRequest()->getLocale(),
+            'sessionName' => $event->getRequest()->getSession()->getName(),
             'uid' => (int)$this->currentUserApi->get('uid')
         ];
 
@@ -98,10 +110,20 @@ class JSConfig
         if (!empty($polyfill_features)) {
             $config['polyfillFeatures'] = implode(' ', $polyfill_features);
         }
-
-        return $this->templating->render('@ZikulaThemeModule/Engine/JSConfig.js.twig', [
+        $config = array_map('htmlspecialchars', $config);
+        $content = $this->templating->render('@ZikulaThemeModule/Engine/JSConfig.js.twig', [
             'compat' => $this->compat,
-            'config' => $config
+            'config' => json_encode($config)
         ]);
+        $this->headers->add([$content => 0]);
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::RESPONSE => [
+                ['addJSConfig', -1]
+            ]
+        ];
     }
 }

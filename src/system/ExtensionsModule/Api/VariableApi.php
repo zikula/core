@@ -92,7 +92,8 @@ class VariableApi
             }
         }
         // reformat localized variables to primary key for certain system vars.
-        $lang = /*$this->kernel->getContainer()->get('request_stack')->getMasterRequest()->getLocale(); */\ZLanguage::getLanguageCode(); //@todo
+        $request = $this->kernel->getContainer()->get('request_stack')->getMasterRequest();
+        $lang = isset($request) ? $request->getLocale() : 'en'; //\ZLanguage::getLanguageCode(); //@todo
         $items = ['sitename', 'slogan', 'metakeywords', 'defaultpagetitle', 'defaultmetadescription'];
         foreach ($items as $item) {
             if (isset($this->variables[self::CONFIG][$item . '_en'])) {

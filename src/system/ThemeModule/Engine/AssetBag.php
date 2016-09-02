@@ -21,7 +21,7 @@ namespace Zikula\ThemeModule\Engine;
  *  - Duplicate assets with different weights will be loaded according to the lighter weight.
  *  - Assets not given a weight are assigned the self::WEIGHT_DEFAULT (100)
  *  - Core assets are loaded at weights 0, 1, 2, etc.
- * @see \Zikula\Bundle\CoreBundle\EventListener\Theme\DefaultPageAssetSetterListener::setDefaultPageAssets()
+ * @see \Zikula\ThemeModule\EventListener\DefaultPageAssetSetterListener::setDefaultPageAssets()
  * @see \Zikula\Bundle\CoreBundle\Twig\Extension\CoreExtension::pageAddAsset()
  */
 class AssetBag implements \IteratorAggregate, \Countable
