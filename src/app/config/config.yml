@@ -141,8 +141,6 @@ stof_doctrine_extensions:
         reference_integrity:  Gedmo\ReferenceIntegrity\ReferenceIntegrityListener
 
 parameters:
-    # override Stof\DoctrineExtensionsBundle\EventListener\BlameListener to set Zikula User
-    stof_doctrine_extensions.event_listener.blame.class: Zikula\Bundle\CoreBundle\EventListener\BlameListener
     # zikula core stylesheet and javascript component locations
     zikula.stylesheet.bootstrap-font-awesome.path: web/bootstrap-font-awesome.css
     zikula.javascript.bootstrap.min.path: web/bootstrap/js/bootstrap.min.js

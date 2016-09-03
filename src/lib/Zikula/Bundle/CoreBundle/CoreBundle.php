@@ -16,6 +16,7 @@ use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Zikula\Bundle\CoreBundle\DependencyInjection\Compiler\DoctrinePass;
+use Zikula\Bundle\CoreBundle\DependencyInjection\Compiler\OverrideBlameableListenerPass;
 use Zikula\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterCoreListenersPass;
 use Zikula\Bundle\CoreBundle\DependencyInjection\Compiler\LinkContainerPass;
 
@@ -29,6 +30,8 @@ class CoreBundle extends Bundle
         $container->addCompilerPass(new RegisterCoreListenersPass(), PassConfig::TYPE_AFTER_REMOVING);
 
         $container->addCompilerPass(new LinkContainerPass());
+
+        $container->addCompilerPass(new OverrideBlameableListenerPass());
 
         // todo - see if we can do this only on module install/upgrade - drak
         $container->addCompilerPass(new ValidateServiceDefinitionsPass(), PassConfig::TYPE_AFTER_REMOVING);

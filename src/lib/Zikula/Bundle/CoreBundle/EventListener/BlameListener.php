@@ -43,8 +43,6 @@ class BlameListener implements EventSubscriberInterface
 
     public function __construct(
         BlameableListener $blameableListener,
-        $tokenStorage = null,
-        AuthorizationCheckerInterface $authorizationChecker = null,
         EntityManagerInterface $entityManager,
         SessionInterface $session
     ) {
