@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "34093d8aee2ba34387bf9f40016dbfbf",
+    "hash": "9b8cac200cab6a9c87014dddce296a2e",
     "content-hash": "ee38fe17ccc6f5345359ad8ae2cc2e92",
     "packages": [
         {
@@ -3485,16 +3485,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.9",
+            "version": "v2.8.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "df02dd5d3f7decb3a05c6d0f31054b4263625dcb"
+                "reference": "84e8eb7690eea267526c3d40050b4c54f1878b7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/df02dd5d3f7decb3a05c6d0f31054b4263625dcb",
-                "reference": "df02dd5d3f7decb3a05c6d0f31054b4263625dcb",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/84e8eb7690eea267526c3d40050b4c54f1878b7a",
+                "reference": "84e8eb7690eea267526c3d40050b4c54f1878b7a",
                 "shasum": ""
             },
             "require": {
@@ -3615,7 +3615,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2016-07-30 08:48:52"
+            "time": "2016-09-02 20:40:06"
         },
         {
             "name": "twig/extensions",
@@ -3671,16 +3671,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.24.1",
+            "version": "v1.24.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "3566d311a92aae4deec6e48682dc5a4528c4a512"
+                "reference": "33093f6e310e6976baeac7b14f3a6ec02f2d79b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/3566d311a92aae4deec6e48682dc5a4528c4a512",
-                "reference": "3566d311a92aae4deec6e48682dc5a4528c4a512",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/33093f6e310e6976baeac7b14f3a6ec02f2d79b7",
+                "reference": "33093f6e310e6976baeac7b14f3a6ec02f2d79b7",
                 "shasum": ""
             },
             "require": {
@@ -3728,7 +3728,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2016-05-30 09:11:59"
+            "time": "2016-09-01 17:50:53"
         },
         {
             "name": "twitter/typeahead.js",
@@ -4281,21 +4281,43 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "8424f6468d69ad156c2aa912c8a7bfc2b4ac8c95"
+                "reference": "ddfbe98ae101839b2eb83eab651318286a718019"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/8424f6468d69ad156c2aa912c8a7bfc2b4ac8c95",
-                "reference": "8424f6468d69ad156c2aa912c8a7bfc2b4ac8c95",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/ddfbe98ae101839b2eb83eab651318286a718019",
+                "reference": "ddfbe98ae101839b2eb83eab651318286a718019",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": ">5.4.0"
             },
             "type": "zikula-module",
             "extra": {
                 "zikula": {
-                    "class": "Zikula\\ProfileModule\\ZikulaProfileModule"
+                    "class": "Zikula\\ProfileModule\\ZikulaProfileModule",
+                    "core-compatibility": ">=1.4.1",
+                    "displayname": "Profile",
+                    "url": "search",
+                    "capabilities": {
+                        "admin": {
+                            "route": "zikulaprofilemodule_config_config"
+                        },
+                        "user": {
+                            "route": "zikulasprofilemodule_user_view"
+                        },
+                        "profile": {
+                            "version": "1.0"
+                        }
+                    },
+                    "securityschema": {
+                        "ZikulaSearchModule::": "::",
+                        "ZikulaSearchModule::view": "::",
+                        "ZikulaSearchModule::item": "DynamicUserData PropertyName::DynamicUserData PropertyID",
+                        "ZikulaSearchModule:Members": "::",
+                        "ZikulaSearchModule:Members:recent": "::",
+                        "ZikulaSearchModule:Members:online": "::"
+                    }
                 }
             },
             "autoload": {
@@ -4312,12 +4334,12 @@
                     "homepage": "http://zikula.org"
                 }
             ],
-            "description": "Extends Zikula's user management.",
+            "description": "User profiles and member list",
             "support": {
-                "source": "https://github.com/zikula-modules/Profile/tree/2.0.1",
+                "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2016-08-26 15:25:24"
+            "time": "2016-09-03 05:36:39"
         },
         {
             "name": "zikula/wizard",

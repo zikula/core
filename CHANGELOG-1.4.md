@@ -2,7 +2,21 @@ CHANGELOG - ZIKULA 1.4.x
 ------------------------
 
 * 1.4.4 (?)
- 
+
+ - BC Breaks:
+
+ - Deprecated:
+
+ - Fixes:
+
+ - Features:
+
+ - Core-2.0 Features:
+
+ - Vendor upgdates:
+    - symfony updated to from 2.8.9 to 2.8.10
+    - twig updated from 1.24.1 to 1.24.2
+
 * 1.4.3 (2016-09-02)
 
  - BC Breaks:
