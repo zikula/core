@@ -56,10 +56,6 @@ class LoginStage implements StageInterface, FormHandlerInterface, InjectContaine
 
     public function isNecessary()
     {
-        if (php_sapi_name() == "cli") {
-            return false;
-        }
-
         return true;
     }
 
