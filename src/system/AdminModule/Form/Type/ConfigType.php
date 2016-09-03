@@ -11,11 +11,9 @@
 
 namespace Zikula\AdminModule\Form\Type;
 
-use ThemeUtil;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Common\Translator\Translator;
 
 /**
  * Configuration form type class.
@@ -64,7 +62,7 @@ class ConfigType extends AbstractType
                 'label' => $translator->__('Theme to use'),
                 'required' => false,
                 'empty_data' => null,
-                'choices' => $this->getAdminThemeChoices($translator),
+                'choices' => $this->formatThemeSelector($options['themes']),
                 'choices_as_values' => true,
                 'placeholder' => $translator->__('Use site\'s theme')
             ])
@@ -140,29 +138,26 @@ class ConfigType extends AbstractType
         $resolver->setDefaults([
             'translator' => null,
             'categories' => [],
-            'modules' => []
+            'modules' => [],
+            'themes' => []
         ]);
     }
 
     /**
      * Returns a list of choices for the admin theme selection.
      *
-     * @param Translator $translator Translator service instance
+     * @param array $themes
      *
      * @return array Choices list
      */
-    private function getAdminThemeChoices($translator)
+    private function formatThemeSelector(array $themes)
     {
         $choices = [];
-
         $themeList = [];
-        $filter = ThemeUtil::FILTER_ADMIN;
-        $state = ThemeUtil::STATE_ACTIVE;
-        $type = ThemeUtil::TYPE_ALL;
-        $themes = ThemeUtil::getAllThemes($filter, $state, $type);
+
         if (!empty($themes)) {
-            foreach ($themes as $theme) {
-                $themeList[$theme['name']] = $theme['displayname'];
+            foreach ($themes as $name => $theme) {
+                $themeList[$name] = $theme['displayname'];
             }
             natcasesort($themeList);
             foreach ($themeList as $k => $v) {

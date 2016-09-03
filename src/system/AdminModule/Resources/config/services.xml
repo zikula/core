@@ -8,7 +8,9 @@
         <parameter key="zikula_admin_module.container.link_container.class">Zikula\AdminModule\Container\LinkContainer</parameter>
         <parameter key="twig.extension.zikula_admin_module.class">Zikula\AdminModule\Twig\Extension\AdminExtension</parameter>
         <parameter key="zikula_admin_module.module_event_listener.class">Zikula\AdminModule\Listener\ModuleEventListener</parameter>
-        <parameter key="zikula_admin_module.update_check_helper.class">Zikula\AdminModule\Helper\UpdateCheckHelper</parameter>        
+        <parameter key="zikula_admin_module.update_check_helper.class">Zikula\AdminModule\Helper\UpdateCheckHelper</parameter>
+        <parameter key="zikula_admin_module.admin_module_repository.class">Zikula\AdminModule\Entity\Repository\AdminModuleRepository</parameter>
+        <parameter key="zikula_admin_module.helper.admin_module_helper.class">Zikula\AdminModule\Helper\AdminModuleHelper</parameter>
     </parameters>
 
     <services>
@@ -43,6 +45,14 @@
         <service id="zikulaadminmodule.update_check_helper" alias="zikula_admin_module.update_check_helper" class="%zikula_admin_module.update_check_helper.class%">
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="request_stack" />
+        </service>
+
+        <service id="zikula_admin_module.admin_module_repository" class="%zikula_admin_module.admin_module_repository.class%">
+            <factory service="doctrine.orm.default_entity_manager" method="getRepository"/>
+            <argument type="string">Zikula\AdminModule\Entity\AdminModuleEntity</argument>
+        </service>
+        <service id="zikula_admin_module.helper.admin_module_helper" class="%zikula_admin_module.helper.admin_module_helper.class%">
+            <argument type="service" id="zikula_admin_module.admin_module_repository" />
         </service>
     </services>
 </container>

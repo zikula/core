@@ -55,9 +55,6 @@ class AjaxUpgradeController extends AbstractController
     public function commandLineAction($stage)
     {
         $this->container->setParameter('upgrading', true);
-        if ($stage == 'loginadmin' && php_sapi_name() == "cli") {
-            return true;
-        }
 
         return $this->executeStage($stage);
     }
