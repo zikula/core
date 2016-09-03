@@ -141,7 +141,7 @@ class AdminController extends AbstractController
                 'gid'         => $item->getGid(),
                 'gtype'       => $item->getGtype(),
                 'gtypelbl'    => $this->__(/** @ignore */$typeLabels[$item->getGtype()]),
-                'description' => (!empty($item->getDescription()) ? $item->getDescription() : ''),
+                'description' => $item->getDescription(),
                 'prefix'      => $item->getPrefix(),
                 'state'       => $item->getState(),
                 'statelbl'    => $this->__(/** @ignore */$stateLabels[$item->getState()]),
