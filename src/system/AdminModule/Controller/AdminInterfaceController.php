@@ -84,9 +84,8 @@ class AdminInterfaceController extends AbstractController
             $requested_cid = $masterRequest->attributes->get('acid');
             $cid = empty($requested_cid) ? $this->getVar('startcategory') : $requested_cid;
         } else {
-            $cid = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodcategory', [
-                'mid' => $caller['info']['id']
-            ]);
+            $moduleRelation = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $caller['info']['id']]);
+            $cid = $moduleRelation->getCid();
         }
         $caller['category'] = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminCategoryEntity')->find($cid);
 
@@ -191,7 +190,7 @@ class AdminInterfaceController extends AbstractController
         }
 
         $variableApi = $this->get('zikula_extensions_module.api.variable');
-        $hasSecurityCenter = ModUtil::available('ZikulaSecurityCenterModule');
+        $hasSecurityCenter = $this->get('kernel')->isBundle('ZikulaSecurityCenterModule');
 
         return $this->render('@ZikulaAdminModule/AdminInterface/securityAnalyzer.html.twig', [
             'security' => [
@@ -259,11 +258,10 @@ class AdminInterfaceController extends AbstractController
         if ($caller['_zkModule'] == 'ZikulaAdminModule' || empty($caller['_zkModule'])) {
             $cid = empty($requestedCid) ? $this->getVar('startcategory') : $requestedCid;
         } else {
-            $cid = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodcategory', [
-                'mid' => $caller['info']['id']
-            ]);
+            $moduleRelation = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $caller['info']['id']]);
+            $cid = $moduleRelation->getCid();
         }
-        $caller['category'] = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminCategoryEntity')->findOneBy(['cid' => $cid]);
+        $caller['category'] = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminCategoryEntity')->find($cid);
         // mode requested
         $mode = $currentRequest->attributes->has('mode') ? $currentRequest->attributes->get('mode') : 'categories';
         $mode = in_array($mode, ['categories', 'modules']) ? $mode : 'categories';

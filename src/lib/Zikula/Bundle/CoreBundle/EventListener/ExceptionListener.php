@@ -66,7 +66,7 @@ class ExceptionListener implements EventSubscriberInterface
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
         // for BC only, remove in 2.0.0
-        $this->handleLegacyExceptionEvent($event);
+//        $this->handleLegacyExceptionEvent($event);
 
         if (!$event->getRequest()->isXmlHttpRequest()) {
             $exception = $event->getException();

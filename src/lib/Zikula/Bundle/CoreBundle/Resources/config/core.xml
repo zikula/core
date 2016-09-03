@@ -28,6 +28,7 @@
         <parameter key="zikula.output_compression_listener.class">Zikula\Bundle\CoreBundle\EventListener\OutputCompressionListener</parameter>
         <parameter key="zikula.strip_front_controller_listener.class">Zikula\Bundle\CoreBundle\EventListener\StripFrontControllerListener</parameter>
         <parameter key="zikula.doctrine.schema_tool.class">Zikula\Core\Doctrine\Helper\SchemaHelper</parameter>
+        <parameter key="zikula_core.internal.bootstrap_helper.class">Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper</parameter>
     </parameters>
 
     <services>
@@ -117,5 +118,11 @@
         <service id="zikula.doctrine.schema_tool" class="%zikula.doctrine.schema_tool.class%" lazy="true">
             <argument type="service" id="doctrine.orm.default_entity_manager" />
         </service>
+
+        <service id="zikula_core.internal.bootstrap_helper" class="%zikula_core.internal.bootstrap_helper.class%">
+            <argument type="service" id="doctrine.dbal.default_connection" />
+            <argument type="service" id="zikula.cache_clearer" />
+        </service>
+
     </services>
 </container>

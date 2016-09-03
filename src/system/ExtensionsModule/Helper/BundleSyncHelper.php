@@ -23,7 +23,6 @@ use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionDependencyRepository;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
-use Zikula\Bundle\CoreBundle\Bundle\Bootstrap;
 use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository;
@@ -71,6 +70,11 @@ class BundleSyncHelper
     private $extensionStateHelper;
 
     /**
+     * @var BootstrapHelper
+     */
+    private $bootstrapHelper;
+
+    /**
      * BundleSyncHelper constructor.
      * @param KernelInterface $kernel
      * @param ExtensionRepository $extensionRepository
@@ -87,7 +91,8 @@ class BundleSyncHelper
         ExtensionDependencyRepository $extensionDependencyRepository,
         TranslatorInterface $translator,
         EventDispatcherInterface $dispatcher,
-        ExtensionStateHelper $extensionStateHelper
+        ExtensionStateHelper $extensionStateHelper,
+        BootstrapHelper $bootstrapHelper
     ) {
         $this->kernel = $kernel;
         $this->extensionRepository = $extensionRepository;
@@ -96,6 +101,7 @@ class BundleSyncHelper
         $this->translator = $translator;
         $this->dispatcher = $dispatcher;
         $this->extensionStateHelper = $extensionStateHelper;
+        $this->bootstrapHelper = $bootstrapHelper;
     }
 
     /**
@@ -111,11 +117,8 @@ class BundleSyncHelper
     {
         $directories = empty($directories) ? ['system', 'modules'] : $directories;
 
-        $boot = new Bootstrap();
-        $helper = new BootstrapHelper($boot->getConnection($this->kernel));
-
         // sync the filesystem and the bundles table
-        $helper->load();
+        $this->bootstrapHelper->load();
 
         // Get all bundles on filesystem
         $bundles = [];

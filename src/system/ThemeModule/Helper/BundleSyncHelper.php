@@ -12,10 +12,10 @@
 namespace Zikula\ThemeModule\Helper;
 
 use Symfony\Component\HttpKernel\KernelInterface;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 use Zikula\ThemeModule\Entity\ThemeEntity;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
-use Zikula\Bundle\CoreBundle\Bundle\Bootstrap;
 use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
 
 /**
@@ -34,14 +34,28 @@ class BundleSyncHelper
     private $themeEntityRepository;
 
     /**
-     * BundleSyncHelper constructor.
-     * @param $kernel
-     * @param $themeEntityRepository
+     * @var BootstrapHelper
      */
-    public function __construct(KernelInterface $kernel, ThemeEntityRepository $themeEntityRepository)
+    private $bootstrapHelper;
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * BundleSyncHelper constructor.
+     * @param KernelInterface $kernel
+     * @param ThemeEntityRepository $themeEntityRepository
+     * @param BootstrapHelper $bootstrapHelper
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(KernelInterface $kernel, ThemeEntityRepository $themeEntityRepository, BootstrapHelper $bootstrapHelper, TranslatorInterface $translator)
     {
         $this->kernel = $kernel;
         $this->themeEntityRepository = $themeEntityRepository;
+        $this->bootstrapHelper = $bootstrapHelper;
+        $this->translator = $translator;
     }
 
     /**
@@ -51,11 +65,8 @@ class BundleSyncHelper
      */
     public function regenerate()
     {
-        $boot = new Bootstrap();
-        $helper = new BootstrapHelper($boot->getConnection($this->kernel));
-
         // sync the filesystem and the bundles table
-        $helper->load();
+        $this->bootstrapHelper->load();
 
         // Get all themes on filesystem
         $filethemes = [];
@@ -90,7 +101,7 @@ class BundleSyncHelper
                 $themeVersionArray['xhtml'] = 1;
             } else {
                 // 2.0-module spec
-                $themeMetaData->setTranslator(\ServiceUtil::get('translator'));
+                $themeMetaData->setTranslator($this->translator);
                 $themeMetaData->setDirectoryFromBundle($bundle);
                 $themeVersionArray = $themeMetaData->getThemeFilteredVersionInfoArray();
             }
@@ -100,7 +111,7 @@ class BundleSyncHelper
             $themeVersionArray['directory'] = implode('/', $directory);
 
             // loads the gettext domain for theme
-            \ZLanguage::bindThemeDomain($bundle->getName());
+//            \ZLanguage::bindThemeDomain($bundle->getName());
 
             // set defaults for all themes
             $themeVersionArray['type'] = 3;

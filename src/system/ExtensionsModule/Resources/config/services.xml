@@ -87,6 +87,7 @@
             <argument type="service" id="translator.default" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="zikula_extensions_module.extension_state_helper" />
+            <argument type="service" id="zikula_core.internal.bootstrap_helper" />
         </service>
 
         <service id="zikula_extensions_module.extension_state_helper" class="%zikula_extensions_module.extension_state_helper.class%" lazy="true">

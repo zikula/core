@@ -15,8 +15,6 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Zikula\Bundle\CoreBundle\Bundle\Bootstrap;
-use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
 
 class BootstrapBundlesCommand extends ContainerAwareCommand
 {
@@ -36,8 +34,7 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $boot = new Bootstrap();
-        $helper = new BootstrapHelper($boot->getConnection($this->getContainer()->get('kernel')));
+        $helper = $this->getContainer()->get('zikula_core.internal.bootstrap_helper');
 
         if ($input->getArgument('create')) {
             $helper->createSchema();

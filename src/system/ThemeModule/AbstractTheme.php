@@ -142,7 +142,7 @@ abstract class AbstractTheme extends AbstractBundle
         $combinedVars = array_merge($defaultVars, $dbVars);
         if (array_keys($dbVars) != array_keys($combinedVars)) {
             // First load of file or vars have been added to the .yml file.
-            \ModUtil::setVars($this->name, $combinedVars);
+            $this->container->get('zikula_extensions_module.api.variable')->setAll($this->name, $combinedVars);
         }
 
         return $combinedVars;
