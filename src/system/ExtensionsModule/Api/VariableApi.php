@@ -11,6 +11,8 @@
 
 namespace Zikula\ExtensionsModule\Api;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionVarRepositoryInterface;
@@ -48,14 +50,22 @@ class VariableApi
     private $variables;
 
     /**
+     * @var Request
+     */
+    private $request;
+
+    /**
      * ExtensionVar constructor.
      * @param ExtensionVarRepositoryInterface $repository
      * @param KernelInterface $kernel
+     * @param RequestStack $requestStack
+     * @param array $multisitesParameters
      */
-    public function __construct(ExtensionVarRepositoryInterface $repository, KernelInterface $kernel, array $multisitesParameters)
+    public function __construct(ExtensionVarRepositoryInterface $repository, KernelInterface $kernel, RequestStack $requestStack, array $multisitesParameters)
     {
         $this->repository = $repository;
         $this->kernel = $kernel;
+        $this->request = $requestStack->getMasterRequest();
         $this->protectedSystemVars = $multisitesParameters['protected.systemvars'];
     }
 
@@ -92,8 +102,7 @@ class VariableApi
             }
         }
         // reformat localized variables to primary key for certain system vars.
-        $request = $this->kernel->getContainer()->get('request_stack')->getMasterRequest();
-        $lang = isset($request) ? $request->getLocale() : 'en'; //\ZLanguage::getLanguageCode(); //@todo
+        $lang = !empty($this->request) ? $this->request->getLocale() : 'en'; //\ZLanguage::getLanguageCode(); //@todo
         $items = ['sitename', 'slogan', 'metakeywords', 'defaultpagetitle', 'defaultmetadescription'];
         foreach ($items as $item) {
             if (isset($this->variables[self::CONFIG][$item . '_en'])) {

@@ -53,6 +53,7 @@
         <service id="zikula_extensions_module.api.variable" class="%zikula_extensions_module.api.variable.class%">
             <argument type="service" id="zikula_extensions_module.extension_var_repository" />
             <argument type="service" id="kernel" />
+            <argument type="service" id="request_stack" />
             <argument>%multisites%</argument>
         </service>
 
