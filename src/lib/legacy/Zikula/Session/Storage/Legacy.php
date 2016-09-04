@@ -30,12 +30,12 @@ class Zikula_Session_Storage_Legacy extends NativeSessionStorage
 
     /**
      * Zikula_Session_Storage_Legacy constructor.
+     * @param VariableApi $variableApi
      * @param array $options
      * @param null $handler
      * @param MetadataBag $metaBag
-     * @param VariableApi $variableApi
      */
-    public function __construct(array $options = array(), $handler = null, MetadataBag $metaBag = null, VariableApi $variableApi)
+    public function __construct(VariableApi $variableApi, array $options = array(), $handler = null, MetadataBag $metaBag = null)
     {
         parent::__construct($options, $handler, $metaBag);
         $this->variableApi = $variableApi;

@@ -68,7 +68,7 @@ class ConfigController extends AbstractController
                 'displayname' => $adminModule['displayname'],
                 'name' => $adminModule['name']
             ];
-            $dataValues['modulecategory' . $adminModule['name']] = (isset($category)) ? $category->getCid(): $this->getVar('defaultcategory');
+            $dataValues['modulecategory' . $adminModule['name']] = (isset($category)) ? $category->getCid() : $this->getVar('defaultcategory');
         }
         $themes = $this->get('zikula_theme_module.theme_entity.repository')->get(ThemeEntityRepository::FILTER_ADMIN);
 

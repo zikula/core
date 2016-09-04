@@ -16,8 +16,6 @@ use Gedmo\Blameable\BlameableListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use UserUtil;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\PermissionsModule\Api\PermissionApi;
 
