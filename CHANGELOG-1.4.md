@@ -10,6 +10,7 @@ CHANGELOG - ZIKULA 1.4.x
  - Fixes:
 
  - Features:
+   - Added mailProtect filter for safe display of email addresses (#3041).
 
  - Core-2.0 Features:
 
