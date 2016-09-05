@@ -8,6 +8,7 @@ CHANGELOG - ZIKULA 1.4.x
  - Deprecated:
 
  - Fixes:
+   - Fixed display of checkboxes in topnav login blocks and authentication method selector (#3044).
 
  - Features:
 
