@@ -31,6 +31,9 @@
             <call method="setConnection">
                 <argument type="service" id="doctrine.dbal.default_connection" />
             </call>
+            <call method="setVariableApi">
+                <argument type="service" id="zikula_extensions_module.api.variable" />
+            </call>
         </service>
     </services>
 </container>

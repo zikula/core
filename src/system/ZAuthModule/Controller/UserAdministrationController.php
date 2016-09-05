@@ -146,7 +146,7 @@ class UserAdministrationController extends AbstractController
             if ($form->get('submit')->isClicked()) {
                 $mapping = $form->getData();
                 $passToSend = $form['sendpass']->getData() ? $mapping->getPass() : '';
-                $authMethodName = ($mapping->getMethod() == ZAuthConstant::AUTHENTICATION_METHOD_EITHER) ? ZAuthConstant::AUTHENTICATION_METHOD_UNAME : $mapping->setMethod();
+                $authMethodName = ($mapping->getMethod() == ZAuthConstant::AUTHENTICATION_METHOD_EITHER) ? ZAuthConstant::AUTHENTICATION_METHOD_UNAME : $mapping->getMethod();
                 $authMethod = $this->get('zikula_users_module.internal.authentication_method_collector')->get($authMethodName);
                 $user = new UserEntity();
                 $user->merge($mapping->getUserEntityData());

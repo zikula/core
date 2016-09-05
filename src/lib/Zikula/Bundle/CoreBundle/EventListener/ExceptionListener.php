@@ -69,8 +69,8 @@ class ExceptionListener implements EventSubscriberInterface
 
         if (!$event->getRequest()->isXmlHttpRequest()) {
             $exception = $event->getException();
-            $userLoggedIn = $this->currentUserApi->isLoggedIn();
             do {
+                $userLoggedIn = $this->currentUserApi->isLoggedIn();
                 if ($exception instanceof AccessDeniedException) {
                     $this->handleAccessDeniedException($event, $userLoggedIn, $exception->getMessage());
                 } elseif ($exception instanceof RouteNotFoundException) {

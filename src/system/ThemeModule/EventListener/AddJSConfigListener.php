@@ -91,6 +91,7 @@ class AddJSConfigListener implements EventSubscriberInterface
         if (\System::isInstalling()) {
             return;
         }
+        $session = $event->getRequest()->hasSession() ? $event->getRequest()->getSession() : null;
 
         $config = [
             'entrypoint' => $this->variableApi->get(VariableApi::CONFIG, 'entrypoint', 'index.php'),
@@ -98,7 +99,7 @@ class AddJSConfigListener implements EventSubscriberInterface
             'baseURI' => $event->getRequest()->getBasePath(),
             'ajaxtimeout' => (int)$this->variableApi->get(VariableApi::CONFIG, 'ajaxtimeout', 5000),
             'lang' => $event->getRequest()->getLocale(),
-            'sessionName' => $event->getRequest()->getSession()->getName(),
+            'sessionName' => isset($session) ? $session->getName() : '_zikula',
             'uid' => (int)$this->currentUserApi->get('uid')
         ];
 

@@ -88,6 +88,7 @@
             <argument type="service" id="zikula_users_module.current_user" />
             <argument type="service" id="templating" />
             <argument type="service" id="form.factory" />
+            <argument type="service" id="router" />
             <tag name="kernel.event_subscriber" />
         </service>
 

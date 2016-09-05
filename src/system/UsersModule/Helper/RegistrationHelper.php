@@ -16,6 +16,7 @@ use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\UsersModule\Api\CurrentUserApi;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
@@ -43,6 +44,11 @@ class RegistrationHelper
     private $userRepository;
 
     /**
+     * @var GroupRepositoryInterface
+     */
+    private $groupRepository;
+
+    /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
@@ -52,18 +58,22 @@ class RegistrationHelper
      * @param VariableApi $variableApi
      * @param CurrentUserApi $currentUserApi
      * @param UserRepositoryInterface $userRepository
+     * @param GroupRepositoryInterface $groupRepository
      * @param EventDispatcherInterface $eventDispatcher
+     * @param TranslatorInterface $translator
      */
     public function __construct(
         VariableApi $variableApi,
         CurrentUserApi $currentUserApi,
         UserRepositoryInterface $userRepository,
+        GroupRepositoryInterface $groupRepository,
         EventDispatcherInterface $eventDispatcher,
         TranslatorInterface $translator
     ) {
         $this->variableApi = $variableApi;
         $this->currentUserApi = $currentUserApi;
         $this->userRepository = $userRepository;
+        $this->groupRepository = $groupRepository;
         $this->eventDispatcher = $eventDispatcher;
         $this->setTranslator($translator);
     }
@@ -102,7 +112,6 @@ class RegistrationHelper
         } else {
             // Everything is in order for a full user record
             $userEntity->setActivated(UsersConstant::ACTIVATED_ACTIVE);
-            $this->userRepository->persistAndFlush($userEntity);
 
             // Add user to default group @todo refactor with Groups module
             $defaultGroup = $this->variableApi->get('ZikulaGroupsModule', 'defaultgroup', false);
@@ -110,11 +119,10 @@ class RegistrationHelper
                 throw new \RuntimeException($this->__('Warning! The user account was created, but there was a problem adding the account to the default group.'));
             }
             if (!$userEntity->getGroups()->containsKey($defaultGroup)) {
-                $groupAdded = \ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'adduser', ['gid' => $defaultGroup, 'uid' => $userEntity->getUid()]);
-                if (!$groupAdded) {
-                    throw new \RuntimeException($this->__('Warning! The user account was created, but there was a problem adding the account to the default group.'));
-                }
+                $defaultGroupEntity = $this->groupRepository->find($defaultGroup);
+                $userEntity->addGroup($defaultGroupEntity);
             }
+            $this->userRepository->persistAndFlush($userEntity);
 
             // ATTENTION: This is the proper place for the item-create hook, not when a pending
             // registration is created. It is not a "real" record until now, so it wasn't really

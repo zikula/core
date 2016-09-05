@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xml:lang="{{ app.request.locale }}" dir="ltr">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset={{ app.request.encodings }}" />
+        <meta http-equiv="Content-Type" content="text/html; charset={{ app.request.encodings.0 }}" />
         <title>{{ __('The site is currently off-line.') }}</title>
         <base href="{{ app.request.baseUrl }}" />
         <style type="text/css">
@@ -178,11 +178,13 @@
                             </a>
                         </p>
                         <div id="login">
-                            {{ form }}
+                            {{ form_start(form) }}
+                            {{ form_widget(form) }}
+                            {{ form_end(form) }}
                         </div>
                     {% endif %}
                     <p>
-                        <a href="http://zikula.org"><img src="{{ zasset('@CoreBundle:images/zk-power.png') }}" alt="{{ __('Proudly powered by Zikula') }}" title="{{ __('Proudly powered by Zikula') }}" width="96" height="30" /></a>
+                        <a href="http://zikula.org"><img src="{{ asset('bundles/core/images/zk-power.png') }}" alt="{{ __('Proudly powered by Zikula') }}" title="{{ __('Proudly powered by Zikula') }}" width="96" height="30" /></a>
                     </p>
                 </div>
             </div>
