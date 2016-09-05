@@ -15,10 +15,10 @@ require 'lib/bootstrap.php';
 
 $request = Request::createFromGlobals();
 
-//$core->init(Zikula_Core::STAGE_ALL, $request);
+$core->init(Zikula_Core::STAGE_ALL, $request);
 
 // this event for BC only. remove in 2.0.0
-//$core->getDispatcher()->dispatch('frontcontroller.predispatch', new \Zikula\Core\Event\GenericEvent());
+$core->getDispatcher()->dispatch('frontcontroller.predispatch', new \Zikula\Core\Event\GenericEvent());
 
 $response = $kernel->handle($request);
 $response->send();

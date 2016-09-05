@@ -149,7 +149,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
 
         if (null !== $bundle) {
             $this->name = $bundle->getName();
-            $this->domain = $bundle->getTranslationDomain(); // ZLanguage::getModuleDomain($this->name);
+            $this->domain = $bundle->getTranslationDomain();
             $this->baseDir = $bundle->getPath();
         } else {
             $separator = (false === strpos(get_class($this), '_')) ? '\\' : '_';
@@ -161,7 +161,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
                 $this->libBaseDir = realpath("{$this->baseDir}/lib/" . $this->name);
             }
             if ($baseDir == 'modules') {
-                $this->domain = strtolower('module_'.$this->name); //ZLanguage::getModuleDomain($this->name);
+                $this->domain = strtolower('module_'.$this->name);
             }
         }
     }

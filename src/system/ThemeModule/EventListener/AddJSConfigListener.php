@@ -51,6 +51,11 @@ class AddJSConfigListener implements EventSubscriberInterface
     private $headers;
 
     /**
+     * @var string
+     */
+    private $defaultSessionName;
+
+    /**
      * @var string|bool
      */
     private $compat;
@@ -62,6 +67,7 @@ class AddJSConfigListener implements EventSubscriberInterface
      * @param EngineInterface $templating
      * @param ParameterBag $pageVars
      * @param AssetBag $headers
+     * @param string $defaultSessionName
      * @param bool $compat
      */
     public function __construct(
@@ -70,6 +76,7 @@ class AddJSConfigListener implements EventSubscriberInterface
         EngineInterface $templating,
         ParameterBag $pageVars,
         AssetBag $headers,
+        $defaultSessionName = '_zsid',
         $compat = false
     ) {
         $this->variableApi = $variableApi;
@@ -77,6 +84,7 @@ class AddJSConfigListener implements EventSubscriberInterface
         $this->templating = $templating;
         $this->pageVars = $pageVars;
         $this->headers = $headers;
+        $this->defaultSessionName = $defaultSessionName;
         $this->compat = $compat;
     }
 
@@ -99,7 +107,7 @@ class AddJSConfigListener implements EventSubscriberInterface
             'baseURI' => $event->getRequest()->getBasePath(),
             'ajaxtimeout' => (int)$this->variableApi->get(VariableApi::CONFIG, 'ajaxtimeout', 5000),
             'lang' => $event->getRequest()->getLocale(),
-            'sessionName' => isset($session) ? $session->getName() : '_zikula',
+            'sessionName' => isset($session) ? $session->getName() : $this->defaultSessionName,
             'uid' => (int)$this->currentUserApi->get('uid')
         ];
 
