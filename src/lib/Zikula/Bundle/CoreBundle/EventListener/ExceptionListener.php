@@ -57,9 +57,6 @@ class ExceptionListener implements EventSubscriberInterface
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
-        // for BC only, remove in 2.0.0
-        $this->handleLegacyExceptionEvent($event);
-
         if (!$event->getRequest()->isXmlHttpRequest()) {
             $exception = $event->getException();
             $userLoggedIn = UserUtil::isLoggedIn();
@@ -125,38 +122,6 @@ class ExceptionListener implements EventSubscriberInterface
                 $event->getRequest()->getSession()->getFlashBag()->add('error', __f('You might try %s for the extension in question.', $link));
             } catch (RouteNotFoundException $e) {
             }
-        }
-    }
-
-    /**
-     * Dispatch and handle the legacy event `frontcontroller.exception`
-     *
-     * @deprecated removal scheduled for 2.0.0
-     *
-     * @param GetResponseForExceptionEvent $event
-     */
-    private function handleLegacyExceptionEvent(GetResponseForExceptionEvent $event)
-    {
-        $modinfo = \ModUtil::getInfoFromName($event->getRequest()->attributes->get('_zkModule'));
-        $legacyEvent = new \Zikula\Core\Event\GenericEvent($event->getException(),
-            [
-                'modinfo' => $modinfo,
-                'type' => $event->getRequest()->attributes->get('_zkType'),
-                'func' => $event->getRequest()->attributes->get('_zkFunc'),
-                'arguments' => $event->getRequest()->attributes->all()
-            ]
-        );
-        $this->dispatcher->dispatch('frontcontroller.exception', $legacyEvent);
-        if ($legacyEvent->isPropagationStopped()) {
-            $event->getRequest()->getSession()->getFlashBag()->add('error', __f('The \'%1$s\' module returned an error in \'%2$s\'. (%3$s)', [
-                $event->getRequest()->attributes->get('_zkModule'),
-                $event->getRequest()->attributes->get('_zkFunc'),
-                $legacyEvent->getArgument('message')
-            ]), $legacyEvent->getArgument('httpcode'));
-            $route = $event->getRequest()->server->get('referrer');
-            $response = new RedirectResponse($route);
-            $event->setResponse($response);
-            $event->stopPropagation();
         }
     }
 }
