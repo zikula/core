@@ -31,7 +31,7 @@
         }
     ],
     "require": {
-        "php": ">=5.4.1",
+        "php": ">=5.5.9",
         "composer/installers": "1.0.*",
         "robloach/component-installer": "*",
 
@@ -48,7 +48,7 @@
         "sensio/generator-bundle": "3.0.*",
         "elao/web-profiler-extra-bundle" : "~2.3.3",
         "matthiasnoback/symfony-service-definition-validator": "1.2.*",
-        "matthiasnoback/symfony-console-form": "1.*",
+        "matthiasnoback/symfony-console-form": "2.*",
         "zikula/generator-bundle": "dev-master",
 
 
@@ -115,7 +115,7 @@
         "bin-dir": "bin",
         "component-dir": "src/web",
         "platform": {
-            "php": "5.4.2"
+            "php": "5.5.9"
         }
     },
     "extra": {
