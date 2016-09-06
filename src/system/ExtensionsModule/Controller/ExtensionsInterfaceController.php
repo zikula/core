@@ -35,6 +35,7 @@ class ExtensionsInterfaceController extends AbstractController
         $currentRequest = $this->get('request_stack')->getCurrentRequest();
         $caller = $this->get('request_stack')->getMasterRequest()->attributes->all();
         $caller['info'] = $this->get('zikula_extensions_module.extension_repository')->get($caller['_zkModule']);
+        $adminImagePath = $this->get('zikula_core.common.theme.asset_helper')->resolve('@' . $caller['_zkModule'] . ':images/admin.png');
 
         return $this->render("@ZikulaExtensionsModule/ExtensionsInterface/header.html.twig", [
             'caller' => $caller,
@@ -44,7 +45,7 @@ class ExtensionsInterfaceController extends AbstractController
             'insertflashes' => (true == $currentRequest->attributes->get('insertflashes')) ? $currentRequest->attributes->get('insertflashes') : false,
             'menufirst' => (true == $currentRequest->attributes->get('menufirst')) ? $currentRequest->attributes->get('menufirst') : false,
             'type' => ('admin' == $currentRequest->attributes->get('type')) ? $currentRequest->attributes->get('type') : 'user',
-            'image' => (true == $currentRequest->attributes->get('image')) ? \ModUtil::getModuleImagePath($caller['_zkModule']) : false,
+            'image' => (true == $currentRequest->attributes->get('image')) ? $adminImagePath : false,
         ]);
     }
 

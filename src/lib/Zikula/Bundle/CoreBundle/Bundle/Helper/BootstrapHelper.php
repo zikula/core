@@ -15,6 +15,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Table;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
+use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Core\AbstractBundle;
 
 class BootstrapHelper
@@ -24,9 +25,15 @@ class BootstrapHelper
      */
     private $conn;
 
-    public function __construct(Connection $conn)
+    /**
+     * @var CacheClearer
+     */
+    private $cacheClearer;
+
+    public function __construct(Connection $conn, CacheClearer $cacheClearer)
     {
         $this->conn = $conn;
+        $this->cacheClearer = $cacheClearer;
     }
 
     public function load()
@@ -85,9 +92,7 @@ class BootstrapHelper
         }
 
         // clear the cache
-        /** @var $cacheClearer \Zikula\Bundle\CoreBundle\CacheClearer */
-        $cacheClearer = \ServiceUtil::getManager()->get('zikula.cache_clearer');
-        $cacheClearer->clear('symfony.config');
+        $this->cacheClearer->clear('symfony.config');
     }
 
     private function updateState($id, $state = AbstractBundle::STATE_DISABLED)

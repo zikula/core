@@ -11,14 +11,14 @@
 
 namespace Zikula\AdminModule\Controller;
 
-use ModUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
+use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 
 /**
  * Class ConfigController
@@ -33,7 +33,7 @@ class ConfigController extends AbstractController
      *
      * @param Request $request
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
-     * @return Response
+     * @return array|RedirectResponse
      */
     public function configAction(Request $request)
     {
@@ -42,12 +42,11 @@ class ConfigController extends AbstractController
         }
 
         // get admin capable mods
-        // TODO replace by Zikula\ExtensionsModule\Api\CapabilityApi for 2.0
-        $adminModules = ModUtil::getAdminMods();
+        $adminModules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf('admin');
 
         // Get all categories
         $categories = [];
-        $items = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getall');
+        $items = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminCategoryEntity')->findBy([], ['sortorder' => 'ASC']);
         foreach ($items as $item) {
             if ($this->hasPermission('ZikulaAdminModule::', $item['name'] . '::' . $item['cid'], ACCESS_READ)) {
                 $categories[$item['name']] = $item['cid'];
@@ -63,26 +62,22 @@ class ConfigController extends AbstractController
         $modules = [];
         foreach ($adminModules as $adminModule) {
             // Get the category assigned to this module
-            $category = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodcategory',
-                    ['mid' => ModUtil::getIdFromName($adminModule['name'])]);
-
-            if (false === $category) {
-                // it's not set, so we use the default category
-                $category = $this->getVar('defaultcategory');
-            }
+            $category = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $adminModule->getId()]);
             // output module category selection
             $modules[] = [
                 'displayname' => $adminModule['displayname'],
                 'name' => $adminModule['name']
             ];
-            $dataValues['modulecategory' . $adminModule['name']] = $category;
+            $dataValues['modulecategory' . $adminModule['name']] = (isset($category)) ? $category->getCid() : $this->getVar('defaultcategory');
         }
+        $themes = $this->get('zikula_theme_module.theme_entity.repository')->get(ThemeEntityRepository::FILTER_ADMIN);
 
         $form = $this->createForm('Zikula\AdminModule\Form\Type\ConfigType',
             $dataValues, [
                 'translator' => $this->get('translator.default'),
                 'categories' => $categories,
-                'modules' => $modules
+                'modules' => $modules,
+                'themes' => $themes
             ]
         );
 
@@ -103,18 +98,7 @@ class ConfigController extends AbstractController
                     if (!$category) {
                         continue;
                     }
-
-                    // Add the module to the category
-                    $result = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'addmodtocategory', [
-                        'module' => $moduleName,
-                        'category' => $category
-                    ]);
-
-                    if (false == $result) {
-                        /** @var $cat \Zikula\AdminModule\Entity\AdminCategoryEntity */
-                        $cat = ModUtil::apiFunc($this->name, 'admin', 'getCategory', ['cid' => $category]);
-                        $this->addFlash('error', $this->__f('Error! Could not add module %module to module category %category.', ['%module' => $moduleName, '%category' => $cat->getName()]));
-                    }
+                    $this->get('zikula_admin_module.helper.admin_module_helper')->setAdminModuleCategory($adminModule, $category);
                 }
 
                 $this->addFlash('status', $this->__('Done! Module configuration updated.'));

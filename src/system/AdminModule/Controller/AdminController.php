@@ -13,14 +13,13 @@ namespace Zikula\AdminModule\Controller;
 
 use ModUtil;
 use System;
-use Zikula_Core;
+use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
@@ -63,7 +62,7 @@ class AdminController extends AbstractController
      *
      * @param integer $startnum
      *
-     * @return Response symfony response object
+     * @return array
      *
      * @throws AccessDeniedException Thrown if the user doesn't have edit permission to the module
      */
@@ -76,22 +75,19 @@ class AdminController extends AbstractController
         $itemsPerPage = $this->getVar('itemsperpage');
 
         $categories = [];
-        $items = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getall', [
-            'startnum' => $startnum,
-            'numitems' => $itemsPerPage
-        ]);
+        /** @var \Doctrine\ORM\Tools\Pagination\Paginator $items */
+        $items = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminCategoryEntity')->getPagedCategories(['sortorder' => 'ASC'], $itemsPerPage, $startnum);
+
         foreach ($items as $item) {
             if ($this->hasPermission('ZikulaAdminModule::', $item['name'] . '::' . $item['cid'], ACCESS_READ)) {
                 $categories[] = $item;
             }
         }
 
-        $amountOfItems = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'countitems');
-
         return [
             'categories' => $categories,
             'pager' => [
-                'amountOfItems' => $amountOfItems,
+                'amountOfItems' => $items->count(),
                 'itemsPerPage' => $itemsPerPage
             ]
         ];
@@ -99,7 +95,6 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/newcategory")
-     * @Method("GET")
      * @Theme("admin")
      * @Template
      *
@@ -109,7 +104,7 @@ class AdminController extends AbstractController
      *
      * @param Request $request
      *
-     * @return Response symfony response object
+     * @return array|RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have permission to add a category
      */
@@ -119,29 +114,22 @@ class AdminController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm('Zikula\AdminModule\Form\Type\CreateCategoryType', [], [
+        $form = $this->createForm('Zikula\AdminModule\Form\Type\CreateCategoryType', new AdminCategoryEntity(), [
             'translator' => $this->get('translator.default')
         ]);
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {
-                $formData = $form->getData();
-
-                // Security check
-                if (!$this->hasPermission('ZikulaAdminModule::Category', $formData['name'] . '::', ACCESS_ADD)) {
-                    throw new AccessDeniedException();
-                }
-
-                $cid = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'create', $formData);
-                if (is_numeric($cid)) {
-                    $this->addFlash('status', $this->__('Done! Created new category.'));
-                }
+                $adminCategory = $form->getData();
+                $this->get('doctrine')->getManager()->persist($adminCategory);
+                $this->get('doctrine')->getManager()->flush();
+                $this->addFlash('status', $this->__('Done! Created new category.'));
             }
             if ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
             if ($form->get('help')->isClicked()) {
-                return $this->redirect($this->generateUrl('zikulaadminmodule_admin_help') . '#new');
+                return $this->redirect($this->generateUrl('zikulaadminmodule_admin_view') . '#new');
             }
 
             return $this->redirectToRoute('zikulaadminmodule_admin_view');
@@ -159,23 +147,14 @@ class AdminController extends AbstractController
      *
      * Displays a modify category form
      *
-     * Displays a form for the user to edit the details of a category. Data is supplied to @see this::updateAction()
-     *
      * @param Request $request
      *
-     * @return Response symfony response object
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have permission to edit the category
-     * @throws NotFoundHttpException Thrown if the requested category cannot be found
+     * @param AdminCategoryEntity $category
+     * @return array|RedirectResponse
      */
-    public function modifyAction(Request $request, $cid)
+    public function modifyAction(Request $request, AdminCategoryEntity $category)
     {
-        $category = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', ['cid' => $cid]);
-        if (empty($category)) {
-            throw new NotFoundHttpException($this->__('Error! No such category found.'));
-        }
-
-        if (!$this->hasPermission('ZikulaAdminModule::Category', $category['name'] . '::' . $cid, ACCESS_EDIT)) {
+        if (!$this->hasPermission('ZikulaAdminModule::Category', $category['name'] . '::' . $category->getCid(), ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
@@ -185,16 +164,12 @@ class AdminController extends AbstractController
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {
-                $formData = $form->getData();
-
-                if (!$this->hasPermission('ZikulaAdminModule::Category', $formData['name'] . '::' . $formData['cid'], ACCESS_EDIT)) {
+                $category = $form->getData();
+                if (!$this->hasPermission('ZikulaAdminModule::Category', $category->getName() . '::' . $category->getCid(), ACCESS_EDIT)) {
                     throw new AccessDeniedException();
                 }
-
-                $update = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'update', $formData);
-                if ($update) {
-                    $this->addFlash('status', $this->__('Done! Saved category.'));
-                }
+                $this->get('doctrine')->getManager()->flush();
+                $this->addFlash('status', $this->__('Done! Saved category.'));
             }
             if ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
@@ -212,36 +187,19 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/deletecategory")
+     * @Route("/deletecategory/{cid}", requirements={"cid" = "^[1-9]\d*$"})
      * @Theme("admin")
      * @Template
      *
-     * delete item
+     * delete an admin category
      *
-     * This is a standard function that is called whenever an administrator
-     * wishes to delete a current module item.
-     *
-     * @return Response Symfony response object if confirmation is null
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have permission to delete the category
-     * @throws NotFoundHttpException Thrown if the category cannot be found
+     * @param Request $request
+     * @param AdminCategoryEntity $category
+     * @return array|RedirectResponse
      */
-    public function deleteAction(Request $request)
+    public function deleteAction(Request $request, AdminCategoryEntity $category)
     {
-        // check where to get the parameters from for this dual purpose controller
-        $cid = null;
-        if ($request->isMethod('GET')) {
-            $cid = $request->query->getDigits('cid', null);
-        } elseif ($request->isMethod('POST')) {
-            $cid = $request->request->getDigits('cid', null);
-        }
-
-        $category = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', ['cid' => $cid]);
-        if (empty($category)) {
-            throw new NotFoundHttpException($this->__('Error! No such category found.'));
-        }
-
-        if (!$this->hasPermission('ZikulaAdminModule::Category', "$category[name]::$cid", ACCESS_DELETE)) {
+        if (!$this->hasPermission('ZikulaAdminModule::Category', $category->getName() . "::" . $category->getCid(), ACCESS_DELETE)) {
             throw new AccessDeniedException();
         }
 
@@ -251,17 +209,10 @@ class AdminController extends AbstractController
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('delete')->isClicked()) {
-                $formData = $form->getData();
-
-                try {
-                    // delete category
-                    $delete = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'delete', ['cid' => $formData['cid']]);
-                    if ($delete) {
-                        $this->addFlash('status', $this->__('Done! Category deleted.'));
-                    }
-                } catch (\RuntimeException $e) {
-                    $this->addFlash('error', $e->getMessage());
-                }
+                $category = $form->getData();
+                $this->get('doctrine')->getManager()->remove($category);
+                $this->get('doctrine')->getManager()->flush();
+                $this->addFlash('status', $this->__('Done! Category deleted.'));
             }
             if ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
@@ -543,76 +494,6 @@ class AdminController extends AbstractController
         }
 
         return [];
-    }
-
-    /**
-     * Zikula curl
-     *
-     * This function is internal for the time being and may be extended to be a proper library
-     * or find an alternative solution later.
-     *
-     * @param  string $url
-     * @param  int    $timeout default=5
-     *
-     * @return string|bool false if no url handling functions are present or url string
-     */
-    private function _zcurl($url, $timeout = 5)
-    {
-        $urlArray = parse_url($url);
-        $data = '';
-        $userAgent = 'Zikula/' . Zikula_Core::VERSION_NUM;
-        $ref = System::getBaseUrl();
-        $port = ($urlArray['scheme'] == 'https') ? 443 : 80;
-        if (ini_get('allow_url_fopen')) {
-            // handle SSL connections
-            $path_query = (isset($urlArray['query']) ? $urlArray['path'] . $urlArray['query'] : $urlArray['path']);
-            $host = ($port == 443 ? "ssl://$urlArray[host]" : $urlArray['host']);
-            $fp = @fsockopen($host, $port, $errno, $errstr, $timeout);
-            if (!$fp) {
-                return false;
-            }
-
-            $out = "GET $path_query? HTTP/1.1\r\n";
-            $out .= "User-Agent: $userAgent\r\n";
-            $out .= "Referer: $ref\r\n";
-            $out .= "Host: $urlArray[host]\r\n";
-            $out .= "Connection: Close\r\n\r\n";
-            fwrite($fp, $out);
-            while (!feof($fp)) {
-                $data .= fgets($fp, 1024);
-            }
-            fclose($fp);
-            $dataArray = explode("\r\n\r\n", $data);
-
-            return $dataArray[1];
-        } elseif (function_exists('curl_init')) {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-            curl_setopt($ch, CURLOPT_URL, "$url?");
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
-            curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
-            curl_setopt($ch, CURLOPT_REFERER, $ref);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            if (!ini_get('safe_mode') && !ini_get('open_basedir')) {
-                // This option doesnt work in safe_mode or with open_basedir set in php.ini
-                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-            }
-            curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-            $data = curl_exec($ch);
-            if (!$data && $port = 443) {
-                // retry non ssl
-                $url = str_replace('https://', 'http://', $url);
-                curl_setopt($ch, CURLOPT_URL, "$url?");
-                $data = @curl_exec($ch);
-            }
-            //$headers = curl_getinfo($ch);
-            curl_close($ch);
-
-            return $data;
-        } else {
-            return false;
-        }
     }
 
     /**

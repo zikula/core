@@ -19,6 +19,13 @@ use Zikula\Core\AbstractExtensionInstaller;
 class PageLockModuleInstaller extends AbstractExtensionInstaller
 {
     /**
+     * @var array
+     */
+    private $entities = [
+        'Zikula\PageLockModule\Entity\PageLockEntity'
+    ];
+
+    /**
      * Initialise the module.
      *
      * @return boolean True if initialisation successful, false otherwise
@@ -26,9 +33,7 @@ class PageLockModuleInstaller extends AbstractExtensionInstaller
     public function install()
     {
         try {
-            $this->schemaTool->create([
-                'Zikula\PageLockModule\Entity\PageLockEntity',
-            ]);
+            $this->schemaTool->create($this->entities);
         } catch (\Exception $e) {
             return false;
         }
@@ -64,12 +69,8 @@ class PageLockModuleInstaller extends AbstractExtensionInstaller
     public function uninstall()
     {
         try {
-            $this->schemaTool->drop([
-                'Zikula\PageLockModule\Entity\PageLockEntity'
-            ]);
+            $this->schemaTool->drop($this->entities);
         } catch (\PDOException $e) {
-            $this->addFlash('error', $e->getMessage());
-
             return false;
         }
 

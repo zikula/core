@@ -16,7 +16,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Bundle\CoreBundle\Bundle\Bootstrap as CoreBundleBootstrap;
-use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper as CoreBundleBootstrapHelper;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Api\VariableApi;
@@ -138,7 +137,7 @@ class AjaxInstallController extends AbstractController
     {
         $kernel = $this->container->get('kernel');
         $boot = new CoreBundleBootstrap();
-        $helper = new CoreBundleBootstrapHelper($boot->getConnection($kernel));
+        $helper = $this->container->get('zikula_core.internal.bootstrap_helper');
         $helper->createSchema();
         $helper->load();
         $bundles = [];

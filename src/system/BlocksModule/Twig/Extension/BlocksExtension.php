@@ -98,14 +98,14 @@ class BlocksExtension extends \Twig_Extension
 
     /**
      * Show all the blocks in a position by name.
-     * @todo at Core-2.0 remove all $legacy use and other checks
      * @param string $positionName
      * @param bool|true $implode
      * @return array|string
      */
     public function showBlockPosition($positionName, $implode = true)
     {
-        if (!\ModUtil::available('ZikulaBlocksModule')) { // @TODO refactor to Core-2.0
+        $instance = $this->extensionApi->getModuleInstanceOrNull('ZikulaBlocksModule');
+        if (!isset($instance)) {
             return "Blocks not currently available.";
         }
         $blocks = $this->blockApi->getBlocksByPosition($positionName);
@@ -125,11 +125,13 @@ class BlocksExtension extends \Twig_Extension
      */
     public function showBlock(BlockEntity $block, $positionName = '')
     {
-        if (!\ModUtil::available('ZikulaBlocksModule')) { // @TODO refactor to Core-2.0
+        $blocksModuleInstance = $this->extensionApi->getModuleInstanceOrNull('ZikulaBlocksModule');
+        if (!isset($blocksModuleInstance)) {
             return "Blocks not currently available.";
         }
         // Check if providing module not available, if block is inactive, if block filter prevents display.
-        if (!\ModUtil::available($block->getModule()->getName()) // @todo replace ModUtil in Core-2.0
+        $moduleInstance = $this->extensionApi->getModuleInstanceOrNull($block->getModule()->getName());
+        if (!isset($moduleInstance)
             || (!$block->getActive())
             || (!$this->blockFilter->isDisplayable($block))) {
             return '';
@@ -166,8 +168,7 @@ class BlocksExtension extends \Twig_Extension
             $content = $blockInstance->display($args);
         }
         if (!$legacy) {
-            if (null !== $moduleInstance = $this->extensionApi->getModuleInstanceOrNull($block->getModule()->getName())) {
-                // @todo can remove check for null at Core-2.0
+            if (isset($moduleInstance)) {
                 // add module stylesheet to page - legacy blocks load stylesheets automatically on ModUtil::load()
                 $moduleInstance->addStylesheet();
             }

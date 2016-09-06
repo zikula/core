@@ -45,13 +45,16 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
 
     private $params;
 
-    public function __construct(AssetBag $jsAssetBag, AssetBag $cssAssetBag, RouterInterface $router, Engine $themeEngine, $rootdir)
+    private $compatLayer;
+
+    public function __construct(AssetBag $jsAssetBag, AssetBag $cssAssetBag, RouterInterface $router, Engine $themeEngine, $rootdir, $compatLayer)
     {
         $this->jsAssetBag = $jsAssetBag;
         $this->cssAssetBag = $cssAssetBag;
         $this->router = $router;
         $this->themeEngine = $themeEngine;
         $this->rootdir = $rootdir;
+        $this->compatLayer = $compatLayer;
     }
 
     public function setParameters(ContainerInterface $container)
@@ -95,7 +98,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
             ]
         );
         // Add legacy stylesheet
-        if (\System::isLegacyMode('1.4.0')) {
+        if ((is_bool($this->compatLayer) && $this->compatLayer) || (!is_bool($this->compatLayer) && version_compare($this->compatLayer, '1.4.0', '<='))) {
             $this->cssAssetBag->add(
                 [
                     $basePath . '/style/legacy.css' => 2,

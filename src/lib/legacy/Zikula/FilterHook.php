@@ -19,7 +19,7 @@ class Zikula_FilterHook extends Zikula\Bundle\HookBundle\Hook\FilterHook
 {
     public function __construct($name, $data = null)
     {
-        LogUtil::log(__f('Warning! Class %s is deprecated.', [__CLASS__], E_USER_DEPRECATED));
+        @trigger_error(__f('Warning! Class %s is deprecated.', [__CLASS__], E_USER_DEPRECATED));
         $this->setName($name);
         parent::__construct($data);
     }

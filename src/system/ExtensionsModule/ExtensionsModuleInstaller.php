@@ -29,7 +29,6 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
      */
     public function install()
     {
-        // create tables
         $entities = [
             'Zikula\ExtensionsModule\Entity\ExtensionEntity',
             'Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity',

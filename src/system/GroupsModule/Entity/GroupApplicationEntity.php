@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * GroupApplication entity class.
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Zikula\GroupsModule\Entity\Repository\GroupApplicationRepository")
  * @ORM\Table(name="group_applications")
  */
 class GroupApplicationEntity extends EntityAccess

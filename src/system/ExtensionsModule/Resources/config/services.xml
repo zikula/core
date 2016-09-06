@@ -53,6 +53,7 @@
         <service id="zikula_extensions_module.api.variable" class="%zikula_extensions_module.api.variable.class%">
             <argument type="service" id="zikula_extensions_module.extension_var_repository" />
             <argument type="service" id="kernel" />
+            <argument type="service" id="request_stack" />
             <argument>%multisites%</argument>
         </service>
 
@@ -87,6 +88,7 @@
             <argument type="service" id="translator.default" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="zikula_extensions_module.extension_state_helper" />
+            <argument type="service" id="zikula_core.internal.bootstrap_helper" />
         </service>
 
         <service id="zikula_extensions_module.extension_state_helper" class="%zikula_extensions_module.extension_state_helper.class%" lazy="true">

@@ -38,6 +38,8 @@
         <service id="zikula_theme_module.helper.bundle_sync_helper" class="%zikula_theme_module.helper.bundle_sync_helper.class%" lazy="true">
             <argument type="service" id="kernel" />
             <argument type="service" id="zikula_theme_module.theme_entity.repository" />
+            <argument type="service" id="zikula_core.internal.bootstrap_helper" />
+            <argument type="service" id="translator.default" />
         </service>
 
     </services>

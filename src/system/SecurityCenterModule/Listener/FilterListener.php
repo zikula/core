@@ -42,6 +42,8 @@ class FilterListener implements EventSubscriberInterface
      */
     private $isInstalled;
 
+    private $isUpgrading;
+
     /**
      * @var VariableApi
      */
@@ -74,9 +76,10 @@ class FilterListener implements EventSubscriberInterface
      * @param EntityManagerInterface $em             Doctrine entity manager
      * @param MailerApi              $mailer         MailerApi service instance
      */
-    public function __construct($isInstalled, VariableApi $variableApi, EntityManagerInterface $em, MailerApi $mailer)
+    public function __construct($isInstalled, $isUpgrading, VariableApi $variableApi, EntityManagerInterface $em, MailerApi $mailer)
     {
         $this->isInstalled = $isInstalled;
+        $this->isUpgrading = $isUpgrading;
         $this->variableApi = $variableApi;
         $this->em = $em;
         $this->mailer = $mailer;
@@ -98,7 +101,7 @@ class FilterListener implements EventSubscriberInterface
         if (!$this->isInstalled) {
             return;
         }
-        if (System::isInstalling() || System::isUpgrading()) {
+        if (System::isInstalling() || $this->isUpgrading) {
             return;
         }
 

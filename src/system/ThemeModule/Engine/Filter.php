@@ -23,18 +23,38 @@ use Zikula\ThemeModule\Engine\Asset\ResolverInterface;
  */
 class Filter
 {
+    /**
+     * @var AssetBag
+     */
     private $headers;
 
+    /**
+     * @var AssetBag
+     */
     private $footers;
 
+    /**
+     * @var ResolverInterface
+     */
     private $jsResolver;
 
+    /**
+     * @var ResolverInterface
+     */
     private $cssResolver;
 
+    /**
+     * @var string
+     */
     private $scriptPosition;
 
-    public function __construct(AssetBag $headers, AssetBag $footers, ResolverInterface $js, ResolverInterface $css, $scriptPosition)
-    {
+    public function __construct(
+        AssetBag $headers,
+        AssetBag $footers,
+        ResolverInterface $js,
+        ResolverInterface $css,
+        $scriptPosition
+    ) {
         $this->headers = $headers;
         $this->footers = $footers;
         $this->jsResolver = $js;
@@ -63,7 +83,6 @@ class Filter
 
         // compile and replace head
         $header = $this->cssResolver->compile();
-        $header .= \JCSSUtil::getJSConfig(); // must be included before other scripts because it defines `Zikula` JS namespace
         $header .= ($this->scriptPosition == 'head') ? $this->jsResolver->compile() : '';
         $header .= implode("\n", $this->headers->all()) . "\n";
         if (strripos($source, '</head>')) {

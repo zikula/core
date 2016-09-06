@@ -15,6 +15,7 @@
         <parameter key="zikula_core.internal.theme.controller_annotation_reader_listener.class">Zikula\ThemeModule\EventListener\ControllerAnnotationReaderListener</parameter>
         <parameter key="zikula_core.internal.theme.template_path_override_listener.class">Zikula\ThemeModule\EventListener\TemplatePathOverrideListener</parameter>
         <parameter key="zikula_core.internal.theme.module_stylesheet_insert_listener.class">Zikula\ThemeModule\EventListener\ModuleStylesheetInsertListener</parameter>
+        <parameter key="zikula_core.internal.theme.add_jsconfig_listener.class">Zikula\ThemeModule\EventListener\AddJSConfigListener</parameter>
         <parameter key="zikula_core.common.theme_engine.class">Zikula\ThemeModule\Engine\Engine</parameter>
         <parameter key="zikula_core.common.theme.assets.js.class">Zikula\ThemeModule\Engine\AssetBag</parameter>
         <parameter key="zikula_core.common.theme.assets.css.class">Zikula\ThemeModule\Engine\AssetBag</parameter>
@@ -55,6 +56,7 @@
             <argument type="service" id="router" />
             <argument type="service" id="zikula_core.common.theme_engine" />
             <argument>%kernel.root_dir%</argument>
+            <argument>%compat_layer%</argument>
             <call method="setParameters">
                 <argument type="service" id="service_container" />
             </call>
@@ -84,6 +86,17 @@
 
         <service id="zikula_core.internal.theme.module_stylesheet_insert_listener" class="%zikula_core.internal.theme.module_stylesheet_insert_listener.class%">
             <argument id="kernel" type="service"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="zikula_core.internal.theme.add_jsconfig_listener" class="%zikula_core.internal.theme.add_jsconfig_listener.class%">
+            <argument type="service" id="zikula_extensions_module.api.variable" />
+            <argument type="service" id="zikula_users_module.current_user" />
+            <argument type="service" id="templating.engine.twig" />
+            <argument type="service" id="zikula_core.common.theme.themevars" />
+            <argument type="service" id="zikula_core.common.theme.assets_header" />
+            <argument>%zikula.session.name%</argument>
+            <argument>%compat_layer%</argument>
             <tag name="kernel.event_subscriber"/>
         </service>
 

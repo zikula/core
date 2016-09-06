@@ -18,7 +18,6 @@ use Zikula\Bundle\HookBundle\Hook\ValidationHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationProviders;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
-use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationMethodInterface;
@@ -39,9 +38,6 @@ class AccessController extends AbstractController
     {
         if ($this->get('zikula_users_module.current_user')->isLoggedIn()) {
             return $this->redirectToRoute('zikulausersmodule_account_menu');
-        }
-        if ($this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'siteoff', false)) {
-            $this->addFlash('error', $this->__('The site is currently unavailable. Attempts to login will fail unless the user has full Admin rights.'));
         }
 
         $authenticationMethodCollector = $this->get('zikula_users_module.internal.authentication_method_collector');

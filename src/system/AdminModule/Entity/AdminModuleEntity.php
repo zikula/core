@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AdminModule entity class.
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Zikula\AdminModule\Entity\Repository\AdminModuleRepository")
  * @ORM\Table(name="admin_module",indexes={@ORM\Index(name="mid_cid",columns={"mid","cid"})})
  */
 class AdminModuleEntity extends EntityAccess

@@ -340,7 +340,7 @@ class CoreExtension extends \Twig_Extension
             throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
-        return \ModUtil::getVar($module, $name, $default);
+        return $this->container->get('zikula_extensions_module.api.variable')->get($module, $name, $default);
     }
 
     /**

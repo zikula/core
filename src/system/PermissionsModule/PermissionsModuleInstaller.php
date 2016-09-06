@@ -69,7 +69,7 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
                 $this->entityManager->persist($record);
                 $lastPerm->setSequence($record->getSequence() + 1);
                 $this->entityManager->flush();
-                $this->addFlash('success', $this->__('A permission rule was added to allow users access to "utility" themes. Please check the sequence.'));
+                //$this->addFlash('success', $this->__('A permission rule was added to allow users access to "utility" themes. Please check the sequence.'));
 
             case '1.1.2':
             // future upgrade routines

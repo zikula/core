@@ -387,25 +387,27 @@ class Engine
      */
     private function filter(Response $response)
     {
-        // @todo START legacy block - remove at Core-2.0 (leave legacy method calls)
-        $baseUri = \System::getBaseUri();
         $jsAssets = [];
-        $javascripts = \JCSSUtil::prepareJavascripts(\PageUtil::getVar('javascript'));
-        $i = 60;
-        $legacyAjaxScripts = 0;
-        foreach ($javascripts as $javascript) {
-            $javascript = (!empty($baseUri) && (false === strpos($javascript, $baseUri))) ? "$baseUri/$javascript" : "$javascript";
-            $javascript = $javascript[0] == '/' ? $javascript : "/$javascript"; // add slash to start if not present.
-            // Add legacy ajax scripts (like prototype/scriptaculous) at the lightest weight (0) and in order from there.
-            // Add others after core default assets (like jQuery) but before pageAddAsset default weight (100) and in order from there.
-            $jsAssets[$javascript] = (false !== strpos($javascript, 'javascript/ajax/')) ? $legacyAjaxScripts++ : $i++;
-        }
         $cssAssets = [];
-        $stylesheets = \PageUtil::getVar('stylesheet');
-        $i = 60;
-        foreach ($stylesheets as $stylesheet) {
-            $stylesheet = $baseUri . '/' . $stylesheet;
-            $cssAssets[$stylesheet] = $i++; // add before pageAddAsset default weight (100)
+        // @todo START legacy block - remove at Core-2.0 (leave legacy method calls)
+        if ($this->kernel->getContainer()->getParameter('compat_layer')) {
+            $baseUri = $this->requestStack->getMasterRequest()->getBasePath();
+            $javascripts = \JCSSUtil::prepareJavascripts(\PageUtil::getVar('javascript', []));
+            $i = 60;
+            $legacyAjaxScripts = 0;
+            foreach ($javascripts as $javascript) {
+                $javascript = (!empty($baseUri) && (false === strpos($javascript, $baseUri))) ? "$baseUri/$javascript" : "$javascript";
+                $javascript = $javascript[0] == '/' ? $javascript : "/$javascript"; // add slash to start if not present.
+                // Add legacy ajax scripts (like prototype/scriptaculous) at the lightest weight (0) and in order from there.
+                // Add others after core default assets (like jQuery) but before pageAddAsset default weight (100) and in order from there.
+                $jsAssets[$javascript] = (false !== strpos($javascript, 'javascript/ajax/')) ? $legacyAjaxScripts++ : $i++;
+            }
+            $stylesheets = \PageUtil::getVar('stylesheet', []);
+            $i = 60;
+            foreach ($stylesheets as $stylesheet) {
+                $stylesheet = $baseUri . '/' . $stylesheet;
+                $cssAssets[$stylesheet] = $i++; // add before pageAddAsset default weight (100)
+            }
         }
         // @todo END legacy block - remove at Core-2.0
 

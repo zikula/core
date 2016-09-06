@@ -28,15 +28,14 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
      */
     public function install()
     {
-        // create tables
-        $classes = [
+        $entities = [
             'Zikula\CategoriesModule\Entity\CategoryEntity',
             'Zikula\CategoriesModule\Entity\CategoryAttributeEntity',
             'Zikula\CategoriesModule\Entity\CategoryRegistryEntity'
         ];
 
         try {
-            $this->schemaTool->create($classes);
+            $this->schemaTool->create($entities);
         } catch (\Exception $e) {
             return false;
         }
