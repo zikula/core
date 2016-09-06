@@ -23,6 +23,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\GroupsModule\Helper\CommonHelper;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -77,7 +78,7 @@ class AdminController extends AbstractController
      *
      * @param integer $startnum
      *
-     * @return Response symfony response object
+     * @return array
      *
      * @throws AccessDeniedException Thrown if the user hasn't permissions to administer any groups
      */
@@ -91,11 +92,7 @@ class AdminController extends AbstractController
         // get the primary admin group
         $primaryAdminGroup = $this->getVar('primaryadmingroup', 2);
 
-        // The user API function is called.
-        $items = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getall', [
-            'startnum' => $startnum,
-            'numitems' => $itemsPerPage
-        ]);
+        $items = $this->get('doctrine')->getManager()->getRepository('ZikulaGroupsModule:GroupEntity')->findBy([], [], $itemsPerPage, $startnum);
 
         // Setting various defines
         $groupsCommon = new CommonHelper();
@@ -105,15 +102,16 @@ class AdminController extends AbstractController
         $groups = [];
         $router = $this->get('router');
 
+        /** @var GroupEntity $item */
         foreach ($items as $item) {
-            if (!$this->hasPermission('ZikulaGroupsModule::', $item['gid'].'::', ACCESS_EDIT)) {
+            if (!$this->hasPermission('ZikulaGroupsModule::', $item->getGid().'::', ACCESS_EDIT)) {
                 continue;
             }
 
             // Options for the item.
             $options = [];
 
-            $routeArgs = ['gid' => $item['gid']];
+            $routeArgs = ['gid' => $item->getGid()];
             $editUrl = $router->generate('zikulagroupsmodule_admin_modify', $routeArgs);
             $membersUrl = $router->generate('zikulagroupsmodule_admin_groupmembership', $routeArgs);
 
@@ -123,8 +121,8 @@ class AdminController extends AbstractController
                 'icon' => 'pencil'
             ];
 
-            if ($this->hasPermission('ZikulaGroupsModule::', $item['gid'].'::', ACCESS_DELETE)
-                    && $item['gid'] != $defaultGroup && $item['gid'] != $primaryAdminGroup) {
+            if ($this->hasPermission('ZikulaGroupsModule::', $item->getGid().'::', ACCESS_DELETE)
+                    && $item->getGid() != $defaultGroup && $item->getGid() != $primaryAdminGroup) {
                 $options[] = [
                     'url' => $router->generate('zikulagroupsmodule_admin_delete', $routeArgs),
                     'title'   => $this->__('Delete'),
@@ -138,21 +136,19 @@ class AdminController extends AbstractController
                 'icon' => 'users'
             ];
 
-            $nbuser = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'countgroupmembers', ['gid' => $item['gid']]);
-
             $groups[] = [
-                'name' => $item['name'],
-                'gid'         => $item['gid'],
-                'gtype'       => $item['gtype'],
-                'gtypelbl'    => $this->__(/** @ignore */$typeLabels[$item['gtype']]),
-                'description' => (!empty($item['description']) ? $item['description'] : ''),
-                'prefix'      => $item['prefix'],
-                'state'       => $item['state'],
-                'statelbl'    => $this->__(/** @ignore */$stateLabels[$item['state']]),
-                'nbuser'      => ($nbuser != false ? $nbuser : 0),
-                'nbumax'      => $item['nbumax'],
-                'link'        => $item['link'],
-                'uidmaster'   => $item['uidmaster'],
+                'name'        => $item->getName(),
+                'gid'         => $item->getGid(),
+                'gtype'       => $item->getGtype(),
+                'gtypelbl'    => $this->__(/** @ignore */$typeLabels[$item->getGtype()]),
+                'description' => $item->getDescription(),
+                'prefix'      => $item->getPrefix(),
+                'state'       => $item->getState(),
+                'statelbl'    => $this->__(/** @ignore */$stateLabels[$item->getState()]),
+                'nbuser'      => $item->getUsers()->count(),
+                'nbumax'      => $item->getNbumax(),
+                'link'        => $item->getLink(),
+                'uidmaster'   => $item->getUidmaster(),
                 'options'     => $options,
                 'editurl'     => $editUrl,
                 'membersurl'  => $membersUrl
@@ -164,12 +160,7 @@ class AdminController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        // The admin API function is called. This fetch the pending applications if any.
-        // permission check for the group is done in this function
-        $users = ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'getapplications', [
-            'startnum' => $startnum,
-            'numitems' => $itemsPerPage
-        ]);
+        $users = $this->get('zikula_groups_module.group_application_repository')->getFilteredApplications();
 
         return [
             'groups' => $groups,
@@ -179,7 +170,7 @@ class AdminController extends AbstractController
             'defaultGroup' => $defaultGroup,
             'primaryAdminGroup' => $primaryAdminGroup,
             'pager' => [
-                'amountOfItems' => ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'countitems'),
+                'amountOfItems' => count($groups),
                 'itemsPerPage' => $itemsPerPage
             ]
         ];

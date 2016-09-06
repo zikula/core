@@ -10,6 +10,7 @@
  */
 
 use Zikula_Request_Http as Request;
+use Symfony\Component\HttpFoundation\Request as BaseRequest;
 
 /**
  * ZLanguage class.
@@ -151,7 +152,7 @@ class ZLanguage
      *
      * @return void
      */
-    public function setup(Request $request)
+    public function setup(BaseRequest $request)
     {
         $this->langRequested = preg_replace('#[^a-z-].#', '', FormUtil::getPassedValue('lang', null, 'GET')); // language for this request
         $this->detectLanguage();

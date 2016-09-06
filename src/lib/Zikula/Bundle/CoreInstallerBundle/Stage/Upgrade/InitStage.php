@@ -124,7 +124,7 @@ class InitStage implements StageInterface, InjectContainerInterface
 
         // install Bundles table
         $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
-        $helper = new \Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper($boot->getConnection($kernel));
+        $helper = $this->container->get('zikula_core.internal.bootstrap_helper');
         $helper->createSchema();
         $helper->load();
         $bundles = [];

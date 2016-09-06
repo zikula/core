@@ -55,6 +55,7 @@ class CurrentUserApi
     public function isLoggedIn()
     {
         if (!isset($this->user)) {
+            $this->session->start();
             if ($uid = $this->session->get('uid')) {
                 $this->user = $this->repository->find($uid);
                 $this->loggedIn = true;

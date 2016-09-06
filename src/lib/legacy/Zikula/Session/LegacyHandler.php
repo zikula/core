@@ -10,6 +10,7 @@
  */
 
 use Doctrine\DBAL\Connection;
+use Zikula\ExtensionsModule\Api\VariableApi;
 
 /**
  * Class Zikula_Session_LegacyHandler
@@ -28,6 +29,11 @@ class Zikula_Session_LegacyHandler implements \SessionHandlerInterface
      */
     private $conn;
 
+    /**
+     * @var VariableApi
+     */
+    private $variableApi;
+
     public function setStorage(Zikula_Session_Storage_Legacy $storage)
     {
         $this->storage = $storage;
@@ -36,6 +42,11 @@ class Zikula_Session_LegacyHandler implements \SessionHandlerInterface
     public function setConnection(Connection $conn)
     {
         $this->conn = $conn;
+    }
+
+    public function setVariableApi(VariableApi $variableApi)
+    {
+        $this->variableApi = $variableApi;
     }
 
     /**
@@ -147,13 +158,13 @@ class Zikula_Session_LegacyHandler implements \SessionHandlerInterface
     public function gc($lifetime)
     {
         $now = time();
-        $inactive = ($now - (int) (System::getVar('secinactivemins') * 60));
-        $daysold = ($now - (int) (System::getVar('secmeddays') * 86400));
+        $inactive = ($now - (int) ($this->variableApi->get(VariableApi::CONFIG, 'secinactivemins') * 60));
+        $daysold = ($now - (int) ($this->variableApi->get(VariableApi::CONFIG, 'secmeddays') * 86400));
 
         $inactive = date('Y-m-d H:i:s', $inactive);
         $daysold = date('Y-m-d H:i:s', $daysold);
 
-        switch (System::getVar('seclevel')) {
+        switch ($this->variableApi->get(VariableApi::CONFIG, 'seclevel')) {
             case 'Low':
                 // Low security - delete session info if user decided not to
                 //                remember themself and inactivity timeout

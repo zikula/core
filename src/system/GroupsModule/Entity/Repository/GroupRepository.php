@@ -12,8 +12,9 @@
 namespace Zikula\GroupsModule\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 
-class GroupRepository extends EntityRepository
+class GroupRepository extends EntityRepository implements GroupRepositoryInterface
 {
     /**
      * @param string $indexField

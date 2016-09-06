@@ -18,6 +18,7 @@
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="zikula_users_module.current_user" />
             <argument type="service" id="zikula_users_module.user_repository" />
+            <argument type="service" id="zikula_groups_module.group_repository" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="translator.default" />
         </service>

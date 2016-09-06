@@ -23,18 +23,38 @@ use Zikula\ThemeModule\Engine\Asset\ResolverInterface;
  */
 class Filter
 {
+    /**
+     * @var AssetBag
+     */
     private $headers;
 
+    /**
+     * @var AssetBag
+     */
     private $footers;
 
+    /**
+     * @var ResolverInterface
+     */
     private $jsResolver;
 
+    /**
+     * @var ResolverInterface
+     */
     private $cssResolver;
 
+    /**
+     * @var string
+     */
     private $scriptPosition;
 
-    public function __construct(AssetBag $headers, AssetBag $footers, ResolverInterface $js, ResolverInterface $css, $scriptPosition)
-    {
+    public function __construct(
+        AssetBag $headers,
+        AssetBag $footers,
+        ResolverInterface $js,
+        ResolverInterface $css,
+        $scriptPosition
+    ) {
         $this->headers = $headers;
         $this->footers = $footers;
         $this->jsResolver = $js;
@@ -63,10 +83,9 @@ class Filter
 
         // compile and replace head
         $header = $this->cssResolver->compile();
-        $header .= \JCSSUtil::getJSConfig(); // must be included before other scripts because it defines `Zikula` JS namespace
         $header .= ($this->scriptPosition == 'head') ? $this->jsResolver->compile() : '';
         $header .= implode("\n", $this->headers->all()) . "\n";
-        $header .= trim(implode("\n", \PageUtil::getVar('header')) . "\n"); // @todo legacy - remove at Core-2.0
+        $header .= trim(implode("\n", \PageUtil::getVar('header', [])) . "\n"); // @todo legacy - remove at Core-2.0
         if (strripos($source, '</head>')) {
             $source = str_replace('</head>', $header."\n</head>", $source);
         }
@@ -74,7 +93,7 @@ class Filter
         // compile and replace foot
         $footer = ($this->scriptPosition == 'foot') ? $this->jsResolver->compile() : '';
         $footer .= trim(implode("\n", $this->footers->all()) . "\n");
-        $footer .= trim(implode("\n", \PageUtil::getVar('footer')) . "\n"); // @todo legacy - remove at Core-2.0
+        $footer .= trim(implode("\n", \PageUtil::getVar('footer', [])) . "\n"); // @todo legacy - remove at Core-2.0
         if (false === empty($footer)) {
             $source = str_replace('</body>', $footer."\n</body>", $source);
         }

@@ -129,7 +129,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
         $this->setContainer($serviceManager);
         $this->dispatcher = $this->getContainer()->get('event_dispatcher');
         $this->eventManager = $this->dispatcher;
-        $this->request =  \ServiceUtil::get('request');
+        $this->request =  $this->container->get('request');
         $this->entityManager = $this->getContainer()->get('doctrine.entitymanager');
         $this->_configureBase($bundle);
         $this->initialize();
@@ -149,7 +149,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
 
         if (null !== $bundle) {
             $this->name = $bundle->getName();
-            $this->domain = ZLanguage::getModuleDomain($this->name);
+            $this->domain = $bundle->getTranslationDomain();
             $this->baseDir = $bundle->getPath();
         } else {
             $separator = (false === strpos(get_class($this), '_')) ? '\\' : '_';
@@ -161,7 +161,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
                 $this->libBaseDir = realpath("{$this->baseDir}/lib/" . $this->name);
             }
             if ($baseDir == 'modules') {
-                $this->domain = ZLanguage::getModuleDomain($this->name);
+                $this->domain = strtolower('module_'.$this->name);
             }
         }
     }

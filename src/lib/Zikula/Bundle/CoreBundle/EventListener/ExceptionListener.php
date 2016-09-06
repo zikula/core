@@ -20,8 +20,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use UserUtil;
 use Zikula\Bundle\CoreBundle\CacheClearer;
+use Zikula\UsersModule\Api\CurrentUserApi;
 
 /**
  * ExceptionListener catches exceptions and converts them to Response instances.
@@ -32,13 +32,20 @@ class ExceptionListener implements EventSubscriberInterface
     private $router;
     private $dispatcher;
     private $cacheClearer;
+    private $currentUserApi;
 
-    public function __construct(LoggerInterface $logger = null, RouterInterface $router = null, EventDispatcherInterface $dispatcher = null, CacheClearer $cacheClearer)
-    {
+    public function __construct(
+        LoggerInterface $logger = null,
+        RouterInterface $router = null,
+        EventDispatcherInterface $dispatcher = null,
+        CacheClearer $cacheClearer,
+        CurrentUserApi $currentUserApi
+    ) {
         $this->logger = $logger;
         $this->router = $router;
         $this->dispatcher = $dispatcher;
         $this->cacheClearer = $cacheClearer;
+        $this->currentUserApi = $currentUserApi;
     }
 
     public static function getSubscribedEvents()
@@ -62,8 +69,8 @@ class ExceptionListener implements EventSubscriberInterface
 
         if (!$event->getRequest()->isXmlHttpRequest()) {
             $exception = $event->getException();
-            $userLoggedIn = UserUtil::isLoggedIn();
             do {
+                $userLoggedIn = $this->currentUserApi->isLoggedIn();
                 if ($exception instanceof AccessDeniedException) {
                     $this->handleAccessDeniedException($event, $userLoggedIn, $exception->getMessage());
                 } elseif ($exception instanceof RouteNotFoundException) {

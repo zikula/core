@@ -16,8 +16,6 @@ use DataUtil;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use HTMLPurifier_VarParser;
-use ModUtil;
-use UserUtil;
 use Zikula_Core;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -45,7 +43,7 @@ class ConfigController extends AbstractController
      *
      * @param Request $request
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
-     * @return Response
+     * @return array|RedirectResponse
      */
     public function configAction(Request $request)
     {
@@ -145,7 +143,7 @@ class ConfigController extends AbstractController
                     $this->setSystemVar('sessionsavepath', $sessionSavePath);
                 }
 
-                if ((bool)$sessionStoreToFile != (bool)\System::getVar('sessionstoretofile')) {
+                if ((bool)$sessionStoreToFile != (bool)$this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'sessionstoretofile')) {
                     // logout if going from one storage to another one
                     $causeLogout = true;
                 }
@@ -277,7 +275,8 @@ class ConfigController extends AbstractController
                 $this->setSystemVar('idsexceptions', $idsExceptionsArray);
 
                 // clear all cache and compile directories
-                ModUtil::apiFunc('ZikulaSettingsModule', 'admin', 'clearallcompiledcaches');
+                $this->get('zikula.cache_clearer')->clear('symfony');
+                $this->get('zikula.cache_clearer')->clear('legacy');
 
                 // the module configuration has been updated successfuly
                 if ($validates) {
@@ -286,12 +285,11 @@ class ConfigController extends AbstractController
 
                 // we need to auto logout the user if they changed from DB to FILE
                 if ($causeLogout == true) {
-                    UserUtil::logout();
+                    $this->get('zikula_users_module.helper.access_helper')->logout();
                     $this->addFlash('status', $this->__('Session handling variables have changed. You must log in again.'));
-
                     $returnPage = urlencode($this->get('router')->generate('zikulasecuritycentermodule_config_config'));
 
-                    return new RedirectResponse($this->get('router')->generate('zikulausersmodule_access_login', ['returnUrl' => $returnPage]));
+                    return $this->redirectToRoute('zikulausersmodule_access_login', ['returnUrl' => $returnPage]);
                 }
             }
             if ($form->get('cancel')->isClicked()) {
@@ -416,7 +414,8 @@ class ConfigController extends AbstractController
             $this->setVar('htmlpurifierConfig', serialize($config));
 
             // clear all cache and compile directories
-            ModUtil::apiFunc('ZikulaSettingsModule', 'admin', 'clearallcompiledcaches');
+            $this->get('cache_clearer')->clear('symfony');
+            $this->get('cache_clearer')->clear('legacy');
 
             // the module configuration has been updated successfuly
             $this->addFlash('status', $this->__('Done! Saved HTMLPurifier configuration.'));
@@ -427,10 +426,10 @@ class ConfigController extends AbstractController
         // load the configuration page
 
         if (isset($reset) && $reset == 'default') {
-            $purifierconfig = SecurityCenterUtil::getPurifierConfig(true);
+            $purifierconfig = SecurityCenterUtil::getpurifierconfig(['forcedefault' => true]);
             $this->addFlash('status', $this->__('Default values for HTML Purifier were successfully loaded. Please store them using the "Save" button at the bottom of this page'));
         } else {
-            $purifierconfig = SecurityCenterUtil::getPurifierConfig(false);
+            $purifierconfig = SecurityCenterUtil::getpurifierconfig(['forcedefault' => false]);
         }
 
         $purifier = new HTMLPurifier($purifierconfig);
@@ -569,7 +568,8 @@ class ConfigController extends AbstractController
             $this->setSystemVar('AllowableHTML', $allowedHtml);
 
             // clear all cache and compile directories
-            ModUtil::apiFunc('ZikulaSettingsModule', 'admin', 'clearallcompiledcaches');
+            $this->get('cache_clearer')->clear('symfony');
+            $this->get('cache_clearer')->clear('legacy');
 
             $this->addFlash('status', $this->__('Done! Module configuration updated.'));
 

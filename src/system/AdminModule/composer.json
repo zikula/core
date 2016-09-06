@@ -22,6 +22,9 @@
             "core-compatibility": ">=1.4.1",
             "displayname": "Administration panel",
             "url": "adminpanel",
+            "capabilities": {
+                "admin": {"route": "zikulaadminmodule_admin_view"}
+            },
             "securityschema": {
                 "ZikulaAdminModule::": "Admin Category name::Admin Category ID",
                 "ZikulaAdminModule:adminnavblock:": "Block title::Block ID"

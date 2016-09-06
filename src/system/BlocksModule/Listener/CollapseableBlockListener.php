@@ -27,12 +27,14 @@ class CollapseableBlockListener implements EventSubscriberInterface
     private $jsAssetBag;
     private $variableApi;
     private $assetHelper;
+    private $isUpgrading;
 
-    public function __construct(AssetBag $jsAssetBag, VariableApi $variableApi, Asset $assetHelper)
+    public function __construct(AssetBag $jsAssetBag, VariableApi $variableApi, Asset $assetHelper, $isUpgrading = false)
     {
         $this->jsAssetBag = $jsAssetBag;
         $this->variableApi = $variableApi;
         $this->assetHelper = $assetHelper;
+        $this->isUpgrading = $isUpgrading;
     }
 
     /**
@@ -40,7 +42,7 @@ class CollapseableBlockListener implements EventSubscriberInterface
      */
     public function addCollapseableBehavior(GetResponseEvent $event)
     {
-        if ((System::isInstalling()) || (System::isUpgrading())) {
+        if ((System::isInstalling()) || ($this->isUpgrading)) {
             return;
         }
         if (!$event->isMasterRequest()) {

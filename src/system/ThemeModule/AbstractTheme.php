@@ -134,7 +134,7 @@ abstract class AbstractTheme extends AbstractBundle
      */
     public function getThemeVars()
     {
-        $dbVars = \ModUtil::getVar($this->name);
+        $dbVars = $this->container->get('zikula_extensions_module.api.variable')->getAll($this->name);
         if (empty($dbVars) && !is_array($dbVars)) {
             $dbVars = [];
         }
@@ -142,7 +142,7 @@ abstract class AbstractTheme extends AbstractBundle
         $combinedVars = array_merge($defaultVars, $dbVars);
         if (array_keys($dbVars) != array_keys($combinedVars)) {
             // First load of file or vars have been added to the .yml file.
-            \ModUtil::setVars($this->name, $combinedVars);
+            $this->container->get('zikula_extensions_module.api.variable')->setAll($this->name, $combinedVars);
         }
 
         return $combinedVars;

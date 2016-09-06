@@ -14,7 +14,10 @@
 
     <services>
         <service id="session.storage.legacy" class="%session.storage.legacy.class%" public="false">
+            <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument>%session.storage.options%</argument>
+            <argument type="expression">null</argument>
+            <argument type="expression">null</argument>
             <!--<argument type="service" id="session.handler" />-->
             <call method="setSaveHandler">
                 <argument type="service" id="session.handler.legacy" />
@@ -27,6 +30,9 @@
             </call>
             <call method="setConnection">
                 <argument type="service" id="doctrine.dbal.default_connection" />
+            </call>
+            <call method="setVariableApi">
+                <argument type="service" id="zikula_extensions_module.api.variable" />
             </call>
         </service>
     </services>

@@ -37,8 +37,6 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use vierbergenlars\SemVer\expression;
 use vierbergenlars\SemVer\version;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
-use Zikula\Bundle\CoreBundle\Bundle\Bootstrap;
-use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
 
 /**
  * Administrative API functions for the Extensions module.
@@ -479,8 +477,7 @@ class AdminApi extends \Zikula_AbstractApi
             }
         }
 
-        $boot = new Bootstrap();
-        $helper = new BootstrapHelper($boot->getConnection($this->getContainer()->get('kernel')));
+        $helper = $this->getContainer()->get('zikula_core.internal.bootstrap_helper');
 
         // sync the filesystem and the bundles table
         $helper->load();
@@ -707,8 +704,7 @@ class AdminApi extends \Zikula_AbstractApi
             }
         }
 
-        $boot = new Bootstrap();
-        $helper = new BootstrapHelper($boot->getConnection($this->getContainer()->get('kernel')));
+        $helper = $this->getContainer()->get('zikula_core.internal.bootstrap_helper');
 
         // sync the filesystem and the bundles table
         $helper->load();

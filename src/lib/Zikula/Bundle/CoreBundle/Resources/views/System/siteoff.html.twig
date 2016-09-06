@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xml:lang="<?php echo ZLanguage::getLanguageCode(); ?>" dir="<?php echo ZLanguage::getDirection(); ?>">
+<html xml:lang="{{ app.request.locale }}" dir="ltr">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=<?php echo ZLanguage::getEncoding(); ?>" />
-        <title><?php echo __('The site is currently off-line.'); ?></title>
-        <base href="<?php echo System::getBaseURL(); ?>" />
+        <meta http-equiv="Content-Type" content="text/html; charset={{ app.request.encodings.0 }}" />
+        <title>{{ __('The site is currently off-line.') }}</title>
+        <base href="{{ app.request.baseUrl }}" />
         <style type="text/css">
             html {
                 background: #eaeaea; /*non-CSS3 browsers*/
@@ -147,36 +147,6 @@
                 background: -moz-linear-gradient(top,#fafafa,#f2f2f2); /*gecko*/
                 background: linear-gradient(#fafafa, #f2f2f2); /*CSS3*/
             }
-            #login .loginrow {
-                clear:both;
-                min-height:2em;
-                padding:0.5em 0;
-                font-size:14px;
-                line-height:16px;
-                font-weight:normal;
-            }
-            #login .loginrow label {
-                float:left;
-                margin:5px 0;
-                padding:2px;
-                text-align:right;
-                width:40%;
-            }
-            #login .loginrow input {
-                border:1px solid #DDDDDD;
-                margin:5px 0 5px 1%;
-                padding:2px;
-                width:47%;
-            }
-            #login .logincheck {
-                clear:both;
-                margin:5px 0 5px 41%;
-                padding:2px;
-            }
-            #login .loginbutton {
-                margin:5px 0 5px 41%;
-                padding:2px;
-            }
         </style>
 
         <script type="text/javascript">
@@ -190,41 +160,31 @@
 
     </head>
     <body>
-
         <div id="container">
             <div id="cell">
                 <div id="content">
-                    <h1><?php echo __('The site is currently off-line.'); ?></h1>
-                    <h2><?php echo nl2br(\DataUtil::formatForDisplay((Zikula_Core::VERSION_NUM != System::getVar('Version_Num')) ? __('This site needs to be upgraded, please contact the system administrator.') : System::getVar('siteoffreason')));?></h2>
-                    <?php if (Zikula_Core::VERSION_NUM == System::getVar('Version_Num')) { ?>
-                    <p>
-                        <a href="#" class="showloginbutton" onclick="toggleLoginBox(); return false;" title="<?php echo __('Administrator log-in'); ?>">
-                            <strong><?php echo __('Administrator log-in'); ?></strong>
-                        </a>
-                    </p>
-                    <form id="login" action="<?php System::getVar('entrypoint', 'index.php'); ?>?module=Users&amp;type=user&amp;func=siteOffLogin" method="post">
-                        <div>
-                        <p><strong><?php echo __('An administrator log-in is required.'); ?></strong></p>
-                            <div class="loginrow">
-                                <label for="user"><?php echo __('User name'); ?></label>
-                                <input id="user" type="text" name="user" size="14" maxlength="64" />
-                            </div>
-                            <div class="loginrow">
-                                <label for="pass"><?php echo __('Password'); ?></label>
-                                <input id="pass" type="password" name="pass" size="14" maxlength="20" />
-                            </div>
-                            <div class="logincheck">
-                                <input id="rememberme" type="checkbox" value="1" name="rememberme" />
-                                <label for="rememberme"><?php echo __('Remember me'); ?></label>
-                            </div>
-                            <div class="loginbutton">
-                                <input class="login-button" type="submit" value="<?php echo __('Log in'); ?>" />
-                            </div>
+                    <h1>{{ __('The site is currently off-line.') }}</h1>
+                    <h2>
+                        {% if versionsEqual %}
+                            {{ getModVar('ZConfig', 'siteoffreason') }}
+                        {% else %}
+                            {{ __('This site needs to be upgraded, please contact the system administrator.') }}
+                        {% endif %}
+                    </h2>
+                    {% if versionsEqual %}
+                        <p>
+                            <a href="#" class="showloginbutton" onclick="toggleLoginBox(); return false;" title="{{ __('Administrator log-in') }}">
+                                <strong>{{ __('Administrator log-in') }}</strong>
+                            </a>
+                        </p>
+                        <div id="login">
+                            {{ form_start(form) }}
+                            {{ form_widget(form) }}
+                            {{ form_end(form) }}
                         </div>
-                    </form>
-                    <?php } ?>
+                    {% endif %}
                     <p>
-                        <a href="http://zikula.org"><img src="images/zk-power.png" alt="<?php echo __('Proudly powered by Zikula'); ?>" title="<?php echo __('Proudly powered by Zikula'); ?>" width="96" height="30" /></a>
+                        <a href="http://zikula.org"><img src="{{ asset('bundles/core/images/zk-power.png') }}" alt="{{ __('Proudly powered by Zikula') }}" title="{{ __('Proudly powered by Zikula') }}" width="96" height="30" /></a>
                     </p>
                 </div>
             </div>

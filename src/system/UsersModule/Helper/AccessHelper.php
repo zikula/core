@@ -74,14 +74,8 @@ class AccessHelper
      */
     public function loginAllowed(UserEntity $user)
     {
-        $siteOff = $this->variableApi->get(VariableApi::CONFIG, 'siteoff', false);
-
         switch ($user->getActivated()) {
             case UsersConstant::ACTIVATED_ACTIVE:
-                if ($siteOff && !$this->permissionApi->hasPermission('::', '::', ACCESS_ADMIN)) {
-                    return false;
-                }
-
                 return true;
             case UsersConstant::ACTIVATED_INACTIVE:
                 $this->session->getFlashBag()->add('error', $this->translator->__('Your account has been disabled. Please contact a site administrator for more information.'));
