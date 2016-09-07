@@ -93,7 +93,8 @@ class CoreExtension extends \Twig_Extension
         return [
             new \Twig_SimpleFilter('languageName', [$this, 'languageName']),
             new \Twig_SimpleFilter('yesNo', [$this, 'yesNo']),
-            new \Twig_SimpleFilter('php', [$this, 'applyPhp'])
+            new \Twig_SimpleFilter('php', [$this, 'applyPhp']),
+            new \Twig_SimpleFilter('protectMail', [$this, 'protectMailAddress'], ['is_safe' => ['html']])
         ];
     }
 
@@ -233,6 +234,26 @@ class CoreExtension extends \Twig_Extension
         if (function_exists($func)) {
             return $func($string);
         }
+
+        return $string;
+    }
+
+    /**
+     * Protect a given mail address by finding the text 'x@y' and replacing
+     * it with HTML entities. This provides protection against email harvesters.
+     *
+     * @param string
+     * @return string
+     */
+    public function protectMailAddress($string)
+    {
+        $string = preg_replace_callback(
+            '/(.)@(.)/s',
+            function ($m) {
+                return "&#" . sprintf("%03d", ord($m[1])) . ";&#064;&#" .sprintf("%03d", ord($m[2])) . ";";
+            },
+            $string
+        );
 
         return $string;
     }
