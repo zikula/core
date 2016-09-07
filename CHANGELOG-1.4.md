@@ -14,7 +14,9 @@ CHANGELOG - ZIKULA 1.4.x
  - Core-2.0 Features:
 
  - Vendor upgdates:
-    - symfony updated to from 2.8.9 to 2.8.10
+    - sensio distribution bundle updated from 5.0.8 to 5.0.9
+    - sensio generator bundle updated from 3.0.7 to 3.0.8
+    - symfony updated to from 2.8.9 to 2.8.11
     - twig updated from 1.24.1 to 1.24.2
 
 * 1.4.3 (2016-09-02)
