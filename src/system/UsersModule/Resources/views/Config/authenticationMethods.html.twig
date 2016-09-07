@@ -19,7 +19,11 @@
                 <div class="alert alert-info">{{ __('Check the methods you wish to activate.') }}</div>
                 <ul class="list-group">
                 {% for name, child in form.children.authenticationMethodsStatus %}
-                    <li class="list-group-item">{{ methods[name].DisplayName }}: {{ form_widget(child) }}</li>
+                    <li class="list-group-item">
+                        {#{ methods[name].DisplayName }}: #}
+                        {#{ form_widget(child) }#}
+                        {{ form_row(child) }}
+                    </li>
                 {% endfor %}
                 </ul>
             </div>
