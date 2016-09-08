@@ -24,7 +24,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\GroupsModule\Entity\GroupEntity;
-use Zikula\GroupsModule\Helper\CommonHelper;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -453,7 +452,6 @@ class AdminController extends AbstractController
         @trigger_error('This method is deprecated. Please use GroupController::modifyAction', E_USER_DEPRECATED);
 
         return $this->redirectToRoute('zikulagroupsmodule_group_edit', ['gid' => $groupEntity->getGid()]);
-
     }
 
     /**
@@ -464,7 +462,6 @@ class AdminController extends AbstractController
         @trigger_error('This method is deprecated. Please use GroupController::deleteAction', E_USER_DEPRECATED);
 
         return $this->redirectToRoute('zikulagroupsmodule_group_remove', ['gid' => $groupEntity->getGid()]);
-
     }
 
     /**
