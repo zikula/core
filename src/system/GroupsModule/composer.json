@@ -23,7 +23,7 @@
             "displayname": "Groups",
             "url": "groups",
             "capabilities": {
-                "admin": {"route": "zikulagroupsmodule_admin_view"},
+                "admin": {"route": "zikulagroupsmodule_group_list"},
                 "user": {"route": "zikulagroupsmodule_user_view"}
             },
             "securityschema": {

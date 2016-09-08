@@ -9,6 +9,7 @@
         <parameter key="twig.extension.zikula_groups_module.class">Zikula\GroupsModule\Twig\TwigExtension</parameter>
         <parameter key="zikula_groups_module.group_application_repository.class">Zikula\GroupsModule\Entity\Repository\GroupApplicationRepository</parameter>
         <parameter key="zikula_groups_module.group_repository.class">Zikula\GroupsModule\Entity\Repository\GroupRepository</parameter>
+        <parameter key="zikula_groups_module.validator.constraints.group_name_validator.class">Zikula\GroupsModule\Validator\Constraints\ValidGroupNameValidator</parameter>
     </parameters>
 
     <services>
@@ -33,6 +34,12 @@
         <service id="zikula_groups_module.group_repository" class="%zikula_groups_module.group_repository.class%">
             <factory service="doctrine.orm.default_entity_manager" method="getRepository"/>
             <argument type="string">Zikula\GroupsModule\Entity\GroupEntity</argument>
+        </service>
+
+        <service id="zikula_groups_module.validator.constraints.group_name_validator" class="%zikula_groups_module.validator.constraints.group_name_validator.class%">
+            <argument type="service" id="translator.default" />
+            <argument type="service" id="zikula_groups_module.group_repository" />
+            <tag name="validator.constraint_validator" alias="zikula.groups.group_name.validator"/>
         </service>
     </services>
 </container>

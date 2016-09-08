@@ -35,369 +35,6 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 class AdminController extends AbstractController
 {
     /**
-     * @Route("")
-     *
-     * Main administration function
-     *
-     * @throws AccessDeniedException if the user doesn't have edit permission to any groups
-     *
-     * @return RedirectResponse
-     */
-    public function indexAction()
-    {
-        $any_access = false;
-
-        // get all groups from the API
-        $groups = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getall');
-        if (is_array($groups)) {
-            foreach ($groups as $group) {
-                if ($this->hasPermission('ZikulaGroupsModule::', $group['gid'] . '::', ACCESS_EDIT)) {
-                    $any_access = true;
-                    break;
-                }
-            }
-        }
-
-        if (!$any_access) {
-            // we found no groups that we are allowed to administer
-            throw new AccessDeniedException();
-        }
-
-        return $this->redirectToRoute('zikulagroupsmodule_admin_view');
-    }
-
-    /**
-     * @Route("/view/{startnum}", requirements={"startnum" = "\d+"})
-     * @Method("GET")
-     * @Theme("admin")
-     * @Template
-     *
-     * View all groups
-     *
-     * This function creates a tabular output of all group items in the module.
-     *
-     * @param integer $startnum
-     *
-     * @return array
-     *
-     * @throws AccessDeniedException Thrown if the user hasn't permissions to administer any groups
-     */
-    public function viewAction($startnum = 0)
-    {
-        $itemsPerPage = $this->getVar('itemsperpage', 25);
-
-        // get the default user group
-        $defaultGroup = $this->getVar('defaultgroup');
-
-        // get the primary admin group
-        $primaryAdminGroup = $this->getVar('primaryadmingroup', 2);
-
-        $items = $this->get('doctrine')->getManager()->getRepository('ZikulaGroupsModule:GroupEntity')->findBy([], [], $itemsPerPage, $startnum);
-
-        // Setting various defines
-        $groupsCommon = new CommonHelper();
-        $typeLabels = $groupsCommon->gtypeLabels();
-        $stateLabels = $groupsCommon->stateLabels();
-
-        $groups = [];
-        $router = $this->get('router');
-
-        /** @var GroupEntity $item */
-        foreach ($items as $item) {
-            if (!$this->hasPermission('ZikulaGroupsModule::', $item->getGid().'::', ACCESS_EDIT)) {
-                continue;
-            }
-
-            // Options for the item.
-            $options = [];
-
-            $routeArgs = ['gid' => $item->getGid()];
-            $editUrl = $router->generate('zikulagroupsmodule_admin_modify', $routeArgs);
-            $membersUrl = $router->generate('zikulagroupsmodule_admin_groupmembership', $routeArgs);
-
-            $options[] = [
-                'url' => $router->generate('zikulagroupsmodule_admin_modify', $routeArgs),
-                'title'   => $this->__('Edit'),
-                'icon' => 'pencil'
-            ];
-
-            if ($this->hasPermission('ZikulaGroupsModule::', $item->getGid().'::', ACCESS_DELETE)
-                    && $item->getGid() != $defaultGroup && $item->getGid() != $primaryAdminGroup) {
-                $options[] = [
-                    'url' => $router->generate('zikulagroupsmodule_admin_delete', $routeArgs),
-                    'title'   => $this->__('Delete'),
-                    'icon' => 'trash-o'
-                ];
-            }
-
-            $options[] = [
-                'url' => $router->generate('zikulagroupsmodule_admin_groupmembership', $routeArgs),
-                'title'   => $this->__('Group membership'),
-                'icon' => 'users'
-            ];
-
-            $groups[] = [
-                'name'        => $item->getName(),
-                'gid'         => $item->getGid(),
-                'gtype'       => $item->getGtype(),
-                'gtypelbl'    => $this->__(/** @ignore */$typeLabels[$item->getGtype()]),
-                'description' => $item->getDescription(),
-                'prefix'      => $item->getPrefix(),
-                'state'       => $item->getState(),
-                'statelbl'    => $this->__(/** @ignore */$stateLabels[$item->getState()]),
-                'nbuser'      => $item->getUsers()->count(),
-                'nbumax'      => $item->getNbumax(),
-                'link'        => $item->getLink(),
-                'uidmaster'   => $item->getUidmaster(),
-                'options'     => $options,
-                'editurl'     => $editUrl,
-                'membersurl'  => $membersUrl
-            ];
-        }
-
-        if (count($groups) == 0) {
-            // groups array is empty
-            throw new AccessDeniedException();
-        }
-
-        $users = $this->get('zikula_groups_module.group_application_repository')->getFilteredApplications();
-
-        return [
-            'groups' => $groups,
-            //'groupTypes' => $typeLabels,
-            //'states' => $stateLabels,
-            'userItems' => $users,
-            'defaultGroup' => $defaultGroup,
-            'primaryAdminGroup' => $primaryAdminGroup,
-            'pager' => [
-                'amountOfItems' => count($groups),
-                'itemsPerPage' => $itemsPerPage
-            ]
-        ];
-    }
-
-    /**
-     * @Route("/new")
-     * @Theme("admin")
-     * @Template
-     *
-     * Display a form to add a new group.
-     *
-     * @param Request $request
-     *
-     * @return Response symfony response object
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have add access to the module
-     */
-    public function newgroupAction(Request $request)
-    {
-        if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_ADD)) {
-            throw new AccessDeniedException();
-        }
-
-        $form = $this->createForm('Zikula\GroupsModule\Form\Type\CreateGroupType', [], [
-            'translator' => $this->get('translator.default')
-        ]);
-
-        if ($form->handleRequest($request)->isValid()) {
-            if ($form->get('save')->isClicked()) {
-                $formData = $form->getData();
-
-                $name = isset($formData['name']) ? $formData['name'] : '';
-
-                // check if group exists
-                $check = ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'getgidbyname', ['name' => $name]);
-                if (false != $check) {
-                    // Group already exists
-                    $this->addFlash('error', $this->__('Error! There is already a group with that name.'));
-
-                    return $this->redirectToRoute('zikulagroupsmodule_admin_view');
-                }
-
-                try {
-                    // create new group
-                    $gid = ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'create', $formData);
-                    if (false != $gid) {
-                        // Success
-                        $this->addFlash('status', $this->__('Done! Created the group.'));
-                    } else {
-                        $this->addFlash('error', $this->__('Error! A problem occurred while attempting to create the group. The group has not been created.'));
-                    }
-                } catch (\RuntimeException $e) {
-                    $this->addFlash('error', $e->getMessage());
-                }
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
-            }
-
-            return $this->redirectToRoute('zikulagroupsmodule_admin_view');
-        }
-
-        return [
-            'form' => $form->createView()
-        ];
-    }
-
-    /**
-     * @Route("/modify/{gid}", requirements={"gid" = "^[1-9]\d*$"})
-     * @Theme("admin")
-     * @Template
-     *
-     * Modify a group.
-     *
-     * @param Request $request
-     * @param integer $gid     the id of the group to be modified
-     *
-     * @return Response symfony response object
-     *
-     * @throws NotFoundHttpException Thrown if the requested group isn't found
-     * @throws AccessDeniedException Thrown if the user doesn't have edit access to the group
-     */
-    public function modifyAction(Request $request, $gid = 0)
-    {
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', ['gid' => $gid]);
-        if (!$group) {
-            throw new NotFoundHttpException($this->__('Sorry! No such group found.'));
-        }
-
-        if (!$this->hasPermission('ZikulaGroupsModule::', $group['gid'].'::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
-
-        $formData = [];
-        foreach (['gid', 'name', 'gtype', 'state', 'nbumax', 'description'] as $fieldName) {
-            $formData[$fieldName] = $group[$fieldName];
-        }
-
-        $form = $this->createForm('Zikula\GroupsModule\Form\Type\EditGroupType', $formData, [
-            'translator' => $this->get('translator.default')
-        ]);
-
-        if ($form->handleRequest($request)->isValid()) {
-            if ($form->get('save')->isClicked()) {
-                $formData = $form->getData();
-
-                $name = isset($formData['name']) ? $formData['name'] : '';
-
-                // check if group exists
-                $check = ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'getgidbyname', ['name' => $name]);
-                if (false != $check && $gid != $check) {
-                    // Group already exists
-                    $this->addFlash('error', $this->__('Error! There is already a group with that name.'));
-
-                    return $this->redirectToRoute('zikulagroupsmodule_admin_view');
-                }
-
-                try {
-                    // update the group
-                    if (ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'update', $formData)) {
-                        // Success
-                        $this->addFlash('status', $this->__('Done! Updated the group.'));
-                    } else {
-                        $this->addFlash('error', $this->__('Error! A problem occurred while attempting to update the group. The group has not been updated.'));
-                    }
-                } catch (\RuntimeException $e) {
-                    $this->addFlash('error', $e->getMessage());
-                }
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
-            }
-
-            return $this->redirectToRoute('zikulagroupsmodule_admin_view');
-        }
-
-        return [
-            'form' => $form->createView()
-        ];
-    }
-
-    /**
-     * @Route("/delete", requirements={"gid"="\d+"})
-     * @Theme("admin")
-     * @Template
-     *
-     * Deletes a group.
-     *
-     * @param Request $request
-     * @param int     $gid     the id of the group to be deleted
-     *
-     * @return Response|void response object if no confirmation, void otherwise
-     *
-     * @throws NotFoundHttpException Thrown if the requested group is not found
-     * @throws \InvalidArgumentException Thrown if the requested group id is invalid
-     * @throws AccessDeniedException Thrown if the user doesn't have delete access to the group
-     */
-    public function deleteAction(Request $request, $gid)
-    {
-        if ($gid < 1) {
-            throw new \InvalidArgumentException($this->__('Invalid Group ID.'));
-        }
-
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', ['gid' => $gid]);
-        if (!$group) {
-            throw new NotFoundHttpException($this->__('Sorry! No such group found.'));
-        }
-
-        if (!$this->hasPermission('ZikulaGroupsModule::', $group['gid'].'::', ACCESS_DELETE)) {
-            throw new AccessDeniedException();
-        }
-
-        // get the user default group - we do not allow its deletion
-        $defaultGroup = $this->getVar('defaultgroup', 1);
-        if ($group['gid'] == $defaultGroup) {
-            $this->addFlash('error', $this->__('Error! You cannot delete the default user group.'));
-
-            return $this->redirectToRoute('zikulagroupsmodule_admin_view');
-        }
-
-        // get the user default group - we do not allow its deletion
-        $primaryAdminGroup = $this->getVar('primaryadmingroup', 2);
-        if ($group['gid'] == $primaryAdminGroup) {
-            $this->addFlash('error', $this->__('Error! You cannot delete the primary administration group.'));
-
-            return $this->redirectToRoute('zikulagroupsmodule_admin_view');
-        }
-
-        $formValues = [
-            'gid' => $gid
-        ];
-
-        $form = $this->createForm('Zikula\GroupsModule\Form\Type\DeleteGroupType', $formValues, [
-            'translator' => $this->get('translator.default')
-        ]);
-
-        if ($form->handleRequest($request)->isValid()) {
-            if ($form->get('delete')->isClicked()) {
-                $formData = $form->getData();
-
-                try {
-                    // delete group
-                    $delete = ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'delete', ['gid' => $formData['gid']]);
-                    if ($delete) {
-                        $this->addFlash('status', $this->__('Done! Group deleted.'));
-                    } else {
-                        $this->addFlash('error', $this->__('Error! A problem occurred while attempting to delete the group. The group has not been deleted.'));
-                    }
-                } catch (\RuntimeException $e) {
-                    $this->addFlash('error', $e->getMessage());
-                }
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
-            }
-
-            return $this->redirectToRoute('zikulagroupsmodule_admin_view');
-        }
-
-        return [
-            'form' => $form->createView(),
-            'group' => $group
-        ];
-    }
-
-    /**
      * @Route("/membership/{gid}/{letter}/{startnum}", requirements={"gid" = "^[1-9]\d*$", "letter" = "[a-zA-Z]|\*", "startnum" = "\d+"})
      * @Method("GET")
      * @Theme("admin")
@@ -769,7 +406,7 @@ class AdminController extends AbstractController
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirectToRoute('zikulagroupsmodule_admin_view');
+            return $this->redirectToRoute('zikulagroupsmodule_group_list');
         }
 
         return [
@@ -779,13 +416,59 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @Route("")
+     */
+    public function indexAction()
+    {
+        @trigger_error('This method is deprecated. Please use GroupController::listAction', E_USER_DEPRECATED);
+
+        return $this->redirectToRoute('zikulagroupsmodule_group_list');
+    }
+
+    /**
+     * @Route("/view/{startnum}", requirements={"startnum" = "\d+"})
+     */
+    public function viewAction($startnum = 0)
+    {
+        @trigger_error('This method is deprecated. Please use GroupController::listAction', E_USER_DEPRECATED);
+
+        return $this->redirectToRoute('zikulagroupsmodule_group_list', ['startnum' => $startnum]);
+    }
+
+    /**
+     * @Route("/new")
+     */
+    public function newgroupAction(Request $request)
+    {
+        @trigger_error('This method is deprecated. Please use GroupController::newgroupAction', E_USER_DEPRECATED);
+
+        return $this->redirectToRoute('zikulagroupsmodule_group_create');
+    }
+
+    /**
+     * @Route("/modify/{gid}", requirements={"gid" = "^[1-9]\d*$"})
+     */
+    public function modifyAction(Request $request, GroupEntity $groupEntity)
+    {
+        @trigger_error('This method is deprecated. Please use GroupController::modifyAction', E_USER_DEPRECATED);
+
+        return $this->redirectToRoute('zikulagroupsmodule_group_edit', ['gid' => $groupEntity->getGid()]);
+
+    }
+
+    /**
+     * @Route("/delete", requirements={"gid"="\d+"})
+     */
+    public function deleteAction(Request $request, GroupEntity $groupEntity)
+    {
+        @trigger_error('This method is deprecated. Please use GroupController::deleteAction', E_USER_DEPRECATED);
+
+        return $this->redirectToRoute('zikulagroupsmodule_group_remove', ['gid' => $groupEntity->getGid()]);
+
+    }
+
+    /**
      * @Route("/config")
-     *
-     * Display a form to modify configuration parameters of the module.
-     *
-     * @return Response symfony response object
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function modifyconfigAction()
     {

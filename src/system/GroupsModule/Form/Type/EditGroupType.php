@@ -14,7 +14,9 @@ namespace Zikula\GroupsModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Zikula\GroupsModule\Helper\CommonHelper;
+use Zikula\GroupsModule\Validator\Constraints\ValidGroupName;
 
 /**
  * Group editing form type class.
@@ -33,15 +35,14 @@ class EditGroupType extends AbstractType
         $stateChoices = array_flip($groupsCommon->stateLabels());
 
         $builder
-            ->add('gid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [])
+            ->add('gid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
             ->add('name', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $translator->__('Name'),
-                'empty_data' => '',
-                'max_length' => 30
+                'max_length' => 30,
+                'constraints' => [new NotBlank()]
             ])
             ->add('gtype', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Type'),
-                'empty_data' => 0,
                 'choices' => $typeChoices,
                 'choices_as_values' => true,
                 'expanded' => false,
@@ -49,7 +50,6 @@ class EditGroupType extends AbstractType
             ])
             ->add('state', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('State'),
-                'empty_data' => 0,
                 'choices' => $stateChoices,
                 'choices_as_values' => true,
                 'expanded' => false,
@@ -57,7 +57,6 @@ class EditGroupType extends AbstractType
             ])
             ->add('nbumax', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $translator->__('Maximum membership'),
-                'empty_data' => 0,
                 'max_length' => 10,
                 'attr' => [
                     'min' => 0
@@ -66,8 +65,6 @@ class EditGroupType extends AbstractType
             ])
             ->add('description', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
                 'label' => $translator->__('Description'),
-                'empty_data' => '',
-                'required' => false
             ])
             ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'label' => $translator->__('Save'),
@@ -108,7 +105,8 @@ class EditGroupType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => null
+            'translator' => null,
+            'constraints' => [new ValidGroupName()]
         ]);
     }
 }
