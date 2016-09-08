@@ -76,9 +76,16 @@ class LinkContainer implements LinkContainerInterface
 
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
             $links[] = [
-                'url' => $this->router->generate('zikulagroupsmodule_admin_view'),
+                'url' => $this->router->generate('zikulagroupsmodule_group_list'),
                 'text' => $this->translator->__('Groups list'),
                 'icon' => 'list'
+            ];
+        }
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADD)) {
+            $links[] = [
+                'url' => $this->router->generate('zikulagroupsmodule_group_create'),
+                'text' => $this->translator->__('New group'),
+                'icon' => 'plus'
             ];
         }
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {

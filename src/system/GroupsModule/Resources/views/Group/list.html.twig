@@ -1,15 +1,10 @@
-{{ pageAddAsset('javascript', zasset('@ZikulaGroupsModule:js/groups.js')) }}
+{#{{ pageAddAsset('javascript', zasset('@ZikulaGroupsModule:js/groups.js')) }}#}
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-list"></span>
     {{ __('Groups list') }}
     {{ pageSetVar('title', __('Groups list')) }}
 </h3>
-{% if hasPermission('ZikulaGroupsModule::', '::', 'ACCESS_ADD') %}
-    <br />
-    <a href="{{ path('zikulagroupsmodule_admin_newgroup') }}" title="{{ __('Create new group') }}"><span class="fa fa-plus-circle"></span> {{ __('Create new group') }}</a>
-    <br /><br />
-{% endif %}
 
 <table id="grouplist" class="table table-bordered table-striped">
     <colgroup>
@@ -73,7 +68,7 @@
                 <a id="modify_{{ group.gid }}" href="{{ group.editurl|e('html_attr') }}" title="{{ strEditGroup }}" class="tooltips fa fa-pencil"></a>
                 <a href="{{ group.membersurl }}" title="{{ __('Group membership') }}" class="fa fa-users tooltips"></a>
                 {% if group.gid not in [defaultGroup, primaryAdminGroup] %}
-                <a href="{{ path('zikulagroupsmodule_admin_delete', { gid: group.gid }) }}" data-gid="{{ group.gid }}" title="{{ strDeleteGroup }}" data-confirm="{{ __('Do you really want to delete this group?') }}" class="fa fa-trash-o con-fixed-width tooltips"></a>
+                <a href="{{ path('zikulagroupsmodule_group_remove', { gid: group.gid }) }}" data-gid="{{ group.gid }}" title="{{ strDeleteGroup }}" data-confirm="{{ __('Do you really want to delete this group?') }}" class="fa fa-trash-o con-fixed-width tooltips"></a>
                 {% else %}
                 <span class="fa-fw"></span>
                 {% endif %}
@@ -123,5 +118,5 @@
 </table>
 {% endif %}
 
-{{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, posvar: 'startnum', route: 'zikulagroupsmodule_admin_view'}) }}
+{{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, posvar: 'startnum', route: 'zikulagroupsmodule_group_list'}) }}
 {{ adminFooter() }}
