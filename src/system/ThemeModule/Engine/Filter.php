@@ -83,8 +83,8 @@ class Filter
 
         // compile and replace head
         $header = $this->cssResolver->compile();
-        $header .= ($this->scriptPosition == 'head') ? $this->jsResolver->compile() : '';
         $header .= implode("\n", $this->headers->all()) . "\n";
+        $header .= ($this->scriptPosition == 'head') ? $this->jsResolver->compile() : '';
         if (strripos($source, '</head>')) {
             $source = str_replace('</head>', $header."\n</head>", $source);
         }

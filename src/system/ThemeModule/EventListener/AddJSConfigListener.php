@@ -103,7 +103,7 @@ class AddJSConfigListener implements EventSubscriberInterface
 
         $config = [
             'entrypoint' => $this->variableApi->get(VariableApi::CONFIG, 'entrypoint', 'index.php'),
-            'baseURL' => $event->getRequest()->getBaseUrl(),
+            'baseURL' => $event->getRequest()->getBaseUrl() . '/',
             'baseURI' => $event->getRequest()->getBasePath(),
             'ajaxtimeout' => (int)$this->variableApi->get(VariableApi::CONFIG, 'ajaxtimeout', 5000),
             'lang' => $event->getRequest()->getLocale(),
@@ -120,7 +120,7 @@ class AddJSConfigListener implements EventSubscriberInterface
             $config['polyfillFeatures'] = implode(' ', $polyfill_features);
         }
         $config = array_map('htmlspecialchars', $config);
-        $content = $this->templating->render('@ZikulaThemeModule/Engine/JSConfig.js.twig', [
+        $content = $this->templating->render('@ZikulaThemeModule/Engine/JSConfig.html.twig', [
             'compat' => $this->compat,
             'config' => json_encode($config)
         ]);
