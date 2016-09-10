@@ -41,7 +41,7 @@ class EventEnabledTwigEngine extends TwigEngine
      *
      * @throws \Twig_Error if something went wrong like a thrown exception while rendering the template
      */
-    public function render($name, array $parameters = array())
+    public function render($name, array $parameters = [])
     {
         $preEvent = new TwigPreRenderEvent($name, $parameters);
         $this->eventDispatcher->dispatch(ThemeEvents::PRE_RENDER, $preEvent);
