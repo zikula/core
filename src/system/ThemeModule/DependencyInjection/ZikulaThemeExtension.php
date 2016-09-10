@@ -30,5 +30,6 @@ class ZikulaThemeExtension extends Extension
 
         $loader->load('services.xml');
         $loader->load('theme_engine.xml');
+        $loader->load('legacy.xml');
     }
 }
