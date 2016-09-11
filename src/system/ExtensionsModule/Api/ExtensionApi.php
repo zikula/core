@@ -30,7 +30,7 @@ class ExtensionApi
     private $kernel;
 
     /**
-     * @var array public list of all the core modules.
+     * @var array public list of all the core modules
      */
     public $coreModules = [
         'ZikulaAdminModule',
@@ -61,7 +61,7 @@ class ExtensionApi
     /**
      * Check if the module is loaded into the kernel or not. Returns null if not.
      * @param $name
-     * @deprecated remove at Core-2.0 replace with $kernel->getModule($name) when all modules are Bundles.
+     * @deprecated remove at Core-2.0 replace with $kernel->getModule($name) when all modules are Bundles
      * @return null|\Zikula\Core\AbstractBundle
      */
     public function getModuleInstanceOrNull($name)
