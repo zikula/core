@@ -9,11 +9,13 @@ CHANGELOG - ZIKULA 1.4.x
 
  - Fixes:
    - Fixed display of checkboxes in topnav login blocks and authentication method selector (#3044).
+   - Removed permanent display of template information in html source (#3068).
 
  - Features:
    - Added mailProtect filter for safe display of email addresses (#3041).
 
  - Core-2.0 Features:
+   - Added display of template name as html comment in source when in dev environment (#3068).
 
  - Vendor upgdates:
     - sensio distribution bundle updated from 5.0.8 to 5.0.9
