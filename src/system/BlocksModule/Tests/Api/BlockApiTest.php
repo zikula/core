@@ -66,12 +66,13 @@ class BlockApiTest extends \PHPUnit_Framework_TestCase
             ->getMockBuilder('Zikula\ExtensionsModule\Api\ExtensionApi')
             ->disableOriginalConstructor()
             ->getMock();
-        $extensionApi
-            ->method('getModulesBy')
-            ->willReturn([]);
+        $extensionRepo = $this
+            ->getMockBuilder('Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
         $blockCollector = new BlockCollector();
 
-        $this->api = new BlockApi($blockPosRepo, $blockFactory, $extensionApi, $blockCollector, '/');
+        $this->api = new BlockApi($blockPosRepo, $blockFactory, $extensionApi, $extensionRepo, $blockCollector, '/');
     }
 
     /**

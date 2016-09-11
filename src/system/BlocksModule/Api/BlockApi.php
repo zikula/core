@@ -18,6 +18,7 @@ use Zikula\Core\AbstractModule;
 use Zikula\BlocksModule\BlockHandlerInterface;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
+use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 
 /**
  * Class BlockApi
@@ -28,23 +29,34 @@ use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 class BlockApi
 {
     const BLOCK_ACTIVE = 1;
+
     const BLOCK_INACTIVE = 0;
+
     /**
      * @var BlockPositionRepositoryInterface
      */
     private $blockPositionRepository;
+
     /**
      * @var BlockFactoryApi
      */
     private $blockFactory;
+
     /**
      * @var \Zikula\ExtensionsModule\Api\ExtensionApi
      */
     private $extensionApi;
+
+    /**
+     * @var ExtensionRepositoryInterface
+     */
+    private $extensionRespository;
+
     /**
      * @var BlockCollector;
      */
     private $blockCollector;
+
     /**
      * @var string the kernel root dir (%kernel.root_dir%)
      * @deprecated remove at Core 2-.0
@@ -56,14 +68,22 @@ class BlockApi
      * @param BlockPositionRepositoryInterface $blockPositionRepository
      * @param BlockFactoryApi $blockFactoryApi
      * @param ExtensionApi $extensionApi
+     * @param ExtensionRepositoryInterface $extensionRepository
      * @param BlockCollector $blockCollector
      * @param string $kernelRootDir
      */
-    public function __construct(BlockPositionRepositoryInterface $blockPositionRepository, BlockFactoryApi $blockFactoryApi, ExtensionApi $extensionApi, BlockCollector $blockCollector, $kernelRootDir)
-    {
+    public function __construct(
+        BlockPositionRepositoryInterface $blockPositionRepository,
+        BlockFactoryApi $blockFactoryApi,
+        ExtensionApi $extensionApi,
+        ExtensionRepositoryInterface $extensionRepository,
+        BlockCollector $blockCollector,
+        $kernelRootDir
+    ) {
         $this->blockPositionRepository = $blockPositionRepository;
         $this->blockFactory = $blockFactoryApi;
         $this->extensionApi = $extensionApi;
+        $this->extensionRespository = $extensionRepository;
         $this->blockCollector = $blockCollector;
         $this->kernelRootDir = $kernelRootDir; // parameter is deprecated. remove at Core-2.0
     }
@@ -116,7 +136,7 @@ class BlockApi
     public function getAvailableBlockTypes(ExtensionEntity $moduleEntity = null)
     {
         $foundBlocks = [];
-        $modules = isset($moduleEntity) ? [$moduleEntity] : $this->extensionApi->getModulesBy(['state' => ExtensionApi::STATE_ACTIVE]);
+        $modules = isset($moduleEntity) ? [$moduleEntity] : $this->extensionRespository->findBy(['state' => ExtensionApi::STATE_ACTIVE]);
         /** @var \Zikula\ExtensionsModule\Entity\ExtensionEntity $module */
         foreach ($modules as $module) {
             $moduleInstance = $this->extensionApi->getModuleInstanceOrNull($module->getName());
@@ -147,7 +167,7 @@ class BlockApi
                 // remove blocks found in file search with same class name
                 unset($foundBlocks["$moduleName:$className"]);
             }
-            $moduleEntity = $this->extensionApi->getModule($moduleName);
+            $moduleEntity = $this->extensionRespository->findOneBy(['name' => $moduleName]);
             $foundBlocks[$id] = $moduleEntity->getDisplayname() . '/' . $blockInstance->getType();
         }
         asort($foundBlocks);
@@ -162,7 +182,7 @@ class BlockApi
      */
     public function getModulesContainingBlocks()
     {
-        $modules = $this->extensionApi->getModulesBy(['state' => ExtensionApi::STATE_ACTIVE]);
+        $modules = $this->extensionRespository->findBy(['state' => ExtensionApi::STATE_ACTIVE]);
         $modulesContainingBlocks = [];
         foreach ($modules as $module) {
             $blocks = $this->getAvailableBlockTypes($module);
