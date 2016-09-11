@@ -125,7 +125,7 @@ class LegacyController
                 return $response;
             }
         }
-        throw new NotFoundHttpException(_('Page not found.'));
+        throw new NotFoundHttpException(__('Page not found.'));
     }
 
     /**
