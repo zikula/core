@@ -25,7 +25,6 @@ use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionVarRepositoryInt
  */
 class VariableApi
 {
-    // TODO change to "private const" as soon as we require PHP 7.1
     const CONFIG = 'ZConfig';
 
     private $isInitialized = false;
