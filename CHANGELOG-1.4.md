@@ -13,6 +13,7 @@ CHANGELOG - ZIKULA 1.4.x
 
  - Features:
    - Added mailProtect filter for safe display of email addresses (#3041).
+   - Added shortcut method in variable api for retrieving system variables (#3077).
 
  - Core-2.0 Features:
    - Added display of template name as html comment in source when in dev environment (#3068).
