@@ -25,6 +25,7 @@ use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionVarRepositoryInt
  */
 class VariableApi
 {
+    // TODO change to "private const" as soon as we require PHP 7.1
     const CONFIG = 'ZConfig';
 
     private $isInitialized = false;
@@ -158,6 +159,20 @@ class VariableApi
         }
 
         return $default;
+    }
+
+    /**
+     * Get a system variable.
+     * @api Core-2.0
+     *
+     * @param string $variableName The name of the variable
+     * @param mixed $default The value to return if the requested var is not set
+     *
+     * @return mixed - extension variable value
+     */
+    public function getSystemVar($variableName, $default = false)
+    {
+        return $this->get(self::CONFIG, $variableName, $default);
     }
 
     /**
