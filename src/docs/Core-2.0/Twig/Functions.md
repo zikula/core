@@ -14,6 +14,7 @@ Functions
  * defaultPath(extensionName, type = "user")
  * dispatchEvent($name, GenericEvent $providedEvent = null, $subject = null, array $arguments = [], $data = null)
  * getModVar(module, name, default = null)
+ * getSystemVar(name, default = null)
  * hasPermission(component, instance, level)
  * modAvailable(modname, force = false)
  * pageAddAsset(type, value, weight = 100)

@@ -75,6 +75,7 @@ class CoreExtension extends \Twig_Extension
             new \Twig_SimpleFunction('pageAddAsset', [$this, 'pageAddAsset']),
             new \Twig_SimpleFunction('pageGetVar', [$this, 'pageGetVar']),
             new \Twig_SimpleFunction('getModVar', [$this, 'getModVar']),
+            new \Twig_SimpleFunction('getSystemVar', [$this, 'getSystemVar']),
             new \Twig_SimpleFunction('setMetaTag', [$this, 'setMetaTag']),
             new \Twig_SimpleFunction('hasPermission', [$this, 'hasPermission']),
             new \Twig_SimpleFunction('defaultPath', [new DefaultPathSimpleFunction($this), 'getDefaultPath']),
@@ -362,6 +363,20 @@ class CoreExtension extends \Twig_Extension
         }
 
         return $this->container->get('zikula_extensions_module.api.variable')->get($module, $name, $default);
+    }
+
+    /**
+     * @param $name
+     * @param null $default
+     * @return mixed
+     */
+    public function getSystemVar($name, $default = null)
+    {
+        if (empty($name)) {
+            throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+        }
+
+        return $this->container->get('zikula_extensions_module.api.variable')->getSystemVar($name, $default);
     }
 
     /**

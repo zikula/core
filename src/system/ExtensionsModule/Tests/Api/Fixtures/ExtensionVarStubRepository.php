@@ -40,6 +40,10 @@ class ExtensionVarStubRepository implements ExtensionVarRepositoryInterface
                 'name' => 'string',
                 'value' => 'xyz',
             ],
+            ['modname' => 'ZConfig',
+                'name' => 'systemvar',
+                'value' => 'abc',
+            ],
         ];
         foreach ($datas as $data) {
             $entity = new ExtensionVarEntity();
