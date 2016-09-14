@@ -40,7 +40,7 @@ class AuthenticationMethodCollector
      */
     public function __construct(VariableApi $variableApi)
     {
-        $this->authenticationMethodsStatus = $variableApi->get(VariableApi::CONFIG, 'authenticationMethodsStatus', []);
+        $this->authenticationMethodsStatus = $variableApi->getSystemVar('authenticationMethodsStatus', []);
     }
 
     /**

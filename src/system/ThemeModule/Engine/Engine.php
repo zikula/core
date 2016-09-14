@@ -362,7 +362,7 @@ class Engine
      */
     private function setActiveTheme($newThemeName = null)
     {
-        $activeTheme = !empty($newThemeName) ? $newThemeName : $this->variableApi->get(VariableApi::CONFIG, 'Default_Theme');
+        $activeTheme = !empty($newThemeName) ? $newThemeName : $this->variableApi->getSystemVar('Default_Theme');
         $request = $this->requestStack->getMasterRequest();
         if (isset($request)) {
             // This allows for setting the theme via the old method in \UserUtil::getTheme and check permissions

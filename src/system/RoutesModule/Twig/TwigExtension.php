@@ -82,7 +82,7 @@ class TwigExtension extends BaseTwigExtension
             $languages = ZLanguage::getInstalledLanguages();
             $isRequiredLangParam = ZLanguage::isRequiredLangParam();
             if (!$isRequiredLangParam) {
-                $defaultLanguage = $this->variableApi->get(VariableApi::CONFIG, 'language_i18n');
+                $defaultLanguage = $this->variableApi->getSystemVar('language_i18n');
                 unset($languages[array_search($defaultLanguage, $languages)]);
             }
             if (count($languages) > 0) {

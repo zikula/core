@@ -143,7 +143,7 @@ class ConfigController extends AbstractController
                     $this->setSystemVar('sessionsavepath', $sessionSavePath);
                 }
 
-                if ((bool)$sessionStoreToFile != (bool)$this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'sessionstoretofile')) {
+                if ((bool)$sessionStoreToFile != (bool)$this->get('zikula_extensions_module.api.variable')->getSystemVar('sessionstoretofile')) {
                     // logout if going from one storage to another one
                     $causeLogout = true;
                 }
@@ -577,11 +577,11 @@ class ConfigController extends AbstractController
         }
 
         return [
-            'htmlEntities' => $variableApi->get(VariableApi::CONFIG, 'htmlentities'),
-            'htmlPurifier' => (bool)($variableApi->get(VariableApi::CONFIG, 'outputfilter') == 1),
+            'htmlEntities' => $variableApi->getSystemVar('htmlentities'),
+            'htmlPurifier' => (bool)($variableApi->getSystemVar('outputfilter') == 1),
             'configUrl' => $this->get('router')->generate('zikulasecuritycentermodule_config_config'),
             'htmlTags' => $htmlTags,
-            'currentHtmlTags' => $variableApi->get(VariableApi::CONFIG, 'AllowableHTML')
+            'currentHtmlTags' => $variableApi->getSystemVar('AllowableHTML')
         ];
     }
 

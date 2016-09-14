@@ -12,7 +12,6 @@
 namespace Zikula\UsersModule\Block;
 
 use Zikula\BlocksModule\AbstractBlockHandler;
-use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\Constant as UsersConstant;
 
 /**
@@ -29,14 +28,18 @@ class OnlineBlock extends AbstractBlockHandler
         if (!$this->hasPermission('Onlineblock::', $properties['bid'].'::', ACCESS_READ)) {
             return '';
         }
-        $inactiveLimit = $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'secinactivemins');
+
+        $variableApi = $this->get('zikula_extensions_module.api.variable');
+        $sessionRepository = $this->get('zikula_users_module.user_session_repository');
+
+        $inactiveLimit = $variableApi->getSystemVar('secinactivemins');
         $dateTime = new \DateTime();
         $dateTime->modify('-' . $inactiveLimit . 'minutes');
-        $numusers = $this->get('zikula_users_module.user_session_repository')->countUsersSince($dateTime);
-        $numguests = $this->get('zikula_users_module.user_session_repository')->countGuestsSince($dateTime);
+        $numusers = $sessionRepository->countUsersSince($dateTime);
+        $numguests = $sessionRepository->countGuestsSince($dateTime);
 
         $templateArgs = [
-            'registerallowed' => $this->get('zikula_extensions_module.api.variable')->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ENABLED),
+            'registerallowed' => $variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ENABLED),
             'usercount' => $numusers,
             'guestcount' => $numguests,
             'since' => $dateTime

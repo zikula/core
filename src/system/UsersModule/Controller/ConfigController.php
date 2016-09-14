@@ -76,7 +76,7 @@ class ConfigController extends AbstractController
             throw new AccessDeniedException();
         }
         $allMethods = $this->get('zikula_users_module.internal.authentication_method_collector')->getAll();
-        $authenticationMethodsStatus = $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'authenticationMethodsStatus', []);
+        $authenticationMethodsStatus = $this->get('zikula_extensions_module.api.variable')->getSystemVar('authenticationMethodsStatus', []);
         foreach ($allMethods as $alias => $method) {
             if (!isset($authenticationMethodsStatus[$alias])) {
                 $authenticationMethodsStatus[$alias] = false;

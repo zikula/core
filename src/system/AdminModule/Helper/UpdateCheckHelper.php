@@ -77,11 +77,11 @@ class UpdateCheckHelper
         $this->variableApi = $variableApi;
         $this->requestStack = $requestStack;
 
-        $this->enabled = (bool)$variableApi->get(VariableApi::CONFIG, 'updatecheck');
-        $this->currentVersion = $variableApi->get(VariableApi::CONFIG, 'Version_Num');
-        $this->lastChecked = (int)$variableApi->get(VariableApi::CONFIG, 'updatelastchecked');
-        $this->checkInterval = (int)$variableApi->get(VariableApi::CONFIG, 'updatefrequency');
-        $this->updateversion = $variableApi->get(VariableApi::CONFIG, 'updateversion');
+        $this->enabled = (bool)$variableApi->getSystemVar('updatecheck');
+        $this->currentVersion = $variableApi->getSystemVar('Version_Num');
+        $this->lastChecked = (int)$variableApi->getSystemVar('updatelastchecked');
+        $this->checkInterval = (int)$variableApi->getSystemVar('updatefrequency');
+        $this->updateversion = $variableApi->getSystemVar('updateversion');
 
         $this->force = (bool)$requestStack->getMasterRequest()->query->get('forceupdatecheck');
         $this->checked = false;
@@ -148,7 +148,7 @@ class UpdateCheckHelper
         if ($this->checked === true && $this->updateversion !== '') {
             $this->variableApi->set(VariableApi::CONFIG, 'updatelastchecked', (int)time());
             $this->variableApi->set(VariableApi::CONFIG, 'updateversion', $this->updateversion);
-            $this->lastChecked = (int)$this->variableApi->get(VariableApi::CONFIG, 'updatelastchecked');
+            $this->lastChecked = (int)$this->variableApi->getSystemVar('updatelastchecked');
         }
     }
 

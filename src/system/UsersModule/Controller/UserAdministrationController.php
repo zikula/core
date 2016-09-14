@@ -25,7 +25,6 @@ use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Response\PlainResponse;
-use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Container\HookContainer;
@@ -405,9 +404,11 @@ class UserAdministrationController extends AbstractController
      */
     private function buildMailForm()
     {
+        $variableApi = $this->get('zikula_extensions_module.api.variable');
+
         return $this->createForm('Zikula\UsersModule\Form\Type\MailType', [
-            'from' => $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'sitename_' . \ZLanguage::getLanguageCode()),
-            'replyto' => $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'adminmail'),
+            'from' => $variableApi->getSystemVar('sitename_' . \ZLanguage::getLanguageCode()),
+            'replyto' => $variableApi->getSystemVar('adminmail'),
             'format' => 'text',
             'batchsize' => 100
         ], [
@@ -424,24 +425,28 @@ class UserAdministrationController extends AbstractController
     private function checkSelf(UserEntity $userBeingModified, array $originalGroups)
     {
         $currentUserId = $this->get('zikula_users_module.current_user')->get('uid');
-        if ($currentUserId == $userBeingModified->getUid()) {
-            // current user not allowed to deactivate self
-            if (UsersConstant::ACTIVATED_ACTIVE != $userBeingModified->getActivated()) {
-                $this->addFlash('info', $this->__('You are not allowed to alter your own active state.'));
-                $userBeingModified->setActivated(UsersConstant::ACTIVATED_ACTIVE);
-            }
-            // current user not allowed to remove self from default group
-            $defaultGroup = $this->get('zikula_extensions_module.api.variable')->get('ZikulaGroupsModule', 'defaultgroup', 1);
-            if (!$userBeingModified->getGroups()->containsKey($defaultGroup)) {
-                $this->addFlash('info', $this->__('You are not allowed to remove yourself from the default group.'));
-                $userBeingModified->getGroups()->add($originalGroups[$defaultGroup]);
-            }
-            // current user not allowed to remove self from admin group if currently a member
-            $adminGroup = $this->get('zikula_extensions_module.api.variable')->get('ZikulaGroupsModule', 'primaryadmingroup', 2);
-            if (isset($originalGroups[$adminGroup]) && !$userBeingModified->getGroups()->containsKey($adminGroup)) {
-                $this->addFlash('info', $this->__('You are not allowed to remove yourself from the primary administrator group.'));
-                $userBeingModified->getGroups()->add($originalGroups[$adminGroup]);
-            }
+        if ($currentUserId != $userBeingModified->getUid()) {
+            return;
+        }
+
+        $variableApi = $this->get('zikula_extensions_module.api.variable');
+
+        // current user not allowed to deactivate self
+        if (UsersConstant::ACTIVATED_ACTIVE != $userBeingModified->getActivated()) {
+            $this->addFlash('info', $this->__('You are not allowed to alter your own active state.'));
+            $userBeingModified->setActivated(UsersConstant::ACTIVATED_ACTIVE);
+        }
+        // current user not allowed to remove self from default group
+        $defaultGroup = $variableApi->get('ZikulaGroupsModule', 'defaultgroup', 1);
+        if (!$userBeingModified->getGroups()->containsKey($defaultGroup)) {
+            $this->addFlash('info', $this->__('You are not allowed to remove yourself from the default group.'));
+            $userBeingModified->getGroups()->add($originalGroups[$defaultGroup]);
+        }
+        // current user not allowed to remove self from admin group if currently a member
+        $adminGroup = $variableApi->get('ZikulaGroupsModule', 'primaryadmingroup', 2);
+        if (isset($originalGroups[$adminGroup]) && !$userBeingModified->getGroups()->containsKey($adminGroup)) {
+            $this->addFlash('info', $this->__('You are not allowed to remove yourself from the primary administrator group.'));
+            $userBeingModified->getGroups()->add($originalGroups[$adminGroup]);
         }
     }
 }

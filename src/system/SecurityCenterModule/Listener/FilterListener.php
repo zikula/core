@@ -420,6 +420,6 @@ class FilterListener implements EventSubscriberInterface
      */
     private function getSystemVar($variableName, $default = false)
     {
-        return $this->variableApi->get(VariableApi::CONFIG, $variableName, $default);
+        return $this->variableApi->getSystemVar($variableName, $default);
     }
 }
