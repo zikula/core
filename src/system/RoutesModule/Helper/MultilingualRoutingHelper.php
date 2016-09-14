@@ -60,17 +60,15 @@ class MultilingualRoutingHelper
      */
     public function reloadMultilingualRoutingSettings()
     {
-        $defaultLocale = $this->variableApi->get(VariableApi::CONFIG, 'language_i18n', $this->locale);
+        $defaultLocale = $this->variableApi->getSystemVar('language_i18n', $this->locale);
         $installedLanguages = \ZLanguage::getInstalledLanguages();
-        $isRequiredLangParameter = $this->variableApi->get(VariableApi::CONFIG, 'languageurl', 0);
+        $isRequiredLangParameter = $this->variableApi->getSystemVar('languageurl', 0);
 
-        $this->configDumper->setConfiguration('jms_i18n_routing',
-            [
-                'default_locale' => $defaultLocale,
-                'locales' => $installedLanguages,
-                'strategy' => $isRequiredLangParameter ? 'prefix' : 'prefix_except_default'
-            ]
-        );
+        $this->configDumper->setConfiguration('jms_i18n_routing', [
+            'default_locale' => $defaultLocale,
+            'locales' => $installedLanguages,
+            'strategy' => $isRequiredLangParameter ? 'prefix' : 'prefix_except_default'
+        ]);
 
         $this->cacheClearer->clear('symfony');
 

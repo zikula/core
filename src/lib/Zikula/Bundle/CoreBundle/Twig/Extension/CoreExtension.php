@@ -75,6 +75,7 @@ class CoreExtension extends \Twig_Extension
             new \Twig_SimpleFunction('pageAddAsset', [$this, 'pageAddAsset']),
             new \Twig_SimpleFunction('pageGetVar', [$this, 'pageGetVar']),
             new \Twig_SimpleFunction('getModVar', [$this, 'getModVar']),
+            new \Twig_SimpleFunction('getSystemVar', [$this, 'getSystemVar']),
             new \Twig_SimpleFunction('setMetaTag', [$this, 'setMetaTag']),
             new \Twig_SimpleFunction('hasPermission', [$this, 'hasPermission']),
             new \Twig_SimpleFunction('defaultPath', [new DefaultPathSimpleFunction($this), 'getDefaultPath']),
@@ -220,7 +221,9 @@ class CoreExtension extends \Twig_Extension
             return $string;
         }
 
-        return (bool)$string ? __('Yes') : __('No');
+        $translator = $this->container->get('translator.default');
+
+        return (bool)$string ? $translator->__('Yes') : $translator->__('No');
     }
 
     /**
@@ -268,7 +271,8 @@ class CoreExtension extends \Twig_Extension
     public function pageSetVar($name, $value)
     {
         if (empty($name) || empty($value)) {
-            throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+            $translator = $this->container->get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
         $this->container->get('zikula_core.common.theme.pagevars')->set($name, $value);
@@ -306,11 +310,14 @@ class CoreExtension extends \Twig_Extension
     public function pageAddAsset($type, $value, $weight = AssetBag::WEIGHT_DEFAULT)
     {
         if (empty($type) || empty($value)) {
-            throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+            $translator = $this->container->get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
         if (!in_array($type, ['stylesheet', 'javascript', 'header', 'footer']) || !is_numeric($weight)) {
-            throw new \InvalidArgumentException(__('Invalid argument at') . ':' . __FILE__ . '::' . __LINE__);
+            $translator = $this->container->get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
+
         // ensure proper variable types
         $value = (string) $value;
         $type = (string) $type;
@@ -343,7 +350,8 @@ class CoreExtension extends \Twig_Extension
     public function pageGetVar($name, $default = null)
     {
         if (empty($name)) {
-            throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+            $translator = $this->container->get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
         return $this->container->get('zikula_core.common.theme.pagevars')->get($name, $default);
@@ -358,10 +366,26 @@ class CoreExtension extends \Twig_Extension
     public function getModVar($module, $name, $default = null)
     {
         if (empty($module) || empty($name)) {
-            throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+            $translator = $this->container->get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
         return $this->container->get('zikula_extensions_module.api.variable')->get($module, $name, $default);
+    }
+
+    /**
+     * @param $name
+     * @param null $default
+     * @return mixed
+     */
+    public function getSystemVar($name, $default = null)
+    {
+        if (empty($name)) {
+            $translator = $this->container->get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+        }
+
+        return $this->container->get('zikula_extensions_module.api.variable')->getSystemVar($name, $default);
     }
 
     /**
@@ -371,7 +395,8 @@ class CoreExtension extends \Twig_Extension
     public function setMetaTag($name, $value)
     {
         if (empty($name) || empty($value)) {
-            throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+            $translator = $this->container->get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
         $metaTags = $this->container->hasParameter('zikula_view.metatags') ? $this->container->getParameter('zikula_view.metatags') : [];
@@ -388,7 +413,8 @@ class CoreExtension extends \Twig_Extension
     public function hasPermission($component, $instance, $level)
     {
         if (empty($component) || empty($instance) || empty($level)) {
-            throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+            $translator = $this->container->get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
         $result = $this->container->get('zikula_permissions_module.api.permission')->hasPermission($component, $instance, constant($level));
@@ -420,6 +446,7 @@ class CoreExtension extends \Twig_Extension
             return call_user_func_array($callable, $params);
         }
 
-        throw new \InvalidArgumentException('Function does not exist or is not callable.');
+        $translator = $this->container->get('translator.default');
+        throw new \InvalidArgumentException($translator->__('Function does not exist or is not callable.') . ':' . __FILE__ . '::' . __LINE__);
     }
 }

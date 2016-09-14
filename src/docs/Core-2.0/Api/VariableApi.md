@@ -12,6 +12,7 @@ The class makes the following methods available:
 
     - has($extensionName, $variableName)
     - get($extensionName, $variableName, $default = false)
+    - getSystemVar($variableName, $default = false)
     - getAll($extensionName)
     - set($extensionName, $variableName, $value = '')
     - setAll($extensionName, array $vars)

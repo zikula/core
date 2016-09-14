@@ -307,7 +307,7 @@ class TwigExtension extends \Twig_Extension
             return $result;
         }
     
-        if ($this->variableApi->get(VariableApi::CONFIG, 'profilemodule') != '') {
+        if ($this->variableApi->getSystemVar('profilemodule') != '') {
             include_once 'lib/legacy/viewplugins/modifier.profilelinkbyuid.php';
             $result = smarty_modifier_profilelinkbyuid($uid, $class, $image, $maxLength);
         } else {

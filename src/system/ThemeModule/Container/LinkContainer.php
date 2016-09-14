@@ -103,7 +103,7 @@ class LinkContainer implements LinkContainerInterface
     {
         $links = [];
 
-        if ($this->variableApi->get(VariableApi::CONFIG, 'theme_change')) {
+        if ($this->variableApi->getSystemVar('theme_change')) {
             $links[] = [
                 'url' => $this->router->generate('zikulathememodule_user_index'),
                 'text' => $this->translator->__('Theme switcher'),

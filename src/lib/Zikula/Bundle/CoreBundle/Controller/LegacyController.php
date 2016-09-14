@@ -98,7 +98,7 @@ class LegacyController
      */
     public function shortUrlAction(Request $request)
     {
-        if ($this->variableApi->get(VariableApi::CONFIG, 'shorturls')) {
+        if ($this->variableApi->getSystemVar('shorturls')) {
             \System::resolveLegacyShortUrl($request);
 
             $module = $request->attributes->get('_zkModule');
@@ -135,7 +135,7 @@ class LegacyController
      */
     public function getLegacyStartPageResponse()
     {
-        $module = $this->variableApi->get(VariableApi::CONFIG, 'startpage');
+        $module = $this->variableApi->getSystemVar('startpage');
         if (!$module) {
             return false;
         }
@@ -143,9 +143,9 @@ class LegacyController
         if (!$modinfo) {
             return false;
         }
-        $type = $this->variableApi->get(VariableApi::CONFIG, 'starttype', 'user');
-        $func = $this->variableApi->get(VariableApi::CONFIG, 'startfunc', 'index');
-        $args = $this->variableApi->get(VariableApi::CONFIG, 'startargs', []);
+        $type = $this->variableApi->getSystemVar('starttype', 'user');
+        $func = $this->variableApi->getSystemVar('startfunc', 'index');
+        $args = $this->variableApi->getSystemVar('startargs', []);
         parse_str($args, $arguments);
 
         return $this->getLegacyResponse($modinfo['name'], $type, $func, $arguments);
@@ -163,7 +163,7 @@ class LegacyController
     private function getLegacyResponse($modName, $type, $func, array $arguments = null, $isAjax = false)
     {
         if ($isAjax
-            && $this->variableApi->get(VariableApi::CONFIG, 'siteoff')
+            && $this->variableApi->getSystemVar('siteoff')
             && !$this->permissionApi->hasPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN)
             && !($modName == 'ZikulaUsersModule' && $func == 'siteofflogin')) {
             return new UnavailableResponse(__('The site is currently off-line.'));

@@ -12,7 +12,6 @@
 namespace Zikula\MailerModule\Api;
 
 use Swift_Message;
-use Zikula\ExtensionsModule\Api\VariableApi;
 use ZLanguage;
 
 /**
@@ -78,8 +77,8 @@ class UserApi extends \Zikula_AbstractApi
         $mailer = $this->getContainer()->get('zikula_mailer_module.api.mailer');
         $variableApi = $this->getContainer()->get('zikula_extensions_module.api.variable');
 
-        $sitename = $variableApi->get(VariableApi::CONFIG, 'sitename_' . ZLanguage::getLanguageCode(), $variableApi->get(VariableApi::CONFIG, 'sitename_en'));
-        $adminMail = $variableApi->get(VariableApi::CONFIG, 'adminmail');
+        $sitename = $variableApi->getSystemVar('sitename_' . ZLanguage::getLanguageCode(), $variableApi->getSystemVar('sitename_en'));
+        $adminMail = $variableApi->getSystemVar('adminmail');
 
         // create new message instance
         /** @var Swift_Message */

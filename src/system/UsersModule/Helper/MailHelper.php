@@ -236,8 +236,10 @@ class MailHelper
             $subject = $this->generateEmailSubject($notificationType, $templateArgs);
         }
 
+        $sitename = $this->variableApi->getSystemVar('sitename_' . \ZLanguage::getLanguageCode(), $this->variableApi->getSystemVar('sitename_en'));
+
         $message = \Swift_Message::newInstance();
-        $message->setFrom([$this->variableApi->get(VariableApi::CONFIG, 'adminmail') => $this->variableApi->get(VariableApi::CONFIG, 'sitename_' . \ZLanguage::getLanguageCode())]);
+        $message->setFrom([$this->variableApi->getSystemVar('adminmail') => $sitename]);
         $message->setTo([$toAddress]);
         $message->setSubject($subject);
         $message->setBody($html ? $htmlBody : $textBody);
@@ -247,7 +249,7 @@ class MailHelper
 
     private function generateEmailSubject($notificationType, array $templateArgs = [])
     {
-        $siteName = $this->variableApi->get(VariableApi::CONFIG, 'sitename');
+        $siteName = $this->variableApi->getSystemVar('sitename');
         switch ($notificationType) {
             case 'regadminnotify':
                 if ($templateArgs['reginfo']['isapproved']) {

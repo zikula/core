@@ -17,7 +17,6 @@ use Swift_Message;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use ZLanguage;
 
@@ -154,8 +153,8 @@ class ConfigController extends AbstractController
 
                 // send the email
                 try {
-                    $siteName = $variableApi->get(VariableApi::CONFIG, 'sitename_' . ZLanguage::getLanguageCode(), $variableApi->get(VariableApi::CONFIG, 'sitename_en'));
-                    $adminMail = $variableApi->get(VariableApi::CONFIG, 'adminmail');
+                    $siteName = $variableApi->getSystemVar('sitename_' . ZLanguage::getLanguageCode(), $variableApi->getSystemVar('sitename_en'));
+                    $adminMail = $variableApi->getSystemVar('adminmail');
 
                     // create new message instance
                     /** @var Swift_Message */
@@ -202,8 +201,8 @@ class ConfigController extends AbstractController
 
         $dataValues = array_merge($params, $modVars);
 
-        $dataValues['sitename'] = $variableApi->get(VariableApi::CONFIG, 'sitename_' . ZLanguage::getLanguageCode(), $variableApi->get(VariableApi::CONFIG, 'sitename_en'));
-        $dataValues['adminmail'] = $variableApi->get(VariableApi::CONFIG, 'adminmail');
+        $dataValues['sitename'] = $variableApi->getSystemVar('sitename_' . ZLanguage::getLanguageCode(), $variableApi->getSystemVar('sitename_en'));
+        $dataValues['adminmail'] = $variableApi->getSystemVar('adminmail');
 
         $dataValues['fromName'] = $dataValues['sitename'];
         $dataValues['fromAddress'] = $dataValues['adminmail'];

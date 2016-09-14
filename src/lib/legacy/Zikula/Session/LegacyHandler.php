@@ -158,13 +158,13 @@ class Zikula_Session_LegacyHandler implements \SessionHandlerInterface
     public function gc($lifetime)
     {
         $now = time();
-        $inactive = ($now - (int) ($this->variableApi->get(VariableApi::CONFIG, 'secinactivemins') * 60));
-        $daysold = ($now - (int) ($this->variableApi->get(VariableApi::CONFIG, 'secmeddays') * 86400));
+        $inactive = ($now - (int) ($this->variableApi->getSystemVar('secinactivemins') * 60));
+        $daysold = ($now - (int) ($this->variableApi->getSystemVar('secmeddays') * 86400));
 
         $inactive = date('Y-m-d H:i:s', $inactive);
         $daysold = date('Y-m-d H:i:s', $daysold);
 
-        switch ($this->variableApi->get(VariableApi::CONFIG, 'seclevel')) {
+        switch ($this->variableApi->getSystemVar('seclevel')) {
             case 'Low':
                 // Low security - delete session info if user decided not to
                 //                remember themself and inactivity timeout

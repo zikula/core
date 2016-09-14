@@ -21,7 +21,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\ExtensionsModule\Api\VariableApi;
 
 /**
  * @Route("/admininterface")
@@ -198,11 +197,11 @@ class AdminInterfaceController extends AbstractController
                 'magic_quotes_gpc' => DataUtil::getBooleanIniValue('magic_quotes_gpc'),
                 'register_globals' => DataUtil::getBooleanIniValue('register_globals'),
                 'app_htaccess' => $app_htaccess,
-                'updatecheck' => $variableApi->get(VariableApi::CONFIG, 'updatecheck'),
+                'updatecheck' => $variableApi->getSystemVar('updatecheck'),
                 'scactive' => $hasSecurityCenter,
                 // check for outputfilter
-                'useids' => $hasSecurityCenter && $variableApi->get(VariableApi::CONFIG, 'useids') == 1,
-                'idssoftblock' => $variableApi->get(VariableApi::CONFIG, 'idssoftblock')
+                'useids' => $hasSecurityCenter && $variableApi->getSystemVar('useids') == 1,
+                'idssoftblock' => $variableApi->getSystemVar('idssoftblock')
             ]
         ]);
     }

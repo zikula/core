@@ -67,6 +67,16 @@ class VariableApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers VariableApi::getSystemVar
+     */
+    public function testGetSystemVar()
+    {
+        $this->assertEquals($this->api->get('ZConfig', 'systemvar'), 'abc');
+        $this->assertFalse($this->api->get('ZConfig', 'nonExistentVariable'));
+        $this->assertEquals($this->api->get('ZConfig', 'nonExistentVariable', 'defaultValue'), 'defaultValue');
+    }
+
+    /**
      * @covers VariableApi::getAll
      */
     public function testGetAll()

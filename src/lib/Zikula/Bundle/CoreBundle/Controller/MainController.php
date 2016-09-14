@@ -63,7 +63,7 @@ class MainController
      */
     public function homeAction(Request $request)
     {
-        $controller = $this->variableApi->get(VariableApi::CONFIG, 'startController');
+        $controller = $this->variableApi->getSystemVar('startController');
         if (!$controller) {
             // @todo remove legacyResponse at Core-2.0
             if (false !== $legacyResponse = $this->legacyController->getLegacyStartPageResponse()) {
@@ -72,7 +72,7 @@ class MainController
 
             return new Response(''); // home page is static
         }
-        $args = $this->variableApi->get(VariableApi::CONFIG, 'startargs');
+        $args = $this->variableApi->getSystemVar('startargs');
         parse_str($args, $attributes);
         $attributes['_controller'] = $controller;
         $subRequest = $request->duplicate(null, null, $attributes);
