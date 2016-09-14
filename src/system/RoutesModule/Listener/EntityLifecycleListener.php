@@ -12,6 +12,7 @@
 
 namespace Zikula\RoutesModule\Listener;
 
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Zikula\RoutesModule\Listener\Base\EntityLifecycleListener as BaseEntityLifecycleListener;
 
 /**
