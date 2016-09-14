@@ -29,6 +29,7 @@ application "Routes" {
         generatePoweredByBacklinksIntoFooterTemplates false
         writeModelToDocs true
         skipFiles "
+            .travis.yml,
             README.md,
             CHANGELOG.md
         "
