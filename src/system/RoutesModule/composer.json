@@ -28,7 +28,7 @@
             "url": "routes",
             "capabilities": {
                 "user": {"route": "zikularoutesmodule_route_index"},
-                "admin": {"route": "zikularoutesmodule_admin_index"},
+                "admin": {"route": "zikularoutesmodule_admin_index"}
             },
             "securityschema": {
                 "ZikulaRoutesModule::": "::",
