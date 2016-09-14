@@ -28,7 +28,7 @@ class ModelHelper
      * Constructor.
      * Initialises member vars.
      *
-     * @param \Zikula_ServiceManager $serviceManager ServiceManager instance.
+     * @param \Zikula_ServiceManager $serviceManager ServiceManager instance
      */
     public function __construct(\Zikula_ServiceManager $serviceManager)
     {
@@ -47,11 +47,11 @@ class ModelHelper
      * Note that even creation of a certain object is possible, it may still be forbidden for the current user
      * if he does not have the required permission level.
      *
-     * @param string $objectType Name of treated entity type.
+     * @param string $objectType Name of treated entity type
      *
-     * @return boolean Whether a new instance can be created or not.
+     * @return boolean Whether a new instance can be created or not
      *
-     * @throws Exception If an invalid object type is used.
+     * @throws Exception If an invalid object type is used
      */
     public function canBeCreated($objectType)
     {
@@ -74,11 +74,11 @@ class ModelHelper
     /**
      * Determines whether there exist at least one instance of a certain object type in the database.
      *
-     * @param string $objectType Name of treated entity type.
+     * @param string $objectType Name of treated entity type
      *
-     * @return boolean Whether at least one instance exists or not.
+     * @return boolean Whether at least one instance exists or not
      *
-     * @throws Exception If an invalid object type is used.
+     * @throws Exception If an invalid object type is used
      */
     protected function hasExistingInstances($objectType)
     {

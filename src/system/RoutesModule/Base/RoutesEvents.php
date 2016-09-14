@@ -24,7 +24,7 @@ class RoutesEvents
      * The event listener receives an
      * Zikula\RoutesModule\Event\FilterRouteEvent instance.
      *
-     * @see Zikula\RoutesModule\Entity\RouteEntity::postLoadCallback()
+     * @see Zikula\RoutesModule\Listener\EntityLifecycleListener::postLoad()
      * @var string
      */
     const ROUTE_POST_LOAD = 'zikularoutesmodule.route_post_load';
@@ -36,7 +36,7 @@ class RoutesEvents
      * The event listener receives an
      * Zikula\RoutesModule\Event\FilterRouteEvent instance.
      *
-     * @see Zikula\RoutesModule\Entity\RouteEntity::prePersistCallback()
+     * @see Zikula\RoutesModule\Listener\EntityLifecycleListener::prePersist()
      * @var string
      */
     const ROUTE_PRE_PERSIST = 'zikularoutesmodule.route_pre_persist';
@@ -48,7 +48,7 @@ class RoutesEvents
      * The event listener receives an
      * Zikula\RoutesModule\Event\FilterRouteEvent instance.
      *
-     * @see Zikula\RoutesModule\Entity\RouteEntity::postPersistCallback()
+     * @see Zikula\RoutesModule\Listener\EntityLifecycleListener::postPersist()
      * @var string
      */
     const ROUTE_POST_PERSIST = 'zikularoutesmodule.route_post_persist';
@@ -60,7 +60,7 @@ class RoutesEvents
      * The event listener receives an
      * Zikula\RoutesModule\Event\FilterRouteEvent instance.
      *
-     * @see Zikula\RoutesModule\Entity\RouteEntity::preRemoveCallback()
+     * @see Zikula\RoutesModule\Listener\EntityLifecycleListener::preRemove()
      * @var string
      */
     const ROUTE_PRE_REMOVE = 'zikularoutesmodule.route_pre_remove';
@@ -72,7 +72,7 @@ class RoutesEvents
      * The event listener receives an
      * Zikula\RoutesModule\Event\FilterRouteEvent instance.
      *
-     * @see Zikula\RoutesModule\Entity\RouteEntity::postRemoveCallback()
+     * @see Zikula\RoutesModule\Listener\EntityLifecycleListener::postRemove()
      * @var string
      */
     const ROUTE_POST_REMOVE = 'zikularoutesmodule.route_post_remove';
@@ -84,7 +84,7 @@ class RoutesEvents
      * The event listener receives an
      * Zikula\RoutesModule\Event\FilterRouteEvent instance.
      *
-     * @see Zikula\RoutesModule\Entity\RouteEntity::preUpdateCallback()
+     * @see Zikula\RoutesModule\Listener\EntityLifecycleListener::preUpdate()
      * @var string
      */
     const ROUTE_PRE_UPDATE = 'zikularoutesmodule.route_pre_update';
@@ -96,33 +96,9 @@ class RoutesEvents
      * The event listener receives an
      * Zikula\RoutesModule\Event\FilterRouteEvent instance.
      *
-     * @see Zikula\RoutesModule\Entity\RouteEntity::postUpdateCallback()
+     * @see Zikula\RoutesModule\Listener\EntityLifecycleListener::postUpdate()
      * @var string
      */
     const ROUTE_POST_UPDATE = 'zikularoutesmodule.route_post_update';
-    
-    /**
-     * The zikularoutesmodule.route_pre_save event is thrown before a new route
-     * is created or an existing route is updated in the system.
-     *
-     * The event listener receives an
-     * Zikula\RoutesModule\Event\FilterRouteEvent instance.
-     *
-     * @see Zikula\RoutesModule\Entity\RouteEntity::preSaveCallback()
-     * @var string
-     */
-    const ROUTE_PRE_SAVE = 'zikularoutesmodule.route_pre_save';
-    
-    /**
-     * The zikularoutesmodule.route_post_save event is thrown after a new route
-     * has been created or an existing route has been updated in the system.
-     *
-     * The event listener receives an
-     * Zikula\RoutesModule\Event\FilterRouteEvent instance.
-     *
-     * @see Zikula\RoutesModule\Entity\RouteEntity::postSaveCallback()
-     * @var string
-     */
-    const ROUTE_POST_SAVE = 'zikularoutesmodule.route_post_save';
     
 }

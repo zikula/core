@@ -48,10 +48,10 @@ class ControllerHelper
      * Constructor.
      * Initialises member vars.
      *
-     * @param \Zikula_ServiceManager $serviceManager ServiceManager instance.
-     * @param TranslatorInterface    $translator     Translator service instance.
-     * @param Session                $session        Session service instance.
-     * @param Logger                 $logger         Logger service instance.
+     * @param \Zikula_ServiceManager $serviceManager ServiceManager instance
+     * @param TranslatorInterface    $translator     Translator service instance
+     * @param Session                $session        Session service instance
+     * @param Logger                 $logger         Logger service instance
      */
     public function __construct(\Zikula_ServiceManager $serviceManager, TranslatorInterface $translator, Session $session, Logger $logger)
     {
@@ -64,10 +64,10 @@ class ControllerHelper
     /**
      * Returns an array of all allowed object types in ZikulaRoutesModule.
      *
-     * @param string $context Usage context (allowed values: controllerAction, api, helper, actionHandler, block, contentType, util).
-     * @param array  $args    Additional arguments.
+     * @param string $context Usage context (allowed values: controllerAction, api, helper, actionHandler, block, contentType, util)
+     * @param array  $args    Additional arguments
      *
-     * @return array List of allowed object types.
+     * @return array List of allowed object types
      */
     public function getObjectTypes($context = '', $args = [])
     {
@@ -84,10 +84,10 @@ class ControllerHelper
     /**
      * Returns the default object type in ZikulaRoutesModule.
      *
-     * @param string $context Usage context (allowed values: controllerAction, api, helper, actionHandler, block, contentType, util).
-     * @param array  $args    Additional arguments.
+     * @param string $context Usage context (allowed values: controllerAction, api, helper, actionHandler, block, contentType, util)
+     * @param array  $args    Additional arguments
      *
-     * @return string The name of the default object type.
+     * @return string The name of the default object type
      */
     public function getDefaultObjectType($context = '', $args = [])
     {
@@ -103,9 +103,9 @@ class ControllerHelper
     /**
      * Checks whether a certain entity type uses composite keys or not.
      *
-     * @param string $objectType The object type to retrieve.
+     * @param string $objectType The object type to retrieve
      *
-     * @return boolean Whether composite keys are used or not.
+     * @return Boolean Whether composite keys are used or not
      */
     public function hasCompositeKeys($objectType)
     {
@@ -120,12 +120,12 @@ class ControllerHelper
     /**
      * Retrieve identifier parameters for a given object type.
      *
-     * @param Request $request    The current request.
-     * @param array   $args       List of arguments used as fallback if request does not contain a field.
-     * @param string  $objectType Name of treated entity type.
-     * @param array   $idFields   List of identifier field names.
+     * @param Request $request    The current request
+     * @param array   $args       List of arguments used as fallback if request does not contain a field
+     * @param string  $objectType Name of treated entity type
+     * @param array   $idFields   List of identifier field names
      *
-     * @return array List of fetched identifiers.
+     * @return array List of fetched identifiers
      */
     public function retrieveIdentifier(Request $request, array $args, $objectType = '', array $idFields)
     {
@@ -173,9 +173,9 @@ class ControllerHelper
     /**
      * Checks if all identifiers are set properly.
      *
-     * @param array  $idValues List of identifier field values.
+     * @param array  $idValues List of identifier field values
      *
-     * @return boolean Whether all identifiers are set or not.
+     * @return boolean Whether all identifiers are set or not
      */
     public function isValidIdentifier(array $idValues)
     {
@@ -195,10 +195,10 @@ class ControllerHelper
     /**
      * Create nice permalinks.
      *
-     * @param string $name The given object title.
+     * @param string $name The given object title
      *
-     * @return string processed permalink.
-     * @deprecated made obsolete by Doctrine extensions.
+     * @return string processed permalink
+     * @deprecated made obsolete by Doctrine extensions
      */
     public function formatPermalink($name)
     {

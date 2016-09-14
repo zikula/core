@@ -29,11 +29,11 @@ class AdminController extends BaseAdminController
      *        methods = {"GET"}
      * )
      *
-     * @param Request  $request      Current request instance.
+     * @param Request $request Current request instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function indexAction(Request $request)
     {

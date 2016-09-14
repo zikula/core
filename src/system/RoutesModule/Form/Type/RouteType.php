@@ -100,7 +100,7 @@ class RouteType extends BaseRouteType
             ],
             'required' => false,
             'max_length' => 255,
-            'help' => $this->__f('Advanced setting, see %s', [ '%s' => 'http://symfony.com/doc/current/components/routing/hostname_pattern.html' ])
+            'help' => $this->__f('Advanced setting, see %s', ['%s' => 'http://symfony.com/doc/current/components/routing/hostname_pattern.html'])
         ]);
 
         $builder->add('condition', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
@@ -112,7 +112,7 @@ class RouteType extends BaseRouteType
             ],
             'required' => false,
             'max_length' => 255,
-            'help' => $this->__f('Advanced setting, see %s', [ '%s' => 'http://symfony.com/doc/current/book/routing.html#completely-customized-route-matching-with-conditions' ])
+            'help' => $this->__f('Advanced setting, see %s', ['%s' => 'http://symfony.com/doc/current/book/routing.html#completely-customized-route-matching-with-conditions'])
         ]);
 
         $builder->add('description', 'Symfony\Component\Form\Extension\Core\Type\TextType', [

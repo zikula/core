@@ -33,12 +33,12 @@ class AjaxController extends BaseAjaxController
      *        methods = {"GET"}
      * )
      *
-     * @param Request  $request      Current request instance
-     * @param string  $ot           Treated object type.
+     * @param Request $request Current request instance
+     * @param string  $ot      Treated object type
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function indexAction(Request $request)
     {
@@ -47,7 +47,13 @@ class AjaxController extends BaseAjaxController
 
     // feel free to add your own controller methods here
 
-
+    /**
+     * Resort routes.
+     *
+     * @param Request $request Current request instance
+     *
+     * @return boolean|AjaxResponse The response
+     */
     public function sort(Request $request)
     {
         if (!$this->hasPermission($this->name . '::Ajax', '::', ACCESS_EDIT)) {

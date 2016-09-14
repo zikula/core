@@ -37,6 +37,7 @@ class Route extends BaseRoute
         if ($orderBy == 'sort asc') {
             $qb->addOrderBy('tbl.group', 'asc');
             $qb->addOrderBy('tbl.sort', 'asc');
+
             return $qb;
         }
 

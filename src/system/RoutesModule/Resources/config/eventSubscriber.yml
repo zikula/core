@@ -1,5 +1,10 @@
 services:
     # Event subscriber and listener classes
+    zikula_routes_module.entity_lifecycle_listener:
+        class: Zikula\RoutesModule\Listener\EntityLifecycleListener
+        tags:
+            - { name: doctrine.event_subscriber }
+    
 #    zikula_routes_module.core_listener:
 #        class: Zikula\RoutesModule\Listener\CoreListener
 #        tags:

@@ -12,6 +12,7 @@
 namespace Zikula\RoutesModule\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -22,9 +23,9 @@ class RedirectingController extends Controller
     /**
      * Remove trailing slash.
      *
-     * @param Request $request
+     * @param Request $request Current request instance
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function removeTrailingSlashAction(Request $request)
     {

@@ -32,9 +32,9 @@ class EditHandler extends BaseEditHandler
      *
      * This method takes care of all necessary initialisation of our data and form states.
      *
-     * @param array $templateParameters List of preassigned template variables.
+     * @param array $templateParameters List of preassigned template variables
      *
-     * @return boolean False in case of initialisation errors, otherwise true.
+     * @return boolean False in case of initialisation errors, otherwise true
      */
     public function processForm(array $templateParameters)
     {
@@ -52,7 +52,7 @@ class EditHandler extends BaseEditHandler
         if ($this->templateParameters['mode'] == 'create') {
             $modelHelper = $this->container->get('zikula_routes_module.model_helper');
             if (!$modelHelper->canBeCreated($this->objectType)) {
-                $this->request->getSession()->getFlashBag()->add(\Zikula_Session::MESSAGE_ERROR, $this->__('Sorry, but you can not create the route yet as other items are required which must be created before!'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Sorry, but you can not create the route yet as other items are required which must be created before!'));
                 $logger = $this->container->get('logger');
                 $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->container->get('zikula_users_module.current_user')->get('uname'), 'entity' => $this->objectType];
                 $logger->notice('{app}: User {user} tried to create a new {entity}, but failed as it other items are required which must be created before.', $logArgs);
@@ -106,9 +106,9 @@ class EditHandler extends BaseEditHandler
      * Get the default redirect url. Required if no returnTo parameter has been supplied.
      * This method is called in handleCommand so we know which command has been performed.
      *
-     * @param array $args List of arguments.
+     * @param array $args List of arguments
      *
-     * @return string The default redirect url.
+     * @return string The default redirect url
      */
     protected function getDefaultReturnUrl($args)
     {
@@ -126,9 +126,9 @@ class EditHandler extends BaseEditHandler
      *
      * This event handler is called when a command is issued by the user.
      *
-     * @param array $args List of arguments.
+     * @param array $args List of arguments
      *
-     * @return mixed Redirect or false on errors.
+     * @return mixed Redirect or false on errors
      */
     public function handleCommand(&$args)
     {
@@ -143,10 +143,10 @@ class EditHandler extends BaseEditHandler
     /**
      * Get success or error message for default operations.
      *
-     * @param array   $args    Arguments from handleCommand method.
-     * @param Boolean $success Becomes true if this is a success, false for default error.
+     * @param array   $args    Arguments from handleCommand method
+     * @param Boolean $success Becomes true if this is a success, false for default error
      *
-     * @return String desired status or error message.
+     * @return String desired status or error message
      */
     protected function getDefaultMessage($args, $success = false)
     {
@@ -177,9 +177,9 @@ class EditHandler extends BaseEditHandler
     /**
      * This method executes a certain workflow action.
      *
-     * @param array $args Arguments from handleCommand method.
+     * @param array $args Arguments from handleCommand method
      *
-     * @return bool Whether everything worked well or not.
+     * @return bool Whether everything worked well or not
      *
      * @throws RuntimeException Thrown if concurrent editing is recognised or another error occurs
      */
@@ -198,7 +198,7 @@ class EditHandler extends BaseEditHandler
             $workflowHelper = $this->container->get('zikula_routes_module.workflow_helper');
             $success = $workflowHelper->executeAction($entity, $action);
         } catch(\Exception $e) {
-            $flashBag->add(\Zikula_Session::MESSAGE_ERROR, $this->__f('Sorry, but an unknown error occured during the %action% action. Please apply the changes again!', ['%action%' => $action]));
+            $flashBag->add('error', $this->__f('Sorry, but an unknown error occured during the %action% action. Please apply the changes again!', ['%action%' => $action]));
             $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->container->get('zikula_users_module.current_user')->get('uname'), 'entity' => 'route', 'id' => $entity->createCompositeIdentifier(), 'errorMessage' => $e->getMessage()];
             $logger->error('{app}: User {user} tried to edit the {entity} with id {id}, but failed. Error details: {errorMessage}.', $logArgs);
         }
@@ -218,9 +218,9 @@ class EditHandler extends BaseEditHandler
     /**
      * Get url to redirect to.
      *
-     * @param array $args List of arguments.
+     * @param array $args List of arguments
      *
-     * @return string The redirect url.
+     * @return string The redirect url
      */
     protected function getRedirectUrl($args)
     {

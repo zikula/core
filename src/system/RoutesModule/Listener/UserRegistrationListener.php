@@ -54,7 +54,7 @@ class UserRegistrationListener extends BaseUserRegistrationListener
         // the currently handled request
         // $request = $event->getRequest();
     }
-
+    
     /**
      * {@inheritdoc}
      */
@@ -216,7 +216,7 @@ class UserRegistrationListener extends BaseUserRegistrationListener
         // the currently handled request
         // $request = $event->getRequest();
     }
-
+    
     /**
      * {@inheritdoc}
      */

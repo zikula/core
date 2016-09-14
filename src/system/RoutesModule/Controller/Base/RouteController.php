@@ -43,11 +43,11 @@ class RouteController extends AbstractController
      * @Theme("admin")
      * @Cache(expires="+7 days", public=true)
      *
-     * @param Request  $request      Current request instance.
+     * @param Request  $request      Current request instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function adminIndexAction(Request $request)
     {
@@ -58,11 +58,11 @@ class RouteController extends AbstractController
      * This is the default action handling the main area called without defining arguments.
      * @Cache(expires="+7 days", public=true)
      *
-     * @param Request  $request      Current request instance.
+     * @param Request  $request      Current request instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function indexAction(Request $request)
     {
@@ -101,15 +101,15 @@ class RouteController extends AbstractController
      * @Theme("admin")
      * @Cache(expires="+2 hours", public=false)
      *
-     * @param Request  $request      Current request instance.
-     * @param string  $sort         Sorting field.
-     * @param string  $sortdir      Sorting direction.
-     * @param int     $pos          Current pager position.
-     * @param int     $num          Amount of entries to display.
+     * @param Request  $request      Current request instance
+     * @param string  $sort         Sorting field
+     * @param string  $sortdir      Sorting direction
+     * @param int     $pos          Current pager position
+     * @param int     $num          Amount of entries to display
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function adminViewAction(Request $request, $sort, $sortdir, $pos, $num)
     {
@@ -120,15 +120,15 @@ class RouteController extends AbstractController
      * This action provides an item list overview.
      * @Cache(expires="+2 hours", public=false)
      *
-     * @param Request  $request      Current request instance.
-     * @param string  $sort         Sorting field.
-     * @param string  $sortdir      Sorting direction.
-     * @param int     $pos          Current pager position.
-     * @param int     $num          Amount of entries to display.
+     * @param Request  $request      Current request instance
+     * @param string  $sort         Sorting field
+     * @param string  $sortdir      Sorting direction
+     * @param int     $pos          Current pager position
+     * @param int     $num          Amount of entries to display
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function viewAction(Request $request, $sort, $sortdir, $pos, $num)
     {
@@ -261,9 +261,6 @@ class RouteController extends AbstractController
             $entity->initWorkflow();
         }
         
-        // build ModUrl instance for display hooks
-        $currentUrlObject = new ModUrl($this->name, 'route', 'view', ZLanguage::getLanguageCode(), $currentUrlArgs);
-        
         $templateParameters['items'] = $entities;
         $templateParameters['sort'] = $sort;
         $templateParameters['sdir'] = $sortdir;
@@ -294,13 +291,13 @@ class RouteController extends AbstractController
      * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options={"id" = "id", "repository_method" = "selectById"})
      * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
      *
-     * @param Request  $request      Current request instance.
-     * @param RouteEntity $route      Treated route instance.
+     * @param Request  $request      Current request instance
+     * @param RouteEntity $route      Treated route instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
-     * @throws NotFoundHttpException Thrown by param converter if item to be displayed isn't found.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by param converter if item to be displayed isn't found
      */
     public function adminDisplayAction(Request $request, RouteEntity $route)
     {
@@ -312,13 +309,13 @@ class RouteController extends AbstractController
      * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options={"id" = "id", "repository_method" = "selectById"})
      * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
      *
-     * @param Request  $request      Current request instance.
-     * @param RouteEntity $route      Treated route instance.
+     * @param Request  $request      Current request instance
+     * @param RouteEntity $route      Treated route instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
-     * @throws NotFoundHttpException Thrown by param converter if item to be displayed isn't found.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by param converter if item to be displayed isn't found
      */
     public function displayAction(Request $request, RouteEntity $route)
     {
@@ -353,11 +350,8 @@ class RouteController extends AbstractController
         
         $entity->initWorkflow();
         
-        // build ModUrl instance for display hooks; also create identifier for permission check
-        $currentUrlArgs = $entity->createUrlArgs();
+        // create identifier for permission check
         $instanceId = $entity->createCompositeIdentifier();
-        $currentUrlArgs['id'] = $instanceId; // TODO remove this
-        $currentUrlObject = new ModUrl($this->name, 'route', 'display', ZLanguage::getLanguageCode(), $currentUrlArgs);
         
         if (!$this->hasPermission($this->name . ':' . ucfirst($objectType) . ':', $instanceId . '::', $permLevel)) {
             throw new AccessDeniedException();
@@ -372,20 +366,28 @@ class RouteController extends AbstractController
         $templateParameters = array_merge($templateParameters, $repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
         
         // fetch and return the appropriate template
-        return $viewHelper->processTemplate($this->get('twig'), $objectType, 'display', $request, $templateParameters);
+        $response = $viewHelper->processTemplate($this->get('twig'), $objectType, 'display', $request, $templateParameters);
+        
+        $format = $request->getRequestFormat();
+        if ($format == 'ics') {
+            $fileName = $objectType . '_' . (property_exists($entity, 'slug') ? $entity['slug'] : $entity->getTitleFromDisplayPattern()) . '.ics';
+            $response->headers->set('Content-Disposition', 'attachment; filename=' . $fileName);
+        }
+        
+        return $response;
     }
     /**
      * This action provides a handling of edit requests in the admin area.
      * @Theme("admin")
      * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
      *
-     * @param Request  $request      Current request instance.
+     * @param Request  $request      Current request instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
-     * @throws NotFoundHttpException Thrown by form handler if item to be edited isn't found.
-     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available).
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by form handler if item to be edited isn't found
+     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
      */
     public function adminEditAction(Request $request)
     {
@@ -396,13 +398,13 @@ class RouteController extends AbstractController
      * This action provides a handling of edit requests.
      * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
      *
-     * @param Request  $request      Current request instance.
+     * @param Request  $request      Current request instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
-     * @throws NotFoundHttpException Thrown by form handler if item to be edited isn't found.
-     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available).
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by form handler if item to be edited isn't found
+     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
      */
     public function editAction(Request $request)
     {
@@ -452,14 +454,14 @@ class RouteController extends AbstractController
      * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options={"id" = "id", "repository_method" = "selectById"})
      * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
      *
-     * @param Request  $request      Current request instance.
-     * @param RouteEntity $route      Treated route instance.
+     * @param Request  $request      Current request instance
+     * @param RouteEntity $route      Treated route instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
-     * @throws NotFoundHttpException Thrown by param converter if item to be deleted isn't found.
-     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available).
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by param converter if item to be deleted isn't found
+     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
      */
     public function adminDeleteAction(Request $request, RouteEntity $route)
     {
@@ -471,14 +473,14 @@ class RouteController extends AbstractController
      * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options={"id" = "id", "repository_method" = "selectById"})
      * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
      *
-     * @param Request  $request      Current request instance.
-     * @param RouteEntity $route      Treated route instance.
+     * @param Request  $request      Current request instance
+     * @param RouteEntity $route      Treated route instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
-     * @throws NotFoundHttpException Thrown by param converter if item to be deleted isn't found.
-     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available).
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by param converter if item to be deleted isn't found
+     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
      */
     public function deleteAction(Request $request, RouteEntity $route)
     {
@@ -501,7 +503,6 @@ class RouteController extends AbstractController
         }
         $entity = $route;
         
-        $flashBag = $request->getSession()->getFlashBag();
         $logger = $this->get('logger');
         $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->get('zikula_users_module.current_user')->get('uname'), 'entity' => 'route', 'id' => $entity->createCompositeIdentifier()];
         
@@ -511,7 +512,7 @@ class RouteController extends AbstractController
         $workflowHelper = $this->get('zikula_routes_module.workflow_helper');
         $actions = $workflowHelper->getActionsForObject($entity);
         if ($actions === false || !is_array($actions)) {
-            $flashBag->add(\Zikula_Session::MESSAGE_ERROR, $this->__('Error! Could not determine workflow actions.'));
+            $this->addFlash('error', $this->__('Error! Could not determine workflow actions.'));
             $logger->error('{app}: User {user} tried to delete the {entity} with id {id}, but failed to determine available workflow actions.', $logArgs);
             throw new \RuntimeException($this->__('Error! Could not determine workflow actions.'));
         }
@@ -530,7 +531,7 @@ class RouteController extends AbstractController
             break;
         }
         if (!$deleteAllowed) {
-            $flashBag->add(\Zikula_Session::MESSAGE_ERROR, $this->__('Error! It is not allowed to delete this route.'));
+            $this->addFlash('error', $this->__('Error! It is not allowed to delete this route.'));
             $logger->error('{app}: User {user} tried to delete the {entity} with id {id}, but this action was not allowed.', $logArgs);
         
             return $this->redirectToRoute($redirectRoute);
@@ -540,26 +541,16 @@ class RouteController extends AbstractController
         
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('delete')->isClicked()) {
-                $hookHelper = $this->get('zikula_routes_module.hook_helper');
-                // Let any hooks perform additional validation actions
-                $hookType = 'validate_delete';
-                $validationHooksPassed = $hookHelper->callValidationHooks($entity, $hookType);
-                if ($validationHooksPassed) {
-                    // execute the workflow action
-                    $success = $workflowHelper->executeAction($entity, $deleteActionId);
-                    if ($success) {
-                        $flashBag->add(\Zikula_Session::MESSAGE_STATUS, $this->__('Done! Item deleted.'));
-                        $logger->notice('{app}: User {user} deleted the {entity} with id {id}.', $logArgs);
-                    }
-                    
-                    // Let any hooks know that we have deleted the route
-                    $hookType = 'process_delete';
-                    $hookHelper->callProcessHooks($entity, $hookType, null);
-                    
-                    return $this->redirectToRoute($redirectRoute);
+                // execute the workflow action
+                $success = $workflowHelper->executeAction($entity, $deleteActionId);
+                if ($success) {
+                    $this->addFlash('status', $this->__('Done! Item deleted.'));
+                    $logger->notice('{app}: User {user} deleted the {entity} with id {id}.', $logArgs);
                 }
+                
+                return $this->redirectToRoute($redirectRoute);
             } elseif ($form->get('cancel')->isClicked()) {
-                $this->addFlash(\Zikula_Session::MESSAGE_STATUS, $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->__('Operation cancelled.'));
         
                 return $this->redirectToRoute($redirectRoute);
             }
@@ -583,11 +574,11 @@ class RouteController extends AbstractController
      * This is a custom action in the admin area.
      * @Theme("admin")
      *
-     * @param Request  $request      Current request instance.
+     * @param Request  $request      Current request instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function adminReloadAction(Request $request)
     {
@@ -597,11 +588,11 @@ class RouteController extends AbstractController
     /**
      * This is a custom action.
      *
-     * @param Request  $request      Current request instance.
+     * @param Request  $request      Current request instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function reloadAction(Request $request)
     {
@@ -635,11 +626,11 @@ class RouteController extends AbstractController
      * This is a custom action in the admin area.
      * @Theme("admin")
      *
-     * @param Request  $request      Current request instance.
+     * @param Request  $request      Current request instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function adminRenewAction(Request $request)
     {
@@ -649,11 +640,11 @@ class RouteController extends AbstractController
     /**
      * This is a custom action.
      *
-     * @param Request  $request      Current request instance.
+     * @param Request  $request      Current request instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function renewAction(Request $request)
     {
@@ -690,9 +681,9 @@ class RouteController extends AbstractController
      * This function processes the items selected in the admin view page.
      * Multiple items may have their state changed or be deleted.
      *
-     * @param Request $request Current request instance.
+     * @param Request $request Current request instance
      *
-     * @return bool true on sucess, false on failure.
+     * @return bool true on sucess, false on failure
      *
      * @throws RuntimeException Thrown if executing the workflow action fails
      */
@@ -706,9 +697,9 @@ class RouteController extends AbstractController
      * This function processes the items selected in the admin view page.
      * Multiple items may have their state changed or be deleted.
      *
-     * @param Request $request Current request instance.
+     * @param Request $request Current request instance
      *
-     * @return bool true on sucess, false on failure.
+     * @return bool true on sucess, false on failure
      *
      * @throws RuntimeException Thrown if executing the workflow action fails
      */
@@ -731,8 +722,6 @@ class RouteController extends AbstractController
         $action = strtolower($action);
         
         $workflowHelper = $this->get('zikula_routes_module.workflow_helper');
-        $hookHelper = $this->get('zikula_routes_module.hook_helper');
-        $flashBag = $request->getSession()->getFlashBag();
         $logger = $this->get('logger');
         $userName = $this->get('zikula_users_module.current_user')->get('uname');
         
@@ -756,13 +745,6 @@ class RouteController extends AbstractController
                 continue;
             }
         
-            // Let any hooks perform additional validation actions
-            $hookType = $action == 'delete' ? 'validate_delete' : 'validate_edit';
-            $validationHooksPassed = $hookHelper->callValidationHooks($entity, $hookType);
-            if (!$validationHooksPassed) {
-                continue;
-            }
-        
             $success = false;
             try {
                 if (!$entity->validate()) {
@@ -771,7 +753,7 @@ class RouteController extends AbstractController
                 // execute the workflow action
                 $success = $workflowHelper->executeAction($entity, $action);
             } catch(\Exception $e) {
-                $flashBag->add(\Zikula_Session::MESSAGE_ERROR, $this->__f('Sorry, but an unknown error occured during the %s action. Please apply the changes again!', [$action]));
+                $this->addFlash('error', $this->__f('Sorry, but an unknown error occured during the %s action. Please apply the changes again!', ['%s' => $action]));
                 $logger->error('{app}: User {user} tried to execute the {action} workflow action for the {entity} with id {id}, but failed. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'user' => $userName, 'action' => $action, 'entity' => 'route', 'id' => $itemid, 'errorMessage' => $e->getMessage()]);
             }
         
@@ -780,21 +762,12 @@ class RouteController extends AbstractController
             }
         
             if ($action == 'delete') {
-                $flashBag->add(\Zikula_Session::MESSAGE_STATUS, $this->__('Done! Item deleted.'));
+                $this->addFlash('status', $this->__('Done! Item deleted.'));
                 $logger->notice('{app}: User {user} deleted the {entity} with id {id}.', ['app' => 'ZikulaRoutesModule', 'user' => $userName, 'entity' => 'route', 'id' => $itemid]);
             } else {
-                $flashBag->add(\Zikula_Session::MESSAGE_STATUS, $this->__('Done! Item updated.'));
+                $this->addFlash('status', $this->__('Done! Item updated.'));
                 $logger->notice('{app}: User {user} executed the {action} workflow action for the {entity} with id {id}.', ['app' => 'ZikulaRoutesModule', 'user' => $userName, 'action' => $action, 'entity' => 'route', 'id' => $itemid]);
             }
-        
-            // Let any hooks know that we have updated or deleted an item
-            $hookType = $action == 'delete' ? 'process_delete' : 'process_edit';
-            $url = null;
-            if ($action != 'delete') {
-                $urlArgs = $entity->createUrlArgs();
-                $url = new RouteUrl('zikularoutesmodule_route_' . /*($isAdmin ? 'admin' : '') . */'display', $urlArgs);
-            }
-            $hookHelper->callProcessHooks($entity, $hookType, $url);
         }
         
         return $this->redirectToRoute('zikularoutesmodule_route_' . ($isAdmin ? 'admin' : '') . 'index');

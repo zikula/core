@@ -12,8 +12,6 @@
 
 namespace Zikula\RoutesModule\Twig;
 
-use System;
-use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\Twig\Base\TwigExtension as BaseTwigExtension;
 use ZLanguage;
@@ -29,7 +27,8 @@ class TwigExtension extends BaseTwigExtension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('zikularoutesmodule_userVar', [$this, 'getUserVar']), // from Base class
+            new \Twig_SimpleFunction('zikularoutesmodule_actions', [$this, 'getActionLinks']), // from base class
+            new \Twig_SimpleFunction('zikularoutesmodule_userVar', [$this, 'getUserVar']), // from base class
         ];
     }
 
@@ -39,8 +38,7 @@ class TwigExtension extends BaseTwigExtension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('zikularoutesmodule_actionUrl', [$this, 'buildActionUrl']), // from Base class
-            new \Twig_SimpleFilter('zikularoutesmodule_listEntry', [$this, 'getListEntry']), // from Base class
+            new \Twig_SimpleFilter('zikularoutesmodule_listEntry', [$this, 'getListEntry']), // from base class
             new \Twig_SimpleFilter('zikularoutesmodule_arrayToString', [$this, 'displayArrayAsString']),
             new \Twig_SimpleFilter('zikularoutesmodule_pathToString', [$this, 'displayPathAsString'])
         ];
@@ -100,17 +98,16 @@ class TwigExtension extends BaseTwigExtension
 
         $defaults = $route->getDefaults();
         $requirements = $route->getRequirements();
-        $dom = ZLanguage::getModuleDomain('ZikulaRoutesModule');
-        $path = preg_replace_callback('#{(.*?)}#', function ($matches) use ($container, $defaults, $requirements, $dom) {
+        $path = preg_replace_callback('#{(.*?)}#', function ($matches) use ($container, $defaults, $requirements) {
             $title = '';
             if (isset($defaults[$matches[1]])) {
-                $title .= __f('Default: %s', [\DataUtil::formatForDisplay($defaults[$matches[1]])], $dom);
+                $title .= $this->translator->__f('Default: %s', ['%s' => \DataUtil::formatForDisplay($defaults[$matches[1]])]);
             }
             if (isset($requirements[$matches[1]])) {
                 if ($title != '') {
                     $title .= ' | ';
                 }
-                $title .= __f('Requirement: %s', [\DataUtil::formatForDisplay($requirements[$matches[1]])], $dom);
+                $title .= $this->__f('Requirement: %s', ['%s' => \DataUtil::formatForDisplay($requirements[$matches[1]])]);
             }
             if ($title == '') {
                 return $matches[0];

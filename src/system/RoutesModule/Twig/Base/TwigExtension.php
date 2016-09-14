@@ -15,8 +15,9 @@ namespace Zikula\RoutesModule\Twig\Base;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\RoutesModule\Helper\WorkflowHelper;
 use Zikula\RoutesModule\Helper\ListEntriesHelper;
+use Zikula\RoutesModule\Helper\WorkflowHelper;
+use Zikula\RoutesModule\Container\LinkContainer;
 
 /**
  * Twig extension base class.
@@ -29,6 +30,11 @@ class TwigExtension extends \Twig_Extension
      * @var VariableApi
      */
     protected $variableApi;
+    
+    /**
+     * @var LinkContainer
+     */
+    protected $linkContainer;
     
     /**
      * @var WorkflowHelper
@@ -44,15 +50,17 @@ class TwigExtension extends \Twig_Extension
      * Constructor.
      * Initialises member vars.
      *
-     * @param TranslatorInterface $translator     Translator service instance.
-     * @param VariableApi         $variableApi    VariableApi service instance.
-     * @param WorkflowHelper      $workflowHelper WorkflowHelper service instance.
-     * @param ListEntriesHelper   $listHelper     ListEntriesHelper service instance.
+     * @param TranslatorInterface $translator     Translator service instance
+     * @param VariableApi         $variableApi    VariableApi service instance
+     * @param LinkContainer       $linkContainer  LinkContainer service instance
+     * @param WorkflowHelper      $workflowHelper WorkflowHelper service instance
+     * @param ListEntriesHelper   $listHelper     ListEntriesHelper service instance
      */
-    public function __construct(TranslatorInterface $translator, VariableApi $variableApi, WorkflowHelper $workflowHelper, ListEntriesHelper $listHelper)
+    public function __construct(TranslatorInterface $translator, VariableApi $variableApi, LinkContainer $linkContainer, WorkflowHelper $workflowHelper, ListEntriesHelper $listHelper)
     {
         $this->setTranslator($translator);
         $this->variableApi = $variableApi;
+        $this->linkContainer = $linkContainer;
         $this->workflowHelper = $workflowHelper;
         $this->listHelper = $listHelper;
     }
@@ -60,7 +68,7 @@ class TwigExtension extends \Twig_Extension
     /**
      * Sets the translator.
      *
-     * @param TranslatorInterface $translator Translator service instance.
+     * @param TranslatorInterface $translator Translator service instance
      */
     public function setTranslator(/*TranslatorInterface */$translator)
     {
@@ -75,7 +83,7 @@ class TwigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('zikularoutesmodule_templateHeaders', [$this, 'templateHeaders']),
+            new \Twig_SimpleFunction('zikularoutesmodule_actions', [$this, 'getActionLinks']),
             new \Twig_SimpleFunction('zikularoutesmodule_objectTypeSelector', [$this, 'getObjectTypeSelector']),
             new \Twig_SimpleFunction('zikularoutesmodule_templateSelector', [$this, 'getTemplateSelector']),
             new \Twig_SimpleFunction('zikularoutesmodule_userVar', [$this, 'getUserVar']),
@@ -92,7 +100,6 @@ class TwigExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('zikularoutesmodule_actionUrl', [$this, 'buildActionUrl']),
             new \Twig_SimpleFilter('zikularoutesmodule_objectState', [$this, 'getObjectState']),
             new \Twig_SimpleFilter('zikularoutesmodule_listEntry', [$this, 'getListEntry']),
             new \Twig_SimpleFilter('zikularoutesmodule_profileLink', [$this, 'profileLink'])
@@ -100,19 +107,18 @@ class TwigExtension extends \Twig_Extension
     }
     
     /**
-     * The zikularoutesmodule_actionUrl filter creates the URL for a given action.
+     * Returns action links for a given entity.
      *
-     * @param string $urlType      The url type (admin, user, etc.)
-     * @param string $urlFunc      The url func (view, display, edit, etc.)
-     * @param array  $urlArguments The argument array containing ids and other additional parameters
+     * @param EntityAccess $entity  The entity
+     * @param string       $area    The context area name (e.g. admin or nothing for user)
+     * @param string       $context The context page name (e.g. view, display, edit, delete)
      *
-     * @return string Desired url in encoded form.
+     * @return array Array of action links
      */
-    public function buildActionUrl($urlType, $urlFunc, $urlArguments)
+    public function getActionLinks(EntityAccess $entity, $area = '', $context = 'view')
     {
-        return \DataUtil::formatForDisplay(\ModUtil::url('ZikulaRoutesModule', $urlType, $urlFunc, $urlArguments));
+        return $this->linkContainer->getActionLinks($entity, $area, $context);
     }
-    
     
     /**
      * The zikularoutesmodule_objectState filter displays the name of a given object's workflow state.
@@ -120,10 +126,10 @@ class TwigExtension extends \Twig_Extension
      *    {{ item.workflowState|zikularoutesmodule_objectState }}        {# with visual feedback #}
      *    {{ item.workflowState|zikularoutesmodule_objectState(false) }} {# no ui feedback #}
      *
-     * @param string  $state      Name of given workflow state.
-     * @param boolean $uiFeedback Whether the output should include some visual feedback about the state.
+     * @param string  $state      Name of given workflow state
+     * @param boolean $uiFeedback Whether the output should include some visual feedback about the state
      *
-     * @return string Enriched and translated workflow state ready for display.
+     * @return string Enriched and translated workflow state ready for display
      */
     public function getObjectState($state = 'initial', $uiFeedback = true)
     {
@@ -139,42 +145,17 @@ class TwigExtension extends \Twig_Extension
     
     
     /**
-     * The zikularoutesmodule_templateHeaders function performs header() operations
-     * to change the content type provided to the user agent.
-     *
-     * Available parameters:
-     *   - contentType:  Content type for corresponding http header.
-     *   - asAttachment: If set to true the file will be offered for downloading.
-     *   - fileName:     Name of download file.
-     *
-     * @return boolean false.
-     */
-    public function templateHeaders($contentType, $asAttachment = false, $fileName = '')
-    {
-        // apply header
-        header('Content-Type: ' . $contentType);
-    
-        // if desired let the browser offer the given file as a download
-        if ($asAttachment && !empty($fileName)) {
-            header('Content-Disposition: attachment; filename=' . $fileName);
-        }
-    
-        return;
-    }
-    
-    
-    /**
      * The zikularoutesmodule_listEntry filter displays the name
      * or names for a given list item.
      * Example:
      *     {{ entity.listField|zikularoutesmodule_listEntry('entityName', 'fieldName') }}
      *
-     * @param string $value      The dropdown value to process.
-     * @param string $objectType The treated object type.
-     * @param string $fieldName  The list field's name.
-     * @param string $delimiter  String used as separator for multiple selections.
+     * @param string $value      The dropdown value to process
+     * @param string $objectType The treated object type
+     * @param string $fieldName  The list field's name
+     * @param string $delimiter  String used as separator for multiple selections
      *
-     * @return string List item name.
+     * @return string List item name
      */
     public function getListEntry($value, $objectType = '', $fieldName = '', $delimiter = ', ')
     {
@@ -189,7 +170,7 @@ class TwigExtension extends \Twig_Extension
     /**
      * The zikularoutesmodule_objectTypeSelector function provides items for a dropdown selector.
      *
-     * @return string The output of the plugin.
+     * @return string The output of the plugin
      */
     public function getObjectTypeSelector()
     {
@@ -204,7 +185,7 @@ class TwigExtension extends \Twig_Extension
     /**
      * The zikularoutesmodule_templateSelector function provides items for a dropdown selector.
      *
-     * @return string The output of the plugin.
+     * @return string The output of the plugin
      */
     public function getTemplateSelector()
     {
@@ -220,9 +201,9 @@ class TwigExtension extends \Twig_Extension
     /**
      * Returns the value of a user variable.
      *
-     * @param string     $name    Name of desired property.
-     * @param int        $uid     The user's id.
-     * @param string|int $default The default value.
+     * @param string     $name    Name of desired property
+     * @param int        $uid     The user's id
+     * @param string|int $default The default value
      *
      * @return string
      */
@@ -240,11 +221,11 @@ class TwigExtension extends \Twig_Extension
     /**
      * Display the avatar of a user.
      *
-     * @param int    $uid    The user's id.
-     * @param int    $width  Image width (optional).
-     * @param int    $height Image height (optional).
-     * @param int    $size   Gravatar size (optional).
-     * @param string $rating Gravatar self-rating [g|pg|r|x] see: http://en.gravatar.com/site/implement/images/ (optional).
+     * @param int    $uid    The user's id
+     * @param int    $width  Image width (optional)
+     * @param int    $height Image height (optional)
+     * @param int    $size   Gravatar size (optional)
+     * @param string $rating Gravatar self-rating [g|pg|r|x] see: http://en.gravatar.com/site/implement/images/ (optional)
      *
      * @return string
      */
@@ -275,9 +256,9 @@ class TwigExtension extends \Twig_Extension
     /**
      * Display an image thumbnail using Imagine system plugin.
      *
-     * @param array $params Parameters assigned to bridged Smarty plugin.
+     * @param array $params Parameters assigned to bridged Smarty plugin
      *
-     * @return string Thumb path.
+     * @return string Thumb path
      */
     public function getImageThumb($params)
     {
@@ -292,9 +273,9 @@ class TwigExtension extends \Twig_Extension
     /**
      * Returns a link to the user's profile.
      *
-     * @param int     $uid       The user's id (optional).
-     * @param string  $class     The class name for the link (optional).
-     * @param integer $maxLength If set then user names are truncated to x chars.
+     * @param int     $uid       The user's id (optional)
+     * @param string  $class     The class name for the link (optional)
+     * @param integer $maxLength If set then user names are truncated to x chars
      *
      * @return string
      */
