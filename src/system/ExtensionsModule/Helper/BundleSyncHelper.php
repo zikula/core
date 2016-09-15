@@ -187,9 +187,10 @@ class BundleSyncHelper
         }
 
         $legacyModules = LegacyBundleSyncHelper::scanForModules();
-        $this->validate($bundles + $legacyModules);
+        $bundles = $bundles + $legacyModules;
+        $this->validate($bundles);
 
-        return $bundles + $legacyModules;
+        return $bundles;
     }
 
     /**
