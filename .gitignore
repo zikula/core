@@ -12,6 +12,7 @@
 /src/config/personal_config.php
 /src/config/multisites_config.php
 /src/modules/*
+!/src/modules/MenuModule
 /src/themes/*
 !/src/themes/Andreas08Theme
 !/src/themes/AtomTheme
