@@ -16,5 +16,4 @@ use Zikula\MenuModule\Entity\RepositoryInterface\MenuItemRepositoryInterface;
 
 class MenuItemRepository extends NestedTreeRepository implements MenuItemRepositoryInterface
 {
-
 }

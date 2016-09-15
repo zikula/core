@@ -16,5 +16,4 @@ use Doctrine\Common\Persistence\ObjectRepository;
 
 interface MenuItemRepositoryInterface extends ObjectRepository , Selectable
 {
-
 }

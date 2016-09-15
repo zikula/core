@@ -55,56 +55,6 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '1.0.0':
-                $root = new MenuItemEntity();
-                $root->setTitle('home');
-                $users = new MenuItemEntity();
-                $users->setParent($root);
-                $users->setTitle('UsersModule');
-                $users->setOptions([
-                    'route' => 'zikulausersmodule_useradministration_list',
-                    'icon' => 'fa fa-user'
-                ]);
-                $blocks = new MenuItemEntity();
-                $blocks->setParent($root);
-                $blocks->setTitle('BlocksModule');
-                $blocks->setOptions([
-                    'route' => 'zikulablocksmodule_admin_view'
-                ]);
-                $zAuth = new MenuItemEntity();
-                $zAuth->setParent($users);
-                $zAuth->setTitle('ZAuthModule');
-                $zAuth->setOptions([
-                    'route' => 'zikulazauthmodule_useradministration_list'
-                ]);
-                $this->entityManager->persist($root);
-                $this->entityManager->persist($users);
-                $this->entityManager->persist($blocks);
-                $this->entityManager->persist($zAuth);
-                $this->entityManager->flush();
-            case '1.0.1':
-                $this->schemaTool->update($this->entities);
-                $root = $this->entityManager->getRepository('ZikulaMenuModule:MenuItemEntity')->findOneBy(['title' => 'home']);
-                $root->setAttributes([
-                    'class' => 'nav navbar-nav'
-                ]);
-                $users = $this->entityManager->getRepository('ZikulaMenuModule:MenuItemEntity')->findOneBy(['title' => 'UsersModule']);
-                $users->removeOption('icon');
-                $users->setAttribute('icon', 'fa fa-users');
-                $modules = new MenuItemEntity();
-                $modules->setTitle('Modules');
-                $modules->setParent($root);
-                $modules->setAttributes([
-                    'icon' => 'fa fa-list',
-                    'dropdown' => true
-                ]);
-                $this->entityManager->persist($modules);
-                $this->entityManager->flush();
-                $users->setParent($modules);
-                $blocks = $this->entityManager->getRepository('ZikulaMenuModule:MenuItemEntity')->findOneBy(['title' => 'BlocksModule']);
-                $blocks->setAttribute('icon', 'fa fa-cubes');
-                $blocks->setParent($modules);
-                $this->entityManager->flush();
-            case '1.0.2':
                 // current version
         }
 
@@ -118,6 +68,8 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
      */
     public function uninstall()
     {
+        $this->schemaTool->drop($this->entities); // @todo remove
+
         return true; // @todo change to false
     }
 
@@ -128,41 +80,49 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
     {
         $root = new MenuItemEntity();
         $root->setTitle('home');
-        $root->setAttributes([
-            'class' => 'nav navbar-nav'
-        ]);
+        $root->setOptions([
+            'childrenAttributes' => [
+                'class' => 'nav navbar-nav'
+        ]]);
 
         $modules = new MenuItemEntity();
         $modules->setTitle('Modules');
         $modules->setParent($root);
-        $modules->setAttributes([
-            'icon' => 'fa fa-list',
-            'dropdown' => true
-        ]);
+        $root->setOptions([
+            'attributes' => [
+                'icon' => 'fa fa-list',
+                'dropdown' => true
+        ]]);
 
         $users = new MenuItemEntity();
         $users->setParent($modules);
         $users->setTitle('UsersModule');
         $users->setOptions([
             'route' => 'zikulausersmodule_useradministration_list',
+            'attributes' => [
+                'icon' => 'fa fa-users'
+            ]
         ]);
-        $users->setAttribute('icon', 'fa fa-users');
 
         $blocks = new MenuItemEntity();
         $blocks->setParent($modules);
         $blocks->setTitle('BlocksModule');
         $blocks->setOptions([
-            'route' => 'zikulablocksmodule_admin_view'
+            'route' => 'zikulablocksmodule_admin_view',
+            'attributes' => [
+                'icon' => 'fa fa-cubes'
+            ]
         ]);
-        $blocks->setAttribute('icon', 'fa fa-cubes');
 
         $zAuth = new MenuItemEntity();
         $zAuth->setParent($modules);
         $zAuth->setTitle('ZAuthModule');
         $zAuth->setOptions([
-            'route' => 'zikulazauthmodule_useradministration_list'
+            'route' => 'zikulazauthmodule_useradministration_list',
+            'attributes' => [
+                'icon' => 'fa fa-user'
+            ]
         ]);
-        $zAuth->setAttribute('icon', 'fa fa-user');
 
         $this->entityManager->persist($root);
         $this->entityManager->persist($modules);

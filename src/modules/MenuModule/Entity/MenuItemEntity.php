@@ -14,15 +14,17 @@ namespace Zikula\MenuModule\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\Menu\NodeInterface;
 use Zikula\Core\Doctrine\EntityAccess;
-use Zikula\MenuModule\NodeWithAttributesInterface;
 
 /**
+ * Represents one menu item in a nested set.
+ * Extends NodeInterface in order to integrate with KnpMenu.
  * @Gedmo\Tree(type="nested")
  * @ORM\Table(name="menu_items")
  * @ORM\Entity(repositoryClass="Zikula\MenuModule\Entity\Repository\MenuItemRepository")
  */
-class MenuItemEntity extends EntityAccess implements NodeWithAttributesInterface
+class MenuItemEntity extends EntityAccess implements NodeInterface
 {
     /**
      * @ORM\Column(type="integer")
@@ -76,13 +78,24 @@ class MenuItemEntity extends EntityAccess implements NodeWithAttributesInterface
 
     /**
      * @ORM\Column(type="array")
+     * possible keys
+     * [
+     *  'route' => null,
+     *  'routeParameters' => [],
+     *  'icon' => null,
+     *  'uri' => null,
+     *  'label' => null,
+     *  'attributes' => [],
+     *  'linkAttributes' => [],
+     *  'childrenAttributes' => [],
+     *  'labelAttributes' => [],
+     *  'extras' => [],
+     *  'current' => null,
+     *  'display' => true,
+     *  'displayChildren' => true,
+     * ]
      */
     private $options;
-
-    /**
-     * @ORM\Column(type="array")
-     */
-    private $attributes;
 
     /**
      * MenuItemEntity constructor.
@@ -90,11 +103,18 @@ class MenuItemEntity extends EntityAccess implements NodeWithAttributesInterface
     public function __construct()
     {
         $this->title = '';
-        $this->options = [];
-        $this->attributes = [];
+        $this->options = [
+            'routeParameters' => [],
+            'attributes' => [],
+            'linkAttributes' => [],
+            'childrenAttributes' => [],
+            'labelAttributes' => [],
+            'extras' => [],
+            'display' => true,
+            'displayChildren' => true,
+        ];
         $this->children = new ArrayCollection();
     }
-
 
     public function getId()
     {
@@ -168,31 +188,151 @@ class MenuItemEntity extends EntityAccess implements NodeWithAttributesInterface
 
     public function getAttributes()
     {
-        return $this->attributes;
+        return $this->options['attributes'];
     }
 
     public function getAttribute($name, $default = null)
     {
-        return isset($this->attributes[$name]) ? $this->attributes[$name] : $default;
+        return isset($this->options['attributes'][$name]) ? $this->options['attributes'][$name] : $default;
     }
 
     public function setAttributes($attributes)
     {
-        $this->attributes = $attributes;
+        $this->options['attributes'] = $attributes;
     }
 
     public function setAttribute($name, $value)
     {
-        $this->attributes[$name] = $value;
+        $this->options['attributes'][$name] = $value;
     }
 
     public function removeAttribute($name)
     {
-        unset($this->attributes[$name]);
+        unset($this->options['attributes'][$name]);
     }
 
     public function hasAttributes()
     {
-        return !empty($this->attributes);
+        return !empty($this->options['attributes']);
+    }
+
+    public function getLinkAttributes()
+    {
+        return $this->options['linkAttributes'];
+    }
+
+    public function getLinkAttribute($name, $default = null)
+    {
+        return isset($this->options['linkAttributes'][$name]) ? $this->options['linkAttributes'][$name] : $default;
+    }
+
+    public function setLinkAttributes($attributes)
+    {
+        $this->options['linkAttributes'] = $attributes;
+    }
+
+    public function setLinkAttribute($name, $value)
+    {
+        $this->options['linkAttributes'][$name] = $value;
+    }
+
+    public function removeLinkAttribute($name)
+    {
+        unset($this->options['linkAttributes'][$name]);
+    }
+
+    public function hasLinkAttributes()
+    {
+        return !empty($this->options['linkAttributes']);
+    }
+
+    public function getChildrenAttributes()
+    {
+        return $this->options['childrenAttributes'];
+    }
+
+    public function getChildrenAttribute($name, $default = null)
+    {
+        return isset($this->options['childrenAttributes'][$name]) ? $this->options['childrenAttributes'][$name] : $default;
+    }
+
+    public function setChildrenAttributes($attributes)
+    {
+        $this->options['childrenAttributes'] = $attributes;
+    }
+
+    public function setChildrenAttribute($name, $value)
+    {
+        $this->options['childrenAttributes'][$name] = $value;
+    }
+
+    public function removeChildrenAttribute($name)
+    {
+        unset($this->options['childrenAttributes'][$name]);
+    }
+
+    public function hasChildrenAttributes()
+    {
+        return !empty($this->options['childrenAttributes']);
+    }
+
+    public function getLabelAttributes()
+    {
+        return $this->options['labelAttributes'];
+    }
+
+    public function getLabelAttribute($name, $default = null)
+    {
+        return isset($this->options['labelAttributes'][$name]) ? $this->options['labelAttributes'][$name] : $default;
+    }
+
+    public function setLabelAttributes($attributes)
+    {
+        $this->options['labelAttributes'] = $attributes;
+    }
+
+    public function setLabelAttribute($name, $value)
+    {
+        $this->options['labelAttributes'][$name] = $value;
+    }
+
+    public function removeLabelAttribute($name)
+    {
+        unset($this->options['labelAttributes'][$name]);
+    }
+
+    public function hasLabelAttributes()
+    {
+        return !empty($this->options['labelAttributes']);
+    }
+
+    public function getExtras()
+    {
+        return $this->options['extras'];
+    }
+
+    public function getExtra($name, $default = null)
+    {
+        return isset($this->options['extras'][$name]) ? $this->options['extras'][$name] : $default;
+    }
+
+    public function setExtras($attributes)
+    {
+        $this->options['extras'] = $attributes;
+    }
+
+    public function setExtra($name, $value)
+    {
+        $this->options['extras'][$name] = $value;
+    }
+
+    public function removeExtra($name)
+    {
+        unset($this->options['extras'][$name]);
+    }
+
+    public function hasExtras()
+    {
+        return !empty($this->options['extras']);
     }
 }

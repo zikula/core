@@ -12,9 +12,9 @@
 namespace Zikula\MenuModule\Provider;
 
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\Loader\NodeLoader;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Zikula\MenuModule\Entity\RepositoryInterface\MenuItemRepositoryInterface;
-use Zikula\MenuModule\Loader\NodeWithAttributesLoader;
 
 class DoctrineTreeProvider implements MenuProviderInterface
 {
@@ -24,7 +24,7 @@ class DoctrineTreeProvider implements MenuProviderInterface
     protected $factory = null;
 
     /**
-     * @var NodeWithAttributesLoader
+     * @var NodeLoader
      */
     protected $nodeLoader;
 
@@ -40,7 +40,7 @@ class DoctrineTreeProvider implements MenuProviderInterface
     public function __construct(FactoryInterface $factory, MenuItemRepositoryInterface $menuItemRepository)
     {
         $this->factory = $factory;
-        $this->nodeLoader = new NodeWithAttributesLoader($factory);
+        $this->nodeLoader = new NodeLoader($factory);
         $this->menuItemRepository = $menuItemRepository;
     }
 
@@ -52,7 +52,7 @@ class DoctrineTreeProvider implements MenuProviderInterface
      * @return \Knp\Menu\ItemInterface
      * @throws \InvalidArgumentException if the menu does not exists
      */
-    public function get($name, array $options = array())
+    public function get($name, array $options = [])
     {
         $node = $this->menuItemRepository->findOneBy(['title' => $name]);
         if ($node === null) {
@@ -70,7 +70,7 @@ class DoctrineTreeProvider implements MenuProviderInterface
      * @param array $options
      * @return bool
      */
-    public function has($name, array $options = array())
+    public function has($name, array $options = [])
     {
         $node = $this->menuItemRepository->findOneBy(['title' => $name]);
 
