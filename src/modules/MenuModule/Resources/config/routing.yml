@@ -1,0 +1,3 @@
+zikulamenumodule:
+    resource: "@ZikulaMenuModule/Controller"
+    type:     annotation

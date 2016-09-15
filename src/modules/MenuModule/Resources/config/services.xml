@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="zikula_menu_module.menu_item_repository.class">Zikula\MenuModule\Entity\Repository\MenuItemRepository</parameter>
+        <parameter key="zikula_menu_module.menu.voter.request.class">Zikula\MenuModule\Voter\RequestVoter</parameter>
+        <parameter key="zikula_menu_module.provider.custom_menu_provider.class">Zikula\MenuModule\Provider\DoctrineTreeProvider</parameter>
+    </parameters>
+
+    <services>
+        <service id="zikula_menu_module.menu_item_repository" class="%zikula_menu_module.menu_item_repository.class%">
+            <factory service="doctrine.orm.default_entity_manager" method="getRepository"/>
+            <argument type="string">Zikula\MenuModule\Entity\MenuItemEntity</argument>
+        </service>
+        <service id="zikula_menu_module.menu.voter.request" class="%zikula_menu_module.menu.voter.request.class%">
+            <argument type="service" id="request_stack" />
+            <tag name="knp_menu.voter" />
+        </service>
+        <service id="zikula_menu_module.provider.custom_menu_provider" class="%zikula_menu_module.provider.custom_menu_provider.class%">
+            <argument type="service" id="knp_menu.factory" />
+            <argument type="service" id="zikula_menu_module.menu_item_repository" />
+            <tag name="knp_menu.provider" />
+        </service>
+    </services>
+
+</container>
