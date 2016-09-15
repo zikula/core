@@ -38,6 +38,7 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
         } catch (\Exception $e) {
             return false;
         }
+        $this->createDemoData();
 
         return true;
     }
@@ -118,5 +119,56 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
     public function uninstall()
     {
         return true; // @todo change to false
+    }
+
+    /**
+     * Create a demo menu
+     */
+    private function createDemoData()
+    {
+        $root = new MenuItemEntity();
+        $root->setTitle('home');
+        $root->setAttributes([
+            'class' => 'nav navbar-nav'
+        ]);
+
+        $modules = new MenuItemEntity();
+        $modules->setTitle('Modules');
+        $modules->setParent($root);
+        $modules->setAttributes([
+            'icon' => 'fa fa-list',
+            'dropdown' => true
+        ]);
+
+        $users = new MenuItemEntity();
+        $users->setParent($modules);
+        $users->setTitle('UsersModule');
+        $users->setOptions([
+            'route' => 'zikulausersmodule_useradministration_list',
+        ]);
+        $users->setAttribute('icon', 'fa fa-users');
+
+        $blocks = new MenuItemEntity();
+        $blocks->setParent($modules);
+        $blocks->setTitle('BlocksModule');
+        $blocks->setOptions([
+            'route' => 'zikulablocksmodule_admin_view'
+        ]);
+        $blocks->setAttribute('icon', 'fa fa-cubes');
+
+        $zAuth = new MenuItemEntity();
+        $zAuth->setParent($modules);
+        $zAuth->setTitle('ZAuthModule');
+        $zAuth->setOptions([
+            'route' => 'zikulazauthmodule_useradministration_list'
+        ]);
+        $zAuth->setAttribute('icon', 'fa fa-user');
+
+        $this->entityManager->persist($root);
+        $this->entityManager->persist($modules);
+        $this->entityManager->persist($users);
+        $this->entityManager->persist($blocks);
+        $this->entityManager->persist($zAuth);
+        $this->entityManager->flush();
     }
 }
