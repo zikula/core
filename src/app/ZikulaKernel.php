@@ -47,7 +47,8 @@ class ZikulaKernel extends Kernel
             new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
             new JMS\TranslationBundle\JMSTranslationBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-            new Matthias\SymfonyConsoleForm\Bundle\SymfonyConsoleFormBundle()
+            new Matthias\SymfonyConsoleForm\Bundle\SymfonyConsoleFormBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
         ];
 
         $this->registerCoreModules($bundles);
