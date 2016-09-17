@@ -81,6 +81,8 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
         $root = new MenuItemEntity();
         $root->setTitle('home');
         $root->setOptions([
+            'currentClass' => 'active',
+            'template' => 'ZikulaMenuModule:Menu:knp_menu.html.twig',
             'childrenAttributes' => [
                 'class' => 'nav navbar-nav'
         ]]);

@@ -1,0 +1,17 @@
+{{ adminHeader() }}
+{{ pageSetVar('title', __('Menu list')) }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-list"></span>
+            {{ __('Menus') }}
+        </h3>
+        <ul>
+        {% for node in rootNodes %}
+            <a href="{{ path('zikulamenumodule_menu_view', {id: node.id}) }}">{{ node.title }}</a> ({{ node.children.count }})
+        {% endfor %}
+        </ul>
+    </div>
+
+</div>
+{{ adminFooter() }}

@@ -21,6 +21,9 @@
             "class": "Zikula\\MenuModule\\ZikulaMenuModule",
             "core-compatibility": ">=1.4.4",
             "displayname": "MenuModule",
+            "capabilities": {
+                "admin": {"route": "zikulamenumodule_menu_list"}
+            },
             "url": "menu",
             "securityschema": {
                 "ZikulaMenuModule::": "::"

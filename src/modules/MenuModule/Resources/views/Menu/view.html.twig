@@ -1,0 +1,25 @@
+{{ pageAddAsset('javascript', asset('jstree/dist/jstree.min.js')) }}
+{{ pageAddAsset('stylesheet', asset('jstree/dist/themes/default/style.min.css')) }}
+{{ adminHeader() }}
+{{ pageSetVar('title', __('Menu')) }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-list"></span>
+            {{ __('Menu') }}
+        </h3>
+        {{ menu.title }}
+        <div id="tree_container">
+            {{ tree|raw }}
+        </div>
+    </div>
+
+</div>
+{{ adminFooter() }}
+<script>
+    ( function($) {
+        $(document).ready(function() {
+            $('#tree_container').jstree();
+        });
+    })(jQuery);
+</script>
