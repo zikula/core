@@ -55,6 +55,19 @@ class MenuController extends AbstractController
      */
     public function viewAction(Request $request, MenuItemEntity $menuItemEntity = null)
     {
+        $repo = $this->get('zikula_menu_module.menu_item_repository');
+        $htmlTree = $repo->childrenHierarchy(
+            $menuItemEntity, /* node to start from */
+            false, /* false: load all children, true: only direct */
+            [
+                'decorate' => true,
+                'representationField' => 'title',
+                'html' => true,
+                'childOpen' => function ($node) {
+                    return '<li class="jstree-open" id="menu_tree_' . $node['id'] . '" data-entity-id="' . $node['id'] . '">';
+                }
+            ]
+        );
 //        $options = array(
 //            'decorate' => true,
 //            'rootOpen' => '<ul>',
@@ -65,20 +78,6 @@ class MenuController extends AbstractController
 //                return '<a href="/page/'.$node['slug'].'">'.$node[$field].'</a>';
 //            }
 //        );
-
-        $repo = $this->get('zikula_menu_module.menu_item_repository');
-        $htmlTree = $repo->childrenHierarchy(
-            $menuItemEntity, /* node to start from */
-            false, /* false: load all children, true: only direct */
-            [
-                'decorate' => true,
-                'representationField' => 'title',
-                'html' => true,
-                'childOpen' => function($node) {
-                    return '<li class="jstree-open" id="menu_tree_' . $node['id'] . '" data-entity-id="' . $node['id'] . '">';
-                }
-            ]
-        );
 
         return [
             'menu' => $menuItemEntity,

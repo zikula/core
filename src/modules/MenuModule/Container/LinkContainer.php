@@ -14,11 +14,7 @@ namespace Zikula\MenuModule\Container;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
-use Zikula\UsersModule\Api\CurrentUserApi;
-use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 
 class LinkContainer implements LinkContainerInterface
 {
