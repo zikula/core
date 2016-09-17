@@ -1,5 +1,14 @@
 {{ pageAddAsset('javascript', asset('jstree/dist/jstree.min.js')) }}
 {{ pageAddAsset('stylesheet', asset('jstree/dist/themes/default/style.min.css')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaMenuModule:js/ZikulaMenuModule.Admin.View.js')) }}
+{% set customStyle %}
+    <style type="text/css">
+        .jstree-contextmenu {
+            z-index: 100;
+        }
+    </style>
+{% endset %}
+{{ pageAddAsset('header', customStyle) }}
 {{ adminHeader() }}
 {{ pageSetVar('title', __('Menu')) }}
 <div class="container-fluid">
@@ -8,7 +17,7 @@
             <span class="fa fa-list"></span>
             {{ __('Menu') }}
         </h3>
-        {{ menu.title }}
+        <h4><i class="fa fa-bars"></i> {{ menu.title }}</h4>
         <div id="tree_container">
             {{ tree|raw }}
         </div>
@@ -16,10 +25,3 @@
 
 </div>
 {{ adminFooter() }}
-<script>
-    ( function($) {
-        $(document).ready(function() {
-            $('#tree_container').jstree();
-        });
-    })(jQuery);
-</script>

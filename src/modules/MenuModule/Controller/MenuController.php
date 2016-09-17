@@ -15,6 +15,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\Core\Response\Ajax\AjaxResponse;
+use Zikula\Core\Response\Ajax\BadDataResponse;
+use Zikula\Core\Response\Ajax\ForbiddenResponse;
 use Zikula\MenuModule\Entity\MenuItemEntity;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -64,7 +67,7 @@ class MenuController extends AbstractController
                 'representationField' => 'title',
                 'html' => true,
                 'childOpen' => function ($node) {
-                    return '<li class="jstree-open" id="menu_tree_' . $node['id'] . '" data-entity-id="' . $node['id'] . '">';
+                    return '<li class="jstree-open" id="node_' . $node['id'] . '" data-entity-id="' . $node['id'] . '">';
                 }
             ]
         );
@@ -83,5 +86,26 @@ class MenuController extends AbstractController
             'menu' => $menuItemEntity,
             'tree' => $htmlTree
         ];
+    }
+
+    /**
+     * @Route("/contextMenu/{action}", options={"expose"=true})
+     * @param Request $request
+     * @param string $action
+     * @return AjaxResponse|ForbiddenResponse|BadDataResponse
+     */
+    public function contextMenuAction(Request $request, $action = '')
+    {
+        if (!$this->hasPermission('ZikulaMenuModule::', '::', ACCESS_ADMIN)) {
+            return new ForbiddenResponse($this->__('No permission for this action'));
+        }
+        if (!in_array($action, ['edit', 'delete', 'deleteandmovesubs', 'copy', 'activate', 'deactivate', 'addafter', 'addchild'])) {
+            return new BadDataResponse($this->__('Data provided was inappropriate.'));
+        }
+
+        // do something based on $action
+        $entityId = $request->request->get('entityId');
+
+        return new AjaxResponse(['result' => true]);
     }
 }
