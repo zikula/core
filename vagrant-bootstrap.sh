@@ -59,6 +59,7 @@ sed -i "s/display_errors = .*/display_errors = On/" /etc/php5/apache2/php.ini
 
 echo -e "\n--- We also need to set the default timezone. ---\n"
 sed -i "s/^;date.timezone =$/date.timezone = \"Europe\/Berlin\"/" /etc/php5/apache2/php.ini
+sed -i "s/^;date.timezone =$/date.timezone = \"Europe\/Berlin\"/" /etc/php5/cli/php.ini
 
 echo -e "\n--- Configure Apache to use phpmyadmin ---\n"
 echo -e "\n\nListen 81\n" >> /etc/apache2/ports.conf
