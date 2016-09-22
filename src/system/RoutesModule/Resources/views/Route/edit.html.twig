@@ -93,23 +93,6 @@
     {{ include('@ZikulaRoutesModule/Helper/includeStandardFieldsEdit.html.twig', { obj: route }) }}
 {% endif %}
 
-{# include display hooks #}
-{% if mode != 'create' %}
-    {% set hookId = route.id %}
-    {% set hooks = notifyDisplayHooks(eventName='zikularoutesmodule.ui_hooks.routes.form_edit', id=hookId) %}
-{% else %}
-    {% set hooks = notifyDisplayHooks(eventName='zikularoutesmodule.ui_hooks.routes.form_edit', id=null) %}
-{% endif %}
-{% if hooks is iterable and hooks|length > 0 %}
-    {% for providerArea, hook in hooks %}
-        {% if providerArea != 'provider.scribite.ui_hooks.editor' %}{# fix for #664 #}
-            <fieldset>
-                {{ hook }}
-            </fieldset>
-        {% endif %}
-    {% endfor %}
-{% endif %}
-
 
 {# include return control #}
 {% if mode == 'create' %}
@@ -155,7 +138,7 @@
                     if (!document.getElementById('routeEditForm').checkValidity()) {
                         // This does not really submit the form,
                         // but causes the browser to display the error message
-                        jQuery('#routeEditForm').find(':submit').not(jQuery('#btnDelete')).first().click();
+                        jQuery('#routeEditForm').find(':submit').first().click();
                     }
                 }
 
@@ -181,7 +164,7 @@
                         allFormFields.change(executeCustomValidationConstraints);
 
                         formButtons = $('#routeEditForm .form-buttons input');
-                        $('#btnDelete').bind('click keypress', function (e) {
+                        $('.btn-danger').first().bind('click keypress', function (e) {
                             if (!window.confirm('{{ __('Really delete this route?') }}')) {
                                 e.preventDefault();
                             }

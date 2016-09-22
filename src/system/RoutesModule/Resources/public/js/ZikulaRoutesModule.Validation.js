@@ -35,6 +35,7 @@ function zikulaRoutesToday(format)
         }
         todayDate += hours + ':' + minutes;// + ':' + seconds;
     }
+
     return todayDate;
 }
 
@@ -52,6 +53,7 @@ function zikulaRoutesReadDate(val, includeTime)
         if (includeTime === true) {
             newVal += ' ' + val.substr(11, 5);
         }
+
         return newVal;
     }
 }

@@ -31,9 +31,9 @@ class ThemeListener extends BaseThemeListener
     /**
      * {@inheritdoc}
      */
-    public function preInit(GenericEvent $event)
+    public function smartyPreInit(GenericEvent $event)
     {
-        parent::preInit($event);
+        parent::smartyPreInit($event);
     
         // you can access general data available in the event
         
@@ -58,9 +58,9 @@ class ThemeListener extends BaseThemeListener
     /**
      * {@inheritdoc}
      */
-    public function init(GenericEvent $event)
+    public function smartyInit(GenericEvent $event)
     {
-        parent::init($event);
+        parent::smartyInit($event);
     
         // you can access general data available in the event
         
@@ -85,9 +85,9 @@ class ThemeListener extends BaseThemeListener
     /**
      * {@inheritdoc}
      */
-    public function loadConfig(GenericEvent $event)
+    public function smartyLoadConfig(GenericEvent $event)
     {
-        parent::loadConfig($event);
+        parent::smartyLoadConfig($event);
     
         // you can access general data available in the event
         
@@ -112,9 +112,9 @@ class ThemeListener extends BaseThemeListener
     /**
      * {@inheritdoc}
      */
-    public function preFetch(GenericEvent $event)
+    public function smartyPreFetch(GenericEvent $event)
     {
-        parent::preFetch($event);
+        parent::smartyPreFetch($event);
     
         // you can access general data available in the event
         
@@ -139,9 +139,9 @@ class ThemeListener extends BaseThemeListener
     /**
      * {@inheritdoc}
      */
-    public function postFetch(GenericEvent $event)
+    public function smartyPostFetch(GenericEvent $event)
     {
-        parent::postFetch($event);
+        parent::smartyPostFetch($event);
     
         // you can access general data available in the event
         
@@ -161,5 +161,21 @@ class ThemeListener extends BaseThemeListener
         
         // the currently handled request
         // $request = $event->getRequest();
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function twigPreRender(TwigPreRenderEvent $event)
+    {
+        parent::twigPreRender($event);
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function twigPostRender(TwigPostRenderEvent $event)
+    {
+        parent::twigPostRender($event);
     }
 }

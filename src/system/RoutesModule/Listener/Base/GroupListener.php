@@ -34,7 +34,6 @@ class GroupListener implements EventSubscriberInterface
         ];
     }
     
-    
     /**
      * Listener for the `group.create` event.
      *

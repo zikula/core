@@ -204,7 +204,7 @@ class UserRegistrationListener implements EventSubscriberInterface
     public function delete(GenericEvent $event)
     {
     }
-
+    
     /**
      * Listener for the `force.registration.approval` event.
      *

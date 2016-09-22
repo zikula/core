@@ -28,20 +28,20 @@ class RouteFactory
     protected $className;
 
     /**
-     * @var ObjectManager The object manager to be used for determining the repository.
+     * @var ObjectManager The object manager to be used for determining the repository
      */
     protected $objectManager;
 
     /**
-     * @var EntityRepository The currently used repository.
+     * @var EntityRepository The currently used repository
      */
     protected $repository;
 
     /**
      * Constructor.
      *
-     * @param ObjectManager $om        The object manager to be used for determining the repository.
-     * @param String        $className Full qualified class name to be used for routes.
+     * @param ObjectManager $om        The object manager to be used for determining the repository
+     * @param String        $className Full qualified class name to be used for routes
      */
     public function __construct(ObjectManager $om, $className)
     {
@@ -70,7 +70,7 @@ class RouteFactory
     /**
      * Sets the class name.
      *
-     * @param string $className.
+     * @param string $className
      *
      * @return void
      */
@@ -92,7 +92,7 @@ class RouteFactory
     /**
      * Sets the object manager.
      *
-     * @param ObjectManager $objectManager.
+     * @param ObjectManager $objectManager
      *
      * @return void
      */
@@ -114,7 +114,7 @@ class RouteFactory
     /**
      * Sets the repository.
      *
-     * @param EntityRepository $repository.
+     * @param EntityRepository $repository
      *
      * @return void
      */

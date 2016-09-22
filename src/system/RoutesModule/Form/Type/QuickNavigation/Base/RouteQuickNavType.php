@@ -40,9 +40,9 @@ class RouteQuickNavType extends AbstractType
     /**
      * RouteQuickNavType constructor.
      *
-     * @param TranslatorInterface $translator   Translator service instance.
-     * @param RequestStack        $requestStack RequestStack service instance.
-     * @param ListEntriesHelper   $listHelper   ListEntriesHelper service instance.
+     * @param TranslatorInterface $translator   Translator service instance
+     * @param RequestStack        $requestStack RequestStack service instance
+     * @param ListEntriesHelper   $listHelper   ListEntriesHelper service instance
      */
     public function __construct(TranslatorInterface $translator, RequestStack $requestStack, ListEntriesHelper $listHelper)
     {
@@ -54,7 +54,7 @@ class RouteQuickNavType extends AbstractType
     /**
      * Sets the translator.
      *
-     * @param TranslatorInterface $translator Translator service instance.
+     * @param TranslatorInterface $translator Translator service instance
      */
     public function setTranslator(/*TranslatorInterface */$translator)
     {
@@ -86,7 +86,6 @@ class RouteQuickNavType extends AbstractType
         $builder->add('updateview', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
             'label' => $this->__('OK'),
             'attr' => [
-                'id' => 'quicknavSubmit',
                 'class' => 'btn btn-default btn-sm'
             ]
         ]);
@@ -95,8 +94,8 @@ class RouteQuickNavType extends AbstractType
     /**
      * Adds list fields.
      *
-     * @param FormBuilderInterface $builder The form builder.
-     * @param array                $options The options.
+     * @param FormBuilderInterface $builder The form builder
+     * @param array                $options The options
      */
     public function addListFields(FormBuilderInterface $builder, array $options)
     {
@@ -157,7 +156,8 @@ class RouteQuickNavType extends AbstractType
             'choices' => $choices,
             'choices_as_values' => true,
             'choice_attr' => $choiceAttributes,
-            'multiple' => true
+            'multiple' => true,
+            'expanded' => false
         ]);
         $listEntries = $this->listHelper->getEntries('route', 'methods');
         $choices = [];
@@ -176,22 +176,22 @@ class RouteQuickNavType extends AbstractType
             'choices' => $choices,
             'choices_as_values' => true,
             'choice_attr' => $choiceAttributes,
-            'multiple' => true
+            'multiple' => true,
+            'expanded' => false
         ]);
     }
 
     /**
      * Adds a search field.
      *
-     * @param FormBuilderInterface $builder The form builder.
-     * @param array                $options The options.
+     * @param FormBuilderInterface $builder The form builder
+     * @param array                $options The options
      */
     public function addSearchField(FormBuilderInterface $builder, array $options)
     {
         $builder->add('q', 'Symfony\Component\Form\Extension\Core\Type\SearchType', [
             'label' => $this->__('Search'),
             'attr' => [
-                'id' => 'searchTerm',
                 'class' => 'input-sm'
             ],
             'required' => false,
@@ -203,8 +203,8 @@ class RouteQuickNavType extends AbstractType
     /**
      * Adds sorting fields.
      *
-     * @param FormBuilderInterface $builder The form builder.
-     * @param array                $options The options.
+     * @param FormBuilderInterface $builder The form builder
+     * @param array                $options The options
      */
     public function addSortingFields(FormBuilderInterface $builder, array $options)
     {
@@ -212,7 +212,6 @@ class RouteQuickNavType extends AbstractType
             ->add('sort', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $this->__('Sort by'),
                 'attr' => [
-                    'id' => 'zikulaRoutesModuleSort',
                     'class' => 'input-sm'
                 ],
                 'choices' => [
@@ -247,7 +246,6 @@ class RouteQuickNavType extends AbstractType
                 'label' => $this->__('Sort direction'),
                 'empty_data' => 'asc',
                 'attr' => [
-                    'id' => 'zikulaRoutesModuleSortDir',
                     'class' => 'input-sm'
                 ],
                 'choices' => [
@@ -264,8 +262,8 @@ class RouteQuickNavType extends AbstractType
     /**
      * Adds a page size field.
      *
-     * @param FormBuilderInterface $builder The form builder.
-     * @param array                $options The options.
+     * @param FormBuilderInterface $builder The form builder
+     * @param array                $options The options
      */
     public function addAmountField(FormBuilderInterface $builder, array $options)
     {
@@ -273,7 +271,6 @@ class RouteQuickNavType extends AbstractType
             'label' => $this->__('Page size'),
             'empty_data' => 20,
             'attr' => [
-                'id' => 'zikulaRoutesModulePageSize',
                 'class' => 'input-sm text-right'
             ],
             'choices' => [
@@ -294,8 +291,8 @@ class RouteQuickNavType extends AbstractType
     /**
      * Adds boolean fields.
      *
-     * @param FormBuilderInterface $builder The form builder.
-     * @param array                $options The options.
+     * @param FormBuilderInterface $builder The form builder
+     * @param array                $options The options
      */
     public function addBooleanFields(FormBuilderInterface $builder, array $options)
     {

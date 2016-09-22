@@ -156,10 +156,10 @@ class EditHandler
     /**
      * Constructor.
      *
-     * @param \Zikula_ServiceManager $serviceManager ServiceManager instance.
-     * @param TranslatorInterface    $translator     Translator service instance.
-     * @param RequestStack           $requestStack   RequestStack service instance.
-     * @param RouterInterface        $router         Router service instance.
+     * @param \Zikula_ServiceManager $serviceManager ServiceManager instance
+     * @param TranslatorInterface    $translator     Translator service instance
+     * @param RequestStack           $requestStack   RequestStack service instance
+     * @param RouterInterface        $router         Router service instance
      */
     public function __construct(\Zikula_ServiceManager $serviceManager, TranslatorInterface $translator, RequestStack $requestStack, RouterInterface $router)
     {
@@ -172,7 +172,7 @@ class EditHandler
     /**
      * Sets the translator.
      *
-     * @param TranslatorInterface $translator Translator service instance.
+     * @param TranslatorInterface $translator Translator service instance
      */
     public function setTranslator(/*TranslatorInterface */$translator)
     {
@@ -184,9 +184,9 @@ class EditHandler
      *
      * This method takes care of all necessary initialisation of our data and form states.
      *
-     * @param array $templateParameters List of preassigned template variables.
+     * @param array $templateParameters List of preassigned template variables
      *
-     * @return boolean False in case of initialisation errors, otherwise true.
+     * @return boolean False in case of initialisation errors, otherwise true
      *
      * @throws NotFoundHttpException Thrown if item to be edited isn't found
      * @throws RuntimeException      Thrown if the workflow actions can not be determined
@@ -215,10 +215,10 @@ class EditHandler
         $entity = null;
         $this->templateParameters['mode'] = $hasIdentifier ? 'edit' : 'create';
     
-        $permissionHelper = $this->container->get('zikula_permissions_module.api.permission');
+        $permissionApi = $this->container->get('zikula_permissions_module.api.permission');
     
         if ($this->templateParameters['mode'] == 'edit') {
-            if (!$permissionHelper->hasPermission($this->permissionComponent, $this->createCompositeIdentifier() . '::', ACCESS_EDIT)) {
+            if (!$permissionApi->hasPermission($this->permissionComponent, $this->createCompositeIdentifier() . '::', ACCESS_EDIT)) {
                 throw new AccessDeniedException();
             }
     
@@ -227,14 +227,15 @@ class EditHandler
                 return false;
             }
     
-            if (true === $this->hasPageLockSupport && ModUtil::available('ZikulaPageLockModule')) {
+            $kernel = $this->container->get('kernel');
+            if (true === $this->hasPageLockSupport && null !== $kernel->getModule('ZikulaPageLockModule')) {
                 // try to guarantee that only one person at a time can be editing this entity
                 $lockingApi = $this->container->get('zikula_pagelock_module.api.locking');
                 $lockName = 'ZikulaRoutesModule' . $this->objectTypeCapital . $this->createCompositeIdentifier();
                 $lockingApi->addLock($lockName, $this->getRedirectUrl(null));
             }
         } else {
-            if (!$permissionHelper->hasPermission($this->permissionComponent, '::', ACCESS_EDIT)) {
+            if (!$permissionApi->hasPermission($this->permissionComponent, '::', ACCESS_EDIT)) {
                 throw new AccessDeniedException();
             }
     
@@ -248,7 +249,7 @@ class EditHandler
         $workflowHelper = $this->container->get('zikula_routes_module.workflow_helper');
         $actions = $workflowHelper->getActionsForObject($entity);
         if (false === $actions || !is_array($actions)) {
-            $this->request->getSession()->getFlashBag()->add(\Zikula_Session::MESSAGE_ERROR, $this->__('Error! Could not determine workflow actions.'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Could not determine workflow actions.'));
             $logger = $this->container->get('logger');
             $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->container->get('zikula_users_module.current_user')->get('uname'), 'entity' => $this->objectType, 'id' => $entity->createCompositeIdentifier()];
             $logger->error('{app}: User {user} tried to edit the {entity} with id {id}, but failed to determine available workflow actions.', $logArgs);
@@ -295,7 +296,7 @@ class EditHandler
     /**
      * Create concatenated identifier string (for composite keys).
      *
-     * @return String concatenated identifiers. 
+     * @return String concatenated identifiers
      */
     protected function createCompositeIdentifier()
     {
@@ -313,7 +314,7 @@ class EditHandler
     /**
      * Initialise existing entity for editing.
      *
-     * @return EntityAccess|null Desired entity instance or null.
+     * @return EntityAccess|null Desired entity instance or null
      *
      * @throws NotFoundHttpException Thrown if item to be edited isn't found
      */
@@ -332,7 +333,7 @@ class EditHandler
     /**
      * Initialise new entity for creation.
      *
-     * @return EntityAccess|null Desired entity instance or null.
+     * @return EntityAccess|null Desired entity instance or null
      *
      * @throws NotFoundHttpException Thrown if item to be cloned isn't found
      */
@@ -395,9 +396,9 @@ class EditHandler
     /**
      * Command event handler.
      *
-     * @param array $args List of arguments.
+     * @param array $args List of arguments
      *
-     * @return mixed Redirect or false on errors.
+     * @return mixed Redirect or false on errors
      */
     public function handleCommand(&$args)
     {
@@ -421,39 +422,16 @@ class EditHandler
         // get treated entity reference from persisted member var
         $entity = $this->entityRef;
     
-        $hookHelper = null;
-        if ($entity->supportsHookSubscribers() && !in_array($action, ['reset', 'cancel'])) {
-            $hookHelper = $this->container->get('zikula_routes_module.hook_helper');
-            // Let any hooks perform additional validation actions
-            $hookType = $action == 'delete' ? 'validate_delete' : 'validate_edit';
-            $validationHooksPassed = $hookHelper->callValidationHooks($entity, $hookType);
-            if (!$validationHooksPassed) {
-                return false;
-            }
-        }
-    
         if ($isRegularAction || $action == 'delete') {
             $success = $this->applyAction($args);
             if (!$success) {
                 // the workflow operation failed
                 return false;
             }
-    
-            if ($entity->supportsHookSubscribers()) {
-                // Let any hooks know that we have created, updated or deleted an item
-                $hookType = $action == 'delete' ? 'process_delete' : 'process_edit';
-                $url = null;
-                if ($action != 'delete') {
-                    $urlArgs = $entity->createUrlArgs();
-                    $url = new RouteUrl('zikularoutesmodule_' . $this->objectType . '_display', $urlArgs);
-                }
-                if (!is_null($hookHelper)) {
-                    $hookHelper->callProcessHooks($entity, $hookType, $url);
-                }
-            }
         }
     
-        if (true === $this->hasPageLockSupport && $this->templateParameters['mode'] == 'edit' && ModUtil::available('ZikulaPageLockModule')) {
+        $kernel = $this->container->get('kernel');
+        if (true === $this->hasPageLockSupport && $this->templateParameters['mode'] == 'edit' && null !== $kernel->getModule('ZikulaPageLockModule')) {
             $lockingApi = $this->container->get('zikula_pagelock_module.api.locking');
             $lockName = 'ZikulaRoutesModule' . $this->objectTypeCapital . $this->createCompositeIdentifier();
             $lockingApi->releaseLock($lockName);
@@ -465,10 +443,10 @@ class EditHandler
     /**
      * Get success or error message for default operations.
      *
-     * @param array   $args    arguments from handleCommand method.
-     * @param Boolean $success true if this is a success, false for default error.
+     * @param array   $args    arguments from handleCommand method
+     * @param Boolean $success true if this is a success, false for default error
      *
-     * @return String desired status or error message.
+     * @return String desired status or error message
      */
     protected function getDefaultMessage($args, $success = false)
     {
@@ -503,8 +481,8 @@ class EditHandler
     /**
      * Add success or error message to session.
      *
-     * @param array   $args    arguments from handleCommand method.
-     * @param Boolean $success true if this is a success, false for default error.
+     * @param array   $args    arguments from handleCommand method
+     * @param Boolean $success true if this is a success, false for default error
      *
      * @throws RuntimeException Thrown if executing the workflow action fails
      */
@@ -515,7 +493,7 @@ class EditHandler
             return;
         }
     
-        $flashType = true === $success ? \Zikula_Session::MESSAGE_STATUS : \Zikula_Session::MESSAGE_ERROR;
+        $flashType = true === $success ? 'status' : 'error';
         $this->request->getSession()->getFlashBag()->add($flashType, $message);
         $logger = $this->container->get('logger');
         $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->container->get('zikula_users_module.current_user')->get('uname'), 'entity' => $this->objectType, 'id' => $this->entityRef->createCompositeIdentifier()];
@@ -529,9 +507,9 @@ class EditHandler
     /**
      * Input data processing called by handleCommand method.
      *
-     * @param array $args Additional arguments.
+     * @param array $args Additional arguments
      *
-     * @return array form data after processing.
+     * @return array form data after processing
      */
     public function fetchInputData(&$args)
     {
@@ -559,9 +537,9 @@ class EditHandler
     /**
      * This method executes a certain workflow action.
      *
-     * @param array $args Arguments from handleCommand method.
+     * @param array $args Arguments from handleCommand method
      *
-     * @return bool Whether everything worked well or not.
+     * @return bool Whether everything worked well or not
      */
     public function applyAction(array $args = [])
     {
