@@ -1,0 +1,12 @@
+{% form_theme form with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+<div id="form_container">
+    {{ form_start(form) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.options) }}
+    {{ form_row(form.root) }}
+    {{ form_row(form.parent) }}
+    {{ form_end(form) }}
+</div>

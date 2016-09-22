@@ -1,6 +1,7 @@
 ( function($) {
     $(document).ready(function() {
-        $('#tree_container').jstree({
+        var treeElem = $('#tree_container');
+        treeElem.jstree({
             "core" : {
                 "animation" : 0,
                 "check_callback" : true,
@@ -130,7 +131,7 @@
                 alert(result.status + ': ' + result.statusText);
             }).always(function() {
                 $('#temp-spinner').remove();
-                redrawTree($('#tree_container'));
+                redrawTree(treeElem);
             });
 
             return true;
@@ -140,7 +141,7 @@
             if (null == data) {
                 return;
             }
-            var originalNode = $('#node_' + data.cid);
+            var originalNode = $('#node_' + data.id);
             var parentNode = $('#node_' + data.parent);
 
             switch (data.action) {
@@ -177,30 +178,14 @@
                         }
 
                         // fetch each input and hidden field and store the value to POST
-                        var pars = {};
+                        var pars = {entityId: data.id};
                         $.each($(':input, :hidden').serializeArray(), function(i, field) {
                             pars[field.name] = field.value;
-                        });
-                        pars.mode = (mode == 'edit') ? 'edit' : 'new';
-                        pars.attribute_name = [];
-                        pars.attribute_value = [];
-                        // special handling of potential array values
-                        $('input[name="attribute_name[]"]').each(function() {
-                            if ($(this).val() == '') {
-                                return true;
-                            }
-                            pars.attribute_name.push($(this).val());
-                        });
-                        $('input[name="attribute_value[]"]').each(function() {
-                            if ($(this).val() == "") {
-                                return true;
-                            }
-                            pars.attribute_value.push($(this).val());
                         });
 
                         $.ajax({
                             type: 'POST',
-                            url: Routing.generate('zikulacategoriesmodule_ajax_save'),
+                            url: Routing.generate('zikulamenumodule_menu_contextmenu', {action: data.action}),
                             data: pars
                         }).success(function(result) {
                             var data = result.data;
@@ -213,19 +198,20 @@
                                 }
                             } else {
                                 if (mode == 'edit') {
+                                    var nodeData = $.parseJSON(data.node);
                                     // delete the existing node and replace with edited version
-                                    var editedNode = treeElem.jstree('get_node', 'node_' + data.cid);
-                                    treeElem.jstree('delete_node', editedNode);
+                                    var editedNode = treeElem.jstree('get_node', 'node_' + data.id);
+                                    treeElem.jstree(true).rename_node(editedNode, nodeData.title);
                                 }
-                                var parentLi = $('#node_' + data.parent),
-                                    parentUl = parentLi.children('ul');
-                                if (!parentUl) {
-                                    parentUl = $('<ul>').attr({ 'class': 'tree' });
-                                    parentLi.append(parentUl);
-                                }
-                                var newNode = treeElem.jstree(true).create_node(parentUl, data.node[0]);
-                                var node = $('#' + newNode);
-                                reinitTreeNode(node, data);
+                                // var parentLi = $('#node_' + data.parent),
+                                //     parentUl = parentLi.children('ul');
+                                // if (!parentUl) {
+                                //     parentUl = $('<ul>').attr({ 'class': 'tree' });
+                                //     parentLi.append(parentUl);
+                                // }
+                                // var newNode = treeElem.jstree(true).create_node(parentUl, nodeData);
+                                // var node = $('#' + newNode);
+                                // reinitTreeNode(node, data);
                                 closeEditForm();
                             }
                         }).error(function(result) {
@@ -316,7 +302,7 @@
         }
 
         function openEditForm(data, callback) {
-            $('#categories_ajax_form_container').show();
+            $('#form_container').show();
             var editModal = $('#editModal');
             editModal.find('.modal-footer button').unbind('click').click(callback);
 
@@ -325,11 +311,28 @@
         }
 
         function updateEditForm(data) {
-            $('#categories_ajax_form_container').replaceWith(data).show();
+            $('#form_container').replaceWith(data).show();
         }
 
         function closeEditForm() {
             $('#editModal').modal('hide');
+        }
+
+        var nodesDisabledForDrop = [];
+
+        function reinitTreeNode(node, data) {
+            if (data.leafstatus) {
+                if (data.leafstatus.leaf) {
+                    // add elements
+                    $.merge(nodesDisabledForDrop, data.leafstatus.leaf);
+                }
+                if (data.leafstatus.noleaf) {
+                    // remove elements
+                    nodesDisabledForDrop = $.grep(nodesDisabledForDrop, function(value) {
+                        return $.inArray(value, data.leafstatus.noleaf) < 0;
+                    });
+                }
+            }
         }
 
         function redrawTree(treeElem) {
