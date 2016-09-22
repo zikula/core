@@ -110,5 +110,4 @@ class MenuItemType extends AbstractType
             'data_class' => 'Zikula\MenuModule\Entity\MenuItemEntity',
         ]);
     }
-
 }
