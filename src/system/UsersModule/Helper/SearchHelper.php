@@ -13,7 +13,6 @@ namespace Zikula\UsersModule\Helper;
 
 use ModUtil;
 use Zikula\Core\ModUrl;
-use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\SearchModule\AbstractSearchable;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
@@ -48,13 +47,15 @@ class SearchHelper extends AbstractSearchable
      */
     public function getResults(array $words, $searchType = 'AND', $modVars = null)
     {
-        if (!$this->container->get('zikula_permissions_module.api.permission')->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
+        $permissionApi = $this->container->get('zikula_permissions_module.api.permission');
+
+        if (!$permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
             return [];
         }
 
         // decide if we have to search the DUDs from the Profile module
-        $profileModule = $this->container->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'profilemodule', '');
-        $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule)); // @todo
+        $profileModule = $this->container->get('zikula_extensions_module.api.variable')->getSystemVar('profilemodule', '');
+        $useProfileMod = !empty($profileModule) && ModUtil::available($profileModule); // @todo
 
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('u')
@@ -74,7 +75,7 @@ class SearchHelper extends AbstractSearchable
 
         $results = [];
         foreach ($users as $user) {
-            if ($user->getUid() != 1 && $this->container->get('zikula_permissions_module.api.permission')->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_READ)) {
+            if ($user->getUid() != 1 && $permissionApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_READ)) {
                 if ($useProfileMod) {
                     $text = $this->__("Click the user's name to view his/her complete profile.");
                     $url = new ModUrl($profileModule, 'user', 'view', ZLanguage::getLanguageCode(), ['uid' => $user->getUid()]); // @todo

@@ -22,19 +22,6 @@
                 </div>
             </div>
         </fieldset>
-
-        {{ block('display_hooks') }}
         {{ form_end(deleteForm) }}
     </div>
-{% endblock %}
-{% block display_hooks %}
-    {% set hooks = notifyDisplayHooks(eventName='zikularoutesmodule.ui_hooks.routes.form_delete', id=route.id) %}
-    {% if hooks is iterable and hooks|length > 0 %}
-        {% for providerArea, hook in hooks %}
-            <fieldset>
-                {# <legend>{{ hookName }}</legend> #}
-                {{ hook }}
-            </fieldset>
-        {% endfor %}
-    {% endif %}
 {% endblock %}

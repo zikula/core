@@ -58,7 +58,7 @@ class Zikula_Form_Plugin_ValidationSummary extends Zikula_Form_AbstractPlugin
                 }
                 $label = !empty($label) ? $label : $validator->myLabel;
                 $html .= "<li><label for=\"{$validator->id}\">" . DataUtil::formatForDisplay($label) . ': ';
-                $html .=  DataUtil::formatForDisplay($validator->errorMessage) . "</label></li>\n";
+                $html .= DataUtil::formatForDisplay($validator->errorMessage) . "</label></li>\n";
             }
         }
 

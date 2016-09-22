@@ -18,7 +18,7 @@ use Zikula\RoutesModule\Helper\ListEntriesHelper;
 /**
  * List fields transformer base class.
  *
- * This data transformer treats mult-valued list fields.
+ * This data transformer treats multi-valued list fields.
  */
 class ListFieldTransformer implements DataTransformerInterface
 {
@@ -30,7 +30,7 @@ class ListFieldTransformer implements DataTransformerInterface
     /**
      * ListFieldTransformer constructor.
      *
-     * @param ListEntriesHelper $listHelper ListEntriesHelper service instance.
+     * @param ListEntriesHelper $listHelper ListEntriesHelper service instance
      */
     public function __construct(ListEntriesHelper $listHelper)
     {

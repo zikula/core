@@ -12,10 +12,11 @@ CHANGELOG - ZIKULA 1.4.x
    - Removed permanent display of template information in html source (#3068).
 
  - Features:
-   - Added mailProtect filter for safe display of email addresses (#3041).
+   - Added mailProtect filter for safe display of email addresses in Twig templates (#3041).
 
  - Core-2.0 Features:
    - Added display of template name as html comment in source when in dev environment (#3068).
+   - Added shortcut method in variable api for retrieving system variables (#3077).
 
  - Vendor upgdates:
     - sensio distribution bundle updated from 5.0.8 to 5.0.9

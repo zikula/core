@@ -1,6 +1,6 @@
 services:
     zikula_routes_module.link_container:
         class: Zikula\RoutesModule\Container\LinkContainer
-        arguments: ["@translator.default", "@router", "@zikula_permissions_module.api.permission", "@zikula_routes_module.controller_helper"]
+        arguments: ["@translator.default", "@router", "@zikula_permissions_module.api.permission", "@zikula_routes_module.controller_helper", "@zikula_users_module.current_user"]
         tags:
             - { name: zikula.link_container }

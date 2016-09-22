@@ -23,7 +23,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\ExtensionsModule\Api\VariableApi;
 
 /**
  * User controllers for the theme module
@@ -48,7 +47,7 @@ class UserController extends AbstractController
     {
         $variableApi = $this->get('zikula_extensions_module.api.variable');
         // check if theme switching is allowed
-        if (!$variableApi->get(VariableApi::CONFIG, 'theme_change')) {
+        if (!$variableApi->getSystemVar('theme_change')) {
             $this->addFlash('warning', $this->__('Notice: Theme switching is currently disabled.'));
 
             return new RedirectResponse(System::normalizeUrl(System::getHomepageUrl()));
@@ -97,7 +96,7 @@ class UserController extends AbstractController
             ->assign('currentthemepic', $currentthemepic)
             ->assign('currenttheme', $currenttheme)
             ->assign('themes', $previewThemes)
-            ->assign('defaulttheme', ThemeUtil::getInfo(ThemeUtil::getIDFromName($variableApi->get(VariableApi::CONFIG, 'Default_Theme'))))
+            ->assign('defaulttheme', ThemeUtil::getInfo(ThemeUtil::getIDFromName($variableApi->getSystemVar('Default_Theme'))))
             ->assign('pager', [
                 'numitems' => count($allthemes),
                 'itemsperpage' => $itemsPerPage

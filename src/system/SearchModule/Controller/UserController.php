@@ -23,7 +23,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\PlainResponse;
-use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\SearchModule\AbstractSearchable;
 use ZLanguage;
 
@@ -301,10 +300,10 @@ class UserController extends AbstractController
         $language = ZLanguage::getLanguageCode();
         $variableApi = $this->get('zikula_extensions_module.api.variable');
         $templateParameters = [
-            'siteName' => $variableApi->get(VariableApi::CONFIG, 'sitename_' . $language, $variableApi->get(VariableApi::CONFIG, 'sitename_en')),
-            'slogan' => $variableApi->get(VariableApi::CONFIG, 'slogan_' . $language, $variableApi->get(VariableApi::CONFIG, 'slogan_en')),
-            'metaKeywords' => $variableApi->get(VariableApi::CONFIG, 'metakeywords_' . $language, $variableApi->get(VariableApi::CONFIG, 'metakeywords_en')),
-            'adminMail' => $variableApi->get(VariableApi::CONFIG, 'adminmail'),
+            'siteName' => $variableApi->getSystemVar('sitename_' . $language, $variableApi->getSystemVar('sitename_en')),
+            'slogan' => $variableApi->getSystemVar('slogan_' . $language, $variableApi->getSystemVar('slogan_en')),
+            'metaKeywords' => $variableApi->getSystemVar('metakeywords_' . $language, $variableApi->getSystemVar('metakeywords_en')),
+            'adminMail' => $variableApi->getSystemVar('adminmail'),
             'hasAdultContent' => $variableApi->get('ZikulaSearchModule', 'opensearch_adult_content', false)
         ];
 

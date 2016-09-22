@@ -74,7 +74,7 @@ class CsrfTokenHandler
             $token = $request->request->get('csrftoken', false);
         }
 
-        if ($this->variableApi->get(VariableApi::CONFIG, 'sessioncsrftokenonetime') && $this->validator->validate($token, false, false)) {
+        if ($this->variableApi->getSystemVar('sessioncsrftokenonetime') && $this->validator->validate($token, false, false)) {
             return true;
         }
 
@@ -99,7 +99,7 @@ class CsrfTokenHandler
      */
     public function generate($forceUnique = false)
     {
-        if (!$forceUnique && $this->variableApi->get(VariableApi::CONFIG, 'sessioncsrftokenonetime')) {
+        if (!$forceUnique && $this->variableApi->getSystemVar('sessioncsrftokenonetime')) {
             $storage = $this->generator->getStorage();
             $tokenId = $this->session->get('sessioncsrftokenid');
             $data = $storage->get($tokenId);

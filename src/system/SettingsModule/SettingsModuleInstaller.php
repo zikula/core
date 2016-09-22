@@ -195,6 +195,6 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
 
     private function getSystemVar($name)
     {
-        return $this->container->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, $name);
+        return $this->container->get('zikula_extensions_module.api.variable')->getSystemVar($name);
     }
 }

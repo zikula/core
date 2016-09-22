@@ -187,7 +187,7 @@ class LinkContainer implements LinkContainerInterface
             return $links;
         }
 
-        if ($this->variableApi->get(VariableApi::CONFIG, 'multilingual')) {
+        if ($this->variableApi->getSystemVar('multilingual')) {
             if (count(\ZLanguage::getInstalledLanguages()) > 1) {
                 $links[] = [
                     'url'   => $this->router->generate('zikulausersmodule_account_changelanguage'),

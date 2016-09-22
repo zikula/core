@@ -12,10 +12,11 @@
 
 /**
  * Update operation.
- * @param object $entity The treated object.
- * @param array  $params Additional arguments.
  *
- * @return bool False on failure or true if everything worked well.
+ * @param object $entity The treated object
+ * @param array  $params Additional arguments
+ *
+ * @return bool False on failure or true if everything worked well
  *
  * @throws RuntimeException Thrown if executing the workflow action fails
  */

@@ -43,8 +43,8 @@ class WorkflowHelper
      * Constructor.
      * Initialises member vars.
      *
-     * @param \Zikula_ServiceManager $serviceManager ServiceManager instance.
-     * @param TranslatorInterface    $translator     Translator service instance.
+     * @param \Zikula_ServiceManager $serviceManager ServiceManager instance
+     * @param TranslatorInterface    $translator     Translator service instance
      *
      * @return void
      */
@@ -58,7 +58,7 @@ class WorkflowHelper
     /**
       * This method returns a list of possible object states.
       *
-      * @return array List of collected state information.
+      * @return array List of collected state information
       */
      public function getObjectStates()
      {
@@ -85,9 +85,9 @@ class WorkflowHelper
     /**
      * This method returns information about a certain state.
      *
-     * @param string $state The given state value.
+     * @param string $state The given state value
      *
-     * @return array|null The corresponding state information.
+     * @return array|null The corresponding state information
      */
     public function getStateInfo($state = 'initial')
     {
@@ -107,9 +107,9 @@ class WorkflowHelper
     /**
      * This method returns the workflow name for a certain object type.
      *
-     * @param string $objectType Name of treated object type.
+     * @param string $objectType Name of treated object type
      *
-     * @return string Name of the corresponding workflow.
+     * @return string Name of the corresponding workflow
      */
     public function getWorkflowName($objectType = '')
     {
@@ -126,7 +126,7 @@ class WorkflowHelper
     /**
      * This method returns the workflow schema for a certain object type.
      *
-     * @param string $objectType Name of treated object type.
+     * @param string $objectType Name of treated object type
      *
      * @return array|null The resulting workflow schema
      */
@@ -144,9 +144,9 @@ class WorkflowHelper
     /**
      * Retrieve the available actions for a given entity object.
      *
-     * @param EntityAccess $entity The given entity instance.
+     * @param EntityAccess $entity The given entity instance
      *
-     * @return array List of available workflow actions.
+     * @return array List of available workflow actions
      */
     public function getActionsForObject($entity)
     {
@@ -183,9 +183,9 @@ class WorkflowHelper
     /**
      * Returns a button class for a certain action.
      *
-     * @param string $actionId Id of the treated action.
+     * @param string $actionId Id of the treated action
      *
-     * @return string The button class.
+     * @return string The button class
      */
     protected function getButtonClassForAction($actionId)
     {
@@ -214,11 +214,11 @@ class WorkflowHelper
     /**
      * Executes a certain workflow action for a given entity object.
      *
-     * @param EntityAccess $entity   The given entity instance.
-     * @param string        $actionId Name of action to be executed.
-     * @param bool          $recursive true if the function called itself.  
+     * @param EntityAccess $entity   The given entity instance
+     * @param string        $actionId Name of action to be executed
+     * @param bool          $recursive true if the function called itself
      *
-     * @return bool False on error or true if everything worked well.
+     * @return bool False on error or true if everything worked well
      */
     public function executeAction($entity, $actionId = '', $recursive = false)
     {
@@ -246,9 +246,9 @@ class WorkflowHelper
     /**
      * Performs a conversion of the workflow object back to an array.
      *
-     * @param EntityAccess $entity The given entity instance (excplicitly assigned by reference as form handlers use arrays).
+     * @param EntityAccess $entity The given entity instance (excplicitly assigned by reference as form handlers use arrays)
      *
-     * @return bool False on error or true if everything worked well.
+     * @return bool False on error or true if everything worked well
      */
     public function normaliseWorkflowData(&$entity)
     {
@@ -284,7 +284,7 @@ class WorkflowHelper
     /**
      * Collects amount of moderation items foreach object type.
      *
-     * @return array List of collected amounts.
+     * @return array List of collected amounts
      */
     public function collectAmountOfModerationItems()
     {
@@ -299,10 +299,10 @@ class WorkflowHelper
      * Retrieves the amount of moderation items for a given object type
      * and a certain workflow state.
      *
-     * @param string $objectType Name of treated object type.
-     * @param string $state The given state value.
+     * @param string $objectType Name of treated object type
+     * @param string $state The given state value
      *
-     * @return integer The affected amount of objects.
+     * @return integer The affected amount of objects
      */
     public function getAmountOfModerationItems($objectType, $state)
     {

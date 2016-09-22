@@ -161,6 +161,20 @@ class VariableApi
     }
 
     /**
+     * Get a system variable.
+     * @api Core-2.0
+     *
+     * @param string $variableName The name of the variable
+     * @param mixed $default The value to return if the requested var is not set
+     *
+     * @return mixed - extension variable value
+     */
+    public function getSystemVar($variableName, $default = false)
+    {
+        return $this->get(self::CONFIG, $variableName, $default);
+    }
+
+    /**
      * Get all the variables for an extension.
      * @api Core-2.0
      *

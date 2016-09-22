@@ -91,19 +91,21 @@ class UserListener implements EventSubscriberInterface
     public function delete(GenericEvent $event)
     {
         $uid = $event->getSubject();
-
+    
         $serviceManager = ServiceUtil::getManager();
         $entityManager = $serviceManager->get('doctrine.entitymanager');
+        $translator = $serviceManager->get('translator.default');
+        $logger = $serviceManager->get('logger');
+        $currentUserApi = $serviceManager->get('zikula_users_module.current_user');
         
         $repo = $entityManager->getRepository('Zikula\RoutesModule\Entity\RouteEntity');
         // set creator to admin (2) for all routes created by this user
-        $repo->updateCreator($uid, 2);
+        $repo->updateCreator($uid, 2, $translator, $logger, $currentUserApi);
         
         // set last editor to admin (2) for all routes updated by this user
-        $repo->updateLastEditor($uid, 2);
+        $repo->updateLastEditor($uid, 2, $translator, $logger, $currentUserApi);
         
-        $logger = $serviceManager->get('logger');
         $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $serviceManager->get('zikula_users_module.current_user')->get('uname'), 'entities' => 'routes'];
-        $logger->notice('{app}: User {user} has been deleted, so we deleted corresponding {entities}, too.', $logArgs);
+        $logger->notice('{app}: User {user} has been deleted, so we deleted/updated corresponding {entities}, too.', $logArgs);
     }
 }

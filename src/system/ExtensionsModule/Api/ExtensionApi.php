@@ -12,8 +12,6 @@
 namespace Zikula\ExtensionsModule\Api;
 
 use Symfony\Component\HttpKernel\KernelInterface;
-use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
-use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 class ExtensionApi
 {
@@ -27,51 +25,43 @@ class ExtensionApi
     const INCOMPATIBLE_CORE_SHIFT = 20;
 
     /**
-     * @var ExtensionRepositoryInterface
-     */
-    private $repository;
-
-    /**
      * @var KernelInterface
      */
     private $kernel;
 
     /**
+     * @var array public list of all the core modules
+     */
+    public $coreModules = [
+        'ZikulaAdminModule',
+        'ZikulaBlocksModule',
+        'ZikulaCategoriesModule',
+        'ZikulaExtensionsModule',
+        'ZikulaGroupsModule',
+        'ZikulaMailerModule',
+        'ZikulaPermissionsModule',
+        'ZikulaRoutesModule',
+        'ZikulaSearchModule',
+        'ZikulaSecurityCenterModule',
+        'ZikulaSettingsModule',
+        'ZikulaThemeModule',
+        'ZikulaUsersModule',
+        'ZikulaZAuthModule',
+    ];
+
+    /**
      * ExtensionVar constructor.
-     * @param ExtensionRepositoryInterface $repository
      * @param KernelInterface $kernel
      */
-    public function __construct(ExtensionRepositoryInterface $repository, KernelInterface $kernel)
+    public function __construct(KernelInterface $kernel)
     {
-        $this->repository = $repository;
         $this->kernel = $kernel;
     }
 
     /**
-     * @param array $criteria
-     * @param array|null $orderBy
-     * @param null $limit
-     * @param null $offset
-     * @return ExtensionEntity[]
-     */
-    public function getModulesBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
-    {
-        return $this->repository->findBy($criteria, $orderBy, $limit, $offset);
-    }
-
-    /**
-     * return one ExtensionEntity
-     * @param $moduleName
-     * @return ExtensionEntity
-     */
-    public function getModule($moduleName)
-    {
-        return $this->repository->get($moduleName);
-    }
-
-    /**
+     * Check if the module is loaded into the kernel or not. Returns null if not.
      * @param $name
-     * @deprecated remove at Core-2.0
+     * @deprecated remove at Core-2.0 replace with $kernel->getModule($name) when all modules are Bundles
      * @return null|\Zikula\Core\AbstractBundle
      */
     public function getModuleInstanceOrNull($name)
@@ -87,23 +77,13 @@ class ExtensionApi
         return $moduleInstance;
     }
 
+    /**
+     * Checks if name is is the list of core modules.
+     * @param $moduleName
+     * @return bool
+     */
     public function isCoreModule($moduleName)
     {
-        return in_array($moduleName, [
-            'ZikulaAdminModule',
-            'ZikulaBlocksModule',
-            'ZikulaCategoriesModule',
-            'ZikulaExtensionsModule',
-            'ZikulaGroupsModule',
-            'ZikulaMailerModule',
-            'ZikulaPermissionsModule',
-            'ZikulaRoutesModule',
-            'ZikulaSearchModule',
-            'ZikulaSecurityCenterModule',
-            'ZikulaSettingsModule',
-            'ZikulaThemeModule',
-            'ZikulaUsersModule',
-            'ZikulaZAuthModule',
-        ]);
+        return in_array($moduleName, $this->coreModules);
     }
 }

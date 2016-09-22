@@ -180,7 +180,7 @@ class SettingsController extends AbstractController
     private function getSystemVar($name, $default = null)
     {
         // service caches values already
-        return $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, $name, $default);
+        return $this->get('zikula_extensions_module.api.variable')->getSystemVar($name, $default);
     }
 
     /**

@@ -13,6 +13,9 @@
 namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Zikula\ThemeModule\ThemeEvents;
+use Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent;
+use Zikula\ThemeModule\Bridge\Event\TwigPreRenderEvent;
 use Zikula\Core\Event\GenericEvent;
 
 /**
@@ -26,11 +29,13 @@ class ThemeListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'theme.preinit'     => ['preInit', 5],
-            'theme.init'        => ['init', 5],
-            'theme.load_config' => ['loadConfig', 5],
-            'theme.prefetch'    => ['preFetch', 5],
-            'theme.postfetch'   => ['postFetch', 5]
+            'theme.preinit'          => ['smartyPreInit', 5],
+            'theme.init'             => ['smartyInit', 5],
+            'theme.load_config'      => ['smartyLoadConfig', 5],
+            'theme.prefetch'         => ['smartyPreFetch', 5],
+            'theme.postfetch'        => ['smartyPostFetch', 5],
+            ThemeEvents::PRE_RENDER  => ['twigPreRender', 5],
+            ThemeEvents::POST_RENDER => ['twigPostRender', 5]
         ];
     }
     
@@ -45,7 +50,7 @@ class ThemeListener implements EventSubscriberInterface
      *
      * @param GenericEvent $event The event instance
      */
-    public function preInit(GenericEvent $event)
+    public function smartyPreInit(GenericEvent $event)
     {
     }
     
@@ -59,7 +64,7 @@ class ThemeListener implements EventSubscriberInterface
      *
      * @param GenericEvent $event The event instance
      */
-    public function init(GenericEvent $event)
+    public function smartyInit(GenericEvent $event)
     {
     }
     
@@ -71,7 +76,7 @@ class ThemeListener implements EventSubscriberInterface
      *
      * @param GenericEvent $event The event instance
      */
-    public function loadConfig(GenericEvent $event)
+    public function smartyLoadConfig(GenericEvent $event)
     {
     }
     
@@ -84,7 +89,7 @@ class ThemeListener implements EventSubscriberInterface
      *
      * @param GenericEvent $event The event instance
      */
-    public function preFetch(GenericEvent $event)
+    public function smartyPreFetch(GenericEvent $event)
     {
     }
     
@@ -97,7 +102,33 @@ class ThemeListener implements EventSubscriberInterface
      *
      * @param GenericEvent $event The event instance
      */
-    public function postFetch(GenericEvent $event)
+    public function smartyPostFetch(GenericEvent $event)
+    {
+    }
+    
+    /**
+     * Listener for the `theme.pre_render` event.
+     *
+     * Occurs immediately before twig theme engine renders a template.
+     * The event subject is \Zikula\ThemeModule\Bridge\Event\TwigPreRenderEvent.
+     *
+     * @param TwigPreRenderEvent $event The event instance
+     */
+    public function twigPreRender(TwigPreRenderEvent $event)
+    {
+    }
+    
+    /**
+     * Listener for the `theme.post_render` event.
+     *
+     * Occurs immediately after twig theme engine renders a template.
+     * The event subject is \Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent.
+     *
+     * An example for implementing this event is \Zikula\ThemeModule\EventListener\TemplateNameExposeListener.
+     *
+     * @param TwigPostRenderEvent $event The event instance
+     */
+    public function twigPostRender(TwigPostRenderEvent $event)
     {
     }
 }

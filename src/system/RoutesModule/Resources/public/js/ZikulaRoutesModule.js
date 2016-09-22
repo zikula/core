@@ -22,38 +22,39 @@ function zikulaRoutesInitQuickNavigation(objectType)
         return;
     }
 
-    if (jQuery('#catid').length > 0) {
-        jQuery('#catid').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
+    var fieldPrefix = 'zikularoutesmodule_' + objectType.toLowerCase() + 'quicknav_';
+    if (jQuery('#' + fieldPrefix + 'catid').length > 0) {
+        jQuery('#' + fieldPrefix + 'catid').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
     }
-    if (jQuery('#sortBy').length > 0) {
-        jQuery('#sortBy').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
+    if (jQuery('#' + fieldPrefix + 'sortBy').length > 0) {
+        jQuery('#' + fieldPrefix + 'sortBy').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
     }
-    if (jQuery('#sortDir').length > 0) {
-        jQuery('#sortDir').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
+    if (jQuery('#' + fieldPrefix + 'sortDir').length > 0) {
+        jQuery('#' + fieldPrefix + 'sortDir').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
     }
-    if (jQuery('#num').length > 0) {
-        jQuery('#num').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
+    if (jQuery('#' + fieldPrefix + 'num').length > 0) {
+        jQuery('#' + fieldPrefix + 'num').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
     }
 
     switch (objectType) {
     case 'route':
-        if (jQuery('#workflowState').length > 0) {
-            jQuery('#workflowState').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
+        if (jQuery('#' + fieldPrefix + 'workflowState').length > 0) {
+            jQuery('#' + fieldPrefix + 'workflowState').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
         }
-        if (jQuery('#routeType').length > 0) {
-            jQuery('#routeType').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
+        if (jQuery('#' + fieldPrefix + 'routeType').length > 0) {
+            jQuery('#' + fieldPrefix + 'routeType').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
         }
-        if (jQuery('#schemes').length > 0) {
-            jQuery('#schemes').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
+        if (jQuery('#' + fieldPrefix + 'schemes').length > 0) {
+            jQuery('#' + fieldPrefix + 'schemes').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
         }
-        if (jQuery('#methods').length > 0) {
-            jQuery('#methods').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
+        if (jQuery('#' + fieldPrefix + 'methods').length > 0) {
+            jQuery('#' + fieldPrefix + 'methods').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
         }
-        if (jQuery('#prependBundlePrefix').length > 0) {
-            jQuery('#prependBundlePrefix').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
+        if (jQuery('#' + fieldPrefix + 'prependBundlePrefix').length > 0) {
+            jQuery('#' + fieldPrefix + 'prependBundlePrefix').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
         }
-        if (jQuery('#translatable').length > 0) {
-            jQuery('#translatable').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
+        if (jQuery('#' + fieldPrefix + 'translatable').length > 0) {
+            jQuery('#' + fieldPrefix + 'translatable').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
         }
         break;
     default:

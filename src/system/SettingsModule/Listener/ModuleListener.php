@@ -58,7 +58,7 @@ class ModuleListener implements EventSubscriberInterface
     public function moduleDeactivated(GenericEvent $event)
     {
         $modname = $event['name'];
-        $startModule = $this->variableApi->get(VariableApi::CONFIG, 'startpage');
+        $startModule = $this->variableApi->getSystemVar('startpage');
 
         if ($modname == $startModule) {
             // since the start module has been removed, set all related variables to ''

@@ -39,7 +39,7 @@ class OutputCompressionListener implements EventSubscriberInterface
         }
 
         // Check if compression is desired
-        if ($this->variableApi->get(VariableApi::CONFIG, 'UseCompression') != 1) {
+        if ($this->variableApi->getSystemVar('UseCompression') != 1) {
             return;
         }
 

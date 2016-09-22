@@ -58,7 +58,6 @@
         </service>
 
         <service id="zikula_extensions_module.api.extension" class="%zikula_extensions_module.api.extension.class%">
-            <argument type="service" id="zikula_extensions_module.extension_repository"/>
             <argument type="service" id="kernel"/>
         </service>
 

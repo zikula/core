@@ -41,8 +41,8 @@ class ViewHelper
      * Constructor.
      * Initialises member vars.
      *
-     * @param \Zikula_ServiceManager $serviceManager ServiceManager instance.
-     * @param TranslatorInterface    $translator     Translator service instance.
+     * @param \Zikula_ServiceManager $serviceManager ServiceManager instance
+     * @param TranslatorInterface    $translator     Translator service instance
      *
      * @return void
      */
@@ -55,12 +55,12 @@ class ViewHelper
     /**
      * Determines the view template for a certain method with given parameters.
      *
-     * @param Twig_Environment $twig     Reference to view object.
-     * @param string           $type    Current controller (name of currently treated entity).
-     * @param string           $func    Current function (index, view, ...).
-     * @param Request          $request Current request.
+     * @param Twig_Environment $twig     Reference to view object
+     * @param string           $type    Current controller (name of currently treated entity)
+     * @param string           $func    Current function (index, view, ...)
+     * @param Request          $request Current request
      *
-     * @return string name of template file.
+     * @return string name of template file
      */
     public function getViewTemplate(Twig_Environment $twig, $type, $func, Request $request)
     {
@@ -92,14 +92,14 @@ class ViewHelper
     /**
      * Utility method for managing view templates.
      *
-     * @param Twig_Environment $twig     Reference to view object.
-     * @param string           $type     Current controller (name of currently treated entity).
-     * @param string           $func     Current function (index, view, ...).
-     * @param Request          $request            Current request.
-     * @param array            $templateParameters Template data.
-     * @param string           $template Optional assignment of precalculated template file.
+     * @param Twig_Environment $twig     Reference to view object
+     * @param string           $type     Current controller (name of currently treated entity)
+     * @param string           $func     Current function (index, view, ...)
+     * @param Request          $request            Current request
+     * @param array            $templateParameters Template data
+     * @param string           $template Optional assignment of precalculated template file
      *
-     * @return mixed Output.
+     * @return mixed Output
      */
     public function processTemplate(Twig_Environment $twig, $type, $func, Request $request, $templateParameters = [], $template = '')
     {
@@ -119,30 +119,43 @@ class ViewHelper
             $raw = true;
         }
     
+        $response = null;
         if ($raw == true) {
             // standalone output
             if ($templateExtension == 'pdf.twig') {
                 $template = str_replace('.pdf', '.html', $template);
     
                 return $this->processPdf($twig, $request, $templateParameters, $template);
-            } else {
-                return new PlainResponse($twig->render($template, $templateParameters));
             }
+    
+            $response = new PlainResponse($twig->render($template, $templateParameters));
         }
     
         // normal output
-        return new Response($twig->render($template, $templateParameters));
+        $response = new Response($twig->render($template, $templateParameters));
+    
+        // check if we need to set any custom headers
+        switch ($templateExtension) {
+            case 'ics.twig':
+                $response->headers->set('Content-Type', 'text/calendar; charset=iso-8859-15');
+                break;
+            case 'kml.twig':
+                $response->headers->set('Content-Type', 'application/vnd.google-earth.kml+xml');
+                break;
+        }
+    
+        return $response;
     }
 
     /**
      * Get extension of the currently treated template.
      *
-     * @param Twig_Environment $twig     Reference to view object.
-     * @param string           $type    Current controller (name of currently treated entity).
-     * @param string           $func    Current function (index, view, ...).
-     * @param Request          $request Current request.
+     * @param Twig_Environment $twig     Reference to view object
+     * @param string           $type    Current controller (name of currently treated entity)
+     * @param string           $func    Current function (index, view, ...)
+     * @param Request          $request Current request
      *
-     * @return array List of allowed template extensions.
+     * @return array List of allowed template extensions
      */
     protected function determineExtension(Twig_Environment $twig, $type, $func, Request $request)
     {
@@ -163,16 +176,16 @@ class ViewHelper
     /**
      * Get list of available template extensions.
      *
-     * @param string $type Current controller (name of currently treated entity).
-     * @param string $func Current function (index, view, ...).
+     * @param string $type Current controller (name of currently treated entity)
+     * @param string $func Current function (index, view, ...)
      *
-     * @return array List of allowed template extensions.
+     * @return array List of allowed template extensions
      */
     public function availableExtensions($type, $func)
     {
         $extensions = [];
-        $permissionHelper = $this->container->get('zikula_permissions_module.api.permission');
-        $hasAdminAccess = $permissionHelper->hasPermission('ZikulaRoutesModule:' . ucfirst($type) . ':', '::', ACCESS_ADMIN);
+        $permissionApi = $this->container->get('zikula_permissions_module.api.permission');
+        $hasAdminAccess = $permissionApi->hasPermission('ZikulaRoutesModule:' . ucfirst($type) . ':', '::', ACCESS_ADMIN);
         if ($func == 'view') {
             if ($hasAdminAccess) {
                 $extensions = ['kml'];
@@ -193,12 +206,12 @@ class ViewHelper
     /**
      * Processes a template file using dompdf (LGPL).
      *
-     * @param Twig_Environment $twig     Reference to view object.
-     * @param Request          $request            Current request.
-     * @param array            $templateParameters Template data.
-     * @param string           $template Name of template to use.
+     * @param Twig_Environment $twig     Reference to view object
+     * @param Request          $request            Current request
+     * @param array            $templateParameters Template data
+     * @param string           $template Name of template to use
      *
-     * @return mixed Output.
+     * @return mixed Output
      */
     protected function processPdf(Twig_Environment $twig, Request $request, $templateParameters = [], $template)
     {

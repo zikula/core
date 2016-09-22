@@ -34,7 +34,7 @@ abstract class Zikula_Doctrine_Template_Listener_Base extends Doctrine_Record_Li
         } elseif ($treatedRecord instanceof Doctrine_Table) {
             return $treatedRecord;
         } else {
-            throw new LogicException("Zikula_Doctrine_Template_Listener_Base::getTableFromEvent() unknown invoker: " +  get_class($treatedRecord));
+            throw new LogicException("Zikula_Doctrine_Template_Listener_Base::getTableFromEvent() unknown invoker: " + get_class($treatedRecord));
         }
     }
 

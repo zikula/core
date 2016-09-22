@@ -23,9 +23,9 @@ class SelectionApi extends Zikula_AbstractBase
     /**
      * Gets the list of identifier fields for a given object type.
      *
-     * @param string $args['ot'] The object type to be treated (optional).
+     * @param string $args['ot'] The object type to be treated (optional)
      *
-     * @return array List of identifier field names.
+     * @return array List of identifier field names
      */
     public function getIdFields(array $args = [])
     {
@@ -47,9 +47,9 @@ class SelectionApi extends Zikula_AbstractBase
     /**
      * Checks whether a certain entity type uses composite keys or not.
      *
-     * @param string $objectType The object type to retrieve.
+     * @param string $objectType The object type to retrieve
      *
-     * @return boolean Whether composite keys are used or not.
+     * @return boolean Whether composite keys are used or not
      */
     protected function hasCompositeKeys($objectType)
     {
@@ -61,12 +61,12 @@ class SelectionApi extends Zikula_AbstractBase
     /**
      * Selects a single entity.
      *
-     * @param string  $args['ot']       The object type to retrieve (optional).
-     * @param mixed   $args['id']       The id (or array of ids) to use to retrieve the object (default=null).
-     * @param boolean $args['useJoins'] Whether to include joining related objects (optional) (default=true).
-     * @param boolean $args['slimMode'] If activated only some basic fields are selected without using any joins (optional) (default=false).
+     * @param string  $args['ot']       The object type to retrieve (optional)
+     * @param mixed   $args['id']       The id (or array of ids) to use to retrieve the object (default=null)
+     * @param boolean $args['useJoins'] Whether to include joining related objects (optional) (default=true)
+     * @param boolean $args['slimMode'] If activated only some basic fields are selected without using any joins (optional) (default=false)
      *
-     * @return mixed Desired entity object or null.
+     * @return mixed Desired entity object or null
      */
     public function getEntity(array $args = [])
     {
@@ -88,14 +88,14 @@ class SelectionApi extends Zikula_AbstractBase
     /**
      * Selects a list of entities by different criteria.
      *
-     * @param string  $args['ot']       The object type to retrieve (optional).
-     * @param string  $args['idList']   A list of ids to select (optional) (default=[]).
-     * @param string  $args['where']    The where clause to use when retrieving the collection (optional) (default='').
-     * @param string  $args['orderBy']  The order-by clause to use when retrieving the collection (optional) (default='').
-     * @param boolean $args['useJoins'] Whether to include joining related objects (optional) (default=true).
-     * @param boolean $args['slimMode'] If activated only some basic fields are selected without using any joins (optional) (default=false).
+     * @param string  $args['ot']       The object type to retrieve (optional)
+     * @param string  $args['idList']   A list of ids to select (optional) (default=[])
+     * @param string  $args['where']    The where clause to use when retrieving the collection (optional) (default='')
+     * @param string  $args['orderBy']  The order-by clause to use when retrieving the collection (optional) (default='')
+     * @param boolean $args['useJoins'] Whether to include joining related objects (optional) (default=true)
+     * @param boolean $args['slimMode'] If activated only some basic fields are selected without using any joins (optional) (default=false)
      *
-     * @return array with retrieved collection.
+     * @return array with retrieved collection
      */
     public function getEntities(array $args = [])
     {
@@ -118,15 +118,15 @@ class SelectionApi extends Zikula_AbstractBase
     /**
      * Selects a list of entities by different criteria.
      *
-     * @param string  $args['ot']             The object type to retrieve (optional).
-     * @param string  $args['where']          The where clause to use when retrieving the collection (optional) (default='').
-     * @param string  $args['orderBy']        The order-by clause to use when retrieving the collection (optional) (default='').
-     * @param integer $args['currentPage']    Where to start selection.
-     * @param integer $args['resultsPerPage'] Amount of items to select.
-     * @param boolean $args['useJoins']       Whether to include joining related objects (optional) (default=true).
-     * @param boolean $args['slimMode']       If activated only some basic fields are selected without using any joins (optional) (default=false).
+     * @param string  $args['ot']             The object type to retrieve (optional)
+     * @param string  $args['where']          The where clause to use when retrieving the collection (optional) (default='')
+     * @param string  $args['orderBy']        The order-by clause to use when retrieving the collection (optional) (default='')
+     * @param integer $args['currentPage']    Where to start selection
+     * @param integer $args['resultsPerPage'] Amount of items to select
+     * @param boolean $args['useJoins']       Whether to include joining related objects (optional) (default=true)
+     * @param boolean $args['slimMode']       If activated only some basic fields are selected without using any joins (optional) (default=false)
      *
-     * @return array with retrieved collection and amount of total records affected by this query.
+     * @return array with retrieved collection and amount of total records affected by this query
      */
     public function getEntitiesPaginated(array $args = [])
     {
@@ -146,10 +146,10 @@ class SelectionApi extends Zikula_AbstractBase
     /**
      * Determines object type using controller util methods.
      *
-     * @param string $args['ot'] The object type to retrieve (optional).
-     * @param string $methodName Name of calling method.
+     * @param string $args['ot'] The object type to retrieve (optional)
+     * @param string $methodName Name of calling method
      *
-     * @return string the object type.
+     * @return string the object type
      */
     protected function determineObjectType(array $args = [], $methodName = '')
     {
@@ -166,9 +166,9 @@ class SelectionApi extends Zikula_AbstractBase
     /**
      * Returns repository instance for a certain object type.
      *
-     * @param string $objectType The desired object type.
+     * @param string $objectType The desired object type
      *
-     * @return mixed Repository class instance or null.
+     * @return mixed Repository class instance or null
      */
     protected function getRepository($objectType = '')
     {

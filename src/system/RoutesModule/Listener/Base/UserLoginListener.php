@@ -21,7 +21,6 @@ use Zikula\UsersModule\AccessEvents;
  */
 class UserLoginListener implements EventSubscriberInterface
 {
-    
     /**
      * Makes our handlers known to the event system.
      */

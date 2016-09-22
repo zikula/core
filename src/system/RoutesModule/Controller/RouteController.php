@@ -33,11 +33,11 @@ class RouteController extends BaseRouteController
      *        methods = {"GET"}
      * )
      *
-     * @param Request $request Current request instance.
+     * @param Request $request Current request instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function adminIndexAction(Request $request)
     {
@@ -51,11 +51,11 @@ class RouteController extends BaseRouteController
      *        methods = {"GET"}
      * )
      *
-     * @param Request $request Current request instance.
+     * @param Request $request Current request instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function indexAction(Request $request)
     {
@@ -71,15 +71,15 @@ class RouteController extends BaseRouteController
      *        methods = {"GET"}
      * )
      *
-     * @param Request $request Current request instance.
-     * @param string  $sort    Sorting field.
-     * @param string  $sortdir Sorting direction.
-     * @param int     $pos     Current pager position.
-     * @param int     $num     Amount of entries to display.
+     * @param Request $request Current request instance
+     * @param string  $sort    Sorting field
+     * @param string  $sortdir Sorting direction
+     * @param int     $pos     Current pager position
+     * @param int     $num     Amount of entries to display
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function adminViewAction(Request $request, $sort, $sortdir, $pos, $num)
     {
@@ -95,15 +95,15 @@ class RouteController extends BaseRouteController
      *        methods = {"GET"}
      * )
      *
-     * @param Request $request Current request instance.
-     * @param string  $sort    Sorting field.
-     * @param string  $sortdir Sorting direction.
-     * @param int     $pos     Current pager position.
-     * @param int     $num     Amount of entries to display.
+     * @param Request $request Current request instance
+     * @param string  $sort    Sorting field
+     * @param string  $sortdir Sorting direction
+     * @param int     $pos     Current pager position
+     * @param int     $num     Amount of entries to display
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function viewAction(Request $request, $sort, $sortdir, $pos, $num)
     {
@@ -130,13 +130,13 @@ class RouteController extends BaseRouteController
      *        methods = {"GET"}
      * )
      *
-     * @param Request     $request Current request instance.
-     * @param RouteEntity $route   Treated route instance.
+     * @param Request     $request Current request instance
+     * @param RouteEntity $route   Treated route instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
-     * @throws NotFoundHttpException Thrown by param converter if item to be displayed isn't found.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by param converter if item to be displayed isn't found
      */
     public function adminDisplayAction(Request $request, RouteEntity $route)
     {
@@ -152,13 +152,13 @@ class RouteController extends BaseRouteController
      *        methods = {"GET"}
      * )
      *
-     * @param Request     $request Current request instance.
-     * @param RouteEntity $route   Treated route instance.
+     * @param Request     $request Current request instance
+     * @param RouteEntity $route   Treated route instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
-     * @throws NotFoundHttpException Thrown by param converter if item to be displayed isn't found.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by param converter if item to be displayed isn't found
      */
     public function displayAction(Request $request, RouteEntity $route)
     {
@@ -174,13 +174,13 @@ class RouteController extends BaseRouteController
      *        methods = {"GET", "POST"}
      * )
      *
-     * @param Request $request Current request instance.
+     * @param Request $request Current request instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
-     * @throws NotFoundHttpException Thrown by form handler if item to be edited isn't found.
-     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available).
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by form handler if item to be edited isn't found
+     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
      */
     public function adminEditAction(Request $request)
     {
@@ -196,13 +196,13 @@ class RouteController extends BaseRouteController
      *        methods = {"GET", "POST"}
      * )
      *
-     * @param Request $request Current request instance.
+     * @param Request $request Current request instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
-     * @throws NotFoundHttpException Thrown by form handler if item to be edited isn't found.
-     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available).
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by form handler if item to be edited isn't found
+     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
      */
     public function editAction(Request $request)
     {
@@ -218,14 +218,14 @@ class RouteController extends BaseRouteController
      *        methods = {"GET", "POST"}
      * )
      *
-     * @param Request     $request Current request instance.
-     * @param RouteEntity $route   Treated route instance.
+     * @param Request     $request Current request instance
+     * @param RouteEntity $route   Treated route instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
-     * @throws NotFoundHttpException Thrown by param converter if item to be deleted isn't found.
-     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available).
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by param converter if item to be deleted isn't found
+     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
      */
     public function adminDeleteAction(Request $request, RouteEntity $route)
     {
@@ -241,14 +241,14 @@ class RouteController extends BaseRouteController
      *        methods = {"GET", "POST"}
      * )
      *
-     * @param Request     $request Current request instance.
-     * @param RouteEntity $route   Treated route instance.
+     * @param Request     $request Current request instance
+     * @param RouteEntity $route   Treated route instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
-     * @throws NotFoundHttpException Thrown by param converter if item to be deleted isn't found.
-     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available).
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by param converter if item to be deleted isn't found
+     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
      */
     public function deleteAction(Request $request, RouteEntity $route)
     {
@@ -262,11 +262,11 @@ class RouteController extends BaseRouteController
      *        methods = {"GET", "POST"}
      * )
      *
-     * @param Request $request Current request instance.
+     * @param Request $request Current request instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function adminReloadAction(Request $request)
     {
@@ -302,11 +302,11 @@ class RouteController extends BaseRouteController
      *        methods = {"GET", "POST"}
      * )
      *
-     * @param Request $request Current request instance.
+     * @param Request $request Current request instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function reloadAction(Request $request)
     {
@@ -320,11 +320,11 @@ class RouteController extends BaseRouteController
      *        methods = {"GET", "POST"}
      * )
      *
-     * @param Request $request Current request instance.
+     * @param Request $request Current request instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function adminRenewAction(Request $request)
     {
@@ -348,11 +348,11 @@ class RouteController extends BaseRouteController
      *        methods = {"GET", "POST"}
      * )
      *
-     * @param Request $request Current request instance.
+     * @param Request $request Current request instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function renewAction(Request $request)
     {
@@ -369,9 +369,9 @@ class RouteController extends BaseRouteController
      *        methods = {"POST"}
      * )
      *
-     * @param Request $request Current request instance.
+     * @param Request $request Current request instance
      *
-     * @return bool true on sucess, false on failure.
+     * @return bool true on sucess, false on failure
      *
      * @throws RuntimeException Thrown if executing the workflow action fails
      */
@@ -390,9 +390,9 @@ class RouteController extends BaseRouteController
      *        methods = {"POST"}
      * )
      *
-     * @param Request $request Current request instance.
+     * @param Request $request Current request instance
      *
-     * @return bool true on sucess, false on failure.
+     * @return bool true on sucess, false on failure
      *
      * @throws RuntimeException Thrown if executing the workflow action fails
      */
@@ -410,9 +410,9 @@ class RouteController extends BaseRouteController
      *        methods = {"GET"}
      * )
      *
-     * @param Request $request Current request instance.
+     * @param Request $request Current request instance
      *
-     * @return mixed Output.
+     * @return mixed Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */

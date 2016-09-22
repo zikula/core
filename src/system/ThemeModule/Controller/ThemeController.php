@@ -62,7 +62,7 @@ class ThemeController extends AbstractController
 
         return [
             'themes' => $themes,
-            'currenttheme' => $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'Default_Theme')
+            'currenttheme' => $this->get('zikula_extensions_module.api.variable')->getSystemVar('Default_Theme')
         ];
     }
 

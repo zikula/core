@@ -12,7 +12,6 @@
 namespace Zikula\MailerModule\Api;
 
 use Swift_Message;
-use Zikula\ExtensionsModule\Api\VariableApi;
 use ZLanguage;
 
 /**
@@ -78,8 +77,8 @@ class UserApi extends \Zikula_AbstractApi
         $mailer = $this->getContainer()->get('zikula_mailer_module.api.mailer');
         $variableApi = $this->getContainer()->get('zikula_extensions_module.api.variable');
 
-        $sitename = $variableApi->get(VariableApi::CONFIG, 'sitename_' . ZLanguage::getLanguageCode(), $variableApi->get(VariableApi::CONFIG, 'sitename_en'));
-        $adminMail = $variableApi->get(VariableApi::CONFIG, 'adminmail');
+        $sitename = $variableApi->getSystemVar('sitename_' . ZLanguage::getLanguageCode(), $variableApi->getSystemVar('sitename_en'));
+        $adminMail = $variableApi->getSystemVar('adminmail');
 
         // create new message instance
         /** @var Swift_Message */
@@ -103,7 +102,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // if replytoname and replytoaddress have been provided use them else use the fromname and fromaddress built earlier
         $args['replytoname'] = (!isset($args['replytoname']) || empty($args['replytoname'])) ? $fromName : $args['replytoname'];
-        $args['replytoaddress'] = (!isset($args['replytoaddress'])  || empty($args['replytoaddress'])) ? $fromAddress : $args['replytoaddress'];
+        $args['replytoaddress'] = (!isset($args['replytoaddress']) || empty($args['replytoaddress'])) ? $fromAddress : $args['replytoaddress'];
         $message->setReplyTo([$args['replytoaddress'] => $args['replytoname']]);
 
         // add any cc addresses
