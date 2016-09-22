@@ -102,7 +102,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // if replytoname and replytoaddress have been provided use them else use the fromname and fromaddress built earlier
         $args['replytoname'] = (!isset($args['replytoname']) || empty($args['replytoname'])) ? $fromName : $args['replytoname'];
-        $args['replytoaddress'] = (!isset($args['replytoaddress'])  || empty($args['replytoaddress'])) ? $fromAddress : $args['replytoaddress'];
+        $args['replytoaddress'] = (!isset($args['replytoaddress']) || empty($args['replytoaddress'])) ? $fromAddress : $args['replytoaddress'];
         $message->setReplyTo([$args['replytoaddress'] => $args['replytoname']]);
 
         // add any cc addresses

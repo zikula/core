@@ -183,7 +183,7 @@ function _smarty_block_menu_parsemenu_html($tree, $listTag, $listClass = null, $
     foreach ($tree as $tab) {
         if (!empty($tab['nodes'])) {
             $subhtml = _smarty_block_menu_parsemenu_html($tab['nodes'], $listTag);
-            $html   .= preg_replace('/<\/li>\s*$/Di', $subhtml.'</li>', $tab['item']['content'], 1);
+            $html .= preg_replace('/<\/li>\s*$/Di', $subhtml.'</li>', $tab['item']['content'], 1);
         } else {
             $html .= $tab['item']['content'];
         }

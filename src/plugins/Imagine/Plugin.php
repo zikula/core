@@ -43,7 +43,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
         $version = $this->getVar('version', false);
         if (!$version) {
             $this->install();
-        } elseif ($version !==  $this->getMetaVersion()) {
+        } elseif ($version !== $this->getMetaVersion()) {
             $this->upgrade($version);
         }
     }
