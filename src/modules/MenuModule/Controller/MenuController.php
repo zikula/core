@@ -13,6 +13,7 @@ namespace Zikula\MenuModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\Ajax\AjaxResponse;
@@ -36,10 +37,13 @@ class MenuController extends AbstractController
      */
     public function listAction(Request $request)
     {
+        if (!$this->hasPermission('ZikulaMenuModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedException();
+        }
         $repo = $this->get('zikula_menu_module.menu_item_repository');
         $rootNodes = $repo->getRootNodes();
-        $children = $repo->getChildren();
-        $childrenHierarchy = $repo->childrenHierarchy();
+//        $children = $repo->getChildren();
+//        $childrenHierarchy = $repo->childrenHierarchy();
 
         return [
             'rootNodes' => $rootNodes
@@ -50,14 +54,16 @@ class MenuController extends AbstractController
      * @Route("/view/{id}")
      * @Template
      * @Theme("admin")
-     * @param Request $request
-     * @param MenuItemEntity|null $menuItemEntity
+     * @param MenuItemEntity $menuItemEntity
      * @return array
      * @see https://jstree.com/
      * @see https://github.com/Atlantic18/DoctrineExtensions/blob/master/doc/tree.md
      */
-    public function viewAction(Request $request, MenuItemEntity $menuItemEntity = null)
+    public function viewAction(MenuItemEntity $menuItemEntity)
     {
+        if (!$this->hasPermission('ZikulaMenuModule::', '::', ACCESS_ADMIN) || null !== $menuItemEntity->getParent()) {
+            throw new AccessDeniedException();
+        }
         $repo = $this->get('zikula_menu_module.menu_item_repository');
         $htmlTree = $repo->childrenHierarchy(
             $menuItemEntity, /* node to start from */
@@ -89,54 +95,61 @@ class MenuController extends AbstractController
     }
 
     /**
-     * @Route("/contextMenu/{action}", options={"expose"=true})
+     * @Route("/contextMenu/{action}/{id}", options={"expose"=true})
      * @param Request $request
      * @param string $action
-     * @return AjaxResponse|ForbiddenResponse|BadDataResponse
+     * @param MenuItemEntity $menuItemEntity
+     * @return AjaxResponse|BadDataResponse|ForbiddenResponse
      */
-    public function contextMenuAction(Request $request, $action = '')
+    public function contextMenuAction(Request $request, $action = 'edit', MenuItemEntity $menuItemEntity = null)
     {
         if (!$this->hasPermission('ZikulaMenuModule::', '::', ACCESS_ADMIN)) {
             return new ForbiddenResponse($this->__('No permission for this action'));
         }
-        if (!in_array($action, ['edit', 'delete', 'deleteandmovesubs', 'copy', 'activate', 'deactivate', 'addafter', 'addchild'])) {
+        if (!in_array($action, ['edit', 'delete', 'deleteandmovechildren', 'copy', 'activate', 'deactivate'])) {
             return new BadDataResponse($this->__('Data provided was inappropriate.'));
         }
-
-        // do something based on $action
-        $entityId = $request->request->get('entityId');
         $repo = $this->get('zikula_menu_module.menu_item_repository');
 
         switch ($action) {
             case 'edit':
-                $menuItemEntity = $repo->find($entityId);
+                if (!isset($menuItemEntity)) {
+                    $menuItemEntity = new MenuItemEntity();
+                    $parentId = $request->request->get('parent');
+                    if (!empty($parentId)) {
+                        $parent = $repo->find($request->request->get('parent'));
+                        $menuItemEntity->setParent($parent);
+                        $menuItemEntity->setRoot($parent->getRoot());
+                    }
+                }
                 $form = $this->createForm('Zikula\MenuModule\Form\Type\MenuItemType', $menuItemEntity, [
                     'translator' => $this->get('translator.default'),
                 ]);
-
                 if ($form->handleRequest($request)->isValid()) {
                     $menuItemEntity = $form->getData();
                     $this->get('doctrine')->getManager()->persist($menuItemEntity); // this isn't technically required
                     $this->get('doctrine')->getManager()->flush();
-//                    $this->addFlash('status', $this->__('Done! Updated the entity.'));
+
                     return new AjaxResponse([
-                        'id' => $entityId,
-                        'parent' => $menuItemEntity->getParent()->getId(),
                         'node' => $menuItemEntity->toJson()
                     ]);
-
-//                    return $this->redirectToRoute('zikulamenumodule_menu_view', ['id' => $menuItemEntity->getRoot()->getId()]);
                 }
-
                 $response = [
                     'result' => $this->get('templating')->render('@ZikulaMenuModule/Menu/edit.html.twig', [
                         'form' => $form->createView()
                     ]),
                     'action' => $action,
                     'id' => $menuItemEntity->getId(),
-                    'parent' => $menuItemEntity->getParent()->getId()
                 ];
-
+                break;
+            case 'delete':
+                $id = $menuItemEntity->getId();
+                $this->get('doctrine')->getManager()->remove($menuItemEntity);
+                $this->get('doctrine')->getManager()->flush();
+                $response = [
+                    'id' => $id,
+                    'action' => $action,
+                ];
                 break;
             default:
                 $response = ['result' => true];

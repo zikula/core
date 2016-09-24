@@ -35,8 +35,8 @@
             <div class="modal-body">
             </div>
             <div class="modal-footer">
-                <button type="button" value="Submit" class="btn btn-primary">{{ __('Submit') }}</button>
-                <button type="button" value="Cancel" class="btn btn-default" data-dismiss="modal">{{ __('Cancel') }}</button>
+                <button type="button" value="Submit" class="btn btn btn-success"><i class="fa fa-check"></i> {{ __('Save') }}</button>
+                <button type="button" value="Cancel" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> {{ __('Cancel') }}</button>
             </div>
         </div>
     </div>
@@ -53,11 +53,11 @@
                 <p id="deleteWithChildrenInfo"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" id='node_delete' value="Delete" class="btn btn-primary">{{ __('Delete') }}</button>
-                <button type="button" id='node_delete_all' value="Delete" class="btn btn-primary" style="display: none">{{ __('Delete all children') }}</button>
-                <button type="button" id='node_delete_move' value="DeleteAndMoveSubs" class="btn btn-default" style="display: none">{{ __('Move all children') }}</button>
-                <button type="button" id='node_delete_move_action' value="DeleteAndMoveSubs" class="btn btn-success" style="display: none">{{ __('Move and delete') }}</button>
-                <button type="button" id='node_cancel' value="Cancel" class="btn btn-default" data-dismiss="modal">{{ __('Cancel') }}</button>
+                <button type="button" id='node_delete' value="Delete" class="btn btn-danger"><i class="fa fa-trash-o"></i> {{ __('Delete') }}</button>
+                <button type="button" id='node_delete_all' value="Delete" class="btn btn-danger" style="display: none"><i class="fa fa-trash-o"></i> {{ __('Delete all children') }}</button>
+                <button type="button" id='node_delete_move' value="DeleteAndMoveChildren" class="btn btn-danger" style="display: none">{{ __('Move all children') }}</button>
+                <button type="button" id='node_delete_move_action' value="DeleteAndMoveChildren" class="btn btn-danger" style="display: none">{{ __('Move and delete') }}</button>
+                <button type="button" id='node_cancel' value="Cancel" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> {{ __('Cancel') }}</button>
             </div>
         </div>
     </div>

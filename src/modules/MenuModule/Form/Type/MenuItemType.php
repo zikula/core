@@ -13,8 +13,10 @@ namespace Zikula\MenuModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class MenuItemType extends AbstractType
 {
@@ -24,27 +26,14 @@ class MenuItemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('id', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', ['mapped' => false])
-            ->add('title', 'Symfony\Component\Form\Extension\Core\Type\TextType')
+            ->add('title', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+                'constraints' => [new NotBlank()]
+            ])
             ->add('options', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'help' => 'json-formatted array (for now).',
                 'label' => 'options',
                 'required' => false
             ])
-//            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-//                'label' => $options['translator']->__('Save'),
-//                'icon' => 'fa-check',
-//                'attr' => [
-//                    'class' => 'btn btn-success'
-//                ]
-//            ])
-//            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-//                'label' => $options['translator']->__('Cancel'),
-//                'icon' => 'fa-times',
-//                'attr' => [
-//                    'class' => 'btn btn-default'
-//                ]
-//            ])
         ;
         // this is maybe a temporary workaround for enumerating the options for a MenuItem.
         $builder->get('options')
@@ -53,26 +42,23 @@ class MenuItemType extends AbstractType
                     // transform the array to a string
                     return json_encode($optionsAsArray);
                 },
-                function ($optionsAsString) {
+                function ($optionsAsString) use ($options) {
                     // transform the string back to an array
-                    return json_decode($optionsAsString, true);
+                    if (!$string = json_decode($optionsAsString, true)) {
+                        throw new TransformationFailedException($options['translator']->__('Invalid data: cannot json_decode provided string.'));
+                    }
+
+                    return $string;
                 }
             ))
         ;
-        $menuItemEntity = $builder->getData();
         if ($options['includeRoot']) {
             $builder->add('root', 'Symfony\Bridge\Doctrine\Form\Type\EntityType', [
                 'class' => 'Zikula\MenuModule\Entity\MenuItemEntity',
                 'choice_label' => 'title',
-                'placeholder' => $options['translator']->__('No root'),
-                'empty_data' => null,
-                'required' => false,
             ]);
         } else {
-            $builder->add('root', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [
-                'data' => $menuItemEntity->getRoot()->getId(),
-                'mapped' => false
-            ]);
+            $builder->add('root', 'Zikula\MenuModule\Form\Type\HiddenMenuItemType');
         }
         if ($options['includeParent']) {
             $builder->add('parent', 'Symfony\Bridge\Doctrine\Form\Type\EntityType', [
@@ -83,10 +69,7 @@ class MenuItemType extends AbstractType
                 'required' => false,
             ]);
         } else {
-            $builder->add('parent', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [
-                'data' => $menuItemEntity->getParent()->getId(),
-                'mapped' => false
-            ]);
+            $builder->add('parent', 'Zikula\MenuModule\Form\Type\HiddenMenuItemType');
         }
     }
 

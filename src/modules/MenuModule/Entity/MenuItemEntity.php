@@ -131,6 +131,10 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
         return $this->title;
     }
 
+    public function setRoot(MenuItemEntity $root) {
+        $this->root = $root;
+    }
+
     public function getRoot()
     {
         return $this->root;
@@ -339,8 +343,11 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
     public function toJson()
     {
         return json_encode([
+            'id' => $this->id,
             'title' => $this->title,
-            'options' => $this->options
+            'options' => $this->options,
+            'parent' => $this->parent->getId(),
+            'root' => null !== $this->root ? $this->root->getId() : null
         ]);
     }
 }

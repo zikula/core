@@ -80,18 +80,17 @@
         }
 
         function performContextMenuAction(node, action, extrainfo) {
-            var allowedActions = ['edit', 'delete', 'deleteandmovesubs', 'copy', 'activate', 'deactivate', 'addafter', 'addchild'];
+            var allowedActions = ['edit', 'delete', 'deleteandmovechildren', 'copy', 'activate', 'deactivate', 'addafter', 'addchild'];
             var parentId;
             if (!$.inArray(action, allowedActions) == -1) {
                 return false;
             }
             var nodeId = $(node).attr('id');
+            var entityId;
             // append spinner
             $('#' + nodeId).find('a').first().after('<i id="temp-spinner" class="fa fa-spinner fa-spin fa-lg text-primary"></i>');
 
-            var pars = {
-                entityId: node.data.entityId
-            };
+            var pars = {};
             // if (nodeId == 'node_1') {
             //     // do not allow editing of root
             //     $('#temp-spinner').remove();
@@ -99,31 +98,30 @@
             // }
             switch (action) {
                 case 'edit':
-                    pars.mode = 'edit';
+                case 'delete':
+                    entityId = node.data.entityId;
                     break;
-                case 'deleteandmovesubs':
+                case 'deleteandmovechildren':
                     pars.parent = extrainfo;
                     break;
                 case 'copy':
                     parentId = treeElem.jstree('get_parent', node);
-                    pars.parent = parentId.replace('node_', '');
+                    pars.parent = $(parentId).data('entityId');
                     break;
                 case 'addafter':
-                    pars.mode = 'new';
                     parentId = treeElem.jstree('get_parent', node);
-                    pars.parent = parentId.replace('node_', '');
+                    pars.parent = $(parentId).data('entityId');
                     action = 'edit';
                     break;
                 case 'addchild':
-                    pars.mode = 'new';
-                    pars.parent = pars.cid;
+                    pars.parent = node.data.entityId;
                     action = 'edit';
                     break;
             }
 
             $.ajax({
                 type: 'POST',
-                url: Routing.generate('zikulamenumodule_menu_contextmenu', {action: action}),
+                url: Routing.generate('zikulamenumodule_menu_contextmenu', {action: action, id: entityId}),
                 data: pars
             }).success(function(result) {
                 performContextMenuActionCallback(result.data);
@@ -143,12 +141,13 @@
             }
             var originalNode = $('#node_' + data.id);
             var parentNode = $('#node_' + data.parent);
+            var pars = {};
 
             switch (data.action) {
                 case 'delete':
                     treeElem.jstree('delete_node', originalNode);
                     break;
-                case 'deleteandmovesubs':
+                case 'deleteandmovechildren':
                     var workingNode = treeElem.jstree('get_node', originalNode.attr('id'));
                     treeElem.jstree('copy_node', workingNode.children, parentNode, 'last'); // use copy here to avoid move_node event
                     treeElem.jstree('delete_node', originalNode);
@@ -165,12 +164,13 @@
                     treeElem.jstree(true).create_node(parentNode, data.node, indexOfOriginalNode);
                     break;
                 case 'edit':
-                case 'add':
+                // case 'add':
                     $('#editModal').find('.modal-body').html(data.result);
                     openEditForm(data, function (event) {
                         event.preventDefault();
                         var mode = data.action;
                         var buttonValue = $(this).val();
+                        var entityId;
 
                         if (buttonValue == 'Cancel') {
                             closeEditForm();
@@ -178,29 +178,28 @@
                         }
 
                         // fetch each input and hidden field and store the value to POST
-                        var pars = {entityId: data.id};
                         $.each($(':input, :hidden').serializeArray(), function(i, field) {
                             pars[field.name] = field.value;
                         });
+                        if ((typeof data.id !== 'undefined') && data.id) {
+                            entityId = data.id;
+                        }
 
                         $.ajax({
                             type: 'POST',
-                            url: Routing.generate('zikulamenumodule_menu_contextmenu', {action: data.action}),
+                            url: Routing.generate('zikulamenumodule_menu_contextmenu', {action: data.action, id: entityId}),
                             data: pars
                         }).success(function(result) {
                             var data = result.data;
 
-                            if (data.validationErrors) {
-                                if (data && data.validationErrors) {
-                                    updateEditForm(data.result);
-                                } else {
-                                    closeEditForm();
-                                }
+                            if (data.action) {
+                                // validation failed
+                                updateEditForm(data.result);
                             } else {
                                 if (mode == 'edit') {
                                     var nodeData = $.parseJSON(data.node);
                                     // delete the existing node and replace with edited version
-                                    var editedNode = treeElem.jstree('get_node', 'node_' + data.id);
+                                    var editedNode = treeElem.jstree('get_node', 'node_' + nodeData.id);
                                     treeElem.jstree(true).rename_node(editedNode, nodeData.title);
                                 }
                                 // var parentLi = $('#node_' + data.parent),
@@ -227,23 +226,23 @@
         }
 
         function getDeleteMenuAction(node) {
-            var subCats = node.children.length;
-            if (subCats > 0) {
-                var info = 'It contains ' + subCats + ' direct children.'
+            var childrenCount = node.children.length;
+            if (childrenCount > 0) {
+                var info = 'It contains ' + childrenCount + ' direct children.'
                     + ' '
                     + "Please choose what to do with this item's children.";
-                $('#deleteWithSubCatInfo').addClass('alert alert-warning').text(info);
+                $('#deleteWithChildrenInfo').addClass('alert alert-warning').text(info);
             } else {
-                $('#deleteWithSubCatInfo').removeClass('alert alert-warning').text('');
+                $('#deleteWithChildrenInfo').removeClass('alert alert-warning').text('');
             }
             var deleteModal = $('#deleteModal');
 
-            if (subCats > 0) {
-                deleteModal.find('#cat_delete').hide();
-                deleteModal.find('#cat_delete_all').show();
-                deleteModal.find('#cat_delete_move').show();
+            if (childrenCount > 0) {
+                deleteModal.find('#node_delete').hide();
+                deleteModal.find('#node_delete_all').show();
+                deleteModal.find('#node_delete_move').show();
             }
-            $('#subcat_move').remove();
+            $('#children_move').remove();
 
             deleteModal.find('.modal-footer button').one('click', function(event) {
                 event.preventDefault();
@@ -254,8 +253,8 @@
                         performContextMenuAction(node, 'delete');
                         deleteModal.modal('hide');
                         break;
-                    case 'DeleteAndMoveSubs':
-                        if (!$('#subcat_move').length) {
+                    case 'DeleteAndMoveChildren':
+                        if (!$('#children_move').length) {
                             // present dialog to determine new parent
                             $(this).prepend('<i id="button-spinner" class="fa fa-gear fa-spin fa-lg text-danger"></i> ');
                             $.ajax({
@@ -265,10 +264,10 @@
                                     cid: $(node).attr('id').replace('node_', '')
                                 }
                             }).success(function(result) {
-                                var subcat_move = result.data.result;
-                                deleteModal.find('.modal-body').append(subcat_move);
-                                deleteModal.find('#cat_delete_move').hide();
-                                deleteModal.find('#cat_delete_move_action').show();
+                                var children_move = result.data.result;
+                                deleteModal.find('.modal-body').append(children_move);
+                                deleteModal.find('#node_delete_move').hide();
+                                deleteModal.find('#node_delete_move_action').show();
                             }).error(function(result) {
                                 alert(result.status + ': ' + result.statusText);
                             }).always(function() {
@@ -278,7 +277,7 @@
                             // utilize new parent to perform delete and move operation
                             var parent = $('#category_parent_id_').val();
                             if (parent) {
-                                performContextMenuAction(node, 'deleteandmovesubs', parent);
+                                performContextMenuAction(node, 'deleteandmovechildren', parent);
                                 deleteModal.modal('hide');
                             }
                         }
@@ -291,12 +290,12 @@
             deleteModal.modal();
             deleteModal.on('hidden.bs.modal', function (e) {
                 // reset modal to initial state
-                deleteModal.find('#cat_delete').show();
-                deleteModal.find('#cat_delete_all').hide();
-                deleteModal.find('#cat_delete_move').hide();
-                deleteModal.find('#cat_delete_move_action').hide();
+                deleteModal.find('#node_delete').show();
+                deleteModal.find('#node_delete_all').hide();
+                deleteModal.find('#node_delete_move').hide();
+                deleteModal.find('#node_delete_move_action').hide();
                 $('#button-spinner').remove();
-                $('#subcat_move').remove();
+                $('#children_move').remove();
             });
             deleteModal.find('.modal-footer button[value=Cancel]').focus();
         }
