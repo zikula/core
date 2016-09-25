@@ -61,8 +61,8 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
         $this->pageVars->set('langdirection', 'ltr'); //\ZLanguage::getDirection());
         $this->pageVars->set('title', $this->variableApi->getSystemVar('defaultpagetitle_'.\ZLanguage::getLanguageCode()));
         $this->pageVars->set('meta.charset', $this->getCharSet());
-        $this->pageVars->set('meta.description', $this->variableApi->getSystemVar('defaultmetadescription'));
-        $this->pageVars->set('meta.keywords', $this->variableApi->getSystemVar('metakeywords'));
+        $this->pageVars->set('meta.description', $this->variableApi->getSystemVar('defaultmetadescription_'.\ZLanguage::getLanguageCode()));
+        $this->pageVars->set('meta.keywords', $this->variableApi->getSystemVar('metakeywords_'.\ZLanguage::getLanguageCode()));
         $this->pageVars->set('homepath', $this->router->generate('home'));
         $this->pageVars->set('coredata', ['version' => \Zikula_Core::VERSION_NUM]); // @todo
     }
