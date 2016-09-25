@@ -59,7 +59,7 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
         // set some defaults
         $this->pageVars->set('lang', $event->getRequest()->getLocale()); //\ZLanguage::getLanguageCode());
         $this->pageVars->set('langdirection', 'ltr'); //\ZLanguage::getDirection());
-        $this->pageVars->set('title', $this->variableApi->getSystemVar('defaultpagetitle'));
+        $this->pageVars->set('title', $this->variableApi->getSystemVar('defaultpagetitle_'.\ZLanguage::getLanguageCode()));
         $this->pageVars->set('meta.charset', $this->getCharSet());
         $this->pageVars->set('meta.description', $this->variableApi->getSystemVar('defaultmetadescription'));
         $this->pageVars->set('meta.keywords', $this->variableApi->getSystemVar('metakeywords'));
