@@ -34,6 +34,10 @@ class MenuItemType extends AbstractType
                 'label' => 'options',
                 'required' => false
             ])
+            ->add('after', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [
+                'mapped' => false,
+                'required' => false
+            ])
         ;
         // this is maybe a temporary workaround for enumerating the options for a MenuItem.
         $builder->get('options')

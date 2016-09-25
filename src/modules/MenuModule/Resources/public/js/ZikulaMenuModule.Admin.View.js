@@ -106,11 +106,11 @@
                     break;
                 case 'copy':
                     parentId = treeElem.jstree('get_parent', node);
-                    pars.parent = $('#' + parentId).data('entityId');
+                    pars.parent = parentId !== '#' ? $('#' + parentId).data('entityId') : null;
                     break;
                 case 'addafter':
                     parentId = treeElem.jstree('get_parent', node);
-                    pars.parent = $('#' + parentId).data('entityId');
+                    pars.parent = parentId !== '#' ? $('#' + parentId).data('entityId') : null;
                     pars.after = node.data.entityId;
                     pars.mode = 'add';
                     action = 'edit';
@@ -205,9 +205,9 @@
                                     var editedNode = treeElem.jstree('get_node', 'node_' + nodeData.id);
                                     treeElem.jstree(true).rename_node(editedNode, nodeData.title);
                                 } else {
-                                    var selectedNode = treeElem.jstree('get_selected', true)[0], newPos = $('#' + selectedNode.parent + ' li').index($('#' + selectedNode.id)) + 1;
+                                    var selectedNode = treeElem.jstree('get_selected', true)[0], selectedNodeIndex = $('#' + selectedNode.id).index();
                                     var parentNode = treeElem.jstree('get_node', 'node_' + nodeData.parent);
-                                    treeElem.jstree(true).create_node(parentNode, nodeData, newPos, function (node) {
+                                    treeElem.jstree(true).create_node(parentNode, nodeData, selectedNodeIndex + 1, function (node) {
                                         $('#' + node.id).data('entity-id', node.id.replace('node_', ''));
                                     });
                                 }

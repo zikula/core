@@ -124,14 +124,25 @@ class MenuController extends AbstractController
                         $parent = $repo->find($request->request->get('parent'));
                         $menuItemEntity->setParent($parent);
                         $menuItemEntity->setRoot($parent->getRoot());
+                    } elseif (empty($parent) && $request->request->has('after')) { // sibling of top-level child
+                        $sibling = $repo->find($request->request->get('after'));
+                        $menuItemEntity->setParent($sibling->getParent());
+                        $menuItemEntity->setRoot($sibling->getRoot());
                     }
                 }
                 $form = $this->createForm('Zikula\MenuModule\Form\Type\MenuItemType', $menuItemEntity, [
                     'translator' => $this->get('translator.default'),
                 ]);
+                $form->get('after')->setData($request->request->get('after', null));
                 if ($form->handleRequest($request)->isValid()) {
                     $menuItemEntity = $form->getData();
-                    $this->get('doctrine')->getManager()->persist($menuItemEntity);
+                    $after = $form->get('after')->getData();
+                    if (!empty($after)) {
+                        $sibling = $repo->find($after);
+                        $repo->persistAsNextSiblingOf($menuItemEntity, $sibling);
+                    } elseif ($mode == 'new') {
+                        $repo->persistAsLastChild($menuItemEntity);
+                    } // no need to persist edited entity
                     $this->get('doctrine')->getManager()->flush();
 
                     return new AjaxResponse([
