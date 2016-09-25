@@ -28,6 +28,8 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
  */
 class MenuController extends AbstractController
 {
+    private $domTreeNodePrefix = 'node_';
+
     /**
      * @Route("/list")
      * @Template
@@ -73,7 +75,7 @@ class MenuController extends AbstractController
                 'representationField' => 'title',
                 'html' => true,
                 'childOpen' => function ($node) {
-                    return '<li class="jstree-open" id="node_' . $node['id'] . '" data-entity-id="' . $node['id'] . '">';
+                    return '<li class="jstree-open" id="' . $this->domTreeNodePrefix . $node['id'] . '" data-entity-id="' . $node['id'] . '">';
                 }
             ]
         );
@@ -110,12 +112,14 @@ class MenuController extends AbstractController
             return new BadDataResponse($this->__('Data provided was inappropriate.'));
         }
         $repo = $this->get('zikula_menu_module.menu_item_repository');
+        $mode = $request->request->get('mode', 'edit');
 
         switch ($action) {
             case 'edit':
                 if (!isset($menuItemEntity)) {
                     $menuItemEntity = new MenuItemEntity();
                     $parentId = $request->request->get('parent');
+                    $mode = 'new';
                     if (!empty($parentId)) {
                         $parent = $repo->find($request->request->get('parent'));
                         $menuItemEntity->setParent($parent);
@@ -127,11 +131,12 @@ class MenuController extends AbstractController
                 ]);
                 if ($form->handleRequest($request)->isValid()) {
                     $menuItemEntity = $form->getData();
-                    $this->get('doctrine')->getManager()->persist($menuItemEntity); // this isn't technically required
+                    $this->get('doctrine')->getManager()->persist($menuItemEntity);
                     $this->get('doctrine')->getManager()->flush();
 
                     return new AjaxResponse([
-                        'node' => $menuItemEntity->toJson()
+                        'node' => $menuItemEntity->toJson($this->domTreeNodePrefix),
+                        'mode' => $mode
                     ]);
                 }
                 $response = [
@@ -140,6 +145,7 @@ class MenuController extends AbstractController
                     ]),
                     'action' => $action,
                     'id' => $menuItemEntity->getId(),
+                    'mode' => $mode
                 ];
                 break;
             case 'delete':

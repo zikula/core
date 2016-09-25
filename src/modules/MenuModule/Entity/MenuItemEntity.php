@@ -341,11 +341,12 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
         return !empty($this->options['extras']);
     }
 
-    public function toJson()
+    public function toJson($prefix = '')
     {
         return json_encode([
-            'id' => $this->id,
+            'id' => $prefix . $this->id,
             'title' => $this->title,
+            'text' => $this->title,
             'options' => $this->options,
             'parent' => $this->parent->getId(),
             'root' => null !== $this->root ? $this->root->getId() : null

@@ -106,15 +106,18 @@
                     break;
                 case 'copy':
                     parentId = treeElem.jstree('get_parent', node);
-                    pars.parent = $(parentId).data('entityId');
+                    pars.parent = $('#' + parentId).data('entityId');
                     break;
                 case 'addafter':
                     parentId = treeElem.jstree('get_parent', node);
-                    pars.parent = $(parentId).data('entityId');
+                    pars.parent = $('#' + parentId).data('entityId');
+                    pars.after = node.data.entityId;
+                    pars.mode = 'add';
                     action = 'edit';
                     break;
                 case 'addchild':
                     pars.parent = node.data.entityId;
+                    pars.mode = 'add';
                     action = 'edit';
                     break;
             }
@@ -168,7 +171,7 @@
                     $('#editModal').find('.modal-body').html(data.result);
                     openEditForm(data, function (event) {
                         event.preventDefault();
-                        var mode = data.action;
+                        // var mode = data.action;
                         var buttonValue = $(this).val();
                         var entityId;
 
@@ -196,19 +199,18 @@
                                 // validation failed
                                 updateEditForm(data.result);
                             } else {
-                                if (mode == 'edit') {
-                                    var nodeData = $.parseJSON(data.node);
+                                var nodeData = $.parseJSON(data.node);
+                                if (data.mode == 'edit') {
                                     // delete the existing node and replace with edited version
                                     var editedNode = treeElem.jstree('get_node', 'node_' + nodeData.id);
                                     treeElem.jstree(true).rename_node(editedNode, nodeData.title);
+                                } else {
+                                    var selectedNode = treeElem.jstree('get_selected', true)[0], newPos = $('#' + selectedNode.parent + ' li').index($('#' + selectedNode.id)) + 1;
+                                    var parentNode = treeElem.jstree('get_node', 'node_' + nodeData.parent);
+                                    treeElem.jstree(true).create_node(parentNode, nodeData, newPos, function (node) {
+                                        $('#' + node.id).data('entity-id', node.id.replace('node_', ''));
+                                    });
                                 }
-                                // var parentLi = $('#node_' + data.parent),
-                                //     parentUl = parentLi.children('ul');
-                                // if (!parentUl) {
-                                //     parentUl = $('<ul>').attr({ 'class': 'tree' });
-                                //     parentLi.append(parentUl);
-                                // }
-                                // var newNode = treeElem.jstree(true).create_node(parentUl, nodeData);
                                 // var node = $('#' + newNode);
                                 // reinitTreeNode(node, data);
                                 closeEditForm();
@@ -261,7 +263,7 @@
                                 type: 'POST',
                                 url: Routing.generate('zikulacategoriesmodule_ajax_deletedialog'),
                                 data: {
-                                    cid: $(node).attr('id').replace('node_', '')
+                                    id: $(node).attr('id').replace('node_', '')
                                 }
                             }).success(function(result) {
                                 var children_move = result.data.result;
@@ -320,18 +322,18 @@
         var nodesDisabledForDrop = [];
 
         function reinitTreeNode(node, data) {
-            if (data.leafstatus) {
-                if (data.leafstatus.leaf) {
-                    // add elements
-                    $.merge(nodesDisabledForDrop, data.leafstatus.leaf);
-                }
-                if (data.leafstatus.noleaf) {
-                    // remove elements
-                    nodesDisabledForDrop = $.grep(nodesDisabledForDrop, function(value) {
-                        return $.inArray(value, data.leafstatus.noleaf) < 0;
-                    });
-                }
-            }
+            // if (data.leafstatus) {
+            //     if (data.leafstatus.leaf) {
+            //         // add elements
+            //         $.merge(nodesDisabledForDrop, data.leafstatus.leaf);
+            //     }
+            //     if (data.leafstatus.noleaf) {
+            //         // remove elements
+            //         nodesDisabledForDrop = $.grep(nodesDisabledForDrop, function(value) {
+            //             return $.inArray(value, data.leafstatus.noleaf) < 0;
+            //         });
+            //     }
+            // }
         }
 
         function redrawTree(treeElem) {
