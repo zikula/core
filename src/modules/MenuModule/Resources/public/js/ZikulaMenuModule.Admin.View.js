@@ -48,20 +48,20 @@
                     },
                     icon: 'fa fa-copy'
                 },
-                activateItem: {
-                    label: 'Activate',
-                    action: function (obj) {
-                        performContextMenuAction(node, 'activate');
-                    },
-                    icon: 'fa fa-check-square-o'
-                },
-                deactivateItem: {
-                    label: 'Deactivate',
-                    action: function (obj) {
-                        performContextMenuAction(node, 'deactivate');
-                    },
-                    icon: 'fa fa-square-o'
-                },
+                // activateItem: {
+                //     label: 'Activate',
+                //     action: function (obj) {
+                //         performContextMenuAction(node, 'activate');
+                //     },
+                //     icon: 'fa fa-check-square-o'
+                // },
+                // deactivateItem: {
+                //     label: 'Deactivate',
+                //     action: function (obj) {
+                //         performContextMenuAction(node, 'deactivate');
+                //     },
+                //     icon: 'fa fa-square-o'
+                // },
                 addItemAfter: {
                     label: 'Add sibling item (after selected)',
                     action: function (obj) {
@@ -124,7 +124,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: Routing.generate('zikulamenumodule_menu_contextmenu', {action: action, id: entityId}),
+                url: Routing.generate('zikulamenumodule_node_contextmenu', {action: action, id: entityId}),
                 data: pars
             }).success(function(result) {
                 performContextMenuActionCallback(result.data);
@@ -190,7 +190,7 @@
 
                         $.ajax({
                             type: 'POST',
-                            url: Routing.generate('zikulamenumodule_menu_contextmenu', {action: data.action, id: entityId}),
+                            url: Routing.generate('zikulamenumodule_node_contextmenu', {action: data.action, id: entityId}),
                             data: pars
                         }).success(function(result) {
                             var data = result.data;
@@ -201,18 +201,17 @@
                             } else {
                                 var nodeData = $.parseJSON(data.node);
                                 if (data.mode == 'edit') {
-                                    // delete the existing node and replace with edited version
+                                    // rename the existing node
                                     var editedNode = treeElem.jstree('get_node', 'node_' + nodeData.id);
                                     treeElem.jstree(true).rename_node(editedNode, nodeData.title);
                                 } else {
                                     var selectedNode = treeElem.jstree('get_selected', true)[0], selectedNodeIndex = $('#' + selectedNode.id).index();
                                     var parentNode = treeElem.jstree('get_node', 'node_' + nodeData.parent);
+                                    parentNode = (!parentNode) ? "#" : parentNode;
                                     treeElem.jstree(true).create_node(parentNode, nodeData, selectedNodeIndex + 1, function (node) {
                                         $('#' + node.id).data('entity-id', node.id.replace('node_', ''));
                                     });
                                 }
-                                // var node = $('#' + newNode);
-                                // reinitTreeNode(node, data);
                                 closeEditForm();
                             }
                         }).error(function(result) {
@@ -342,6 +341,26 @@
             //     .find('a.jstree-anchor.leaf > i.fa-folder').hide().end()
             // // use folder-open icon for already open nodes
             //     .find('li.jstree-open > a.z-tree-fixedparent > i.fa-folder').removeClass('fa-folder').addClass('fa-folder-open');
+        }
+
+        treeElem.on("move_node.jstree", moveTreeNode);
+
+        function moveTreeNode(e, data) {
+            $.ajax({
+                type: 'POST',
+                url: Routing.generate('zikulamenumodule_node_move'),
+                data: {
+                    node: data.node,
+                    old_parent: data.old_parent,
+                    old_position: data.old_position,
+                    parent: data.parent,
+                    position: data.position
+                }
+            }).success(function(result) {
+                console.log(result);
+            }).error(function(result) {
+                alert(result.status + ': ' + result.statusText);
+            });
         }
     });
 })(jQuery);

@@ -8,9 +8,14 @@
         </h3>
         <ul>
         {% for node in rootNodes %}
-            <a href="{{ path('zikulamenumodule_menu_view', {id: node.id}) }}">{{ node.title }}</a> ({{ node.children.count }})
+            <li><a href="{{ path('zikulamenumodule_menu_view', {id: node.id}) }}">{{ node.title }}</a> ({{ node.children.count }} direct children)
+                <a href="{{ path('zikulamenumodule_menu_edit', {id: node.id}) }}">edit</a>&nbsp;
+                <a href="{{ path('zikulamenumodule_menu_delete', {id: node.id}) }}">delete</a>
+            </li>
         {% endfor %}
+            <li><a href="{{ path('zikulamenumodule_menu_edit') }}">add new menu</a></li>
         </ul>
+
     </div>
 
 </div>

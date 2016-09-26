@@ -40,10 +40,14 @@ class MenuItemEntityTransformer implements DataTransformerInterface
     }
 
     /**
-     * {@inheritdoc} TRANSFORMER
+     * {@inheritdoc}
      */
     public function reverseTransform($value)
     {
+        if (null == $value) {
+            return null;
+        }
+
         $entity = $this->repo->find($value);
         if (null === $entity) {
             throw new TransformationFailedException($this->translator->__('That entity does not exist!'));
@@ -53,7 +57,7 @@ class MenuItemEntityTransformer implements DataTransformerInterface
     }
 
     /**
-     * {@inheritdoc} TRANSFORMER
+     * {@inheritdoc}
      */
     public function transform($value)
     {

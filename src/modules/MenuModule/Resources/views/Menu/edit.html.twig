@@ -4,6 +4,7 @@
 ] %}
 <div id="form_container">
     {{ form_start(form) }}
+    {{ form_errors(form) }}
     {{ form_row(form.title) }}
     {{ form_row(form.options) }}
     {{ form_row(form.root) }}
