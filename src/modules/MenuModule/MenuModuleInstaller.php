@@ -85,17 +85,19 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
             'template' => 'ZikulaMenuModule:Menu:knp_menu.html.twig',
             'childrenAttributes' => [
                 'class' => 'nav navbar-nav'
-        ]]);
+            ]]);
 
         $modules = new MenuItemEntity();
         $modules->setTitle('Modules');
+        $modules->setParent($root);
         $root->setOptions([
             'attributes' => [
                 'icon' => 'fa fa-list',
                 'dropdown' => true
-        ]]);
+            ]]);
 
         $users = new MenuItemEntity();
+        $users->setParent($modules);
         $users->setTitle('UsersModule');
         $users->setOptions([
             'route' => 'zikulausersmodule_useradministration_list',
@@ -105,6 +107,7 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
         ]);
 
         $blocks = new MenuItemEntity();
+        $blocks->setParent($modules);
         $blocks->setTitle('BlocksModule');
         $blocks->setOptions([
             'route' => 'zikulablocksmodule_admin_view',
@@ -114,6 +117,7 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
         ]);
 
         $zAuth = new MenuItemEntity();
+        $zAuth->setParent($modules);
         $zAuth->setTitle('ZAuthModule');
         $zAuth->setOptions([
             'route' => 'zikulazauthmodule_useradministration_list',
@@ -122,12 +126,11 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
             ]
         ]);
 
-        $repo = $this->container->get('zikula_menu_module.menu_item_repository');
-        $repo->persistAsFirstChild($root);
-        $repo->persistAsFirstChildOf($modules, $root);
-        $repo->persistAsFirstChildOf($users, $modules);
-        $repo->persistAsNextSiblingOf($blocks, $users);
-        $repo->persistAsNextSiblingOf($zAuth, $blocks);
+        $this->entityManager->persist($root);
+        $this->entityManager->persist($modules);
+        $this->entityManager->persist($users);
+        $this->entityManager->persist($blocks);
+        $this->entityManager->persist($zAuth);
         $this->entityManager->flush();
     }
 }
