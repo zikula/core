@@ -197,9 +197,8 @@ class LockingApi
         // Look for existing lock
         $count = $this->repository->getActiveLockAmount($lockName, $theSessionId);
 
-        $now = time();
         $expireDate = new \DateTime();
-        $expireDate->setTimestamp($now + self::PAGELOCKLIFETIME);
+        $expireDate->setTimestamp(time() + self::PAGELOCKLIFETIME);
 
         if ($count > 0) {
             // update the existing lock with a new expiry date
@@ -208,7 +207,7 @@ class LockingApi
             // create the new object
             $newLock = new PageLockEntity();
             $newLock->setName($lockName);
-            $newLock->setCdate(new \DateTime($now));
+            $newLock->setCdate(new \DateTime());
             $newLock->setEdate($expireDate);
             $newLock->setSession($theSessionId);
             $newLock->setTitle($lockedByTitle);
