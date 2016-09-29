@@ -118,7 +118,7 @@ class PageLockRepository extends EntityRepository
         $qb = $this->createQueryBuilder('tbl')
             ->delete('Zikula\PageLockModule\Entity\PageLockEntity', 'tbl')
             ->where('tbl.edate < :now')
-            ->setParameter('now', time());
+            ->setParameter('now', new \DateTime());
         $query = $qb->getQuery();
 
         $query->execute();
