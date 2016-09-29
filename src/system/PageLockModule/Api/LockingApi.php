@@ -195,7 +195,7 @@ class LockingApi
         }
 
         // Look for existing lock
-        $count = $this->repository->getLockAmount($lockName, $theSessionId);
+        $count = $this->repository->getActiveLockAmount($lockName, $theSessionId);
 
         $now = time();
         $expireDate = new \DateTime($now + self::PAGELOCKLIFETIME);
