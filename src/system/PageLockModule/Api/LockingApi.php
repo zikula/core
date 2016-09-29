@@ -198,7 +198,8 @@ class LockingApi
         $count = $this->repository->getActiveLockAmount($lockName, $theSessionId);
 
         $now = time();
-        $expireDate = new \DateTime($now + self::PAGELOCKLIFETIME);
+        $expireDate = new \DateTime();
+        $expireDate->setTimestamp($now + self::PAGELOCKLIFETIME);
 
         if ($count > 0) {
             // update the existing lock with a new expiry date
