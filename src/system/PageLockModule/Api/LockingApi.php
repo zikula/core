@@ -205,10 +205,13 @@ class LockingApi
             // update the existing lock with a new expiry date
             $this->repository->updateExpireDate($lockName, $theSessionId, $expireDate);
         } else {
+            $createdDate = new \DateTime();
+            $createdDate->setTimestamp($now);
+
             // create the new object
             $newLock = new PageLockEntity();
             $newLock->setName($lockName);
-            $newLock->setCdate(new \DateTime($now));
+            $newLock->setCdate($createdDate);
             $newLock->setEdate($expireDate);
             $newLock->setSession($theSessionId);
             $newLock->setTitle($lockedByTitle);
