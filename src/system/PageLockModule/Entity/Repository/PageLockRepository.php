@@ -68,8 +68,11 @@ class PageLockRepository extends EntityRepository
         }
 
         $qb = $this->createQueryBuilder('tbl')
-            ->select('tbl');
-        $qb = $this->addCommonFilters($qb, $lockName, $sessionId);
+            ->select('tbl')
+            ->where('tbl.name = :lockName')
+            ->setParameter('lockName', $lockName)
+            ->andWhere('tbl.session != :sessionId')
+            ->setParameter('sessionId', $sessionId);
 
         $query = $qb->getQuery();
 
@@ -99,9 +102,9 @@ class PageLockRepository extends EntityRepository
             throw new \InvalidArgumentException('Invalid parameter received.');
         }
 
-        $qb = $this->createQueryBuilder('tbl')
-            ->update('Zikula\PageLockModule\Entity\PageLockEntity', 'tbl')
-            ->set('tbl.edate', $expireDate);
+        $qb = $this->createQueryBuilder('tbl');
+        $qb->update('Zikula\PageLockModule\Entity\PageLockEntity', 'tbl')
+           ->set('tbl.edate', $qb->expr()->literal($expireDate->format('Y-m-d H:i:s')));
         $qb = $this->addCommonFilters($qb, $lockName, $sessionId);
 
         $query = $qb->getQuery();
