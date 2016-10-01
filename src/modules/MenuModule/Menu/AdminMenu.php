@@ -34,11 +34,12 @@ class AdminMenu implements ContainerAwareInterface
         /** @var ExtensionEntity[] $adminModules */
         foreach ($adminModules as $adminModule) {
             if (isset($adminModule->getCapabilities()['admin']['route'])) {
-                $menu['Home']->addChild($adminModule->getDisplayname(), [
+                $menu['Home']
+                    ->addChild($adminModule->getDisplayname(), [
                     'route' => $adminModule->getCapabilities()['admin']['route'],
                     'routeParameters' => []
-                ])
-                ->setAttribute('icon', 'fa fa-star');
+                    ])
+                    ->setAttribute('icon', 'fa fa-star');
             }
         }
 
