@@ -32,7 +32,7 @@ class AdminActionsMenu implements ContainerAwareInterface
                 'routeParameters' => $options,
             ])->setAttribute('icon', 'fa fa-tree');
         $menu->addChild('Delete', [
-                'route' => 'zikulamenumodule_menu_view',
+                'route' => 'zikulamenumodule_menu_delete',
                 'routeParameters' => $options,
             ])->setAttribute('icon', 'fa fa-trash-o');
 

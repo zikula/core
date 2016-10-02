@@ -74,7 +74,7 @@ class MenuController extends AbstractController
                 'representationField' => 'title',
                 'html' => true,
                 'childOpen' => function ($node) {
-                    return '<li class="jstree-open" id="' . $this->domTreeNodePrefix . $node['id'] . '" data-entity-id="' . $node['id'] . '">';
+                    return '<li class="jstree-open" id="' . $this->domTreeNodePrefix . $node['id'] . '">';
                 }
             ]
         );

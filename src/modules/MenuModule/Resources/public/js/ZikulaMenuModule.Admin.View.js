@@ -1,5 +1,7 @@
 ( function($) {
     $(document).ready(function() {
+        // config items
+        var id_prefix = 'node_';
         var treeElem = $('#tree_container');
         treeElem.jstree({
             "core" : {
@@ -11,11 +13,6 @@
                 'items': getContextMenuActions
             },
             "types" : {
-                "#" : {
-                    "max_children" : 1,
-                    "max_depth" : 4,
-                    "valid_children" : ["root"]
-                },
                 "default" : {
                     "icon" : "fa fa-check-circle"
                 }
@@ -24,6 +21,7 @@
                 "contextmenu", "dnd", "state", "types", "wholerow"
             ]
         });
+        // end config
 
         function getContextMenuActions(node) {
             return {
@@ -91,32 +89,27 @@
             $('#' + nodeId).find('a').first().after('<i id="temp-spinner" class="fa fa-spinner fa-spin fa-lg text-primary"></i>');
 
             var pars = {};
-            // if (nodeId == 'node_1') {
-            //     // do not allow editing of root
-            //     $('#temp-spinner').remove();
-            //     return false;
-            // }
             switch (action) {
                 case 'edit':
                 case 'delete':
-                    entityId = node.data.entityId;
+                    entityId = nodeId.replace(id_prefix, '');
                     break;
                 case 'deleteandmovechildren':
                     pars.parent = extrainfo;
                     break;
                 case 'copy':
                     parentId = treeElem.jstree('get_parent', node);
-                    pars.parent = parentId !== '#' ? $('#' + parentId).data('entityId') : null;
+                    pars.parent = parentId !== '#' ? $('#' + parentId).attr('id').replace(id_prefix, '') : null;
                     break;
                 case 'addafter':
                     parentId = treeElem.jstree('get_parent', node);
-                    pars.parent = parentId !== '#' ? $('#' + parentId).data('entityId') : null;
-                    pars.after = node.data.entityId;
+                    pars.parent = parentId !== '#' ? $('#' + parentId).attr('id').replace(id_prefix, '') : null;
+                    pars.after = nodeId.replace(id_prefix, '');
                     pars.mode = 'add';
                     action = 'edit';
                     break;
                 case 'addchild':
-                    pars.parent = node.data.entityId;
+                    pars.parent = nodeId.replace(id_prefix, '');
                     pars.mode = 'add';
                     action = 'edit';
                     break;
@@ -142,10 +135,9 @@
             if (null == data) {
                 return;
             }
-            var originalNode = $('#node_' + data.id);
-            var parentNode = $('#node_' + data.parent);
+            var originalNode = $('#' + id_prefix + data.id);
+            var parentNode = $('#' + id_prefix + data.parent);
             var pars = {};
-
             switch (data.action) {
                 case 'delete':
                     treeElem.jstree('delete_node', originalNode);
@@ -202,15 +194,13 @@
                                 var nodeData = $.parseJSON(data.node);
                                 if (data.mode == 'edit') {
                                     // rename the existing node
-                                    var editedNode = treeElem.jstree('get_node', 'node_' + nodeData.id);
+                                    var editedNode = treeElem.jstree('get_node', nodeData.id);
                                     treeElem.jstree(true).rename_node(editedNode, nodeData.title);
                                 } else {
                                     var selectedNode = treeElem.jstree('get_selected', true)[0], selectedNodeIndex = $('#' + selectedNode.id).index();
-                                    var parentNode = treeElem.jstree('get_node', 'node_' + nodeData.parent);
+                                    var parentNode = treeElem.jstree('get_node', id_prefix + nodeData.parent);
                                     parentNode = (!parentNode) ? "#" : parentNode;
-                                    treeElem.jstree(true).create_node(parentNode, nodeData, selectedNodeIndex + 1, function (node) {
-                                        $('#' + node.id).data('entity-id', node.id.replace('node_', ''));
-                                    });
+                                    treeElem.jstree(true).create_node(parentNode, nodeData, selectedNodeIndex + 1);
                                 }
                                 closeEditForm();
                             }
@@ -262,7 +252,7 @@
                                 type: 'POST',
                                 url: Routing.generate('zikulacategoriesmodule_ajax_deletedialog'),
                                 data: {
-                                    id: $(node).attr('id').replace('node_', '')
+                                    id: $(node).attr('id').replace(id_prefix, '')
                                 }
                             }).success(function(result) {
                                 var children_move = result.data.result;

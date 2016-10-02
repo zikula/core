@@ -119,7 +119,8 @@ class NodeController extends AbstractController
         }
         $repo = $this->get('zikula_menu_module.menu_item_repository');
         $node = $request->request->get('node');
-        $menuItemEntity = $repo->find($node['data']['entityId']);
+        $entityId = str_replace($this->domTreeNodePrefix, '', $node['id']);
+        $menuItemEntity = $repo->find($entityId);
         $oldParent = $request->request->get('old_parent');
         $oldPosition = (int) $request->request->get('old_position');
         $parent = $request->request->get('parent');

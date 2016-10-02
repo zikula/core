@@ -2,7 +2,6 @@
 
 ( function($) {
     $(document).ready(function() {
-        console.log('loaded');
         $(document).on("click", "#add-option", function(e) {
             e.preventDefault();
 
