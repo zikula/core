@@ -81,8 +81,6 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
         $root = new MenuItemEntity();
         $root->setTitle('home');
         $root->setOptions([
-            'currentClass' => 'active',
-            'template' => 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig',
             'childrenAttributes' => [
                 'class' => 'nav navbar-nav'
             ]]);

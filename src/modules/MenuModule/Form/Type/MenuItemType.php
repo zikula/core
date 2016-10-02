@@ -103,7 +103,6 @@ class MenuItemType extends AbstractType
         return [
             'route' => 'route',
             'routeParameters*' => 'routeParameters',
-            'icon' => 'icon',
             'uri' => 'uri',
             'label' => 'label',
             'attributes*' => 'attributes',

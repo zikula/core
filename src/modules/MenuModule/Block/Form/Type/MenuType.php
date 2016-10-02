@@ -43,6 +43,9 @@ class MenuType extends AbstractType
                     return $text;
                 },
                 function ($text) {
+                    if (empty($text)) {
+                        return '{}';
+                    }
                     $json = str_replace("'", '"', $text);
                     if (null === json_decode($json, true)) {
                         throw new TransformationFailedException();
