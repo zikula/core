@@ -19,10 +19,17 @@
                 {% endfor %}
                 <li style="display:none">{{ form_row(form.options) }}</li><!-- hack to hide repeated display of options label -->
             </ul>
+            <div class="alert alert-info">{{ __('Options with an asterisk (*) must have a value of a json_encoded string of option key-value pairs. Options with a plus (+) must have a boolean value.') }}</div>
             <a href="#" id="add-option" class="btn btn-default btn-sm fa fa-plus"> {{ __('Add Option') }}</a>
         </div>
     </div>
     {{ form_row(form.root) }}
     {{ form_row(form.parent) }}
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+            {% if form.save|default %}{{ form_widget(form.save) }}{% endif %}
+            {% if form.cancel|default %}{{ form_widget(form.cancel) }}{% endif %}
+        </div>
+    </div>
     {{ form_end(form) }}
 </div>

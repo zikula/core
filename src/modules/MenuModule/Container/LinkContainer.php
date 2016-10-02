@@ -81,6 +81,11 @@ class LinkContainer implements LinkContainerInterface
                 'text' => $this->translator->__('Menu list'),
                 'icon' => 'list'
             ];
+            $links[] = [
+                'url' => $this->router->generate('zikulamenumodule_menu_edit'),
+                'text' => $this->translator->__('New menu'),
+                'icon' => 'plus'
+            ];
         }
 
         return $links;

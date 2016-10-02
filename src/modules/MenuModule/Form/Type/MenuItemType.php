@@ -17,6 +17,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Zikula\MenuModule\Form\DataTransformer\KeyValueTransformer;
 use Zikula\MenuModule\Form\EventListener\KeyValueFixerListener;
+use Zikula\MenuModule\Form\EventListener\OptionValidatorListener;
+use Zikula\MenuModule\Validator\Constraints\OptionsArrayValidator;
 
 class MenuItemType extends AbstractType
 {
@@ -53,6 +55,7 @@ class MenuItemType extends AbstractType
         $builder->get('options')
             ->addModelTransformer(new KeyValueTransformer())
             ->addEventSubscriber(new KeyValueFixerListener())
+            ->addEventSubscriber(new OptionValidatorListener())
         ;
         if ($options['includeRoot']) {
             $builder->add('root', 'Symfony\Bridge\Doctrine\Form\Type\EntityType', [
@@ -100,18 +103,18 @@ class MenuItemType extends AbstractType
     {
         return [
             'route' => 'route',
-            'routeParameters' => 'routeParameters',
+            'routeParameters*' => 'routeParameters',
             'icon' => 'icon',
             'uri' => 'uri',
             'label' => 'label',
-            'attributes' => 'attributes',
-            'linkAttributes' => 'linkAttributes',
-            'childrenAttributes' => 'childrenAttributes',
-            'labelAttributes' => 'labelAttributes',
-            'extras' => 'extras',
+            'attributes*' => 'attributes',
+            'linkAttributes*' => 'linkAttributes',
+            'childrenAttributes*' => 'childrenAttributes',
+            'labelAttributes*' => 'labelAttributes',
+            'extras*' => 'extras',
             'current' => 'current',
-            'display' => 'display',
-            'displayChildren' => 'displayChildren',
+            'display+' => 'display',
+            'displayChildren+' => 'displayChildren',
         ];
     }
 }

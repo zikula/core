@@ -82,7 +82,7 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
         $root->setTitle('home');
         $root->setOptions([
             'currentClass' => 'active',
-            'template' => 'ZikulaMenuModule:Menu:knp_menu.html.twig',
+            'template' => 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig',
             'childrenAttributes' => [
                 'class' => 'nav navbar-nav'
             ]]);
@@ -90,7 +90,7 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
         $modules = new MenuItemEntity();
         $modules->setTitle('Modules');
         $modules->setParent($root);
-        $root->setOptions([
+        $modules->setOptions([
             'attributes' => [
                 'icon' => 'fa fa-list',
                 'dropdown' => true

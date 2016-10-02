@@ -13,10 +13,7 @@ namespace Zikula\MenuModule\Block;
 
 use Zikula\BlocksModule\AbstractBlockHandler;
 
-/**
- * Block to display drop-down menu in bootstrap nav bar
- */
-class NavBarMenuBlock extends AbstractBlockHandler
+class MenuBlock extends AbstractBlockHandler
 {
     /**
      * display block
@@ -26,13 +23,13 @@ class NavBarMenuBlock extends AbstractBlockHandler
      */
     public function display(array $properties)
     {
-        return $this->renderView('@ZikulaMenuModule/Block/navBarMenuBlock.html.twig', [
-            'menuName' => 'home'
-        ]);
+        $properties['options'] = json_decode($properties['options'], true);
+
+        return $this->renderView('@ZikulaMenuModule/Block/menu.html.twig', $properties);
     }
 
-//    public function getFormClassName()
-//    {
-//        return 'Zikula\BlocksModule\Block\Form\Type\TextBlockType';
-//    }
+    public function getFormClassName()
+    {
+        return 'Zikula\MenuModule\Block\Form\Type\MenuType';
+    }
 }
