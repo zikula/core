@@ -36,23 +36,6 @@ class AjaxInstallController extends AbstractController
      */
     private $yamlManager;
 
-    private $systemModules = [
-        'ZikulaExtensionsModule',
-        'ZikulaSettingsModule',
-        'ZikulaThemeModule',
-        'ZikulaAdminModule',
-        'ZikulaPermissionsModule',
-        'ZikulaGroupsModule',
-        'ZikulaBlocksModule',
-        'ZikulaUsersModule',
-        'ZikulaZAuthModule',
-        'ZikulaSecurityCenterModule',
-        'ZikulaCategoriesModule',
-        'ZikulaMailerModule',
-        'ZikulaSearchModule',
-        'ZikulaRoutesModule',
-    ];
-
     public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
@@ -107,6 +90,8 @@ class AjaxInstallController extends AbstractController
                 return $this->installModule('ZikulaSearchModule');
             case "routes":
                 return $this->installModule('ZikulaRoutesModule');
+            case "menu":
+                return $this->installModule('ZikulaMenuModule');
             case "updateadmin":
                 return $this->updateAdmin();
             case "loginadmin":
@@ -192,7 +177,7 @@ class AjaxInstallController extends AbstractController
         /** @var ExtensionEntity[] $extensions */
         $extensions = $this->container->get('zikula_extensions_module.extension_repository')->findAll();
         foreach ($extensions as $extension) {
-            if (in_array($extension->getName(), $this->systemModules)) {
+            if (\ZikulaKernel::isCoreModule($extension->getName())) {
                 $extension->setState(ExtensionApi::STATE_ACTIVE);
             }
         }
@@ -203,7 +188,7 @@ class AjaxInstallController extends AbstractController
 
     private function categorizeModules()
     {
-        reset($this->systemModules);
+        reset(\ZikulaKernel::$coreModules);
         $systemModulesCategories = [
             'ZikulaExtensionsModule' => __('System'),
             'ZikulaPermissionsModule' => __('Users'),
@@ -218,13 +203,15 @@ class AjaxInstallController extends AbstractController
             'ZikulaSearchModule' => __('Content'),
             'ZikulaAdminModule' => __('System'),
             'ZikulaSettingsModule' => __('System'),
-            'ZikulaRoutesModule' => __('System')
+            'ZikulaRoutesModule' => __('System'),
+            'ZikulaMenuModule' => __('Content'),
+            'ZikulaPageLockModule' => __('Content'),
         ];
 
         $modulesCategories = $this->container->get('doctrine.orm.entity_manager')
             ->getRepository('ZikulaAdminModule:AdminCategoryEntity')->getIndexedCollection('name');
 
-        foreach ($this->systemModules as $systemModule) {
+        foreach (\ZikulaKernel::$coreModules as $systemModule => $bundleClass) {
             $category = $systemModulesCategories[$systemModule];
             \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'addmodtocategory', [
                 'module' => $systemModule,

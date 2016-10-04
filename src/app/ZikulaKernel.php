@@ -27,6 +27,29 @@ define('ACCESS_ADMIN', 800);
 
 class ZikulaKernel extends Kernel
 {
+    /**
+     * Public list of core modules and their bundle class.
+     * @var array
+     */
+    public static $coreModules = [
+        'ZikulaAdminModule' => 'Zikula\AdminModule\ZikulaAdminModule',
+        'ZikulaBlocksModule' => 'Zikula\BlocksModule\ZikulaBlocksModule',
+        'ZikulaCategoriesModule' => 'Zikula\CategoriesModule\ZikulaCategoriesModule',
+        'ZikulaExtensionsModule' => 'Zikula\ExtensionsModule\ZikulaExtensionsModule',
+        'ZikulaGroupsModule' => 'Zikula\GroupsModule\ZikulaGroupsModule',
+        'ZikulaMailerModule' => 'Zikula\MailerModule\ZikulaMailerModule',
+        'ZikulaPermissionsModule' => 'Zikula\PermissionsModule\ZikulaPermissionsModule',
+        'ZikulaRoutesModule' => 'Zikula\RoutesModule\ZikulaRoutesModule',
+        'ZikulaSearchModule' => 'Zikula\SearchModule\ZikulaSearchModule',
+        'ZikulaSecurityCenterModule' => 'Zikula\SecurityCenterModule\ZikulaSecurityCenterModule',
+        'ZikulaSettingsModule' => 'Zikula\SettingsModule\ZikulaSettingsModule',
+        'ZikulaThemeModule' => 'Zikula\ThemeModule\ZikulaThemeModule',
+        'ZikulaUsersModule' => 'Zikula\UsersModule\ZikulaUsersModule',
+        'ZikulaZAuthModule' => 'Zikula\ZAuthModule\ZikulaZAuthModule',
+        'ZikulaPageLockModule' => 'Zikula\PageLockModule\ZikulaPageLockModule',
+        'ZikulaMenuModule' => 'Zikula\MenuModule\ZikulaMenuModule',
+    ];
+
     public function registerBundles()
     {
         $bundles = [
@@ -84,21 +107,9 @@ class ZikulaKernel extends Kernel
 
     private function registerCoreModules(array &$bundles)
     {
-        $bundles[] = new Zikula\AdminModule\ZikulaAdminModule();
-        $bundles[] = new Zikula\BlocksModule\ZikulaBlocksModule();
-        $bundles[] = new Zikula\CategoriesModule\ZikulaCategoriesModule();
-        $bundles[] = new Zikula\ExtensionsModule\ZikulaExtensionsModule();
-        $bundles[] = new Zikula\GroupsModule\ZikulaGroupsModule();
-        $bundles[] = new Zikula\MailerModule\ZikulaMailerModule();
-        $bundles[] = new Zikula\PageLockModule\ZikulaPageLockModule();
-        $bundles[] = new Zikula\PermissionsModule\ZikulaPermissionsModule();
-        $bundles[] = new Zikula\SearchModule\ZikulaSearchModule();
-        $bundles[] = new Zikula\SecurityCenterModule\ZikulaSecurityCenterModule();
-        $bundles[] = new Zikula\SettingsModule\ZikulaSettingsModule();
-        $bundles[] = new Zikula\ThemeModule\ZikulaThemeModule();
-        $bundles[] = new Zikula\UsersModule\ZikulaUsersModule();
-        $bundles[] = new Zikula\RoutesModule\ZikulaRoutesModule();
-        $bundles[] = new Zikula\ZAuthModule\ZikulaZAuthModule();
+        foreach (self::$coreModules as $bundleClass) {
+            $bundles[] = new $bundleClass();
+        }
 
         $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
         $boot->getPersistedBundles($this, $bundles);
@@ -120,5 +131,15 @@ class ZikulaKernel extends Kernel
         } catch (\Exception $e) {
             return false;
         }
+    }
+
+    /**
+     * Checks if name is is the list of core modules.
+     * @param $moduleName
+     * @return bool
+     */
+    public static function isCoreModule($moduleName)
+    {
+        return array_key_exists($moduleName, self::$coreModules);
     }
 }

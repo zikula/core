@@ -70,9 +70,7 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
      */
     public function uninstall()
     {
-        $this->schemaTool->drop($this->entities); // @todo remove
-
-        return true; // @todo change to false
+        return false; // cannot delete core modules
     }
 
     /**

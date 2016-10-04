@@ -17,6 +17,7 @@ use Zikula\Core\Token\CsrfTokenHandler;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\PermissionsModule\Api\PermissionApi;
+use ZikulaKernel;
 
 class ExtensionsExtension extends \Twig_Extension
 {
@@ -43,11 +44,15 @@ class ExtensionsExtension extends \Twig_Extension
     /**
      * @var ExtensionApi
      */
-    private $extensinApi;
+    private $extensionApi;
 
     /**
      * ExtensionsExtension constructor.
-     * @param $translator
+     * @param TranslatorInterface $translator
+     * @param PermissionApi $permissionApi
+     * @param CsrfTokenHandler $tokenHandler
+     * @param RouterInterface $router
+     * @param ExtensionApi $extensionApi
      */
     public function __construct(
         TranslatorInterface $translator,
@@ -60,7 +65,7 @@ class ExtensionsExtension extends \Twig_Extension
         $this->permissionApi = $permissionApi;
         $this->tokenHandler = $tokenHandler;
         $this->router = $router;
-        $this->extensinApi = $extensionApi;
+        $this->extensionApi = $extensionApi;
     }
 
     /**
@@ -89,7 +94,7 @@ class ExtensionsExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('isCoreModule', [$this, 'isCoreModule']),
+            new \Twig_SimpleFilter('isCoreModule', ['ZikulaKernel', 'isCoreModule']),
         ];
     }
 
@@ -137,11 +142,6 @@ class ExtensionsExtension extends \Twig_Extension
         return '<span class="label label-' . $statusclass . '">' . $status . '</span>' . $newVersionString;
     }
 
-    public function isCoreModule($moduleName)
-    {
-        return $this->extensinApi->isCoreModule($moduleName);
-    }
-
     public function extensionActions(ExtensionEntity $extension)
     {
         if (!$this->permissionApi->hasPermission('ZikulaExtensionsModule::', $extension->getName() . '::' . $extension->getId(), ACCESS_ADMIN)) {
@@ -153,7 +153,7 @@ class ExtensionsExtension extends \Twig_Extension
         $actions = [];
         switch ($extension->getState()) {
             case ExtensionApi::STATE_ACTIVE:
-                if (!$this->isCoreModule($extension->getName())) {
+                if (!ZikulaKernel::isCoreModule($extension->getName())) {
                     $actions[] = [
                         'url' => $this->router->generate('zikulaextensionsmodule_module_deactivate', ['id' => $extension->getId(), 'csrftoken' => $csrfToken]),
                         'icon' => 'minus-circle text-danger',
