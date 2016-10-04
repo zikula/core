@@ -20,10 +20,16 @@ CHANGELOG - ZIKULA 1.4.x
    - Added shortcut method in variable api for retrieving system variables (#3077).
 
  - Vendor upgdates:
-    - sensio distribution bundle updated from 5.0.8 to 5.0.9
+    - doctrine dbal updated from 2.5.4 to 2.5.5
+    - doctrine orm updated from 2.5.4 to 2.5.5
+    - gedmo/doctrine-extensions updates from 2.4.22 to 2.4.23
+    - jquery ui updates from 1.12.0.1 to 1.12.1
+    - psr log updated from 1.0.0 to 1.0.1
+    - sensio distribution bundle updated from 5.0.8 to 5.0.12
     - sensio generator bundle updated from 3.0.7 to 3.0.8
-    - symfony updated to from 2.8.9 to 2.8.11
-    - twig updated from 1.24.1 to 1.24.2
+    - symfony updated from 2.8.9 to 2.8.12
+    - symfony service definition validator updates from 1.2.5 to 1.2.6
+    - twig updated from 1.24.1 to 1.26.0
 
 * 1.4.3 (2016-09-02)
 
