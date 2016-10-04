@@ -59,7 +59,7 @@ class ExtensionApi
 
     /**
      * Checks if name is is the list of core modules.
-     * @deprecated remove at Core-2.0 use Kernel method directly.
+     * @deprecated remove at Core-2.0 use Kernel method directly
      * @param $moduleName
      * @return bool
      */
