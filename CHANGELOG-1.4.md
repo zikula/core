@@ -19,7 +19,7 @@ CHANGELOG - ZIKULA 1.4.x
    - Added display of template name as html comment in source when in dev environment (#3068).
    - Added shortcut method in variable api for retrieving system variables (#3077).
 
- - Vendor upgdates:
+ - Vendor updates:
     - doctrine dbal updated from 2.5.4 to 2.5.5
     - doctrine orm updated from 2.5.4 to 2.5.5
     - gedmo/doctrine-extensions updates from 2.4.22 to 2.4.23
@@ -30,6 +30,8 @@ CHANGELOG - ZIKULA 1.4.x
     - symfony updated from 2.8.9 to 2.8.12
     - symfony service definition validator updates from 1.2.5 to 1.2.6
     - twig updated from 1.24.1 to 1.26.0
+    - knp-menu installed at version 2.2.0
+    - knp-menu-bundle installed at version 2.1.3
 
 * 1.4.3 (2016-09-02)
 
