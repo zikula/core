@@ -1,7 +1,7 @@
 ( function($) {
     $(document).ready(function() {
         // config items
-        var id_prefix = 'node_';
+        var id_prefix = 'node_'; // must match NodeController::$domTreeNodePrefix
         var treeElem = $('#tree_container');
         treeElem.jstree({
             "core" : {

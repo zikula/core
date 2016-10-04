@@ -11,6 +11,8 @@
 
 namespace Zikula\MenuModule;
 
+use Zikula\BlocksModule\Entity\BlockEntity;
+use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\MenuModule\Entity\MenuItemEntity;
 
@@ -38,7 +40,7 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
         } catch (\Exception $e) {
             return false;
         }
-        $this->createDemoData();
+        $this->createMainMenu();
 
         return true;
     }
@@ -76,59 +78,62 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
     /**
      * Create a demo menu
      */
-    private function createDemoData()
+    private function createMainMenu()
     {
+        // Create the Main Menu
         $root = new MenuItemEntity();
-        $root->setTitle('home');
+        $root->setTitle('mainMenu');
         $root->setOptions([
             'childrenAttributes' => [
                 'class' => 'nav navbar-nav'
             ]]);
 
-        $modules = new MenuItemEntity();
-        $modules->setTitle('Modules');
-        $modules->setParent($root);
-        $modules->setOptions([
+        $home = new MenuItemEntity();
+        $home->setParent($root);
+        $home->setTitle($this->__('Home'));
+        $home->setOptions([
+            'route' => 'home',
             'attributes' => [
-                'icon' => 'fa fa-list',
-                'dropdown' => true
-            ]]);
-
-        $users = new MenuItemEntity();
-        $users->setParent($modules);
-        $users->setTitle('UsersModule');
-        $users->setOptions([
-            'route' => 'zikulausersmodule_useradministration_list',
-            'attributes' => [
-                'icon' => 'fa fa-users'
+                'icon' => 'fa fa-home'
             ]
         ]);
 
-        $blocks = new MenuItemEntity();
-        $blocks->setParent($modules);
-        $blocks->setTitle('BlocksModule');
-        $blocks->setOptions([
-            'route' => 'zikulablocksmodule_admin_view',
+        $search = new MenuItemEntity();
+        $search->setParent($root);
+        $search->setTitle($this->__('Site search'));
+        $search->setOptions([
+            'route' => 'zikulasearchmodule_user_form',
             'attributes' => [
-                'icon' => 'fa fa-cubes'
-            ]
-        ]);
-
-        $zAuth = new MenuItemEntity();
-        $zAuth->setParent($modules);
-        $zAuth->setTitle('ZAuthModule');
-        $zAuth->setOptions([
-            'route' => 'zikulazauthmodule_useradministration_list',
-            'attributes' => [
-                'icon' => 'fa fa-user'
+                'icon' => 'fa fa-search'
             ]
         ]);
 
         $this->entityManager->persist($root);
-        $this->entityManager->persist($modules);
-        $this->entityManager->persist($users);
-        $this->entityManager->persist($blocks);
-        $this->entityManager->persist($zAuth);
+        $this->entityManager->persist($home);
+        $this->entityManager->persist($search);
+        $this->entityManager->flush();
+
+        // Create the Main Menu Block
+        $blocksModuleEntity = $this->entityManager->getRepository('ZikulaExtensionsModule:ExtensionEntity')->findOneBy(['name' => 'ZikulaMenuModule']);
+        $blockEntity = new BlockEntity();
+        $blockEntity->setTitle($this->__('Main menu'));
+        $blockEntity->setBkey('ZikulaMenuModule:\Zikula\MenuModule\Block\MenuBlock');
+        $blockEntity->setBlocktype('Menu');
+        $blockEntity->setDescription($this->__('Main menu'));
+        $blockEntity->setModule($blocksModuleEntity);
+        $blockEntity->setProperties([
+            'name' => 'mainMenu',
+            'options' => '{"template": "ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig"}'
+        ]);
+        $this->entityManager->persist($blockEntity);
+
+        $topNavPosition = $this->entityManager->getRepository('ZikulaBlocksModule:BlockPositionEntity')->findOneBy(['name' => 'topnav']);
+        $placement = new BlockPlacementEntity();
+        $placement->setBlock($blockEntity);
+        $placement->setPosition($topNavPosition);
+        $placement->setSortorder(0);
+        $this->entityManager->persist($placement);
+
         $this->entityManager->flush();
     }
 }
