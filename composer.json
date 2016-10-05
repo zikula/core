@@ -90,7 +90,8 @@
         "drak/doctrine1": "dev-master",
         "drak/smarty": "dev-master",
 
-        "oyejorge/less.php": "dev-master"
+        "oyejorge/less.php": "dev-master",
+        "knplabs/knp-menu-bundle": "^2.0"
     },
     "scripts": {
         "post-install-cmd": [

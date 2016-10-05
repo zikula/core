@@ -1,0 +1,67 @@
+{{ pageAddAsset('javascript', asset('jstree/dist/jstree.min.js')) }}
+{{ pageAddAsset('stylesheet', asset('jstree/dist/themes/default/style.min.css')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaMenuModule:js/ZikulaMenuModule.Admin.View.js')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaMenuModule:js/Zikula.Menu.Node.Edit.js')) }}
+{% set customStyle %}
+    <style type="text/css">
+        .jstree-contextmenu {
+            z-index: 100;
+        }
+    </style>
+{% endset %}
+{{ pageAddAsset('header', customStyle) }}
+{{ adminHeader() }}
+{{ pageSetVar('title', __('Menu')) }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-list"></span>
+            {{ __('Menu') }}
+        </h3>
+        <h4><i class="fa fa-bars"></i> {{ menu.title }}</h4>
+        <div id="tree_container">
+            {{ tree|raw }}
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('Close') }}"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="editModalLabel">{{ __('Edit item') }}</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" value="Submit" class="btn btn btn-success"><i class="fa fa-check"></i> {{ __('Save') }}</button>
+                <button type="button" value="Cancel" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> {{ __('Cancel') }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('Close') }}"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="deleteModalLabel">{{ __('Confirmation prompt') }}</h4>
+            </div>
+            <div class="modal-body">
+                <p>{{ __('Do you really want to delete this item?') }}
+                <p id="deleteWithChildrenInfo"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id='node_delete' value="Delete" class="btn btn-danger"><i class="fa fa-trash-o"></i> {{ __('Delete') }}</button>
+                <button type="button" id='node_delete_all' value="Delete" class="btn btn-danger" style="display: none"><i class="fa fa-trash-o"></i> {{ __('Delete all children') }}</button>
+                <button type="button" id='node_delete_move' value="DeleteAndMoveChildren" class="btn btn-danger" style="display: none">{{ __('Move all children') }}</button>
+                <button type="button" id='node_delete_move_action' value="DeleteAndMoveChildren" class="btn btn-danger" style="display: none">{{ __('Move and delete') }}</button>
+                <button type="button" id='node_cancel' value="Cancel" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> {{ __('Cancel') }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ adminFooter() }}

@@ -1,0 +1,33 @@
+{
+    "name": "zikula/menu-module",
+    "version": "1.0.0",
+    "description": "Create, modify and destroy menus.",
+    "type": "zikula-module",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Zikula",
+            "homepage": "http://zikula.org/"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Zikula\\MenuModule\\": "" }
+    },
+    "require": {
+        "php": ">5.4.1"
+    },
+    "extra": {
+        "zikula": {
+            "class": "Zikula\\MenuModule\\ZikulaMenuModule",
+            "core-compatibility": ">=1.4.4",
+            "displayname": "MenuModule",
+            "capabilities": {
+                "admin": {"route": "zikulamenumodule_menu_list"}
+            },
+            "url": "menu",
+            "securityschema": {
+                "ZikulaMenuModule::": "::"
+            }
+        }
+    }
+}

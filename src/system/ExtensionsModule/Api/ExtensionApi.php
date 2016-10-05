@@ -30,26 +30,6 @@ class ExtensionApi
     private $kernel;
 
     /**
-     * @var array public list of all the core modules
-     */
-    public $coreModules = [
-        'ZikulaAdminModule',
-        'ZikulaBlocksModule',
-        'ZikulaCategoriesModule',
-        'ZikulaExtensionsModule',
-        'ZikulaGroupsModule',
-        'ZikulaMailerModule',
-        'ZikulaPermissionsModule',
-        'ZikulaRoutesModule',
-        'ZikulaSearchModule',
-        'ZikulaSecurityCenterModule',
-        'ZikulaSettingsModule',
-        'ZikulaThemeModule',
-        'ZikulaUsersModule',
-        'ZikulaZAuthModule',
-    ];
-
-    /**
      * ExtensionVar constructor.
      * @param KernelInterface $kernel
      */
@@ -79,11 +59,12 @@ class ExtensionApi
 
     /**
      * Checks if name is is the list of core modules.
+     * @deprecated remove at Core-2.0 use Kernel method directly
      * @param $moduleName
      * @return bool
      */
     public function isCoreModule($moduleName)
     {
-        return in_array($moduleName, $this->coreModules);
+        return \ZikulaKernel::isCoreModule($moduleName);
     }
 }

@@ -13,8 +13,6 @@ namespace Zikula\Bundle\CoreBundle\Bundle;
 
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Yaml\Yaml;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\AbstractBundle;
 
@@ -128,29 +126,8 @@ class Bootstrap
                 return $state['state'] == \ThemeUtil::STATE_ACTIVE;
                 break;
             default:
-                if ($state['state'] == \ModUtil::STATE_ACTIVE) {
+                if (($state['state'] == \ModUtil::STATE_ACTIVE) || ($state['state'] == \ModUtil::STATE_UPGRADED)) {
                     return true;
-                }
-
-                if ($state['state'] == \ModUtil::STATE_UPGRADED && isset($_GET['id']) && $state['id'] == $_GET['id'] && isset($_GET['secret'])) {
-                    $secret = $_GET['secret'];
-                    $rootDir = $kernel->getRootDir() . "/config";
-                    $path = $rootDir . "/custom_parameters.yml";
-                    if (!is_readable($path)) {
-                        $path = $rootDir . "/parameters.yml";
-                    }
-                    $parameters = Yaml::parse(file_get_contents($path));
-                    $urlSecret = $parameters['parameters']['url_secret'];
-
-                    // Only set module to active if the secret matches.
-                    $turnActive = ($secret === $urlSecret);
-                    if ($turnActive) {
-                        // Make sure to clear the cache here, as the module becomes active which it wasn't before.
-                        $fs = new Filesystem();
-                        $fs->remove($kernel->getCacheDir());
-                    }
-
-                    return $turnActive;
                 }
 
                 return false;

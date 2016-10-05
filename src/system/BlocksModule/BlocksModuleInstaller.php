@@ -210,39 +210,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         $this->entityManager->flush();
 
         // build the menu content
-        $languages = ZLanguage::getInstalledLanguages();
         $saveLanguage = ZLanguage::getLanguageCode();
-        $menucontent = [];
-        foreach ($languages as $lang) {
-            ZLanguage::setLocale($lang);
-            ZLanguage::bindCoreDomain();
-
-            $menucontent['displaymodules'] = '0';
-            $menucontent['stylesheet'] = 'extmenu.css';
-            $menucontent['template'] = 'Block/Extmenu/topnav.tpl';
-            $menucontent['blocktitles'][$lang] = $this->__('Main menu');
-
-            // insert the links
-            $menucontent['links'][$lang][] = [
-                'name' => $this->__('Home'),
-                'url' => '{homepage}',
-                'title' => $this->__('Go to the home page'),
-                'level' => 0,
-                'parentid' => null,
-                'image' => '',
-                'active' => '1'
-            ];
-            $menucontent['links'][$lang][] = [
-                'name' => $this->__('Site search'),
-                'url' => '{ZikulaSearchModule}',
-                'title' => $this->__('Search this site'),
-                'level' => 0,
-                'parentid' => null,
-                'image' => '',
-                'active' => '1'
-            ];
-        }
-
         ZLanguage::setLocale($saveLanguage);
 
         $searchcontent = [
@@ -257,17 +225,6 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         $blocksModuleEntity = $extensionRepo->findOneBy(['name' => 'ZikulaBlocksModule']);
         $searchModuleEntity = $extensionRepo->findOneBy(['name' => 'ZikulaSearchModule']);
         $usersModuleEntity = $extensionRepo->findOneBy(['name' => 'ZikulaUsersModule']);
-        $blocks[] = [
-            'bkey' => 'ZikulaBlocksModule:\Zikula\BlocksModule\Block\ExtmenuBlock',
-            'blocktype' => 'Extmenu',
-            'language' => '',
-            'module' => $blocksModuleEntity,
-            'title' => $this->__('Main menu'),
-            'description' => $this->__('Main menu'),
-            'content' => $menucontent,
-            'position' => $positions['topnav'],
-            'order' => 0
-        ];
         $blocks[] = [
             'bkey' => 'ZikulaSearchModule:\Zikula\SearchModule\Block\SearchBlock',
             'blocktype' => 'Search',
