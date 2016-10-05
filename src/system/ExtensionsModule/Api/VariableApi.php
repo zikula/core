@@ -30,6 +30,11 @@ class VariableApi
     private $isInitialized = false;
 
     /**
+     * @var boolean Site is installed or not
+     */
+    private $installed;
+
+    /**
      * @var ExtensionVarRepositoryInterface
      */
     private $repository;
@@ -56,13 +61,20 @@ class VariableApi
 
     /**
      * ExtensionVar constructor.
+     * @param $installed
      * @param ExtensionVarRepositoryInterface $repository
      * @param KernelInterface $kernel
      * @param RequestStack $requestStack
      * @param array $multisitesParameters
      */
-    public function __construct(ExtensionVarRepositoryInterface $repository, KernelInterface $kernel, RequestStack $requestStack, array $multisitesParameters)
-    {
+    public function __construct(
+        $installed,
+        ExtensionVarRepositoryInterface $repository,
+        KernelInterface $kernel,
+        RequestStack $requestStack,
+        array $multisitesParameters
+    ) {
+        $this->installed = $installed;
         $this->repository = $repository;
         $this->kernel = $kernel;
         $this->request = $requestStack->getMasterRequest();
@@ -76,6 +88,9 @@ class VariableApi
      */
     private function initialize()
     {
+        if (!$this->installed) {
+            return;
+        }
         // The empty arrays for handlers and settings are required to prevent messages with E_ALL error reporting
         $this->variables = [
             \EventUtil::HANDLERS => [],

@@ -152,76 +152,83 @@ class AjaxInstallerStage implements StageInterface
                 self::FAIL => __('There was an error installing Zikula Routes Module')
             ],
             17 => [
+                self::NAME => 'menu',
+                self::PRE => __('Zikula Menu Module'),
+                self::DURING => __('Installing Zikula Menu Module'),
+                self::SUCCESS => __('Zikula Menu Module installed'),
+                self::FAIL => __('There was an error installing Zikula Menu Module')
+            ],
+            18 => [
                 self::NAME => 'activatemodules',
                 self::PRE => __('Activate system modules'),
                 self::DURING => __('Activating system modules'),
                 self::SUCCESS => __('System modules activated'),
                 self::FAIL => __('There was an error activating system modules')
             ],
-            18 => [
+            19 => [
                 self::NAME => 'categorize',
                 self::PRE => __('Module categorization'),
                 self::DURING => __('Moving modules to their default categories'),
                 self::SUCCESS => __('Modules moved to their default categories'),
                 self::FAIL => __('There was an error moving modules to their default categories')
             ],
-            19 => [
+            20 => [
                 self::NAME => 'createblocks',
                 self::PRE => __('Create blocks'),
                 self::DURING => __('Creating default blocks'),
                 self::SUCCESS => __('Default blocks created'),
                 self::FAIL => __('There was an error creating default blocks')
             ],
-            20 => [
+            21 => [
                 self::NAME => 'updateadmin',
                 self::PRE => __('Create admin account'),
                 self::DURING => __('Creating admin account'),
                 self::SUCCESS => __('Admin account created'),
                 self::FAIL => __('There was an error creating admin account')
             ],
-            21 => [
+            22 => [
                 self::NAME => 'loginadmin',
                 self::PRE => __('Login'),
                 self::DURING => __('Logging in as admin'),
                 self::SUCCESS => __('Logged in as admin'),
                 self::FAIL => __('There was an error logging in as admin')
             ],
-            22 => [
+            23 => [
                 self::NAME => 'finalizeparameters',
                 self::PRE => __('Finalize parameters'),
                 self::DURING => __('Finalizing parameters'),
                 self::SUCCESS => __('Parameters finalized'),
                 self::FAIL => __('There was an error finalizing the parameters')
             ],
-            23 => [
+            24 => [
                 self::NAME => 'reloadroutes',
                 self::PRE => __('Reload routes'),
                 self::DURING => __('Reloading routes (takes longer...)'),
                 self::SUCCESS => __('Routes reloaded'),
                 self::FAIL => __('There was an error reloading the routes')
             ],
-            24 => [
+            25 => [
                 self::NAME => 'plugins',
                 self::PRE => __('System Plugins'),
                 self::DURING => __('Installing System Plugins'),
                 self::SUCCESS => __('System Plugins installed'),
                 self::FAIL => __('There was an error installing System Plugins')
             ],
-            25 => [
+            26 => [
                 self::NAME => 'protect',
                 self::PRE => __('Protect configuration files'),
                 self::DURING => __('Protecting configuration files'),
                 self::SUCCESS => __('Configuration files protected'),
                 self::FAIL => __('There was an error protecting configuration files')
             ],
-            26 => [
+            27 => [
                 self::NAME => 'installassets',
                 self::PRE => __('Install assets'),
                 self::DURING => __('Installing assets to /web'),
                 self::SUCCESS => __('Assets installed'),
                 self::FAIL => __('Failed to install assets')
             ],
-            27 => [
+            28 => [
                 self::NAME => 'finish',
                 self::PRE => __('Finish'),
                 self::DURING => __('Finish'),

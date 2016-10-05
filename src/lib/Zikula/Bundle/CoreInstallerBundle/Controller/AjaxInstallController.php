@@ -15,6 +15,8 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Zikula\BlocksModule\Entity\BlockEntity;
+use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\Bundle\CoreBundle\Bundle\Bootstrap as CoreBundleBootstrap;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
@@ -35,23 +37,6 @@ class AjaxInstallController extends AbstractController
      * @var YamlDumper
      */
     private $yamlManager;
-
-    private $systemModules = [
-        'ZikulaExtensionsModule',
-        'ZikulaSettingsModule',
-        'ZikulaThemeModule',
-        'ZikulaAdminModule',
-        'ZikulaPermissionsModule',
-        'ZikulaGroupsModule',
-        'ZikulaBlocksModule',
-        'ZikulaUsersModule',
-        'ZikulaZAuthModule',
-        'ZikulaSecurityCenterModule',
-        'ZikulaCategoriesModule',
-        'ZikulaMailerModule',
-        'ZikulaSearchModule',
-        'ZikulaRoutesModule',
-    ];
 
     public function __construct(ContainerInterface $container)
     {
@@ -107,6 +92,8 @@ class AjaxInstallController extends AbstractController
                 return $this->installModule('ZikulaSearchModule');
             case "routes":
                 return $this->installModule('ZikulaRoutesModule');
+            case "menu":
+                return $this->installModule('ZikulaMenuModule');
             case "updateadmin":
                 return $this->updateAdmin();
             case "loginadmin":
@@ -192,7 +179,7 @@ class AjaxInstallController extends AbstractController
         /** @var ExtensionEntity[] $extensions */
         $extensions = $this->container->get('zikula_extensions_module.extension_repository')->findAll();
         foreach ($extensions as $extension) {
-            if (in_array($extension->getName(), $this->systemModules)) {
+            if (\ZikulaKernel::isCoreModule($extension->getName())) {
                 $extension->setState(ExtensionApi::STATE_ACTIVE);
             }
         }
@@ -203,7 +190,7 @@ class AjaxInstallController extends AbstractController
 
     private function categorizeModules()
     {
-        reset($this->systemModules);
+        reset(\ZikulaKernel::$coreModules);
         $systemModulesCategories = [
             'ZikulaExtensionsModule' => __('System'),
             'ZikulaPermissionsModule' => __('Users'),
@@ -218,13 +205,15 @@ class AjaxInstallController extends AbstractController
             'ZikulaSearchModule' => __('Content'),
             'ZikulaAdminModule' => __('System'),
             'ZikulaSettingsModule' => __('System'),
-            'ZikulaRoutesModule' => __('System')
+            'ZikulaRoutesModule' => __('System'),
+            'ZikulaMenuModule' => __('Content'),
+            'ZikulaPageLockModule' => __('Content'),
         ];
 
         $modulesCategories = $this->container->get('doctrine.orm.entity_manager')
             ->getRepository('ZikulaAdminModule:AdminCategoryEntity')->getIndexedCollection('name');
 
-        foreach ($this->systemModules as $systemModule) {
+        foreach (\ZikulaKernel::$coreModules as $systemModule => $bundleClass) {
             $category = $systemModulesCategories[$systemModule];
             \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'addmodtocategory', [
                 'module' => $systemModule,
@@ -242,6 +231,7 @@ class AjaxInstallController extends AbstractController
         $installer->setContainer($this->container);
         // create the default blocks.
         $installer->defaultdata();
+        $this->createMainMenuBlock();
 
         return true;
     }
@@ -407,6 +397,34 @@ class AjaxInstallController extends AbstractController
         $this->container->get('zikula.cache_clearer')->clear('symfony.config');
 
         return true;
+    }
+
+    private function createMainMenuBlock()
+    {
+        // Create the Main Menu Block
+        $_em = $this->container->get('doctrine')->getManager();
+        $menuModuleEntity = $_em->getRepository('ZikulaExtensionsModule:ExtensionEntity')->findOneBy(['name' => 'ZikulaMenuModule']);
+        $blockEntity = new BlockEntity();
+        $mainMenuString = $this->container->get('translator.default')->__('Main menu');
+        $blockEntity->setTitle($mainMenuString);
+        $blockEntity->setBkey('ZikulaMenuModule:\Zikula\MenuModule\Block\MenuBlock');
+        $blockEntity->setBlocktype('Menu');
+        $blockEntity->setDescription($mainMenuString);
+        $blockEntity->setModule($menuModuleEntity);
+        $blockEntity->setProperties([
+            'name' => 'mainMenu',
+            'options' => '{"template": "ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig"}'
+        ]);
+        $_em->persist($blockEntity);
+
+        $topNavPosition = $_em->getRepository('ZikulaBlocksModule:BlockPositionEntity')->findOneBy(['name' => 'topnav']);
+        $placement = new BlockPlacementEntity();
+        $placement->setBlock($blockEntity);
+        $placement->setPosition($topNavPosition);
+        $placement->setSortorder(0);
+        $_em->persist($placement);
+
+        $_em->flush();
     }
 
     private function fireEvent($eventName)

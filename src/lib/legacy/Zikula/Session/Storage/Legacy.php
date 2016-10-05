@@ -58,8 +58,8 @@ class Zikula_Session_Storage_Legacy extends NativeSessionStorage
         if (parent::start()) {
             // check if session has expired or not
             $now = time();
-            $inactive = ($now - (int)($this->variableApi->getSystemVar('secinactivemins') * 60));
-            $daysold = ($now - (int)($this->variableApi->getSystemVar('secmeddays') * 86400));
+            $inactive = ($now - (int)($this->variableApi->getSystemVar('secinactivemins', 20) * 60));
+            $daysold = ($now - (int)($this->variableApi->getSystemVar('secmeddays', 7) * 86400));
             $lastused = $this->getMetadataBag()->getLastUsed();
             $rememberme = $this->getBag('attributes')->get('rememberme');
             $uid = $this->getBag('attributes')->get('uid');

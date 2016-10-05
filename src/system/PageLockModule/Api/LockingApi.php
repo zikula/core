@@ -11,6 +11,7 @@
 
 namespace Zikula\PageLockModule\Api;
 
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig_Environment;
 use Zikula\PageLockModule\Entity\PageLockEntity;
@@ -53,6 +54,11 @@ class LockingApi
     private $requestStack;
 
     /**
+     * @var EntityManager
+     */
+    private $entityManager;
+
+    /**
      * @var PageLockRepository
      */
     private $repository;
@@ -92,6 +98,7 @@ class LockingApi
      *
      * @param Twig_Environment   $twig           Twig service instance
      * @param RequestStack       $requestStack   RequestStack service instance
+     * @param EntityManager      $entityManager  EntityManager service instance
      * @param PageLockRepository $repository     PageLockRepository service instance
      * @param CurrentUserApi     $currentUserApi CurrentUserApi service instance
      * @param AssetBag           $jsAssetBag     AssetBag service instance for JS files
@@ -103,6 +110,7 @@ class LockingApi
     public function __construct(
         Twig_Environment $twig,
         RequestStack $requestStack,
+        EntityManager $entityManager,
         PageLockRepository $repository,
         CurrentUserApi $currentUserApi,
         AssetBag $jsAssetBag,
@@ -113,6 +121,7 @@ class LockingApi
     {
         $this->twig = $twig;
         $this->requestStack = $requestStack;
+        $this->entityManager = $entityManager;
         $this->repository = $repository;
         $this->currentUserApi = $currentUserApi;
         $this->jsAssetBag = $jsAssetBag;
@@ -195,10 +204,10 @@ class LockingApi
         }
 
         // Look for existing lock
-        $count = $this->repository->getLockAmount($lockName, $theSessionId);
+        $count = $this->repository->getActiveLockAmount($lockName, $theSessionId);
 
-        $now = time();
-        $expireDate = new \DateTime($now + self::PAGELOCKLIFETIME);
+        $expireDate = new \DateTime();
+        $expireDate->setTimestamp(time() + self::PAGELOCKLIFETIME);
 
         if ($count > 0) {
             // update the existing lock with a new expiry date
@@ -207,7 +216,7 @@ class LockingApi
             // create the new object
             $newLock = new PageLockEntity();
             $newLock->setName($lockName);
-            $newLock->setCdate(new \DateTime($now));
+            $newLock->setCdate(new \DateTime());
             $newLock->setEdate($expireDate);
             $newLock->setSession($theSessionId);
             $newLock->setTitle($lockedByTitle);

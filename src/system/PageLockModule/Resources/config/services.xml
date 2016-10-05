@@ -18,6 +18,7 @@
         <service id="zikula_pagelock_module.api.locking" class="%zikula_pagelock_module.api.locking.class%">
             <argument type="service" id="twig" />
             <argument type="service" id="request_stack" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="zikula_pagelock_module.page_lock_repository" />
             <argument type="service" id="zikula_users_module.current_user" />
             <argument type="service" id="zikula_core.common.theme.assets_js" />
