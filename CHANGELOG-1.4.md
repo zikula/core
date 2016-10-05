@@ -6,6 +6,7 @@ CHANGELOG - ZIKULA 1.4.x
  - BC Breaks:
 
  - Deprecated:
+   - ExtMenu and MenuTree blocks are deprecated and will not be refactored to Twig/Core-2.0.
 
  - Fixes:
    - Fixed display of checkboxes in topnav login blocks and authentication method selector (#3044).
