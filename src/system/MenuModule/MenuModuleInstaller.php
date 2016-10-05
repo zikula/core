@@ -11,8 +11,6 @@
 
 namespace Zikula\MenuModule;
 
-use Zikula\BlocksModule\Entity\BlockEntity;
-use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\MenuModule\Entity\MenuItemEntity;
 
@@ -109,29 +107,6 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
         $this->entityManager->persist($root);
         $this->entityManager->persist($home);
         $this->entityManager->persist($search);
-        $this->entityManager->flush();
-
-        // Create the Main Menu Block
-        $blocksModuleEntity = $this->entityManager->getRepository('ZikulaExtensionsModule:ExtensionEntity')->findOneBy(['name' => 'ZikulaMenuModule']);
-        $blockEntity = new BlockEntity();
-        $blockEntity->setTitle($this->__('Main menu'));
-        $blockEntity->setBkey('ZikulaMenuModule:\Zikula\MenuModule\Block\MenuBlock');
-        $blockEntity->setBlocktype('Menu');
-        $blockEntity->setDescription($this->__('Main menu'));
-        $blockEntity->setModule($blocksModuleEntity);
-        $blockEntity->setProperties([
-            'name' => 'mainMenu',
-            'options' => '{"template": "ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig"}'
-        ]);
-        $this->entityManager->persist($blockEntity);
-
-        $topNavPosition = $this->entityManager->getRepository('ZikulaBlocksModule:BlockPositionEntity')->findOneBy(['name' => 'topnav']);
-        $placement = new BlockPlacementEntity();
-        $placement->setBlock($blockEntity);
-        $placement->setPosition($topNavPosition);
-        $placement->setSortorder(0);
-        $this->entityManager->persist($placement);
-
         $this->entityManager->flush();
     }
 }

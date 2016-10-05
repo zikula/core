@@ -15,6 +15,8 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Zikula\BlocksModule\Entity\BlockEntity;
+use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\Bundle\CoreBundle\Bundle\Bootstrap as CoreBundleBootstrap;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
@@ -229,6 +231,7 @@ class AjaxInstallController extends AbstractController
         $installer->setContainer($this->container);
         // create the default blocks.
         $installer->defaultdata();
+        $this->createMainMenuBlock();
 
         return true;
     }
@@ -394,6 +397,34 @@ class AjaxInstallController extends AbstractController
         $this->container->get('zikula.cache_clearer')->clear('symfony.config');
 
         return true;
+    }
+
+    private function createMainMenuBlock()
+    {
+        // Create the Main Menu Block
+        $_em = $this->container->get('doctrine')->getManager();
+        $menuModuleEntity = $_em->getRepository('ZikulaExtensionsModule:ExtensionEntity')->findOneBy(['name' => 'ZikulaMenuModule']);
+        $blockEntity = new BlockEntity();
+        $mainMenuString = $this->container->get('translator.default')->__('Main menu');
+        $blockEntity->setTitle($mainMenuString);
+        $blockEntity->setBkey('ZikulaMenuModule:\Zikula\MenuModule\Block\MenuBlock');
+        $blockEntity->setBlocktype('Menu');
+        $blockEntity->setDescription($mainMenuString);
+        $blockEntity->setModule($menuModuleEntity);
+        $blockEntity->setProperties([
+            'name' => 'mainMenu',
+            'options' => '{"template": "ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig"}'
+        ]);
+        $_em->persist($blockEntity);
+
+        $topNavPosition = $_em->getRepository('ZikulaBlocksModule:BlockPositionEntity')->findOneBy(['name' => 'topnav']);
+        $placement = new BlockPlacementEntity();
+        $placement->setBlock($blockEntity);
+        $placement->setPosition($topNavPosition);
+        $placement->setSortorder(0);
+        $_em->persist($placement);
+
+        $_em->flush();
     }
 
     private function fireEvent($eventName)
