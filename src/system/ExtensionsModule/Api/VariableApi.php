@@ -30,7 +30,7 @@ class VariableApi
     private $isInitialized = false;
 
     /**
-     * @var boolean Site is installed or not.
+     * @var boolean Site is installed or not
      */
     private $installed;
 
