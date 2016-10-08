@@ -11,6 +11,8 @@ Filters
  * languageName
  * notifyFilters(filterEventName)
  * php(func)
+ * profileLinkByUserId
+ * profileLinkByUserName
  * safeHtml
  * urldecode
  * yesNo

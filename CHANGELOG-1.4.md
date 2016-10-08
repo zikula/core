@@ -20,6 +20,7 @@ CHANGELOG - ZIKULA 1.4.x
    - Added display of template name as html comment in source when in dev environment (#3068).
    - Added shortcut method in variable api for retrieving system variables (#3077).
    - Added new core module: MenuModule for implementing menus of any kind (#3082).
+   - Added Twig filters profileLinkByUserName and profileLinkByUserId (#3079).
 
  - Vendor updates:
     - doctrine dbal updated from 2.5.4 to 2.5.5
