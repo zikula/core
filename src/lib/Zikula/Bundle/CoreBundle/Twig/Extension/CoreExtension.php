@@ -278,7 +278,7 @@ class CoreExtension extends \Twig_Extension
      *
      * @param integer $userId    The users uid
      * @param string  $class     The class name for the link (optional)
-     * @param string  $image     Path to the image to show instead of the username (optional).
+     * @param string  $image     Path to the image to show instead of the username (optional)
      * @param integer $maxLength If set then user names are truncated to x chars
      * @return string The output
      */
@@ -308,7 +308,7 @@ class CoreExtension extends \Twig_Extension
      *
      * @param string  $userName  The users name
      * @param string  $class     The class name for the link (optional)
-     * @param string  $image     Path to the image to show instead of the username (optional).
+     * @param string  $image     Path to the image to show instead of the username (optional)
      * @param integer $maxLength If set then user names are truncated to x chars
      * @return string The output
      */
@@ -329,7 +329,7 @@ class CoreExtension extends \Twig_Extension
      * @param integer $userId    The users uid
      * @param string  $userName  The users name
      * @param string  $class     The class name for the link (optional)
-     * @param string  $image     Path to the image to show instead of the username (optional).
+     * @param string  $image     Path to the image to show instead of the username (optional)
      * @param integer $maxLength If set then user names are truncated to x chars
      * @return string The output
      */
