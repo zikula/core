@@ -12,6 +12,7 @@ CHANGELOG - ZIKULA 1.4.x
    - Fixed display of checkboxes in topnav login blocks and authentication method selector (#3044).
    - Removed permanent display of template information in html source (#3068).
    - Fixed errors in PageLock module (#3089 - #3096).
+   - Fixed problem in JS Config template with debug mode enabled (#3105, #3106).
 
  - Features:
    - Added mailProtect filter for safe display of email addresses in Twig templates (#3041).
