@@ -122,7 +122,7 @@ class AddJSConfigListener implements EventSubscriberInterface
         $config = array_map('htmlspecialchars', $config);
         $content = $this->templating->render('@ZikulaThemeModule/Engine/JSConfig.html.twig', [
             'compat' => $this->compat,
-            'config' => json_encode($config)
+            'config' => $config
         ]);
         $this->headers->add([$content => 0]);
     }
