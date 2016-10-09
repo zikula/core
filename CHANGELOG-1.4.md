@@ -14,6 +14,7 @@ CHANGELOG - ZIKULA 1.4.x
    - Fixed errors in PageLock module (#3089 - #3096).
    - Fixed problem in JS Config template with debug mode enabled (#3105, #3106).
    - Fixed disabling mailer (setting to debug mode) (#3100, #3107).
+   - Fixed admin icon determination for legacy modules (#3108).
 
  - Features:
    - Added mailProtect filter for safe display of email addresses in Twig templates (#3041).
