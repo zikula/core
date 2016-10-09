@@ -74,8 +74,6 @@ class RouteController extends AbstractController
      */
     protected function indexInternal(Request $request, $isAdmin = false)
     {
-        $controllerHelper = $this->get('zikula_routes_module.controller_helper');
-        
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
         $utilArgs = ['controller' => 'route', 'action' => 'main'];
@@ -140,8 +138,6 @@ class RouteController extends AbstractController
      */
     protected function viewInternal(Request $request, $sort, $sortdir, $pos, $num, $isAdmin = false)
     {
-        $controllerHelper = $this->get('zikula_routes_module.controller_helper');
-        
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
         $utilArgs = ['controller' => 'route', 'action' => 'view'];
@@ -326,8 +322,6 @@ class RouteController extends AbstractController
      */
     protected function displayInternal(Request $request, RouteEntity $route, $isAdmin = false)
     {
-        $controllerHelper = $this->get('zikula_routes_module.controller_helper');
-        
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
         $utilArgs = ['controller' => 'route', 'action' => 'display'];
@@ -414,8 +408,6 @@ class RouteController extends AbstractController
      */
     protected function editInternal(Request $request, $isAdmin = false)
     {
-        $controllerHelper = $this->get('zikula_routes_module.controller_helper');
-        
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
         $utilArgs = ['controller' => 'route', 'action' => 'edit'];
@@ -490,8 +482,6 @@ class RouteController extends AbstractController
      */
     protected function deleteInternal(Request $request, RouteEntity $route, $isAdmin = false)
     {
-        $controllerHelper = $this->get('zikula_routes_module.controller_helper');
-        
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
         $utilArgs = ['controller' => 'route', 'action' => 'delete'];
@@ -602,8 +592,6 @@ class RouteController extends AbstractController
      */
     protected function reloadInternal(Request $request, $isAdmin = false)
     {
-        $controllerHelper = $this->get('zikula_routes_module.controller_helper');
-        
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
         $utilArgs = ['controller' => 'route', 'action' => 'reload'];
@@ -654,8 +642,6 @@ class RouteController extends AbstractController
      */
     protected function renewInternal(Request $request, $isAdmin = false)
     {
-        $controllerHelper = $this->get('zikula_routes_module.controller_helper');
-        
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
         $utilArgs = ['controller' => 'route', 'action' => 'renew'];
