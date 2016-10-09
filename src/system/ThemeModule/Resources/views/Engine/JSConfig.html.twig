@@ -5,5 +5,5 @@
     document.location.ajaxtimeout={{ config.ajaxtimeout }};
 {% endif %}
 if (typeof(Zikula) == 'undefined') {var Zikula = {};}
-Zikula.Config = {{ config|raw }};
+Zikula.Config = {{ config|json_encode|raw }};
 /* ]]> */</script>
