@@ -50,9 +50,6 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface, ContainerA
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
         }
-        // load any plugins
-        // @todo adjust this when Namespaced plugins are implemented
-        \PluginUtil::loadPlugins($bundle->getPath() . "/plugins", "ModulePlugin_{$bundle->getName()}");
     }
 
     public function getFormClassName()

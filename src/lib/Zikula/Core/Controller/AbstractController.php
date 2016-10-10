@@ -60,9 +60,6 @@ abstract class AbstractController extends Controller
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
         }
-        // load any plugins
-        // @todo adjust this when Namespaced plugins are implemented
-        \PluginUtil::loadPlugins($bundle->getPath() . "/plugins", "ModulePlugin_{$this->name}");
     }
 
     /**
