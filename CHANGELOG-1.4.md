@@ -15,7 +15,7 @@ CHANGELOG - ZIKULA 1.4.x
    - Fixed problem in JS Config template with debug mode enabled (#3105, #3106).
    - Fixed disabling mailer (setting to debug mode) (#3100, #3107).
    - Fixed admin icon determination for legacy modules (#3108).
-   - Fixed updating "translate embedded html entities into real characters" setting in SecurityCenter module.
+   - Fixed several regressions in SecurityCenter module.
 
  - Features:
    - Added mailProtect filter for safe display of email addresses in Twig templates (#3041).
