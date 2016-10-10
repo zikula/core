@@ -39,11 +39,6 @@ abstract class AbstractSearchable extends Translator
     protected $container;
 
     /**
-     * @var Zikula_View
-     */
-    protected $view;
-
-    /**
      * @var array
      */
     private $errors = [];
@@ -59,7 +54,6 @@ abstract class AbstractSearchable extends Translator
         $this->container = $container;
         $this->entityManager = $container->get('doctrine.entitymanager');
         $this->name = $bundle->getName();
-        $this->view = Zikula_View::getInstance($this->name);
         parent::__construct(ZLanguage::getModuleDomain($this->name));
     }
 
