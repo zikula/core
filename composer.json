@@ -16,9 +16,7 @@
         },
         "classmap": [
             "src/lib/util/",
-            "src/lib/i18n/",
-            "src/lib/legacy/dbobject",
-            "src/lib/legacy/util"
+            "src/lib/i18n/"
         ],
         "files": [
             "src/lib/i18n/ZGettextFunctions.php"
@@ -86,9 +84,7 @@
 
 
         "ramsey/array_column": "1.1.*",
-        "beberlei/DoctrineExtensions": "v0.3",
-        "drak/doctrine1": "dev-master",
-        "drak/smarty": "dev-master",
+
 
         "oyejorge/less.php": "dev-master",
         "knplabs/knp-menu-bundle": "^2.0"

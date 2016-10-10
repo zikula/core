@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "faeb772dccb1032ef97abf3544448a04",
-    "content-hash": "3a7df59fdf4d088e240ddaf2d6572c97",
+    "hash": "34d9911d9de2bdbf3538128408d4e556",
+    "content-hash": "ed762ef3cfb85ce3cfea6a97aa4bafb0",
     "packages": [
         {
             "name": "abeautifulsite/jquery-minicolors",
@@ -73,41 +73,6 @@
             "description": "Defacto way to enable use of HTML5 sectioning elements in legacy Internet Explorer.",
             "homepage": "http://paulirish.com/2011/the-history-of-the-html5-shiv/",
             "time": "2015-07-20 20:04:00"
-        },
-        {
-            "name": "beberlei/DoctrineExtensions",
-            "version": "v0.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/beberlei/DoctrineExtensions.git",
-                "reference": "90a82c62f4513d580e1be6f0256889d85f278aa9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/DoctrineExtensions/zipball/90a82c62f4513d580e1be6f0256889d85f278aa9",
-                "reference": "90a82c62f4513d580e1be6f0256889d85f278aa9",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2"
-            },
-            "require-dev": {
-                "doctrine/orm": "<2.2",
-                "phpunit/phpunit": "~4.5",
-                "zf1/zend-date": "~1.12",
-                "zf1/zend-registry": "~1.12"
-            },
-            "suggest": {
-                "zf1/zend-date": "Alternative to DateTime"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "DoctrineExtensions": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "time": "2015-03-15 12:15:09"
         },
         {
             "name": "behat/transliterator",
@@ -1307,86 +1272,6 @@
                 "orm"
             ],
             "time": "2016-09-10 18:51:13"
-        },
-        {
-            "name": "drak/doctrine1",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zikula/doctrine1.git",
-                "reference": "5acde02f4330f441d7de5cd591e3e594ce42b786"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zikula/doctrine1/zipball/5acde02f4330f441d7de5cd591e3e594ce42b786",
-                "reference": "5acde02f4330f441d7de5cd591e3e594ce42b786",
-                "shasum": ""
-            },
-            "require": {
-                "ext-pdo": "*",
-                "php": ">=5.4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Doctrine_": "lib/"
-                },
-                "classmap": [
-                    "lib/Doctrine.php",
-                    "lib/Doctrine/Parser/sfYaml/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL"
-            ],
-            "authors": [
-                {
-                    "name": "Konsta Vesterinen",
-                    "email": "kvesteri@cc.hut.fi"
-                },
-                {
-                    "name": "Jonathan Wage",
-                    "email": "jonwage@gmail.com"
-                }
-            ],
-            "description": "PHP5 Database ORM",
-            "homepage": "http://www.doctrine-project.org",
-            "keywords": [
-                "database",
-                "orm"
-            ],
-            "time": "2015-11-24 19:03:11"
-        },
-        {
-            "name": "drak/smarty",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zikula/smarty.git",
-                "reference": "5cb903b94c7d7f1651cc23b2d523c868c67235ac"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zikula/smarty/zipball/5cb903b94c7d7f1651cc23b2d523c868c67235ac",
-                "reference": "5cb903b94c7d7f1651cc23b2d523c868c67235ac",
-                "shasum": ""
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "Smarty/Smarty.class.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "Drak",
-                    "email": "drak@zikula.org"
-                }
-            ],
-            "description": "Smarty repository for Zikula Core",
-            "time": "2014-02-18 09:33:52"
         },
         {
             "name": "elao/web-profiler-extra-bundle",
@@ -4544,8 +4429,6 @@
         "zikula/fontawesome-bundle": 20,
         "zikula/jquery-minicolors-bundle": 20,
         "bootstrap-plus/bootstrap-jqueryui": 20,
-        "drak/doctrine1": 20,
-        "drak/smarty": 20,
         "oyejorge/less.php": 20
     },
     "prefer-stable": true,
