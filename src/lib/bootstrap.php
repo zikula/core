@@ -34,8 +34,3 @@ requirementCheck($kernelConfig);
 
 $kernel = new ZikulaKernel($kernelConfig['env'], $kernelConfig['debug']);
 $kernel->boot();
-
-// enable this optionally during development to improve BC but develop code that doesn't rely on them.
-//ServiceUtil::setContainer($kernel->getContainer());
-//EventUtil::setManager($kernel->getContainer()->get('event_dispatcher'));
-//ModUtil::initCoreVars();
