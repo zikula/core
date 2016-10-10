@@ -119,7 +119,6 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
     /**
      * Get a AuthenticationMappingEntity if it exists. If not, check for existing UserEntity and
      * migrate data from UserEntity to AuthenticationMappingEntity and return that.
-     * @todo The migration from UserEntity parts of this method must be removed at Core-2.0
      * @param string $field the field to perform lookup by
      * @param string $value the value of that field
      * @return null|AuthenticationMappingEntity
@@ -128,33 +127,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
     private function getMapping($field, $value)
     {
         $mapping = $this->mappingRepository->findOneBy([$field => $value]);
-        if (!isset($mapping)) {
-            $userEntity = $this->userRepository->findOneBy([$field => $value]);
-            if ($userEntity) {
-                // This is a migration from existing UserEntity. Create new mapping.
-                $mapping = new AuthenticationMappingEntity();
-                $mapping->setUid($userEntity->getUid());
-                $mapping->setUname($userEntity->getUname());
-                $mapping->setEmail($userEntity->getEmail());
-                $mapping->setVerifiedEmail(true);
-                $mapping->setPass($userEntity->getPass()); // previously salted and hashed
-                $mapping->setPassreminder($userEntity->getPassreminder());
-                $mapping->setMethod($this->getAlias());
-                $errors = $this->validator->validate($mapping);
-                if (count($errors) > 0) {
-                    $error = implode(',', $errors);
-                    throw new \Exception($error);
-                }
-                $this->mappingRepository->persistAndFlush($mapping);
-                // remove data from UserEntity
-                $userEntity->setPass('');
-                $userEntity->setPassreminder('');
-                $userEntity->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $mapping->getMethod());
-                $this->userRepository->persistAndFlush($userEntity);
-
-                return $mapping;
-            }
-        } elseif (($field == 'email' && ZAuthConstant::AUTHENTICATION_METHOD_UNAME == $mapping->getMethod())
+        if (($field == 'email' && ZAuthConstant::AUTHENTICATION_METHOD_UNAME == $mapping->getMethod())
             || ($field == 'uname' && ZAuthConstant::AUTHENTICATION_METHOD_EMAIL == $mapping->getMethod())) {
             // mapping exists but method is set to opposite. allow either if possible.
             $mapping->setMethod(ZAuthConstant::AUTHENTICATION_METHOD_EITHER);
