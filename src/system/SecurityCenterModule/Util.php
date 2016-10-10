@@ -35,19 +35,22 @@ class Util
      */
     public static function getpurifierconfig($args)
     {
-        if (isset($args['forcedefault']) && $args['forcedefault'] == true) {
-            $config = self::getPurifierDefaultConfig();
-        } else {
-            // don't change the following statement to getVar()
-            // $this is not allowed in functions declared as static
-            $currentconfig = ModUtil::getVar('ZikulaSecurityCenterModule', 'htmlpurifierConfig');
+        $config = self::getPurifierDefaultConfig();
+        if (!isset($args['forcedefault']) || true !== $args['forcedefault']) {
+            $savedConfig = ModUtil::getVar('ZikulaSecurityCenterModule', 'htmlpurifierConfig');
 
-            if (!is_null($currentconfig) && ($currentconfig !== false)) {
-                $config = unserialize($currentconfig);
-            } else {
-                $config = self::getPurifierDefaultConfig();
+            if (!is_null($savedConfig) && false !== $savedConfig) {
+                $savedConfig = unserialize($savedConfig);
+                foreach ($savedConfig as $section => $values) {
+                    foreach ($values as $k => $v) {
+                        $config->set($section . '.' . $k, $v);
+                    }
+                }
             }
         }
+
+        $def = $config->getHTMLDefinition(true);
+        $def->addAttribute('iframe', 'allowfullscreen', 'Bool');
 
         return $config;
     }
@@ -77,8 +80,6 @@ class Util
         if (!isset($purifier) || $force) {
             $config = self::getpurifierconfig(['forcedefault' => false]);
 
-            $config['Cache']['SerializerPath'] = CacheUtil::getLocalDir() . '/purifierCache';
-
             $purifier = new HTMLPurifier($config);
         }
 
@@ -92,21 +93,12 @@ class Util
      */
     private static function getPurifierDefaultConfig()
     {
-        $purifierDefaultConfig = HTMLPurifier_Config::createDefault();
-        $purifierDefaultConfigValues = $purifierDefaultConfig->def->defaults;
-
-        $config = [];
-
-        foreach ($purifierDefaultConfigValues as $key => $val) {
-            $keys = explode('.', $key, 2);
-
-            $config[$keys[0]][$keys[1]] = $val;
-        }
+        $config = HTMLPurifier_Config::createDefault();
 
         $charset = ZLanguage::getEncoding();
         if (strtolower($charset) != 'utf-8') {
             // set a different character encoding with iconv
-            $config['Core']['Encoding'] = $charset;
+            $config->set('Core.Encoding', $charset);
             // Note that HTML Purifier's support for non-Unicode encodings is crippled by the
             // fact that any character not supported by that encoding will be silently
             // dropped, EVEN if it is ampersand escaped.  If you want to work around
@@ -132,24 +124,23 @@ class Util
 
         // as XHTML 1.0 Transitional is the default, we only set HTML (for now)
         if (!$useXHTML) {
-            $config['HTML']['Doctype'] = 'HTML 4.01 Transitional';
+            $config->set('HTML.Doctype', 'HTML 4.01 Transitional');
         }
 
         // allow nofollow and imageviewer to be used as document relationships in the rel attribute
         // see http://htmlpurifier.org/live/configdoc/plain.html#Attr.AllowedRel
-        $config['Attr']['AllowedRel'] = [
+        $config->set('Attr.AllowedRel', [
             'nofollow' => true,
             'imageviewer' => true,
             'lightbox' => true
-        ];
-
-        // allow Youtube by default
-        $config['Filter']['YouTube'] = false; // technically deprecated in favour of HTML.SafeEmbed and HTML.Object
+        ]);
 
         // general enable for embeds and objects
-        $config['HTML']['SafeObject'] = true;
-        $config['Output']['FlashCompat'] = true;
-        $config['HTML']['SafeEmbed'] = true;
+        $config->set('HTML.SafeObject', true);
+        $config->set('Output.FlashCompat', true);
+        $config->set('HTML.SafeEmbed', true);
+
+        $config->set('Cache.SerializerPath', CacheUtil::getLocalDir() . '/purifierCache');
 
         return $config;
     }
