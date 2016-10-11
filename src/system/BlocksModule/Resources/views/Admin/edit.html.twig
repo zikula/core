@@ -35,7 +35,6 @@
         <fieldset>
             <legend>{{ __('Properties') }}</legend>
             {{ include(propertiesFormTemplate, {form: form.properties|default()}, with_context = false, ignore_missing = true) }}
-            {{ renderedPropertiesForm|default('')|raw }}{# @todo remove at Core-2.0 #}
         </fieldset>
         {% endif %}
         <fieldset>
