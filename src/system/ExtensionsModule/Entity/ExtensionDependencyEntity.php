@@ -150,18 +150,8 @@ class ExtensionDependencyEntity extends EntityAccess
             $bundle = ModUtil::getModule($modinfo['name'], true);
 
             if (null !== $bundle) {
-                $versionClass =  $bundle->getVersionClass();
-
-                if (class_exists($versionClass)) {
-                    // 1.4-module spec - @deprecated - remove in Core-2.0
-                    $version = new $versionClass($bundle);
-                    $moduleVersionArray = $version->toArray();
-                    $dependencies = $moduleVersionArray['dependencies'];
-                } else {
-                    // Core-2.0 module spec
-                    $moduleMetaData = $bundle->getMetaData();
-                    $dependencies = $moduleMetaData->getDependencies();
-                }
+                $moduleMetaData = $bundle->getMetaData();
+                $dependencies = $moduleMetaData->getDependencies();
 
                 foreach ($dependencies as $dependency) {
                     if ($dependency['modname'] == $this->modname) {
