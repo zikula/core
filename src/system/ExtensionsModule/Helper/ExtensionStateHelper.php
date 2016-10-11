@@ -12,6 +12,7 @@
 namespace Zikula\ExtensionsModule\Helper;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Core\CoreEvents;
@@ -45,9 +46,9 @@ class ExtensionStateHelper
     private $translator;
 
     /**
-     * @var ExtensionApi
+     * @var KernelInterface
      */
-    private $extensionApi;
+    private $kernel;
 
     /**
      * ExtensionStateHelper constructor.
@@ -55,20 +56,20 @@ class ExtensionStateHelper
      * @param CacheClearer $cacheClearer
      * @param ExtensionRepository $extensionRepository
      * @param TranslatorInterface $translator
-     * @param ExtensionApi $extensionApi
+     * @param KernelInterface $kernel
      */
     public function __construct(
         EventDispatcherInterface $dispatcher,
         CacheClearer $cacheClearer,
         ExtensionRepository $extensionRepository,
         TranslatorInterface $translator,
-        ExtensionApi $extensionApi
+        KernelInterface $kernel
     ) {
         $this->dispatcher = $dispatcher;
         $this->cacheClearer = $cacheClearer;
         $this->extensionRepository = $extensionRepository;
         $this->translator = $translator;
-        $this->extensionApi = $extensionApi;
+        $this->kernel = $kernel;
     }
 
     /**
@@ -112,10 +113,10 @@ class ExtensionStateHelper
 
         // state changed, so update the ModUtil::available-info for this module.
         // @todo refactor and remove ModUtil!
-        \ModUtil::available($extension->getName(), true);
+//        \ModUtil::available($extension->getName(), true);
 
         if (isset($eventName)) {
-            $moduleBundle = $this->extensionApi->getModuleInstanceOrNull($extension->getName());
+            $moduleBundle = $this->kernel->getModule($extension->getName());
             $event = new ModuleStateEvent($moduleBundle, ($moduleBundle === null) ? $extension->toArray() : null);
             $this->dispatcher->dispatch($eventName, $event);
         }
