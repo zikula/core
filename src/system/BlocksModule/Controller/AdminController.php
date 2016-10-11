@@ -27,17 +27,6 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 class AdminController extends AbstractController
 {
     /**
-     * @Route("")
-     * @deprecated remove at Core-2.0
-     */
-    public function indexAction()
-    {
-        @trigger_error('The zikulablocksmodule_admin_index route is deprecated. please use zikulablocksmodule_admin_view instead.', E_USER_DEPRECATED);
-
-        return $this->redirectToRoute('zikulablocksmodule_admin_view');
-    }
-
-    /**
      * @Route("/view")
      * @Theme("admin")
      * @Template
