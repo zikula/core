@@ -13,6 +13,3 @@ installer:
 Routing:
     resource: .
     type: zikularoutesmodule
-
-legacy:
-    resource: "@CoreBundle/Resources/config/legacy_routing.xml"
