@@ -161,16 +161,6 @@ class ExtensionsExtension extends \Twig_Extension
                         'title' => $this->translator->__f('Deactivate %s', ['%s' => $extension->getDisplayname()])
                     ];
                 }
-                if (\PluginUtil::hasModulePlugins($extension->getName())) {
-                    $actions[] = [
-                        'url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', [
-                            'bymodule' => $extension->getName(),
-                            'csrftoken' => $csrfToken]),
-                        'icon' => 'plug',
-                        'color' => 'black',
-                        'title' => $this->translator->__f('Plugins for %s', ['%s' => $extension->getDisplayname()])
-                    ];
-                }
                 break;
             case ExtensionApi::STATE_INACTIVE:
                 $actions[] = [
