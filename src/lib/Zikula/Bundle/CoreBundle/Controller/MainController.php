@@ -35,28 +35,19 @@ class MainController
     private $kernel;
 
     /**
-     * @deprecated
-     * @var LegacyController
-     */
-    private $legacyController;
-
-    /**
      * MainController constructor.
      * @param KernelInterface $kernelInterface
      * @param VariableApi $variableApi
      */
-    public function __construct(KernelInterface $kernelInterface, VariableApi $variableApi, LegacyController $legacyController)
+    public function __construct(KernelInterface $kernelInterface, VariableApi $variableApi)
     {
         $this->kernel = $kernelInterface;
         $this->variableApi = $variableApi;
-        $this->legacyController = $legacyController;
     }
 
     /**
      * This controller action is designed for the "/" route (home).
      * The route definition is set in `CoreBundle/Resources/config/routing.xml`
-     * and includes the condition `request.query.get('module') == ''`
-     *   which means it will not be used if the query param `module` is set (which is true in legacy urls).
      *
      * @param Request $request
      * @return bool|mixed|Response|PlainResponse
@@ -65,11 +56,6 @@ class MainController
     {
         $controller = $this->variableApi->getSystemVar('startController');
         if (!$controller) {
-            // @todo remove legacyResponse at Core-2.0
-            if (false !== $legacyResponse = $this->legacyController->getLegacyStartPageResponse()) {
-                return $legacyResponse;
-            }
-
             return new Response(''); // home page is static
         }
         $args = $this->variableApi->getSystemVar('startargs');
