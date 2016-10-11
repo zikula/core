@@ -104,24 +104,7 @@ class BlockController extends AbstractController
         $form->handleRequest($request);
 
         list($moduleName, $blockFqCn) = explode(':', $blockEntity->getBkey());
-        // @todo @deprecated remove this code block (re: $renderedPropertiesForm) at Core-2.0
-        $renderedPropertiesForm = $this->getBlockModifyOutput($blockInstance, $blockEntity);
-        if (($blockInstance instanceof \Zikula_Controller_AbstractBlock) && $blockInstance->info()['form_content']) {
-            $renderedPropertiesForm = $this->formContentModify($request, $blockEntity);
-        }
-
         if ($form->isSubmitted() and $form->get('save')->isClicked() and $form->isValid()) {
-            if ($blockInstance instanceof \Zikula_Controller_AbstractBlock) { // @todo remove this BC at Core-2.0
-                if ($blockInstance->info()['form_content']) {
-                    $content = $this->formContentModify($request);
-                    $blockEntity->setContent($content);
-                } else {
-                    $blockInfo = call_user_func([$blockInstance, 'update'], $blockEntity->toArray());
-                    $properties = $blockInfo['content'];
-                    $blockEntity->setProperties($properties);
-                }
-            }
-
             // sort Filter array so keys are always sequential.
             $filters = $blockEntity->getFilters();
             sort($filters);
@@ -144,7 +127,6 @@ class BlockController extends AbstractController
 
         return $this->render('@ZikulaBlocksModule/Admin/edit.html.twig', [
             'moduleName' => $moduleName,
-            'renderedPropertiesForm' => $renderedPropertiesForm, // @remove at Core-2.0
             'propertiesFormTemplate' => ($blockInstance instanceof BlockHandlerInterface) ? $blockInstance->getFormTemplate() : null,
             'form' => $form->createView(),
         ]);
@@ -230,54 +212,6 @@ class BlockController extends AbstractController
         $em->flush();
 
         return new JsonResponse(['bid' => $bid]);
-    }
-
-    /**
-     * Get the html output from the block's `modify` method.
-     *
-     * @deprecated Remove at Core-2.0
-     * @param $blockClassInstance
-     * @param BlockEntity $blockEntity
-     * @return mixed|string
-     */
-    private function getBlockModifyOutput($blockClassInstance, BlockEntity $blockEntity)
-    {
-        $output = '';
-        if ($blockClassInstance instanceof \Zikula_Controller_AbstractBlock) {
-            $blockInfo = \BlockUtil::getBlockInfo($blockEntity->getBid());
-            $blockInfo = $blockInfo ? $blockInfo : ['content' => ''];
-            $output = call_user_func([$blockClassInstance, 'modify'], $blockInfo);
-        }
-
-        return $output;
-    }
-
-    /**
-     * Handle modification of blocks with form_content = true
-     *
-     * @deprecated This option is no longer allowed in Core-2.0. Blocks must provide their own properties handling
-     * @param Request $request
-     * @param BlockEntity $blockEntity
-     * @return mixed|string
-     */
-    private function formContentModify(Request $request, BlockEntity $blockEntity = null)
-    {
-        $options = [];
-        if (isset($blockEntity)) {
-            $options = ['data' => $blockEntity->getContent() == [] ? '' : $blockEntity->getContent()];
-        }
-
-        $form = $this->createFormBuilder()
-            ->add('content', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', $options)
-            ->getForm();
-        $form->handleRequest($request);
-        if ($form->isValid()) {
-            return $form->getData()['content'];
-        }
-
-        return $this->renderView('ZikulaBlocksModule:Block:default_modify.html.twig', [
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
