@@ -45,10 +45,7 @@ class ConfigController extends AbstractController
         $variableApi = $this->get('zikula_extensions_module.api.variable');
         $modVars = $variableApi->getAll('ZikulaSearchModule');
 
-        // get all the LEGACY (<1.4.0) search plugins
-        $plugins = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins', ['loadall' => true]);
-        $plugins = false === $plugins ? [] : $plugins;
-
+        $plugins = [];
         // get 1.4.0+ type searchable modules and add to array
         $searchableModules = ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
         foreach ($searchableModules as $searchableModule) {
