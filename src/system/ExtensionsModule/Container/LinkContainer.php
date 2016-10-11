@@ -84,54 +84,6 @@ class LinkContainer implements LinkContainerInterface
         ];
 
         $links[] = [
-            'url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins'),
-            'text' => $this->translator->__('Plugins list'),
-            'icon' => 'table',
-            'links' => [
-                [
-                    'url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins'),
-                    'text' => $this->translator->__('All')
-                ],
-                [
-                    'url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', ['state' => \PluginUtil::NOTINSTALLED]),
-                    'text' => $this->translator->__('Not installed')
-                ],
-                [
-                    'url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', ['state' => \PluginUtil::DISABLED]),
-                    'text' => $this->translator->__('Inactive')
-                ],
-                [
-                    'url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', ['state' => \PluginUtil::ENABLED]),
-                    'text' => $this->translator->__('Active')
-                ]
-            ]
-        ];
-
-        $links[] = [
-            'url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', ['systemplugins' => true]),
-            'text' => $this->translator->__('System Plugins'),
-            'icon' => 'table',
-            'links' => [
-                [
-                    'url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', ['systemplugins' => true]),
-                    'text' => $this->translator->__('All')
-                ],
-                [
-                    'url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', ['systemplugins' => true, 'state' => \PluginUtil::NOTINSTALLED]),
-                    'text' => $this->translator->__('Not installed')
-                ],
-                [
-                    'url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', ['systemplugins' => true, 'state' => \PluginUtil::DISABLED]),
-                    'text' => $this->translator->__('Inactive')
-                ],
-                [
-                    'url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', ['systemplugins' => true, 'state' => \PluginUtil::ENABLED]),
-                    'text' => $this->translator->__('Active')
-                ]
-            ]
-        ];
-
-        $links[] = [
             'url' => $this->router->generate('zikulaextensionsmodule_config_config'),
             'text' => $this->translator->__('Settings'),
             'icon' => 'wrench'
