@@ -53,7 +53,7 @@ class RouteController extends AbstractController
     {
         return $this->indexInternal($request, true);
     }
-    
+
     /**
      * This is the default action handling the main area called without defining arguments.
      * @Cache(expires="+7 days", public=true)
@@ -68,14 +68,14 @@ class RouteController extends AbstractController
     {
         return $this->indexInternal($request, false);
     }
-    
+
     /**
      * This method includes the common implementation code for adminIndex() and index().
      */
     protected function indexInternal(Request $request, $isAdmin = false)
     {
         $controllerHelper = $this->get('zikula_routes_module.controller_helper');
-        
+
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
         $utilArgs = ['controller' => 'route', 'action' => 'main'];
@@ -83,16 +83,16 @@ class RouteController extends AbstractController
         if (!$this->hasPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
-        
+
         if ($isAdmin) {
-            
+
             return $this->redirectToRoute('zikularoutesmodule_route_' . ($isAdmin ? 'admin' : '') . 'view');
         }
-        
+
         $templateParameters = [
             'routeArea' => $isAdmin ? 'admin' : ''
         ];
-        
+
         // return index template
         return $this->render('@ZikulaRoutesModule/Route/index.html.twig', $templateParameters);
     }
@@ -115,7 +115,7 @@ class RouteController extends AbstractController
     {
         return $this->viewInternal($request, $sort, $sortdir, $pos, $num, true);
     }
-    
+
     /**
      * This action provides an item list overview.
      * @Cache(expires="+2 hours", public=false)
@@ -134,14 +134,14 @@ class RouteController extends AbstractController
     {
         return $this->viewInternal($request, $sort, $sortdir, $pos, $num, false);
     }
-    
+
     /**
      * This method includes the common implementation code for adminView() and view().
      */
     protected function viewInternal(Request $request, $sort, $sortdir, $pos, $num, $isAdmin = false)
     {
         $controllerHelper = $this->get('zikula_routes_module.controller_helper');
-        
+
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
         $utilArgs = ['controller' => 'route', 'action' => 'view'];
@@ -149,26 +149,20 @@ class RouteController extends AbstractController
         if (!$this->hasPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
-        // temporary workarounds
-        // let repository know if we are in admin or user area
-        $request->query->set('lct', $isAdmin ? 'admin' : 'user');
-        // let entities know if we are in admin or user area
-        System::queryStringSetVar('lct', $isAdmin ? 'admin' : 'user');
-        
         $repository = $this->get('zikula_routes_module.' . $objectType . '_factory')->getRepository();
         $repository->setRequest($request);
         $viewHelper = $this->get('zikula_routes_module.view_helper');
         $templateParameters = [
             'routeArea' => $isAdmin ? 'admin' : ''
         ];
-        
+
         // convenience vars to make code clearer
         $currentUrlArgs = [];
         $where = '';
-        
+
         $showOwnEntries = $request->query->getInt('own', $this->getVar('showOnlyOwnEntries', 0));
         $showAllEntries = $request->query->getInt('all', 0);
-        
+
         $templateParameters['showOwnEntries'] = $showOwnEntries;
         $templateParameters['showAllEntries'] = $showAllEntries;
         if ($showOwnEntries == 1) {
@@ -177,9 +171,9 @@ class RouteController extends AbstractController
         if ($showAllEntries == 1) {
             $currentUrlArgs['all'] = 1;
         }
-        
+
         $additionalParameters = $repository->getAdditionalTemplateParameters('controllerAction', $utilArgs);
-        
+
         $resultsPerPage = 0;
         if ($showAllEntries != 1) {
             // the number of items displayed on a page for pagination
@@ -188,21 +182,20 @@ class RouteController extends AbstractController
                 $resultsPerPage = $this->getVar('pageSize', 10);
             }
         }
-        
+
         // parameter for used sorting field
         if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields())) {
             $sort = $repository->getDefaultSortingField();
-            System::queryStringSetVar('sort', $sort);
             $request->query->set('sort', $sort);
             // set default sorting in route parameters (e.g. for the pager)
             $routeParams = $request->attributes->get('_route_params');
             $routeParams['sort'] = $sort;
             $request->attributes->set('_route_params', $routeParams);
         }
-        
+
         // parameter for used sort order
         $sortdir = strtolower($sortdir);
-        
+
         $sortableColumns = new SortableColumns($this->get('router'), 'zikularoutesmodule_route_' . ($isAdmin ? 'admin' : '') . 'view', 'sort', 'sortdir');
         $sortableColumns->addColumns([
             new Column('routeType'),
@@ -227,7 +220,7 @@ class RouteController extends AbstractController
             new Column('updatedDate'),
         ]);
         $sortableColumns->setOrderBy($sortableColumns->getColumn($sort), strtoupper($sortdir));
-        
+
         $additionalUrlParameters = [
             'all' => $showAllEntries,
             'own' => $showOwnEntries,
@@ -235,7 +228,7 @@ class RouteController extends AbstractController
         ];
         $additionalUrlParameters = array_merge($additionalUrlParameters, $additionalParameters);
         $sortableColumns->setAdditionalUrlParameters($additionalUrlParameters);
-        
+
         $selectionArgs = [
             'ot' => $objectType,
             'where' => $where,
@@ -247,41 +240,41 @@ class RouteController extends AbstractController
         } else {
             // the current offset which is used to calculate the pagination
             $currentPage = $pos;
-        
+
             // retrieve item list with pagination
             $selectionArgs['currentPage'] = $currentPage;
             $selectionArgs['resultsPerPage'] = $resultsPerPage;
             list($entities, $objectCount) = ModUtil::apiFunc($this->name, 'selection', 'getEntitiesPaginated', $selectionArgs);
-        
+
             $templateParameters['currentPage'] = $currentPage;
             $templateParameters['pager'] = ['numitems' => $objectCount, 'itemsperpage' => $resultsPerPage];
         }
-        
+
         foreach ($entities as $k => $entity) {
             $entity->initWorkflow();
         }
-        
+
         $templateParameters['items'] = $entities;
         $templateParameters['sort'] = $sort;
         $templateParameters['sdir'] = $sortdir;
         $templateParameters['pagesize'] = $resultsPerPage;
         $templateParameters['currentUrlObject'] = $currentUrlObject;
         $templateParameters = array_merge($templateParameters, $additionalParameters);
-        
+
         $formOptions = [
             'all' => $templateParameters['showAllEntries'],
             'own' => $templateParameters['showOwnEntries']
         ];
         $form = $this->createForm('Zikula\RoutesModule\Form\Type\QuickNavigation\\' . ucfirst($objectType) . 'QuickNavType', $templateParameters, $formOptions);
-        
+
         $templateParameters['sort'] = $sortableColumns->generateSortableColumns();
         $templateParameters['quickNavForm'] = $form->createView();
-        
-        
-        
+
+
+
         $modelHelper = $this->get('zikula_routes_module.model_helper');
         $templateParameters['canBeCreated'] = $modelHelper->canBeCreated($objectType);
-        
+
         // fetch and return the appropriate template
         return $viewHelper->processTemplate($this->get('twig'), $objectType, 'view', $request, $templateParameters);
     }
@@ -303,7 +296,7 @@ class RouteController extends AbstractController
     {
         return $this->displayInternal($request, $route, true);
     }
-    
+
     /**
      * This action provides a item detail view.
      * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options={"id" = "id", "repository_method" = "selectById"})
@@ -321,14 +314,14 @@ class RouteController extends AbstractController
     {
         return $this->displayInternal($request, $route, false);
     }
-    
+
     /**
      * This method includes the common implementation code for adminDisplay() and display().
      */
     protected function displayInternal(Request $request, RouteEntity $route, $isAdmin = false)
     {
         $controllerHelper = $this->get('zikula_routes_module.controller_helper');
-        
+
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
         $utilArgs = ['controller' => 'route', 'action' => 'display'];
@@ -341,22 +334,22 @@ class RouteController extends AbstractController
         $request->query->set('lct', $isAdmin ? 'admin' : 'user');
         // let entities know if we are in admin or user area
         System::queryStringSetVar('lct', $isAdmin ? 'admin' : 'user');
-        
+
         $repository = $this->get('zikula_routes_module.' . $objectType . '_factory')->getRepository();
         $repository->setRequest($request);
-        
+
         $entity = $route;
-        
-        
+
+
         $entity->initWorkflow();
-        
+
         // create identifier for permission check
         $instanceId = $entity->createCompositeIdentifier();
-        
+
         if (!$this->hasPermission($this->name . ':' . ucfirst($objectType) . ':', $instanceId . '::', $permLevel)) {
             throw new AccessDeniedException();
         }
-        
+
         $viewHelper = $this->get('zikula_routes_module.view_helper');
         $templateParameters = [
             'routeArea' => $isAdmin ? 'admin' : ''
@@ -364,16 +357,16 @@ class RouteController extends AbstractController
         $templateParameters[$objectType] = $entity;
         $templateParameters['currentUrlObject'] = $currentUrlObject;
         $templateParameters = array_merge($templateParameters, $repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
-        
+
         // fetch and return the appropriate template
         $response = $viewHelper->processTemplate($this->get('twig'), $objectType, 'display', $request, $templateParameters);
-        
+
         $format = $request->getRequestFormat();
         if ($format == 'ics') {
             $fileName = $objectType . '_' . (property_exists($entity, 'slug') ? $entity['slug'] : $entity->getTitleFromDisplayPattern()) . '.ics';
             $response->headers->set('Content-Disposition', 'attachment; filename=' . $fileName);
         }
-        
+
         return $response;
     }
     /**
@@ -393,7 +386,7 @@ class RouteController extends AbstractController
     {
         return $this->editInternal($request, true);
     }
-    
+
     /**
      * This action provides a handling of edit requests.
      * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
@@ -410,14 +403,14 @@ class RouteController extends AbstractController
     {
         return $this->editInternal($request, false);
     }
-    
+
     /**
      * This method includes the common implementation code for adminEdit() and edit().
      */
     protected function editInternal(Request $request, $isAdmin = false)
     {
         $controllerHelper = $this->get('zikula_routes_module.controller_helper');
-        
+
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
         $utilArgs = ['controller' => 'route', 'action' => 'edit'];
@@ -430,21 +423,21 @@ class RouteController extends AbstractController
         $request->query->set('lct', $isAdmin ? 'admin' : 'user');
         // let entities know if we are in admin or user area
         System::queryStringSetVar('lct', $isAdmin ? 'admin' : 'user');
-        
+
         $repository = $this->get('zikula_routes_module.' . $objectType . '_factory')->getRepository();
-        
+
         $templateParameters = [
             'routeArea' => $isAdmin ? 'admin' : ''
         ];
         $templateParameters = array_merge($templateParameters, $repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
-        
+
         // delegate form processing to the form handler
         $formHandler = $this->get('zikula_routes_module.form.handler.route');
         $formHandler->processForm($templateParameters);
-        
+
         $viewHelper = $this->get('zikula_routes_module.view_helper');
         $templateParameters = $formHandler->getTemplateParameters();
-        
+
         // fetch and return the appropriate template
         return $viewHelper->processTemplate($this->get('twig'), $objectType, 'edit', $request, $templateParameters);
     }
@@ -467,7 +460,7 @@ class RouteController extends AbstractController
     {
         return $this->deleteInternal($request, $route, true);
     }
-    
+
     /**
      * This action provides a handling of simple delete requests.
      * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options={"id" = "id", "repository_method" = "selectById"})
@@ -486,14 +479,14 @@ class RouteController extends AbstractController
     {
         return $this->deleteInternal($request, $route, false);
     }
-    
+
     /**
      * This method includes the common implementation code for adminDelete() and delete().
      */
     protected function deleteInternal(Request $request, RouteEntity $route, $isAdmin = false)
     {
         $controllerHelper = $this->get('zikula_routes_module.controller_helper');
-        
+
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
         $utilArgs = ['controller' => 'route', 'action' => 'delete'];
@@ -502,12 +495,12 @@ class RouteController extends AbstractController
             throw new AccessDeniedException();
         }
         $entity = $route;
-        
+
         $logger = $this->get('logger');
         $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->get('zikula_users_module.current_user')->get('uname'), 'entity' => 'route', 'id' => $entity->createCompositeIdentifier()];
-        
+
         $entity->initWorkflow();
-        
+
         // determine available workflow actions
         $workflowHelper = $this->get('zikula_routes_module.workflow_helper');
         $actions = $workflowHelper->getActionsForObject($entity);
@@ -516,10 +509,10 @@ class RouteController extends AbstractController
             $logger->error('{app}: User {user} tried to delete the {entity} with id {id}, but failed to determine available workflow actions.', $logArgs);
             throw new \RuntimeException($this->__('Error! Could not determine workflow actions.'));
         }
-        
+
         // redirect to the list of routes
         $redirectRoute = 'zikularoutesmodule_route_' . ($isAdmin ? 'admin' : '') . 'view';
-        
+
         // check whether deletion is allowed
         $deleteActionId = 'delete';
         $deleteAllowed = false;
@@ -533,12 +526,12 @@ class RouteController extends AbstractController
         if (!$deleteAllowed) {
             $this->addFlash('error', $this->__('Error! It is not allowed to delete this route.'));
             $logger->error('{app}: User {user} tried to delete the {entity} with id {id}, but this action was not allowed.', $logArgs);
-        
+
             return $this->redirectToRoute($redirectRoute);
         }
-        
+
         $form = $this->createForm('Zikula\RoutesModule\Form\DeleteEntityType', $entity);
-        
+
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('delete')->isClicked()) {
                 // execute the workflow action
@@ -547,26 +540,26 @@ class RouteController extends AbstractController
                     $this->addFlash('status', $this->__('Done! Item deleted.'));
                     $logger->notice('{app}: User {user} deleted the {entity} with id {id}.', $logArgs);
                 }
-                
+
                 return $this->redirectToRoute($redirectRoute);
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
-        
+
                 return $this->redirectToRoute($redirectRoute);
             }
         }
-        
+
         $repository = $this->get('zikula_routes_module.' . $objectType . '_factory')->getRepository();
-        
+
         $viewHelper = $this->get('zikula_routes_module.view_helper');
         $templateParameters = [
             'routeArea' => $isAdmin ? 'admin' : '',
             'deleteForm' => $form->createView()
         ];
-        
+
         $templateParameters[$objectType] = $entity;
         $templateParameters = array_merge($templateParameters, $repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
-        
+
         // fetch and return the appropriate template
         return $viewHelper->processTemplate($this->get('twig'), $objectType, 'delete', $request, $templateParameters);
     }
@@ -584,7 +577,7 @@ class RouteController extends AbstractController
     {
         return $this->reloadInternal($request, true);
     }
-    
+
     /**
      * This is a custom action.
      *
@@ -598,14 +591,14 @@ class RouteController extends AbstractController
     {
         return $this->reloadInternal($request, false);
     }
-    
+
     /**
      * This method includes the common implementation code for adminReload() and reload().
      */
     protected function reloadInternal(Request $request, $isAdmin = false)
     {
         $controllerHelper = $this->get('zikula_routes_module.controller_helper');
-        
+
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
         $utilArgs = ['controller' => 'route', 'action' => 'reload'];
@@ -614,11 +607,11 @@ class RouteController extends AbstractController
             throw new AccessDeniedException();
         }
         /** TODO: custom logic */
-        
+
         $templateParameters = [
             'routeArea' => $isAdmin ? 'admin' : ''
         ];
-        
+
         // return template
         return $this->render('@ZikulaRoutesModule/Route/reload.html.twig', $templateParameters);
     }
@@ -636,7 +629,7 @@ class RouteController extends AbstractController
     {
         return $this->renewInternal($request, true);
     }
-    
+
     /**
      * This is a custom action.
      *
@@ -650,14 +643,14 @@ class RouteController extends AbstractController
     {
         return $this->renewInternal($request, false);
     }
-    
+
     /**
      * This method includes the common implementation code for adminRenew() and renew().
      */
     protected function renewInternal(Request $request, $isAdmin = false)
     {
         $controllerHelper = $this->get('zikula_routes_module.controller_helper');
-        
+
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
         $utilArgs = ['controller' => 'route', 'action' => 'renew'];
@@ -666,11 +659,11 @@ class RouteController extends AbstractController
             throw new AccessDeniedException();
         }
         /** TODO: custom logic */
-        
+
         $templateParameters = [
             'routeArea' => $isAdmin ? 'admin' : ''
         ];
-        
+
         // return template
         return $this->render('@ZikulaRoutesModule/Route/renew.html.twig', $templateParameters);
     }
@@ -707,24 +700,24 @@ class RouteController extends AbstractController
     {
         return $this->handleSelectedEntriesActionInternal($request, false);
     }
-    
+
     /**
      * This method includes the common implementation code for adminHandleSelectedEntriesAction() and handleSelectedEntriesAction().
      */
     protected function handleSelectedEntriesActionInternal(Request $request, $isAdmin = false)
     {
         $objectType = 'route';
-        
+
         // Get parameters
         $action = $request->request->get('action', null);
         $items = $request->request->get('items', null);
-        
+
         $action = strtolower($action);
-        
+
         $workflowHelper = $this->get('zikula_routes_module.workflow_helper');
         $logger = $this->get('logger');
         $userName = $this->get('zikula_users_module.current_user')->get('uname');
-        
+
         // process each item
         foreach ($items as $itemid) {
             // check if item exists, and get record instance
@@ -734,9 +727,9 @@ class RouteController extends AbstractController
                 'useJoins' => false
             ];
             $entity = ModUtil::apiFunc($this->name, 'selection', 'getEntity', $selectionArgs);
-        
+
             $entity->initWorkflow();
-        
+
             // check if $action can be applied to this entity (may depend on it's current workflow state)
             $allowedActions = $workflowHelper->getActionsForObject($entity);
             $actionIds = array_keys($allowedActions);
@@ -744,7 +737,7 @@ class RouteController extends AbstractController
                 // action not allowed, skip this object
                 continue;
             }
-        
+
             $success = false;
             try {
                 if (!$entity->validate()) {
@@ -756,11 +749,11 @@ class RouteController extends AbstractController
                 $this->addFlash('error', $this->__f('Sorry, but an unknown error occured during the %s action. Please apply the changes again!', ['%s' => $action]));
                 $logger->error('{app}: User {user} tried to execute the {action} workflow action for the {entity} with id {id}, but failed. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'user' => $userName, 'action' => $action, 'entity' => 'route', 'id' => $itemid, 'errorMessage' => $e->getMessage()]);
             }
-        
+
             if (!$success) {
                 continue;
             }
-        
+
             if ($action == 'delete') {
                 $this->addFlash('status', $this->__('Done! Item deleted.'));
                 $logger->notice('{app}: User {user} deleted the {entity} with id {id}.', ['app' => 'ZikulaRoutesModule', 'user' => $userName, 'entity' => 'route', 'id' => $itemid]);
@@ -769,7 +762,7 @@ class RouteController extends AbstractController
                 $logger->notice('{app}: User {user} executed the {action} workflow action for the {entity} with id {id}.', ['app' => 'ZikulaRoutesModule', 'user' => $userName, 'action' => $action, 'entity' => 'route', 'id' => $itemid]);
             }
         }
-        
+
         return $this->redirectToRoute('zikularoutesmodule_route_' . ($isAdmin ? 'admin' : '') . 'index');
     }
 }
