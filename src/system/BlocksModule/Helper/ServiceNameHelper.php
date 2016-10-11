@@ -23,7 +23,7 @@ class ServiceNameHelper
      */
     public function generateServiceNameFromClassName($classname)
     {
-        $classname = str_replace(['\\', '_'], '.', $classname); // @todo in Core-2.0 the '_' can be removed.
+        $classname = str_replace(['\\'], '.', $classname);
         $classname = Container::underscore($classname);
 
         return trim($classname, "\\_. \t\n\r\0\x0B");
