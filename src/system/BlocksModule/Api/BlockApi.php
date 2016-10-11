@@ -12,6 +12,7 @@
 namespace Zikula\BlocksModule\Api;
 
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\BlocksModule\Collector\BlockCollector;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockPositionRepositoryInterface;
 use Zikula\Core\AbstractModule;
@@ -43,11 +44,6 @@ class BlockApi
     private $blockFactory;
 
     /**
-     * @var \Zikula\ExtensionsModule\Api\ExtensionApi
-     */
-    private $extensionApi;
-
-    /**
      * @var ExtensionRepositoryInterface
      */
     private $extensionRespository;
@@ -58,34 +54,30 @@ class BlockApi
     private $blockCollector;
 
     /**
-     * @var string the kernel root dir (%kernel.root_dir%)
-     * @deprecated remove at Core 2-.0
+     * @var KernelInterface
      */
-    private $kernelRootDir;
+    private $kernel;
 
     /**
      * BlockApi constructor.
      * @param BlockPositionRepositoryInterface $blockPositionRepository
      * @param BlockFactoryApi $blockFactoryApi
-     * @param ExtensionApi $extensionApi
      * @param ExtensionRepositoryInterface $extensionRepository
      * @param BlockCollector $blockCollector
-     * @param string $kernelRootDir
+     * @param KernelInterface $kernel
      */
     public function __construct(
         BlockPositionRepositoryInterface $blockPositionRepository,
         BlockFactoryApi $blockFactoryApi,
-        ExtensionApi $extensionApi,
         ExtensionRepositoryInterface $extensionRepository,
         BlockCollector $blockCollector,
-        $kernelRootDir
+        KernelInterface $kernel
     ) {
         $this->blockPositionRepository = $blockPositionRepository;
         $this->blockFactory = $blockFactoryApi;
-        $this->extensionApi = $extensionApi;
         $this->extensionRespository = $extensionRepository;
         $this->blockCollector = $blockCollector;
-        $this->kernelRootDir = $kernelRootDir; // parameter is deprecated. remove at Core-2.0
+        $this->kernel = $kernel;
     }
 
     /**
@@ -116,12 +108,12 @@ class BlockApi
      * Create an instance of a the block Object given a 'bKey' string like AcmeFooModule:Acme\FooModule\Block\FooBlock
      *   which is the Common ModuleName and the FullyQualifiedClassName of the block.
      * @param string $bKey
-     * @return \Zikula_Controller_AbstractBlock|BlockHandlerInterface
+     * @return BlockHandlerInterface
      */
     public function createInstanceFromBKey($bKey)
     {
         list($moduleName, $blockFqCn) = explode(':', $bKey);
-        $moduleInstance = $this->extensionApi->getModuleInstanceOrNull($moduleName);
+        $moduleInstance = $this->kernel->getModule($moduleName);
 
         return $this->blockFactory->getInstance($blockFqCn, $moduleInstance);
     }
@@ -139,7 +131,7 @@ class BlockApi
         $modules = isset($moduleEntity) ? [$moduleEntity] : $this->extensionRespository->findBy(['state' => ExtensionApi::STATE_ACTIVE]);
         /** @var \Zikula\ExtensionsModule\Entity\ExtensionEntity $module */
         foreach ($modules as $module) {
-            $moduleInstance = $this->extensionApi->getModuleInstanceOrNull($module->getName());
+            $moduleInstance = $this->kernel->getModule($module->getName());
             list($nameSpace, $path) = $this->getModuleBlockPath($moduleInstance, $module->getName());
             if (!isset($path)) {
                 continue;
@@ -196,14 +188,12 @@ class BlockApi
     }
 
     /**
-     * Get the block directory for a module given an instance of the module or (for BC purposes), the module name.
-     *  The $moduleName parameter is deprecated and will be removed at Core-2.0
+     * Get the block directory for a module given an instance of the module
      *
      * @param AbstractModule|null $moduleInstance
-     * @param null $moduleName (parameter is @deprecated)
      * @return array
      */
-    public function getModuleBlockPath(AbstractModule $moduleInstance = null, $moduleName = null)
+    public function getModuleBlockPath(AbstractModule $moduleInstance = null)
     {
         $path = null;
         $nameSpace = null;
@@ -211,12 +201,6 @@ class BlockApi
             if (is_dir($moduleInstance->getPath() . '/Block')) {
                 $path = $moduleInstance->getPath() . '/Block';
                 $nameSpace = $moduleInstance->getNamespace() . '\Block\\';
-            }
-        } elseif (isset($moduleName)) { // @todo remove at Core-2.0
-            $testPath = realpath($this->kernelRootDir . '/../modules/' . $moduleName . '/lib/' . $moduleName . '/Block');
-            if (is_dir($testPath)) {
-                $path = $testPath;
-                $nameSpace = '\\';
             }
         }
 
