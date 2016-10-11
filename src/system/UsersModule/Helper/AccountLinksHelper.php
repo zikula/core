@@ -32,7 +32,7 @@ class AccountLinksHelper
 
     public function getAllAccountLinks()
     {
-        // get the menu links for Core-2.0 modules
+        // get the menu links for modules
         $accountLinks = $this->collector->getAllLinksByType(LinkContainerInterface::TYPE_ACCOUNT);
         $legacyAccountLinksFromNew = [];
         foreach ($accountLinks as $moduleName => $links) {
@@ -46,17 +46,6 @@ class AccountLinksHelper
             }
         }
 
-        // @deprecated The API function is called for old-style modules
-        $legacyAccountLinks = \ModUtil::apiFunc('ZikulaUsersModule', 'user', 'accountLinks');
-        if (false === $legacyAccountLinks) {
-            $legacyAccountLinks = [];
-        } else {
-            foreach ($legacyAccountLinks as $key => $legacyAccountLink) {
-                $legacyAccountLinks[$key]['text'] = $legacyAccountLink['title'];
-            }
-        }
-
-        // add the arrays together
-        return $legacyAccountLinksFromNew + $legacyAccountLinks;
+        return $legacyAccountLinksFromNew;
     }
 }
