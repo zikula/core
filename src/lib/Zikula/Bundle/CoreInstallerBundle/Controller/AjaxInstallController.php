@@ -26,6 +26,7 @@ use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\Core\CoreEvents;
+use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
@@ -108,8 +109,6 @@ class AjaxInstallController extends AbstractController
                 return $this->finalizeParameters();
             case "reloadroutes":
                 return $this->reloadRoutes();
-            case "plugins":
-                return $this->installPlugins();
             case "installassets":
                 return $this->installAssets();
             case "protect":
@@ -149,19 +148,15 @@ class AjaxInstallController extends AbstractController
             include_once $bootstrap;
         }
 
-        // support both Legacy and Core-2.0 Spec system modules until fully refactored.
-        // @todo remove legacy support when refactoring is complete.
         $reflectionInstaller = new \ReflectionClass($className);
-        if ($reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
-            $installer = $reflectionInstaller->newInstanceArgs([$this->container, $module]);
-        } elseif ($reflectionInstaller->isSubclassOf('\Zikula\Core\ExtensionInstallerInterface')) {
+        if ($reflectionInstaller->isSubclassOf('\Zikula\Core\ExtensionInstallerInterface')) {
             $installer = $reflectionInstaller->newInstance();
             $installer->setBundle($module);
             if ($installer instanceof ContainerAwareInterface) {
                 $installer->setContainer($this->container);
             }
         } else {
-            throw new \Exception('Installer class must be subclass of Zikula_AbstractInstaller or implement Zikula\Core\ExtensionInstallerInterface.');
+            throw new \Exception('Installer class must implement Zikula\Core\ExtensionInstallerInterface.');
         }
 
         if ($installer->install()) {
@@ -173,7 +168,7 @@ class AjaxInstallController extends AbstractController
 
     private function activateModules()
     {
-        $extensionsInFileSystem = $this->container->get('zikula_extensions_module.bundle_sync_helper')->scanForBundles();
+        $extensionsInFileSystem = $this->container->get('zikula_extensions_module.bundle_sync_helper')->scanForBundles(['system']);
         $this->container->get('zikula_extensions_module.bundle_sync_helper')->syncExtensions($extensionsInFileSystem);
 
         /** @var ExtensionEntity[] $extensions */
@@ -210,15 +205,14 @@ class AjaxInstallController extends AbstractController
             'ZikulaPageLockModule' => __('Content'),
         ];
 
-        $modulesCategories = $this->container->get('doctrine.orm.entity_manager')
+        $modulesCategories = $this->container->get('doctrine')
             ->getRepository('ZikulaAdminModule:AdminCategoryEntity')->getIndexedCollection('name');
 
         foreach (\ZikulaKernel::$coreModules as $systemModule => $bundleClass) {
             $category = $systemModulesCategories[$systemModule];
-            \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'addmodtocategory', [
-                'module' => $systemModule,
-                'category' => $modulesCategories[$category]->getCid()
-            ]);
+            $this->container->get('doctrine')
+                ->getRepository('ZikulaAdminModule:AdminModuleEntity')
+                ->setModuleCategory($systemModule, $modulesCategories[$category]);
         }
 
         return true;
@@ -244,26 +238,27 @@ class AjaxInstallController extends AbstractController
         $em = $this->container->get('doctrine.entitymanager');
         $params = $this->decodeParameters($this->yamlManager->getParameters());
 
-        // @todo this must be updated to use ZAuth
-
-        // create the password hash
-        $password = \UserUtil::getHashedPassword($params['password'], \UserUtil::getPasswordHashMethodCode(ZAuthConstant::DEFAULT_HASH_METHOD));
-
-        // prepare the data
-        $username = mb_strtolower($params['username']);
-
         $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
         $nowUTCStr = $nowUTC->format(UsersConstant::DATETIME_FORMAT);
 
-        /** @var \Zikula\UsersModule\Entity\UserEntity $entity */
-        $entity = $em->find('ZikulaUsersModule:UserEntity', 2);
-        $entity->setUname($username);
-        $entity->setEmail($params['email']);
-        $entity->setPass($password);
-        $entity->setActivated(1);
-        $entity->setUser_Regdate($nowUTCStr);
-        $entity->setLastlogin($nowUTCStr);
-        $em->persist($entity);
+        /** @var \Zikula\UsersModule\Entity\UserEntity $userEntity */
+        $userEntity = $em->find('ZikulaUsersModule:UserEntity', 2);
+        $userEntity->setUname($params['username']);
+        $userEntity->setEmail($params['email']);
+        $userEntity->setActivated(1);
+        $userEntity->setUser_Regdate($nowUTCStr);
+        $userEntity->setLastlogin($nowUTCStr);
+        $em->persist($userEntity);
+
+        $mapping = new AuthenticationMappingEntity();
+        $mapping->setUid($userEntity->getUid());
+        $mapping->setUname($userEntity->getUname());
+        $mapping->setEmail($userEntity->getEmail());
+        $mapping->setVerifiedEmail(true);
+        $mapping->setPass(\UserUtil::getHashedPassword($params['password'], \UserUtil::getPasswordHashMethodCode(ZAuthConstant::DEFAULT_HASH_METHOD))); // @todo
+        $mapping->setPassreminder($userEntity->getPassreminder());
+        $mapping->setMethod(ZAuthConstant::AUTHENTICATION_METHOD_UNAME);
+        $em->persist($mapping);
 
         $em->flush();
 
@@ -288,7 +283,7 @@ class AjaxInstallController extends AbstractController
 
     private function finalizeParameters()
     {
-        \ModUtil::initCoreVars(true); // initialize the modvars array (includes ZConfig (System) vars)
+//        \ModUtil::initCoreVars(true); // initialize the modvars array (includes ZConfig (System) vars)
         $params = $this->decodeParameters($this->yamlManager->getParameters());
 
         $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'language_i18n', $params['locale']);
@@ -352,17 +347,6 @@ class AjaxInstallController extends AbstractController
         return true;
     }
 
-    private function installPlugins()
-    {
-        $result = true;
-        $systemPlugins = \PluginUtil::loadAllSystemPlugins();
-        foreach ($systemPlugins as $plugin) {
-            $result = $result && \PluginUtil::install($plugin);
-        }
-
-        return $result;
-    }
-
     private function installAssets()
     {
         $this->container->get('zikula_extensions_module.extension_helper')->installAssets();
@@ -374,7 +358,6 @@ class AjaxInstallController extends AbstractController
     {
         // protect config.php and parameters.yml files
         foreach ([
-            realpath($this->container->get('kernel')->getRootDir() . '/../config/config.php'),
             realpath($this->container->get('kernel')->getRootDir() . '/../app/config/parameters.yml')
         ] as $file) {
             @chmod($file, 0400);
@@ -390,7 +373,7 @@ class AjaxInstallController extends AbstractController
         $params = $this->yamlManager->getParameters();
         $params['installed'] = true;
         // set currently installed version into parameters
-        $params[\Zikula_Core::CORE_INSTALLED_VERSION_PARAM] = \Zikula_Core::VERSION_NUM;
+        $params[\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM] = \ZikulaKernel::VERSION;
 
         $this->yamlManager->setParameters($params);
         // clear the cache

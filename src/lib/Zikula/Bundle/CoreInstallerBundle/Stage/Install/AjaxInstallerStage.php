@@ -208,27 +208,20 @@ class AjaxInstallerStage implements StageInterface
                 self::FAIL => __('There was an error reloading the routes')
             ],
             25 => [
-                self::NAME => 'plugins',
-                self::PRE => __('System Plugins'),
-                self::DURING => __('Installing System Plugins'),
-                self::SUCCESS => __('System Plugins installed'),
-                self::FAIL => __('There was an error installing System Plugins')
-            ],
-            26 => [
                 self::NAME => 'protect',
                 self::PRE => __('Protect configuration files'),
                 self::DURING => __('Protecting configuration files'),
                 self::SUCCESS => __('Configuration files protected'),
                 self::FAIL => __('There was an error protecting configuration files')
             ],
-            27 => [
+            26 => [
                 self::NAME => 'installassets',
                 self::PRE => __('Install assets'),
                 self::DURING => __('Installing assets to /web'),
                 self::SUCCESS => __('Assets installed'),
                 self::FAIL => __('Failed to install assets')
             ],
-            28 => [
+            27 => [
                 self::NAME => 'finish',
                 self::PRE => __('Finish'),
                 self::DURING => __('Finish'),
