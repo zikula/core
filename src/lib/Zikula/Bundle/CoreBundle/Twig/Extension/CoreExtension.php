@@ -71,7 +71,6 @@ class CoreExtension extends \Twig_Extension
             new \Twig_SimpleFunction('showflashes', [$this, 'showFlashes'], ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('array_unset', [$this, 'arrayUnset']),
             new \Twig_SimpleFunction('pageSetVar', [$this, 'pageSetVar']),
-            new \Twig_SimpleFunction('pageAddVar', [$this, 'pageAddVar']),
             new \Twig_SimpleFunction('pageAddAsset', [$this, 'pageAddAsset']),
             new \Twig_SimpleFunction('pageGetVar', [$this, 'pageGetVar']),
             new \Twig_SimpleFunction('getModVar', [$this, 'getModVar']),
@@ -102,20 +101,6 @@ class CoreExtension extends \Twig_Extension
     public function getAssetPath($path)
     {
         return $this->container->get('zikula_core.common.theme.asset_helper')->resolve($path);
-    }
-
-    /**
-     * Function to get the site's language.
-     *
-     * Available parameters:
-     *     - fs:  safe for filesystem.
-     * @return string The language
-     */
-    public function lang($fs = false)
-    {
-        $result = ($fs ? \ZLanguage::transformFS(\ZLanguage::getLanguageCode()) : \ZLanguage::getLanguageCode());
-
-        return $result;
     }
 
     /**
@@ -165,7 +150,8 @@ class CoreExtension extends \Twig_Extension
         ];
 
         foreach ($messageTypeMap as $messageType => $bootstrapClass) {
-            $messages = $this->container->get('session')->getFlashBag()->get($messageType);
+            $session = $this->container->get('session');
+            $messages = $session->isStarted() ? $session->getFlashBag()->get($messageType) : [];
             if (count($messages) > 0) {
                 // Set class for the messages.
                 $class = (!empty($params['class'])) ? $params['class'] : "alert alert-$bootstrapClass";
@@ -279,22 +265,6 @@ class CoreExtension extends \Twig_Extension
     }
 
     /**
-     * @deprecated at Core 1.4.1, remove at Core-2.0
-     * @see use pageSetVar() or pageAddAsset()
-     * @param string $name
-     * @param string $value
-     */
-    public function pageAddVar($name, $value)
-    {
-        $this->container->get('logger')->log(\Monolog\Logger::DEBUG, '\Zikula\Bundle\CoreBundle\Twig\Extension\CoreExtension::pageAddVar is deprecated use pageAddAsset() or pageSetVar().');
-        if (in_array($name, ['stylesheet', 'javascript', 'header', 'footer'])) {
-            $this->pageAddAsset($name, $value);
-        } else {
-            $this->pageSetVar($name, $value);
-        }
-    }
-
-    /**
      * Zikula allows only the following asset types
      * <ul>
      *  <li>stylesheet</li>
@@ -322,14 +292,6 @@ class CoreExtension extends \Twig_Extension
         $value = (string) $value;
         $type = (string) $type;
         $weight = (int) $weight;
-
-        // @todo remove this code block at Core-2.0 because all themes are twig based
-        $themeBundle = $this->container->get('zikula_core.common.theme_engine')->getTheme();
-        if (isset($themeBundle) && !$themeBundle->isTwigBased()) {
-            \PageUtil::addVar($type, $value);
-
-            return;
-        }
 
         if ('stylesheet' == $type) {
             $this->container->get('zikula_core.common.theme.assets_css')->add([$value => $weight]);
