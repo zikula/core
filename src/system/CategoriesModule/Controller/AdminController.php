@@ -278,16 +278,9 @@ class AdminController extends AbstractController
 
         $moduleOptions = [];
         foreach ($modules as $module) {
-            $bundle = \ModUtil::getModule($module['name']);
-            if (null !== $bundle && !class_exists($bundle->getVersionClass())) {
-                // this check just confirming a Core-2.0 spec bundle - remove in 2.0.0
-                // then instead of getting MetaData, could just do ModUtil::getCapabilitiesOf($module['name'])
-                $capabilities = $bundle->getMetaData()->getCapabilities();
-                if (!isset($capabilities['categorizable'])) {
-                    continue; // skip this module if not categorizable
-                }
+            if ($this->get("zikula_extensions_module.api.capability")->isCapable($module['name'], 'categorizable')) {
+                $moduleOptions[$module['name']] = $module['displayname'];
             }
-            $moduleOptions[$module['name']] = $module['displayname'];
         }
 
         $templateParameters = [
