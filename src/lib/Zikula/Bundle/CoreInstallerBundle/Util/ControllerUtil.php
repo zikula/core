@@ -28,9 +28,7 @@ class ControllerUtil
     public function getTemplateGlobals(StageInterface $currentStage)
     {
         $globals = [
-            'lang' => \ZLanguage::getLanguageCode(),
-            'charset' => \ZLanguage::getEncoding(),
-            'version' => \Zikula_Core::VERSION_NUM,
+            'version' => \ZikulaKernel::VERSION,
             'currentstage' => $currentStage->getName()
         ];
 
@@ -83,7 +81,7 @@ class ControllerUtil
 
         $x = explode('.', str_replace('-', '.', phpversion()));
         $phpVersion = "$x[0].$x[1].$x[2]";
-        $results['phpsatisfied'] = version_compare($phpVersion, \Zikula_Core::PHP_MINIMUM_VERSION, ">=");
+        $results['phpsatisfied'] = version_compare($phpVersion, \ZikulaKernel::PHP_MINIMUM_VERSION, ">=");
 
         $results['pdo'] = extension_loaded('pdo');
         $isEnabled = @preg_match('/^\p{L}+$/u', 'TheseAreLetters');
@@ -91,7 +89,6 @@ class ControllerUtil
         $rootDir = $container->get('kernel')->getRootDir();
         if ($container->hasParameter('upgrading') && $container->getParameter('upgrading') === true) {
             $files = [
-                'personal_config' => '/../config/personal_config.php',
                 'custom_parameters' => '/config/custom_parameters.yml'
             ];
             foreach ($files as $key => $file) {
@@ -114,7 +111,7 @@ class ControllerUtil
             return true;
         }
         $results['phpversion'] = phpversion();
-        $results['phpcoreminversion'] = \Zikula_Core::PHP_MINIMUM_VERSION;
+        $results['phpcoreminversion'] = \ZikulaKernel::PHP_MINIMUM_VERSION;
 
         return $results;
     }
@@ -137,31 +134,5 @@ class ControllerUtil
         } catch (IOException $e) {
             throw new AbortStageException(__f('Cannot write parameters to %s file.', 'custom_parameters.yml'));
         }
-    }
-
-    /**
-     * @TODO unused at the moment. probably is needed in the controller to display translations?
-     * Load the right language.
-     *
-     * @return string
-     */
-    public function setupLang(ContainerInterface $container)
-    {
-        $lang = 'en';
-        // @TODO read this from parameters, not ini
-        if (is_readable('config/installer.ini')) {
-            $ini = parse_ini_file('config/installer.ini');
-            $lang = isset($ini['language']) ? $ini['language'] : 'en';
-        }
-
-        // setup multilingual
-        $GLOBALS['ZConfig']['System']['language_i18n'] = $lang;
-        $GLOBALS['ZConfig']['System']['multilingual'] = true;
-        $GLOBALS['ZConfig']['System']['languageurl'] = true;
-        $GLOBALS['ZConfig']['System']['language_detect'] = false;
-        $container->loadArguments($GLOBALS['ZConfig']['System']);
-
-        $zLang = \ZLanguage::getInstance();
-        $zLang->setup($container->get('request'));
     }
 }
