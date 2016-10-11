@@ -6,7 +6,6 @@
 
     <route id="home" path="/">
         <default key="_controller">zikula_core.controller.main_controller:homeAction</default>
-        <condition>request.query.get('module') == ''</condition>
         <option key="i18n">false</option>
     </route>
 </routes>
