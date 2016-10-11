@@ -7,7 +7,6 @@
     <parameters>
         <parameter key="core_installer.install_upgrade_check.class">Zikula\Bundle\CoreInstallerBundle\EventListener\InstallUpgradeCheckListener</parameter>
         <parameter key="core_installer.controller.util.class">Zikula\Bundle\CoreInstallerBundle\Util\ControllerUtil</parameter>
-        <parameter key="core_installer.config.util.class">Zikula\Bundle\CoreInstallerBundle\Util\ConfigUtil</parameter>
         <parameter key="core_installer.controller.installer.class">Zikula\Bundle\CoreInstallerBundle\Controller\InstallerController</parameter>
         <parameter key="core_installer.controller.upgrader.class">Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController</parameter>
         <parameter key="core_installer.controller.doc.class">Zikula\Bundle\CoreInstallerBundle\Controller\DocController</parameter>
@@ -22,10 +21,6 @@
         </service>
 
         <service id="core_installer.controller.util" class="%core_installer.controller.util.class%">
-        </service>
-
-        <service id="core_installer.config.util" class="%core_installer.config.util.class%">
-            <argument type="service" id="kernel" />
         </service>
 
         <service id="core_installer.controller.installer" class="%core_installer.controller.installer.class%">
