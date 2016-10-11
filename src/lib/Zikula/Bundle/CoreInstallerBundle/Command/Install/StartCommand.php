@@ -75,7 +75,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         if ($input->isInteractive()) {
             $env = $this->getContainer()->get('kernel')->getEnvironment();
             $io->comment($this->translator->__f('Configuring Zikula installation in %env% environment.', ['%env%' => $env]));
-            $io->comment($this->translator->__f('Please follow the instructions to install Zikula %version%.', ['%version%' => Zikula_Core::VERSION_NUM]));
+            $io->comment($this->translator->__f('Please follow the instructions to install Zikula %version%.', ['%version%' => \ZikulaKernel::VERSION]));
         }
 
         // get the settings from user input
@@ -119,7 +119,6 @@ class StartCommand extends AbstractCoreInstallerCommand
         $params['database_server_version'] = $dbh->getAttribute(\PDO::ATTR_SERVER_VERSION);
         $params['database_driver'] = 'pdo_' . $params['database_driver']; // doctrine requires prefix in custom_parameters.yml
         $yamlManager->setParameters($params);
-        $this->getContainer()->get('core_installer.config.util')->writeLegacyConfig($params);
         $this->getContainer()->get('zikula.cache_clearer')->clear('symfony.config');
 
         $io->success($this->translator->__('First stage of installation complete. Run `php app/console zikula:install:finish` to complete the installation.'));
