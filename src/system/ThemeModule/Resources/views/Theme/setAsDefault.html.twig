@@ -14,17 +14,6 @@
 </p>
 {{ form_start(form) }}
     {{ form_errors(form) }}
-    {{ form_row(form.resetuserselected) }}
-    <div class="form-group">
-        <div class="col-sm-offset-3 col-sm-9">
-            {% if theme_change %}
-                <em class="help-block">{{ __('Users are allowed to change their own theme.') }}</em>
-            {% else %}
-                <em class="help-block">{{ __('Users are not currently allowed to change their own theme, but may have previously changed them.') }}</em>
-            {% endif %}
-            <em class="help-block">{{ __('Note: User selection of themes is a deprecated feature.') }}</em>
-        </div>
-    </div>
     <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">
             {{ form_widget(form.accept) }}
