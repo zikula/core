@@ -97,14 +97,6 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
                 $basePath . '/style/core.css' => 1,
             ]
         );
-        // Add legacy stylesheet
-        if ((is_bool($this->compatLayer) && $this->compatLayer) || (!is_bool($this->compatLayer) && version_compare($this->compatLayer, '1.4.0', '<='))) {
-            $this->cssAssetBag->add(
-                [
-                    $basePath . '/style/legacy.css' => 2,
-                ]
-            );
-        }
     }
 
     public static function getSubscribedEvents()
@@ -144,16 +136,9 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         if (!\System::isInstalling()) {
             // Check for override of bootstrap css path
             if (!empty($this->params['zikula.stylesheet.bootstrap.min.path'])) {
-                // Core-2.0 Site method
                 $overrideBootstrapPath = $this->params['zikula.stylesheet.bootstrap.min.path'];
             } elseif (null !== $this->themeEngine->getTheme() && !empty($this->themeEngine->getTheme()->getConfig()['bootstrapPath'])) {
-                // Core-2.0 Theme method
                 $overrideBootstrapPath = $this->themeEngine->getTheme()->getConfig()['bootstrapPath'];
-            } else {
-                // Core-1.4 method @deprecated
-                if (!$this->themeEngine->getTheme()->isTwigBased()) {
-                    $overrideBootstrapPath = \ThemeUtil::getVar('bootstrapPath', '');
-                }
             }
         }
         $path = realpath($this->rootdir . '/../') . "/$overrideBootstrapPath";
