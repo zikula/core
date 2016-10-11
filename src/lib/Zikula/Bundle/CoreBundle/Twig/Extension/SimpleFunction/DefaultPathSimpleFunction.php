@@ -36,9 +36,6 @@ class DefaultPathSimpleFunction
         }
         if (isset($capability['route'])) {
             return $container->get('router')->generate($capability['route']);
-        } elseif (isset($capability['url'])) {
-            // BC - remove at Core-2.0
-            return $capability['url'];
         }
 
         return '';
