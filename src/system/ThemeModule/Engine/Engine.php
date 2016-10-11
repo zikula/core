@@ -115,16 +115,11 @@ class Engine
      * Wrap the response in the theme.
      * @api Core-2.0
      * @param Response $response
-     * @return Response|bool (false if theme is not twigBased)
+     * @return Response
      */
     public function wrapResponseInTheme(Response $response)
     {
         $activeTheme = $this->getTheme();
-        // @todo remove twigBased check in 2.0
-        if (!isset($activeTheme) || !$activeTheme->isTwigBased()) {
-            return false;
-        }
-
         $moduleName = $this->requestStack->getMasterRequest()->attributes->get('_zkModule');
         $themedResponse = $activeTheme->generateThemedResponse($this->getRealm(), $response, $moduleName);
         $filteredResponse = $this->filter($themedResponse);
@@ -141,8 +136,7 @@ class Engine
     public function wrapBcBlockInTheme(array $blockInfo)
     {
         $activeTheme = $this->getTheme();
-        // @todo remove twigBased check in 2.0
-        if (!isset($activeTheme) || !$activeTheme->isTwigBased()) {
+        if (!isset($activeTheme)) {
             return false;
         }
         $position = !empty($blockInfo['position']) ? $blockInfo['position'] : 'none';
@@ -159,15 +153,10 @@ class Engine
      * @param string $blockType
      * @param integer $bid
      * @param string $positionName
-     * @param bool $legacy @deprecated param
      * @return Response
      */
-    public function wrapBlockContentInTheme($content, $title, $blockType, $bid, $positionName, $legacy)
+    public function wrapBlockContentInTheme($content, $title, $blockType, $bid, $positionName)
     {
-        if (!$legacy) {
-            // legacy blocks are already themed at this point. @todo at Core-2.0 remove $legacy param and this check.
-            $content = $this->getTheme()->generateThemedBlockContent($this->getRealm(), $positionName, $content, $title);
-        }
         $themeConfig = $this->getTheme()->getConfig();
         $wrap = isset($themeConfig['blockWrapping']) ? $themeConfig['blockWrapping'] : true;
 
@@ -286,7 +275,6 @@ class Engine
      *  1) 'master' (required) this is the default realm. any non-matching value will utilize the master realm
      *  2) 'home' (optional) will be used when the path matches `^/$`
      *  3) 'admin' (optional) will be used when the annotationValue is 'admin'
-     *     until Core-2.0 the 'admin' realm will also be used when _zkType or lct are 'admin' (BC)
      * Uses regex to find the FIRST match to a pattern to one of three possible request attribute values.
      *  1) path   e.g. /pages/display/welcome-to-pages-content-manager
      *  2) route  e.g. zikulapagesmodule_user_display
@@ -305,15 +293,6 @@ class Engine
         }
         $request = $this->requestStack->getMasterRequest();
         $requestAttributes = $request->attributes->all();
-        // @todo BC remove at Core-2.0
-        $lct = $request->query->get('lct', null);
-        if ((isset($requestAttributes['_zkType']) && $requestAttributes['_zkType'] == 'admin')
-            || ((isset($requestAttributes['_route']) && in_array($requestAttributes['_route'], ['legacy', 'legacy_short_url'])) && ($request->query->get('type') == 'admin'))
-            || isset($lct)) {
-            $this->realm = 'admin';
-
-            return;
-        }
         // match `/` for home realm
         if (isset($requestAttributes['_route']) && $requestAttributes['_route'] == 'home') {
             $this->realm = 'home';
@@ -389,28 +368,6 @@ class Engine
     {
         $jsAssets = [];
         $cssAssets = [];
-        // @todo START legacy block - remove at Core-2.0 (leave legacy method calls)
-        if ($this->kernel->getContainer()->getParameter('compat_layer')) {
-            $baseUri = $this->requestStack->getMasterRequest()->getBasePath();
-            $javascripts = \JCSSUtil::prepareJavascripts(\PageUtil::getVar('javascript', []));
-            $i = 60;
-            $legacyAjaxScripts = 0;
-            foreach ($javascripts as $javascript) {
-                $javascript = (!empty($baseUri) && (false === strpos($javascript, $baseUri))) ? "$baseUri/$javascript" : "$javascript";
-                $javascript = $javascript[0] == '/' ? $javascript : "/$javascript"; // add slash to start if not present.
-                // Add legacy ajax scripts (like prototype/scriptaculous) at the lightest weight (0) and in order from there.
-                // Add others after core default assets (like jQuery) but before pageAddAsset default weight (100) and in order from there.
-                $jsAssets[$javascript] = (false !== strpos($javascript, 'javascript/ajax/')) ? $legacyAjaxScripts++ : $i++;
-            }
-            $stylesheets = \PageUtil::getVar('stylesheet', []);
-            $i = 60;
-            foreach ($stylesheets as $stylesheet) {
-                $stylesheet = $baseUri . '/' . $stylesheet;
-                $cssAssets[$stylesheet] = $i++; // add before pageAddAsset default weight (100)
-            }
-        }
-        // @todo END legacy block - remove at Core-2.0
-
         $filteredContent = $this->filterService->filter($response->getContent(), $jsAssets, $cssAssets);
         $response->setContent($filteredContent);
 
