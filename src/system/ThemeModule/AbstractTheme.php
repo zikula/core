@@ -20,8 +20,6 @@ abstract class AbstractTheme extends AbstractBundle
 {
     private $config;
 
-    private $isTwigBased = false;
-
     public function getNameType()
     {
         return 'Theme';
@@ -48,7 +46,6 @@ abstract class AbstractTheme extends AbstractBundle
             if (!isset($this->config['master'])) {
                 throw new InvalidConfigurationException('Core-2.0 themes must have a defined master realm.');
             }
-            $this->isTwigBased = true;
         }
     }
 
@@ -166,15 +163,5 @@ abstract class AbstractTheme extends AbstractBundle
         }
 
         return $defaultVars;
-    }
-
-    /**
-     * Is theme twig (Core-2.0) based?
-     * @deprecated
-     * @return bool
-     */
-    public function isTwigBased()
-    {
-        return $this->isTwigBased;
     }
 }
