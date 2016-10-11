@@ -74,9 +74,6 @@ class ExtensionHelper
         }
 
         $bundle = $this->forceLoadExtension($extension);
-        if (null === $bundle) {
-            return LegacyExtensionHelper::install($extension);
-        }
 
         $installer = $this->getExtensionInstallerInstance($bundle);
         $result = $installer->install();
@@ -119,9 +116,6 @@ class ExtensionHelper
         } else {
             $bundle = $this->forceLoadExtension($extension);
         }
-        if (null === $bundle) {
-            return LegacyExtensionHelper::upgrade($extension);
-        }
 
         // @TODO: Need to check status of Dependencies here to be sure they are met for upgraded extension.
 
@@ -140,11 +134,6 @@ class ExtensionHelper
         }
         // persist the updated version
         $newVersion = $bundle->getMetaData()->getVersion();
-        if (empty($newVersion)) {
-            // @todo remove this legacy at Core-2.0
-            $newVersion = \Zikula\ExtensionsModule\Util::getVersionMeta($extension->getName(), 'modules', $bundle)->getVersion();
-        }
-
         $extension->setVersion($newVersion);
         $this->container->get('doctrine')->getManager()->flush();
 
@@ -184,9 +173,6 @@ class ExtensionHelper
         }
 
         $bundle = $this->forceLoadExtension($extension);
-        if (null === $bundle) {
-            return LegacyExtensionHelper::uninstall($extension);
-        }
 
         // remove hooks
         $this->container->get('zikula_hook_bundle.api.hook')->uninstallProviderHooks($bundle->getMetaData());
@@ -320,10 +306,7 @@ class ExtensionHelper
     {
         $className = $bundle->getInstallerClass();
         $reflectionInstaller = new \ReflectionClass($className);
-        if ($reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) { // @deprecated remove at Core-2.0
-
-            return $reflectionInstaller->newInstanceArgs([$this->container, $bundle]);
-        } elseif (!$reflectionInstaller->isSubclassOf('\Zikula\Core\ExtensionInstallerInterface')) {
+        if (!$reflectionInstaller->isSubclassOf('\Zikula\Core\ExtensionInstallerInterface')) {
             throw new \RuntimeException($this->translator->__f("%s must implement ExtensionInstallerInterface", ['%s' => $className]));
         }
         $installer = $reflectionInstaller->newInstance();
