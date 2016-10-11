@@ -59,7 +59,6 @@
         </service>
 
         <service id="zikula_extensions_module.api.extension" class="%zikula_extensions_module.api.extension.class%">
-            <argument type="service" id="kernel"/>
         </service>
 
         <service id="zikula_extensions_module.api.capability" class="%zikula_extensions_module.api.capability.class%" >
@@ -96,7 +95,7 @@
             <argument type="service" id="zikula.cache_clearer" />
             <argument type="service" id="zikula_extensions_module.extension_repository" />
             <argument type="service" id="translator.default" />
-            <argument type="service" id="zikula_extensions_module.api.extension" />
+            <argument type="service" id="kernel" />
         </service>
 
         <service id="zikula_extensions_module.extension_helper" class="%zikula_extensions_module.extension_helper.class%" >
