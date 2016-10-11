@@ -507,7 +507,7 @@ class Zikula_Core
             // register default page vars
             PageUtil::registerVar('polyfill_features', true);
             PageUtil::registerVar('title');
-            PageUtil::setVar('title', System::getVar('defaultpagetitle'));
+            PageUtil::setVar('title', System::getVar('defaultpagetitle_'.\ZLanguage::getLanguageCode()));
             PageUtil::registerVar('keywords', true);
             PageUtil::registerVar('stylesheet', true);
             PageUtil::registerVar('javascript', true);
@@ -518,10 +518,10 @@ class Zikula_Core
 
             // set some defaults
             // Metadata for SEO
-            $this->container->setParameter('zikula_view.metatags', [
-                'description' => System::getVar('defaultmetadescription'),
+            $this->container->setParameter('zikula_view.metatags', array(
+                'description' => System::getVar('defaultmetadescription_'.\ZLanguage::getLanguageCode()),
                 'keywords' => System::getVar('metakeywords')
-            ]);
+            ));
 
             $coreInitEvent->setArgument('stage', self::STAGE_THEME);
             $this->dispatcher->dispatch('core.init', $coreInitEvent);
