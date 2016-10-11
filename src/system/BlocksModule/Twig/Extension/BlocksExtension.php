@@ -11,12 +11,12 @@
 
 namespace Zikula\BlocksModule\Twig\Extension;
 
+use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\BlocksModule\Api\BlockApi;
 use Zikula\BlocksModule\Api\BlockFilterApi;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\BlockHandlerInterface;
 use Zikula\ThemeModule\Engine\Engine;
-use Zikula\ExtensionsModule\Api\ExtensionApi;
 
 class BlocksExtension extends \Twig_Extension
 {
@@ -36,9 +36,9 @@ class BlocksExtension extends \Twig_Extension
     private $themeEngine;
 
     /**
-     * @var ExtensionApi
+     * @var KernelInterface
      */
-    private $extensionApi;
+    private $kernel;
 
     /**
      * @var \Twig_Loader_Filesystem
@@ -50,20 +50,20 @@ class BlocksExtension extends \Twig_Extension
      * @param BlockApi $blockApi
      * @param BlockFilterApi $blockFilterApi
      * @param Engine $themeEngine
-     * @param ExtensionApi $extensionApi
+     * @param KernelInterface $kernel
      * @param \Twig_Loader_Filesystem $loader
      */
     public function __construct(
         BlockApi $blockApi,
         BlockFilterApi $blockFilterApi,
         Engine $themeEngine,
-        ExtensionApi $extensionApi,
+        KernelInterface $kernel,
         \Twig_Loader_Filesystem $loader
     ) {
         $this->blockApi = $blockApi;
         $this->blockFilter = $blockFilterApi;
         $this->themeEngine = $themeEngine;
-        $this->extensionApi = $extensionApi;
+        $this->kernel = $kernel;
         $this->loader = $loader;
     }
 
@@ -104,7 +104,7 @@ class BlocksExtension extends \Twig_Extension
      */
     public function showBlockPosition($positionName, $implode = true)
     {
-        $instance = $this->extensionApi->getModuleInstanceOrNull('ZikulaBlocksModule');
+        $instance = $this->kernel->getModule('ZikulaBlocksModule');
         if (!isset($instance)) {
             return "Blocks not currently available.";
         }
@@ -125,15 +125,13 @@ class BlocksExtension extends \Twig_Extension
      */
     public function showBlock(BlockEntity $block, $positionName = '')
     {
-        $blocksModuleInstance = $this->extensionApi->getModuleInstanceOrNull('ZikulaBlocksModule');
+        $blocksModuleInstance = $this->kernel->getModule('ZikulaBlocksModule');
         if (!isset($blocksModuleInstance)) {
             return "Blocks not currently available.";
         }
         // Check if providing module not available, if block is inactive, if block filter prevents display.
-        $moduleInstance = $this->extensionApi->getModuleInstanceOrNull($block->getModule()->getName());
-        if (!isset($moduleInstance)
-            || (!$block->getActive())
-            || (!$this->blockFilter->isDisplayable($block))) {
+        $moduleInstance = $this->kernel->getModule($block->getModule()->getName());
+        if ((!$block->getActive()) || (!$this->blockFilter->isDisplayable($block))) {
             return '';
         }
 
@@ -156,20 +154,15 @@ class BlocksExtension extends \Twig_Extension
         $legacy = false;
         $content = '';
         if ($blockInstance instanceof BlockHandlerInterface) {
-            $blockProperties = $block->getContent();
+            $blockProperties = $block->getProperties();
             $blockProperties['bid'] = $block->getBid();
             $blockProperties['title'] = $block->getTitle();
             $blockProperties['position'] = $positionName;
             $content = $blockInstance->display($blockProperties);
-        } elseif ($blockInstance instanceof \Zikula_Controller_AbstractBlock) { // @todo remove at Core-2.0
-            $legacy = true;
-            $args = \BlockUtil::getBlockInfo($block->getBid());
-            $args['position'] = $positionName;
-            $content = $blockInstance->display($args);
         }
         if (!$legacy) {
             if (isset($moduleInstance)) {
-                // add module stylesheet to page - legacy blocks load stylesheets automatically on ModUtil::load()
+                // add module stylesheet to page
                 $moduleInstance->addStylesheet();
             }
         }
