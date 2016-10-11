@@ -14,9 +14,8 @@ namespace Zikula\Bundle\CoreInstallerBundle\EventListener;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Zikula\Bundle\CoreInstallerBundle\Util\VersionUtil;
-use Zikula\Core\Event\GenericEvent;
-use Zikula_Request_Http as Request;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpFoundation\Request;
 
 class InstallUpgradeCheckListener implements EventSubscriberInterface
 {
@@ -30,17 +29,19 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
         $this->container = $container;
     }
 
-    public function onCoreInit(GenericEvent $event)
+    public function onKernelRequest(GetResponseEvent $event)
     {
+        if (!$event->isMasterRequest()) {
+            return;
+        }
         /** @var Request $request */
-        $request = $this->container->get('request');
+        $request = $event->getRequest();
         // create several booleans to test condition of request regarding install/upgrade
         $installed = $this->container->getParameter('installed');
         $requiresUpgrade = false;
         if ($installed) {
-            VersionUtil::defineCurrentInstalledCoreVersion($this->container);
-            $currentVersion = $this->container->getParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM);
-            $requiresUpgrade = $installed && version_compare($currentVersion, \Zikula_Core::VERSION_NUM, '<');
+            $currentVersion = $this->container->getParameter(\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
+            $requiresUpgrade = $installed && version_compare($currentVersion, \ZikulaKernel::VERSION, '<');
         }
 
         // can't use $request->get('_route') to get any of the following
@@ -76,10 +77,9 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        // @todo can this be done on kernel.request instead?
         return [
-            'core.init' => [
-                ['onCoreInit']
+            'kernel.request' => [
+                ['onKernelRequest', 200]
             ],
         ];
     }
