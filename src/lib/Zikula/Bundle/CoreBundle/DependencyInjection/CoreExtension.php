@@ -42,27 +42,6 @@ class CoreExtension extends Extension
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
 
-        // @todo - temporary - remove at Core-2.0, also need to redeligate some
-        // of this to other's responsibility
-        $cacheDir = $container->getParameterBag()->resolveValue('%kernel.cache_dir%/ztemp');
-        $dirs = [
-            'doctrinemodels',
-            'idsTmp',
-            'purifierCache',
-            'doctrinemodels',
-            'Theme_cache',
-            'Theme_compiled',
-            'Theme_Config',
-            'view_cache',
-            'view_compiled',
-            'error_logs'
-        ];
-        foreach ($dirs as $dir) {
-            if (!is_dir($cacheDir . '/' . $dir)) {
-                mkdir($cacheDir . '/' . $dir, 0777, true);
-            }
-        }
-
         $this->registerTranslatorConfiguration($config['translator'], $container);
     }
 
