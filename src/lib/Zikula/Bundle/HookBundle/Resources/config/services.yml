@@ -32,8 +32,7 @@ services:
     # note: the second args is intentionally a string.
 
   hook_dispatcher:
-    class: Zikula_HookDispatcher
-    # at Core-2.0 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcher
+    class: Zikula\Bundle\HookBundle\Dispatcher\HookDispatcher
     arguments: ["@hook_dispatcher.storage", "@event_dispatcher", "@hook_dispatcher.servicefactory"]
 
   zikula.hookmanager:
