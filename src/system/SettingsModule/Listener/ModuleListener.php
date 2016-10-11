@@ -14,6 +14,7 @@ namespace Zikula\SettingsModule\Listener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Zikula\Core\CoreEvents;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
 class ModuleListener implements EventSubscriberInterface
@@ -42,8 +43,7 @@ class ModuleListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            // @todo convert to CoreEvent::MODULE_DISABLE at Core-2.0
-            'installer.module.deactivated' => ['moduleDeactivated']
+            CoreEvents::MODULE_DISABLE => ['moduleDeactivated']
         ];
     }
 
