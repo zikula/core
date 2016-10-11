@@ -99,12 +99,8 @@ class ThemeController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createFormBuilder(['themeName' => $themeName, 'resetuserselected' => true])
+        $form = $this->createFormBuilder(['themeName' => $themeName])
             ->add('themeName', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('resetuserselected', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [ // @todo remove at Core-2.0
-                'label' => $this->__('Override users\' theme settings'),
-                'required' => false,
-            ])
             ->add('accept', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'label' => $this->__('Accept'),
                 'icon' => 'fa-check',
@@ -126,15 +122,6 @@ class ThemeController extends AbstractController
                 $data = $form->getData();
                 // Set the default theme
                 $this->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'Default_Theme', $data['themeName']);
-                if ($data['resetuserselected']) {
-                    // @todo remove this at Core-2.0
-                    $query = $this->getDoctrine()->getManager()->createQueryBuilder()
-                        ->update('ZikulaUsersModule:UserEntity', 'u')
-                        ->set('u.theme', ':null')
-                        ->setParameter('null', '')
-                        ->getQuery();
-                    $query->getResult();
-                }
                 $this->get('zikula.cache_clearer')->clear('twig');
                 $this->get('zikula.cache_clearer')->clear('symfony.config');
                 $this->addFlash('status', $this->__('Done! Changed default theme.'));
@@ -148,7 +135,6 @@ class ThemeController extends AbstractController
 
         return [
             'themeName' => $themeName,
-            'theme_change' => $this->getVar('theme_change'),
             'form' => $form->createView()
         ];
     }
