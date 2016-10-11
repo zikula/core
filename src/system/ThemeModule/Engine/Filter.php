@@ -18,8 +18,8 @@ use Zikula\ThemeModule\Engine\Asset\ResolverInterface;
  *
  * This class resolves, compiles and renders all page assets and adds them to the outgoing source content
  * Recently, the accepted practice for placement of javascript has changed from header to footer. Placement in this
- * class is determined by the `scriptPosition` parameter in `app/config/parameters.yml`. In Core-1.4 this defaults
- * to the header. In Core-2.0 it will default to footer. Scripts must be written to accommodate this change.
+ * class is determined by the `scriptPosition` parameter in `app/config/parameters.yml`. In Core-2.0 this defaults to
+ * footer. Scripts must be written to accommodate this.
  */
 class Filter
 {
@@ -59,8 +59,7 @@ class Filter
         $this->footers = $footers;
         $this->jsResolver = $js;
         $this->cssResolver = $css;
-        // @todo default to 'head' for BC in Core 1.x but default to 'foot' in Core-2.0
-        $this->scriptPosition = isset($scriptPosition) && in_array($scriptPosition, ['head', 'foot']) ? $scriptPosition : 'head';
+        $this->scriptPosition = isset($scriptPosition) && in_array($scriptPosition, ['head', 'foot']) ? $scriptPosition : 'foot';
     }
 
     /**
