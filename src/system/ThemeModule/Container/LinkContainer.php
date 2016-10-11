@@ -90,26 +90,6 @@ class LinkContainer implements LinkContainerInterface
             'text' => $this->translator->__('Themes list'),
             'icon' => 'list'
         ];
-        $links[] = [
-            'url' => $this->router->generate('zikulathememodule_admin_modifyconfig'),
-            'text' => $this->translator->__('Settings'),
-            'icon' => 'wrench'
-        ];
-
-        return $links;
-    }
-
-    private function getAccount()
-    {
-        $links = [];
-
-        if ($this->variableApi->getSystemVar('theme_change')) {
-            $links[] = [
-                'url' => $this->router->generate('zikulathememodule_user_index'),
-                'text' => $this->translator->__('Theme switcher'),
-                'icon' => 'admin.png'
-            ];
-        }
 
         return $links;
     }
