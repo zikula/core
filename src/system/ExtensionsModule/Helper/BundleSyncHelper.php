@@ -127,14 +127,9 @@ class BundleSyncHelper
         $scanner->scan($directories, 5);
         $newModules = $scanner->getModulesMetaData();
 
-        // scan for all bundle-type bundles (psr-0 & psr-4) in either /system or /bundles
+        // scan for all bundle-type bundles (psr-4) in either /system or /bundles
         /** @var MetaData $bundleMetaData */
         foreach ($newModules as $name => $bundleMetaData) {
-            /* @todo psr-0 is deprecated - remove this in Core-2.0 */
-            foreach ($bundleMetaData->getPsr0() as $ns => $path) {
-                \ZLoader::addPrefix($ns, $path);
-            }
-
             foreach ($bundleMetaData->getPsr4() as $ns => $path) {
                 \ZLoader::addPrefixPsr4($ns, $path);
             }
@@ -143,35 +138,9 @@ class BundleSyncHelper
 
             /** @var $bundle \Zikula\Core\AbstractModule */
             $bundle = new $bundleClass();
-            $versionClass = $bundle->getVersionClass();
-
-            if (class_exists($versionClass)) {
-                // @todo 1.4-bundle spec - deprecated - remove in Core-2.0
-                $version = new $versionClass($bundle);
-                $version['name'] = $bundle->getName();
-
-                $bundleVersionArray = $version->toArray();
-                unset($bundleVersionArray['id']);
-            } else {
-                // 2.0-bundle spec
-                $bundleMetaData->setTranslator($this->translator);
-                $bundleMetaData->setDirectoryFromBundle($bundle);
-                $bundleVersionArray = $bundleMetaData->getFilteredVersionInfoArray();
-            }
-
-            // Work out if admin-capable
-            // @deprecated - author must declare in Core 2.0
-            // e.g. "capabilities": {"admin": {"route": "zikulafoobundle_admin_index"} }
-            if (empty($bundleVersionArray['capabilities']['admin']) && file_exists($bundle->getPath().'/Controller/AdminController.php')) {
-                $bundleVersionArray['capabilities']['admin'] = ['url' => \ModUtil::url($bundle->getName(), 'admin', 'index')];
-            }
-
-            // Work out if user-capable
-            // @deprecated - author must declare in Core 2.0
-            // e.g. "capabilities": {"user": {"route": "zikulafoobundle_user_index"} }
-            if (empty($bundleVersionArray['capabilities']['user']) && file_exists($bundle->getPath().'/Controller/UserController.php')) {
-                $bundleVersionArray['capabilities']['user'] = ['url' => \ModUtil::url($bundle->getName(), 'user', 'index')];
-            }
+            $bundleMetaData->setTranslator($this->translator);
+            $bundleMetaData->setDirectoryFromBundle($bundle);
+            $bundleVersionArray = $bundleMetaData->getFilteredVersionInfoArray();
 
             // loads the gettext domain for 3rd party bundles
             if (!strpos($bundle->getPath(), 'bundles') === false) {
@@ -186,8 +155,6 @@ class BundleSyncHelper
             $bundles[$bundle->getName()]['oldnames'] = isset($bundleVersionArray['oldnames']) ? $bundleVersionArray['oldnames'] : '';
         }
 
-        $legacyModules = LegacyBundleSyncHelper::scanForModules();
-        $bundles = $bundles + $legacyModules;
         $this->validate($bundles);
 
         return $bundles;
@@ -449,7 +416,7 @@ class BundleSyncHelper
      */
     private function isCoreCompatible($compatibilityString)
     {
-        $coreVersion = new version(\Zikula_Core::VERSION_NUM);
+        $coreVersion = new version(\ZikulaKernel::VERSION);
         $requiredVersionExpression = new expression($compatibilityString);
 
         return $requiredVersionExpression->satisfiedBy($coreVersion);
