@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-use Zikula_Request_Http as Request;
+use Symfony\Component\HttpFoundation\Request;
 
 require 'lib/bootstrap.php';
 
