@@ -44,15 +44,9 @@ class SearchBlock extends AbstractBlockHandler
             $properties['active'] = [];
         }
 
-        $pluginOptions = [];
-        $activeModules = array_keys($properties['active']);
-        foreach ($activeModules as $moduleName) {
-            $pluginOptions[$moduleName] = ModUtil::apiFunc($moduleName, 'search', 'options', $properties);
-        }
-
         $templateParameters = [
             'properties' => $properties,
-            'pluginOptions' => $pluginOptions
+            'pluginOptions' => []
         ];
 
         return $this->renderView('@ZikulaSearchModule/Block/search.html.twig', $templateParameters);
