@@ -5,11 +5,9 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="event_dispatcher.class">Zikula_EventManager</parameter>
         <!-- Make controller resolving working with Zikula base classes. -->
         <parameter key="controller_resolver.class">Zikula\Bundle\CoreBundle\Controller\ControllerResolver</parameter>
         <parameter key="zikula_core.controller.main_controller.class">Zikula\Bundle\CoreBundle\Controller\MainController</parameter>
-        <parameter key="zikula_core.controller.legacy_controller.class">Zikula\Bundle\CoreBundle\Controller\LegacyController</parameter>
         <parameter key="zikula.data_collector.class">Zikula\Bundle\CoreBundle\DataCollector\ZikulaVersionDataCollector</parameter>
         <parameter key="zikula.dynamic_config_dumper.class">Zikula\Bundle\CoreBundle\DynamicConfigDumper</parameter>
         <parameter key="zikula.cache_clearer.class">Zikula\Bundle\CoreBundle\CacheClearer</parameter>
@@ -20,12 +18,6 @@
         <service id="zikula_core.controller.main_controller" class="%zikula_core.controller.main_controller.class%">
             <argument type="service" id="kernel" />
             <argument type="service" id="zikula_extensions_module.api.variable" />
-            <argument type="service" id="zikula_core.controller.legacy_controller" />
-        </service>
-        <service id="zikula_core.controller.legacy_controller" class="%zikula_core.controller.legacy_controller.class%">
-            <argument type="service" id="zikula_extensions_module.api.variable" />
-            <argument type="service" id="zikula_permissions_module.api.permission" />
-            <argument type="service" id="zikula_extensions_module.extension_repository" />
         </service>
         <service id="data_collector.zikula_version" class="%zikula.data_collector.class%" public="false">
             <argument type="service" id="zikula_core.common.theme_engine" />
