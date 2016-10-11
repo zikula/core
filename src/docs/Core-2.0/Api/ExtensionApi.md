@@ -5,11 +5,7 @@ classname: \Zikula\ExtensionsModule\Api\ExtensionApi
 
 service id="zikula_extensions_module.api.extension"
 
-The class makes the following methods available:
-
-    - getModuleInstanceOrNull($name) @deprecated remove at Core-2.0
-
-The class also hosts several constants which identify the state of an extension:
+The class hosts several constants which identify the state of an extension:
 
     const STATE_UNINITIALISED = 1;
     const STATE_INACTIVE = 2;
