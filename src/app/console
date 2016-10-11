@@ -39,8 +39,5 @@ requirementCheck($kernelConfig['parameters']);
 $kernel = new ZikulaKernel($env, $debug);
 $kernel->boot();
 
-// legacy handling
-require __DIR__.'/../lib/core.php';
-
 $application = new Application($kernel);
 $application->run($input);
