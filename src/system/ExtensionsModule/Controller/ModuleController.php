@@ -165,15 +165,8 @@ class ModuleController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $isLegacyExtension = false;
-        $bundle = $this->get('zikula_extensions_module.api.extension')->getModuleInstanceOrNull($extension->getName());
-        if (isset($bundle)) {
-            $metaData = $bundle->getMetaData()->getFilteredVersionInfoArray();
-        } else {
-            // @todo for BC only, remove at Core-2.0
-            $isLegacyExtension = true;
-            $metaData = ExtensionsUtil::getVersionMeta($extension->getName());
-        }
+        $bundle = $this->get('kernel')->getModule($extension->getName());
+        $metaData = $bundle->getMetaData()->getFilteredVersionInfoArray();
 
         if ($forceDefaults) {
             $extension->setName($metaData['name']);
@@ -195,26 +188,6 @@ class ModuleController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($extension);
                 $em->flush();
-
-                if ($isLegacyExtension) {
-                    // @todo for BC only, remove at Core-2.0
-                    // update admin and user urls in case the modules url name changed
-                    $capabilities = $extension->getCapabilities();
-                    foreach (['admin', 'user'] as $area) {
-                        if (!array_key_exists($area, $capabilities)) {
-                            // area not supported, skipping
-                            continue;
-                        }
-
-                        // build updated url (using new url name)
-                        $newUrl = \ModUtil::url($extension->getName(), $area, 'index');
-                        $capabilities[$area] = ['url' => $newUrl];
-                    }
-
-                    $extension->setCapabilities($capabilities);
-                    $em->persist($extension);
-                    $em->flush();
-                }
 
                 $this->get('zikula.cache_clearer')->clear('symfony.routing');
                 $this->addFlash('status', $this->__('Done! Extension updated.'));
@@ -333,7 +306,7 @@ class ModuleController extends AbstractController
             $extensions = json_decode($extensions);
             foreach ($extensions as $extensionId) {
                 $extensionEntity = $this->get('zikula_extensions_module.extension_repository')->find($extensionId);
-                $bundle = $this->get('zikula_extensions_module.api.extension')->getModuleInstanceOrNull($extensionEntity->getName());
+                $bundle = $this->get('kernel')->getModule($extensionEntity->getName());
                 if (!empty($bundle)) {
                     $event = new ModuleStateEvent($bundle);
                     $this->get('event_dispatcher')->dispatch(CoreEvents::MODULE_POSTINSTALL, $event);
