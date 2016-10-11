@@ -42,27 +42,21 @@ class ExtensionServicesListener implements EventSubscriberInterface
     {
         return [
             'zikula.link_collector' => 'linkCollectorResponder',
-            'module_dispatch.postexecute' => 'addServiceLink' // deprecated event
         ];
     }
 
     /**
-     * Dynamically add menu links to administration for system services.
+     * Respond to zikula.link_collector events.
      *
-     * Listens for 'module_dispatch.postexecute' events.
-     * @deprecated remove at Core-2.0
-     * move logic to linkCollectorResponder
+     * Create a BC Layer for the zikula.link_collector event to gather Hook-related links.
      *
-     * @param \Zikula_Event $event The event handler
-     *
-     * @return void
+     * @param GenericEvent $event
      */
-    public function addServiceLink(\Zikula_Event $event)
+    public function linkCollectorResponder(GenericEvent $event)
     {
-        // check if this is for this handler
-        if (!($event['modfunc'][1] == 'getLinks' && $event['type'] == 'admin' && $event['api'] == true)) {
-            return;
-        }
+        $event->setArgument('modname', $event->getSubject());
+        $event->setArgument('modfunc', [1 => 'getLinks']);
+        $event->setArgument('api', true);
 
         // notify EVENT here to gather any system service links
         $args = ['modname' => $event->getArgument('modname')];
@@ -78,20 +72,5 @@ class ExtensionServicesListener implements EventSubscriberInterface
                 'links' => $sublinks
             ];
         }
-    }
-
-    /**
-     * Respond to zikula.link_collector events.
-     *
-     * Create a BC Layer for the zikula.link_collector event to gather Hook-related links.
-     *
-     * @param GenericEvent $event
-     */
-    public function linkCollectorResponder(GenericEvent $event)
-    {
-        $event->setArgument('modname', $event->getSubject());
-        $event->setArgument('modfunc', [1 => 'getLinks']);
-        $event->setArgument('api', true);
-        $this->addServiceLink($event);
     }
 }
