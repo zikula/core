@@ -36,9 +36,7 @@ class PendingContentBlock extends AbstractBlockHandler
             /** @var \Zikula\Common\Collection\Container $collection */
             $module = $collection->getName();
             foreach ($collection as $item) {
-                if ($item instanceof \Zikula_Provider_AggregateItem) { // @todo remove at Core-2.0
-                    $link = \ModUtil::url($module, $item->getController(), $item->getMethod(), $item->getArgs());
-                } elseif ($item instanceof PendingContentCollectible) {
+                if ($item instanceof PendingContentCollectible) {
                     $link = $this->get('router')->generate($item->getRoute(), $item->getArgs());
                 } else {
                     $link = '';
