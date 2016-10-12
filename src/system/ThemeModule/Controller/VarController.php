@@ -35,10 +35,7 @@ class VarController extends AbstractController
      */
     public function varAction(Request $request, $themeName)
     {
-        $themeBundle = \ThemeUtil::getTheme($themeName);
-        if (!$themeBundle->isTwigBased()) {
-            throw new NotFoundHttpException('Theme type must be twig-based in ' . __FILE__ . ' at line ' . __LINE__ . '.');
-        }
+        $themeBundle = $this->get('kernel')->getBundle($themeName);
         $themeVarsPath = $themeBundle->getConfigPath() . '/variables.yml';
         if (!file_exists($themeVarsPath)) {
             $this->addFlash('warning', $this->__f('%theme% has no configuration.', ['%theme%' => $themeName]));
