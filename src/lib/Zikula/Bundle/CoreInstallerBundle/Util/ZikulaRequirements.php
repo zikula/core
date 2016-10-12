@@ -68,11 +68,5 @@ class ZikulaRequirements
             $parameters['datadir'] . '/ directory must be writable',
             'Change the permissions of "<strong>' . $parameters['datadir']. '</strong>" directory so that the web server can write into it.'
         );
-        // @todo @deprecated
-        $symfonyRequirements->addRequirement(
-            is_writable($src . '/config'),
-            'config/ directory must be writable',
-            'Change the permissions of "<strong>config/</strong>" directory so that the web server can write into it.'
-        );
     }
 }
