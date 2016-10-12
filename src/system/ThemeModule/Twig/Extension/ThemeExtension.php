@@ -73,20 +73,9 @@ class ThemeExtension extends \Twig_Extension
             $size = 'medium';
         }
 
-        $themeInfo = \ThemeUtil::getInfo(\ThemeUtil::getIDFromName($themeName));
-        $theme = \ThemeUtil::getTheme($themeInfo['name']);
-        $imagePath = null;
-        if (null === $theme) {
-            if (file_exists($this->assetHelper->getSiteRoot() . "themes/{$themeInfo['directory']}/images/preview_{$size}.png")) {
-                $imagePath = $this->assetHelper->getSiteRoot() . "/themes/{$themeInfo['directory']}/images/preview_{$size}.png";
-            }
-        } else {
-            try {
-                $imagePath = $this->assetHelper->resolve('@' . $themeName . ':images/preview_' . $size . '.png');
-            } catch (\Exception $e) {
-            }
-        }
-        if (!$imagePath) {
+        try {
+            $imagePath = $this->assetHelper->resolve('@' . $themeName . ':images/preview_' . $size . '.png');
+        } catch (\Exception $e) {
             $imagePath = $this->assetHelper->resolve('@ZikulaThemeModule:images/preview_' . $size . '.png');
         }
 
