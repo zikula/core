@@ -101,7 +101,6 @@ class ThemeEntityRepository extends EntityRepository
                 } catch (\Exception $e) {
                     $themeBundle = null;
                 }
-                $this->filteredGetCache[$key][$theme['directory']]['isTwigBased'] = isset($themeBundle) ? $themeBundle->isTwigBased() : false;
                 $this->filteredGetCache[$key][$theme['directory']]['vars'] = isset($themeBundle) ? $themeBundle->getThemeVars() : false;
             }
 
