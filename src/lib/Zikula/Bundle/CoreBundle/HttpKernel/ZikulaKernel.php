@@ -14,12 +14,13 @@ namespace Zikula\Bundle\CoreBundle\HttpKernel;
 use Composer\Autoload\ClassLoader;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Debug\DebugClassLoader;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\MergeExtensionConfigurationPass;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Yaml\Yaml;
+use Zikula\Bridge\DependencyInjection\ContainerBuilder;
 use Zikula\Bridge\DependencyInjection\PhpDumper;
 use Zikula\Core\AbstractBundle;
 use Zikula\Core\AbstractModule;
@@ -333,11 +334,11 @@ abstract class ZikulaKernel extends Kernel
      * Dumps the service container to PHP code in the cache.
      *
      * @param ConfigCache      $cache     The config cache
-     * @param ContainerBuilder $container The service container
+     * @param SymfonyContainerBuilder $container The service container
      * @param string           $class     The name of the class to generate
      * @param string           $baseClass The name of the container's base class
      */
-    protected function dumpContainer(ConfigCache $cache, ContainerBuilder $container, $class, $baseClass)
+    protected function dumpContainer(ConfigCache $cache, SymfonyContainerBuilder $container, $class, $baseClass)
     {
         // cache the container
         $dumper = new PhpDumper($container);
@@ -360,9 +361,8 @@ abstract class ZikulaKernel extends Kernel
      */
     protected function getContainerBaseClass()
     {
-        return 'Zikula_ServiceManager';
         //return 'Symfony\Component\DependencyInjection\Container';
-        // return 'Zikula\Bridge\DependencyInjection\ContainerBuilder';
+        return 'Zikula\Bridge\DependencyInjection\ContainerBuilder';
     }
 
     /**
@@ -372,8 +372,7 @@ abstract class ZikulaKernel extends Kernel
      */
     protected function getContainerBuilder()
     {
-        return new \Zikula_ServiceManager(new ParameterBag($this->getKernelParameters()));
-        //return new ContainerBuilder(new ParameterBag($this->getKernelParameters()));
+        return new ContainerBuilder(new ParameterBag($this->getKernelParameters()));
     }
 
     /**
@@ -398,9 +397,9 @@ abstract class ZikulaKernel extends Kernel
     /**
      * Prepares the ContainerBuilder before it is compiled.
      *
-     * @param ContainerBuilder $container A ContainerBuilder instance
+     * @param SymfonyContainerBuilder $container A ContainerBuilder instance
      */
-    protected function prepareContainer(ContainerBuilder $container)
+    protected function prepareContainer(SymfonyContainerBuilder $container)
     {
         $extensions = [];
         foreach ($this->bundles as $bundle) {
