@@ -132,6 +132,8 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             case '3.0.0':
                 $this->schemaTool->update(['Zikula\UsersModule\Entity\UserSessionEntity']);
             case '3.0.1':
+                $this->schemaTool->update(['Zikula\UsersModule\Entity\UserEntity']);
+            case '3.0.2':
                 // current version
         }
 
@@ -214,7 +216,6 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             'approved_by'   => 0,
             'user_regdate'  => '1970-01-01 00:00:00',
             'lastlogin'     => '1970-01-01 00:00:00',
-            'theme'         => '',
         ];
         $user = new \Zikula\UsersModule\Entity\UserEntity();
         $user->merge($record);
@@ -232,7 +233,6 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             'approved_by'   => 2,
             'user_regdate'  => $nowUTCStr,
             'lastlogin'     => '1970-01-01 00:00:00',
-            'theme'         => '',
         ];
         $user = new \Zikula\UsersModule\Entity\UserEntity();
         $user->merge($record);

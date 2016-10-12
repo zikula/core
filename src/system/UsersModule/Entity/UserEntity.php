@@ -147,15 +147,6 @@ class UserEntity extends EntityAccess
     private $lastlogin;
 
     /**
-     * @deprecated removal at Core-2.0
-     * User's Theme: The name (identifier) of the per-user theme the user would like to use while viewing the site, when user theme switching is enabled
-     *
-     * @Assert\Type(type="string")
-     * @ORM\Column(type="string", length=255)
-     */
-    private $theme;
-
-    /**
      * User's timezone, as supported by PHP (listed at http://us2.php.net/manual/en/timezones.php), and as expressed by the Olson tz database.
      * Optional, if blank then the system default timezone should be used. [FUTURE USE]
      *
@@ -207,7 +198,6 @@ class UserEntity extends EntityAccess
         $this->approved_by = 0;
         $this->user_regdate = new \DateTime("1970-01-01 00:00:00");
         $this->lastlogin = new \DateTime("1970-01-01 00:00:00");
-        $this->theme = '';
         $this->tz = '';
         $this->locale = '';
 
@@ -436,26 +426,6 @@ class UserEntity extends EntityAccess
             // assume $lastlogin is a string
             $this->lastlogin = new \DateTime($lastlogin);
         }
-    }
-
-    /**
-     * get the theme of the user
-     *
-     * @return string the user's theme
-     */
-    public function getTheme()
-    {
-        return $this->theme;
-    }
-
-    /**
-     * set the theme for the user
-     *
-     * @param string $theme the user's theme
-     */
-    public function setTheme($theme)
-    {
-        $this->theme = $theme;
     }
 
     /**
