@@ -27,6 +27,17 @@ define('ACCESS_ADMIN', 800);
 
 class ZikulaKernel extends Kernel
 {
+    const VERSION = '2.0.0-alpha1';
+
+    const VERSION_SUB = 'Concerto';
+
+    const PHP_MINIMUM_VERSION = '5.5.9';
+
+    /**
+     * The parameter name identifying the currently installed version of the core.
+     */
+    const CORE_INSTALLED_VERSION_PARAM = 'core_installed_version';
+
     /**
      * Public list of core modules and their bundle class.
      * @var array
