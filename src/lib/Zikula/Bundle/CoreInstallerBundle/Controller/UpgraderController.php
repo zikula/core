@@ -33,8 +33,8 @@ class UpgraderController extends AbstractController
      */
     public function upgradeAction(Request $request, $stage)
     {
-        $currentVersion = $this->container->getParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM);
-        if (version_compare($currentVersion, \Zikula_Core::VERSION_NUM, '=')) {
+        $currentVersion = $this->container->getParameter(\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
+        if (version_compare($currentVersion, \ZikulaKernel::VERSION, '=')) {
             $stage = 'complete';
         }
         // notinstalled?
