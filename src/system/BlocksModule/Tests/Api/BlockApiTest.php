@@ -16,6 +16,7 @@ use Zikula\BlocksModule\Api\BlockApi;
 use Zikula\BlocksModule\Collector\BlockCollector;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
+use Zikula\BlocksModule\Tests\Api\Fixture\AcmeFooModule;
 use Zikula\BlocksModule\Tests\Api\Fixture\FooBlock;
 
 class BlockApiTest extends \PHPUnit_Framework_TestCase
@@ -62,17 +63,20 @@ class BlockApiTest extends \PHPUnit_Framework_TestCase
         $blockFactory
             ->method('getInstance')
             ->willReturn($this->fooBlock);
-        $extensionApi = $this
-            ->getMockBuilder('Zikula\ExtensionsModule\Api\ExtensionApi')
-            ->disableOriginalConstructor()
-            ->getMock();
         $extensionRepo = $this
             ->getMockBuilder('Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface')
             ->disableOriginalConstructor()
             ->getMock();
         $blockCollector = new BlockCollector();
+        $kernel = $this
+            ->getMockBuilder('ZikulaKernel')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $kernel
+            ->method('getModule')
+            ->willReturn(new AcmeFooModule());
 
-        $this->api = new BlockApi($blockPosRepo, $blockFactory, $extensionApi, $extensionRepo, $blockCollector, '/');
+        $this->api = new BlockApi($blockPosRepo, $blockFactory, $extensionRepo, $blockCollector, $kernel);
     }
 
     /**

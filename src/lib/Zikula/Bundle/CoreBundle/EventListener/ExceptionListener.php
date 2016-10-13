@@ -73,8 +73,6 @@ class ExceptionListener implements EventSubscriberInterface
                 $userLoggedIn = $this->installed ? $this->currentUserApi->isLoggedIn() : false;
                 if ($exception instanceof AccessDeniedException) {
                     $this->handleAccessDeniedException($event, $userLoggedIn, $exception->getMessage());
-                } elseif ($exception instanceof RouteNotFoundException) {
-                    $this->handleRouteNotFoundException($event, $userLoggedIn);
                 }
                 // list and handle additional exceptions here
             } while (null !== $exception = $exception->getPrevious());
@@ -113,25 +111,5 @@ class ExceptionListener implements EventSubscriberInterface
         $response = new RedirectResponse($route);
         $event->setResponse($response);
         $event->stopPropagation();
-    }
-
-    /**
-     * Handle an RouteNotFoundException
-     *
-     * @param GetResponseForExceptionEvent $event
-     * @param $userLoggedIn
-     */
-    private function handleRouteNotFoundException(GetResponseForExceptionEvent $event, $userLoggedIn)
-    {
-        $message = $event->getException()->getMessage();
-        $event->getRequest()->getSession()->getFlashBag()->add('error', $message);
-        if ($userLoggedIn && \SecurityUtil::checkPermission('ZikulaRoutesModule::', '::', ACCESS_ADMIN)) {
-            try {
-                $url = $this->router->generate('zikularoutesmodule_route_reload', ['lct' => 'admin'], RouterInterface::ABSOLUTE_URL);
-                $link = "<a href='$url'>". __('re-loading the routes') . "</a>";
-                $event->getRequest()->getSession()->getFlashBag()->add('error', __f('You might try %s for the extension in question.', $link));
-            } catch (RouteNotFoundException $e) {
-            }
-        }
     }
 }

@@ -35,7 +35,7 @@ class HookApiTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $eventDispatcher = $this
-            ->getMockBuilder('\Zikula_EventManager') // @TODO change to Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
+            ->getMockBuilder('Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher')
             ->disableOriginalConstructor()
             ->getMock();
         $this->api = new HookApi($translator, $hookDispatcher, $eventDispatcher);
