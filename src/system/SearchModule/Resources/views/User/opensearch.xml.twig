@@ -12,7 +12,7 @@
     <Attribution>{{ __f('Search data copyright %s, all rights reserved.', { '%s': siteName }) }}</Attribution>
     <SyndicationRight>open</SyndicationRight>
     <AdultContent>{% if hasAdultContent %}1{% else %}0{% endif %}</AdultContent>
-    <Language>{{ lang() }}</Language>
+    <Language>{{ app.request.locale }}</Language>
     <OutputEncoding>{{ pagevars.meta.charset }}</OutputEncoding>
     <InputEncoding>{{ pagevars.meta.charset }}</InputEncoding>
 </OpenSearchDescription>
