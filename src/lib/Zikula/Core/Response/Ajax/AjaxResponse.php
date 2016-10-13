@@ -28,13 +28,9 @@ class AjaxResponse extends AbstractBaseResponse
         $this->payload = $payload;
         $this->messages = (array)$message;
         $this->options = $options;
-        if ($this->newCsrfToken) {
-            $this->csrfToken = \SecurityUtil::generateCsrfToken();
-        }
-
-        if (\System::isLegacyMode()) {
-            $this->authid = \SecurityUtil::generateAuthKey(\ModUtil::getName());
-        }
+//        if ($this->newCsrfToken) {
+//            $this->csrfToken = \SecurityUtil::generateCsrfToken();
+//        }
 
         parent::__construct('', $this->statusCode);
     }
