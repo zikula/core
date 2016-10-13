@@ -44,7 +44,6 @@
             <argument type="service" id="router" />
             <argument type="service" id="zikula_core.common.theme_engine" />
             <argument>%kernel.root_dir%</argument>
-            <argument>%compat_layer%</argument>
             <call method="setParameters">
                 <argument type="service" id="service_container" />
             </call>

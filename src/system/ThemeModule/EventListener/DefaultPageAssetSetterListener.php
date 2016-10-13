@@ -45,16 +45,13 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
 
     private $params;
 
-    private $compatLayer;
-
-    public function __construct(AssetBag $jsAssetBag, AssetBag $cssAssetBag, RouterInterface $router, Engine $themeEngine, $rootdir, $compatLayer)
+    public function __construct(AssetBag $jsAssetBag, AssetBag $cssAssetBag, RouterInterface $router, Engine $themeEngine, $rootdir)
     {
         $this->jsAssetBag = $jsAssetBag;
         $this->cssAssetBag = $cssAssetBag;
         $this->router = $router;
         $this->themeEngine = $themeEngine;
         $this->rootdir = $rootdir;
-        $this->compatLayer = $compatLayer;
     }
 
     public function setParameters(ContainerInterface $container)
