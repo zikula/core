@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Bundle\CoreBundle\YamlDumper;
+use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 
 /**
@@ -36,7 +37,7 @@ class AjaxUpgradeController extends AbstractController
     {
         parent::__construct($container);
         $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
-        $this->currentVersion = $this->container->getParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM);
+        $this->currentVersion = $this->container->getParameter(\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
     }
 
     public function ajaxAction(Request $request)
@@ -95,7 +96,7 @@ class AjaxUpgradeController extends AbstractController
 
     private function installRoutesModule()
     {
-        if (version_compare(\Zikula_Core::VERSION_NUM, '1.4.0', '>') && version_compare($this->currentVersion, '1.4.0', '>=')) {
+        if (version_compare(\ZikulaKernel::VERSION, '1.4.0', '>') && version_compare($this->currentVersion, '1.4.0', '>=')) {
             // this stage is not necessary to upgrade from 1.4.0 -> 1.4.x
             return true;
         }
@@ -241,7 +242,8 @@ class AjaxUpgradeController extends AbstractController
 
     private function finalizeParameters()
     {
-        \ModUtil::initCoreVars(true); // initialize the modvars array (includes ZConfig (System) vars)
+        $variableApi = $this->container->get('zikula_extensions_module.api.variable');
+//        \ModUtil::initCoreVars(true); // initialize the modvars array (includes ZConfig (System) vars)
         // Set the System Identifier as a unique string.
         if (!\System::getVar('system_identifier')) {
             \System::setVar('system_identifier', str_replace('.', '', uniqid(rand(1000000000, 9999999999), true)));
@@ -263,15 +265,13 @@ class AjaxUpgradeController extends AbstractController
         $params['router.request_context.base_url'] = isset($params['router.request_context.base_url']) ? $params['router.request_context.base_url'] : $this->container->get('request')->getBasePath();
 
         // set currently installed version into parameters
-        $params[\Zikula_Core::CORE_INSTALLED_VERSION_PARAM] = \Zikula_Core::VERSION_NUM;
+        $params[\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM] = \ZikulaKernel::VERSION;
 
         $this->yamlManager->setParameters($params);
 
         // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
-        \System::setVar('Version_Num', \Zikula_Core::VERSION_NUM);
-        \System::setVar('Version_ID', \Zikula_Core::VERSION_ID);
-        \System::setVar('Version_Sub', \Zikula_Core::VERSION_SUB);
-        \System::setVar('language_i18n', \ZLanguage::getLanguageCode());
+        $variableApi->set(VariableApi::CONFIG, 'Version_Num', \ZikulaKernel::VERSION);
+        $variableApi->set(VariableApi::CONFIG, 'Version_Sub', \ZikulaKernel::VERSION_SUB);
 
         // set the 'start' page information to empty to avoid missing module errors.
         \System::setVar('startpage', '');
