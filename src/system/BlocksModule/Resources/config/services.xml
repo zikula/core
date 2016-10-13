@@ -67,7 +67,7 @@
             <argument type="service" id="zikula_blocks_module.api.block" />
             <argument type="service" id="zikula_blocks_module.api.block_filter" />
             <argument type="service" id="zikula_core.common.theme_engine" />
-            <argument type="service" id="kernel" />
+            <argument type="service" id="zikula_extensions_module.api.extension" />
             <argument type="service" id="twig.loader" />
             <tag name="twig.extension" />
         </service>
