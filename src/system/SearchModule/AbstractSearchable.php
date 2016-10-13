@@ -11,7 +11,6 @@
 
 namespace Zikula\SearchModule;
 
-use Zikula_View;
 use ZLanguage;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;

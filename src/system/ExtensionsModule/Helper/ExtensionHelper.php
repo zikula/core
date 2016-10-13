@@ -26,7 +26,6 @@ use Zikula\Core\ExtensionInstallerInterface;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\ExtensionEvents;
-use Zikula\ExtensionsModule\Helper\Legacy\ExtensionHelper as LegacyExtensionHelper;
 
 class ExtensionHelper
 {

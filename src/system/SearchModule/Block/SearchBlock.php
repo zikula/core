@@ -11,7 +11,6 @@
 
 namespace Zikula\SearchModule\Block;
 
-use ModUtil;
 use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\SearchModule\AbstractSearchable;
 
