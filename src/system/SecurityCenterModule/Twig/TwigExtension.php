@@ -12,7 +12,7 @@
 namespace Zikula\SecurityCenterModule\Twig;
 
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\SecurityCenterModule\Util as SecurityCenterUtil;
+use Zikula\SecurityCenterModule\Helper\PurifierHelper;
 
 /**
  * Twig extension class.
@@ -30,15 +30,21 @@ class TwigExtension extends \Twig_Extension
     private $variableApi;
 
     /**
+     * @var PurifierHelper
+     */
+    private $purifierHelper;
+
+    /**
      * TwigExtension constructor.
      *
      * @param bool        $isInstalled Installed flag
      * @param VariableApi $variableApi VariableApi service instance
      */
-    public function __construct($isInstalled, VariableApi $variableApi)
+    public function __construct($isInstalled, VariableApi $variableApi, PurifierHelper $purifierHelper)
     {
         $this->isInstalled = $isInstalled;
         $this->variableApi = $variableApi;
+        $this->purifierHelper = $purifierHelper;
     }
 
     public function getFilters()
@@ -82,7 +88,7 @@ class TwigExtension extends \Twig_Extension
 
         // prepare htmlpurifier class
         static $safeCache;
-        $purifier = SecurityCenterUtil::getpurifier();
+        $purifier = $this->purifierHelper->getPurifier();
 
         $md5 = md5($string);
         // check if the value is in the safecache

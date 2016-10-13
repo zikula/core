@@ -67,6 +67,9 @@ class CacheClearer
             ],
             'twig' => [
                 $cacheFolder . 'twig'
+            ],
+            'purifier' => [
+                $cacheFolder . 'purifier'
             ]
         ];
         if (isset($legacyCacheDir)) {

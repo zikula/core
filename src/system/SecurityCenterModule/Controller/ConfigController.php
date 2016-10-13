@@ -24,7 +24,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\SecurityCenterModule\Util as SecurityCenterUtil;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -324,7 +323,7 @@ class ConfigController extends AbstractController
 
         if ($request->getMethod() == 'POST') {
             // Load HTMLPurifier Classes
-            $purifier = SecurityCenterUtil::getpurifier();
+            $purifier = $this->container->get('zikula_security_center_module.helper.purifier_helper')->getPurifier();
 
             // Update module variables.
             $config = $request->request->get('purifierConfig', null);
@@ -425,10 +424,10 @@ class ConfigController extends AbstractController
         // load the configuration page
 
         if (isset($reset) && $reset == 'default') {
-            $purifierconfig = SecurityCenterUtil::getpurifierconfig(['forcedefault' => true]);
+            $purifierconfig = $this->container->get('zikula_security_center_module.helper.purifier_helper')->getPurifierConfig(['forcedefault' => true]);
             $this->addFlash('status', $this->__('Default values for HTML Purifier were successfully loaded. Please store them using the "Save" button at the bottom of this page'));
         } else {
-            $purifierconfig = SecurityCenterUtil::getpurifierconfig(['forcedefault' => false]);
+            $purifierconfig = $this->container->get('zikula_security_center_module.helper.purifier_helper')->getPurifierConfig(['forcedefault' => false]);
         }
 
         $purifier = new HTMLPurifier($purifierconfig);
