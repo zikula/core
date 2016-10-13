@@ -458,7 +458,7 @@ class UserUtil
      */
     public static function isLoggedIn()
     {
-        return ServiceUtil::get('session')->hasStarted() && (bool)SessionUtil::getVar('uid');
+        return ServiceUtil::get('session')->isStarted() && (bool)SessionUtil::getVar('uid');
     }
 
     /**
