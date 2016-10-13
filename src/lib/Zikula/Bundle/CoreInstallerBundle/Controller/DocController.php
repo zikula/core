@@ -32,8 +32,6 @@ class DocController
 
     private $parser;
 
-    private $locale;
-
     private $basePath;
 
     private $translator;
@@ -45,6 +43,7 @@ class DocController
      * @param RouterInterface $router The route generator
      * @param EngineInterface $templatingService
      * @param MarkdownExtra $parser
+     * @param TranslatorInterface $translator
      */
     public function __construct(KernelInterface $kernel, RouterInterface $router, EngineInterface $templatingService, MarkdownExtra $parser, TranslatorInterface $translator)
     {
@@ -53,7 +52,6 @@ class DocController
         $this->templatingService = $templatingService;
         $this->parser = $parser;
         $this->translator = $translator;
-        $this->locale = \ZLanguage::getLanguageCode();
     }
 
     /**
@@ -67,7 +65,7 @@ class DocController
         if (!in_array($name, ['INSTALL-1.4.md', 'UPGRADE-1.4.md', 'CHANGELOG.md', 'README.md'])) {
             $name = 'INSTALL-1.4.md';
         }
-        $this->setBasePath();
+        $this->setBasePath($request);
 
         if (file_exists($this->basePath . "/$name")) {
             $content = file_get_contents($this->basePath . "/$name");
@@ -76,8 +74,8 @@ class DocController
         }
         $content = $this->parser->defaultTransform($content);
         $templateParams = [
-            'lang' => $this->locale,
-            'charset' => \ZLanguage::getEncoding(),
+            'lang' => $request->getLocale(),
+            'charset' => $this->kernel->getCharset(),
             'content' => $content,
         ];
 
@@ -86,14 +84,15 @@ class DocController
 
     /**
      * set the base path for doc files, computing whether this is a Github clone or CI build.
+     * @param Request $request
      */
-    public function setBasePath()
+    private function setBasePath(Request $request)
     {
         if (file_exists(realpath($this->kernel->getRootDir() . '/../../composer.json'))) {
             // installation is clone of github repo and files are not moved
             $this->basePath = realpath($this->kernel->getRootDir() . '/../..');
         } else {
-            $this->basePath = realpath($this->kernel->getRootDir() . '/../docs/' . $this->locale);
+            $this->basePath = realpath($this->kernel->getRootDir() . '/../docs/' . $request->getLocale());
         }
     }
 }

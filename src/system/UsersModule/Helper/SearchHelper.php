@@ -78,7 +78,7 @@ class SearchHelper extends AbstractSearchable
             if ($user->getUid() != 1 && $permissionApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_READ)) {
                 if ($useProfileMod) {
                     $text = $this->__("Click the user's name to view his/her complete profile.");
-                    $url = new ModUrl($profileModule, 'user', 'view', ZLanguage::getLanguageCode(), ['uid' => $user->getUid()]); // @todo
+                    $url = new ModUrl($profileModule, 'user', 'view', $this->container->get('request')->getLocale(), ['uid' => $user->getUid()]); // @todo
                 } else {
                     $text = null;
                     $url = null;

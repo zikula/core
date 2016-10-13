@@ -144,7 +144,7 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
     private function getDefaults()
     {
         return [
-            'charset' => ZLanguage::getEncoding(),
+            'charset' => $this->container->get('kernel')->getCharset(),
             'encoding' => '8bit',
             'html' => false,
             'wordwrap' => 50,

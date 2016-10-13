@@ -736,7 +736,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
      */
     public function makeDisplayName($name)
     {
-        return [ZLanguage::getLanguageCode() => $name];
+        return [$this->container->get('request')->getLocale() => $name];
     }
 
     /**
@@ -748,7 +748,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
      */
     public function makeDisplayDesc()
     {
-        return [ZLanguage::getLanguageCode() => ''];
+        return [$this->container->get('request')->getLocale() => ''];
     }
 
     /**
