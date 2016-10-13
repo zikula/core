@@ -30,8 +30,11 @@ class CreateThemedResponseListener implements EventSubscriberInterface
 
     private $variableApi;
 
-    public function __construct(Engine $themeEngine, VariableApi $variableApi)
+    private $installed;
+
+    public function __construct($installed, Engine $themeEngine, VariableApi $variableApi)
     {
+        $this->installed = $installed;
         $this->themeEngine = $themeEngine;
         $this->variableApi = $variableApi;
     }
@@ -41,7 +44,7 @@ class CreateThemedResponseListener implements EventSubscriberInterface
         if (!$event->isMasterRequest()) {
             return;
         }
-        if (\System::isInstalling()) {
+        if (!$this->installed) {
             return;
         }
 
@@ -64,6 +67,7 @@ class CreateThemedResponseListener implements EventSubscriberInterface
         if ($trimWhitespace) {
             $this->trimWhitespace($twigThemedResponse);
         }
+        $event->setResponse($twigThemedResponse);
     }
 
     private function trimWhitespace(Response $response)

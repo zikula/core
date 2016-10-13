@@ -243,10 +243,9 @@ class AjaxUpgradeController extends AbstractController
     private function finalizeParameters()
     {
         $variableApi = $this->container->get('zikula_extensions_module.api.variable');
-//        \ModUtil::initCoreVars(true); // initialize the modvars array (includes ZConfig (System) vars)
         // Set the System Identifier as a unique string.
-        if (!\System::getVar('system_identifier')) {
-            \System::setVar('system_identifier', str_replace('.', '', uniqid(rand(1000000000, 9999999999), true)));
+        if (!$variableApi->get(VariableApi::CONFIG, 'system_identifier')) {
+            $variableApi->set(VariableApi::CONFIG, 'system_identifier', str_replace('.', '', uniqid(rand(1000000000, 9999999999), true)));
         }
 
         // add new configuration parameters
@@ -274,10 +273,10 @@ class AjaxUpgradeController extends AbstractController
         $variableApi->set(VariableApi::CONFIG, 'Version_Sub', \ZikulaKernel::VERSION_SUB);
 
         // set the 'start' page information to empty to avoid missing module errors.
-        \System::setVar('startpage', '');
-        \System::setVar('starttype', '');
-        \System::setVar('startfunc', '');
-        \System::setVar('startargs', '');
+        $variableApi->set(VariableApi::CONFIG, 'startpage', '');
+        $variableApi->set(VariableApi::CONFIG, 'starttype', '');
+        $variableApi->set(VariableApi::CONFIG, 'startfunc', '');
+        $variableApi->set(VariableApi::CONFIG, 'startargs', '');
 
         return true;
     }

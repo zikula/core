@@ -198,7 +198,7 @@ class LinkContainer implements LinkContainerInterface
         }
 
         $links[] = [
-            'url'   => $this->router->generate('zikulausersmodule_user_logout'),
+            'url'   => $this->router->generate('zikulausersmodule_access_logout'),
             'text' => $this->translator->__('Log out'),
             'icon'  => 'power-off text-danger'
         ];

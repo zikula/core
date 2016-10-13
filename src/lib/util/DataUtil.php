@@ -242,7 +242,7 @@ class DataUtil
                                 $allowedHTML[] = "/?$k\s*/?";
                                 break;
                             case 2:
-                                $allowedHTML[] = "/?\s*$k" . "(\s+[\w:]+\s*=\s*(\"[^\"]*\"|'[^']*'))*" . '\s*/?';
+                                $allowedHTML[] = "/?\s*$k" . "(\s+[\w\-:]+\s*=\s*(\"[^\"]*\"|'[^']*'))*" . '\s*/?';
                                 break;
                         }
                     }

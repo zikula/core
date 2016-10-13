@@ -25,6 +25,7 @@
         </service>
 
         <service id="session.handler.legacy" class="%session.handler.legacy.class%" public="false">
+            <argument>%installed%</argument>
             <call method="setStorage">
                 <argument type="service" id="session.storage.legacy" />
             </call>

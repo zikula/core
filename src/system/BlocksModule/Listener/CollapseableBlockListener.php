@@ -14,7 +14,6 @@ namespace Zikula\BlocksModule\Listener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use System;
 use Zikula\ThemeModule\Engine\Asset;
 use Zikula\ThemeModule\Engine\AssetBag;
 use Zikula\ExtensionsModule\Api\VariableApi;
@@ -27,13 +26,15 @@ class CollapseableBlockListener implements EventSubscriberInterface
     private $jsAssetBag;
     private $variableApi;
     private $assetHelper;
+    private $installed;
     private $isUpgrading;
 
-    public function __construct(AssetBag $jsAssetBag, VariableApi $variableApi, Asset $assetHelper, $isUpgrading = false)
+    public function __construct(AssetBag $jsAssetBag, VariableApi $variableApi, Asset $assetHelper, $installed, $isUpgrading = false)
     {
         $this->jsAssetBag = $jsAssetBag;
         $this->variableApi = $variableApi;
         $this->assetHelper = $assetHelper;
+        $this->installed = $installed;
         $this->isUpgrading = $isUpgrading;
     }
 
@@ -42,7 +43,7 @@ class CollapseableBlockListener implements EventSubscriberInterface
      */
     public function addCollapseableBehavior(GetResponseEvent $event)
     {
-        if ((System::isInstalling()) || ($this->isUpgrading)) {
+        if (!$this->installed || $this->isUpgrading) {
             return;
         }
         if (!$event->isMasterRequest()) {

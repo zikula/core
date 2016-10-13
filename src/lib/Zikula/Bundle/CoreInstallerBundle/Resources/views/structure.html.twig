@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="{{ lang }}" xml:lang="{{ lang }}">
+<html lang="{{ app.request.locale }}" xml:lang="{{ app.request.locale }}">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset={{ charset }}" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Zikula Aplication Framework">
         <meta name="author" content="Zikula Development Team">
@@ -23,8 +23,8 @@
         <script type="text/javascript" src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
         <script type="text/javascript" src="{{ app.request.getBasePath() }}/javascript/js-webshim/minified/polyfiller.js"></script>
         <script type="text/javascript">
-            $.webshims.setOptions('basePath', '{{ app.request.getBasePath() }}/javascript/js-webshim/minified/shims/'); 
-            $.webshims.activeLang('{{ lang }}');
+            $.webshims.setOptions('basePath', '{{ app.request.getBasePath() }}/javascript/js-webshim/minified/shims/');
+            $.webshims.activeLang('{{ app.request.locale }}');
             $.webshims.polyfill('forms');
         </script>
         <script type="text/javascript">

@@ -24,7 +24,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\SearchModule\AbstractSearchable;
-use ZLanguage;
 
 /**
  * User controllers for the search module
@@ -289,7 +288,7 @@ class UserController extends AbstractController
      *
      * Generate xml for opensearch syndication
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have read access to the module
+     * @return PlainResponse Thrown if the user doesn't have read access to the module
      */
     public function opensearchAction()
     {
@@ -297,12 +296,11 @@ class UserController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $language = ZLanguage::getLanguageCode();
         $variableApi = $this->get('zikula_extensions_module.api.variable');
         $templateParameters = [
-            'siteName' => $variableApi->getSystemVar('sitename_' . $language, $variableApi->getSystemVar('sitename_en')),
-            'slogan' => $variableApi->getSystemVar('slogan_' . $language, $variableApi->getSystemVar('slogan_en')),
-            'metaKeywords' => $variableApi->getSystemVar('metakeywords_' . $language, $variableApi->getSystemVar('metakeywords_en')),
+            'siteName' => $variableApi->getSystemVar('sitename', $variableApi->getSystemVar('sitename_en')),
+            'slogan' => $variableApi->getSystemVar('slogan', $variableApi->getSystemVar('slogan_en')),
+            'metaKeywords' => $variableApi->getSystemVar('metakeywords', $variableApi->getSystemVar('metakeywords_en')),
             'adminMail' => $variableApi->getSystemVar('adminmail'),
             'hasAdultContent' => $variableApi->get('ZikulaSearchModule', 'opensearch_adult_content', false)
         ];

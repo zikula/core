@@ -12,7 +12,6 @@
 namespace Zikula\MailerModule;
 
 use Zikula\Core\AbstractExtensionInstaller;
-use ZLanguage;
 
 /**
  * Installation and upgrade routines for the mailer module.
@@ -144,7 +143,7 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
     private function getDefaults()
     {
         return [
-            'charset' => ZLanguage::getEncoding(),
+            'charset' => $this->container->get('kernel')->getCharset(),
             'encoding' => '8bit',
             'html' => false,
             'wordwrap' => 50,

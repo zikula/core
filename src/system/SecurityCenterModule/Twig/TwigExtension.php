@@ -66,7 +66,7 @@ class TwigExtension extends \Twig_Extension
             return $string;
         }
 
-        if ($this->variableApi->getSystemVar('outputfilter') > 1) {
+        if ($this->variableApi->getSystemVar('outputfilter') < 1) {
             return $string;
         }
 

@@ -94,7 +94,9 @@ class CoreExtension extends \Twig_Extension
             new \Twig_SimpleFilter('languageName', [$this, 'languageName']),
             new \Twig_SimpleFilter('yesNo', [$this, 'yesNo']),
             new \Twig_SimpleFilter('php', [$this, 'applyPhp']),
-            new \Twig_SimpleFilter('protectMail', [$this, 'protectMailAddress'], ['is_safe' => ['html']])
+            new \Twig_SimpleFilter('protectMail', [$this, 'protectMailAddress'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFilter('profileLinkByUserId', [$this, 'profileLinkByUserId'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFilter('profileLinkByUserName', [$this, 'profileLinkByUserName'], ['is_safe' => ['html']])
         ];
     }
 
@@ -214,6 +216,7 @@ class CoreExtension extends \Twig_Extension
 
     /**
      * Apply an existing function (e.g. php's `md5`) to a string.
+     *
      * @param $string
      * @param $func
      * @return mixed
@@ -245,6 +248,112 @@ class CoreExtension extends \Twig_Extension
         );
 
         return $string;
+    }
+
+    /**
+     * Create a link to a users profile from the UID.
+     *
+     * Examples
+     *
+     *   Simple version, shows the username
+     *   {{ uid|profileLinkByUserId() }}
+     *   Simple version, shows username, using class="classname"
+     *   {{ uid|profileLinkByUserId(class='classname') }}
+     *   Using profile.gif instead of username, no class
+     *   {{ uid|profileLinkByUserId(image='images/profile.gif') }}
+     *
+     * @param integer $userId    The users uid
+     * @param string  $class     The class name for the link (optional)
+     * @param string  $image     Path to the image to show instead of the username (optional)
+     * @param integer $maxLength If set then user names are truncated to x chars
+     * @return string The output
+     */
+    public function profileLinkByUserId($userId, $class = '', $image = '', $maxLength = 0)
+    {
+        if (empty($userId) || (int)$userId < 1) {
+            return $userId;
+        }
+
+        $userId = (int)$userId;
+        $userName = \UserUtil::getVar('uname', $userId);
+
+        return $this->determineProfileLink($userId, $userName, $class, $image, $maxLength);
+    }
+
+    /**
+     * Create a link to a users profile from the username.
+     *
+     * Examples
+     *
+     *   Simple version, shows the username
+     *   {{ username|profileLinkByUserName() }}
+     *   Simple version, shows username, using class="classname"
+     *   {{ username|profileLinkByUserName(class='classname') }}
+     *   Using profile.gif instead of username, no class
+     *   {{ username|profileLinkByUserName('image'='images/profile.gif') }}
+     *
+     * @param string  $userName  The users name
+     * @param string  $class     The class name for the link (optional)
+     * @param string  $image     Path to the image to show instead of the username (optional)
+     * @param integer $maxLength If set then user names are truncated to x chars
+     * @return string The output
+     */
+    public function profileLinkByUserName($userName, $class = '', $image = '', $maxLength = 0)
+    {
+        if (empty($userName)) {
+            return $userName;
+        }
+
+        $userId = \UserUtil::getIdFromName($userName);
+
+        return $this->determineProfileLink($userId, $userName, $class, $image, $maxLength);
+    }
+
+    /**
+     * Internal function used by profileLinkByUserId() and profileLinkByUserName().
+     *
+     * @param integer $userId    The users uid
+     * @param string  $userName  The users name
+     * @param string  $class     The class name for the link (optional)
+     * @param string  $image     Path to the image to show instead of the username (optional)
+     * @param integer $maxLength If set then user names are truncated to x chars
+     * @return string The output
+     */
+    private function determineProfileLink($userId, $userName, $class = '', $image = '', $maxLength = 0)
+    {
+        $profileLink = '';
+
+        $profileModule = \System::getVar('profilemodule', '');
+
+        if ($userId && $userId > 1 && !empty($profileModule) && \ModUtil::available($profileModule)) {
+            $userDisplayName = \ModUtil::apiFunc($profileModule, 'user', 'getUserDisplayName', ['uid' => $userId]);
+            if (empty($userDisplayName)) {
+                $userDisplayName = $userName;
+            }
+
+            if (!empty($class)) {
+                $class = ' class="' . \DataUtil::formatForDisplay($class) . '"';
+            }
+
+            if (!empty($image)) {
+                $show = '<img src="' . \DataUtil::formatForDisplay($image) . '" alt="' . \DataUtil::formatForDisplay($userDisplayName) . '" />';
+            } elseif ($maxLength > 0) {
+                // truncate the user name to $maxLength chars
+                $length = strlen($userDisplayName);
+                $truncEnd = ($maxLength > $length) ? $length : $maxLength;
+                $show  = \DataUtil::formatForDisplay(substr($userDisplayName, 0, $truncEnd));
+            } else {
+                $show = \DataUtil::formatForDisplay($userDisplayName);
+            }
+
+            $profileLink = '<a' . $class . ' title="' . \DataUtil::formatForDisplay(__('Profile')) . ': ' . \DataUtil::formatForDisplay($userDisplayName) . '" href="' . \DataUtil::formatForDisplay(\ModUtil::url($profileModule, 'user', 'view', ['uid' => $userId], null, null, true)) . '">' . $show . '</a>';
+        } elseif (!empty($image)) {
+            $profileLink = ''; // image for anonymous user should be "empty"
+        } else {
+            $profileLink = \DataUtil::formatForDisplay($userName);
+        }
+
+        return $profileLink;
     }
 
     /**

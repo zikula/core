@@ -1,4 +1,5 @@
 {{ pageAddAsset('javascript', zasset('@ZikulaAdminModule:js/jQuery.mmenu-5.6.3/dist/js/jquery.mmenu.all.min.js')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaAdminModule:js/AdminModule.Modules.Panel.MMenuConfig.js')) }}
 {{ pageAddAsset('stylesheet', zasset('@ZikulaAdminModule:js/jQuery.mmenu-5.6.3/dist/css/jquery.mmenu.all.css')) }}
 {{ pageAddAsset('stylesheet', zasset('@ZikulaAdminModule:css/mmenu-hiddenpanel-customwidth.css')) }}
 
@@ -35,16 +36,3 @@
         </ul>
     </div>
 </nav>
-<script type="text/javascript">
-    jQuery(document).ready(function ($) {
-        $('#zikula-admin-hiddenpanel-menu').mmenu({
-            extensions: ['hiddenpanel-customwidth'],
-            'header': {
-                'title': '{{ __('Administration') }}',
-                'add': true,
-                'update': true
-            },
-            'searchfield': true
-        });
-    });
-</script>

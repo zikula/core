@@ -12,6 +12,11 @@ CHANGELOG - ZIKULA 1.4.x
    - Fixed display of checkboxes in topnav login blocks and authentication method selector (#3044).
    - Removed permanent display of template information in html source (#3068).
    - Fixed errors in PageLock module (#3089 - #3096).
+   - Fixed problem in JS Config template with debug mode enabled (#3105, #3106).
+   - Fixed disabling mailer (setting to debug mode) (#3100, #3107).
+   - Fixed admin icon determination for legacy modules (#3108).
+   - Fixed several regressions in SecurityCenter module.
+   - Fixed problem in DataUtil::formatForDisplayHTML for proper handling of data-* attributes.
 
  - Features:
    - Added mailProtect filter for safe display of email addresses in Twig templates (#3041).
@@ -20,6 +25,7 @@ CHANGELOG - ZIKULA 1.4.x
    - Added display of template name as html comment in source when in dev environment (#3068).
    - Added shortcut method in variable api for retrieving system variables (#3077).
    - Added new core module: MenuModule for implementing menus of any kind (#3082).
+   - Added Twig filters profileLinkByUserName and profileLinkByUserId (#3079).
 
  - Vendor updates:
     - doctrine dbal updated from 2.5.4 to 2.5.5

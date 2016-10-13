@@ -33,19 +33,22 @@ class ExceptionListener implements EventSubscriberInterface
     private $dispatcher;
     private $cacheClearer;
     private $currentUserApi;
+    private $installed;
 
     public function __construct(
         LoggerInterface $logger = null,
         RouterInterface $router = null,
         EventDispatcherInterface $dispatcher = null,
         CacheClearer $cacheClearer,
-        CurrentUserApi $currentUserApi
+        CurrentUserApi $currentUserApi,
+        $installed
     ) {
         $this->logger = $logger;
         $this->router = $router;
         $this->dispatcher = $dispatcher;
         $this->cacheClearer = $cacheClearer;
         $this->currentUserApi = $currentUserApi;
+        $this->installed = $installed;
     }
 
     public static function getSubscribedEvents()
@@ -67,7 +70,7 @@ class ExceptionListener implements EventSubscriberInterface
         if (!$event->getRequest()->isXmlHttpRequest()) {
             $exception = $event->getException();
             do {
-                $userLoggedIn = $this->currentUserApi->isLoggedIn();
+                $userLoggedIn = $this->installed ? $this->currentUserApi->isLoggedIn() : false;
                 if ($exception instanceof AccessDeniedException) {
                     $this->handleAccessDeniedException($event, $userLoggedIn, $exception->getMessage());
                 } elseif ($exception instanceof RouteNotFoundException) {

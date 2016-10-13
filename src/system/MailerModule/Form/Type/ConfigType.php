@@ -50,7 +50,6 @@ class ConfigType extends AbstractType
 
         $transportOptions = [
             'label' => $translator->__('Mail transport'),
-            'empty_data' => 'mail',
             'choices' => $transportChoices,
             'choices_as_values' => true,
             'alert' => $transportAlert
@@ -60,13 +59,11 @@ class ConfigType extends AbstractType
             ->add('transport', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', $transportOptions)
             ->add('charset', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $translator->__('Character set'),
-                'empty_data' => \ZLanguage::getEncoding(),
                 'max_length' => 20,
-                'help' => $translator->__f("Default: '%s'", ['%s' => \ZLanguage::getEncoding()])
+                'help' => $translator->__f("Default: '%s'", ['%s' => 'utf-8' /* @todo! \ZLanguage::getEncoding() */])
             ])
             ->add('encoding', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Encoding'),
-                'empty_data' => '8bit',
                 'choices' => [
                     '8bit' => '8bit',
                     '7bit' => '7bit',
@@ -83,7 +80,6 @@ class ConfigType extends AbstractType
             ])
             ->add('wordwrap', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $translator->__('Word wrap'),
-                'empty_data' => 50,
                 'scale' => 0,
                 'max_length' => 3,
                 'help' => $translator->__f("Default: '%s'", ['%s' => '50'])
@@ -94,14 +90,12 @@ class ConfigType extends AbstractType
             ])
             ->add('host', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $translator->__('SMTP host server'),
-                'empty_data' => 'localhost',
                 'max_length' => 255,
                 'required' => false,
                 'help' => $translator->__f("Default: '%s'", ['%s' => 'localhost'])
             ])
             ->add('port', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $translator->__('SMTP port'),
-                'empty_data' => 25,
                 'scale' => 0,
                 'max_length' => 5,
                 'required' => false,
@@ -109,7 +103,6 @@ class ConfigType extends AbstractType
             ])
             ->add('encryption', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('SMTP encryption method'),
-                'empty_data' => '',
                 'choices' => [
                     $translator->__('None') => '',
                     'SSL' => 'ssl',
@@ -120,7 +113,6 @@ class ConfigType extends AbstractType
             ])
             ->add('auth_mode', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('SMTP authentication type'),
-                'empty_data' => '',
                 'choices' => [
                     $translator->__('None') => '',
                     'Plain' => 'plain',
@@ -132,26 +124,22 @@ class ConfigType extends AbstractType
             ])
             ->add('username', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $translator->__('SMTP user name'),
-                'empty_data' => '',
                 'max_length' => 50,
                 'required' => false
             ])
             ->add('password', 'Symfony\Component\Form\Extension\Core\Type\PasswordType', [
                 'label' => $translator->__('SMTP password'),
-                'empty_data' => '',
                 'max_length' => 50,
                 'always_empty' => false,
                 'required' => false
             ])
             ->add('usernameGmail', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $translator->__('Gmail user name'),
-                'empty_data' => '',
                 'max_length' => 50,
                 'required' => false
             ])
             ->add('passwordGmail', 'Symfony\Component\Form\Extension\Core\Type\PasswordType', [
                 'label' => $translator->__('Gmail password'),
-                'empty_data' => '',
                 'max_length' => 50,
                 'always_empty' => false,
                 'required' => false

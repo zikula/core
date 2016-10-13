@@ -407,7 +407,7 @@ class UserAdministrationController extends AbstractController
         $variableApi = $this->get('zikula_extensions_module.api.variable');
 
         return $this->createForm('Zikula\UsersModule\Form\Type\MailType', [
-            'from' => $variableApi->getSystemVar('sitename_' . \ZLanguage::getLanguageCode()),
+            'from' => $variableApi->getSystemVar('sitename'),
             'replyto' => $variableApi->getSystemVar('adminmail'),
             'format' => 'text',
             'batchsize' => 100

@@ -35,7 +35,12 @@ class ExtensionsInterfaceController extends AbstractController
         $currentRequest = $this->get('request_stack')->getCurrentRequest();
         $caller = $this->get('request_stack')->getMasterRequest()->attributes->all();
         $caller['info'] = $this->get('zikula_extensions_module.extension_repository')->get($caller['_zkModule']);
-        $adminImagePath = $this->get('zikula_core.common.theme.asset_helper')->resolve('@' . $caller['_zkModule'] . ':images/admin.png');
+        if ($caller['_route'] == 'legacy') {
+            // @todo remove at Core-2.0
+            $adminImagePath = ModUtil::getModuleImagePath($caller['_zkModule']);
+        } else {
+            $adminImagePath = $this->get('zikula_core.common.theme.asset_helper')->resolve('@' . $caller['_zkModule'] . ':images/admin.png');
+        }
 
         return $this->render("@ZikulaExtensionsModule/ExtensionsInterface/header.html.twig", [
             'caller' => $caller,

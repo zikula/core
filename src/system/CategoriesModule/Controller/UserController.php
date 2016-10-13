@@ -181,7 +181,7 @@ class UserController extends AbstractController
             'attributes' => $attributes,
             'allCats' => $allCats,
             'languages' => ZLanguage::getInstalledLanguages(),
-            'userlanguage' => ZLanguage::getLanguageCode(),
+            'userlanguage' => $request->getLocale(),
             'referer' => $request->getSession()->get('categories_referer'),
             'csrfToken' => $this->get('zikula_core.common.csrf_token_handler')->generate()
         ];
@@ -261,8 +261,8 @@ class UserController extends AbstractController
                 'id' => '',
                 'parent' => $entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $userRootCat['id']),
                 'name' => $userCatName,
-                'display_name' => [ZLanguage::getLanguageCode() => $userCatName],
-                'display_desc' => [ZLanguage::getLanguageCode() => ''],
+                'display_name' => [$request->getLocale() => $userCatName],
+                'display_desc' => [$request->getLocale() => ''],
                 'path' => $thisUserRootCatPath,
                 'status' => 'A'
             ];
@@ -288,8 +288,8 @@ class UserController extends AbstractController
                     'is_leaf' => 1,
                     'name' => $userdefaultcatname,
                     'sort_value' => 0,
-                    'display_name' => [ZLanguage::getLanguageCode() => $userdefaultcatname],
-                    'display_desc' => [ZLanguage::getLanguageCode() => ''],
+                    'display_name' => [$request->getLocale() => $userdefaultcatname],
+                    'display_desc' => [$request->getLocale() => ''],
                     'path' => $thisUserRootCatPath . '/' . $userdefaultcatname,
                     'status' => 'A'
                 ];

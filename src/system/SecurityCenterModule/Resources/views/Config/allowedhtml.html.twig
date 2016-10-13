@@ -17,9 +17,9 @@
                 <div class="form-group" id="securitycenter_htmlentities">
                     <div class="col-sm-12">
                         <label>{{ __('Translate embedded HTML entities into real characters') }}</label>
-                        <input id="securitycenter_htmlentities_yes" type="radio" name="xhtmlentities" value="1"{% if htmlEntities == 1 %} checked="checked"{% endif %} />
+                        <input id="securitycenter_htmlentities_yes" type="radio" name="htmlentities" value="1"{% if htmlEntities == 1 %} checked="checked"{% endif %} />
                         <label for="securitycenter_htmlentities_yes">{{ __('Yes') }}</label>
-                        <input id="securitycenter_htmlentities_n0" type="radio" name="xhtmlentities" value="0"{% if htmlEntities != 1 %} checked="checked"{% endif %} />
+                        <input id="securitycenter_htmlentities_n0" type="radio" name="htmlentities" value="0"{% if htmlEntities != 1 %} checked="checked"{% endif %} />
                         <label for="securitycenter_htmlentities_n0">{{ __('No') }}</label>
                     </div>
                 </div>

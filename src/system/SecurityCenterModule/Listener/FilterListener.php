@@ -28,7 +28,6 @@ use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\MailerModule\Api\MailerApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
-use ZLanguage;
 
 /**
  * Event handler for the security center module
@@ -98,10 +97,7 @@ class FilterListener implements EventSubscriberInterface
      */
     public function idsInputFilter(GetResponseEvent $event)
     {
-        if (!$this->isInstalled) {
-            return;
-        }
-        if (System::isInstalling() || $this->isUpgrading) {
+        if (!$this->isInstalled || $this->isUpgrading) {
             return;
         }
 
@@ -380,7 +376,7 @@ class FilterListener implements EventSubscriberInterface
             $mailBody .= __f('Request URI: %s', urlencode($currentPage));
 
             // prepare other mail arguments
-            $siteName = $this->getSystemVar('sitename_' . ZLanguage::getLanguageCode(), $this->getSystemVar('sitename_en'));
+            $siteName = $this->getSystemVar('sitename', $this->getSystemVar('sitename_en'));
             $adminMail = $this->getSystemVar('adminmail');
 
             // create new message instance

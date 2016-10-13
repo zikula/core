@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
-use ZLanguage;
 
 /**
  * Class ConfigController
@@ -59,12 +58,19 @@ class ConfigController extends AbstractController
                 // fetch different username and password fields depending on the transport type
                 $credentialsSuffix = $formData['transport'] == 'gmail' ? 'Gmail' : '';
 
+                $transport = (string)$formData['transport'];
+                $disableDelivery = false;
+                if ($transport == 'test') {
+                    $transport = null;
+                    $disableDelivery = true;
+                }
+
                 // write the config file
                 // http://symfony.com/doc/current/reference/configuration/swiftmailer.html
                 $configDumper = $this->get('zikula.dynamic_config_dumper');
                 $currentConfig = $configDumper->getConfiguration('swiftmailer');
                 $config = [
-                    'transport' => (string)$formData['transport'],
+                    'transport' => $transport,
                     'username' => $formData['username' . $credentialsSuffix],
                     'password' => $formData['password' . $credentialsSuffix],
                     'host' => $formData['host'],
@@ -76,7 +82,7 @@ class ConfigController extends AbstractController
                     'delivery_addresses' => !empty($currentConfig['delivery_addresses'])
                         ? $currentConfig['delivery_addresses']
                         : (!empty($currentConfig['delivery_address']) ? [$currentConfig['delivery_address']] : []),
-                    'disable_delivery' => !empty($currentConfig['disable_delivery']) ? $currentConfig['disable_delivery'] : false,
+                    'disable_delivery' => $disableDelivery
                 ];
                 if ($config['encryption'] == '') {
                     $config['encryption'] = null;
@@ -153,7 +159,7 @@ class ConfigController extends AbstractController
 
                 // send the email
                 try {
-                    $siteName = $variableApi->getSystemVar('sitename_' . ZLanguage::getLanguageCode(), $variableApi->getSystemVar('sitename_en'));
+                    $siteName = $variableApi->getSystemVar('sitename', $variableApi->getSystemVar('sitename_en'));
                     $adminMail = $variableApi->getSystemVar('adminmail');
 
                     // create new message instance
@@ -201,7 +207,7 @@ class ConfigController extends AbstractController
 
         $dataValues = array_merge($params, $modVars);
 
-        $dataValues['sitename'] = $variableApi->getSystemVar('sitename_' . ZLanguage::getLanguageCode(), $variableApi->getSystemVar('sitename_en'));
+        $dataValues['sitename'] = $variableApi->getSystemVar('sitename', $variableApi->getSystemVar('sitename_en'));
         $dataValues['adminmail'] = $variableApi->getSystemVar('adminmail');
 
         $dataValues['fromName'] = $dataValues['sitename'];

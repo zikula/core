@@ -258,7 +258,6 @@ class RouteController extends AbstractController
         $templateParameters['sort'] = $sort;
         $templateParameters['sdir'] = $sortdir;
         $templateParameters['pagesize'] = $resultsPerPage;
-        $templateParameters['currentUrlObject'] = $currentUrlObject;
         $templateParameters = array_merge($templateParameters, $additionalParameters);
 
         $formOptions = [
@@ -355,7 +354,6 @@ class RouteController extends AbstractController
             'routeArea' => $isAdmin ? 'admin' : ''
         ];
         $templateParameters[$objectType] = $entity;
-        $templateParameters['currentUrlObject'] = $currentUrlObject;
         $templateParameters = array_merge($templateParameters, $repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
 
         // fetch and return the appropriate template

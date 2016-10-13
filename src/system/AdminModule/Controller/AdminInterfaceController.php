@@ -301,8 +301,7 @@ class AdminInterfaceController extends AbstractController
             try {
                 $adminIconPath = $this->get('zikula_core.common.theme.asset_helper')->resolve('@' . $adminModule['name'] . ':images/admin.png');
             } catch (\Exception $e) {
-                // @todo add BC method to get admin image from non-bundle
-                $adminIconPath = ''; //$masterRequest->getBasePath() . '/' . ModUtil::getModuleImagePath($adminModule['name'])
+                $adminIconPath = ModUtil::getModuleImagePath($adminModule['name']);
             }
 
             $module = [

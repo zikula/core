@@ -12,6 +12,7 @@
 namespace Zikula\ZAuthModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\AccessEvents;
@@ -38,7 +39,7 @@ class UserEventListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(\Zikula_Session $session, RouterInterface $router)
+    public function __construct(SessionInterface $session, RouterInterface $router)
     {
         $this->session = $session;
         $this->router = $router;

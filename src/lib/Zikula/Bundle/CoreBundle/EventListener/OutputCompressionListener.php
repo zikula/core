@@ -20,13 +20,16 @@ class OutputCompressionListener implements EventSubscriberInterface
 {
     private $variableApi;
 
+    private $installed;
+
     /**
      * OutputCompressionListener constructor.
      * @param $variableApi
      */
-    public function __construct(VariableApi $variableApi)
+    public function __construct(VariableApi $variableApi, $installed)
     {
         $this->variableApi = $variableApi;
+        $this->installed = $installed;
     }
 
     public function onKernelRequest(GetResponseEvent $event)
@@ -34,7 +37,7 @@ class OutputCompressionListener implements EventSubscriberInterface
         if (!$event->isMasterRequest()) {
             return;
         }
-        if (\System::isInstalling()) {
+        if (!$this->installed) {
             return;
         }
 

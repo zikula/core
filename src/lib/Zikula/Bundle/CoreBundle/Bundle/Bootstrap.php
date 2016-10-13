@@ -15,6 +15,8 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\AbstractBundle;
+use Zikula\ExtensionsModule\Api\ExtensionApi;
+use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 
 class Bootstrap
 {
@@ -117,16 +119,16 @@ class Bootstrap
             if (isset($this->extensionStateMap[$extensionName])) {
                 $state = $this->extensionStateMap[$extensionName];
             } else {
-                $state = ['state' => ($type == 'T') ? \ThemeUtil::STATE_INACTIVE : \ModUtil::STATE_UNINITIALISED];
+                $state = ['state' => ($type == 'T') ? ThemeEntityRepository::STATE_INACTIVE : ExtensionApi::STATE_UNINITIALISED];
             }
         }
 
         switch ($type) {
             case 'T':
-                return $state['state'] == \ThemeUtil::STATE_ACTIVE;
+                return $state['state'] == ThemeEntityRepository::STATE_ACTIVE;
                 break;
             default:
-                if (($state['state'] == \ModUtil::STATE_ACTIVE) || ($state['state'] == \ModUtil::STATE_UPGRADED)) {
+                if (($state['state'] == ExtensionApi::STATE_ACTIVE) || ($state['state'] == ExtensionApi::STATE_UPGRADED)) {
                     return true;
                 }
 

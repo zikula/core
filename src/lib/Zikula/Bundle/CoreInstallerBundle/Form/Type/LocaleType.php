@@ -41,7 +41,7 @@ class LocaleType extends AbstractType
         $resolver->setDefaults([
             'csrf_protection' => false,
             'choices' => \ZLanguage::getInstalledLanguageNames(),
-            'choice' => \ZLanguage::getLanguageCode()
+            'choice' => 'en'
 //                'csrf_field_name' => '_token',
 //                // a unique key to help generate the secret token
 //                'intention'       => '_zk_bdcreds',

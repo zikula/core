@@ -14,7 +14,7 @@ namespace Zikula\Core;
 /**
  * This class collects names of custom events used for changing module states.
  *
- * @see Zikula\Core\Event\ModuleStateEvent
+ * @see \Zikula\Core\Event\ModuleStateEvent
  */
 final class CoreEvents
 {
