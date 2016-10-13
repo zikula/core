@@ -89,10 +89,12 @@
             <argument type="service" id="templating" />
             <argument type="service" id="form.factory" />
             <argument type="service" id="router" />
+            <argument>%installed%</argument>
             <tag name="kernel.event_subscriber" />
         </service>
 
         <service id="zikula.session_expire_listener" class="%zikula.session_expire_listener.class%">
+            <argument>%installed%</argument>
             <tag name="kernel.event_subscriber" />
         </service>
 
@@ -104,15 +106,18 @@
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="zikula.cache_clearer" />
             <argument type="service" id="zikula_users_module.current_user" />
+            <argument>%installed%</argument>
         </service>
 
         <service id="zikula.output_compression_listener" class="%zikula.output_compression_listener.class%">
             <argument type="service" id="zikula_extensions_module.api.variable" />
+            <argument>%installed%</argument>
             <tag name="kernel.event_subscriber" />
         </service>
 
         <service id="zikula.strip_front_controller_listener" class="%zikula.strip_front_controller_listener.class%">
             <argument type="service" id="zikula_extensions_module.api.variable" />
+            <argument>%installed%</argument>
             <tag name="kernel.event_subscriber" />
         </service>
 

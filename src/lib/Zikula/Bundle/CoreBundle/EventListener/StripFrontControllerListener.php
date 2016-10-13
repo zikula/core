@@ -24,13 +24,16 @@ class StripFrontControllerListener implements EventSubscriberInterface
 {
     private $variableApi;
 
+    private $installed;
+
     /**
      * OutputCompressionListener constructor.
      * @param $variableApi
      */
-    public function __construct(VariableApi $variableApi)
+    public function __construct(VariableApi $variableApi, $installed)
     {
         $this->variableApi = $variableApi;
+        $this->installed = $installed;
     }
 
     public static function getSubscribedEvents()
@@ -52,7 +55,7 @@ class StripFrontControllerListener implements EventSubscriberInterface
         if (!$event->isMasterRequest()) {
             return;
         }
-        if (\System::isInstalling()) {
+        if (!$this->installed) {
             return;
         }
         if (!$event->getRequest()->isMethod('GET')) {

@@ -37,6 +37,8 @@ class SiteOffListener implements EventSubscriberInterface
 
     private $router;
 
+    private $installed;
+
     /**
      * OutputCompressionListener constructor.
      * @param VariableApi $variableApi
@@ -51,7 +53,8 @@ class SiteOffListener implements EventSubscriberInterface
         CurrentUserApi $currentUserApi,
         EngineInterface $templating,
         FormFactory $formFactory,
-        RouterInterface $router
+        RouterInterface $router,
+        $installed
     ) {
         $this->variableApi = $variableApi;
         $this->permissionApi = $permissionApi;
@@ -59,6 +62,7 @@ class SiteOffListener implements EventSubscriberInterface
         $this->templating = $templating;
         $this->formFactory = $formFactory;
         $this->router = $router;
+        $this->installed = $installed;
     }
 
     public function onKernelRequestSiteOff(GetResponseEvent $event)
@@ -76,7 +80,7 @@ class SiteOffListener implements EventSubscriberInterface
             || $request->isXmlHttpRequest()) {
             return;
         }
-        if (\System::isInstalling()) {
+        if (!$this->installed) {
             return;
         }
 

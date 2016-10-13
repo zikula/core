@@ -43,6 +43,8 @@ class FrontControllerListener implements EventSubscriberInterface
      */
     private $headerAssetBag;
 
+    private $installed;
+
     private $isUpgrading;
 
     public static function getSubscribedEvents()
@@ -63,12 +65,13 @@ class FrontControllerListener implements EventSubscriberInterface
      * @param VariableApi     $variableApi    VariableApi service instance
      * @param AssetBag        $headerAssetBag AssetBag service instance for header code
      */
-    public function __construct(RouterInterface $router, PermissionApi $permissionApi, VariableApi $variableApi, AssetBag $headerAssetBag, $isUpgrading = false)
+    public function __construct(RouterInterface $router, PermissionApi $permissionApi, VariableApi $variableApi, AssetBag $headerAssetBag, $installed, $isUpgrading = false)
     {
         $this->router = $router;
         $this->permissionApi = $permissionApi;
         $this->variableApi = $variableApi;
         $this->headerAssetBag = $headerAssetBag;
+        $this->installed = $installed;
         $this->isUpgrading = $isUpgrading;
     }
 
@@ -84,7 +87,7 @@ class FrontControllerListener implements EventSubscriberInterface
         if (!$event->isMasterRequest()) {
             return;
         }
-        if (System::isInstalling() || $this->isUpgrading) {
+        if (!$this->installed || $this->isUpgrading) {
             return;
         }
         $openSearchEnabled = $this->variableApi->get('ZikulaSearchModule', 'opensearch_enabled');

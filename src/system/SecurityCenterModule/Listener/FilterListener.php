@@ -98,10 +98,7 @@ class FilterListener implements EventSubscriberInterface
      */
     public function idsInputFilter(GetResponseEvent $event)
     {
-        if (!$this->isInstalled) {
-            return;
-        }
-        if (System::isInstalling() || $this->isUpgrading) {
+        if (!$this->isInstalled || $this->isUpgrading) {
             return;
         }
 
@@ -380,7 +377,7 @@ class FilterListener implements EventSubscriberInterface
             $mailBody .= __f('Request URI: %s', urlencode($currentPage));
 
             // prepare other mail arguments
-            $siteName = $this->getSystemVar('sitename_' . ZLanguage::getLanguageCode(), $this->getSystemVar('sitename_en'));
+            $siteName = $this->getSystemVar('sitename', $this->getSystemVar('sitename_en'));
             $adminMail = $this->getSystemVar('adminmail');
 
             // create new message instance
