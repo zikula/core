@@ -54,6 +54,9 @@ class TwigExtension extends \Twig_Extension
      */
     public function safeHtml($string)
     {
+        // @todo!!!
+        return $string;
+
         $string = \DataUtil::formatForDisplayHTML($string);
 
         if (!$this->isInstalled) {
