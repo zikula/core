@@ -653,7 +653,7 @@ class ZLanguage
 
         $finder = new Finder();
         $localeArray = [];
-        $locales = $finder->directories()->in(['config/locale', 'app/Resources/locale']);
+        $locales = $finder->directories()->in(['app/Resources/locale']);
         foreach ($locales as $locale) {
             $localeArray[] = $locale->getBasename();
         }
