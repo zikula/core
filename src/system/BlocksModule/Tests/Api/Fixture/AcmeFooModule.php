@@ -15,5 +15,4 @@ use Zikula\Core\AbstractModule;
 
 class AcmeFooModule extends AbstractModule
 {
-
 }
