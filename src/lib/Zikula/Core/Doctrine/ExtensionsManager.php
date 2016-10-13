@@ -12,6 +12,7 @@
 namespace Zikula\Core\Doctrine;
 
 use Doctrine\Common\EventManager;
+use Zikula\Bridge\DependencyInjection\ContainerBuilder;
 
 /**
  * This class serves for initialising and managing doctrine extensions.
@@ -22,7 +23,7 @@ class ExtensionsManager
     private $serviceManager;
     private $listeners;
 
-    public function __construct(EventManager $eventManager, \Zikula_ServiceManager $serviceManager)
+    public function __construct(EventManager $eventManager, ContainerBuilder $serviceManager)
     {
         $this->eventManager = $eventManager;
         $this->serviceManager = $serviceManager;

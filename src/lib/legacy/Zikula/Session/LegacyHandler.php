@@ -19,6 +19,8 @@ use Zikula\ExtensionsModule\Api\VariableApi;
  */
 class Zikula_Session_LegacyHandler implements \SessionHandlerInterface
 {
+    private $installed;
+
     /**
      * @var Zikula_Session_Storage_Legacy
      */
@@ -33,6 +35,15 @@ class Zikula_Session_LegacyHandler implements \SessionHandlerInterface
      * @var VariableApi
      */
     private $variableApi;
+
+    /**
+     * Zikula_Session_LegacyHandler constructor.
+     * @param $installed
+     */
+    public function __construct($installed)
+    {
+        $this->installed = $installed;
+    }
 
     public function setStorage(Zikula_Session_Storage_Legacy $storage)
     {
@@ -70,7 +81,7 @@ class Zikula_Session_LegacyHandler implements \SessionHandlerInterface
      */
     public function read($sessionId)
     {
-        if (System::isInstalling()) {
+        if (!$this->installed) {
             return '';
         }
 
@@ -84,7 +95,7 @@ class Zikula_Session_LegacyHandler implements \SessionHandlerInterface
      */
     public function write($sessionId, $vars)
     {
-        if (System::isInstalling()) {
+        if (!$this->installed) {
             return true;
         }
 

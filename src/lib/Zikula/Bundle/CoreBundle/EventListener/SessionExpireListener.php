@@ -18,19 +18,28 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class SessionExpireListener implements EventSubscriberInterface
 {
+    private $installed;
+
+    /**
+     * SessionExpireListener constructor.
+     * @param $installed
+     */
+    public function __construct($installed)
+    {
+        $this->installed = $installed;
+    }
+
     public function onKernelRequestSessionExpire(GetResponseEvent $event)
     {
+        if (!$this->installed) {
+            return;
+        }
         if ($event->getRequest()->hasSession() && $event->getRequest()->getSession()->get('session_expired', false)) {
             // Session has expired, display warning
             $response = new Response("Session expired.", 403);
-            $this->setResponse($event, $response);
+            $response->legacy = true;
+            $event->setResponse($response);
         }
-    }
-
-    private function setResponse(GetResponseEvent $event, Response $response)
-    {
-        $response->legacy = true;
-        $event->setResponse($response);
     }
 
     public static function getSubscribedEvents()

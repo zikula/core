@@ -60,6 +60,8 @@ class AddJSConfigListener implements EventSubscriberInterface
      */
     private $compat;
 
+    private $installed;
+
     /**
      * JSConfig constructor.
      * @param VariableApi $variableApi
@@ -71,6 +73,7 @@ class AddJSConfigListener implements EventSubscriberInterface
      * @param bool $compat
      */
     public function __construct(
+        $installed,
         VariableApi $variableApi,
         CurrentUserApi $currentUserApi,
         EngineInterface $templating,
@@ -79,6 +82,7 @@ class AddJSConfigListener implements EventSubscriberInterface
         $defaultSessionName = '_zsid',
         $compat = false
     ) {
+        $this->installed = $installed;
         $this->variableApi = $variableApi;
         $this->currentUserApi = $currentUserApi;
         $this->templating = $templating;
@@ -96,7 +100,7 @@ class AddJSConfigListener implements EventSubscriberInterface
         if (!$event->isMasterRequest()) {
             return;
         }
-        if (\System::isInstalling()) {
+        if (!$this->installed) {
             return;
         }
         $session = $event->getRequest()->hasSession() ? $event->getRequest()->getSession() : null;

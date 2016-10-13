@@ -1117,12 +1117,6 @@ class ModUtil
             return null;
         }
 
-        // Remove from 1.4
-        if (System::isLegacyMode('1.4.0') && $modname == 'Modules') {
-            LogUtil::log(__('Warning! "Modules" module has been renamed to "ZikulaExtensionsModule".  Please update your ModUtil::func() and ModUtil::apiFunc() calls.'));
-            $modname = 'ZikulaExtensionsModule';
-        }
-
         $modinfo = self::getInfo(self::getIDFromName($modname));
 
         $controller = null;

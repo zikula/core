@@ -61,7 +61,7 @@ class AccountController extends AbstractController
                 'choices_as_values' => true,
                 'placeholder' => $this->__('Site default'),
                 'required' => false,
-                'data' => \ZLanguage::getLanguageCode()
+                'data' => $request->getLocale()
             ])
             ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'label' => $this->__('Save'),

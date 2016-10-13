@@ -35,10 +35,10 @@ class SessionStorage implements StorageInterface
     /**
      * Constructor.
      *
-     * @param \Zikula_Session $session \Zikula_Session instance
+     * @param SessionInterface $session
      * @param string          $key
      */
-    public function __construct(\Zikula_Session $session, $key = '_tokens')
+    public function __construct(SessionInterface $session, $key = '_tokens')
     {
         $this->session = $session;
         $this->key = $key;

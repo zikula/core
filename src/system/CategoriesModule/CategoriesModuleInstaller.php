@@ -14,7 +14,6 @@ namespace Zikula\CategoriesModule;
 use DoctrineUtil;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\Core\AbstractExtensionInstaller;
-use ZLanguage;
 
 /**
  * Installation and upgrade routines for the categories module.
@@ -736,7 +735,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
      */
     public function makeDisplayName($name)
     {
-        return [ZLanguage::getLanguageCode() => $name];
+        return [$this->container->get('request')->getLocale() => $name];
     }
 
     /**
@@ -748,7 +747,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
      */
     public function makeDisplayDesc()
     {
-        return [ZLanguage::getLanguageCode() => ''];
+        return [$this->container->get('request')->getLocale() => ''];
     }
 
     /**

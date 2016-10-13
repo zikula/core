@@ -74,7 +74,7 @@ class Zikula_Session_Storage_Legacy extends NativeSessionStorage
                     // expired or user decided not to remember themself and inactivity timeout
                     // OR max number of days have elapsed without logging back in
                     if ((!$rememberme && $lastused < $inactive) || ($lastused < $daysold) || ($uid == '0' && $lastused < $inactive)) {
-                        $this->expire();
+                        parent::regenerate(true);
                     }
                     break;
                 case 'High':
@@ -82,7 +82,7 @@ class Zikula_Session_Storage_Legacy extends NativeSessionStorage
                     // High security - delete session info if user is inactive
                     //if ($rememberme && ($lastused < $inactive)) { // see #427
                     if ($lastused < $inactive) {
-                        $this->expire();
+                        parent::regenerate(true);
                     }
                     break;
             }
@@ -96,7 +96,7 @@ class Zikula_Session_Storage_Legacy extends NativeSessionStorage
      */
     public function expire()
     {
-        SessionUtil::expire();
+        //        SessionUtil::expire();
     }
 
     /**

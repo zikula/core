@@ -13,6 +13,7 @@ namespace Zikula\UsersModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Core\Event\GenericEvent;
@@ -44,7 +45,7 @@ class UserEventListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(\Zikula_Session $session, RequestStack $requestStack, RouterInterface $router)
+    public function __construct(SessionInterface $session, RequestStack $requestStack, RouterInterface $router)
     {
         $this->session = $session;
         $this->requestStack = $requestStack;

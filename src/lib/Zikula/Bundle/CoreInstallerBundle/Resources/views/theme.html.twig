@@ -1,9 +1,6 @@
 {% extends '@ZikulaCoreInstaller/structure.html.twig' %}
 
 {% block stylesheets %}
-    {#{% stylesheets '@ZikulaCoreInstallerBundle/Resources/public/css/*' %}#}
-    {#<link rel="stylesheet" href="{{ asset_url }}" />#}
-    {#{% endstylesheets %}#}
     <link href="{{ asset('bundles/zikulacoreinstaller/css/installer.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="{{ app.request.basepath }}/style/core.css" type="text/css" />
     <!--[if IE]><link rel="stylesheet" type="text/css" href="style/core_iehacks.css" media="print,projection,screen" /><![endif]-->

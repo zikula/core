@@ -236,7 +236,7 @@ class MailHelper
             $subject = $this->generateEmailSubject($notificationType, $templateArgs);
         }
 
-        $sitename = $this->variableApi->getSystemVar('sitename_' . \ZLanguage::getLanguageCode(), $this->variableApi->getSystemVar('sitename_en'));
+        $sitename = $this->variableApi->getSystemVar('sitename', $this->variableApi->getSystemVar('sitename_en'));
 
         $message = \Swift_Message::newInstance();
         $message->setFrom([$this->variableApi->getSystemVar('adminmail') => $sitename]);

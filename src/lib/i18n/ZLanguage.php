@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-use Zikula_Request_Http as Request;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request as BaseRequest;
 
 /**
@@ -136,7 +136,7 @@ class ZLanguage
      */
     public function __construct()
     {
-        $this->langSession = (ServiceUtil::get('session')->hasStarted()) ? SessionUtil::getVar('language', null) : null;
+        $this->langSession = (ServiceUtil::get('session')->isStarted()) ? SessionUtil::getVar('language', null) : null;
         $this->langSystemDefault = System::getVar('language_i18n', 'en');
         $this->languageCode = $this->langSystemDefault;
         $this->langFixSession = preg_replace('#[^a-z-].#', '', FormUtil::getPassedValue('setsessionlanguage', null, 'POST'));
@@ -651,17 +651,12 @@ class ZLanguage
             return $localeArray;
         }
 
-        // search for locale and config overrides
+        $finder = new Finder();
         $localeArray = [];
-        $search = ['config/locale', 'app/Resources/locale'];
-        foreach ($search as $k) {
-            // get only the directories of the search paths
-            $locales = FileUtil::getFiles($k, false, true, null, 'd');
-            foreach ($locales as $locale) {
-                $localeArray[] = self::transformInternal($locale);
-            }
+        $locales = $finder->directories()->in(['config/locale', 'app/Resources/locale']);
+        foreach ($locales as $locale) {
+            $localeArray[] = $locale->getBasename();
         }
-        $localeArray = array_unique($localeArray);
 
         return $localeArray;
     }

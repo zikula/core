@@ -12,7 +12,7 @@
 
 namespace Zikula\RoutesModule\Helper\Base;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Zikula\Bridge\DependencyInjection\ContainerBuilder;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula_Workflow_Util;
@@ -43,12 +43,12 @@ class WorkflowHelper
      * Constructor.
      * Initialises member vars.
      *
-     * @param \Zikula_ServiceManager $serviceManager ServiceManager instance
+     * @param ContainerBuilder $serviceManager ServiceManager instance
      * @param TranslatorInterface    $translator     Translator service instance
      *
      * @return void
      */
-    public function __construct(\Zikula_ServiceManager $serviceManager, TranslatorInterface $translator)
+    public function __construct(ContainerBuilder $serviceManager, TranslatorInterface $translator)
     {
         $this->name = 'ZikulaRoutesModule';
         $this->container = $serviceManager;
@@ -78,10 +78,10 @@ class WorkflowHelper
              'text' => $this->translator->__('Deleted'),
              'ui' => 'danger'
          ];
-    
+
          return $states;
      }
-    
+
     /**
      * This method returns information about a certain state.
      *
@@ -100,10 +100,10 @@ class WorkflowHelper
             $result = $singleState;
             break;
         }
-    
+
         return $result;
     }
-    
+
     /**
      * This method returns the workflow name for a certain object type.
      *
@@ -119,10 +119,10 @@ class WorkflowHelper
                 $result = 'none';
                 break;
         }
-    
+
         return $result;
     }
-    
+
     /**
      * This method returns the workflow schema for a certain object type.
      *
@@ -137,10 +137,10 @@ class WorkflowHelper
         if ($schemaName != '') {
             $schema = Zikula_Workflow_Util::loadSchema($schemaName, $this->name);
         }
-    
+
         return $schema;
     }
-    
+
     /**
      * Retrieve the available actions for a given entity object.
      *
@@ -152,12 +152,12 @@ class WorkflowHelper
     {
         // get possible actions for this object in it's current workflow state
         $objectType = $entity['_objectType'];
-    
+
         $this->normaliseWorkflowData($entity);
-    
+
         $idColumn = $entity['__WORKFLOW__']['obj_idcolumn'];
         $wfActions = Zikula_Workflow_Util::getActionsForObject($entity, $objectType, $idColumn, $this->name);
-    
+
         // as we use the workflows for multiple object types we must maybe filter out some actions
         $listHelper = $this->container->get('zikula_routes_module.listentries_helper');
         $states = $listHelper->getEntries($objectType, 'workflowState');
@@ -165,21 +165,21 @@ class WorkflowHelper
         foreach ($states as $state) {
             $allowedStates[] = $state['value'];
         }
-    
+
         $actions = [];
         foreach ($wfActions as $actionId => $action) {
             $nextState = (isset($action['nextState']) ? $action['nextState'] : '');
             if ($nextState != '' && !in_array($nextState, $allowedStates)) {
                 continue;
             }
-    
+
             $actions[$actionId] = $action;
             $actions[$actionId]['buttonClass'] = $this->getButtonClassForAction($actionId);
         }
-    
+
         return $actions;
     }
-    
+
     /**
      * Returns a button class for a certain action.
      *
@@ -201,16 +201,16 @@ class WorkflowHelper
                 $buttonClass = 'danger';
                 break;
         }
-    
+
         if (empty($buttonClass)) {
             $buttonClass = 'default';
         }
-    
+
         $buttonClass = 'btn btn-' . $buttonClass;
-    
+
         return $buttonClass;
     }
-    
+
     /**
      * Executes a certain workflow action for a given entity object.
      *
@@ -224,14 +224,14 @@ class WorkflowHelper
     {
         $objectType = $entity['_objectType'];
         $schemaName = $this->getWorkflowName($objectType);
-    
+
         $entity->initWorkflow(true);
         $idColumn = $entity['__WORKFLOW__']['obj_idcolumn'];
-    
+
         $this->normaliseWorkflowData($entity);
-    
+
         $result = Zikula_Workflow_Util::executeAction($schemaName, $entity, $actionId, $objectType, 'ZikulaRoutesModule', $idColumn);
-    
+
         if ($result !== false && !$recursive) {
             $entities = $entity->getRelatedObjectsToPersist();
             foreach ($entities as $rel) {
@@ -240,7 +240,7 @@ class WorkflowHelper
                 }
             }
         }
-    
+
         return ($result !== false);
     }
     /**
@@ -256,18 +256,18 @@ class WorkflowHelper
         if (!isset($workflow[0]) && isset($workflow['module'])) {
             return true;
         }
-    
+
         if (isset($workflow[0])) {
             $workflow = $workflow[0];
         }
-    
+
         if (!is_object($workflow)) {
             $workflow['module'] = 'ZikulaRoutesModule';
             $entity['__WORKFLOW__'] = $workflow;
-    
+
             return true;
         }
-    
+
         $entity['__WORKFLOW__'] = [
             'module'        => 'ZikulaRoutesModule',
             'id'            => $workflow->getId(),
@@ -277,10 +277,10 @@ class WorkflowHelper
             'obj_id'        => $workflow->getObjId(),
             'schemaname'    => $workflow->getSchemaname()
         ];
-    
+
         return true;
     }
-    
+
     /**
      * Collects amount of moderation items foreach object type.
      *
@@ -289,12 +289,12 @@ class WorkflowHelper
     public function collectAmountOfModerationItems()
     {
         $amounts = [];
-    
+
         // nothing required here as no entities use enhanced workflows including approval actions
-    
+
         return $amounts;
     }
-    
+
     /**
      * Retrieves the amount of moderation items for a given object type
      * and a certain workflow state.
@@ -307,12 +307,12 @@ class WorkflowHelper
     public function getAmountOfModerationItems($objectType, $state)
     {
         $repository = $this->container->get('zikula_routes_module.' . $objectType . '_factory')->getRepository();
-    
+
         $where = 'tbl.workflowState = \'' . $state . '\'';
         $parameters = ['workflowState' => $state];
         $useJoins = false;
         $amount = $repository->selectCount($where, $useJoins, $parameters);
-    
+
         return $amount;
     }
 }

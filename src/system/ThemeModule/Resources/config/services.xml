@@ -22,7 +22,7 @@
 
         <service id="zikula_theme_module.twig.extension.theme_extension" class="%zikula_theme_module.twig.extension.theme_extension.class%">
             <tag name="twig.extension" />
-            <argument type="service" id="theme.asset_helper" />
+            <argument type="service" id="zikula_core.common.theme.asset_helper" />
         </service>
 
         <service id="zikula_theme_module.theme_entity.repository"

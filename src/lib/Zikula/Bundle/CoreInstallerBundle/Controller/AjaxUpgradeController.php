@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Bundle\CoreBundle\YamlDumper;
+use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 
 /**
@@ -241,10 +242,10 @@ class AjaxUpgradeController extends AbstractController
 
     private function finalizeParameters()
     {
-        \ModUtil::initCoreVars(true); // initialize the modvars array (includes ZConfig (System) vars)
+        $variableApi = $this->container->get('zikula_extensions_module.api.variable');
         // Set the System Identifier as a unique string.
-        if (!\System::getVar('system_identifier')) {
-            \System::setVar('system_identifier', str_replace('.', '', uniqid(rand(1000000000, 9999999999), true)));
+        if (!$variableApi->get(VariableApi::CONFIG, 'system_identifier')) {
+            $variableApi->set(VariableApi::CONFIG, 'system_identifier', str_replace('.', '', uniqid(rand(1000000000, 9999999999), true)));
         }
 
         // add new configuration parameters
@@ -268,16 +269,15 @@ class AjaxUpgradeController extends AbstractController
         $this->yamlManager->setParameters($params);
 
         // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
-        \System::setVar('Version_Num', \Zikula_Core::VERSION_NUM);
-        \System::setVar('Version_ID', \Zikula_Core::VERSION_ID);
-        \System::setVar('Version_Sub', \Zikula_Core::VERSION_SUB);
-        \System::setVar('language_i18n', \ZLanguage::getLanguageCode());
+        $variableApi->set(VariableApi::CONFIG, 'Version_Num', \Zikula_Core::VERSION_NUM);
+        $variableApi->set(VariableApi::CONFIG, 'Version_ID', \Zikula_Core::VERSION_ID);
+        $variableApi->set(VariableApi::CONFIG, 'Version_Sub', \Zikula_Core::VERSION_SUB);
 
         // set the 'start' page information to empty to avoid missing module errors.
-        \System::setVar('startpage', '');
-        \System::setVar('starttype', '');
-        \System::setVar('startfunc', '');
-        \System::setVar('startargs', '');
+        $variableApi->set(VariableApi::CONFIG, 'startpage', '');
+        $variableApi->set(VariableApi::CONFIG, 'starttype', '');
+        $variableApi->set(VariableApi::CONFIG, 'startfunc', '');
+        $variableApi->set(VariableApi::CONFIG, 'startargs', '');
 
         return true;
     }

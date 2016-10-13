@@ -51,7 +51,7 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
 
     public function getResponse(Request $request)
     {
-        $admin = \UserUtil::getVars(2);
+        $admin = $this->container->get('zikula_users_module.current_user');
         if ($this->sendEmailToAdmin($request, $admin)) {
             $request->getSession()->getFlashBag()->add('success', __('Congratulations! Zikula has been successfully installed.'));
 

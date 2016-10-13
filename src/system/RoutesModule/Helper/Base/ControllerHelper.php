@@ -14,9 +14,9 @@ namespace Zikula\RoutesModule\Helper\Base;
 
 use DataUtil;
 use Monolog\Logger;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Zikula\Bridge\DependencyInjection\ContainerBuilder;
 use Zikula\Common\Translator\TranslatorInterface;
 
 /**
@@ -48,12 +48,12 @@ class ControllerHelper
      * Constructor.
      * Initialises member vars.
      *
-     * @param \Zikula_ServiceManager $serviceManager ServiceManager instance
+     * @param ContainerBuilder $serviceManager ServiceManager instance
      * @param TranslatorInterface    $translator     Translator service instance
      * @param Session                $session        Session service instance
      * @param Logger                 $logger         Logger service instance
      */
-    public function __construct(\Zikula_ServiceManager $serviceManager, TranslatorInterface $translator, Session $session, Logger $logger)
+    public function __construct(ContainerBuilder $serviceManager, TranslatorInterface $translator, Session $session, Logger $logger)
     {
         $this->container = $serviceManager;
         $this->translator = $translator;
@@ -74,10 +74,10 @@ class ControllerHelper
         if (!in_array($context, ['controllerAction', 'api', 'helper', 'actionHandler', 'block', 'contentType', 'util'])) {
             $context = 'controllerAction';
         }
-    
+
         $allowedObjectTypes = [];
         $allowedObjectTypes[] = 'route';
-    
+
         return $allowedObjectTypes;
     }
 
@@ -94,9 +94,9 @@ class ControllerHelper
         if (!in_array($context, ['controllerAction', 'api', 'helper', 'actionHandler', 'block', 'contentType', 'util'])) {
             $context = 'controllerAction';
         }
-    
+
         $defaultObjectType = 'route';
-    
+
         return $defaultObjectType;
     }
 
@@ -152,7 +152,7 @@ class ControllerHelper
                     $id = $defaultValue;
                 }
             }
-    
+
             // fallback if id has not been found yet
             if (!$id && $idField != 'id' && count($idFields) == 1) {
                 $defaultValue = isset($args['id']) && is_numeric($args['id']) ? $args['id'] : 0;
@@ -166,7 +166,7 @@ class ControllerHelper
             }
             $idValues[$idField] = $id;
         }
-    
+
         return $idValues;
     }
 
@@ -182,13 +182,13 @@ class ControllerHelper
         if (!count($idValues)) {
             return false;
         }
-    
+
         foreach ($idValues as $idField => $idValue) {
             if (!$idValue) {
                 return false;
             }
         }
-    
+
         return true;
     }
 
@@ -208,7 +208,7 @@ class ControllerHelper
             $name
         );
         $name = DataUtil::formatPermalink($name);
-    
+
         return strtolower($name);
     }
 }

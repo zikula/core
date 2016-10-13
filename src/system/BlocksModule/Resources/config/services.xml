@@ -76,6 +76,7 @@
             <argument type="service" id="zikula_core.common.theme.assets_js" />
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="zikula_core.common.theme.asset_helper" />
+            <argument>%installed%</argument>
             <argument type="expression">container.hasParameter('upgrading') ? parameter('upgrading') : false</argument>
             <tag name="kernel.event_subscriber"/>
         </service>

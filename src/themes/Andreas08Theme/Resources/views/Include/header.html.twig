@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ pagevars.lang }}" xml:lang="{{ pagevars.lang }}" dir="{{ pagevars.langdirection }}">
+<html lang="{{ app.request.locale }}" xml:lang="{{ app.request.locale }}" dir="{{ localeApi.language_direction }}">
     <head>
         <meta charset="{{ pagevars.meta.charset }}" />
         <title>{{ pagevars.title }}</title>
@@ -13,7 +13,7 @@
         <div id="theme_page_container" class="{{ themevars.layout|default('container') }}">
             <div id="theme_header">
                 {% if currentUser.loggedIn %}
-                <a href="{{ path('zikulausersmodule_user_index') }}" class="pull-right btn btn-primary btn-sm" style="margin: 1em;">{{ __('Signed in as') }} {{ currentUser.uname }}</a>
+                <a href="{{ path('zikulausersmodule_account_menu') }}" class="pull-right btn btn-primary btn-sm" style="margin: 1em;">{{ __('Signed in as') }} {{ currentUser.uname }}</a>
                 {% endif %}
                 <h1 class="title">{{ adminPanelMenu() }} <a href="{{ pagevars.homepath }}">{{ getModVar('ZConfig', 'sitename') }}</a></h1>
                 <h2 class="slogan">{{ getModVar('ZConfig', 'slogan') }}</h2>
