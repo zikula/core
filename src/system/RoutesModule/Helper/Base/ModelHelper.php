@@ -12,7 +12,7 @@
 
 namespace Zikula\RoutesModule\Helper\Base;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Zikula\Bridge\DependencyInjection\ContainerBuilder;
 
 /**
  * Utility base class for model helper methods.
@@ -28,9 +28,9 @@ class ModelHelper
      * Constructor.
      * Initialises member vars.
      *
-     * @param \Zikula_ServiceManager $serviceManager ServiceManager instance
+     * @param ContainerBuilder $serviceManager ServiceManager instance
      */
-    public function __construct(\Zikula_ServiceManager $serviceManager)
+    public function __construct(ContainerBuilder $serviceManager)
     {
         $this->container = $serviceManager;
     }
@@ -59,15 +59,15 @@ class ModelHelper
         if (!in_array($objectType, $controllerHelper->getObjectTypes('util', ['util' => 'model', 'action' => 'canBeCreated']))) {
             throw new Exception('Error! Invalid object type received.');
         }
-    
+
         $result = false;
-    
+
         switch ($objectType) {
             case 'route':
                 $result = true;
                 break;
         }
-    
+
         return $result;
     }
 
@@ -86,9 +86,9 @@ class ModelHelper
         if (!in_array($objectType, $controllerHelper->getObjectTypes('util', ['util' => 'model', 'action' => 'hasExistingInstances']))) {
             throw new Exception('Error! Invalid object type received.');
         }
-    
+
         $repository = $this->container->get('zikula_routes_module.' . $objectType . '_factory')->getRepository();
-    
+
         return ($repository->selectCount() > 0);
     }
 }

@@ -15,10 +15,10 @@ namespace Zikula\RoutesModule\Helper\Base;
 use DataUtil;
 use PageUtil;
 use System;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig_Environment;
+use Zikula\Bridge\DependencyInjection\ContainerBuilder;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Response\PlainResponse;
 
@@ -41,12 +41,12 @@ class ViewHelper
      * Constructor.
      * Initialises member vars.
      *
-     * @param \Zikula_ServiceManager $serviceManager ServiceManager instance
+     * @param ContainerBuilder $serviceManager ServiceManager instance
      * @param TranslatorInterface    $translator     Translator service instance
      *
      * @return void
      */
-    public function __construct(\Zikula_ServiceManager $serviceManager, TranslatorInterface $translator)
+    public function __construct(ContainerBuilder $serviceManager, TranslatorInterface $translator)
     {
         $this->container = $serviceManager;
         $this->translator = $translator;
@@ -66,10 +66,10 @@ class ViewHelper
     {
         // create the base template name
         $template = '@ZikulaRoutesModule/' . ucfirst($type) . '/' . $func;
-    
+
         // check for template extension
         $templateExtension = $this->determineExtension($twig, $type, $func, $request);
-    
+
         // check whether a special template is used
         $tpl = '';
         if ($request->isMethod('POST')) {
@@ -77,15 +77,15 @@ class ViewHelper
         } elseif ($request->isMethod('GET')) {
             $tpl = $request->query->getAlnum('tpl', '');
         }
-    
+
         $templateExtension = '.' . $templateExtension;
-        
+
         // check if custom template exists
         if (!empty($tpl)) {
             $template .= '_' . DataUtil::formatForOS($tpl);
         }
         $template .= $templateExtension;
-    
+
         return $template;
     }
 
@@ -107,7 +107,7 @@ class ViewHelper
         if (empty($template)) {
             $template = $this->getViewTemplate($twig, $type, $func, $request);
         }
-    
+
         // look whether we need output with or without the theme
         $raw = false;
         if ($request->isMethod('POST')) {
@@ -118,22 +118,22 @@ class ViewHelper
         if (!$raw && $templateExtension != 'html.twig') {
             $raw = true;
         }
-    
+
         $response = null;
         if ($raw == true) {
             // standalone output
             if ($templateExtension == 'pdf.twig') {
                 $template = str_replace('.pdf', '.html', $template);
-    
+
                 return $this->processPdf($twig, $request, $templateParameters, $template);
             }
-    
+
             $response = new PlainResponse($twig->render($template, $templateParameters));
         }
-    
+
         // normal output
         $response = new Response($twig->render($template, $templateParameters));
-    
+
         // check if we need to set any custom headers
         switch ($templateExtension) {
             case 'ics.twig':
@@ -143,7 +143,7 @@ class ViewHelper
                 $response->headers->set('Content-Type', 'application/vnd.google-earth.kml+xml');
                 break;
         }
-    
+
         return $response;
     }
 
@@ -163,13 +163,13 @@ class ViewHelper
         if (!in_array($func, ['view', 'display'])) {
             return $templateExtension;
         }
-    
+
         $extensions = $this->availableExtensions($type, $func);
         $format = $request->getRequestFormat();
         if ($format != 'html' && in_array($format, $extensions)) {
             $templateExtension = $format . '.twig';
         }
-    
+
         return $templateExtension;
     }
 
@@ -199,7 +199,7 @@ class ViewHelper
                 $extensions = ['ics'];
             }
         }
-    
+
         return $extensions;
     }
 
@@ -217,25 +217,25 @@ class ViewHelper
     {
         // first the content, to set page vars
         $output = $twig->render($template, $templateParameters);
-    
+
         // make local images absolute
         $output = str_replace('img src="/', 'img src="' . $request->server->get('DOCUMENT_ROOT') . '/', $output);
-    
+
         // see http://codeigniter.com/forums/viewthread/69388/P15/#561214
         //$output = utf8_decode($output);
-    
+
         // then the surrounding
         $output = $twig->render('includePdfHeader.html.twig') . $output . '</body></html>';
-    
+
         $controllerHelper = $this->container->get('zikula_routes_module.controller_helper');
         // create name of the pdf output file
         $fileTitle = $controllerHelper->formatPermalink(System::getVar('sitename'))
                    . '-'
                    . $controllerHelper->formatPermalink(PageUtil::getVar('title'))
                    . '-' . date('Ymd') . '.pdf';
-    
+
         // if ($_GET['dbg'] == 1) die($output);
-    
+
         // instantiate pdf object
         $pdf = new \DOMPDF();
         // define page properties
@@ -246,10 +246,10 @@ class ViewHelper
         $pdf->render();
         // stream output to browser
         $pdf->stream($fileTitle);
-    
+
         // prevent additional output by shutting down the system
         System::shutDown();
-    
+
         return true;
     }
 }
