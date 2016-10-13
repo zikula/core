@@ -29,7 +29,6 @@ use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\ExtensionEvents;
-use Zikula\ExtensionsModule\Util as ExtensionsUtil;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**

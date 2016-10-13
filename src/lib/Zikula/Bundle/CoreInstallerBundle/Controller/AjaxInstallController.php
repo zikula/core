@@ -283,7 +283,7 @@ class AjaxInstallController extends AbstractController
 
     private function finalizeParameters()
     {
-//        \ModUtil::initCoreVars(true); // initialize the modvars array (includes ZConfig (System) vars)
+        //        \ModUtil::initCoreVars(true); // initialize the modvars array (includes ZConfig (System) vars)
         $params = $this->decodeParameters($this->yamlManager->getParameters());
 
         $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'language_i18n', $params['locale']);

@@ -27,7 +27,6 @@ use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository;
 use Zikula\ExtensionsModule\ExtensionEvents;
-use Zikula\ExtensionsModule\Helper\Legacy\BundleSyncHelper as LegacyBundleSyncHelper;
 
 /**
  * Helper functions for the extensions bundle
