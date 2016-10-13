@@ -33,42 +33,6 @@ install:
     - php app/console zikula:install:start -n --database_user=root --database_name=zk_test --password=12345678 --email=admin@example.com --router:request_context:host=localhost
     - php app/console zikula:install:finish -vvv
 
-    # drop the install test db
-    - mysql -e 'drop database zk_test'
-    # create an upgrade db for 1310
-    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.3.10''/" app/config/custom_parameters.yml'
-    - mysql -e 'create database zk_test;'
-    - mysql zk_test < ../test_dbs/core1310.sql
-    # run the upgrade from the 1310 db
-    - php app/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/' -vvv
-
-    # drop the install test db
-    - mysql -e 'drop database zk_test'
-    # create an upgrade db for 140
-    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.0''/" app/config/custom_parameters.yml'
-    - mysql -e 'create database zk_test;'
-    - mysql zk_test < ../test_dbs/core140.sql
-    # run the upgrade from the 140 db
-    - php app/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/' -vvv
-
-    # drop the install test db
-    - mysql -e 'drop database zk_test'
-    # create an upgrade db for 141
-    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.1''/" app/config/custom_parameters.yml'
-    - mysql -e 'create database zk_test;'
-    - mysql zk_test < ../test_dbs/core141.sql
-    # run the upgrade from the 141 db
-    - php app/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/' -vvv
-
-    # drop the install test db
-    - mysql -e 'drop database zk_test'
-    # create an upgrade db for 142
-    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.2''/" app/config/custom_parameters.yml'
-    - mysql -e 'create database zk_test;'
-    - mysql zk_test < ../test_dbs/core142.sql
-    # run the upgrade from the 142 db
-    - php app/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/' -vvv
-
 # We cannot install Apache2 for now, because this requires sudo mode in which composer takes too long to install the depencencies.
 #before_script:
 #    - sudo apt-get update
