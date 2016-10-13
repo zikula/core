@@ -103,7 +103,7 @@ class Util
             $config[$keys[0]][$keys[1]] = $val;
         }
 
-        $charset = ZLanguage::getEncoding();
+        $charset = 'utf-8'; // @todo! ZLanguage::getEncoding();
         if (strtolower($charset) != 'utf-8') {
             // set a different character encoding with iconv
             $config['Core']['Encoding'] = $charset;
@@ -126,8 +126,8 @@ class Util
         //
         // TODO - we need a new theme field for doctype declaration
         // for now we will use non-strict modes
-        $currentThemeID = ThemeUtil::getIDFromName(UserUtil::getTheme());
-        $themeInfo = ThemeUtil::getInfo($currentThemeID);
+//        $currentThemeID = ThemeUtil::getIDFromName(UserUtil::getTheme());
+//        $themeInfo = ThemeUtil::getInfo($currentThemeID);
         $useXHTML = (isset($themeInfo['xhtml']) && $themeInfo['xhtml']) ? true : false;
 
         // as XHTML 1.0 Transitional is the default, we only set HTML (for now)
