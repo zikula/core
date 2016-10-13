@@ -96,7 +96,7 @@ class Zikula_Session_Storage_Legacy extends NativeSessionStorage
      */
     public function expire()
     {
-//        SessionUtil::expire();
+        //        SessionUtil::expire();
     }
 
     /**

@@ -115,7 +115,7 @@ class LocaleMetaData
     private $n_sign_posn = 2;
 
     /**
-     * @var int 0 = Sunday, 1 Monday etc.
+     * @var int 0 = Sunday, 1 Monday etc
      */
     private $firstweekday = 0;
 

@@ -24,7 +24,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\SearchModule\AbstractSearchable;
-use ZLanguage;
 
 /**
  * User controllers for the search module

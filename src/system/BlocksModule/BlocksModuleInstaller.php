@@ -16,7 +16,6 @@ use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
 use Zikula\BlocksModule\Helper\InstallerHelper;
 use Zikula\Core\AbstractExtensionInstaller;
-use ZLanguage;
 
 /**
  * Installation and upgrade routines for the blocks module.

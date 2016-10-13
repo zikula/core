@@ -12,9 +12,7 @@
 namespace Zikula\SecurityCenterModule;
 
 use CacheUtil;
-use System;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula_Core;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\SecurityCenterModule\Util as SecurityCenterUtil;
 
