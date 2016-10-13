@@ -13,6 +13,7 @@ namespace Zikula\SecurityCenterModule;
 
 use CacheUtil;
 use System;
+use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula_Core;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\SecurityCenterModule\Util as SecurityCenterUtil;
@@ -42,35 +43,35 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         $this->setVar('itemsperpage', 10);
 
         // We use config vars for the rest of the configuration as config vars
-        System::setVar('updatecheck', 1);
-        System::setVar('updatefrequency', 7);
-        System::setVar('updatelastchecked', 0);
-        System::setVar('updateversion', Zikula_Core::VERSION_NUM);
-        System::setVar('keyexpiry', 0);
-        System::setVar('sessionauthkeyua', 0);
-        System::setVar('secure_domain', '');
-        System::setVar('signcookies', 1);
-        System::setVar('signingkey', sha1(mt_rand(0, time())));
-        System::setVar('seclevel', 'Medium');
-        System::setVar('secmeddays', 7);
-        System::setVar('secinactivemins', 20);
-        System::setVar('sessionstoretofile', 0);
-        System::setVar('sessionsavepath', '');
-        System::setVar('gc_probability', 100);
-        System::setVar('sessioncsrftokenonetime', 1);  // 1 means use same token for entire session
-        System::setVar('anonymoussessions', 1); // @deprecated
-        System::setVar('sessionrandregenerate', 1);
-        System::setVar('sessionregenerate', 1);
-        System::setVar('sessionregeneratefreq', 10);
-        System::setVar('sessionipcheck', 0);
-        System::setVar('sessionname', '_zsid');
+        $this->setSystemVar('updatecheck', 1);
+        $this->setSystemVar('updatefrequency', 7);
+        $this->setSystemVar('updatelastchecked', 0);
+        $this->setSystemVar('updateversion', \Zikula_Core::VERSION_NUM);
+        $this->setSystemVar('keyexpiry', 0);
+        $this->setSystemVar('sessionauthkeyua', 0);
+        $this->setSystemVar('secure_domain', '');
+        $this->setSystemVar('signcookies', 1);
+        $this->setSystemVar('signingkey', sha1(mt_rand(0, time())));
+        $this->setSystemVar('seclevel', 'Medium');
+        $this->setSystemVar('secmeddays', 7);
+        $this->setSystemVar('secinactivemins', 20);
+        $this->setSystemVar('sessionstoretofile', 0);
+        $this->setSystemVar('sessionsavepath', '');
+        $this->setSystemVar('gc_probability', 100);
+        $this->setSystemVar('sessioncsrftokenonetime', 1);  // 1 means use same token for entire session
+        $this->setSystemVar('anonymoussessions', 1); // @deprecated
+        $this->setSystemVar('sessionrandregenerate', 1);
+        $this->setSystemVar('sessionregenerate', 1);
+        $this->setSystemVar('sessionregeneratefreq', 10);
+        $this->setSystemVar('sessionipcheck', 0);
+        $this->setSystemVar('sessionname', '_zsid');
 
-        System::setVar('filtergetvars', 1);
-        System::setVar('filterpostvars', 1);
-        System::setVar('filtercookievars', 1);
+        $this->setSystemVar('filtergetvars', 1);
+        $this->setSystemVar('filterpostvars', 1);
+        $this->setSystemVar('filtercookievars', 1);
 
         // Location of HTML Purifier
-        System::setVar('htmlpurifierlocation', __DIR__.'/vendor/htmlpurifier/');
+        $this->setSystemVar('htmlpurifierlocation', __DIR__.'/vendor/htmlpurifier/');
 
         // HTML Purifier cache dir
         $purifierCacheDir = CacheUtil::getLocalDir() . '/purifierCache';
@@ -83,19 +84,19 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         $this->setVar('htmlpurifierConfig', serialize($purifierDefaultConfig));
 
         // create vars for phpids usage
-        System::setVar('useids', 0);
-        System::setVar('idsmail', 0);
-        System::setVar('idsrulepath', __DIR__ . '/Resources/config/phpids_zikula_default.xml');
-        System::setVar('idssoftblock', 1);                // do not block requests, but warn for debugging
-        System::setVar('idsfilter', 'xml');               // filter type
-        System::setVar('idsimpactthresholdone', 1);       // db logging
-        System::setVar('idsimpactthresholdtwo', 10);      // mail admin
-        System::setVar('idsimpactthresholdthree', 25);    // block request
-        System::setVar('idsimpactthresholdfour', 75);     // kick user, destroy session
-        System::setVar('idsimpactmode', 1);               // per request per default
-        System::setVar('idshtmlfields', ['POST.__wysiwyg']);
-        System::setVar('idsjsonfields', ['POST.__jsondata']);
-        System::setVar('idsexceptions', [
+        $this->setSystemVar('useids', 0);
+        $this->setSystemVar('idsmail', 0);
+        $this->setSystemVar('idsrulepath', __DIR__ . '/Resources/config/phpids_zikula_default.xml');
+        $this->setSystemVar('idssoftblock', 1);                // do not block requests, but warn for debugging
+        $this->setSystemVar('idsfilter', 'xml');               // filter type
+        $this->setSystemVar('idsimpactthresholdone', 1);       // db logging
+        $this->setSystemVar('idsimpactthresholdtwo', 10);      // mail admin
+        $this->setSystemVar('idsimpactthresholdthree', 25);    // block request
+        $this->setSystemVar('idsimpactthresholdfour', 75);     // kick user, destroy session
+        $this->setSystemVar('idsimpactmode', 1);               // per request per default
+        $this->setSystemVar('idshtmlfields', ['POST.__wysiwyg']);
+        $this->setSystemVar('idsjsonfields', ['POST.__jsondata']);
+        $this->setSystemVar('idsexceptions', [
             'GET.__utmz',
             'GET.__utmc',
             'REQUEST.linksorder', 'POST.linksorder',
@@ -105,9 +106,9 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
             'REQUEST.filter.value', 'POST.filter.value'
         ]);
 
-        System::setVar('outputfilter', 1);
+        $this->setSystemVar('outputfilter', 1);
 
-        System::setVar('htmlentities', 1);
+        $this->setSystemVar('htmlentities', 1);
 
         // default values for AllowableHTML
         $defhtml = [
@@ -222,7 +223,7 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
             'video' => 0,
             'wbr' => 0
         ];
-        System::setVar('AllowableHTML', $defhtml);
+        $this->setSystemVar('AllowableHTML', $defhtml);
 
         // Initialisation successful
         return true;
@@ -255,5 +256,10 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
     {
         // this module can't be uninstalled
         return false;
+    }
+
+    private function setSystemVar($name, $value = '')
+    {
+        return $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, $name, $value);
     }
 }
