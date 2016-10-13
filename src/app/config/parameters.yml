@@ -2,12 +2,9 @@ parameters:
     installed:        false
     env:              prod
     debug:            false
-    compat_layer:     true
-    script_position:  head
+    script_position:  foot
     # script_position defines the location where javascripts will be placed in the page
     # choices are `head` or `foot`
-    # in Core-1.x this defaults to `head`. In Core-2.0 it will default to `foot`
-    # it can be changed to `foot` now if you are certain your site's inline javascript is compatible.
     temp_dir:         %kernel.cache_dir%/ztemp
     datadir:          userdata
     system.chmod_dir: 0777
@@ -33,7 +30,7 @@ parameters:
 
     zikula.session.name: _zsid
     assets_version: ~ #e.g. 'v1'
-    
+
     # Changing the current umask to the octal "022" will set directory permissions
     # to "755", and file permissions to "644" (for directories such as
     # "app/cache" and "app/logs"). Changing the current umask to the octal "02"
