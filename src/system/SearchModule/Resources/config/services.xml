@@ -37,13 +37,7 @@
             <argument type="service" id="zikula_permissions_module.api.permission" />
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="zikula_core.common.theme.assets_header" />
-        </service>
-        <!-- to be removed in 2.0 -->
-        <service id="zikulasearchmodule.front_controller_listener" alias="zikula_search_module.front_controller_listener" class="%zikula_search_module.front_controller_listener.class%">
-            <tag name="kernel.event_subscriber" />
-            <argument type="service" id="router" />
-            <argument type="service" id="zikula_permissions_module.api.permission" />
-            <argument type="service" id="zikula_core.common.theme.assets_header" />
+            <argument>%installed%</argument>
             <argument type="expression">container.hasParameter('upgrading') ? parameter('upgrading') : false</argument>
         </service>
         <service id="zikula_search_module.module_event_listener" class="%zikula_search_module.module_event_listener.class%">
