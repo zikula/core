@@ -61,16 +61,9 @@ class CreateThemedResponseListener implements EventSubscriberInterface
 
         // all responses are assumed to be themed. PlainResponse will have already returned.
         $twigThemedResponse = $this->themeEngine->wrapResponseInTheme($response);
-        if ($twigThemedResponse) {
-            $trimWhitespace = $this->variableApi->get('ZikulaThemeModule', 'trimwhitespace', false);
-            if ($trimWhitespace) {
-                $this->trimWhitespace($twigThemedResponse);
-            }
-            $event->setResponse($twigThemedResponse);
-        } else {
-            // theme is not a twig based theme, revert to smarty
-            $smartyThemedResponse = Zikula_View_Theme::getInstance()->themefooter($response);
-            $event->setResponse($smartyThemedResponse);
+        $trimWhitespace = $this->variableApi->get('ZikulaThemeModule', 'trimwhitespace', false);
+        if ($trimWhitespace) {
+            $this->trimWhitespace($twigThemedResponse);
         }
     }
 
