@@ -86,7 +86,6 @@
             <argument type="service" id="zikula_core.common.theme.themevars" />
             <argument type="service" id="zikula_core.common.theme.assets_header" />
             <argument>%zikula.session.name%</argument>
-            <argument>%compat_layer%</argument>
             <tag name="kernel.event_subscriber"/>
         </service>
 

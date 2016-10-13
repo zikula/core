@@ -1,9 +1,4 @@
 <script type="text/javascript">/* <![CDATA[ */
-{% if compat|default(false) %}
-    document.location.entrypoint="{{ config.entrypoint }}";
-    document.location.pnbaseURL="{{ config.baseURL }}";
-    document.location.ajaxtimeout={{ config.ajaxtimeout }};
-{% endif %}
 if (typeof(Zikula) == 'undefined') {var Zikula = {};}
 Zikula.Config = {{ config|json_encode|raw }};
 /* ]]> */</script>

@@ -55,11 +55,6 @@ class AddJSConfigListener implements EventSubscriberInterface
      */
     private $defaultSessionName;
 
-    /**
-     * @var string|bool
-     */
-    private $compat;
-
     private $installed;
 
     /**
@@ -70,7 +65,6 @@ class AddJSConfigListener implements EventSubscriberInterface
      * @param ParameterBag $pageVars
      * @param AssetBag $headers
      * @param string $defaultSessionName
-     * @param bool $compat
      */
     public function __construct(
         $installed,
@@ -79,8 +73,7 @@ class AddJSConfigListener implements EventSubscriberInterface
         EngineInterface $templating,
         ParameterBag $pageVars,
         AssetBag $headers,
-        $defaultSessionName = '_zsid',
-        $compat = false
+        $defaultSessionName = '_zsid'
     ) {
         $this->installed = $installed;
         $this->variableApi = $variableApi;
@@ -89,7 +82,6 @@ class AddJSConfigListener implements EventSubscriberInterface
         $this->pageVars = $pageVars;
         $this->headers = $headers;
         $this->defaultSessionName = $defaultSessionName;
-        $this->compat = $compat;
     }
 
     /**
@@ -125,7 +117,6 @@ class AddJSConfigListener implements EventSubscriberInterface
         }
         $config = array_map('htmlspecialchars', $config);
         $content = $this->templating->render('@ZikulaThemeModule/Engine/JSConfig.html.twig', [
-            'compat' => $this->compat,
             'config' => $config
         ]);
         $this->headers->add([$content => 0]);
