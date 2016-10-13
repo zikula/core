@@ -1762,8 +1762,8 @@ class ModUtil
                 'name' => 'zikula',
                 'type' => self::TYPE_CORE,
                 'directory' => '',
-                'displayname' => 'Zikula Core v' . \ZikulaKernel::VERSION,
-                'version' => \ZikulaKernel::VERSION,
+                'displayname' => 'Zikula Core v' . \Zikula_Core::VERSION_NUM,
+                'version' => \Zikula_Core::VERSION_NUM,
                 'state' => self::STATE_ACTIVE
             ];
         }

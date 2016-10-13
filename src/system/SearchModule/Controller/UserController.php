@@ -288,10 +288,9 @@ class UserController extends AbstractController
      *
      * Generate xml for opensearch syndication
      *
-     * @param Request $request
      * @return PlainResponse Thrown if the user doesn't have read access to the module
      */
-    public function opensearchAction(Request $request)
+    public function opensearchAction()
     {
         if (!$this->hasPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
