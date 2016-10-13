@@ -289,20 +289,20 @@ class UserController extends AbstractController
      *
      * Generate xml for opensearch syndication
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have read access to the module
+     * @param Request $request
+     * @return PlainResponse Thrown if the user doesn't have read access to the module
      */
-    public function opensearchAction()
+    public function opensearchAction(Request $request)
     {
         if (!$this->hasPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
         }
 
-        $language = ZLanguage::getLanguageCode();
         $variableApi = $this->get('zikula_extensions_module.api.variable');
         $templateParameters = [
-            'siteName' => $variableApi->getSystemVar('sitename_' . $language, $variableApi->getSystemVar('sitename_en')),
-            'slogan' => $variableApi->getSystemVar('slogan_' . $language, $variableApi->getSystemVar('slogan_en')),
-            'metaKeywords' => $variableApi->getSystemVar('metakeywords_' . $language, $variableApi->getSystemVar('metakeywords_en')),
+            'siteName' => $variableApi->getSystemVar('sitename', $variableApi->getSystemVar('sitename_en')),
+            'slogan' => $variableApi->getSystemVar('slogan', $variableApi->getSystemVar('slogan_en')),
+            'metaKeywords' => $variableApi->getSystemVar('metakeywords', $variableApi->getSystemVar('metakeywords_en')),
             'adminMail' => $variableApi->getSystemVar('adminmail'),
             'hasAdultContent' => $variableApi->get('ZikulaSearchModule', 'opensearch_adult_content', false)
         ];

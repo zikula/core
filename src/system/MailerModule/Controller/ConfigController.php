@@ -160,7 +160,7 @@ class ConfigController extends AbstractController
 
                 // send the email
                 try {
-                    $siteName = $variableApi->getSystemVar('sitename_' . ZLanguage::getLanguageCode(), $variableApi->getSystemVar('sitename_en'));
+                    $siteName = $variableApi->getSystemVar('sitename', $variableApi->getSystemVar('sitename_en'));
                     $adminMail = $variableApi->getSystemVar('adminmail');
 
                     // create new message instance
@@ -208,7 +208,7 @@ class ConfigController extends AbstractController
 
         $dataValues = array_merge($params, $modVars);
 
-        $dataValues['sitename'] = $variableApi->getSystemVar('sitename_' . ZLanguage::getLanguageCode(), $variableApi->getSystemVar('sitename_en'));
+        $dataValues['sitename'] = $variableApi->getSystemVar('sitename', $variableApi->getSystemVar('sitename_en'));
         $dataValues['adminmail'] = $variableApi->getSystemVar('adminmail');
 
         $dataValues['fromName'] = $dataValues['sitename'];
