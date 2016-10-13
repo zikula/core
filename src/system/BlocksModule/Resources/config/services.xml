@@ -37,10 +37,9 @@
         <service id="zikula_blocks_module.api.block" class="%zikula_blocks_module.api.block.class%">
             <argument type="service" id="zikula_blocks_module.block_position_repository" />
             <argument type="service" id="zikula_blocks_module.api.block_factory" />
-            <argument type="service" id="zikula_extensions_module.api.extension" />
             <argument type="service" id="zikula_extensions_module.extension_repository" />
             <argument type="service" id="zikula_blocks_module.internal.block_collector" />
-            <argument>%kernel.root_dir%</argument>
+            <argument type="service" id="kernel" />
         </service>
 
         <service id="zikula_blocks_module.api.block_filter" class="%zikula_blocks_module.api.block_filter.class%">
