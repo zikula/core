@@ -45,7 +45,7 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         System::setVar('updatecheck', 1);
         System::setVar('updatefrequency', 7);
         System::setVar('updatelastchecked', 0);
-        System::setVar('updateversion', Zikula_Core::VERSION_NUM);
+        System::setVar('updateversion', \ZikulaKernel::VERSION);
         System::setVar('keyexpiry', 0);
         System::setVar('sessionauthkeyua', 0);
         System::setVar('secure_domain', '');
@@ -73,10 +73,10 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         System::setVar('htmlpurifierlocation', __DIR__.'/vendor/htmlpurifier/');
 
         // HTML Purifier cache dir
-        $purifierCacheDir = CacheUtil::getLocalDir() . '/purifierCache';
-        if (!file_exists($purifierCacheDir)) {
-            CacheUtil::clearLocalDir('purifierCache');
-        }
+//        $purifierCacheDir = CacheUtil::getLocalDir() . '/purifierCache';
+//        if (!file_exists($purifierCacheDir)) {
+//            CacheUtil::clearLocalDir('purifierCache');
+//        }
 
         // HTML Purifier default settings
         $purifierDefaultConfig = SecurityCenterUtil::getpurifierconfig(['forcedefault' => true]);
