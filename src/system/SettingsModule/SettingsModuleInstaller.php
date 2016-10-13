@@ -45,9 +45,8 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('funtext', '1');
         $this->setSystemVar('reportlevel', '0');
         $this->setSystemVar('startpage', '');
-        $this->setSystemVar('Version_Num', \Zikula_Core::VERSION_NUM);
-        $this->setSystemVar('Version_ID', \Zikula_Core::VERSION_ID);
-        $this->setSystemVar('Version_Sub', \Zikula_Core::VERSION_SUB);
+        $this->setSystemVar('Version_Num', \ZikulaKernel::VERSION);
+        $this->setSystemVar('Version_Sub', \ZikulaKernel::VERSION_SUB);
         $this->setSystemVar('debug_sql', '0');
         $this->setSystemVar('multilingual', '1');
         $this->setSystemVar('useflags', '0');
@@ -80,7 +79,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         }
 
         $this->setSystemVar('shorturlsdefaultmodule', '');
-        $this->setSystemVar('profilemodule', ((\ModUtil::available('ZikulaProfileModule')) ? 'ZikulaProfileModule' : ''));
+        $this->setSystemVar('profilemodule', ''); //((\ModUtil::available('ZikulaProfileModule')) ? 'ZikulaProfileModule' : ''));
         $this->setSystemVar('messagemodule', '');
         $this->setSystemVar('languageurl', 0);
         $this->setSystemVar('ajaxtimeout', 5000);
@@ -89,30 +88,14 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         //! this is a comma-separated list of special characters to replace in permalinks
         $this->setSystemVar('permareplace', $this->__('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue'));
 
-        $this->setSystemVar('language', ZLanguage::getLanguageCodeLegacy());
-        $this->setSystemVar('locale', ZLanguage::getLocale());
-        $this->setSystemVar('language_i18n', ZLanguage::getLanguageCode());
+        $this->setSystemVar('locale', $this->container->get('request')->getLocale()); //ZLanguage::getLocale());
+        $this->setSystemVar('language_i18n', $this->container->get('request')->getLocale());
 
         $this->setSystemVar('idnnames', 1);
 
         // create schema
         try {
             $this->schemaTool->create(['Zikula\Core\Doctrine\Entity\WorkflowEntity']);
-        } catch (\Exception $e) {
-            return false;
-        }
-
-        /**
-         * These entities are only used to install the tables and they
-         * are @deprecated as of 1.4.0 because the Objectdata paradigm
-         * is being removed at 2.0.0
-         */
-        try {
-            $this->schemaTool->create([
-                'Zikula\SettingsModule\Entity\ObjectdataAttributes',
-                'Zikula\SettingsModule\Entity\ObjectdataLog',
-                'Zikula\SettingsModule\Entity\ObjectdataMeta',
-            ]);
         } catch (\Exception $e) {
             return false;
         }
