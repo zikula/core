@@ -83,7 +83,7 @@ class SiteOffListener implements EventSubscriberInterface
         // Get variables
         $siteOff = (bool)$this->variableApi->getSystemVar('siteoff');
         $hasAdminPerms = $this->permissionApi->hasPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN);
-        $versionCheck = (\Zikula_Core::VERSION_NUM != $this->variableApi->getSystemVar('Version_Num'));
+        $versionCheck = (\ZikulaKernel::VERSION != $this->variableApi->getSystemVar('Version_Num'));
 
         // Check for site closed
         if (($siteOff && !$hasAdminPerms) || $versionCheck) {
