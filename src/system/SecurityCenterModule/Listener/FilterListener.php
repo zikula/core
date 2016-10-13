@@ -28,7 +28,6 @@ use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\MailerModule\Api\MailerApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
-use ZLanguage;
 
 /**
  * Event handler for the security center module

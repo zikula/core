@@ -14,7 +14,6 @@ namespace Zikula\CategoriesModule;
 use DoctrineUtil;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\Core\AbstractExtensionInstaller;
-use ZLanguage;
 
 /**
  * Installation and upgrade routines for the categories module.
