@@ -111,7 +111,7 @@ class AddJSConfigListener implements EventSubscriberInterface
             'uid' => (int)$this->currentUserApi->get('uid')
         ];
 
-        $polyfill_features = $this->compat ? \PageUtil::getVar('polyfill_features', []) : []; // @todo remove
+        $polyfill_features = [];
         // merge in features added via twig
         $featuresFromTwig = $this->pageVars->get('polyfill_features', []);
         $polyfill_features = array_unique(array_merge($polyfill_features, $featuresFromTwig));
