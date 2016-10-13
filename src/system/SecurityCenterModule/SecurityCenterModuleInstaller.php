@@ -11,10 +11,8 @@
 
 namespace Zikula\SecurityCenterModule;
 
-use CacheUtil;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\Core\AbstractExtensionInstaller;
-use Zikula\SecurityCenterModule\Util as SecurityCenterUtil;
 
 /**
  * Installation routines for the security center module.
@@ -72,13 +70,10 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('htmlpurifierlocation', __DIR__.'/vendor/htmlpurifier/');
 
         // HTML Purifier cache dir
-        $purifierCacheDir = CacheUtil::getLocalDir() . '/purifierCache';
-        if (!file_exists($purifierCacheDir)) {
-            CacheUtil::clearLocalDir('purifierCache');
-        }
+        $this->container->get('cache_clearer')->clear('purifier');
 
         // HTML Purifier default settings
-        $purifierDefaultConfig = SecurityCenterUtil::getpurifierconfig(['forcedefault' => true]);
+        $purifierDefaultConfig = $this->container->get('zikula_security_center_module.helper.purifier_helper')->getPurifierConfig(['forcedefault' => true]);
         $this->setVar('htmlpurifierConfig', serialize($purifierDefaultConfig));
 
         // create vars for phpids usage

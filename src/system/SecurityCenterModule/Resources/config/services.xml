@@ -9,6 +9,7 @@
         <parameter key="zikula_securitycenter_module.intrusion_repository.class">Zikula\SecurityCenterModule\Entity\Repository\IntrusionRepository</parameter>
         <parameter key="twig.extension.zikula_securitycenter_module.class">Zikula\SecurityCenterModule\Twig\TwigExtension</parameter>
         <parameter key="zikula_securitycenter_module.filter_listener.class">Zikula\SecurityCenterModule\Listener\FilterListener</parameter>
+        <parameter key="zikula_security_center_module.helper.purifier_helper.class">Zikula\SecurityCenterModule\Helper\PurifierHelper</parameter>
     </parameters>
 
     <services>
@@ -28,6 +29,7 @@
         <service id="twig.extension.zikula_securitycenter_module" class="%twig.extension.zikula_securitycenter_module.class%">
             <argument>%installed%</argument>
             <argument type="service" id="zikula_extensions_module.api.variable" />
+            <argument type="service" id="zikula_security_center_module.helper.purifier_helper" />
             <tag name="twig.extension" />
         </service>
 
@@ -38,6 +40,11 @@
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="zikula_mailer_module.api.mailer" />
+        </service>
+
+        <service id="zikula_security_center_module.helper.purifier_helper" class="%zikula_security_center_module.helper.purifier_helper.class%">
+            <argument type="service" id="kernel" />
+            <argument type="service" id="zikula_extensions_module.api.variable" />
         </service>
     </services>
 </container>

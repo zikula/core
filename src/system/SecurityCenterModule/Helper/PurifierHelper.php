@@ -9,21 +9,34 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\SecurityCenterModule;
+namespace Zikula\SecurityCenterModule\Helper;
 
-use HTMLPurifier;
-use HTMLPurifier_Config;
-use CacheUtil;
-use ModUtil;
-use ThemeUtil;
-use UserUtil;
-use ZLanguage;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Zikula\ExtensionsModule\Api\VariableApi;
 
-/**
- * Utility methods for the security center module
- */
-class Util
+class PurifierHelper
 {
+    /**
+     * @var KernelInterface
+     */
+    private $kernel;
+
+    /**
+     * @var VariableApi
+     */
+    private $variableApi;
+
+    /**
+     * PurifierHelper constructor.
+     * @param KernelInterface $kernel
+     * @param VariableApi $variableApi
+     */
+    public function __construct(KernelInterface $kernel, VariableApi $variableApi)
+    {
+        $this->kernel = $kernel;
+        $this->variableApi = $variableApi;
+    }
+
     /**
      * Retrieves configuration array for HTML Purifier.
      *
@@ -31,13 +44,13 @@ class Util
      *      @type bool $forcedefault true to force return of default config / false to auto detect
      *                    }
      *
-     * @return array HTML Purifier configuration settings
+     * @return \HTMLPurifier_Config HTML Purifier configuration settings
      */
-    public static function getpurifierconfig($args)
+    public function getPurifierConfig($args)
     {
-        $config = self::getPurifierDefaultConfig();
+        $config = $this->getPurifierDefaultConfig();
         if (!isset($args['forcedefault']) || true !== $args['forcedefault']) {
-            $savedConfig = ModUtil::getVar('ZikulaSecurityCenterModule', 'htmlpurifierConfig');
+            $savedConfig = $this->variableApi->get('ZikulaSecurityCenterModule', 'htmlpurifierConfig');
 
             if (!is_null($savedConfig) && false !== $savedConfig) {
                 $savedConfig = unserialize($savedConfig);
@@ -68,9 +81,9 @@ class Util
      *
      * @staticvar array $purifier The HTMLPurifier instance.
      *
-     * @return HTMLPurifier The HTMLPurifier instance, returned by reference
+     * @return \HTMLPurifier The HTMLPurifier instance, returned by reference
      */
-    public static function getpurifier($args = null)
+    public function getPurifier($args = null)
     {
         $force = isset($args['force']) ? $args['force'] : false;
 
@@ -78,9 +91,9 @@ class Util
         static $purifier;
 
         if (!isset($purifier) || $force) {
-            $config = self::getpurifierconfig(['forcedefault' => false]);
+            $config = $this->getPurifierConfig(['forcedefault' => false]);
 
-            $purifier = new HTMLPurifier($config);
+            $purifier = new \HTMLPurifier($config);
         }
 
         return $purifier;
@@ -89,13 +102,13 @@ class Util
     /**
      * Retrieves default configuration array for HTML Purifier.
      *
-     * @return array HTML Purifier default configuration settings
+     * @return \HTMLPurifier_Config HTML Purifier default configuration settings
      */
-    private static function getPurifierDefaultConfig()
+    private function getPurifierDefaultConfig()
     {
-        $config = HTMLPurifier_Config::createDefault();
+        $config = \HTMLPurifier_Config::createDefault();
 
-        $charset = ZLanguage::getEncoding();
+        $charset = $this->kernel->getCharset();
         if (strtolower($charset) != 'utf-8') {
             // set a different character encoding with iconv
             $config->set('Core.Encoding', $charset);
@@ -105,26 +118,6 @@ class Util
             // this, you are welcome to read docs/enduser-utf8.html in the full package for a fix,
             // but please be cognizant of the issues the "solution" creates (for this
             // reason, I do not include the solution in this document).
-        }
-
-        // determine doctype of current theme
-        // supported doctypes include:
-        //
-        // HTML 4.01 Strict
-        // HTML 4.01 Transitional
-        // XHTML 1.0 Strict
-        // XHTML 1.0 Transitional (default)
-        // XHTML 1.1
-        //
-        // TODO - we need a new theme field for doctype declaration
-        // for now we will use non-strict modes
-        $currentThemeID = ThemeUtil::getIDFromName(UserUtil::getTheme());
-        $themeInfo = ThemeUtil::getInfo($currentThemeID);
-        $useXHTML = (isset($themeInfo['xhtml']) && $themeInfo['xhtml']) ? true : false;
-
-        // as XHTML 1.0 Transitional is the default, we only set HTML (for now)
-        if (!$useXHTML) {
-            $config->set('HTML.Doctype', 'HTML 4.01 Transitional');
         }
 
         // allow nofollow and imageviewer to be used as document relationships in the rel attribute
@@ -140,7 +133,7 @@ class Util
         $config->set('Output.FlashCompat', true);
         $config->set('HTML.SafeEmbed', true);
 
-        $config->set('Cache.SerializerPath', CacheUtil::getLocalDir() . '/purifierCache');
+        $config->set('Cache.SerializerPath', $this->kernel->getCacheDir() . '/purifier');
 
         return $config;
     }
