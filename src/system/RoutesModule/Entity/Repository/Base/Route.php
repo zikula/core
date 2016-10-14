@@ -659,19 +659,6 @@ class Route extends SortableRepository
      */
     protected function applyDefaultFilters(QueryBuilder $qb, $parameters = [])
     {
-        $currentModule = ModUtil::getName();
-        $currentLegacyControllerType = null !== $this->getRequest() ? $this->getRequest()->get('lct', 'user') : 'user';
-        if ($currentLegacyControllerType == 'admin' && $currentModule == 'ZikulaRoutesModule') {
-            return $qb;
-        }
-    
-        if (!in_array('workflowState', array_keys($parameters)) || empty($parameters['workflowState'])) {
-            // per default we show approved routes only
-            $onlineStates = ['approved'];
-            $qb->andWhere('tbl.workflowState IN (:onlineStates)')
-               ->setParameter('onlineStates', $onlineStates);
-        }
-    
         return $qb;
     }
 

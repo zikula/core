@@ -328,11 +328,6 @@ class RouteController extends AbstractController
         if (!$this->hasPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
-        // temporary workarounds
-        // let repository know if we are in admin or user area
-        $request->query->set('lct', $isAdmin ? 'admin' : 'user');
-        // let entities know if we are in admin or user area
-        System::queryStringSetVar('lct', $isAdmin ? 'admin' : 'user');
 
         $repository = $this->get('zikula_routes_module.' . $objectType . '_factory')->getRepository();
         $repository->setRequest($request);
@@ -416,11 +411,6 @@ class RouteController extends AbstractController
         if (!$this->hasPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
-        // temporary workarounds
-        // let repository know if we are in admin or user area
-        $request->query->set('lct', $isAdmin ? 'admin' : 'user');
-        // let entities know if we are in admin or user area
-        System::queryStringSetVar('lct', $isAdmin ? 'admin' : 'user');
 
         $repository = $this->get('zikula_routes_module.' . $objectType . '_factory')->getRepository();
 
