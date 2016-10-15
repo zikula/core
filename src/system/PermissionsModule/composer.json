@@ -20,6 +20,9 @@
         "zikula": {
             "class": "Zikula\\PermissionsModule\\ZikulaPermissionsModule",
             "core-compatibility": ">=1.4.1",
+            "capabilities": {
+                "admin": {"route": "zikulapermissionsmodule_admin_view"}
+            },
             "displayname": "Permissions",
             "url": "permissions",
             "securityschema": {
