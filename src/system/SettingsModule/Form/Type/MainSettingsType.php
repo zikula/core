@@ -87,22 +87,6 @@ class MainSettingsType extends AbstractType
                 'label' => $translator->__('Start Controller'),
                 'required' => false
             ])
-            ->add('startpage', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $translator->__('Start module'),
-                'choices' => $options['modules'],
-                'choices_as_values' => true,
-                'placeholder' => $translator->__('No start module (static frontpage)'),
-                'required' => false,
-                'help' => $translator->__("('index.php' points to this)")
-            ])
-            ->add('starttype', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $translator->__('Start function type (required if module is set)'),
-                'required' => false
-            ])
-            ->add('startfunc', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $translator->__('Start function (required if module is set)'),
-                'required' => false
-            ])
             ->add('startargs', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $translator->__('Start function arguments'),
                 'required' => false,
@@ -111,7 +95,7 @@ class MainSettingsType extends AbstractType
             ->add('entrypoint', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $translator->__('Site entry point (front controller)'),
                 'constraints' => new Callback([
-                    'callback' => function ($data, ExecutionContextInterface $context) use ($options) {
+                    'callback' => function ($data, ExecutionContextInterface $context) use ($translator) {
                         $falseEntryPoints = ['admin.php', 'ajax.php', 'user.php', 'mo2json.php', 'jcss.php'];
                         $entryPointExt = pathinfo($data, PATHINFO_EXTENSION);
                         if (in_array($data, $falseEntryPoints) || strtolower($entryPointExt) != 'php') {
@@ -152,7 +136,7 @@ class MainSettingsType extends AbstractType
                 $builder->create('permasearch', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                     'label' => $translator->__('List to search for'),
                     'constraints' => new Callback([
-                        'callback' => function ($data, ExecutionContextInterface $context) use ($options) {
+                        'callback' => function ($data, ExecutionContextInterface $context) use ($translator) {
                             if (mb_ereg(',$', $data)) {
                                 $context->addViolation($translator->__('Error! In your permalink settings, strings cannot be terminated with a comma.'));
                             }
@@ -167,17 +151,6 @@ class MainSettingsType extends AbstractType
                 ])
                 ->addModelTransformer($spaceReplaceCallbackTransformer)
             )
-            ->add('shorturls', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
-                'label' => $translator->__('Enable directory-based short URLs'),
-                'required' => false
-            ])
-            ->add('shorturlsseparator', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $translator->__('Separator for permalink titles')
-            ])
-            ->add('shorturlsdefaultmodule', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $translator->__('Do not display module name in short URLs for'),
-                'choices' => $options['modules']
-            ])
             ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'label' => $translator->__('Save'),
                 'icon' => 'fa-check',
@@ -229,7 +202,6 @@ class MainSettingsType extends AbstractType
     {
         $resolver->setDefaults([
             'translator' => null,
-            'modules' => [],
             'profileModules' => [],
             'messageModules' => [],
             'languages' => [],

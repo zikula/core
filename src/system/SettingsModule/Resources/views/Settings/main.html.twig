@@ -66,18 +66,8 @@
             {{ form_row(form.startController) }}
             <div class="col-sm-offset-3 col-sm-9">
                 <em class="help-block">{{ __("MyModuleName:Controller:method") }}</em>
-                <em class="help-block alert alert-warning">{{ __("Start Controller will take precedence over module/type/function settings below.") }}<br />
-                    {{ __("This setting only works with Core-1.4.x/2.0 compatible modules (with routes).") }}<br />
-                    {{ __("The module/type/func method of setting the start page is deprecated and will be removed at Core-2.0.") }}<br />
-                    {{ __("Start function arguments (below) can also be combined with this setting.") }}
-                </em>
             </div>
-            {{ form_row(form.startpage) }}
-            <div id="settings_startpage_container">
-                {{ form_row(form.starttype) }}
-                {{ form_row(form.startfunc) }}
-                {{ form_row(form.startargs) }}
-            </div>
+            {{ form_row(form.startargs) }}
         </fieldset>
         <fieldset>
             <legend>{{ __('Front Controller settings') }}</legend>
@@ -123,22 +113,6 @@
             <div class="col-sm-offset-3 col-sm-9">
                 <label for="settings_permareplace_default">{{ __('Default') }}</label>
                 <input id="settings_permareplace_default" type="text" class="form-control" readonly="readonly" value="{{ __('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue') }}" />
-            </div>
-        </fieldset>
-        <fieldset>
-            <legend>{{ __('Short URL settings') }}</legend>
-            <p class="alert alert-warning">{{ __("Notice: This feature is deprecated in favor of Symfony routing. This site may have a mixture of modules of both types; those capable of using the old functionality, and those using routing.") }}</p>
-            {{ form_row(form.shorturls) }}
-            <div data-switch="zikulasettingsmodule_mainsettings[shorturls]" data-switch-value="1">
-                <div id="settings_shorturlsseparator_container">
-                    {{ form_row(form.shorturlsseparator) }}
-                </div>
-                <div id="settings_shorturls_defaultmodule_container">
-                    {{ form_row(form.shorturlsdefaultmodule) }}
-                    <div class="col-sm-offset-3 col-sm-9">
-                        <p class="help-block alert alert-info">{{ __('Routed modules cannot utilize this feature. Edit the routes directly instead.') }}</p>
-                    </div>
-                </div>
             </div>
         </fieldset>
 

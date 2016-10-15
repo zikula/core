@@ -50,7 +50,6 @@ class SettingsController extends AbstractController
         $installedLanguageNames = ZLanguage::getInstalledLanguageNames();
 
         $capabilityApi = $this->get('zikula_extensions_module.api.capability');
-        $userModules = $capabilityApi->getExtensionsCapableOf(CapabilityApiInterface::USER);
         $profileModules = $capabilityApi->getExtensionsCapableOf(CapabilityApiInterface::PROFILE);
         $messageModules = $capabilityApi->getExtensionsCapableOf(CapabilityApiInterface::MESSAGE);
 
@@ -59,7 +58,6 @@ class SettingsController extends AbstractController
             [
                 'translator' => $this->get('translator.default'),
                 'languages' => $installedLanguageNames,
-                'modules' => $this->formatModuleArrayForSelect($userModules),
                 'profileModules' => $this->formatModuleArrayForSelect($profileModules),
                 'messageModules' => $this->formatModuleArrayForSelect($messageModules)
             ]

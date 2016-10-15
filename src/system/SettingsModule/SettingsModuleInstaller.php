@@ -54,14 +54,9 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('UseCompression', '0');
         $this->setSystemVar('siteoff', 0);
         $this->setSystemVar('siteoffreason', '');
-        $this->setSystemVar('starttype', '');
-        $this->setSystemVar('startfunc', '');
         $this->setSystemVar('startargs', '');
         $this->setSystemVar('entrypoint', 'index.php');
         $this->setSystemVar('language_detect', 0);
-        $this->setSystemVar('shorturls', false);
-        $this->setSystemVar('shorturlstype', '0');
-        $this->setSystemVar('shorturlsseparator', '-');
         // Multilingual support
         foreach (ZLanguage::getInstalledLanguages() as $lang) {
             $this->setSystemVar('sitename_' . $lang, $this->__('Site name'));
