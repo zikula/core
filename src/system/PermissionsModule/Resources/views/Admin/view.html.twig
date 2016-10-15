@@ -63,7 +63,7 @@
             </th>
             <th id="hComponent" scope="col" class="text-left">
                 {{ __('Component') }}
-                <em id="filter-warning-component" style="{% if filterComponent == -1 %}display: none; {% endif %}color: red; vertical-align: top"> ({{ __('filtered') }})</em>
+                <em id="filter-warning-component" style="{% if filterComponent is empty %}display: none; {% endif %}color: red; vertical-align: top"> ({{ __('filtered') }})</em>
             </th>
             <th id="hInstance" scope="col" class="text-left">
                 {{ __('Instance') }}

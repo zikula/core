@@ -234,7 +234,7 @@ var currentDelete, currentInsertBefore;
             } else {
                 $('#filter-warning-group').show();
             }
-            if (component == -1) {
+            if (component == null || component == "-1") {
                 $('#filter-warning-component').hide();
             } else {
                 $('#filter-warning-component').show();
@@ -247,7 +247,7 @@ var currentDelete, currentInsertBefore;
                 if (group != -1 && group != $('#permission-group-' + pid).data('id')) {
                     show = false;
                 }
-                if (component != -1 && component != $('#permission-component-' + pid).text().replace('::', '')) {
+                if (component != null && component != "-1" && $('#permission-component-' + pid).text().indexOf(component) == -1) {
                     show = false;
                 }
                 if (show) {
@@ -259,7 +259,7 @@ var currentDelete, currentInsertBefore;
         });
 
         $('#reset-filter').click(function () {
-            $('#filter-component').val(-1);
+            $('#filter-component').val(null);
             $('#filter-group').val(-1).trigger('change');
         });
 

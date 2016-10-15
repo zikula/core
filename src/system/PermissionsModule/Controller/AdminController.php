@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 class AdminController extends AbstractController
@@ -60,8 +61,8 @@ class AdminController extends AbstractController
         }
 
         // Get parameters from whatever input we need.
-        $filterGroup = $request->get('filter-group', -1);
-        $filterComponent = $request->get('filter-component', -1);
+        $filterGroup = $request->get('filter-group', PermissionApi::ALL_GROUPS);
+        $filterComponent = $request->get('filter-component', null);
         $testUser = $request->request->get('test_user', null);
         $testComponent = $request->request->get('test_component', null);
         $testInstance = $request->request->get('test_instance', null);
@@ -95,24 +96,8 @@ class AdminController extends AbstractController
         $tokenHandler = $this->get('zikula_core.common.csrf_token_handler');
         $csrfToken = $tokenHandler->generate(true);
 
-        $variableApi = $this->get('zikula_extensions_module.api.variable');
-
-        // form the first part of the query
-        $qb = $this->get('doctrine.orm.entity_manager')->createQueryBuilder()
-            ->select('p')
-            ->from('ZikulaPermissionsModule:PermissionEntity', 'p')
-            ->orderBy('p.sequence', 'ASC');
-
-        $enableFilter = $variableApi->get('ZikulaPermissionsModule', 'filter', 1);
-        if ($enableFilter == 1) {
-            if ($filterGroup != -1) {
-                $qb->where('(p.gid = :gid)')
-                    ->setParameter('gid', $filterGroup);
-            }
-            if ($filterComponent != -1) {
-                $qb->andWhere("(p.component LIKE :permgrpparts)")
-                    ->setParameter('permgrpparts', $filterComponent.'%');
-            }
+        $enableFilter = $this->getVar('filter', 1);
+        if ($enableFilter) {
             $templateParameters['permgrps'] = $groupIds;
             $templateParameters['filterGroup'] = $filterGroup;
             $templateParameters['filterComponent'] = $filterComponent;
@@ -120,16 +105,11 @@ class AdminController extends AbstractController
             $templateParameters['csrfToken'] = $csrfToken;
         } else {
             $templateParameters['enableFilter'] = false;
-            $templateParameters['permgrp'] = SecurityUtil::PERMS_ALL;
+            $templateParameters['permgrp'] = PermissionApi::ALL_GROUPS;
         }
 
-        if ($filterGroup == -1) {
-            $filterGroup = null;
-        }
-
-        $query = $qb->getQuery();
-        $objArray = $query->getResult();
-        $numrows = count($objArray);
+        $permissionEntities = $this->get('doctrine')->getRepository('ZikulaPermissionsModule:PermissionEntity')->getFilteredPermissions($filterGroup, $filterComponent);
+        $numrows = count($permissionEntities);
 
         $permissions = [];
 
@@ -137,7 +117,7 @@ class AdminController extends AbstractController
             $accesslevels = SecurityUtil::accesslevelnames();
             $rownum = 1;
 
-            foreach ($objArray as $obj) {
+            foreach ($permissionEntities as $obj) {
                 $id = $obj['gid'];
                 $up = [
                     'url' => $this->get('router')->generate('zikulapermissionsmodule_admin_inc', [
@@ -206,29 +186,16 @@ class AdminController extends AbstractController
             }
         }
 
-        $components = [
-            -1 => $this->__('All components')
-        ];
-        // read all perms to extract components
-        $allPerms = $this->get('doctrine.orm.entity_manager')
-            ->getRepository('ZikulaPermissionsModule:PermissionEntity')
-            ->findBy([], ['sequence' => 'ASC']);
-        foreach ($allPerms as $singlePerm) {
-            // extract components, we keep everything up to the first colon
-            $compparts = explode(':', $singlePerm['component']);
-            $components[$compparts[0]] = $compparts[0];
-        }
+        $components = $this->get('doctrine')->getRepository('ZikulaPermissionsModule:PermissionEntity')->getAllComponents();
+        $components = [-1 => $this->__('All components')] + $components;
 
         $templateParameters['groups'] = $this->getGroupsInfo();
         $templateParameters['permissions'] = $permissions;
         $templateParameters['components'] = $components;
-
-        $lockadmin = ($variableApi->get('ZikulaPermissionsModule', 'lockadmin', 1)) ? 1 : 0;
-        $templateParameters['lockadmin'] = $lockadmin;
-        $templateParameters['adminId'] = $variableApi->get('ZikulaPermissionsModule', 'adminid', 1);
-
-        $templateParameters['permissionLevels'] = SecurityUtil::accesslevelnames();
-        $templateParameters['schemas'] = ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'getallschemas');
+        $templateParameters['lockadmin'] = $this->getVar('lockadmin', 1) ? 1 : 0;
+        $templateParameters['adminId'] = $this->getVar('adminid', 1);
+        $templateParameters['permissionLevels'] = $this->get('zikula_permissions_module.api.permission')->accessLevelNames();
+        $templateParameters['schemas'] = $this->get('zikula_permissions_module.helper.schema_helper')->getAllSchema();
 
         return $templateParameters;
     }
@@ -578,12 +545,12 @@ class AdminController extends AbstractController
     private function getGroupsInfo()
     {
         $groups = [];
-        $groups[SecurityUtil::PERMS_ALL] = $this->__('All groups');
-        $groups[SecurityUtil::PERMS_UNREGISTERED] = $this->__('Unregistered');
+        $groups[PermissionApi::ALL_GROUPS] = $this->__('All groups');
+        $groups[PermissionApi::UNREGISTERED_USER_GROUP] = $this->__('Unregistered');
 
-        $objArray = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getall');
-        foreach ($objArray as $group) {
-            $groups[$group['gid']] = $group['name'];
+        $entities = $this->container->get('doctrine')->getRepository('ZikulaGroupsModule:GroupEntity')->findAll();
+        foreach ($entities as $group) {
+            $groups[$group->getGid()] = $group->getName();
         }
 
         return $groups;
