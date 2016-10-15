@@ -51,14 +51,9 @@ class PurifierHelper
         $config = $this->getPurifierDefaultConfig();
         if (!isset($args['forcedefault']) || true !== $args['forcedefault']) {
             $savedConfig = $this->variableApi->get('ZikulaSecurityCenterModule', 'htmlpurifierConfig');
-
             if (!is_null($savedConfig) && false !== $savedConfig) {
-                $savedConfig = unserialize($savedConfig);
-                foreach ($savedConfig as $section => $values) {
-                    foreach ($values as $k => $v) {
-                        $config->set($section . '.' . $k, $v);
-                    }
-                }
+                /** @var \HTMLPurifier_Config $config */
+                $config = unserialize($savedConfig);
             }
         }
 

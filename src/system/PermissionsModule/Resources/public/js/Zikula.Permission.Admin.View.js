@@ -49,10 +49,10 @@ var currentDelete, currentInsertBefore;
         /* Copies the component, instance and level to the permission test form */
         $(document).on('click', '.test-permission', function () {
             var pid = $(this).parent().parent().data('id');
-            $('#test_user').val('');
+            $('#zikulapermissionsmodule_permissioncheck_test_user').val('');
 
-            $('#test_component').val($('#permission-component-' + pid).text());
-            $('#test_instance').val($('#permission-instance-' + pid).text());
+            $('#zikulapermissionsmodule_permissioncheck_test_component').val($('#permission-component-' + pid).text());
+            $('#zikulapermissionsmodule_permissioncheck_test_instance').val($('#permission-instance-' + pid).text());
             $('#permission-test-info').html('&nbsp;');
             $('html, body').animate({
                 scrollTop: $('#testpermform').offset().top
@@ -60,15 +60,15 @@ var currentDelete, currentInsertBefore;
         });
 
         /* Test a permission for a user */
-        $('#test-permission').click(function (event) {
+        $('#zikulapermissionsmodule_permissioncheck_test_permission').click(function (event) {
             event.preventDefault();
             var $permissionTestInfo = $('#permission-test-info');
             $permissionTestInfo.text($permissionTestInfo.data('testing'));
             var vars = {
-                test_user: $('#test_user').val(),
-                test_component: $('#test_component').val(),
-                test_instance: $('#test_instance').val(),
-                test_level: $('#test_level').val()
+                test_user: $('#zikulapermissionsmodule_permissioncheck_test_user').val(),
+                test_component: $('#zikulapermissionsmodule_permissioncheck_test_component').val(),
+                test_instance: $('#zikulapermissionsmodule_permissioncheck_test_instance').val(),
+                test_level: $('#zikulapermissionsmodule_permissioncheck_test_level').val()
             };
             $.ajax({
                 url: Routing.generate('zikulapermissionsmodule_ajax_test'),
@@ -79,6 +79,12 @@ var currentDelete, currentInsertBefore;
                     $permissionTestInfo.html(result.data.testresult);
                 }
             });
+        });
+        $('#zikulapermissionsmodule_permissioncheck_reset').click(function (event) {
+            event.preventDefault();
+            $('#zikulapermissionsmodule_permissioncheck_test_user').val('');
+            $('#zikulapermissionsmodule_permissioncheck_test_component').val('');
+            $('#zikulapermissionsmodule_permissioncheck_test_instance').val('');
         });
 
         /* --- edit permission ---------------------------------------------------------------------------------------------- */
@@ -224,9 +230,9 @@ var currentDelete, currentInsertBefore;
         });
 
         /* --- Filter permissions ------------------------------------------------------------------------------------------- */
-        $('#filter-group, #filter-component').change(function () {
-            var group = $('#filter-group').val();
-            var component = $('#filter-component').val();
+        $('#zikulapermissionsmodule_filterlist_filterGroup, #zikulapermissionsmodule_filterlist_filterComponent').change(function () {
+            var group = $('#zikulapermissionsmodule_filterlist_filterGroup').val();
+            var component = $('#zikulapermissionsmodule_filterlist_filterComponent').val();
 
             // toggle warnings
             if (group == -1) {
@@ -234,7 +240,7 @@ var currentDelete, currentInsertBefore;
             } else {
                 $('#filter-warning-group').show();
             }
-            if (component == null || component == "-1") {
+            if (component == "-1") {
                 $('#filter-warning-component').hide();
             } else {
                 $('#filter-warning-component').show();
@@ -247,7 +253,7 @@ var currentDelete, currentInsertBefore;
                 if (group != -1 && group != $('#permission-group-' + pid).data('id')) {
                     show = false;
                 }
-                if (component != null && component != "-1" && $('#permission-component-' + pid).text().indexOf(component) == -1) {
+                if (component != "-1" && $('#permission-component-' + pid).text().indexOf(component) == -1) {
                     show = false;
                 }
                 if (show) {
@@ -258,9 +264,9 @@ var currentDelete, currentInsertBefore;
             });
         });
 
-        $('#reset-filter').click(function () {
-            $('#filter-component').val(null);
-            $('#filter-group').val(-1).trigger('change');
+        $('#zikulapermissionsmodule_filterlist_reset').click(function () {
+            $('#zikulapermissionsmodule_filterlist_filterComponent').val(-1);
+            $('#zikulapermissionsmodule_filterlist_filterGroup').val(-1).trigger('change');
         });
 
         // on modal close, stop all spinning icons

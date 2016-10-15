@@ -13,7 +13,6 @@ namespace Zikula\PermissionsModule\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Zikula\PermissionsModule\Api\PermissionApi;
-use Zikula\PermissionsModule\Entity\PermissionEntity;
 use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface;
 
 class PermissionRepository extends EntityRepository implements PermissionRepositoryInterface
@@ -41,7 +40,7 @@ class PermissionRepository extends EntityRepository implements PermissionReposit
         $qb = $this->createQueryBuilder('p')
             ->select('p')
             ->orderBy('p.sequence', 'ASC');
-        if ($group != -1) {
+        if ($group != PermissionApi::ALL_GROUPS) {
             $qb->where('p.gid = :gid')
                 ->setParameter('gid', $group);
         }

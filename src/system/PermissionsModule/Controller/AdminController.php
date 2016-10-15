@@ -49,217 +49,74 @@ class AdminController extends AbstractController
      *
      * view permissions
      *
-     * @return Response symfony response object
+     * @return array
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
      */
-    public function viewAction(Request $request)
+    public function viewAction()
     {
-        // Security check
         if (!$this->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-
-        // Get parameters from whatever input we need.
-        $filterGroup = $request->get('filter-group', PermissionApi::ALL_GROUPS);
-        $filterComponent = $request->get('filter-component', null);
-        $testUser = $request->request->get('test_user', null);
-        $testComponent = $request->request->get('test_component', null);
-        $testInstance = $request->request->get('test_instance', null);
-        $testLevel = $request->request->get('test_level', null);
-
-        $testResult = '';
-        if (!empty($testUser) && !empty($testComponent) && !empty($testInstance)) {
-            // we have everything we need for an effective permission check
-            $testuid = UserUtil::getIdFromName($testUser);
-            if ($testuid != false) {
-                if ($this->hasPermission($testComponent, $testInstance, $testLevel, $testuid)) {
-                    $testResult = '<span id="permissiontestinfogreen">' . $this->__('permission granted.') . '</span>';
-                } else {
-                    $testResult = '<span id="permissiontestinfored">' . $this->__('permission not granted.') . '</span>';
-                }
-            } else {
-                $testResult = '<span id="permissiontestinfored">' . $this->__('unknown user.') . '</span>';
-            }
-        }
-
-        $templateParameters = [
-            'testUser' => $testUser,
-            'testComponent' => $testComponent,
-            'testInstance' => $testInstance,
-            'testLevel' => $testLevel,
-            'testResult' => $testResult
-        ];
-
-        $groupIds = $this->getGroupsInfo();
-
-        $tokenHandler = $this->get('zikula_core.common.csrf_token_handler');
-        $csrfToken = $tokenHandler->generate(true);
-
-        $enableFilter = $this->getVar('filter', 1);
-        if ($enableFilter) {
-            $templateParameters['permgrps'] = $groupIds;
-            $templateParameters['filterGroup'] = $filterGroup;
-            $templateParameters['filterComponent'] = $filterComponent;
-            $templateParameters['enableFilter'] = true;
-            $templateParameters['csrfToken'] = $csrfToken;
-        } else {
-            $templateParameters['enableFilter'] = false;
-            $templateParameters['permgrp'] = PermissionApi::ALL_GROUPS;
-        }
-
-        $permissionEntities = $this->get('doctrine')->getRepository('ZikulaPermissionsModule:PermissionEntity')->getFilteredPermissions($filterGroup, $filterComponent);
-        $numrows = count($permissionEntities);
-
+        $groups = $this->getGroupsInfo();
+        $permissionEntities = $this->get('doctrine')->getRepository('ZikulaPermissionsModule:PermissionEntity')->getFilteredPermissions();
+        $permissionLevels = $this->get('zikula_permissions_module.api.permission')->accessLevelNames();
         $permissions = [];
 
-        if ($numrows > 0) {
-            $accesslevels = SecurityUtil::accesslevelnames();
-            $rownum = 1;
+        foreach ($permissionEntities as $obj) {
+            $id = $obj['gid'];
+            $inserturl = $this->get('router')->generate('zikulapermissionsmodule_admin_listedit', [
+                'action' => 'insert',
+                'insseq' => $obj['sequence']
+            ]);
+            $editurl = $this->get('router')->generate('zikulapermissionsmodule_admin_listedit', [
+                'chgpid' => $obj['pid'],
+                'action' => 'modify'
+            ]);
+            $deleteurl = $this->get('router')->generate('zikulapermissionsmodule_admin_delete', [
+                'pid' => $obj['pid'],
+            ]);
 
-            foreach ($permissionEntities as $obj) {
-                $id = $obj['gid'];
-                $up = [
-                    'url' => $this->get('router')->generate('zikulapermissionsmodule_admin_inc', [
-                        'pid' => $obj['pid'],
-                        'permgrp' => $filterGroup,
-                        'csrftoken' => $csrfToken
-                    ]),
-                    'title' => $this->__('Up')
-                ];
-                $down = [
-                    'url' => $this->get('router')->generate('zikulapermissionsmodule_admin_dec', [
-                        'pid' => $obj['pid'],
-                        'permgrp' => $filterGroup,
-                        'csrftoken' => $csrfToken
-                    ]),
-                    'title' => $this->__('Down')
-                ];
-                switch ($rownum) {
-                    case 1:
-                        $arrows = ['up' => 0, 'down' => 1];
-                        break;
-                    case $numrows:
-                        $arrows = ['up' => 1, 'down' => 0];
-                        break;
-                    default:
-                        $arrows = ['up' => 1, 'down' => 1];
-                        break;
-                }
-                $rownum++;
-
-                $options = [];
-                $inserturl = $this->get('router')->generate('zikulapermissionsmodule_admin_listedit', [
-                    'permgrp' => $filterGroup,
-                    'action' => 'insert',
-                    'insseq' => $obj['sequence']
-                ]);
-                $editurl = $this->get('router')->generate('zikulapermissionsmodule_admin_listedit', [
-                    'chgpid' => $obj['pid'],
-                    'permgrp' => $filterGroup,
-                    'action' => 'modify'
-                ]);
-                $deleteurl = $this->get('router')->generate('zikulapermissionsmodule_admin_delete', [
-                    'pid' => $obj['pid'],
-                    'permgrp' => $filterGroup
-                ]);
-
-                $permissions[] = [
-                    'sequence' => $obj['sequence'],
-                    'arrows' => $arrows,
-                    // Realms not currently functional so hide the output - jgm
-                    //'realms'    => $realms[$realm],
-                    'group' => $groupIds[$id],
-                    'groupid' => $id,
-                    'component' => $obj['component'],
-                    'instance' => $obj['instance'],
-                    'accesslevel' => $accesslevels[$obj['level']],
-                    'accesslevelid' => $obj['level'],
-                    'options' => $options,
-                    'up' => $up,
-                    'down' => $down,
-                    'permid' => $obj['pid'],
-                    'inserturl' => $inserturl,
-                    'editurl' => $editurl,
-                    'deleteurl' => $deleteurl
-                ];
+            $permissions[] = [
+                'sequence' => $obj['sequence'],
+                // Realms not currently functional so hide the output - jgm
+                //'realms'    => $realms[$realm],
+                'group' => $groups[$id],
+                'groupid' => $id,
+                'component' => $obj['component'],
+                'instance' => $obj['instance'],
+                'accesslevel' => $permissionLevels[$obj['level']],
+                'accesslevelid' => $obj['level'],
+                'options' => [],
+                'permid' => $obj['pid'],
+                'inserturl' => $inserturl,
+                'editurl' => $editurl,
+                'deleteurl' => $deleteurl
+            ];
             }
-        }
 
         $components = $this->get('doctrine')->getRepository('ZikulaPermissionsModule:PermissionEntity')->getAllComponents();
-        $components = [-1 => $this->__('All components')] + $components;
-
-        $templateParameters['groups'] = $this->getGroupsInfo();
+        $components = [$this->__('All components') => '-1'] + $components;
+        $filterForm = $this->createForm('Zikula\PermissionsModule\Form\Type\FilterListType', [], [
+            'groupChoices' => $groups,
+            'componentChoices' => $components,
+            'translator' => $this->getTranslator()
+        ]);
+        $templateParameters['filterForm'] = $filterForm->createView();
+        $permissionCheckForm = $this->createForm('Zikula\PermissionsModule\Form\Type\PermissionCheckType', [], [
+            'translator' => $this->getTranslator(),
+            'permissionLevels' => $permissionLevels
+        ]);
+        $templateParameters['permissionCheckForm'] = $permissionCheckForm->createView();
+        $templateParameters['permissionLevels'] = $permissionLevels;
         $templateParameters['permissions'] = $permissions;
-        $templateParameters['components'] = $components;
+        $templateParameters['groups'] = $groups;
         $templateParameters['lockadmin'] = $this->getVar('lockadmin', 1) ? 1 : 0;
         $templateParameters['adminId'] = $this->getVar('adminid', 1);
-        $templateParameters['permissionLevels'] = $this->get('zikula_permissions_module.api.permission')->accessLevelNames();
         $templateParameters['schemas'] = $this->get('zikula_permissions_module.helper.schema_helper')->getAllSchema();
+        $templateParameters['enableFilter'] = (bool) $this->getVar('filter', 1);
 
         return $templateParameters;
-    }
-
-    /**
-     * @Route("/inc/{pid}/{permgrp}", requirements={"pid"="\d+","permgrp"="\d+"})
-     *
-     * Increment a permission.
-     *
-     * @param int 'pid' permissions id
-     *
-     * @return RedirectResponse
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
-     */
-    public function incAction(Request $request, $pid, $permgrp = null)
-    {
-        if (!$this->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
-        if (empty($permgrp)) {
-            // Make sure we return something sensible.
-            $permgrp = SecurityUtil::PERMS_ALL;
-        }
-
-        // Pass to API
-        if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'inc', ['pid' => $pid, 'permgrp' => $permgrp])) {
-            // Success
-            $this->addFlash('status', $this->__('Done! Incremented permission rule.'));
-        }
-
-        return $this->redirect($this->generateUrl('zikulapermissionsmodule_admin_view', ['filter-group' => $permgrp]));
-    }
-
-    /**
-     * @Route("/dec/{pid}/{permgrp}", requirements={"pid"="\d+","permgrp"="\d+"})
-     *
-     * Decrement a permission.
-     *
-     * @param int 'pid' permissions id
-     *
-     * @return RedirectResponse
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
-     */
-    public function decAction(Request $request, $pid, $permgrp = null)
-    {
-        if (!$this->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
-        if (!isset($permgrp) || $permgrp == '') {
-            // Make sure we return something sensible.
-            $permgrp = SecurityUtil::PERMS_ALL;
-        }
-
-        // Pass to API
-        if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'dec', ['pid' => $pid, 'permgrp' => $permgrp])) {
-            // Success
-            $this->addFlash('status', $this->__('Done! Decremented permission rule.'));
-        }
-
-        return $this->redirect($this->generateUrl('zikulapermissionsmodule_admin_view', ['filter-group' => $permgrp]));
     }
 
     /**

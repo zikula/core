@@ -16,31 +16,19 @@
     {{ pageSetVar('title', __('Permission rules list')) }}
 </h3>
 
-{% if enableFilter == true %}
-<form class="form-inline" role="form" action="{{ path('zikulapermissionsmodule_admin_view') }}" method="post" enctype="application/x-www-form-urlencoded">
+{% if enableFilter %}
+    {% form_theme filterForm with [
+    'ZikulaCategoriesModule:Form:filter_layout_customizations.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+    ] %}
+    {{ form_start(filterForm) }}
     <fieldset>
-        <input type="hidden" name="csrftoken" value="{{ csrfToken|e('html_attr') }}" />
-        <legend>{{ __('Filter permission rules list') }}</legend>
-        <span class="nowrap">
-            <select id="filter-group" name="filter-group">
-                {% for groupId, groupName in permgrps %}
-                <option value="{{ groupId }}"{{ groupId == filterGroup ? ' selected="selected"' : '' }}>{{ groupName }}</option>
-                {% endfor %}
-            </select>
-            <select id="filter-component" name="filter-component">
-                {% for compKey, component in components %}
-                <option value="{{ compKey }}"{{ compKey == filterComponent ? ' selected="selected"' : '' }}>{{ component }}</option>
-                {% endfor %}
-            </select>
-        </span>
-        <span class="nowrap">
-            <button id="reset-filter" type="reset"><i class="fa fa-times"></i> {{ __('Reset') }}</button>
-        </span>
-        <span class="nowrap no-script">
-            <button name="permgroupfiltersubmit" type="submit"><i class="fa fa-filter"></i> {{ __('Filter') }}</button>
-        </span>
+        <legend style="margin-bottom:0">{{ __("Filter") }}</legend>
+        {{ form_widget(filterForm.filterGroup) }}
+        {{ form_widget(filterForm.filterComponent) }}
+        {{ form_widget(filterForm.reset) }}
     </fieldset>
-</form>
+    {{ form_end(filterForm) }}
 {% endif %}
 
 <table id="permission-list" class="table table-striped">
@@ -59,11 +47,11 @@
             <th id="hId" scope="col" class="text-left">{{ __('ID') }}</th>
             <th id="hGroup" scope="col" class="text-left">
                 {{ __('Group') }}
-                <em id="filter-warning-group" style="{% if filterGroup == -1 %}display: none; {% endif %}color: red; vertical-align: top"> ({{ __('filtered') }})</em>
+                <em id="filter-warning-group" style="display: none; color: red; vertical-align: top"> ({{ __('filtered') }})</em>
             </th>
             <th id="hComponent" scope="col" class="text-left">
                 {{ __('Component') }}
-                <em id="filter-warning-component" style="{% if filterComponent is empty %}display: none; {% endif %}color: red; vertical-align: top"> ({{ __('filtered') }})</em>
+                <em id="filter-warning-component" style="display: none; color: red; vertical-align: top"> ({{ __('filtered') }})</em>
             </th>
             <th id="hInstance" scope="col" class="text-left">
                 {{ __('Instance') }}
@@ -83,15 +71,7 @@
                 {% if lockadmin and adminId == permission.permid %}
                 <i class="fa fa-lock" title="{{ __('This permission rule has been locked. If you need to unlock it, go to the Permission rules manager Settings page.') }}"></i>
                 {% else %}
-                {% spaceless %}
-                {% if permission.arrows.up == 1 %}
-                    <a href="{{ permission.up.url|e('html_attr') }}" class="no-script fa fa-chevron-up" title="{{ permission.up.title|e('html_attr') }}"></a>
-                {% endif %}
-                {% if permission.arrows.down == 1 %}
-                    <a href="{{ permission.down.url|e('html_attr') }}" class="no-script fa fa-chevron-down" title="{{ permission.down.title|e('html_attr') }}"></a>
-                {% endif %}
-                {% endspaceless %}
-                <i class="fa fa-arrows ajax hidden"></i>
+                <i class="fa fa-arrows"></i>
                 {% endif %}
             </td>
             <td class="text-right" style="width: 1px; white-space: nowrap">{{ permission.permid }}</td>
@@ -112,54 +92,31 @@
     </tbody>
 </table>
 
-<form id="testpermform" class="form-horizontal" role="form" action="{{ path('zikulapermissionsmodule_admin_view') }}" method="post">
-    <fieldset>
-        <legend>{{ __('User permission check') }}</legend>
-        <div class="form-group">
-            <label class="col-sm-3 control-label" for="test_user">{{ __('User name') }}</label>
-            <div class="col-sm-9">
-                <input class="form-control" type="text" size="40" maxlength="50" name="test_user" id="test_user" value="{{ testUser }}" />
-            </div>
+{% form_theme permissionCheckForm with [
+'bootstrap_3_horizontal_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ form_start(permissionCheckForm) }}
+{{ form_errors(permissionCheckForm) }}
+<fieldset>
+    <legend>{{ __('User permission check') }}</legend>
+    {{ form_row(permissionCheckForm.test_user) }}
+    {{ form_row(permissionCheckForm.test_component) }}
+    {{ form_row(permissionCheckForm.test_instance) }}
+    {{ form_row(permissionCheckForm.test_level) }}
+    <div class="form-group">
+        <div class="help-block col-sm-offset-3 col-sm-9" id="permission-test-info" data-testing="{{ __('Testing permission...') }}">
+            &nbsp;
         </div>
-        <div class="form-group">
-            <label class="col-sm-3 control-label" for="test_component">{{ __('Component to check') }}</label>
-            <div class="col-sm-9">
-                <input class="form-control" type="text" size="40" maxlength="50" name="test_component" id="test_component" value="{{ testComponent }}" />
-            </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+            {{ form_widget(permissionCheckForm.test_permission) }}
+            {{ form_widget(permissionCheckForm.reset) }}
         </div>
-        <div class="form-group">
-            <label class="col-sm-3 control-label" for="test_instance">{{ __('Instance to check') }}</label>
-            <div class="col-sm-9">
-                <input class="form-control" type="text" size="40" maxlength="50" name="test_instance" id="test_instance" value="{{ testInstance }}" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-3 control-label" for="test_level">{{ __('Permission level') }}</label>
-            <div class="col-sm-9">
-                <select name="test_level" id="test_level" class="form-control" >
-                    {% for levelId, levelName in permissionLevels %}
-                        <option value="{{ levelId }}"{{ levelId == testLevel ? ' selected="selected"' : '' }}>{{ levelName }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="help-block col-sm-offset-3 col-sm-9" id="permission-test-info" data-testing="{{ __('Testing permission...') }}">
-                {% if testResult != '' %}
-                    {{ __('Permission check result:') }} {{ testResult }}
-                {% else %}
-                    &nbsp;
-                {% endif %}
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
-                <button class="btn btn-default" id="test-permission" title="{{ __('Check permission') }}">{{ __('Check permission') }}</button>
-                <button class="btn btn-danger" type="reset" title="{{ __('Reset') }}">{{ __('Reset') }}</button>
-            </div>
-        </div>
-    </fieldset>
-</form>
+    </div>
+</fieldset>
+{{ form_end(permissionCheckForm) }}
 
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog">
