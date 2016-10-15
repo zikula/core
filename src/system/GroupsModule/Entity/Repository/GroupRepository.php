@@ -11,10 +11,12 @@
 
 namespace Zikula\GroupsModule\Entity\Repository;
 
+use Doctrine\Common\Collections\Selectable;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityRepository;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 
-class GroupRepository extends EntityRepository implements GroupRepositoryInterface
+class GroupRepository extends EntityRepository implements GroupRepositoryInterface, ObjectRepository , Selectable
 {
     /**
      * @param string $indexField
