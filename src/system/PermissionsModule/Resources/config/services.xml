@@ -8,6 +8,7 @@
         <parameter key="zikula_permissions_module.container.link_container.class">Zikula\PermissionsModule\Container\LinkContainer</parameter>
         <parameter key="zikula_permissions_module.api.permission.class">Zikula\PermissionsModule\Api\PermissionApi</parameter>
         <parameter key="zikula_permissions_module.permission_repository.class">Zikula\PermissionsModule\Entity\Repository\PermissionRepository</parameter>
+        <parameter key="zikula_permissions_module.helper.schema_helper.class">Zikula\PermissionsModule\Helper\SchemaHelper</parameter>
     </parameters>
 
     <services>
@@ -27,6 +28,10 @@
             <argument type="service" id="zikula_users_module.user_repository" />
             <argument type="service" id="session" />
             <argument type="service" id="translator" />
+        </service>
+
+        <service id="zikula_permissions_module.helper.schema_helper" class="%zikula_permissions_module.helper.schema_helper.class%">
+            <argument type="service" id="zikula_extensions_module.extension_repository" />
         </service>
     </services>
 
