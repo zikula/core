@@ -14,10 +14,25 @@ namespace Zikula\GroupsModule\Entity\Repository;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityRepository;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
+use Zikula\PermissionsModule\Api\PermissionApi;
 
 class GroupRepository extends EntityRepository implements GroupRepositoryInterface, ObjectRepository , Selectable
 {
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * @param string $indexField
      * @return array
@@ -30,5 +45,24 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
             ->indexBy('g', 'g.' . $indexField)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param bool $includeAll
+     * @param bool $includeUnregistered
+     * @return array
+     */
+    public function getGroupNamesById($includeAll = true, $includeUnregistered = true)
+    {
+        $groups = [];
+        $groups[PermissionApi::ALL_GROUPS] = $this->translator->__('All groups');
+        $groups[PermissionApi::UNREGISTERED_USER_GROUP] = $this->translator->__('Unregistered');
+
+        $entities = parent::findAll();
+        foreach ($entities as $group) {
+            $groups[$group->getGid()] = $group->getName();
+        }
+
+        return $groups;
     }
 }
