@@ -58,43 +58,9 @@ class AdminController extends AbstractController
         if (!$this->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-        $groups = $this->getGroupsInfo();
-        $permissionEntities = $this->get('doctrine')->getRepository('ZikulaPermissionsModule:PermissionEntity')->getFilteredPermissions();
+        $groups = $this->getGroupNamesById();
+        $permissions = $this->get('doctrine')->getRepository('ZikulaPermissionsModule:PermissionEntity')->getFilteredPermissions();
         $permissionLevels = $this->get('zikula_permissions_module.api.permission')->accessLevelNames();
-        $permissions = [];
-
-        foreach ($permissionEntities as $obj) {
-            $id = $obj['gid'];
-            $inserturl = $this->get('router')->generate('zikulapermissionsmodule_admin_listedit', [
-                'action' => 'insert',
-                'insseq' => $obj['sequence']
-            ]);
-            $editurl = $this->get('router')->generate('zikulapermissionsmodule_admin_listedit', [
-                'chgpid' => $obj['pid'],
-                'action' => 'modify'
-            ]);
-            $deleteurl = $this->get('router')->generate('zikulapermissionsmodule_admin_delete', [
-                'pid' => $obj['pid'],
-            ]);
-
-            $permissions[] = [
-                'sequence' => $obj['sequence'],
-                // Realms not currently functional so hide the output - jgm
-                //'realms'    => $realms[$realm],
-                'group' => $groups[$id],
-                'groupid' => $id,
-                'component' => $obj['component'],
-                'instance' => $obj['instance'],
-                'accesslevel' => $permissionLevels[$obj['level']],
-                'accesslevelid' => $obj['level'],
-                'options' => [],
-                'permid' => $obj['pid'],
-                'inserturl' => $inserturl,
-                'editurl' => $editurl,
-                'deleteurl' => $deleteurl
-            ];
-            }
-
         $components = $this->get('doctrine')->getRepository('ZikulaPermissionsModule:PermissionEntity')->getAllComponents();
         $components = [$this->__('All components') => '-1'] + $components;
         $filterForm = $this->createForm('Zikula\PermissionsModule\Form\Type\FilterListType', [], [
@@ -113,7 +79,7 @@ class AdminController extends AbstractController
         $templateParameters['groups'] = $groups;
         $templateParameters['lockadmin'] = $this->getVar('lockadmin', 1) ? 1 : 0;
         $templateParameters['adminId'] = $this->getVar('adminid', 1);
-        $templateParameters['schemas'] = $this->get('zikula_permissions_module.helper.schema_helper')->getAllSchema();
+        $templateParameters['schema'] = $this->get('zikula_permissions_module.helper.schema_helper')->getAllSchema();
         $templateParameters['enableFilter'] = (bool) $this->getVar('filter', 1);
 
         return $templateParameters;
@@ -155,8 +121,8 @@ class AdminController extends AbstractController
         $viewperms = ($action == 'modify') ? $this->__('Modify permission rule') : $this->__('Create new permission rule');
         $templateParameters['title'] = $viewperms;
 
-        $groupIds = $this->getGroupsInfo();
-        $templateParameters['groups'] = $groupIds;
+        $groups = $this->getGroupNamesById();
+        $templateParameters['groups'] = $groups;
 
         if ($action == 'modify') {
             // Form-start
@@ -183,7 +149,7 @@ class AdminController extends AbstractController
 
             $permissions[] = [
                 'pid' => $obj['pid'],
-                'group' => $groupIds[$id],
+                'group' => $groups[$id],
                 'component' => $obj['component'],
                 'instance' => $obj['instance'],
                 'accesslevel' => $accesslevels[$obj['level']],
@@ -393,13 +359,9 @@ class AdminController extends AbstractController
     }
 
     /**
-     * getGroupsInfo - get groups information.
-     *
-     * @todo remove calls to this function in favour of calls to the groups module
-     *
      * @return array groups array
      */
-    private function getGroupsInfo()
+    private function getGroupNamesById()
     {
         $groups = [];
         $groups[PermissionApi::ALL_GROUPS] = $this->__('All groups');

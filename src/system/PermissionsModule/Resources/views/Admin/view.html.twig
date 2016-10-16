@@ -66,26 +66,22 @@
     </thead>
     <tbody>
         {% for permission in permissions %}
-        <tr{% if lockadmin and adminId == permission.permid %} class="warning"{% endif %} data-id="{{ permission.permid }}">
+        <tr{% if lockadmin and adminId == permission.pid %} class="warning"{% endif %} data-id="{{ permission.pid }}">
             <td headers="hPosition" style="width: 1px; white-space: nowrap">
-                {% if lockadmin and adminId == permission.permid %}
+                {% if lockadmin and adminId == permission.pid %}
                 <i class="fa fa-lock" title="{{ __('This permission rule has been locked. If you need to unlock it, go to the Permission rules manager Settings page.') }}"></i>
                 {% else %}
                 <i class="fa fa-arrows"></i>
                 {% endif %}
             </td>
             <td class="text-right" style="width: 1px; white-space: nowrap">{{ permission.permid }}</td>
-            <td id="permission-group-{{ permission.permid }}" data-id="{{ permission.groupid }}">{{ permission.group }}</td>
-            <td id="permission-component-{{ permission.permid }}">{{ permission.component }}</td>
-            <td id="permission-instance-{{ permission.permid }}">{{ permission.instance }}</td>
-            <td id="permission-level-{{ permission.permid }}" data-id="{{ permission.accesslevelid }}">{{ permission.accesslevel }}</td>
+            <td id="permission-group-{{ permission.pid }}" data-id="{{ permission.gid }}">{{ groups[permission.gid] }}</td>
+            <td id="permission-component-{{ permission.pid }}">{{ permission.component }}</td>
+            <td id="permission-instance-{{ permission.pid }}">{{ permission.instance }}</td>
+            <td id="permission-level-{{ permission.pid }}" data-id="{{ permission.level }}">{{ permissionLevels[permission.level] }}</td>
             <td class="actions">
-                <a class="pointer insertBefore create-new-permission tooltips" href="{{ permission.inserturl|e('html_attr') }}" title="{{ __f('Insert permission rule before %s', { '%s': permission.permid }) }}"><i class="fa fa-plus"></i></a>
-                {% if not lockadmin or adminId != permission.permid %}
-                <a class="pointer edit-permission tooltips" href="{{ permission.editurl|e('html_attr') }}" title="{{ __f('Edit permission %s', { '%s': permission.permid }) }}"><i class="fa fa-pencil"></i></a>
-                <a class="delete-permission tooltips" href="{{ permission.deleteurl|e('html_attr') }}" title="{{ __f('Delete permission %s', { '%s': permission.permid }) }}"><i class="fa fa-trash-o"></i></a>
-                {% endif %}
-                <i class="test-permission pointer ajax hidden tooltips" title="{{ __('Check a users permission') }}"><i class="fa fa-key"></i></i>
+                {% set rowActions = knp_menu_get('ZikulaPermissionsModule:AdminActionsMenu:menu', [], {permission: permission}) %}
+                {{ knp_menu_render(rowActions, {template: 'ZikulaMenuModule:Override:actions.html.twig'}) }}
             </td>
         </tr>
         {% endfor %}

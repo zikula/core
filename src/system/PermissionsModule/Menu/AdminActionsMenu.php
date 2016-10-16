@@ -14,27 +14,60 @@ namespace Zikula\PermissionsModule\Menu;
 use Knp\Menu\FactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\PermissionsModule\Entity\PermissionEntity;
 
 class AdminActionsMenu implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
+    use TranslatorTrait;
+
+    public function setTranslator($translator)
+    {
+        $this->translator = $translator;
+    }
 
     public function menu(FactoryInterface $factory, array $options)
     {
+        $this->setTranslator($this->container->get('translator'));
+        /** @var PermissionEntity $permission */
+        $permission = $options['permission'];
+        $lockAdmin = $this->container->get('zikula_extensions_module.api.variable')->get('ZikulaPermissionsModule', 'lockadmin', 1);
+        $adminPermId = $this->container->get('zikula_extensions_module.api.variable')->get('ZikulaPermissionsModule', 'adminid', 1);
         $menu = $factory->createItem('adminActions');
         $menu->setChildrenAttribute('class', 'list-inline');
-        $menu->addChild('Edit Children', [
-                'route' => 'zikulamenumodule_menu_view',
-                'routeParameters' => $options,
-            ])->setAttribute('icon', 'fa fa-child');
-        $menu->addChild('Edit Menu Root', [
-                'route' => 'zikulamenumodule_menu_edit',
-                'routeParameters' => $options,
-            ])->setAttribute('icon', 'fa fa-tree');
-        $menu->addChild('Delete', [
-                'route' => 'zikulamenumodule_menu_delete',
-                'routeParameters' => $options,
-            ])->setAttribute('icon', 'fa fa-trash-o');
+        $menu->addChild($this->__f('Insert permission rule before %s', ['%s' => $permission->getPid()]), [
+                'route' => 'zikulapermissionsmodule_admin_listedit',
+                'routeParameters' => [
+                    'action' => 'insert',
+                    'insseq' => $permission->getSequence()
+                ],
+            ])->setAttribute('icon', 'fa fa-plus')
+            ->setLinkAttributes(['class' => 'pointer insertBefore create-new-permission tooltips']);
+
+        if (!$lockAdmin || $adminPermId != $permission->getPid()) {
+            $menu->addChild($this->__f('Edit permission %s', ['%s' => $permission->getPid()]), [
+                'route' => 'zikulapermissionsmodule_admin_listedit',
+                'routeParameters' => [
+                    'action' => 'modify',
+                    'chgpid' => $permission->getPid()
+                ],
+            ])->setAttribute('icon', 'fa fa-pencil')
+                ->setLinkAttributes(['class' => 'pointer edit-permission tooltips']);
+
+            $menu->addChild($this->__f('Delete permission %s', ['%s' => $permission->getPid()]), [
+                'route' => 'zikulapermissionsmodule_admin_delete',
+                'routeParameters' => [
+                    'pid' => $permission->getPid()
+                ],
+            ])->setAttribute('icon', 'fa fa-trash-o')
+                ->setLinkAttributes(['class' => 'delete-permission tooltips']);
+        }
+
+        $menu->addChild($this->__('Check a users permission'), [
+                    'uri' => '#'
+            ])->setAttribute('icon', 'fa fa-key')
+            ->setLinkAttributes(['class' => 'test-permission pointer ajax hidden tooltips']);
 
         return $menu;
     }
