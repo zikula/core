@@ -13,7 +13,6 @@ namespace Zikula\PermissionsModule\Controller;
 
 use ModUtil;
 use SecurityUtil;
-use UserUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
