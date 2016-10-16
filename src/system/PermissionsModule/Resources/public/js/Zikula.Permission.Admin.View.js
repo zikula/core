@@ -5,10 +5,6 @@ var currentDelete, currentInsertBefore;
     $(document).ready(function () {
 
         /* --- init --------------------------------------------------------------------------------------------------------- */
-        /* hide no ajax fallback - show ajax */
-        $('.ajax').removeClass('hidden');
-        $('.no-script').addClass('hidden');
-
         var $sortable = $('#permission-list > tbody');
 
         // Return a helper with preserved width of cells
@@ -210,7 +206,7 @@ var currentDelete, currentInsertBefore;
                         '<a class="fa fa-plus pointer insertBefore create-new-permission tooltips" href="#" title="' + $('.create-new-permission').first().attr('title') + '"></a> ' +
                         '<a class="fa fa-pencil pointer edit-permission tooltips" href="#" title="' + $('.edit-permission').first().attr('title') + '"></a> ' +
                         '<a class="fa fa-trash-o delete-permission tooltips" href="#" title="' + $('.delete-permission').first().attr('title') + '"></a> ' +
-                        '<i class="fa fa-key test-permission pointer ajax tooltips" title="' + $('.test-permission').first().attr('title') + '"></i>' +
+                        '<i class="fa fa-key test-permission pointer tooltips" title="' + $('.test-permission').first().attr('title') + '"></i>' +
                         '</td>' +
                         '</tr>';
 

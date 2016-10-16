@@ -37,37 +37,26 @@ class AdminActionsMenu implements ContainerAwareInterface
         $menu = $factory->createItem('adminActions');
         $menu->setChildrenAttribute('class', 'list-inline');
         $menu->addChild($this->__f('Insert permission rule before %s', ['%s' => $permission->getPid()]), [
-                'route' => 'zikulapermissionsmodule_admin_listedit',
-                'routeParameters' => [
-                    'action' => 'insert',
-                    'insseq' => $permission->getSequence()
-                ],
+                'uri' => '#'
             ])->setAttribute('icon', 'fa fa-plus')
-            ->setLinkAttributes(['class' => 'pointer insertBefore create-new-permission tooltips']);
+            ->setLinkAttributes(['class' => 'create-new-permission insertBefore pointer tooltips']);
 
         if (!$lockAdmin || $adminPermId != $permission->getPid()) {
             $menu->addChild($this->__f('Edit permission %s', ['%s' => $permission->getPid()]), [
-                'route' => 'zikulapermissionsmodule_admin_listedit',
-                'routeParameters' => [
-                    'action' => 'modify',
-                    'chgpid' => $permission->getPid()
-                ],
+                'uri' => '#'
             ])->setAttribute('icon', 'fa fa-pencil')
-                ->setLinkAttributes(['class' => 'pointer edit-permission tooltips']);
+                ->setLinkAttributes(['class' => 'edit-permission pointer tooltips']);
 
             $menu->addChild($this->__f('Delete permission %s', ['%s' => $permission->getPid()]), [
-                'route' => 'zikulapermissionsmodule_admin_delete',
-                'routeParameters' => [
-                    'pid' => $permission->getPid()
-                ],
+                'uri' => '#'
             ])->setAttribute('icon', 'fa fa-trash-o')
-                ->setLinkAttributes(['class' => 'delete-permission tooltips']);
+                ->setLinkAttributes(['class' => 'delete-permission pointer tooltips']);
         }
 
         $menu->addChild($this->__('Check a users permission'), [
-                    'uri' => '#'
+                'uri' => '#'
             ])->setAttribute('icon', 'fa fa-key')
-            ->setLinkAttributes(['class' => 'test-permission pointer ajax hidden tooltips']);
+            ->setLinkAttributes(['class' => 'test-permission pointer tooltips']);
 
         return $menu;
     }
