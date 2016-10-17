@@ -13,6 +13,7 @@ namespace Zikula\PermissionsModule\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\PermissionsModule\Entity\PermissionEntity;
 use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface;
 
 class PermissionRepository extends EntityRepository implements PermissionRepositoryInterface
@@ -66,5 +67,11 @@ class PermissionRepository extends EntityRepository implements PermissionReposit
         }
 
         return $components;
+    }
+
+    public function persistAndFlush(PermissionEntity $entity)
+    {
+        $this->_em->persist($entity);
+        $this->_em->flush($entity);
     }
 }

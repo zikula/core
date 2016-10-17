@@ -44,7 +44,7 @@ var currentDelete, currentInsertBefore;
         /* --- test permission ---------------------------------------------------------------------------------------------- */
         /* Copies the component, instance and level to the permission test form */
         $(document).on('click', '.test-permission', function () {
-            var pid = $(this).parent().parent().data('id');
+            var pid = $(this).parents("tr").data('id');
             $('#zikulapermissionsmodule_permissioncheck_test_user').val('');
 
             $('#zikulapermissionsmodule_permissioncheck_test_component').val($('#permission-component-' + pid).text());
@@ -88,46 +88,72 @@ var currentDelete, currentInsertBefore;
         $(document).on('click', '.edit-permission', function (event) {
             event.preventDefault();
             $(this).find('.fa').addClass('fa-spin');
-            var id = $(this).parent().parent().data('id');
-            $('#permission-id').val(id);
-            $('#permission-component').val($('#permission-component-' + id).text());
-            $('#permission-instance').val($('#permission-instance-' + id).text());
-            $('#permission-group').val($('#permission-group-' + id).data('id'));
-            $('#permission-level').val($('#permission-level-' + id).data('id'));
+            var id = $(this).parents("tr").data('id');
+            $.ajax({
+                type: 'POST',
+                url: Routing.generate('zikulapermissionsmodule_permission_edit', {pid: id})
+            }).done(function(result) {
+                openEditForm(result.data);
+            }).fail(function(result) {
+                alert(result.status + ': ' + result.statusText);
+            }).always(function() {
+            });
+        });
 
+        function openEditForm(data) {
+            var modal = $('#editModal');
+            modal.find('.modal-body').html(data.view);
             $('#save-permission-changes').show();
             $('#save-new-permission').hide();
 
-            $('#editModal').modal();
-        });
+            modal.modal();
+        }
+
+        function updateEditForm(view) {
+            $('#edit-form-container').replaceWith(view).show();
+        }
+
+        function closeEditForm() {
+            $('#editModal').modal('hide');
+        }
 
         /* Save permission changes */
         $('#save-permission-changes').click(function () {
-            var pid = $('#permission-id').val();
+            var pid = $('#zikulapermissionsmodule_permission_pid').val();
             if (pid == adminpermission && lockadmin == 1) {
                 return;
             }
-            var vars = {
-                pid: pid,
-                gid: $('#permission-group').val(),
-                comp: $('#permission-component').val(),
-                inst: $('#permission-instance').val(),
-                level: $('#permission-level').val()
-            };
+
+            // fetch each input and hidden field and store the value to POST
+            var pars = {};
+            $.each($(':input, :hidden').serializeArray(), function(i, field) {
+                pars[field.name] = field.value;
+            });
+            // if ((typeof data.id !== 'undefined') && data.id) {
+            //     entityId = data.id;
+            // }
 
             $.ajax({
-                url: Routing.generate('zikulapermissionsmodule_ajax_update'),
-                dataType: 'html',
                 type: 'POST',
-                data: vars,
-                success: function () {
-                    $('#permission-component-' + pid).text(vars.comp);
-                    $('#permission-instance-' + pid).text(vars.inst);
-                    $('#permission-group-' + pid).data('id', vars.gid);
+                url: Routing.generate('zikulapermissionsmodule_permission_edit', {pid: pid}),
+                data: pars
+            }).done(function(result) {
+                var data = result.data;
+                if (data.view) {
+                    // validation failed
+                    updateEditForm(data.view);
+                } else {
+                    $('#permission-component-' + pid).text(data.permission.component);
+                    $('#permission-instance-' + pid).text(data.permission.instance);
+                    $('#permission-group-' + pid).data('id', data.permission.gid);
                     $('#permission-group-' + pid).text($('#permission-group').find('option:selected').text());
-                    $('#permission-level-' + pid).data('id', vars.level);
+                    $('#permission-level-' + pid).data('id', data.permission.level);
                     $('#permission-level-' + pid).text($('#permission-level').find('option:selected').text());
+                    closeEditForm();
                 }
+            }).fail(function(result) {
+                alert(result.status + ': ' + result.statusText);
+            }).always(function() {
             });
         });
 
@@ -136,7 +162,7 @@ var currentDelete, currentInsertBefore;
         $(document).on('click', '.delete-permission', function (event) {
             event.preventDefault();
             $(this).find('.fa').addClass('fa-spin');
-            currentDelete = $(this).parent().parent();
+            currentDelete = $(this).parents("tr");
             $('#deleteModal').modal();
         });
 
@@ -166,7 +192,7 @@ var currentDelete, currentInsertBefore;
         $('.create-new-permission').click(function (event) {
             event.preventDefault();
             $(this).find('.fa').addClass('fa-spin');
-            currentInsertBefore = $(this).hasClass('insertBefore') ? $(this).parent().parent() : null;
+            currentInsertBefore = $(this).hasClass('insertBefore') ? $(this).parents("tr") : null;
             $('#save-permission-changes').hide();
             $('#save-new-permission').show();
 
