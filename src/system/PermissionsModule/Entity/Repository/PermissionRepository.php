@@ -105,4 +105,19 @@ class PermissionRepository extends EntityRepository implements PermissionReposit
             ->getQuery();
         $query->execute();
     }
+
+    /**
+     * ReSequence all perms
+     */
+    public function reSequence()
+    {
+        /** @var PermissionEntity[] $permissions */
+        $permissions = parent::findBy([], ['sequence' => 'ASC']);
+        $sequence = 1;
+        foreach ($permissions as $permission) {
+            $permission->setSequence($sequence);
+            $sequence++;
+        }
+        $this->_em->flush();
+    }
 }

@@ -75,7 +75,7 @@ class LinkContainer implements LinkContainerInterface
 
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
             $links[] = [
-                'url' => $this->router->generate('zikulapermissionsmodule_admin_view'),
+                'url' => $this->router->generate('zikulapermissionsmodule_permission_list'),
                 'text' => $this->translator->__('Permission rules list'),
                 'id' => 'permissions_view',
                 'icon' => 'list'
@@ -84,7 +84,7 @@ class LinkContainer implements LinkContainerInterface
 
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADD)) {
             $links[] = [
-                'url' => $this->router->generate('zikulapermissionsmodule_ajax_create', ['action' => 'add']),
+                'url' => '#',
                 'text' => $this->translator->__('Create new permission rule'),
                 'icon' => 'plus',
                 'class' => 'create-new-permission'

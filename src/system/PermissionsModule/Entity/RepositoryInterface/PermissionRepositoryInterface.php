@@ -27,4 +27,6 @@ interface PermissionRepositoryInterface
     public function getMaxSequence();
 
     public function updateSequencesFrom($value, $amount = 1);
+
+    public function reSequence();
 }

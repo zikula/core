@@ -66,7 +66,7 @@
     </thead>
     <tbody>
         {% for permission in permissions %}
-            {{ include('@ZikulaPermissionsModule/Admin/permissionTableRow.html.twig') }}
+            {{ include('@ZikulaPermissionsModule/Permission/permissionTableRow.html.twig') }}
         {% endfor %}
     </tbody>
 </table>
@@ -79,10 +79,10 @@
 {{ form_errors(permissionCheckForm) }}
 <fieldset>
     <legend>{{ __('User permission check') }}</legend>
-    {{ form_row(permissionCheckForm.test_user) }}
-    {{ form_row(permissionCheckForm.test_component) }}
-    {{ form_row(permissionCheckForm.test_instance) }}
-    {{ form_row(permissionCheckForm.test_level) }}
+    {{ form_row(permissionCheckForm.user) }}
+    {{ form_row(permissionCheckForm.component) }}
+    {{ form_row(permissionCheckForm.instance) }}
+    {{ form_row(permissionCheckForm.level) }}
     <div class="form-group">
         <div class="help-block col-sm-offset-3 col-sm-9" id="permission-test-info" data-testing="{{ __('Testing permission...') }}">
             &nbsp;
@@ -90,7 +90,7 @@
     </div>
     <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">
-            {{ form_widget(permissionCheckForm.test_permission) }}
+            {{ form_widget(permissionCheckForm.check) }}
             {{ form_widget(permissionCheckForm.reset) }}
         </div>
     </div>
@@ -123,7 +123,7 @@
                 <h4 class="modal-title" id="instanceInfoModalLabel">{{ __('Permission rule information') }}</h4>
             </div>
             <div class="modal-body">
-                {{ include('@ZikulaPermissionsModule/Admin/instanceinfo.html.twig') }}
+                {{ include('@ZikulaPermissionsModule/Permission/instanceinfo.html.twig') }}
             </div>
         </div>
     </div>

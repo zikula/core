@@ -25,22 +25,25 @@ class PermissionCheckType extends AbstractType
         $translator = $options['translator'];
 
         $builder
-            ->add('test_user', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('user', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $translator->__('User name'),
                 'required' => false
             ])
-            ->add('test_component', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $translator->__('Component to check')
+            ->add('component', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+                'label' => $translator->__('Component to check'),
+                'data' => '.*'
             ])
-            ->add('test_instance', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $translator->__('Instance to check')
+            ->add('instance', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+                'label' => $translator->__('Instance to check'),
+                'data' => '.*'
             ])
-            ->add('test_level', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('level', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Permission level'),
                 'choices' => array_flip($options['permissionLevels']),
-                'choices_as_values' => true
+                'choices_as_values' => true,
+                'data' => ACCESS_READ
             ])
-            ->add('test_permission', 'Symfony\Component\Form\Extension\Core\Type\ButtonType', [
+            ->add('check', 'Symfony\Component\Form\Extension\Core\Type\ButtonType', [
                 'label' => $translator->__('Check permission'),
                 'icon' => 'fa-check',
                 'attr' => [

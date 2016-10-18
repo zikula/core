@@ -114,4 +114,9 @@ class StubPermissionRepository implements PermissionRepositoryInterface
     {
         // TODO: Implement updateSequencesFrom() method.
     }
+
+    public function reSequence()
+    {
+        // TODO: Implement reSequence() method.
+    }
 }
