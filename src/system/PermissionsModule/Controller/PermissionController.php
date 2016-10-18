@@ -33,6 +33,9 @@ class PermissionController extends AbstractController
         }
         if (!isset($permissionEntity)) {
             $permissionEntity = new PermissionEntity();
+            if ($request->request->has('sequence')) {
+                $permissionEntity->setSequence($request->request->get('sequence'));
+            }
         }
         $form = $this->createForm('Zikula\PermissionsModule\Form\Type\PermissionType', $permissionEntity, [
             'translator' => $this->getTranslator(),
@@ -42,9 +45,27 @@ class PermissionController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $permissionEntity = $form->getData();
+            $pid = $permissionEntity->getPid();
+            if (null == $pid) {
+                if ($permissionEntity->getSequence() == -1) {
+                    $permissionEntity->setSequence($this->get('zikula_permissions_module.permission_repository')->getMaxSequence() + 1); // last
+                } else {
+                    $this->get('zikula_permissions_module.permission_repository')->updateSequencesFrom($permissionEntity->getSequence(), 1); // insert
+                }
+            }
             $this->get('doctrine')->getRepository('ZikulaPermissionsModule:PermissionEntity')->persistAndFlush($permissionEntity);
+            $row = (null == $pid) ? $this->renderView("@ZikulaPermissionsModule/Admin/permissionTableRow.html.twig", [
+                'permission' => $permissionEntity,
+                'groups' => $this->get('zikula_groups_module.group_repository')->getGroupNamesById(),
+                'permissionLevels' => $this->get('zikula_permissions_module.api.permission')->accessLevelNames(),
+                'lockadmin' => $this->getVar('lockadmin', 1) ? 1 : 0,
+                'adminId' => $this->getVar('adminid', 1)
+            ]) : null;
 
-            return new AjaxResponse(['permission' => $permissionEntity->toArray()]);
+            return new AjaxResponse([
+                'permission' => $permissionEntity->toArray(),
+                'row' => $row
+            ]);
         }
         $templateParameters = [
             'form' => $form->createView(),

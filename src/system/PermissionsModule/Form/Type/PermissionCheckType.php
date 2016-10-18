@@ -26,7 +26,8 @@ class PermissionCheckType extends AbstractType
 
         $builder
             ->add('test_user', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $translator->__('User name')
+                'label' => $translator->__('User name'),
+                'required' => false
             ])
             ->add('test_component', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $translator->__('Component to check')

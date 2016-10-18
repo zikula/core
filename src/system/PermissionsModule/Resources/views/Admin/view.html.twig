@@ -66,24 +66,7 @@
     </thead>
     <tbody>
         {% for permission in permissions %}
-        <tr{% if lockadmin and adminId == permission.pid %} class="warning"{% endif %} data-id="{{ permission.pid }}">
-            <td headers="hPosition" style="width: 1px; white-space: nowrap">
-                {% if lockadmin and adminId == permission.pid %}
-                <i class="fa fa-lock" title="{{ __('This permission rule has been locked. If you need to unlock it, go to the Permission rules manager Settings page.') }}"></i>
-                {% else %}
-                <i class="fa fa-arrows"></i>
-                {% endif %}
-            </td>
-            <td class="text-right" style="width: 1px; white-space: nowrap">{{ permission.permid }}</td>
-            <td id="permission-group-{{ permission.pid }}" data-id="{{ permission.gid }}">{{ groups[permission.gid] }}</td>
-            <td id="permission-component-{{ permission.pid }}">{{ permission.component }}</td>
-            <td id="permission-instance-{{ permission.pid }}">{{ permission.instance }}</td>
-            <td id="permission-level-{{ permission.pid }}" data-id="{{ permission.level }}">{{ permissionLevels[permission.level] }}</td>
-            <td class="actions">
-                {% set rowActions = knp_menu_get('ZikulaPermissionsModule:AdminActionsMenu:menu', [], {permission: permission}) %}
-                {{ knp_menu_render(rowActions, {template: 'ZikulaMenuModule:Override:actions.html.twig'}) }}
-            </td>
-        </tr>
+            {{ include('@ZikulaPermissionsModule/Admin/permissionTableRow.html.twig') }}
         {% endfor %}
     </tbody>
 </table>
@@ -126,8 +109,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class='fa fa-times'></i> {{ __('Close') }}</button>
-                <button id="save-permission-changes" type="button" class="btn btn-success" data-dismiss="modal"><i class='fa fa-check'></i> {{ __('Save changes') }}</button>
-                <button id="save-new-permission" type="button" class="btn btn-success" data-dismiss="modal"><i class='fa fa-plus-square'></i> {{ __('Create new') }}</button>
+                <button id="save-permission" type="button" class="btn btn-success" data-dismiss="modal"><i class='fa fa-check'></i> {{ __('Save') }}</button>
             </div>
         </div>
     </div>

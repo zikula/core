@@ -23,4 +23,8 @@ interface PermissionRepositoryInterface
     public function getAllComponents();
 
     public function persistAndFlush(PermissionEntity $entity);
+
+    public function getMaxSequence();
+
+    public function updateSequencesFrom($value, $amount = 1);
 }

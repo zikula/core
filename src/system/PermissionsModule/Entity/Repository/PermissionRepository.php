@@ -74,4 +74,35 @@ class PermissionRepository extends EntityRepository implements PermissionReposit
         $this->_em->persist($entity);
         $this->_em->flush($entity);
     }
+
+    /**
+     * Get the highest sequential number
+     * @return int
+     */
+    public function getMaxSequence()
+    {
+        $qb = $this->createQueryBuilder('p');
+        $query = $qb->select($qb->expr()->max('p.sequence'))
+            ->getQuery();
+
+        return (int)$query->getSingleScalarResult();
+    }
+
+    /**
+     * Update all sequence values >= the provided $value by the provided $amount
+     *   to increment, amount = 1; to decrement, amount = -1
+     * @param $value
+     * @param int $amount
+     */
+    public function updateSequencesFrom($value, $amount = 1)
+    {
+        $query = $this->_em->createQueryBuilder()
+            ->update('ZikulaPermissionsModule:PermissionEntity', 'p')
+            ->set('p.sequence', 'p.sequence + :amount')
+            ->where('p.sequence >= :value')
+            ->setParameter('amount', $amount)
+            ->setParameter('value', $value)
+            ->getQuery();
+        $query->execute();
+    }
 }

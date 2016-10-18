@@ -104,4 +104,14 @@ class StubPermissionRepository implements PermissionRepositoryInterface
     {
         // TODO: Implement persistAndFlush() method.
     }
+
+    public function getMaxSequence()
+    {
+        // TODO: Implement getMaxSequence() method.
+    }
+
+    public function updateSequencesFrom($value, $amount = 1)
+    {
+        // TODO: Implement updateSequencesFrom() method.
+    }
 }
