@@ -298,10 +298,10 @@ class PermissionApi
      */
     public function accessLevelNames($level = null)
     {
-        if (is_numeric($level)) {
-            $level = intval($level);
-        } else {
+        if (isset($level) && !is_numeric($level)) {
             throw new \InvalidArgumentException();
+        } elseif (isset($level)) {
+            $level = intval($level);
         }
 
         $accessNames = [

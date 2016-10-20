@@ -19,11 +19,9 @@
             <argument type="service" id="zikula_permissions_module.api.permission" />
             <tag name="zikula.link_container" />
         </service>
-
         <service id="twig.extension.zikula_groups_module" class="%twig.extension.zikula_groups_module.class%" public="false">
             <tag name="twig.extension" />
         </service>
-
         <service id="zikula_groups_module.group_application_repository" class="%zikula_groups_module.group_application_repository.class%">
             <factory service="doctrine.orm.default_entity_manager" method="getRepository"/>
             <argument type="string">Zikula\GroupsModule\Entity\GroupApplicationEntity</argument>
@@ -34,8 +32,10 @@
         <service id="zikula_groups_module.group_repository" class="%zikula_groups_module.group_repository.class%">
             <factory service="doctrine.orm.default_entity_manager" method="getRepository"/>
             <argument type="string">Zikula\GroupsModule\Entity\GroupEntity</argument>
+            <call method="setTranslator">
+                <argument type="service" id="translator.default" />
+            </call>
         </service>
-
         <service id="zikula_groups_module.validator.constraints.group_name_validator" class="%zikula_groups_module.validator.constraints.group_name_validator.class%">
             <argument type="service" id="translator.default" />
             <argument type="service" id="zikula_groups_module.group_repository" />

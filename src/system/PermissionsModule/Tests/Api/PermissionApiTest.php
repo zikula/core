@@ -135,6 +135,37 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedText, $api->accessLevelNames($level));
     }
 
+    /**
+     * @covers      PermissionApi::accessLevelNames()
+     */
+    public function testAccessLevelArray()
+    {
+        $api = new PermissionApi($this->permRepo, $this->userRepo, $this->session, $this->translator);
+        $accessNames = [
+            ACCESS_INVALID => $this->translator->__('Invalid'),
+            ACCESS_NONE => $this->translator->__('No access'),
+            ACCESS_OVERVIEW => $this->translator->__('Overview access'),
+            ACCESS_READ => $this->translator->__('Read access'),
+            ACCESS_COMMENT => $this->translator->__('Comment access'),
+            ACCESS_MODERATE => $this->translator->__('Moderate access'),
+            ACCESS_EDIT => $this->translator->__('Edit access'),
+            ACCESS_ADD => $this->translator->__('Add access'),
+            ACCESS_DELETE => $this->translator->__('Delete access'),
+            ACCESS_ADMIN => $this->translator->__('Admin access'),
+        ];
+        $this->assertEquals($accessNames, $api->accessLevelNames());
+    }
+
+    /**
+     * @covers      PermissionApi::accessLevelNames()
+     * @expectedException \InvalidArgumentException
+     */
+    public function testAccessLevelException()
+    {
+        $api = new PermissionApi($this->permRepo, $this->userRepo, $this->session, $this->translator);
+        $api->accessLevelNames('foo');
+    }
+
     public function permProvider()
     {
         return [

@@ -1,0 +1,18 @@
+<tr{% if lockadmin and adminId == permission.pid %} class="warning"{% endif %} data-id="{{ permission.pid }}">
+    <td headers="hPosition" style="width: 1px; white-space: nowrap">
+        {% if lockadmin and adminId == permission.pid %}
+            <i class="fa fa-lock" title="{{ __('This permission rule has been locked. If you need to unlock it, go to the Permission rules manager Settings page.') }}"></i>
+        {% else %}
+            <i class="fa fa-arrows"></i>
+        {% endif %}
+    </td>
+    <td class="text-right" style="width: 1px; white-space: nowrap">{{ permission.pid }}</td>
+    <td id="permission-group-{{ permission.pid }}" data-id="{{ permission.gid }}">{{ groups[permission.gid] }}</td>
+    <td id="permission-component-{{ permission.pid }}">{{ permission.component }}</td>
+    <td id="permission-instance-{{ permission.pid }}">{{ permission.instance }}</td>
+    <td id="permission-level-{{ permission.pid }}" data-id="{{ permission.level }}">{{ permissionLevels[permission.level] }}</td>
+    <td class="actions">
+        {% set rowActions = knp_menu_get('ZikulaPermissionsModule:AdminActionsMenu:menu', [], {permission: permission}) %}
+        {{ knp_menu_render(rowActions, {template: 'ZikulaMenuModule:Override:actions.html.twig'}) }}
+    </td>
+</tr>

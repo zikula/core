@@ -1,0 +1,9 @@
+<div id="edit-form-container">
+    {% form_theme form with [
+    'bootstrap_3_horizontal_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+    ] %}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_end(form) }}
+</div>
