@@ -1,4 +1,4 @@
-/******************************************************************************
+﻿/******************************************************************************
 * Generic styles
 ******************************************************************************/
 
@@ -289,14 +289,7 @@ table.z-admintable ul li {
     text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.8);
 }
 
-.z-form .z-formrow input,
-.z-form .z-formrow textarea,
-.z-form .z-formrow select,
-.z-form fieldset input[type="text"],
-.z-form fieldset select,
-.z-form .z-datatable input[type="text"],
-.z-form .z-datatable textarea,
-.z-form .z-datatable select {
+.z-form .z-formrow input, .z-form .z-formrow textarea, .z-form .z-formrow select, .z-form fieldset input[type=text], .z-form fieldset select, .z-form .z-datatable input[type=text], .z-form .z-datatable textarea, .z-form .z-datatable select {
     font-family:"Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
     border: 1px solid #ddd;
     font-size: 1em;
@@ -503,9 +496,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     padding: 0.2em 1px;
 }
 
-.z-form fieldset input[type="text"],
-.z-form .z-datatable input[type="text"],
-.z-form .z-datatable textarea {
+.z-form fieldset input[type=text], .z-form .z-datatable input[type=text], .z-form .z-datatable textarea {
     padding: 0.3em 0.3em;
 }
 
@@ -1414,4 +1405,10 @@ img.z-floatright {
 .z-icon-es-rss {
     background: url("../images/feeds/feed-icon-16x16.png") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 20px;
+}
+.z-icon-es-add, .z-icon-es-back, .z-icon-es-cancel, .z-icon-es-config, .z-icon-es-copy, .z-icon-es-cubes, .z-icon-es-cut, .z-icon-es-delete, .z-icon-es-display, .z-icon-es-edit,
+.z-icon-es-error, .z-icon-es-export, .z-icon-es-gears, .z-icon-es-filter, .z-icon-es-group, .z-icon-es-help, .z-icon-es-home, .z-icon-es-hook, .z-icon-es-import, .z-icon-es-info,
+.z-icon-es-locale, .z-icon-es-locked, .z-icon-es-log, .z-icon-es-mail, .z-icon-es-new, .z-icon-es-ok, .z-icon-es-options, .z-icon-es-preview, .z-icon-es-print, .z-icon-es-profile,
+.z-icon-es-regenerate, .z-icon-es-remove, .z-icon-es-save, .z-icon-es-saveas, .z-icon-es-search, .z-icon-es-url, .z-icon-es-user, .z-icon-es-view, .z-icon-es-warning, .z-icon-es-rss {
+    padding-left: 20px !important;
 }
