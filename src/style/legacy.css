@@ -1,4 +1,4 @@
-﻿/******************************************************************************
+/******************************************************************************
 * Generic styles
 ******************************************************************************/
 
@@ -289,7 +289,14 @@ table.z-admintable ul li {
     text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.8);
 }
 
-.z-form .z-formrow input, .z-form .z-formrow textarea, .z-form .z-formrow select, .z-form fieldset input[type=text], .z-form fieldset select, .z-form .z-datatable input[type=text], .z-form .z-datatable textarea, .z-form .z-datatable select {
+.z-form .z-formrow input,
+.z-form .z-formrow textarea,
+.z-form .z-formrow select,
+.z-form fieldset input[type="text"],
+.z-form fieldset select,
+.z-form .z-datatable input[type="text"],
+.z-form .z-datatable textarea,
+.z-form .z-datatable select {
     font-family:"Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
     border: 1px solid #ddd;
     font-size: 1em;
@@ -496,7 +503,9 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     padding: 0.2em 1px;
 }
 
-.z-form fieldset input[type=text], .z-form .z-datatable input[type=text], .z-form .z-datatable textarea {
+.z-form fieldset input[type="text"],
+.z-form .z-datatable input[type="text"],
+.z-form .z-datatable textarea {
     padding: 0.3em 0.3em;
 }
 
