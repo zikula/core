@@ -89,4 +89,34 @@ class StubPermissionRepository implements PermissionRepositoryInterface
 
         return $result;
     }
+
+    public function getFilteredPermissions($group = PermissionApi::ALL_GROUPS, $component = null)
+    {
+        // TODO: Implement getFilteredPermissions() method.
+    }
+
+    public function getAllComponents()
+    {
+        // TODO: Implement getAllComponents() method.
+    }
+
+    public function persistAndFlush(PermissionEntity $entity)
+    {
+        // TODO: Implement persistAndFlush() method.
+    }
+
+    public function getMaxSequence()
+    {
+        // TODO: Implement getMaxSequence() method.
+    }
+
+    public function updateSequencesFrom($value, $amount = 1)
+    {
+        // TODO: Implement updateSequencesFrom() method.
+    }
+
+    public function reSequence()
+    {
+        // TODO: Implement reSequence() method.
+    }
 }

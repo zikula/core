@@ -62,7 +62,7 @@ class ConfigController extends AbstractController
 
                 $adminId = isset($formData['adminid']) ? (int)$formData['adminid'] : 1;
                 if ($adminId != 0) {
-                    $perm = $this->get('doctrine.orm.entity_manager')->find('ZikulaPermissionsModule:PermissionEntity', $adminId);
+                    $perm = $this->get('doctrine')->getRepository('ZikulaPermissionsModule:PermissionEntity')->find($adminId);
                     if (!$perm) {
                         $adminId = 0;
                         $error = true;
@@ -89,7 +89,7 @@ class ConfigController extends AbstractController
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirectToRoute('zikulapermissionsmodule_admin_view');
+            return $this->redirectToRoute('zikulapermissionsmodule_permission_list');
         }
 
         return [

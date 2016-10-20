@@ -149,6 +149,7 @@ class RouteController extends AbstractController
         if (!$this->hasPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
+        
         $repository = $this->get('zikula_routes_module.' . $objectType . '_factory')->getRepository();
         $repository->setRequest($request);
         $viewHelper = $this->get('zikula_routes_module.view_helper');
@@ -328,7 +329,7 @@ class RouteController extends AbstractController
         if (!$this->hasPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
-
+        
         $repository = $this->get('zikula_routes_module.' . $objectType . '_factory')->getRepository();
         $repository->setRequest($request);
 
@@ -411,7 +412,7 @@ class RouteController extends AbstractController
         if (!$this->hasPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
-
+        
         $repository = $this->get('zikula_routes_module.' . $objectType . '_factory')->getRepository();
 
         $templateParameters = [

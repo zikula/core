@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Swift_Mailer;
 use Symfony\Component\Routing\RouterInterface;
+use Zikula\ExtensionsModule\Api\VariableApi;
 
 class CompleteStage implements StageInterface, WizardCompleteInterface, InjectContainerInterface
 {
@@ -51,8 +52,7 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
 
     public function getResponse(Request $request)
     {
-        $admin = $this->container->get('zikula_users_module.current_user');
-        if ($this->sendEmailToAdmin($request, $admin)) {
+        if ($this->sendEmailToAdmin($request)) {
             $request->getSession()->getFlashBag()->add('success', __('Congratulations! Zikula has been successfully installed.'));
 
             return new RedirectResponse($this->container->get('router')->generate('zikulaadminmodule_admin_adminpanel', [], RouterInterface::ABSOLUTE_URL));
@@ -63,23 +63,26 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
         }
     }
 
-    private function sendEmailToAdmin(Request $request, $admin)
+    private function sendEmailToAdmin(Request $request)
     {
+        $uName = $this->container->get('zikula_users_module.current_user')->get('uname');
+        $email = $this->container->get('zikula_users_module.current_user')->get('email');
+        $fromMail = $this->container->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'adminmail');
         $url = $request->getSchemeAndHttpHost() . $request->getBasePath();
 
         $body = <<<EOF
 <html>
 <head></head>
 <body>
-<h1>Hi $admin[uname]!</h1>
+<h1>Hi $uName!</h1>
 <p>Zikula has been successfully installed at <a href="$url">$url</a>. If you have further questions,
 visit <a href="http://zikula.org">zikula.org</a></p>
 </body>
 EOF;
         $message = \Swift_Message::newInstance()
             ->setSubject(__('Zikula installation completed!'))
-            ->setFrom(\System::getVar('adminmail'))
-            ->setTo($admin['email'])
+            ->setFrom($fromMail)
+            ->setTo($email)
             ->setBody($body)
             ->setContentType('text/html')
         ;

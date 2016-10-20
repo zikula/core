@@ -13,8 +13,13 @@ namespace Zikula\GroupsModule\Entity\RepositoryInterface;
 
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Zikula\Common\Translator\TranslatorInterface;
 
 interface GroupRepositoryInterface extends ObjectRepository, Selectable
 {
+    public function setTranslator(TranslatorInterface $translator);
+
     public function findAllAndIndexBy($indexField);
+
+    public function getGroupNamesById($includeAll = true, $includeUnregistered = true);
 }
