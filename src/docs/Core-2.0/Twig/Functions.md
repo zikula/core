@@ -57,7 +57,7 @@ Functions
  * adminSecurityAnalyzer()
  * adminUpdateCheck()
 
- * moduleHeader(type, title, titlelink, setpagetitle, insertflashes, menufirst, image)
+ * moduleHeader(type, title, titlelink, set_page_title, insert_flashes, menufirst, image)
  * moduleFooter()
  * moduleBreadcrumbs()
  * moduleHelp(type)
