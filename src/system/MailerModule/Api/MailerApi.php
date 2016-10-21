@@ -199,9 +199,7 @@ class MailerApi
         }
 
         // send message
-        $this->performSending();
-
-        return true; // message has been sent
+        return $this->performSending();
     }
 
     /**
@@ -272,6 +270,8 @@ class MailerApi
 
     /**
      * Does the actual sending of the current message.
+     *
+     * @return bool true if successful
      */
     private function performSending()
     {
@@ -292,7 +292,9 @@ class MailerApi
 
             $this->eventDispatcher->dispatch(MailerEvents::SEND_MESSAGE_FAILURE, $event);
 
-            throw new \RuntimeException($this->__('Error! A problem occurred while sending the e-mail message.'));
+            //throw new \RuntimeException($this->__('Error! A problem occurred while sending the e-mail message.'));
+
+            return false;
         }
 
         if ($this->dataValues['enableLogging']) {
@@ -303,5 +305,7 @@ class MailerApi
         }
 
         $this->eventDispatcher->dispatch(MailerEvents::SEND_MESSAGE_SUCCESS, $event);
+
+        return true;
     }
 }
