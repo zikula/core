@@ -12,12 +12,12 @@
 
 namespace Zikula\RoutesModule;
 
-use Zikula\RoutesModule\Base\ZikulaRoutesModule as BaseZikulaRoutesModule;
+use Zikula\RoutesModule\Base\AbstractZikulaRoutesModule;
 
 /**
  * Module implementation class.
  */
-class ZikulaRoutesModule extends BaseZikulaRoutesModule
+class ZikulaRoutesModule extends AbstractZikulaRoutesModule
 {
     // custom enhancements can go here
 }

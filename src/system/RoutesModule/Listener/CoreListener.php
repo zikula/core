@@ -12,13 +12,13 @@
 
 namespace Zikula\RoutesModule\Listener;
 
-use Zikula\RoutesModule\Listener\Base\CoreListener as BaseCoreListener;
+use Zikula\RoutesModule\Listener\Base\AbstractCoreListener;
 use Zikula\Core\Event\GenericEvent;
 
 /**
  * Event handler implementation class for core events.
  */
-class CoreListener extends BaseCoreListener
+class CoreListener extends AbstractCoreListener
 {
     /**
      * {@inheritdoc}

@@ -14,13 +14,13 @@ namespace Zikula\RoutesModule\Form\Handler\Route;
 
 use Symfony\Component\Routing\RouteCollection;
 use Zikula\RoutesModule\Entity\RouteEntity;
-use Zikula\RoutesModule\Form\Handler\Route\Base\EditHandler as BaseEditHandler;
+use Zikula\RoutesModule\Form\Handler\Route\Base\AbstractEditHandler;
 
 /**
  * This handler class handles the page events of the Form called by the zikulaRoutesModule_route_edit() function.
  * It aims on the route object type.
  */
-class EditHandler extends BaseEditHandler
+class EditHandler extends AbstractEditHandler
 {
     /**
      * {@inheritdoc}

@@ -13,21 +13,14 @@
 namespace Zikula\RoutesModule\Entity\Repository;
 
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Routing\RouteCollection;
-use Zikula\Core\AbstractModule;
-use Zikula\RoutesModule\Entity\Repository\Base\Doctrine;
-use Zikula\RoutesModule\Entity\Repository\Base\Route as BaseRoute;
-use Zikula\RoutesModule\Entity\RouteEntity;
-use Zikula\RoutesModule\Util\WorkflowUtil;
-use Zikula\RoutesModule\Routing\Util as RoutingUtil;
+use Zikula\RoutesModule\Entity\Repository\Base\AbstractRoute as BaseRepository;
 
 /**
  * Repository class used to implement own convenience methods for performing certain DQL queries.
  *
  * This is the concrete repository class for route entities.
  */
-class Route extends BaseRoute
+class Route extends BaseRepository
 {
     /**
      * {@inheritdoc}
