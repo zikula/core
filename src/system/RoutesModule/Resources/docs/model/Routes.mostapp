@@ -50,6 +50,7 @@ application "Routes" {
             Resources/config/helpers.yml,
             Resources/config/routing.yml,
             Resources/public/images/admin.png,
+            Resources/views/Helper/includeStandardFieldsDisplay.html.twig,
             Resources/views/Route/display.html.twig,
             Resources/views/Route/edit.html.twig,
             Resources/views/Route/view.html.twig,
