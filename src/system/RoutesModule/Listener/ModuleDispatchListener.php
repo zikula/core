@@ -12,13 +12,13 @@
 
 namespace Zikula\RoutesModule\Listener;
 
-use Zikula\RoutesModule\Listener\Base\ModuleDispatchListener as BaseModuleDispatchListener;
+use Zikula\RoutesModule\Listener\Base\AbstractModuleDispatchListener;
 use Zikula\Core\Event\GenericEvent;
 
 /**
  * Event handler implementation class for dispatching modules.
  */
-class ModuleDispatchListener extends BaseModuleDispatchListener
+class ModuleDispatchListener extends AbstractModuleDispatchListener
 {
     /**
      * Makes our handlers known to the event system.

@@ -16,12 +16,12 @@ use ModUtil;
 use Symfony\Component\HttpFoundation\Request;
 use Twig_Environment;
 use Zikula\RoutesModule\Entity\RouteEntity;
-use Zikula\RoutesModule\Helper\Base\ViewHelper as BaseViewHelper;
+use Zikula\RoutesModule\Helper\Base\AbstractViewHelper;
 
 /**
  * Utility implementation class for view helper methods.
  */
-class ViewHelper extends BaseViewHelper
+class ViewHelper extends AbstractViewHelper
 {
     /**
      * {@inheritdoc}

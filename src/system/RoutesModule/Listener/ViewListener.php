@@ -12,13 +12,13 @@
 
 namespace Zikula\RoutesModule\Listener;
 
-use Zikula\RoutesModule\Listener\Base\ViewListener as BaseViewListener;
+use Zikula\RoutesModule\Listener\Base\AbstractViewListener;
 use Zikula\Core\Event\GenericEvent;
 
 /**
  * Event handler implementation class for view-related events.
  */
-class ViewListener extends BaseViewListener
+class ViewListener extends AbstractViewListener
 {
     /**
      * {@inheritdoc}

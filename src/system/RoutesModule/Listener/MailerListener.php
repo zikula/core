@@ -12,13 +12,13 @@
 
 namespace Zikula\RoutesModule\Listener;
 
-use Zikula\RoutesModule\Listener\Base\MailerListener as BaseMailerListener;
+use Zikula\RoutesModule\Listener\Base\AbstractMailerListener;
 use Zikula\Core\Event\GenericEvent;
 
 /**
  * Event handler implementation class for mailing events.
  */
-class MailerListener extends BaseMailerListener
+class MailerListener extends AbstractMailerListener
 {
     /**
      * {@inheritdoc}

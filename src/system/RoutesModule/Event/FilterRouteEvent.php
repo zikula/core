@@ -12,12 +12,12 @@
 
 namespace Zikula\RoutesModule\Event;
 
-use Zikula\RoutesModule\Event\Base\FilterRouteEvent as BaseFilterRouteEvent;
+use Zikula\RoutesModule\Event\Base\AbstractFilterRouteEvent;
 
 /**
  * Event implementation class for filtering route processing.
  */
-class FilterRouteEvent extends BaseFilterRouteEvent
+class FilterRouteEvent extends AbstractFilterRouteEvent
 {
     // feel free to extend the event class here
 }

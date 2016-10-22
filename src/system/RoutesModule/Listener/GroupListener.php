@@ -12,13 +12,13 @@
 
 namespace Zikula\RoutesModule\Listener;
 
-use Zikula\RoutesModule\Listener\Base\GroupListener as BaseGroupListener;
+use Zikula\RoutesModule\Listener\Base\AbstractGroupListener;
 use Zikula\Core\Event\GenericEvent;
 
 /**
  * Event handler implementation class for group-related events.
  */
-class GroupListener extends BaseGroupListener
+class GroupListener extends AbstractGroupListener
 {
     /**
      * {@inheritdoc}

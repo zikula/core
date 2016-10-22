@@ -15,12 +15,12 @@ namespace Zikula\RoutesModule\DependencyInjection;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Zikula\RoutesModule\DependencyInjection\Base\ZikulaRoutesExtension as BaseZikulaRoutesExtension;
+use Zikula\RoutesModule\DependencyInjection\Base\AbstractZikulaRoutesExtension;
 
 /**
  * Implementation class for service definition loader using the DependencyInjection extension.
  */
-class ZikulaRoutesExtension extends BaseZikulaRoutesExtension
+class ZikulaRoutesExtension extends AbstractZikulaRoutesExtension
 {
     /**
      * {@inheritdoc}

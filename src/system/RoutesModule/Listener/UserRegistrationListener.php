@@ -12,13 +12,13 @@
 
 namespace Zikula\RoutesModule\Listener;
 
-use Zikula\RoutesModule\Listener\Base\UserRegistrationListener as BaseUserRegistrationListener;
+use Zikula\RoutesModule\Listener\Base\AbstractUserRegistrationListener;
 use Zikula\Core\Event\GenericEvent;
 
 /**
  * Event handler implementation class for user registration events.
  */
-class UserRegistrationListener extends BaseUserRegistrationListener
+class UserRegistrationListener extends AbstractUserRegistrationListener
 {
     /**
      * {@inheritdoc}

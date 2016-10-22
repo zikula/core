@@ -12,12 +12,12 @@
 
 namespace Zikula\RoutesModule\Helper;
 
-use Zikula\RoutesModule\Helper\Base\ModelHelper as BaseModelHelper;
+use Zikula\RoutesModule\Helper\Base\AbstractModelHelper;
 
 /**
  * Utility implementation class for model helper methods.
  */
-class ModelHelper extends BaseModelHelper
+class ModelHelper extends AbstractModelHelper
 {
     // feel free to add your own convenience methods here
 }

@@ -12,7 +12,7 @@
 
 namespace Zikula\RoutesModule\Controller;
 
-use Zikula\RoutesModule\Controller\Base\AdminController as BaseAdminController;
+use Zikula\RoutesModule\Controller\Base\AbstractAdminController;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Admin controller class providing navigation and interaction functionality.
  */
-class AdminController extends BaseAdminController
+class AdminController extends AbstractAdminController
 {
     /**
      * This is the default action handling the main area called without defining arguments.

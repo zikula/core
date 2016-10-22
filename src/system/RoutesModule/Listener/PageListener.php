@@ -12,13 +12,13 @@
 
 namespace Zikula\RoutesModule\Listener;
 
-use Zikula\RoutesModule\Listener\Base\PageListener as BasePageListener;
+use Zikula\RoutesModule\Listener\Base\AbstractPageListener;
 use Zikula\Core\Event\GenericEvent;
 
 /**
  * Event handler implementation class for page-related events.
  */
-class PageListener extends BasePageListener
+class PageListener extends AbstractPageListener
 {
     /**
      * {@inheritdoc}

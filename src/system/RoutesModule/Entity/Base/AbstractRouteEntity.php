@@ -1174,7 +1174,6 @@ abstract class AbstractRouteEntity extends EntityAccess
             $this->setUpdatedDate(null);
             $this->setUpdatedUserId(null);
     
-            
         }
         // otherwise do nothing, do NOT throw an exception!
     }

@@ -13,12 +13,12 @@
 namespace Zikula\RoutesModule\Listener;
 
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Zikula\RoutesModule\Listener\Base\EntityLifecycleListener as BaseEntityLifecycleListener;
+use Zikula\RoutesModule\Listener\Base\AbstractEntityLifecycleListener;
 
 /**
  * Event subscriber implementation class for entity lifecycle events.
  */
-class EntityLifecycleListener extends BaseEntityLifecycleListener
+class EntityLifecycleListener extends AbstractEntityLifecycleListener
 {
     /**
      * {@inheritdoc}

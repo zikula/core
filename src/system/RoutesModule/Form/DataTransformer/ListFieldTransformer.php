@@ -12,14 +12,14 @@
 
 namespace Zikula\RoutesModule\Form\DataTransformer;
 
-use Zikula\RoutesModule\Form\DataTransformer\Base\ListFieldTransformer as BaseTransformer;
+use Zikula\RoutesModule\Form\DataTransformer\Base\AbstractListFieldTransformer;
 
 /**
  * List fields transformer implementation class.
  *
  * This data transformer treats multi-valued list fields.
  */
-class ListFieldTransformer extends BaseTransformer
+class ListFieldTransformer extends AbstractListFieldTransformer
 {
     // feel free to add your customisation here
 }

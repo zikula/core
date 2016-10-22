@@ -13,12 +13,12 @@
 namespace Zikula\RoutesModule\Container;
 
 use Zikula\Core\LinkContainer\LinkContainerInterface;
-use Zikula\RoutesModule\Container\Base\LinkContainer as BaseLinkContainer;
+use Zikula\RoutesModule\Container\Base\AbstractLinkContainer;
 
 /**
  * This is the link container service implementation class.
  */
-class LinkContainer extends BaseLinkContainer
+class LinkContainer extends AbstractLinkContainer
 {
     /**
      * {@inheritdoc}

@@ -12,7 +12,7 @@
 
 namespace Zikula\RoutesModule\Listener;
 
-use Zikula\RoutesModule\Listener\Base\KernelListener as BaseKernelListener;
+use Zikula\RoutesModule\Listener\Base\AbstractKernelListener;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
@@ -26,7 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Event handler implementation class for Symfony kernel events.
  */
-class KernelListener extends BaseKernelListener
+class KernelListener extends AbstractKernelListener
 {
     /**
      * {@inheritdoc}

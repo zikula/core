@@ -12,12 +12,12 @@
 
 namespace Zikula\RoutesModule\Form\Type\QuickNavigation;
 
-use Zikula\RoutesModule\Form\Type\QuickNavigation\Base\RouteQuickNavType as BaseRouteQuickNavType;
+use Zikula\RoutesModule\Form\Type\QuickNavigation\Base\AbstractRouteQuickNavType;
 
 /**
  * Route quick navigation form type implementation class.
  */
-class RouteQuickNavType extends BaseRouteQuickNavType
+class RouteQuickNavType extends AbstractRouteQuickNavType
 {
     // feel free to extend the base form type class here
 }

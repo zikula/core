@@ -12,7 +12,7 @@
 
 namespace Zikula\RoutesModule\Entity;
 
-use Zikula\RoutesModule\Entity\Base\AbstractRouteEntity as BaseAbstractRouteEntity;
+use Zikula\RoutesModule\Entity\Base\AbstractRouteEntity as BaseEntity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class RouteEntity extends BaseAbstractRouteEntity
+class RouteEntity extends BaseEntity
 {
     const POSITION_FIXED_TOP = 3;
 
@@ -53,24 +53,24 @@ class RouteEntity extends BaseAbstractRouteEntity
     /**
      * Returns the route's path prepended with the bundle prefix.
      *
-     * @param null $container Can be used to set the container for \ServiceUtil in case it is not already set.
+     * @param null $container Used to set the container for \ServiceUtil in case it is not already set
      *
      * @return string
      */
     public function getPathWithBundlePrefix($container = null)
     {
-        if (!isset($this->options['zkNoBundlePrefix']) || !$this->options['zkNoBundlePrefix']) {
-            $bundle = $this->getBundle();
-
-            if (!\ServiceUtil::hasContainer()) {
-                \ServiceUtil::setContainer($container);
-            }
-
-            $modinfo = \ModUtil::getInfoFromName($bundle);
-
-            return '/' . $modinfo['url'] . $this->path;
+        if (isset($this->options['zkNoBundlePrefix']) && $this->options['zkNoBundlePrefix']) {
+            // return path only
+            return $this->path;
         }
 
-        return $this->path;
+        $bundle = $this->getBundle();
+
+        if (!\ServiceUtil::hasContainer()) {
+            \ServiceUtil::setContainer($container);
+        }
+
+        // return path prepended with bundle prefix
+        return '/' . $bundle->getMetaData()->getUrl() . $this->path;
     }
 }
