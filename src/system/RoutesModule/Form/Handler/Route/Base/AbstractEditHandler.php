@@ -12,7 +12,7 @@
 
 namespace Zikula\RoutesModule\Form\Handler\Route\Base;
 
-use Zikula\RoutesModule\Form\Handler\Common\AbstractEditHandler;
+use Zikula\RoutesModule\Form\Handler\Common\EditHandler;
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -25,7 +25,7 @@ use UserUtil;
  * This handler class handles the page events of editing forms.
  * It aims on the route object type.
  */
-abstract class EditHandler extends EditHandler
+abstract class AbstractEditHandler extends EditHandler
 {
     /**
      * Initialise form handler.
