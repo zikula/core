@@ -21,7 +21,7 @@ use Zikula\Core\Event\GenericEvent;
 /**
  * Event handler base class for theme-related events.
  */
-abstract class ThemeListener implements EventSubscriberInterface
+abstract class AbstractThemeListener implements EventSubscriberInterface
 {
     /**
      * Makes our handlers known to the event system.

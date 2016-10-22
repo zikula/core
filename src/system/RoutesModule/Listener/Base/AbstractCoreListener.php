@@ -19,7 +19,7 @@ use Zikula\Core\Event\GenericEvent;
 /**
  * Event handler base class for core events.
  */
-abstract class CoreListener implements EventSubscriberInterface
+abstract class AbstractCoreListener implements EventSubscriberInterface
 {
     /**
      * Makes our handlers known to the event system.

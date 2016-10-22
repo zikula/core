@@ -22,7 +22,7 @@ use Zikula\UsersModule\UserEvents;
 /**
  * Event handler base class for user-related events.
  */
-abstract class UserListener implements EventSubscriberInterface
+abstract class AbstractUserListener implements EventSubscriberInterface
 {
     /**
      * Makes our handlers known to the event system.

@@ -18,7 +18,7 @@ use Zikula\Core\Event\GenericEvent;
 /**
  * Event handler base class for view-related events.
  */
-abstract class ViewListener implements EventSubscriberInterface
+abstract class AbstractViewListener implements EventSubscriberInterface
 {
     /**
      * Makes our handlers known to the event system.

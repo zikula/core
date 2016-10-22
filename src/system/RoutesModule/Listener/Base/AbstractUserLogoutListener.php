@@ -19,7 +19,7 @@ use Zikula\UsersModule\AccessEvents;
 /**
  * Event handler base class for user logout events.
  */
-abstract class UserLogoutListener implements EventSubscriberInterface
+abstract class AbstractUserLogoutListener implements EventSubscriberInterface
 {
     /**
      * Makes our handlers known to the event system.

@@ -18,7 +18,7 @@ use Zikula\Core\Event\GenericEvent;
 /**
  * Event handler base class for dispatching modules.
  */
-abstract class ModuleDispatchListener implements EventSubscriberInterface
+abstract class AbstractModuleDispatchListener implements EventSubscriberInterface
 {
     /**
      * Makes our handlers known to the event system.

@@ -18,7 +18,7 @@ use Zikula\Core\Event\GenericEvent;
 /**
  * Event handler base class for page-related events.
  */
-abstract class PageListener implements EventSubscriberInterface
+abstract class AbstractPageListener implements EventSubscriberInterface
 {
     /**
      * Makes our handlers known to the event system.

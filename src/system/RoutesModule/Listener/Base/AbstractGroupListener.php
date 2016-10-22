@@ -18,7 +18,7 @@ use Zikula\Core\Event\GenericEvent;
 /**
  * Event handler implementation class for group-related events.
  */
-abstract class GroupListener implements EventSubscriberInterface
+abstract class AbstractGroupListener implements EventSubscriberInterface
 {
     /**
      * Makes our handlers known to the event system.

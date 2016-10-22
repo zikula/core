@@ -21,7 +21,7 @@ use Zikula\Core\Event\ModuleStateEvent;
 /**
  * Event handler base class for module installer events.
  */
-abstract class InstallerListener implements EventSubscriberInterface
+abstract class AbstractInstallerListener implements EventSubscriberInterface
 {
     /**
      * Makes our handlers known to the event system.

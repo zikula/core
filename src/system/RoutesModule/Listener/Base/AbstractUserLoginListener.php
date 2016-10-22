@@ -19,7 +19,7 @@ use Zikula\UsersModule\AccessEvents;
 /**
  * Event handler base class for user login events.
  */
-abstract class UserLoginListener implements EventSubscriberInterface
+abstract class AbstractUserLoginListener implements EventSubscriberInterface
 {
     /**
      * Makes our handlers known to the event system.

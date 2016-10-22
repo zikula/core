@@ -20,7 +20,7 @@ use Zikula\Core\Event\GenericEvent;
 /**
  * Event handler base class for mailing events.
  */
-abstract class MailerListener implements EventSubscriberInterface
+abstract class AbstractMailerListener implements EventSubscriberInterface
 {
     /**
      * Makes our handlers known to the event system.

@@ -53,7 +53,7 @@ class RouteEntity extends BaseEntity
     /**
      * Returns the route's path prepended with the bundle prefix.
      *
-     * @param null $container Can be used to set the container for \ServiceUtil in case it is not already set.
+     * @param null $container Used to set the container for \ServiceUtil in case it is not already set
      *
      * @return string
      */
@@ -70,9 +70,7 @@ class RouteEntity extends BaseEntity
             \ServiceUtil::setContainer($container);
         }
 
-        $modinfo = \ModUtil::getInfoFromName($bundle);
-
         // return path prepended with bundle prefix
-        return '/' . $modinfo['url'] . $this->path;
+        return '/' . $bundle->getMetaData()->getUrl() . $this->path;
     }
 }

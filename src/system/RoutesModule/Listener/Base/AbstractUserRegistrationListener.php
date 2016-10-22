@@ -19,7 +19,7 @@ use Zikula\UsersModule\RegistrationEvents;
 /**
  * Event handler base class for user registration events.
  */
-abstract class UserRegistrationListener implements EventSubscriberInterface
+abstract class AbstractUserRegistrationListener implements EventSubscriberInterface
 {
     /**
      * Makes our handlers known to the event system.

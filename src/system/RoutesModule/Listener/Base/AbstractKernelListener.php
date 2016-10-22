@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Event handler base class for Symfony kernel events.
  */
-abstract class KernelListener implements EventSubscriberInterface
+abstract class AbstractKernelListener implements EventSubscriberInterface
 {
     /**
      * Makes our handlers known to the event system.

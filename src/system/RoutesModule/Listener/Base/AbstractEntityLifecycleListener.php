@@ -69,7 +69,6 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber
         }
         
         // delete workflow for this entity
-        $serviceManager = ServiceUtil::getManager();
         $workflowHelper = $serviceManager->get('zikula_routes_module.workflow_helper');
         $workflowHelper->normaliseWorkflowData($entity);
         $workflow = $entity['__WORKFLOW__'];
