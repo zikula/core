@@ -56,7 +56,7 @@
         <service id="zikula_blocks_module.form.block_type" class="%zikula_blocks_module.form.block_type.class%">
             <argument type="service" id="zikula_blocks_module.api.block" />
             <argument type="service" id="zikula_blocks_module.api.block_filter" />
-            <argument type="service" id="translator" />
+            <argument type="service" id="translator.default" />
             <tag name="form.type" />
         </service>
 

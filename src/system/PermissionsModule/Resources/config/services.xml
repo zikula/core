@@ -24,7 +24,7 @@
             <argument type="service" id="zikula_permissions_module.permission_repository" />
             <argument type="service" id="zikula_users_module.user_repository" />
             <argument type="service" id="session" />
-            <argument type="service" id="translator" />
+            <argument type="service" id="translator.default" />
         </service>
 
         <service id="zikula_permissions_module.helper.schema_helper" class="%zikula_permissions_module.helper.schema_helper.class%">
