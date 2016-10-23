@@ -9,6 +9,10 @@
  * file that was distributed with this source code.
  */
 
+/**
+ * Class SystemPlugin_Imagine_Configuration
+ * @deprecated
+ */
 class SystemPlugin_Imagine_Configuration extends Zikula_Controller_AbstractPlugin
 {
     /**
