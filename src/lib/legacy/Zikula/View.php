@@ -171,7 +171,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     {
         $this->serviceManager = $serviceManager;
         $this->eventManager = $this->serviceManager->get('event_dispatcher');
-        $this->request = \ServiceUtil::get('request_stack')->getCurrentRequest();
+        $this->request = $this->serviceManager->get('request_stack')->getCurrentRequest();
 
         // set the error reporting level
         $this->error_reporting = isset($GLOBALS['ZConfig']['Debug']['error_reporting']) ? $GLOBALS['ZConfig']['Debug']['error_reporting'] : E_ALL;
@@ -184,7 +184,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $func   = FormUtil::getPassedValue('func', 'main', 'GETPOST', FILTER_SANITIZE_STRING);
 
         // set vars based on the module structures
-        $pathInfo = $this->request->getPathInfo();
+        $pathInfo = null !== $this->request ? $this->request->getPathInfo() : '/';
         $routeParams = isset($pathInfo) && $pathInfo != '/' ? $this->serviceManager->get('router')->match($pathInfo) : null;
         if (!isset($routeParams) && $pathInfo == '/') {
             $this->homepage = true;
@@ -202,9 +202,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         // Initialize the module property with the name of
         // the topmost module. For Hooks, Blocks, API Functions and others
         // you need to set this property to the name of the respective module!
-        $masterRequest = \ServiceUtil::get('request_stack')->getMasterRequest();
+        $masterRequest = $this->serviceManager->get('request_stack')->getMasterRequest();
         $masterRequestModule = !empty($routeParams['_zkModule']) ? $routeParams['_zkModule'] : null;
-        if (!isset($masterRequestModule) && $masterRequest->attributes->get('_route') == 'zikula_hook_hook_edit' && $masterRequest->attributes->has('moduleName')) {
+        if (!isset($masterRequestModule) && null !== $masterRequest && $masterRequest->attributes->get('_route') == 'zikula_hook_hook_edit' && $masterRequest->attributes->has('moduleName')) {
             // accommodates HookBundle
             $masterRequestModule = $masterRequest->attributes->get('moduleName');
         }
