@@ -1,6 +1,8 @@
 Zikula Plugin System
 --------------------
 
+### Please note that Plugins are deprecated for Core-2.0.
+
 The Zikula plugins system is based on the Zikula_EventManager system.
 
 Plugins can be used for a diverse number of purposes.  For example they could be
@@ -28,7 +30,7 @@ There are two kinds of plugins:
     e.g. modules/News/plugins/Example/Plugin.php (contains
     class ModulePlugin_News_Example_Plugin extends Zikula_AbstractPlugin
 
-    Module plugins are only loaded when the ModUtil::loadGeneric is invoked for 
+    Module plugins are only loaded when the ModUtil::loadGeneric is invoked for
     that module.
 
     Module plugins are there to allow 3rd parties to extend a module or add
