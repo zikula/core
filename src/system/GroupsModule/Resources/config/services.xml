@@ -1,9 +1,7 @@
-<?xml version="1.0" ?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
     <parameters>
         <parameter key="zikula_groups_module.container.link_container.class">Zikula\GroupsModule\Container\LinkContainer</parameter>
         <parameter key="twig.extension.zikula_groups_module.class">Zikula\GroupsModule\Twig\TwigExtension</parameter>
@@ -11,7 +9,6 @@
         <parameter key="zikula_groups_module.group_repository.class">Zikula\GroupsModule\Entity\Repository\GroupRepository</parameter>
         <parameter key="zikula_groups_module.validator.constraints.group_name_validator.class">Zikula\GroupsModule\Validator\Constraints\ValidGroupNameValidator</parameter>
     </parameters>
-
     <services>
         <service id="zikula_groups_module.container.link_container" class="%zikula_groups_module.container.link_container.class%">
             <argument type="service" id="translator.default" />

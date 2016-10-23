@@ -1,16 +1,13 @@
-<?xml version="1.0" ?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
     <parameters>
         <parameter key="zikula_theme_module.twig.extension.theme_extension.class">Zikula\ThemeModule\Twig\Extension\ThemeExtension</parameter>
         <parameter key="zikula_theme_module.container.link_container.class">Zikula\ThemeModule\Container\LinkContainer</parameter>
         <parameter key="zikula_theme_module.theme_entity.repository.class">Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository</parameter>
         <parameter key="zikula_theme_module.helper.bundle_sync_helper.class">Zikula\ThemeModule\Helper\BundleSyncHelper</parameter>
     </parameters>
-
     <services>
         <service id="zikula_theme_module.container.link_container" class="%zikula_theme_module.container.link_container.class%">
             <argument type="service" id="translator" />
@@ -41,7 +38,5 @@
             <argument type="service" id="zikula_core.internal.bootstrap_helper" />
             <argument type="service" id="translator.default" />
         </service>
-
     </services>
-
 </container>

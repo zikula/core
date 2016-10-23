@@ -14,7 +14,6 @@ namespace Zikula\GroupsModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Common\Translator\Translator;
 
 /**
  * Group deletion form type class.

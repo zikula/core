@@ -13,7 +13,7 @@ namespace Zikula\SearchModule\Container;
 
 use ModUtil;
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\Common\Translator\Translator;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Api\CurrentUserApi;
@@ -21,7 +21,7 @@ use Zikula\UsersModule\Api\CurrentUserApi;
 class LinkContainer implements LinkContainerInterface
 {
     /**
-     * @var Translator
+     * @var TranslatorInterface
      */
     private $translator;
 
@@ -43,12 +43,12 @@ class LinkContainer implements LinkContainerInterface
     /**
      * LinkContainer constructor.
      *
-     * @param Translator      $translator     Translator service instance
-     * @param RouterInterface $router         RouterInterface service instance
-     * @param PermissionApi   $permissionApi  PermissionApi service instance
-     * @param CurrentUserApi  $currentUserApi CurrentUserApi service instance
+     * @param TranslatorInterface $translator     TranslatorInterface service instance
+     * @param RouterInterface     $router         RouterInterface service instance
+     * @param PermissionApi       $permissionApi  PermissionApi service instance
+     * @param CurrentUserApi      $currentUserApi CurrentUserApi service instance
      */
-    public function __construct($translator, RouterInterface $router, PermissionApi $permissionApi, CurrentUserApi $currentUserApi)
+    public function __construct(TranslatorInterface $translator, RouterInterface $router, PermissionApi $permissionApi, CurrentUserApi $currentUserApi)
     {
         $this->translator = $translator;
         $this->router = $router;
