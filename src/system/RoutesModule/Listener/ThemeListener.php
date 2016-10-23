@@ -13,6 +13,8 @@
 namespace Zikula\RoutesModule\Listener;
 
 use Zikula\RoutesModule\Listener\Base\AbstractThemeListener;
+use Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent;
+use Zikula\ThemeModule\Bridge\Event\TwigPreRenderEvent;
 use Zikula\Core\Event\GenericEvent;
 
 /**
