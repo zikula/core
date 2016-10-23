@@ -18,7 +18,7 @@ use Zikula\RoutesModule\Entity\RouteEntity;
 /**
  * Event base class for filtering route processing.
  */
-class FilterRouteEvent extends Event
+class AbstractFilterRouteEvent extends Event
 {
     /**
      * @var RouteEntity Reference to treated entity instance.
