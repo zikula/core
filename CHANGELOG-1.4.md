@@ -20,6 +20,7 @@ CHANGELOG - ZIKULA 1.4.x
    - Fixed admin icon determination for legacy modules (#3108).
    - Fixed several regressions in SecurityCenter module.
    - Fixed problem in DataUtil::formatForDisplayHTML for proper handling of data-* attributes.
+   - Fixed regression in argument typehints in UserUtil (#3123)
 
  - Features:
    - Added mailProtect filter for safe display of email addresses in Twig templates (#3041).
