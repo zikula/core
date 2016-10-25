@@ -12,12 +12,12 @@
 
 namespace Zikula\RoutesModule\Form;
 
-use Zikula\RoutesModule\Form\Base\DeleteEntityType as BaseDeleteEntityType;
+use Zikula\RoutesModule\Form\Base\AbstractDeleteEntityType;
 
 /**
  * Entity deletion form type implementation class.
  */
-class DeleteEntityType extends BaseDeleteEntityType
+class DeleteEntityType extends AbstractDeleteEntityType
 {
     // feel free to extend the base form type class here
 }

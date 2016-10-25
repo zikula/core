@@ -1,9 +1,7 @@
-<?xml version="1.0" ?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
     <parameters>
         <parameter key="zikula_zauth_module.user_delete_listener.class">Zikula\ZAuthModule\Listener\UserDeleteListener</parameter>
         <parameter key="zikula_zauth_module.registration_listener.class">Zikula\ZAuthModule\Listener\RegistrationListener</parameter>
@@ -19,7 +17,6 @@
 
         <parameter key="zikula_zauth_module.container.link_container.class">Zikula\ZAuthModule\Container\LinkContainer</parameter>
     </parameters>
-
     <services>
         <service id="zikula_zauth_module.listener.user_delete_listener" class="%zikula_zauth_module.user_delete_listener.class%">
             <argument type="service" id="zikula_zauth_module.authentication_mapping_repository" />
@@ -90,5 +87,4 @@
             <tag name="zikula.link_container" />
         </service>
     </services>
-
 </container>

@@ -12,7 +12,7 @@
 
 namespace Zikula\RoutesModule\Controller;
 
-use Zikula\RoutesModule\Controller\Base\AjaxController as BaseAjaxController;
+use Zikula\RoutesModule\Controller\Base\AbstractAjaxController;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -24,7 +24,7 @@ use Zikula\Core\Response\Ajax\AjaxResponse;
  *
  * @Route("/ajax")
  */
-class AjaxController extends BaseAjaxController
+class AjaxController extends AbstractAjaxController
 {
     /**
      * This method is the default function handling the main area called without defining arguments.
@@ -44,8 +44,6 @@ class AjaxController extends BaseAjaxController
     {
         return parent::indexAction($request);
     }
-
-    // feel free to add your own controller methods here
 
     /**
      * Resort routes.

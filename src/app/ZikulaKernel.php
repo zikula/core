@@ -83,6 +83,7 @@ class ZikulaKernel extends Kernel
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Matthias\SymfonyConsoleForm\Bundle\SymfonyConsoleFormBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new Liip\ImagineBundle\LiipImagineBundle(),
         ];
 
         $this->registerCoreModules($bundles);

@@ -1,0 +1,25 @@
+liip_imagine:
+    resolvers:
+        default:
+            web_path:
+                web_root: "%kernel.root_dir%/../"
+                cache_prefix: "web/imagine/cache"
+    loaders:
+        zikula_root:
+            filesystem:
+                data_root: "%kernel.root_dir%/../"
+    filter_sets:
+        cache: ~
+        my_thumb: # sample
+            jpeg_quality: 75
+            png_compression_level: 7
+            filters:
+                thumbnail: { size: [120, 90], mode: outbound }
+                background: { size: [124, 94], position: center, color: '#000000' }
+        z100x100: # sample using zikula root
+            data_loader: zikula_root
+            jpeg_quality: 75
+            png_compression_level: 7
+            filters:
+                thumbnail: { size: [100, 100], mode: inset }
+        # add more filters as required for your personal application

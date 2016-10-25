@@ -14,12 +14,12 @@ namespace Zikula\RoutesModule\Form\Type;
 
 use ModUtil;
 use Symfony\Component\Form\FormBuilderInterface;
-use Zikula\RoutesModule\Form\Type\Base\RouteType as BaseRouteType;
+use Zikula\RoutesModule\Form\Type\Base\AbstractRouteType;
 
 /**
  * Route editing form type implementation class.
  */
-class RouteType extends BaseRouteType
+class RouteType extends AbstractRouteType
 {
     /**
      * {@inheritdoc}

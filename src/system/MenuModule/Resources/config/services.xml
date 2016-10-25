@@ -1,9 +1,7 @@
-<?xml version="1.0" ?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
     <parameters>
         <parameter key="zikula_menu_module.menu_item_repository.class">Zikula\MenuModule\Entity\Repository\MenuItemRepository</parameter>
         <parameter key="zikula_menu_module.menu.voter.request.class">Zikula\MenuModule\Voter\RequestVoter</parameter>
@@ -11,7 +9,6 @@
         <parameter key="zikula_menu_module.container.link_container.class">Zikula\MenuModule\Container\LinkContainer</parameter>
         <parameter key="zikula_menu_module.form.type.hidden_menu_item_type.class">Zikula\MenuModule\Form\Type\HiddenMenuItemType</parameter>
     </parameters>
-
     <services>
         <service id="zikula_menu_module.menu_item_repository" class="%zikula_menu_module.menu_item_repository.class%">
             <factory service="doctrine.orm.default_entity_manager" method="getRepository"/>
@@ -38,5 +35,4 @@
             <tag name="form.type" alias="Zikula\MenuModule\Form\Type\HiddenMenuItemType" />
         </service>
     </services>
-
 </container>

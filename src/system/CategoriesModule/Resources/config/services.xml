@@ -1,14 +1,11 @@
-<?xml version="1.0" ?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
     <parameters>
         <parameter key="zikula_categories_module.container.link_container.class">Zikula\CategoriesModule\Container\LinkContainer</parameter>
         <parameter key="twig.extension.zikula_categories_module.class">Zikula\CategoriesModule\Twig\Extension\CategoriesExtension</parameter>
     </parameters>
-
     <services>
         <service id="zikula_categories_module.container.link_container" class="%zikula_categories_module.container.link_container.class%">
             <argument type="service" id="translator.default" />

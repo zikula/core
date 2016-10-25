@@ -12,7 +12,7 @@
 
 namespace Zikula\RoutesModule\Controller;
 
-use Zikula\RoutesModule\Controller\Base\RouteController as BaseRouteController;
+use Zikula\RoutesModule\Controller\Base\AbstractRouteController;
 
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +24,7 @@ use Zikula\RoutesModule\Entity\RouteEntity;
 /**
  * Route controller class providing navigation and interaction functionality.
  */
-class RouteController extends BaseRouteController
+class RouteController extends AbstractRouteController
 {
     /**
      * This is the default action handling the main admin area called without defining arguments.

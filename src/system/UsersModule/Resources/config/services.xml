@@ -1,9 +1,7 @@
-<?xml version="1.0" ?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
     <parameters>
         <parameter key="zikula_users_module.user_listener.class">Zikula\UsersModule\Listener\UserEventListener</parameter>
         <parameter key="zikula_users_module.pending_content_listener.class">Zikula\UsersModule\Listener\PendingContentListener</parameter>
@@ -13,7 +11,6 @@
         <parameter key="zikula_users_module.twig.extension.registration_extension.class">Zikula\UsersModule\Twig\Extension\RegistrationExtension</parameter>
         <parameter key="zikula_users_module.container.link_container.class">Zikula\UsersModule\Container\LinkContainer</parameter>
     </parameters>
-
     <services>
         <service id="zikula_users_module.user_listener" class="%zikula_users_module.user_listener.class%">
             <tag name="kernel.event_subscriber" />
@@ -52,4 +49,3 @@
         </service>
     </services>
 </container>
-

@@ -12,12 +12,12 @@
 
 namespace Zikula\RoutesModule;
 
-use Zikula\RoutesModule\Base\RoutesEvents as BaseRoutesEvents;
+use Zikula\RoutesModule\Base\AbstractRoutesEvents;
 
 /**
  * Events definition implementation class.
  */
-class RoutesEvents extends BaseRoutesEvents
+class RoutesEvents extends AbstractRoutesEvents
 {
     // feel free to extend the events definition here
 }

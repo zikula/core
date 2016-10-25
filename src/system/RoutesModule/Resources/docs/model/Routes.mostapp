@@ -21,6 +21,7 @@ application "Routes" {
         generateExternalControllerAndFinder false
         generateScribitePlugins false
         generateTagSupport false
+        generateMultiHookNeedles false
         generateRssTemplates false
         generateAtomTemplates false
         generateCsvTemplates false
@@ -48,10 +49,11 @@ application "Routes" {
             Resources/config/eventSubscriber.yml,
             Resources/config/helpers.yml,
             Resources/config/routing.yml,
+            Resources/public/images/admin.png,
             Resources/views/Helper/includeStandardFieldsDisplay.html.twig,
-            Resources/views/Route/view.html.twig,
             Resources/views/Route/display.html.twig,
             Resources/views/Route/edit.html.twig,
+            Resources/views/Route/view.html.twig,
             RoutesModuleInstaller.php,
             Twig/TwigExtension.php
         "

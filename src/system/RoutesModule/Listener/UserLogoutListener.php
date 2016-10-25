@@ -12,13 +12,13 @@
 
 namespace Zikula\RoutesModule\Listener;
 
-use Zikula\RoutesModule\Listener\Base\UserLogoutListener as BaseUserLogoutListener;
+use Zikula\RoutesModule\Listener\Base\AbstractUserLogoutListener;
 use Zikula\Core\Event\GenericEvent;
 
 /**
  * Event handler implementation class for user logout events.
  */
-class UserLogoutListener extends BaseUserLogoutListener
+class UserLogoutListener extends AbstractUserLogoutListener
 {
     /**
      * {@inheritdoc}

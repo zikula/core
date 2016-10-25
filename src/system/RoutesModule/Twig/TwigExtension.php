@@ -13,13 +13,13 @@
 namespace Zikula\RoutesModule\Twig;
 
 use Zikula\RoutesModule\Entity\RouteEntity;
-use Zikula\RoutesModule\Twig\Base\TwigExtension as BaseTwigExtension;
+use Zikula\RoutesModule\Twig\Base\AbstractTwigExtension;
 use ZLanguage;
 
 /**
  * Twig extension implementation class.
  */
-class TwigExtension extends BaseTwigExtension
+class TwigExtension extends AbstractTwigExtension
 {
     /**
      * {@inheritdoc}

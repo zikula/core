@@ -10,6 +10,9 @@ fos_js_routing:
 installer:
     resource: "@ZikulaCoreInstallerBundle/Resources/config/routing/routing.xml"
 
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"
+
 Routing:
     resource: .
     type: zikularoutesmodule

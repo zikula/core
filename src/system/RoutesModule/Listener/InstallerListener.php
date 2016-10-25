@@ -20,13 +20,13 @@ use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\RoutesModule\Helper\MultilingualRoutingHelper;
 use Zikula\RoutesModule\Helper\RouteDumperHelper;
-use Zikula\RoutesModule\Listener\Base\InstallerListener as BaseInstallerListener;
+use Zikula\RoutesModule\Listener\Base\AbstractInstallerListener;
 use Zikula\RoutesModule\Routing\RouteFinder;
 
 /**
  * Event handler implementation class for module installer events.
  */
-class InstallerListener extends BaseInstallerListener
+class InstallerListener extends AbstractInstallerListener
 {
     private $em;
 

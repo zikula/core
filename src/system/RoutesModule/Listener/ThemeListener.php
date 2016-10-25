@@ -12,15 +12,15 @@
 
 namespace Zikula\RoutesModule\Listener;
 
-use Zikula\RoutesModule\Listener\Base\ThemeListener as BaseThemeListener;
-use Zikula\Core\Event\GenericEvent;
+use Zikula\RoutesModule\Listener\Base\AbstractThemeListener;
 use Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent;
 use Zikula\ThemeModule\Bridge\Event\TwigPreRenderEvent;
+use Zikula\Core\Event\GenericEvent;
 
 /**
  * Event handler implementation class for theme-related events.
  */
-class ThemeListener extends BaseThemeListener
+class ThemeListener extends AbstractThemeListener
 {
     /**
      * {@inheritdoc}

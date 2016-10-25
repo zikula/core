@@ -12,12 +12,12 @@
 
 namespace Zikula\RoutesModule\Form\Type\Field;
 
-use Zikula\RoutesModule\Form\Type\Field\Base\MultiListType as BaseMultiListType;
+use Zikula\RoutesModule\Form\Type\Field\Base\AbstractMultiListType;
 
 /**
  * Multi list field type implementation class.
  */
-class MultiListType extends BaseMultiListType
+class MultiListType extends AbstractMultiListType
 {
     // feel free to extend the base form type class here
 }

@@ -12,12 +12,12 @@
 
 namespace Zikula\RoutesModule;
 
-use Zikula\RoutesModule\Base\RoutesModuleInstaller as BaseRoutesModuleInstaller;
+use Zikula\RoutesModule\Base\AbstractRoutesModuleInstaller;
 
 /**
  * Installer implementation class.
  */
-class RoutesModuleInstaller extends BaseRoutesModuleInstaller
+class RoutesModuleInstaller extends AbstractRoutesModuleInstaller
 {
     /**
      * {@inheritdoc}
