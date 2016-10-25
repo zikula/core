@@ -59,18 +59,6 @@ abstract class AbstractBundle extends Bundle
         return $class;
     }
 
-    /**
-     * @deprecated remove in Core 2.0.0
-     * @return string
-     */
-    public function getVersionClass()
-    {
-        $ns = $this->getNamespace();
-        $class = $ns.'\\'.substr($ns, strrpos($ns, '\\') + 1, strlen($ns)).'Version';
-
-        return $class;
-    }
-
     public function getRoutingConfig()
     {
         return "@{$this->name}/Resources/config/routing.yml";

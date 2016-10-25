@@ -13,6 +13,7 @@ namespace Zikula\Bundle\HookBundle\Tests\Api;
 
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\HookBundle\Api\HookApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 
 class HookApiTest extends \PHPUnit_Framework_TestCase
 {
@@ -56,7 +57,7 @@ class HookApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('ui_hooks', $subscriberBundle->getCategory());
         $this->assertEquals('foo.area', $subscriberBundle->getArea());
 
-        $subscriberHookContainerInstance = $this->api->getHookContainerInstance($meta, HookApi::SUBSCRIBER_TYPE);
+        $subscriberHookContainerInstance = $this->api->getHookContainerInstance($meta, CapabilityApiInterface::HOOK_SUBSCRIBER);
         $this->assertEquals($hookContainerInstance, $subscriberHookContainerInstance);
 
         $this->assertEmpty($hookContainerInstance->getHookProviderBundles());

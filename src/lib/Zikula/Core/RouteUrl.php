@@ -15,10 +15,8 @@ use Symfony\Component\Routing\RouterInterface;
 
 /**
  * RouteUrl class.
- *
- * @TODO in Core 2.0.0 remove `extends ModUrl` and simply leave `implements UrlInterface`
  */
-class RouteUrl extends ModUrl implements UrlInterface
+class RouteUrl implements UrlInterface
 {
     private $route;
 

@@ -16,21 +16,12 @@ use Zikula\RoutesModule\Entity\RouteEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use FormUtil;
-use ModUtil;
 use RuntimeException;
-use System;
-use ZLanguage;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\ModUrl;
-use Zikula\Core\RouteUrl;
-use Zikula\Core\Response\PlainResponse;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -156,7 +147,7 @@ abstract class AbstractRouteController extends AbstractController
             'routeArea' => $isAdmin ? 'admin' : ''
         ];
         $selectionHelper = $this->get('zikula_routes_module.selection_helper');
-        
+
         // convenience vars to make code clearer
         $currentUrlArgs = [];
         $where = '';
@@ -229,7 +220,7 @@ abstract class AbstractRouteController extends AbstractController
         ];
         $additionalUrlParameters = array_merge($additionalUrlParameters, $additionalParameters);
         $sortableColumns->setAdditionalUrlParameters($additionalUrlParameters);
-        
+
         if ($showAllEntries == 1) {
             // retrieve item list without pagination
             $entities = $selectionHelper->getEntities($objectType, [], $where, $sort . ' ' . $sortdir);
@@ -239,7 +230,7 @@ abstract class AbstractRouteController extends AbstractController
 
             // retrieve item list with pagination
             list($entities, $objectCount) = $selectionHelper->getEntitiesPaginated($objectType, $where, $sort . ' ' . $sortdir, $currentPage, $resultsPerPage);
-        
+
             $templateParameters['currentPage'] = $currentPage;
             $templateParameters['pager'] = ['numitems' => $objectCount, 'itemsperpage' => $resultsPerPage];
         }
@@ -703,7 +694,7 @@ abstract class AbstractRouteController extends AbstractController
             // check if item exists, and get record instance
             $selectionHelper = $this->get('zikula_routes_module.selection_helper');
             $entity = $selectionHelper->getEntity($objectType, $itemid, false);
-        
+
             $entity->initWorkflow();
 
             // check if $action can be applied to this entity (may depend on it's current workflow state)

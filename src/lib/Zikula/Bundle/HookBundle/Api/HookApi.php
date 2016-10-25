@@ -21,27 +21,6 @@ use Zikula\Core\Event\GenericEvent;
 class HookApi
 {
     /**
-     * Provider capability key.
-     * @deprecated
-     * @see CapabilityApiInterface::HOOK_PROVIDER
-     */
-    const PROVIDER_TYPE = 'hook_provider';
-
-    /**
-     * Subscriber capability key.
-     * @deprecated
-     * @see CapabilityApiInterface::HOOK_SUBSCRIBER
-     */
-    const SUBSCRIBER_TYPE = 'hook_subscriber';
-
-    /**
-     * Allow to provide to self.
-     * @deprecated
-     * @see CapabilityApiInterface::HOOK_SUBSCRIBER_OWN
-     */
-    const SELF_TYPE = 'subscribe_own';
-
-    /**
      * @var \Zikula\Common\Translator\Translator
      */
     private $translator;
