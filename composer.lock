@@ -283,16 +283,16 @@
         },
         {
             "name": "components/font-awesome",
-            "version": "4.6.3",
+            "version": "4.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/font-awesome.git",
-                "reference": "daa3ef598620217085dcb13ad11149e89a20a925"
+                "reference": "885308b939369d147bec93174722786bc2c4eedd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/font-awesome/zipball/daa3ef598620217085dcb13ad11149e89a20a925",
-                "reference": "daa3ef598620217085dcb13ad11149e89a20a925",
+                "url": "https://api.github.com/repos/components/font-awesome/zipball/885308b939369d147bec93174722786bc2c4eedd",
+                "reference": "885308b939369d147bec93174722786bc2c4eedd",
                 "shasum": ""
             },
             "type": "component",
@@ -314,7 +314,7 @@
                 "OFL-1.1"
             ],
             "description": "The iconic font designed for use with Twitter Bootstrap.",
-            "time": "2016-05-18 10:46:59"
+            "time": "2016-10-25 10:56:23"
         },
         {
             "name": "components/jquery",
@@ -1448,12 +1448,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "08eee90e15d028767e0a082bdf6cdf450c8cbbbf"
+                "reference": "dc8702160c4e873020e1dee8aad5092c90e8949d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/08eee90e15d028767e0a082bdf6cdf450c8cbbbf",
-                "reference": "08eee90e15d028767e0a082bdf6cdf450c8cbbbf",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/dc8702160c4e873020e1dee8aad5092c90e8949d",
+                "reference": "dc8702160c4e873020e1dee8aad5092c90e8949d",
                 "shasum": ""
             },
             "require": {
@@ -1487,7 +1487,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2016-10-02 07:14:41"
+            "time": "2016-10-16 06:14:10"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -3882,16 +3882,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.26.1",
+            "version": "v1.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "a09d8ee17ac1cfea29ed60c83960ad685c6a898d"
+                "reference": "3c6c0033fd3b5679c6e1cb60f4f9766c2b424d97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/a09d8ee17ac1cfea29ed60c83960ad685c6a898d",
-                "reference": "a09d8ee17ac1cfea29ed60c83960ad685c6a898d",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/3c6c0033fd3b5679c6e1cb60f4f9766c2b424d97",
+                "reference": "3c6c0033fd3b5679c6e1cb60f4f9766c2b424d97",
                 "shasum": ""
             },
             "require": {
@@ -3904,7 +3904,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.26-dev"
+                    "dev-master": "1.27-dev"
                 }
             },
             "autoload": {
@@ -3939,7 +3939,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2016-10-05 18:57:41"
+            "time": "2016-10-25 19:17:17"
         },
         {
             "name": "twitter/typeahead.js",
@@ -4448,12 +4448,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "d1850c8cebb9aa6718a13d6887af7c48a8fd3097"
+                "reference": "013f5bcdef1af93910622e0dbee6594b4b6748df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/d1850c8cebb9aa6718a13d6887af7c48a8fd3097",
-                "reference": "d1850c8cebb9aa6718a13d6887af7c48a8fd3097",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/013f5bcdef1af93910622e0dbee6594b4b6748df",
+                "reference": "013f5bcdef1af93910622e0dbee6594b4b6748df",
                 "shasum": ""
             },
             "require": {
@@ -4505,7 +4505,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2016-10-21 15:10:07"
+            "time": "2016-10-25 06:36:07"
         },
         {
             "name": "zikula/profile-module",
@@ -4513,12 +4513,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "7b7680ce63721ef87a65ba4ad689438ad2ce225d"
+                "reference": "9444caffc40a3fb4bb1d1f6a52ae7054f98cafc0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/7b7680ce63721ef87a65ba4ad689438ad2ce225d",
-                "reference": "7b7680ce63721ef87a65ba4ad689438ad2ce225d",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/9444caffc40a3fb4bb1d1f6a52ae7054f98cafc0",
+                "reference": "9444caffc40a3fb4bb1d1f6a52ae7054f98cafc0",
                 "shasum": ""
             },
             "require": {
@@ -4576,7 +4576,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2016-10-21 16:51:58"
+            "time": "2016-10-25 06:35:41"
         },
         {
             "name": "zikula/wizard",

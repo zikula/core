@@ -41,10 +41,11 @@ CHANGELOG - ZIKULA 1.4.x
     - sensiolabs security checker updated from 3.0.2 to 4.0.0
     - symfony updated from 2.8.9 to 2.8.12
     - symfony service definition validator updates from 1.2.5 to 1.2.6
-    - twig updated from 1.24.1 to 1.26.1
+    - twig updated from 1.24.1 to 1.27.0
     - knp-menu installed at version 2.2.0
     - knp-menu-bundle installed at version 2.1.3
     - liip/imagine-bundle installed at 1.6.0
+    - font-awesome updated from 4.6.3 to 4.7.0
 
 * 1.4.3 (2016-09-02)
 
