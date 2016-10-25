@@ -15,7 +15,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
-use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\Core\Event\GenericEvent;
 
 class HookApi

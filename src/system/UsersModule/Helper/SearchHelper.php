@@ -12,7 +12,6 @@
 namespace Zikula\UsersModule\Helper;
 
 use ModUtil;
-use Zikula\Core\ModUrl;
 use Zikula\Core\RouteUrl;
 use Zikula\SearchModule\AbstractSearchable;
 use Zikula\UsersModule\Constant as UsersConstant;
