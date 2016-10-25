@@ -32,7 +32,6 @@
             <argument>%kernel.container_class%</argument>
             <argument type="service" id="fos_js_routing.extractor" />
             <argument>%jms_i18n_routing.locales%</argument>
-            <argument type="expression">container.hasParameter('temp_dir') ? parameter('temp_dir') : null</argument>
         </service>
         <service id="zikula.link_container_collector" class="%zikula.link_container_collector.class%">
             <argument type="service" id="event_dispatcher" />

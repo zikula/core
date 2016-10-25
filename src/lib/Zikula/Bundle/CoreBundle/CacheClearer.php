@@ -30,9 +30,8 @@ class CacheClearer
      * @param string $kernelContainerClass
      * @param ExposedRoutesExtractorInterface $fosJsRoutesExtractor
      * @param array $routingLocales
-     * @param string $legacyCacheDir @deprecated
      */
-    public function __construct($cacheDir, $cachePrefix, $kernelContainerClass, $fosJsRoutesExtractor, $routingLocales, $legacyCacheDir = null)
+    public function __construct($cacheDir, $cachePrefix, $kernelContainerClass, $fosJsRoutesExtractor, $routingLocales)
     {
         $this->cacheDir = $cacheDir;
         $this->cachePrefix = $cachePrefix;
@@ -72,20 +71,6 @@ class CacheClearer
                 $cacheFolder . 'purifier'
             ]
         ];
-        if (isset($legacyCacheDir)) {
-            $this->cacheTypes['legacy.cache.theme'] = [
-                $legacyCacheDir . DIRECTORY_SEPARATOR . 'Theme_cache'
-            ];
-            $this->cacheTypes['legacy.cache.view'] = [
-                $legacyCacheDir . DIRECTORY_SEPARATOR . 'view_cache'
-            ];
-            $this->cacheTypes['legacy.compiled.theme'] = [
-                $legacyCacheDir . DIRECTORY_SEPARATOR . 'Theme_compiled'
-            ];
-            $this->cacheTypes['legacy.compiled.view'] = [
-                $legacyCacheDir . DIRECTORY_SEPARATOR . 'view_compiled'
-            ];
-        }
     }
 
     public function clear($type)
