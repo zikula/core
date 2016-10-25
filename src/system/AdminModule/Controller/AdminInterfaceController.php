@@ -12,7 +12,6 @@
 namespace Zikula\AdminModule\Controller;
 
 use DataUtil;
-use ModUtil;
 use StringUtil;
 use System;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
