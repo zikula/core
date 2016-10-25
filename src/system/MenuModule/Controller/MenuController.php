@@ -78,7 +78,7 @@ class MenuController extends AbstractController
                 }
             ]
         );
-//        $options = array(
+//        $options = [
 //            'decorate' => true,
 //            'rootOpen' => '<ul>',
 //            'rootClose' => '</ul>',
@@ -87,7 +87,7 @@ class MenuController extends AbstractController
 //            'nodeDecorator' => function($node) {
 //                return '<a href="/page/'.$node['slug'].'">'.$node[$field].'</a>';
 //            }
-//        );
+//        ];
 
         return [
             'menu' => $menuItemEntity,
