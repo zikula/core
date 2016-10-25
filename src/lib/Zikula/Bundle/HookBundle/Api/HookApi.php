@@ -16,6 +16,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\Core\Event\GenericEvent;
+use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 
 class HookApi
 {
@@ -53,7 +54,7 @@ class HookApi
      */
     public function installProviderHooks(MetaData $metaData)
     {
-        $hookContainer = $this->getHookContainerInstance($metaData, self::PROVIDER_TYPE);
+        $hookContainer = $this->getHookContainerInstance($metaData, CapabilityApiInterface::HOOK_PROVIDER);
         if (!is_null($hookContainer)) {
             $this->registerProviderBundles($hookContainer->getHookProviderBundles());
         }
@@ -65,7 +66,7 @@ class HookApi
      */
     public function installSubscriberHooks(MetaData $metaData)
     {
-        $hookContainer = $this->getHookContainerInstance($metaData, self::SUBSCRIBER_TYPE);
+        $hookContainer = $this->getHookContainerInstance($metaData, CapabilityApiInterface::HOOK_SUBSCRIBER);
         if (!is_null($hookContainer)) {
             $this->registerSubscriberBundles($hookContainer->getHookSubscriberBundles());
         }
@@ -77,7 +78,7 @@ class HookApi
      */
     public function uninstallProviderHooks(MetaData $metaData)
     {
-        $hookContainer = $this->getHookContainerInstance($metaData, self::PROVIDER_TYPE);
+        $hookContainer = $this->getHookContainerInstance($metaData, CapabilityApiInterface::HOOK_PROVIDER);
         if (!is_null($hookContainer)) {
             $this->unregisterProviderBundles($hookContainer->getHookProviderBundles());
         }
@@ -89,7 +90,7 @@ class HookApi
      */
     public function uninstallSubscriberHooks(MetaData $metaData)
     {
-        $hookContainer = $this->getHookContainerInstance($metaData, self::SUBSCRIBER_TYPE);
+        $hookContainer = $this->getHookContainerInstance($metaData, CapabilityApiInterface::HOOK_SUBSCRIBER);
         if (!is_null($hookContainer)) {
             $this->unregisterSubscriberBundles($hookContainer->getHookSubscriberBundles());
         }
@@ -103,7 +104,7 @@ class HookApi
      */
     public function getHookContainerInstance(MetaData $metaData, $requestedHookType = null)
     {
-        foreach ([self::SUBSCRIBER_TYPE, self::PROVIDER_TYPE] as $type) {
+        foreach ([CapabilityApiInterface::HOOK_SUBSCRIBER, CapabilityApiInterface::HOOK_PROVIDER] as $type) {
             if (isset($metaData->getCapabilities()[$type]['class'])
                 && (!isset($requestedHookType) || $type == $requestedHookType)) {
                 $hookContainerClassName = $metaData->getCapabilities()[$type]['class'];
