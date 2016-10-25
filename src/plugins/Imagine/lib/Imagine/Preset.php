@@ -9,6 +9,10 @@
  * file that was distributed with this source code.
  */
 
+/**
+ * Class SystemPlugin_Imagine_Preset
+ * @deprecated
+ */
 class SystemPlugin_Imagine_Preset extends ArrayObject
 {
     /**

@@ -11,6 +11,7 @@
 
 /**
  * Imagine plugin definition.
+ * @deprecated
  */
 class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikula_Plugin_AlwaysOnInterface, Zikula_Plugin_ConfigurableInterface
 {

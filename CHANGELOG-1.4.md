@@ -7,6 +7,9 @@ CHANGELOG - ZIKULA 1.4.x
 
  - Deprecated:
    - ExtMenu and MenuTree blocks are deprecated and will not be refactored to Twig/Core-2.0.
+   - All System plugins and Module plugins and the systems supporting them are deprecated.
+     - System plugins should be replaced by Bundles and added to the kernel manually.
+     - Module plugins should be replaced by [tagged services](http://symfony.com/doc/current/service_container/tags.html).
 
  - Fixes:
    - Fixed display of checkboxes in topnav login blocks and authentication method selector (#3044).
@@ -41,6 +44,7 @@ CHANGELOG - ZIKULA 1.4.x
     - twig updated from 1.24.1 to 1.26.1
     - knp-menu installed at version 2.2.0
     - knp-menu-bundle installed at version 2.1.3
+    - liip/imagine-bundle installed at 1.6.0
 
 * 1.4.3 (2016-09-02)
 

@@ -11,6 +11,7 @@
 
 /**
  * Imagine manager.
+ * @deprecated
  */
 class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
 {

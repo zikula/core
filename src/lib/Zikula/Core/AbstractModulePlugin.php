@@ -11,6 +11,10 @@
 
 namespace Zikula\Core;
 
+/**
+ * Class AbstractModulePlugin
+ * @deprecated
+ */
 abstract class AbstractModulePlugin extends AbstractBundle
 {
     public function getNameType()
