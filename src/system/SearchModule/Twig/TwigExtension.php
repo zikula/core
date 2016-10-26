@@ -61,7 +61,7 @@ class TwigExtension extends \Twig_Extension
     }
 
     /**
-     * The zikulamailermodule_searchVarToFieldNames function generates a flat lost of field names
+     * The zikulasearchmodule_searchVarToFieldNames function generates a flat lost of field names
      * for hidden form fields from a nested array set
      *
      * @param array|string $data            The data that should be stored in hidden fields (nested arrays allowed).
