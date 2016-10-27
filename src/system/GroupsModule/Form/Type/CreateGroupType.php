@@ -102,6 +102,7 @@ class CreateGroupType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'data_class' => 'Zikula\GroupsModule\Entity\GroupEntity',
             'translator' => null,
             'constraints' => new ValidGroupName()
         ]);

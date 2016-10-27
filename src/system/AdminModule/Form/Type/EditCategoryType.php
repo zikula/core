@@ -83,6 +83,7 @@ class EditCategoryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'data_class' => 'Zikula\AdminModule\Entity\AdminCategoryEntity',
             'translator' => null
         ]);
     }
