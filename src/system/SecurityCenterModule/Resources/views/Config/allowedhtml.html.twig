@@ -8,7 +8,7 @@
             {{ pageSetVar('title', __('Allowed HTML settings')) }}
         </h3>
 
-        <p class="alert alert-info">{{ __('Filtering of allowed HTML occurs when a template string or variable is modified with the \'safehtml\' modifier, or when a module asks for similar processing from within its functions.') }}</p>
+        <p class="alert alert-info">{{ __('Filtering of allowed HTML occurs when a template string or variable is modified with the \'safeHtml\' filter, or when a module asks for similar processing from within its functions.') }}</p>
 
         <form class="form-horizontal" role="form" action="{{ path('zikulasecuritycentermodule_config_allowedhtml') }}" method="post" enctype="application/x-www-form-urlencoded">
             <fieldset>
