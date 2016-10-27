@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Entity class that defines the entity structure and behaviours.
  *
  * This is the concrete entity class for route entities.
- * @ORM\Entity(repositoryClass="\Zikula\RoutesModule\Entity\Repository\Route")
+ * @ORM\Entity(repositoryClass="\Zikula\RoutesModule\Entity\Repository\RouteRepository")
  * @ORM\Table(name="zikula_routes_route",
  *     indexes={
  *         @ORM\Index(name="workflowstateindex", columns={"workflowState"})
