@@ -40,7 +40,7 @@ CHANGELOG - ZIKULA 1.4.x
     - sensio distribution bundle updated from 5.0.8 to 5.0.13
     - sensio generator bundle updated from 3.0.7 to 3.0.11
     - sensiolabs security checker updated from 3.0.2 to 4.0.0
-    - symfony updated from 2.8.9 to 2.8.12
+    - symfony updated from 2.8.9 to 2.8.13
     - symfony service definition validator updates from 1.2.5 to 1.2.6
     - twig updated from 1.24.1 to 1.27.0
     - knp-menu installed at version 2.2.0

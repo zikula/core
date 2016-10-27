@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0932781c724e4913ff95116a036d0bd6",
+    "hash": "d901227fb4809571c8ffa812e6a7482d",
     "content-hash": "193eaea3e2dcc38dfa633f997d5f1e39",
     "packages": [
         {
@@ -1951,7 +1951,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -3695,16 +3695,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.12",
+            "version": "v2.8.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "6a5bc3257b60098c28fc1bbcacd52000dd2801d1"
+                "reference": "d04e2eb13ae63068fc8862530b403756e3702896"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/6a5bc3257b60098c28fc1bbcacd52000dd2801d1",
-                "reference": "6a5bc3257b60098c28fc1bbcacd52000dd2801d1",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/d04e2eb13ae63068fc8862530b403756e3702896",
+                "reference": "d04e2eb13ae63068fc8862530b403756e3702896",
                 "shasum": ""
             },
             "require": {
@@ -3720,7 +3720,7 @@
                 "symfony/polyfill-php70": "~1.0",
                 "symfony/polyfill-util": "~1.0",
                 "symfony/security-acl": "~2.7|~3.0.0",
-                "twig/twig": "~1.26|~2.0"
+                "twig/twig": "~1.27|~2.0"
             },
             "conflict": {
                 "phpdocumentor/reflection": "<1.0.7"
@@ -3826,7 +3826,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2016-10-03 18:44:12"
+            "time": "2016-10-27 02:18:45"
         },
         {
             "name": "twig/extensions",
@@ -4448,12 +4448,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "013f5bcdef1af93910622e0dbee6594b4b6748df"
+                "reference": "f45fb7ebd0e91a95f0fcdedd358e7b2bed397fa8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/013f5bcdef1af93910622e0dbee6594b4b6748df",
-                "reference": "013f5bcdef1af93910622e0dbee6594b4b6748df",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/f45fb7ebd0e91a95f0fcdedd358e7b2bed397fa8",
+                "reference": "f45fb7ebd0e91a95f0fcdedd358e7b2bed397fa8",
                 "shasum": ""
             },
             "require": {
@@ -4466,6 +4466,9 @@
                     "core-compatibility": ">=1.4.3",
                     "displayname": "Legal",
                     "url": "legal",
+                    "oldnames": [
+                        "Legal"
+                    ],
                     "capabilities": {
                         "admin": {
                             "route": "zikulalegalmodule_config_config"
@@ -4505,7 +4508,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2016-10-25 06:36:07"
+            "time": "2016-10-27 05:14:44"
         },
         {
             "name": "zikula/profile-module",
@@ -4513,12 +4516,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "9444caffc40a3fb4bb1d1f6a52ae7054f98cafc0"
+                "reference": "62261efa0d36b232618b8daf065a995e729b7202"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/9444caffc40a3fb4bb1d1f6a52ae7054f98cafc0",
-                "reference": "9444caffc40a3fb4bb1d1f6a52ae7054f98cafc0",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/62261efa0d36b232618b8daf065a995e729b7202",
+                "reference": "62261efa0d36b232618b8daf065a995e729b7202",
                 "shasum": ""
             },
             "require": {
@@ -4531,6 +4534,9 @@
                     "core-compatibility": ">=1.4.3",
                     "displayname": "Profile",
                     "url": "profile",
+                    "oldnames": [
+                        "Profile"
+                    ],
                     "capabilities": {
                         "admin": {
                             "route": "zikulaprofilemodule_config_config"
@@ -4576,7 +4582,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2016-10-25 06:35:41"
+            "time": "2016-10-27 05:15:40"
         },
         {
             "name": "zikula/wizard",
