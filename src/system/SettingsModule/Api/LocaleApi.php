@@ -141,6 +141,11 @@ class LocaleApi
      */
     private $mon_grouping = [];
 
+    /**
+     * @see \Zikula\SettingsModule\Listener\LocaleListener
+     * @param $locale
+     * @param $rootDir
+     */
     public function load($locale, $rootDir)
     {
         if ($this->loaded) {
