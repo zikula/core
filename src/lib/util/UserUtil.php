@@ -50,7 +50,7 @@ class UserUtil
      *
      * @return array An array mapping uid to username
      */
-    public static function getUsers(array $where = [], array $orderBy = [], $limitOffset = null, $limitNumRows = null, $assocKey = 'uid')
+    public static function getUsers($where = [], $orderBy = [], $limitOffset = null, $limitNumRows = null, $assocKey = 'uid')
     {
         // first check for string based parameters and use dbutil if found
         if (System::isLegacyMode() && (is_string($where) || is_string($orderBy))) {
@@ -101,7 +101,7 @@ class UserUtil
      *
      * @return array An array mapping gid to groupname
      */
-    public static function getGroups(array $where = [], array $orderBy = [], $limitOffset = null, $limitNumRows = null, $assocKey = 'gid')
+    public static function getGroups($where = [], array $orderBy = [], $limitOffset = null, $limitNumRows = null, $assocKey = 'gid')
     {
         $em = \ServiceUtil::get('doctrine.entitymanager');
         $groups = $em->getRepository('ZikulaGroupsModule:GroupEntity')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
@@ -146,7 +146,7 @@ class UserUtil
      *
      * @return string A string list of group ids
      */
-    public static function getGroupIdList(array $where = [], array $orderBy = [], $separator = ',')
+    public static function getGroupIdList($where = [], array $orderBy = [], $separator = ',')
     {
         $groupdata = self::getGroups($where, $orderBy);
 

@@ -35,7 +35,7 @@ use Zikula\RoutesModule\Entity\RouteEntity;
  *
  * This is the base repository class for route entities.
  */
-abstract class AbstractRoute extends SortableRepository
+abstract class AbstractRouteRepository extends SortableRepository
 {
     /**
      * @var string The default sorting field/expression

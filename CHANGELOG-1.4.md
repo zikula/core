@@ -6,29 +6,31 @@ CHANGELOG - ZIKULA 1.4.x
  - BC Breaks:
 
  - Deprecated:
-   - ExtMenu and MenuTree blocks are deprecated and will not be refactored to Twig/Core-2.0.
-   - All System plugins and Module plugins and the systems supporting them are deprecated.
-     - System plugins should be replaced by Bundles and added to the kernel manually.
-     - Module plugins should be replaced by [tagged services](http://symfony.com/doc/current/service_container/tags.html).
+    - ExtMenu and MenuTree blocks are deprecated and will not be refactored to Twig/Core-2.0.
+    - All System plugins and Module plugins and the systems supporting them are deprecated.
+       - System plugins should be replaced by Bundles and added to the kernel manually.
+       - Module plugins should be replaced by [tagged services](http://symfony.com/doc/current/service_container/tags.html).
 
  - Fixes:
-   - Fixed display of checkboxes in topnav login blocks and authentication method selector (#3044).
-   - Removed permanent display of template information in html source (#3068).
-   - Fixed errors in PageLock module (#3089 - #3096).
-   - Fixed problem in JS Config template with debug mode enabled (#3105, #3106).
-   - Fixed disabling mailer (setting to debug mode) (#3100, #3107).
-   - Fixed admin icon determination for legacy modules (#3108).
-   - Fixed several regressions in SecurityCenter module.
-   - Fixed problem in DataUtil::formatForDisplayHTML for proper handling of data-* attributes.
+    - Fixed display of checkboxes in topnav login blocks and authentication method selector (#3044).
+    - Removed permanent display of template information in html source (#3068).
+    - Fixed errors in PageLock module (#3089 - #3096).
+    - Fixed problem in JS Config template with debug mode enabled (#3105, #3106).
+    - Fixed disabling mailer (setting to debug mode) (#3100, #3107).
+    - Fixed admin icon determination for legacy modules (#3108).
+    - Fixed several regressions in SecurityCenter module.
+    - Fixed problem in DataUtil::formatForDisplayHTML for proper handling of data-* attributes.
+    - Fixed regression in argument typehints in UserUtil (#3123)
 
  - Features:
-   - Added mailProtect filter for safe display of email addresses in Twig templates (#3041).
+    - Added mailProtect filter for safe display of email addresses in Twig templates (#3041).
 
  - Core-2.0 Features:
-   - Added display of template name as html comment in source when in dev environment (#3068).
-   - Added shortcut method in variable api for retrieving system variables (#3077).
-   - Added new core module: MenuModule for implementing menus of any kind (#3082).
-   - Added Twig filters profileLinkByUserName and profileLinkByUserId (#3079).
+    - Added display of template name as html comment in source when in dev environment (#3068).
+    - Added shortcut method in variable api for retrieving system variables (#3077).
+    - Added new core module: MenuModule for implementing menus of any kind (#3082).
+    - Added Twig filters profileLinkByUserName and profileLinkByUserId (#3079).
+    - Added LocaleApi for access to locale definitions.
 
  - Vendor updates:
     - doctrine dbal updated from 2.5.4 to 2.5.5
@@ -39,12 +41,13 @@ CHANGELOG - ZIKULA 1.4.x
     - sensio distribution bundle updated from 5.0.8 to 5.0.13
     - sensio generator bundle updated from 3.0.7 to 3.0.11
     - sensiolabs security checker updated from 3.0.2 to 4.0.0
-    - symfony updated from 2.8.9 to 2.8.12
+    - symfony updated from 2.8.9 to 2.8.13
     - symfony service definition validator updates from 1.2.5 to 1.2.6
-    - twig updated from 1.24.1 to 1.26.1
+    - twig updated from 1.24.1 to 1.27.0
     - knp-menu installed at version 2.2.0
     - knp-menu-bundle installed at version 2.1.3
     - liip/imagine-bundle installed at 1.6.0
+    - font-awesome updated from 4.6.3 to 4.7.0
 
 * 1.4.3 (2016-09-02)
 
@@ -53,7 +56,7 @@ CHANGELOG - ZIKULA 1.4.x
     - User block function removed. It is going to be added to the Profile module instead.
     - Old Authentication_Method_Api system has been completely removed.
     - Due to refactoring the UsersModule, some unknown BC Breaks may have occurred.
-      - `subscriber.users.ui_hooks.login_block` hooks have been removed. use `subscriber.users.ui_hooks.login_screen`
+       - `subscriber.users.ui_hooks.login_block` hooks have been removed. use `subscriber.users.ui_hooks.login_screen`
     - Option for having no session for anonymous users has been removed. In Symfony every request has a session.
 
  - Deprecated:

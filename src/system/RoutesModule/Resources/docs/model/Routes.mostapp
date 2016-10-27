@@ -40,7 +40,7 @@ application "Routes" {
             Controller/RouteController.php,
             DependencyInjection/ZikulaRoutesExtension.php,
             Entity/RouteEntity.php,
-            Entity/Repository/Route.php,
+            Entity/Repository/RouteRepository.php,
             Form/Handler/Route/EditHandler.php,
             Form/Type/RouteType.php,
             Helper/ViewHelper.php,
