@@ -62,6 +62,5 @@ class RegistrationEventsListener implements EventSubscriberInterface
         if (!empty($notificationErrors)) {
             $this->session->getFlashBag()->add('error', implode('<br>', $notificationErrors));
         }
-
     }
 }
