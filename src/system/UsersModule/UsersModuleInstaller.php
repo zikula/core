@@ -132,11 +132,15 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             case '3.0.0':
                 $this->schemaTool->update(['Zikula\UsersModule\Entity\UserSessionEntity']);
             case '3.0.1':
-                $this->schemaTool->update(['Zikula\UsersModule\Entity\UserAttributeEntity']);
-                $sql = "ALTER TABLE users_attributes ADD FOREIGN KEY (user_id) REFERENCES users(uid) ON DELETE CASCADE";
+                $sql = "SHOW TABLES LIKE 'users_attributes'"; // ensure table exists before altering it.
                 $stmt = $connection->prepare($sql);
-                $stmt->execute();
-            case '3.0.3':
+                $result = $stmt->fetch();
+                if (count($result) > 0) {
+                    $sql = "ALTER TABLE users_attributes ADD FOREIGN KEY (user_id) REFERENCES users(uid) ON DELETE CASCADE";
+                    $stmt = $connection->prepare($sql);
+                    $stmt->execute();
+                }
+            case '3.0.2':
                 // current version
         }
 
