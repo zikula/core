@@ -44,7 +44,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         if ($event['stage'] & Zikula_Core::STAGE_MODS) {
             // todo - handle this in DIC later
             // inject secret
-            $def = $this->serviceManager->get('token.generator');
+            $def = $this->serviceManager->get('zikula_core.internal.token.generator');
             $def->setSecret(System::getVar('signingkey'));
         }
     }

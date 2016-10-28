@@ -247,7 +247,7 @@ class StringUtil
     {
         $sm = ServiceUtil::getManager();
 
-        return $sm->get('markdown_parser');
+        return $sm->get('zikula_core.common.markdown_parser');
     }
 
     /**
@@ -259,6 +259,6 @@ class StringUtil
     {
         $sm = ServiceUtil::getManager();
 
-        return $sm->get('markdown_extra_parser');
+        return $sm->get('zikula_core.common.markdown_extra_parser');
     }
 }

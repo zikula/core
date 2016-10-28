@@ -1,17 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <routes xmlns="http://symfony.com/schema/routing"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
-
-    <!-- all these routes deprecated -->
-
+    <!-- all these routes are deprecated -->
     <route id="legacy" path="/">
         <default key="_controller">zikula_core.controller.legacy_controller:legacyAction</default>
         <condition>request.query.get('module') != '' and request.query.get('type') != '' and request.query.get('func') != ''</condition>
         <option key="i18n">false</option>
     </route>
-
     <route id="legacy_short_url" path="/{path}">
         <default key="_controller">zikula_core.controller.legacy_controller:shortUrlAction</default>
         <default key="path" />
