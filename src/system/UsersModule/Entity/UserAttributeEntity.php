@@ -30,7 +30,7 @@ class UserAttributeEntity extends EntityAccess
      *
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="UserEntity", inversedBy="attributes")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="uid")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")
      */
     private $user;
 
