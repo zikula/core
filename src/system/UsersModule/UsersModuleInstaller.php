@@ -132,7 +132,8 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             case '3.0.0':
                 $this->schemaTool->update(['Zikula\UsersModule\Entity\UserSessionEntity']);
             case '3.0.1':
-                $sql = "SHOW TABLES LIKE 'users_attributes'"; // ensure table exists before altering it.
+                $dbName = $this->container->getParameter('database_name');
+                $sql = "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '$dbName' AND table_name = 'users_attributes'";
                 $stmt = $connection->prepare($sql);
                 $result = $stmt->fetch();
                 if (count($result) > 0) {
