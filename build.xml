@@ -108,12 +108,12 @@
         <!-- move doc files from repo root -->
         <echo msg="Moving doc files to /docs/en ..."/>
         <move file="${workspace}/source/README.md" tofile="${packagepath}/docs/en/README.md" overwrite="true"/>
-        <copy file="${workspace}/source/INSTALL-1.4.md" tofile="${packagepath}/INSTALL-1.4.md" overwrite="true"/>
-        <move file="${workspace}/source/INSTALL-1.4.md" tofile="${packagepath}/docs/en/INSTALL-1.4.md" overwrite="true"/>
-        <copy file="${workspace}/source/UPGRADE-1.4.md" tofile="${packagepath}/UPGRADE-1.4.md" overwrite="true"/>
-        <move file="${workspace}/source/UPGRADE-1.4.md" tofile="${packagepath}/docs/en/UPGRADE-1.4.md" overwrite="true"/>
+        <copy file="${workspace}/source/INSTALL-2.0.md" tofile="${packagepath}/INSTALL-2.0.md" overwrite="true"/>
+        <move file="${workspace}/source/INSTALL-2.0.md" tofile="${packagepath}/docs/en/INSTALL-2.0.md" overwrite="true"/>
+        <copy file="${workspace}/source/UPGRADE-2.0.md" tofile="${packagepath}/UPGRADE-2.0.md" overwrite="true"/>
+        <move file="${workspace}/source/UPGRADE-2.0.md" tofile="${packagepath}/docs/en/UPGRADE-2.0.md" overwrite="true"/>
         <move file="${workspace}/source/CHANGELOG-1.3.md" tofile="${packagepath}/docs/en/CHANGELOG-1.3.md" overwrite="true"/>
-        <move file="${workspace}/source/CHANGELOG-1.4.md" tofile="${packagepath}/docs/en/CHANGELOG-1.4.md" overwrite="true"/>
+        <move file="${workspace}/source/CHANGELOG-2.0.md" tofile="${packagepath}/docs/en/CHANGELOG-2.0.md" overwrite="true"/>
         <move file="${workspace}/source/composer.json" tofile="${packagepath}/docs/en/dev/composer.json" overwrite="true"/>
         <move file="${workspace}/source/composer.lock" tofile="${packagepath}/docs/en/dev/composer.lock" overwrite="true"/>
 
@@ -147,7 +147,6 @@
         <chmod file="${packagepath}/app/config/dynamic" mode="0777"/>
         <chmod file="${packagepath}/app/cache" mode="0777"/>
         <chmod file="${packagepath}/app/logs" mode="0777"/>
-        <chmod file="${packagepath}/config" mode="0777"/>
         <chmod file="${packagepath}/userdata" mode="0777"/>
 
         <echo msg="Creating archive..."/>
