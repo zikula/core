@@ -57,7 +57,7 @@
         </service>
 
         <service id="zikula_core.internal.token.generator" class="%zikula_core.internal.token.generator.class%">
-            <argument type="service" id="token.storage" />
+            <argument type="service" id="zikula_core.internal.token.storage" />
             <argument>_dummy</argument>
             <argument>%zikula_core.internal.token.max_life%</argument>
         </service>
