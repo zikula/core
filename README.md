@@ -4,77 +4,31 @@
 Zikula Core - Application Framework
 ===================================
 
-  1. [Introduction](#introduction)
-  2. [Requirements](#requirements)
-  3. [Before installing](#beforeinstalling)
-  4. [Installing](#installing)
-  5. [Vagrant installation](#vagrant)
-  6. [Contributing](#contributing)
-
-<a name="introduction"></a>
-Introduction
-------------
-
-Zikula Core-1.4 is based on Symfony 2.8.x as a foundation and includes other technologies including a dynamic modular development paradigm and Twig-based theming system which allows for quick expansion of Symfony.
+Zikula Core is based on Symfony 2.8.x (will be 3.x) as a foundation and includes other technologies including a dynamic
+modular development paradigm and Twig-based theming system which allows for quick expansion of Symfony.
 
 For more information visit http://zikula.org/
 
-
 <a name="requirements"></a>
+
 Requirements
 ------------
-Before installing Zikula it's important to ensure that the hosting server environment meets the requirements
-of the new core release. Zikula Core 1.4.x has the following requirements:
 
-|               | Minimum       | Recommended  |
-| ------------- |:-------------:| :-----------:|
-| PHP           | 5.4.1         | 5.5          |
-
-
-Please note:
-
+ - Zikula Core requires PHP >= 5.5.9
+ - Zikula requires more memory than typical to install. You should set your memory limit in `php.ini`
+   to 128 MB for the installation process.
+ - Zikula requires that `date.timezone` be set in the `php.ini` configuration file (or `.htaccess`).
  - Zikula requires `AllowOverride All` and the `mod_rewrite` module (be aware the Apache 2.3.9+ has changed
    the default setting for `AllowOverride` to `None`.
  - Additional (advanced) server considerations can be found on
-   [the Symfony site](http://symfony.com/doc/current/cookbook/configuration/web_server_configuration.html)
- - Zikula requires more memory than typical to install. You should set your memory limit in `php.ini` to 128 MB for the
-   installation process.
-
-
-<a name="beforeinstalling"></a>
-Before installing
------------------
-
-Zikula makes use of [composer](http://getcomposer.org/) to manage and download all dependencies.
-If cloning via github, composer must be run prior to installation. Run:
-
-    `composer self-update`
-    `composer install`
-
-If you store Composer in the root of the Zikula Core checkout, please rename it from `composer.phar` to `composer`
-to avoid your IDE reading the package contents.
-
-
-<a name="installing"></a>
-Installing
-----------
-Once all of the pre-install steps are complete, choose an installation method:
-
-  1) CLI install: `cd` to zikula root and run `php app/console zikula:install:start`
-  2) HTTP install: Run `http://yoursiteurl/install` and follow any on-screen prompts.
-
-<a name="vagrant"></a>
-Vagrant installation
---------------------
-You can use vagrant to easily setup a complete Zikula development environment.
-All you need to do is install [Vagrant](https://vagrantup.com) and
-[VirtualBox](https://www.virtualbox.org/). Then run `vagrant up` inside the
-cloned repository and wait for the machine to boot (first time booting might
-take several minutes). Then head over to `localhost:8080` and install Zikula.
-Database user, password and table are all set to `zikula`. PHPMyAdmin is
-accessible from `localhost:8081`.
+   [the Symfony site](http://symfony.com/doc/current/reference/requirements.html)
+ - Zikula also requires other php extensions and configurations. These are checked during the installation
+   process and if there are problems, you will be notified. If you discover errors, check with your hosting
+   provider on how to rectify these issues. Typically, they will require changing the `php.ini` file or
+   possibly reconfiguring the php installation by your provider.
 
 <a name="contributing"></a>
+
 Contributing
 ------------
 
@@ -87,5 +41,3 @@ Contributions can be made to Zikula in a number of ways
   5. Contributing bug fixes and patches to the Core.
 
 Pull requests are welcome, please see https://github.com/zikula/core/wiki/Contributing.
-
-All pull requests must follow [this template](https://github.com/zikula/core/wiki/Contributing#pull-request-template)
