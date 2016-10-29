@@ -63,7 +63,7 @@
         </service>
 
         <service id="zikula_core.internal.token.validator" class="%zikula_core.internal.token.validator.class%">
-            <argument type="service" id="token.generator" />
+            <argument type="service" id="zikula_core.internal.token.generator" />
         </service>
 
         <service id="zikula_core.common.csrf_token_handler" class="%zikula_core.common.csrf_token_handler.class%" >
