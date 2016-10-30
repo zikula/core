@@ -5,6 +5,7 @@
     <parameters>
         <parameter key="zikula_users_module.user_listener.class">Zikula\UsersModule\Listener\UserEventListener</parameter>
         <parameter key="zikula_users_module.pending_content_listener.class">Zikula\UsersModule\Listener\PendingContentListener</parameter>
+        <parameter key="zikula_users_module.registration_events_listener.class">Zikula\UsersModule\Listener\RegistrationEventsListener</parameter>
         <parameter key="zikula_users_module.user_repository.class">Zikula\UsersModule\Entity\Repository\UserRepository</parameter>
         <parameter key="zikula_users_module.user_session_repository.class">Zikula\UsersModule\Entity\Repository\UserSessionRepository</parameter>
         <parameter key="zikula_users_module.current_user.class">Zikula\UsersModule\Api\CurrentUserApi</parameter>
@@ -22,6 +23,11 @@
             <tag name="kernel.event_subscriber" />
             <argument type="service" id="zikula_permissions_module.api.permission" />
             <argument type="service" id="zikula_users_module.user_repository" />
+        </service>
+        <service id="zikula_users_module.registration_events_listener" class="%zikula_users_module.registration_events_listener.class%">
+            <tag name="kernel.event_subscriber"/>
+            <argument type="service" id="session" />
+            <argument type="service" id="zikula_users_module.helper.mail_helper" />
         </service>
 
         <service id="zikula_users_module.user_repository" class="%zikula_users_module.user_repository.class%">

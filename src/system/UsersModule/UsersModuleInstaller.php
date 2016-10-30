@@ -72,6 +72,9 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '2.2.0': // version shipped with Core 1.3.5 -> current 1.3.x
+                $sql = "ALTER TABLE users ENGINE = InnoDB";
+                $stmt = $connection->prepare($sql);
+                $stmt->execute();
                 // add new table
                 $this->schemaTool->create(['Zikula\UsersModule\Entity\UserAttributeEntity']);
                 $this->migrateAttributes();
@@ -132,6 +135,10 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             case '3.0.0':
                 $this->schemaTool->update(['Zikula\UsersModule\Entity\UserSessionEntity']);
             case '3.0.1':
+                $sql = "ALTER TABLE users_attributes ADD FOREIGN KEY (user_id) REFERENCES users(uid) ON DELETE CASCADE";
+                $stmt = $connection->prepare($sql);
+                $stmt->execute();
+            case '3.0.2':
                 // current version
         }
 
