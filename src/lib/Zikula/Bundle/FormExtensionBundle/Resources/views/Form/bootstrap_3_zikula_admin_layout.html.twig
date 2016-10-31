@@ -34,7 +34,7 @@ col-sm-9
         {{ parent() }}
     {% else -%}
         <div class="checkbox">
-            <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+            <input type="checkbox" {{ block('widget_attributes') }} style="margin-left: auto"{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
         </div>
     {%- endif %}
 {%- endblock checkbox_widget %}

@@ -1,0 +1,14 @@
+{% extends "bootstrap_3_layout.html.twig" %}
+
+{% block form_widget_simple %}
+    {# Add bootstrap input group option to borm element #}
+    {% if type is not defined or type not in ['file', 'hidden'] %}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-control input-sm')|trim}) -%}
+    {% endif %}
+    {%- set type = type|default('text') -%}
+    {% if input_group|default %}<div class="input-group">{% endif %}
+    {% if input_group|default and input_group.left|default %}<div class="input-group-addon input-sm">{{ input_group.left|default|raw }}</div>{% endif %}
+    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    {% if input_group|default and input_group.right|default %}<div class="input-group-addon input-sm">{{ input_group.right|default|raw }}</div>{% endif %}
+    {% if input_group|default %}</div>{% endif %}
+{% endblock %}
