@@ -22,14 +22,14 @@ Drop Menu
 
 This menu is slightly less intuitive. You must create a structure like so:
 
-Menu Root ("MyDropMenu")
-   |
-   |
-   ––– Displayed "Parent" (first child) ("Click Here")
-           |
-           -- Child 1 (link)
-           -- Child 2 (link)
-           -- etc...
+    Menu Root ("MyDropMenu")
+       |
+       |
+       ––– Displayed "Parent" (first child) ("Click Here")
+               |
+               -- Child 1 (link)
+               -- Child 2 (link)
+               -- etc...
 
 As above for the standard NavBar, you must set the `childrenAttributes` as 
 `{"class":"nav navbar-nav"}` on the Menu root.
