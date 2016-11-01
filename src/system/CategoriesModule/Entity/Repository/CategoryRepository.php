@@ -17,5 +17,5 @@ use Doctrine\ORM\EntityRepository;
 
 class CategoryRepository extends EntityRepository implements ObjectRepository, Selectable
 {
-
+    // @todo
 }
