@@ -59,13 +59,16 @@ class StartCommand extends AbstractCoreInstallerCommand
 
             return;
         }
-        $warnings = $this->getContainer()->get('core_installer.controller.util')->initPhp();
+
+        $controllerHelper = $this->getContainer()->get('zikula_core_installer.controller.util');
+
+        $warnings = $controllerHelper->initPhp();
         if (!empty($warnings)) {
             $this->printWarnings($output, $warnings);
 
             return;
         }
-        $checks = $this->getContainer()->get('core_installer.controller.util')->requirementsMet($this->getContainer());
+        $checks = $controllerHelper->requirementsMet($this->getContainer());
         if (true !== $checks) {
             $this->printRequirementsWarnings($output, $checks);
 
@@ -112,6 +115,7 @@ class StartCommand extends AbstractCoreInstallerCommand
                 return;
             }
         }
+
         // write the parameters to personal_config.php and custom_parameters.yml
         $yamlManager = new YamlDumper($this->getContainer()->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml', 'parameters.yml');
         $params = array_merge($yamlManager->getParameters(), $settings);
@@ -119,7 +123,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         $params['database_server_version'] = $dbh->getAttribute(\PDO::ATTR_SERVER_VERSION);
         $params['database_driver'] = 'pdo_' . $params['database_driver']; // doctrine requires prefix in custom_parameters.yml
         $yamlManager->setParameters($params);
-        $this->getContainer()->get('core_installer.config.util')->writeLegacyConfig($params);
+        $this->getContainer()->get('zikula_core_installer.config.util')->writeLegacyConfig($params);
         $this->getContainer()->get('zikula.cache_clearer')->clear('symfony.config');
 
         $io->success($this->translator->__('First stage of installation complete. Run `php app/console zikula:install:finish` to complete the installation.'));

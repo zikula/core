@@ -25,8 +25,8 @@ framework:
     trusted_proxies: ~
     session:
         name: %zikula.session.name%
-        handler_id: session.handler.legacy
-        storage_id: session.storage.legacy
+        handler_id: zikula_core.legacy.session_handler
+        storage_id: zikula_core.legacy.session_storage
         cookie_httponly: false
     fragments:       ~
 

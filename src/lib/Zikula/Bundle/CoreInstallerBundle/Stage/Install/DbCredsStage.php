@@ -87,7 +87,7 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
         $params['database_server_version'] = $dbh->getAttribute(\PDO::ATTR_SERVER_VERSION);
         $params['database_driver'] = 'pdo_' . $params['database_driver']; // doctrine requires prefix in custom_parameters.yml
         $this->writeParams($params);
-        $this->container->get('core_installer.config.util')->writeLegacyConfig($params);
+        $this->container->get('zikula_core_installer.config.util')->writeLegacyConfig($params);
     }
 
     private function writeParams($params)

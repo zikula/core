@@ -1,14 +1,11 @@
-<?xml version="1.0" ?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
     <parameters>
         <parameter key="zikula_core_installer_bundle.validator.constraints.valid_pdo_connection_validator.class">Zikula\Bundle\CoreInstallerBundle\Validator\Constraints\ValidPdoConnectionValidator</parameter>
         <parameter key="zikula_core_installer_bundle.validator.constraints.authenticate_admin_login_validator.class">Zikula\Bundle\CoreInstallerBundle\Validator\Constraints\AuthenticateAdminLoginValidator</parameter>
     </parameters>
-
     <services>
         <service id="zikula_core_installer_bundle.validator.constraints.valid_pdo_connection_validator" class="%zikula_core_installer_bundle.validator.constraints.valid_pdo_connection_validator.class%">
             <tag name="validator.constraint_validator" alias="zikula.core_installer.pdo_connection.validator" />
