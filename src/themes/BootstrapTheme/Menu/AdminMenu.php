@@ -32,7 +32,7 @@ class AdminMenu implements ContainerAwareInterface
             $menu->addChild($this->__('Settings'), ['route' => 'zikulasettingsmodule_settings_main']);
         }
         if ($permApi->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            $menu->addChild($this->__('Extensions'), ['route' => 'zikulasettingsmodule_settings_main']);
+            $menu->addChild($this->__('Extensions'), ['route' => 'zikulaextensionsmodule_module_viewmodulelist']);
         }
         if ($permApi->hasPermission('ZikulaBlocksModule::', '::', ACCESS_EDIT)) {
             $menu->addChild($this->__('Blocks'), ['route' => 'zikulablocksmodule_admin_view']);
