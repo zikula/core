@@ -3,29 +3,29 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
     <route id="install" path="/install/{stage}">
-        <default key="_controller">core_installer.controller.installer:installAction</default>
+        <default key="_controller">zikula_core_installer.controller.installer:installAction</default>
         <default key="stage">null</default>
     </route>
 
     <route id="ajaxinstall" path="/ajaxinstall">
-        <default key="_controller">core_installer.controller.ajaxinstall:ajaxAction</default>
+        <default key="_controller">zikula_core_installer.controller.ajaxinstall:ajaxAction</default>
         <option key="expose">true</option>
         <option key="i18n">false</option>
     </route>
 
     <route id="ajaxupgrade" path="/ajaxupgrade">
-        <default key="_controller">core_installer.controller.ajaxupgrade:ajaxAction</default>
+        <default key="_controller">zikula_core_installer.controller.ajaxupgrade:ajaxAction</default>
         <option key="expose">true</option>
         <option key="i18n">false</option>
     </route>
 
     <route id="upgrade" path="/upgrade/{stage}">
-        <default key="_controller">core_installer.controller.upgrader:upgradeAction</default>
+        <default key="_controller">zikula_core_installer.controller.upgrader:upgradeAction</default>
         <default key="stage">null</default>
     </route>
 
     <route id="doc" path="/installdoc/{name}">
-        <default key="_controller">core_installer.controller.doc:displayAction</default>
+        <default key="_controller">zikula_core_installer.controller.doc:displayAction</default>
         <default key="name">INSTALL-1.4.md</default>
     </route>
 </routes>
