@@ -14,6 +14,7 @@
         <parameter key="zikula_core.internal.theme.add_jsconfig_listener.class">Zikula\ThemeModule\EventListener\AddJSConfigListener</parameter>
         <parameter key="zikula_core.internal.theme.template_name_expose_listener.class">Zikula\ThemeModule\EventListener\TemplateNameExposeListener</parameter>
         <parameter key="zikula_core.common.theme_engine.class">Zikula\ThemeModule\Engine\Engine</parameter>
+        <parameter key="zikula_core.internal.theme.merger.class">Zikula\ThemeModule\Engine\Asset\Merger</parameter>
         <parameter key="zikula_core.common.theme.assets.js.class">Zikula\ThemeModule\Engine\AssetBag</parameter>
         <parameter key="zikula_core.common.theme.assets.css.class">Zikula\ThemeModule\Engine\AssetBag</parameter>
         <parameter key="zikula_core.common.theme.assets.header.class">Zikula\ThemeModule\Engine\AssetBag</parameter>
@@ -124,12 +125,28 @@
         <service id="zikula_core.common.theme.themevars" class="%zikula_core.common.theme.themevars.class%">
         </service>
 
+        <service id="zikula_core.internal.theme.merger" class="%zikula_core.internal.theme.merger.class%">
+            <argument type="service" id="router.default" />
+            <argument type="service" id="doctrine_cache.providers.zikula_js_asset_cache" />
+            <argument type="service" id="doctrine_cache.providers.zikula_css_asset_cache" />
+            <argument>%kernel.root_dir%</argument>
+            <argument>%zikula_asset_manager.lifetime%</argument>
+            <argument>%zikula_asset_manager.minify%</argument>
+            <argument>%zikula_asset_manager.compress%</argument>
+        </service>
+
         <service id="zikula_core.internal.theme.js_resolver" class="%zikula_core.internal.theme.js_resolver.class%">
             <argument type="service" id="zikula_core.common.theme.assets_js" />
+            <argument type="service" id="zikula_core.internal.theme.merger" />
+            <argument>%env%</argument>
+            <argument>%zikula_asset_manager.combine%</argument>
         </service>
 
         <service id="zikula_core.internal.theme.css_resolver" class="%zikula_core.internal.theme.css_resolver.class%">
             <argument type="service" id="zikula_core.common.theme.assets_css" />
+            <argument type="service" id="zikula_core.internal.theme.merger" />
+            <argument>%env%</argument>
+            <argument>%zikula_asset_manager.combine%</argument>
         </service>
 
         <service id="zikula_core.common.theme.asset_helper" class="%zikula_core.common.theme.asset_helper.class%">

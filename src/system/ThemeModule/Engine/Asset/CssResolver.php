@@ -20,17 +20,43 @@ use Zikula\ThemeModule\Engine\AssetBag;
  */
 class CssResolver implements ResolverInterface
 {
+    /**
+     * @var AssetBag
+     */
     private $bag;
 
-    public function __construct(AssetBag $bag)
+    /**
+     * @var MergerInterface
+     */
+    private $merger;
+
+    /**
+     * @var string
+     */
+    private $combine;
+
+    /**
+     * CssResolver constructor.
+     * @param AssetBag $bag
+     * @param MergerInterface $merger
+     * @param string $env
+     * @param bool $combine
+     */
+    public function __construct(AssetBag $bag, MergerInterface $merger, $env = 'prod', $combine = false)
     {
         $this->bag = $bag;
+        $this->merger = $merger;
+        $this->combine = $env == 'prod' && $combine;
     }
 
     public function compile()
     {
+        $assets = $this->bag->all();
+        if ($this->combine) {
+            $assets = $this->merger->merge($assets, 'css');
+        }
         $headers = '';
-        foreach ($this->bag->all() as $asset) {
+        foreach ($assets as $asset) {
             $headers .= '<link rel="stylesheet" href="'.$asset.'" type="text/css">'."\n";
         }
 

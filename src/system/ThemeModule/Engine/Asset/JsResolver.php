@@ -20,18 +20,44 @@ use Zikula\ThemeModule\Engine\AssetBag;
  */
 class JsResolver implements ResolverInterface
 {
+    /**
+     * @var AssetBag
+     */
     private $bag;
 
-    public function __construct(AssetBag $bag)
+    /**
+     * @var MergerInterface
+     */
+    private $merger;
+
+    /**
+     * @var string
+     */
+    private $combine;
+
+    /**
+     * JsResolver constructor.
+     * @param AssetBag $bag
+     * @param MergerInterface $merger
+     * @param string $env
+     * @param bool $combine
+     */
+    public function __construct(AssetBag $bag, MergerInterface $merger, $env = 'prod', $combine = false)
     {
         $this->bag = $bag;
+        $this->merger = $merger;
+        $this->combine = $env == 'prod' && $combine;
     }
 
     public function compile()
     {
+        $assets = $this->bag->all();
+        if ($this->combine) {
+            $assets = $this->merger->merge($assets, 'js');
+        }
         $headers = '';
-        foreach ($this->bag->all() as $asset) {
-            $headers .= '<script type="text/javascript" src="'.$asset.'"></script>'."\n";
+        foreach ($assets as $asset) {
+            $headers .= '<script type="text/javascript" src="' . $asset . '"></script>' . "\n";
         }
 
         return $headers;
