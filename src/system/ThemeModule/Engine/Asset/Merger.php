@@ -75,7 +75,7 @@ class Merger implements MergerInterface
         $this->cssCache = $cssCache;
         $rootDir = realpath($kernelRootDir . '/../');
         $this->rootDir = str_replace($router->getContext()->getBaseUrl(), '', $rootDir);
-        $this->lifetime = abs((new \DateTime($lifetime))->getTimestamp() - (new \DateTime)->getTimestamp());
+        $this->lifetime = abs((new \DateTime($lifetime))->getTimestamp() - (new \DateTime())->getTimestamp());
         $this->minify = $minify;
         $this->compress = $compress;
     }

@@ -27,7 +27,7 @@ class CombinedAssetController extends AbstractController
         $data = $this->get($serviceName)->fetch($key);
         $compress = $this->getParameter('zikula_asset_manager.compress');
         $lifetime = $this->getParameter('zikula_asset_manager.lifetime');
-        $lifetime = abs((new \DateTime($lifetime))->getTimestamp() - (new \DateTime)->getTimestamp());
+        $lifetime = abs((new \DateTime($lifetime))->getTimestamp() - (new \DateTime())->getTimestamp());
         if ($compress) {
             ini_set('zlib.output_handler', '');
             ini_set('zlib.output_compression', 1);

@@ -11,7 +11,6 @@
 
 namespace Zikula\ThemeModule\Engine\Asset;
 
-
 interface MergerInterface
 {
     /**
