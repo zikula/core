@@ -16,7 +16,7 @@ liip_imagine:
             filters:
                 thumbnail: { size: [120, 90], mode: outbound }
                 background: { size: [124, 94], position: center, color: '#000000' }
-        z100x100: # sample using zikula root
+        zkroot: # sample using zikula root
             data_loader: zikula_root
             jpeg_quality: 75
             png_compression_level: 7
