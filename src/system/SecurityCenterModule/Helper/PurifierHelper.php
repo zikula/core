@@ -50,10 +50,17 @@ class PurifierHelper
     {
         $config = $this->getPurifierDefaultConfig();
         if (!isset($args['forcedefault']) || true !== $args['forcedefault']) {
-            $savedConfig = $this->variableApi->get('ZikulaSecurityCenterModule', 'htmlpurifierConfig');
-            if (!is_null($savedConfig) && false !== $savedConfig) {
-                /** @var \HTMLPurifier_Config $config */
-                $config = unserialize($savedConfig);
+            $savedConfigSerialised = $this->variableApi->get('ZikulaSecurityCenterModule', 'htmlpurifierConfig');
+            if (!is_null($savedConfigSerialised) && false !== $savedConfigSerialised) {
+                /** @var \HTMLPurifier_Config $savedConfig */
+                $savedConfig = unserialize($savedConfigSerialised);
+                $savedConfigArray = $savedConfig->getAll();
+                $savedNamespaces = array_keys($savedConfigArray);
+                foreach ($savedNamespaces as $savedNamespace) {
+                    foreach ($savedConfigArray[$savedNamespace] as $key => $value) {
+                        $config->set($savedNamespace . '.' . $key, $value);
+                    }
+                }
             }
         }
 

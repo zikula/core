@@ -45,42 +45,41 @@
                         <label class="col-sm-3 control-label" for="{{ idVal }}">{{ directiveName }} <a href="http://htmlpurifier.org/live/configdoc/plain.html#{{ directive.key|e('url') }}">(?)</a></label>
                     {% endif %}
 
-                        {% set disabledVal = directive.value is null ? ' disabled="disabled"' : '' %}
+                    {% set disabledVal = directive.value is null ? ' disabled="disabled"' : '' %}
 
-                        {% if directive.allowedValues is defined %}
+                    {% if directive.allowedValues is defined %}
                         <div class="col-sm-9">
                             <select id="{{ idVal }}" class="form-control" name="{{ nameVal }}"{{ disabledVal }} style="min-width: 5em">
                                 {% for allowedVal in directive.allowedValues %}
-                                <option value="{{ allowedVal }}"{% if directive.value == allowedVal %} selected="selected"{% endif %}>{{ allowedVal }}</option>
+                                    <option value="{{ allowedVal }}"{% if directive.value == allowedVal %} selected="selected"{% endif %}>{{ allowedVal }}</option>
                                 {% endfor %}
                             </select>
                         </div>
-                        {% elseif directive.type in [purifierTypes.text, purifierTypes.itext, purifierTypes.list, purifierTypes.hash, purifierTypes.lookup] %}
+                    {% elseif directive.type in [purifierTypes.text, purifierTypes.itext, purifierTypes.list, purifierTypes.hash, purifierTypes.lookup] %}
                         <div class="col-sm-9">
-                            <textarea id="{{ idVal }}" class="form-control" name="{{ nameVal }}" cols="50" rows="8"{{ disabledVal }}>{{ directive.value }}</textarea>
-
-                            {% if directive.type == purifierTypes.list or directive.type == purifierTypes.lookup %}
-                            <em class="help-block sub">{{ __('(Place each value on a separate line.)') }}</em>
+                            <textarea id="{{ idVal }}" class="form-control" name="{{ nameVal }}" cols="50" rows="5"{{ disabledVal }}>{{ directive.value }}</textarea>
+                            {% if directive.type in [purifierTypes.list, purifierTypes.lookup] %}
+                                <em class="help-block sub">{{ __('(Place each value on a separate line.)') }}</em>
                             {% elseif directive.type == purifierTypes.hash %}
-                            <em class="help-block sub">{{ __('(Separate each key-value pair with a colon (e.g., key:value). Place each key-value pair on a separate line.)') }}</em>
+                                <em class="help-block sub">{{ __('(Separate each key-value pair with a colon (e.g., key:value). Place each key-value pair on a separate line.)') }}</em>
                             {% endif %}
                         </div>
-                        {% elseif directive.type in [purifierTypes.string, purifierTypes.istring, purifierTypes.int, purifierTypes.float] %}
+                    {% elseif directive.type in [purifierTypes.string, purifierTypes.istring, purifierTypes.int, purifierTypes.float] %}
                         <div class="col-sm-9">  
                             <input id="{{ idVal }}" name="{{ nameVal }}" class="form-control" type="text" value="{{ directive.value }}"{{ disabledVal }} />
                         </div>
-                        {% elseif directive.type == purifierTypes.bool %}
+                    {% elseif directive.type == purifierTypes.bool %}
                         <div id="{{ idVal }}" class="col-sm-9"> 
                             <input id="{{ idVal }}_Yes" name="{{ nameVal }}" type="radio" value="1"{% if directive.value == true %} checked="checked"{% endif %}{{ disabledVal }} />
                             <label for="{{ idVal }}_Yes">{{ __('Yes') }}</label>
                             <input id="{{ idVal }}_No" name="{{ nameVal }}" type="radio" value="0"{% if directive.value != true %} checked="checked"{% endif %}{{ disabledVal }} />
                             <label for="{{ idVal }}_No">{{ __('No') }}</label>
                         </div>
-                        {% else %}
+                    {% else %}
                         <div class="col-sm-9">
                             <em class="help-block sub">{{ __('(Modification not supported.)') }} {{ __('Value:') }} {# directive.value|serialize #}{{ directive.value }}</em>
                         </div>
-                        {% endif %}
+                    {% endif %}
                     </div>
                 {% endfor %}
             </fieldset>

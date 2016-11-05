@@ -322,9 +322,11 @@ class ConfigController extends AbstractController
             throw new AccessDeniedException();
         }
 
+        $purifierHelper = $this->get('zikula_security_center_module.helper.purifier_helper');
+
         if ($request->getMethod() == 'POST') {
             // Load HTMLPurifier Classes
-            $purifier = $this->container->get('zikula_security_center_module.helper.purifier_helper')->getPurifier();
+            $purifier = $purifierHelper->getPurifier();
 
             // Update module variables.
             $config = $request->request->get('purifierConfig', null);
@@ -425,13 +427,13 @@ class ConfigController extends AbstractController
         // load the configuration page
 
         if (isset($reset) && $reset == 'default') {
-            $purifierconfig = $this->container->get('zikula_security_center_module.helper.purifier_helper')->getPurifierConfig(['forcedefault' => true]);
+            $purifierConfig = $purifierHelper->getPurifierConfig(['forcedefault' => true]);
             $this->addFlash('status', $this->__('Default values for HTML Purifier were successfully loaded. Please store them using the "Save" button at the bottom of this page'));
         } else {
-            $purifierconfig = $this->container->get('zikula_security_center_module.helper.purifier_helper')->getPurifierConfig(['forcedefault' => false]);
+            $purifierConfig = $purifierHelper->getPurifierConfig(['forcedefault' => false]);
         }
 
-        $purifier = new HTMLPurifier($purifierconfig);
+        $purifier = new HTMLPurifier($purifierConfig);
 
         $config = $purifier->config;
 
@@ -443,6 +445,20 @@ class ConfigController extends AbstractController
 
         // list of excluded directives, format is $namespace_$directive
         $excluded = ['Cache_SerializerPath'];
+
+        // Editing for only these types is supported
+        $editableTypes = [
+            HTMLPurifier_VarParser::STRING,
+            HTMLPurifier_VarParser::ISTRING,
+            HTMLPurifier_VarParser::TEXT,
+            HTMLPurifier_VarParser::ITEXT,
+            HTMLPurifier_VarParser::INT,
+            HTMLPurifier_VarParser::FLOAT,
+            HTMLPurifier_VarParser::BOOL,
+            HTMLPurifier_VarParser::LOOKUP,
+            HTMLPurifier_VarParser::ALIST,
+            HTMLPurifier_VarParser::HASH
+        ];
 
         $purifierAllowed = [];
         foreach ($allowed as $allowedDirective) {
@@ -505,17 +521,8 @@ class ConfigController extends AbstractController
                         $directiveRec['value'] = '';
                 }
             }
-            // Editing for only these types is supported
-            $directiveRec['supported'] = (($directiveRec['type'] == HTMLPurifier_VarParser::STRING)
-                    || ($directiveRec['type'] == HTMLPurifier_VarParser::ISTRING)
-                    || ($directiveRec['type'] == HTMLPurifier_VarParser::TEXT)
-                    || ($directiveRec['type'] == HTMLPurifier_VarParser::ITEXT)
-                    || ($directiveRec['type'] == HTMLPurifier_VarParser::INT)
-                    || ($directiveRec['type'] == HTMLPurifier_VarParser::FLOAT)
-                    || ($directiveRec['type'] == HTMLPurifier_VarParser::BOOL)
-                    || ($directiveRec['type'] == HTMLPurifier_VarParser::LOOKUP)
-                    || ($directiveRec['type'] == HTMLPurifier_VarParser::ALIST)
-                    || ($directiveRec['type'] == HTMLPurifier_VarParser::HASH));
+
+            $directiveRec['supported'] = in_array($directiveRec['type'], $editableTypes);
 
             $purifierAllowed[$namespace][$directive] = $directiveRec;
         }
