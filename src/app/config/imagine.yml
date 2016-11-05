@@ -11,14 +11,14 @@ liip_imagine:
     filter_sets:
         cache: ~
         my_thumb: # sample
-            jpeg_quality: 75
+            jpeg_quality: 90
             png_compression_level: 7
             filters:
                 thumbnail: { size: [120, 90], mode: outbound }
                 background: { size: [124, 94], position: center, color: '#000000' }
-        z100x100: # sample using zikula root
+        zkroot: # sample using zikula root
             data_loader: zikula_root
-            jpeg_quality: 75
+            jpeg_quality: 90
             png_compression_level: 7
             filters:
                 thumbnail: { size: [100, 100], mode: inset }

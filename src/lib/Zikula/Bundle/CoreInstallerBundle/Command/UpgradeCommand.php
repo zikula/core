@@ -81,13 +81,15 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $initStage->isNecessary(); // runs init and upgradeUsersModule methods and intentionally returns false
         $io->success($this->translator->__('Initialization complete'));
 
-        $warnings = $this->getContainer()->get('core_installer.controller.util')->initPhp();
+        $controllerHelper = $this->getContainer()->get('zikula_core_installer.controller.util');
+
+        $warnings = $controllerHelper->initPhp();
         if (!empty($warnings)) {
             $this->printWarnings($output, $warnings);
 
             return;
         }
-        $checks = $this->getContainer()->get('core_installer.controller.util')->requirementsMet($this->getContainer());
+        $checks = $controllerHelper->requirementsMet($this->getContainer());
         if (true !== $checks) {
             $this->printRequirementsWarnings($output, $checks);
 
@@ -120,7 +122,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         foreach ($stages['stages'] as $key => $stage) {
             $io->text($stage[AjaxInstallerStage::PRE]);
             $io->text("<fg=blue;options=bold>" . $stage[AjaxInstallerStage::DURING] . "</fg=blue;options=bold>");
-            $status = $this->getContainer()->get('core_installer.controller.ajaxupgrade')->commandLineAction($stage[AjaxInstallerStage::NAME]);
+            $status = $this->getContainer()->get('zikula_core_installer.controller.ajaxupgrade')->commandLineAction($stage[AjaxInstallerStage::NAME]);
             if ($status) {
                 $io->success($stage[AjaxInstallerStage::SUCCESS]);
             } else {

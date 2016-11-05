@@ -60,6 +60,7 @@ class PermissionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'data_class' => 'Zikula\PermissionsModule\Entity\PermissionEntity',
             'translator' => null,
             'groups' => [],
             'permissionLevels' => [],

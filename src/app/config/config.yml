@@ -25,8 +25,8 @@ framework:
     trusted_proxies: ~
     session:
         name: %zikula.session.name%
-        handler_id: session.handler.legacy
-        storage_id: session.storage.legacy
+        handler_id: zikula_core.legacy.session_handler
+        storage_id: zikula_core.legacy.session_storage
         cookie_httponly: false
     fragments:       ~
 
@@ -106,6 +106,19 @@ doctrine:
                         dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
                         alias: GedmoTree # this one is optional and will default to the name set for the mapping
                         is_bundle: false
+
+doctrine_cache:
+    providers:
+        zikula_js_asset_cache:
+            namespace: js_assets
+            file_system:
+                extension: ".combined.js"
+                directory: "%kernel.root_dir%/cache/%env%/assets/js"
+        zikula_css_asset_cache:
+            namespace: css_assets
+            file_system:
+                extension: ".combined.css"
+                directory: "%kernel.root_dir%/cache/%env%/assets/css"
 
 services:
     standardfields.listener:

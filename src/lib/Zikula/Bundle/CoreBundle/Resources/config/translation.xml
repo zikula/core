@@ -1,9 +1,7 @@
-<?xml version="1.0" ?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony.com/schema/dic/services"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
     <parameters>
         <parameter key="translator.class">Zikula\Common\Translator\Translator</parameter>
         <parameter key="zikula.extractor.file.php_extractor.class">Zikula\Bundle\CoreBundle\Translation\ZikulaPhpFileExtractor</parameter>
@@ -11,7 +9,6 @@
         <parameter key="zikula.dumper.pot_dumper.class">Zikula\Bundle\CoreBundle\Translation\Dumper\PotDumper</parameter>
         <parameter key="zikula.translation.loader.pot.class">Zikula\Bundle\CoreBundle\Translation\SymfonyLoader\MockPotFileLoader</parameter>
     </parameters>
-
     <services>
         <service id="translator.default" class="%translator.class%">
             <argument type="service" id="service_container" />
@@ -23,24 +20,23 @@
             </argument>
         </service>
 
-        <service id="zikula.extractor.file.php_extractor" class="%zikula.extractor.file.php_extractor.class%" public="false">
+        <service id="zikula_core.internal.translation_extractor.file.php_extractor" class="%zikula.extractor.file.php_extractor.class%" public="false">
             <argument type="service" id="jms_translation.doc_parser" />
             <argument type="service" id="kernel" strict="false" />
             <tag name="jms_translation.file_visitor" />
         </service>
 
-        <service id="zikula.extractor.file.twig_extractor" class="%zikula.extractor.file.twig_extractor.class%" public="false">
+        <service id="zikula_core.internal.translation_extractor.file.twig_extractor" class="%zikula.extractor.file.twig_extractor.class%" public="false">
             <argument type="service" id="twig" />
             <tag name="jms_translation.file_visitor" />
         </service>
 
-        <service id="zikula.dumper.pot_dumper" class="%zikula.dumper.pot_dumper.class%" public="false">
+        <service id="zikula_core.internal.translation_dumper.pot_dumper" class="%zikula.dumper.pot_dumper.class%" public="false">
             <tag name="jms_translation.dumper" format="pot" />
         </service>
 
-        <service id="translation.loader.pot" class="%zikula.translation.loader.pot.class%">
+        <service id="zikula_core.internal.translation_loader.pot" class="%zikula.translation.loader.pot.class%">
             <tag name="translation.loader" alias="pot" />
         </service>
-
     </services>
 </container>

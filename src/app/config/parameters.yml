@@ -30,6 +30,10 @@ parameters:
 
     zikula.session.name: _zsid
     assets_version: ~ #e.g. 'v1'
+    zikula_asset_manager.combine: true
+    zikula_asset_manager.lifetime: "1 day"
+    zikula_asset_manager.compress: false
+    zikula_asset_manager.minify: false
 
     # Changing the current umask to the octal "022" will set directory permissions
     # to "755", and file permissions to "644" (for directories such as

@@ -1,44 +1,44 @@
 services:
 
-  zikula_hook_bundle.installer:
-    class: Zikula\Bundle\HookBundle\HookBundleInstaller
-    arguments: [ "@zikula.doctrine.schema_tool" ]
+    zikula_hook_bundle.installer:
+        class: Zikula\Bundle\HookBundle\HookBundleInstaller
+        arguments: ["@zikula_core.common.doctrine.schema_tool"]
 
-  zikula_hook_bundle.listener.core_installer_listener:
-    class: Zikula\Bundle\HookBundle\Listener\CoreInstallerListener
-    arguments: [ "@zikula_hook_bundle.installer" ]
-    tags:
-      - { name: kernel.event_subscriber }
+    zikula_hook_bundle.listener.core_installer_listener:
+        class: Zikula\Bundle\HookBundle\Listener\CoreInstallerListener
+        arguments: ["@zikula_hook_bundle.installer"]
+        tags:
+        - { name: kernel.event_subscriber }
 
-  zikula_hook_bundle.listener.hooks_listener:
-    class: Zikula\Bundle\HookBundle\Listener\HooksListener
-    arguments: [ "@zikula_permissions_module.api.permission", "@zikula_extensions_module.api.capability", "@router" ]
-    tags:
-      - { name: kernel.event_subscriber }
+    zikula_hook_bundle.listener.hooks_listener:
+        class: Zikula\Bundle\HookBundle\Listener\HooksListener
+        arguments: ["@zikula_permissions_module.api.permission", "@zikula_extensions_module.api.capability", "@router"]
+        tags:
+        - { name: kernel.event_subscriber }
 
-  twig.extension.zikula_hook:
-    class: Zikula\Bundle\HookBundle\Twig\Extension\HookExtension
-    arguments: ["@hook_dispatcher"]
-    tags:
-        - { name: twig.extension }
+    twig.extension.zikula_hook:
+        class: Zikula\Bundle\HookBundle\Twig\Extension\HookExtension
+        arguments: ["@hook_dispatcher"]
+        tags:
+            - { name: twig.extension }
 
-  hook_dispatcher.storage:
-    class: Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\DoctrineStorage
-    arguments: ["@doctrine.orm.default_entity_manager"]
+    hook_dispatcher.storage:
+        class: Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\DoctrineStorage
+        arguments: ["@doctrine.orm.default_entity_manager"]
 
-  hook_dispatcher.servicefactory:
-    class: Zikula\Bundle\HookBundle\Dispatcher\ServiceFactory
-    arguments: ["@service_container", "event_dispatcher"]
-    # note: the second args is intentionally a string.
+    hook_dispatcher.servicefactory:
+        class: Zikula\Bundle\HookBundle\Dispatcher\ServiceFactory
+        arguments: ["@service_container", "event_dispatcher"]
+        # note: the second args is intentionally a string.
 
-  hook_dispatcher:
-    class: Zikula\Bundle\HookBundle\Dispatcher\HookDispatcher
-    arguments: ["@hook_dispatcher.storage", "@event_dispatcher", "@hook_dispatcher.servicefactory"]
+    hook_dispatcher:
+        class: Zikula\Bundle\HookBundle\Dispatcher\HookDispatcher
+        arguments: ["@hook_dispatcher.storage", "@event_dispatcher", "@hook_dispatcher.servicefactory"]
 
-  zikula.hookmanager:
-    alias: hook_dispatcher
+    zikula.hookmanager:
+        alias: hook_dispatcher
 
-  zikula_hook_bundle.api.hook:
-    class: Zikula\Bundle\HookBundle\Api\HookApi
-    lazy: true
-    arguments: ["@translator.default", "@hook_dispatcher", "@event_dispatcher"]
+    zikula_hook_bundle.api.hook:
+        class: Zikula\Bundle\HookBundle\Api\HookApi
+        lazy: true
+        arguments: ["@translator.default", "@hook_dispatcher", "@event_dispatcher"]

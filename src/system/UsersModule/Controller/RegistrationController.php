@@ -126,14 +126,6 @@ class RegistrationController extends AbstractController
                     $userEntity->setEmail($formData['email']);
                     $userEntity->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $authenticationMethod->getAlias());
                     $this->get('zikula_users_module.helper.registration_helper')->registerNewUser($userEntity);
-                    if ($userEntity->getActivated() == UsersConstant::ACTIVATED_PENDING_REG) {
-                        $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendRegistrationMail($userEntity);
-                    } else {
-                        $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendUserMail($userEntity);
-                    }
-                    if (!empty($notificationErrors)) {
-                        $this->addFlash('error', implode('<br>', $notificationErrors));
-                    }
 
                     $formData['id'] = $authenticationMethodId;
                     $formData['uid'] = $userEntity->getUid();

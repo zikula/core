@@ -1,51 +1,47 @@
-<?xml version="1.0" ?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
     <parameters>
-        <parameter key="core_installer.install_upgrade_check.class">Zikula\Bundle\CoreInstallerBundle\EventListener\InstallUpgradeCheckListener</parameter>
-        <parameter key="core_installer.controller.util.class">Zikula\Bundle\CoreInstallerBundle\Util\ControllerUtil</parameter>
-        <parameter key="core_installer.controller.installer.class">Zikula\Bundle\CoreInstallerBundle\Controller\InstallerController</parameter>
-        <parameter key="core_installer.controller.upgrader.class">Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController</parameter>
-        <parameter key="core_installer.controller.doc.class">Zikula\Bundle\CoreInstallerBundle\Controller\DocController</parameter>
-        <parameter key="core_installer.controller.ajaxinstall.class">Zikula\Bundle\CoreInstallerBundle\Controller\AjaxInstallController</parameter>
-        <parameter key="core_installer.controller.ajaxupgrade.class">Zikula\Bundle\CoreInstallerBundle\Controller\AjaxUpgradeController</parameter>
+        <parameter key="zikula_core_installer.install_upgrade_check.class">Zikula\Bundle\CoreInstallerBundle\EventListener\InstallUpgradeCheckListener</parameter>
+        <parameter key="zikula_core_installer.controller.util.class">Zikula\Bundle\CoreInstallerBundle\Util\ControllerUtil</parameter>
+        <parameter key="zikula_core_installer.controller.installer.class">Zikula\Bundle\CoreInstallerBundle\Controller\InstallerController</parameter>
+        <parameter key="zikula_core_installer.controller.upgrader.class">Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController</parameter>
+        <parameter key="zikula_core_installer.controller.doc.class">Zikula\Bundle\CoreInstallerBundle\Controller\DocController</parameter>
+        <parameter key="zikula_core_installer.controller.ajaxinstall.class">Zikula\Bundle\CoreInstallerBundle\Controller\AjaxInstallController</parameter>
+        <parameter key="zikula_core_installer.controller.ajaxupgrade.class">Zikula\Bundle\CoreInstallerBundle\Controller\AjaxUpgradeController</parameter>
     </parameters>
-
     <services>
-        <service id="core_installer.install_upgrade_check" class="%core_installer.install_upgrade_check.class%">
+        <service id="zikula_core_installer.install_upgrade_check" class="%zikula_core_installer.install_upgrade_check.class%">
             <argument type="service" id="service_container" />
             <tag name="kernel.event_subscriber" />
         </service>
 
-        <service id="core_installer.controller.util" class="%core_installer.controller.util.class%">
+        <service id="zikula_core_installer.controller.util" class="%zikula_core_installer.controller.util.class%">
         </service>
 
-        <service id="core_installer.controller.installer" class="%core_installer.controller.installer.class%">
+        <service id="zikula_core_installer.controller.installer" class="%zikula_core_installer.controller.installer.class%">
             <argument type="service" id="service_container" />
         </service>
 
-        <service id="core_installer.controller.upgrader" class="%core_installer.controller.upgrader.class%">
+        <service id="zikula_core_installer.controller.upgrader" class="%zikula_core_installer.controller.upgrader.class%">
             <argument type="service" id="service_container" />
         </service>
 
-        <service id="core_installer.controller.ajaxinstall" class="%core_installer.controller.ajaxinstall.class%">
+        <service id="zikula_core_installer.controller.ajaxinstall" class="%zikula_core_installer.controller.ajaxinstall.class%">
             <argument type="service" id="service_container" />
         </service>
 
-        <service id="core_installer.controller.ajaxupgrade" class="%core_installer.controller.ajaxupgrade.class%">
+        <service id="zikula_core_installer.controller.ajaxupgrade" class="%zikula_core_installer.controller.ajaxupgrade.class%">
             <argument type="service" id="service_container" />
         </service>
 
-        <service id="core_installer.controller.doc" class="%core_installer.controller.doc.class%">
+        <service id="zikula_core_installer.controller.doc" class="%zikula_core_installer.controller.doc.class%">
             <argument type="service" id="kernel" />
             <argument type="service" id="router" />
             <argument type="service" id="templating" />
-            <argument type="service" id="markdown_extra_parser" />
+            <argument type="service" id="zikula_core.common.markdown_extra_parser" />
             <argument type="service" id="translator.default" />
         </service>
-
     </services>
 </container>

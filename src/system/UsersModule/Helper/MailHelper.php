@@ -150,7 +150,7 @@ class MailHelper
             // mail notify email to inform admin about registration
             $mailEmail = $this->variableApi->get('ZikulaUsersModule', 'reg_notifyemail', '');
             if (!empty($mailEmail)) {
-                $subject = $this->translator->__f('New registration: %s', $userEntity->getUname());
+                $subject = $this->translator->__f('New registration: %s', ['%s' => $userEntity->getUname()]);
                 $mailSent = $this->sendNotification($mailEmail, 'regadminnotify', $rendererArgs, $subject);
                 if (!$mailSent) {
                     $mailErrors[] = $this->translator->__('Warning! The mail email for the newly created user could not be sent.');

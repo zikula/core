@@ -64,7 +64,7 @@ class AjaxUpgradeController extends AbstractController
     {
         switch ($stageName) {
             case "loginadmin":
-                return $this->container->get('core_installer.controller.ajaxinstall')->loginAdmin();
+                return $this->container->get('zikula_core_installer.controller.ajaxinstall')->loginAdmin();
             case "upgrademodules":
                 $result = $this->upgradeModules();
                 if (count($result) === 0) {
@@ -75,7 +75,7 @@ class AjaxUpgradeController extends AbstractController
             case "installroutes":
                 return $this->installRoutesModule();
             case "reloadroutes":
-                return $this->container->get('core_installer.controller.ajaxinstall')->reloadRoutes();
+                return $this->container->get('zikula_core_installer.controller.ajaxinstall')->reloadRoutes();
             case "regenthemes":
                 return $this->regenerateThemes();
             case "from140to141":
@@ -103,7 +103,7 @@ class AjaxUpgradeController extends AbstractController
 
         $kernel = $this->container->get('kernel');
         $routeModuleName = 'ZikulaRoutesModule';
-        $install = $this->container->get('core_installer.controller.ajaxinstall')->installModule($routeModuleName);
+        $install = $this->container->get('zikula_core_installer.controller.ajaxinstall')->installModule($routeModuleName);
         if (!$install) {
             // error
             return false;
@@ -207,7 +207,7 @@ class AjaxUpgradeController extends AbstractController
         // install ZAuth
         $kernel = $this->container->get('kernel');
         $zAuthModuleName = 'ZikulaZAuthModule';
-        $install = $this->container->get('core_installer.controller.ajaxinstall')->installModule($zAuthModuleName);
+        $install = $this->container->get('zikula_core_installer.controller.ajaxinstall')->installModule($zAuthModuleName);
         if (!$install) {
             // error
             return false;

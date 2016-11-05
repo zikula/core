@@ -1,81 +1,78 @@
-<?xml version="1.0" ?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony.com/schema/dic/services"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
     <parameters>
-        <parameter key="zikula.doctrine_connector.class">Zikula\Bundle\CoreBundle\EventListener\DoctrineListener</parameter>
+        <parameter key="zikula_core.internal.doctrine_connector.class">Zikula\Bundle\CoreBundle\EventListener\DoctrineListener</parameter>
 
-        <parameter key="token.storage.class">Zikula\Core\Token\Storage\SessionStorage</parameter>
-        <parameter key="token.generator.class">Zikula\Core\Token\Generator</parameter>
-        <parameter key="token.validator.class">Zikula\Core\Token\Validator</parameter>
+        <parameter key="zikula_core.internal.token.storage.class">Zikula\Core\Token\Storage\SessionStorage</parameter>
+        <parameter key="zikula_core.internal.token.generator.class">Zikula\Core\Token\Generator</parameter>
+        <parameter key="zikula_core.internal.token.validator.class">Zikula\Core\Token\Validator</parameter>
         <parameter key="zikula_core.common.csrf_token_handler.class">Zikula\Core\Token\CsrfTokenHandler</parameter>
-        <parameter key="token.max_life">3600</parameter>
+        <parameter key="zikula_core.internal.token.max_life">3600</parameter>
 
-        <parameter key="markdown.class">Michelf\Markdown</parameter>
-        <parameter key="markdown_extra.class">Michelf\MarkdownExtra</parameter>
+        <parameter key="zikula_core.common.markdown.class">Michelf\Markdown</parameter>
+        <parameter key="zikula_core.common.markdown_extra.class">Michelf\MarkdownExtra</parameter>
 
         <!--<parameter key="zikula_core.class">Zikula\Core\Core</parameter>-->
-        <!--<parameter key="zikula.core_init_listener.class">Zikula\Bundle\CoreBundle\EventListener\InitListener</parameter>-->
+        <!--<parameter key="zikula_core.internal.core_init_listener.class">Zikula\Bundle\CoreBundle\EventListener\InitListener</parameter>-->
 
-        <parameter key="zikula.clickjack_protection_listener.class">Zikula\Bundle\CoreBundle\EventListener\ClickjackProtectionListener</parameter>
-        <parameter key="zikula.site_off_listener.class">Zikula\Bundle\CoreBundle\EventListener\SiteOffListener</parameter>
-        <parameter key="zikula.session_expire_listener.class">Zikula\Bundle\CoreBundle\EventListener\SessionExpireListener</parameter>
+        <parameter key="zikula_core.internal.clickjack_protection_listener.class">Zikula\Bundle\CoreBundle\EventListener\ClickjackProtectionListener</parameter>
+        <parameter key="zikula_core.internal.site_off_listener.class">Zikula\Bundle\CoreBundle\EventListener\SiteOffListener</parameter>
+        <parameter key="zikula_core.internal.session_expire_listener.class">Zikula\Bundle\CoreBundle\EventListener\SessionExpireListener</parameter>
         <parameter key="router_listener.class">Zikula\Bundle\CoreBundle\EventListener\RouterListener</parameter>
-        <parameter key="zikula.exception_listener.class">Zikula\Bundle\CoreBundle\EventListener\ExceptionListener</parameter>
-        <parameter key="zikula.output_compression_listener.class">Zikula\Bundle\CoreBundle\EventListener\OutputCompressionListener</parameter>
-        <parameter key="zikula.strip_front_controller_listener.class">Zikula\Bundle\CoreBundle\EventListener\StripFrontControllerListener</parameter>
-        <parameter key="zikula.doctrine.schema_tool.class">Zikula\Core\Doctrine\Helper\SchemaHelper</parameter>
+        <parameter key="zikula_core.internal.exception_listener.class">Zikula\Bundle\CoreBundle\EventListener\ExceptionListener</parameter>
+        <parameter key="zikula_core.internal.output_compression_listener.class">Zikula\Bundle\CoreBundle\EventListener\OutputCompressionListener</parameter>
+        <parameter key="zikula_core.internal.strip_front_controller_listener.class">Zikula\Bundle\CoreBundle\EventListener\StripFrontControllerListener</parameter>
+        <parameter key="zikula_core.common.doctrine.schema_tool.class">Zikula\Core\Doctrine\Helper\SchemaHelper</parameter>
         <parameter key="zikula_core.internal.bootstrap_helper.class">Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper</parameter>
     </parameters>
-
     <services>
         <!--<service id="zikula" class="%zikula_core.class%">-->
             <!--<argument type="service" id="service_container" />-->
         <!--</service>-->
 
-        <service id="markdown_parser" class="%markdown.class%" />
-        <service id="markdown_extra_parser" class="%markdown_extra.class%" />
+        <service id="zikula_core.common.markdown_parser" class="%zikula_core.common.markdown.class%" />
+        <service id="zikula_core.common.markdown_extra_parser" class="%zikula_core.common.markdown_extra.class%" />
 
-        <!--<service id="zikula.core_init" class="%zikula.core_init_listener.class%">-->
+        <!--<service id="zikula_core.internal.core_init" class="%zikula_core.internal.core_init_listener.class%">-->
             <!--<tag name="zikula.event_subscriber" />-->
             <!--<argument type="service" id="service_container" />-->
         <!--</service>-->
 
-        <service id="zikula.doctrine_init" class="%zikula.doctrine_connector.class%">
+        <service id="zikula_core.internal.doctrine_init" class="%zikula_core.internal.doctrine_connector.class%">
             <tag name="kernel.event_subscriber" />
             <argument type="service" id="service_container" />
         </service>
 
-        <service id="token.storage" class="%token.storage.class%">
+        <service id="zikula_core.internal.token.storage" class="%zikula_core.internal.token.storage.class%">
             <argument type="service" id="session" />
         </service>
 
-        <service id="token.generator" class="%token.generator.class%">
-            <argument type="service" id="token.storage" />
+        <service id="zikula_core.internal.token.generator" class="%zikula_core.internal.token.generator.class%">
+            <argument type="service" id="zikula_core.internal.token.storage" />
             <argument>_dummy</argument>
-            <argument>3600</argument>
+            <argument>%zikula_core.internal.token.max_life%</argument>
         </service>
 
-        <service id="token.validator" class="%token.validator.class%">
-            <argument type="service" id="token.generator" />
+        <service id="zikula_core.internal.token.validator" class="%zikula_core.internal.token.validator.class%">
+            <argument type="service" id="zikula_core.internal.token.generator" />
         </service>
 
         <service id="zikula_core.common.csrf_token_handler" class="%zikula_core.common.csrf_token_handler.class%" >
-            <argument type="service" id="token.generator" />
-            <argument type="service" id="token.validator" />
+            <argument type="service" id="zikula_core.internal.token.generator" />
+            <argument type="service" id="zikula_core.internal.token.validator" />
             <argument type="service" id="request_stack" />
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="session" />
         </service>
 
-        <service id="zikula.clickjack_protection_listener" class="%zikula.clickjack_protection_listener.class%">
+        <service id="zikula_core.internal.clickjack_protection_listener" class="%zikula_core.internal.clickjack_protection_listener.class%">
             <tag name="kernel.event_subscriber" />
             <argument>%security.x_frame_options%</argument>
         </service>
 
-        <service id="zikula.site_off_listener" class="%zikula.site_off_listener.class%">
+        <service id="zikula_core.internal.site_off_listener" class="%zikula_core.internal.site_off_listener.class%">
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="zikula_permissions_module.api.permission" />
             <argument type="service" id="zikula_users_module.current_user" />
@@ -86,12 +83,12 @@
             <tag name="kernel.event_subscriber" />
         </service>
 
-        <service id="zikula.session_expire_listener" class="%zikula.session_expire_listener.class%">
+        <service id="zikula_core.internal.session_expire_listener" class="%zikula_core.internal.session_expire_listener.class%">
             <argument>%installed%</argument>
             <tag name="kernel.event_subscriber" />
         </service>
 
-        <service id="zikula.exception_listener" class="%zikula.exception_listener.class%">
+        <service id="zikula_core.internal.exception_listener" class="%zikula_core.internal.exception_listener.class%">
             <tag name="kernel.event_subscriber" />
             <tag name="monolog.logger" channel="request" />
             <argument type="service" id="logger" on-invalid="ignore" />
@@ -102,19 +99,19 @@
             <argument>%installed%</argument>
         </service>
 
-        <service id="zikula.output_compression_listener" class="%zikula.output_compression_listener.class%">
+        <service id="zikula_core.internal.output_compression_listener" class="%zikula_core.internal.output_compression_listener.class%">
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument>%installed%</argument>
             <tag name="kernel.event_subscriber" />
         </service>
 
-        <service id="zikula.strip_front_controller_listener" class="%zikula.strip_front_controller_listener.class%">
+        <service id="zikula_core.internal.strip_front_controller_listener" class="%zikula_core.internal.strip_front_controller_listener.class%">
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument>%installed%</argument>
             <tag name="kernel.event_subscriber" />
         </service>
 
-        <service id="zikula.doctrine.schema_tool" class="%zikula.doctrine.schema_tool.class%" lazy="true">
+        <service id="zikula_core.common.doctrine.schema_tool" class="%zikula_core.common.doctrine.schema_tool.class%" lazy="true">
             <argument type="service" id="doctrine.orm.default_entity_manager" />
         </service>
 
@@ -122,6 +119,5 @@
             <argument type="service" id="doctrine.dbal.default_connection" />
             <argument type="service" id="zikula.cache_clearer" />
         </service>
-
     </services>
 </container>

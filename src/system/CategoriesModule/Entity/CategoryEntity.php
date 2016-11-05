@@ -19,7 +19,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Category entity.
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Zikula\CategoriesModule\Entity\Repository\CategoryRepository")
  * @ORM\Table(name="categories_category",indexes={@ORM\Index(name="idx_categories_is_leaf",columns={"is_leaf"}),
  *                                                @ORM\Index(name="idx_categories_name",columns={"name"}),
  *                                                @ORM\Index(name="idx_categories_ipath",columns={"ipath","is_leaf","status"}),

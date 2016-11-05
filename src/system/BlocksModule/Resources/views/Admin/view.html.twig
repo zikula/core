@@ -30,14 +30,14 @@
     </colgroup>
     <thead>
         <tr>
-            <th id="hBlockId" scope="col"><a class='{{ sort.bid.class }}' href='{{ sort.bid.url }}'>{{ __('ID') }}</a></th>
-            <th id="hBlockTitle" scope="col"><a class='{{ sort.title.class }}' href='{{ sort.title.url }}'>{{ __('Title') }}</a></th>
+            <th id="hBlockId" scope="col"><a href="{{ sort.bid.url }}" title="{{ __('Sort by ID') }}" class="{{ sort.bid.class }}">{{ __('ID') }}</a></th>
+            <th id="hBlockTitle" scope="col"><a href="{{ sort.title.url }}" title="{{ __('Sort by title') }}" class="{{ sort.title.class }}">{{ __('Title') }}</a></th>
             <th id="hBlockDescription" scope="col">{{ __('Description') }}</th>
             <th id="hBlockModule" scope="col">{{ __('Module') }}</th>
-            <th id="hBlockType" scope="col"><a class='{{ sort.blocktype.class }}' href='{{ sort.blocktype.url }}'>{{ __('Type') }}</a></th>
+            <th id="hBlockType" scope="col"><a href="{{ sort.blocktype.url }}" title="{{ __('Sort by type') }}" class="{{ sort.blocktype.class }}">{{ __('Type') }}</a></th>
             <th id="hBlockPositions" scope="col">{{ __('Positions') }}</th>
-            <th id="hBlockLanguage" scope="col"><a class='{{ sort.language.class }}' href='{{ sort.language.url }}'>{{ __('Language') }}</a></th>
-            <th id="hBlockState" scope="col"><a class='{{ sort.state.class }}' href='{{ sort.state.url }}'>{{ __('State') }}</a></th>
+            <th id="hBlockLanguage" scope="col"><a href="{{ sort.language.url }}" title="{{ __('Sort by language') }}" class="{{ sort.language.class }}">{{ __('Language') }}</a></th>
+            <th id="hBlockState" scope="col"><a href="{{ sort.state.url }}" title="{{ __('Sort by state') }}" class="{{ sort.state.class }}">{{ __('State') }}</a></th>
             <th id="hBlockActions" scope="col" class="text-right">{{ __('Actions') }}</th>
         </tr>
     </thead>
@@ -135,7 +135,7 @@ To delete a block position, click on the 'Delete' icon and confirm the action in
                 <div class="text-center"><i class="fa fa-spin fa-3x fa-spinner"></i></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">{{ __("Close") }}</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('Close') }}</button>
             </div>
         </div>
     </div>

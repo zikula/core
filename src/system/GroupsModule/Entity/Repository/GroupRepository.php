@@ -18,7 +18,7 @@ use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
 
-class GroupRepository extends EntityRepository implements GroupRepositoryInterface, ObjectRepository , Selectable
+class GroupRepository extends EntityRepository implements GroupRepositoryInterface, ObjectRepository, Selectable
 {
     /**
      * @var TranslatorInterface

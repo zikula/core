@@ -58,13 +58,16 @@ class StartCommand extends AbstractCoreInstallerCommand
 
             return;
         }
-        $warnings = $this->getContainer()->get('core_installer.controller.util')->initPhp();
+
+        $controllerHelper = $this->getContainer()->get('zikula_core_installer.controller.util');
+
+        $warnings = $controllerHelper->initPhp();
         if (!empty($warnings)) {
             $this->printWarnings($output, $warnings);
 
             return;
         }
-        $checks = $this->getContainer()->get('core_installer.controller.util')->requirementsMet($this->getContainer());
+        $checks = $controllerHelper->requirementsMet($this->getContainer());
         if (true !== $checks) {
             $this->printRequirementsWarnings($output, $checks);
 
@@ -111,6 +114,7 @@ class StartCommand extends AbstractCoreInstallerCommand
                 return;
             }
         }
+
         // write the parameters to personal_config.php and custom_parameters.yml
         $yamlManager = new YamlDumper($this->getContainer()->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml', 'parameters.yml');
         $params = array_merge($yamlManager->getParameters(), $settings);
