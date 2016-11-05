@@ -15,3 +15,5 @@ To enable the features, modify these parameters in the `app/config/custom_parame
 | zikula_asset_manager.minify   | true or false
 
 If `zikula_asset_manager.combine` is false, none of the other parameters have any effect.
+
+Please note: Asset combination only occurs in the `prod` environment. If `env` is set to another value, it is disabled.
