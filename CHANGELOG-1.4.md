@@ -22,10 +22,8 @@ CHANGELOG - ZIKULA 1.4.x
     - Fixed problem in DataUtil::formatForDisplayHTML for proper handling of data-* attributes.
     - Fixed regression in argument typehints in UserUtil (#3123)
 
- - Features:
-    - Added mailProtect filter for safe display of email addresses in Twig templates (#3041).
-
  - Core-2.0 Features:
+    - Added mailProtect filter for safe display of email addresses in Twig templates (#3041).
     - Added display of template name as html comment in source when in dev environment (#3068).
     - Added shortcut method in variable api for retrieving system variables (#3077).
     - Added new core module: MenuModule for implementing menus of any kind (#3082).
