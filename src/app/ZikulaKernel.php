@@ -73,6 +73,7 @@ class ZikulaKernel extends Kernel
             new Matthias\SymfonyConsoleForm\Bundle\SymfonyConsoleFormBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
+            new Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
         ];
 
         $this->registerCoreModules($bundles);

@@ -31,6 +31,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Added new core module: MenuModule for implementing menus of any kind (#3082).
     - Added Twig filters profileLinkByUserName and profileLinkByUserId (#3079).
     - Added LocaleApi for access to locale definitions.
+    - Added Asset merger feature for twig themes (#2912, #3138)
 
  - Vendor updates:
     - doctrine dbal updated from 2.5.4 to 2.5.5

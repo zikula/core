@@ -107,6 +107,19 @@ doctrine:
                         alias: GedmoTree # this one is optional and will default to the name set for the mapping
                         is_bundle: false
 
+doctrine_cache:
+    providers:
+        zikula_js_asset_cache:
+            namespace: js_assets
+            file_system:
+                extension: ".combined.js"
+                directory: "%kernel.root_dir%/cache/%env%/assets/js"
+        zikula_css_asset_cache:
+            namespace: css_assets
+            file_system:
+                extension: ".combined.css"
+                directory: "%kernel.root_dir%/cache/%env%/assets/css"
+
 services:
     standardfields.listener:
         class: Zikula\Core\Doctrine\StandardFields\StandardFieldsListener
