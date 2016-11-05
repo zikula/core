@@ -23,7 +23,7 @@ use Zikula\ExtensionsModule\Api\VariableApi;
  *
  * The Theme Engine class is responsible to manage all aspects of theme management using the classes referenced below.
  * @see \Zikula\ThemeModule\Engine\*
- * @see \Zikula\Bundle\CoreBundle\EventListener\Theme\*
+ * @see \Zikula\ThemeModule\EventListener\*
  * @see \Zikula\ThemeModule\AbstractTheme
  *
  * The Engine works by intercepting the Response sent by the module controller (the controller action is the
