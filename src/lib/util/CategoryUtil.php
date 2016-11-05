@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+use Zikula\CategoriesModule\GenericUtil;
+
 /**
  * CategoryUtil.
  */
@@ -486,7 +488,7 @@ class CategoryUtil
      *
      * @param integer $cid The categoryID to delete
      *
-     * @return void
+     * @return boolean|void
      */
     public static function deleteCategoryByID($cid)
     {
@@ -495,6 +497,10 @@ class CategoryUtil
         $category = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cid);
         if (!isset($category)) {
             return;
+        }
+
+        if (!GenericUtil::mayCategoryBeDeletedOrMoved($category)) {
+            return LogUtil::registerError(__f('Error! Category %s can not be deleted, because it is already used.', $category['name']));
         }
 
         $entityManager->remove($category);
