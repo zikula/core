@@ -1,0 +1,19 @@
+{{ __('text1') }}
+
+{{ __f('text2 %s', {'%s': 'sub2'}) }}
+
+{{ _n('text3', 'text3s', 5) }}
+
+{{ _fn('text4 %s', 'text4s %s', 5, {'%s': 'sub4'}) }}
+
+{{ __('text5', 'my_domain') }}
+
+{{ __f('text6 %s', {'%s': 'sub6'}, 'my_domain') }}
+
+{{ _n('text7', 'text7s', 5, 'my_domain') }}
+
+{{ _fn('text8 %s', 'text8s %s', 5, {'%s': 'sub8'}, 'my_domain') }}
+
+{% set foo = __('bar') %}
+
+{% if foo == __('foo') %}{{ __('foo is foo') }}{% endif %}
