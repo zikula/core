@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Zikula package.
+ *
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Zikula\Bundle\CoreBundle\Tests\Translation;
 
 use JMS\TranslationBundle\Model\Message;
@@ -102,11 +111,11 @@ class PhpFileExtractorTest extends \PHPUnit_Framework_TestCase
     protected function getDocParser()
     {
         $docParser = new DocParser();
-        $docParser->setImports(array(
+        $docParser->setImports([
             'desc' => 'JMS\TranslationBundle\Annotation\Desc',
             'meaning' => 'JMS\TranslationBundle\Annotation\Meaning',
             'ignore' => 'JMS\TranslationBundle\Annotation\Ignore',
-        ));
+        ]);
         $docParser->setIgnoreNotImportedAnnotations(true);
 
         return $docParser;

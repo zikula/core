@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Zikula package.
+ *
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Zikula\Bundle\CoreBundle\Tests\Translation\Fixture;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -31,7 +40,7 @@ class Controller
     {
         $this->session->setFlash('bar',
             /** @Desc("Welcome %name%! Thanks for signing up.") */
-            $this->translator->__f('text.sign_up_successful %name%', array('%name%' => 'Johannes')));
+            $this->translator->__f('text.sign_up_successful %name%', ['%name%' => 'Johannes']));
     }
 
     public function foobarAction()
@@ -44,13 +53,13 @@ class Controller
     public function nonExtractableButIgnoredAction()
     {
         /** @Ignore */ $this->translator->__($foo);
-        /** Foobar */
-        /** @Ignore */ $this->translator->__f('foo', array(), $baz);
+/** Foobar */
+/** @Ignore */ $this->translator->__f('foo', [], $baz);
     }
 
     public function irrelevantDocComment()
     {
-        /** @Foo @Bar */ $this->translator->__f('text.irrelevant_doc_comment', array(), 'baz');
+        /** @Foo @Bar */ $this->translator->__f('text.irrelevant_doc_comment', [], 'baz');
     }
 
     public function arrayAccess()
@@ -61,6 +70,6 @@ class Controller
     public function assignToVar()
     {
         /** @Desc("The var %foo% should be assigned.") */
-        return $this->translator->__f('text.var.assign %foo%', array('%foo%' => 'fooVar'));
+        return $this->translator->__f('text.var.assign %foo%', ['%foo%' => 'fooVar']);
     }
 }
