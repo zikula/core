@@ -127,9 +127,9 @@ class GettextExtension extends \Twig_Extension
     /**
      * @see __p()
      */
-    public function __p(array $context, $context, $message, $domain = null)
+    public function __p(array $twigContext, $context, $message, $domain = null)
     {
-        $domain = isset($domain) ? $domain : $this->determineTranslationDomainFromContext($context);
+        $domain = isset($domain) ? $domain : $this->determineTranslationDomainFromContext($twigContext);
 
         return \__p($context, $message, $domain);
     }
@@ -137,9 +137,9 @@ class GettextExtension extends \Twig_Extension
     /**
      * @see __fp()
      */
-    public function __fp(array $context, $context, $message, $params, $domain = null)
+    public function __fp(array $twigContext, $context, $message, $params, $domain = null)
     {
-        $domain = isset($domain) ? $domain : $this->determineTranslationDomainFromContext($context);
+        $domain = isset($domain) ? $domain : $this->determineTranslationDomainFromContext($twigContext);
 
         return \__fp($context, $message, $params, $domain);
     }
@@ -147,9 +147,9 @@ class GettextExtension extends \Twig_Extension
     /**
      * @see _fpn()
      */
-    public function _fnp(array $context, $context, $singular, $plural, $count, $params, $domain = null)
+    public function _fnp(array $twigContext, $context, $singular, $plural, $count, $params, $domain = null)
     {
-        $domain = isset($domain) ? $domain : $this->determineTranslationDomainFromContext($context);
+        $domain = isset($domain) ? $domain : $this->determineTranslationDomainFromContext($twigContext);
 
         return \_fnp($context, $singular, $plural, $count, $params, $domain);
     }
@@ -157,9 +157,9 @@ class GettextExtension extends \Twig_Extension
     /**
      * @see _np()
      */
-    public function _np(array $context, $context, $singular, $plural, $count, $domain = null)
+    public function _np(array $twigContext, $context, $singular, $plural, $count, $domain = null)
     {
-        $domain = isset($domain) ? $domain : $this->determineTranslationDomainFromContext($context);
+        $domain = isset($domain) ? $domain : $this->determineTranslationDomainFromContext($twigContext);
 
         return \_np($context, $singular, $plural, $count, $domain);
     }
