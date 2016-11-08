@@ -38,7 +38,7 @@ class AppKernel extends Kernel
 
     public function registerBundles()
     {
-        return array(
+        return [
             new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new \Symfony\Bundle\TwigBundle\TwigBundle(),
             new \JMS\TranslationBundle\JMSTranslationBundle(),
@@ -46,7 +46,7 @@ class AppKernel extends Kernel
             new \Zikula\Bundle\CoreBundle\Tests\Functional\Fixture\TestBundle\TestBundle(),
 //            new \JMS\DiExtraBundle\JMSDiExtraBundle($this),
 //            new \JMS\AopBundle\JMSAopBundle(),
-        );
+        ];
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader)
