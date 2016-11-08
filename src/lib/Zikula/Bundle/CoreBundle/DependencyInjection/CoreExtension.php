@@ -74,7 +74,7 @@ class CoreExtension extends Extension
      * @param ContainerBuilder $container
      *            A ContainerBuilder instance
      */
-    private function registerTranslatorConfiguration(array $config, ContainerBuilder $container)
+    protected function registerTranslatorConfiguration(array $config, ContainerBuilder $container)
     {
         $translator = $container->findDefinition('translator.default');
         $translator->addMethodCall('setFallbackLocales', [

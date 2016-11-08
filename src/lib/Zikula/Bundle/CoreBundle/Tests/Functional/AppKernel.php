@@ -39,11 +39,11 @@ class AppKernel extends Kernel
     public function registerBundles()
     {
         return array(
-            new \Zikula\Bundle\CoreBundle\Tests\Functional\Fixture\TestBundle\TestBundle(),
             new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new \Symfony\Bundle\TwigBundle\TwigBundle(),
             new \JMS\TranslationBundle\JMSTranslationBundle(),
             new \Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            new \Zikula\Bundle\CoreBundle\Tests\Functional\Fixture\TestBundle\TestBundle(),
 //            new \JMS\DiExtraBundle\JMSDiExtraBundle($this),
 //            new \JMS\AopBundle\JMSAopBundle(),
         );
@@ -52,13 +52,11 @@ class AppKernel extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load($this->config);
-        $xmlTranslatrionConfig = realpath(__DIR__.'/../../Resources/config/translation.xml');
-        $loader->load($xmlTranslatrionConfig);
     }
 
     public function getCacheDir()
     {
-        return sys_get_temp_dir().'/JMSTranslationBundle';
+        return sys_get_temp_dir().'/ZikulaCoreBundle';
     }
 
     public function serialize()
