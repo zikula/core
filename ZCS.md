@@ -11,7 +11,7 @@ up and work on the same problems. Good communication will help make the Sprint m
 How can I help?
 ---------------
 
- - Install Zikula Core-1.4.3. Download the latest build here: http://ci.zikula.org/job/Zikula_Core-1.4.3/
+ - Install Zikula Core-1.4.4. Download the latest build here: http://ci.zikula.org/job/Zikula_Core-1.4.4/
  - Follow the instructions to install. Evaluate the instructions. Accurate?
  - Following successful installation, click on **every** link you can find. Are the results what you expect?
  - Find and submit **every** form you can find in the core. Are the results what you expect?
