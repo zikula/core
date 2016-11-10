@@ -28,7 +28,8 @@ class CategoriesExtension extends \Twig_Extension
      *
      * @param RequestStack $requestStack
      */
-    public function __construct(RequestStack $requestStack) {
+    public function __construct(RequestStack $requestStack)
+    {
         $this->request = $requestStack->getMasterRequest();
     }
 
