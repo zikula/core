@@ -13,13 +13,23 @@ namespace Zikula\CategoriesModule\Twig\Extension;
 
 use CategoryUtil;
 use DataUtil;
-use ZLanguage;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class CategoriesExtension extends \Twig_Extension
 {
-    public function getName()
-    {
-        return 'zikula_categories_module';
+    /**
+     * @var Request
+     */
+    private $request;
+
+    /**
+     * CategoriesExtension constructor.
+     *
+     * @param RequestStack $requestStack
+     */
+    public function __construct(RequestStack $requestStack) {
+        $this->request = $requestStack->getMasterRequest();
     }
 
     /**
@@ -153,12 +163,17 @@ class CategoriesExtension extends \Twig_Extension
     public function categorySelector($category = 0, $field = 'id', $name = null, $selectedValue = 0, $defaultValue = 0, $defaultText = '',
         $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true)
     {
-        $lang = ZLanguage::getLanguageCode();
+        $lang = !empty($this->request) ? $this->request->getLocale() : 'en';
 
         $category = CategoryUtil::getCategoryByID($category);
 
         $categories = CategoryUtil::getSubCategoriesForCategory($category, $recurse, $relative, $includeRoot, $includeLeaf, false, '', '', null, 'sort_value');
 
         return CategoryUtil::getSelector_Categories($categories, $field, $selectedValue, $name, $defaultValue, $defaultText, 0, '', false, false, null, 1, null, '', $lang);
+    }
+
+    public function getName()
+    {
+        return 'zikulacategoriesmodule.twigextension';
     }
 }

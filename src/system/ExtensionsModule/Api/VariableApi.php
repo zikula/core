@@ -27,7 +27,7 @@ class VariableApi
 {
     const CONFIG = 'ZConfig';
 
-    private $isInitialized = false;
+    private $isInitialised = false;
 
     /**
      * @var boolean Site is installed or not
@@ -60,7 +60,8 @@ class VariableApi
     private $request;
 
     /**
-     * ExtensionVar constructor.
+     * VariableApi constructor.
+     *
      * @param $installed
      * @param ExtensionVarRepositoryInterface $repository
      * @param KernelInterface $kernel
@@ -86,11 +87,12 @@ class VariableApi
      *
      * @return void
      */
-    private function initialize()
+    private function initialise()
     {
         if (!$this->installed) {
             return;
         }
+
         // The empty arrays for handlers and settings are required to prevent messages with E_ALL error reporting
         $this->variables = [
             \EventUtil::HANDLERS => [],
@@ -117,7 +119,7 @@ class VariableApi
             }
         }
         // reformat localized variables to primary key for certain system vars.
-        $lang = !empty($this->request) ? $this->request->getLocale() : 'en'; //\ZLanguage::getLanguageCode(); //@todo
+        $lang = !empty($this->request) ? $this->request->getLocale() : 'en';
         $items = ['sitename', 'slogan', 'metakeywords', 'defaultpagetitle', 'defaultmetadescription'];
         foreach ($items as $item) {
             if (isset($this->variables[self::CONFIG][$item . '_en'])) {
@@ -125,7 +127,7 @@ class VariableApi
             }
         }
 
-        $this->isInitialized = true;
+        $this->isInitialised = true;
     }
 
     /**
@@ -142,8 +144,8 @@ class VariableApi
         if (empty($extensionName) || !is_string($extensionName) || empty($variableName) || !is_string($variableName)) {
             throw new \InvalidArgumentException();
         }
-        if (!$this->isInitialized) {
-            $this->initialize();
+        if (!$this->isInitialised) {
+            $this->initialise();
         }
 
         return isset($this->variables[$extensionName]) && array_key_exists($variableName, $this->variables[$extensionName]);
@@ -164,8 +166,8 @@ class VariableApi
         if (empty($extensionName) || !is_string($extensionName) || empty($variableName) || !is_string($variableName)) {
             throw new \InvalidArgumentException();
         }
-        if (!$this->isInitialized) {
-            $this->initialize();
+        if (!$this->isInitialised) {
+            $this->initialise();
         }
 
         if (isset($this->variables[$extensionName]) && array_key_exists($variableName, $this->variables[$extensionName])) {
@@ -201,8 +203,8 @@ class VariableApi
         if (empty($extensionName) || !is_string($extensionName)) {
             throw new \InvalidArgumentException();
         }
-        if (!$this->isInitialized) {
-            $this->initialize();
+        if (!$this->isInitialised) {
+            $this->initialise();
         }
 
         return isset($this->variables[$extensionName]) ? $this->variables[$extensionName] : [];
@@ -223,8 +225,8 @@ class VariableApi
         if (empty($extensionName) || !is_string($extensionName) || empty($variableName) || !is_string($variableName)) {
             throw new \InvalidArgumentException();
         }
-        if (!$this->isInitialized) {
-            $this->initialize();
+        if (!$this->isInitialised) {
+            $this->initialise();
         }
         if ($extensionName == self::CONFIG && in_array($variableName, $this->protectedSystemVars)) {
             return false;
@@ -282,8 +284,8 @@ class VariableApi
         if (empty($extensionName) || !is_string($extensionName) || empty($variableName) || !is_string($variableName)) {
             throw new \InvalidArgumentException();
         }
-        if (!$this->isInitialized) {
-            $this->initialize();
+        if (!$this->isInitialised) {
+            $this->initialise();
         }
 
         if (!isset($this->variables[$extensionName])) {
@@ -308,8 +310,8 @@ class VariableApi
         if (empty($extensionName) || !is_string($extensionName)) {
             throw new \InvalidArgumentException();
         }
-        if (!$this->isInitialized) {
-            $this->initialize();
+        if (!$this->isInitialised) {
+            $this->initialise();
         }
 
         if (array_key_exists($extensionName, $this->variables)) {

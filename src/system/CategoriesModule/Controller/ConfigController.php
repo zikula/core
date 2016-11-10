@@ -50,7 +50,8 @@ class ConfigController extends AbstractController
 
         $form = $this->createForm('Zikula\CategoriesModule\Form\Type\ConfigType',
             $modVars, [
-                'translator' => $this->get('translator.default')
+                'translator' => $this->get('translator.default'),
+                'request' => $request
             ]
         );
 

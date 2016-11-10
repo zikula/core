@@ -14,8 +14,8 @@ namespace Zikula\CategoriesModule\Form\Type;
 use CategoryUtil;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use ZLanguage;
 
 /**
  * Configuration form type class.
@@ -33,7 +33,7 @@ class ConfigType extends AbstractType
             ->add('userrootcat', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Root category for user categories'),
                 'empty_data' => '/__SYSTEM__/Users',
-                'choices' => $this->getCategoryChoices(),
+                'choices' => $this->getCategoryChoices($options['request']),
                 'choices_as_values' => true,
                 'multiple' => false,
                 'expanded' => false,
@@ -106,9 +106,10 @@ class ConfigType extends AbstractType
     /**
      * Returns choices for category selection.
      *
+     * @param Request $request
      * @return array
      */
-    private function getCategoryChoices()
+    private function getCategoryChoices(Request $request)
     {
         $choices = [];
 
@@ -121,7 +122,7 @@ class ConfigType extends AbstractType
         $category = CategoryUtil::getCategoryByID(1);
         $categoryList = CategoryUtil::getSubCategoriesForCategory($category, $recurse, $relative, $includeRoot, $includeLeaf, $all, '', '', null, 'sort_value');
 
-        $lang = ZLanguage::getLanguageCode();
+        $lang = !empty($request) ? $request->getLocale() : 'en';
 
         $line = '---------------------------------------------------------------------';
 
