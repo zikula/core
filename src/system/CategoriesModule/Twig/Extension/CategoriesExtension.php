@@ -13,15 +13,14 @@ namespace Zikula\CategoriesModule\Twig\Extension;
 
 use CategoryUtil;
 use DataUtil;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class CategoriesExtension extends \Twig_Extension
 {
     /**
-     * @var Request
+     * @var RequestStack
      */
-    private $request;
+    private $requestStack;
 
     /**
      * CategoriesExtension constructor.
@@ -30,7 +29,7 @@ class CategoriesExtension extends \Twig_Extension
      */
     public function __construct(RequestStack $requestStack)
     {
-        $this->request = $requestStack->getMasterRequest();
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -164,7 +163,7 @@ class CategoriesExtension extends \Twig_Extension
     public function categorySelector($category = 0, $field = 'id', $name = null, $selectedValue = 0, $defaultValue = 0, $defaultText = '',
         $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true)
     {
-        $lang = !empty($this->request) ? $this->request->getLocale() : 'en';
+        $lang = !empty($this->requestStack->getMasterRequest()) ? $this->requestStack->getMasterRequest()->getLocale() : 'en';
 
         $category = CategoryUtil::getCategoryByID($category);
 

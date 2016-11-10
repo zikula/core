@@ -33,7 +33,7 @@ class ConfigType extends AbstractType
             ->add('userrootcat', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Root category for user categories'),
                 'empty_data' => '/__SYSTEM__/Users',
-                'choices' => $this->getCategoryChoices($options['request']),
+                'choices' => $this->getCategoryChoices($options['locale']),
                 'choices_as_values' => true,
                 'multiple' => false,
                 'expanded' => false,
@@ -99,17 +99,18 @@ class ConfigType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => null
+            'translator' => null,
+            'locale' => 'en'
         ]);
     }
 
     /**
      * Returns choices for category selection.
      *
-     * @param Request $request
+     * @param string $locale
      * @return array
      */
-    private function getCategoryChoices(Request $request)
+    private function getCategoryChoices($locale = '')
     {
         $choices = [];
 
@@ -122,8 +123,6 @@ class ConfigType extends AbstractType
         $category = CategoryUtil::getCategoryByID(1);
         $categoryList = CategoryUtil::getSubCategoriesForCategory($category, $recurse, $relative, $includeRoot, $includeLeaf, $all, '', '', null, 'sort_value');
 
-        $lang = !empty($request) ? $request->getLocale() : 'en';
-
         $line = '---------------------------------------------------------------------';
 
         foreach ($categoryList as $cat) {
@@ -132,8 +131,8 @@ class ConfigType extends AbstractType
             $indent = $amountOfSlashes > 0 ? substr($line, 0, $amountOfSlashes * 2) : '';
             $indent = '|' . $indent;
 
-            if (isset($cat['display_name'][$lang]) && !empty($cat['display_name'][$lang])) {
-                $catName = $cat['display_name'][$lang];
+            if (isset($cat['display_name'][$locale]) && !empty($cat['display_name'][$locale])) {
+                $catName = $cat['display_name'][$locale];
             } else {
                 $catName = $cat['name'];
             }
