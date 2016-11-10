@@ -163,7 +163,7 @@ class CategoriesExtension extends \Twig_Extension
     public function categorySelector($category = 0, $field = 'id', $name = null, $selectedValue = 0, $defaultValue = 0, $defaultText = '',
         $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true)
     {
-        $lang = !empty($this->requestStack->getMasterRequest()) ? $this->requestStack->getMasterRequest()->getLocale() : 'en';
+        $lang = $this->requestStack->getMasterRequest() != '' ? $this->requestStack->getMasterRequest()->getLocale() : 'en';
 
         $category = CategoryUtil::getCategoryByID($category);
 
