@@ -239,9 +239,9 @@ class HtmlUtil
             return __f('Security check failed for %1$s [%2$s] passed to %3$s.', ['modulename', $modname, 'HtmlUtil::getSelector_EntityArray']);
         }
 
-        /** @var $em \Doctrine\ORM\EntityManager */
-        $em = ServiceUtil::get('doctrine.entitymanager');
-        $qb = $em->createQueryBuilder();
+        /** @var $entityManager \Doctrine\ORM\EntityManager */
+        $entityManager = ServiceUtil::get('doctrine.orm.default_entity_manager');
+        $qb = $entityManager->createQueryBuilder();
         $qb->select('e')->from($entity, 'e');
         $dataArray = $qb->getQuery()->getResult(); // array of Entities
         // @todo does not accommodate $sort or $where

@@ -99,7 +99,7 @@ class ExtensionHelper
                 if ($result != $extension->getVersion()) {
                     // update the last successful updated version
                     $extension->setVersion($result);
-                    $serviceManager->get('doctrine.entitymanager')->flush();
+                    $serviceManager->get('doctrine.orm.default_entity_manager')->flush();
                 }
 
                 return false;
@@ -114,7 +114,7 @@ class ExtensionHelper
 
         // update the module with the new version
         $extension->setVersion($modversion['version']);
-        $serviceManager->get('doctrine.entitymanager')->flush();
+        $serviceManager->get('doctrine.orm.default_entity_manager')->flush();
 
         // clear the cache before calling events
         $theme = \Zikula_View_Theme::getInstance();

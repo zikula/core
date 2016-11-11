@@ -93,7 +93,7 @@ abstract class AbstractUserListener implements EventSubscriberInterface
         $uid = $event->getSubject();
     
         $serviceManager = ServiceUtil::getManager();
-        $entityManager = $serviceManager->get('doctrine.entitymanager');
+        $entityManager = $serviceManager->get('doctrine.orm.default_entity_manager');
         $translator = $serviceManager->get('translator.default');
         $logger = $serviceManager->get('logger');
         $currentUserApi = $serviceManager->get('zikula_users_module.current_user');

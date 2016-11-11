@@ -185,14 +185,14 @@ class Zikula_Workflow_Util
          $theModule = isset($module) ? $module : ModUtil::getName();
 
         //This is a static function, so we have to use ServiceUtil to get the entity manager
-        $em = ServiceUtil::getManager()->get('doctrine.entitymanager');
+        $entityManager = ServiceUtil::getManager()->get('doctrine.orm.default_entity_manager');
 
         //create the dql query.
-        $query = $em->createQueryBuilder()
-                    ->delete('Zikula\Core\Doctrine\Entity\WorkflowEntity', 'w')
-                    ->where('w.module = :module')
-                    ->setParameter('module', $theModule)
-                    ->getQuery();
+        $query = $entityManager->createQueryBuilder()
+            ->delete('Zikula\Core\Doctrine\Entity\WorkflowEntity', 'w')
+            ->where('w.module = :module')
+            ->setParameter('module', $theModule)
+            ->getQuery();
 
          $result = $query->execute();
 
@@ -212,14 +212,14 @@ class Zikula_Workflow_Util
         $idColumn = $workflow['obj_idcolumn'];
 
         //This is a static function, so we have to use ServiceUtil to get the entity manager
-        $em = ServiceUtil::getManager()->get('doctrine.entitymanager');
+        $entityManager = ServiceUtil::getManager()->get('doctrine.orm.default_entity_manager');
 
         //create the dql query.
-        $query = $em->createQueryBuilder()
-                    ->delete('Zikula\Core\Doctrine\Entity\WorkflowEntity', 'w')
-                    ->where('w.objIdcolumn = :idColumn')
-                    ->setParameter('idColumn', $idColumn)
-                    ->getQuery();
+        $query = $entityManager->createQueryBuilder()
+            ->delete('Zikula\Core\Doctrine\Entity\WorkflowEntity', 'w')
+            ->where('w.objIdcolumn = :idColumn')
+            ->setParameter('idColumn', $idColumn)
+            ->getQuery();
 
         $result = $query->execute();
 
@@ -369,21 +369,21 @@ class Zikula_Workflow_Util
 
         if (!empty($obj[$idcolumn])) {
             //This is a static function, so we have to user ServiceUtil to get the manager
-            $em = ServiceUtil::getManager()->get('doctrine.entitymanager');
+            $entityManager = ServiceUtil::getManager()->get('doctrine.orm.default_entity_manager');
 
             //build the query and execute
-            $query = $em->createQueryBuilder()
-                         ->select('w')
-                         ->from('Zikula\Core\Doctrine\Entity\WorkflowEntity', 'w')
-                         ->where('w.module = :module')
-                         ->andWhere('w.objIdcolumn = :idcolumn')
-                         ->andWhere('w.objTable = :dbtable')
-                         ->andWhere('w.objId = :id')
-                         ->setParameter('module', $module)
-                         ->setParameter('idcolumn', $idcolumn)
-                         ->setParameter('dbtable', $dbTable)
-                         ->setParameter('id', $obj[$idcolumn])
-                         ->getQuery();
+            $query = $entityManager->createQueryBuilder()
+                ->select('w')
+                ->from('Zikula\Core\Doctrine\Entity\WorkflowEntity', 'w')
+                ->where('w.module = :module')
+                ->andWhere('w.objIdcolumn = :idcolumn')
+                ->andWhere('w.objTable = :dbtable')
+                ->andWhere('w.objId = :id')
+                ->setParameter('module', $module)
+                ->setParameter('idcolumn', $idcolumn)
+                ->setParameter('dbtable', $dbTable)
+                ->setParameter('id', $obj[$idcolumn])
+                ->getQuery();
 
             $workflow = $query->getArrayResult();
             if ($workflow) {

@@ -130,7 +130,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
         $this->dispatcher = $this->getContainer()->get('event_dispatcher');
         $this->eventManager = $this->dispatcher;
         $this->request =  $this->container->get('request');
-        $this->entityManager = $this->getContainer()->get('doctrine.entitymanager');
+        $this->entityManager = $this->getContainer()->get('doctrine.orm.default_entity_manager');
         $this->_configureBase($bundle);
         $this->initialize();
         $this->postInitialize();
@@ -209,7 +209,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      */
     public function getEntityManager()
     {
-        return $this->getContainer()->get('doctrine.entitymanager');
+        return $this->getContainer()->get('doctrine.orm.default_entity_manager');
     }
 
     /**
