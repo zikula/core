@@ -43,3 +43,4 @@ src/system/ThemeModule/EventListener/DefaultPageVarSetterListener.php
  - There is no FC method for determining the language direction line 61
  - There is no FC method for determining the DB charset line 77
  
+Comment to remove later
