@@ -11,15 +11,13 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Install;
 
-use Zikula\Component\Wizard\InjectContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Zikula\Component\Wizard\StageInterface;
-use Zikula\Component\Wizard\WizardCompleteInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Swift_Mailer;
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\Component\Wizard\InjectContainerInterface;
+use Zikula\Component\Wizard\StageInterface;
+use Zikula\Component\Wizard\WizardCompleteInterface;
 
 class CompleteStage implements StageInterface, WizardCompleteInterface, InjectContainerInterface
 {
@@ -52,45 +50,8 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
 
     public function getResponse(Request $request)
     {
-        if ($this->sendEmailToAdmin($request)) {
-            $request->getSession()->getFlashBag()->add('success', __('Congratulations! Zikula has been successfully installed.'));
+        $request->getSession()->getFlashBag()->add('success', __('Congratulations! Zikula has been successfully installed.'));
 
-            return new RedirectResponse($this->container->get('router')->generate('zikulaadminmodule_admin_adminpanel', [], RouterInterface::ABSOLUTE_URL));
-        } else {
-            $request->getSession()->getFlashBag()->add('warning', __('Email settings are not yet configured. Please configure them below.'));
-
-            return new RedirectResponse($this->container->get('router')->generate('zikulamailermodule_config_config', [], RouterInterface::ABSOLUTE_URL));
-        }
-    }
-
-    private function sendEmailToAdmin(Request $request)
-    {
-        $uName = $this->container->get('zikula_users_module.current_user')->get('uname');
-        $email = $this->container->get('zikula_users_module.current_user')->get('email');
-        $fromMail = $this->container->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'adminmail');
-        $url = $request->getSchemeAndHttpHost() . $request->getBasePath();
-
-        $body = <<<EOF
-<html>
-<head></head>
-<body>
-<h1>Hi $uName!</h1>
-<p>Zikula has been successfully installed at <a href="$url">$url</a>. If you have further questions,
-visit <a href="http://zikula.org">zikula.org</a></p>
-</body>
-EOF;
-        $message = \Swift_Message::newInstance()
-            ->setSubject(__('Zikula installation completed!'))
-            ->setFrom($fromMail)
-            ->setTo($email)
-            ->setBody($body)
-            ->setContentType('text/html')
-        ;
-        /**
-         * @var Swift_Mailer
-         */
-        $mailer = $this->container->get('mailer');
-
-        return $mailer->send($message);
+        return new RedirectResponse($this->container->get('router')->generate('zikulaadminmodule_admin_adminpanel', [], RouterInterface::ABSOLUTE_URL));
     }
 }
