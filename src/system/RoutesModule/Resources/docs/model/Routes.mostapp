@@ -1,4 +1,5 @@
 application "Routes" {
+    documentation "Routes management module"
     vendor "Zikula"
     author "Zikula contributors"
     email "support@zikula.org"

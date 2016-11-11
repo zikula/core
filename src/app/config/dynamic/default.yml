@@ -7,7 +7,7 @@ jms_i18n_routing:
     locales: [en]
     strategy: prefix_except_default
 swiftmailer:
-    transport: mail
+    transport: null
     username: ''
     password: ''
     host: 'localhost'
@@ -15,7 +15,7 @@ swiftmailer:
     encryption: null
     auth_mode: null
     delivery_addresses: []
-    disable_delivery: false
+    disable_delivery: true
 parameters:
     zikula.session.name: _zsid
     # multisites configuration does nothing unless the Multisites module is installed and configured properly.
