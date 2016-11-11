@@ -94,6 +94,8 @@ class AjaxInstallController extends AbstractController
                 return $this->installModule('ZikulaRoutesModule');
             case "menu":
                 return $this->installModule('ZikulaMenuModule');
+            case "pagelock":
+                return $this->installModule('ZikulaPageLockModule');
             case "updateadmin":
                 return $this->updateAdmin();
             case "loginadmin":
