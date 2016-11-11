@@ -60,7 +60,8 @@ class VariableApi
     private $request;
 
     /**
-     * ExtensionVar constructor.
+     * VariableApi constructor.
+     *
      * @param $installed
      * @param ExtensionVarRepositoryInterface $repository
      * @param KernelInterface $kernel
@@ -91,6 +92,7 @@ class VariableApi
         if (!$this->installed) {
             return;
         }
+
         // The empty arrays for handlers and settings are required to prevent messages with E_ALL error reporting
         $this->variables = [
             \EventUtil::HANDLERS => [],
@@ -117,7 +119,7 @@ class VariableApi
             }
         }
         // reformat localized variables to primary key for certain system vars.
-        $lang = !empty($this->request) ? $this->request->getLocale() : 'en'; //\ZLanguage::getLanguageCode(); //@todo
+        $lang = !empty($this->request) ? $this->request->getLocale() : 'en';
         $items = ['sitename', 'slogan', 'metakeywords', 'defaultpagetitle', 'defaultmetadescription'];
         foreach ($items as $item) {
             if (isset($this->variables[self::CONFIG][$item . '_en'])) {

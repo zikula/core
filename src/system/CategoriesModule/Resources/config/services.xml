@@ -17,6 +17,7 @@
         </service>
 
         <service id="twig.extension.zikula_categories_module" class="%twig.extension.zikula_categories_module.class%" public="true">
+            <argument type="service" id="request_stack" />
             <tag name="twig.extension" />
         </service>
     </services>
