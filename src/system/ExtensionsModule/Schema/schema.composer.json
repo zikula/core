@@ -1,0 +1,91 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "ZikulaComposer",
+    "description": "Zikula Extension composer.json",
+    "type": "object",
+    "properties": {
+        "name": {"type": "string"},
+        "version": {"type": "string"},
+        "description": {"type": "string"},
+        "type": {
+            "type": "string",
+            "enum": ["zikula-module", "zikula-theme"]
+        },
+        "license": {
+            "type": ["string", "array"],
+            "minItems": 1
+        },
+        "authors": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "name": {"type": "string"},
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "homepage": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "role": {"type": "string"}
+                },
+                "required": ["name"]
+            },
+            "uniqueItems": true
+        },
+        "autoload": {
+            "type": "object",
+            "description": "Description of how the package can be autoloaded.",
+            "properties": {
+                "psr-4": {
+                    "type": "object",
+                    "additionalProperties": true
+                }
+            },
+            "required": ["psr-4"]
+        },
+        "require": {
+            "type": "object",
+            "additionalProperties": true
+        },
+        "require-dev": {
+            "type": "object",
+            "additionalProperties": true
+        },
+        "suggest": {
+            "type": "object",
+            "additionalProperties": true
+        },
+        "extra": {
+            "type": "object",
+            "properties": {
+                "zikula": {
+                    "type": "object",
+                    "properties": {
+                        "core-compatibility": {"type": "string"},
+                        "class": {"type": "string"},
+                        "displayname": {"type": "string"},
+                        "url": {"type": "string"},
+                        "oldnames": {"type": "array"},
+                        "capabilities": {
+                            "type": "object",
+                            "additionalProperties": true
+                        },
+                        "securityschema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "required": ["class"],
+                    "additionalProperties": false
+                }
+            },
+            "required": ["zikula"],
+            "additionalProperties": true
+        }
+    },
+    "required": ["name", "description", "type", "license", "authors", "require", "extra"]
+}

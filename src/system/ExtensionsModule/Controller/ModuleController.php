@@ -69,8 +69,9 @@ class ModuleController extends AbstractController
         $this->get('event_dispatcher')->dispatch(ExtensionEvents::REGENERATE_VETO, $vetoEvent);
         if (!$vetoEvent->isPropagationStopped() && $pos == 1) {
             // regenerate the extension list only when viewing the first page
-            $extensionsInFileSystem = $this->get('zikula_extensions_module.bundle_sync_helper')->scanForBundles();
-            $upgradedExtensions = $this->get('zikula_extensions_module.bundle_sync_helper')->syncExtensions($extensionsInFileSystem);
+            $bundleSyncHelper = $this->get('zikula_extensions_module.bundle_sync_helper');
+            $extensionsInFileSystem = $bundleSyncHelper->scanForBundles();
+            $upgradedExtensions = $bundleSyncHelper->syncExtensions($extensionsInFileSystem);
         }
 
         $pagedResult = $this->getDoctrine()->getManager()

@@ -84,6 +84,7 @@
         "afarkas/html5shiv": "3.7.*",
 
 
+        "justinrainbow/json-schema": "4.*",
         "ramsey/array_column": "1.1.*",
         "beberlei/DoctrineExtensions": "v0.3",
         "drak/doctrine1": "dev-master",

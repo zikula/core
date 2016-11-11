@@ -12,10 +12,36 @@
 namespace Zikula\Bundle\CoreBundle\Bundle;
 
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Zikula\ExtensionsModule\Helper\ComposerValidationHelper;
 
 class Scanner
 {
     private $jsons = [];
+
+    /**
+     * @var ComposerValidationHelper
+     */
+    private $composerValidationHelper;
+
+    /**
+     * @var SessionInterface
+     */
+    protected $session;
+
+    /**
+     * Scanner constructor.
+     *
+     * @param ComposerValidationHelper $composerValidationHelper Composer validation helper (optional)
+     * @param SessionInterface $session
+     */
+    public function __construct(ComposerValidationHelper $composerValidationHelper = null, SessionInterface $session = null)
+    {
+        $this->composerValidationHelper = $composerValidationHelper;
+        $this->session = $session;
+    }
+
 
     /**
      * Scans and loads composer.json files.
@@ -38,9 +64,18 @@ class Scanner
             ->depth('<' . $depth)
             ->name('composer.json');
 
-        /** @var $f \SplFileInfo */
-        foreach ($finder as $f) {
-            $json = $this->decode($f->getRealPath());
+        /** @var $file SplFileInfo */
+        foreach ($finder as $file) {
+            if (null !== $this->composerValidationHelper) {
+                $this->composerValidationHelper->check($file);
+                if (!$this->composerValidationHelper->isValid()) {
+                    foreach ($this->composerValidationHelper->getErrors() as $errorMessage) {
+                        $this->session->getFlashBag()->add('error', $errorMessage);
+                    }
+                }
+            }
+
+            $json = $this->decode($file->getRealPath());
             if (false !== $json) {
                 $this->jsons[$json['name']] = $json;
             }
@@ -106,11 +141,13 @@ class Scanner
         return $this->getMetaData('zikula-theme', $indexByShortName);
     }
 
+    // @todo remove for 2.0
     public function getPluginsMetaData($indexByShortName = false)
     {
         return $this->getMetaData('zikula-plugin', $indexByShortName);
     }
 
+    // @todo this can probably be removed in favour of ComposerValidationHelper
     private function validateBasic($json)
     {
         if (!isset($json['type'])) {
@@ -120,12 +157,14 @@ class Scanner
         switch ($json['type']) {
             case 'zikula-module':
             case 'zikula-theme':
+            // @todo remove for 2.0
             case 'zikula-plugin':
                 break;
             default:
                 return false;
         }
 
+        // @todo remove psr-0 for 2.0
         if (!isset($json['autoload']['psr-0']) && !isset($json['autoload']['psr-4'])) {
             return false;
         }
