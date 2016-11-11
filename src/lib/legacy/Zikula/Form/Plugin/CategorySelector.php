@@ -235,14 +235,14 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
             $entityClass = get_class($entity);
 
             // load category from db
-            $em = ServiceUtil::getService('doctrine.entitymanager');
+            $entityManager = ServiceUtil::getService('doctrine.orm.default_entity_manager');
 
-            $collection = $em->getClassMetadata($entityClass)
-                             ->getFieldValue($entity, $this->dataField);
+            $collection = $entityManager->getClassMetadata($entityClass)
+                ->getFieldValue($entity, $this->dataField);
 
             if (!$collection) {
                 $collection = new \Doctrine\Common\Collections\ArrayCollection();
-                $em->getClassMetadata($entityClass)
+                $entityManager->getClassMetadata($entityClass)
                    ->setFieldValue($entity, $this->dataField, $collection);
             }
 

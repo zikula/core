@@ -101,9 +101,9 @@ class ThemeUtil
         $key = md5((string)$filter . (string)$state . (string)$type);
 
         if (empty($themesarray[$key])) {
-            /** @var $em Doctrine\ORM\EntityManager */
-            $em = ServiceUtil::get('doctrine.entitymanager');
-            $qb = $em->createQueryBuilder()
+            /** @var $entityManager Doctrine\ORM\EntityManager */
+            $entityManager = ServiceUtil::get('doctrine.orm.default_entity_manager');
+            $qb = $entityManager->createQueryBuilder()
                      ->select('t')
                      ->from('ZikulaThemeModule:ThemeEntity', 't');
 
@@ -242,10 +242,10 @@ class ThemeUtil
     {
         static $themestable;
         if (!isset($themestable) || System::isInstalling()) {
-            /** @var $em Doctrine\ORM\EntityManager */
-            $em = ServiceUtil::get('doctrine.entitymanager');
+            /** @var $entityManager Doctrine\ORM\EntityManager */
+            $entityManager = ServiceUtil::get('doctrine.orm.default_entity_manager');
             /** @var $array ThemeEntity[] */
-            $array = $em->getRepository('ZikulaThemeModule:ThemeEntity')->findAll();
+            $array = $entityManager->getRepository('ZikulaThemeModule:ThemeEntity')->findAll();
             foreach ($array as $theme) {
                 $theme = $theme->toArray();
                 $theme['i18n'] = (is_dir("themes/$theme[directory]/locale") || is_dir("themes/$theme[directory]/Resources/locale") ? 1 : 0);

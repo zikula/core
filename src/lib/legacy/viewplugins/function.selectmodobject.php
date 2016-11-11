@@ -87,7 +87,7 @@ function smarty_function_selectmodobject($params, Zikula_View $view)
             }
         } else {
             /** @var $em Doctrine\ORM\EntityManager */
-            $em = \ServiceUtil::get('doctrine.entitymanager');
+            $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
             $result = $em->getRepository($params['recordClass'])->find($params['id']);
             $objectData = $result->toArray();
         }

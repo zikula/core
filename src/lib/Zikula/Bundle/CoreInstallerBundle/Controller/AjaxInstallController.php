@@ -241,7 +241,7 @@ class AjaxInstallController extends AbstractController
      */
     private function updateAdmin()
     {
-        $em = $this->container->get('doctrine.entitymanager');
+        $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
         $params = $this->decodeParameters($this->yamlManager->getParameters());
 
         // @todo this must be updated to use ZAuth
@@ -256,16 +256,16 @@ class AjaxInstallController extends AbstractController
         $nowUTCStr = $nowUTC->format(UsersConstant::DATETIME_FORMAT);
 
         /** @var \Zikula\UsersModule\Entity\UserEntity $entity */
-        $entity = $em->find('ZikulaUsersModule:UserEntity', 2);
+        $entity = $entityManager->find('ZikulaUsersModule:UserEntity', 2);
         $entity->setUname($username);
         $entity->setEmail($params['email']);
         $entity->setPass($password);
         $entity->setActivated(1);
         $entity->setUser_Regdate($nowUTCStr);
         $entity->setLastlogin($nowUTCStr);
-        $em->persist($entity);
+        $entityManager->persist($entity);
 
-        $em->flush();
+        $entityManager->flush();
 
         return true;
     }

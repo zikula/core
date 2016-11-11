@@ -180,7 +180,7 @@ class BlockUtil
         $content = '';
         $blockInstance = self::load($modname, $blockname);
         $displayfunc = [$blockInstance, 'display'];
-        $blockEntity = isset($blockEntity) ? $blockEntity : ServiceUtil::get('doctrine.entitymanager')->find('Zikula\BlocksModule\Entity\BlockEntity', $blockinfo['bid']);
+        $blockEntity = isset($blockEntity) ? $blockEntity : ServiceUtil::get('doctrine.orm.default_entity_manager')->find('Zikula\BlocksModule\Entity\BlockEntity', $blockinfo['bid']);
         if ($blockInstance instanceof BlockHandlerInterface) {
             $instanceArgs = $blockEntity->getContent();
             $instanceArgs['bid'] = $blockEntity->getBid();
@@ -401,7 +401,7 @@ class BlockUtil
         if (UserUtil::isLoggedIn()) {
             $uid = UserUtil::getVar('uid');
             $sm = ServiceUtil::getManager();
-            $entityManager = $sm->get('doctrine.entitymanager');
+            $entityManager = $sm->get('doctrine.orm.default_entity_manager');
             $item = $entityManager->getRepository('ZikulaBlocksModule:UserBlockEntity')->findOneBy(['uid' => $uid, 'bid' => $blockinfo['bid']]);
             if (!$item) {
                 $item = new \Zikula\BlocksModule\Entity\UserBlockEntity();

@@ -41,7 +41,7 @@ class GenericUtil
         }
 
         // get entity manager
-        $entityManager = \ServiceUtil::get('doctrine.entitymanager');
+        $entityManager = \ServiceUtil::get('doctrine.orm.default_entity_manager');
 
         // process name
         $data['name'] = self::processCategoryName($data['name']);
@@ -92,7 +92,7 @@ class GenericUtil
      */
     public static function processCategoryParent($parent_id)
     {
-        $entityManager = \ServiceUtil::get('doctrine.entitymanager');
+        $entityManager = \ServiceUtil::get('doctrine.orm.default_entity_manager');
 
         return $entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $parent_id);
     }
@@ -183,7 +183,7 @@ class GenericUtil
     public static function mayCategoryBeDeletedOrMoved($category)
     {
         // get entity manager
-        $entityManager = \ServiceUtil::get('doctrine.entitymanager');
+        $entityManager = \ServiceUtil::get('doctrine.orm.default_entity_manager');
 
         // check legacy table first (as this is quickly done)
         $legacyMappings = $entityManager->getRepository('ZikulaCategoriesModule:CategoriesMapobj')
