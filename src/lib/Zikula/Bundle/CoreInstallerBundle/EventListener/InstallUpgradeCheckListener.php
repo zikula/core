@@ -13,7 +13,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Request\Request;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Zikula\Bundle\CoreInstallerBundle\Util\VersionUtil;
 use Zikula\Core\Event\GenericEvent;

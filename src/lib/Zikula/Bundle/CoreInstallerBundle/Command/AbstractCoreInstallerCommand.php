@@ -14,7 +14,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Command;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request\Request;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NullSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Zikula\Common\Translator\TranslatorInterface;
