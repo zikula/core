@@ -21,7 +21,6 @@
         <parameter key="zikula_core.internal.clickjack_protection_listener.class">Zikula\Bundle\CoreBundle\EventListener\ClickjackProtectionListener</parameter>
         <parameter key="zikula_core.internal.site_off_listener.class">Zikula\Bundle\CoreBundle\EventListener\SiteOffListener</parameter>
         <parameter key="zikula_core.internal.session_expire_listener.class">Zikula\Bundle\CoreBundle\EventListener\SessionExpireListener</parameter>
-        <parameter key="router_listener.class">Zikula\Bundle\CoreBundle\EventListener\RouterListener</parameter>
         <parameter key="zikula_core.internal.exception_listener.class">Zikula\Bundle\CoreBundle\EventListener\ExceptionListener</parameter>
         <parameter key="zikula_core.internal.output_compression_listener.class">Zikula\Bundle\CoreBundle\EventListener\OutputCompressionListener</parameter>
         <parameter key="zikula_core.internal.strip_front_controller_listener.class">Zikula\Bundle\CoreBundle\EventListener\StripFrontControllerListener</parameter>
