@@ -176,7 +176,7 @@ class ComposerValidationHelper
      */
     public function isValid()
     {
-        return (count($this->getErrors()) < 1);
+        return count($this->getErrors()) < 1;
     }
 
     /**
