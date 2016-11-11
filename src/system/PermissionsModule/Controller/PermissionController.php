@@ -118,7 +118,7 @@ class PermissionController extends AbstractController
         $templateParameters = [
             'form' => $form->createView(),
         ];
-        $view = $this->renderView("@ZikulaPermissionsModule/Permission/Permission.html.twig", $templateParameters);
+        $view = $this->renderView("@ZikulaPermissionsModule/Permission/permission.html.twig", $templateParameters);
 
         return new AjaxResponse(['view' => $view]);
     }
