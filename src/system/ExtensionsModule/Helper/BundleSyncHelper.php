@@ -28,7 +28,6 @@ use Zikula\ExtensionsModule\Entity\Repository\ExtensionDependencyRepository;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository;
 use Zikula\ExtensionsModule\ExtensionEvents;
-use Zikula\ExtensionsModule\Helper\ComposerValidationHelper;
 use Zikula\ExtensionsModule\Helper\Legacy\BundleSyncHelper as LegacyBundleSyncHelper;
 
 /**

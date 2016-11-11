@@ -42,7 +42,6 @@ class Scanner
         $this->session = $session;
     }
 
-
     /**
      * Scans and loads composer.json files.
      *

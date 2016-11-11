@@ -106,7 +106,7 @@ class ComposerValidationHelper
         // because if a composer file is invalid the bundle is not detected
         // so we can not use AbstractBundle methods here
         $pathParts = explode('/', $file->getRelativePath());
-        $this->bundleName = $pathParts[count($pathParts)-1];
+        $this->bundleName = $pathParts[count($pathParts) - 1];
 
         if (strtolower(substr($this->bundleName, -6)) != 'module' && strtolower(substr($this->bundleName, -5)) != 'theme') {
             $this->errors[] = $this->__f('Invalid bundle type detected for component %component.', ['%component' => $this->bundleName]);
@@ -152,7 +152,7 @@ class ComposerValidationHelper
         $schemaPath = $this->kernel->getModule('ZikulaExtensionsModule')->getPath() . '/Schema/schema.composer.json';
 
         // Get the schema and data as objects
-        $retriever = new UriRetriever;
+        $retriever = new UriRetriever();
         $schemaFile = $retriever->retrieve('file://' . realpath($schemaPath));
 
         // Validate
