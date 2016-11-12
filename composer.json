@@ -82,6 +82,7 @@
         "twitter/typeahead.js": "~0.11.1",
         "vakata/jstree": "3.*",
         "afarkas/html5shiv": "3.7.*",
+        "jquery.mmenu": "5.*",
 
 
         "justinrainbow/json-schema": "4.*",
@@ -136,6 +137,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/zikula-modules/Profile"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/FrDH/jQuery.mmenu"
         }
     ]
 }
