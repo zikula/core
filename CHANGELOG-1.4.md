@@ -37,21 +37,22 @@ CHANGELOG - ZIKULA 1.4.x
  - Vendor updates:
     - doctrine dbal updated from 2.5.4 to 2.5.5
     - doctrine orm updated from 2.5.4 to 2.5.5
+    - font-awesome updated from 4.6.3 to 4.7.0
     - gedmo/doctrine-extensions updates from 2.4.22 to 2.4.24
+    - jquery.mmenu updated from 5.6.3 to 5.7.6
     - jquery ui updates from 1.12.0.1 to 1.12.1
+    - justinrainbow/json-schema added in version 4.0.1
+    - jstree updated from 3.3.2 to 3.3.3
+    - knp-menu installed at version 2.2.0
+    - knp-menu-bundle installed at version 2.1.3
+    - liip/imagine-bundle installed at 1.6.0
     - psr log updated from 1.0.0 to 1.0.2
     - sensio distribution bundle updated from 5.0.8 to 5.0.14
     - sensio generator bundle updated from 3.0.7 to 3.0.11
     - sensiolabs security checker updated from 3.0.2 to 4.0.0
     - symfony updated from 2.8.9 to 2.8.13
-    - symfony service definition validator updates from 1.2.5 to 1.2.6
+    - symfony service definition validator updated from 1.2.5 to 1.2.6
     - twig updated from 1.24.1 to 1.27.0
-    - knp-menu installed at version 2.2.0
-    - knp-menu-bundle installed at version 2.1.3
-    - liip/imagine-bundle installed at 1.6.0
-    - font-awesome updated from 4.6.3 to 4.7.0
-    - added justinrainbow/json-schema 4.0.1
-    - jstree updated from 3.3.2 to 3.3.3
 
 * 1.4.3 (2016-09-02)
 
@@ -265,7 +266,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Doctrine ORM updated to 2.5.x. (#2613)
         - Includes 'minor' security fix for local access exploits. see http://www.doctrine-project.org/2015/08/31/doctrine_orm_2_5_1_and_2_4_8_released.html
     - Doctrine Bundle updated to 1.5.x (#2614)
-    - JQuery MMenu updated to 5.5.1 to fix Prototype compatibility.
+    - jQuery.mmenu updated to 5.5.1 to fix Prototype compatibility.
     - jsTree updated to latest 3.x version (#2616)
     - php-markdown updated to 1.5.x (#2617)
 
@@ -395,7 +396,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Added view plugin {langchange} for switching language, function with shorturls enabled (#2364)
     - Added view plugin {moduleheader} to unify module headers and make styling at one place - moduleheader.tpl (#2372).
     - Added support Webshim, which is a polyfill library that enables you to reliably use HTML5 features across browsers, even if native support is lacking. (#2377)
-    - Added mmenu js library and smarty template plugin to create a hidden admin panel
+    - Added jQuery.mmenu js library and smarty template plugin to create a hidden admin panel
     - Added several Twig tags and filters to duplicate some legacy functionality
     - Added automatic form-theming (bootstrap-style) for Twig-based admin forms
     - Hooks methods moved from event Listener to standard Controller method and given a true route
