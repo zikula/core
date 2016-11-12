@@ -112,6 +112,17 @@ class CategoryUtil
         // convert to array
         $cat = $category->toArray();
 
+        // set name and description by languages if not set
+        $languages = ZLanguage::getInstalledLanguages();
+        foreach ($languages as $lang) {
+            if (!isset($cat['display_name'][$lang])) {
+                $cat['display_name'][$lang] = isset($cat['display_name']['en']) ? $cat['display_name']['en'] : '';
+            }
+            if (!isset($cat['display_desc'][$lang])) {
+                $cat['display_desc'][$lang] = isset($cat['display_desc']['en']) ? $cat['display_desc']['en'] : '';
+            }
+        }
+
         // assign parent_id
         // this makes the rootcat's parent 0 as it's stored as null in the database
         $cat['parent_id'] = (null === $cat['parent']) ? null : $category['parent']->getId();
@@ -162,8 +173,19 @@ class CategoryUtil
         $categories = $query->getResult();
 
         $cats = [];
+        $languages = ZLanguage::getInstalledLanguages();
         foreach ($categories as $category) {
             $cat = $category->toArray();
+
+            // set name and description by languages if not set
+            foreach ($languages as $lang) {
+                if (!isset($cat['display_name'][$lang])) {
+                    $cat['display_name'][$lang] = isset($cat['display_name']['en']) ? $cat['display_name']['en'] : '';
+                }
+                if (!isset($cat['display_desc'][$lang])) {
+                    $cat['display_desc'][$lang] = isset($cat['display_desc']['en']) ? $cat['display_desc']['en'] : '';
+                }
+            }
 
             // this makes the rotocat's parent 0 as it's stored as null in the database
             $cat['parent_id'] = (null === $cat['parent']) ? null : $category['parent']->getId();
