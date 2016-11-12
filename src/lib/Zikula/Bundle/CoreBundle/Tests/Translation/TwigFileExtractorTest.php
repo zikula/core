@@ -42,19 +42,19 @@ class TwigFileExtractorTest extends KernelTestCase
         $fileSourceFactory = $this->getFileSourceFactory();
         $fixtureSplInfo = new \SplFileInfo('/' . __DIR__ . '/Fixture/simple_template.html.twig'); // extra slash in path is necessary :(
 
-        $message = new Message('text1');
+        $message = new Message('text1', 'zikula');
         $message->addSource($fileSourceFactory->create($fixtureSplInfo, 1));
         $expected->add($message);
 
-        $message = new Message('text2 %s');
+        $message = new Message('text2 %s', 'zikula');
         $message->addSource($fileSourceFactory->create($fixtureSplInfo, 3));
         $expected->add($message);
 
-        $message = new Message('text3|text3s');
+        $message = new Message('text3|text3s', 'zikula');
         $message->addSource($fileSourceFactory->create($fixtureSplInfo, 5));
         $expected->add($message);
 
-        $message = new Message('text4 %s|text4s %s');
+        $message = new Message('text4 %s|text4s %s', 'zikula');
         $message->addSource($fileSourceFactory->create($fixtureSplInfo, 7));
         $expected->add($message);
 
@@ -74,15 +74,15 @@ class TwigFileExtractorTest extends KernelTestCase
         $message->addSource($fileSourceFactory->create($fixtureSplInfo, 15));
         $expected->add($message);
 
-        $message = new Message('bar');
+        $message = new Message('bar', 'zikula');
         $message->addSource($fileSourceFactory->create($fixtureSplInfo, 17));
         $expected->add($message);
 
-        $message = new Message('foo');
+        $message = new Message('foo', 'zikula');
         $message->addSource($fileSourceFactory->create($fixtureSplInfo, 19));
         $expected->add($message);
 
-        $message = new Message('foo is foo');
+        $message = new Message('foo is foo', 'zikula');
         $message->addSource($fileSourceFactory->create($fixtureSplInfo, 19));
         $expected->add($message);
 
@@ -95,15 +95,15 @@ class TwigFileExtractorTest extends KernelTestCase
         $fileSourceFactory = $this->getFileSourceFactory();
         $fixtureSplInfo = new \SplFileInfo('/' . __DIR__ . '/Fixture/delete.html.twig');  // extra slash in path is necessary :(
 
-        $message = new Message('Delete block position');
+        $message = new Message('Delete block position', 'zikula');
         $message->addSource($fileSourceFactory->create($fixtureSplInfo, 9));
         $expected->add($message);
 
-        $message = new Message("Delete block position");
+        $message = new Message("Delete block position", 'zikula');
         $message->addSource($fileSourceFactory->create($fixtureSplInfo, 10));
         $expected->add($message);
 
-        $message = new Message('Do you really want to delete position \'%name%\'?');
+        $message = new Message('Do you really want to delete position \'%name%\'?', 'zikula');
         $message->addSource($fileSourceFactory->create($fixtureSplInfo, 13));
         $expected->add($message);
 

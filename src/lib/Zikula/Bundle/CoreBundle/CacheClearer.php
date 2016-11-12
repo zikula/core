@@ -65,6 +65,9 @@ class CacheClearer
                 $cacheFolder . $kernelContainerClass . 'Compiler.log',
                 $cacheFolder . 'classes.map'
             ],
+            'symfony.translations' => [
+                $cacheFolder . '/translations'
+            ],
             'twig' => [
                 $cacheFolder . 'twig'
             ],

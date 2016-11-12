@@ -241,7 +241,7 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
     {
         $message = $this->chooseMessage($m1, $m2, $n, $domain);
 
-        return $this->transChoice($message, $n, [], $domain, $locale);
+        return $this->transChoice($message, $n, ['%count%' => $n], $domain, $locale);
     }
 
     /**
@@ -272,6 +272,7 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
     public function _fn($m1, $m2, $n, array $param, $domain = null, $locale = null)
     {
         $message = $this->chooseMessage($m1, $m2, $n, $domain);
+        $param['%count%'] = $n;
 
         return $this->transChoice($message, $n, $param, $domain, $locale);
     }

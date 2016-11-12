@@ -20,7 +20,8 @@ CHANGELOG - ZIKULA 1.4.x
     - Fixed admin icon determination for legacy modules (#3108).
     - Fixed several regressions in SecurityCenter module.
     - Fixed problem in DataUtil::formatForDisplayHTML for proper handling of data-* attributes.
-    - Fixed regression in argument typehints in UserUtil (#3123)
+    - Fixed regression in argument typehints in UserUtil (#3123).
+    - Fixed some problems with the Zikula Symfony Translator (#3161).
 
  - Core-2.0 Features:
     - Added mailProtect filter for safe display of email addresses in Twig templates (#3041).
@@ -29,7 +30,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Added new core module: MenuModule for implementing menus of any kind (#3082).
     - Added Twig filters profileLinkByUserName and profileLinkByUserId (#3079).
     - Added LocaleApi for access to locale definitions.
-    - Added Asset merger feature for twig themes (#2912, #3138)
+    - Added Asset merger feature for twig themes (#2912, #3138).
 
  - Vendor updates:
     - doctrine dbal updated from 2.5.4 to 2.5.5

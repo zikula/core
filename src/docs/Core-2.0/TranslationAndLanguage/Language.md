@@ -1,4 +1,5 @@
 notes:
+------
 
 ZLanguage::getLanguageCode() is replaced by $request->getLocale()
 

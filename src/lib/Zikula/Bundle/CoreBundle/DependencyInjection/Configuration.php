@@ -46,7 +46,7 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function addTranslatorSection(ArrayNodeDefinition $rootNode)
+    protected function addTranslatorSection(ArrayNodeDefinition $rootNode)
     {
         $rootNode
         ->children()
