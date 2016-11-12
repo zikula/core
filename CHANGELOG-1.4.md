@@ -34,7 +34,6 @@ CHANGELOG - ZIKULA 1.4.x
     - Added validation of extension composer files (#2669, #3151)
 
  - Vendor updates:
-    - assetic updated from 1.3.2 to 1.4.0
     - doctrine dbal updated from 2.5.4 to 2.5.5
     - doctrine orm updated from 2.5.4 to 2.5.5
     - font-awesome updated from 4.6.3 to 4.7.0
