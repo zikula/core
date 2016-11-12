@@ -37,6 +37,8 @@
             <argument type="service" id="zikula_theme_module.theme_entity.repository" />
             <argument type="service" id="zikula_core.internal.bootstrap_helper" />
             <argument type="service" id="translator.default" />
+            <argument type="service" id="zikula_extensions_module.composer_validation_helper" />
+            <argument type="service" id="session" />
         </service>
     </services>
 </container>
