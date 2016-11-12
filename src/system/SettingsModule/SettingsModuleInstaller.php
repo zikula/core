@@ -170,7 +170,9 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                 $newStargArgs = str_replace(',', '&', $this->getSystemVar('startargs')); // replace comma with `&`
                 $this->setSystemVar('startargs', $newStargArgs);
             case '2.9.11':
-                $this->setSystemVar('shorturls', (bool)$this->getSystemVar('shorturls'));
+                $this->setSystemVar('shorturls', (bool) $this->getSystemVar('shorturls'));
+                $this->setSystemVar('shorturlsstripentrypoint', (bool) $this->getSystemVar('shorturlsstripentrypoint'));
+                $this->setSystemVar('useCompression', (bool) $this->getSystemVar('useCompression'));
             case '2.9.12': // ship with Core-1.4.4
                 // current version
         }
