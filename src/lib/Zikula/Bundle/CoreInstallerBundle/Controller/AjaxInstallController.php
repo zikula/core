@@ -179,7 +179,7 @@ class AjaxInstallController extends AbstractController
         /** @var ExtensionEntity[] $extensions */
         $extensions = $this->container->get('zikula_extensions_module.extension_repository')->findAll();
         foreach ($extensions as $extension) {
-            if (\ZikulaKernel::isCoreModule($extension->getName())) {
+            if ($extension->getName() != 'ZikulaPageLockModule' && \ZikulaKernel::isCoreModule($extension->getName())) {
                 $extension->setState(ExtensionApi::STATE_ACTIVE);
             }
         }
