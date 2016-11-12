@@ -9,7 +9,7 @@
         "description": {"type": "string"},
         "type": {
             "type": "string",
-            "enum": ["zikula-module", "zikula-theme"]
+            "enum": ["zikula-module", "zikula-theme", "zikula-plugin"]
         },
         "license": {
             "type": ["string", "array"],
@@ -40,12 +40,15 @@
             "type": "object",
             "description": "Description of how the package can be autoloaded.",
             "properties": {
+                "psr-0": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
                 "psr-4": {
                     "type": "object",
                     "additionalProperties": true
                 }
-            },
-            "required": ["psr-4"]
+            }
         },
         "require": {
             "type": "object",
