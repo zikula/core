@@ -1,0 +1,5 @@
+msgid "text.apples_remaining"
+msgstr "{0} There is no apple|{1} There is one apple|]1,Inf] There are %count% apples (messages.en.po)"
+
+msgid "text.foo"
+msgstr "foobar"

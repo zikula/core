@@ -33,3 +33,4 @@
 /.vagrant
 
 !/test_dbs/*.sql
+/src/lib/Zikula/Bundle/CoreBundle/Tests/Functional/cache/
