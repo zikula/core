@@ -9,7 +9,7 @@
         "description": {"type": "string"},
         "type": {
             "type": "string",
-            "enum": ["zikula-module", "zikula-theme", "zikula-plugin"]
+            "enum": ["zikula-module", "zikula-theme"]
         },
         "license": {
             "type": ["string", "array"],
