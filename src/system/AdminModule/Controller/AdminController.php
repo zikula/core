@@ -333,7 +333,7 @@ class AdminController extends AbstractController
                 $links = (false == $linkCollection)
                     ? (array) ModUtil::apiFunc($adminModule['name'], 'admin', 'getLinks')
                     : $linkCollection
-                    ;
+                ;
 
                 $adminLinks[] = [
                     'menuTextUrl' => $menuTextUrl,

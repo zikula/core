@@ -1912,7 +1912,7 @@ class ModUtil
      */
     public static function getModuleBaseDir($moduleName)
     {
-        if (in_array(strtolower($moduleName), ['zikulaadminmodule', 'zikulablocksmodule', 'zikulacategoriesmodule', 'zikularoutesmodule', 'zikulaextensionsmodule', 'zikulagroupsmodule', 'zikulamailermodule', 'zikulapagelockmodule', 'zikulapermissionsmodule', 'zikulasearchmodule', 'zikulasecuritycentermodule', 'zikulasettingsmodule', 'zikulathememodule', 'zikulausersmodule', 'zikulazauthmodule'])) {
+        if (in_array(strtolower($moduleName), ['zikulaadminmodule', 'zikulablocksmodule', 'zikulacategoriesmodule', 'zikularoutesmodule', 'zikulaextensionsmodule', 'zikulagroupsmodule', 'zikulamailermodule', 'zikulamenumodule', 'zikulapagelockmodule', 'zikulapermissionsmodule', 'zikulasearchmodule', 'zikulasecuritycentermodule', 'zikulasettingsmodule', 'zikulathememodule', 'zikulausersmodule', 'zikulazauthmodule'])) {
             $directory = 'system';
         } else {
             $directory = 'modules';
