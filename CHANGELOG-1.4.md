@@ -19,9 +19,10 @@ CHANGELOG - ZIKULA 1.4.x
     - Fixed disabling mailer (setting to debug mode) (#3100, #3107).
     - Fixed admin icon determination for legacy modules (#3108).
     - Fixed several regressions in SecurityCenter module.
-    - Fixed problem in DataUtil::formatForDisplayHTML for proper handling of data-* attributes.
+    - Fixed problem in DataUtil::formatForDisplayHTML for proper handling of data- * attributes.
     - Fixed regression in argument typehints in UserUtil (#3123).
     - Fixed some problems with the Zikula Symfony Translator (#3161).
+    - Fixed upgrade in Settings module for shorturl value to boolean (#3166).
 
  - Core-2.0 Features:
     - Added mailProtect filter for safe display of email addresses in Twig templates (#3041).

@@ -1,6 +1,6 @@
 {
     "name": "zikula/settings-module",
-    "version": "2.9.11",
+    "version": "2.9.12",
     "description": "System Settings Administration Module",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
