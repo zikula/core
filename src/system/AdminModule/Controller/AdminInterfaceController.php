@@ -106,8 +106,12 @@ class AdminInterfaceController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $modvars = $this->get('zikula_extensions_module.api.variable')->getAll('ZikulaThemeModule');
         $data = [];
+
+        $mailerParameters = $this->get('zikula.dynamic_config_dumper')->getConfiguration('swiftmailer');
+        $data['mailerEnabled'] = (null !== $mailerParameters['transport'] && false === $mailerParameters['disable_delivery']);
+
+        $modvars = $this->get('zikula_extensions_module.api.variable')->getAll('ZikulaThemeModule');
         $data['mode'] = $this->get('kernel')->getEnvironment();
         if ($data['mode'] != 'prod') {
             $data['debug'] = $this->get('kernel')->isDebug() ? $this->__('Yes') : $this->__('No');

@@ -41,7 +41,9 @@ class ConfigController extends AbstractController
         }
 
         $form = $this->createForm('Zikula\MailerModule\Form\Type\ConfigType',
-            $this->getDataValues(), ['translator' => $this->get('translator.default')]
+            $this->getDataValues(), [
+                'translator' => $this->get('translator.default')
+            ]
         );
 
         if ($form->handleRequest($request)->isValid()) {
@@ -126,7 +128,9 @@ class ConfigController extends AbstractController
         $paramHtml = $dumper->getConfigurationForHtml('swiftmailer');
 
         $form = $this->createForm('Zikula\MailerModule\Form\Type\TestType',
-            $this->getDataValues(), ['translator' => $this->get('translator.default')]
+            $this->getDataValues(), [
+                'translator' => $this->get('translator.default')
+            ]
         );
 
         if ($form->handleRequest($request)->isValid()) {
@@ -204,6 +208,10 @@ class ConfigController extends AbstractController
 
         $params = $dumper->getConfiguration('swiftmailer');
         $modVars = $variableApi->getAll('ZikulaMailerModule');
+
+        if (null === $params['transport']) {
+            $params['transport'] = 'test';
+        }
 
         $dataValues = array_merge($params, $modVars);
 

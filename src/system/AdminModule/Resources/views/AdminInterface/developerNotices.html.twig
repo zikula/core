@@ -1,6 +1,20 @@
 {% if hasPermission('ZikulaAdminModule::', '::', 'ACCESS_ADMIN') %}
-    {% set themeUrl = path('zikulathememodule_admin_modifyconfig') %}
+    {% if not developer.mailerEnabled %}
+        <div id="mailerNotice" class="alert" style="background-color: #F7F7F7">
+            <div class="row">
+                <div class="col-sm-12">
+                    <i class="close" data-dismiss="alert">&times;</i>
+                    <a href="{{ path('zikulamailermodule_config_config') }}" title="{{ __('Mailer configuration') }}">
+                        <i class="fa fa-envelope fa-2x"></i>
+                        <strong> {{ __('Mailer configuration') }}: </strong>
+                        {{ __('Email settings are not yet configured. Please configure them now.') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
     {% if developer.mode != 'prod' %}
+        {% set themeUrl = path('zikulathememodule_admin_modifyconfig') %}
         <div id="developernotices" class="alert alert-info">
             <div class="row">
                 <div class="col-md-12">
