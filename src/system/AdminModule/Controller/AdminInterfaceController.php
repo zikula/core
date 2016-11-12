@@ -275,6 +275,8 @@ class AdminInterfaceController extends AbstractController
             $moduleNames[$key] = $module['displayname'];
         }
         array_multisort($moduleNames, SORT_ASC, $adminModules);
+        $baseUrl = $masterRequest->getBasePath() . '/';
+
         $moduleCategories = $this->getDoctrine()->getManager()->getRepository('ZikulaAdminModule:AdminCategoryEntity')->getIndexedCollection('cid');
         $menuModules = [];
         $menuCategories = [];
@@ -301,7 +303,7 @@ class AdminInterfaceController extends AbstractController
             try {
                 $adminIconPath = $this->get('zikula_core.common.theme.asset_helper')->resolve('@' . $adminModule['name'] . ':images/admin.png');
             } catch (\Exception $e) {
-                $adminIconPath = ModUtil::getModuleImagePath($adminModule['name']);
+                $adminIconPath = $baseUrl . ModUtil::getModuleImagePath($adminModule['name']);
             }
 
             $module = [
