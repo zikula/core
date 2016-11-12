@@ -11,12 +11,14 @@
 
 namespace Zikula\ThemeModule\Helper;
 
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
+use Zikula\Bundle\CoreBundle\Bundle\Scanner;
+use Zikula\ExtensionsModule\Helper\ComposerValidationHelper;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 use Zikula\ThemeModule\Entity\ThemeEntity;
-use Zikula\Bundle\CoreBundle\Bundle\Scanner;
-use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
 
 /**
  * Helper functions for the theme module
@@ -44,18 +46,39 @@ class BundleSyncHelper
     private $translator;
 
     /**
+     * @var ComposerValidationHelper
+     */
+    private $composerValidationHelper;
+
+    /**
+     * @var SessionInterface
+     */
+    protected $session;
+
+    /**
      * BundleSyncHelper constructor.
+     *
      * @param KernelInterface $kernel
      * @param ThemeEntityRepository $themeEntityRepository
      * @param BootstrapHelper $bootstrapHelper
      * @param TranslatorInterface $translator
+     * @param ComposerValidationHelper $composerValidationHelper
+     * @param SessionInterface $session
      */
-    public function __construct(KernelInterface $kernel, ThemeEntityRepository $themeEntityRepository, BootstrapHelper $bootstrapHelper, TranslatorInterface $translator)
-    {
+    public function __construct(
+        KernelInterface $kernel,
+        ThemeEntityRepository $themeEntityRepository,
+        BootstrapHelper $bootstrapHelper,
+        TranslatorInterface $translator,
+        ComposerValidationHelper $composerValidationHelper,
+        SessionInterface $session
+    ) {
         $this->kernel = $kernel;
         $this->themeEntityRepository = $themeEntityRepository;
         $this->bootstrapHelper = $bootstrapHelper;
         $this->translator = $translator;
+        $this->composerValidationHelper = $composerValidationHelper;
+        $this->session = $session;
     }
 
     /**
@@ -71,7 +94,7 @@ class BundleSyncHelper
         // Get all themes on filesystem
         $filethemes = [];
 
-        $scanner = new Scanner();
+        $scanner = new Scanner($this->composerValidationHelper, $this->session);
         $scanner->scan(['themes'], 4);
         $newThemes = $scanner->getThemesMetaData();
 

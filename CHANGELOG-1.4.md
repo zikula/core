@@ -31,6 +31,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Added Twig filters profileLinkByUserName and profileLinkByUserId (#3079).
     - Added LocaleApi for access to locale definitions.
     - Added Asset merger feature for twig themes (#2912, #3138).
+    - Added validation of extension composer files (#2669, #3151)
 
  - Vendor updates:
     - doctrine dbal updated from 2.5.4 to 2.5.5
@@ -38,7 +39,7 @@ CHANGELOG - ZIKULA 1.4.x
     - gedmo/doctrine-extensions updates from 2.4.22 to 2.4.24
     - jquery ui updates from 1.12.0.1 to 1.12.1
     - psr log updated from 1.0.0 to 1.0.2
-    - sensio distribution bundle updated from 5.0.8 to 5.0.13
+    - sensio distribution bundle updated from 5.0.8 to 5.0.14
     - sensio generator bundle updated from 3.0.7 to 3.0.11
     - sensiolabs security checker updated from 3.0.2 to 4.0.0
     - symfony updated from 2.8.9 to 2.8.13
@@ -48,6 +49,8 @@ CHANGELOG - ZIKULA 1.4.x
     - knp-menu-bundle installed at version 2.1.3
     - liip/imagine-bundle installed at 1.6.0
     - font-awesome updated from 4.6.3 to 4.7.0
+    - added justinrainbow/json-schema 4.0.1
+    - jstree updated from 3.3.2 to 3.3.3
 
 * 1.4.3 (2016-09-02)
 

@@ -45,8 +45,10 @@ class ExtensionDependencyHelper
 
     /**
      * ExtensionDependencyHelper constructor.
-     * @param $extensionDependencyRepo
-     * @param $extensionEntityRepo
+     *
+     * @param ExtensionDependencyRepository $extensionDependencyRepo
+     * @param ExtensionRepositoryInterface $extensionEntityRepo
+     * @param KernelInterface $kernel
      */
     public function __construct(
         ExtensionDependencyRepository $extensionDependencyRepo,
@@ -60,6 +62,7 @@ class ExtensionDependencyHelper
 
     /**
      * Get an array of ExtensionEntities that are dependent on the $extension.
+     *
      * @param ExtensionEntity $extension
      * @return ExtensionEntity[]
      */
@@ -86,6 +89,7 @@ class ExtensionDependencyHelper
 
     /**
      * Get an array of dependencies that are not currently met by the system and active extensions.
+     *
      * @param ExtensionEntity $extension
      * @return ExtensionDependencyEntity[]
      */
@@ -113,6 +117,7 @@ class ExtensionDependencyHelper
 
     /**
      * Check for 'fatal' dependency.
+     *
      * @param ExtensionDependencyEntity $dependency
      * @throws ExtensionDependencyException
      */
@@ -134,7 +139,8 @@ class ExtensionDependencyHelper
     }
 
     /**
-     * compute if bundle requirements are met
+     * Compute if bundle requirements are met.
+     *
      * @param ExtensionDependencyEntity $dependency
      * @return bool
      */
@@ -188,6 +194,7 @@ class ExtensionDependencyHelper
 
     /**
      * Determine if a $current value is between $requiredMin and $requiredMax.
+     *
      * @param $requiredMin
      * @param $requiredMax
      * @param $current

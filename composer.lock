@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d901227fb4809571c8ffa812e6a7482d",
-    "content-hash": "193eaea3e2dcc38dfa633f997d5f1e39",
+    "hash": "2d08b732ef3a45d2800b4330cf17e4df",
+    "content-hash": "142b73acc006ddd78a31bd5617b7dcdf",
     "packages": [
         {
             "name": "abeautifulsite/jquery-minicolors",
@@ -1448,12 +1448,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "dc8702160c4e873020e1dee8aad5092c90e8949d"
+                "reference": "5070404376d3b4287ce5c6bfae13e888b464742d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/dc8702160c4e873020e1dee8aad5092c90e8949d",
-                "reference": "dc8702160c4e873020e1dee8aad5092c90e8949d",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/5070404376d3b4287ce5c6bfae13e888b464742d",
+                "reference": "5070404376d3b4287ce5c6bfae13e888b464742d",
                 "shasum": ""
             },
             "require": {
@@ -1487,7 +1487,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2016-10-16 06:14:10"
+            "time": "2016-10-29 07:01:19"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -1900,6 +1900,72 @@
                 "webinterface"
             ],
             "time": "2016-08-13 23:17:44"
+        },
+        {
+            "name": "justinrainbow/json-schema",
+            "version": "4.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/justinrainbow/json-schema.git",
+                "reference": "10d1f6977f6be5f177dded8f585a11debdc27591"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/10d1f6977f6be5f177dded8f585a11debdc27591",
+                "reference": "10d1f6977f6be5f177dded8f585a11debdc27591",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "json-schema/json-schema-test-suite": "1.2.0",
+                "phpdocumentor/phpdocumentor": "~2",
+                "phpunit/phpunit": "^4.8.22"
+            },
+            "bin": [
+                "bin/validate-json"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "JsonSchema\\": "src/JsonSchema/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bruno Prieto Reis",
+                    "email": "bruno.p.reis@gmail.com"
+                },
+                {
+                    "name": "Justin Rainbow",
+                    "email": "justin.rainbow@gmail.com"
+                },
+                {
+                    "name": "Igor Wiedler",
+                    "email": "igor@wiedler.ch"
+                },
+                {
+                    "name": "Robert Schönthal",
+                    "email": "seroscho@googlemail.com"
+                }
+            ],
+            "description": "A library to validate a json schema.",
+            "homepage": "https://github.com/justinrainbow/json-schema",
+            "keywords": [
+                "json",
+                "schema"
+            ],
+            "time": "2016-11-09 16:32:33"
         },
         {
             "name": "knplabs/knp-menu",
@@ -2517,16 +2583,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.3",
+            "version": "v2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "c0125896dbb151380ab47e96c621741e79623beb"
+                "reference": "a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/c0125896dbb151380ab47e96c621741e79623beb",
-                "reference": "c0125896dbb151380ab47e96c621741e79623beb",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e",
+                "reference": "a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e",
                 "shasum": ""
             },
             "require": {
@@ -2561,7 +2627,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-10-17 15:23:22"
+            "time": "2016-11-07 23:38:38"
         },
         {
             "name": "phpids/phpids",
@@ -2743,16 +2809,16 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v5.0.13",
+            "version": "v5.0.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "7bc47dcfdbde6d567e1a834577d1c04ddb970281"
+                "reference": "e64947de9ebc37732a62f5115164484a9bee7fa6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/7bc47dcfdbde6d567e1a834577d1c04ddb970281",
-                "reference": "7bc47dcfdbde6d567e1a834577d1c04ddb970281",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/e64947de9ebc37732a62f5115164484a9bee7fa6",
+                "reference": "e64947de9ebc37732a62f5115164484a9bee7fa6",
                 "shasum": ""
             },
             "require": {
@@ -2791,7 +2857,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2016-10-08 18:50:33"
+            "time": "2016-10-30 23:18:01"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -3976,16 +4042,16 @@
         },
         {
             "name": "vakata/jstree",
-            "version": "3.3.2",
+            "version": "3.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vakata/jstree.git",
-                "reference": "bb0473ae8cfc205585b6404ef86f650df2f6996e"
+                "reference": "9770c6711f0a155ec494f635aaf0add9b3cfb45c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vakata/jstree/zipball/bb0473ae8cfc205585b6404ef86f650df2f6996e",
-                "reference": "bb0473ae8cfc205585b6404ef86f650df2f6996e",
+                "url": "https://api.github.com/repos/vakata/jstree/zipball/9770c6711f0a155ec494f635aaf0add9b3cfb45c",
+                "reference": "9770c6711f0a155ec494f635aaf0add9b3cfb45c",
                 "shasum": ""
             },
             "require": {
@@ -4029,7 +4095,7 @@
             ],
             "description": "jsTree is jquery plugin, that provides interactive trees.",
             "homepage": "http://jstree.com",
-            "time": "2016-08-15 10:53:06"
+            "time": "2016-10-31 09:49:21"
         },
         {
             "name": "vierbergenlars/php-semver",
@@ -4516,12 +4582,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "62261efa0d36b232618b8daf065a995e729b7202"
+                "reference": "b3fdf2ce6a5dd13dd9f7b1da4b623a0726fee145"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/62261efa0d36b232618b8daf065a995e729b7202",
-                "reference": "62261efa0d36b232618b8daf065a995e729b7202",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/b3fdf2ce6a5dd13dd9f7b1da4b623a0726fee145",
+                "reference": "b3fdf2ce6a5dd13dd9f7b1da4b623a0726fee145",
                 "shasum": ""
             },
             "require": {
@@ -4582,7 +4648,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2016-10-27 05:15:40"
+            "time": "2016-11-01 17:23:17"
         },
         {
             "name": "zikula/wizard",
