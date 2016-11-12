@@ -6,5 +6,5 @@
     {% if caller._zkType != 'admin' %}
         <li><a href="#" class="text-capitalize">{{ caller._zkType }}</a></li>
     {% endif %}
-    <li class="active z-admin-pagefunc">{{ caller._zkFunc }}</li>
+    <li class="active z-admin-pagefunc">{{ caller._zkFunc|humanize }}</li>
 </ol>
