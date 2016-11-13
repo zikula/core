@@ -13,7 +13,6 @@
         <service id="zikula_core_installer_bundle.validator.constraints.authenticate_admin_login_validator" class="%zikula_core_installer_bundle.validator.constraints.authenticate_admin_login_validator.class%">
             <argument type="service" id="zikula_permissions_module.api.permission" />
             <argument type="service" id="doctrine.dbal.default_connection" />
-            <argument type="expression">container.hasParameter('core_installed_version') ? parameter('core_installed_version') : '1.4.2'</argument><!-- @deprecated -->
             <tag name="validator.constraint_validator" alias="zikula.core_installer.authenticate_admin_login.validator" />
         </service>
     </services>
