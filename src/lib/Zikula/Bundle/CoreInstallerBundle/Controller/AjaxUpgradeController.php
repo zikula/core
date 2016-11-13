@@ -190,7 +190,8 @@ class AjaxUpgradeController extends AbstractController
         if (version_compare($this->currentVersion, '1.4.4', '>=')) {
             return true;
         }
-        $this->installModule('ZikulaMenuModule', $this->translator->__('Content'));
+        // @todotemporarily disabled because of peristent errors in the build...
+//        $this->installModule('ZikulaMenuModule', $this->translator->__('Content'));
 
         return true;
     }
