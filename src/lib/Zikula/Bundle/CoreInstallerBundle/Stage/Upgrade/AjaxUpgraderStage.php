@@ -91,20 +91,27 @@ class AjaxUpgraderStage implements StageInterface
                 AjaxInstallerStage::FAIL => __('There was an error upgrading to Core 1.4.3')
             ],
             9 => [
+                AjaxInstallerStage::NAME => 'from143to144',
+                AjaxInstallerStage::PRE => __('Upgrade from Core 1.4.3 to Core 1.4.4'),
+                AjaxInstallerStage::DURING => __('Upgrading to Core 1.4.4'),
+                AjaxInstallerStage::SUCCESS => __('Upgraded to Core 1.4.4'),
+                AjaxInstallerStage::FAIL => __('There was an error upgrading to Core 1.4.4')
+            ],
+            10 => [
                 AjaxInstallerStage::NAME => 'finalizeparameters',
                 AjaxInstallerStage::PRE => __('Finalize parameters'),
                 AjaxInstallerStage::DURING => __('Finalizing parameters'),
                 AjaxInstallerStage::SUCCESS => __('Parameters finalized'),
                 AjaxInstallerStage::FAIL => __('There was an error finalizing the parameters')
             ],
-            10 => [
+            11 => [
                 AjaxInstallerStage::NAME => 'clearcaches',
                 AjaxInstallerStage::PRE => __('Clear caches'),
                 AjaxInstallerStage::DURING => __('Clearing caches'),
                 AjaxInstallerStage::SUCCESS => __('Caches cleared'),
                 AjaxInstallerStage::FAIL => __('There was an error clearing caches')
             ],
-            11 => [
+            12 => [
                 AjaxInstallerStage::NAME => 'finish',
                 AjaxInstallerStage::PRE => __('Finish'),
                 AjaxInstallerStage::DURING => __('Finish'),

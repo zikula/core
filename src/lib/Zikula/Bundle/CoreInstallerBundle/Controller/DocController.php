@@ -18,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Michelf\MarkdownExtra;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Core\Response\PlainResponse;
 
 /**
  * Class DocController
@@ -79,7 +80,7 @@ class DocController
             'content' => $content,
         ];
 
-        return $this->templatingService->renderResponse('ZikulaCoreInstallerBundle::doc.html.twig', $templateParams);
+        return $this->templatingService->renderResponse('ZikulaCoreInstallerBundle::doc.html.twig', $templateParams, new PlainResponse());
     }
 
     /**

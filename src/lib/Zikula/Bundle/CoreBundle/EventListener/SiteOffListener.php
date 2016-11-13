@@ -87,23 +87,25 @@ class SiteOffListener implements EventSubscriberInterface
         // Get variables
         $siteOff = (bool)$this->variableApi->getSystemVar('siteoff');
         $hasAdminPerms = $this->permissionApi->hasPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN);
-        $versionCheck = (\Zikula_Core::VERSION_NUM != $this->variableApi->getSystemVar('Version_Num'));
+        $currentInstalledVersion = $this->variableApi->getSystemVar('Version_Num');
+        $versionsEqual = (\Zikula_Core::VERSION_NUM == $currentInstalledVersion);
 
         // Check for site closed
-        if (($siteOff && !$hasAdminPerms) || $versionCheck) {
+        if (($siteOff || !$versionsEqual) && !$hasAdminPerms) {
             $hasOnlyOverviewAccess = $this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_OVERVIEW);
             if ($hasOnlyOverviewAccess && $request->hasSession() && $this->currentUserApi->isLoggedIn()) {
                 $request->getSession()->invalidate(); // logout
             }
 
+            $route = version_compare($currentInstalledVersion, '1.4.3', '<') ? 'zikulausersmodule_access_upgradeadminlogin' : 'zikulausersmodule_access_login'; // @todo @deprecated remove at Core-2.0
             $form = $this->formFactory->create('Zikula\ZAuthModule\Form\Type\UnameLoginType', [], [
-                'action' => $this->router->generate('zikulausersmodule_access_login')
+                'action' => $this->router->generate($route, ['authenticationMethod' => 'native_uname'])
             ]);
             $response = new PlainResponse();
             $response->headers->add(['HTTP/1.1 503 Service Unavailable']);
             $response->setStatusCode(503);
             $content = $this->templating->render('CoreBundle:System:siteoff.html.twig', [
-                'versionsEqual' => !$versionCheck,
+                'versionsEqual' => $versionsEqual,
                 'form' => $form->createView()
             ]);
             $response->setContent($content);

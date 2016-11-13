@@ -84,6 +84,8 @@ class AjaxUpgradeController extends AbstractController
                 return $this->from141to142();
             case "from142to143":
                 return $this->from142to143();
+            case "from143to144":
+                return $this->from143to144();
             case "finalizeparameters":
                 return $this->finalizeParameters();
             case "clearcaches":
@@ -237,6 +239,11 @@ class AjaxUpgradeController extends AbstractController
         $destinationCategoryId = isset($modscat[$category]) ? $modscat[$category] : \ModUtil::getVar('ZikulaAdminModule', 'defaultcategory');
         \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'addmodtocategory', ['module' => $zAuthModuleName, 'category' => (int)$destinationCategoryId]);
 
+        return true;
+    }
+
+    private function from143to144()
+    {
         return true;
     }
 

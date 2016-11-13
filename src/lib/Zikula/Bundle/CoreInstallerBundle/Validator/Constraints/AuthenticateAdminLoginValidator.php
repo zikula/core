@@ -29,20 +29,29 @@ class AuthenticateAdminLoginValidator extends ConstraintValidator
     private $databaseConnection;
 
     /**
+     * @deprecated remove at Core-2.0
+     * @var string
+     */
+    private $installedCoreVersion;
+
+    /**
      * AuthenticateAdminLoginValidator constructor.
      * @param PermissionApi $permissionApi
      * @param Connection $connection
+     * @param string $coreVersion @deprecated
      */
-    public function __construct(PermissionApi $permissionApi, Connection $connection)
+    public function __construct(PermissionApi $permissionApi, Connection $connection, $installedCoreVersion = '1.4.2')
     {
         $this->permissionApi = $permissionApi;
         $this->databaseConnection = $connection;
+        $this->installedCoreVersion = $installedCoreVersion;
     }
 
     public function validate($object, Constraint $constraint)
     {
         try {
-            $user = $this->databaseConnection->fetchAssoc('SELECT uid, pass FROM users WHERE uname= ?', [$object['username']]);
+            $table = version_compare($this->installedCoreVersion, '1.4.3', '>=') ? 'zauth_authentication_mapping' : 'users'; // @deprecated use zauth_authentication_mapping for Core-2.0
+            $user = $this->databaseConnection->fetchAssoc('SELECT uid, pass FROM ' . $table . ' WHERE uname= ?', [$object['username']]);
 
             if (empty($user) || ($user['uid'] <= 1) || (!\UserUtil::passwordsMatch($object['password'], $user['pass']))) { // @todo
                 $this->context->buildViolation(__('Error! Could not login with provided credentials. Please try again.'))
