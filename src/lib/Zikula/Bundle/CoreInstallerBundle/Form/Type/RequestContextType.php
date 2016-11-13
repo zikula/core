@@ -22,7 +22,7 @@ class RequestContextType extends AbstractType
     {
         $builder
             ->add('router:request_context:host', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => __('The host where you install Zikula, e.g. "example.com". Do not include subdirectories.'),
+                'label' => __('The root domain where you install Zikula, e.g. "example.com". Do not include subdirectories.'),
                 'label_attr' => [
                     'class' => 'col-sm-3'
                 ],

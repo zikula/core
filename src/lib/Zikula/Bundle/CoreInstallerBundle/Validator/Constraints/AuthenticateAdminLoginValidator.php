@@ -42,22 +42,30 @@ class AuthenticateAdminLoginValidator extends ConstraintValidator
     public function validate($object, Constraint $constraint)
     {
         try {
-            $user = $this->databaseConnection->fetchAssoc('SELECT uid, pass FROM users WHERE uname= ?', [$object['username']]);
-
-            if (empty($user) || ($user['uid'] <= 1) || (!\UserUtil::passwordsMatch($object['password'], $user['pass']))) { // @todo
-                $this->context->buildViolation(__('Error! Could not login with provided credentials. Please try again.'))
-                    ->addViolation()
-                ;
+            $schemaManager = $this->databaseConnection->getSchemaManager();
+            if ($schemaManager->tablesExist(['zauth_authentication_mapping']) == true) {
+                $user = $this->databaseConnection->fetchAssoc('SELECT uid, pass FROM zauth_authentication_mapping WHERE uname= ?', [$object['username']]);
             }
+            if (empty($user)) {
+                // core-1.4.3 method failed, try older method
+                // @deprecated use zauth_authentication_mapping for Core-2.0
+                $user = $this->databaseConnection->fetchAssoc('SELECT uid, pass FROM users WHERE uname= ?', [$object['username']]);
+            }
+        } catch (\Exception $e) {
+            $this->context->buildViolation(__('Error! There was a problem with the database connection.'))
+                ->addViolation()
+            ;
+        }
+
+        if (empty($user) || ($user['uid'] <= 1) || (!\UserUtil::passwordsMatch($object['password'], $user['pass']))) { // @todo
+            $this->context->buildViolation(__('Error! Could not login with provided credentials. Please try again.'))
+                ->addViolation();
+        } else {
             $granted = $this->permissionApi->hasPermission('.*', '.*', ACCESS_ADMIN, $user['uid']);
             if (!$granted) {
                 $this->context->buildViolation(__('Error! You logged in to an account without Admin permissions'))
                     ->addViolation();
             }
-        } catch (\Exception $e) {
-            $this->context->buildViolation(__('Error! There was a problem logging in.'))
-                ->addViolation()
-            ;
         }
     }
 }

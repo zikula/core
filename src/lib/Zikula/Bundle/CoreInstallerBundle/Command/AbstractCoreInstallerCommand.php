@@ -75,7 +75,7 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
         ],
         /* Http settings */
         'router:request_context:host' => [
-            'description' => 'The host where you install Zikula, e.g. "example.com". Do not include subdirectories.',
+            'description' => 'The root domain where you install Zikula, e.g. "example.com". Do not include subdirectories.',
             'default' => null,
         ],
         'router:request_context:scheme' => [
