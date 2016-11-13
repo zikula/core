@@ -139,6 +139,11 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
                 $stmt = $connection->prepare($sql);
                 $stmt->execute();
             case '3.0.2':
+                // remove password reminder
+                $this->schemaTool->update(['Zikula\UsersModule\Entity\UserEntity']);
+                $this->delVar('password_reminder_enabled');
+                $this->delVar('password_reminder_mandatory');
+            case '3.0.3':
                 // current version
         }
 
@@ -215,7 +220,6 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             'uname'         => 'guest',
             'email'         => '',
             'pass'          => '',
-            'passreminder'  => '',
             'activated'     => UsersConstant::ACTIVATED_ACTIVE,
             'approved_date' => '1970-01-01 00:00:00',
             'approved_by'   => 0,
@@ -233,7 +237,6 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             'uname'         => 'admin',
             'email'         => '',
             'pass'          => '1$$dc647eb65e6711e155375218212b3964',
-            'passreminder'  => '',
             'activated'     => UsersConstant::ACTIVATED_ACTIVE,
             'approved_date' => $nowUTCStr,
             'approved_by'   => 2,
@@ -286,9 +289,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             $migratedModVarName = ($migratedModVarName == 'reg_verifyemail') ? ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED : $migratedModVarName;
             $value = in_array($migratedModVarName, [
                 ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED,
-                ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED,
-                ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED,
-                ZAuthConstant::MODVAR_PASSWORD_REMINDER_MANDATORY
+                ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED
             ]) ? (bool) $value : $value;
             $this->container->get('zikula_extensions_module.api.variable')->set('ZikulaZAuthModule', $migratedModVarName, $value);
         }
@@ -304,8 +305,6 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             ZAuthConstant::MODVAR_HASH_METHOD,
             ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH,
             ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED, // convert to bool
-            ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED, // convert to bool
-            ZAuthConstant::MODVAR_PASSWORD_REMINDER_MANDATORY, // convert to bool
             ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION,
             ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER,
             ZAuthConstant::MODVAR_EXPIRE_DAYS_REGISTRATION,

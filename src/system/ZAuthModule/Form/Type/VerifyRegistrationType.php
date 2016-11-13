@@ -18,7 +18,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
-use Zikula\ZAuthModule\Validator\Constraints\ValidPasswordReminder;
 use Zikula\ZAuthModule\Validator\Constraints\ValidRegistrationVerification;
 use Zikula\ZAuthModule\ZAuthConstant;
 
@@ -48,27 +47,16 @@ class VerifyRegistrationType extends AbstractType
             ])
         ;
         if ($options['setpass']) {
-            $builder
-                ->add('pass', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
-                    'type' => 'Symfony\Component\Form\Extension\Core\Type\PasswordType',
-                    'first_options' => ['label' => $options['translator']->__('Password')],
-                    'second_options' => ['label' => $options['translator']->__('Repeat Password')],
-                    'invalid_message' => $options['translator']->__('The passwords must match!'),
-                    'constraints' => [
-                        new NotNull(),
-                        new ValidPassword()
-                    ]
-                ]);
-            if ($options['passwordReminderEnabled']) {
-                $builder
-                    ->add('passreminder', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                        'required' => $options['passwordReminderMandatory'],
-                        'help' => $options['translator']->__('Enter a word or a phrase that will remind you of your password.'),
-                        'alert' => [$options['translator']->__('Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!') => 'info'],
-                        'constraints' => [new ValidPasswordReminder()]
-                    ])
-                ;
-            }
+            $builder->add('pass', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
+                'type' => 'Symfony\Component\Form\Extension\Core\Type\PasswordType',
+                'first_options' => ['label' => $options['translator']->__('Password')],
+                'second_options' => ['label' => $options['translator']->__('Repeat Password')],
+                'invalid_message' => $options['translator']->__('The passwords must match!'),
+                'constraints' => [
+                    new NotNull(),
+                    new ValidPassword()
+                ]
+            ]);
         }
     }
 
@@ -85,10 +73,8 @@ class VerifyRegistrationType extends AbstractType
         $resolver->setDefaults([
             'translator' => null,
             'setpass' => true,
-            'passwordReminderEnabled' => ZAuthConstant::DEFAULT_PASSWORD_REMINDER_ENABLED,
-            'passwordReminderMandatory' => ZAuthConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY,
             'constraints' => [
-                new ValidRegistrationVerification(),
+                new ValidRegistrationVerification()
             ]
         ]);
     }

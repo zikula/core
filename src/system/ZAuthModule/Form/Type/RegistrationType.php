@@ -21,7 +21,6 @@ use Zikula\UsersModule\Validator\Constraints\ValidUname;
 use Zikula\ZAuthModule\Validator\Constraints\ValidAntiSpamAnswer;
 use Zikula\ZAuthModule\Validator\Constraints\ValidEmail;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
-use Zikula\ZAuthModule\Validator\Constraints\ValidPasswordReminder;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 class RegistrationType extends AbstractType
@@ -91,16 +90,6 @@ class RegistrationType extends AbstractType
                 'attr' => ['class' => 'btn btn-primary']
             ])
         ;
-        if ($options['passwordReminderEnabled']) {
-            $builder
-                ->add('passreminder', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                    'required' => $options['passwordReminderMandatory'],
-                    'constraints' => [new ValidPasswordReminder()],
-                    'help' => $this->translator->__('Enter a word or a phrase that will remind you of your password.'),
-                    'alert' => [$this->translator->__('Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!') => 'info'],
-                ])
-            ;
-        }
         if (!empty($options['antiSpamQuestion'])) {
             $builder->add('antispamanswer', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'mapped' => false,
@@ -122,9 +111,7 @@ class RegistrationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'passwordReminderEnabled' => $this->zAuthModVars[ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED],
-            'passwordReminderMandatory' => $this->zAuthModVars[ZAuthConstant::MODVAR_PASSWORD_REMINDER_MANDATORY],
-            'antiSpamQuestion' => $this->zAuthModVars[ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION],
+            'antiSpamQuestion' => $this->zAuthModVars[ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION]
         ]);
     }
 }

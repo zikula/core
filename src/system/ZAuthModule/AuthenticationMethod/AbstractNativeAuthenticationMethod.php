@@ -138,7 +138,6 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
                 $mapping->setEmail($userEntity->getEmail());
                 $mapping->setVerifiedEmail(true);
                 $mapping->setPass($userEntity->getPass()); // previously salted and hashed
-                $mapping->setPassreminder($userEntity->getPassreminder());
                 $mapping->setMethod($this->getAlias());
                 $errors = $this->validator->validate($mapping);
                 if (count($errors) > 0) {
@@ -148,7 +147,6 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
                 $this->mappingRepository->persistAndFlush($mapping);
                 // remove data from UserEntity
                 $userEntity->setPass('');
-                $userEntity->setPassreminder('');
                 $userEntity->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $mapping->getMethod());
                 $this->userRepository->persistAndFlush($userEntity);
 
@@ -181,9 +179,6 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         $mapping->setUname($data['uname']);
         $mapping->setEmail($data['email']);
         $mapping->setPass(\UserUtil::getHashedPassword($data['pass'])); // @todo replace UserUtil
-        if (isset($data['passreminder'])) {
-            $mapping->setPassreminder($data['passreminder']);
-        }
         $mapping->setMethod($this->getAlias());
         $requireVerifiedEmail = $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED);
         $mapping->setVerifiedEmail(!$requireVerifiedEmail);

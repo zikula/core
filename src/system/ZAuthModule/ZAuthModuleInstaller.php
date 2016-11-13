@@ -23,7 +23,7 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
      */
     private $entities = [
         'Zikula\ZAuthModule\Entity\AuthenticationMappingEntity',
-        'Zikula\ZAuthModule\Entity\UserVerificationEntity',
+        'Zikula\ZAuthModule\Entity\UserVerificationEntity'
     ];
 
     public function install()
@@ -47,6 +47,11 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
     {
         switch ($oldversion) {
             case '1.0.0':
+                // remove password reminder
+                $this->schemaTool->update(['Zikula\ZAuthModule\Entity\AuthenticationMappingEntity']);
+                $this->delVar('password_reminder_enabled');
+                $this->delVar('password_reminder_mandatory');
+            case '1.0.1':
                 // current version
         }
 
@@ -69,8 +74,6 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
             ZAuthConstant::MODVAR_HASH_METHOD => ZAuthConstant::DEFAULT_HASH_METHOD,
             ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH => ZAuthConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH,
             ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED => ZAuthConstant::DEFAULT_PASSWORD_STRENGTH_METER_ENABLED,
-            ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED => ZAuthConstant::DEFAULT_PASSWORD_REMINDER_ENABLED,
-            ZAuthConstant::MODVAR_PASSWORD_REMINDER_MANDATORY => ZAuthConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY,
             ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL => ZAuthConstant::DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL,
             ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD => ZAuthConstant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD,
             ZAuthConstant::MODVAR_EXPIRE_DAYS_REGISTRATION => ZAuthConstant::DEFAULT_EXPIRE_DAYS_REGISTRATION,

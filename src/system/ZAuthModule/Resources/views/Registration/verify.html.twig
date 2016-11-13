@@ -16,9 +16,6 @@
             <legend>{{ __('Create a password') }}</legend>
             {{ form_row(form.pass) }}
             <div id="{{ form.vars.id }}_passmeter" class="col-sm-offset-3 col-sm-9"></div>
-            {% if form.children.passreminder is defined %}
-                {{ form_row(form.passreminder) }}
-            {% endif %}
         </fieldset>
     {% endif %}
     <div class="form-group">

@@ -4,6 +4,7 @@ CHANGELOG - ZIKULA 1.4.x
 * 1.4.4 (?)
 
  - BC Breaks:
+    - Password reminder has been removed (#1682, #3172) in favour of easier lost password functionality (#1781).
 
  - Deprecated:
     - ExtMenu and MenuTree blocks are deprecated and will not be refactored to Twig/Core-2.0.
