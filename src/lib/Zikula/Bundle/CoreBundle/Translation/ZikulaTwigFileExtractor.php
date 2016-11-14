@@ -84,7 +84,7 @@ class ZikulaTwigFileExtractor implements FileVisitorInterface, \Twig_NodeVisitor
                         // cache result of file lookup
                         self::$domainCache[$composerPath] = $domain;
                     } else {
-                        $domain = 'messages';
+                        $domain = 'zikula';
                     }
                 }
                 $domainNode = array_search($name, $this->methodNames);

@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Request class.
  *
  * @deprecated
+ * @todo remove in 2.0
  */
 abstract class Zikula_Request_AbstractRequest extends Request
 {

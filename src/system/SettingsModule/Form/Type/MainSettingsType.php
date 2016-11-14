@@ -99,10 +99,10 @@ class MainSettingsType extends AbstractType
                         $falseEntryPoints = ['admin.php', 'ajax.php', 'user.php', 'mo2json.php', 'jcss.php'];
                         $entryPointExt = pathinfo($data, PATHINFO_EXTENSION);
                         if (in_array($data, $falseEntryPoints) || strtolower($entryPointExt) != 'php') {
-                            $context->addViolation($translator->__('Error! You entered an invalid entry point.'));
+                            $context->addViolation($options['translator']->__('Error! You entered an invalid entry point.'));
                         }
                         if (!file_exists($data)) {
-                            $context->addViolation($translator->__('Error! The file was not found in the Zikula root directory.'));
+                            $context->addViolation($options['translator']->__('Error! The file was not found in the Zikula root directory.'));
                         }
                     }
                 ])
@@ -138,7 +138,7 @@ class MainSettingsType extends AbstractType
                     'constraints' => new Callback([
                         'callback' => function ($data, ExecutionContextInterface $context) use ($translator) {
                             if (mb_ereg(',$', $data)) {
-                                $context->addViolation($translator->__('Error! In your permalink settings, strings cannot be terminated with a comma.'));
+                                $context->addViolation($options['translator']->__('Error! In your permalink settings, strings cannot be terminated with a comma.'));
                             }
                         }
                     ])

@@ -274,6 +274,8 @@ class AdminInterfaceController extends AbstractController
             $moduleNames[$key] = $module['displayname'];
         }
         array_multisort($moduleNames, SORT_ASC, $adminModules);
+        $baseUrl = $masterRequest->getBasePath() . '/';
+
         $moduleCategories = $this->getDoctrine()->getManager()->getRepository('ZikulaAdminModule:AdminCategoryEntity')->getIndexedCollection('cid');
         $menuModules = [];
         $menuCategories = [];

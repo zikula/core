@@ -17,8 +17,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPasswordChange;
-use Zikula\ZAuthModule\Validator\Constraints\ValidPasswordReminder;
-use Zikula\ZAuthModule\ZAuthConstant;
 
 class ChangePasswordType extends AbstractType
 {
@@ -53,16 +51,6 @@ class ChangePasswordType extends AbstractType
                 'attr' => ['class' => 'btn btn-default']
             ])
         ;
-        if ($options['passwordReminderEnabled']) {
-            $builder
-                ->add('passreminder', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                    'required' => $options['passwordReminderMandatory'],
-                    'help' => $options['translator']->__('Enter a word or a phrase that will remind you of your password.'),
-                    'alert' => [$options['translator']->__('Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!') => 'info'],
-                    'constraints' => [new ValidPasswordReminder()]
-                ])
-            ;
-        }
     }
 
     public function getBlockPrefix()
@@ -77,9 +65,9 @@ class ChangePasswordType extends AbstractType
     {
         $resolver->setDefaults([
             'translator' => null,
-            'passwordReminderEnabled' => ZAuthConstant::DEFAULT_PASSWORD_REMINDER_ENABLED,
-            'passwordReminderMandatory' => ZAuthConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY,
-            'constraints' => [new ValidPasswordChange()],
+            'constraints' => [
+                new ValidPasswordChange()
+            ]
         ]);
     }
 }

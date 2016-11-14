@@ -115,9 +115,9 @@ class Zikula_Workflow
         $entity->setState($insertObj['state']);
 
         //get the entity manager
-        $em = ServiceUtil::get('doctrine.entitymanager');
-        $em->persist($entity);
-        $em->flush();
+        $entityManager = ServiceUtil::get('doctrine.orm.default_entity_manager');
+        $entityManager->persist($entity);
+        $entityManager->flush();
 
         $insertObj['id'] = $entity->getId();
 
@@ -142,13 +142,13 @@ class Zikula_Workflow
     public function updateWorkflowState($stateID, $debug = null)
     {
         //get the entity manager
-        $em = ServiceUtil::get('doctrine.entitymanager');
+        $entityManager = ServiceUtil::get('doctrine.orm.default_entity_manager');
 
         //create the dql query.
-        $qb = $em->createQueryBuilder()
-                 ->update('Zikula\Core\Doctrine\Entity\WorkflowEntity', 'w')
-                 ->set('w.state', ':newState')
-                 ->setParameter('newState', $stateID);
+        $qb = $entityManager->createQueryBuilder()
+            ->update('Zikula\Core\Doctrine\Entity\WorkflowEntity', 'w')
+            ->set('w.state', ':newState')
+            ->setParameter('newState', $stateID);
 
         if (isset($debug)) {
             $qb->set('w.debug', ':newDebug')

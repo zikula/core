@@ -9,11 +9,16 @@
          processIsolation="false"
          stopOnFailure="false"
          syntaxCheck="false"
-         bootstrap="vendor/autoload.php"
+         bootstrap="../../../bootstrap.php"
 >
+    <php>
+        <server name="KERNEL_DIR" value="../../../../app/" />
+    </php>
     <testsuites>
         <testsuite name="CoreBundle Test Suite">
             <directory>./Tests/</directory>
+            <exclude>./Tests/Twig/Node/SwitchNodeTest.php</exclude>
+            <exclude>./Tests/Twig/IntegrationTest.php</exclude>
         </testsuite>
     </testsuites>
 </phpunit>

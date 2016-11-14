@@ -66,12 +66,6 @@ class AuthenticationMappingEntity extends EntityAccess
     private $pass;
 
     /**
-     * @ZAuthAssert\ValidPasswordReminder()
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $passreminder;
-
-    /**
      * @return integer
      */
     public function getId()
@@ -173,22 +167,6 @@ class AuthenticationMappingEntity extends EntityAccess
     public function setPass($pass)
     {
         $this->pass = $pass;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPassreminder()
-    {
-        return $this->passreminder;
-    }
-
-    /**
-     * @param string $passreminder
-     */
-    public function setPassreminder($passreminder)
-    {
-        $this->passreminder = $passreminder;
     }
 
     public function getUserEntityData()

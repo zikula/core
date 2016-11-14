@@ -153,9 +153,6 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         $mapping->setUname($data['uname']);
         $mapping->setEmail($data['email']);
         $mapping->setPass(\UserUtil::getHashedPassword($data['pass'])); // @todo replace UserUtil
-        if (isset($data['passreminder'])) {
-            $mapping->setPassreminder($data['passreminder']);
-        }
         $mapping->setMethod($this->getAlias());
         $requireVerifiedEmail = $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED);
         $mapping->setVerifiedEmail(!$requireVerifiedEmail);

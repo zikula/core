@@ -17,31 +17,41 @@ use JMS\TranslationBundle\Translation\Dumper\ArrayStructureDumper;
 
 class PotDumper extends ArrayStructureDumper
 {
+    /**
+     * @var Writer
+     */
     private $writer;
 
-    public function __construct()
+    /**
+     * @var boolean
+     */
+    private $enableHeader;
+
+    public function __construct($enableHeader = true)
     {
         $this->writer = new Writer();
+        $this->enableHeader = $enableHeader;
     }
 
     protected function dumpStructure(array $structure)
     {
         $currentDateTime = new \DateTime();
-        $this->writer
-            ->reset()
-            ->writeln('msgid ""')
-            ->writeln('msgstr ""')
-            ->writeln('"Project-Id-Version: PACKAGE VERSION\n"')
-            ->writeln('"POT-Creation-Date: '.$currentDateTime->format('Y-m-d H:iO') .'\n"')
-            ->writeln('"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"')
-            ->writeln('"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"')
-            ->writeln('"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"')
-            ->writeln('"MIME-Version: 1.0\n"')
-            ->writeln('"Content-Type: text/plain; charset=UTF-8\n"')
-            ->writeln('"Content-Transfer-Encoding: 8bit\n"')
-            ->writeln('"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"')
-            ->writeln("\n")
-        ;
+        if ($this->enableHeader) {
+            $this->writer
+                ->reset()
+                ->writeln('msgid ""')
+                ->writeln('msgstr ""')
+                ->writeln('"Project-Id-Version: PACKAGE VERSION\n"')
+                ->writeln('"POT-Creation-Date: ' . $currentDateTime->format('Y-m-d H:iO') . '\n"')
+                ->writeln('"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"')
+                ->writeln('"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"')
+                ->writeln('"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"')
+                ->writeln('"MIME-Version: 1.0\n"')
+                ->writeln('"Content-Type: text/plain; charset=UTF-8\n"')
+                ->writeln('"Content-Transfer-Encoding: 8bit\n"')
+                ->writeln('"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"')
+                ->writeln("\n");
+        }
 
         $this->dumpStructureRecursively($structure);
 

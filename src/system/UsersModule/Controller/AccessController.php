@@ -12,7 +12,9 @@
 namespace Zikula\UsersModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Zikula\Bundle\CoreInstallerBundle\Validator\Constraints\AuthenticateAdminLogin;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationProviders;
@@ -193,5 +195,40 @@ class AccessController extends AbstractController
         }
 
         return isset($returnUrl) ? $this->redirect($returnUrl) : $this->redirectToRoute('home');
+    }
+
+    /**
+     * This method is required when upgrading from <1.4.3 to >1.4.3 because the new ZAuth module is not yet available
+     * when the site becomes disabled to perform the upgrade.
+     *
+     * @Route("/upgrade-login")
+     * @deprecated remove at Core-2.0
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function upgradeAdminLoginAction(Request $request)
+    {
+        $form = $this->createForm('Zikula\ZAuthModule\Form\Type\UnameLoginType');
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            $userObject = [
+                'username' => $form->get('uname')->getData(),
+                'password' => $form->get('pass')->getData()
+            ];
+            $errors = $this->get('validator')->validate($userObject, [
+                new AuthenticateAdminLogin()
+            ]);
+            if (count($errors) > 0) {
+                foreach ($errors as $error) {
+                    $this->addFlash('error', $error->getMessage());
+                }
+            } else {
+                $uid = $this->get('doctrine.dbal.default_connection')->fetchColumn('SELECT uid FROM users WHERE uname= ?', [$userObject['username']], 0);
+                $this->get('session')->clear();
+                $this->get('session')->set('uid', $uid); // this 'logs in' the user
+            }
+        }
+
+        return $this->redirectToRoute('upgrade');
     }
 }

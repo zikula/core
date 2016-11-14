@@ -11,24 +11,33 @@
 
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Zikula\Common\Translator\TranslatorInterface;
 
 /**
  * GettextExtension class.
  */
 class GettextExtension extends \Twig_Extension
 {
-    private $container;
-
     /**
-     * @var \Zikula\Common\Translator\Translator
+     * @var TranslatorInterface
      */
     private $translator;
 
-    public function __construct(ContainerInterface $container)
+    /**
+     * @var KernelInterface
+     */
+    private $kernel;
+
+    /**
+     * GettextExtension constructor.
+     * @param TranslatorInterface $translator
+     * @param KernelInterface $kernel
+     */
+    public function __construct(TranslatorInterface $translator, KernelInterface $kernel)
     {
-        $this->container = $container;
-        $this->translator = $this->container->get('translator');
+        $this->translator = $translator;
+        $this->kernel = $kernel;
     }
 
     /**
@@ -39,13 +48,13 @@ class GettextExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('__', [$this, '__'], ['needs_environment' => true]),
-            new \Twig_SimpleFunction('_n', [$this, '_n'], ['needs_environment' => true]),
-            new \Twig_SimpleFunction('__f', [$this, '__f'], ['needs_environment' => true]),
-            new \Twig_SimpleFunction('_fn', [$this, '_fn'], ['needs_environment' => true]),
-            new \Twig_SimpleFunction('__p', [$this, '__p'], ['needs_environment' => true]),
-            new \Twig_SimpleFunction('__fp', [$this, '__fp'], ['needs_environment' => true]),
-            new \Twig_SimpleFunction('_fnp', [$this, '_fnp'], ['needs_environment' => true]),
+            new \Twig_SimpleFunction('__', [$this, '__'], ['needs_context' => true]),
+            new \Twig_SimpleFunction('_n', [$this, '_n'], ['needs_context' => true]),
+            new \Twig_SimpleFunction('__f', [$this, '__f'], ['needs_context' => true]),
+            new \Twig_SimpleFunction('_fn', [$this, '_fn'], ['needs_context' => true]),
+            new \Twig_SimpleFunction('__p', [$this, '__p'], ['needs_context' => true]),
+            new \Twig_SimpleFunction('__fp', [$this, '__fp'], ['needs_context' => true]),
+            new \Twig_SimpleFunction('_fnp', [$this, '_fnp'], ['needs_context' => true]),
             new \Twig_SimpleFunction('no__', [$this, 'no__']),
         ];
     }
@@ -63,32 +72,40 @@ class GettextExtension extends \Twig_Extension
     /**
      * @see __()
      */
-    public function __(\Twig_Environment $env, $message, $domain = null, $locale = null)
+    public function __(array $context, $message, $domain = null, $locale = null)
     {
+        $domain = $this->determineTranslationDomainFromContext($context);
+
         return $this->translator->__(/** @Ignore */$message, $domain, $locale);
     }
 
     /**
      * @see __f()
      */
-    public function __f(\Twig_Environment $env, $message, $params, $domain = null, $locale = null)
+    public function __f(array $context, $message, $params, $domain = null, $locale = null)
     {
+        $domain = isset($domain) ? $domain : $this->determineTranslationDomainFromContext($context);
+
         return $this->translator->__f(/** @Ignore */$message, $params, $domain, $locale);
     }
 
     /**
      * @see _n()
      */
-    public function _n(\Twig_Environment $env, $singular, $plural, $count, $domain = null, $locale = null)
+    public function _n(array $context, $singular, $plural, $count, $domain = null, $locale = null)
     {
+        $domain = isset($domain) ? $domain : $this->determineTranslationDomainFromContext($context);
+
         return $this->translator->_n(/** @Ignore */$singular, $plural, $count, $domain, $locale);
     }
 
     /**
      * @see _fn()
      */
-    public function _fn(\Twig_Environment $env, $singular, $plural, $count, $params, $domain = null, $locale = null)
+    public function _fn(array $context, $singular, $plural, $count, $params, $domain = null, $locale = null)
     {
+        $domain = isset($domain) ? $domain : $this->determineTranslationDomainFromContext($context);
+
         return $this->translator->_fn(/** @Ignore */$singular, $plural, $count, $params, $domain, $locale);
     }
 
@@ -110,32 +127,62 @@ class GettextExtension extends \Twig_Extension
     /**
      * @see __p()
      */
-    public function __p(\Twig_Environment $env, $context, $message, $domain = null)
+    public function __p(array $twigContext, $context, $message, $domain = null)
     {
+        $domain = isset($domain) ? $domain : $this->determineTranslationDomainFromContext($twigContext);
+
         return \__p($context, $message, $domain);
     }
 
     /**
      * @see __fp()
      */
-    public function __fp(\Twig_Environment $env, $context, $message, $params, $domain = null)
+    public function __fp(array $twigContext, $context, $message, $params, $domain = null)
     {
+        $domain = isset($domain) ? $domain : $this->determineTranslationDomainFromContext($twigContext);
+
         return \__fp($context, $message, $params, $domain);
     }
 
     /**
      * @see _fpn()
      */
-    public function _fnp(\Twig_Environment $env, $context, $singular, $plural, $count, $params, $domain = null)
+    public function _fnp(array $twigContext, $context, $singular, $plural, $count, $params, $domain = null)
     {
+        $domain = isset($domain) ? $domain : $this->determineTranslationDomainFromContext($twigContext);
+
         return \_fnp($context, $singular, $plural, $count, $params, $domain);
     }
 
     /**
      * @see _np()
      */
-    public function _np(\Twig_Environment $env, $context, $singular, $plural, $count, $domain = null)
+    public function _np(array $twigContext, $context, $singular, $plural, $count, $domain = null)
     {
+        $domain = isset($domain) ? $domain : $this->determineTranslationDomainFromContext($twigContext);
+
         return \_np($context, $singular, $plural, $count, $domain);
+    }
+
+    /**
+     * @param array $context
+     * @param string $default
+     * @return string
+     */
+    private function determineTranslationDomainFromContext(array $context, $default = 'zikula')
+    {
+        if (isset($context['domain'])) {
+            return $context['domain'];
+        }
+        if (isset($context['app'])) {
+            /** @var \Symfony\Bridge\Twig\AppVariable $app */
+            $app = $context['app'];
+            $bundleName = $app->getRequest()->attributes->get('_zkBundle');
+            if (!empty($bundleName)) {
+                return $this->kernel->getBundle($bundleName)->getTranslationDomain();
+            }
+        }
+
+        return $default;
     }
 }

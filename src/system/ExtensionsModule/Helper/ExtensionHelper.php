@@ -49,6 +49,7 @@ class ExtensionHelper
 
     /**
      * ExtensionHelper constructor.
+     *
      * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
@@ -61,6 +62,7 @@ class ExtensionHelper
 
     /**
      * Install an extension.
+     *
      * @param ExtensionEntity $extension
      * @return bool
      */
@@ -94,6 +96,7 @@ class ExtensionHelper
 
     /**
      * Upgrade an extension.
+     *
      * @param ExtensionEntity $extension
      * @return bool
      */
@@ -151,6 +154,7 @@ class ExtensionHelper
 
     /**
      * Uninstall an extension.
+     *
      * @param ExtensionEntity $extension
      * @return bool
      */
@@ -202,6 +206,7 @@ class ExtensionHelper
 
     /**
      * Uninstall an array of extensions.
+     *
      * @param ExtensionEntity[] $extensions
      * @return bool
      */
@@ -222,6 +227,7 @@ class ExtensionHelper
 
     /**
      * Based on the state of the extension, either install, upgrade or activate the extension.
+     *
      * @param ExtensionEntity $extension
      * @return bool
      */
@@ -281,6 +287,7 @@ class ExtensionHelper
 
     /**
      * Run the console command app/console assets:install
+     *
      * @throws \Exception
      */
     public function installAssets()

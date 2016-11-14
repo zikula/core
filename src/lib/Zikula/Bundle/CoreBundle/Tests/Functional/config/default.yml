@@ -1,0 +1,13 @@
+imports:
+    - { resource: framework.yml }
+    - { resource: twig.yml }
+    - { resource: bundle.yml }
+
+services:
+    logger:
+        class: Psr\Log\NullLogger
+    twig.extension.zikula_gettext:
+        class: 'Zikula\Bundle\CoreBundle\Twig\Extension\GettextExtension'
+        arguments: ["@translator.default", "@kernel"]
+        tags:
+        - { name: twig.extension }

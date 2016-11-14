@@ -201,7 +201,7 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
      */
     protected function getConnection()
     {
-        $entityManager = $this->container->get('doctrine.entitymanager');
+        $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
         $connection = $entityManager->getConnection();
     
         return $connection;
@@ -274,7 +274,7 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
      */
     protected function createDefaultData()
     {
-        $entityManager = $this->container->get('doctrine.entitymanager');
+        $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
         $logger = $this->container->get('logger');
         
         $entityClass = 'Zikula\RoutesModule\Entity\RouteEntity';

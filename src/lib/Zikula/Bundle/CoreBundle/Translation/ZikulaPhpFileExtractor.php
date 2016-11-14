@@ -23,6 +23,7 @@ use JMS\TranslationBundle\Model\MessageCatalogue;
 use JMS\TranslationBundle\Logger\LoggerAwareInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Psr\Log\LoggerInterface;
+use Zikula\Core\AbstractBundle;
 
 /**
  * This parser can extract translation information from PHP files.
@@ -69,6 +70,11 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
     private $bundles;
 
     /**
+     * @var KernelInterface
+     */
+    private $kernel;
+
+    /**
      * Possible Zikula-style translation method names
      *
      * @var array
@@ -83,6 +89,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
     public function __construct(DocParser $docParser, KernelInterface $kernel)
     {
         $this->docParser = $docParser;
+        $this->kernel = $kernel;
         $bundles = $kernel->getBundles();
         foreach ($bundles as $bundle) {
             $this->bundles[$bundle->getNamespace()] = $bundle->getName();
@@ -108,8 +115,13 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
          */
         if ($node instanceof \PHPParser_Node_Stmt_Namespace) {
             if (isset($node->name)) {
-                if (array_key_exists($node->name->toString(), $this->bundles)) {
+                $bundle = array_key_exists($node->name->toString(), $this->bundles) && $this->kernel->isBundle($this->bundles[$node->name->toString()]) ? $this->kernel->getBundle($this->bundles[$node->name->toString()]) : null;
+                if (isset($bundle) && $bundle instanceof AbstractBundle) {
+                    $this->domain = $bundle->getTranslationDomain();
+                } elseif (array_key_exists($node->name->toString(), $this->bundles)) {
                     $this->domain = strtolower($this->bundles[$node->name->toString()]);
+                } else {
+                    $this->domain = 'zikula';
                 }
 
                 return;
@@ -188,7 +200,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
 
             $domain = $node->args[$domainIndex]->value->value;
         } else {
-            $domain = !empty($this->domain) ? $this->domain : 'messages';
+            $domain = !empty($this->domain) ? $this->domain : 'zikula';
         }
 
         $message = new Message($id, $domain);

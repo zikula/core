@@ -35,7 +35,7 @@ function ZikulaRoutesModule_operation_update(&$entity, $params)
     
     // get entity manager
     $serviceManager = \ServiceUtil::getManager();
-    $entityManager = $serviceManager->get('doctrine.entitymanager');
+    $entityManager = $serviceManager->get('doctrine.orm.default_entity_manager');
     $logger = $serviceManager->get('logger');
     $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $serviceManager->get('zikula_users_module.current_user')->get('uname')];
     

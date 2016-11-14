@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  * Http Request class.
  *
  * @deprecated
+ * @todo remove in 2.0
  */
 class Zikula_Request_Http extends Zikula_Request_AbstractRequest
 {

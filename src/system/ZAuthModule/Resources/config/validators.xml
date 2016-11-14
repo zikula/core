@@ -10,7 +10,6 @@
         <parameter key="zikula_zauth_module.validator.constraints.valid_user_fields_validator.class">Zikula\ZAuthModule\Validator\Constraints\ValidUserFieldsValidator</parameter>
         <parameter key="zikula_zauth_module.validator.constraints.valid_password_validator.class">Zikula\ZAuthModule\Validator\Constraints\ValidPasswordValidator</parameter>
         <parameter key="zikula_zauth_module.validator.constraints.valid_anti_spam_answer_validator.class">Zikula\ZAuthModule\Validator\Constraints\ValidAntiSpamAnswerValidator</parameter>
-        <parameter key="zikula_zauth_module.validator.constraints.valid_password_reminder_validator.class">Zikula\ZAuthModule\Validator\Constraints\ValidPasswordReminderValidator</parameter>
         <parameter key="zikula_zauth_module.validator.constraints.valid_registration_verification_validator.class">Zikula\ZAuthModule\Validator\Constraints\ValidRegistrationVerificationValidator</parameter>
         <parameter key="zikula_zauth_module.validator.constraints.valid_password_change_validator.class">Zikula\ZAuthModule\Validator\Constraints\ValidPasswordChangeValidator</parameter>
     </parameters>
@@ -46,11 +45,6 @@
             <argument type="service" id="translator.default" />
             <argument id="validator" type="service"/>
             <tag name="validator.constraint_validator" alias="zikula.zauth.antispam_answer.validator" />
-        </service>
-        <service id="zikula_zauth_module.validator.constraints.valid_password_reminder_validator" class="%zikula_zauth_module.validator.constraints.valid_password_reminder_validator.class%">
-            <argument type="service" id="zikula_extensions_module.api.variable" />
-            <argument id="validator" type="service"/>
-            <tag name="validator.constraint_validator" alias="zikula.zauth.password_reminder.validator" />
         </service>
         <service id="zikula_zauth_module.validator.constraints.valid_registration_verification_validator" class="%zikula_zauth_module.validator.constraints.valid_registration_verification_validator.class%">
             <argument type="service" id="zikula_extensions_module.api.variable" />

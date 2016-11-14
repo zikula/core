@@ -12,19 +12,20 @@
 namespace Zikula\ExtensionsModule\Helper;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use vierbergenlars\SemVer\expression;
 use vierbergenlars\SemVer\version;
+use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
+use Zikula\Bundle\CoreBundle\Bundle\Scanner;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Exception\FatalErrorException;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionDependencyRepository;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository;
-use Zikula\Bundle\CoreBundle\Bundle\Scanner;
-use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
-use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository;
 use Zikula\ExtensionsModule\ExtensionEvents;
 
@@ -74,7 +75,18 @@ class BundleSyncHelper
     private $bootstrapHelper;
 
     /**
+     * @var ComposerValidationHelper
+     */
+    private $composerValidationHelper;
+
+    /**
+     * @var SessionInterface
+     */
+    protected $session;
+
+    /**
      * BundleSyncHelper constructor.
+     *
      * @param KernelInterface $kernel
      * @param ExtensionRepository $extensionRepository
      * @param ExtensionVarRepository $extensionVarRepository
@@ -82,6 +94,8 @@ class BundleSyncHelper
      * @param TranslatorInterface $translator
      * @param EventDispatcherInterface $dispatcher
      * @param ExtensionStateHelper $extensionStateHelper
+     * @param ComposerValidationHelper $composerValidationHelper
+     * @param SessionInterface $session
      */
     public function __construct(
         KernelInterface $kernel,
@@ -91,7 +105,9 @@ class BundleSyncHelper
         TranslatorInterface $translator,
         EventDispatcherInterface $dispatcher,
         ExtensionStateHelper $extensionStateHelper,
-        BootstrapHelper $bootstrapHelper
+        BootstrapHelper $bootstrapHelper,
+        ComposerValidationHelper $composerValidationHelper,
+        SessionInterface $session
     ) {
         $this->kernel = $kernel;
         $this->extensionRepository = $extensionRepository;
@@ -101,6 +117,8 @@ class BundleSyncHelper
         $this->dispatcher = $dispatcher;
         $this->extensionStateHelper = $extensionStateHelper;
         $this->bootstrapHelper = $bootstrapHelper;
+        $this->composerValidationHelper = $composerValidationHelper;
+        $this->session = $session;
     }
 
     /**
@@ -122,7 +140,7 @@ class BundleSyncHelper
         // Get all bundles on filesystem
         $bundles = [];
 
-        $scanner = new Scanner();
+        $scanner = new Scanner($this->composerValidationHelper, $this->session);
         $scanner->scan($directories, 5);
         $newModules = $scanner->getModulesMetaData();
 
@@ -161,6 +179,7 @@ class BundleSyncHelper
 
     /**
      * Validate the extensions and ensure there are no duplicate names, displaynames or urls.
+     *
      * @param array $extensions
      * @throws FatalErrorException
      */
@@ -199,6 +218,7 @@ class BundleSyncHelper
 
     /**
      * Sync extensions in the filesystem and the database.
+     *
      * @param array $extensionsFromFile
      * @param bool $forceDefaults
      * @return array $upgradedExtensions[<name>] = <version>
@@ -230,6 +250,7 @@ class BundleSyncHelper
      *  - update compatibility
      *  - update user settings (or reset to defaults)
      *  - ensure current core compatibility
+     *
      * @param array $extensionsFromFile
      * @param array $extensionsFromDB
      * @param bool $forceDefaults
@@ -296,6 +317,7 @@ class BundleSyncHelper
 
     /**
      * Remove extensions from the DB that have been removed from the filesystem.
+     *
      * @param array $extensionsFromFile
      * @param array $extensionsFromDB
      */
@@ -335,6 +357,7 @@ class BundleSyncHelper
      * Add extensions to the DB that have been added to the filesystem.
      *  - add uninitialized extensions
      *  - update missing or invalid extensions
+     *
      * @param array $extensionsFromFile
      * @param array $extensionsFromDB
      * @return array $upgradedExtensions[<name>] => <version>

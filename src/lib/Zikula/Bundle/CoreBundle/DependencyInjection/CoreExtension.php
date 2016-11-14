@@ -53,10 +53,10 @@ class CoreExtension extends Extension
      * @param ContainerBuilder $container
      *            A ContainerBuilder instance
      */
-    private function registerTranslatorConfiguration(array $config, ContainerBuilder $container)
+    protected function registerTranslatorConfiguration(array $config, ContainerBuilder $container)
     {
-        $translator = $container->findDefinition('translator.default');
-        $translator->addMethodCall('setFallbackLocales', [
+        $translatorServiceDefinition = $container->findDefinition('translator.default');
+        $translatorServiceDefinition->addMethodCall('setFallbackLocales', [
             $config['fallbacks']
         ]);
         $container->setParameter('translator.logging', $config['logging']);
@@ -66,25 +66,25 @@ class CoreExtension extends Extension
 
         if (class_exists('Symfony\Component\Validator\Validator')) {
             $r = new \ReflectionClass('Symfony\Component\Validator\Validator');
-            $dirs[] = dirname($r->getFilename()) . '/Resources/translations';
+            $dirs[] = dirname($r->getFileName()) . '/Resources/translations';
         }
         if (class_exists('Symfony\Component\Form\Form')) {
             $r = new \ReflectionClass('Symfony\Component\Form\Form');
-            $dirs[] = dirname($r->getFilename()) . '/Resources/translations';
+            $dirs[] = dirname($r->getFileName()) . '/Resources/translations';
         }
         if (class_exists('Symfony\Component\Security\Core\Exception\AuthenticationException')) {
             $r = new \ReflectionClass('Symfony\Component\Security\Core\Exception\AuthenticationException');
-            $dirs[] = dirname($r->getFilename()) . '/../Resources/translations';
+            $dirs[] = dirname($r->getFileName()) . '/../Resources/translations';
         }
 
         $overridePath = $container->getParameter('kernel.root_dir') . '/Resources/%s/translations';
         foreach ($container->getParameter('kernel.bundles') as $bundle => $class) {
             $reflection = new \ReflectionClass($class);
-            if (is_dir($dir = dirname($reflection->getFilename()) . '/Resources/translations')) {
+            if (is_dir($dir = dirname($reflection->getFileName()) . '/Resources/translations')) {
                 $dirs[] = $dir;
             }
 
-            if (is_dir($dir = dirname($reflection->getFilename()) . '/Resources/locale')) {
+            if (is_dir($dir = dirname($reflection->getFileName()) . '/Resources/locale')) {
                 $dirs[] = $dir;
             }
 
@@ -107,7 +107,7 @@ class CoreExtension extends Extension
                 $container->addResource(new DirectoryResource($dir));
             }
 
-            // nativ
+            // Symfony & Zikula Core-2.0
             $finder = Finder::create()->files()
                 ->filter(function (\SplFileInfo $file) {
                     return 2 === substr_count($file->getBasename(), '.') && preg_match('/\.\w+$/', $file->getBasename());
@@ -117,7 +117,7 @@ class CoreExtension extends Extension
             foreach ($finder as $file) {
                 // filename is domain.locale.format
                 list($domain, $locale, $format) = explode('.', $file->getBasename(), 3);
-                $translator->addMethodCall('addResource', [
+                $translatorServiceDefinition->addMethodCall('addResource', [
                     $format,
                     (string) $file,
                     $locale,
@@ -125,30 +125,29 @@ class CoreExtension extends Extension
                 ]);
             }
 
-            // zikula
+            // Zikula legacy @deprecated remove at Core-2.0 -->
             $zfinder = Finder::create()->files()
                 ->filter(function (\SplFileInfo $file) {
                     return 1 === substr_count($file->getBasename(), '.') && preg_match('/\.\w+$/', $file->getBasename());
                 })
+                ->name('*.po')
                 ->in($dirs);
 
             foreach ($zfinder as $file) {
-                // filepath/name is locale/catalogue/domain.format
-                $path_arr = explode('/', $file->getRelativePath());
-                if (count($path_arr) == 2) {
+                // filepath/name is locale/<catalogue>/LC_MESSAGES/<domain>.po
+                $path_arr = explode('/', $file->getRelativePathname());
+                if (count($path_arr) == 3 && $path_arr[1] == 'LC_MESSAGES') {
                     $locale = $path_arr[0];
-                    list($domain, $format) = explode('.', $file->getBasename(), 2);
-                    // todo add $config['zk_loader'] config.xml translator when mo files handling will be working
-                    if ($format == 'po') {
-                        $translator->addMethodCall('addResource', [
-                            $format,
-                            (string) $file,
-                            $locale,
-                            $domain
-                        ]);
-                    }
+                    list($domain) = explode('.', $file->getBasename(), 2);
+                    $translatorServiceDefinition->addMethodCall('addResource', [
+                        'po',
+                        (string) $file,
+                        $locale,
+                        $domain
+                    ]);
                 }
             }
+            // <-- end @deprecated code
         }
     }
 

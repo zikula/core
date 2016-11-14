@@ -18,7 +18,8 @@
         <testsuite name="Zikula Bundle Tests">
             <directory>./src/lib/Zikula/Bundle/*/Tests/</directory>
             <!-- The `switch` tests are not functional and too complicated to fix atm, so exclude them. -->
-            <exclude>./src/lib/Zikula/Bundle/CoreBundle/Tests/Twig*</exclude>
+            <exclude>./src/lib/Zikula/Bundle/CoreBundle/Tests/Twig/Node/SwitchNodeTest.php</exclude>
+            <exclude>./src/lib/Zikula/Bundle/CoreBundle/Tests/Twig/IntegrationTest.php</exclude>
         </testsuite>
         <testsuite name="Zikula Component Tests">
             <directory>./src/lib/Zikula/Component/*/Tests/</directory>

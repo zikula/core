@@ -60,7 +60,8 @@ class VariableApi
     private $request;
 
     /**
-     * ExtensionVar constructor.
+     * VariableApi constructor.
+     *
      * @param $installed
      * @param ExtensionVarRepositoryInterface $repository
      * @param KernelInterface $kernel
@@ -91,6 +92,7 @@ class VariableApi
         if (!$this->installed) {
             return;
         }
+
         // The empty arrays for handlers and settings are required to prevent messages with E_ALL error reporting
         $this->variables = [
             'ZikulaSettingsModule' => [],

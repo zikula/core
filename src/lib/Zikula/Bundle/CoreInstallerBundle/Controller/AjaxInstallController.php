@@ -174,7 +174,7 @@ class AjaxInstallController extends AbstractController
         /** @var ExtensionEntity[] $extensions */
         $extensions = $this->container->get('zikula_extensions_module.extension_repository')->findAll();
         foreach ($extensions as $extension) {
-            if (\ZikulaKernel::isCoreModule($extension->getName())) {
+            if ($extension->getName() != 'ZikulaPageLockModule' && \ZikulaKernel::isCoreModule($extension->getName())) {
                 $extension->setState(ExtensionApi::STATE_ACTIVE);
             }
         }
@@ -235,7 +235,7 @@ class AjaxInstallController extends AbstractController
      */
     private function updateAdmin()
     {
-        $em = $this->container->get('doctrine.entitymanager');
+        $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
         $params = $this->decodeParameters($this->yamlManager->getParameters());
 
         $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
@@ -260,7 +260,7 @@ class AjaxInstallController extends AbstractController
         $mapping->setMethod(ZAuthConstant::AUTHENTICATION_METHOD_UNAME);
         $em->persist($mapping);
 
-        $em->flush();
+        $entityManager->flush();
 
         return true;
     }

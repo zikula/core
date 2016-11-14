@@ -33,9 +33,10 @@
     javascript/helpers/Zikula.Tree.js,
     javascript/helpers/Zikula.itemlist.js,
     javascript/helpers/Zikula.UI.js,
-    system/AdminModule/Resources/public/js/admin_admin_admintabs.js,
-    system/AdminModule/Resources/public/js/admin_admin_systemnotices.js,
-    system/AdminModule/Resources/public/js/jQuery.mmenu-5.6.3/dist/js/jquery.mmenu.all.min.js,
+    system/AdminModule/Resources/public/js/ZikulaAdminModule.AdminTabs.js,
+    system/AdminModule/Resources/public/js/ZikulaAdminModule.Modal.Fix.js,
+    system/AdminModule/Resources/public/js/ZikulaAdminModule.Modules.Panel.MMenuConfig.js,
+    system/AdminModule/Resources/public/js/ZikulaAdminModule.SystemNotices.js,
     system/BlocksModule/Resources/public/js/Zikula.Blocks.Admin.Common.js,
     system/BlocksModule/Resources/public/js/Zikula.Blocks.Admin.Modifyposition.js,
     system/BlocksModule/Resources/public/js/contextmenu.js,
@@ -122,8 +123,8 @@
         <!-- install assets -->
         <!--<exec command="php ${packagepath}/app/console assets:install ${packagepath}/web" checkreturn="true" passthru="true"/>-->
 
-        <!-- create route translation dummy file -->
-        <exec command="php ${packagepath}/app/console translation:extract template --output-format=po --output-dir=${packagepath}/app/Resources/translations --enable-extractor=jms_i18n_routing --dir=${packagepath}/system --dir=${packagepath}/lib/Zikula/Bundle" checkreturn="true" passthru="true" />
+        <!-- create translation file -->
+        <exec command="php -dmemory_limit=2G ${packagepath}/app/console translation:extract template --output-format=po --output-dir=${packagepath}/app/Resources/translations --enable-extractor=jms_i18n_routing --dir=${packagepath}/system --dir=${packagepath}/lib/Zikula/Bundle" checkreturn="true" passthru="true" />
         <!-- Clear cache and log directories filled by the console command above -->
         <delete includeEmptyDirs="true">
             <fileset dir="${packagepath}/app/cache" defaultexcludes="false">
