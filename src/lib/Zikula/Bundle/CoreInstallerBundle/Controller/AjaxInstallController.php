@@ -26,6 +26,7 @@ use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\Core\CoreEvents;
+use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
