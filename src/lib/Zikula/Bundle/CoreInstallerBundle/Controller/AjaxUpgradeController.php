@@ -15,7 +15,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Bundle\CoreBundle\YamlDumper;
-use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 
@@ -35,11 +34,6 @@ class AjaxUpgradeController extends AbstractController
     private $currentVersion;
 
     /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
      * AjaxUpgradeController constructor.
      * @param ContainerInterface $container
      */
@@ -48,7 +42,6 @@ class AjaxUpgradeController extends AbstractController
         parent::__construct($container);
         $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
         $this->currentVersion = $this->container->getParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM);
-        $this->translator = $container->get('translator.default');
     }
 
     public function ajaxAction(Request $request)
