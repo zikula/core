@@ -40,7 +40,7 @@ CHANGELOG - ZIKULA 1.4.x
     - doctrine orm updated from 2.5.4 to 2.5.5
     - font-awesome updated from 4.6.3 to 4.7.0
     - gedmo/doctrine-extensions updates from 2.4.22 to 2.4.24
-    - jquery.mmenu updated from 5.6.3 to 5.7.6
+    - jquery.mmenu updated from 5.6.3 to 5.7.8
     - jquery ui updates from 1.12.0.1 to 1.12.1
     - justinrainbow/json-schema added in version 4.0.1
     - jstree updated from 3.3.2 to 3.3.3
@@ -54,6 +54,7 @@ CHANGELOG - ZIKULA 1.4.x
     - symfony updated from 2.8.9 to 2.8.13
     - symfony service definition validator updated from 1.2.5 to 1.2.6
     - twig updated from 1.24.1 to 1.27.0
+    - symfony/polyfill-* updated from 1.2.0 to 1.3.0
 
 * 1.4.3 (2016-09-02)
 
