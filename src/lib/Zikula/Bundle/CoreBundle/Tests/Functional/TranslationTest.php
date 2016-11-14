@@ -24,7 +24,7 @@ class TranslationTest extends BaseTestCase
 //        var_dump($translator->getMessages());
 
         $this->assertEquals(200, $response->getStatusCode(), substr($response, 0, 2000));
-        $this->assertEquals("text.apples_remaining_does_not_exist\n\nThere are 5 apples (locale/zikula.po)\n", $response->getContent());
+        $this->assertEquals("text.apples_remaining_does_not_exist\n\nThere are 5 apples (zikula.en.po)\n", $response->getContent());
 
         $client->request('GET', '/apples/view/messages');
         $response = $client->getResponse();
