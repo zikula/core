@@ -52,9 +52,16 @@ class PurifierHelper
         if (!isset($args['forcedefault']) || true !== $args['forcedefault']) {
             $savedConfigSerialised = $this->variableApi->get('ZikulaSecurityCenterModule', 'htmlpurifierConfig');
             if (!is_null($savedConfigSerialised) && false !== $savedConfigSerialised) {
+                $savedConfigArray = [];
                 /** @var \HTMLPurifier_Config $savedConfig */
                 $savedConfig = unserialize($savedConfigSerialised);
-                $savedConfigArray = $savedConfig->getAll();
+                if (!is_object($savedConfig) && is_array($savedConfig)) {
+                    // this case may happen for old installations
+                    $savedConfigArray = $savedConfig;
+                } elseif (is_object($savedConfig) && $savedConfig instanceof \HTMLPurifier_Config) {
+                    // this is the normal case for newer installations
+                    $savedConfigArray = $savedConfig->getAll();
+                }
                 $savedNamespaces = array_keys($savedConfigArray);
                 foreach ($savedNamespaces as $savedNamespace) {
                     foreach ($savedConfigArray[$savedNamespace] as $key => $value) {
