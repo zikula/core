@@ -107,7 +107,6 @@ class CoreExtension extends Extension
                 $container->addResource(new DirectoryResource($dir));
             }
 
-            // Symfony & Zikula Core-2.0
             $finder = Finder::create()->files()
                 ->filter(function (\SplFileInfo $file) {
                     return 2 === substr_count($file->getBasename(), '.') && preg_match('/\.\w+$/', $file->getBasename());
@@ -124,30 +123,6 @@ class CoreExtension extends Extension
                     $domain
                 ]);
             }
-
-            // Zikula legacy @deprecated remove at Core-2.0 -->
-            $zfinder = Finder::create()->files()
-                ->filter(function (\SplFileInfo $file) {
-                    return 1 === substr_count($file->getBasename(), '.') && preg_match('/\.\w+$/', $file->getBasename());
-                })
-                ->name('*.po')
-                ->in($dirs);
-
-            foreach ($zfinder as $file) {
-                // filepath/name is locale/<catalogue>/LC_MESSAGES/<domain>.po
-                $path_arr = explode('/', $file->getRelativePathname());
-                if (count($path_arr) == 3 && $path_arr[1] == 'LC_MESSAGES') {
-                    $locale = $path_arr[0];
-                    list($domain) = explode('.', $file->getBasename(), 2);
-                    $translatorServiceDefinition->addMethodCall('addResource', [
-                        'po',
-                        (string) $file,
-                        $locale,
-                        $domain
-                    ]);
-                }
-            }
-            // <-- end @deprecated code
         }
     }
 
