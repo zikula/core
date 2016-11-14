@@ -23,7 +23,8 @@ use Zikula\Core\Doctrine\EntityAccess;
  * @ORM\Table(name="users_verifychg")
  *
  * Account-change verification table.
- * Holds a one-time use, expirable verification code used when a user needs to change his email address
+ * Holds a one-time use, expirable verification code used when a user needs to change his email address,
+ * reset his password and has not answered any security questions,
  * or when a new user is registering with the site for the first time.
  */
 class UserVerificationEntity extends EntityAccess
