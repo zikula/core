@@ -87,7 +87,7 @@ class ComposerValidationHelper
      *
      * @param TranslatorInterface $translator
      */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator($translator)
     {
         $this->translator = $translator;
     }
