@@ -15,7 +15,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
-use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
