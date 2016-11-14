@@ -35,7 +35,8 @@ class LostPasswordVerificationHelper
      * @param UserVerificationRepositoryInterface $userVerificationRepository
      * @param VariableApi                         $variableApi
      */
-    public function __construct(UserVerificationRepositoryInterface $userVerificationRepository, VariableApi $variableApi) {
+    public function __construct(UserVerificationRepositoryInterface $userVerificationRepository, VariableApi $variableApi)
+    {
         $this->userVerificationRepository = $userVerificationRepository;
         $this->variableApi = $variableApi;
     }
