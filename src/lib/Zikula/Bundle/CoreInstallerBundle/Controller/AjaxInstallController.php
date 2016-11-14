@@ -199,13 +199,14 @@ class AjaxInstallController extends AbstractController
             'ZikulaPageLockModule' => $this->translator->__('Content'),
         ];
 
-        $modulesCategories = $this->container->get('doctrine.orm.entity_manager')
+        $modulesCategories = $this->container->get('doctrine')
             ->getRepository('ZikulaAdminModule:AdminCategoryEntity')->getIndexedCollection('name');
 
         foreach (\ZikulaKernel::$coreModules as $systemModule => $bundleClass) {
-            $systemModuleEntity = $this->container->get('zikula_extensions_module.extension_repository')->get($systemModule);
             $category = $systemModulesCategories[$systemModule];
-            $this->container->get('zikula_admin_module.helper.admin_module_helper')->setAdminModuleCategory($systemModuleEntity, $modulesCategories[$category]->getCid());
+            $this->container->get('doctrine')
+                ->getRepository('ZikulaAdminModule:AdminModuleEntity')
+                ->setModuleCategory($systemModule, $modulesCategories[$category]);
         }
 
         return true;

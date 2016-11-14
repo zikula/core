@@ -14,6 +14,8 @@ namespace Zikula\AdminModule\Entity\Repository;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityRepository;
+use Zikula\AdminModule\Entity\AdminCategoryEntity;
+use Zikula\AdminModule\Entity\AdminModuleEntity;
 
 class AdminModuleRepository extends EntityRepository implements ObjectRepository, Selectable
 {
@@ -32,5 +34,19 @@ class AdminModuleRepository extends EntityRepository implements ObjectRepository
             ->getQuery();
 
         return (int)$query->getSingleScalarResult();
+    }
+
+    public function setModuleCategory($moduleName, AdminCategoryEntity $adminCategoryEntity)
+    {
+        $moduleEntity = $this->_em->getRepository('ZikulaExtensionsModule:ExtensionEntity')->findOneBy(['name' => $moduleName]);
+        $adminModuleEntity = $this->findOneBy(['mid' => $moduleEntity->getId()]);
+        if (!isset($adminModuleEntity)) {
+            $adminModuleEntity = new AdminModuleEntity();
+        }
+        $adminModuleEntity->setMid($moduleEntity->getId());
+        $adminModuleEntity->setCid($adminCategoryEntity->getCid());
+        $modulesInCategory = $this->countModulesByCategory($adminCategoryEntity->getCid());
+        $adminModuleEntity->setSortorder($modulesInCategory);
+        $this->persistAndFlush($adminModuleEntity);
     }
 }
