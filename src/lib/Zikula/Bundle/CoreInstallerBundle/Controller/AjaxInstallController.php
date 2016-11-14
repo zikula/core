@@ -242,13 +242,13 @@ class AjaxInstallController extends AbstractController
         $nowUTCStr = $nowUTC->format(UsersConstant::DATETIME_FORMAT);
 
         /** @var \Zikula\UsersModule\Entity\UserEntity $userEntity */
-        $userEntity = $em->find('ZikulaUsersModule:UserEntity', 2);
+        $userEntity = $entityManager->find('ZikulaUsersModule:UserEntity', 2);
         $userEntity->setUname($params['username']);
         $userEntity->setEmail($params['email']);
         $userEntity->setActivated(1);
         $userEntity->setUser_Regdate($nowUTCStr);
         $userEntity->setLastlogin($nowUTCStr);
-        $em->persist($userEntity);
+        $entityManager->persist($userEntity);
 
         $mapping = new AuthenticationMappingEntity();
         $mapping->setUid($userEntity->getUid());
@@ -256,9 +256,8 @@ class AjaxInstallController extends AbstractController
         $mapping->setEmail($userEntity->getEmail());
         $mapping->setVerifiedEmail(true);
         $mapping->setPass(\UserUtil::getHashedPassword($params['password'], \UserUtil::getPasswordHashMethodCode(ZAuthConstant::DEFAULT_HASH_METHOD))); // @todo
-        $mapping->setPassreminder($userEntity->getPassreminder());
         $mapping->setMethod(ZAuthConstant::AUTHENTICATION_METHOD_UNAME);
-        $em->persist($mapping);
+        $entityManager->persist($mapping);
 
         $entityManager->flush();
 
