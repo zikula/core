@@ -12,6 +12,7 @@
 
         <parameter key="zikula_zauth_module.helper.administration_actions_helper.class">Zikula\ZAuthModule\Helper\AdministrationActionsHelper</parameter>
         <parameter key="zikula_zauth_module.helper.file_io.class">Zikula\ZAuthModule\Helper\FileIOHelper</parameter>
+        <parameter key="zikula_zauth_module.helper.lost_password_verification_helper.class">Zikula\ZAuthModule\Helper\LostPasswordVerificationHelper</parameter>
         <parameter key="zikula_zauth_module.helper.registration_verification_helper.class">Zikula\ZAuthModule\Helper\RegistrationVerificationHelper</parameter>
         <parameter key="zikula_zauth_module.helper.mail_helper.class">Zikula\ZAuthModule\Helper\MailHelper</parameter>
 
@@ -62,6 +63,10 @@
             <argument type="service" id="zikula_zauth_module.helper.mail_helper" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="zikula_users_module.current_user" />
+        </service>
+        <service id="zikula_zauth_module.helper.lost_password_verification_helper" class="%zikula_zauth_module.helper.lost_password_verification_helper.class%" lazy="true">
+            <argument type="service" id="zikula_zauth_module.user_verification_repository" />
+            <argument type="service" id="zikula_extensions_module.api.variable" />
         </service>
         <service id="zikula_zauth_module.helper.registration_verification_helper" class="%zikula_zauth_module.helper.registration_verification_helper.class%" lazy="true">
             <argument type="service" id="zikula_permissions_module.api.permission" />

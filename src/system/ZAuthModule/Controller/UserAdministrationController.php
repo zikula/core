@@ -318,14 +318,16 @@ class UserAdministrationController extends AbstractController
         if (!$this->hasPermission('ZikulaZAuthModule', $mapping->getUname() . '::' . $mapping->getUid(), ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
-        $newConfirmationCode = $this->get('zikula_zauth_module.user_verification_repository')->setVerificationCode($mapping->getUid());
+        $changePasswordExpireDays = $this->getVar(ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD, ZAuthConstant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD);
+        $lostPasswordId = $this->get('zikula_zauth_module.helper.lost_password_verification_helper')->createLostPasswordId($mapping);
         $mailSent = $this->get('zikula_zauth_module.helper.mail_helper')->sendNotification($mapping->getEmail(), 'lostpassword', [
             'uname' => $mapping->getUname(),
-            'code' => $newConfirmationCode,
+            'validDays' => $changePasswordExpireDays,
+            'lostPasswordId' => $lostPasswordId,
             'requestedByAdmin' => true
         ]);
         if ($mailSent) {
-            $this->addFlash('status', $this->__f('Done! The password recovery verification code for %s has been sent via e-mail.', ['%s' => $mapping->getUname()]));
+            $this->addFlash('status', $this->__f('Done! The password recovery verification link for %s has been sent via e-mail.', ['%s' => $mapping->getUname()]));
         }
 
         return $this->redirectToRoute('zikulazauthmodule_useradministration_list');

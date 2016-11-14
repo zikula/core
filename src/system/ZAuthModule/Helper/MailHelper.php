@@ -90,10 +90,10 @@ class MailHelper
         $message = \Swift_Message::newInstance();
         $message->setFrom([$this->variableApi->getSystemVar('adminmail') => $sitename]);
         $message->setTo([$toAddress]);
-        $message->setSubject($subject);
-        $message->setBody($html ? $htmlBody : $textBody);
+        $body = $html ? $htmlBody : $textBody;
+        $altBody = $html ? $textBody : '';
 
-        return $this->mailerApi->sendMessage($message, null, null, $textBody, $html);
+        return $this->mailerApi->sendMessage($message, $subject, $body, $altBody, $html);
     }
 
     private function generateEmailSubject($notificationType, array $templateArgs = [])

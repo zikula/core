@@ -6,7 +6,7 @@
 {{ moduleHeader('user', __('Email address manager'), '', true) }}
 
 <p class="alert alert-info">
-    {{ __f('Notice: Please enter your new e-mail address, the same address again for verification, and then click save. The site uses this address to send you mail (when you request a new password, for instance). Your currently-recorded e-mail address is %s.', {'%s': currentUser.email}) }}
+    {{ __f('Notice: Please enter your new e-mail address, the same address again for verification, and then click save. The site uses this address to send you mail (when you request a new password, for instance). Your currently-recorded e-mail address is %email%.', { '%email%': currentUser.email }) }}
     {{ __('You will receive an e-mail to your new e-mail address to confirm the change.') }}
 </p>
 

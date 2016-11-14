@@ -111,7 +111,7 @@ class UserController extends \Zikula_AbstractController
     {
         @trigger_error('This method is deprecated. Please use AccountController::confirmationCodeAction', E_USER_DEPRECATED);
 
-        return new RedirectResponse($this->get('router')->generate('zikulazauthmodule_account_confirmationcode'));
+        return new RedirectResponse($this->get('router')->generate('zikulazauthmodule_account_lostpassword'));
     }
 
     /**

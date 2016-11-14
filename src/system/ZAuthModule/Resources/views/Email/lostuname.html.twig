@@ -9,7 +9,7 @@
 <p>{{ __f('The user name for your account is: %1s', {"%sub%": uname}) }}</p>
 
 <p>
-    {% if not requestedByAdmin %}{{ __('If the request was not made by you then you don\'t need to take any action.') }} {% endif %}
+    {% if not requestedByAdmin %}{{ __('If the request was not made by you then you don\'t need to worry.') }} {% endif %}
     {{ __('You are the only recipient of this message, and your user name has not been sent to any other e-mail address.') }}
     {% if not requestedByAdmin %} {{ __('You can just delete this message.') }}{% endif %}
 </p>
