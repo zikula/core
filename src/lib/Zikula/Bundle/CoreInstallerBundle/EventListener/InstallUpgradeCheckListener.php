@@ -49,7 +49,7 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
         $requestedUri = $request->getRequestUri();
         $uriContainsInstall = strpos($requestedUri, '/install') !== false;
         $uriContainsUpgrade = strpos($requestedUri, '/upgrade') !== false;
-        $uriContainsLogin = strpos($requestedUri, '/login') !== false || strpos($requestedUri, '/upgrade-login') !== false; // @todo @deprecated at Core-2.0 remove later half
+        $uriContainsLogin = strpos($requestedUri, '/login') !== false;
         $uriContainsDoc = strpos($requestedUri, '/installdoc') !== false;
         $uriContainsWdt = strpos($requestedUri, '/_wdt') !== false;
         $uriContainsProfiler = strpos($requestedUri, '/_profiler') !== false;

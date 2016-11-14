@@ -42,15 +42,7 @@ class AuthenticateAdminLoginValidator extends ConstraintValidator
     public function validate($object, Constraint $constraint)
     {
         try {
-            $schemaManager = $this->databaseConnection->getSchemaManager();
-            if ($schemaManager->tablesExist(['zauth_authentication_mapping']) == true) {
-                $user = $this->databaseConnection->fetchAssoc('SELECT uid, pass FROM zauth_authentication_mapping WHERE uname= ?', [$object['username']]);
-            }
-            if (empty($user)) {
-                // core-1.4.3 method failed, try older method
-                // @deprecated use zauth_authentication_mapping for Core-2.0
-                $user = $this->databaseConnection->fetchAssoc('SELECT uid, pass FROM users WHERE uname= ?', [$object['username']]);
-            }
+            $user = $this->databaseConnection->fetchAssoc('SELECT uid, pass FROM zauth_authentication_mapping WHERE uname= ?', [$object['username']]);
         } catch (\Exception $e) {
             $this->context->buildViolation(__('Error! There was a problem with the database connection.'))
                 ->addViolation()

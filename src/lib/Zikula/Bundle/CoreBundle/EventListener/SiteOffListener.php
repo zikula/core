@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
@@ -87,8 +88,8 @@ class SiteOffListener implements EventSubscriberInterface
         // Get variables
         $siteOff = (bool)$this->variableApi->getSystemVar('siteoff');
         $hasAdminPerms = $this->permissionApi->hasPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN);
-        $currentInstalledVersion = $this->variableApi->getSystemVar('Version_Num');
-        $versionsEqual = (\Zikula_Core::VERSION_NUM == $currentInstalledVersion);
+        $currentInstalledVersion = $this->variableApi->getSystemVar('Version_Num'); // @todo replace by param
+        $versionsEqual = (\ZikulaKernel::VERSION == $currentInstalledVersion);
 
         // Check for site closed
         if (($siteOff || !$versionsEqual) && !$hasAdminPerms) {
@@ -97,9 +98,8 @@ class SiteOffListener implements EventSubscriberInterface
                 $request->getSession()->invalidate(); // logout
             }
 
-            $route = version_compare($currentInstalledVersion, '1.4.3', '<') ? 'zikulausersmodule_access_upgradeadminlogin' : 'zikulausersmodule_access_login'; // @todo @deprecated remove at Core-2.0
             $form = $this->formFactory->create('Zikula\ZAuthModule\Form\Type\UnameLoginType', [], [
-                'action' => $this->router->generate($route, ['authenticationMethod' => 'native_uname'])
+                'action' => $this->router->generate('zikulausersmodule_access_login', ['authenticationMethod' => 'native_uname'])
             ]);
             $response = new PlainResponse();
             $response->headers->add(['HTTP/1.1 503 Service Unavailable']);
