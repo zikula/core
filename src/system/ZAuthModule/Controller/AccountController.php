@@ -186,24 +186,13 @@ class AccountController extends AbstractController
             return $this->redirectToRoute($redirectToRoute);
         }
 
-        $user = $this->get('zikula_users_module.user_repository')->findBy([
-            'uid' => $requestDetails['userId'],
-            'uname' => $requestDetails['userName'],
-            'email' => $requestDetails['emailAddress']
-        ]);
-
-        if (count($user) > 1) {
-            $this->addFlash('error', $this->__('There are too many users registered with that address. Please contact the system administrator for assistance.'));
-
-            return $this->redirectToRoute($redirectToRoute);
-        } elseif (count($user) < 1) {
+        /** @var UserEntity $user */
+        $user = $this->get('zikula_users_module.user_repository')->find($requestDetails['userId']);
+        if (null === $user) {
             $this->addFlash('error', $this->__('User not found. Please contact the system administrator for assistance.'));
 
             return $this->redirectToRoute($redirectToRoute);
         }
-
-        /** @var UserEntity $user */
-        $user = $user[0];
 
         if (!$lostPasswordVerificationHelper->checkConfirmationCode($user->getUid(), $requestDetails['confirmationCode'])) {
             $this->addFlash('error', $this->__('Your request could not be processed due to invalid arguments. Maybe your link is expired?'));
