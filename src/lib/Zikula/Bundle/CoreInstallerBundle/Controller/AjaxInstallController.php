@@ -27,6 +27,7 @@ use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\Core\CoreEvents;
+use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
@@ -230,26 +231,29 @@ class AjaxInstallController extends AbstractController
         $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
         $params = $this->decodeParameters($this->yamlManager->getParameters());
 
-        // @todo this must be updated to use ZAuth
-
-        // create the password hash
-        $password = \UserUtil::getHashedPassword($params['password'], \UserUtil::getPasswordHashMethodCode(ZAuthConstant::DEFAULT_HASH_METHOD));
-
         // prepare the data
         $username = mb_strtolower($params['username']);
 
         $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
         $nowUTCStr = $nowUTC->format(UsersConstant::DATETIME_FORMAT);
 
-        /** @var \Zikula\UsersModule\Entity\UserEntity $entity */
-        $entity = $entityManager->find('ZikulaUsersModule:UserEntity', 2);
-        $entity->setUname($username);
-        $entity->setEmail($params['email']);
-        $entity->setPass($password);
-        $entity->setActivated(1);
-        $entity->setUser_Regdate($nowUTCStr);
-        $entity->setLastlogin($nowUTCStr);
-        $entityManager->persist($entity);
+        /** @var \Zikula\UsersModule\Entity\UserEntity $userEntity */
+        $userEntity = $entityManager->find('ZikulaUsersModule:UserEntity', 2);
+        $userEntity->setUname($params['username']);
+        $userEntity->setEmail($params['email']);
+        $userEntity->setActivated(1);
+        $userEntity->setUser_Regdate($nowUTCStr);
+        $userEntity->setLastlogin($nowUTCStr);
+        $entityManager->persist($userEntity);
+
+        $mapping = new AuthenticationMappingEntity();
+        $mapping->setUid($userEntity->getUid());
+        $mapping->setUname($userEntity->getUname());
+        $mapping->setEmail($userEntity->getEmail());
+        $mapping->setVerifiedEmail(true);
+        $mapping->setPass(\UserUtil::getHashedPassword($params['password'], \UserUtil::getPasswordHashMethodCode(ZAuthConstant::DEFAULT_HASH_METHOD))); // @todo
+        $mapping->setMethod(ZAuthConstant::AUTHENTICATION_METHOD_UNAME);
+        $entityManager->persist($mapping);
 
         $entityManager->flush();
 
