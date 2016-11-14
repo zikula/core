@@ -31,10 +31,6 @@
         <legend>{{ __('Set a password') }}</legend>
         {{ form_row(form.pass, {'help': __f('The minimum length for user passwords is %sub% characters.', {"%sub%": getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH'))} )}) }}
         <div id="{{ form.vars.id }}_passmeter" class="col-sm-offset-3 col-sm-9"></div>
-        {% set passReminderEnabled = getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED')) %}
-        {% if passReminderEnabled is defined and passReminderEnabled %}
-            {{ form_row(form.passreminder) }}
-        {% endif %}
     </fieldset>
     <fieldset {% if hideEmail is defined and hideEmail %}class="hide"{% endif %}>
         <legend>{{ __('Enter your e-mail address') }}</legend>

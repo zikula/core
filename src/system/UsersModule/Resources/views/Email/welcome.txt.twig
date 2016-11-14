@@ -8,8 +8,6 @@
 {{ __('User name') }}: {{ reginfo.uname }}
 {% if createdpassword is not empty %}
 {{ __('Password') }}: {{ createdpassword }}
-{% elseif reginfo.passreminder|default %}
-{{ __('Password reminder') }}: {{ reginfo.passreminder }}
 {% endif %}
 
 {% if createdpassword is not empty %}{{ __('(This is the only time you will receive your password. Please keep it in a safe place.)') }}{% endif %}

@@ -69,17 +69,6 @@ class ValidUserFieldsValidator extends ConstraintValidator
                 ->atPath('pass')
                 ->addViolation();
         }
-        // Validate password not included in the password reminder.
-        if ($this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED, ZAuthConstant::DEFAULT_PASSWORD_REMINDER_ENABLED)) {
-            $testPass = mb_strtolower(trim($authenticationMappingEntity->getPass()));
-            $testPassreminder = mb_strtolower(trim($authenticationMappingEntity->getPassreminder()));
-            if (!empty($testPass) && (strlen($testPassreminder) >= strlen($testPass)) && (stristr($testPassreminder, $testPass) !== false)) {
-                $this->context->buildViolation($this->translator->__('You cannot include your password in your password reminder.'))
-                    ->atPath('passreminder')
-                    ->addViolation();
-            }
-            // note: removed 'too similar' reminder <=> pass comparison from <= Core-1.4.2
-        }
         // Ensure unique uname.
         $qb = $this->mappingRepository->createQueryBuilder('m');
         $qb->select('count(m.uid)')

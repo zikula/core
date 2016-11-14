@@ -313,21 +313,16 @@ class AccountController extends AbstractController
         $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->findOneBy(['uid' => $uid]);
 
         $form = $this->createForm('Zikula\ZAuthModule\Form\Type\ChangePasswordType', [
-            'uid' => $uid,
-            'authenticationMethod' => $authenticationMethod
-        ], [
-                'translator' => $this->get('translator.default'),
-                'passwordReminderEnabled' => $this->getVar(ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED),
-                'passwordReminderMandatory' => $this->getVar(ZAuthConstant::MODVAR_PASSWORD_REMINDER_MANDATORY)
+                'uid' => $uid,
+                'authenticationMethod' => $authenticationMethod
+            ], [
+                'translator' => $this->get('translator.default')
             ]
         );
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $mapping->setPass(\UserUtil::getHashedPassword($data['pass']));
-            if (isset($data['passreminder'])) {
-                $mapping->setPassreminder($data['passreminder']);
-            }
             $userEntity = $this->get('zikula_users_module.user_repository')->find($mapping->getUid());
             $userEntity->delAttribute(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY);
             $this->get('zikula_zauth_module.authentication_mapping_repository')->persistAndFlush($mapping);

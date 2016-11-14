@@ -9,8 +9,6 @@
 <p>{{ __('User name') }}: {{ reginfo.uname }}<br />
 {% if createdpassword is not empty %}
     {{ __('Password') }}: {{ createdpassword }}
-{% elseif reginfo.passreminder|default %}
-    {{ __('Password reminder') }}: {{ reginfo.passreminder }}
 {% endif %}
 </p>
 

@@ -75,10 +75,9 @@ class RegistrationController extends AbstractController
             ],
             [
                 'translator' => $this->getTranslator(),
-                'setpass' => $setPass,
-                'passwordReminderEnabled' => $this->getVar(ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED),
-                'passwordReminderMandatory' => $this->getVar(ZAuthConstant::MODVAR_PASSWORD_REMINDER_MANDATORY)
-            ]);
+                'setpass' => $setPass
+            ]
+        );
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
@@ -86,9 +85,6 @@ class RegistrationController extends AbstractController
             $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->getByZikulaId($userEntity->getUid());
             if (isset($data['pass'])) {
                 $mapping->setPass(\UserUtil::getHashedPassword($data['pass']));
-            }
-            if ($this->getVar(ZAuthConstant::MODVAR_PASSWORD_REMINDER_ENABLED) && isset($data['passreminder'])) {
-                $mapping->setPassreminder($data['passreminder']);
             }
             $mapping->setVerifiedEmail(true);
             $this->get('zikula_zauth_module.authentication_mapping_repository')->persistAndFlush($mapping);
