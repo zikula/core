@@ -21,6 +21,7 @@ use JMS\TranslationBundle\Annotation\Ignore;
 use JMS\TranslationBundle\Translation\Extractor\FileVisitorInterface;
 use JMS\TranslationBundle\Model\MessageCatalogue;
 use JMS\TranslationBundle\Logger\LoggerAwareInterface;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Psr\Log\LoggerInterface;
 use Zikula\Core\AbstractBundle;
@@ -32,6 +33,9 @@ use Zikula\Core\AbstractBundle;
  */
 class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterface, \PHPParser_NodeVisitor
 {
+    /**
+     * @var string
+     */
     private $domain = '';
 
     /**
@@ -86,6 +90,11 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
         4 => '_fn'
     ];
 
+    /**
+     * ZikulaPhpFileExtractor constructor.
+     * @param DocParser $docParser
+     * @param KernelInterface $kernel
+     */
     public function __construct(DocParser $docParser, KernelInterface $kernel)
     {
         $this->docParser = $docParser;
@@ -115,11 +124,9 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
          */
         if ($node instanceof \PHPParser_Node_Stmt_Namespace) {
             if (isset($node->name)) {
-                $bundle = array_key_exists($node->name->toString(), $this->bundles) && $this->kernel->isBundle($this->bundles[$node->name->toString()]) ? $this->kernel->getBundle($this->bundles[$node->name->toString()]) : null;
+                $bundle = $this->getBundleFromNodeNamespace($node->name->toString());
                 if (isset($bundle) && $bundle instanceof AbstractBundle) {
                     $this->domain = $bundle->getTranslationDomain();
-                } elseif (array_key_exists($node->name->toString(), $this->bundles)) {
-                    $this->domain = strtolower($this->bundles[$node->name->toString()]);
                 } else {
                     $this->domain = 'zikula';
                 }
@@ -256,6 +263,24 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
             $comment = $this->previousNode->getDocComment();
 
             return is_object($comment) ? $comment->getText() : $comment;
+        }
+
+        return null;
+    }
+
+    /**
+     * Search namespaces for match and return BundleObject
+     * @param $nodeNamespace
+     * @return BundleInterface|null
+     */
+    private function getBundleFromNodeNamespace($nodeNamespace)
+    {
+        foreach ($this->bundles as $namespace => $bundleName) {
+            if (false !== strpos($namespace, $nodeNamespace)) {
+                if ($this->kernel->isBundle($bundleName)) {
+                    return $this->kernel->getBundle($bundleName);
+                }
+            }
         }
 
         return null;

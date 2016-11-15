@@ -28,6 +28,7 @@
 
         <service id="zikula_core.internal.translation_extractor.file.twig_extractor" class="%zikula.extractor.file.twig_extractor.class%" public="false">
             <argument type="service" id="twig" />
+            <argument type="service" id="kernel" strict="false" />
             <tag name="jms_translation.file_visitor" />
         </service>
 
