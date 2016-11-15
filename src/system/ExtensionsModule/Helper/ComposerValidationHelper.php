@@ -15,13 +15,9 @@ use JsonSchema\Uri\UriRetriever;
 use JsonSchema\Validator;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 
 class ComposerValidationHelper
 {
-    use TranslatorTrait;
-
     /**
      * @var KernelInterface
      */
@@ -74,22 +70,10 @@ class ComposerValidationHelper
      * ComposerValidationHelper constructor.
      *
      * @param KernelInterface $kernel
-     * @param TranslatorInterface $translator
      */
-    public function __construct(KernelInterface $kernel, TranslatorInterface $translator)
+    public function __construct(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
-        $this->setTranslator($translator);
-    }
-
-    /**
-     * Sets the translator.
-     *
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator($translator)
-    {
-        $this->translator = $translator;
     }
 
     /**
@@ -107,12 +91,6 @@ class ComposerValidationHelper
         // so we can not use AbstractBundle methods here
         $pathParts = explode('/', $file->getRelativePath());
         $this->bundleName = $pathParts[count($pathParts) - 1];
-
-        if (strtolower(substr($this->bundleName, -6)) != 'module' && strtolower(substr($this->bundleName, -5)) != 'theme') {
-            $this->errors[] = $this->__f('Invalid bundle type detected for component %component.', ['%component' => $this->bundleName]);
-
-            return;
-        }
 
         $this->filePath = $file->getRelativePath();
         $this->rawContent = $file->getContents();
