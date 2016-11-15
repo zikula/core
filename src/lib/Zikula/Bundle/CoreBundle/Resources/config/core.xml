@@ -32,8 +32,8 @@
             <!--<argument type="service" id="service_container" />-->
         <!--</service>-->
 
-        <service id="zikula_core.common.markdown_parser" class="%zikula_core.common.markdown.class%" />
-        <service id="zikula_core.common.markdown_extra_parser" class="%zikula_core.common.markdown_extra.class%" />
+        <service id="zikula_core.common.markdown_parser" alias="markdown_parser" class="%zikula_core.common.markdown.class%" />
+        <service id="zikula_core.common.markdown_extra_parser" alias="markdown_extra_parser" class="%zikula_core.common.markdown_extra.class%" />
 
         <!--<service id="zikula_core.internal.core_init" class="%zikula_core.internal.core_init_listener.class%">-->
             <!--<tag name="zikula.event_subscriber" />-->
