@@ -15,16 +15,35 @@ use JMS\TranslationBundle\Model\FileSource;
 use JMS\TranslationBundle\Model\Message;
 use JMS\TranslationBundle\Model\MessageCatalogue;
 use JMS\TranslationBundle\Translation\Extractor\FileVisitorInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
+use Zikula\Core\AbstractBundle;
 
 class ZikulaTwigFileExtractor implements FileVisitorInterface, \Twig_NodeVisitorInterface
 {
+    /**
+     * @var \SplFileInfo
+     */
     private $file;
 
+    /**
+     * @var MessageCatalogue
+     */
     private $catalogue;
 
+    /**
+     * @var \Twig_NodeTraverser
+     */
     private $traverser;
 
+    /**
+     * @var KernelInterface
+     */
+    private $kernel;
+
+    /**
+     * @var array
+     */
     private $stack = [];
 
     /**
@@ -44,12 +63,23 @@ class ZikulaTwigFileExtractor implements FileVisitorInterface, \Twig_NodeVisitor
         4 => '_fn'
     ];
 
-    public function __construct(\Twig_Environment $env)
+    /**
+     * ZikulaTwigFileExtractor constructor.
+     * @param \Twig_Environment $env
+     * @param KernelInterface $kernel
+     */
+    public function __construct(\Twig_Environment $env, KernelInterface $kernel)
     {
         $this->traverser = new \Twig_NodeTraverser($env, [$this]);
+        $this->kernel = $kernel;
         self::$domainCache = [];
     }
 
+    /**
+     * @param \Twig_NodeInterface $node
+     * @param \Twig_Environment $env
+     * @return \Twig_NodeInterface
+     */
     public function enterNode(\Twig_NodeInterface $node, \Twig_Environment $env)
     {
         $this->stack[] = $node;
@@ -70,7 +100,7 @@ class ZikulaTwigFileExtractor implements FileVisitorInterface, \Twig_NodeVisitor
                         break;
                 }
 
-                // obtain translation domain from composer file
+                // obtain translation domain from bundle if possible
                 $composerPath = str_replace($this->file->getRelativePathname(), '', $this->file->getPathname());
                 if (isset(self::$domainCache[$composerPath])) {
                     $domain = self::$domainCache[$composerPath];
@@ -80,7 +110,12 @@ class ZikulaTwigFileExtractor implements FileVisitorInterface, \Twig_NodeVisitor
                     $metaData = $scanner->getModulesMetaData(true);
                     $domains = array_keys($metaData);
                     if (isset($domains[0])) {
-                        $domain = strtolower($domains[0]);
+                        if ($this->kernel->isBundle($domains[0])) {
+                            $bundle = $this->kernel->getBundle($domains[0]);
+                            $domain = ($bundle instanceof AbstractBundle) ? $bundle->getTranslationDomain() : strtolower($bundle->getName());
+                        } else {
+                            $domain = strtolower($domains[0]);
+                        }
                         // cache result of file lookup
                         self::$domainCache[$composerPath] = $domain;
                     } else {
