@@ -108,12 +108,6 @@ class ComposerValidationHelper
         $pathParts = explode('/', $file->getRelativePath());
         $this->bundleName = $pathParts[count($pathParts) - 1];
 
-        if (strtolower(substr($this->bundleName, -6)) != 'module' && strtolower(substr($this->bundleName, -5)) != 'theme') {
-            $this->errors[] = $this->__f('Invalid bundle type detected for component %component.', ['%component' => $this->bundleName]);
-
-            return;
-        }
-
         $this->filePath = $file->getRelativePath();
         $this->rawContent = $file->getContents();
 
