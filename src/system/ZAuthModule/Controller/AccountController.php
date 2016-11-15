@@ -13,6 +13,7 @@ namespace Zikula\ZAuthModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -33,7 +34,7 @@ class AccountController extends AbstractController
      * @Route("/lost-user-name")
      * @Template
      * @param Request $request
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array|RedirectResponse
      */
     public function lostUserNameAction(Request $request)
     {
@@ -75,7 +76,7 @@ class AccountController extends AbstractController
      * @Route("/lost-password")
      * @Template
      * @param Request $request
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array|RedirectResponse
      */
     public function lostPasswordAction(Request $request)
     {
@@ -99,15 +100,17 @@ class AccountController extends AbstractController
                 $user = $this->get('zikula_users_module.user_repository')->find($mapping->getUid());
                 switch ($user->getActivated()) {
                     case UsersConstant::ACTIVATED_ACTIVE:
-                        $newConfirmationCode = $this->get('zikula_zauth_module.user_verification_repository')->setVerificationCode($mapping->getUid());
+                        $changePasswordExpireDays = $this->getVar(ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD, ZAuthConstant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD);
+                        $lostPasswordId = $this->get('zikula_zauth_module.helper.lost_password_verification_helper')->createLostPasswordId($mapping);
                         $sent = $this->get('zikula_zauth_module.helper.mail_helper')->sendNotification($mapping->getEmail(), 'lostpassword', [
                             'uname' => $mapping->getUname(),
-                            'code' => $newConfirmationCode,
-                            'requestedByAdmin' => false
+                            'validDays' => $changePasswordExpireDays,
+                            'lostPasswordId' => $lostPasswordId,
+                            'requestedByAdmin' => false,
                         ]);
                         if ($sent) {
-                            $this->addFlash('status', $this->__f('Done! The confirmation code for %s has been sent via e-mail.', ['%s' => $data[$field]]));
-                            $redirectToRoute = 'zikulazauthmodule_account_confirmationcode';
+                            $this->addFlash('status', $this->__f('Done! The confirmation link for %s has been sent via e-mail.', ['%s' => $data[$field]]));
+                            $redirectToRoute = 'zikulausersmodule_account_menu';
                         } else {
                             $this->addFlash('error', $this->__f('Unable to send email to the requested %s. Please try your %o or contact the system administrator for assistance.', ['%s' => $map[$field], '%o' => $map[$inverse]]));
                         }
@@ -147,55 +150,77 @@ class AccountController extends AbstractController
     }
 
     /**
-     * @Route("/lost-password/code")
+     * @Route("/lost-password/reset")
      * @Template
      * @param Request $request
      * @return array
      */
-    public function confirmationCodeAction(Request $request)
+    public function lostPasswordResetAction(Request $request)
     {
+        $redirectToRoute = 'zikulausersmodule_account_menu';
+
         if ($this->get('zikula_users_module.current_user')->isLoggedIn()) {
-            return $this->redirectToRoute('zikulausersmodule_account_menu');
+            return $this->redirectToRoute($redirectToRoute);
+        }
+
+        if (!$request->query->has('id')) {
+            $this->addFlash('error', $this->__('Your request could not be processed due to missing arguments.'));
+
+            return $this->redirectToRoute($redirectToRoute);
+        }
+
+        $lostPasswordVerificationHelper = $this->get('zikula_zauth_module.helper.lost_password_verification_helper');
+        $requestDetails = [];
+
+        try {
+            $requestDetails = $lostPasswordVerificationHelper->decodeLostPasswordId($request->query->get('id'));
+        } catch (Exception $e) {
+            $this->addFlash('error', $this->__('Your request could not be processed.') . ' ' . $e->getMessage());
+
+            return $this->redirectToRoute($redirectToRoute);
+        }
+
+        if ($requestDetails['userId'] == '' || $requestDetails['userName'] == '' || $requestDetails['emailAddress'] == '') {
+            $this->addFlash('error', $this->__('Your request could not be processed due to invalid arguments.'));
+
+            return $this->redirectToRoute($redirectToRoute);
+        }
+
+        /** @var UserEntity $user */
+        $user = $this->get('zikula_users_module.user_repository')->find($requestDetails['userId']);
+        if (null === $user) {
+            $this->addFlash('error', $this->__('User not found. Please contact the system administrator for assistance.'));
+
+            return $this->redirectToRoute($redirectToRoute);
+        }
+
+        if (!$lostPasswordVerificationHelper->checkConfirmationCode($user->getUid(), $requestDetails['confirmationCode'])) {
+            $this->addFlash('error', $this->__('Your request could not be processed due to invalid arguments. Maybe your link is expired?'));
+
+            return $this->redirectToRoute($redirectToRoute);
         }
 
         $form = $this->createForm('Zikula\ZAuthModule\Form\Type\LostPasswordType', [], [
                 'translator' => $this->get('translator.default'),
-                'includeCode' => true,
+                'includeReset' => true
             ]
         );
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $map = ['uname' => $this->__('username'), 'email' => $this->__('email address')];
             $data = $form->getData();
-            $field = empty($data['uname']) ? 'email' : 'uname';
-            $user = $this->get('zikula_users_module.user_repository')->findBy([$field => $data[$field]]);
-            if (count($user) == 1) {
-                /** @var UserEntity $user */
-                $user = $user[0];
-                $changePasswordExpireDays = $this->getVar(ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD, ZAuthConstant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD);
-                $this->get('zikula_zauth_module.user_verification_repository')->purgeExpiredRecords($changePasswordExpireDays);
-                /** @var UserVerificationEntity $userVerificationEntity */
-                $userVerificationEntity = $this->get('zikula_zauth_module.user_verification_repository')->findOneBy(['uid' => $user->getUid(), 'changetype' => ZAuthConstant::VERIFYCHGTYPE_PWD]);
-                if (isset($userVerificationEntity) && (\UserUtil::passwordsMatch($data['code'], $userVerificationEntity->getVerifycode()))) {
-                    $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->getByZikulaId($user->getUid());
-                    $mapping->setPass(\UserUtil::getHashedPassword($data['pass']));
-                    $this->get('zikula_zauth_module.authentication_mapping_repository')->persistAndFlush($mapping);
-                    $this->get('zikula_users_module.helper.access_helper')->login($user);
-                    $this->addFlash('success', $this->__('Code is confirmed. You are now logged in with your new password.'));
 
-                    return $this->redirectToRoute('zikulausersmodule_account_menu');
-                } else {
-                    $this->addFlash('error', $this->__('Invalid or expired code.'));
-                }
-            } elseif (count($user) > 1) {
-                $this->addFlash('error', $this->__('There are too many users registered with that address. Please contact the system administrator for assistance.'));
-            } else {
-                $this->addFlash('error', $this->__f('%s not found. Please contact the system administrator for assistance.', ['%s' => ucwords($map[$field])]));
-            }
+            $mappingRepository = $this->get('zikula_zauth_module.authentication_mapping_repository');
+            $mapping = $mappingRepository->getByZikulaId($user->getUid());
+            $mapping->setPass(\UserUtil::getHashedPassword($data['pass']));
+            $mappingRepository->persistAndFlush($mapping);
+            $this->get('zikula_users_module.helper.access_helper')->login($user);
+            $this->addFlash('success', $this->__('Your change has been successfully saved. You are now logged in with your new password.'));
+
+            return $this->redirectToRoute($redirectToRoute);
         }
 
         return [
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ];
     }
 
@@ -221,10 +246,10 @@ class AccountController extends AbstractController
             $currentUser = $this->get('zikula_users_module.current_user');
             $code = $this->get('zikula_zauth_module.user_verification_repository')->setVerificationCode($currentUser->get('uid'), ZAuthConstant::VERIFYCHGTYPE_EMAIL, $data['email']);
             $templateArgs = [
-                'uname'     => $currentUser->get('uname'),
-                'email'     => $currentUser->get('email'),
-                'newemail'  => $data['email'],
-                'url'       => $this->get('router')->generate('zikulazauthmodule_account_confirmchangedemail', ['code' => $code], RouterInterface::ABSOLUTE_URL),
+                'uname'    => $currentUser->get('uname'),
+                'email'    => $currentUser->get('email'),
+                'newemail' => $data['email'],
+                'url'      => $this->get('router')->generate('zikulazauthmodule_account_confirmchangedemail', ['code' => $code], RouterInterface::ABSOLUTE_URL),
             ];
             $sent = $this->get('zikula_zauth_module.helper.mail_helper')->sendNotification($data['email'], 'userverifyemail', $templateArgs);
             if ($sent) {
@@ -338,7 +363,7 @@ class AccountController extends AbstractController
             'login' => $login,
             'form' => $form->createView(),
             'user' => $mapping,
-            'modvars' => $this->getVars(),
+            'modvars' => $this->getVars()
         ];
     }
 }

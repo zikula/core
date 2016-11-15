@@ -161,10 +161,6 @@ class LinkContainer implements LinkContainerInterface
                 [
                     'text' => $this->translator->__('Recover Lost Password'),
                     'url' => $this->router->generate('zikulazauthmodule_account_lostpassword')
-                ],
-                [
-                    'text' => $this->translator->__('Enter Password Recovery Code'),
-                    'url' => $this->router->generate('zikulazauthmodule_account_confirmationcode')
                 ]
             ],
             'text' => $this->translator->__('Recover account information or password'),
