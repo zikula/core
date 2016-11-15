@@ -22,7 +22,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Fixed several regressions in SecurityCenter module.
     - Fixed problem in DataUtil::formatForDisplayHTML for proper handling of data- * attributes.
     - Fixed regression in argument typehints in UserUtil (#3123).
-    - Fixed some problems with the Zikula Symfony Translator (#3161).
+    - Fixed some problems with the Zikula Symfony Translator (#3161, #3117).
     - Fixed upgrade in Settings module for shorturl value to boolean (#3166).
 
  - Core-2.0 Features:
