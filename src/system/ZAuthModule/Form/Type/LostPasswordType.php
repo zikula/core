@@ -35,11 +35,6 @@ class LostPasswordType extends AbstractType
                     'label' => $options['translator']->__('Email Address'),
                     'input_group' => ['left' => '<i class="fa fa-at"></i>'],
                 ])
-                ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                    'label' => $options['translator']->__('Submit'),
-                    'icon' => 'fa-check',
-                    'attr' => ['class' => 'btn btn-success']
-                ])
             ;
         } else {
             $builder
@@ -61,6 +56,13 @@ class LostPasswordType extends AbstractType
                 ])
             ;
         }
+        $builder
+            ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $options['translator']->__('Submit'),
+                'icon' => 'fa-check',
+                'attr' => ['class' => 'btn btn-success']
+            ])
+        ;
     }
 
     public function getBlockPrefix()
@@ -77,7 +79,7 @@ class LostPasswordType extends AbstractType
             'translator' => null,
             'includeReset' => false,
             'constraints' => new Callback(['callback' => function ($data, ExecutionContextInterface $context) use ($resolver) {
-                if (empty($data['uname']) && empty($data['email'])) {
+                if (!isset($data['pass']) && empty($data['uname']) && empty($data['email'])) {
                     $context->buildViolation(__('Error! You must enter either your username or email address.'))
                         ->addViolation();
                 }
