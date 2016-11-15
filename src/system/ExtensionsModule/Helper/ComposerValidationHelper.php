@@ -15,13 +15,9 @@ use JsonSchema\Uri\UriRetriever;
 use JsonSchema\Validator;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 
 class ComposerValidationHelper
 {
-    use TranslatorTrait;
-
     /**
      * @var KernelInterface
      */
@@ -74,22 +70,10 @@ class ComposerValidationHelper
      * ComposerValidationHelper constructor.
      *
      * @param KernelInterface $kernel
-     * @param TranslatorInterface $translator
      */
-    public function __construct(KernelInterface $kernel, TranslatorInterface $translator)
+    public function __construct(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
-        $this->setTranslator($translator);
-    }
-
-    /**
-     * Sets the translator.
-     *
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator($translator)
-    {
-        $this->translator = $translator;
     }
 
     /**
