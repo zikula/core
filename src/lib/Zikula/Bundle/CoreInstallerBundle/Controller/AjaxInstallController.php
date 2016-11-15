@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
+use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 use Zikula\Bundle\CoreBundle\Bundle\Bootstrap as CoreBundleBootstrap;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
@@ -141,22 +142,13 @@ class AjaxInstallController extends AbstractController
     public function installModule($moduleName)
     {
         $module = $this->container->get('kernel')->getModule($moduleName);
-        /** @var \Zikula\Core\AbstractModule $module */
+        /** @var AbstractCoreModule $module */
         $className = $module->getInstallerClass();
-        $bootstrap = $module->getPath().'/bootstrap.php';
-        if (file_exists($bootstrap)) {
-            include_once $bootstrap;
-        }
-
         $reflectionInstaller = new \ReflectionClass($className);
-        if ($reflectionInstaller->isSubclassOf('\Zikula\Core\ExtensionInstallerInterface')) {
-            $installer = $reflectionInstaller->newInstance();
-            $installer->setBundle($module);
-            if ($installer instanceof ContainerAwareInterface) {
-                $installer->setContainer($this->container);
-            }
-        } else {
-            throw new \Exception('Installer class must implement Zikula\Core\ExtensionInstallerInterface.');
+        $installer = $reflectionInstaller->newInstance();
+        $installer->setBundle($module);
+        if ($installer instanceof ContainerAwareInterface) {
+            $installer->setContainer($this->container);
         }
 
         if ($installer->install()) {
@@ -187,22 +179,22 @@ class AjaxInstallController extends AbstractController
     {
         reset(\ZikulaKernel::$coreModules);
         $systemModulesCategories = [
-            'ZikulaExtensionsModule' => __('System'),
-            'ZikulaPermissionsModule' => __('Users'),
-            'ZikulaGroupsModule' => __('Users'),
-            'ZikulaBlocksModule' => __('Layout'),
-            'ZikulaUsersModule' => __('Users'),
-            'ZikulaZAuthModule' => __('Users'),
-            'ZikulaThemeModule' => __('Layout'),
-            'ZikulaSecurityCenterModule' => __('Security'),
-            'ZikulaCategoriesModule' => __('Content'),
-            'ZikulaMailerModule' => __('System'),
-            'ZikulaSearchModule' => __('Content'),
-            'ZikulaAdminModule' => __('System'),
-            'ZikulaSettingsModule' => __('System'),
-            'ZikulaRoutesModule' => __('System'),
-            'ZikulaMenuModule' => __('Content'),
-            'ZikulaPageLockModule' => __('Content'),
+            'ZikulaExtensionsModule' => $this->translator->__('System'),
+            'ZikulaPermissionsModule' => $this->translator->__('Users'),
+            'ZikulaGroupsModule' => $this->translator->__('Users'),
+            'ZikulaBlocksModule' => $this->translator->__('Layout'),
+            'ZikulaUsersModule' => $this->translator->__('Users'),
+            'ZikulaZAuthModule' => $this->translator->__('Users'),
+            'ZikulaThemeModule' => $this->translator->__('Layout'),
+            'ZikulaSecurityCenterModule' => $this->translator->__('Security'),
+            'ZikulaCategoriesModule' => $this->translator->__('Content'),
+            'ZikulaMailerModule' => $this->translator->__('System'),
+            'ZikulaSearchModule' => $this->translator->__('Content'),
+            'ZikulaAdminModule' => $this->translator->__('System'),
+            'ZikulaSettingsModule' => $this->translator->__('System'),
+            'ZikulaRoutesModule' => $this->translator->__('System'),
+            'ZikulaMenuModule' => $this->translator->__('Content'),
+            'ZikulaPageLockModule' => $this->translator->__('Content'),
         ];
 
         $modulesCategories = $this->container->get('doctrine')
@@ -282,14 +274,14 @@ class AjaxInstallController extends AbstractController
 
     private function finalizeParameters()
     {
-        //        \ModUtil::initCoreVars(true); // initialize the modvars array (includes ZConfig (System) vars)
         $params = $this->decodeParameters($this->yamlManager->getParameters());
-
-        $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'language_i18n', $params['locale']);
+        $variableApi = $this->container->get('zikula_extensions_module.api.variable');
+        $variableApi->getAll(VariableApi::CONFIG); // forces initialization of API
+        $variableApi->set(VariableApi::CONFIG, 'language_i18n', $params['locale']);
         // Set the System Identifier as a unique string.
-        $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'system_identifier', str_replace('.', '', uniqid(rand(1000000000, 9999999999), true)));
+        $variableApi->set(VariableApi::CONFIG, 'system_identifier', str_replace('.', '', uniqid(rand(1000000000, 9999999999), true)));
         // add admin email as site email
-        $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'adminmail', $params['email']);
+        $variableApi->set(VariableApi::CONFIG, 'adminmail', $params['email']);
         // regenerate the theme list
         $this->container->get('zikula_theme_module.helper.bundle_sync_helper')->regenerate();
 
@@ -387,7 +379,7 @@ class AjaxInstallController extends AbstractController
         $_em = $this->container->get('doctrine')->getManager();
         $menuModuleEntity = $_em->getRepository('ZikulaExtensionsModule:ExtensionEntity')->findOneBy(['name' => 'ZikulaMenuModule']);
         $blockEntity = new BlockEntity();
-        $mainMenuString = $this->container->get('translator.default')->__('Main menu');
+        $mainMenuString = $this->translator->__('Main menu');
         $blockEntity->setTitle($mainMenuString);
         $blockEntity->setBkey('ZikulaMenuModule:\Zikula\MenuModule\Block\MenuBlock');
         $blockEntity->setBlocktype('Menu');

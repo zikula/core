@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreInstallerBundle\Util\ControllerUtil;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Zikula\Common\Translator\TranslatorInterface;
 
 /**
  * Class AbstractController
@@ -48,6 +49,11 @@ abstract class AbstractController
     protected $form;
 
     /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    /**
      * Constructor.
      *
      * @param ContainerInterface $container
@@ -59,5 +65,6 @@ abstract class AbstractController
         $this->templatingService = $this->container->get('templating');
         $this->form = $this->container->get('form.factory');
         $this->util = $this->container->get('zikula_core_installer.controller.util');
+        $this->translator = $container->get('translator.default');
     }
 }

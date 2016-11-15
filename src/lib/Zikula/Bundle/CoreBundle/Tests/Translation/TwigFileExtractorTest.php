@@ -152,7 +152,7 @@ class TwigFileExtractorTest extends KernelTestCase
         }
 
         if (null === $extractor) {
-            $extractor = new ZikulaTwigFileExtractor($env);
+            $extractor = new ZikulaTwigFileExtractor($env, $kernel);
         }
 
         $ast = $env->parse($env->tokenize(file_get_contents($file), $file));
