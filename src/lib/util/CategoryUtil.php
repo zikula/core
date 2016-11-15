@@ -1660,7 +1660,7 @@ class CategoryUtil
         $accessAll = ModUtil::getVar('ZikulaCategoriesModule', 'permissionsall', 0);
 
         foreach ($categories as $propertyName => $cat) {
-            $hasAccess = SecurityUtil::checkPermission("ZikulaCategoriesModule:$propertyName:Category", "$cat[id]:$cat[path]:$cat[ipath]", $permLevel);
+            $hasAccess = SecurityUtil::checkPermission("ZikulaCategoriesModule:$propertyName:Category", "$cat[id]::", $permLevel);
             if (!$accessAll && $hasAccess) {
                 break;
             } elseif ($accessAll && !$hasAccess) {
