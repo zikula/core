@@ -117,7 +117,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $yamlManager->setParameters($params);
 
         // upgrade!
-        $ajaxInstallerStage = new AjaxUpgraderStage();
+        $ajaxInstallerStage = new AjaxUpgraderStage($this->getContainer());
         $stages = $ajaxInstallerStage->getTemplateParams();
         foreach ($stages['stages'] as $key => $stage) {
             $io->text($stage[AjaxInstallerStage::PRE]);
