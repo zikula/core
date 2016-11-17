@@ -113,7 +113,7 @@ class MailHelper
             $notificationEmail = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL, '');
             if (!empty($notificationEmail)) {
                 $authMapping = $this->authenticationMappingRepository->getByZikulaId($userEntity->getUid());
-                $rendererArgs['isVerified'] = $authMapping->isVerifiedEmail();
+                $rendererArgs['isVerified'] = null === $authMapping || $authMapping->isVerifiedEmail();
 
                 $mailSent = $this->sendNotification($notificationEmail, 'regadminnotify', $rendererArgs);
                 if (!$mailSent) {
@@ -163,7 +163,7 @@ class MailHelper
             $notificationEmail = $this->variableApi->get('ZikulaUsersModule', 'reg_notifyemail', '');
             if (!empty($notificationEmail)) {
                 $authMapping = $this->authenticationMappingRepository->getByZikulaId($userEntity->getUid());
-                $rendererArgs['isVerified'] = $authMapping->isVerifiedEmail();
+                $rendererArgs['isVerified'] = null === $authMapping || $authMapping->isVerifiedEmail();
 
                 $subject = $this->translator->__f('New registration: %s', ['%s' => $userEntity->getUname()]);
                 $mailSent = $this->sendNotification($notificationEmail, 'regadminnotify', $rendererArgs, $subject);
@@ -269,8 +269,8 @@ class MailHelper
             case 'regadminnotify':
                 if (!$templateArgs['reginfo']->isApproved()) {
                     return $this->translator->__f('New registration pending approval: %s', ['%s' => $templateArgs['reginfo']['uname']]);
-                /*} elseif (isset($templateArgs['isVerified']) && !$templateArgs['isVerified']) {
-                    return $this->translator->__f('New registration pending e-mail verification: %s', ['%s' => $templateArgs['reginfo']['uname']]);*/
+                } elseif (isset($templateArgs['isVerified']) && !$templateArgs['isVerified']) {
+                    return $this->translator->__f('New registration pending e-mail verification: %s', ['%s' => $templateArgs['reginfo']['uname']]);
                 } else {
                     return $this->translator->__f('New user activated: %s', ['%s' => $templateArgs['reginfo']['uname']]);
                 }
