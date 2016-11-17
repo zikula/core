@@ -48,6 +48,7 @@ class InstallerController extends AbstractController
             $request->getSession()->getFlashBag()->add('warning', implode('<hr>', $ini_warnings));
         }
 
+        $request->setLocale($this->container->getParameter('locale'));
         // begin the wizard
         $wizard = new Wizard($this->container, realpath(__DIR__ . '/../Resources/config/install_stages.yml'));
         $currentStage = $wizard->getCurrentStage($stage);
@@ -68,7 +69,8 @@ class InstallerController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $currentStage->handleFormResult($form);
-                $url = $this->router->generate('install', ['stage' => $wizard->getNextStage()->getName()], RouterInterface::ABSOLUTE_URL);
+                $params = ['stage' => $wizard->getNextStage()->getName(), '_locale' => $this->container->getParameter('locale')];
+                $url = $this->router->generate('install', $params);
 
                 return new RedirectResponse($url);
             }

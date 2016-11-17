@@ -106,11 +106,11 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
         }
         // setup multilingual
         $this->container->setParameter('language_i18n', $data['locale']);
+        $this->container->setParameter('locale', $data['locale']);
         $this->container->setParameter('multilingual', true);
         $this->container->setParameter('languageurl', true);
         $this->container->setParameter('language_detect', false);
-
-//        $_lang = ZLanguage::getInstance();
-//        $_lang->setup($request);
+        // clear container cache
+        $this->container->get('zikula.cache_clearer')->clear('symfony.config');
     }
 }
