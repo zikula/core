@@ -65,7 +65,8 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
     {
         return [
             'choices' => \ZLanguage::getInstalledLanguageNames(),
-            'choice' => $this->matchedLocale
+            'choice' => $this->matchedLocale,
+            'translator' => $this->container->get('translator.default')
         ];
     }
 

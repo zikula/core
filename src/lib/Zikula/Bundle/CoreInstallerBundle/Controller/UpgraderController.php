@@ -14,6 +14,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Zikula\Bundle\CoreInstallerBundle\Form\AbstractType;
 use Zikula\Component\Wizard\FormHandlerInterface;
 use Zikula\Component\Wizard\Wizard;
 use Zikula\Component\Wizard\WizardCompleteInterface;
@@ -68,6 +69,9 @@ class UpgraderController extends AbstractController
         // handle the form
         if ($currentStage instanceof FormHandlerInterface) {
             $form = $this->form->create($currentStage->getFormType(), null, $currentStage->getFormOptions());
+            if ($form instanceof AbstractType) {
+                $form->setTranslator($this->translator);
+            }
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $currentStage->handleFormResult($form);
