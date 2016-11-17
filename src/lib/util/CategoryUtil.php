@@ -1657,17 +1657,23 @@ class CategoryUtil
         }
 
         // Check if access is required for all categories or for at least one category
-        $accessAll = ModUtil::getVar('ZikulaCategoriesModule', 'permissionsall', 0);
+        $requireAccessForAll = ModUtil::getVar('ZikulaCategoriesModule', 'permissionsall', 0);
 
+        $accessGranted = true;
         foreach ($categories as $propertyName => $cat) {
             $hasAccess = SecurityUtil::checkPermission("ZikulaCategoriesModule:$propertyName:Category", "$cat[id]:$cat[path]:$cat[ipath]", $permLevel);
-            if (!$accessAll && $hasAccess) {
-                break;
-            } elseif ($accessAll && !$hasAccess) {
+            if ($requireAccessForAll && !$hasAccess) {
                 return false;
+            }
+            if (!$requireAccessForAll) {
+                if ($hasAccess) {
+                    break;
+                } else {
+                    $accessGranted = false;
+                }
             }
         }
 
-        return true;
+        return $accessGranted;
     }
 }
