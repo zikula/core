@@ -1,7 +1,7 @@
 parameters:
     installed:        false
     env:              prod
-    debug:            false
+    debug:            true
     compat_layer:     true
     script_position:  head
     # script_position defines the location where javascripts will be placed in the page
