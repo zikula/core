@@ -1667,10 +1667,9 @@ class CategoryUtil
             }
             if (!$requireAccessForAll) {
                 if ($hasAccess) {
-                    break;
-                } else {
-                    $accessGranted = false;
+                    return true;
                 }
+                $accessGranted = false;
             }
         }
 
