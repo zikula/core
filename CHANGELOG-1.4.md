@@ -24,6 +24,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Fixed regression in argument typehints in UserUtil (#3123).
     - Fixed some problems with the Zikula Symfony Translator (#3161, #3117).
     - Fixed upgrade in Settings module for shorturl value to boolean (#3166).
+    - Fixed logical problem in CategoryUtil::hasCategoryAccess() (#3171, #3190).
 
  - Features:
     - Lost password functionality has been simplified to work without an additional (confusing) confirmation step (#1781, #3178).
