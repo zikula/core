@@ -1,9 +1,7 @@
-<?xml version="1.0" ?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
     <parameters>
         <parameter key="zikula_users_module.helper.registration_helper.class">Zikula\UsersModule\Helper\RegistrationHelper</parameter>
         <parameter key="zikula_users_module.helper.mail_helper.class">Zikula\UsersModule\Helper\MailHelper</parameter>
@@ -11,9 +9,7 @@
         <parameter key="zikula_users_module.helper.account_links_helper.class">Zikula\UsersModule\Helper\AccountLinksHelper</parameter>
         <parameter key="zikula_users_module.helper.access_helper.class">Zikula\UsersModule\Helper\AccessHelper</parameter>
     </parameters>
-
     <services>
-
         <service id="zikula_users_module.helper.registration_helper" class="%zikula_users_module.helper.registration_helper.class%" lazy="true">
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="zikula_users_module.current_user" />
@@ -28,6 +24,7 @@
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="zikula_mailer_module.api.mailer" />
             <argument type="service" id="zikula_permissions_module.api.permission" />
+            <argument type="service" id="zikula_zauth_module.authentication_mapping_repository" />
         </service>
         <service id="zikula_users_module.helper.administration_actions" class="%zikula_users_module.helper.administration_actions.class%" lazy="true">
             <argument type="service" id="zikula_permissions_module.api.permission" />
@@ -45,7 +42,5 @@
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="translator.default" />
         </service>
-
     </services>
 </container>
-

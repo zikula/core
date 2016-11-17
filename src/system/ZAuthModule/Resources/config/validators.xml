@@ -1,9 +1,7 @@
-<?xml version="1.0" ?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
     <parameters>
         <parameter key="zikula_zauth_module.validator.constraints.valid_uname_validator.class">Zikula\ZAuthModule\Validator\Constraints\ValidUnameValidator</parameter>
         <parameter key="zikula_zauth_module.validator.constraints.valid_email_validator.class">Zikula\ZAuthModule\Validator\Constraints\ValidEmailValidator</parameter>
@@ -13,7 +11,6 @@
         <parameter key="zikula_zauth_module.validator.constraints.valid_registration_verification_validator.class">Zikula\ZAuthModule\Validator\Constraints\ValidRegistrationVerificationValidator</parameter>
         <parameter key="zikula_zauth_module.validator.constraints.valid_password_change_validator.class">Zikula\ZAuthModule\Validator\Constraints\ValidPasswordChangeValidator</parameter>
     </parameters>
-
     <services>
         <service id="zikula_zauth_module.validator.constraints.valid_uname_validator" class="%zikula_zauth_module.validator.constraints.valid_uname_validator.class%">
             <argument type="service" id="zikula_extensions_module.api.variable" />
@@ -60,4 +57,3 @@
         </service>
     </services>
 </container>
-

@@ -18,6 +18,7 @@ use Zikula\MailerModule\Api\MailerApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 
 class MailHelper
 {
@@ -47,25 +48,33 @@ class MailHelper
     private $permissionApi;
 
     /**
+     * @var AuthenticationMappingRepositoryInterface
+     */
+    private $authenticationMappingRepository;
+
+    /**
      * MailHelper constructor.
      * @param TranslatorInterface $translator
      * @param \Twig_Environment $twig
      * @param VariableApi $variableApi
      * @param MailerApi $mailerApi
      * @param PermissionApi $permissionApi
+     * @param AuthenticationMappingRepositoryInterface $authenticationMappingRepository
      */
     public function __construct(
         TranslatorInterface $translator,
         \Twig_Environment $twig,
         VariableApi $variableApi,
         MailerApi $mailerApi,
-        PermissionApi $permissionApi
+        PermissionApi $permissionApi,
+        AuthenticationMappingRepositoryInterface $authenticationMappingRepository
     ) {
         $this->translator = $translator;
         $this->twig = $twig;
         $this->variableApi = $variableApi;
         $this->mailerApi = $mailerApi;
         $this->permissionApi = $permissionApi;
+        $this->authenticationMappingRepository = $authenticationMappingRepository;
     }
 
     /**
@@ -91,7 +100,7 @@ class MailHelper
         $rendererArgs = [];
         $rendererArgs['reginfo'] = $userEntity;
         $rendererArgs['createdpassword'] = $passwordCreatedForUser;
-        $rendererArgs['admincreated'] = $this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_EDIT);
+        $rendererArgs['createdByAdmin'] = $this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_EDIT);
 
         if (($userNotification && $userEntity->isApproved()) || !empty($passwordCreatedForUser)) {
             $mailSent = $this->sendNotification($userEntity->getEmail(), 'welcome', $rendererArgs);
@@ -101,11 +110,14 @@ class MailHelper
         }
         if ($adminNotification) {
             // mail notify email to inform admin about registration
-            $mailEmail = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL, '');
-            if (!empty($mailEmail)) {
-                $mailSent = $this->sendNotification($mailEmail, 'regadminnotify', $rendererArgs);
+            $notificationEmail = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL, '');
+            if (!empty($notificationEmail)) {
+                $authMapping = $this->authenticationMappingRepository->getByZikulaId($userEntity->getUid());
+                $rendererArgs['isVerified'] = $authMapping->isVerifiedEmail();
+
+                $mailSent = $this->sendNotification($notificationEmail, 'regadminnotify', $rendererArgs);
                 if (!$mailSent) {
-                    $mailErrors[] = $this->translator->__('Warning! The mail email for the new registration could not be sent.');
+                    $mailErrors[] = $this->translator->__('Warning! The notification email for the new registration could not be sent.');
                 }
             }
         }
@@ -138,7 +150,7 @@ class MailHelper
         $rendererArgs = [];
         $rendererArgs['reginfo'] = $userEntity;
         $rendererArgs['createdpassword'] = $passwordCreatedForUser;
-        $rendererArgs['admincreated'] = $this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_EDIT);
+        $rendererArgs['createdByAdmin'] = $this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_EDIT);
 
         if ($userNotification || !empty($passwordCreatedForUser)) {
             $mailSent = $this->sendNotification($userEntity->getEmail(), 'welcome', $rendererArgs);
@@ -148,12 +160,15 @@ class MailHelper
         }
         if ($adminNotification) {
             // mail notify email to inform admin about registration
-            $mailEmail = $this->variableApi->get('ZikulaUsersModule', 'reg_notifyemail', '');
-            if (!empty($mailEmail)) {
+            $notificationEmail = $this->variableApi->get('ZikulaUsersModule', 'reg_notifyemail', '');
+            if (!empty($notificationEmail)) {
+                $authMapping = $this->authenticationMappingRepository->getByZikulaId($userEntity->getUid());
+                $rendererArgs['isVerified'] = $authMapping->isVerifiedEmail();
+
                 $subject = $this->translator->__f('New registration: %s', ['%s' => $userEntity->getUname()]);
-                $mailSent = $this->sendNotification($mailEmail, 'regadminnotify', $rendererArgs, $subject);
+                $mailSent = $this->sendNotification($notificationEmail, 'regadminnotify', $rendererArgs, $subject);
                 if (!$mailSent) {
-                    $mailErrors[] = $this->translator->__('Warning! The mail email for the newly created user could not be sent.');
+                    $mailErrors[] = $this->translator->__('Warning! The notification email for the newly created user could not be sent.');
                 }
             }
         }
@@ -252,8 +267,10 @@ class MailHelper
         $siteName = $this->variableApi->getSystemVar('sitename');
         switch ($notificationType) {
             case 'regadminnotify':
-                if ($templateArgs['reginfo']['isapproved']) {
+                if (!$templateArgs['reginfo']->isApproved()) {
                     return $this->translator->__f('New registration pending approval: %s', ['%s' => $templateArgs['reginfo']['uname']]);
+                /*} elseif (isset($templateArgs['isVerified']) && !$templateArgs['isVerified']) {
+                    return $this->translator->__f('New registration pending e-mail verification: %s', ['%s' => $templateArgs['reginfo']['uname']]);*/
                 } else {
                     return $this->translator->__f('New user activated: %s', ['%s' => $templateArgs['reginfo']['uname']]);
                 }
