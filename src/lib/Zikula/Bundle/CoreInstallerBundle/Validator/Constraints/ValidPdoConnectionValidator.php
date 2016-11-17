@@ -54,7 +54,7 @@ class ValidPdoConnectionValidator extends ConstraintValidator
                     ->addViolation();
             }
         } catch (\PDOException $eb) {
-            $this->context->buildViolation($this->__('Error! Could not connect to the database. Please check that you have entered the correct database information and try again. ' . $eb->getMessage()))
+            $this->context->buildViolation($this->__('Error! Could not connect to the database. Please check that you have entered the correct database information and try again. ') . $eb->getMessage())
                 ->addViolation();
         }
     }
