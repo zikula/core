@@ -11,6 +11,7 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Install;
 
+use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Component\Wizard\InjectContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
@@ -23,11 +24,19 @@ use Zikula\ExtensionsModule\Api\VariableApi;
 
 class CompleteStage implements StageInterface, WizardCompleteInterface, InjectContainerInterface
 {
+    use TranslatorTrait;
+
     private $container;
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+        $this->setTranslator($container->get('translator.default'));
+    }
+
+    public function setTranslator($translator)
+    {
+        $this->translator = $translator;
     }
 
     public function getName()
@@ -53,11 +62,11 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
     public function getResponse(Request $request)
     {
         if ($this->sendEmailToAdmin($request)) {
-            $request->getSession()->getFlashBag()->add('success', __('Congratulations! Zikula has been successfully installed.'));
+            $request->getSession()->getFlashBag()->add('success', $this->__('Congratulations! Zikula has been successfully installed.'));
 
             return new RedirectResponse($this->container->get('router')->generate('zikulaadminmodule_admin_adminpanel', [], RouterInterface::ABSOLUTE_URL));
         } else {
-            $request->getSession()->getFlashBag()->add('warning', __('Email settings are not yet configured. Please configure them below.'));
+            $request->getSession()->getFlashBag()->add('warning', $this->__('Email settings are not yet configured. Please configure them below.'));
 
             return new RedirectResponse($this->container->get('router')->generate('zikulamailermodule_config_config', [], RouterInterface::ABSOLUTE_URL));
         }
@@ -80,7 +89,7 @@ visit <a href="http://zikula.org">zikula.org</a></p>
 </body>
 EOF;
         $message = \Swift_Message::newInstance()
-            ->setSubject(__('Zikula installation completed!'))
+            ->setSubject($this->__('Zikula installation completed!'))
             ->setFrom($fromMail)
             ->setTo($email)
             ->setBody($body)

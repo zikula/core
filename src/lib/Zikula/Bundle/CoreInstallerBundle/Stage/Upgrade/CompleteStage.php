@@ -50,7 +50,7 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
 
     public function getResponse(Request $request)
     {
-        $request->getSession()->getFlashBag()->add('success', __('Congratulations! Upgrade Complete.'));
+        $request->getSession()->getFlashBag()->add('success', $this->container->get('translator.default')->__('Congratulations! Upgrade Complete.'));
 
         return new RedirectResponse($this->container->get('router')->generate('zikulaadminmodule_admin_adminpanel', [], RouterInterface::ABSOLUTE_URL));
     }

@@ -41,7 +41,9 @@ class LoginStage implements StageInterface, FormHandlerInterface, InjectContaine
 
     public function getFormOptions()
     {
-        return [];
+        return [
+            'translator' => $this->container->get('translator.default')
+        ];
     }
 
     public function getTemplateName()
