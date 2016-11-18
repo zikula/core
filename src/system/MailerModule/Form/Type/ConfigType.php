@@ -12,6 +12,12 @@
 namespace Zikula\MailerModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -56,13 +62,13 @@ class ConfigType extends AbstractType
         ];
 
         $builder
-            ->add('transport', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', $transportOptions)
-            ->add('charset', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('transport', ChoiceType::class, $transportOptions)
+            ->add('charset', TextType::class, [
                 'label' => $translator->__('Character set'),
                 'max_length' => 20,
                 'help' => $translator->__f("Default: '%s'", ['%s' => 'utf-8' /* @todo! \ZLanguage::getEncoding() */])
             ])
-            ->add('encoding', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('encoding', ChoiceType::class, [
                 'label' => $translator->__('Encoding'),
                 'choices' => [
                     '8bit' => '8bit',
@@ -74,34 +80,34 @@ class ConfigType extends AbstractType
                 'choices_as_values' => true,
                 'help' => $translator->__f("Default: '%s'", ['%s' => '8bit'])
             ])
-            ->add('html', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('html', CheckboxType::class, [
                 'label' => $translator->__('HTML-formatted messages'),
                 'required' => false
             ])
-            ->add('wordwrap', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add('wordwrap', IntegerType::class, [
                 'label' => $translator->__('Word wrap'),
                 'scale' => 0,
                 'max_length' => 3,
                 'help' => $translator->__f("Default: '%s'", ['%s' => '50'])
             ])
-            ->add('enableLogging', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('enableLogging', CheckboxType::class, [
                 'label' => $translator->__('Enable logging of sent mail'),
                 'required' => false
             ])
-            ->add('host', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('host', TextType::class, [
                 'label' => $translator->__('SMTP host server'),
                 'max_length' => 255,
                 'required' => false,
                 'help' => $translator->__f("Default: '%s'", ['%s' => 'localhost'])
             ])
-            ->add('port', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add('port', IntegerType::class, [
                 'label' => $translator->__('SMTP port'),
                 'scale' => 0,
                 'max_length' => 5,
                 'required' => false,
                 'help' => $translator->__f("Default: '%s'", ['%s' => '25'])
             ])
-            ->add('encryption', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('encryption', ChoiceType::class, [
                 'label' => $translator->__('SMTP encryption method'),
                 'choices' => [
                     $translator->__('None') => '',
@@ -111,7 +117,7 @@ class ConfigType extends AbstractType
                 'choices_as_values' => true,
                 'required' => false
             ])
-            ->add('auth_mode', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('auth_mode', ChoiceType::class, [
                 'label' => $translator->__('SMTP authentication type'),
                 'choices' => [
                     $translator->__('None') => '',
@@ -122,36 +128,36 @@ class ConfigType extends AbstractType
                 'choices_as_values' => true,
                 'required' => false
             ])
-            ->add('username', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('username', TextType::class, [
                 'label' => $translator->__('SMTP user name'),
                 'max_length' => 50,
                 'required' => false
             ])
-            ->add('password', 'Symfony\Component\Form\Extension\Core\Type\PasswordType', [
+            ->add('password', PasswordType::class, [
                 'label' => $translator->__('SMTP password'),
                 'max_length' => 50,
                 'always_empty' => false,
                 'required' => false
             ])
-            ->add('usernameGmail', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('usernameGmail', TextType::class, [
                 'label' => $translator->__('Gmail user name'),
                 'max_length' => 50,
                 'required' => false
             ])
-            ->add('passwordGmail', 'Symfony\Component\Form\Extension\Core\Type\PasswordType', [
+            ->add('passwordGmail', PasswordType::class, [
                 'label' => $translator->__('Gmail password'),
                 'max_length' => 50,
                 'always_empty' => false,
                 'required' => false
             ])
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('save', SubmitType::class, [
                 'label' => $translator->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [

@@ -14,6 +14,7 @@ namespace Zikula\ExtensionsModule\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -388,14 +389,14 @@ class ModuleController extends AbstractController
         $blocks = $this->getDoctrine()->getManager()->getRepository('ZikulaBlocksModule:BlockEntity')->findBy(['module' => $extension]);
 
         $form = $this->createFormBuilder()
-            ->add('uninstall', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('uninstall', SubmitType::class, [
                 'label' => $this->__('Delete'),
                 'icon' => 'fa-trash-o',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [

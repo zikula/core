@@ -12,6 +12,13 @@
 namespace Zikula\ZAuthModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\UsersModule\Validator\Constraints\ValidEmail;
@@ -25,7 +32,7 @@ class AdminCreatedUserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('method', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('method', ChoiceType::class, [
                 'label' => $options['translator']->__('Login method'),
                 'choices_as_values' => true,
                 'choices' => [
@@ -34,13 +41,13 @@ class AdminCreatedUserType extends AbstractType
                     $options['translator']->__('Email') => ZAuthConstant::AUTHENTICATION_METHOD_EMAIL
                 ]
             ])
-            ->add('uname', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('uname', TextType::class, [
                 'label' => $options['translator']->__('User name'),
                 'help' => $options['translator']->__('User names can contain letters, numbers, underscores, periods, spaces and/or dashes.'),
                 'constraints' => [new ValidUname()]
             ])
-            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
-                'type' => 'Symfony\Component\Form\Extension\Core\Type\EmailType',
+            ->add('email', RepeatedType::class, [
+                'type' => EmailType::class,
                 'first_options' => [
                     'label' => $options['translator']->__('Email'),
                     'help' => $options['translator']->__('If login method is Email, then this value must be unique for the site.'),
@@ -49,14 +56,14 @@ class AdminCreatedUserType extends AbstractType
                 'invalid_message' => $options['translator']->__('The emails  must match!'),
                 'constraints' => [new ValidEmail()]
             ])
-            ->add('setpass', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('setpass', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
                 'label' => $options['translator']->__('Set password now'),
                 'alert' => [$options['translator']->__('If unchecked, the user\'s e-mail address will be verified. The user will create a password at that time.') => 'info']
             ])
-            ->add('pass', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
-                'type' => 'Symfony\Component\Form\Extension\Core\Type\PasswordType',
+            ->add('pass', RepeatedType::class, [
+                'type' => PasswordType::class,
                 'first_options' => [
                     'label' => $options['translator']->__('Create new password'),
                     'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
@@ -70,7 +77,7 @@ class AdminCreatedUserType extends AbstractType
                     new ValidPassword(),
                 ]
             ])
-            ->add('sendpass', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('sendpass', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
                 'label' => $options['translator']->__('Send password via email'),
@@ -79,29 +86,29 @@ class AdminCreatedUserType extends AbstractType
                     $options['translator']->__('Even if you choose to not send the user\'s password via e-mail, other e-mail messages may be sent to the user as part of the registration process.') => 'info'
                 ]
             ])
-            ->add('usernotification', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('usernotification', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
                 'label' => $options['translator']->__('Send welcome message to user'),
             ])
-            ->add('adminnotification', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('adminnotification', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
                 'label' => $options['translator']->__('Notify administrators'),
             ])
-            ->add('usermustverify', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('usermustverify', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
                 'label' => $options['translator']->__('User must verify email address'),
                 'help' => $options['translator']->__('Notice: This overrides the \'Verify e-mail address during registration\' setting in \'Settings\'.'),
                 'alert' => [$options['translator']->__('It is recommended to force users to verify their email address.') => 'info']
             ])
-            ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('submit', SubmitType::class, [
                 'label' => $options['translator']->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $options['translator']->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']

@@ -13,6 +13,7 @@ namespace Zikula\BlocksModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
@@ -90,14 +91,14 @@ class PositionController extends AbstractController
         }
 
         $form = $this->createFormBuilder()
-            ->add('delete', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('delete', SubmitType::class, [
                 'label' => $this->__('Delete'),
                 'icon' => 'fa-trash-o',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [

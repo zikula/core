@@ -12,6 +12,11 @@
 namespace Zikula\GroupsModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -35,42 +40,44 @@ class CreateGroupType extends AbstractType
         $stateChoices = array_flip($groupsCommon->stateLabels());
 
         $builder
-            ->add('name', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('name', TextType::class, [
                 'label' => $translator->__('Name'),
                 'max_length' => 30,
-                'constraints' => [new NotBlank()]
+                'constraints' => [
+                    new NotBlank()
+                ]
             ])
-            ->add('gtype', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('gtype', ChoiceType::class, [
                 'label' => $translator->__('Type'),
                 'choices' => $typeChoices,
                 'choices_as_values' => true,
                 'expanded' => false,
                 'multiple' => false
             ])
-            ->add('state', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('state', ChoiceType::class, [
                 'label' => $translator->__('State'),
                 'choices' => $stateChoices,
                 'choices_as_values' => true,
                 'expanded' => false,
                 'multiple' => false
             ])
-            ->add('nbumax', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add('nbumax', IntegerType::class, [
                 'label' => $translator->__('Maximum membership'),
                 'max_length' => 10,
                 'required' => false,
                 'help' => $translator->__('Set as 0 for unlimited.')
             ])
-            ->add('description', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+            ->add('description', TextareaType::class, [
                 'label' => $translator->__('Description'),
             ])
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('save', SubmitType::class, [
                 'label' => $translator->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [

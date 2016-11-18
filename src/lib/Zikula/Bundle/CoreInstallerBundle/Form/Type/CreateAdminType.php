@@ -12,6 +12,9 @@
 namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
@@ -25,7 +28,7 @@ class CreateAdminType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('username', TextType::class, [
                 'label' => __('Admin User Name'),
                 'label_attr' => [
                     'class' => 'col-sm-3'
@@ -40,7 +43,7 @@ class CreateAdminType extends AbstractType
                     ])
                 ]
             ])
-            ->add('password', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
+            ->add('password', RepeatedType::class, [
                 'type' => 'password',
                 'invalid_message' => 'The password fields must match.',
                 'options' => [
@@ -56,7 +59,7 @@ class CreateAdminType extends AbstractType
                 'first_options'  => ['label' => __('Admin Password')],
                 'second_options' => ['label' => __('Repeat Password')]
             ])
-            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\EmailType', [
+            ->add('email', EmailType::class, [
                 'label' => __('Admin Email Address'),
                 'label_attr' => [
                     'class' => 'col-sm-3'

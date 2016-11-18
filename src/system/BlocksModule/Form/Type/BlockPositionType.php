@@ -12,6 +12,9 @@
 namespace Zikula\BlocksModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,19 +26,19 @@ class BlockPositionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('pid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('name', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('pid', HiddenType::class)
+            ->add('name', TextType::class, [
                 'help' => $options['translator']->__('Characters allowed: a-z, A-Z, 0-9, dash (-) and underscore (_).')
             ])
-            ->add('description', 'Symfony\Component\Form\Extension\Core\Type\TextType')
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('description', TextType::class)
+            ->add('save', SubmitType::class, [
                 'label' => $options['translator']->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $options['translator']->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [

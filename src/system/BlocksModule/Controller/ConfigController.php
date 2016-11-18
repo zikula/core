@@ -13,6 +13,8 @@ namespace Zikula\BlocksModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
@@ -39,18 +41,18 @@ class ConfigController extends AbstractController
         }
 
         $form = $this->createFormBuilder($this->getVars())
-            ->add('collapseable', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('collapseable', CheckboxType::class, [
                 'label' => $this->__('Enable block collapse icons'),
                 'required' => false
             ])
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('save', SubmitType::class, [
                 'label' => $this->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [

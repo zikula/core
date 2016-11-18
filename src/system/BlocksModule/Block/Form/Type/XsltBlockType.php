@@ -12,6 +12,8 @@
 namespace Zikula\BlocksModule\Block\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
@@ -26,28 +28,28 @@ class XsltBlockType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('docurl', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('docurl', TextType::class, [
                 'constraints' => [
                     new Url()
                 ],
                 'required' => false,
                 'label' => __('Document URL')
             ])
-            ->add('doccontents', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+            ->add('doccontents', TextareaType::class, [
                 'label' => __('Document contents'),
                 'required' => false,
                 'attr' => [
                     'rows' => 15
                 ]
             ])
-            ->add('styleurl', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('styleurl', TextType::class, [
                 'constraints' => [
                     new Url()
                 ],
                 'required' => false,
                 'label' => __('Style sheet URL')
             ])
-            ->add('stylecontents', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+            ->add('stylecontents', TextareaType::class, [
                 'label' => __('Style sheet contents'),
                 'required' => false,
                 'attr' => [

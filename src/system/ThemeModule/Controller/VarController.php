@@ -15,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -51,21 +52,21 @@ class VarController extends AbstractController
             }
         }
         $formBuilder
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('save', SubmitType::class, [
                 'label' => $this->__('Save'),
                 'icon' => 'fa-check fa-lg',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('toDefault', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('toDefault', SubmitType::class, [
                 'label' => $this->__('Set to defaults'),
                 'icon' => 'fa-refresh fa-lg',
                 'attr' => [
                     'class' => 'btn btn-primary'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $this->__('Cancel'),
                 'icon' => 'fa-times fa-lg',
                 'attr' => [

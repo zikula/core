@@ -13,6 +13,8 @@ namespace Zikula\BlocksModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,12 +42,12 @@ class BlockController extends AbstractController
     public function newAction(Request $request)
     {
         $form = $this->createFormBuilder()
-            ->add('bkey', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('bkey', ChoiceType::class, [
                 'placeholder' => 'Choose a block type',
                 'choices' => $this->get('zikula_blocks_module.api.block')->getAvailableBlockTypes(),
-                'label' => 'Block type',
+                'label' => 'Block type'
             ])
-            ->add('choose', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('choose', SubmitType::class, [
                 'label' => $this->__('Choose'),
                 'icon' => 'fa-check',
                 'attr' => [
@@ -149,14 +151,14 @@ class BlockController extends AbstractController
         }
 
         $form = $this->createFormBuilder()
-            ->add('delete', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('delete', SubmitType::class, [
                 'label' => $this->__('Delete'),
                 'icon' => 'fa-trash-o',
                 'attr' => [
                     'class' => 'btn btn-default'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [

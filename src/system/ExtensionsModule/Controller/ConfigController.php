@@ -13,6 +13,9 @@ namespace Zikula\ExtensionsModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -43,26 +46,26 @@ class ConfigController extends AbstractController
         }
 
         $form = $this->createFormBuilder($this->getVars())
-            ->add('itemsperpage', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add('itemsperpage', IntegerType::class, [
                 'label' => $this->__('Items per page'),
                 'constraints' => [
                     new NotBlank(),
                     new GreaterThan(0)
                 ]
             ])
-            ->add('hardreset', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('hardreset', CheckboxType::class, [
                 'label' => $this->__('Reset all extensions to default values'),
                 'mapped' => false,
                 'required' => false
             ])
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('save', SubmitType::class, [
                 'label' => $this->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [

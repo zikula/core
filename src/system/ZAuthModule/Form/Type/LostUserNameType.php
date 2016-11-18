@@ -12,6 +12,8 @@
 namespace Zikula\ZAuthModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,11 +22,11 @@ class LostUserNameType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\EmailType', [
+            ->add('email', EmailType::class, [
                 'label' => $options['translator']->__('Email Address'),
                 'input_group' => ['left' => '<i class="fa fa-at"></i>'],
             ])
-            ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('submit', SubmitType::class, [
                 'label' => $options['translator']->__('Submit'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']

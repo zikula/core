@@ -12,6 +12,9 @@
 namespace Zikula\PermissionsModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,20 +28,20 @@ class PermissionType extends AbstractType
         $translator = $options['translator'];
 
         $builder
-            ->add('pid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('gid', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('pid', HiddenType::class)
+            ->add('gid', ChoiceType::class, [
                 'label' => $translator->__('Group'),
                 'choices' => array_flip($options['groups']),
                 'choices_as_values' => true
             ])
-            ->add('sequence', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('component', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('sequence', HiddenType::class)
+            ->add('component', TextType::class, [
                 'label' => $translator->__('Component')
             ])
-            ->add('instance', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('instance', TextType::class, [
                 'label' => $translator->__('Instance')
             ])
-            ->add('level', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('level', ChoiceType::class, [
                 'label' => $translator->__('Level'),
                 'choices' => array_flip($options['permissionLevels']),
                 'choices_as_values' => true

@@ -14,6 +14,7 @@ namespace Zikula\MenuModule\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -114,14 +115,14 @@ class MenuController extends AbstractController
         $form = $this->createForm('Zikula\MenuModule\Form\Type\MenuItemType', $menuItemEntity, [
             'translator' => $this->get('translator.default'),
         ]);
-        $form->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+        $form->add('save', SubmitType::class, [
             'label' => $this->__('Save'),
             'icon' => 'fa-check',
             'attr' => [
                 'class' => 'btn btn-success'
             ]
         ])
-        ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+        ->add('cancel', SubmitType::class, [
             'label' => $this->__('Cancel'),
             'icon' => 'fa-times',
             'attr' => [

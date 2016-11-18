@@ -13,6 +13,9 @@ namespace Zikula\SettingsModule\Form\Type;
 
 use DateUtil;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -29,11 +32,11 @@ class LocaleSettingsType extends AbstractType
         $translator = $options['translator'];
 
         $builder
-            ->add('multilingual', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('multilingual', CheckboxType::class, [
                 'label' => $translator->__('Activate multilingual features'),
                 'required' => false
             ])
-            ->add('languageurl', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('languageurl', ChoiceType::class, [
                 'label' => $translator->__('Prepend language to URL'),
                 'expanded' => true,
                 'choices' => [
@@ -41,35 +44,35 @@ class LocaleSettingsType extends AbstractType
                     0 => $translator->__('Only for non-default languages'),
                 ]
             ])
-            ->add('language_detect', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('language_detect', CheckboxType::class, [
                 'label' => $translator->__('Automatically detect language from browser settings'),
                 'required' => false,
                 'help' => $translator->__('If this is checked, Zikula tries to serve the language requested by browser (if that language available and allowed by the multi-lingual settings). If users set their personal language preference, then this setting will be overriden by their personal preference.')
             ])
-            ->add('language_i18n', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('language_i18n', ChoiceType::class, [
                 'label' => $translator->__('Default language to use for this site'),
                 'choices' => $options['languages']
             ])
-            ->add('timezone_offset', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('timezone_offset', ChoiceType::class, [
                 'choices' => $options['timezones'],
                 'label' => $translator->__('Time zone for anonymous guests'),
                 'help' => $translator->__('Server time zone') . ': ' . DateUtil::getTimezoneAbbr()
             ])
-            ->add('idnnames', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('idnnames', CheckboxType::class, [
                 'label' => $translator->__('Allow IDN domain names'),
                 'help' => [
                     $translator->__('This only applies to legacy variable validation. The system itself has native IDN support.'),
                     $translator->__('Notice: With IDN domains, special characters are allowed in e-mail addresses and URLs.')
                 ]
             ])
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('save', SubmitType::class, [
                 'label' => $translator->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [

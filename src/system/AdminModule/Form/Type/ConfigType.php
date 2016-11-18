@@ -12,6 +12,10 @@
 namespace Zikula\AdminModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,15 +32,15 @@ class ConfigType extends AbstractType
         $translator = $options['translator'];
 
         $builder
-            ->add('ignoreinstallercheck', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('ignoreinstallercheck', CheckboxType::class, [
                 'label' => $translator->__('Ignore check for installer'),
                 'required' => false
             ])
-            ->add('admingraphic', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('admingraphic', CheckboxType::class, [
                 'label' => $translator->__('Display icons'),
                 'required' => false
             ])
-            ->add('displaynametype', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('displaynametype', ChoiceType::class, [
                 'label' => $translator->__('Form of display for module names'),
                 'empty_data' => 1,
                 'choices' => [
@@ -46,19 +50,19 @@ class ConfigType extends AbstractType
                 ],
                 'choices_as_values' => true
             ])
-            ->add('itemsperpage', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add('itemsperpage', IntegerType::class, [
                 'label' => $translator->__('Modules per page in module categories list'),
                 'empty_data' => 5,
                 'scale' => 0,
                 'max_length' => 3
             ])
-            ->add('modulesperrow', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add('modulesperrow', IntegerType::class, [
                 'label' => $translator->__('Modules per row in admin panel'),
                 'empty_data' => 5,
                 'scale' => 0,
                 'max_length' => 3
             ])
-            ->add('admintheme', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('admintheme', ChoiceType::class, [
                 'label' => $translator->__('Theme to use'),
                 'required' => false,
                 'empty_data' => null,
@@ -66,13 +70,13 @@ class ConfigType extends AbstractType
                 'choices_as_values' => true,
                 'placeholder' => $translator->__('Use site\'s theme')
             ])
-            ->add('startcategory', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('startcategory', ChoiceType::class, [
                 'label' => $translator->__('Initially selected category'),
                 'empty_data' => null,
                 'choices' => $options['categories'],
                 'choices_as_values' => true
             ])
-            ->add('defaultcategory', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('defaultcategory', ChoiceType::class, [
                 'label' => $translator->__('Default category for newly-added modules'),
                 'empty_data' => null,
                 'choices' => $options['categories'],
@@ -81,7 +85,7 @@ class ConfigType extends AbstractType
         ;
 
         foreach ($options['modules'] as $module) {
-            $builder->add('modulecategory' . $module['name'], 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            $builder->add('modulecategory' . $module['name'], ChoiceType::class, [
                 'label' => $module['displayname'],
                 'empty_data' => null,
                 'choices' => $options['categories'],
@@ -90,21 +94,21 @@ class ConfigType extends AbstractType
         }
 
         $builder
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('save', SubmitType::class, [
                 'label' => $translator->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'
                 ]
             ])
-            ->add('help', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('help', SubmitType::class, [
                 'label' => $translator->__('Help'),
                 'icon' => 'fa-question',
                 'attr' => [

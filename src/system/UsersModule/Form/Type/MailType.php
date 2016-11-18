@@ -12,6 +12,13 @@
 namespace Zikula\UsersModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,17 +27,17 @@ class MailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('userIds', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('from', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('userIds', HiddenType::class)
+            ->add('from', TextType::class, [
                 'label' => $options['translator']->__('Sender name'),
             ])
-            ->add('replyto', 'Symfony\Component\Form\Extension\Core\Type\EmailType', [
+            ->add('replyto', EmailType::class, [
                 'label' => $options['translator']->__('Replyto email address'),
             ])
-            ->add('subject', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('subject', TextType::class, [
                 'label' => $options['translator']->__('Subject'),
             ])
-            ->add('format', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('format', ChoiceType::class, [
                 'choices' => [
                     $options['translator']->__('Text') => 'text',
                     $options['translator']->__('Html') => 'html',
@@ -38,13 +45,13 @@ class MailType extends AbstractType
                 'choices_as_values' => true,
                 'label' => $options['translator']->__('Format'),
             ])
-            ->add('message', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+            ->add('message', TextareaType::class, [
                 'label' => $options['translator']->__('Message'),
             ])
-            ->add('batchsize', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add('batchsize', IntegerType::class, [
                 'label' => $options['translator']->__('Send mail in batches of'),
             ])
-            ->add('send', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('send', SubmitType::class, [
                 'label' => $options['translator']->__('Send Mail'),
                 'icon' => 'fa-angle-double-right',
                 'attr' => ['class' => 'btn btn-success'],

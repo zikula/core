@@ -13,6 +13,8 @@ namespace Zikula\UsersModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -55,7 +57,7 @@ class AccountController extends AbstractController
         }
         $installedLanguages = \ZLanguage::getInstalledLanguageNames();
         $form = $this->createFormBuilder()
-            ->add('language', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('language', ChoiceType::class, [
                 'label' => $this->__('Choose language'),
                 'choices' => array_flip($installedLanguages),
                 'choices_as_values' => true,
@@ -63,12 +65,12 @@ class AccountController extends AbstractController
                 'required' => false,
                 'data' => $request->getLocale()
             ])
-            ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('submit', SubmitType::class, [
                 'label' => $this->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']

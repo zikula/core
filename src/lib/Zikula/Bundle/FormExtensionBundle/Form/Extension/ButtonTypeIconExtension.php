@@ -12,6 +12,7 @@
 namespace Zikula\Bundle\FormExtensionBundle\Form\Extension;
 
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -60,6 +61,6 @@ class ButtonTypeIconExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return 'Symfony\Component\Form\Extension\Core\Type\ButtonType'; // Extend the button field type
+        return ButtonType::class; // Extend the button field type
     }
 }
