@@ -22,7 +22,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\BlocksModule\Api\BlockApi;
 use Zikula\BlocksModule\Api\BlockFilterApi;
-use Zikula\BlocksModule\Form\Type\BlockFilterType;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
 
 class BlockType extends AbstractType
