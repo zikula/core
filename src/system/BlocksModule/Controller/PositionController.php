@@ -17,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
+use Zikula\BlocksModule\Form\Type\BlockPositionType;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -48,12 +49,11 @@ class PositionController extends AbstractController
             $positionEntity = new BlockPositionEntity(); // sets defaults in constructor
         }
 
-        $form = $this->createForm('Zikula\BlocksModule\Form\Type\BlockPositionType', $positionEntity, [
+        $form = $this->createForm(BlockPositionType::class, $positionEntity, [
             'translator' => $this->getTranslator()
         ]);
-        $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {
                 /** @var \Doctrine\ORM\EntityManager $em */
                 $em = $this->getDoctrine()->getManager();
@@ -107,9 +107,7 @@ class PositionController extends AbstractController
             ])
             ->getForm();
 
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
+        if ($form->handleRequest($request)->isValid()) {
             if ($form->get('delete')->isClicked()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($positionEntity);

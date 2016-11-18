@@ -20,6 +20,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\MenuModule\Entity\MenuItemEntity;
+use Zikula\MenuModule\Form\Type\DeleteMenuItemType;
+use Zikula\MenuModule\Form\Type\MenuItemType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -112,7 +114,7 @@ class MenuController extends AbstractController
         if (!isset($menuItemEntity)) {
             $menuItemEntity = new MenuItemEntity();
         }
-        $form = $this->createForm('Zikula\MenuModule\Form\Type\MenuItemType', $menuItemEntity, [
+        $form = $this->createForm(MenuItemType::class, $menuItemEntity, [
             'translator' => $this->get('translator.default'),
         ]);
         $form->add('save', SubmitType::class, [
@@ -168,7 +170,9 @@ class MenuController extends AbstractController
         if (!$this->hasPermission('ZikulaMenuModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-        $form = $this->createForm('Zikula\MenuModule\Form\Type\DeleteMenuItemType', ['entity' => $menuItemEntity], [
+        $form = $this->createForm(DeleteMenuItemType::class, [
+            'entity' => $menuItemEntity
+        ], [
             'translator' => $this->get('translator.default'),
         ]);
 

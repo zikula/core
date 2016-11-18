@@ -22,6 +22,9 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\SecurityCenterModule\Form\Type\IdsLogExportType;
+use Zikula\SecurityCenterModule\Form\Type\IdsLogFilterType;
+use Zikula\SecurityCenterModule\Form\Type\IdsLogPurgeType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -75,12 +78,10 @@ class IdsLogController extends AbstractController
             }
         }
 
-        $filterForm = $this->createForm('Zikula\SecurityCenterModule\Form\Type\IdsLogFilterType',
-            $filters, [
-                'translator' => $this->get('translator.default'),
-                'repository' => $this->get('zikula_securitycenter_module.intrusion_repository')
-            ]
-        );
+        $filterForm = $this->createForm(IdsLogFilterType::class, $filters, [
+            'translator' => $this->get('translator.default'),
+            'repository' => $this->get('zikula_securitycenter_module.intrusion_repository')
+        ]);
 
         // offset
         $startOffset = $request->query->getDigits('startnum', 0);
@@ -157,11 +158,9 @@ class IdsLogController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm('Zikula\SecurityCenterModule\Form\Type\IdsLogExportType',
-            [], [
-                'translator' => $this->get('translator.default')
-            ]
-        );
+        $form = $this->createForm(IdsLogExportType::class, [], [
+            'translator' => $this->get('translator.default')
+        ]);
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('export')->isClicked()) {
@@ -290,11 +289,9 @@ class IdsLogController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm('Zikula\SecurityCenterModule\Form\Type\IdsLogPurgeType',
-            [], [
-                'translator' => $this->get('translator.default')
-            ]
-        );
+        $form = $this->createForm(IdsLogPurgeType::class, [], [
+            'translator' => $this->get('translator.default')
+        ]);
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('delete')->isClicked()) {

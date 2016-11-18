@@ -22,6 +22,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\GroupsModule\Form\Type\MembershipApplicationType;
 use Zikula\GroupsModule\Helper\CommonHelper;
 
 /**
@@ -195,13 +196,11 @@ class UserController extends AbstractController
             'applyText' => ''
         ];
 
-        $form = $this->createForm('Zikula\GroupsModule\Form\Type\MembershipApplicationType',
-            $formData, [
-                'translator' => $this->get('translator.default'),
-                'theAction' => $action,
-                'groupType' => $group['gtype']
-            ]
-        );
+        $form = $this->createForm(MembershipApplicationType::class, $formData, [
+            'translator' => $this->get('translator.default'),
+            'theAction' => $action,
+            'groupType' => $group['gtype']
+        ]);
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('apply')->isClicked()) {

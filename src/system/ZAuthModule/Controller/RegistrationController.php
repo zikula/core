@@ -18,6 +18,7 @@ use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\RegistrationEvents;
+use Zikula\ZAuthModule\Form\Type\VerifyRegistrationType;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
@@ -68,7 +69,7 @@ class RegistrationController extends AbstractController
                 $setPass = null == $mapping->getPass() || '' == $mapping->getPass();
             }
         }
-        $form = $this->createForm('Zikula\ZAuthModule\Form\Type\VerifyRegistrationType',
+        $form = $this->createForm(VerifyRegistrationType::class,
             [
                 'uname' => $uname,
                 'verifycode' => $verifycode

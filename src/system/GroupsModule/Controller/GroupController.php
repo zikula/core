@@ -19,6 +19,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\GroupsModule\Entity\GroupEntity;
+use Zikula\GroupsModule\Form\Type\CreateGroupType;
+use Zikula\GroupsModule\Form\Type\DeleteGroupType;
+use Zikula\GroupsModule\Form\Type\EditGroupType;
 use Zikula\GroupsModule\Helper\CommonHelper;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -151,7 +154,7 @@ class GroupController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm('Zikula\GroupsModule\Form\Type\CreateGroupType', new GroupEntity(), [
+        $form = $this->createForm(CreateGroupType::class, new GroupEntity(), [
             'translator' => $this->get('translator.default')
         ]);
 
@@ -191,7 +194,7 @@ class GroupController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm('Zikula\GroupsModule\Form\Type\EditGroupType', $groupEntity, [
+        $form = $this->createForm(EditGroupType::class, $groupEntity, [
             'translator' => $this->get('translator.default')
         ]);
 
@@ -247,7 +250,7 @@ class GroupController extends AbstractController
             return $this->redirectToRoute('zikulagroupsmodule_group_list');
         }
 
-        $form = $this->createForm('Zikula\GroupsModule\Form\Type\DeleteGroupType', $groupEntity, [
+        $form = $this->createForm(DeleteGroupType::class, $groupEntity, [
             'translator' => $this->get('translator.default')
         ]);
 

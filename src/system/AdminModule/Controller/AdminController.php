@@ -22,6 +22,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\AdminModule\Form\Type\CreateCategoryType;
+use Zikula\AdminModule\Form\Type\DeleteCategoryType;
+use Zikula\AdminModule\Form\Type\EditCategoryType;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -114,7 +117,7 @@ class AdminController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm('Zikula\AdminModule\Form\Type\CreateCategoryType', new AdminCategoryEntity(), [
+        $form = $this->createForm(CreateCategoryType::class, new AdminCategoryEntity(), [
             'translator' => $this->get('translator.default')
         ]);
 
@@ -158,7 +161,7 @@ class AdminController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm('Zikula\AdminModule\Form\Type\EditCategoryType', $category, [
+        $form = $this->createForm(EditCategoryType::class, $category, [
             'translator' => $this->get('translator.default')
         ]);
 
@@ -203,7 +206,7 @@ class AdminController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm('Zikula\AdminModule\Form\Type\DeleteCategoryType', $category, [
+        $form = $this->createForm(DeleteCategoryType::class, $category, [
             'translator' => $this->get('translator.default')
         ]);
 

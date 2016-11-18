@@ -24,6 +24,7 @@ use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationMeth
 use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Exception\InvalidAuthenticationMethodLoginFormException;
+use Zikula\UsersModule\Form\Type\DefaultLoginType;
 
 class AccessController extends AbstractController
 {
@@ -81,7 +82,9 @@ class AccessController extends AbstractController
             $hasListeners = $this->get('event_dispatcher')->hasListeners(AccessEvents::LOGIN_FORM);
             $hookBindings = $this->get('hook_dispatcher')->getBindingsFor('subscriber.users.ui_hooks.login_screen');
             if ($hasListeners || count($hookBindings) > 0) {
-                $form = $this->createForm('Zikula\UsersModule\Form\Type\DefaultLoginType', ['uid' => $uid]);
+                $form = $this->createForm(DefaultLoginType::class, [
+                    'uid' => $uid
+                ]);
                 $form->handleRequest($request);
                 if ($form->isValid() && $form->isSubmitted()) {
                     $uid = $form->get('uid')->getData();

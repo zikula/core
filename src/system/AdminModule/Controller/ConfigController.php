@@ -16,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\AdminModule\Form\Type\ConfigType;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
@@ -72,7 +73,7 @@ class ConfigController extends AbstractController
         }
         $themes = $this->get('zikula_theme_module.theme_entity.repository')->get(ThemeEntityRepository::FILTER_ADMIN);
 
-        $form = $this->createForm('Zikula\AdminModule\Form\Type\ConfigType',
+        $form = $this->createForm(ConfigType::class,
             $dataValues, [
                 'translator' => $this->get('translator.default'),
                 'categories' => $categories,

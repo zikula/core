@@ -74,9 +74,7 @@ class ConfigController extends AbstractController
             ])
             ->getForm();
 
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
+        if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $this->setVars($form->getData());
                 if ($form->get('hardreset')->getData() == true) {

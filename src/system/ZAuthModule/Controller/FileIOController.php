@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
+use Zikula\ZAuthModule\Form\Type\ImportUserType;
 
 /**
  * @Route("/fileIO")
@@ -36,12 +37,11 @@ class FileIOController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm('Zikula\ZAuthModule\Form\Type\ImportUserType',
-            [], ['translator' => $this->get('translator.default')]
-        );
-        $form->handleRequest($request);
+        $form = $this->createForm(ImportUserType::class, [], [
+            'translator' => $this->get('translator.default')
+        ]);
 
-        if ($form->isValid()) {
+        if ($form->handleRequest($request)->isValid()) {
             if ($form->get('upload')->isClicked()) {
                 $data = $form->getData();
                 $importErrors = $this->get('zikula_zauth_module.helper.file_io')->importUsersFromFile($data['file'], $data['delimiter']);

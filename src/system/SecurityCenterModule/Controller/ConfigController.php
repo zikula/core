@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\SecurityCenterModule\Form\Type\ConfigType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -58,11 +59,9 @@ class ConfigController extends AbstractController
         $modVars['idsjsonfields'] = implode(PHP_EOL, $modVars['idsjsonfields']);
         $modVars['idsexceptions'] = implode(PHP_EOL, $modVars['idsexceptions']);
 
-        $form = $this->createForm('Zikula\SecurityCenterModule\Form\Type\ConfigType',
-            $modVars, [
-                'translator' => $this->get('translator.default')
-            ]
-        );
+        $form = $this->createForm(ConfigType::class, $modVars, [
+            'translator' => $this->get('translator.default')
+        ]);
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {
