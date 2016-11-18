@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "969310a92b8c83bd00a19ad131419b72",
-    "content-hash": "21f73b35d841b9c5b9a2fce030deebb7",
+    "hash": "6b1d9ca796b3e7fcc7283359416c7023",
+    "content-hash": "fa6a82914d92026989230726409e1626",
     "packages": [
         {
             "name": "abeautifulsite/jquery-minicolors",
@@ -2789,32 +2789,37 @@
         },
         {
             "name": "sensio/framework-extra-bundle",
-            "version": "v3.0.16",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "507a15f56fa7699f6cc8c2c7de4080b19ce22546"
+                "reference": "6f99800cca3ddecda9c8b114889ce4545148b315"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/507a15f56fa7699f6cc8c2c7de4080b19ce22546",
-                "reference": "507a15f56fa7699f6cc8c2c7de4080b19ce22546",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/6f99800cca3ddecda9c8b114889ce4545148b315",
+                "reference": "6f99800cca3ddecda9c8b114889ce4545148b315",
                 "shasum": ""
             },
             "require": {
                 "doctrine/common": "~2.2",
-                "symfony/dependency-injection": "~2.3|~3.0",
-                "symfony/framework-bundle": "~2.3|~3.0"
+                "symfony/config": "^3.2",
+                "symfony/dependency-injection": "~3.0",
+                "symfony/framework-bundle": "^3.1",
+                "symfony/http-kernel": "^3.1"
             },
             "require-dev": {
-                "symfony/browser-kit": "~2.3|~3.0",
-                "symfony/dom-crawler": "~2.3|~3.0",
-                "symfony/expression-language": "~2.4|~3.0",
-                "symfony/finder": "~2.3|~3.0",
-                "symfony/phpunit-bridge": "~2.7|~3.0",
-                "symfony/security-bundle": "~2.4|~3.0",
-                "symfony/twig-bundle": "~2.3|~3.0",
-                "twig/twig": "~1.11|~2.0"
+                "symfony/browser-kit": "~3.0",
+                "symfony/dom-crawler": "~3.0",
+                "symfony/expression-language": "~3.0",
+                "symfony/finder": "~3.0",
+                "symfony/phpunit-bridge": "~3.2",
+                "symfony/psr-http-message-bridge": "^0.3",
+                "symfony/security-bundle": "~3.0",
+                "symfony/twig-bundle": "~3.0",
+                "symfony/yaml": "~3.0",
+                "twig/twig": "~1.11|~2.0",
+                "zendframework/zend-diactoros": "^1.3"
             },
             "suggest": {
                 "symfony/expression-language": "",
@@ -2824,7 +2829,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0.x-dev"
+                    "dev-master": "4.0.x-dev"
                 }
             },
             "autoload": {
@@ -2847,7 +2852,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2016-03-25 17:08:27"
+            "time": "2016-10-19 21:21:22"
         },
         {
             "name": "sensio/generator-bundle",
@@ -4032,6 +4037,61 @@
             "time": "2014-06-07 22:21:47"
         },
         {
+            "name": "zikula/generator-bundle",
+            "version": "dev-master",
+            "target-dir": "Zikula/Bundle/GeneratorBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Guite/GeneratorBundle.git",
+                "reference": "9b1d9863e4a1427dea64e2903ac1296e55999c94"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Guite/GeneratorBundle/zipball/9b1d9863e4a1427dea64e2903ac1296e55999c94",
+                "reference": "9b1d9863e4a1427dea64e2903ac1296e55999c94",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/console": "3.2.*",
+                "symfony/finder": "3.2.*",
+                "symfony/framework-bundle": "3.2.*"
+            },
+            "require-dev": {
+                "doctrine/orm": "2.5.*",
+                "symfony/doctrine-bridge": "3.2.*",
+                "twig/twig": "~1.28"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Zikula\\Bundle\\GeneratorBundle\\": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Zikula Community",
+                    "homepage": "http://zikula.org/"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "This module generates code for you",
+            "support": {
+                "source": "https://github.com/Guite/GeneratorBundle/tree/master"
+            },
+            "time": "2016-11-18 18:35:37"
+        },
+        {
             "name": "zikula/jquery-bundle",
             "version": "dev-master",
             "source": {
@@ -4302,6 +4362,53 @@
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
             "time": "2016-11-01 17:23:17"
+        },
+        {
+            "name": "zikula/wizard",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Guite/Wizard.git",
+                "reference": "99e6b518bc69a8ec14c59c95008e201044380bba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Guite/Wizard/zipball/99e6b518bc69a8ec14c59c95008e201044380bba",
+                "reference": "99e6b518bc69a8ec14c59c95008e201044380bba",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.1",
+                "symfony/symfony": "3.2.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Zikula\\Component\\Wizard\\": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Craig Heydenburg",
+                    "email": "craig@zikula.org"
+                }
+            ],
+            "description": "Wizard for multi-stage interaction including Symfony Forms",
+            "homepage": "http://zikula.org",
+            "keywords": [
+                "forms",
+                "stage",
+                "step",
+                "symfony2",
+                "wizard"
+            ],
+            "support": {
+                "source": "https://github.com/Guite/Wizard/tree/master"
+            },
+            "time": "2016-11-18 18:19:56"
         }
     ],
     "packages-dev": [],
@@ -4310,7 +4417,10 @@
     "stability-flags": {
         "zikula/legal-module": 20,
         "zikula/profile-module": 20,
+        "sensio/framework-extra-bundle": 20,
+        "zikula/generator-bundle": 20,
         "phpids/phpids": 20,
+        "zikula/wizard": 20,
         "zikula/filesystem": 20,
         "zikula/jquery-bundle": 20,
         "zikula/jquery-ui-bundle": 20,
