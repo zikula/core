@@ -37,8 +37,7 @@ class BlockFilterType extends AbstractType
     {
         $builder
             ->add('attribute', ChoiceType::class, [
-                'choices' => $this->blockFilterApi->getFilterAttributeChoices(),
-                'choices_as_values' => true,
+                'choices' => $this->blockFilterApi->getFilterAttributeChoices()
             ])
             ->add('queryParameter', TextType::class, [
                 'required' => false
@@ -53,8 +52,7 @@ class BlockFilterType extends AbstractType
                     '<' => '<',
                     'in_array' => 'in_array',
                     '!in_array' => '!in_array'
-                ],
-                'choices_as_values' => true,
+                ]
             ])
             ->add('value', TextType::class, [
                 'required' => false

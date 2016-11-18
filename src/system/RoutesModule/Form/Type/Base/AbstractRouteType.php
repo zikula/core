@@ -102,7 +102,6 @@ abstract class AbstractRouteType extends AbstractType
                 'title' => $this->__('Choose the route type')
             ],'placeholder' => '',
             'choices' => $choices,
-            'choices_as_values' => true,
             'choice_attr' => $choiceAttributes,
             'multiple' => false,
             'expanded' => false
@@ -176,7 +175,6 @@ abstract class AbstractRouteType extends AbstractType
                 'title' => $this->__('Choose the schemes')
             ],'placeholder' => '',
             'choices' => $choices,
-            'choices_as_values' => true,
             'choice_attr' => $choiceAttributes,
             'multiple' => true,
             'expanded' => false
@@ -196,7 +194,6 @@ abstract class AbstractRouteType extends AbstractType
                 'title' => $this->__('Choose the methods')
             ],'placeholder' => '',
             'choices' => $choices,
-            'choices_as_values' => true,
             'choice_attr' => $choiceAttributes,
             'multiple' => true,
             'expanded' => false

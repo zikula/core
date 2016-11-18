@@ -47,8 +47,7 @@ class ConfigType extends AbstractType
                     $translator->__('Display name') => 1,
                     $translator->__('Internal name') => 2,
                     $translator->__('Show both internal name and display name') => 3
-                ],
-                'choices_as_values' => true
+                ]
             ])
             ->add('itemsperpage', IntegerType::class, [
                 'label' => $translator->__('Modules per page in module categories list'),
@@ -67,20 +66,17 @@ class ConfigType extends AbstractType
                 'required' => false,
                 'empty_data' => null,
                 'choices' => $this->formatThemeSelector($options['themes']),
-                'choices_as_values' => true,
                 'placeholder' => $translator->__('Use site\'s theme')
             ])
             ->add('startcategory', ChoiceType::class, [
                 'label' => $translator->__('Initially selected category'),
                 'empty_data' => null,
-                'choices' => $options['categories'],
-                'choices_as_values' => true
+                'choices' => $options['categories']
             ])
             ->add('defaultcategory', ChoiceType::class, [
                 'label' => $translator->__('Default category for newly-added modules'),
                 'empty_data' => null,
-                'choices' => $options['categories'],
-                'choices_as_values' => true
+                'choices' => $options['categories']
             ])
         ;
 
@@ -88,8 +84,7 @@ class ConfigType extends AbstractType
             $builder->add('modulecategory' . $module['name'], ChoiceType::class, [
                 'label' => $module['displayname'],
                 'empty_data' => null,
-                'choices' => $options['categories'],
-                'choices_as_values' => true
+                'choices' => $options['categories']
             ]);
         }
 

@@ -60,7 +60,6 @@ class AccountController extends AbstractController
             ->add('language', ChoiceType::class, [
                 'label' => $this->__('Choose language'),
                 'choices' => array_flip($installedLanguages),
-                'choices_as_values' => true,
                 'placeholder' => $this->__('Site default'),
                 'required' => false,
                 'data' => $request->getLocale()

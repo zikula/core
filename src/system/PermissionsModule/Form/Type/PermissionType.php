@@ -31,8 +31,7 @@ class PermissionType extends AbstractType
             ->add('pid', HiddenType::class)
             ->add('gid', ChoiceType::class, [
                 'label' => $translator->__('Group'),
-                'choices' => array_flip($options['groups']),
-                'choices_as_values' => true
+                'choices' => array_flip($options['groups'])
             ])
             ->add('sequence', HiddenType::class)
             ->add('component', TextType::class, [
@@ -43,8 +42,7 @@ class PermissionType extends AbstractType
             ])
             ->add('level', ChoiceType::class, [
                 'label' => $translator->__('Level'),
-                'choices' => array_flip($options['permissionLevels']),
-                'choices_as_values' => true
+                'choices' => array_flip($options['permissionLevels'])
             ])
         ;
     }

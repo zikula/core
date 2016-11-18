@@ -118,7 +118,6 @@ abstract class AbstractRouteQuickNavType extends AbstractType
             'required' => false,
             'placeholder' => $this->__('All'),
             'choices' => $choices,
-            'choices_as_values' => true,
             'choice_attr' => $choiceAttributes,
             'multiple' => false,
             'expanded' => false
@@ -138,7 +137,6 @@ abstract class AbstractRouteQuickNavType extends AbstractType
             'required' => false,
             'placeholder' => $this->__('All'),
             'choices' => $choices,
-            'choices_as_values' => true,
             'choice_attr' => $choiceAttributes,
             'multiple' => false,
             'expanded' => false
@@ -158,7 +156,6 @@ abstract class AbstractRouteQuickNavType extends AbstractType
             'required' => false,
             'placeholder' => $this->__('All'),
             'choices' => $choices,
-            'choices_as_values' => true,
             'choice_attr' => $choiceAttributes,
             'multiple' => true,
             'expanded' => false
@@ -178,7 +175,6 @@ abstract class AbstractRouteQuickNavType extends AbstractType
             'required' => false,
             'placeholder' => $this->__('All'),
             'choices' => $choices,
-            'choices_as_values' => true,
             'choice_attr' => $choiceAttributes,
             'multiple' => true,
             'expanded' => false
@@ -242,7 +238,6 @@ abstract class AbstractRouteQuickNavType extends AbstractType
                     $this->__('Creator') => 'createdUserId',
                     $this->__('Update date') => 'updatedDate'
                 ],
-                'choices_as_values' => true,
                 'required' => false,
                 'expanded' => false
             ])
@@ -256,7 +251,6 @@ abstract class AbstractRouteQuickNavType extends AbstractType
                     $this->__('Ascending') => 'asc',
                     $this->__('Descending') => 'desc'
                 ],
-                'choices_as_values' => true,
                 'required' => false,
                 'expanded' => false
             ])
@@ -286,7 +280,6 @@ abstract class AbstractRouteQuickNavType extends AbstractType
                 50 => 50,
                 100 => 100
             ],
-            'choices_as_values' => true,
             'required' => false,
             'expanded' => false
         ]);
@@ -310,8 +303,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
             'choices' => [
                 $this->__('No') => 'no',
                 $this->__('Yes') => 'yes'
-            ],
-            'choices_as_values' => true
+            ]
         ]);
         $builder->add('translatable', ChoiceType::class, [
             'label' => $this->__('Translatable'),
@@ -323,8 +315,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
             'choices' => [
                 $this->__('No') => 'no',
                 $this->__('Yes') => 'yes'
-            ],
-            'choices_as_values' => true
+            ]
         ]);
     }
 

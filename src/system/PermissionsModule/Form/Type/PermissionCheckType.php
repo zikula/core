@@ -43,7 +43,6 @@ class PermissionCheckType extends AbstractType
             ->add('level', ChoiceType::class, [
                 'label' => $translator->__('Permission level'),
                 'choices' => array_flip($options['permissionLevels']),
-                'choices_as_values' => true,
                 'data' => ACCESS_READ
             ])
             ->add('check', ButtonType::class, [

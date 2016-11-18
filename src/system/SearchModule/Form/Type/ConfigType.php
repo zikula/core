@@ -53,7 +53,6 @@ class ConfigType extends AbstractType
                 'label_attr' => ['class' => 'checkbox-inline'],
                 'empty_data' => [],
                 'choices' => $this->getPluginChoices($options['plugins']),
-                'choices_as_values' => true,
                 'expanded' => true,
                 'multiple' => true
             ])

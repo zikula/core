@@ -203,7 +203,7 @@ class SettingsController extends AbstractController
     }
 
     /**
-     * Prepare an array of module names and displaynames with choices_as_values
+     * Prepare an array of module names and displaynames
      * @param ExtensionEntity[] $modules
      * @return array
      */

@@ -45,7 +45,6 @@ class ConfigType extends AbstractType
                 'label' => $translator->__('Initial user group'),
                 'empty_data' => 1,
                 'choices' => array_flip($options['groups']),
-                'choices_as_values' => true,
                 'expanded' => false,
                 'multiple' => false
             ])
