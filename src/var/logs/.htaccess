@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 # Purpose of file: block any web access to unallowed files
-#                  stored under the /app/logs directory
+#                  stored under the /var/logs directory
 # ------------------------------------------------------------------
 
 # Apache 2.2
