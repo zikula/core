@@ -24,8 +24,8 @@ class AdminViewFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('sort-field', 'hidden')
-            ->add('sort-direction', 'hidden')
+            ->add('sort-field', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
+            ->add('sort-direction', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
             ->add('position', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'choices' => $options['positionChoices'],
                 'required' => false,

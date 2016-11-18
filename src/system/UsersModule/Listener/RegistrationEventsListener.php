@@ -60,7 +60,7 @@ class RegistrationEventsListener implements EventSubscriberInterface
             $notificationErrors = $this->mailHelper->createAndSendUserMail($userEntity);
         }
         if (!empty($notificationErrors)) {
-            $this->session->getFlashBag()->add('error', implode('<br>', $notificationErrors));
+            $this->session->getFlashBag()->add('error', implode('<br />', $notificationErrors));
         }
     }
 }

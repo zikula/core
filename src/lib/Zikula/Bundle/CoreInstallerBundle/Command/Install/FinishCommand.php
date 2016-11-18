@@ -51,7 +51,7 @@ class FinishCommand extends AbstractCoreInstallerCommand
         $io->comment($this->translator->__f('Configuring Zikula installation in %env% environment.', ['%env%' => $env]));
 
         // install!
-        $ajaxInstallerStage = new AjaxInstallerStage();
+        $ajaxInstallerStage = new AjaxInstallerStage($this->getContainer());
         $stages = $ajaxInstallerStage->getTemplateParams();
         foreach ($stages['stages'] as $key => $stage) {
             $io->text($stage[AjaxInstallerStage::PRE]);

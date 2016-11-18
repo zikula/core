@@ -111,6 +111,7 @@
 
         <service id="zikula_extensions_module.composer_validation_helper" class="%zikula_extensions_module.composer_validation_helper.class%" >
             <argument type="service" id="kernel" />
+            <argument type="service" id="translator.default" />
         </service>
     </services>
 </container>

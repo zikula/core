@@ -13,13 +13,27 @@ namespace Zikula\Bundle\CoreInstallerBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 class ValidPdoConnectionValidator extends ConstraintValidator
 {
+    use TranslatorTrait;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    public function setTranslator($translator)
+    {
+        $this->translator = $translator;
+    }
+
     public function validate($object, Constraint $constraint)
     {
         if ($object['database_host'] == '' || $object['database_name'] == '' || $object['database_user'] == '') {
-            $this->context->buildViolation(__('Error! Please enter your database credentials.'))
+            $this->context->buildViolation($this->__('Error! Please enter your database credentials.'))
                 ->addViolation();
 
             return;
@@ -33,14 +47,14 @@ class ValidPdoConnectionValidator extends ConstraintValidator
                 "SHOW TABLES FROM $object[database_name] LIKE '%'";
             $tables = $dbh->query($sql);
             if (!is_object($tables)) {
-                $this->context->buildViolation(__('Error! Determination existing tables failed.') . ' SQL: ' . $sql)
+                $this->context->buildViolation($this->__('Error! Determination existing tables failed.') . ' SQL: ' . $sql)
                     ->addViolation();
             } elseif ($tables->rowCount() > 0) {
-                $this->context->buildViolation(__('Error! The database exists and contains tables. Please delete all tables before proceeding or select a new database.'))
+                $this->context->buildViolation($this->__('Error! The database exists and contains tables. Please delete all tables before proceeding or select a new database.'))
                     ->addViolation();
             }
         } catch (\PDOException $eb) {
-            $this->context->buildViolation(__('Error! Could not connect to the database. Please check that you have entered the correct database information and try again. ' . $eb->getMessage()))
+            $this->context->buildViolation($this->__('Error! Could not connect to the database. Please check that you have entered the correct database information and try again. ') . $eb->getMessage())
                 ->addViolation();
         }
     }

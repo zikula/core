@@ -8,11 +8,13 @@
     </parameters>
     <services>
         <service id="zikula_core_installer_bundle.validator.constraints.valid_pdo_connection_validator" class="%zikula_core_installer_bundle.validator.constraints.valid_pdo_connection_validator.class%">
+            <argument type="service" id="translator.default" />
             <tag name="validator.constraint_validator" alias="zikula.core_installer.pdo_connection.validator" />
         </service>
         <service id="zikula_core_installer_bundle.validator.constraints.authenticate_admin_login_validator" class="%zikula_core_installer_bundle.validator.constraints.authenticate_admin_login_validator.class%">
             <argument type="service" id="zikula_permissions_module.api.permission" />
             <argument type="service" id="doctrine.dbal.default_connection" />
+            <argument type="service" id="translator.default" />
             <tag name="validator.constraint_validator" alias="zikula.core_installer.authenticate_admin_login.validator" />
         </service>
     </services>

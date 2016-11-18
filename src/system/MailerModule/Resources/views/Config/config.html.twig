@@ -33,7 +33,7 @@
             {{ form_row(form.port) }}
             {{ form_row(form.encryption) }}
             {{ form_row(form.auth_mode) }}
-            <div data-switch="zikulamailermodule_config[auth_mode]" data-switch-value="login">
+            <div data-switch="zikulamailermodule_config[auth_mode]" data-switch-value="plain,login,cram-md5">
                 {{ form_row(form.username) }}
                 {{ form_row(form.password) }}
             </div>

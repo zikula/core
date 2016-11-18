@@ -65,7 +65,8 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
     {
         return [
             'choices' => \ZLanguage::getInstalledLanguageNames(),
-            'choice' => $this->matchedLocale
+            'choice' => $this->matchedLocale,
+            'translator' => $this->container->get('translator.default')
         ];
     }
 
@@ -102,15 +103,15 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
         try {
             $this->yamlManager->setParameters($params);
         } catch (IOException $e) {
-            throw new AbortStageException(__f('Cannot write parameters to %s file.', 'custom_parameters.yml'));
+            throw new AbortStageException($this->container->get('translator.default')->__f('Cannot write parameters to %s file.', 'custom_parameters.yml'));
         }
         // setup multilingual
         $this->container->setParameter('language_i18n', $data['locale']);
+        $this->container->setParameter('locale', $data['locale']);
         $this->container->setParameter('multilingual', true);
         $this->container->setParameter('languageurl', true);
         $this->container->setParameter('language_detect', false);
-
-//        $_lang = ZLanguage::getInstance();
-//        $_lang->setup($request);
+        // clear container cache
+        $this->container->get('zikula.cache_clearer')->clear('symfony.config');
     }
 }
