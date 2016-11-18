@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <parameter key="zikula_theme_module.twig.extension.theme_extension.class">Zikula\ThemeModule\Twig\Extension\ThemeExtension</parameter>
+        <parameter key="zikula_theme_module.container.link_container.class">Zikula\ThemeModule\Container\LinkContainer</parameter>
+        <parameter key="zikula_theme_module.theme_entity.repository.class">Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository</parameter>
+        <parameter key="zikula_theme_module.helper.bundle_sync_helper.class">Zikula\ThemeModule\Helper\BundleSyncHelper</parameter>
+    </parameters>
+    <services>
+        <service id="zikula_theme_module.container.link_container" class="%zikula_theme_module.container.link_container.class%">
+            <argument type="service" id="translator.default" />
+            <argument type="service" id="jms_i18n_routing.router" />
+            <argument type="service" id="zikula_permissions_module.api.permission" />
+            <argument type="service" id="zikula_extensions_module.api.variable" />
+            <tag name="zikula.link_container"/>
+        </service>
+
+        <service id="zikula_theme_module.twig.extension.theme_extension" class="%zikula_theme_module.twig.extension.theme_extension.class%">
+            <tag name="twig.extension" />
+            <argument type="service" id="zikula_core.common.theme.asset_helper" />
+        </service>
+
+        <service id="zikula_theme_module.theme_entity.repository"
+                 class="%zikula_theme_module.theme_entity.repository.class%">
+            <factory service="doctrine" method="getRepository" />
+            <argument>ZikulaThemeModule:ThemeEntity</argument>
+            <call method="setKernel">
+                <argument type="service" id="kernel" />
+            </call>
+        </service>
+
+        <service id="zikula_theme_module.helper.bundle_sync_helper" class="%zikula_theme_module.helper.bundle_sync_helper.class%" lazy="true">
+            <argument type="service" id="kernel" />
+            <argument type="service" id="zikula_theme_module.theme_entity.repository" />
+            <argument type="service" id="zikula_core.internal.bootstrap_helper" />
+            <argument type="service" id="translator.default" />
+            <argument type="service" id="zikula_extensions_module.composer_validation_helper" />
+            <argument type="service" id="session" />
+        </service>
+    </services>
+</container>
