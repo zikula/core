@@ -58,7 +58,7 @@ class IdsLogFilterType extends AbstractType
             $choices[$entry] = $entry;
         }
 
-        $builder->add('workflowState', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+        $builder->add($fieldName, 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
             'label' => $label,
             'attr' => [
                 'class' => 'input-sm'
