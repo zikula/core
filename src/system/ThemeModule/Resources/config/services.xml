@@ -23,9 +23,8 @@
         </service>
 
         <service id="zikula_theme_module.theme_entity.repository"
-                 class="%zikula_theme_module.theme_entity.repository.class%"
-                 factory-service="doctrine"
-                 factory-method="getRepository">
+                 class="%zikula_theme_module.theme_entity.repository.class%">
+            <factory service="doctrine" method="getRepository" />
             <argument>ZikulaThemeModule:ThemeEntity</argument>
             <call method="setKernel">
                 <argument type="service" id="kernel" />
