@@ -1,9 +1,7 @@
-<?xml version="1.0" ?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
     <parameters>
         <parameter key="zikula_zauth_module.authentication_method.native_uname.class">Zikula\ZAuthModule\AuthenticationMethod\NativeUnameAuthenticationMethod</parameter>
         <parameter key="zikula_zauth_module.authentication_method.alias.native_uname.value" type="constant">Zikula\ZAuthModule\ZAuthConstant::AUTHENTICATION_METHOD_UNAME</parameter>
@@ -14,7 +12,6 @@
         <parameter key="zikula_zauth_module.form.authentication_method_type.email_type.class">Zikula\ZAuthModule\Form\Type\EmailLoginType</parameter>
         <parameter key="zikula_zauth_module.form.registration_type.class">Zikula\ZAuthModule\Form\Type\RegistrationType</parameter>
     </parameters>
-
     <services>
         <service id="zikula_zauth_module.authentication_method.native_uname" class="%zikula_zauth_module.authentication_method.native_uname.class%">
             <argument type="service" id="zikula_users_module.user_repository" />
@@ -50,5 +47,4 @@
             <tag alias="Zikula\ZAuthModule\Form\Type\RegistrationType" name="form.type"/>
         </service>
     </services>
-
 </container>
