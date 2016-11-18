@@ -11,12 +11,12 @@
 
 namespace Zikula\Core\Forms;
 
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface ;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
  * Csrf provider based on zikula csrf system.
  */
-class ZikulaCsrfProvider implements CsrfProviderInterface
+class ZikulaCsrfProvider implements CsrfTokenManagerInterface
 {
     /**
      * {@inheritdoc}
