@@ -25,7 +25,6 @@ class AdminModifyUserType extends AbstractType
                     $options['translator']->__('Active') => 1,
                     $options['translator']->__('Inactive') => 0
                 ],
-                'choices_as_values' => true,
                 'label' => $options['translator']->__('User status')
             ])
             ->add('groups', 'Symfony\Bridge\Doctrine\Form\Type\EntityType', [

@@ -43,7 +43,6 @@ class FincludeBlockType extends AbstractType
                     'Text' => 1,
                     'PHP' => 2
                 ],
-                'choices_as_values' => true, // defaults to true in Sy3.0
                 'label' => __('File type')
             ])
         ;

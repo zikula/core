@@ -35,8 +35,7 @@ class BlockFilterType extends AbstractType
     {
         $builder
             ->add('attribute', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'choices' => $this->blockFilterApi->getFilterAttributeChoices(),
-                'choices_as_values' => true,
+                'choices' => $this->blockFilterApi->getFilterAttributeChoices()
             ])
             ->add('queryParameter', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'required' => false
@@ -51,8 +50,7 @@ class BlockFilterType extends AbstractType
                     '<' => '<',
                     'in_array' => 'in_array',
                     '!in_array' => '!in_array'
-                ],
-                'choices_as_values' => true,
+                ]
             ])
             ->add('value', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'required' => false

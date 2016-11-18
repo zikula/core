@@ -47,8 +47,7 @@ class ImportUserType extends AbstractType
                     ',' => ',',
                     ';' => ';',
                     ':' => ':',
-                ],
-                'choices_as_values' => true
+                ]
             ])
             ->add('upload', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'label' => $options['translator']->__('Upload'),

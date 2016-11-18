@@ -28,8 +28,7 @@ class PermissionType extends AbstractType
             ->add('pid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
             ->add('gid', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Group'),
-                'choices' => array_flip($options['groups']),
-                'choices_as_values' => true
+                'choices' => array_flip($options['groups'])
             ])
             ->add('sequence', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
             ->add('component', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
@@ -40,8 +39,7 @@ class PermissionType extends AbstractType
             ])
             ->add('level', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Level'),
-                'choices' => array_flip($options['permissionLevels']),
-                'choices_as_values' => true
+                'choices' => array_flip($options['permissionLevels'])
             ])
         ;
     }

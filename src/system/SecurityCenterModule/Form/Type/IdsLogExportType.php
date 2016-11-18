@@ -46,7 +46,6 @@ class IdsLogExportType extends AbstractType
                     $translator->__('Colon') . ' (:)' => 3,
                     $translator->__('Tab') => 4
                 ],
-                'choices_as_values' => true,
                 'multiple' => false,
                 'expanded' => false
             ])
@@ -73,14 +72,6 @@ class IdsLogExportType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulasecuritycentermodule_idslogexport';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
     }
 
     /**

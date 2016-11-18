@@ -43,8 +43,7 @@ class ConfigType extends AbstractType
                     $translator->__('Display name') => 1,
                     $translator->__('Internal name') => 2,
                     $translator->__('Show both internal name and display name') => 3
-                ],
-                'choices_as_values' => true
+                ]
             ])
             ->add('itemsperpage', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $translator->__('Modules per page in module categories list'),
@@ -63,20 +62,17 @@ class ConfigType extends AbstractType
                 'required' => false,
                 'empty_data' => null,
                 'choices' => $this->formatThemeSelector($options['themes']),
-                'choices_as_values' => true,
                 'placeholder' => $translator->__('Use site\'s theme')
             ])
             ->add('startcategory', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Initially selected category'),
                 'empty_data' => null,
-                'choices' => $options['categories'],
-                'choices_as_values' => true
+                'choices' => $options['categories']
             ])
             ->add('defaultcategory', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Default category for newly-added modules'),
                 'empty_data' => null,
-                'choices' => $options['categories'],
-                'choices_as_values' => true
+                'choices' => $options['categories']
             ])
         ;
 
@@ -84,8 +80,7 @@ class ConfigType extends AbstractType
             $builder->add('modulecategory' . $module['name'], 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $module['displayname'],
                 'empty_data' => null,
-                'choices' => $options['categories'],
-                'choices_as_values' => true
+                'choices' => $options['categories']
             ]);
         }
 
@@ -120,14 +115,6 @@ class ConfigType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulaadminmodule_config';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
     }
 
     /**

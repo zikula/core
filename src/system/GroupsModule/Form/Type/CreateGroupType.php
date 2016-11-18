@@ -43,14 +43,12 @@ class CreateGroupType extends AbstractType
             ->add('gtype', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Type'),
                 'choices' => $typeChoices,
-                'choices_as_values' => true,
                 'expanded' => false,
                 'multiple' => false
             ])
             ->add('state', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('State'),
                 'choices' => $stateChoices,
-                'choices_as_values' => true,
                 'expanded' => false,
                 'multiple' => false
             ])
@@ -86,14 +84,6 @@ class CreateGroupType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulagroupsmodule_creategroup';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
     }
 
     /**

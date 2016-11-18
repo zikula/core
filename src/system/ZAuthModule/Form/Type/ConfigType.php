@@ -44,8 +44,7 @@ class ConfigType extends AbstractType
                     'SHA1'  => 'sha1',
                     'SHA256' => 'sha256',
                     // @todo bcrypt
-                ],
-                'choices_as_values' => true
+                ]
             ])
             ->add(ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $options['translator']->__('Show password strength meter'),

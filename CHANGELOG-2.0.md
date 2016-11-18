@@ -17,3 +17,4 @@ CHANGELOG - ZIKULA 2.0.x
  - Core-2.0 Features:
 
  - Vendor updates:
+    - symfony updated from 2.8.13 to 3.2.0-RC1 (#3027, #2099, #2639).

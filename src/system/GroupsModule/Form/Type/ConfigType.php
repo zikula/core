@@ -41,7 +41,6 @@ class ConfigType extends AbstractType
                 'label' => $translator->__('Initial user group'),
                 'empty_data' => 1,
                 'choices' => array_flip($options['groups']),
-                'choices_as_values' => true,
                 'expanded' => false,
                 'multiple' => false
             ])
@@ -76,14 +75,6 @@ class ConfigType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulagroupsmodule_config';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
     }
 
     /**

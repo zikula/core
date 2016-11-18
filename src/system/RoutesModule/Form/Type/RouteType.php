@@ -48,7 +48,6 @@ class RouteType extends AbstractRouteType
             ],
             'required' => true,
             'choices' => $moduleChoices,
-            'choices_as_values' => true,
             'choice_attr' => $moduleChoiceAttributes,
             'multiple' => false,
             'expanded' => false

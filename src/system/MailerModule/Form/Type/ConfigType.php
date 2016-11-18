@@ -51,7 +51,6 @@ class ConfigType extends AbstractType
         $transportOptions = [
             'label' => $translator->__('Mail transport'),
             'choices' => $transportChoices,
-            'choices_as_values' => true,
             'alert' => $transportAlert
         ];
 
@@ -71,7 +70,6 @@ class ConfigType extends AbstractType
                     'base64' => 'base64',
                     'quoted-printable' => 'quoted-printable'
                 ],
-                'choices_as_values' => true,
                 'help' => $translator->__f("Default: '%s'", ['%s' => '8bit'])
             ])
             ->add('html', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
@@ -108,7 +106,6 @@ class ConfigType extends AbstractType
                     'SSL' => 'ssl',
                     'TLS' => 'tls'
                 ],
-                'choices_as_values' => true,
                 'required' => false
             ])
             ->add('auth_mode', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
@@ -119,7 +116,6 @@ class ConfigType extends AbstractType
                     'Login' => 'login',
                     'Cram-MD5' => 'cram-md5'
                 ],
-                'choices_as_values' => true,
                 'required' => false
             ])
             ->add('username', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
@@ -167,14 +163,6 @@ class ConfigType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulamailermodule_config';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
     }
 
     /**

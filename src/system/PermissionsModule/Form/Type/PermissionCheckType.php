@@ -40,7 +40,6 @@ class PermissionCheckType extends AbstractType
             ->add('level', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Permission level'),
                 'choices' => array_flip($options['permissionLevels']),
-                'choices_as_values' => true,
                 'data' => ACCESS_READ
             ])
             ->add('check', 'Symfony\Component\Form\Extension\Core\Type\ButtonType', [

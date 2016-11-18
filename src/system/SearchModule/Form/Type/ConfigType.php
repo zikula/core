@@ -49,7 +49,6 @@ class ConfigType extends AbstractType
                 'label_attr' => ['class' => 'checkbox-inline'],
                 'empty_data' => [],
                 'choices' => $this->getPluginChoices($options['plugins']),
-                'choices_as_values' => true,
                 'expanded' => true,
                 'multiple' => true
             ])
@@ -107,14 +106,6 @@ class ConfigType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulasearchmodule_config';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
     }
 
     /**

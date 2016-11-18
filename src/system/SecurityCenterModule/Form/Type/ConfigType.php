@@ -35,7 +35,6 @@ class ConfigType extends AbstractType
                     $translator->__('Yes') => 1,
                     $translator->__('No') => 0
                 ],
-                'choices_as_values' => true,
                 'expanded' => true,
                 'multiple' => false
             ])
@@ -47,7 +46,6 @@ class ConfigType extends AbstractType
                     $translator->__('Weekly') => 7,
                     $translator->__('Daily') => 1
                 ],
-                'choices_as_values' => true,
                 'expanded' => false,
                 'multiple' => false
             ])
@@ -64,7 +62,6 @@ class ConfigType extends AbstractType
                     $translator->__('Yes') => 1,
                     $translator->__('No') => 0
                 ],
-                'choices_as_values' => true,
                 'expanded' => true,
                 'multiple' => false
             ])
@@ -82,7 +79,6 @@ class ConfigType extends AbstractType
                     $translator->__('Yes') => 1,
                     $translator->__('No') => 0
                 ],
-                'choices_as_values' => true,
                 'expanded' => true,
                 'multiple' => false
             ])
@@ -100,7 +96,6 @@ class ConfigType extends AbstractType
                     $translator->__("Medium (user is logged-out after X minutes of inactivity, unless 'Remember me' checkbox is activated during log-in)") => 'Medium',
                     $translator->__('Low (user stays logged-in until he logs-out)') => 'Low'
                 ],
-                'choices_as_values' => true,
                 'expanded' => false,
                 'multiple' => false,
                 'help' => $translator->__('More information: http://www.php.net/manual/en/session.configuration.php#ini.session.cookie-lifetime')
@@ -127,7 +122,6 @@ class ConfigType extends AbstractType
                     $translator->__('File') => 1,
                     $translator->__('Database (recommended)') => 0
                 ],
-                'choices_as_values' => true,
                 'expanded' => true,
                 'multiple' => false,
                 'alert' => [$translator->__('Notice: If you change this setting, you will be logged-out immediately and will have to log back in again.') => 'info']
@@ -154,7 +148,6 @@ class ConfigType extends AbstractType
                     $translator->__('Per session') => 1,
                     $translator->__('One time use') => 0
                 ],
-                'choices_as_values' => true,
                 'expanded' => true,
                 'multiple' => false,
                 'alert' => [$translator->__('One time CSRF protection may affect the browser back button but is more secure.') => 'info']
@@ -166,7 +159,6 @@ class ConfigType extends AbstractType
                     $translator->__('Yes') => 1,
                     $translator->__('No') => 0
                 ],
-                'choices_as_values' => true,
                 'expanded' => true,
                 'multiple' => false
             ])
@@ -177,7 +169,6 @@ class ConfigType extends AbstractType
                     $translator->__('Yes') => 1,
                     $translator->__('No') => 0
                 ],
-                'choices_as_values' => true,
                 'expanded' => true,
                 'multiple' => false
             ])
@@ -195,7 +186,6 @@ class ConfigType extends AbstractType
                     $translator->__('Yes') => 1,
                     $translator->__('No') => 0
                 ],
-                'choices_as_values' => true,
                 'expanded' => true,
                 'multiple' => false
             ])
@@ -211,7 +201,6 @@ class ConfigType extends AbstractType
                     $translator->__('Yes') => 1,
                     $translator->__('No') => 0
                 ],
-                'choices_as_values' => true,
                 'expanded' => true,
                 'multiple' => false
             ])
@@ -222,7 +211,6 @@ class ConfigType extends AbstractType
                     $translator->__('Warn only') => 1,
                     $translator->__('Block') => 0
                 ],
-                'choices_as_values' => true,
                 'expanded' => true,
                 'multiple' => false
             ])
@@ -233,7 +221,6 @@ class ConfigType extends AbstractType
                     $translator->__('Yes') => 1,
                     $translator->__('No') => 0
                 ],
-                'choices_as_values' => true,
                 'expanded' => true,
                 'multiple' => false
             ])
@@ -244,7 +231,6 @@ class ConfigType extends AbstractType
                     $translator->__('XML') => 'xml',
                     $translator->__('JSON') => 'json'
                 ],
-                'choices_as_values' => true,
                 'expanded' => true,
                 'multiple' => false
             ])
@@ -281,7 +267,6 @@ class ConfigType extends AbstractType
                     $translator->__('React on impact sum per session [loose] (uses the values from above * 10)') => 2,
                     $translator->__('React on impact sum per session [strict] (uses the values from above * 5)') => 3
                 ],
-                'choices_as_values' => true,
                 'expanded' => false,
                 'multiple' => false
             ])
@@ -310,7 +295,6 @@ class ConfigType extends AbstractType
                     $translator->__('Use internal output filter only') => 0,
                     $translator->__("Use 'HTML Purifier' + internal mechanism as output filter") => 1
                 ],
-                'choices_as_values' => true,
                 'expanded' => false,
                 'multiple' => false
             ])
@@ -337,14 +321,6 @@ class ConfigType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulasecuritycentermodule_config';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
     }
 
     /**

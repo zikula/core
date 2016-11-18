@@ -35,7 +35,6 @@ class MailType extends AbstractType
                     $options['translator']->__('Text') => 'text',
                     $options['translator']->__('Html') => 'html',
                 ],
-                'choices_as_values' => true,
                 'label' => $options['translator']->__('Format'),
             ])
             ->add('message', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [

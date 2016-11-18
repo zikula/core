@@ -58,7 +58,6 @@ class AccountController extends AbstractController
             ->add('language', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $this->__('Choose language'),
                 'choices' => array_flip($installedLanguages),
-                'choices_as_values' => true,
                 'placeholder' => $this->__('Site default'),
                 'required' => false,
                 'data' => $request->getLocale()

@@ -61,7 +61,6 @@ class ManageApplicationType extends AbstractType
                     $translator->__('None') => 0,
                     $translator->__('E-mail') => 1
                 ],
-                'choices_as_values' => true,
                 'expanded' => false,
                 'multiple' => false
             ])
@@ -88,14 +87,6 @@ class ManageApplicationType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulagroupsmodule_manageapplication';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
     }
 
     /**

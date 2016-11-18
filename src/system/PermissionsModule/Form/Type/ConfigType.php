@@ -53,14 +53,12 @@ class ConfigType extends AbstractType
             ->add('rowview', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Minimum row height for permission rules list view (in pixels)'),
                 'empty_data' => 25,
-                'choices' => $amountChoices,
-                'choices_as_values' => true
+                'choices' => $amountChoices
             ])
             ->add('rowedit', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Minimum row height for rule editing view (in pixels)'),
                 'empty_data' => 35,
-                'choices' => $amountChoices,
-                'choices_as_values' => true
+                'choices' => $amountChoices
             ])
             ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'label' => $translator->__('Save'),
@@ -85,14 +83,6 @@ class ConfigType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulapermissionsmodule_config';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
     }
 
     /**

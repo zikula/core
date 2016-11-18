@@ -12,6 +12,7 @@
 namespace Zikula\Bundle\FormExtensionBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class LocaleType extends AbstractType
@@ -19,7 +20,7 @@ class LocaleType extends AbstractType
     /**
      * @param OptionsResolverInterface $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults([
             'choices' => \ZLanguage::getInstalledLanguageNames(),
@@ -29,13 +30,13 @@ class LocaleType extends AbstractType
         ]);
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'zikula_locale';
     }
 
     public function getParent()
     {
-        return 'choice';
+        return ChoiceType::class;
     }
 }

@@ -58,7 +58,7 @@ class IdsLogFilterType extends AbstractType
             $choices[$entry] = $entry;
         }
 
-        $builder->add('workflowState', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+        $builder->add($fieldName, 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
             'label' => $label,
             'attr' => [
                 'class' => 'input-sm'
@@ -66,7 +66,6 @@ class IdsLogFilterType extends AbstractType
             'required' => false,
             'placeholder' => $translator->__('All'),
             'choices' => $choices,
-            'choices_as_values' => true,
             'multiple' => false,
             'expanded' => false
         ]);
@@ -78,14 +77,6 @@ class IdsLogFilterType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulasecuritycentermodule_idslogfilter';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
     }
 
     /**

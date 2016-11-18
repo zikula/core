@@ -34,8 +34,7 @@ class MenuItemType extends AbstractType
                 'entry_type' => 'Zikula\MenuModule\Form\Type\KeyValuePairType',
                 'entry_options'  => [
                     'key_options' => [
-                        'choices' => $this->getKeyChoices(),
-                        'choices_as_values' => true,
+                        'choices' => $this->getKeyChoices()
                     ],
                     'value_options' => [
                         'required' => false,

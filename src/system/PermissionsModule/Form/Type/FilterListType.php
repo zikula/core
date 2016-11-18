@@ -27,14 +27,12 @@ class FilterListType extends AbstractType
         $builder
             ->add('filterGroup', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'choices' => array_flip($options['groupChoices']),
-                'choices_as_values' => true,
                 'attr' => [
                     'class' => 'input-sm'
                 ]
             ])
             ->add('filterComponent', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'choices' => $options['componentChoices'],
-                'choices_as_values' => true,
                 'attr' => [
                     'class' => 'input-sm'
                 ]

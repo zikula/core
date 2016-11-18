@@ -55,7 +55,6 @@ class ExportUsersType extends AbstractType
             ])
             ->add('delimiter', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $options['translator']->__('CSV delimiter'),
-                'choices_as_values' => true,
                 'choices' => [
                     ',' => ',',
                     ';' => ';',

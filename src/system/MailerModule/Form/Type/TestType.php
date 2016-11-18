@@ -68,7 +68,6 @@ class TestType extends AbstractType
                     'HTML-formatted message' => 'html',
                     'Multi-part message' => 'multipart'
                 ],
-                'choices_as_values' => true,
                 'expanded' => false
             ])
             ->add('bodyHtml', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
@@ -102,14 +101,6 @@ class TestType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulamailermodule_test';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
     }
 
     /**
