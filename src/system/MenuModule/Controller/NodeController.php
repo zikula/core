@@ -18,6 +18,7 @@ use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\Core\Response\Ajax\BadDataResponse;
 use Zikula\Core\Response\Ajax\ForbiddenResponse;
 use Zikula\MenuModule\Entity\MenuItemEntity;
+use Zikula\MenuModule\Form\Type\MenuItemType;
 
 /**
  * Class NodeController
@@ -61,7 +62,7 @@ class NodeController extends AbstractController
                         $menuItemEntity->setRoot($sibling->getRoot());
                     }
                 }
-                $form = $this->createForm('Zikula\MenuModule\Form\Type\MenuItemType', $menuItemEntity, [
+                $form = $this->createForm(MenuItemType::class, $menuItemEntity, [
                     'translator' => $this->get('translator.default'),
                 ]);
                 $form->get('after')->setData($request->request->get('after', null));

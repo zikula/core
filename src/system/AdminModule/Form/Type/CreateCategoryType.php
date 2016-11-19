@@ -12,6 +12,9 @@
 namespace Zikula\AdminModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,29 +31,29 @@ class CreateCategoryType extends AbstractType
         $translator = $options['translator'];
 
         $builder
-            ->add('name', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('name', TextType::class, [
                 'label' => $translator->__('Name'),
                 'max_length' => 50
             ])
-            ->add('description', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+            ->add('description', TextareaType::class, [
                 'label' => $translator->__('Description'),
                 'required' => false
             ])
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('save', SubmitType::class, [
                 'label' => $translator->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'
                 ]
             ])
-            ->add('help', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('help', SubmitType::class, [
                 'label' => $translator->__('Help'),
                 'icon' => 'fa-question',
                 'attr' => [

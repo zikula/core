@@ -32,6 +32,10 @@ use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
+use Zikula\ZAuthModule\Form\Type\AdminCreatedUserType;
+use Zikula\ZAuthModule\Form\Type\AdminModifyUserType;
+use Zikula\ZAuthModule\Form\Type\SendVerificationConfirmationType;
+use Zikula\ZAuthModule\Form\Type\TogglePasswordConfirmationType;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
@@ -130,9 +134,9 @@ class UserAdministrationController extends AbstractController
         }
 
         $mapping = new AuthenticationMappingEntity();
-        $form = $this->createForm('Zikula\ZAuthModule\Form\Type\AdminCreatedUserType',
-            $mapping, ['translator' => $this->get('translator.default')]
-        );
+        $form = $this->createForm(AdminCreatedUserType::class, $mapping, [
+            'translator' => $this->get('translator.default')
+        ]);
         $form->handleRequest($request);
 
         $event = new GenericEvent($form->getData(), [], new ValidationProviders());
@@ -212,9 +216,9 @@ class UserAdministrationController extends AbstractController
             throw new AccessDeniedException($this->__("Error! You can't edit the guest account."));
         }
 
-        $form = $this->createForm('Zikula\ZAuthModule\Form\Type\AdminModifyUserType',
-            $mapping, ['translator' => $this->get('translator.default')]
-        );
+        $form = $this->createForm(AdminModifyUserType::class, $mapping, [
+            'translator' => $this->get('translator.default')
+        ]);
         $originalMapping = clone $mapping;
         $form->handleRequest($request);
 
@@ -277,7 +281,7 @@ class UserAdministrationController extends AbstractController
         if (!$this->hasPermission('ZikulaZAuthModule', '::', ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
-        $form = $this->createForm('Zikula\ZAuthModule\Form\Type\SendVerificationConfirmationType', [
+        $form = $this->createForm(SendVerificationConfirmationType::class, [
             'mapping' => $mapping->getId()
         ], [
             'translator' => $this->get('translator.default')
@@ -372,7 +376,7 @@ class UserAdministrationController extends AbstractController
         } else {
             $mustChangePass = false;
         }
-        $form = $this->createForm('Zikula\ZAuthModule\Form\Type\TogglePasswordConfirmationType', [
+        $form = $this->createForm(TogglePasswordConfirmationType::class, [
             'uid' => $user->getUid(),
         ], [
             'mustChangePass' => $mustChangePass,

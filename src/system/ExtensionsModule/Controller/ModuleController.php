@@ -14,6 +14,7 @@ namespace Zikula\ExtensionsModule\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,6 +30,8 @@ use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\ExtensionEvents;
+use Zikula\ExtensionsModule\Form\Type\ExtensionInstallType;
+use Zikula\ExtensionsModule\Form\Type\ExtensionModifyType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -174,7 +177,7 @@ class ModuleController extends AbstractController
             $extension->setDescription($metaData['description']);
         }
 
-        $form = $this->createForm('Zikula\ExtensionsModule\Form\Type\ExtensionModifyType', $extension, [
+        $form = $this->createForm(ExtensionModifyType::class, $extension, [
             'translator' => $this->get('translator.default')
         ]);
 
@@ -241,7 +244,7 @@ class ModuleController extends AbstractController
     public function installAction(Request $request, ExtensionEntity $extension)
     {
         $unsatisfiedDependencies = $this->get('zikula_extensions_module.extension_dependency_helper')->getUnsatisfiedExtensionDependencies($extension);
-        $form = $this->createForm('Zikula\ExtensionsModule\Form\Type\ExtensionInstallType', [
+        $form = $this->createForm(ExtensionInstallType::class, [
             'dependencies' => $this->formatDependencyCheckboxArray($unsatisfiedDependencies)
         ], [
             'translator' => $this->get('translator.default')
@@ -388,14 +391,14 @@ class ModuleController extends AbstractController
         $blocks = $this->getDoctrine()->getManager()->getRepository('ZikulaBlocksModule:BlockEntity')->findBy(['module' => $extension]);
 
         $form = $this->createFormBuilder()
-            ->add('uninstall', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('uninstall', SubmitType::class, [
                 'label' => $this->__('Delete'),
                 'icon' => 'fa-trash-o',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [

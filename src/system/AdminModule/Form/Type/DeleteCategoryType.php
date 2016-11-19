@@ -12,6 +12,8 @@
 namespace Zikula\AdminModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,15 +30,15 @@ class DeleteCategoryType extends AbstractType
         $translator = $options['translator'];
 
         $builder
-            ->add('cid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [])
-            ->add('delete', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cid', HiddenType::class)
+            ->add('delete', SubmitType::class, [
                 'label' => $translator->__('Delete'),
                 'icon' => 'fa-trash-o',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [

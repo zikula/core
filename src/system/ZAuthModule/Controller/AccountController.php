@@ -22,6 +22,10 @@ use Zikula\Core\Exception\FatalErrorException;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\ZAuthModule\Entity\UserVerificationEntity;
+use Zikula\ZAuthModule\Form\Type\ChangeEmailType;
+use Zikula\ZAuthModule\Form\Type\ChangePasswordType;
+use Zikula\ZAuthModule\Form\Type\LostPasswordType;
+use Zikula\ZAuthModule\Form\Type\LostUserNameType;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
@@ -41,9 +45,9 @@ class AccountController extends AbstractController
             return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
 
-        $form = $this->createForm('Zikula\ZAuthModule\Form\Type\LostUserNameType',
-            [], ['translator' => $this->get('translator.default')]
-        );
+        $form = $this->createForm(LostUserNameType::class, [], [
+            'translator' => $this->get('translator.default')
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $data = $form->getData();
@@ -83,9 +87,9 @@ class AccountController extends AbstractController
             return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
 
-        $form = $this->createForm('Zikula\ZAuthModule\Form\Type\LostPasswordType',
-            [], ['translator' => $this->get('translator.default')]
-        );
+        $form = $this->createForm(LostPasswordType::class, [], [
+            'translator' => $this->get('translator.default')
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $redirectToRoute = '';
@@ -158,11 +162,10 @@ class AccountController extends AbstractController
             return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
 
-        $form = $this->createForm('Zikula\ZAuthModule\Form\Type\LostPasswordType', [], [
-                'translator' => $this->get('translator.default'),
-                'includeCode' => true,
-            ]
-        );
+        $form = $this->createForm(LostPasswordType::class, [], [
+            'translator' => $this->get('translator.default'),
+            'includeCode' => true,
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $map = ['uname' => $this->__('username'), 'email' => $this->__('email address')];
@@ -211,10 +214,9 @@ class AccountController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm('Zikula\ZAuthModule\Form\Type\ChangeEmailType', [], [
-                'translator' => $this->get('translator.default'),
-            ]
-        );
+        $form = $this->createForm(ChangeEmailType::class, [], [
+            'translator' => $this->get('translator.default'),
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
@@ -312,7 +314,7 @@ class AccountController extends AbstractController
         }
         $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->findOneBy(['uid' => $uid]);
 
-        $form = $this->createForm('Zikula\ZAuthModule\Form\Type\ChangePasswordType', [
+        $form = $this->createForm(ChangePasswordType::class, [
                 'uid' => $uid,
                 'authenticationMethod' => $authenticationMethod
             ], [

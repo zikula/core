@@ -12,6 +12,7 @@
 namespace Zikula\Bundle\FormExtensionBundle\Form\Extension;
 
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -67,6 +68,6 @@ class FormTypeHelpExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return 'Symfony\Component\Form\Extension\Core\Type\FormType'; // Extend all field types
+        return FormType::class; // Extend all field types
     }
 }

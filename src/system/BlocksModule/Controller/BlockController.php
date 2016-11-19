@@ -13,13 +13,16 @@ namespace Zikula\BlocksModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\BlocksModule\Api\BlockApi;
-use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\BlockHandlerInterface;
+use Zikula\BlocksModule\Entity\BlockEntity;
+use Zikula\BlocksModule\Form\Type\BlockType;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\Ajax\FatalResponse;
 use Zikula\Core\Response\Ajax\ForbiddenResponse;
@@ -40,12 +43,12 @@ class BlockController extends AbstractController
     public function newAction(Request $request)
     {
         $form = $this->createFormBuilder()
-            ->add('bkey', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('bkey', ChoiceType::class, [
                 'placeholder' => 'Choose a block type',
                 'choices' => $this->get('zikula_blocks_module.api.block')->getAvailableBlockTypes(),
-                'label' => 'Block type',
+                'label' => 'Block type'
             ])
-            ->add('choose', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('choose', SubmitType::class, [
                 'label' => $this->__('Choose'),
                 'icon' => 'fa-check',
                 'attr' => [
@@ -53,8 +56,8 @@ class BlockController extends AbstractController
                 ]
             ])
             ->getForm();
-        $form->handleRequest($request);
-        if ($form->isValid()) {
+
+        if ($form->handleRequest($request)->isValid()) {
             $bkey = json_encode($form->getData()['bkey']);
 
             return $this->redirectToRoute('zikulablocksmodule_block_edit', ['bkey' => $bkey]);
@@ -97,7 +100,7 @@ class BlockController extends AbstractController
             $blockEntity->setBlocktype($blockInstance->getType());
         }
 
-        $form = $this->createForm('Zikula\BlocksModule\Form\Type\BlockType', $blockEntity);
+        $form = $this->createForm(BlockType::class, $blockEntity);
         if (($blockInstance instanceof BlockHandlerInterface) && (null !== $blockInstance->getFormClassName())) {
             $form->add('properties', $blockInstance->getFormClassName(), $blockInstance->getFormOptions());
         }
@@ -149,14 +152,14 @@ class BlockController extends AbstractController
         }
 
         $form = $this->createFormBuilder()
-            ->add('delete', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('delete', SubmitType::class, [
                 'label' => $this->__('Delete'),
                 'icon' => 'fa-trash-o',
                 'attr' => [
                     'class' => 'btn btn-default'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
@@ -165,9 +168,7 @@ class BlockController extends AbstractController
             ])
             ->getForm();
 
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
+        if ($form->handleRequest($request)->isValid()) {
             if ($form->get('delete')->isClicked()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($blockEntity);

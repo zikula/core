@@ -24,6 +24,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\GroupsModule\Entity\GroupEntity;
+use Zikula\GroupsModule\Form\Type\ManageApplicationType;
+use Zikula\GroupsModule\Form\Type\RemoveUserType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -272,7 +274,7 @@ class AdminController extends AbstractController
             'uid' => $uid
         ];
 
-        $form = $this->createForm('Zikula\GroupsModule\Form\Type\RemoveUserType', $formValues, [
+        $form = $this->createForm(RemoveUserType::class, $formValues, [
             'translator' => $this->get('translator.default')
         ]);
 
@@ -348,7 +350,7 @@ class AdminController extends AbstractController
             $formValues['reason'] = $this->__('Sorry! This is a message to inform you with regret that your application for membership of the aforementioned private group has been rejected.');
         }
 
-        $form = $this->createForm('Zikula\GroupsModule\Form\Type\ManageApplicationType', $formValues, [
+        $form = $this->createForm(ManageApplicationType::class, $formValues, [
             'translator' => $this->get('translator.default')
         ]);
 

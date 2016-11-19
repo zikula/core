@@ -15,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\BlocksModule\Form\Type\AdminViewFilterType;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
@@ -52,7 +53,7 @@ class AdminController extends AbstractController
         $sessionFilterData = $request->getSession()->get('zikulablocksmodule.filter', []);
         $sortField = $request->query->get('sort-field', isset($sessionFilterData['sort-field']) ? $sessionFilterData['sort-field'] : 'bid');
         $currentSortDirection = $request->query->get('sort-direction', isset($sessionFilterData['sort-direction']) ? $sessionFilterData['sort-direction'] : Column::DIRECTION_ASCENDING);
-        $filterForm = $this->createForm('Zikula\BlocksModule\Form\Type\AdminViewFilterType', $sessionFilterData, [
+        $filterForm = $this->createForm(AdminViewFilterType::class, $sessionFilterData, [
             'action' => $this->generateUrl('zikulablocksmodule_admin_view'),
             'method' => 'POST',
             'translator' => $this->get('translator'),

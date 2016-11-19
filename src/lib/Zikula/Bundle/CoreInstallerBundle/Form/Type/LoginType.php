@@ -12,6 +12,8 @@
 namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -22,7 +24,7 @@ class LoginType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('username', TextType::class, [
                 'label' => __('User Name'),
                 'label_attr' => [
                     'class' => 'col-sm-3'
@@ -32,7 +34,7 @@ class LoginType extends AbstractType
                     new NotBlank(),
                 ]
             ])
-            ->add('password', 'Symfony\Component\Form\Extension\Core\Type\PasswordType', [
+            ->add('password', PasswordType::class, [
                 'label' => __('Password'),
                 'label_attr' => [
                     'class' => 'col-sm-3'

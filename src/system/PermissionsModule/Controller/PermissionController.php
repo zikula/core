@@ -21,6 +21,9 @@ use Zikula\Core\Exception\FatalErrorException;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\PermissionsModule\Entity\PermissionEntity;
+use Zikula\PermissionsModule\Form\Type\FilterListType;
+use Zikula\PermissionsModule\Form\Type\PermissionCheckType;
+use Zikula\PermissionsModule\Form\Type\PermissionType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 class PermissionController extends AbstractController
@@ -46,13 +49,13 @@ class PermissionController extends AbstractController
         $permissionLevels = $this->get('zikula_permissions_module.api.permission')->accessLevelNames();
         $components = $this->get('doctrine')->getRepository('ZikulaPermissionsModule:PermissionEntity')->getAllComponents();
         $components = [$this->__('All components') => '-1'] + $components;
-        $filterForm = $this->createForm('Zikula\PermissionsModule\Form\Type\FilterListType', [], [
+        $filterForm = $this->createForm(FilterListType::class, [], [
             'groupChoices' => $groups,
             'componentChoices' => $components,
             'translator' => $this->getTranslator()
         ]);
         $templateParameters['filterForm'] = $filterForm->createView();
-        $permissionCheckForm = $this->createForm('Zikula\PermissionsModule\Form\Type\PermissionCheckType', [], [
+        $permissionCheckForm = $this->createForm(PermissionCheckType::class, [], [
             'translator' => $this->getTranslator(),
             'permissionLevels' => $permissionLevels
         ]);
@@ -85,7 +88,7 @@ class PermissionController extends AbstractController
                 $permissionEntity->setSequence($request->request->get('sequence'));
             }
         }
-        $form = $this->createForm('Zikula\PermissionsModule\Form\Type\PermissionType', $permissionEntity, [
+        $form = $this->createForm(PermissionType::class, $permissionEntity, [
             'translator' => $this->getTranslator(),
             'groups' => $this->get('zikula_groups_module.group_repository')->getGroupNamesById(),
             'permissionLevels' => $this->get('zikula_permissions_module.api.permission')->accessLevelNames()
@@ -201,7 +204,7 @@ class PermissionController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $permissionCheckForm = $this->createForm('Zikula\PermissionsModule\Form\Type\PermissionCheckType', [], [
+        $permissionCheckForm = $this->createForm(PermissionCheckType::class, [], [
             'translator' => $this->getTranslator(),
             'permissionLevels' => $this->get('zikula_permissions_module.api.permission')->accessLevelNames()
         ]);

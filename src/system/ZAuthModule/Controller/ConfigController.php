@@ -18,6 +18,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\ZAuthModule\ZAuthConstant;
+use Zikula\ZAuthModule\Form\Type\ConfigType;
 
 /**
  * @Route("/admin")
@@ -37,12 +38,11 @@ class ConfigController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm('Zikula\ZAuthModule\Form\Type\ConfigType',
-            $this->getVars(), ['translator' => $this->get('translator.default')]
-        );
-        $form->handleRequest($request);
+        $form = $this->createForm(ConfigType::class, $this->getVars(), [
+            'translator' => $this->get('translator.default')
+        ]);
 
-        if ($form->isValid()) {
+        if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $data = $form->getData();
                 $this->setVars($data);

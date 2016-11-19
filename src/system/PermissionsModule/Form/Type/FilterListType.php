@@ -12,6 +12,8 @@
 namespace Zikula\PermissionsModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,21 +27,21 @@ class FilterListType extends AbstractType
         $translator = $options['translator'];
 
         $builder
-            ->add('filterGroup', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('filterGroup', ChoiceType::class, [
                 'choices' => array_flip($options['groupChoices']),
                 'choices_as_values' => true,
                 'attr' => [
                     'class' => 'input-sm'
                 ]
             ])
-            ->add('filterComponent', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('filterComponent', ChoiceType::class, [
                 'choices' => $options['componentChoices'],
                 'choices_as_values' => true,
                 'attr' => [
                     'class' => 'input-sm'
                 ]
             ])
-            ->add('reset', 'Symfony\Component\Form\Extension\Core\Type\ButtonType', [
+            ->add('reset', ButtonType::class, [
                 'label' => $translator->__('Reset'),
                 'icon' => 'fa-times',
                 'attr' => [

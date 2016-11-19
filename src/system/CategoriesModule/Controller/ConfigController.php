@@ -16,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\CategoriesModule\Form\Type\ConfigType;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -48,7 +49,7 @@ class ConfigController extends AbstractController
             $modVars[$boolVar] = isset($modVars[$boolVar]) ? (bool)$modVars[$boolVar] : false;
         }
 
-        $form = $this->createForm('Zikula\CategoriesModule\Form\Type\ConfigType',
+        $form = $this->createForm(ConfigType::class,
             $modVars, [
                 'translator' => $this->get('translator.default'),
                 'locale' => $request->getLocale()

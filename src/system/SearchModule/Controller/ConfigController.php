@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\SearchModule\AbstractSearchable;
+use Zikula\SearchModule\Form\Type\ConfigType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -70,12 +71,10 @@ class ConfigController extends AbstractController
         }
         $modVars['plugins'] = $disabledPlugins;
 
-        $form = $this->createForm('Zikula\SearchModule\Form\Type\ConfigType',
-            $modVars, [
-                'translator' => $this->get('translator.default'),
-                'plugins' => $plugins
-            ]
-        );
+        $form = $this->createForm(ConfigType::class, $modVars, [
+            'translator' => $this->get('translator.default'),
+            'plugins' => $plugins
+        ]);
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {

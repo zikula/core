@@ -11,7 +11,11 @@
 
 namespace Zikula\MenuModule\Form\Type;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -27,11 +31,13 @@ class MenuItemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'constraints' => [new NotBlank()]
+            ->add('title', TextType::class, [
+                'constraints' => [
+                    new NotBlank()
+                ]
             ])
-            ->add('options', 'Symfony\Component\Form\Extension\Core\Type\CollectionType', [
-                'entry_type' => 'Zikula\MenuModule\Form\Type\KeyValuePairType',
+            ->add('options', CollectionType::class, [
+                'entry_type' => KeyValuePairType::class,
                 'entry_options'  => [
                     'key_options' => [
                         'choices' => $this->getKeyChoices(),
@@ -46,7 +52,7 @@ class MenuItemType extends AbstractType
                 'label' => 'Options',
                 'required' => false
             ])
-            ->add('after', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [
+            ->add('after', HiddenType::class, [
                 'mapped' => false,
                 'required' => false
             ])
@@ -57,15 +63,15 @@ class MenuItemType extends AbstractType
             ->addEventSubscriber(new OptionValidatorListener())
         ;
         if ($options['includeRoot']) {
-            $builder->add('root', 'Symfony\Bridge\Doctrine\Form\Type\EntityType', [
+            $builder->add('root', EntityType::class, [
                 'class' => 'Zikula\MenuModule\Entity\MenuItemEntity',
                 'choice_label' => 'title',
             ]);
         } else {
-            $builder->add('root', 'Zikula\MenuModule\Form\Type\HiddenMenuItemType');
+            $builder->add('root', HiddenMenuItemType::class);
         }
         if ($options['includeParent']) {
-            $builder->add('parent', 'Symfony\Bridge\Doctrine\Form\Type\EntityType', [
+            $builder->add('parent', EntityType::class, [
                 'class' => 'Zikula\MenuModule\Entity\MenuItemEntity',
                 'choice_label' => 'title',
                 'placeholder' => $options['translator']->__('No parent'),
@@ -73,7 +79,7 @@ class MenuItemType extends AbstractType
                 'required' => false,
             ]);
         } else {
-            $builder->add('parent', 'Zikula\MenuModule\Form\Type\HiddenMenuItemType');
+            $builder->add('parent', HiddenMenuItemType::class);
         }
     }
 

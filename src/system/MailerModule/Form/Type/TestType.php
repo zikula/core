@@ -12,6 +12,11 @@
 namespace Zikula\MailerModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
@@ -30,22 +35,22 @@ class TestType extends AbstractType
         $translator = $options['translator'];
 
         $builder
-            ->add('fromName', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('fromName', TextType::class, [
                 'label' => $translator->__('Sender\'s name'),
                 'disabled' => true
             ])
-            ->add('fromAddress', 'Symfony\Component\Form\Extension\Core\Type\EmailType', [
+            ->add('fromAddress', EmailType::class, [
                 'label' => $translator->__('Sender\'s e-mail address'),
                 'disabled' => true
             ])
-            ->add('toName', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('toName', TextType::class, [
                 'label' => $translator->__('Recipient\'s name'),
                 'constraints' => [
                     new NotBlank()
                 ],
                 'max_length' => 50
             ])
-            ->add('toAddress', 'Symfony\Component\Form\Extension\Core\Type\EmailType', [
+            ->add('toAddress', EmailType::class, [
                 'label' => $translator->__('Recipient\'s e-mail address'),
                 'constraints' => [
                     new NotBlank(),
@@ -53,14 +58,14 @@ class TestType extends AbstractType
                 ],
                 'max_length' => 50
             ])
-            ->add('subject', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('subject', TextType::class, [
                 'label' => $translator->__('Subject'),
                 'constraints' => [
                     new NotBlank()
                 ],
                 'max_length' => 50
             ])
-            ->add('messageType', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('messageType', ChoiceType::class, [
                 'label' => $translator->__('Message type'),
                 'empty_data' => 'text',
                 'choices' => [
@@ -71,22 +76,22 @@ class TestType extends AbstractType
                 'choices_as_values' => true,
                 'expanded' => false
             ])
-            ->add('bodyHtml', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+            ->add('bodyHtml', TextareaType::class, [
                 'label' => $translator->__('HTML-formatted message'),
                 'required' => false
             ])
-            ->add('bodyText', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+            ->add('bodyText', TextareaType::class, [
                 'label' => $translator->__('Plain-text message'),
                 'required' => false
             ])
-            ->add('test', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('test', SubmitType::class, [
                 'label' => $translator->__('Send test email'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [

@@ -12,6 +12,10 @@
 namespace Zikula\UsersModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Regex;
@@ -21,31 +25,31 @@ class ExportUsersType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('title', CheckboxType::class, [
                 'label' => $options['translator']->__('Export title row'),
                 'required' => false,
                 'data' => true
             ])
-            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('email', CheckboxType::class, [
                 'label' => $options['translator']->__('Export email address'),
                 'required' => false,
                 'data' => true
             ])
-            ->add('user_regdate', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('user_regdate', CheckboxType::class, [
                 'label' => $options['translator']->__('Export registration date'),
                 'required' => false,
                 'data' => true
             ])
-            ->add('lastlogin', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('lastlogin', CheckboxType::class, [
                 'label' => $options['translator']->__('Export last login date'),
                 'required' => false,
                 'data' => true
             ])
-            ->add('groups', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('groups', CheckboxType::class, [
                 'required' => false,
                 'label' => $options['translator']->__('Export group memberships'),
             ])
-            ->add('filename', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('filename', TextType::class, [
                 'label' => $options['translator']->__('CSV filename'),
                 'help' => $options['translator']->__('A simple name with three letter suffix, e.g. `myfile.csv`'),
                 'data' => 'user.csv',
@@ -53,7 +57,7 @@ class ExportUsersType extends AbstractType
                     new Regex(['pattern' => '/^[\w,\s-]+\.[A-Za-z]{3}$/'])
                 ]
             ])
-            ->add('delimiter', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('delimiter', ChoiceType::class, [
                 'label' => $options['translator']->__('CSV delimiter'),
                 'choices_as_values' => true,
                 'choices' => [
@@ -63,12 +67,12 @@ class ExportUsersType extends AbstractType
                     'tab' => '\t'
                 ]
             ])
-            ->add('download', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('download', SubmitType::class, [
                 'label' => $options['translator']->__('Download'),
                 'icon' => 'fa-download',
                 'attr' => ['class' => 'btn btn-success'],
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $options['translator']->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
