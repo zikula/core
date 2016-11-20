@@ -11,6 +11,7 @@
 
 /**
  * SecurityUtil.
+ * @deprecated
  *
  * Notes on security system.
  *

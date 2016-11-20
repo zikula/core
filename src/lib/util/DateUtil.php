@@ -17,6 +17,7 @@ define('DATEONLYFORMAT_FIXED', '%Y-%m-%d');
 
 /**
  * DateUtil.
+ * @deprecated
  */
 class DateUtil
 {

@@ -16,6 +16,7 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 /**
  * System class.
+ * @deprecated
  *
  * Core class with the base methods.
  */

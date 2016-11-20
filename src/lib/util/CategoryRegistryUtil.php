@@ -13,6 +13,7 @@ use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 
 /**
  * CategoryRegistryUtil
+ * @deprecated
  */
 class CategoryRegistryUtil
 {

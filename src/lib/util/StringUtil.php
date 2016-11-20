@@ -11,6 +11,7 @@
 
 /**
  * StringUtil
+ * @deprecated
  */
 class StringUtil
 {
