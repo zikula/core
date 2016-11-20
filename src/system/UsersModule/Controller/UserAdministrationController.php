@@ -199,6 +199,7 @@ class UserAdministrationController extends AbstractController
         if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
+
         $forceVerification = $this->hasPermission('ZikulaUsersModule', '::', ACCESS_ADMIN) && $force;
         $form = $this->createForm(ApproveRegistrationConfirmationType::class, [
             'user' => $user->getUid(),
@@ -207,40 +208,42 @@ class UserAdministrationController extends AbstractController
             'translator' => $this->get('translator.default'),
             'buttonLabel' => $this->__('Approve')
         ]);
-        if ($user->isApproved() && !$forceVerification) {
-            $this->addFlash('error', $this->__f('Warning! Nothing to do! %sub% is already approved.', ['%sub%' => $user->getUname()]));
+        $redirectToRoute = 'zikulausersmodule_useradministration_list';
 
-            return $this->redirectToRoute('zikulausersmodule_useradministration_list');
-        } elseif (!$user->isApproved() && !$forceVerification
-            && !$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
-            $this->addFlash('error', $this->__f('Error! %sub% cannot be approved.', ['%sub%' => $user->getUname()]));
+        if (!$forceVerification) {
+            if ($user->isApproved()) {
+                $this->addFlash('error', $this->__f('Warning! Nothing to do! %sub% is already approved.', ['%sub%' => $user->getUname()]));
 
-            return $this->redirectToRoute('zikulausersmodule_useradministration_list');
+                return $this->redirectToRoute($redirectToRoute);
+            }
+            if (!$user->isApproved() && !$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
+                $this->addFlash('error', $this->__f('Error! %sub% cannot be approved.', ['%sub%' => $user->getUname()]));
+
+                return $this->redirectToRoute($redirectToRoute);
+            }
         }
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('confirm')->isClicked()) {
                 $this->get('zikula_users_module.helper.registration_helper')->approve($user);
+                $mailHelper = $this->get('zikula_users_module.helper.mail_helper');
                 if ($user->getActivated() == UsersConstant::ACTIVATED_PENDING_REG) {
-                    $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendRegistrationMail($user, true, false);
+                    $notificationErrors = $mailHelper->createAndSendRegistrationMail($user, true, false);
                 } else {
-                    $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendUserMail($user, true, false);
+                    $notificationErrors = $mailHelper->createAndSendUserMail($user, true, false);
                 }
 
                 if ($notificationErrors) {
-                    foreach ($notificationErrors as $error) {
-                        $this->addFlash('error', $error);
-                    }
-                } else {
-                    $this->addFlash('status', $this->__f('Done! %sub% has been approved.', ['%sub%' => $user->getUname()]));
+                    $this->addFlash('error', implode('<br />', $notificationErrors));
                 }
+                $this->addFlash('status', $this->__f('Done! %sub% has been approved.', ['%sub%' => $user->getUname()]));
             }
             if ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirectToRoute('zikulausersmodule_useradministration_list');
+            return $this->redirectToRoute($redirectToRoute);
         }
 
         return [

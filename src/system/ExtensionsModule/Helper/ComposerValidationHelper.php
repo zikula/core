@@ -16,16 +16,18 @@ use JsonSchema\Validator;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 
 class ComposerValidationHelper
 {
-    use TranslatorTrait;
-
     /**
      * @var KernelInterface
      */
     private $kernel;
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
 
     /**
      * JSON DECODING ERROR CODE DEFINITIONS
@@ -79,16 +81,6 @@ class ComposerValidationHelper
     public function __construct(KernelInterface $kernel, TranslatorInterface $translator)
     {
         $this->kernel = $kernel;
-        $this->setTranslator($translator);
-    }
-
-    /**
-     * Sets the translator.
-     *
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator($translator)
-    {
         $this->translator = $translator;
     }
 
@@ -108,12 +100,6 @@ class ComposerValidationHelper
         $pathParts = explode('/', $file->getRelativePath());
         $this->bundleName = $pathParts[count($pathParts) - 1];
 
-        if (strtolower(substr($this->bundleName, -6)) != 'module' && strtolower(substr($this->bundleName, -5)) != 'theme') {
-            $this->errors[] = $this->__f('Invalid bundle type detected for component %component.', ['%component' => $this->bundleName]);
-
-            return;
-        }
-
         $this->filePath = $file->getRelativePath();
         $this->rawContent = $file->getContents();
 
@@ -132,7 +118,7 @@ class ComposerValidationHelper
         $this->content = json_decode($this->rawContent); // returns null on failure
         if (empty($this->content)) {
             $error = $this->jsonErrorCodes[json_last_error()];
-            $this->errors[] = $this->__f('Unable to decode composer file of %component% (%filePath%): %error%. Ensure the composer.json file has a valid syntax.', [
+            $this->errors[] = $this->translator->__f('Unable to decode composer file of %component% (%filePath%): %error%. Ensure the composer.json file has a valid syntax.', [
                 '%component%' => $this->bundleName,
                 '%filePath%' => $this->filePath,
                 '%error%' => $error
@@ -161,7 +147,7 @@ class ComposerValidationHelper
 
         if (!$validator->isValid()) {
             foreach ($validator->getErrors() as $errorDetails) {
-                $this->errors[] = $this->__f('Error found in composer file of %component% (%filePath%) in property "%property%": %error%.', [
+                $this->errors[] = $this->translator->__f('Error found in composer file of %component% (%filePath%) in property "%property%": %error%.', [
                     '%component%' => $this->bundleName,
                     '%filePath%' => $this->filePath,
                     '%property%' => $errorDetails['property'],

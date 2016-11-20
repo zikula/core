@@ -4,6 +4,7 @@
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
     <route id="home" path="/">
         <default key="_controller">zikula_core.controller.main_controller:homeAction</default>
+        <condition>request == null or request.query.get('module') == ''</condition>
         <option key="i18n">false</option>
     </route>
 </routes>

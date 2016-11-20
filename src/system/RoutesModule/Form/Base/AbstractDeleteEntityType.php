@@ -68,12 +68,4 @@ abstract class AbstractDeleteEntityType extends AbstractType
     {
         return 'zikularoutesmodule_deleteentity';
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
 }

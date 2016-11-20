@@ -45,30 +45,24 @@ class LostPasswordType extends AbstractType
                 'attr' => ['class' => 'btn btn-success']
             ])
         ;
-        if ($options['includeCode']) {
-            $builder
-                ->add('code', TextType::class, [
-                    'label' => $options['translator']->__('Confirmation code'),
-                    'input_group' => ['left' => '<i class="fa fa-code"></i>'],
-                ])
-                ->add('pass', RepeatedType::class, [
-                    'type' => PasswordType::class,
-                    'first_options' => [
-                        'label' => $options['translator']->__('Create new password'),
-                        'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
-                    ],
-                    'second_options' => [
-                        'label' => $options['translator']->__('Repeat new password'),
-                        'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
-                    ],
-                    'invalid_message' => $options['translator']->__('The passwords must match!'),
-                    'constraints' => [
-                        new NotNull(),
-                        new ValidPassword()
-                    ]
-                ])
-            ;
-        }
+        $builder
+            ->add('pass', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'first_options' => [
+                    'label' => $options['translator']->__('Create new password'),
+                    'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
+                ],
+                'second_options' => [
+                    'label' => $options['translator']->__('Repeat new password'),
+                    'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
+                ],
+                'invalid_message' => $options['translator']->__('The passwords must match!'),
+                'constraints' => [
+                    new NotNull(),
+                    new ValidPassword()
+                ]
+            ])
+        ;
     }
 
     public function getBlockPrefix()
@@ -83,9 +77,9 @@ class LostPasswordType extends AbstractType
     {
         $resolver->setDefaults([
             'translator' => null,
-            'includeCode' => false,
+            'includeReset' => false,
             'constraints' => new Callback(['callback' => function ($data, ExecutionContextInterface $context) use ($resolver) {
-                if (empty($data['uname']) && empty($data['email'])) {
+                if (!isset($data['pass']) && empty($data['uname']) && empty($data['email'])) {
                     $context->buildViolation(__('Error! You must enter either your username or email address.'))
                         ->addViolation();
                 }

@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Zikula\Component\Wizard\FormHandlerInterface;
 use Zikula\Component\Wizard\Wizard;
 use Zikula\Component\Wizard\WizardCompleteInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Zikula\Core\Response\PlainResponse;
 
 /**
@@ -40,7 +39,7 @@ class UpgraderController extends AbstractController
         }
         // notinstalled?
         if (($this->container->getParameter('installed') == false)) {
-            return new RedirectResponse($this->router->generate('install', [], RouterInterface::ABSOLUTE_URL));
+            return new RedirectResponse($this->router->generate('install'));
         }
 
         // check php
@@ -50,6 +49,7 @@ class UpgraderController extends AbstractController
         }
 
         $this->container->setParameter('upgrading', true);
+        $request->setLocale($this->container->getParameter('locale'));
 
         // begin the wizard
         $wizard = new Wizard($this->container, realpath(__DIR__ . '/../Resources/config/upgrade_stages.yml'));
@@ -71,7 +71,8 @@ class UpgraderController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $currentStage->handleFormResult($form);
-                $url = $this->router->generate('upgrade', ['stage' => $wizard->getNextStage()->getName()], RouterInterface::ABSOLUTE_URL);
+                $params = ['stage' => $wizard->getNextStage()->getName(), '_locale' => $this->container->getParameter('locale')];
+                $url = $this->router->generate('upgrade', $params);
 
                 return new RedirectResponse($url);
             }

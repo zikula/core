@@ -17,25 +17,28 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Zikula\Bundle\CoreInstallerBundle\Form\AbstractType;
 use Zikula\Bundle\CoreInstallerBundle\Validator\Constraints\AuthenticateAdminLogin;
+use Zikula\Common\Translator\IdentityTranslator;
 
 class LoginType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->setTranslator($options['translator']);
         $builder
             ->add('username', TextType::class, [
-                'label' => __('User Name'),
+                'label' => $this->__('User Name'),
                 'label_attr' => [
                     'class' => 'col-sm-3'
                 ],
-                'data' => __('admin'),
+                'data' => $this->__('admin'),
                 'constraints' => [
                     new NotBlank(),
                 ]
             ])
             ->add('password', PasswordType::class, [
-                'label' => __('Password'),
+                'label' => $this->__('Password'),
                 'label_attr' => [
                     'class' => 'col-sm-3'
                 ],
@@ -56,6 +59,7 @@ class LoginType extends AbstractType
         $resolver->setDefaults([
             'constraints' => new AuthenticateAdminLogin(),
             'csrf_protection' => false,
+            'translator' => new IdentityTranslator()
 //                'csrf_field_name' => '_token',
 //                // a unique key to help generate the secret token
 //                'intention'       => '_zk_bdcreds',

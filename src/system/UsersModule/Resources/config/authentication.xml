@@ -1,15 +1,12 @@
-<?xml version="1.0" ?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
     <parameters>
         <parameter key="zikula_users_module.internal.authentication_method_collector.class">Zikula\UsersModule\Collector\AuthenticationMethodCollector</parameter>
         <parameter key="zikula_users_module.form.default_registration_type.class">Zikula\UsersModule\Form\RegistrationType\DefaultRegistrationType</parameter>
         <parameter key="zikula_users_module.form.default_login_type.class">Zikula\UsersModule\Form\Type\DefaultLoginType</parameter>
     </parameters>
-
     <services>
         <service id="zikula_users_module.internal.authentication_method_collector" class="%zikula_users_module.internal.authentication_method_collector.class%">
             <argument type="service" id="zikula_extensions_module.api.variable" />
@@ -23,7 +20,5 @@
             <argument type="service" id="translator.default" />
             <tag alias="Zikula\UsersModule\Form\Type\DefaultLoginType" name="form.type"/>
         </service>
-
     </services>
 </container>
-

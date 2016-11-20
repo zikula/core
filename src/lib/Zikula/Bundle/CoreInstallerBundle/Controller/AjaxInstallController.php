@@ -332,8 +332,8 @@ class AjaxInstallController extends AbstractController
     public function reloadRoutes()
     {
         // fire MODULE_INSTALL event to reload all routes
-        $event = new ModuleStateEvent($this->container->get('kernel')->getModule('ZikulaRoutesModule'));
-        $this->container->get('event_dispatcher')->dispatch(CoreEvents::MODULE_POSTINSTALL, $event);
+//        $event = new ModuleStateEvent($this->container->get('kernel')->getModule('ZikulaRoutesModule'));
+//        $this->container->get('event_dispatcher')->dispatch(CoreEvents::MODULE_POSTINSTALL, $event);
 
         return true;
     }

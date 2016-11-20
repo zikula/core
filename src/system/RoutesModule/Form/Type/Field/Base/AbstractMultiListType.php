@@ -62,12 +62,4 @@ abstract class AbstractMultiListType extends AbstractType
     {
         return 'zikularoutesmodule_field_multilist';
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
 }
