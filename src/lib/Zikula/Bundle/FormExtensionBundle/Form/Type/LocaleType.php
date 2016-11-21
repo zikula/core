@@ -29,13 +29,13 @@ class LocaleType extends AbstractType
         ]);
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'zikula_locale';
     }
 
     public function getParent()
     {
-        return 'choice';
+        return 'Symfony\Component\Form\Extension\Core\Type\Choice';
     }
 }
