@@ -28,7 +28,7 @@ class TextBlock extends AbstractBlockHandler
     {
         $title = (!empty($properties['title'])) ? $properties['title'] : '';
         if ((!$this->hasPermission('Textblock::', "$title::", ACCESS_OVERVIEW))
-        || (!$this->hasPermission('Textblock::bid', "::$properties[bid]", ACCESS_OVERVIEW))){
+        || (!$this->hasPermission('Textblock::bid', "::$properties[bid]", ACCESS_OVERVIEW))) {
             return '';
         }
 
