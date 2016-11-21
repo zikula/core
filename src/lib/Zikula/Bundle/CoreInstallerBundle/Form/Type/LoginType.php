@@ -29,7 +29,7 @@ class LoginType extends AbstractType
                 'label_attr' => [
                     'class' => 'col-sm-3'
                 ],
-                'data' => $this->__('admin'),
+                'data' => 'admin',
                 'constraints' => [
                     new NotBlank(),
                 ]
