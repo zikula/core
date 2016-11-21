@@ -221,32 +221,34 @@ class BundleSyncHelper
     {
         $modulenames = [];
         $displaynames = [];
+        $urls = [];
 
-        // check for duplicate names or display names
-        foreach ($extensions as $dir => $modinfo) {
-            if (isset($modulenames[strtolower($modinfo['name'])])) {
+        // check for duplicate names, display names or urls
+        foreach ($extensions as $dir => $modInfo) {
+            if (isset($modulenames[strtolower($modInfo['name'])])) {
                 throw new FatalErrorException($this->translator->__f('Fatal Error: Two extensions share the same name. [%ext1%] and [%ext2%]', [
-                    '%ext1%' => $modinfo['name'],
-                    '%ext2%' => $modulenames[strtolower($modinfo['name'])]
+                    '%ext1%' => $modInfo['name'],
+                    '%ext2%' => $modulenames[strtolower($modInfo['name'])]
                 ]));
             }
 
-            if (isset($displaynames[strtolower($modinfo['displayname'])])) {
+            if (isset($displaynames[strtolower($modInfo['displayname'])])) {
                 throw new FatalErrorException($this->translator->__f('Fatal Error: Two extensions share the same displayname. [%ext1%] and [%ext2%]', [
-                    '%ext1%' => $modinfo['displayname'],
-                    '%ext2%' => $modulenames[strtolower($modinfo['displayname'])]
+                    '%ext1%' => $modInfo['name'],
+                    '%ext2%' => $modulenames[strtolower($modInfo['name'])]
                 ]));
             }
 
-            if (isset($displaynames[strtolower($modinfo['url'])])) {
+            if (isset($urls[strtolower($modInfo['url'])])) {
                 throw new FatalErrorException($this->translator->__f('Fatal Error: Two extensions share the same url. [%ext1%] and [%ext2%]', [
-                    '%ext1%' => $modinfo['url'],
-                    '%ext2%' => $modulenames[strtolower($modinfo['url'])]
+                    '%ext1%' => $modInfo['name'],
+                    '%ext2%' => $modulenames[strtolower($modInfo['name'])]
                 ]));
             }
 
-            $modulenames[strtolower($modinfo['name'])] = $dir;
-            $displaynames[strtolower($modinfo['displayname'])] = $dir;
+            $modulenames[strtolower($modInfo['name'])] = $dir;
+            $displaynames[strtolower($modInfo['displayname'])] = $dir;
+            $urls[strtolower($modInfo['url'])] = $dir;
         }
     }
 
