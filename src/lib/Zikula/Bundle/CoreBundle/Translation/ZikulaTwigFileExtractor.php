@@ -76,11 +76,9 @@ class ZikulaTwigFileExtractor extends \Twig_BaseNodeVisitor implements FileVisit
     }
 
     /**
-     * @param \Twig_NodeInterface $node
-     * @param \Twig_Environment $env
-     * @return \Twig_NodeInterface
+     * {@inheritdoc}
      */
-    public function enterNode(\Twig_NodeInterface $node, \Twig_Environment $env)
+    protected function doEnterNode(\Twig_Node $node, \Twig_Environment $env)
     {
         $this->stack[] = $node;
 
@@ -166,7 +164,10 @@ class ZikulaTwigFileExtractor extends \Twig_BaseNodeVisitor implements FileVisit
         }
     }
 
-    public function leaveNode(\Twig_NodeInterface $node, \Twig_Environment $env)
+    /**
+     * {@inheritdoc}
+     */
+    protected function doLeaveNode(\Twig_Node $node, \Twig_Environment $env) {
     {
         array_pop($this->stack);
 
