@@ -20,4 +20,3 @@ CHANGELOG - ZIKULA 2.0.x
     - doctrine cache updated from 1.5.4 to 1.6.1
     - doctrine common updated from 2.5.3 to 2.6.1
     - symfony updated from 2.8.14 to 3.2.0-RC1 (#3027, #2099, #2639).
-    - twig updated from 1.17.0 to 1.28.0
