@@ -167,7 +167,7 @@ class ZikulaTwigFileExtractor extends \Twig_BaseNodeVisitor implements FileVisit
     /**
      * {@inheritdoc}
      */
-    protected function doLeaveNode(\Twig_Node $node, \Twig_Environment $env) {
+    protected function doLeaveNode(\Twig_Node $node, \Twig_Environment $env)
     {
         array_pop($this->stack);
 
