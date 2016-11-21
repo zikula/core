@@ -223,7 +223,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             'title' => $this->__('Search box'),
             'description' => $this->__('Search block'),
             'properties' => [
-                'displaySearchBtn' => 1,
+                'displaySearchBtn' => true,
                 'active' => ['ZikulaUsersModule' => 1]
             ],
             'position' => $positions['left']
