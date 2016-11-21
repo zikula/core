@@ -11,6 +11,7 @@
 
 /**
  * SecurityUtil.
+ * @deprecated
  *
  * Notes on security system.
  *
@@ -18,7 +19,7 @@
  *  UID -1 corresponds to 'all users', includes unregistered users
  *  GID -1 corresponds to 'all groups', includes unregistered users
  *  UID 0 corresponds to unregistered users
- *  GID 0 corresponds to unregistered users.
+ *  GID 0 corresponds to unregistered users
  */
 class SecurityUtil
 {

@@ -11,6 +11,7 @@
 
 /**
  * PluginUtil class.
+ * @deprecated
  */
 class PluginUtil
 {
