@@ -5,6 +5,8 @@ CHANGELOG - ZIKULA 1.4.x
 
  - BC Breaks:
     - Password reminder has been removed (#1682, #3172) in favour of easier lost password functionality (#1781, #3178).
+    - Templates from `CoreBundle:Default:*` have been moved to `ZikulaThemeModule:Default:*` respectively. This will
+      break theme overrides and will need to be adjusted. 
 
  - Deprecated:
     - ExtMenu and MenuTree blocks are deprecated and will not be refactored to Twig/Core-2.0.
@@ -30,6 +32,7 @@ CHANGELOG - ZIKULA 1.4.x
 
  - Features:
     - Lost password functionality has been simplified to work without an additional (confusing) confirmation step (#1781, #3178).
+    - Add template for HTMLblock and Textblock for easier overriding if required.
 
  - Core-2.0 Features:
     - Added mailProtect filter for safe display of email addresses in Twig templates (#3041).

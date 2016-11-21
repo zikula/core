@@ -36,11 +36,13 @@
                 "ExtendedMenublock::": "Block ID:Link ID:",
                 "fincludeblock::": "Block title::",
                 "HTMLblock::": "Block title::",
+                "HTMLblock::bid": "::bid",
                 "Languageblock::": "Block title::",
                 "Menublock::": "Block title:Link name:",
                 "Menutree:menutreeblock:": "Block ID:Link Name:Link ID",
                 "PendingContent::": "Block title::",
                 "Textblock::": "Block title::",
+                "Textblock::bid": "::bid",
                 "xsltblock::": "Block title::"
             }
         }
