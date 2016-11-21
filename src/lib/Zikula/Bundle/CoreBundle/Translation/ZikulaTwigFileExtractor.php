@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\Core\AbstractBundle;
 
-class ZikulaTwigFileExtractor implements FileVisitorInterface, \Twig_BaseNodeVisitor
+class ZikulaTwigFileExtractor extends \Twig_BaseNodeVisitor implements FileVisitorInterface
 {
     /**
      * @var \SplFileInfo
