@@ -11,6 +11,7 @@
 
 /**
  * DataUtil is the class used to manage datas and variables.
+ * @deprecated
  */
 class DataUtil
 {

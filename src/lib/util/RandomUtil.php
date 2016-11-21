@@ -11,6 +11,7 @@
 
 /**
  * RandomUtil
+ * @deprecated
  */
 class RandomUtil
 {

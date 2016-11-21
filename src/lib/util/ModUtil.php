@@ -17,6 +17,7 @@ use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 
 /**
  * Module Util.
+ * @deprecated
  */
 class ModUtil
 {

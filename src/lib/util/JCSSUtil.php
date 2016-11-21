@@ -11,6 +11,7 @@
 
 /**
  * Util class to manage stylesheets and javascript files
+ * @deprecated
  */
 class JCSSUtil
 {

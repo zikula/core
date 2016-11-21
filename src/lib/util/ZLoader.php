@@ -13,6 +13,7 @@ use Composer\Autoload\ClassLoader;
 
 /**
  * ZLoader.
+ * @deprecated
  */
 class ZLoader
 {

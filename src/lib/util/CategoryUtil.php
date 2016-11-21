@@ -13,6 +13,7 @@ use Zikula\CategoriesModule\GenericUtil;
 
 /**
  * CategoryUtil.
+ * @deprecated
  */
 class CategoryUtil
 {

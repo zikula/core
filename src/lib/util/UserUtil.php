@@ -17,6 +17,7 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
  * UserUtil
+ * @deprecated
  */
 class UserUtil
 {

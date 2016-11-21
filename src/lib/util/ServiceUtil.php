@@ -13,9 +13,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * ServiceUtil
+ * @deprecated
  *
  * In the context of Zikula, unfortunately we need to maintain the ServiceManager
- * since it's not convenient to pass around using dependency injection.
+ * since it's not convenient to pass around using dependency injection
  */
 class ServiceUtil
 {
