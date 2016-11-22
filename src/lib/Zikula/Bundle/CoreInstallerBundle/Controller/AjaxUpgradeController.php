@@ -14,6 +14,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Yaml\Yaml;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
@@ -40,7 +41,10 @@ class AjaxUpgradeController extends AbstractController
     public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
+        $originalParameters = Yaml::parse(file_get_contents($this->container->get('kernel')->getRootDir() .'/config/parameters.yml'));
         $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
+        // load and set new default values from the original parameters.yml file into the custom_parameters.yml file.
+        $this->yamlManager->setParameters(array_merge($originalParameters['parameters'], $this->yamlManager->getParameters()));
         $this->currentVersion = $this->container->getParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM);
     }
 
@@ -214,6 +218,9 @@ class AjaxUpgradeController extends AbstractController
 
         // set currently installed version into parameters
         $params[\Zikula_Core::CORE_INSTALLED_VERSION_PARAM] = \Zikula_Core::VERSION_NUM;
+
+        // disable asset combination on upgrades
+        $params['zikula_asset_manager.combine'] = false;
 
         $this->yamlManager->setParameters($params);
 
