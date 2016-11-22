@@ -11,6 +11,7 @@
 
 namespace Zikula\ThemeModule\Helper;
 
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -19,6 +20,7 @@ use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\ExtensionsModule\Helper\ComposerValidationHelper;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 use Zikula\ThemeModule\Entity\ThemeEntity;
+use Zikula\ThemeModule\Helper\Legacy\BundleSyncHelper as LegacyBundleSyncHelper;
 
 /**
  * Helper functions for the theme module
@@ -92,9 +94,9 @@ class BundleSyncHelper
         $this->bootstrapHelper->load();
 
         // Get all themes on filesystem
-        $filethemes = [];
+        $bundleThemes = [];
 
-        $scanner = new Scanner($this->composerValidationHelper, $this->session);
+        $scanner = new Scanner();
         $scanner->scan(['themes'], 4);
         $newThemes = $scanner->getThemesMetaData();
 
@@ -141,53 +143,30 @@ class BundleSyncHelper
             $themeVersionArray['state'] = ThemeEntityRepository::STATE_INACTIVE;
             $themeVersionArray['contact'] = 3;
 
-            $filethemes[$bundle->getName()] = $themeVersionArray;
-        }
-
-        // scan for old theme types (<Core-1.4) @deprecated - remove at Core-2.0
-        $dirArray = \FileUtil::getFiles('themes', false, true, null, 'd');
-        foreach ($dirArray as $dir) {
-            // Work out the theme type
-            if (file_exists("themes/$dir/version.php")) {
-                $themetype = 3;
-                // set defaults
-                $themeversion['name'] = preg_replace('/_/', ' ', $dir);
-                $themeversion['displayname'] = preg_replace('/_/', ' ', $dir);
-                $themeversion['version'] = '0';
-                $themeversion['description'] = '';
-                include "themes/$dir/version.php";
-            } else {
-                // anything else isn't a theme
-                // this skips all directories not containing a version.php file (including >=1.4-type themes)
-                continue;
+            $finder = new Finder();
+            $finder->files()->in($bundle->getPath())->depth(0)->name('composer.json');
+            foreach ($finder as $splFileInfo) {
+                // there will only be one loop here
+                $this->composerValidationHelper->check($splFileInfo);
+                if ($this->composerValidationHelper->isValid()) {
+                    $bundleThemes[$bundle->getName()] = $themeVersionArray;
+                } else {
+                    $this->session->getFlashBag()->add('error', $this->translator->__f('Cannot load %extension because the composer file is invalid.', ['%extension' => $bundle->getName()]));
+                    foreach ($this->composerValidationHelper->getErrors() as $error) {
+                        $this->session->getFlashBag()->add('error', $error);
+                    }
+                }
             }
-
-            $filethemes[$themeversion['name']] = [
-                'directory' => $dir,
-                'name' => $themeversion['name'],
-                'type' => 3,
-                'displayname' => (isset($themeversion['displayname']) ? $themeversion['displayname'] : $themeversion['name']),
-                'version' => (isset($themeversion['version']) ? $themeversion['version'] : '1.0.0'),
-                'description' => (isset($themeversion['description']) ? $themeversion['description'] : $themeversion['displayname']),
-                'admin' => (isset($themeversion['admin']) ? (int)$themeversion['admin'] : '0'),
-                'user' => (isset($themeversion['user']) ? (int)$themeversion['user'] : '1'),
-                'system' => (isset($themeversion['system']) ? (int)$themeversion['system'] : '0'),
-                'state' => (isset($themeversion['state']) ? $themeversion['state'] : ThemeEntityRepository::STATE_INACTIVE),
-                'contact' => (isset($themeversion['contact']) ? $themeversion['contact'] : ''),
-                'xhtml' => (isset($themeversion['xhtml']) ? (int)$themeversion['xhtml'] : 1)
-            ];
-
-            unset($themeversion);
-            unset($themetype);
         }
+
+        $filethemes = $bundleThemes + LegacyBundleSyncHelper::scan();
+
 
         /**
          * Persist themes
          */
         $dbthemes = [];
         $themeEntities = $this->themeEntityRepository->findAll();
-
-        // @todo - can this be done with the `findAll()` method or doctrine (index by name, hydrate to array?)
         foreach ($themeEntities as $entity) {
             $entity = $entity->toArray();
             $dbthemes[$entity['name']] = $entity;
@@ -196,16 +175,7 @@ class BundleSyncHelper
         // See if we have lost any themes since last generation
         foreach ($dbthemes as $name => $themeinfo) {
             if (empty($filethemes[$name])) {
-                // delete a running configuration
-                try {
-                    \ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'deleterunningconfig', ['themename' => $name]);
-                } catch (\Exception $e) {
-                    if (\System::isInstalling()) {
-                        // silent fail when installing or upgrading
-                    } else {
-                        throw $e;
-                    }
-                }
+                LegacyBundleSyncHelper::deleteRunningConfig($name);
 
                 // delete item from db
                 $item = $this->themeEntityRepository->findOneBy(['name' => $name]);

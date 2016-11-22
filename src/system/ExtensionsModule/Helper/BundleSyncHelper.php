@@ -12,6 +12,7 @@
 namespace Zikula\ExtensionsModule\Helper;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use vierbergenlars\SemVer\expression;
@@ -141,7 +142,7 @@ class BundleSyncHelper
         // Get all bundles on filesystem
         $bundles = [];
 
-        $scanner = new Scanner($this->composerValidationHelper, $this->session);
+        $scanner = new Scanner();
         $scanner->scan($directories, 5);
         $newModules = $scanner->getModulesMetaData();
 
@@ -200,8 +201,21 @@ class BundleSyncHelper
             $bundleVersionArray['securityschema'] = serialize($bundleVersionArray['securityschema']);
             $bundleVersionArray['dependencies'] = serialize($bundleVersionArray['dependencies']);
 
-            $bundles[$bundle->getName()] = $bundleVersionArray;
-            $bundles[$bundle->getName()]['oldnames'] = isset($bundleVersionArray['oldnames']) ? $bundleVersionArray['oldnames'] : '';
+            $finder = new Finder();
+            $finder->files()->in($bundle->getPath())->depth(0)->name('composer.json');
+            foreach ($finder as $splFileInfo) {
+                // there will only be one loop here
+                $this->composerValidationHelper->check($splFileInfo);
+                if ($this->composerValidationHelper->isValid()) {
+                    $bundles[$bundle->getName()] = $bundleVersionArray;
+                    $bundles[$bundle->getName()]['oldnames'] = isset($bundleVersionArray['oldnames']) ? $bundleVersionArray['oldnames'] : '';
+                } else {
+                    $this->session->getFlashBag()->add('error', $this->translator->__f('Cannot load %extension because the composer file is invalid.', ['%extension' => $bundle->getName()]));
+                    foreach ($this->composerValidationHelper->getErrors() as $error) {
+                        $this->session->getFlashBag()->add('error', $error);
+                    }
+                }
+            }
         }
 
         $legacyModules = LegacyBundleSyncHelper::scanForModules();
