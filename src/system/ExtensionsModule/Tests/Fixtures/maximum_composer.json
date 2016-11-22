@@ -1,0 +1,50 @@
+{
+  "name": "zikula/foomodule-module",
+  "version": "2.0.0-beta",
+  "description": "A foo module.",
+  "type": "zikula-module",
+  "license": ["MIT", "LGPL"],
+  "authors": [
+    {
+      "name": "Zikula Team",
+      "homepage": "http://zikula.org/",
+      "email": "admin@example.com",
+      "role": "lead"
+    },
+    {
+      "name": "Zikula B Team",
+      "homepage": "http://zikula.org/",
+      "email": "admin@example.com",
+      "role": "minion"
+    }
+  ],
+  "autoload": {
+    "psr-4": { "Zikula\\FooModule\\": "" }
+  },
+  "require": {
+    "php": ">=5.4.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.5"
+  },
+  "suggest": {
+    "barmodule": "~1.0"
+  },
+  "extra": {
+    "zikula": {
+      "core-compatibility": ">=1.4.2",
+      "class": "Zikula\\FooModule\\ZikulaFooModule",
+      "displayname": "FooModule",
+      "url": "foo",
+      "oldnames": ["food"],
+      "capabilities": {
+        "hook_subscriber": {"class": "Zikula\\FooModule\\Container\\HookContainer"},
+        "user": {"route": "zikulafoomodule_foo_index"},
+        "admin": {"route": "zikulafoomodule_bar_index"}
+      },
+      "securityschema": {
+        "ZikulaFooModule::": "::"
+      }
+    }
+  }
+}
