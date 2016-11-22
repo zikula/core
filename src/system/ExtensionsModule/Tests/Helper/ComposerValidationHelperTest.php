@@ -11,7 +11,6 @@
 
 namespace Zikula\ExtensionsModule\Tests\Helper;
 
-
 use Symfony\Component\Finder\SplFileInfo;
 use Zikula\Common\Translator\IdentityTranslator;
 use Zikula\ExtensionsModule\Helper\ComposerValidationHelper;
