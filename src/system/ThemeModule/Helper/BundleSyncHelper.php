@@ -20,7 +20,6 @@ use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\ExtensionsModule\Helper\ComposerValidationHelper;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 use Zikula\ThemeModule\Entity\ThemeEntity;
-use Zikula\ThemeModule\Helper\Legacy\BundleSyncHelper as LegacyBundleSyncHelper;
 
 /**
  * Helper functions for the theme module
