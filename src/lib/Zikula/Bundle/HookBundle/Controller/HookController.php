@@ -22,7 +22,7 @@ use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Util as ExtensionsUtil;
-use Zikula\Module\ExtensionLibraryModule\Entity\ExtensionEntity;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
