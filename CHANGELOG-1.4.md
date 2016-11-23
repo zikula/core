@@ -27,8 +27,9 @@ CHANGELOG - ZIKULA 1.4.x
     - Fixed some problems with the Zikula Symfony Translator (#3161, #3117).
     - Fixed upgrade in Settings module for shorturl value to boolean (#3166).
     - Fixed logical problem in CategoryUtil::hasCategoryAccess() (#3171, #3190).
-    - Fixed issue where upgrader also showed partial theme (#3087)
-    - Fixed many issues with translation in the Core installer and upgrader (#2919, #3192)
+    - Fixed issue where upgrader also showed partial theme (#3087).
+    - Fixed many issues with translation in the Core installer and upgrader (#2919, #3192).
+    - Fixed issue with using permissions to hide blocks (#3200).
 
  - Features:
     - Lost password functionality has been simplified to work without an additional (confusing) confirmation step (#1781, #3178).
@@ -42,7 +43,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Added Twig filters profileLinkByUserName and profileLinkByUserId (#3079).
     - Added LocaleApi for access to locale definitions.
     - Added Asset merger feature for twig themes (#2912, #3138).
-    - Added validation of extension composer files (#2669, #3151)
+    - Added validation of extension composer files (#2669, #3151).
 
  - Vendor updates:
     - doctrine dbal updated from 2.5.4 to 2.5.5
