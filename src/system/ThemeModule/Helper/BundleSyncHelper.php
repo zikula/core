@@ -11,6 +11,7 @@
 
 namespace Zikula\ThemeModule\Helper;
 
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -19,6 +20,7 @@ use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\ExtensionsModule\Helper\ComposerValidationHelper;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 use Zikula\ThemeModule\Entity\ThemeEntity;
+use Zikula\ThemeModule\Helper\Legacy\BundleSyncHelper as LegacyBundleSyncHelper;
 
 /**
  * Helper functions for the theme module
@@ -92,9 +94,9 @@ class BundleSyncHelper
         $this->bootstrapHelper->load();
 
         // Get all themes on filesystem
-        $filethemes = [];
+        $bundleThemes = [];
 
-        $scanner = new Scanner($this->composerValidationHelper, $this->session);
+        $scanner = new Scanner();
         $scanner->scan(['themes'], 4);
         $newThemes = $scanner->getThemesMetaData();
 
@@ -124,7 +126,20 @@ class BundleSyncHelper
             $themeVersionArray['state'] = ThemeEntityRepository::STATE_INACTIVE;
             $themeVersionArray['contact'] = 3;
 
-            $filethemes[$bundle->getName()] = $themeVersionArray;
+            $finder = new Finder();
+            $finder->files()->in($bundle->getPath())->depth(0)->name('composer.json');
+            foreach ($finder as $splFileInfo) {
+                // there will only be one loop here
+                $this->composerValidationHelper->check($splFileInfo);
+                if ($this->composerValidationHelper->isValid()) {
+                    $bundleThemes[$bundle->getName()] = $themeVersionArray;
+                } else {
+                    $this->session->getFlashBag()->add('error', $this->translator->__f('Cannot load %extension because the composer file is invalid.', ['%extension' => $bundle->getName()]));
+                    foreach ($this->composerValidationHelper->getErrors() as $error) {
+                        $this->session->getFlashBag()->add('error', $error);
+                    }
+                }
+            }
         }
 
         /**
@@ -132,8 +147,6 @@ class BundleSyncHelper
          */
         $dbthemes = [];
         $themeEntities = $this->themeEntityRepository->findAll();
-
-        // @todo - can this be done with the `findAll()` method or doctrine (index by name, hydrate to array?)
         foreach ($themeEntities as $entity) {
             $entity = $entity->toArray();
             $dbthemes[$entity['name']] = $entity;
@@ -141,7 +154,7 @@ class BundleSyncHelper
 
         // See if we have lost any themes since last generation
         foreach ($dbthemes as $name => $themeinfo) {
-            if (empty($filethemes[$name])) {
+            if (empty($bundleThemes[$name])) {
                 // delete item from db
                 $item = $this->themeEntityRepository->findOneBy(['name' => $name]);
                 $this->themeEntityRepository->removeAndFlush($item);
@@ -152,7 +165,7 @@ class BundleSyncHelper
 
         // See if we have gained any themes since last generation,
         // or if any current themes have been upgraded
-        foreach ($filethemes as $name => $themeinfo) {
+        foreach ($bundleThemes as $name => $themeinfo) {
             if (empty($dbthemes[$name])) {
                 // add item to db
                 $item = new ThemeEntity();
@@ -162,7 +175,7 @@ class BundleSyncHelper
         }
 
         // see if any themes have changed
-        foreach ($filethemes as $name => $themeinfo) {
+        foreach ($bundleThemes as $name => $themeinfo) {
             if (isset($dbthemes[$name])) {
                 if (($themeinfo['directory'] != $dbthemes[$name]['directory']) ||
                     ($themeinfo['type'] != $dbthemes[$name]['type']) ||

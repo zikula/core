@@ -67,6 +67,7 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
         if ($requiresUpgrade && !$containsLogin && !$containsDoc && !$containsUpgrade && !$doNotRedirect) {
             $this->container->get('router')->getContext()->setBaseUrl($request->getBasePath()); // compensate for sub-directory installs
             $url = $this->container->get('router')->generate('upgrade');
+            $this->loadLocales();
             $response = new RedirectResponse($url);
             $response->send();
             \System::shutDown();

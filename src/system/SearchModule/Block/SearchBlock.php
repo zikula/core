@@ -37,7 +37,7 @@ class SearchBlock extends AbstractBlockHandler
             $title = $this->__('Search');
         }
         if (!isset($properties['displaySearchBtn'])) {
-            $properties['displaySearchBtn'] = 0;
+            $properties['displaySearchBtn'] = false;
         }
         if (!isset($properties['active'])) {
             $properties['active'] = [];

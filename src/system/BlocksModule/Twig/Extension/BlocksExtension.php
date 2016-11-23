@@ -167,7 +167,7 @@ class BlocksExtension extends \Twig_Extension
             }
         }
 
-        return $this->themeEngine->wrapBlockContentInTheme($content, $block->getTitle(), $block->getBlocktype(), $block->getBid(), $positionName, $legacy);
+        return !empty($content) ? $this->themeEngine->wrapBlockContentInTheme($content, $block->getTitle(), $block->getBlocktype(), $block->getBid(), $positionName, $legacy) : $content;
     }
 
     /**

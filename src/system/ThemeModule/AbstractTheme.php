@@ -61,7 +61,7 @@ abstract class AbstractTheme extends AbstractBundle
     {
         $template = $this->config[$realm]['page'];
         $classes = $realm == 'home' ? 'z-homepage' : '' . (empty($classes) ? '' : ' ') . (isset($moduleName) ? 'z-module-' . $moduleName : '');
-        $content = $this->getContainer()->get('templating')->render('CoreBundle:Default:maincontent.html.twig', [
+        $content = $this->getContainer()->get('templating')->render('ZikulaThemeModule:Default:maincontent.html.twig', [
             'classes' => $classes,
             'maincontent' => $response->getContent()
         ]);
@@ -83,7 +83,7 @@ abstract class AbstractTheme extends AbstractBundle
             $template = $this->name . ':' . $this->config[$realm]['block']['positions'][$positionName];
         } else {
             // block position not defined, provide a default template
-            $template = 'CoreBundle:Default:block.html.twig';
+            $template = 'ZikulaThemeModule:Default:block.html.twig';
         }
 
         $templateParameters = [
@@ -112,7 +112,7 @@ abstract class AbstractTheme extends AbstractBundle
             'content' => $content
         ];
 
-        return $this->getContainer()->get('templating')->render('CoreBundle:Default:blockwrapper.html.twig', $templateParams);
+        return $this->getContainer()->get('templating')->render('ZikulaThemeModule:Default:blockwrapper.html.twig', $templateParams);
     }
 
     /**
