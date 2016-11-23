@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <!-- Alias for services. These service names are @deprecated and will be removed in Core-2.0 -->
+        <service id="theme.theme_listener" alias="zikula_core.internal.theme.create_themed_response_listener" />
+        <service id="theme.asset_helper" alias="zikula_core.common.theme.asset_helper" />
+        <service id="theme.pagevars" alias="zikula_core.common.theme.pagevars" />
+        <service id="theme.assets_js" alias="zikula_core.common.theme.assets_js" />
+        <service id="theme.assets_css" alias="zikula_core.common.theme.assets_css" />
+        <service id="theme.js_resolver" alias="zikula_core.internal.theme.js_resolver" />
+        <service id="theme.css_resolver" alias="zikula_core.internal.theme.css_resolver" />
+        <service id="theme.themevars" alias="zikula_core.common.theme.themevars" />
+        <!-- end alias definitions -->
+    </services>
+</container>

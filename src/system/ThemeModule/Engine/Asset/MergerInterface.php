@@ -15,7 +15,7 @@ interface MergerInterface
 {
     /**
      * Merge the assets and publish.
-     * @param \Traversable $assets
+     * @param array $assets
      * @param string $type
      * @return $this
      */
