@@ -29,7 +29,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         @ORM\Index(name="workflowstateindex", columns={"workflowState"})
  *     }
  * )
- * @ORM\HasLifecycleCallbacks
  */
 class RouteEntity extends BaseEntity
 {
