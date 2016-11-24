@@ -12,8 +12,6 @@
 namespace Zikula\SearchModule\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
-use InvalidArgumentException;
 
 /**
  * Repository class used to implement own convenience methods for performing certain DQL queries.

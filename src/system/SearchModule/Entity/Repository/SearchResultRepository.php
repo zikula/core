@@ -12,8 +12,6 @@
 namespace Zikula\SearchModule\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
-use InvalidArgumentException;
 
 /**
  * Repository class used to implement own convenience methods for performing certain DQL queries.
@@ -25,7 +23,7 @@ class SearchResultRepository extends EntityRepository
     /**
      * Returns amount of results.
      *
-     * @param string $sessionId Session id to filter results.
+     * @param string $sessionId Session id to filter results
      *
      * @return integer
      */
@@ -94,7 +92,7 @@ class SearchResultRepository extends EntityRepository
     /**
      * Deletes all results for the current session.
      *
-     * @param string $sessionId Session id of current user.
+     * @param string $sessionId Session id of current user
      *
      * @return void
      */

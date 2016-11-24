@@ -29,7 +29,7 @@ class AdminCategoryRepository extends EntityRepository
     {
         $query = $this->createQueryBuilder('c')
             ->where('c.mid = :mid')
-            ->setParameter('mid', $moduleId);
+            ->setParameter('mid', $moduleId)
             ->getQuery();
 
         return $query->getOneOrNullResult();

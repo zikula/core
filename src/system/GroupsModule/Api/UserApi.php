@@ -11,12 +11,10 @@
 
 namespace Zikula\GroupsModule\Api;
 
-use ModUtil;
 use ServiceUtil;
 use UserUtil;
 use Swift_Message;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use System;
 use Zikula;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\GroupsModule\Helper\CommonHelper;
@@ -470,7 +468,7 @@ class UserApi
         $applications = $entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')
             ->findBy(['gid' => $args['gid'], 'uid' => $args['uid']]);
 
-        return (count($applications) > 0);
+        return count($applications) > 0;
     }
 
     /**
