@@ -11,11 +11,11 @@
 
 namespace Zikula\SecurityCenterModule\Api;
 
-use SecurityUtil;
 use ServiceUtil;
 
 /**
  * API functions used by administrative controllers
+ * @deprecated remove at Core-2.0
  */
 class AdminApi extends \Zikula_AbstractApi
 {
@@ -36,12 +36,12 @@ class AdminApi extends \Zikula_AbstractApi
     public function getAllIntrusions($args)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaSecurityCenterModule::', '::', ACCESS_OVERVIEW)) {
+        $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
+        if (!$permissionApi->hasPermission('ZikulaSecurityCenterModule::', '::', ACCESS_OVERVIEW)) {
             return [];
         }
 
-        $serviceManager = ServiceUtil::getManager();
-        $repository = $serviceManager->get('zikula_securitycenter_module.intrusion_repository');
+        $repository = ServiceUtil::get('zikula_securitycenter_module.intrusion_repository');
 
         $filters = isset($args['where']) ? $args['where'] : [];
         $sorting = isset($args['sorting']) ? $args['sorting'] : [];
@@ -65,12 +65,12 @@ class AdminApi extends \Zikula_AbstractApi
     public function countAllIntrusions($args)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaSecurityCenterModule::', '::', ACCESS_OVERVIEW)) {
+        $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
+        if (!$permissionApi->hasPermission('ZikulaSecurityCenterModule::', '::', ACCESS_OVERVIEW)) {
             return 0;
         }
 
-        $serviceManager = ServiceUtil::getManager();
-        $repository = $serviceManager->get('zikula_securitycenter_module.intrusion_repository');
+        $repository = ServiceUtil::get('zikula_securitycenter_module.intrusion_repository');
 
         $filters = isset($args['where']) ? $args['where'] : [];
 
@@ -86,12 +86,12 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function purgeidslog()
     {
-        if (!SecurityUtil::checkPermission('ZikulaSecurityCenterModule::', '::', ACCESS_DELETE)) {
+        $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
+        if (!$permissionApi->hasPermission('ZikulaSecurityCenterModule::', '::', ACCESS_DELETE)) {
             return false;
         }
 
-        $serviceManager = ServiceUtil::getManager();
-        $repository = $serviceManager->get('zikula_securitycenter_module.intrusion_repository');
+        $repository = ServiceUtil::get('zikula_securitycenter_module.intrusion_repository');
 
         $repository->truncateTable();
 

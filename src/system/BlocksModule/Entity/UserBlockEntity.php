@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * UserBlock entity class.
  * @deprecated remove at Core-2.0 (unused)
+ *
  * @ORM\Entity
  * @ORM\Table(name="userblocks",indexes={@ORM\Index(name="uid_bid_idx",columns={"uid","bid"})})
  */

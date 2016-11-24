@@ -11,18 +11,22 @@
 
 namespace Zikula\GroupsModule\Api;
 
-use Zikula\Core\Event\GenericEvent;
-use Zikula\GroupsModule\Entity\GroupEntity;
-use Zikula\GroupsModule\Helper\CommonHelper;
 use ModUtil;
-use SecurityUtil;
-use UserUtil;
+use ServiceUtil;
+use Swift_Message;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use UserUtil;
+use Zikula\Core\Event\GenericEvent;
+use Zikula\GroupsModule\Helper\CommonHelper;
+use Zikula\GroupsModule\Entity\GroupEntity;
 
 /**
  * Adminstrative API functions for the groups module
+ *
+ * @deprecated
+ * @todo Needs a service replacement for removal in Core-2.0
  */
-class AdminApi extends \Zikula_AbstractApi
+class AdminApi
 {
     /**
      * Create a new group item.
@@ -40,7 +44,8 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['name'])) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            $translator = ServiceUtil::get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
         // Setting defaults
@@ -52,7 +57,8 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADD)) {
+        $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
+        if (!$permissionApi->Permission('ZikulaGroupsModule::', '::', ACCESS_ADD)) {
             throw new AccessDeniedException();
         }
 
@@ -64,15 +70,16 @@ class AdminApi extends \Zikula_AbstractApi
         $obj['nbumax'] = $args['nbumax'];
         $obj['description'] = $args['description'];
 
-        $this->entityManager->persist($obj);
-        $this->entityManager->flush();
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+        $entityManager->persist($obj);
+        $entityManager->flush();
 
         // Get the ID of the item that we inserted.
         $gid = $obj['gid'];
 
         // Let other modules know that we have created a new group.
         $createEvent = new GenericEvent($obj);
-        $this->getDispatcher()->dispatch('group.create', $createEvent);
+        ServiceUtil::get('event_dispatcher')->dispatch('group.create', $createEvent);
 
         // Return the id of the newly created item to the calling process
         return $gid;
@@ -95,53 +102,53 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function delete($args)
     {
+        $translator = ServiceUtil::get('translator.default');
+
         // Argument check
         if (!isset($args['gid'])) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
+        }
+
+        // Security check
+        $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
+        if (!$permissionApi->hasPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_DELETE)) {
+            throw new AccessDeniedException();
         }
 
         // get item
-        $group = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
-
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+        $group = $entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
         if (!$group) {
             return false;
         }
 
-        // Security check
-        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_DELETE)) {
-            throw new AccessDeniedException();
-        }
+        $variableApi = ServiceUtil::get('zikula_extensions_module.api.variable');
 
         // Special groups check
-        $defaultgroupid = $this->getVar('defaultgroup', 0);
+        $defaultgroupid = $variableApi->get('ZikulaGroupsModule', 'defaultgroup', 0);
         if ($group['gid'] == $defaultgroupid) {
-            throw new \RuntimeException($this->__('Sorry! You cannot delete the default users group.'));
+            throw new \RuntimeException($translator->__('Sorry! You cannot delete the default users group.'));
         }
 
-        $primaryadmingroupid = $this->getVar('primaryadmingroup', 0);
+        $primaryadmingroupid = $variableApi->get('ZikulaGroupsModule', 'primaryadmingroup', 0);
         if ($group['gid'] == $primaryadmingroupid) {
-            throw new \RuntimeException($this->__('Sorry! You cannot delete the primary administrators group.'));
+            throw new \RuntimeException($translator->__('Sorry! You cannot delete the primary administrators group.'));
         }
 
         // Delete the group
         $group->removeAllUsers();
         // @todo Is there any reason why we don't delete group applications?
-        $this->entityManager->remove($group);
+        $entityManager->remove($group);
         // this could be quite memory intensive for large groups managing large collections.
-        $this->entityManager->flush();
+        $entityManager->flush();
 
         // Remove any group permissions for this group
-        $query = $this->entityManager->createQueryBuilder()
-            ->delete()
-            ->from('ZikulaPermissionsModule:PermissionEntity', 'p')
-            ->where('p.gid = :gid')
-            ->setParameter('gid', $args['gid'])
-            ->getQuery();
-        $query->getResult();
+        $permissionsRepository = $entityManager->getRepository('ZikulaPermissionsModule:PermissionEntity');
+        $permissionsRepository->deleteGroupPermissions($args['gid']);
 
         // Let other modules know that we have deleted a group.
         $deleteEvent = new GenericEvent($group->toArray());
-        $this->getDispatcher()->dispatch('group.delete', $deleteEvent);
+        ServiceUtil::get('event_dispatcher')->dispatch('group.delete', $deleteEvent);
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -162,21 +169,24 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function update($args)
     {
+        $translator = ServiceUtil::get('translator.default');
+
         // Argument check
         if (!isset($args['gid']) || !isset($args['name'])) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
-        }
-
-        // get item
-        $item = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
-
-        if (!$item) {
-            return false;
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_EDIT)) {
+        $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
+        if (!$permissionApi->hasPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
+        }
+
+        // get item
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+        $item = $entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
+        if (!$item) {
+            return false;
         }
 
         // Other check
@@ -184,9 +194,8 @@ class AdminApi extends \Zikula_AbstractApi
             'name' => $args['name'],
             'checkgid' => $args['gid']
         ]);
-
-        if ($checkname != false) {
-            throw new \RuntimeException($this->__('Error! There is already a group with that name.'));
+        if (false !== $checkname) {
+            throw new \RuntimeException($translator->__('Error! There is already a group with that name.'));
         }
 
         // Setting defaults
@@ -199,11 +208,11 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Update the item
         $item->merge($args);
-        $this->entityManager->flush();
+        $entityManager->flush();
 
         // Let other modules know that we have updated a group.
         $updateEvent = new GenericEvent($item);
-        $this->getDispatcher()->dispatch('group.update', $updateEvent);
+        ServiceUtil::get('event_dispatcher')->dispatch('group.update', $updateEvent);
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -225,29 +234,36 @@ class AdminApi extends \Zikula_AbstractApi
     public function adduser($args)
     {
         // Argument check
-        if ((!isset($args['gid'])) || (!isset($args['uid']))) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+        if (!isset($args['gid']) || !isset($args['uid'])) {
+            $translator = ServiceUtil::get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
+        }
+
+        // Security check
+        $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
+        if (!$permissionApi->hasPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_EDIT)) {
+            throw new AccessDeniedException();
         }
 
         // get group
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', ['gid' => $args['gid'], 'group_membership' => false]);
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', [
+            'gid' => $args['gid'],
+            'group_membership' => false
+        ]);
         if (!$group) {
             return false;
         }
 
-        // Security check
-        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
 
-        $user = $this->entityManager->find('ZikulaUsersModule:UserEntity', $args['uid']);
+        $user = $entityManager->find('ZikulaUsersModule:UserEntity', $args['uid']);
         // Add user to group
-        $user->addGroup($this->entityManager->getReference('ZikulaGroupsModule:GroupEntity', $args['gid']));
-        $this->entityManager->flush();
+        $user->addGroup($entityManager->getReference('ZikulaGroupsModule:GroupEntity', $args['gid']));
+        $entityManager->flush();
 
         // Let other modules know that we have updated a group.
         $adduserEvent = new GenericEvent(['gid' => $args['gid'], 'uid' => $args['uid']]);
-        $this->getDispatcher()->dispatch('group.adduser', $adduserEvent);
+        ServiceUtil::get('event_dispatcher')->dispatch('group.adduser', $adduserEvent);
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -269,30 +285,32 @@ class AdminApi extends \Zikula_AbstractApi
     public function removeuser($args)
     {
         // Argument check
-        if ((!isset($args['gid'])) || (!isset($args['uid']))) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+        if (!isset($args['gid']) || !isset($args['uid'])) {
+            $translator = ServiceUtil::get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
+        }
+
+        // Security check
+        $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
+        if (!$permissionApi->hasPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_EDIT)) {
+            throw new AccessDeniedException();
         }
 
         // get group
-        $group = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
-
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+        $group = $entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
         if (!$group) {
             return false;
         }
 
-        // Security check
-        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
-
-        $user = $this->entityManager->find('ZikulaUsersModule:UserEntity', $args['uid']);
+        $user = $entityManager->find('ZikulaUsersModule:UserEntity', $args['uid']);
         // delete user from group
         $user->removeGroup($group);
-        $this->entityManager->flush();
+        $entityManager->flush();
 
         // Let other modules know we have updated a group
         $removeuserEvent = new GenericEvent(['gid' => $args['gid'], 'uid' => $args['uid']]);
-        $this->getDispatcher()->dispatch('group.removeuser', $removeuserEvent);
+        ServiceUtil::get('event_dispatcher')->dispatch('group.removeuser', $removeuserEvent);
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -314,34 +332,16 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['name'])) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            $translator = ServiceUtil::get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
-        // create a QueryBuilder instance
-        $qb = $this->entityManager->createQueryBuilder();
+        $excludedGroupId = isset($args['checkgid']) && is_numeric($args['checkgid']) ? $args['checkgid'] : 0;
 
-        // add select and from params
-        $qb->select('g')
-           ->from('ZikulaGroupsModule:GroupEntity', 'g');
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+        $groupRepository = $entityManager->getRepository('ZikulaGroupsModule:GroupEntity');
+        $result = $groupRepository->getGroupByName($args['name'], $excludedGroupId);
 
-        // add clause for filtering name
-        $qb->andWhere($qb->expr()->eq('g.name', ':gname'))
-           ->setParameter('gname', $args['name']);
-
-        // Optional Where to use when modifying a group to check if there is
-        // already another group by that name.
-        if (isset($args['checkgid']) && is_numeric($args['checkgid'])) {
-            $qb->andWhere($qb->expr()->neq('g.gid', ':ggid'))
-               ->setParameter('ggid', $args['checkgid']);
-        }
-
-        // convert querybuilder instance into a Query object
-        $query = $qb->getQuery();
-
-        // execute query
-        $result = $query->getOneOrNullResult();
-
-        // error message and return
         if (!$result) {
             return false;
         }
@@ -365,32 +365,17 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['gid'])) {
-            throw new \InvalidArgumentException($this->__('Error! Invalid arguments array received.'));
+            $translator = ServiceUtil::get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Error! Invalid arguments array received.'));
         }
 
-        // create a QueryBuilder instance
-        $qb = $this->entityManager->createQueryBuilder();
-
-        // add select and from params
-        $qb->select('g')
-           ->from('Zikula\GroupsModule\Entity\GroupEntity', 'g');
-
-        // add clause for filtering name
-        $qb->andWhere($qb->expr()->eq('g.gid', ':ggid'))
-           ->setParameter('ggid', $args['gid']);
-
-        // convert querybuilder instance into a Query object
-        $query = $qb->getQuery();
-
-        // execute query
-        $result = $query->getOneOrNullResult();
-
-        // error message and return
-        if (!$result) {
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+        $group = $entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
+        if (!$group) {
             return false;
         }
 
-        return $result['name'];
+        return $group['name'];
     }
 
     /**
@@ -400,13 +385,15 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function getapplications()
     {
-        $objArray = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+        $objArray = $entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')
             ->findBy([], ['app_id' => 'ASC']);
 
         if (false === $objArray) {
             return false;
         }
 
+        $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
         $items = [];
 
         foreach ($objArray as $obj) {
@@ -415,7 +402,7 @@ class AdminApi extends \Zikula_AbstractApi
                 continue;
             }
 
-            if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $group['gid'] . '::', ACCESS_EDIT) && $group != false) {
+            if ($permissionApi->hasPermission('ZikulaGroupsModule::', $group['gid'] . '::', ACCESS_EDIT)) {
                 $items[] = [
                     'app_id' => $obj['app_id'],
                     'userid' => $obj['uid'],
@@ -449,7 +436,8 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $appInfo = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+        $appInfo = $entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')
             ->findOneBy(['gid' => $args['gid'], 'uid' => $args['userid']]);
 
         if (!$appInfo) {
@@ -478,25 +466,39 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+
         // delete group application
-        $application = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')
-            ->findOneBy(['gid' => $args['gid'], 'uid' => $args['userid']]);
-        $this->entityManager->remove($application);
-        $this->entityManager->flush();
+        $application = $entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findOneBy([
+            'gid' => $args['gid'],
+            'uid' => $args['userid']
+        ]);
+        $entityManager->remove($application);
+        $entityManager->flush();
 
         if ($args['action'] == 'accept') {
-            $adduser = $this->adduser(['gid' => $args['gid'], 'uid' => $args['userid']]);
+            $adduser = $this->adduser([
+                'gid' => $args['gid'],
+                'uid' => $args['userid']
+            ]);
         }
 
         // Send message part
         switch ($args['sendtag']) {
             case 1:
-                $send = ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendmessage', [
-                    'toname' => UserUtil::getVar('uname', $args['userid']),
-                    'toaddress' => UserUtil::getVar('email', $args['userid']),
-                    'subject' => $args['reasontitle'],
-                    'body' => $args['reason']
-                ]);
+                $variableApi = ServiceUtil::get('zikula_extensions_module.api.variable');
+                $siteName = $variableApi->getSystemVar('sitename', $variableApi->getSystemVar('sitename_en'));
+                $adminMail = $variableApi->getSystemVar('adminmail');
+
+                // create new message instance
+                /** @var Swift_Message */
+                $message = Swift_Message::newInstance();
+
+                $message->setFrom([$adminMail => $siteName]);
+                $message->setTo([UserUtil::getVar('email', $args['userid']) => UserUtil::getVar('uname', $args['userid'])]);
+
+                $mailer = ServiceUtil::get('zikula_mailer_module.api.mailer');
+                $send = $mailer->sendMessage($message, $args['reasontitle'], $args['reason']);
                 break;
             default:
                 $send = true;
@@ -512,11 +514,8 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function countitems()
     {
-        $query = $this->entityManager->createQueryBuilder()
-            ->select('COUNT(g.gid)')
-            ->from('ZikulaGroupsModule:GroupEntity', 'g')
-            ->getQuery();
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
 
-        return (int)$query->getSingleScalarResult();
+        return $entityManager->getRepository('ZikulaGroupsModule:GroupEntity')->countGroups();
     }
 }

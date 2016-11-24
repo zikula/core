@@ -19,8 +19,8 @@ use ThemeUtil;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * @deprecated remove at Core-2.0
  * API functions used by administrative controllers
+ * @deprecated remove at Core-2.0
  */
 class AdminApi extends \Zikula_AbstractApi
 {

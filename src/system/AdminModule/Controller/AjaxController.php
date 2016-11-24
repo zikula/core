@@ -15,6 +15,7 @@ use DataUtil;
 use ModUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\Core\Response\Ajax\BadDataResponse;
@@ -53,8 +54,7 @@ class AjaxController extends AbstractController
         //get info on the module
         $module = ModUtil::getInfo($moduleId);
         if (!$module) {
-            //deal with couldn't get module info
-            return new NotFoundResponse($this->__('Error! Could not get module name for id %s.'));
+            return new NotFoundResponse($this->__f('Error! Could not get module name for id %s.', ['%s' => $moduleId]));
         }
 
         //get the module name
@@ -62,21 +62,32 @@ class AjaxController extends AbstractController
         $url = isset($module['capabilities']['admin']['url'])
             ? $module['capabilities']['admin']['url']
             : $this->get('router')->generate($module['capabilities']['admin']['route']);
-        $module = $module['name'];
-        $oldcid = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodcategory', ['mid' => $moduleId]);
+
+        $entityManager = $this->get('doctrine')->getManager();
+        $adminCategoryRepository = $entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity');
+        $adminModuleRepository = $entityManager->getRepository('ZikulaAdminModule:AdminModuleEntity');
+
+        $oldCategory = $adminCategoryRepository->getModuleCategory($moduleId);
+        $sortOrder = $adminModuleRepository->countModulesByCategory($newParentCat);
 
         //move the module
-        $result = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'addmodtocategory', ['category' => $newParentCat, 'module' => $module]);
-        if (!$result) {
-            return new FatalResponse($this->__('Error! Could not add module to module category.'));
+        $item = $adminModuleRepository->findOneBy(['mid' => $moduleId]);
+        if (!$item) {
+            $item = new AdminModuleEntity();
         }
+        $item->setMid($moduleId);
+        $item->setCid($newParentCat);
+        $item->setSortorder($sortOrder);
+
+        $entityManager->persist($item);
+        $entityManager->flush();
 
         $output = [
             'id' => $moduleId,
             'name' => $displayname,
             'url' => $url,
             'parentCategory' => $newParentCat,
-            'oldCategory' => $oldcid,
+            'oldCategory' => (null !== $oldCategory ? $oldCategory['cid'] : false),
         ];
 
         return new AjaxResponse($output);
@@ -108,9 +119,17 @@ class AjaxController extends AbstractController
             return new BadDataResponse($this->__('Error! No category name given.'));
         }
 
-        //check if there exists a cat with this name.
+        // Security check
+        if (!$this->hasPermission('ZikulaAdminModule::Category', "$name::", ACCESS_ADD)) {
+            return new ForbiddenResponse($this->__('Access forbidden.'));
+        }
+
+        $entityManager = $this->get('doctrine')->getManager();
+        $adminCategoryRepository = $entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity');
+
+        //check if category with same name exists
         $categories = [];
-        $items = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getall');
+        $items = $adminCategoryRepository->findBy([], ['sortorder' => 'ASC']);
         foreach ($items as $item) {
             if ($this->hasPermission('ZikulaAdminModule::', "$item[name]::$item[cid]", ACCESS_READ)) {
                 $categories[] = $item;
@@ -123,16 +142,19 @@ class AjaxController extends AbstractController
             }
         }
 
-        // Security check
-        if (!$this->hasPermission('ZikulaAdminModule::Category', "$name::", ACCESS_ADD)) {
-            return new ForbiddenResponse($this->__('Access forbidden.'));
-        }
+        $entityManager = $this->get('doctrine')->getManager();
 
-        //create the category
-        $result = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'create', ['name' => $name, 'description' => '']);
-        if (!$result) {
-            return new FatalResponse($this->__('The category could not be created.'));
-        }
+        $record = [
+            'name' => $name,
+            'description' => '',
+            'sortorder' => $entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity')->countCategories()
+        ];
+
+        $item = new AdminCategoryEntity();
+        $item->merge($record);
+
+        $entityManager->persist($item);
+        $entityManager->flush();
 
         $output = [
             'id' => $result,
@@ -165,9 +187,11 @@ class AjaxController extends AbstractController
             return new ForbiddenResponse($this->__('Access forbidden.'));
         }
 
-        //find the category corresponding to the cid.
-        $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', ['cid' => $cid]);
-        if (empty($item)) {
+        $entityManager = $this->get('doctrine')->getManager();
+
+        // retrieve the category object
+        $item = $entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity')->findOneBy(['cid' => $cid]);
+        if (null === $item) {
             return new NotFoundResponse($this->__('Error! No such category found.'));
         }
 
@@ -177,17 +201,28 @@ class AjaxController extends AbstractController
 
         $output = [];
 
-        //delete the category
-        $delete = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'delete', ['cid' => $cid]);
-        if ($delete) {
-            // Success
-            $output['response'] = $cid;
-
-            return new AjaxResponse($output);
+        // Avoid deletion of the default category
+        $defaultcategory = $this->getVar('defaultcategory');
+        if ($cid == $defaultcategory) {
+            return new FatalResponse($this->__('Error! You cannot delete the default module category used in the administration panel.'));
         }
 
-        //unknown error
-        return new FatalResponse($this->__('Error! Could not perform the deletion.'));
+        // Avoid deletion of the start category
+        $startcategory = $this->getVar('startcategory');
+        if ($cid == $startcategory) {
+            return new FatalResponse($this->__('Error! This module category is currently set as the category that is initially displayed when you visit the administration panel. You must first select a different category for initial display. Afterwards, you will be able to delete the category you have just attempted to remove.'));
+        }
+
+        // move all modules from the category to be deleted into the default category.
+        $entityManager->getRepository('ZikulaAdminModule:AdminModuleEntity')->changeCategory($cid, $defaultcategory);
+
+        // delete the category
+        $entityManager->remove($item);
+        $entityManager->flush();
+
+        $output['response'] = $cid;
+
+        return new AjaxResponse($output);
     }
 
     /**
@@ -225,9 +260,12 @@ class AjaxController extends AbstractController
 
         $output = [];
 
+        $entityManager = $this->get('doctrine')->getManager();
+        $adminCategoryRepository = $entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity');
+
         //check if category with same name exists
         $categories = [];
-        $items = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getall');
+        $items = $adminCategoryRepository->findBy([], ['sortorder' => 'ASC']);
         foreach ($items as $item) {
             if ($this->hasPermission('ZikulaAdminModule::', $item['name'] . '::' . $item['cid'], ACCESS_READ)) {
                 $categories[] = $item;
@@ -250,26 +288,22 @@ class AjaxController extends AbstractController
             return new BadDataResponse($this->__('Error! A category by this name already exists.'));
         }
 
-        //get the category from the database
-        $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', ['cid' => $cid]);
-        if (empty($item)) {
+        // retrieve the category object
+        $item = $entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity')->findOneBy(['cid' => $cid]);
+        if (null === $item) {
             return new NotFoundResponse($this->__('Error! No such category found.'));
         }
 
         // update the category using the info from the database and from the form.
-        $update = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'update', [
-            'cid' => $cid,
+        $item->merge([
             'name' => $name,
             'description' => $item['description']
         ]);
-        if ($update) {
-            $output['response'] = $name;
+        $entityManager->flush();
 
-            return new AjaxResponse($output);
-        }
+        $output['response'] = $name;
 
-        //update failed for some reason
-        return new FatalResponse($this->__('Error! Could not save your changes.'));
+        return new AjaxResponse($output);
     }
 
     /**
@@ -294,9 +328,11 @@ class AjaxController extends AbstractController
         //get passed cid
         $cid = trim($request->request->getDigits('cid'));
 
-        //find the category corresponding to the cid.
-        $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', ['cid' => $cid]);
-        if (false == $item) {
+        $entityManager = $this->get('doctrine')->getManager();
+
+        // retrieve the category object
+        $item = $entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity')->findOneBy(['cid' => $cid]);
+        if (false === $item) {
             return new NotFoundResponse($this->__('Error! No such category found.'));
         }
 
@@ -334,11 +370,10 @@ class AjaxController extends AbstractController
 
         $data = $request->request->get('admintabs');
 
-        $entity = 'ZikulaAdminModule:AdminCategoryEntity';
-        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $entityManager = $this->get('doctrine')->getManager();
 
         foreach ($data as $order => $cid) {
-            $item = $entityManager->getRepository($entity)->findOneBy(['cid' => $cid]);
+            $item = $entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity')->findOneBy(['cid' => $cid]);
             $item->setSortorder($order);
         }
 
@@ -365,11 +400,10 @@ class AjaxController extends AbstractController
 
         $data = $request->request->get('modules');
 
-        $entity = 'ZikulaAdminModule:AdminModuleEntity';
-        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $entityManager = $this->get('doctrine')->getManager();
 
         foreach ($data as $order => $mid) {
-            $item = $entityManager->getRepository($entity)->findOneBy(['mid' => $mid]);
+            $item = $entityManager->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $mid]);
             $item->setSortorder($order);
         }
 

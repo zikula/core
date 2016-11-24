@@ -23,6 +23,7 @@ use UserUtil;
 
 /**
  * Suppport API functions for the menutree block
+ * @deprecated remove at Core-2.0
  */
 class MenutreeApi extends \Zikula_AbstractApi
 {

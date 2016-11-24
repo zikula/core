@@ -11,18 +11,19 @@
 
 namespace Zikula\AdminModule\Api;
 
-use ModUtil;
-use Zikula\AdminModule\Entity\AdminCategoryEntity;
-use SecurityUtil;
-use System;
 use DataUtil;
+use ModUtil;
+use ServiceUtil;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use System;
+use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Zikula\AdminModule\Entity\AdminModuleEntity;
 
 /**
  * API functions used by administrative controllers
+ * @deprecated remove at Core-2.0
  */
-class AdminApi extends \Zikula_AbstractApi
+class AdminApi
 {
     /**
      * create an admin category
@@ -41,15 +42,17 @@ class AdminApi extends \Zikula_AbstractApi
         // Argument check
         if (!isset($args['name']) || !strlen($args['name']) ||
             !isset($args['description'])) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            $translator = ServiceUtil::get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
-        $args['sortorder'] = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'countitems');
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+        $args['sortorder'] = $entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity')->countCategories();
 
         $item = new AdminCategoryEntity();
         $item->merge($args);
-        $this->entityManager->persist($item);
-        $this->entityManager->flush();
+        $entityManager->persist($item);
+        $entityManager->flush();
 
         // Return the id of the newly created item to the calling process
         return $item['cid'];
@@ -75,24 +78,27 @@ class AdminApi extends \Zikula_AbstractApi
         if (!isset($args['cid']) || !is_numeric($args['cid']) ||
             !isset($args['name']) || !strlen($args['name']) ||
             !isset($args['description'])) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            $translator = ServiceUtil::get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
         // Get the existing item
         /** @var AdminCategoryEntity $item */
-        $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', ['cid' => $args['cid']]);
-
+        $item = $this->getCategory(['cid' => $args['cid']]);
         if (empty($item)) {
             return false;
         }
 
         // Security check (old item)
-        if (!SecurityUtil::checkPermission('ZikulaAdminModule::Category', "$item[name]::$args[cid]", ACCESS_EDIT)) {
+        $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
+        if (!$permissionApi->getPermission('ZikulaAdminModule::Category', "$item[name]::$args[cid]", ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+
         $item->merge($args);
-        $this->entityManager->flush();
+        $entityManager->flush();
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -113,8 +119,9 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function delete($args)
     {
+        $translator = ServiceUtil::get('translator.default');
         if (!isset($args['cid']) || !is_numeric($args['cid'])) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
         $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', ['cid' => $args['cid']]);
@@ -122,32 +129,29 @@ class AdminApi extends \Zikula_AbstractApi
             return false;
         }
 
+        $variableApi = ServiceUtil::get('zikula_extensions_module.api.variable');
+
         // Avoid deletion of the default category
-        $defaultcategory = $this->getVar('defaultcategory');
+        $defaultcategory = $variableApi->get('ZikulaAdminModule', 'defaultcategory');
         if ($item['cid'] == $defaultcategory) {
-            throw new \RuntimeException($this->__('Error! You cannot delete the default module category used in the administration panel.'));
+            throw new \RuntimeException($translator->__('Error! You cannot delete the default module category used in the administration panel.'));
         }
 
         // Avoid deletion of the start category
-        $startcategory = $this->getVar('startcategory');
+        $startcategory = $variableApi->get('ZikulaAdminModule', 'startcategory');
         if ($item['cid'] == $startcategory) {
-            throw new \RuntimeException($this->__('Error! This module category is currently set as the category that is initially displayed when you visit the administration panel. You must first select a different category for initial display. Afterwards, you will be able to delete the category you have just attempted to remove.'));
+            throw new \RuntimeException($translator->__('Error! This module category is currently set as the category that is initially displayed when you visit the administration panel. You must first select a different category for initial display. Afterwards, you will be able to delete the category you have just attempted to remove.'));
         }
+
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
 
         // move all modules from the category to be deleted into the
         // default category.
-        $query = $this->entityManager->createQueryBuilder()
-            ->update('ZikulaAdminModule:AdminModuleEntity', 'm')
-            ->set('m.cid', $defaultcategory)
-            ->where('m.cid = :cid')
-            ->setParameter('cid', $item['cid'])
-            ->getQuery();
-
-        $query->getResult();
+        $entityManager->getRepository('ZikulaAdminModule:AdminModuleEntity')->changeCategory($item['cid'], $defaultcategory);
 
         // Now actually delete the category
-        $this->entityManager->remove($item);
-        $this->entityManager->flush();
+        $entityManager->remove($item);
+        $entityManager->flush();
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -176,12 +180,14 @@ class AdminApi extends \Zikula_AbstractApi
         $items = [];
 
         // Security check
-        if (!System::isUpgrading() && !SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_READ)) {
+        $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
+        if (!System::isUpgrading() && !$permissionApi->hasPermission('ZikulaAdminModule::', '::', ACCESS_READ)) {
             return $items;
         }
 
-        $entity = 'ZikulaAdminModule:AdminCategoryEntity';
-        $items = $this->entityManager->getRepository($entity)->findBy([], ['sortorder' => 'ASC'], $args['numitems'], $args['startnum']);
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+
+        $items = $entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity')->findBy([], ['sortorder' => 'ASC'], $args['numitems'], $args['startnum']);
 
         return $items;
     }
@@ -193,12 +199,9 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function countitems()
     {
-        $query = $this->entityManager->createQueryBuilder()
-            ->select('COUNT(c.cid)')
-            ->from('ZikulaAdminModule:AdminCategoryEntity', 'c')
-            ->getQuery();
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
 
-        return (int)$query->getSingleScalarResult();
+        return $entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity')->countCategories();
     }
 
     /**
@@ -216,13 +219,14 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['cid']) || !is_numeric($args['cid'])) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            $translator = ServiceUtil::get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
-        // retrieve the category object
-        $entity = 'ZikulaAdminModule:AdminCategoryEntity';
-        $category = $this->entityManager->getRepository($entity)->findOneBy(['cid' => (int)$args['cid']]);
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
 
+        // retrieve the category object
+        $category = $entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity')->findOneBy(['cid' => (int)$args['cid']]);
         if (!$category) {
             return [];
         }
@@ -248,19 +252,23 @@ class AdminApi extends \Zikula_AbstractApi
     {
         if (!isset($args['module']) ||
             (!isset($args['category']) || !is_numeric($args['category']))) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            $translator = ServiceUtil::get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
-        // this function is called durung the init process so we have to check in installing
+        // this function is called during the init process so we have to check in installing
         // is set as alternative to the correct permission check
-        if (!System::isInstalling() && !SecurityUtil::checkPermission('ZikulaAdminModule::Category', "::", ACCESS_ADD)) {
+        $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
+        if (!System::isInstalling() && !$permissionApi->hasPermission('ZikulaAdminModule::Category', "::", ACCESS_ADD)) {
             throw new AccessDeniedException();
         }
 
         // get module id
         $mid = (int)ModUtil::getIdFromName($args['module']);
 
-        $item = $this->entityManager->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $mid]);
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+
+        $item = $entityManager->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $mid]);
         if (!$item) {
             $item = new AdminModuleEntity();
         }
@@ -269,8 +277,8 @@ class AdminApi extends \Zikula_AbstractApi
         $item->setCid((int)$args['category']);
         $item->setSortorder(ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'countModsInCat', ['cid' => $args['category']]));
 
-        $this->entityManager->persist($item);
-        $this->entityManager->flush();
+        $entityManager->persist($item);
+        $entityManager->flush();
 
         // Return success
         return true;
@@ -294,32 +302,16 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Argument check
         if (!isset($args['mid']) || !is_numeric($args['mid'])) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            $translator = ServiceUtil::get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
-        // check if we've already worked this query out
-        if (isset($catitems[$args['mid']])) {
-            return $catitems[$args['mid']];
-        }
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
 
-        $entity = 'ZikulaAdminModule:AdminModuleEntity';
+        // retrieve the admin category for this module
+        $category = $entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity')->getModuleCategory($args['mid']);
 
-        // retrieve the admin module object array
-        $associations = $this->entityManager->getRepository($entity)->findAll();
-        if (!$associations) {
-            return false;
-        }
-
-        foreach ($associations as $association) {
-            $catitems[$association['mid']] = $association['cid'];
-        }
-
-        // Return the category id
-        if (isset($catitems[$args['mid']])) {
-            return $catitems[$args['mid']];
-        }
-
-        return false;
+        return null !== $category ? $category['cid'] : false;
     }
 
     /**
@@ -337,13 +329,15 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['mid']) || !is_numeric($args['mid'])) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            $translator = ServiceUtil::get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
         static $associations = [];
 
         if (empty($associations)) {
-            $associations = $this->entityManager->getRepository('ZikulaAdminModule:AdminModuleEntity')->findAll();
+            $entityManager = ServiceUtil::get('doctrine')->getManager();
+            $associations = $entityManager->getRepository('ZikulaAdminModule:AdminModuleEntity')->findAll();
         }
 
         $sortOrder = -1;
@@ -381,7 +375,8 @@ class AdminApi extends \Zikula_AbstractApi
         if (!isset($args['modname']) ||
             !is_string($args['modname']) ||
             !is_array($modinfo = ModUtil::getInfoFromName($args['modname']))) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            $translator = ServiceUtil::get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
         if (!isset($args['exclude']) || !is_array($args['exclude'])) {
@@ -428,16 +423,12 @@ class AdminApi extends \Zikula_AbstractApi
     public function countModsInCat($args)
     {
         if (!isset($args['cid']) || !is_numeric($args['cid'])) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            $translator = ServiceUtil::get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
-        $query = $this->entityManager->createQueryBuilder()
-            ->select('count(m.amid)')
-            ->from('ZikulaAdminModule:AdminModuleEntity', 'm')
-            ->where('m.cid = :cid')
-            ->setParameter('cid', $args['cid'])
-            ->getQuery();
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
 
-        return (int)$query->getSingleScalarResult();
+        return $entityManager->getRepository('ZikulaAdminModule:AdminModuleEntity')->countModulesByCategory($args['cid']);
     }
 }

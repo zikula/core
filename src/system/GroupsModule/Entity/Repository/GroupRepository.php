@@ -34,6 +34,90 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     }
 
     /**
+     * Returns amount of groups.
+     *
+     * @param int $groupType     Optional type filter
+     * @param int $excludedState Optional state exclusion filter
+     *
+     * @return integer
+     */
+    public function countGroups($groupType = null, $excludedState = null)
+    {
+        $qb = $this->createQueryBuilder('tbl')
+            ->select('COUNT(tbl.gid)');
+
+        if (null !== $groupType) {
+            $qb->where('g.gtype = :gtype')
+               ->setParameter('gtype', $groupType);
+        }
+
+        if (null !== $excludedState) {
+            $qb->andWhere('g.state != :state')
+               ->setParameter('state', $excludedState);
+        }
+
+        $query = $qb->getQuery();
+
+        $count = (int)$query->getSingleScalarResult();
+
+        return $count;
+    }
+
+    /**
+     * Returns groups for given arguments.
+     *
+     * @param array   $filters    Optional array with filters
+     * @param array   $exclusions Optional array with exclusion filters
+     * @param array   $sorting    Optional array with sorting criteria
+     * @param integer $limit      Optional limitation for amount of retrieved objects
+     * @param integer $offset     Optional start offset of retrieved objects
+     *
+     * @return array
+     */
+    public function getGroups($filters = [], $exclusions = [], $sorting = [], $limit = 0, $offset = 0)
+    {
+        $qb = $this->createQueryBuilder('tbl')
+            ->select('tbl');
+
+        // add clauses for where
+        if (count($filters) > 0) {
+            $i = 1;
+            foreach ($filters as $w_key => $w_value) {
+                $qb->andWhere($qb->expr()->eq('tbl.' . $w_key, '?' . $i))
+                   ->setParameter($i, $w_value);
+                $i++;
+            }
+        }
+        if (count($exclusions) > 0) {
+            $i = 1;
+            foreach ($exclusions as $w_key => $w_value) {
+                $qb->andWhere($qb->expr()->neq('tbl.' . $w_key, '?' . $i))
+                   ->setParameter($i, $w_value);
+                $i++;
+            }
+        }
+
+        // add clause for ordering
+        if (count($sorting) > 0) {
+            foreach ($sorting as $sort => $sortdir) {
+                $qb->addOrderBy('tbl.' . $sort, $sortdir);
+            }
+        }
+
+        // add limit and offset
+        if ($limit > 0) {
+            $qb->setMaxResults($limit);
+            if ($offset > 0) {
+                $qb->setFirstResult($offset);
+            }
+        }
+
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
+
+    /**
      * @param string $indexField
      * @return array
      * @throws \Doctrine\ORM\Query\QueryException
@@ -64,5 +148,34 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
         }
 
         return $groups;
+    }
+
+    /**
+     * @param string $name
+     * @param int    $excludedGroupId
+     * @return array
+     */
+    public function getGroupByName($name = '', $excludedGroupId = 0)
+    {
+        if ($name == '') {
+            return null;
+        }
+
+        $qb = $this->createQueryBuilder('g')
+            ->select('g')
+            ->where($qb->expr()->eq('g.name', ':gname'))
+            ->setParameter('gname', $name);
+
+        // Optional, used when modifying a group to check if there is
+        // already another group by that name.
+        if (is_numeric($excludedGroupId) && $excludedGroupId > 0) {
+            $qb->andWhere($qb->expr()->neq('g.gid', ':ggid'))
+               ->setParameter('ggid', $excludedGroupId);
+        }
+
+        $query = $qb->getQuery();
+
+        // execute query
+        return $query->getOneOrNullResult();
     }
 }

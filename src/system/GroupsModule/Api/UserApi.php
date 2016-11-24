@@ -11,21 +11,25 @@
 
 namespace Zikula\GroupsModule\Api;
 
+use ModUtil;
+use ServiceUtil;
+use UserUtil;
+use Swift_Message;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use System;
+use Zikula;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\GroupsModule\Helper\CommonHelper;
 use Zikula\GroupsModule\Entity\GroupApplicationEntity;
 use Zikula\UsersModule\Entity\UserEntity;
-use SecurityUtil;
-use UserUtil;
-use ModUtil;
-use System;
-use Zikula;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * User API functions for the groups module
+ *
+ * @deprecated
+ * @todo Needs a service replacement for removal in Core-2.0
  */
-class UserApi extends \Zikula_AbstractApi
+class UserApi
 {
     /**
      * Get all group items.
@@ -42,41 +46,17 @@ class UserApi extends \Zikula_AbstractApi
         $items = [];
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_READ)) {
+        $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
+        if (!$permissionApi->hasPermission('ZikulaGroupsModule::', '::', ACCESS_READ)) {
             return $items;
         }
 
-        // create a QueryBuilder instance
-        $qb = $this->entityManager->createQueryBuilder();
+        $amountOfItems = (!isset($args['numitems']) || !is_numeric($args['numitems'])) ? 0 : (int)$args['numitems'];
+        $startOffset = (!isset($args['startnum']) || !is_numeric($args['startnum'])) ? 0 : (int)$args['startnum'];
 
-        // add select and from params
-        $qb->select('g')
-           ->from('ZikulaGroupsModule:GroupEntity', 'g');
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
 
-         // add clause for ordering
-        $qb->addOrderBy('g.name', 'ASC');
-
-        // add limit and offset
-        $startnum = (!isset($args['startnum']) || !is_numeric($args['startnum'])) ? 0 : (int)$args['startnum'];
-        $numitems = (!isset($args['numitems']) || !is_numeric($args['numitems'])) ? 0 : (int)$args['numitems'];
-        if ($numitems > 0) {
-            $qb->setFirstResult($startnum)
-               ->setMaxResults($numitems);
-        }
-
-        // convert querybuilder instance into a Query object
-        $query = $qb->getQuery();
-
-        // execute query
-        $objArray = $query->getResult();
-
-        // Check for an error with the database code
-        if ($objArray === false) {
-            return false;
-        }
-
-        // Return the items
-        return $objArray;
+        return $entityManager->getRepository('ZikulaGroupsModule:GroupEntity')->getGroups([], [], ['name' => 'ASC'], $amountOfItems, $startOffset);
     }
 
     /**
@@ -98,12 +78,19 @@ class UserApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['gid'])) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            $translator = ServiceUtil::get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
+        }
+
+        // Security check
+        $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
+        if (!$permissionApi->hasPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_READ)) {
+            return false;
         }
 
         // get item
-        $group = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
-
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+        $group = $entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
         if (!$group) {
             return false;
         }
@@ -136,17 +123,15 @@ class UserApi extends \Zikula_AbstractApi
             }
         }
 
-        // Security check
-        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $result['gid'] . '::', ACCESS_READ)) {
-            return false;
-        }
-
         // Create the item array
         $result['nbuser'] = count($uidsArray);
         $result['members'] = $uidsArray;
 
         if (!is_null($args['uid'])) {
-            $result['status'] = $this->isuserpending(['gid' => $args['gid'], 'uid' => $args['uid']]);
+            $result['status'] = $this->isuserpending([
+                'gid' => $args['gid'],
+                'uid' => $args['uid']
+            ]);
         } else {
             $result['status'] = false;
         }
@@ -162,20 +147,15 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function countitems()
     {
-        $qb = $this->entityManager->createQueryBuilder();
-        $qb->select('count(g.gid)')
-           ->from('ZikulaGroupsModule:GroupEntity', 'g')
-           ->where('g.gtype = :gtype')
-           ->setParameter('gtype', CommonHelper::GTYPE_CORE);
+        $variableApi = ServiceUtil::get('zikula_extensions_module.api.variable');
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
 
-        if ($this->getVar('hideclosed')) {
-            $qb->andWhere('g.state != :state')
-               ->setParameter('state', CommonHelper::STATE_CLOSED);
+        $excludedState = null;
+        if ($variableApi->get('ZikulaGroupsModule', 'hideclosed')) {
+            $excludedState = CommonHelper::STATE_CLOSED;
         }
 
-        $query = $qb->getQuery();
-
-        return (int)$query->getSingleScalarResult();
+        return $entityManager->getRepository('ZikulaGroupsModule:GroupEntity')->countGroups(CommonHelper::GTYPE_CORE, $excludedState);
     }
 
     /**
@@ -196,7 +176,12 @@ class UserApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $group = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+        $group = $entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
+
+        if (null === $group) {
+            return 0;
+        }
 
         return $group->getUsers()->count();
     }
@@ -219,16 +204,19 @@ class UserApi extends \Zikula_AbstractApi
         if (!isset($args['uid'])) {
             $args['uid'] = UserUtil::getVar('uid');
         }
-        if (!isset($args['uid']) && !is_numeric($args['gid'])) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+        if (!is_numeric($args['uid'])) {
+            $translator = ServiceUtil::get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_READ)) {
+        $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
+        if (!$permissionApi->hasPermission('ZikulaGroupsModule::', '::', ACCESS_READ)) {
             return [];
         }
 
-        $userGroups = $this->entityManager->find('ZikulaUsersModule:UserEntity', $args['uid'])->getGroups();
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+        $userGroups = $entityManager->find('ZikulaUsersModule:UserEntity', $args['uid'])->getGroups();
 
         $groupsArray = [];
         foreach ($userGroups as $gid => $group) {
@@ -253,43 +241,25 @@ class UserApi extends \Zikula_AbstractApi
     {
         $items = [];
 
-        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', 'ANY', ACCESS_OVERVIEW)) {
+        $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
+        if (!$permissionApi->hasPermission('ZikulaGroupsModule::', 'ANY', ACCESS_OVERVIEW)) {
             return $items;
         }
 
-        // create a QueryBuilder instance
-        $qb = $this->entityManager->createQueryBuilder();
+        $amountOfItems = (!isset($args['numitems']) || !is_numeric($args['numitems'])) ? 0 : (int)$args['numitems'];
+        $startOffset = (!isset($args['startnum']) || !is_numeric($args['startnum'])) ? 0 : (int)$args['startnum'];
 
-        // add select and from params
-        $qb->select('g')
-           ->from('ZikulaGroupsModule:GroupEntity', 'g');
-
-        // add clause for filtering type
-        $qb->andWhere($qb->expr()->neq('g.gtype', $qb->expr()->literal(CommonHelper::GTYPE_CORE)));
-
-        // add clause for filtering state
-        if ($this->getVar('hideclosed')) {
-            $qb->andWhere($qb->expr()->neq('g.state', $qb->expr()->literal(CommonHelper::STATE_CLOSED)));
+        $variableApi = ServiceUtil::get('zikula_extensions_module.api.variable');
+        $exclusions = [
+            'gtype' => CommonHelper::GTYPE_CORE
+        ];
+        if ($variableApi->get('ZikulaGroupsModule', 'hideclosed')) {
+            $exclusions['state'] = CommonHelper::STATE_CLOSED;
         }
 
-        // add clause for ordering
-        $qb->addOrderBy('g.name', 'ASC');
-
-        // add limit and offset
-        $startnum = (!isset($args['startnum']) || !is_numeric($args['startnum'])) ? 0 : (int)$args['startnum'];
-        $numitems = (!isset($args['numitems']) || !is_numeric($args['numitems'])) ? 0 : (int)$args['numitems'];
-        if ($numitems > 0) {
-            $qb->setFirstResult($startnum)
-               ->setMaxResults($numitems);
-        }
-
-        // convert querybuilder instance into a Query object
-        $query = $qb->getQuery();
-
-        // execute query
-        $objArray = $query->getResult();
-
-        if ($objArray === false) {
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+        $groups = $entityManager->getRepository('ZikulaGroupsModule:GroupEntity')->getGroups([], $exclusions, ['name' => 'ASC'], $amountOfItems, $startOffset);
+        if (false === $groups) {
             return false;
         }
 
@@ -297,73 +267,85 @@ class UserApi extends \Zikula_AbstractApi
 
         $memberships = false;
         if ($uid != 0) {
-            $memberships = $this->getusergroups(['uid' => $uid, 'clean' => true]);
+            $memberships = $this->getusergroups([
+                'uid' => $uid,
+                'clean' => true
+            ]);
         }
 
         $row = 1;
+        $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
 
-        foreach ($objArray as $obj) {
+        foreach ($groups as $obj) {
             $obj = $obj->toArray();
-
             $gid = $obj['gid'];
+
+            if (!$permissionApi->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_OVERVIEW)) {
+                continue;
+            }
+
             $name = $obj['name'];
             $gtype = $obj['gtype'];
             $description = $obj['description'];
             $state = $obj['state'];
             $nbumax = $obj['nbumax'];
 
-            if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_OVERVIEW)) {
-                if (!isset($gtype) || is_null($gtype)) {
-                    $gtype = CommonHelper::GTYPE_CORE;
-                }
-                if (is_null($state)) {
-                    $state = CommonHelper::STATE_CLOSED;
-                }
+            if (!isset($gtype) || is_null($gtype)) {
+                $gtype = CommonHelper::GTYPE_CORE;
+            }
+            if (is_null($state)) {
+                $state = CommonHelper::STATE_CLOSED;
+            }
 
-                $ismember = is_array($memberships) && in_array($gid, $memberships) ? true : false;
+            $ismember = is_array($memberships) && in_array($gid, $memberships) ? true : false;
 
-                $status = false;
-                if ($uid != 0) {
-                    $status = $this->isuserpending(['gid' => $gid, 'uid' => $uid]);
-                }
-
-                $nbuser = $this->countgroupmembers(['gid' => $gid]);
-
-                $canview = false;
-                $canapply = false;
-                if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_READ)) {
-                    $canview = true;
-                    $canapply = true;
-                }
-
-                // Anon users or non-members should not be able to see private groups.
-                if ($gtype == CommonHelper::GTYPE_PRIVATE) {
-                    if (!$uid || !$this->isgroupmember(['uid' => $uid, 'gid' => $gid])) {
-                        continue;
-                    }
-                }
-
-                $items[] = [
+            $status = false;
+            if ($uid != 0) {
+                $status = $this->isuserpending([
                     'gid' => $gid,
-                    'name' => $name,
-                    'gtype' => $gtype,
-                    'description' => $description,
-                    'state' => $state,
-                    'nbuser' => (($nbuser != false) ? $nbuser : 0),
-                    'nbumax' => $nbumax,
-                    'ismember' => $ismember,
-                    'status' => $status,
-                    'canview' => $canview,
-                    'canapply' => $canapply,
-                    'islogged' => UserUtil::isLoggedIn(),
-                    'row' => $row
-                ];
+                    'uid' => $uid
+                ]);
+            }
 
-                if ($row == 1) {
-                    $row = 2;
-                } else {
-                    $row = 1;
+            $nbuser = $this->countgroupmembers(['gid' => $gid]);
+
+            $canview = false;
+            $canapply = false;
+            if ($permissionApi->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_READ)) {
+                $canview = true;
+                $canapply = true;
+            }
+
+            // Anon users or non-members should not be able to see private groups.
+            if ($gtype == CommonHelper::GTYPE_PRIVATE) {
+                if (!$uid || !$this->isgroupmember([
+                    'uid' => $uid,
+                    'gid' => $gid
+                ])) {
+                    continue;
                 }
+            }
+
+            $items[] = [
+                'gid' => $gid,
+                'name' => $name,
+                'gtype' => $gtype,
+                'description' => $description,
+                'state' => $state,
+                'nbuser' => (($nbuser != false) ? $nbuser : 0),
+                'nbumax' => $nbumax,
+                'ismember' => $ismember,
+                'status' => $status,
+                'canview' => $canview,
+                'canapply' => $canapply,
+                'islogged' => UserUtil::isLoggedIn(),
+                'row' => $row
+            ];
+
+            if ($row == 1) {
+                $row = 2;
+            } else {
+                $row = 1;
             }
         }
 
@@ -386,25 +368,32 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function saveapplication($args)
     {
+        $translator = ServiceUtil::get('translator.default');
         if ((!isset($args['gid']) && !is_numeric($args['gid'])) ||
             (!isset($args['uid']) && !is_numeric($args['uid']))) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
-        $item = $this->get(['gid' => $args['gid'], 'group_membership' => false]);
+        $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
+        if (!$permissionApi->hasPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_READ)) {
+            throw new AccessDeniedException();
+        }
 
+        $item = $this->get([
+            'gid' => $args['gid'],
+            'group_membership' => false
+        ]);
         if (!$item) {
             return false;
         }
 
-        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_READ)) {
-            throw new AccessDeniedException();
-        }
-
         // Check in case the user already applied
-        $pending = $this->isuserpending(['gid' => $args['gid'], 'uid' => $args['uid']]);
+        $pending = $this->isuserpending([
+            'gid' => $args['gid'],
+            'uid' => $args['uid']
+        ]);
         if ($pending) {
-            throw new \RuntimeException($this->__('Error! You have already applied for membership of this group.'));
+            throw new \RuntimeException($translator->__('Error! You have already applied for membership of this group.'));
         }
 
         $application = new GroupApplicationEntity();
@@ -413,8 +402,9 @@ class UserApi extends \Zikula_AbstractApi
         $application['application'] = $args['applytext'];
         $application['status'] = 1;
 
-        $this->entityManager->persist($application);
-        $this->entityManager->flush();
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+        $entityManager->persist($application);
+        $entityManager->flush();
 
         return true;
     }
@@ -435,17 +425,22 @@ class UserApi extends \Zikula_AbstractApi
     {
         if ((!isset($args['gid']) && !is_numeric($args['gid'])) ||
             (!isset($args['uid']) && !is_numeric($args['uid']))) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            $translator = ServiceUtil::get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
-        // Checking first if this user is really pending.
-        $ispending = $this->isuserpending(['gid' => $args['gid'], 'uid' => $args['uid']]);
+        $appArgs = [
+            'gid' => $args['gid'],
+            'uid' => $args['uid']
+        ];
 
-        if ($ispending == true) {
-            $application = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')
-                ->findOneBy(['gid' => $args['gid'], 'uid' => $args['uid']]);
-            $this->entityManager->remove($application);
-            $this->entityManager->flush();
+        // Checking first if this user is really pending.
+        $isPending = $this->isuserpending($appArgs);
+        if (true === $isPending) {
+            $entityManager = ServiceUtil::get('doctrine')->getManager();
+            $application = $entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findOneBy($appArgs);
+            $entityManager->remove($application);
+            $entityManager->flush();
         }
 
         return true;
@@ -467,17 +462,15 @@ class UserApi extends \Zikula_AbstractApi
     {
         if ((!isset($args['gid']) && !is_numeric($args['gid'])) ||
             (!isset($args['uid']) && !is_numeric($args['uid']))) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            $translator = ServiceUtil::get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
-        $applications = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+        $applications = $entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')
             ->findBy(['gid' => $args['gid'], 'uid' => $args['uid']]);
 
-        if (count($applications) > 0) {
-            return true;
-        }
-
-        return false;
+        return (count($applications) > 0);
     }
 
     /**
@@ -500,18 +493,19 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function userupdate($args)
     {
+        $translator = ServiceUtil::get('translator.default');
         if (!isset($args['gtype']) && !is_numeric($args['gtype']) ||
             (!isset($args['gid']) && !is_numeric($args['gid'])) ||
             !isset($args['action'])) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
         if (!in_array($args['action'], ['subscribe', 'unsubscribe', 'cancel'])) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
         if (!UserUtil::isLoggedIn()) {
-            throw new AccessDeniedException($this->__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
+            throw new AccessDeniedException($translator->__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
         }
 
         $userid = UserUtil::getVar('uid');
@@ -519,7 +513,7 @@ class UserApi extends \Zikula_AbstractApi
         if ($args['action'] == 'subscribe') {
             if ($args['gtype'] == CommonHelper::GTYPE_PRIVATE) {
                 if (!isset($args['applytext'])) {
-                    throw new \InvalidArgumentException(__('Invalid arguments array received'));
+                    throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
                 }
 
                 // We save the user in the application table
@@ -528,36 +522,45 @@ class UserApi extends \Zikula_AbstractApi
                     'uid' => $userid,
                     'applytext' => $args['applytext']
                 ]);
-
-                if ($save == false) {
+                if (false === $save) {
                     return false;
                 }
 
-                if ($this->getVar('mailwarning')) {
+                $variableApi = ServiceUtil::get('zikula_extensions_module.api.variable');
+                if ($variableApi->get('ZikulaGroupsModule', 'mailwarning')) {
+                    $siteName = $variableApi->getSystemVar('sitename', $variableApi->getSystemVar('sitename_en'));
+                    $adminMail = $variableApi->getSystemVar('adminmail');
                     $uname = UserUtil::getVar('uname', $userid);
-                    $send = ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendmessage', [
-                        'toname' => $this->__('Administrator'),
-                        'toaddress' => System::getVar('adminmail'),
-                        'subject' => $this->__('Group membership application registered'),
-                        'body' => $this->__f('The registered user %1$s has applied for membership of a group. The details of the application are as follows: %2$s', [$uname, $args['applytext']])
-                    ]);
+
+                    // create new message instance
+                    /** @var Swift_Message */
+                    $message = Swift_Message::newInstance();
+
+                    $message->setFrom([$adminMail => $siteName]);
+                    $message->setTo([$adminMail => $translator->__('Administrator')]);
+
+                    $subject = $translator->__('Group membership application registered');
+                    $body = $translator->__f('The registered user %1$s has applied for membership of a group. The details of the application are as follows: %2$s', ['%1$s' => $uname, '%2$s' => $args['applytext']]);
+
+                    $mailer = ServiceUtil::get('zikula_mailer_module.api.mailer');
+                    $send = $mailer->sendMessage($message, $subject, $body);
                 }
             } else {
                 // We save the user into the groups
                 $save = $this->adduser(['gid' => $args['gid'], 'uid' => $userid]);
-                if ($save == false) {
-                    throw new \RuntimeException($this->__('Error! Could not add the user to the group.'));
+                if (false === $save) {
+                    throw new \RuntimeException($translator->__('Error! Could not add the user to the group.'));
                 }
             }
         } elseif ($args['action'] == 'cancel') {
             $save = $this->cancelapp(['gid' => $args['gid'], 'uid' => $userid]);
-            if ($save == false) {
-                throw new \RuntimeException($this->__('Error! Could not remove the user from the group.'));
+            if (false === $save) {
+                throw new \RuntimeException($translator->__('Error! Could not remove the user from the group.'));
             }
         } else {
             $save = $this->removeuser(['gid' => $args['gid'], 'uid' => $userid]);
-            if ($save == false) {
-                throw new \RuntimeException($this->__('Error! Could not remove the user from the group.'));
+            if (false === $save) {
+                throw new \RuntimeException($translator->__('Error! Could not remove the user from the group.'));
             }
         }
 
@@ -579,42 +582,44 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function adduser($args)
     {
+        $translator = ServiceUtil::get('translator.default');
         // Argument check
         if ((!isset($args['gid']) && !is_numeric($args['gid'])) ||
             (!isset($args['uid']) && !is_numeric($args['uid']))) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
+        }
+
+        // Security check
+        $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
+        if (!$permissionApi->hasPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_READ)) {
+            throw new AccessDeniedException();
         }
 
         // get group
-        $group = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
-
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+        $group = $entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
         if (!$group) {
             return false;
         }
 
-        // Security check
-        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_READ)) {
-            throw new AccessDeniedException();
-        }
-
         // verify if the user is alredy a member of this group
-        $user = $this->entityManager->find('ZikulaUsersModule:UserEntity', $args['uid']);
+        $user = $entityManager->find('ZikulaUsersModule:UserEntity', $args['uid']);
         $isMember = $group->getUsers()->contains($user);
 
         // Add item
         if (!$isMember) {
             $user->addGroup($group);
-            $this->entityManager->flush();
+            $entityManager->flush();
 
             // Let other modules know that we have updated a group.
             $adduserEvent = new GenericEvent(['gid' => $args['gid'], 'uid' => $args['uid']]);
-            $this->getDispatcher()->dispatch('group.adduser', $adduserEvent);
+            ServiceUtil::get('event_dispatcher')->dispatch('group.adduser', $adduserEvent);
         } else {
             if (isset($args['verbose']) && !$args['verbose']) {
                 return false;
             }
 
-            throw new \RuntimeException($this->__('Error! You are already a member of this group.'));
+            throw new \RuntimeException($translator->__('Error! You are already a member of this group.'));
         }
 
         // Let the calling process know that we have finished successfully
@@ -638,29 +643,31 @@ class UserApi extends \Zikula_AbstractApi
     {
         if ((!isset($args['gid']) && !is_numeric($args['gid'])) ||
             (!isset($args['uid']) && !is_numeric($args['uid']))) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            $translator = ServiceUtil::get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
+        }
+
+        // Security check
+        $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
+        if (!$permissionApi->hasPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_READ)) {
+            throw new AccessDeniedException();
         }
 
         // get group
-        $group = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
-
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+        $group = $entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
         if (!$group) {
             return false;
         }
 
-        // Security check
-        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_READ)) {
-            throw new AccessDeniedException();
-        }
-
         // delete user from group
-        $user = $this->entityManager->find('ZikulaUsersModule:UserEntity', $args['uid']);
+        $user = $entityManager->find('ZikulaUsersModule:UserEntity', $args['uid']);
         $user->removeGroup($group);
-        $this->entityManager->flush();
+        $entityManager->flush();
 
         // Let other modules know we have updated a group
         $removeuserEvent = new GenericEvent(null, ['gid' => $args['gid'], 'uid' => $args['uid']]);
-        $this->getDispatcher()->dispatch('group.removeuser', $removeuserEvent);
+        ServiceUtil::get('event_dispatcher')->dispatch('group.removeuser', $removeuserEvent);
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -673,20 +680,14 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function whosonline()
     {
-        $activetime = time() - (\System::getVar('secinactivemins') * 60);
+        $variableApi = ServiceUtil::get('zikula_extensions_module.api.variable');
+        $inactiveLimit = $variableApi->getSystemVar('secinactivemins');
+        $dateTime = new \DateTime();
+        $dateTime->modify('-' . $inactiveLimit . 'minutes');
 
-        $qb = $this->entityManager->createQueryBuilder();
-        $qb->select('DISTINCT s.uid')
-           ->from('ZikulaUsersModule:UserSessionEntity', 's')
-           ->where('s.lastused > :activetime')
-           ->setParameter('activetime', $activetime)
-           ->andWhere('s.uid != 0');
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
 
-        $query = $qb->getQuery();
-
-        $items = $query->getArrayResult();
-
-        return $items;
+        return $entityManager->getRepository('ZikulaUsersModule:UserSessionEntity')->getUsersSince($dateTime);
     }
 
     /**
@@ -705,16 +706,22 @@ class UserApi extends \Zikula_AbstractApi
     {
         if ((!isset($args['uid']) && !is_numeric($args['uid'])) ||
             (!isset($args['gid']) && !is_numeric($args['gid']))) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            $translator = ServiceUtil::get('translator.default');
+            throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_READ)) {
+        $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
+        if (!$permissionApi->hasPermission('ZikulaGroupsModule::', '::', ACCESS_READ)) {
             return false;
         }
 
         // Get group and check if the user exists in this group.
-        $group = $this->get(['gid' => $args['gid'], 'group_membership' => true, 'uid' => $args['uid']]);
+        $group = $this->get([
+            'gid' => $args['gid'],
+            'group_membership' => true,
+            'uid' => $args['uid']
+        ]);
 
         if (!$group || !array_key_exists($args['uid'], $group['members'])) {
             // either group does not exist or the requested uid is not a member of the group

@@ -13,12 +13,14 @@ namespace Zikula\CategoriesModule\Api;
 
 use CategoryUtil;
 use UserUtil;
-use Zikula_AbstractApi;
 
 /**
  * User api functions for the categories module.
+ *
+ * @deprecated
+ * @todo Needs a service replacement for removal in Core-2.0
  */
-class UserApi extends Zikula_AbstractApi
+class UserApi extends \Zikula_AbstractApi
 {
     /**
      * get the root category for a user
