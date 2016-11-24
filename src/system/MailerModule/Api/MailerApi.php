@@ -275,7 +275,7 @@ class MailerApi
      */
     private function performSending()
     {
-        $logFile = 'app/logs/mailer.log';
+        $logFile = 'var/logs/mailer.log';
         $event = new GenericEvent($this->message);
 
         if (!$this->mailer->send($this->message, $failedEmails)) {
