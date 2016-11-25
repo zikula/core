@@ -31,15 +31,22 @@ class PathBuilderHelper
     private $categoryApi;
 
     /**
+     * @var RelativeCategoryPathBuilderHelper
+     */
+    private $relativeHelper;
+
+    /**
      * PathBuilderHelper constructor.
      *
-     * @param EntityManager $entityManager EntityManager service instance
-     * @param CategoryApi   $categoryApi   CategoryApi service instance
+     * @param EntityManager                     $entityManager  EntityManager service instance
+     * @param CategoryApi                       $categoryApi    CategoryApi service instance
+     * @param RelativeCategoryPathBuilderHelper $relativeHelper RelativeCategoryPathBuilderHelper service instance
      */
-    public function __construct(EntityManager $entityManager, CategoryApi $categoryApi)
+    public function __construct(EntityManager $entityManager, CategoryApi $categoryApi, RelativeCategoryPathBuilderHelper $relativeHelper)
     {
         $this->entityManager = $entityManager;
         $this->categoryApi = $categoryApi;
+        $this->relativeHelper = $relativeHelper;
     }
 
     /**
@@ -67,65 +74,10 @@ class PathBuilderHelper
                 continue;
             }
             $rootCat = $this->categoryApi->getCategoryById($rootCatIDs[$prop]);
-            $this->buildRelativePathsForCategory($rootCat, $cats[$prop], $includeRoot);
+            $this->relativeHelper->buildRelativePathsForCategory($rootCat, $cats[$prop], $includeRoot);
         }
 
         return;
-    }
-
-    /**
-     * Given a category with its parent category.
-     *
-     * Return an (idenically indexed) array of category-paths based on the given field (name or id make sense).
-     *
-     * @param integer|array $rootCategory The root/parent category
-     * @param array         &$cat         The category to process
-     * @param boolean $includeRoot If true, the root portion of the path is preserved
-     *
-     * @return The resulting folder path array (which is also altered in place)
-     */
-    public function buildRelativePathsForCategory($rootCategory, &$cat, $includeRoot = false)
-    {
-        if (!$rootCategory) {
-            return false;
-        }
-
-        if (is_numeric($rootCategory)) {
-            $rootCategory = $this->categoryApi->getCategoryById($rootCategory);
-        }
-
-        // remove the Root Category name of the paths
-        // because multilanguage names has different lengths
-        $pos = strpos($rootCategory['path'], '/', 1);
-        $rootCategory['path'] = substr($rootCategory['path'], $pos);
-
-        $pos = strpos($cat['path'], '/', 1);
-        $normalizedPath = substr($cat['path'], $pos);
-
-        // process the normalized paths
-        $ppos = strrpos($rootCategory['path'], '/') + 1;
-        $ipos = strrpos($rootCategory['ipath'], '/') + 1;
-
-        $cat['path_relative'] = substr($normalizedPath, $ppos);
-        if (isset($cat['ipath'])) {
-            $cat['ipath_relative'] = substr($cat['ipath'], $ipos);
-        }
-
-        if (!$includeRoot) {
-            $offSlashPath = strpos($cat['path_relative'], '/');
-            if (isset($cat['ipath'])) {
-                $offSlashIPath = strpos($cat['ipath_relative'], '/');
-            }
-
-            if ($offSlashPath !== false) {
-                $cat['path_relative'] = substr($cat['path_relative'], $offSlashPath + 1);
-            }
-            if (isset($cat['ipath']) && $offSlashIPath !== false) {
-                $cat['ipath_relative'] = substr($cat['ipath_relative'], $offSlashIPath + 1);
-            }
-        }
-
-        return $cat;
     }
 
     /**
@@ -185,13 +137,15 @@ class PathBuilderHelper
 
         $paths = $this->buildPaths($cats, $sourceField);
 
-        if ($cats && $paths) {
-            $categoryRepository = $this->entityManager->getRepository('ZikulaCategoriesModule:CategoryEntity');
+        if (!$cats || !$paths) {
+            return;
+        }
 
-            foreach ($cats as $k => $v) {
-                if (isset($v[$pathField]) && isset($paths[$k]) && ($v[$pathField] != $paths[$k])) {
-                    $categoryRepository->updatePath($k, $pathField, $paths[$k]);
-                }
+        $categoryRepository = $this->entityManager->getRepository('ZikulaCategoriesModule:CategoryEntity');
+
+        foreach ($cats as $k => $v) {
+            if (isset($v[$pathField]) && isset($paths[$k]) && ($v[$pathField] != $paths[$k])) {
+                $categoryRepository->updatePath($k, $pathField, $paths[$k]);
             }
         }
     }

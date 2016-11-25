@@ -689,9 +689,13 @@ class CategoryUtil
      */
     public static function buildRelativePathsForCategory($rootCategory, &$cat, $includeRoot = false)
     {
-        @trigger_error('CategoryUtil is deprecated. please use the new path builder helper instead.', E_USER_DEPRECATED);
+        @trigger_error('CategoryUtil is deprecated. please use the new relative category path builder helper instead.', E_USER_DEPRECATED);
 
-        return ServiceUtil::get('zikula_categories_module.path_builder_helper')->buildRelativePathsForCategory($rootCategory, $cat, $includeRoot);
+        if (is_numeric($rootCategory)) {
+            $rootCategory = ServiceUtil::get('zikula_categories_module.api.category')->getCategoryById($rootCategory);
+        }
+
+        return ServiceUtil::get('zikula_categories_module.relative_category_path_builder_helper')->buildRelativePathsForCategory($rootCategory, $cat, $includeRoot);
     }
 
     /**

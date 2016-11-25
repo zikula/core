@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Helper\CategoryProcessingHelper;
 use Zikula\CategoriesModule\Helper\CategorySortingHelper;
-use Zikula\CategoriesModule\Helper\PathBuilderHelper;
+use Zikula\CategoriesModule\Helper\RelativeCategoryPathBuilderHelper;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use ZLanguage;
@@ -58,20 +58,20 @@ class CategoryApi
     private $sortingHelper;
 
     /**
-     * @var PathBuilderHelper
+     * @var RelativeCategoryPathBuilderHelper
      */
     private $pathBuilder;
 
     /**
      * CategoryApi constructor.
      *
-     * @param TranslatorInterface      $translator       TranslatorInterface service instance
-     * @param EntityManager            $entityManager    EntityManager service instance
-     * @param RequestStack             $requestStack     RequestStack service instance
-     * @param PermissionApi            $permissionApi    PermissionApi service instance
-     * @param CategoryProcessingHelper $processingHelper CategoryProcessingHelper service instance
-     * @param CategorySortingHelper    $sortingHelper    CategorySortingHelper service instance
-     * @param PathBuilderHelper        $pathBuilder      PathBuilderHelper service instance
+     * @param TranslatorInterface               $translator       TranslatorInterface service instance
+     * @param EntityManager                     $entityManager    EntityManager service instance
+     * @param RequestStack                      $requestStack     RequestStack service instance
+     * @param PermissionApi                     $permissionApi    PermissionApi service instance
+     * @param CategoryProcessingHelper          $processingHelper CategoryProcessingHelper service instance
+     * @param CategorySortingHelper             $sortingHelper    CategorySortingHelper service instance
+     * @param RelativeCategoryPathBuilderHelper $pathBuilder      RelativeCategoryPathBuilderHelper service instance
      */
     public function __construct(
         TranslatorInterface $translator,
@@ -80,7 +80,7 @@ class CategoryApi
         PermissionApi $permissionApi,
         CategoryProcessingHelper $processingHelper,
         CategorySortingHelper $sortingHelper,
-        PathBuilderHelper $pathBuilder
+        RelativeCategoryPathBuilderHelper $pathBuilder
     ) {
         $this->translator = $translator;
         $this->entityManager = $entityManager;

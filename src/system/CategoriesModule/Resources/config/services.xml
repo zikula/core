@@ -17,6 +17,7 @@
         <parameter key="zikula_categories_module.html_tree_helper.class">Zikula\CategoriesModule\Helper\HtmlTreeHelper</parameter>
         <parameter key="zikula_categories_module.js_tree_helper.class">Zikula\CategoriesModule\Helper\JsTreeHelper</parameter>
         <parameter key="zikula_categories_module.path_builder_helper.class">Zikula\CategoriesModule\Helper\PathBuilderHelper</parameter>
+        <parameter key="zikula_categories_module.relative_category_path_builder_helper.class">Zikula\CategoriesModule\Helper\RelativeCategoryPathBuilderHelper</parameter>
         <parameter key="twig.extension.zikula_categories_module.class">Zikula\CategoriesModule\Twig\Extension\CategoriesExtension</parameter>
     </parameters>
     <services>
@@ -36,7 +37,7 @@
             <argument type="service" id="zikula_permissions_module.api.permission" />
             <argument type="service" id="zikula_categories_module.category_processing_helper" />
             <argument type="service" id="zikula_categories_module.category_sorting_helper" />
-            <argument type="service" id="zikula_categories_module.path_builder_helper" />
+            <argument type="service" id="zikula_categories_module.relative_category_path_builder_helper" />
         </service>
 
         <service id="zikula_categories_module.api.category_permission" class="%zikula_categories_module.api.category_permission.class%">
@@ -95,6 +96,10 @@
         <service id="zikula_categories_module.path_builder_helper" class="%zikula_categories_module.path_builder_helper.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="zikula_categories_module.api.category" />
+            <argument type="service" id="zikula_categories_module.relative_category_path_builder_helper" />
+        </service>
+
+        <service id="zikula_categories_module.relative_category_path_builder_helper" class="%zikula_categories_module.relative_category_path_builder_helper.class%">
         </service>
 
         <service id="zikula_categories_module.form_type.categories_type" class="%zikula_categories_module.form_type.categories_type.class%">

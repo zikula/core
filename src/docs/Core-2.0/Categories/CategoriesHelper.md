@@ -120,6 +120,19 @@ Contains utility methods used for (re)building category pathes.
 The class makes the following methods available:
 
     - buildRelativePaths($rootCatIDs, &$cats, $includeRoot = false)
-    - buildRelativePathsForCategory($rootCategory, &$cat, $includeRoot = false)
     - buildPaths($cats, $field = 'name')
     - rebuildPaths($pathField = 'path', $sourceField = 'name', $leafId = 0)
+
+Relative category path builder helper
+-------------------------------------
+
+classname: \Zikula\CategoriesModule\Helper\RelativeCategoryPathBuilderHelper
+
+service id = "zikula_categories_module.relative_category_path_builder_helper"
+
+Contains utility methods used for building relative category pathes.
+Used by the path builder helper shown above.
+
+The class makes the following methods available:
+
+    - buildRelativePathsForCategory(CategoryEntity $rootCategory, &$cat, $includeRoot = false)
