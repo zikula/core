@@ -44,7 +44,7 @@ class JsTreeHelper
      * @param RouterInterface     $router       RouterInterface service instance
      * @param RequestStack        $requestStack RequestStack service instance
      */
-    public function __construct(TranslatorInterface $translator, RequestStack $requestStack)
+    public function __construct(TranslatorInterface $translator, RouterInterface $router, RequestStack $requestStack)
     {
         $this->translator = $translator;
         $this->router = $router;
