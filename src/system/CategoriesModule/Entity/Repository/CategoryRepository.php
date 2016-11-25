@@ -64,7 +64,7 @@ class CategoryRepository extends EntityRepository implements ObjectRepository, S
         }
 
         $qb = $this->createQueryBuilder('c')
-            ->select('c.id');
+            ->select('c.id')
             ->where('c.' . $pathField . ' = :path')
             ->setParameter('path', $path . '%');
 
