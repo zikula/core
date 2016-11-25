@@ -12,7 +12,6 @@
 namespace Zikula\CategoriesModule\Api;
 
 use Doctrine\ORM\EntityManager;
-use Zikula\CategoriesModule\Api\CategoryApi;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 use Zikula\Common\Translator\TranslatorInterface;
 

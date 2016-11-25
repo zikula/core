@@ -158,6 +158,7 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
             if (null !== $con) {
                 return $expr->andX($con, $propertyCon);
             }
+
             return $propertyCon;
         }
 

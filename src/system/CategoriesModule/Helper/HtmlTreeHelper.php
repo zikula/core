@@ -40,7 +40,7 @@ class HtmlTreeHelper
     /**
      * @var CategorySortingHelper
      * /
-    private $sortingHelper;*/
+     private $sortingHelper;*/
 
     /**
      * HtmlTreeHelper constructor.

@@ -179,7 +179,6 @@ class AjaxController extends AbstractController
         $entityManager = $this->get('doctrine')->getManager();
 
         // get the last added category in the parent
-        
         $category = $entityManager->getRepository('ZikulaCategoriesModule:CategoryEntity')->getLastByParent($parent);
 
         // create jsTree node

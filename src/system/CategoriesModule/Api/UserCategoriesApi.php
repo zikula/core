@@ -12,7 +12,6 @@
 namespace Zikula\CategoriesModule\Api;
 
 use UserUtil;
-use Zikula\CategoriesModule\Api\CategoryApi;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\UsersModule\Api\CurrentUserApi;
 

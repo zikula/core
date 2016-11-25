@@ -30,7 +30,7 @@ class CategoryRepository extends EntityRepository implements ObjectRepository, S
     public function countForContext($name = '', $parentId = 0, $excludedId = 0)
     {
         $qb = $this->createQueryBuilder('c')
-            ->select('COUNT(c.id)');
+            ->select('COUNT(c.id)')
             ->where('c.name = :name')
             ->setParameter('name', $name);
 

@@ -15,7 +15,6 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
-use Zikula\CategoriesModule\Helper\HierarchyHelper;
 use Zikula\Common\Translator\TranslatorInterface;
 use ZLanguage;
 
