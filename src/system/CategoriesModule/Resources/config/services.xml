@@ -61,7 +61,6 @@
             <argument type="service" id="translator.default" />
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="kernel" />
-            <argument type="service" id="zikula_categories_module.hierarchy_helper" />
         </service>
 
         <service id="zikula_categories_module.category_sorting_helper" class="%zikula_categories_module.category_sorting_helper.class%">

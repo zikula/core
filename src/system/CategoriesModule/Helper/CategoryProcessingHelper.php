@@ -39,24 +39,17 @@ class CategoryProcessingHelper
     private $kernel;
 
     /**
-     * @var HierarchyHelper
-     */
-    private $hierarchyHelper;
-
-    /**
      * CategoryProcessingHelper constructor.
      *
-     * @param TranslatorInterface $translator      TranslatorInterface service instance
-     * @param EntityManager       $entityManager   EntityManager service instance
-     * @param KernelInterface     $kernel          KernelInterface service instance
-     * @param HierarchyHelper     $hierarchyHelper HierarchyHelper service instance
+     * @param TranslatorInterface $translator    TranslatorInterface service instance
+     * @param EntityManager       $entityManager EntityManager service instance
+     * @param KernelInterface     $kernel        KernelInterface service instance
      */
-    public function __construct(TranslatorInterface $translator, EntityManager $entityManager, KernelInterface $kernel, HierarchyHelper $hierarchyHelper)
+    public function __construct(TranslatorInterface $translator, EntityManager $entityManager, KernelInterface $kernel)
     {
         $this->translator = $translator;
         $this->entityManager = $entityManager;
         $this->kernel = $kernel;
-        $this->hierarchyHelper = $hierarchyHelper;
     }
 
     /**
@@ -221,7 +214,10 @@ class CategoryProcessingHelper
         // iterate over all registries
         foreach ($registries as $registry) {
             // check if the registry subtree contains our category
-            $isContained = $this->hierarchyHelper->isSubCategory($registry['category_id'], $category);
+            $rPath = $registry['category_id']['ipath'] . '/';
+            $cPath = $category['ipath'];
+
+            $isContained = strpos($cPath, $rPath) === 0;
             if (!$isContained) {
                 continue;
             }
