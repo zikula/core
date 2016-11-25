@@ -11,11 +11,10 @@
 
 namespace Zikula\CategoriesModule\Controller;
 
-use CategoryUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
-use Zikula\CategoriesModule\GenericUtil;
+use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\Core\Response\Ajax\BadDataResponse;
@@ -48,22 +47,23 @@ class AjaxController extends AbstractController
 
         $tree = $request->request->get('tree');
 
-        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $entityManager = $this->get('doctrine')->getManager();
+        $processingHelper = $this->get('zikula_categories_module.category_processing_helper');
 
         foreach ($tree as $catData) {
             if (empty($catData)) {
                 continue;
             }
-            /** @var \Zikula\CategoriesModule\Entity\CategoryEntity $category */
+            /** @var CategoryEntity $category */
             $category = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $catData['id']);
             $category->setSort_value($catData['lineno']);
             if (!empty($catData['parent'])) {
-                /** @var \Zikula\CategoriesModule\Entity\CategoryEntity $parent */
+                /** @var CategoryEntity $parent */
                 $parent = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $catData['parent']);
                 $category->setParent($parent);
                 // reset paths
-                $category->setPath(GenericUtil::processCategoryPath($parent->getPath(), $category->getName()));
-                $category->setIPath(GenericUtil::processCategoryIPath($parent->getIPath(), $category->getId()));
+                $category->setPath($processingHelper->processCategoryPath($parent->getPath(), $category->getName()));
+                $category->setIPath($processingHelper->processCategoryIPath($parent->getIPath(), $category->getId()));
             } else {
                 $category->setParent(null);
             }
@@ -117,7 +117,7 @@ class AjaxController extends AbstractController
             if (!$cid) {
                 return new BadDataResponse($this->__('Error! Cannot determine valid \'cid\' for edit mode in \'Categories_admin_edit\'.'));
             }
-            $editCat = CategoryUtil::getCategoryByID($cid);
+            $editCat = $this->get('zikula_categories_module.api.category')->getCategoryById($cid);
             if (!$editCat) {
                 return new NotFoundResponse($this->__('Sorry! No such item found.'));
             }
@@ -138,7 +138,7 @@ class AjaxController extends AbstractController
 
         $result = [
             'action' => $mode == 'new' ? 'add' : 'edit',
-            'result' => $this->get('twig')->render('@ZikulaCategoriesModule/Ajax/edit.html.twig', $templateParameters),
+            'result' => $this->renderView('@ZikulaCategoriesModule/Ajax/edit.html.twig', $templateParameters),
             'validationErrors' => $validationErrors
         ];
 
@@ -167,28 +167,23 @@ class AjaxController extends AbstractController
 
         $cid = $request->request->get('cid');
         $parent = $request->request->get('parent');
+        $categoryApi = $this->get('zikula_categories_module.api.category');
 
-        $cat = CategoryUtil::getCategoryByID($cid);
-        CategoryUtil::copyCategoriesByPath($cat['ipath'], $parent);
+        $cat = $categoryApi->getCategoryById($cid);
+        $this->get('zikula_categories_module.copy_and_move_helper')->copyCategoriesByPath($cat['ipath'], $parent);
 
-        $copyParent = CategoryUtil::getCategoryByID($cat['parent_id']);
+        $copyParent = $categoryApi->getCategoryById($cat['parent_id']);
 
-        $categories = CategoryUtil::getSubCategories($copyParent['id'], true, true, true, true, true);
+        $categories = $categoryApi->getSubCategories($copyParent['id'], true, true, true, true, true);
 
-        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $entityManager = $this->get('doctrine')->getManager();
 
         // get the last added category in the parent
-        $qb = $entityManager->createQueryBuilder();
-        $category = $qb->select('c')
-            ->from('Zikula\CategoriesModule\Entity\CategoryEntity', 'c')
-            ->where('c.parent = :parent_id')
-            ->setParameter('parent_id', $parent)
-            ->orderBy('c.id', 'DESC')
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getSingleResult();
+        
+        $category = $entityManager->getRepository('ZikulaCategoriesModule:CategoryEntity')->getLastByParent($parent);
+
         // create jsTree node
-        $node = CategoryUtil::getJsTreeNodeFromCategory($category);
+        $node = $this->get('zikula_categories_module.js_tree_helper')->getJsTreeNodeFromCategory($category);
 
         $leafStatus = [
             'leaf' => [],
@@ -231,14 +226,17 @@ class AjaxController extends AbstractController
         }
 
         $cid = $request->request->get('cid');
-        $cat = CategoryUtil::getCategoryByID($cid);
+        $categoryApi = $this->get('zikula_categories_module.api.category');
+        $processingHelper = $this->get('zikula_categories_module.category_processing_helper');
+
+        $cat = $categoryApi->getCategoryById($cid);
 
         // prevent deletion if category is already used
-        if (!GenericUtil::mayCategoryBeDeletedOrMoved($cat)) {
+        if (!$processingHelper->mayCategoryBeDeletedOrMoved($cat)) {
             return new BadDataResponse($this->__f('Error! Category %s can not be deleted, because it is already used.', ['%s' => $cat['name']]));
         }
 
-        CategoryUtil::deleteCategoriesByPath($cat['ipath']);
+        $categoryApi->deleteCategoriesByPath($cat['ipath']);
 
         $result = [
             'action' => 'delete',
@@ -267,21 +265,23 @@ class AjaxController extends AbstractController
 
         $cid = $request->request->get('cid');
         $parent = $request->request->get('parent');
+        $categoryApi = $this->get('zikula_categories_module.api.category');
 
-        $cat = CategoryUtil::getCategoryByID($cid);
+        $cat = $categoryApi->getCategoryById($cid);
+        $processingHelper = $this->get('zikula_categories_module.category_processing_helper');
 
         // prevent deletion if category is already used
-        if (!GenericUtil::mayCategoryBeDeletedOrMoved($cat)) {
+        if (!$processingHelper->mayCategoryBeDeletedOrMoved($cat)) {
             return new BadDataResponse($this->__f('Error! Category %s can not be deleted, because it is already used.', ['%s' => $cat['name']]));
         }
 
-        CategoryUtil::moveSubCategoriesByPath($cat['ipath'], $parent);
-        CategoryUtil::deleteCategoryByID($cat['id']);
+        $this->get('zikula_categories_module.copy_and_move_helper')->moveSubCategoriesByPath($cat['ipath'], $parent);
+        $categoryApi->deleteCategoryById($cat['id']);
 
         // need to re-render new parents node
-        $newParent = CategoryUtil::getCategoryByID($parent);
+        $newParent = $categoryApi->getCategoryById($parent);
 
-        $categories = CategoryUtil::getSubCategories($newParent['id'], true, true, true, true, true);
+        $categories = $categoryApi->getSubCategories($newParent['id'], true, true, true, true, true);
 
         $leafStatus = [
             'leaf' => [],
@@ -324,15 +324,13 @@ class AjaxController extends AbstractController
 
         $cid = $request->request->get('cid');
 
-        $allCats = CategoryUtil::getSubCategories(1, true, true, true, false, true, $cid);
-        $selector = CategoryUtil::getSelector_Categories($allCats, 'id', '0', 'category[parent_id]', 0, '', 0, '', false, false, true, 1, false, 'form-control');
-
-        $templateParameters = [
-            'categorySelector' => $selector
-        ];
+        $allCats = $this->get('zikula_categories_module.api.category')->getSubCategories(1, true, true, true, false, true, $cid);
+        $selector = $this->get('zikula_categories_module.html_tree_helper')->getSelector($allCats, 'id', '0', 'category[parent_id]', 0, '', 0, '', false, false, true, 1, false, 'form-control');
 
         $result = [
-            'result' => $this->get('twig')->render('@ZikulaCategoriesModule/Ajax/delete.html.twig', $templateParameters)
+            'result' => $this->renderView('@ZikulaCategoriesModule/Ajax/delete.html.twig', [
+                'categorySelector' => $selector
+            ])
         ];
 
         return new AjaxResponse($result);
@@ -354,7 +352,7 @@ class AjaxController extends AbstractController
             return new ForbiddenResponse($this->__('No permission for this action'));
         }
 
-        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $entityManager = $this->get('doctrine')->getManager();
 
         $cid = $request->request->get('cid');
         $cat = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cid);
@@ -386,7 +384,7 @@ class AjaxController extends AbstractController
             return new ForbiddenResponse($this->__('No permission for this action'));
         }
 
-        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $entityManager = $this->get('doctrine')->getManager();
 
         $cid = $request->request->get('cid');
         $cat = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cid);
@@ -433,7 +431,9 @@ class AjaxController extends AbstractController
             $data['status'] = 'I';
         }
 
-        $valid = GenericUtil::validateCategoryData($data);
+        $processingHelper = $this->get('zikula_categories_module.category_processing_helper');
+
+        $valid = $processingHelper->validateCategoryData($data);
         if (!$valid) {
             $request->request->set('cid', (isset($data['cid']) ? $data['cid'] : 0));
             $request->request->set('parent', $data['parent_id']);
@@ -443,21 +443,21 @@ class AjaxController extends AbstractController
         }
 
         // process name
-        $data['name'] = GenericUtil::processCategoryName($data['name']);
+        $data['name'] = $processingHelper->processCategoryName($data['name']);
 
         // process parent
-        $data['parent'] = GenericUtil::processCategoryParent($data['parent_id']);
+        $data['parent'] = $processingHelper->processCategoryParent($data['parent_id']);
         unset($data['parent_id']);
 
         // process display names
-        $data['display_name'] = GenericUtil::processCategoryDisplayName($data['display_name'], $data['name']);
+        $data['display_name'] = $processingHelper->processCategoryDisplayName($data['display_name'], $data['name']);
 
         // save category
-        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $entityManager = $this->get('doctrine')->getManager();
         if ($mode == 'edit') {
             $category = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $data['id']);
         } else {
-            $category = new \Zikula\CategoriesModule\Entity\CategoryEntity();
+            $category = new CategoryEntity();
         }
         $prevCategoryName = $category['name'];
         $category->merge($data);
@@ -465,23 +465,23 @@ class AjaxController extends AbstractController
         $entityManager->flush();
 
         // process path and ipath
-        $category['path'] = GenericUtil::processCategoryPath($data['parent']['path'], $category['name']);
-        $category['ipath'] = GenericUtil::processCategoryIPath($data['parent']['ipath'], $category['id']);
+        $category['path'] = $processingHelper->processCategoryPath($data['parent']['path'], $category['name']);
+        $category['ipath'] = $processingHelper->processCategoryIPath($data['parent']['ipath'], $category['id']);
 
         // process category attributes
         $attrib_names = $request->request->get('attribute_name', []);
         $attrib_values = $request->request->get('attribute_value', []);
-        GenericUtil::processCategoryAttributes($category, $attrib_names, $attrib_values);
+        $processingHelper->processCategoryAttributes($category, $attrib_names, $attrib_values);
 
         $entityManager->flush();
 
         // since a name change will change the object path, we must rebuild it here
         if ($prevCategoryName != $category['name']) {
-            CategoryUtil::rebuildPaths('path', 'name', $category['id']);
+            $this->get('zikula_categories_module.path_builder_helper')->rebuildPaths('path', 'name', $category['id']);
         }
 
-        $categories = CategoryUtil::getSubCategories($category['id'], true, true, true, true, true);
-        $node = CategoryUtil::getJsTreeNodeFromCategoryArray([0 => $category]);
+        $categories = $this->get('zikula_categories_module.api.category')->getSubCategories($category['id'], true, true, true, true, true);
+        $node = $this->get('zikula_categories_module.js_tree_helper')->getJsTreeNodeFromCategoryArray([0 => $category]);
 
         $leafStatus = [
             'leaf' => [],

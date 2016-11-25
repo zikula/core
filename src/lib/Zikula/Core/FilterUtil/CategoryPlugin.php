@@ -11,8 +11,8 @@
 
 namespace Zikula\Core\FilterUtil;
 
-use CategoryUtil;
 use Doctrine\ORM\Query\Expr\Base as BaseExpr;
+use ServiceUtil;
 use Zikula\Component\FilterUtil;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 
@@ -80,8 +80,6 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
      * Sets the category registry.
      *
      * @param mixed $property Category Property
-     *
-     * @see CategoryUtil
      */
     public function setProperty($property)
     {
@@ -146,22 +144,21 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
                 $con = $expr->neq($column, $config->toParam($value, 'category', $field));
             case 'sub':
                 $items = [$value];
-                $cats = CategoryUtil::getSubCategories($value);
+                $cats = ServiceUtil::get('zikula_categories_module.api.category')->getSubCategories($value);
                 foreach ($cats as $item) {
                     $items[] = $item['id'];
                 }
                 $con = $expr->in($column, $config->toParam($items, 'category', $field));
         }
-        if ($this->modname !== null && $this->property !== null) {
+        if (null !== $this->modname && null !== $this->property) {
             $propertyCon = $expr->in(
                 $alias.'_cat_plugin.categoryRegistryId',
                 $config->toParam($this->getRegistryIds(), 'category', $field)
             );
-            if ($con !== null) {
+            if (null !== $con) {
                 return $expr->andX($con, $propertyCon);
-            } else {
-                return $propertyCon;
             }
+            return $propertyCon;
         }
 
         return $con;

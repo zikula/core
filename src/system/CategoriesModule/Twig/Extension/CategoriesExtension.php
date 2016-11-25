@@ -11,9 +11,11 @@
 
 namespace Zikula\CategoriesModule\Twig\Extension;
 
-use CategoryUtil;
 use DataUtil;
+use HtmlUtil;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Zikula\CategoriesModule\Api\CategoryApi;
+use Zikula\CategoriesModule\Helper\HtmlTreeHelper;
 
 class CategoriesExtension extends \Twig_Extension
 {
@@ -23,13 +25,27 @@ class CategoriesExtension extends \Twig_Extension
     private $requestStack;
 
     /**
+     * @var CategoryApi
+     */
+    private $categoryApi;
+
+    /**
+     * @var HtmlTreeHelper
+     */
+    private $htmlTreeHelper;
+
+    /**
      * CategoriesExtension constructor.
      *
-     * @param RequestStack $requestStack
+     * @param RequestStack   $requestStack   RequestStack service instance
+     * @param CategoryApi    $categoryApi    CategoryApi service instance
+     * @param HtmlTreeHelper $htmlTreeHelper HtmlTreeHelper service instance
      */
-    public function __construct(RequestStack $requestStack)
+    public function __construct(RequestStack $requestStack, CategoryApi $categoryApi, HtmlTreeHelper $htmlTreeHelper)
     {
         $this->requestStack = $requestStack;
+        $this->categoryApi = $categoryApi;
+        $this->htmlTreeHelper = $htmlTreeHelper;
     }
 
     /**
@@ -102,9 +118,9 @@ class CategoriesExtension extends \Twig_Extension
 
         $result = null;
         if ($idColumn == 'id') {
-            $cat = CategoryUtil::getCategoryByID($id);
+            $cat = $this->categoryApi->getCategoryById($id);
         } elseif (($idColumn == 'path') || ($idColumn == 'ipath')) {
-            $cat = CategoryUtil::getCategoryByPath($id, $idColumn);
+            $cat = $this->categoryApi->getCategoryByPath($id, $idColumn);
         }
 
         if ($cat) {
@@ -140,12 +156,13 @@ class CategoriesExtension extends \Twig_Extension
      */
     public function moduleTableSelector($modname = null, $name = null, $selectedValue = 0, $defaultValue = 0, $defaultText = '')
     {
-        return \HtmlUtil::getSelector_ModuleTables($modname, $name, $selectedValue, $defaultValue, $defaultText);
+        return HtmlUtil::getSelector_ModuleTables($modname, $name, $selectedValue, $defaultValue, $defaultText);
     }
 
     /**
      * Generates a category selector.
      * @todo Temporary solution, to be removed after migration to Symfony Forms has been completed
+     * @deprecated
      *
      * @param int        $category      The parent category id
      * @param string     $field         The category field to use
@@ -165,11 +182,11 @@ class CategoriesExtension extends \Twig_Extension
     {
         $lang = null !== $this->requestStack->getMasterRequest() ? $this->requestStack->getMasterRequest()->getLocale() : 'en';
 
-        $category = CategoryUtil::getCategoryByID($category);
+        $category = $this->categoryApi->getCategoryById($category);
 
-        $categories = CategoryUtil::getSubCategoriesForCategory($category, $recurse, $relative, $includeRoot, $includeLeaf, false, '', '', null, 'sort_value');
+        $categories = $this->categoryApi->getSubCategoriesForCategory($category, $recurse, $relative, $includeRoot, $includeLeaf);
 
-        return CategoryUtil::getSelector_Categories($categories, $field, $selectedValue, $name, $defaultValue, $defaultText, 0, '', false, false, null, 1, null, '', $lang);
+        return $this->htmlTreeHelper->getSelector($categories, $field, $selectedValue, $name, $defaultValue, $defaultText, 0, '', false, false, null, 1, null, '', $lang);
     }
 
     public function getName()

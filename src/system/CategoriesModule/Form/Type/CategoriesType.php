@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\CategoriesModule\Api\CategoryRegistryApi;
 use Zikula\CategoriesModule\Form\DataTransformer\CategoriesCollectionTransformer;
 use Zikula\CategoriesModule\Form\EventListener\CategoriesMergeCollectionListener;
 
@@ -24,6 +25,21 @@ use Zikula\CategoriesModule\Form\EventListener\CategoriesMergeCollectionListener
 class CategoriesType extends AbstractType
 {
     /**
+     * @var CategoryRegistryApi
+     */
+    private $categoryRegistryApi;
+
+    /**
+     * CategoriesType constructor.
+     *
+     * @param CategoryRegistryApi $categoryRegistryApi CategoryRegistryApi service instance
+     */
+    public function __construct(CategoryRegistryApi $categoryRegistryApi)
+    {
+        $this->categoryRegistryApi = $categoryRegistryApi;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -32,7 +48,7 @@ class CategoriesType extends AbstractType
             throw new \InvalidArgumentException('empty argument!');
         }
 
-        $registries = \CategoryRegistryUtil::getRegisteredModuleCategories($options['module'], $options['entity'], 'id');
+        $registries = $this->categoryRegistryApi->getModuleCategoryIds($options['module'], $options['entity'], 'id');
 
         foreach ($registries as $registryId => $categoryId) {
             $builder->add(
@@ -45,7 +61,7 @@ class CategoriesType extends AbstractType
                     'class' => 'ZikulaCategoriesModule:CategoryEntity',
                     'property' => 'name',
                     'query_builder' => function (EntityRepository $repo) use ($categoryId) {
-                        //TODO: (move to)/use own entity repository after CategoryUtil migration
+                        //TODO: (move to)/use own entity repository
                         return $repo->createQueryBuilder('e')
                                     ->where('e.parent = :parentId')
                                     ->setParameter('parentId', (int) $categoryId);

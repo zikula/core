@@ -58,9 +58,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
 
         $query = $qb->getQuery();
 
-        $count = (int)$query->getSingleScalarResult();
-
-        return $count;
+        return (int)$query->getSingleScalarResult();
     }
 
     /**

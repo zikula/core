@@ -4,6 +4,19 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <parameters>
         <parameter key="zikula_categories_module.container.link_container.class">Zikula\CategoriesModule\Container\LinkContainer</parameter>
+        <parameter key="zikula_categories_module.api.category.class">Zikula\CategoriesModule\Api\CategoryApi</parameter>
+        <parameter key="zikula_categories_module.api.category_permission.class">Zikula\CategoriesModule\Api\CategoryPermissionApi</parameter>
+        <parameter key="zikula_categories_module.api.category_registry.class">Zikula\CategoriesModule\Api\CategoryRegistryApi</parameter>
+        <parameter key="zikula_categories_module.api.user_categories.class">Zikula\CategoriesModule\Api\UserCategoriesApi</parameter>
+        <parameter key="zikula_categories_module.form_type.categories_type.class">Zikula\CategoriesModule\Form\Type\CategoriesType</parameter>
+        <parameter key="zikula_categories_module.form_type.config_type.class">Zikula\CategoriesModule\Form\Type\ConfigType</parameter>
+        <parameter key="zikula_categories_module.category_processing_helper.class">Zikula\CategoriesModule\Helper\CategoryProcessingHelper</parameter>
+        <parameter key="zikula_categories_module.category_sorting_helper.class">Zikula\CategoriesModule\Helper\CategorySortingHelper</parameter>
+        <parameter key="zikula_categories_module.copy_and_move_helper.class">Zikula\CategoriesModule\Helper\CopyAndMoveHelper</parameter>
+        <parameter key="zikula_categories_module.hierarchy_helper.class">Zikula\CategoriesModule\Helper\HierarchyHelper</parameter>
+        <parameter key="zikula_categories_module.html_tree_helper.class">Zikula\CategoriesModule\Helper\HtmlTreeHelper</parameter>
+        <parameter key="zikula_categories_module.js_tree_helper.class">Zikula\CategoriesModule\Helper\JsTreeHelper</parameter>
+        <parameter key="zikula_categories_module.path_builder_helper.class">Zikula\CategoriesModule\Helper\PathBuilderHelper</parameter>
         <parameter key="twig.extension.zikula_categories_module.class">Zikula\CategoriesModule\Twig\Extension\CategoriesExtension</parameter>
     </parameters>
     <services>
@@ -16,8 +29,86 @@
             <tag name="zikula.link_container" />
         </service>
 
+        <service id="zikula_categories_module.api.category" class="%zikula_categories_module.api.category.class%">
+            <argument type="service" id="translator.default" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="zikula_permissions_module.api.permission" />
+            <argument type="service" id="zikula_categories_module.category_processing_helper" />
+            <argument type="service" id="zikula_categories_module.category_sorting_helper" />
+            <argument type="service" id="zikula_categories_module.path_builder_helper" />
+        </service>
+
+        <service id="zikula_categories_module.api.category_permission" class="%zikula_categories_module.api.category_permission.class%">
+            <argument type="service" id="zikula_permissions_module.api.permission" />
+            <argument type="service" id="zikula_extensions_module.api.variable" />
+        </service>
+
+        <service id="zikula_categories_module.api.category_registry" class="%zikula_categories_module.api.category_registry.class%">
+            <argument type="service" id="translator.default" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="zikula_categories_module.api.category" />
+        </service>
+
+        <service id="zikula_categories_module.api.user_categories" class="%zikula_categories_module.api.user_categories.class%">
+            <argument type="service" id="translator.default" />
+            <argument type="service" id="zikula_categories_module.api.category" />
+            <argument type="service" id="zikula_users_module.current_user" />
+        </service>
+
+        <service id="zikula_categories_module.category_processing_helper" class="%zikula_categories_module.category_processing_helper.class%">
+            <argument type="service" id="translator.default" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="kernel" />
+            <argument type="service" id="zikula_categories_module.hierarchy_helper" />
+        </service>
+
+        <service id="zikula_categories_module.category_sorting_helper" class="%zikula_categories_module.category_sorting_helper.class%">
+            <argument type="service" id="request_stack" />
+        </service>
+
+        <service id="zikula_categories_module.copy_and_move_helper" class="%zikula_categories_module.copy_and_move_helper.class%">
+            <argument type="service" id="translator.default" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="zikula_categories_module.api.category" />
+        </service>
+
+        <service id="zikula_categories_module.hierarchy_helper" class="%zikula_categories_module.hierarchy_helper.class%">
+            <argument type="service" id="translator.default" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="zikula_categories_module.api.category" />
+        </service>
+
+        <service id="zikula_categories_module.html_tree_helper" class="%zikula_categories_module.html_tree_helper.class%">
+            <argument type="service" id="translator.default" />
+            <argument type="service" id="jms_i18n_routing.router" />
+            <argument type="service" id="request_stack" />
+        </service>
+
+        <service id="zikula_categories_module.js_tree_helper" class="%zikula_categories_module.js_tree_helper.class%">
+            <argument type="service" id="translator.default" />
+            <argument type="service" id="jms_i18n_routing.router" />
+            <argument type="service" id="request_stack" />
+            <!--argument type="service" id="zikula_categories_module.category_sorting_helper" /-->
+        </service>
+
+        <service id="zikula_categories_module.path_builder_helper" class="%zikula_categories_module.path_builder_helper.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="zikula_categories_module.api.category" />
+        </service>
+
+        <service id="zikula_categories_module.form_type.categories_type" class="%zikula_categories_module.form_type.categories_type.class%">
+            <argument type="service" id="zikula_categories_module.api.category_registry" />
+        </service>
+
+        <service id="zikula_categories_module.form_type.config_type" class="%zikula_categories_module.form_type.config_type.class%">
+            <argument type="service" id="zikula_categories_module.api.category" />
+        </service>
+
         <service id="twig.extension.zikula_categories_module" class="%twig.extension.zikula_categories_module.class%" public="true">
             <argument type="service" id="request_stack" />
+            <argument type="service" id="zikula_categories_module.api.category" />
+            <argument type="service" id="zikula_categories_module.html_tree_helper" />
             <tag name="twig.extension" />
         </service>
     </services>

@@ -11,14 +11,12 @@
 
 namespace Zikula\CategoriesModule\Api;
 
-use CategoryUtil;
-use UserUtil;
+use ServiceUtil;
 
 /**
  * User api functions for the categories module.
  *
- * @deprecated
- * @todo Needs a service replacement for removal in Core-2.0
+ * @deprecated remove at Core-2.0
  */
 class UserApi extends \Zikula_AbstractApi
 {
@@ -26,9 +24,9 @@ class UserApi extends \Zikula_AbstractApi
      * get the root category for a user
      *
      * @param mixed[] $args {
-     *      @type  int     $returnCategory
-     *      @type  string  $returnField
-     *                       }
+     *      @type  bool   $returnCategory Whether the whole category object should be returned or not
+     *      @type  string $returnField    Name of field to return if $returnCategory is false
+     * }
      *
      * @return string|array|bool the return field if returnCategory is false, the full category if returnCategory is true, false otherwise
      *
@@ -37,33 +35,13 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function getuserrootcat($args)
     {
-        $returnCategory = isset($args['returnCategory']) ? $args['returnCategory'] : false;
+        @trigger_error('Categories UserApi is deprecated. please use the new user categories api instead.', E_USER_DEPRECATED);
+
+        $returnCategory = isset($args['returnCategory']) ? (bool)$args['returnCategory'] : false;
         $returnField    = isset($args['returnField']) ? $args['returnField'] : 'id';
         unset($args);
 
-        $userRoot = $this->getVar('userrootcat', 0);
-        if (!$userRoot) {
-            throw new \RuntimeException($this->__f('Error! The user root node seems to point towards an invalid category: %s.', $userRoot));
-        }
-
-        $userRootCat = CategoryUtil::getCategoryByPath($userRoot);
-        if ($userRootCat == 1) {
-            throw new \RuntimeException($this->__("Error! The root directory cannot be modified in 'user' mode"));
-        }
-
-        $userCatName = $this->getusercategoryname([]);
-        $thisUserRootCatPath = $userRoot . '/' . $userCatName;
-        $thisUserRootCat = CategoryUtil::getCategoryByPath($thisUserRootCatPath);
-
-        if (!$thisUserRootCat) {
-            return false;
-        }
-
-        if ($returnCategory) {
-            return $thisUserRootCat;
-        }
-
-        return $thisUserRootCat[$returnField];
+        return ServiceUtil::get('zikula_categories_module.api.user_categories')->getUserRootCategory($returnCategory, $returnField);
     }
 
     /**
@@ -71,7 +49,7 @@ class UserApi extends \Zikula_AbstractApi
      *
      * @param mixed[] $args {
      *      @type bool $relative optionally generate relative paths
-     *                       }
+     * }
      *
      * @return array array of categories
      *
@@ -79,16 +57,9 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function getusercategories($args)
     {
-        $args['returnCategory'] = 1;
-        $userRootCat = $this->getuserrootcat($args);
+        @trigger_error('Categories UserApi is deprecated. please use the new user categories api instead.', E_USER_DEPRECATED);
 
-        if (!$userRootCat) {
-            throw new \RuntimeException($this->__('Error! The user root node seems to point towards an invalid category.'));
-        }
-
-        $relative = (isset($args['relative']) ? $args['relative'] : false);
-
-        return CategoryUtil::getCategoriesByParentID($userRootCat['id'], '', $relative);
+        return ServiceUtil::get('zikula_categories_module.api.user_categories')->getUserCategories($relative);
     }
 
     /**
@@ -96,18 +67,16 @@ class UserApi extends \Zikula_AbstractApi
      *
      * @param mixed[] $args {
      *      @type int $uid the user id
-     *                       }
+     * }
      *
-     * @return string the username associated with the category
+     * @return string Root category name based on the username
      */
     public function getusercategoryname($args)
     {
-        $uid = isset($args['uid']) && $args['uid'] ? $args['uid'] : UserUtil::getVar('uid');
-        unset($args);
+        @trigger_error('Categories UserApi is deprecated. please use the new user categories api instead.', E_USER_DEPRECATED);
 
-        $uname = UserUtil::getVar('uname', $uid);
-        $userCatName = $uname . ' [' . $uid . ']';
+        $uid = isset($args['uid']) && $args['uid'] ? $args['uid'] : 0;
 
-        return $userCatName;
+        return ServiceUtil::get('zikula_categories_module.api.user_categories')->getUserCategoryName($uid);
     }
 }
