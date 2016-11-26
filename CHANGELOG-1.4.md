@@ -58,14 +58,16 @@ CHANGELOG - ZIKULA 1.4.x
     - knp-menu installed at version 2.2.0
     - knp-menu-bundle installed at version 2.1.3
     - liip/imagine-bundle installed at 1.6.0
+    - monolog updated from 1.21.0 to 1.22.0
     - psr log updated from 1.0.0 to 1.0.2
     - sensio distribution bundle updated from 5.0.8 to 5.0.14
     - sensio generator bundle updated from 3.0.7 to 3.0.11
     - sensiolabs security checker updated from 3.0.2 to 4.0.0
+    - swiftmailer updated from 5.4.3 to 5.4.4
     - symfony updated from 2.8.9 to 2.8.14
     - symfony service definition validator updated from 1.2.5 to 1.2.6
     - symfony/polyfill-* updated from 1.2.0 to 1.3.0
-    - twig updated from 1.24.1 to 1.28.1
+    - twig updated from 1.24.1 to 1.28.2
 
 * 1.4.3 (2016-09-02)
 
