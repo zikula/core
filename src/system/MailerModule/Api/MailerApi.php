@@ -18,6 +18,7 @@ use Swift_DependencyContainer;
 use Swift_Mailer;
 use Swift_Message;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
@@ -34,6 +35,11 @@ use Zikula\MailerModule\MailerEvents;
 class MailerApi
 {
     use TranslatorTrait;
+
+    /**
+     * @var KernelInterface
+     */
+    private $kernel;
 
     /**
      * @var bool
@@ -64,14 +70,16 @@ class MailerApi
      * MailerApi constructor.
      *
      * @param bool                     $isInstalled     Installed flag
+     * @param KernelInterface          $kernel          Kernel service instance
      * @param TranslatorInterface      $translator      Translator service instance
      * @param EventDispatcherInterface $eventDispatcher EventDispatcher service instance
-     * @param DynamicConfigDumper $configDumper Configuration dumper for retrieving SwiftMailer configuration parameters
-     * @param VariableApi $variableApi VariableApi service instance
-     * @param Swift_Mailer $mailer
+     * @param DynamicConfigDumper      $configDumper    Configuration dumper for retrieving SwiftMailer configuration parameters
+     * @param VariableApi              $variableApi     VariableApi service instance
+     * @param Swift_Mailer             $mailer
      */
     public function __construct(
         $isInstalled,
+        KernelInterface $kernel,
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         DynamicConfigDumper $configDumper,
@@ -79,6 +87,7 @@ class MailerApi
         Swift_Mailer $mailer
     ) {
         $this->isInstalled = $isInstalled;
+        $this->kernel = $kernel;
         $this->setTranslator($translator);
         $this->eventDispatcher = $eventDispatcher;
         $this->mailer = $mailer;
@@ -275,7 +284,7 @@ class MailerApi
      */
     private function performSending()
     {
-        $logFile = 'app/logs/mailer.log';
+        $logFile = $this->kernel->getLogDir() . '/mailer.log';
         $event = new GenericEvent($this->message);
 
         if (!$this->mailer->send($this->message, $failedEmails)) {

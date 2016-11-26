@@ -41,6 +41,8 @@
 
         <service id="zikula_security_center_module.helper.purifier_helper" class="%zikula_security_center_module.helper.purifier_helper.class%">
             <argument type="service" id="kernel" />
+            <argument type="service" id="session" />
+            <argument type="service" id="translator.default" />
             <argument type="service" id="zikula_extensions_module.api.variable" />
         </service>
     </services>
