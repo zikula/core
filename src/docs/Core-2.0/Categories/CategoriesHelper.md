@@ -38,8 +38,8 @@ The class makes the following methods available:
     - cmpDesc($catA, $catB)
     - sortByLocale(&$cats, $func = 'cmpName')
     - resequence($cats, $step = 1)
-    - _tree_insert(&$tree, $entry, $currentpath = null)
-    - _tree_sort($tree, &$cats)
+    - insertTreeLeaf(&$tree, $entry, $currentpath = null)
+    - sortTree($tree, &$cats)
     - sortCategories($cats, $sortField = '', $assocKey = '')
 
 Copy and move helper

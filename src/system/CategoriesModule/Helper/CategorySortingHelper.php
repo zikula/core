@@ -128,7 +128,7 @@ class CategorySortingHelper
      *
      * @return array Tree
      */
-    public function _tree_insert(&$tree, $entry, $currentpath = null)
+    public function insertTreeLeaf(&$tree, $entry, $currentpath = null)
     {
         if ($currentpath === null) {
             $currentpath = $entry['ipath'];
@@ -145,19 +145,19 @@ class CategorySortingHelper
             return $tree;
         } else {
             unset($pathlist[0]);
-            $this->_tree_insert($tree[$root], $entry, implode('/', $pathlist));
+            $this->insertTreeLeaf($tree[$root], $entry, implode('/', $pathlist));
         }
     }
 
     /**
      * make a list, sorted on each level, from a tree.
      *
-     * @param array $tree Nested array from _tree_insert
+     * @param array $tree Nested array from insertTreeLeaf
      * @param array &$cats List of categories (initially empty array)
      *
      * @return void
      */
-    public function _tree_sort($tree, &$cats)
+    public function sortTree($tree, &$cats)
     {
         global $_catSortField;
         $sorted = [];
@@ -177,10 +177,10 @@ class CategorySortingHelper
             }
         }
 
-        uasort($sorted, [$this, '_tree_sort_cmp']);
+        uasort($sorted, [$this, 'treeSortCmp']);
 
         foreach ($sorted as $k => $v) {
-            $this->_tree_sort($tree[$k], $cats);
+            $this->sortTree($tree[$k], $cats);
         }
     }
 
@@ -195,7 +195,7 @@ class CategorySortingHelper
      *
      * @return int 0 if $a and $b are equal, 1 ir $a is greater then $b, -1 if $a is less than $b
      */
-    private function _tree_sort_cmp($a, $b)
+    private function treeSortCmp($a, $b)
     {
         if ($a === $b) {
             return 0;
@@ -231,10 +231,10 @@ class CategorySortingHelper
 
         $tree = [];
         foreach ($cats as $c) {
-            $this->_tree_insert($tree, $c);
+            $this->insertTreeLeaf($tree, $c);
         }
         $new_cats = [];
-        $this->_tree_sort($tree[1], $new_cats);
+        $this->sortTree($tree[1], $new_cats);
 
         if ($assocKey) {
             $new_cats_assoc = [];

@@ -518,7 +518,7 @@ class CategoryUtil
     {
         @trigger_error('CategoryUtil is deprecated. please use the category sorting helper instead.', E_USER_DEPRECATED);
 
-        return ServiceUtil::get('zikula_categories_module.category_sorting_helper')->_tree_insert($tree, $entry, $currentpath);
+        return ServiceUtil::get('zikula_categories_module.category_sorting_helper')->insertTreeLeaf($tree, $entry, $currentpath);
     }
 
     /**
@@ -533,7 +533,7 @@ class CategoryUtil
     {
         @trigger_error('CategoryUtil is deprecated. please use the category sorting helper instead.', E_USER_DEPRECATED);
 
-        return ServiceUtil::get('zikula_categories_module.category_sorting_helper')->_tree_sort($tree, $cats);
+        return ServiceUtil::get('zikula_categories_module.category_sorting_helper')->sortTree($tree, $cats);
     }
 
     /**
