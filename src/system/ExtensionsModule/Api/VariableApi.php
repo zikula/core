@@ -11,8 +11,6 @@
 
 namespace Zikula\ExtensionsModule\Api;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionVarRepositoryInterface;
