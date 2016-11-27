@@ -22,7 +22,7 @@ parameters:
     database_socket:   ~
     database_server_version: 5
     # _actual_ server version doesn't matter here. Any value compensates for Doctrine Bug DBAL-1057
-    # see http://www.doctrine-project.org/jira/browse/DBAL-1057
+    # see https://github.com/doctrine/dbal/issues/990
     # the actual value is written on install
 
     pagerendertime:    false
