@@ -4553,12 +4553,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "f669ca3d12d96b10944dd1d9407be78d1dea0774"
+                "reference": "f3667b6f538164714945cdf29cec2b282485d07d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/f669ca3d12d96b10944dd1d9407be78d1dea0774",
-                "reference": "f669ca3d12d96b10944dd1d9407be78d1dea0774",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/f3667b6f538164714945cdf29cec2b282485d07d",
+                "reference": "f3667b6f538164714945cdf29cec2b282485d07d",
                 "shasum": ""
             },
             "require": {
@@ -4613,7 +4613,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2016-11-26 15:35:26"
+            "time": "2016-11-27 18:32:45"
         },
         {
             "name": "zikula/profile-module",
@@ -4621,12 +4621,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "b3fdf2ce6a5dd13dd9f7b1da4b623a0726fee145"
+                "reference": "9f7def97050ffaeb6a1694376d73418d4320177a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/b3fdf2ce6a5dd13dd9f7b1da4b623a0726fee145",
-                "reference": "b3fdf2ce6a5dd13dd9f7b1da4b623a0726fee145",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/9f7def97050ffaeb6a1694376d73418d4320177a",
+                "reference": "9f7def97050ffaeb6a1694376d73418d4320177a",
                 "shasum": ""
             },
             "require": {
@@ -4687,7 +4687,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2016-11-01 17:23:17"
+            "time": "2016-11-27 18:17:10"
         },
         {
             "name": "zikula/wizard",
