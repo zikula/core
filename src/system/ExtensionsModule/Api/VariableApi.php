@@ -55,30 +55,22 @@ class VariableApi
     private $variables;
 
     /**
-     * @var Request
-     */
-    private $request;
-
-    /**
      * VariableApi constructor.
      *
      * @param $installed
      * @param ExtensionVarRepositoryInterface $repository
      * @param KernelInterface $kernel
-     * @param RequestStack $requestStack
      * @param array $multisitesParameters
      */
     public function __construct(
         $installed,
         ExtensionVarRepositoryInterface $repository,
         KernelInterface $kernel,
-        RequestStack $requestStack,
         array $multisitesParameters
     ) {
         $this->installed = $installed;
         $this->repository = $repository;
         $this->kernel = $kernel;
-        $this->request = $requestStack->getMasterRequest();
         $this->protectedSystemVars = $multisitesParameters['protected.systemvars'];
     }
 
@@ -118,16 +110,25 @@ class VariableApi
                 $this->variables[$bundle->getName()] = [];
             }
         }
-        // reformat localized variables to primary key for certain system vars.
-        $lang = !empty($this->request) ? $this->request->getLocale() : 'en';
+        // set default values for localized variables
+        $this->localizeVariables('en');
+
+        $this->isInitialized = true;
+    }
+
+    /**
+     * Replace specified variable values with their localized value
+     * @see \Zikula\SettingsModule\Listener\LocalizedVariableListener
+     * @param $lang
+     */
+    public function localizeVariables($lang)
+    {
         $items = ['sitename', 'slogan', 'metakeywords', 'defaultpagetitle', 'defaultmetadescription'];
         foreach ($items as $item) {
             if (isset($this->variables[self::CONFIG][$item . '_en'])) {
-                $this->variables[self::CONFIG][$item] = isset($this->variables[self::CONFIG][$item . '_' . $lang]) ? $this->variables[self::CONFIG][$item . '_' . $lang] : $this->variables[self::CONFIG][$item . '_en'];
+                $this->variables[self::CONFIG][$item] = !empty($this->variables[self::CONFIG][$item . '_' . $lang]) ? $this->variables[self::CONFIG][$item . '_' . $lang] : $this->variables[self::CONFIG][$item . '_en'];
             }
         }
-
-        $this->isInitialized = true;
     }
 
     /**
