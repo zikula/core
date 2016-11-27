@@ -605,7 +605,7 @@ class CategoryUtil
     {
         @trigger_error('CategoryUtil is deprecated. please use the category sorting helper instead.', E_USER_DEPRECATED);
 
-        return ServiceUtil::get('zikula_categories_module.category_sorting_helper')->cmpName($catA, $catB);
+        return ServiceUtil::get('zikula_categories_module.category_sorting_helper')->compareName($catA, $catB);
     }
 
     /**
@@ -620,7 +620,7 @@ class CategoryUtil
     {
         @trigger_error('CategoryUtil is deprecated. please use the category sorting helper instead.', E_USER_DEPRECATED);
 
-        return ServiceUtil::get('zikula_categories_module.category_sorting_helper')->cmpDesc($catA, $catB);
+        return ServiceUtil::get('zikula_categories_module.category_sorting_helper')->compareDesc($catA, $catB);
     }
 
     /**
@@ -629,11 +629,11 @@ class CategoryUtil
      *  The resulting sorted category array $cats updated by reference nothing is returned.
      *
      * @param array  &$cats The categories array
-     * @param string $func Which compare function to use (determines field to be used for comparison) (optional) (defaylt='cmpName')
+     * @param string $func Which compare function to use (determines field to be used for comparison) (optional) (default='compareName')
      *
      * @return void
      */
-    public static function sortByLocale(&$cats, $func = 'cmpName')
+    public static function sortByLocale(&$cats, $func = 'compareName')
     {
         @trigger_error('CategoryUtil is deprecated. please use the category sorting helper instead.', E_USER_DEPRECATED);
 

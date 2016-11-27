@@ -34,9 +34,9 @@ Contains methods used for performing or amending the sorting of categories.
 
 The class makes the following methods available:
 
-    - cmpName($catA, $catB)
-    - cmpDesc($catA, $catB)
-    - sortByLocale(&$cats, $func = 'cmpName')
+    - compareName($catA, $catB)
+    - compareDesc($catA, $catB)
+    - sortByLocale(&$cats, $func = 'compareName')
     - resequence($cats, $step = 1)
     - insertTreeLeaf(&$tree, $entry, $currentpath = null)
     - sortTree($tree, &$cats)

@@ -41,7 +41,7 @@ class CategorySortingHelper
      *
      * @return The resulting compare value
      */
-    public function cmpName($catA, $catB)
+    public function compareName($catA, $catB)
     {
         $lang = $this->requestStack->getCurrentRequest()->getLocale();
 
@@ -64,7 +64,7 @@ class CategorySortingHelper
      *
      * @return The resulting compare value
      */
-    public function cmpDesc($catA, $catB)
+    public function compareDesc($catA, $catB)
     {
         $lang = $this->requestStack->getCurrentRequest()->getLocale();
 
@@ -81,13 +81,13 @@ class CategorySortingHelper
      *  The resulting sorted category array $cats updated by reference nothing is returned.
      *
      * @param array  &$cats The categories array
-     * @param string $func Which compare function to use (determines field to be used for comparison) (optional) (defaylt='cmpName')
+     * @param string $func Which compare function to use (determines field to be used for comparison) (optional) (default='compareName')
      *
      * @return void
      */
-    public function sortByLocale(&$cats, $func = 'cmpName')
+    public function sortByLocale(&$cats, $func = 'compareName')
     {
-        usort($cats, $func);
+        usort($cats, [$this, $func]);
 
         return;
     }
