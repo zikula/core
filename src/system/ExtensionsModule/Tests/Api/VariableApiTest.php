@@ -40,10 +40,7 @@ class VariableApiTest extends \PHPUnit_Framework_TestCase
         ;
 
         $repo = new ExtensionVarStubRepository();
-        $requestStack = $this
-            ->getMockBuilder('Symfony\Component\HttpFoundation\RequestStack')
-            ->getMock();
-        $this->api = new VariableApi(true, $repo, $kernel, $requestStack, ['protected.systemvars' => []]);
+        $this->api = new VariableApi(true, $repo, $kernel, ['protected.systemvars' => []]);
     }
 
     /**
