@@ -7,6 +7,7 @@
         <parameter key="zikula_settings_module.module_listener.class">Zikula\SettingsModule\Listener\ModuleListener</parameter>
         <parameter key="zikula_settings_module.locale_api.class">Zikula\SettingsModule\Api\LocaleApi</parameter>
         <parameter key="zikula_settings_module.listener.locale_listener.class">Zikula\SettingsModule\Listener\LocaleListener</parameter>
+        <parameter key="zikula_settings_module.listener.localized_variable_listener.class">Zikula\SettingsModule\Listener\LocalizedVariableListener</parameter>
     </parameters>
     <services>
         <service id="zikula_settings_module.container.link_container" class="%zikula_settings_module.container.link_container.class%">
@@ -34,6 +35,11 @@
         <service id="zikula_settings_module.listener.locale_listener" class="%zikula_settings_module.listener.locale_listener.class%">
             <argument type="service" id="kernel" />
             <argument type="service" id="zikula_settings_module.locale_api" />
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="zikula_settings_module.listener.localized_variable_listener" class="%zikula_settings_module.listener.localized_variable_listener.class%">
+            <argument type="service" id="zikula_extensions_module.api.variable" />
             <tag name="kernel.event_subscriber"/>
         </service>
     </services>

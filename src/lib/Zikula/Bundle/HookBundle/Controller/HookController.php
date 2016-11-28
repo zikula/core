@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
-use Zikula\Module\ExtensionLibraryModule\Entity\ExtensionEntity;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**

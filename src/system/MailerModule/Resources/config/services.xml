@@ -16,6 +16,7 @@
 
         <service id="zikula_mailer_module.api.mailer" class="%zikula_mailer_module.api.mailer.class%">
             <argument>%installed%</argument>
+            <argument type="service" id="kernel" />
             <argument type="service" id="translator.default" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="zikula.dynamic_config_dumper" />

@@ -153,7 +153,7 @@ class ExtensionsExtension extends \Twig_Extension
         $actions = [];
         switch ($extension->getState()) {
             case ExtensionApi::STATE_ACTIVE:
-                if (!ZikulaKernel::isCoreModule($extension->getName())) {
+                if ($extension->getName() == 'ZikulaPageLockModule' || !ZikulaKernel::isCoreModule($extension->getName())) {
                     $actions[] = [
                         'url' => $this->router->generate('zikulaextensionsmodule_module_deactivate', ['id' => $extension->getId(), 'csrftoken' => $csrfToken]),
                         'icon' => 'minus-circle text-danger',

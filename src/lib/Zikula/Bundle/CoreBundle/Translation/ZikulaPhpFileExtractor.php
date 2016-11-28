@@ -11,19 +11,25 @@
 
 namespace Zikula\Bundle\CoreBundle\Translation;
 
-use JMS\TranslationBundle\Exception\RuntimeException;
 use Doctrine\Common\Annotations\DocParser;
-use JMS\TranslationBundle\Model\FileSource;
-use JMS\TranslationBundle\Model\Message;
-use JMS\TranslationBundle\Annotation\Meaning;
 use JMS\TranslationBundle\Annotation\Desc;
 use JMS\TranslationBundle\Annotation\Ignore;
-use JMS\TranslationBundle\Translation\Extractor\FileVisitorInterface;
-use JMS\TranslationBundle\Model\MessageCatalogue;
+use JMS\TranslationBundle\Annotation\Meaning;
+use JMS\TranslationBundle\Exception\RuntimeException;
 use JMS\TranslationBundle\Logger\LoggerAwareInterface;
+use JMS\TranslationBundle\Model\FileSource;
+use JMS\TranslationBundle\Model\Message;
+use JMS\TranslationBundle\Model\MessageCatalogue;
+use JMS\TranslationBundle\Translation\Extractor\FileVisitorInterface;
+use PhpParser\Node;
+use PhpParser\Node\Stmt\Namespace_;
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Scalar\String_;
+use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitor;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Psr\Log\LoggerInterface;
 use Zikula\Core\AbstractBundle;
 
 /**
@@ -31,7 +37,7 @@ use Zikula\Core\AbstractBundle;
  *
  * It parses all zikula-style translation calls.
  */
-class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterface, \PHPParser_NodeVisitor
+class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterface, NodeVisitor
 {
     /**
      * @var string
@@ -39,7 +45,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
     private $domain = '';
 
     /**
-     * @var \PHPParser_NodeTraverser
+     * @var NodeTraverser
      */
     private $traverser;
 
@@ -64,7 +70,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
     private $logger;
 
     /**
-     * @var \PHPParser_Node
+     * @var Node
      */
     private $previousNode;
 
@@ -104,7 +110,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
             $this->bundles[$bundle->getNamespace()] = $bundle->getName();
         }
 
-        $this->traverser = new \PHPParser_NodeTraverser();
+        $this->traverser = new NodeTraverser();
         $this->traverser->addVisitor($this);
     }
 
@@ -116,13 +122,13 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
         $this->logger = $logger;
     }
 
-    public function enterNode(\PHPParser_Node $node)
+    public function enterNode(Node $node)
     {
         /**
          * determine domain from namespace of files.
          * Finder appears to start with root level files so Namespace is correct for remaining files
          */
-        if ($node instanceof \PHPParser_Node_Stmt_Namespace) {
+        if ($node instanceof Namespace_) {
             if (isset($node->name)) {
                 $bundle = $this->getBundleFromNodeNamespace($node->name->toString());
                 if (isset($bundle) && $bundle instanceof AbstractBundle) {
@@ -140,7 +146,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
                 return;
             }
         }
-        if (!$node instanceof \PHPParser_Node_Expr_MethodCall
+        if (!$node instanceof MethodCall
             || !is_string($node->name)
             || !in_array(strtolower($node->name), $this->methodNames)
         ) {
@@ -163,7 +169,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
             }
         }
 
-        if (!$node->args[0]->value instanceof \PHPParser_Node_Scalar_String) {
+        if (!$node->args[0]->value instanceof String_) {
             if ($ignore) {
                 return;
             }
@@ -171,7 +177,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
             $message = sprintf('Can only extract the translation id from a scalar string, but got "%s". Please refactor your code to make it extractable, or add the doc comment /** @Ignore */ to this code element (in %s on line %d).', get_class($node->args[0]->value), $this->file, $node->args[0]->value->getLine());
 
             if ($this->logger) {
-                $this->logger->err($message);
+                $this->logger->error($message);
 
                 return;
             }
@@ -189,7 +195,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
         $domainIndex = array_search(strtolower($node->name), $this->methodNames);
 
         if (isset($node->args[$domainIndex])) {
-            if (!$node->args[$domainIndex]->value instanceof \PHPParser_Node_Scalar_String) {
+            if (!$node->args[$domainIndex]->value instanceof String_) {
                 if ($ignore) {
                     return;
                 }
@@ -197,7 +203,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
                 $message = sprintf('Can only extract the translation domain from a scalar string, but got "%s". Please refactor your code to make it extractable, or add the doc comment /** @Ignore */ to this code element (in %s on line %d).', get_class($node->args[0]->value), $this->file, $node->args[0]->value->getLine());
 
                 if ($this->logger) {
-                    $this->logger->err($message);
+                    $this->logger->error($message);
 
                     return;
                 }
@@ -229,7 +235,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
     {
     }
 
-    public function leaveNode(\PHPParser_Node $node)
+    public function leaveNode(Node $node)
     {
     }
 
@@ -245,7 +251,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
     {
     }
 
-    private function getDocCommentForNode(\PHPParser_Node $node)
+    private function getDocCommentForNode(Node $node)
     {
         // check if there is a doc comment for the ID argument
         // ->trans(/** @Desc("FOO") */ 'my.id')

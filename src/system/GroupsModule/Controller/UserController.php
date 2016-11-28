@@ -94,8 +94,8 @@ class UserController extends AbstractController
 
         foreach ($groups as $group) {
             if ($this->hasPermission('ZikulaGroupsModule::', $group['gid'].'::', ACCESS_OVERVIEW)) {
-                $group['typeLabel']  = $this->__(/** @ignore */$typeLabels[$group['gtype']]);
-                $group['stateLabel'] = $this->__(/** @ignore */$stateLabels[$group['state']]);
+                $group['typeLabel']  = $this->__(/** @Ignore */$typeLabels[$group['gtype']]);
+                $group['stateLabel'] = $this->__(/** @Ignore */$stateLabels[$group['state']]);
 
                 if (true == $isLoggedIn && $this->hasPermission('ZikulaGroupsModule::', $group['gid'].'::', ACCESS_READ)) {
                     // The right to apply

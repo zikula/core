@@ -138,7 +138,7 @@ class ModuleController extends AbstractController
         $this->get('zikula_core.common.csrf_token_handler')->validate($csrftoken);
 
         $extension = $this->getDoctrine()->getManager()->find('ZikulaExtensionsModule:ExtensionEntity', $id);
-        if (\ZikulaKernel::isCoreModule($extension->getName())) {
+        if ($extension->getName() != 'ZikulaPageLockModule' && \ZikulaKernel::isCoreModule($extension->getName())) {
             $this->addFlash('error', $this->__f('Error! You cannot deactivate this extension [%s]. It is a mandatory core extension, and is required by the system.', ['%s' => $extension->getName()]));
         } else {
             // Update state
