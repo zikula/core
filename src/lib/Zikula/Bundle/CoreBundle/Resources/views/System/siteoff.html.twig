@@ -171,18 +171,16 @@
                     {{ __('This site needs to be upgraded, please contact the system administrator.') }}
                 {% endif %}
             </h2>
-            {% if not versionsEqual %}
-                <p>
-                    <a href="#" class="showloginbutton" onclick="toggleLoginBox(); return false;" title="{{ __('Administrator log-in') }}">
-                        <strong>{{ __('Administrator log-in') }}</strong>
-                    </a>
-                </p>
-                <div id="login">
-                    {{ form_start(form) }}
-                    {{ form_widget(form) }}
-                    {{ form_end(form) }}
-                </div>
-            {% endif %}
+            <p>
+                <a href="#" class="showloginbutton" onclick="toggleLoginBox(); return false;" title="{{ __('Administrator log-in') }}">
+                    <strong>{{ __('Administrator log-in') }}</strong>
+                </a>
+            </p>
+            <div id="login">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+            </div>
             <p>
                 <a href="http://zikula.org"><img src="{{ asset('bundles/core/images/zk-power.png') }}" alt="{{ __('Proudly powered by Zikula') }}" title="{{ __('Proudly powered by Zikula') }}" width="96" height="30" /></a>
             </p>
