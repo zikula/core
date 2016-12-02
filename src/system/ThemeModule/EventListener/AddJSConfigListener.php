@@ -107,7 +107,7 @@ class AddJSConfigListener implements EventSubscriberInterface
 
         $config = [
             'entrypoint' => $this->variableApi->getSystemVar('entrypoint', 'index.php'),
-            'baseURL' => $event->getRequest()->getBaseUrl() . '/',
+            'baseURL' => $event->getRequest()->getSchemeAndHttpHost() . '/',
             'baseURI' => $event->getRequest()->getBasePath(),
             'ajaxtimeout' => (int)$this->variableApi->getSystemVar('ajaxtimeout', 5000),
             'lang' => $event->getRequest()->getLocale(),
