@@ -37,7 +37,7 @@ parameters:
 
     # Changing the current umask to the octal "022" will set directory permissions
     # to "755", and file permissions to "644" (for directories such as
-    # "app/cache" and "app/logs"). Changing the current umask to the octal "02"
+    # "var/cache" and "var/logs"). Changing the current umask to the octal "02"
     # will set directory permissions to "775", and file permissions to "664".
     # Changing the current umask to the octal "0" will set (insecure) directory
     # permissions to "777", and file permissions to "666". Note that using the ACL
