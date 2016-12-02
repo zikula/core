@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0148f7b4281f8a8f256bcfa7583efd8e",
+    "hash": "2af9dbadc646440a2fe759cf07dd25b1",
     "content-hash": "41f4f5175afbf2e67da4f1c675418c59",
     "packages": [
         {
@@ -2056,7 +2056,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -4621,12 +4621,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "9f7def97050ffaeb6a1694376d73418d4320177a"
+                "reference": "d872fe1b69bef822f64114a0b5ffe2255f46d141"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/9f7def97050ffaeb6a1694376d73418d4320177a",
-                "reference": "9f7def97050ffaeb6a1694376d73418d4320177a",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/d872fe1b69bef822f64114a0b5ffe2255f46d141",
+                "reference": "d872fe1b69bef822f64114a0b5ffe2255f46d141",
                 "shasum": ""
             },
             "require": {
@@ -4687,7 +4687,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2016-11-27 18:17:10"
+            "time": "2016-12-02 12:00:21"
         },
         {
             "name": "zikula/wizard",
