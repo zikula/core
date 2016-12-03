@@ -14,7 +14,7 @@
 {% block body %}
 <div class="container">
     <div id="content">
-        {% include headertemplate %}
+        {{ include(headertemplate) }}
 
         <div id="maincontent" class="text-left">
             {{ showflashes() }}

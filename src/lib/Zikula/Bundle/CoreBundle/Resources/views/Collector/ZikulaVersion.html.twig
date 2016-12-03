@@ -29,7 +29,7 @@
         <a href="{{ collector.ghZikulaBootstrapDocsUrl }}">Styling Documentation</a>
     </div>
     {% endset %}
-    {% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { 'link': profiler_url } %}
+    {{ include('@WebProfilerBundle/Profiler/toolbar_item.html.twig', { 'link': profiler_url }) }}
 {% endblock %}
 
 {% block menu %}

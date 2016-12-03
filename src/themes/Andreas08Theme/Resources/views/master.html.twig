@@ -1,4 +1,4 @@
-{% include 'ZikulaAndreas08Theme:Include:header.html.twig' %}
+{{ include('@ZikulaAndreas08Theme/Include/header.html.twig') }}
 <div id="theme_navigation_bar" class="clearfix">
     {% set topnavblock = showblockposition('topnav') %}
     {% if topnavblock is empty %}
@@ -12,5 +12,5 @@
     {% endif %}
     {{ showblockposition('search') }}
 </div>
-{% include "ZikulaAndreas08Theme:Body:" ~ themevars.master ~ ".html.twig" %}
-{% include 'ZikulaAndreas08Theme:Include:footer.html.twig' %}
+{{ include('@ZikulaAndreas08Theme/Body/' ~ themevars.master ~ '.html.twig') }}
+{{ include('@ZikulaAndreas08Theme/Include/footer.html.twig') }}
