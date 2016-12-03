@@ -486,7 +486,7 @@ webshims.isReady('swfmini', true);
 		var message = '';
 		var elem = this[0];
 		if(elem){
-			message = webshims.getContentValidationMessage(elem, false, key) || $.prop(elem, 'customValidationMessage') || $.prop(elem, 'validationMessage');
+			message = webshims.getContentValidationMessage(elem, false, key) || $.prop(elem, 'customValidationMessage') || ($.prop(elem, 'validationMessage') || '');
 		}
 		return message;
 	};
