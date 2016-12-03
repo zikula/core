@@ -66,19 +66,22 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      *
      * This will register the definition as a service.
      *
-     * @param string                           $id         Service Id
-     * @param Zikula_ServiceManager_Definition $definition Service definition
-     * @param boolean                          $shared     Shared type
+     * @param string    $id         Service Id
+     * @param Object    $definition Service definition
+     * @param boolean   $shared     Shared type
      *
      * @deprecated since 1.4.0
      * @see \Symfony\Component\DependencyInjection\ContainerBuilder::setDefinition()
      *
      * @throws InvalidArgumentException If service ID is already registered
      *
-     * @return void
+     * @return \Symfony\Component\DependencyInjection\Definition
      */
-    public function registerService($id, Zikula_ServiceManager_Definition $definition, $shared = true)
+    public function registerService($id, $definition, $shared = true)
     {
+        if (!($definition instanceof Zikula_ServiceManager_Definition) && !($definition instanceof \Symfony\Component\DependencyInjection\Definition)) {
+            throw new InvalidArgumentException(sprintf('%s must be an instance of Zikula_ServiceManager_Definition or Symfony\Component\DependencyInjection\Definition', $definition));
+        }
         if ($shared) {
             $definition->setScope(self::SCOPE_CONTAINER);
         } else {
