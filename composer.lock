@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2af9dbadc646440a2fe759cf07dd25b1",
-    "content-hash": "41f4f5175afbf2e67da4f1c675418c59",
+    "hash": "a1007f46712f63305b89dc8c991ac649",
+    "content-hash": "42edc7ab8da973719fa8dacc144bafef",
     "packages": [
         {
             "name": "abeautifulsite/jquery-minicolors",
@@ -4048,20 +4048,19 @@
         },
         {
             "name": "twitter/typeahead.js",
-            "version": "v0.11.1",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/twitter/typeahead.js.git",
-                "reference": "588440f66559714280628a4f9799f0c4eb880a4a"
+                "url": "https://github.com/corejavascript/typeahead.js.git",
+                "reference": "a79d0865af787f0aba2a544995fd5cc358c13689"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twitter/typeahead.js/zipball/588440f66559714280628a4f9799f0c4eb880a4a",
-                "reference": "588440f66559714280628a4f9799f0c4eb880a4a",
+                "url": "https://api.github.com/repos/corejavascript/typeahead.js/zipball/a79d0865af787f0aba2a544995fd5cc358c13689",
+                "reference": "a79d0865af787f0aba2a544995fd5cc358c13689",
                 "shasum": ""
             },
             "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -4077,7 +4076,11 @@
                 "autocomplete",
                 "typeahead"
             ],
-            "time": "2015-04-27 04:02:14"
+            "support": {
+                "issues": "https://github.com/twitter/typeahead.js/issues",
+                "source": "https://github.com/corejavascript/typeahead.js/tree/v1.0.1"
+            },
+            "time": "2016-11-17 14:24:27"
         },
         {
             "name": "vakata/jstree",
