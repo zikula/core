@@ -328,7 +328,6 @@ class ExtensionHelper
         $className = $bundle->getInstallerClass();
         $reflectionInstaller = new \ReflectionClass($className);
         if ($reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) { // @deprecated remove at Core-2.0
-
             return $reflectionInstaller->newInstanceArgs([$this->container, $bundle]);
         } elseif (!$reflectionInstaller->isSubclassOf('\Zikula\Core\ExtensionInstallerInterface')) {
             throw new \RuntimeException($this->translator->__f("%s must implement ExtensionInstallerInterface", ['%s' => $className]));

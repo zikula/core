@@ -109,7 +109,6 @@ class AdminController extends AbstractController
         }
         array_multisort($sortAarr, SORT_ASC, $groupMembers);
 
-
         // check for a letter parameter
         if (strlen($letter) != 1) {
             $letter = '*';

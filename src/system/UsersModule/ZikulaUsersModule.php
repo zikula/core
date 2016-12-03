@@ -10,7 +10,6 @@
  */
 
 namespace Zikula\UsersModule {
-
     use Symfony\Component\DependencyInjection\ContainerBuilder;
     use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
     use Zikula\UsersModule\DependencyInjection\Compiler\AuthenticationMethodCollectorPass;

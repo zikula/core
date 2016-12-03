@@ -37,7 +37,6 @@
  */
 function smarty_insert_getstatusmsg($params, $view)
 {
-
     /**
      * Note: The "assign" parameter is handled by the smarty_core_run_insert_handler()
      * function in lib/vendor/Smarty/internals/core.run_insert_handler.php.

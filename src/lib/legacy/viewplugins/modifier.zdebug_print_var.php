@@ -16,7 +16,7 @@
  * @param integer      $depth  Depth to print arrays
  * @param integer      $length Max length
  *
- * @link http://smarty.php.net/manual/en/language.modifier.debug.print.var.php
+ * @see http://smarty.php.net/manual/en/language.modifier.debug.print.var.php
  *
  * @return string
  */
