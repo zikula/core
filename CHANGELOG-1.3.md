@@ -5,7 +5,7 @@ CHANGELOG - ZIKULA 1.3.11
 - Add filter parameter to Menutree in order to work better with Clip (#2597)
 - Fixed user block is not shown and not editable (#2891)
 - Fixed getPluralOffset to return numbers instead of boolean values (#3010)
-- Fixed possible jcss vulnerability in Windows environment (#3237, #3238)
+- Fixed possible jcss vulnerability in Windows environment (#3237, #3239)
 
 
 CHANGELOG - ZIKULA 1.3.10
