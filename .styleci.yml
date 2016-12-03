@@ -5,8 +5,9 @@ enabled:
 
 disabled:
   - concat_without_spaces
-  - no_empty_lines_after_phpdocs
   - multiline_array_trailing_comma
+  - no_blank_lines_after_throw
+  - no_empty_lines_after_phpdocs
   - php_unit_fqcn_annotation
   - phpdoc_align
   - phpdoc_no_empty_return
