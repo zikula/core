@@ -614,7 +614,7 @@ webshims.register('form-number-date-api', function($, webshims, window, document
 	}
 	
 });
-(function ($) {
+;(function($){
 	"use strict";
 
 	var isNumber = function(string){
@@ -1234,7 +1234,7 @@ webshims.register('form-number-date-api', function($, webshims, window, document
 		webshims.isReady('range-ui', true);
 	}
 })(window.webshims ? webshims.$ : jQuery);
-webshims.register('form-number-date-ui', function ($, webshims, window, document, undefined, options) {
+;webshims.register('form-number-date-ui', function($, webshims, window, document, undefined, options){
 	"use strict";
 	var curCfg;
 	var formcfg = webshims.formcfg;
@@ -1429,8 +1429,8 @@ webshims.register('form-number-date-ui', function ($, webshims, window, document
 		};
 	})();
 	var addZero = function(val){
-		if(!val){return "";}
 		val = val+'';
+		if(!val){return "";}
 		return val.length == 1 ? '0'+val : val;
 	};
 	
@@ -1509,13 +1509,12 @@ webshims.register('form-number-date-ui', function ($, webshims, window, document
 				",": ","
 			},
 			numberSigns: '.',
-			dateSigns: '/',
+			dateSigns: '-',
 			timeSigns: ":. ",
-			dFormat: "/",
+			dFormat: "-",
 			patterns: {
-				d: "mm/dd/yy"
+				d: "yy-mm-dd"
 			},
-			meridian: ['AM', 'PM'],
 			month:  {
 				currentText: 'This month'
 			},
@@ -1534,7 +1533,7 @@ webshims.register('form-number-date-ui', function ($, webshims, window, document
 				"dayNamesShort": ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
 				"dayNamesMin": ["Su","Mo","Tu","We","Th","Fr","Sa"],
 				"weekHeader": "Wk",
-				"firstDay": 0,
+				"firstDay": 1,
 				"isRTL": false,
 				"showMonthAfterYear": false,
 				"yearSuffix": ""
@@ -1542,19 +1541,29 @@ webshims.register('form-number-date-ui', function ($, webshims, window, document
 		}, formcfg.en || {});
 		
 		if(!formcfg['en-US']){
-			formcfg['en-US'] = $.extend(true, {}, formcfg['en']);
+			formcfg['en-US'] = $.extend(true, {}, formcfg.en, {
+				date: {firstDay: 0},
+				patterns: {d: "mm/dd/yy"},
+				dateSigns: '/',
+				dFormat: "/",
+				meridian: ['AM', 'PM']
+				
+			});
 		}
 		if(!formcfg['en-GB']){
 			formcfg['en-GB'] = $.extend(true, {}, formcfg.en, {
-				date: {firstDay: 1}, 
-				patterns: {d: "dd/mm/yy"}
+				date: {firstDay: 1},
+				patterns: {d: "dd/mm/yy"},
+				dateSigns: '/',
+				dFormat: "/",
+				meridian: ['AM', 'PM']
 			});
 		}
 		if(!formcfg['en-AU']){
 			formcfg['en-AU'] = $.extend(true, {}, formcfg['en-GB']);
 		}
 		if(!formcfg['']){
-			formcfg[''] = formcfg['en-US'];
+			formcfg[''] = formcfg['en'];
 		}
 		
 		curCfg = formcfg[''];

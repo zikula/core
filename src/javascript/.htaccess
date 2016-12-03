@@ -13,7 +13,7 @@
     Require all denied
 </IfModule>
 
-<FilesMatch "(?i)\.(css|gif|jpg|jpeg|js|png)$">
+<FilesMatch "(?i)\.(css|gif|jpg|jpeg|js|png|swf)$">
     # Apache 2.2
     <IfModule !mod_authz_core.c>
         Order allow,deny

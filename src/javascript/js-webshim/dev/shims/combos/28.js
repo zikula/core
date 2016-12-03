@@ -1051,7 +1051,7 @@ webshims.defineNodeNamesProperties(['input', 'button'], formSubmitterDescriptors
 			message = getMessageFromObj(currentValidationMessage.badInput, elem);
 		}
 		if(!message){
-			message = getMessageFromObj(validityMessages[''][name], elem) || $.prop(elem, 'validationMessage');
+			message = getMessageFromObj(validityMessages[''][name], elem) || ($.prop(elem, 'validationMessage') || '').replace(lReg, '&lt;').replace(gReg, '&gt;');
 			if(name != 'customError'){
 				webshims.info('could not find errormessage for: '+ name +' / '+ $.prop(elem, 'type') +'. in language: '+webshims.activeLang());
 			}
