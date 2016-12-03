@@ -103,3 +103,7 @@ col-sm-9
     {{ macros.helpBlock(help) }}
     {{ macros.alertBlock(alert) }}
 {%- endblock choice_widget_expanded %}
+
+{% block form_errors -%}
+    {{ parent()|replace({'<span class="glyphicon glyphicon-exclamation-sign"></span>': '<i class="fa fa-warning"></i>'})|raw }}
+{%- endblock form_errors %}
