@@ -33,6 +33,7 @@ if (!$f) {
 }
 
 // clean $f
+$f = str_replace('\\', '', $f);
 $f = preg_replace('`/`', '', $f);
 
 // set full path to the file

@@ -31,6 +31,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Fixed many issues with translation in the Core installer and upgrader (#2919, #3192).
     - Fixed issue with using permissions to hide blocks (#3200).
     - Refactored PhpParser usage in ZikulaPhpFileExtractor to namespaces (#3183).
+    - Fixed possible jcss vulnerability in Windows environment (#3237).
 
  - Features:
     - Lost password functionality has been simplified to work without an additional (confusing) confirmation step (#1781, #3178).
