@@ -5,6 +5,7 @@ enabled:
 
 disabled:
   - concat_without_spaces
+  - empty_return
   - multiline_array_trailing_comma
   - no_blank_lines_after_throw
   - no_empty_lines_after_phpdocs
@@ -21,7 +22,6 @@ disabled:
   - spaces_cast
   - unalign_double_arrow
   - unalign_equals
-  - empty_return
 
 finder:
   exclude:
