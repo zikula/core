@@ -37,7 +37,7 @@ class CategoriesType extends AbstractType
         foreach ($registries as $registryId => $categoryId) {
             $builder->add(
                 'registry_' . $registryId,
-                'entity',
+                'Symfony\Bridge\Doctrine\Form\Type\EntityType',
                 [
                     'attr' => $options['attr'],
                     'required' => $options['required'],
