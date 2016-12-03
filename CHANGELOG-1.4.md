@@ -32,6 +32,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Fixed issue with using permissions to hide blocks (#3200).
     - Refactored PhpParser usage in ZikulaPhpFileExtractor to namespaces (#3183).
     - Fixed possible jcss vulnerability in Windows environment (#3237).
+    - Use namespaced include notation in themes (#3230, #3246).
 
  - Features:
     - Lost password functionality has been simplified to work without an additional (confusing) confirmation step (#1781, #3178).
