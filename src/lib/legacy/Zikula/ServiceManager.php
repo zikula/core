@@ -67,7 +67,7 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      * This will register the definition as a service.
      *
      * @param string    $id         Service Id
-     * @param Object    $definition Service definition
+     * @param object    $definition Service definition
      * @param boolean   $shared     Shared type
      *
      * @deprecated since 1.4.0
