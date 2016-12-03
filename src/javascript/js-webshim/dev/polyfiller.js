@@ -137,7 +137,7 @@
 	}
 
 	$.extend(webshims, {
-		version: '1.15.6',
+		version: '1.16.0',
 
 		cfg: {
 			enhanceAuto: window.Audio && (!window.matchMedia || matchMedia('(min-device-width: 721px)').matches),
@@ -147,7 +147,7 @@
 			loadStyles: true,
 			wsdoc: document,
 			wspopover: {appendTo: 'auto', hideOnBlur: true},
-			ajax: {},
+			ajax: {crossDomain: true},
 			loadScript: function(src, success){
 				$.ajax($.extend({}, webCFG.ajax, {url: src, success: success, dataType: 'script', cache: true, global: false, dataFilter: addSource}));
 			},
@@ -203,7 +203,7 @@
 				if(WSDEBUG){
 					for(var i = 0; i < features.length; i++){
 						if(loaded[features[i]]){
-							webshims.error(features[i] +' already loaded, you might want to use updatePolyfill instead? see: bit.ly/12BtXX3');
+							webshims.error(features[i] +' already loaded, you might want to use updatePolyfill instead? see: afarkas.github.io/webshim/demos/#Shiv-dynamic-html5');
 						}
 						loaded[features[i]] = true;
 					}
@@ -725,10 +725,6 @@
 		firstRun = function(){
 			if(!firstRun.run){
 
-				if(webCFG.debug || (!('crossDomain' in webCFG.ajax) && location.protocol.indexOf('http'))){
-					webCFG.ajax.crossDomain = true;
-				}
-
 				if(WSDEBUG && $.mobile && ($.mobile.textinput || $.mobile.rangeslider || $.mobile.button)){
 					webshims.info('jQM textinput/rangeslider/button detected waitReady was set to false. Use webshims.ready("featurename") to script against polyfilled methods/properties');
 
@@ -993,7 +989,7 @@
 
 	addPolyfill('usermedia-core', {
 		f: 'usermedia',
-		test: userMediaTest && window.URL,
+		test: userMediaTest && !!window.URL,
 		d: ['url', DOMSUPPORT]
 	});
 
@@ -1097,7 +1093,7 @@
 
 		webshims.validationMessages = webshims.validityMessages = {
 			langSrc: 'i18n/formcfg-',
-			availableLangs: "ar ca cs el es fa fr he hi hu it ja lt nl no pl pt pt-BR pt-PT ru sv zh-CN zh-TW".split(' ')
+			availableLangs: "ar bg ca cs el es fa fi fr he hi hu it ja lt nl no pl pt pt-BR pt-PT ru sv zh-CN zh-TW".split(' ')
 		};
 		webshims.formcfg = $.extend({}, webshims.validationMessages);
 

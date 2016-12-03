@@ -1,6 +1,6 @@
 (function($) {
     $.webshim.bugs.bustedValidity = !('minLength' in document.createElement('input'));
-    $.webshims.setOptions('basePath', Zikula.Config.baseURL+'javascript/js-webshim/minified/shims/');
+    $.webshims.setOptions('basePath', Zikula.Config.baseURL + Zikula.Config.baseURI + '/javascript/js-webshim/minified/shims/');
     $.webshims.setOptions('ajax', {
         method: 'GET'
     });
