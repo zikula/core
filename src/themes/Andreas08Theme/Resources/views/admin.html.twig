@@ -1,4 +1,4 @@
-{% include 'ZikulaAndreas08Theme:Include:header.html.twig' %}
+{{ include('@ZikulaAndreas08Theme/Include/header.html.twig') }}
 
 <div id="theme_navigation_bar">
     <ul class="list-inline">
@@ -27,5 +27,5 @@
     </ul>
 </div>
 
-{% include "ZikulaAndreas08Theme:Body:" ~ themevars.admin ~ ".html.twig" %}
-{% include 'ZikulaAndreas08Theme:Include:footer.html.twig' %}
+{{ include('@ZikulaAndreas08Theme/Body/' ~ themevars.admin ~ '.html.twig') }}
+{{ include('@ZikulaAndreas08Theme/Include/footer.html.twig') }}
