@@ -56,6 +56,7 @@ CHANGELOG - ZIKULA 1.4.x
     - jquery ui updates from 1.12.0.1 to 1.12.1
     - justinrainbow/json-schema added in version 4.0.1
     - jstree updated from 3.3.2 to 3.3.3
+    - js-webshim updated to 1.16.0
     - knp-menu installed at version 2.2.0
     - knp-menu-bundle installed at version 2.1.3
     - liip/imagine-bundle installed at 1.6.0
