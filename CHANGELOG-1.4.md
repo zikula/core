@@ -46,6 +46,8 @@ CHANGELOG - ZIKULA 1.4.x
     - Added LocaleApi for access to locale definitions.
     - Added Asset merger feature for twig themes (#2912, #3138).
     - Added validation of extension composer files (#2669, #3151).
+    - LegalModule updated to Core-2.0 Spec.
+    - ProfileModule updated to Core-2.0 Spec.
 
  - Vendor updates:
     - doctrine dbal updated from 2.5.4 to 2.5.5
