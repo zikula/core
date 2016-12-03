@@ -33,7 +33,7 @@ class CapabilityApiTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getExtensionsCapableOfProvider
-     * @covers  CapabilityApi::getExtensionsCapableOf
+     * @covers  \CapabilityApi::getExtensionsCapableOf
      * @param $type
      * @param $count
      * @param $names
@@ -49,7 +49,7 @@ class CapabilityApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers CapabilityApi::isCapable
+     * @covers \CapabilityApi::isCapable
      */
     public function testIsCapable()
     {
@@ -63,7 +63,7 @@ class CapabilityApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers CapabilityApi::getCapabilitiesOf
+     * @covers \CapabilityApi::getCapabilitiesOf
      */
     public function testGetCapabilitiesOf()
     {

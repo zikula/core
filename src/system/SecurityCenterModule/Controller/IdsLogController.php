@@ -120,7 +120,6 @@ class IdsLogController extends AbstractController
         ]);
         $sortableColumns->setOrderBy($sortableColumns->getColumn($sortField), strtoupper($sortDirection));
 
-
         $tokenHandler = $this->get('zikula_core.common.csrf_token_handler');
 
         $templateParameters = [

@@ -114,7 +114,6 @@ class ObjectUtil
     {
         if (!is_array($obj)) {
             throw new \Exception(__f('%s called on a non-object', 'ObjectUtil::setStandardFieldsOnObjectCreate'));
-
             return;
         }
 
@@ -146,7 +145,6 @@ class ObjectUtil
     {
         if (!is_array($obj)) {
             throw new \Exception(__f('%s called on a non-object', 'ObjectUtil::setStandardFieldsOnObjectUpdate'));
-
             return;
         }
 

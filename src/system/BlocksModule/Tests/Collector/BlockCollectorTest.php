@@ -26,7 +26,7 @@ class BlockCollectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers BlockCollector::add
+     * @covers \BlockCollector::add
      */
     public function testAdd()
     {
@@ -48,7 +48,7 @@ class BlockCollectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers BlockCollector::add
+     * @covers \BlockCollector::add
      */
     public function testGet()
     {
@@ -63,7 +63,7 @@ class BlockCollectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers BlockCollector::getBlocks
+     * @covers \BlockCollector::getBlocks
      */
     public function testGetBlocks()
     {

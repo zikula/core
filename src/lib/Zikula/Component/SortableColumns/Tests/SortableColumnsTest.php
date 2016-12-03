@@ -42,7 +42,7 @@ class SortableColumnsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers SortableColumns::getColumn
+     * @covers \SortableColumns::getColumn
      */
     public function testGetColumn()
     {
@@ -52,7 +52,7 @@ class SortableColumnsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers SortableColumns::addColumn
+     * @covers \SortableColumns::addColumn
      */
     public function testAddColumn()
     {
@@ -62,7 +62,7 @@ class SortableColumnsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers SortableColumns::addColumns
+     * @covers \SortableColumns::addColumns
      */
     public function testAddColumns()
     {
@@ -76,7 +76,7 @@ class SortableColumnsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers SortableColumns::getDefaultColumn
+     * @covers \SortableColumns::getDefaultColumn
      */
     public function testGetDefaultColumn()
     {
@@ -87,7 +87,7 @@ class SortableColumnsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers SortableColumns::removeColumn
+     * @covers \SortableColumns::removeColumn
      */
     public function testRemoveColumn()
     {
@@ -96,7 +96,7 @@ class SortableColumnsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers SortableColumns::getSortDirection
+     * @covers \SortableColumns::getSortDirection
      */
     public function testGetSortDirection()
     {
@@ -104,7 +104,7 @@ class SortableColumnsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers SortableColumns::getSortColumn
+     * @covers \SortableColumns::getSortColumn
      */
     public function testGetSortColumn()
     {
@@ -113,7 +113,7 @@ class SortableColumnsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers SortableColumns::setOrderBy
+     * @covers \SortableColumns::setOrderBy
      */
     public function testSetOrderBy()
     {
@@ -124,7 +124,7 @@ class SortableColumnsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers SortableColumns::setOrderByFromRequest
+     * @covers \SortableColumns::setOrderByFromRequest
      */
     public function testSetOrderByFromRequest()
     {
@@ -139,8 +139,8 @@ class SortableColumnsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers SortableColumns::setAdditionalUrlParameters
-     * @covers SortableColumns::getAdditionalUrlParameters
+     * @covers \SortableColumns::setAdditionalUrlParameters
+     * @covers \SortableColumns::getAdditionalUrlParameters
      */
     public function testAdditionalUrlParameters()
     {
@@ -150,7 +150,7 @@ class SortableColumnsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider columnDefProvider
-     * @covers SortableColumns::generateSortableColumns
+     * @covers \SortableColumns::generateSortableColumns
      * @param $columnDef
      */
     public function testGenerateSortableColumns($col, $dir, $columnDef)
@@ -160,8 +160,8 @@ class SortableColumnsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers SortableColumns::generateSortableColumns
-     * @covers SortableColumns::setAdditionalUrlParameters
+     * @covers \SortableColumns::generateSortableColumns
+     * @covers \SortableColumns::setAdditionalUrlParameters
      */
     public function testGenerateSortableColumnsWithAdditionalUrlParameters()
     {

@@ -14,6 +14,6 @@ namespace Zikula\MenuModule\Entity\RepositoryInterface;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Common\Persistence\ObjectRepository;
 
-interface MenuItemRepositoryInterface extends ObjectRepository , Selectable
+interface MenuItemRepositoryInterface extends ObjectRepository, Selectable
 {
 }

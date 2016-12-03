@@ -161,7 +161,6 @@ class BundleSyncHelper
 
         $filethemes = $bundleThemes + LegacyBundleSyncHelper::scan();
 
-
         /**
          * Persist themes
          */

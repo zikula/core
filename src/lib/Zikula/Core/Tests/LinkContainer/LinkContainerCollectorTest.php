@@ -39,7 +39,7 @@ class LinkContainerCollectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers LinkContainerCollector::addContainer
+     * @covers \LinkContainerCollector::addContainer
      */
     public function testAddContainer()
     {
@@ -55,7 +55,7 @@ class LinkContainerCollectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers LinkContainerCollector::hasContainer
+     * @covers \LinkContainerCollector::hasContainer
      */
     public function testHasContainer()
     {
@@ -66,7 +66,7 @@ class LinkContainerCollectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers LinkContainerCollector::getLinks
+     * @covers \LinkContainerCollector::getLinks
      * @dataProvider linksProvider
      * @param string $extension
      * @param string $type
@@ -78,7 +78,7 @@ class LinkContainerCollectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers LinkContainerCollector::getAllLinksByType
+     * @covers \LinkContainerCollector::getAllLinksByType
      * @dataProvider allLinksProvider
      * @param string $type
      * @param array $expected
@@ -161,7 +161,6 @@ class LinkContainerCollectorTest extends \PHPUnit_Framework_TestCase
                     ]
                 ],
             ]],
-
         ];
     }
 }

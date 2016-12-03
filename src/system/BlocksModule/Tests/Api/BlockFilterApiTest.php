@@ -48,7 +48,7 @@ class BlockFilterApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers BlockFilterApi::getFilterAttributeChoices
+     * @covers \BlockFilterApi::getFilterAttributeChoices
      */
     public function testGetFilterAttributeChoices()
     {
@@ -64,7 +64,7 @@ class BlockFilterApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers BlockFilterApi::isDisplayable
+     * @covers \BlockFilterApi::isDisplayable
      * @dataProvider filterProvider
      * @param array $filter
      * @param bool $expected

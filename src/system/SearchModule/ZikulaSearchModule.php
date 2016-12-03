@@ -14,7 +14,6 @@
  */
 
 namespace Zikula\SearchModule {
-
     use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 
     /**
@@ -41,7 +40,6 @@ namespace {
 }
 
 namespace Zikula\Module\SearchModule {
-
     use Zikula\SearchModule\AbstractSearchable as AbstractSearchableActual;
 
     /**

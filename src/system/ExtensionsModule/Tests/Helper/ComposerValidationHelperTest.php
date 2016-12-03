@@ -40,7 +40,7 @@ class ComposerValidationHelperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ComposerValidationHelper::check()
+     * @covers \ComposerValidationHelper::check()
      * @dataProvider getFileNamesProvider
      * @param $fileName
      * @param $errors

@@ -105,7 +105,6 @@ class FormUtil
                     static $valid = ['R', 'REQUEST', 'G', 'GET', 'P', 'POST', 'C', 'COOKIE', 'F', 'FILES', 'GP', 'GETPOST'];
                     if (!in_array($source, $valid)) {
                         throw new \Exception(__f('Invalid input source [%s] received.', DataUtil::formatForDisplay($source)));
-
                         return $default;
                     }
                 }
