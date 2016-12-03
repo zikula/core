@@ -1334,7 +1334,6 @@ class DBUtil
 
         // given that we use quotes in our generated SQL, oracle requires the same quotes in the order-by
         if ($dbDriverName == 'oracle') {
-
             // anything which doesn't look like a basic ORDER BY clause (with possibly an ASC/DESC modifier)
             // we don't touch. To use such stuff with Oracle, you'll have to apply the quotes yourself.
 

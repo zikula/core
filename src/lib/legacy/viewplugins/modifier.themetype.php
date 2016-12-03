@@ -27,6 +27,5 @@ function smarty_modifier_themetype($string)
     switch ((int)$string) {
         case 3:
             return __('Theme 3.0');
-
     }
 }
