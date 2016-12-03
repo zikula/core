@@ -70,6 +70,7 @@ CHANGELOG - ZIKULA 1.4.x
     - symfony service definition validator updated from 1.2.5 to 1.2.6
     - symfony/polyfill-* updated from 1.2.0 to 1.3.0
     - twig updated from 1.24.1 to 1.28.2
+    - typeahead.js updated from 0.11.1 to 1.0.1
 
 * 1.4.3 (2016-09-02)
 
