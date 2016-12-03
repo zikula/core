@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+use Symfony\Component\DependencyInjection\Definition;
+
 /**
  * Imagine plugin definition.
  * @deprecated
@@ -58,7 +60,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
      */
     public function initialize()
     {
-        $definition = new Zikula_ServiceManager_Definition('SystemPlugin_Imagine_Manager', [
+        $definition = new Definition('SystemPlugin_Imagine_Manager', [
             new Zikula_ServiceManager_Reference('service_container'),
             new Zikula_ServiceManager_Reference($this->getServiceId())
         ]);
