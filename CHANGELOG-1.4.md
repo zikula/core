@@ -33,6 +33,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Refactored PhpParser usage in ZikulaPhpFileExtractor to namespaces (#3183).
     - Fixed possible jcss vulnerability in Windows environment (#3237).
     - Use namespaced include notation in themes (#3230, #3246).
+    - Block access to possibly malicious vendor demo file (#3260, #3261).
 
  - Features:
     - Lost password functionality has been simplified to work without an additional (confusing) confirmation step (#1781, #3178).
