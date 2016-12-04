@@ -34,6 +34,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Fixed possible jcss vulnerability in Windows environment (#3237).
     - Use namespaced include notation in themes (#3230, #3246).
     - Block access to possibly malicious vendor demo file (#3260, #3261).
+    - Fixed broken validation of duplicate user names during registration (#3256, #3263).
 
  - Features:
     - Lost password functionality has been simplified to work without an additional (confusing) confirmation step (#1781, #3178).
