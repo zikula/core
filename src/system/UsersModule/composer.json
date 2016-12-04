@@ -1,7 +1,7 @@
 {
     "name": "zikula/users-module",
     "version": "3.0.3",
-    "description": "Provides an interface for administering user accounts.",
+    "description": "User account administration",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
     "authors": [
