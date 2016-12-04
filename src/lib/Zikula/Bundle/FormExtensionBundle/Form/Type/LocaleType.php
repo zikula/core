@@ -36,6 +36,6 @@ class LocaleType extends AbstractType
 
     public function getParent()
     {
-        return 'Symfony\Component\Form\Extension\Core\Type\Choice';
+        return 'Symfony\Component\Form\Extension\Core\Type\ChoiceType';
     }
 }
