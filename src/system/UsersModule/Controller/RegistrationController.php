@@ -125,6 +125,15 @@ class RegistrationController extends AbstractController
                     $userEntity->setUname($formData['uname']);
                     $userEntity->setEmail($formData['email']);
                     $userEntity->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $authenticationMethod->getAlias());
+                    $validationErrors = $this->get('validator')->validate($userEntity);
+                    if (count($validationErrors) > 0) {
+                        foreach ($validationErrors as $validationError) {
+                            $this->addFlash('error', $validationError->getMessage());
+                        }
+
+                        return $this->redirectToRoute('zikulausersmodule_registration_register'); // try again.
+                    }
+
                     $this->get('zikula_users_module.helper.registration_helper')->registerNewUser($userEntity);
 
                     $formData['id'] = $authenticationMethodId;
