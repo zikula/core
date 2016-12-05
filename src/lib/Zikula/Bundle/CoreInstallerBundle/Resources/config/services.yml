@@ -1,4 +1,4 @@
-<parameters:
+parameters:
     zikula_core_installer.install_upgrade_check.class: Zikula\Bundle\CoreInstallerBundle\EventListener\InstallUpgradeCheckListener
     zikula_core_installer.controller.util.class: Zikula\Bundle\CoreInstallerBundle\Util\ControllerUtil
     zikula_core_installer.config.util.class: Zikula\Bundle\CoreInstallerBundle\Util\ConfigUtil
