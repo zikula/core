@@ -50,7 +50,7 @@ services:
     zikula_admin_module.admin_module_repository:
         class: %zikula_admin_module.admin_module_repository.class%
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
-        arguments: ["Zikula\AdminModule\Entity\AdminModuleEntity"]
+        arguments: ["ZikulaAdminModule:AdminModuleEntity"]
 
     zikula_admin_module.helper.admin_module_helper:
         class: %zikula_admin_module.helper.admin_module_helper.class%

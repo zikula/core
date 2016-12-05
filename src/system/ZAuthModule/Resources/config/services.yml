@@ -33,12 +33,12 @@ services:
     zikula_zauth_module.authentication_mapping_repository:
         class: %zikula_zauth_module.authentication_mapping_repository.class%
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
-        arguments: ["Zikula\ZAuthModule\Entity\AuthenticationMappingEntity"]
+        arguments: ["ZikulaZAuthModule:AuthenticationMappingEntity"]
 
     zikula_zauth_module.user_verification_repository:
         class: %zikula_zauth_module.user_verification_repository.class%
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
-        arguments: ["Zikula\ZAuthModule\Entity\UserVerificationEntity"]
+        arguments: ["ZikulaZAuthModule:UserVerificationEntity"]
 
     zikula_zauth_module.helper.administration_actions_helper:
         class: %zikula_zauth_module.helper.administration_actions_helper.class%

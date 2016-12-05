@@ -14,7 +14,7 @@ services:
     zikula_permissions_module.permission_repository:
         class: %zikula_permissions_module.permission_repository.class%
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
-        arguments: ["Zikula\PermissionsModule\Entity\PermissionEntity"]
+        arguments: ["ZikulaPermissionsModule:PermissionEntity"]
 
     zikula_permissions_module.api.permission:
         class: %zikula_permissions_module.api.permission.class%

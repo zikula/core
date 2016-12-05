@@ -20,7 +20,7 @@ services:
     zikula_blocks_module.block_position_repository:
         class: %zikula_blocks_module.block_position_repository.class%
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
-        arguments: ["Zikula\BlocksModule\Entity\BlockPositionEntity"]
+        arguments: ["ZikulaBlocksModule:BlockPositionEntity"]
 
     zikula_blocks_module.api.block_factory:
         class: %zikula_blocks_module.api.block_factory.class%

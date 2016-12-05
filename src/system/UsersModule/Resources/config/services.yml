@@ -30,12 +30,12 @@ services:
     zikula_users_module.user_repository:
         class: %zikula_users_module.user_repository.class%
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
-        arguments: ["Zikula\UsersModule\Entity\UserEntity"]
+        arguments: ["ZikulaUsersModule:UserEntity"]
 
     zikula_users_module.user_session_repository:
         class: %zikula_users_module.user_session_repository.class%
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
-        arguments: ["Zikula\UsersModule\Entity\UserSessionEntity"]
+        arguments: ["ZikulaUsersModule:UserSessionEntity"]
 
     zikula_users_module.current_user:
         class: %zikula_users_module.current_user.class%

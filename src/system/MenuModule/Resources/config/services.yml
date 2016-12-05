@@ -9,7 +9,7 @@ services:
     zikula_menu_module.menu_item_repository:
         class: %zikula_menu_module.menu_item_repository.class%
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
-        arguments: ["Zikula\MenuModule\Entity\MenuItemEntity"]
+        arguments: ["ZikulaMenuModule:MenuItemEntity"]
 
     zikula_menu_module.menu.voter.request:
         class: %zikula_menu_module.menu.voter.request.class%

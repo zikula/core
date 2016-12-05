@@ -6,7 +6,7 @@ services:
     zikula_pagelock_module.page_lock_repository:
         class: %zikula_pagelock_module.page_lock_repository.class%
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
-        arguments: ["Zikula\PageLockModule\Entity\PageLockEntity"]
+        arguments: ["ZikulaPageLockModule:PageLockEntity"]
 
     zikula_pagelock_module.api.locking:
         class: %zikula_pagelock_module.api.locking.class%

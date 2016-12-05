@@ -31,17 +31,17 @@ services:
     zikula_extensions_module.extension_var_repository:
         class: %zikula_extensions_module.extension_var_repository.class%
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
-        arguments: ["Zikula\ExtensionsModule\Entity\ExtensionVarEntity"]
+        arguments: ["ZikulaExtensionsModule:ExtensionVarEntity"]
 
     zikula_extensions_module.extension_repository:
         class: %zikula_extensions_module.extension_repository.class%
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
-        arguments: ["Zikula\ExtensionsModule\Entity\ExtensionEntity"]
+        arguments: ["ZikulaExtensionsModule:ExtensionEntity"]
 
     zikula_extensions_module.extension_dependency_repository:
         class: %zikula_extensions_module.extension_dependency_repository.class%
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
-        arguments: ["Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity"]
+        arguments: ["ZikulaExtensionsModule:ExtensionDependencyEntity"]
 
     zikula_extensions_module.api.variable:
         class: %zikula_extensions_module.api.variable.class%

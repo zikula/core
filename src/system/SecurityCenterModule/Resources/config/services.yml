@@ -15,7 +15,7 @@ services:
     zikula_securitycenter_module.intrusion_repository:
         class: %zikula_securitycenter_module.intrusion_repository.class%
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
-        arguments: ["Zikula\SecurityCenterModule\Entity\IntrusionEntity"]
+        arguments: ["ZikulaSecurityCenterModule:IntrusionEntity"]
 
     twig.extension.zikula_securitycenter_module:
         class: %twig.extension.zikula_securitycenter_module.class%
