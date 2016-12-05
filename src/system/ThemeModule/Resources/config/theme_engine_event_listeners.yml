@@ -57,16 +57,16 @@ services:
         class: %zikula_core.internal.theme.add_jsconfig_listener.class%
         arguments: ["%installed%", "@zikula_extensions_module.api.variable", "@zikula_users_module.current_user", "@templating.engine.twig", "@zikula_core.common.theme.themevars", "@zikula_core.common.theme.assets_header", "%zikula.session.name%", "%compat_layer%"]
         tags:
-            { name: kernel.event_subscriber }
+            - { name: kernel.event_subscriber }
 
     zikula_core.internal.theme.template_name_expose_listener:
         class: %zikula_core.internal.theme.template_name_expose_listener.class%
         arguments: ["%env%"]
         tags:
-            { name: kernel.event_subscriber }
+            - { name: kernel.event_subscriber }
 
     zikula_core.internal.theme.extension_installation_listener:
         class: %zikula_core.internal.theme.extension_installation_listener.class%
         arguments: ["@zikula.cache_clearer"]
         tags:
-            { name: kernel.event_subscriber }
+            - { name: kernel.event_subscriber }
