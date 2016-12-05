@@ -51,7 +51,7 @@ services:
         class: %zikula_extensions_module.api.extension.class%
         arguments: ["@kernel"]
 
-    zikula_extensions_module.api.capability
+    zikula_extensions_module.api.capability:
         class: %zikula_extensions_module.api.capability.class%
         arguments: ["@zikula_extensions_module.extension_repository"]
 
