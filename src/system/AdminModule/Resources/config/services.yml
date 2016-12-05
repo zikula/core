@@ -6,7 +6,7 @@ parameters:
     zikula_admin_module.admin_module_repository.class: Zikula\AdminModule\Entity\Repository\AdminModuleRepository
     zikula_admin_module.helper.admin_module_helper.class: Zikula\AdminModule\Helper\AdminModuleHelper
 
-services
+services:
     zikula_admin_module.container.link_container:
         class: %zikula_admin_module.container.link_container.class%
         arguments: ["@translator.default", "@jms_i18n_routing.router", "@zikula_permissions_module.api.permission"]
