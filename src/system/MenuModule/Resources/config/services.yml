@@ -13,7 +13,7 @@ services:
 
     zikula_menu_module.menu.voter.request:
         class: %zikula_menu_module.menu.voter.request.class%
-        arguments: ["request_stack"]
+        arguments: ["@request_stack"]
         tags:
             - { name: knp_menu.voter }
 
