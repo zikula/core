@@ -8,7 +8,7 @@ parameters:
     zikula_zauth_module.validator.constraints.valid_password_change_validator.class: Zikula\ZAuthModule\Validator\Constraints\ValidPasswordChangeValidator
 
 services:
-    zikula_zauth_module.validator.constraints.valid_uname_validator
+    zikula_zauth_module.validator.constraints.valid_uname_validator:
         class: %zikula_zauth_module.validator.constraints.valid_uname_validator.class%
         arguments: ["@zikula_extensions_module.api.variable", "@translator.default", "@validator"]
         tags:
