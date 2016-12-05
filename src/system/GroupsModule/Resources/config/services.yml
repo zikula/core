@@ -34,6 +34,6 @@ services:
 
     zikula_groups_module.validator.constraints.group_name_validator:
         class: %zikula_groups_module.validator.constraints.group_name_validator.class%
-        arguments: ["@translator.default", "zikula_groups_module.group_repository"]
+        arguments: ["@translator.default", "@zikula_groups_module.group_repository"]
         tags:
             - { name: validator.constraint_validator, alias: zikula.groups.group_name.validator }
