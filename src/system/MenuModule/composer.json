@@ -1,7 +1,7 @@
 {
     "name": "zikula/menu-module",
     "version": "1.0.0",
-    "description": "Create, modify and destroy menus.",
+    "description": "Menu management",
     "type": "zikula-module",
     "license": "MIT",
     "authors": [

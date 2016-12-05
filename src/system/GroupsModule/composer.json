@@ -1,7 +1,7 @@
 {
     "name": "zikula/groups-module",
     "version": "2.4.0",
-    "description": "User group administration module.",
+    "description": "User group administration",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
     "authors": [

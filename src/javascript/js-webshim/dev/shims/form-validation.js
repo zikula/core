@@ -257,10 +257,14 @@ webshims.register('form-validation', function($, webshims, window, document, und
 	;
 
 	var setRoot = function(){
-		webshims.scrollRoot = (isWebkit || document.compatMode == 'BackCompat') ?
-			$(document.body) :
-			$(document.documentElement)
-		;
+		if(document.scrollingElement){
+			webshims.scrollRoot = $(document.scrollingElement);
+		} else {
+			webshims.scrollRoot = (isWebkit || document.compatMode == 'BackCompat') ?
+				$(document.body) :
+				$(document.documentElement)
+			;
+		}
 	};
 	var hasTransition = ('transitionDelay' in document.documentElement.style);
 	var resetPos = {display: 'inline-block', left: 0, top: 0, marginTop: 0, marginLeft: 0, marginRight: 0, marginBottom: 0};
@@ -923,7 +927,7 @@ webshims.register('form-validation', function($, webshims, window, document, und
 			var jElm = $(e.target);
 
 
-			if(!firstEvent){
+			if(!firstEvent && !$.find.matchesSelector(e.target, 'form, fieldset') ){
 				//trigger firstinvalid
 				firstEvent = $.Event('firstinvalid');
 				jElm.addClass('first-invalid').trigger(firstEvent);
@@ -1013,6 +1017,27 @@ webshims.register('form-validation', function($, webshims, window, document, und
 			});
 		}
 	});
+
+	if(!$.swap){
+		$.swap = function (elem, options, callback, args) {
+			var ret, name, old = {};
+
+			// Remember the old values, and insert the new ones
+			for (name in options) {
+				old[name] = elem.style[name];
+				elem.style[name] = options[name];
+			}
+
+			ret = callback.apply(elem, args || []);
+
+			// Revert the old values
+			for (name in options) {
+				elem.style[name] = old[name];
+			}
+
+			return ret;
+		};
+	}
 
 	webshims.addReady(function(context, contextElem){
 		$(context.querySelectorAll('.ws-custom-file')).add($(contextElem).filter('.ws-custom-file')).each(customFile);

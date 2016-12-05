@@ -243,7 +243,6 @@ class PermissionApi
         // Normal permissions check
         // there *is* a $instance at this point.
         foreach ($perms as $perm) {
-
             // if there is a component, check that it matches
             if (($component != '') && (!preg_match("=^$perm[component]$=", $component))) {
                 // component exists, and does not match.

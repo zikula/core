@@ -33,7 +33,9 @@
 
         <service id="zikula_core.common.markdown_parser" class="%zikula_core.common.markdown.class%" />
         <service id="zikula_core.common.markdown_extra_parser" class="%zikula_core.common.markdown_extra.class%" />
+        <!-- @todo remove in Core-2.0 -->
         <service id="markdown_parser" alias="zikula_core.common.markdown_parser" />
+        <!-- @todo remove in Core-2.0 -->
         <service id="markdown_extra_parser" alias="zikula_core.common.markdown_extra_parser" />
 
         <!--<service id="zikula_core.internal.core_init" class="%zikula_core.internal.core_init_listener.class%">-->
@@ -115,6 +117,8 @@
         <service id="zikula_core.common.doctrine.schema_tool" class="%zikula_core.common.doctrine.schema_tool.class%" lazy="true">
             <argument type="service" id="doctrine.orm.default_entity_manager" />
         </service>
+        <!-- @todo remove in Core-2.0 -->
+        <service id="zikula.doctrine.schema_tool" alias="zikula_core.common.doctrine.schema_tool" />
 
         <service id="zikula_core.internal.bootstrap_helper" class="%zikula_core.internal.bootstrap_helper.class%">
             <argument type="service" id="doctrine.dbal.default_connection" />

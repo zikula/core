@@ -6,7 +6,7 @@
 <p>{{ __f('Someone with the IP address %1$s has just requested the account information at %2$s associated with this e-mail address.', {"%1$s": app.request.server.get('REMOTE_ADDR'), "%2$s": getModVar('ZConfig', 'sitename')}) }}</p>
 {% endif %}
 
-<p>{{ __f('The user name for your account is: %1s', {"%sub%": uname}) }}</p>
+<p>{{ __f('The user name for your account is: %user%', {"%user%": uname}) }}</p>
 
 <p>
     {% if not requestedByAdmin %}{{ __('If the request was not made by you then you don\'t need to worry.') }} {% endif %}

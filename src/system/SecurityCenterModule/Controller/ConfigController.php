@@ -211,7 +211,6 @@ class ConfigController extends AbstractController
                 $idsFilter = isset($formData['idsfilter']) ? $formData['idsfilter'] : 'xml';
                 $this->setSystemVar('idsfilter', $idsFilter);
 
-
                 $validates = true;
 
                 $idsRulePath = isset($formData['idsrulepath']) ? $formData['idsrulepath'] : 'Resources/config/zikula_default.xml';

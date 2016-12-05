@@ -165,7 +165,6 @@ class LinkContainer implements LinkContainerInterface
                 'icon' => 'sign-in',
                 'text' => $this->translator->__('Log in'),
                 'url' => $this->router->generate('zikulausersmodule_access_login')
-
             ];
 
             if ($this->variableApi->get($this->getBundleName(), UsersConstant::MODVAR_REGISTRATION_ENABLED)) {
