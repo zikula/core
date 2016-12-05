@@ -1,0 +1,20 @@
+parameters:
+    zikula_core.legacy.theme_template_override_listener.class: Zikula\ThemeModule\EventListener\ThemeTemplateOverrideYamlListener
+    zikula.config_template_override_listener.class: Zikula\ThemeModule\EventListener\ConfigTemplateOverrideYamlListener
+
+services:
+    zikula_core.legacy.theme_template_override_listener:
+        class: %zikula_core.legacy.theme_template_override_listener.class%
+        tags:
+            - { name: kernel.event_subscriber }
+        deprecated: The "%service_id%" service is deprecated since 1.4.4 and will be removed in 2.0.
+
+    zikula.config_template_override_listener:
+        class: %zikula.config_template_override_listener.class%
+        tags:
+            - { name: kernel.event_subscriber }
+        deprecated: The "%service_id%" service is deprecated since 1.4.4 and will be removed in 2.0.
+
+    zikula.theme_template_override_listener:
+        alias: zikula_core.legacy.theme_template_override_listener
+        deprecated: The "%service_id%" service is deprecated since 1.4.4 and will be removed in 2.0.

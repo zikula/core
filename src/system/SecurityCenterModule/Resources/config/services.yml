@@ -1,0 +1,34 @@
+parameters:
+    zikula_securitycenter_module.container.link_container.class: Zikula\SecurityCenterModule\Container\LinkContainer
+    zikula_securitycenter_module.intrusion_repository.class: Zikula\SecurityCenterModule\Entity\Repository\IntrusionRepository
+    twig.extension.zikula_securitycenter_module.class: Zikula\SecurityCenterModule\Twig\TwigExtension
+    zikula_securitycenter_module.filter_listener.class: Zikula\SecurityCenterModule\Listener\FilterListener
+    zikula_security_center_module.helper.purifier_helper.class: Zikula\SecurityCenterModule\Helper\PurifierHelper
+
+services:
+    zikula_securitycenter_module.container.link_container:
+        class: %zikula_securitycenter_module.container.link_container.class%
+        arguments: ["@translator.default", "@jms_i18n_routing.router", "@zikula_permissions_module.api.permission", "@zikula_extensions_module.api.variable"]
+        tags:
+            - { name: zikula.link_container }
+
+    zikula_securitycenter_module.intrusion_repository:
+        class: %zikula_securitycenter_module.intrusion_repository.class%
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["Zikula\SecurityCenterModule\Entity\IntrusionEntity"]
+
+    twig.extension.zikula_securitycenter_module:
+        class: %twig.extension.zikula_securitycenter_module.class%
+        arguments: ["%installed%", "@zikula_extensions_module.api.variable", "@zikula_security_center_module.helper.purifier_helper"]
+        tags:
+            - { name: twig.extension }
+
+    zikula_securitycenter_module.filter_listener:
+        class: %zikula_securitycenter_module.filter_listener.class%
+        arguments: ["%installed%", "@=container.hasParameter('upgrading') ? parameter('upgrading') : false", "@zikula_extensions_module.api.variable", "@doctrine.orm.entity_manager", "@zikula_mailer_module.api.mailer"]
+        tags:
+            - { name: kernel.event_subscriber }
+
+    zikula_security_center_module.helper.purifier_helper:
+        class: %zikula_security_center_module.helper.purifier_helper.class%
+        arguments: ["@kernel", "@session", "@translator.default", "@zikula_extensions_module.api.variable"]
