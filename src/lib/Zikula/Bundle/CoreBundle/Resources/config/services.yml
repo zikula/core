@@ -1,4 +1,4 @@
-parameters
+parameters:
     event_dispatcher.class: Zikula_EventManager
     controller_resolver.class: Zikula\Bundle\CoreBundle\Controller\ControllerResolver
     zikula_core.controller.main_controller.class: Zikula\Bundle\CoreBundle\Controller\MainController
