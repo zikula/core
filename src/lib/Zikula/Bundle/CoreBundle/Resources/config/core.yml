@@ -102,7 +102,7 @@ services:
         class: %zikula_core.common.doctrine.schema_tool.class%
         lazy: true
         arguments: ["@doctrine.orm.default_entity_manager"]
-    zikula.doctrine.schema_tool
+    zikula.doctrine.schema_tool:
         alias: zikula_core.common.doctrine.schema_tool
         deprecated: The "%service_id%" service is deprecated since 1.4.4 and will be removed in 2.0.
 
