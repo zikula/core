@@ -20,7 +20,7 @@ services:
     zikula_theme_module.theme_entity.repository:
         class: %zikula_theme_module.theme_entity.repository.class%
         factory: ["@doctrine", getRepository]
-        arguments: "ZikulaThemeModule:ThemeEntity"
+        arguments: ["ZikulaThemeModule:ThemeEntity"]
         calls:
             - [setKernel, ["@kernel"]]
 
