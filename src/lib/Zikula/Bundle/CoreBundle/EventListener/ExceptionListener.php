@@ -21,6 +21,7 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\CacheClearer;
+use Zikula\Core\Exception\ExtensionNotAvailableException;
 use Zikula\UsersModule\Api\CurrentUserApi;
 
 /**
@@ -78,6 +79,8 @@ class ExceptionListener implements EventSubscriberInterface
                     $this->handleAccessDeniedException($event, $userLoggedIn, $exception->getMessage());
                 } elseif ($exception instanceof RouteNotFoundException) {
                     $this->handleRouteNotFoundException($event, $userLoggedIn);
+                } elseif ($exception instanceof ExtensionNotAvailableException) {
+                    $this->handleLegacyExtensionNotAvailableExtension($event);
                 }
                 // list and handle additional exceptions here
             } while (null !== $exception = $exception->getPrevious());
@@ -91,9 +94,9 @@ class ExceptionListener implements EventSubscriberInterface
      * Handle an AccessDeniedException
      *
      * @param GetResponseForExceptionEvent $event
-     * @param $userLoggedIn
+     * @param bool $userLoggedIn
      * @param string $message a custom error message (default: 'Access Denied') (The default message from Symfony)
-     * @see http://api.symfony.com/2.6/Symfony/Component/Security/Core/Exception/AccessDeniedException.html
+     * @see http://api.symfony.com/2.8/Symfony/Component/Security/Core/Exception/AccessDeniedException.html
      */
     private function handleAccessDeniedException(GetResponseForExceptionEvent $event, $userLoggedIn, $message = 'Access Denied')
     {
@@ -119,10 +122,10 @@ class ExceptionListener implements EventSubscriberInterface
     }
 
     /**
-     * Handle an RouteNotFoundException
+     * Handle a RouteNotFoundException
      *
      * @param GetResponseForExceptionEvent $event
-     * @param $userLoggedIn
+     * @param bool $userLoggedIn
      */
     private function handleRouteNotFoundException(GetResponseForExceptionEvent $event, $userLoggedIn)
     {
@@ -131,11 +134,27 @@ class ExceptionListener implements EventSubscriberInterface
         if ($userLoggedIn && \SecurityUtil::checkPermission('ZikulaRoutesModule::', '::', ACCESS_ADMIN)) {
             try {
                 $url = $this->router->generate('zikularoutesmodule_route_reload', ['lct' => 'admin'], RouterInterface::ABSOLUTE_URL);
-                $link = "<a href='$url'>". __('re-loading the routes') . "</a>";
+                $link = '<a href="' . $url . '" title="' . __('Re-load the routes') . '">' .  __('re-loading the routes') . '</a>';
                 $event->getRequest()->getSession()->getFlashBag()->add('error', __f('You might try %s for the extension in question.', $link));
             } catch (RouteNotFoundException $e) {
             }
         }
+    }
+
+    /**
+     * Handle a LegacyExtensionNotAvailableExtension
+     *
+     * @param GetResponseForExceptionEvent $event
+     */
+    private function handleLegacyExtensionNotAvailableExtension(GetResponseForExceptionEvent $event)
+    {
+        $message = $event->getException()->getMessage();
+        $event->getRequest()->getSession()->getFlashBag()->add('error', $message);
+
+        $route = $this->router->generate('home');
+        $response = new RedirectResponse($route);
+        $event->setResponse($response);
+        $event->stopPropagation();
     }
 
     /**

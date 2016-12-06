@@ -14,6 +14,7 @@ namespace Zikula\Bundle\CoreBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zikula\Core\Exception\ExtensionNotAvailableException;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\Core\Response\Ajax\UnavailableResponse;
 use Zikula\Core\Response\PlainResponse;
@@ -175,6 +176,11 @@ class LegacyController
         } else {
             $return = \ModUtil::func($modName, $type, $func, $arguments);
         }
+
+        if (!\ModUtil::available($modName)) {
+            throw new ExtensionNotAvailableException(__f('The requested extension [%s] is currently unavailable.', [$modName]));
+        }
+
         if (false === $return) {
             // hack for BC since modules currently use ModUtil::func without expecting exceptions - drak.
             throw new NotFoundHttpException(__('Page not found.'));
