@@ -19,6 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 
@@ -267,8 +268,10 @@ class AdminInterfaceController extends AbstractController
         // template requested
         $template = $currentRequest->attributes->has('template') ? $currentRequest->attributes->get('template') : 'tabs';
         $template = in_array($template, ['tabs', 'panel']) ? $template : 'tabs';
+
         // get admin capable modules
         $adminModules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf('admin');
+
         // sort modules by displayname
         $moduleNames = [];
         foreach ($adminModules as $key => $module) {
@@ -290,8 +293,16 @@ class AdminInterfaceController extends AbstractController
             $catid = $categoryAssignment->getCid();
             // order
             $order = $categoryAssignment->getSortorder();
+
+            $menuText = $adminModule['displayname'];
+
             // url
-            $menuTextUrl = isset($adminModule['capabilities']['admin']['route']) ? $this->get('router')->generate($adminModule['capabilities']['admin']['route']) : $adminModule['capabilities']['admin']['url'];
+            try {
+                $menuTextUrl = isset($adminModule['capabilities']['admin']['route']) ? $this->get('router')->generate($adminModule['capabilities']['admin']['route']) : $adminModule['capabilities']['admin']['url'];
+            } catch (RouteNotFoundException $routeNotFoundException) {
+                $menuTextUrl = 'javascript:void(0)';
+                $menuText .= ' (' . $this->__('invalid route') . ')';
+            }
 
             $links = $this->get('zikula.link_container_collector')->getLinks($adminModule['name'], 'admin');
             if ($links == false) {
@@ -308,7 +319,7 @@ class AdminInterfaceController extends AbstractController
 
             $module = [
                 'menutexturl' => $menuTextUrl,
-                'menutext' => $adminModule['displayname'],
+                'menutext' => $menuText,
                 'menutexttitle' => $adminModule['description'],
                 'modname' => $adminModule['name'],
                 'order' => $order,
