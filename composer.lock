@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a1007f46712f63305b89dc8c991ac649",
-    "content-hash": "42edc7ab8da973719fa8dacc144bafef",
+    "hash": "f5a611dcf333c9df3a7f44c76c5a697b",
+    "content-hash": "4d41a4defd4afa1c80b7dfbf33c3bec5",
     "packages": [
         {
             "name": "abeautifulsite/jquery-minicolors",
@@ -73,6 +73,68 @@
             "description": "Defacto way to enable use of HTML5 sectioning elements in legacy Internet Explorer.",
             "homepage": "http://paulirish.com/2011/the-history-of-the-html5-shiv/",
             "time": "2015-07-20 20:04:00"
+        },
+        {
+            "name": "afarkas/webshim",
+            "version": "1.16.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aFarkas/webshim.git",
+                "reference": "1600cc692854ac06bf128681bb0f7dd3ccf6b35d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aFarkas/webshim/zipball/1600cc692854ac06bf128681bb0f7dd3ccf6b35d",
+                "reference": "1600cc692854ac06bf128681bb0f7dd3ccf6b35d",
+                "shasum": ""
+            },
+            "require": {
+                "components/jquery": ">=1.8.2 <3.0",
+                "robloach/component-installer": "^0.2"
+            },
+            "type": "component",
+            "extra": {
+                "component": {
+                    "scripts": [
+                        "js-webshim/minified/polyfiller.js"
+                    ],
+                    "files": [
+                        "js-webshim/minified/shims/**"
+                    ]
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Farkas",
+                    "homepage": "https://github.com/aFarkas/"
+                }
+            ],
+            "description": "The polyfilling, capability based loading JavaScript Library",
+            "homepage": "http://afarkas.github.com/webshim/demos/index.html",
+            "keywords": [
+                "HTML5",
+                "audio",
+                "canvas",
+                "forms",
+                "geolocation",
+                "getUserMedia",
+                "localstorage",
+                "polyfill",
+                "ui",
+                "validation",
+                "video",
+                "webshim",
+                "webshims",
+                "widgets"
+            ],
+            "support": {
+                "source": "https://github.com/aFarkas/webshim/tree/1.16.0",
+                "issues": "https://github.com/aFarkas/webshim/issues"
+            },
+            "time": "2016-11-13 20:27:50"
         },
         {
             "name": "beberlei/DoctrineExtensions",

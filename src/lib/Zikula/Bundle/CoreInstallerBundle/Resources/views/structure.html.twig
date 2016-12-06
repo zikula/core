@@ -21,9 +21,9 @@
         <script type="text/javascript" src="{{ asset('jquery/jquery.min.js') }}"></script>
         {# always load bootstrap #}
         <script type="text/javascript" src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
-        <script type="text/javascript" src="{{ app.request.getBasePath() }}/javascript/js-webshim/minified/polyfiller.js"></script>
+        <script type="text/javascript" src="{{ asset('webshim/js-webshim/minified/polyfiller.js') }}"></script>
         <script type="text/javascript">
-            $.webshims.setOptions('basePath', '{{ app.request.getBasePath() }}/javascript/js-webshim/minified/shims/');
+            $.webshims.setOptions('basePath', '{{ app.request.getBasePath() }}/web/webshim/js-webshim/minified/shims/');
             $.webshims.activeLang('{{ app.request.locale }}');
             $.webshims.polyfill('forms');
         </script>

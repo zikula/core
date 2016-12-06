@@ -82,6 +82,7 @@
         "twitter/typeahead.js": "1.*",
         "vakata/jstree": "3.*",
         "afarkas/html5shiv": "3.7.*",
+        "afarkas/webshim": "1.*",
         "jquery.mmenu": "5.*",
 
 
@@ -141,6 +142,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/FrDH/jQuery.mmenu"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/aFarkas/webshim"
         },
         {
             "type": "vcs",
