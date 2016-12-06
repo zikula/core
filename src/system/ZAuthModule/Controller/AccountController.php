@@ -48,15 +48,28 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $data = $form->getData();
-            $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->findBy(['email' => $data['email']]);
+
+            $email = $data['email'];
+            $userName = '';
+
+            $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->findBy(['email' => $email]);
             if (count($mapping) == 1) {
+                $userName = $mapping[0]->getUname();
+            } elseif (count($mapping) < 1) {
+                $user = $this->get('zikula_users_module.user_repository')->findBy(['email' => $email]);
+                if (count($user) == 1) {
+                    $userName = $user[0]->getUname();
+                }
+            }
+
+            if ($userName != '') {
                 // send email
-                $sent = $this->get('zikula_zauth_module.helper.mail_helper')->sendNotification($mapping[0]->getEmail(), 'lostuname', [
-                    'uname' => $mapping[0]->getUname(),
+                $sent = $this->get('zikula_zauth_module.helper.mail_helper')->sendNotification($email, 'lostuname', [
+                    'uname' => $userName,
                     'requestedByAdmin' => false,
                 ]);
                 if ($sent) {
-                    $this->addFlash('status', $this->__f('Done! The account information for %s has been sent via e-mail.', ['%s' => $data['email']]));
+                    $this->addFlash('status', $this->__f('Done! The account information for %s has been sent via e-mail.', ['%s' => $email]));
                 } else {
                     $this->addFlash('error', $this->__('Unable to send email to the requested address. Please contact the system administrator for assistance.'));
                 }
@@ -90,20 +103,33 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $redirectToRoute = '';
-            $map = ['uname' => $this->__('username'), 'email' => $this->__('email address')];
+            $map = [
+                'uname' => $this->__('username'),
+                'email' => $this->__('email address')
+            ];
             $data = $form->getData();
             $field = empty($data['uname']) ? 'email' : 'uname';
             $inverse = $field == 'uname' ? 'email' : 'uname';
+
+            $user = null;
+
             $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->findBy([$field => $data[$field]]);
             if (count($mapping) == 1) {
-                $mapping = $mapping[0];
-                $user = $this->get('zikula_users_module.user_repository')->find($mapping->getUid());
+                $user = $this->get('zikula_users_module.user_repository')->find($mapping[0]->getUid());
+            } elseif (count($mapping) < 1) {
+                $users = $this->get('zikula_users_module.user_repository')->findBy([$field => $data[$field]]);
+                if (count($users) == 1) {
+                    $user = $users[0];
+                }
+            }
+
+            if (null !== $user) {
                 switch ($user->getActivated()) {
                     case UsersConstant::ACTIVATED_ACTIVE:
                         $changePasswordExpireDays = $this->getVar(ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD, ZAuthConstant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD);
-                        $lostPasswordId = $this->get('zikula_zauth_module.helper.lost_password_verification_helper')->createLostPasswordId($mapping);
-                        $sent = $this->get('zikula_zauth_module.helper.mail_helper')->sendNotification($mapping->getEmail(), 'lostpassword', [
-                            'uname' => $mapping->getUname(),
+                        $lostPasswordId = $this->get('zikula_zauth_module.helper.lost_password_verification_helper')->createLostPasswordId($user);
+                        $sent = $this->get('zikula_zauth_module.helper.mail_helper')->sendNotification($user->getEmail(), 'lostpassword', [
+                            'uname' => $user->getUname(),
                             'validDays' => $changePasswordExpireDays,
                             'lostPasswordId' => $lostPasswordId,
                             'requestedByAdmin' => false,

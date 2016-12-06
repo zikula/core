@@ -11,7 +11,9 @@
 
 namespace Zikula\ZAuthModule\Helper;
 
+use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\Entity\UserVerificationEntity;
@@ -55,17 +57,21 @@ class LostPasswordVerificationHelper
      * Creates an identifier for the lost password link.
      * This link carries the user's id, name and email address as well as the actual confirmation code.
      *
-     * @param AuthenticationMappingEntity $mapping
+     * @param EntityAccess $record instance of UserEntity or AuthenticationMappingEntity
      * @return string The created identifier
      */
-    public function createLostPasswordId(AuthenticationMappingEntity $mapping)
+    public function createLostPasswordId(EntityAccess $record)
     {
-        $confirmationCode = $this->userVerificationRepository->setVerificationCode($mapping->getUid());
+        if (!($record instanceof UserEntity) && !($record instanceof AuthenticationMappingEntity)) {
+            throw new Exception('Record must be an instance of UserEntity or AuthenticationMappingEntity.');
+        }
+
+        $confirmationCode = $this->userVerificationRepository->setVerificationCode($record->getUid());
 
         $params = [
-            $mapping->getUid(),
-            $mapping->getUname(),
-            $mapping->getEmail(),
+            $record->getUid(),
+            $record->getUname(),
+            $record->getEmail(),
             $confirmationCode
         ];
 
