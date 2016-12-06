@@ -332,7 +332,7 @@ class AdminController extends AbstractController
                         : $this->get('router')->generate($adminModule['capabilities']['admin']['route']);
                 } catch (RouteNotFoundException $routeNotFoundException) {
                     $menuTextUrl = 'javascript:void(0)';
-                    $menuText .= ' (' . $this->__('invalid route') . ')';
+                    $menuText .= ' (<i class="fa fa-warning"></i> ' . $this->__('invalid route') . ')';
                 }
 
                 $linkCollection = $this->get('zikula.link_container_collector')->getLinks($adminModule['name'], 'admin');
@@ -403,7 +403,7 @@ class AdminController extends AbstractController
                     : $this->get('router')->generate($adminModule['capabilities']['admin']['route']);
             } catch (RouteNotFoundException $routeNotFoundException) {
                 $menuTextUrl = 'javascript:void(0)';
-                $menuText .= ' (' . $this->__('invalid route') . ')';
+                $menuText .= ' (<i class="fa fa-warning"></i> ' . $this->__('invalid route') . ')';
             }
 
             $adminLinks[$catid][] = [

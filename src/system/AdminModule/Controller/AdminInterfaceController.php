@@ -301,7 +301,7 @@ class AdminInterfaceController extends AbstractController
                 $menuTextUrl = isset($adminModule['capabilities']['admin']['route']) ? $this->get('router')->generate($adminModule['capabilities']['admin']['route']) : $adminModule['capabilities']['admin']['url'];
             } catch (RouteNotFoundException $routeNotFoundException) {
                 $menuTextUrl = 'javascript:void(0)';
-                $menuText .= ' (' . $this->__('invalid route') . ')';
+                $menuText .= ' (<i class="fa fa-warning"></i> ' . $this->__('invalid route') . ')';
             }
 
             $links = $this->get('zikula.link_container_collector')->getLinks($adminModule['name'], 'admin');

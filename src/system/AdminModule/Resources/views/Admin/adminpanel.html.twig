@@ -10,14 +10,14 @@
             <li data-modid="{{ adminLink.id }}" class="draggable">
                 {# module icon #}
                 {% if getModVar('ZikulaAdminModule', 'admingraphic') == 1 %}
-                <a title="{{ adminLink.menuTextTitle }}" href="{{ adminLink.menuTextUrl }}"><img src="{{ adminLink.adminIcon }}" title="{{ adminLink.menuText }}" alt="{{ adminLink.menuText }}" /></a>
+                <a title="{{ adminLink.menuTextTitle }}" href="{{ adminLink.menuTextUrl }}"><img src="{{ adminLink.adminIcon }}" title="{{ adminLink.menuText }}" alt="{{ adminLink.menuText|striptags }}" /></a>
                 {% endif %}
                 <div>
                     {# movable icon #}
                     <span title="{{ __('Drag and drop into a new module category') }}" class="tooltips fa fa-arrows admintabs-lock"></span>
 
                     {# module title #}
-                    <a title="{{ adminLink.menuTextTitle }}" href="{{ adminLink.menuTextUrl }}">{{ adminLink.menuText }}</a>
+                    <a title="{{ adminLink.menuTextTitle }}" href="{{ adminLink.menuTextUrl }}">{{ adminLink.menuText|raw }}</a>
 
                     {% if adminLink.links %}
                         <div class="dropdown" style="display: inline">
