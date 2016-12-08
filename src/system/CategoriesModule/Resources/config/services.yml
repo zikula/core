@@ -1,0 +1,17 @@
+parameters:
+    zikula_categories_module.container.link_container.class: Zikula\CategoriesModule\Container\LinkContainer
+    twig.extension.zikula_categories_module.class: Zikula\CategoriesModule\Twig\Extension\CategoriesExtension
+
+services:
+    zikula_categories_module.container.link_container:
+        class: %zikula_categories_module.container.link_container.class%
+        arguments: ["@translator.default", "@jms_i18n_routing.router", "@zikula_permissions_module.api.permission", "@zikula_extensions_module.api.variable", "@request_stack"]
+        tags:
+            - { name: zikula.link_container }
+
+    twig.extension.zikula_categories_module:
+        class: %twig.extension.zikula_categories_module.class%
+        public: true
+        arguments: ["@request_stack"]
+        tags:
+            - { name: twig.extension }

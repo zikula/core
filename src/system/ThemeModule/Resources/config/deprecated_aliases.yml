@@ -1,0 +1,25 @@
+services:
+    theme.theme_listener:
+        alias: zikula_core.internal.theme.create_themed_response_listener
+        deprecated: The "%service_id%" service is deprecated since 1.4.3 and will be removed in 2.0.
+    theme.asset_helper:
+        alias: zikula_core.common.theme.asset_helper
+        deprecated: The "%service_id%" service is deprecated since 1.4.3 and will be removed in 2.0.
+    theme.pagevars:
+        alias: zikula_core.common.theme.pagevars
+        deprecated: The "%service_id%" service is deprecated since 1.4.3 and will be removed in 2.0.
+    theme.assets_js:
+        alias: zikula_core.common.theme.assets_js
+        deprecated: The "%service_id%" service is deprecated since 1.4.3 and will be removed in 2.0.
+    theme.assets_css:
+        alias: zikula_core.common.theme.assets_css
+        deprecated: The "%service_id%" service is deprecated since 1.4.3 and will be removed in 2.0.
+    theme.js_resolver:
+        alias: zikula_core.internal.theme.js_resolver
+        deprecated: The "%service_id%" service is deprecated since 1.4.3 and will be removed in 2.0.
+    theme.css_resolver:
+        alias: zikula_core.internal.theme.css_resolver
+        deprecated: The "%service_id%" service is deprecated since 1.4.3 and will be removed in 2.0.
+    theme.themevars:
+        alias: zikula_core.common.theme.themevars
+        deprecated: The "%service_id%" service is deprecated since 1.4.3 and will be removed in 2.0.

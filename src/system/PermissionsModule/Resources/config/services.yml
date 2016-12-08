@@ -1,0 +1,25 @@
+parameters:
+    zikula_permissions_module.container.link_container.class: Zikula\PermissionsModule\Container\LinkContainer
+    zikula_permissions_module.api.permission.class: Zikula\PermissionsModule\Api\PermissionApi
+    zikula_permissions_module.permission_repository.class: Zikula\PermissionsModule\Entity\Repository\PermissionRepository
+    zikula_permissions_module.helper.schema_helper.class: Zikula\PermissionsModule\Helper\SchemaHelper
+
+services:
+    zikula_permissions_module.container.link_container:
+        class: %zikula_permissions_module.container.link_container.class%
+        arguments: ["@translator.default", "@jms_i18n_routing.router", "@zikula_permissions_module.api.permission"]
+        tags:
+            - { name: zikula.link_container }
+
+    zikula_permissions_module.permission_repository:
+        class: %zikula_permissions_module.permission_repository.class%
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["ZikulaPermissionsModule:PermissionEntity"]
+
+    zikula_permissions_module.api.permission:
+        class: %zikula_permissions_module.api.permission.class%
+        arguments: ["@zikula_permissions_module.permission_repository", "@zikula_users_module.user_repository", "@session", "@translator.default"]
+
+    zikula_permissions_module.helper.schema_helper:
+        class: %zikula_permissions_module.helper.schema_helper.class%
+        arguments: ["@zikula_extensions_module.extension_repository"]
