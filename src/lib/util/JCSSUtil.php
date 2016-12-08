@@ -434,11 +434,11 @@ class JCSSUtil
                 'require' => ['prototype']
             ],
             'polyfill' => [
-                'path' => 'javascript/js-webshim/minified/polyfiller.js',
+                'path' => 'web/webshim/js-webshim/minified/polyfiller.js',
                 'require' => ['jquery', 'polyfill.init']
             ],
             'polyfill.init' => [
-                'path' => 'javascript/js-webshim/minified/polyfiller.init.js'
+                'path' => 'javascript/polyfiller.init.js'
             ]
         ];
         if (System::isDevelopmentMode()) {
@@ -536,11 +536,11 @@ class JCSSUtil
             ];
             $polyfillUncompressed = [
                 'polyfill' => [
-                    'path' => 'javascript/js-webshim/dev/polyfiller.js',
+                    'path' => 'web/webshim/js-webshim/minified/polyfiller.js',
                     'require' => ['jquery', 'polyfill.init']
                 ],
                 'polyfill.init' => [
-                    'path' => 'javascript/js-webshim/dev/polyfiller.init.js'
+                    'path' => 'javascript/polyfiller.init.js'
                 ]
             ];
 
