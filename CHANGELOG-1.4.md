@@ -1,7 +1,31 @@
 CHANGELOG - ZIKULA 1.4.x
 ------------------------
 
-* 1.4.4 (?)
+* 1.4.5 (?)
+
+ - BC Breaks:
+    - ?
+
+ - Deprecated:
+    - ?
+
+ - Fixes:
+    - Improved handling calls to inactive legacy modules (#3275, #1869).
+    - Avoid breaking site if capability route is invalid (#3276, #2905).
+
+ - Features:
+    - ?
+
+ - Core-2.0 Features:
+    - Convert all service definitions from xml to yml (#3269, #3217).
+    - Fetch Webshim (vendor) using composer (#3271, #3262).
+    - Removed custom JS compression from Jenkins build in favor of AssetMerger service (#3272, #3250).
+
+ - Vendor updates:
+    - afarkas/webshim installed at 1.16.0
+    - sensio/distribution-bundle updated from 5.0.14 to 5.0.15
+
+* 1.4.4 (2016-12-08)
 
  - BC Breaks:
     - Password reminder has been removed (#1682, #3172) in favour of easier lost password functionality (#1781, #3178).
