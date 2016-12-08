@@ -93,7 +93,7 @@ class LostPasswordVerificationHelper
     public function decodeLostPasswordId($identifier = '')
     {
         if (empty($identifier)) {
-            throw new Exception('Invalid id in lost password verification helper.');
+            throw new \Exception('Invalid id in lost password verification helper.');
         }
 
         $id = $identifier;
@@ -103,7 +103,7 @@ class LostPasswordVerificationHelper
 
         $params = explode($this->delimiter, $id);
         if (count($params) != 4) {
-            throw new Exception('Unexpected extraction results in lost password verification helper.');
+            throw new \Exception('Unexpected extraction results in lost password verification helper.');
         }
 
         return [
