@@ -25,7 +25,7 @@
             {% for module in adminMenu %}
                 <li{% if caller._zkModule == module.modname %} class="selected"{% endif %}>
                     <a href="{{ module.menutexturl }}">
-                        <img src="{{ module.icon }}" alt="{{ module.menutext|e('html_attr') }}" style="height: 18px" /> {{ module.menutext }}
+                        <img src="{{ module.icon }}" alt="{{ module.menutext|e('html_attr') }}" style="height: 18px" /> {{ module.menutext|raw }}
                     </a>
                     {% if module.links|length > 0 %}
                         <ul class="text-left">

@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
@@ -78,10 +79,38 @@ class ModuleController extends AbstractController
             ->getRepository('ZikulaExtensionsModule:ExtensionEntity')
             ->getPagedCollectionBy([], [$sortableColumns->getSortColumn()->getName() => $sortableColumns->getSortDirection()], $this->getVar('itemsperpage'), $pos);
 
+        $adminRoutes = [];
+
+        foreach ($pagedResult as $module) {
+            if (!isset($module['capabilities']['admin']) || empty($module['capabilities']['admin']) || $module['state'] != ExtensionApi::STATE_ACTIVE) {
+                continue;
+            }
+
+            $adminCapabilityInfo = $module['capabilities']['admin'];
+            $adminUrl = '';
+            if (isset($adminCapabilityInfo['route'])) {
+                try {
+                    $adminUrl = $this->get('router')->generate($adminCapabilityInfo['route']);
+                } catch (RouteNotFoundException $routeNotFoundException) {
+                    // do nothing, just skip this link
+                }
+            } elseif (isset($adminCapabilityInfo['url'])) {
+                $adminUrl = $adminCapabilityInfo['url'];
+            }
+
+            if (!empty($adminUrl)) {
+                $adminRoutes[$module['name']] = $adminUrl;
+            }
+        }
+
         return [
             'sort' => $sortableColumns->generateSortableColumns(),
-            'pager' => ['limit' => $this->getVar('itemsperpage'), 'count' => count($pagedResult)],
+            'pager' => [
+                'limit' => $this->getVar('itemsperpage'),
+                'count' => count($pagedResult)
+            ],
             'modules' => $pagedResult,
+            'adminRoutes' => $adminRoutes,
             'upgradedExtensions' => $upgradedExtensions
         ];
     }

@@ -12,6 +12,7 @@
 namespace Zikula\Core\LinkContainer;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Zikula\Core\Event\GenericEvent;
 
 class LinkContainerCollector
@@ -33,8 +34,14 @@ class LinkContainerCollector
     public function getLinks($containerName, $type = LinkContainerInterface::TYPE_ADMIN)
     {
         $links = [];
+
         if ($this->hasContainer($containerName)) {
-            $links = $this->linkContainers[$containerName]->getLinks($type);
+            try {
+                $links = $this->linkContainers[$containerName]->getLinks($type);
+            } catch (RouteNotFoundException $routeNotFoundException) {
+                // do nothing, just skip invalid links
+            }
+
             // fire event here to add more links like hooks, moduleServices, etc
             $event = new GenericEvent($containerName, ['type' => $type], $links);
             $links = $this->eventDispatcher->dispatch(LinkContainerInterface::EVENT_NAME, $event)->getData();

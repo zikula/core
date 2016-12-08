@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
@@ -316,10 +317,6 @@ class AdminController extends AbstractController
                     ['mid' => ModUtil::getIdFromName($adminModule['name'])]);
 
             if ($catid == $acid || (false == $catid && $acid == $this->getVar('defaultcategory'))) {
-                $menuTextUrl = isset($adminModule['capabilities']['admin']['url'])
-                    ? $adminModule['capabilities']['admin']['url']
-                    : $this->get('router')->generate($adminModule['capabilities']['admin']['route']);
-
                 $menuText = '';
                 if ($displayNameType == 1) {
                     $menuText = $adminModule['displayname'];
@@ -327,6 +324,15 @@ class AdminController extends AbstractController
                     $menuText = $adminModule['name'];
                 } elseif ($displayNameType == 3) {
                     $menuText = $adminModule['displayname'] . ' (' . $adminModule['name'] . ')';
+                }
+
+                try {
+                    $menuTextUrl = isset($adminModule['capabilities']['admin']['url'])
+                        ? $adminModule['capabilities']['admin']['url']
+                        : $this->get('router')->generate($adminModule['capabilities']['admin']['route']);
+                } catch (RouteNotFoundException $routeNotFoundException) {
+                    $menuTextUrl = 'javascript:void(0)';
+                    $menuText .= ' (<i class="fa fa-warning"></i> ' . $this->__('invalid route') . ')';
                 }
 
                 $linkCollection = $this->get('zikula.link_container_collector')->getLinks($adminModule['name'], 'admin');
@@ -389,13 +395,20 @@ class AdminController extends AbstractController
             $catid = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodcategory', ['mid' => $adminModule['id']]);
             $order = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getSortOrder',
                                         ['mid' => ModUtil::getIdFromName($adminModule['name'])]);
-            $menuTextUrl = isset($adminModule['capabilities']['admin']['url'])
-                ? $adminModule['capabilities']['admin']['url']
-                : $this->get('router')->generate($adminModule['capabilities']['admin']['route']);
+
+            $menuText = $adminModule['displayname'];
+            try {
+                $menuTextUrl = isset($adminModule['capabilities']['admin']['url'])
+                    ? $adminModule['capabilities']['admin']['url']
+                    : $this->get('router')->generate($adminModule['capabilities']['admin']['route']);
+            } catch (RouteNotFoundException $routeNotFoundException) {
+                $menuTextUrl = 'javascript:void(0)';
+                $menuText .= ' (<i class="fa fa-warning"></i> ' . $this->__('invalid route') . ')';
+            }
 
             $adminLinks[$catid][] = [
                 'menuTextUrl' => $menuTextUrl,
-                'menuText' => $adminModule['displayname'],
+                'menuText' => $menuText,
                 'menuTextTitle' => $adminModule['description'],
                 'moduleName' => $adminModule['name'],
                 'order' => $order,
