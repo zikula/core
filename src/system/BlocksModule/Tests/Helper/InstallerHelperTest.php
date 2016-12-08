@@ -29,7 +29,7 @@ class InstallerHelperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers       InstallerHelper::upgradeFilterArray
+     * @covers       \InstallerHelper::upgradeFilterArray
      * @dataProvider filterProvider
      * @param $initialFilter
      * @param $expected
@@ -40,7 +40,7 @@ class InstallerHelperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers       InstallerHelper::upgradeBkeyToFqClassname
+     * @covers       \InstallerHelper::upgradeBkeyToFqClassname
      * @dataProvider bKeyProvider
      * @param $moduleName
      * @param $oldBkey

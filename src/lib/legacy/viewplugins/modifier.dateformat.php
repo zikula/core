@@ -29,7 +29,7 @@ require_once $smarty->_get_plugin_filepath('shared', 'make_timestamp');
  * @param string $format       Strftime format for output
  * @param string $default_date Default date if $string is empty
  *
- * @uses smarty_make_timestamp()
+ * @uses \smarty_make_timestamp()
  *
  * @return string The modified output
  */

@@ -76,7 +76,7 @@ class BlockApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers BlockApi::getBlocksByPosition
+     * @covers \BlockApi::getBlocksByPosition
      */
     public function testGetBlocksByPosition()
     {
@@ -84,7 +84,7 @@ class BlockApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers BlockApi::createInstanceFromBKey
+     * @covers \BlockApi::createInstanceFromBKey
      */
     public function testCreateInstanceFromBKey()
     {

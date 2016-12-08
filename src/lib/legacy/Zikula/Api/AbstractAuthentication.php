@@ -194,7 +194,6 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
     public function checkPasswordForRegistration(array $args)
     {
         throw new FatalErrorException($this->__('Registration authentication is not supported by this authentication method.'));
-
         return false;
     }
 

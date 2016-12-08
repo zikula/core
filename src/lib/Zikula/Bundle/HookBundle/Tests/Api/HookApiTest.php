@@ -42,7 +42,7 @@ class HookApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers HookApi::getHookContainerInterface
+     * @covers \HookApi::getHookContainerInterface
      */
     public function testGetHookContainerInstance()
     {

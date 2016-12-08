@@ -3385,7 +3385,6 @@ class DBUtil
         $success = self::verifyTableDefinitionConsistency($table);
         if (!$success) {
             throw new Exception(__f('Table consistency check failed for %s', $table));
-
             return false;
         }
 
@@ -3460,7 +3459,6 @@ class DBUtil
         $success = self::verifyTableDefinitionConsistency($table);
         if (!$success) {
             throw new Exception(__f('Table consistency check failed for %s', $table));
-
             return false;
         }
 

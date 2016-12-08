@@ -26,7 +26,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Column::getName
+     * @covers \Column::getName
      */
     public function testGetName()
     {
@@ -34,7 +34,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Column::setName
+     * @covers \Column::setName
      */
     public function testSetName()
     {
@@ -43,7 +43,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Column::getDefaultSortDirection
+     * @covers \Column::getDefaultSortDirection
      */
     public function testGetDefaultSortDirection()
     {
@@ -51,7 +51,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Column::setDefaultSortDirection
+     * @covers \Column::setDefaultSortDirection
      */
     public function getSetDefaultSortDirection()
     {
@@ -60,7 +60,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Column::getCurrentSortDirection
+     * @covers \Column::getCurrentSortDirection
      */
     public function testGetCurrentSortDirection()
     {
@@ -68,7 +68,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Column::setCurrentSortDirection
+     * @covers \Column::setCurrentSortDirection
      */
     public function testSetCurrentSortDirection()
     {
@@ -79,7 +79,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Column::getReverseSortDirection
+     * @covers \Column::getReverseSortDirection
      */
     public function testGetReverseSortDirection()
     {
@@ -87,7 +87,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Column::getCssClassString
+     * @covers \Column::getCssClassString
      */
     public function testGetCssClassString()
     {
@@ -95,7 +95,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Column::setCssClassString
+     * @covers \Column::setCssClassString
      */
     public function testSetCssClassString()
     {
@@ -106,7 +106,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Column::isSortColumn
+     * @covers \Column::isSortColumn
      */
     public function testIsSortColumn()
     {
@@ -114,7 +114,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Column::setIsSortColumn
+     * @covers \Column::setIsSortColumn
      */
     public function testSetIsSortColumn()
     {

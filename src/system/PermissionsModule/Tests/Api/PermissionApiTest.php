@@ -87,7 +87,7 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers       PermissionApi::setGroupPermsForUser
+     * @covers       \PermissionApi::setGroupPermsForUser
      * @dataProvider permProvider
      */
     public function testSetGroupPermsForUser($uid, $perms)
@@ -98,7 +98,7 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers       PermissionApi::getSecurityLevel
+     * @covers       \PermissionApi::getSecurityLevel
      * @dataProvider secLevelProvider
      */
     public function testGetSecurityLevel($uid, $component, $instance, $expectedLevel)
@@ -110,7 +110,7 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers       PermissionApi::hasPermission
+     * @covers       \PermissionApi::hasPermission
      * @dataProvider uidProvider
      */
     public function testHasPermission($component, $instance, $level, $uid, $result)
@@ -126,7 +126,7 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers       PermissionApi::accessLevelNames
+     * @covers       \PermissionApi::accessLevelNames
      * @dataProvider accessLevelNamesProvider
      */
     public function testAccessLevelNames($expectedText, $level)
@@ -136,7 +136,7 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers      PermissionApi::accessLevelNames()
+     * @covers      \PermissionApi::accessLevelNames()
      */
     public function testAccessLevelArray()
     {
@@ -157,7 +157,7 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers      PermissionApi::accessLevelNames()
+     * @covers      \PermissionApi::accessLevelNames()
      * @expectedException \InvalidArgumentException
      */
     public function testAccessLevelException()

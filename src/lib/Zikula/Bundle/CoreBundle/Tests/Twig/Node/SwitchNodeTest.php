@@ -16,7 +16,7 @@ use Zikula\Bundle\CoreBundle\Twig\Node\SwitchNode;
 class SwitchNodeTest extends \Twig_Test_NodeTestCase
 {
     /**
-     * @covers SwitchNode::__construct
+     * @covers \SwitchNode::__construct
      */
     public function testConstructor()
     {

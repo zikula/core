@@ -44,7 +44,7 @@ class VariableApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers VariableApi::has
+     * @covers \VariableApi::has
      */
     public function testHas()
     {
@@ -53,7 +53,7 @@ class VariableApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers VariableApi::get
+     * @covers \VariableApi::get
      */
     public function testGet()
     {
@@ -64,7 +64,7 @@ class VariableApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers VariableApi::getSystemVar
+     * @covers \VariableApi::getSystemVar
      */
     public function testGetSystemVar()
     {
@@ -74,7 +74,7 @@ class VariableApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers VariableApi::getAll
+     * @covers \VariableApi::getAll
      */
     public function testGetAll()
     {
@@ -84,7 +84,7 @@ class VariableApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers VariableApi::set
+     * @covers \VariableApi::set
      */
     public function testSetAndGet()
     {
@@ -93,7 +93,7 @@ class VariableApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers VariableApi::setAll
+     * @covers \VariableApi::setAll
      */
     public function testSetAllAndGetAll()
     {
@@ -107,7 +107,7 @@ class VariableApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers VariableApi::del
+     * @covers \VariableApi::del
      */
     public function testDel()
     {
@@ -119,7 +119,7 @@ class VariableApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers VariableApi::delAll
+     * @covers \VariableApi::delAll
      */
     public function testDelAll()
     {
