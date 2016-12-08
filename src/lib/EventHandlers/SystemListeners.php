@@ -29,7 +29,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('installer.module.uninstalled', 'deleteGeneratedCategoryModelsOnModuleRemove');
         $this->addHandlerDefinition('pageutil.addvar_filter', 'coreStylesheetOverride');
         $this->addHandlerDefinition('core.preinit', 'initDB');
-        $this->addHandlerDefinition('core.init', 'setupCsfrProtection');
+        $this->addHandlerDefinition('core.init', 'setupCsrfProtection');
     }
 
     /**
@@ -39,10 +39,10 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * @return void
      */
-    public function setupCsfrProtection(Zikula_Event $event)
+    public function setupCsrfProtection(Zikula_Event $event)
     {
         if ($event['stage'] & Zikula_Core::STAGE_MODS) {
-            // todo - handle this in DIC later
+            // @todo - handle this in DIC later
             // inject secret
             $def = $this->serviceManager->get('zikula_core.internal.token.generator');
             $def->setSecret(System::getVar('signingkey'));
