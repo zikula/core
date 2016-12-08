@@ -83,6 +83,15 @@ install:
     # run the upgrade from the 143 db
     - php app/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/' -vvv
 
+    # drop the install test db
+    - mysql -e 'drop database zk_test'
+    # create an upgrade db for 144
+    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.4''/" app/config/custom_parameters.yml'
+    - mysql -e 'create database zk_test;'
+    - mysql zk_test < ../test_dbs/core144.sql
+    # run the upgrade from the 144 db
+    - php app/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/' -vvv
+
 # We cannot install Apache2 for now, because this requires sudo mode in which composer takes too long to install the depencencies.
 #before_script:
 #    - sudo apt-get update
