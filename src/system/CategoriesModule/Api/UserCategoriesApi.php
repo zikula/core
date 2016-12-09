@@ -62,7 +62,7 @@ class UserCategoriesApi
      */
     public function getUserRootCategory($returnCategory = false, $returnField = 'id')
     {
-        $userRoot = $this->getVar('userrootcat', 0);
+        $userRoot = $this->currentUserApi->get('userrootcat');
         if (!$userRoot) {
             throw new \RuntimeException($this->translator->__f('Error! The user root node seems to point towards an invalid category: %s.', ['%s' => $userRoot]));
         }

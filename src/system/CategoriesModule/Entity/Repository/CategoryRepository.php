@@ -111,7 +111,7 @@ class CategoryRepository extends EntityRepository implements ObjectRepository, S
         $qb = $this->createQueryBuilder('c')
             ->select('c')
             ->where('c.parent = :parentId')
-            ->setParameter('parentId', $parent)
+            ->setParameter('parentId', $parentId)
             ->orderBy('c.id', 'DESC')
             ->setMaxResults(1);
 
@@ -148,14 +148,14 @@ class CategoryRepository extends EntityRepository implements ObjectRepository, S
 
         if ($sort != '') {
             if (false !== stripos($sort, 'ASC')) {
-                $selection->orderBy(str_ireplace('ASC', '', $sort), 'ASC');
+                $qb->orderBy(str_ireplace('ASC', '', $sort), 'ASC');
             } elseif (false !== stripos($sort, 'DESC')) {
-                $selection->orderBy(str_ireplace('DESC', '', $sort), 'DESC');
+                $qb->orderBy(str_ireplace('DESC', '', $sort), 'DESC');
             } else {
-                $selection->orderBy($sort);
+                $qb->orderBy($sort);
             }
         } else {
-            $selection->orderBy('c.sort_value, c.path');
+            $qb->orderBy('c.sort_value, c.path');
         }
 
         return $qb->getQuery()->getResult();
@@ -176,7 +176,7 @@ class CategoryRepository extends EntityRepository implements ObjectRepository, S
 
         $whereField = $includeRoot ? 'id' : 'parent';
 
-        $qb = $this->_em->createQueryBuilder('c')
+        $qb = $this->_em->createQueryBuilder()
             ->update('Zikula\CategoriesModule\Entity\CategoryEntity', 'c')
             ->set('c.parent', ':newParent')
             ->setParameter('newParent', $newParentId)
@@ -199,7 +199,7 @@ class CategoryRepository extends EntityRepository implements ObjectRepository, S
             return;
         }
 
-        $qb = $this->_em->createQueryBuilder('c')
+        $qb = $this->_em->createQueryBuilder()
             ->update('Zikula\CategoriesModule\Entity\CategoryEntity', 'c')
             ->set('c.' . $pathField, ':path')
             ->setParameter('path', $path)
