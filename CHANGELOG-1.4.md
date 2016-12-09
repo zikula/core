@@ -20,6 +20,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Convert all service definitions from xml to yml (#3269, #3217).
     - Fetch Webshim (vendor) using composer (#3271, #3262).
     - Removed custom JS compression from Jenkins build in favor of AssetMerger service (#3272, #3250).
+    - Template overrides are also considered in sub requests (e.g. embedding a Formicula form into a Content page) (#3234).
 
  - Vendor updates:
     - afarkas/webshim installed at 1.16.0
