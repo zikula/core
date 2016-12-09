@@ -13,20 +13,23 @@ namespace Zikula\SearchModule\Api;
 
 use DataUtil;
 use ModUtil;
-use SecurityUtil;
+use ServiceUtil;
 use SessionUtil;
 use System;
-use ZLanguage;
 use Zikula\Core\ModUrl;
 use Zikula\SearchModule\AbstractSearchable;
 use Zikula\SearchModule\Entity\SearchResultEntity;
 use Zikula\SearchModule\Entity\SearchStatEntity;
 use Zikula\SearchModule\ResultHelper;
+use ZLanguage;
 
 /**
  * API's used by user controllers
+ *
+ * @deprecated
+ * @todo Needs a service replacement for removal in Core-2.0
  */
-class UserApi extends \Zikula_AbstractApi
+class UserApi
 {
     /**
      * Perform the search.
@@ -53,11 +56,12 @@ class UserApi extends \Zikula_AbstractApi
         if (!isset($args['firstPage']) || ($args['firstPage'] && (!isset($args['q']) || empty($args['q'])))) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
+        $variableApi = ServiceUtil::get('zikula_extensions_module.api.variable');
         $vars = [
             'q' => str_replace('%', '', $args['q']), // Don't allow user input % as wildcard
             'searchtype' => isset($args['searchtype']) && !empty($args['searchtype']) ? $args['searchtype'] : 'AND',
             'searchorder' => isset($args['searchorder']) && !empty($args['searchorder']) ? $args['searchorder'] : 'newest',
-            'numlimit' => isset($args['numlimit']) && !empty($args['numlimit']) ? $args['numlimit'] : $this->getVar('itemsperpage', 25),
+            'numlimit' => isset($args['numlimit']) && !empty($args['numlimit']) ? $args['numlimit'] : $variableApi->get('ZikulaSearchModule', 'itemsperpage', 25),
             'page' => isset($args['page']) && !empty($args['page']) ? (int)$args['page'] : 1
         ];
 
@@ -71,20 +75,17 @@ class UserApi extends \Zikula_AbstractApi
 
         $sessionId = session_id();
 
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+        $searchResultRepository = $entityManager->getRepository('ZikulaSearchModule:SearchResultEntity');
+
         // Do all the heavy database stuff on the first page only
         if ($firstPage) {
             // Clear current search result for current user - before showing the first page
             // Clear also older searches from other users.
-            $query = $this->entityManager->createQuery("
-                DELETE Zikula\SearchModule\Entity\SearchResultEntity s
-                WHERE s.sesid = :sid
-                OR DATE_ADD(s.found, 1, 'DAY') < CURRENT_TIMESTAMP()
-            ");
-            $query->setParameter('sid', $sessionId);
-            $query->execute();
+            $searchResultRepository->clearOldResults($sessionId);
 
             // get all the search plugins
-            $search_modules = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins');
+            $search_modules = $this->getallplugins();
 
             // Ask active modules to find their items and put them into $searchTable for the current user
             // At the same time convert modules list from numeric index to modname index
@@ -108,7 +109,11 @@ class UserApi extends \Zikula_AbstractApi
                     $searchModulesByName[$mod['name']] = $mod;
                     $ok = ModUtil::apiFunc($mod['title'], 'search', $function, $param);
                     if (!$ok) {
-                        throw new \RuntimeException($this->__f('Error! \'%1$s\' module returned false in search function \'%2$s\'.', [$mod['title'], $function]));
+                        $translator = ServiceUtil::get('translator.default');
+                        throw new \RuntimeException($translator->__f('Error! \'%1$s\' module returned false in search function \'%2$s\'.', [
+                            '%1$s' => $mod['title'],
+                            '%2$s' => $function
+                        ]));
                     }
                 }
             }
@@ -128,7 +133,7 @@ class UserApi extends \Zikula_AbstractApi
                 }
                 $moduleBundle = ModUtil::getModule($searchableModule['name']);
                 /** @var $searchableInstance AbstractSearchable */
-                $searchableInstance = new $searchableModule['capabilities']['searchable']['class']($this->getContainer(), $moduleBundle);
+                $searchableInstance = new $searchableModule['capabilities']['searchable']['class'](ServiceUtil::get('service_container'), $moduleBundle);
                 if (!($searchableInstance instanceof AbstractSearchable)) {
                     continue;
                 }
@@ -137,19 +142,13 @@ class UserApi extends \Zikula_AbstractApi
                 foreach ($results as $result) {
                     $searchResult = new SearchResultEntity();
                     $searchResult->merge($result);
-                    $this->entityManager->persist($searchResult);
+                    $entityManager->persist($searchResult);
                 }
-                $this->entityManager->flush();
+                $entityManager->flush();
             }
 
             // Count number of found results
-            $query = $this->entityManager->createQueryBuilder()
-                ->select('COUNT(s.sesid)')
-                ->from('ZikulaSearchModule:SearchResultEntity', 's')
-                ->where('s.sesid = :sid')
-                ->setParameter('sid', $sessionId)
-                ->getQuery();
-            $resultCount = $query->getSingleScalarResult();
+            $resultCount = $searchResultRepository->countResults($sessionId);
             SessionUtil::setVar('searchResultCount', $resultCount);
             SessionUtil::setVar('searchModulesByName', $searchModulesByName);
         } else {
@@ -180,16 +179,7 @@ class UserApi extends \Zikula_AbstractApi
         // 2) let the modules add "url" to the found (and viewed) items
         $checker = new ResultHelper($searchModulesByName);
 
-        $query = $this->entityManager->createQueryBuilder()
-            ->select('s')
-            ->from('ZikulaSearchModule:SearchResultEntity', 's')
-            ->where('s.sesid = :sid')
-            ->setParameter('sid', $sessionId)
-            ->orderBy("s.$sort", $dir)
-            ->setMaxResults($vars['numlimit'])
-            ->setFirstResult($vars['startnum'] - 1)
-            ->getQuery();
-        $results = $query->getArrayResult();
+        $results = $searchResultRepository->getResults(['sesid' => $sessionId], [$sort => $dir], $vars['numlimit'], $vars['startnum'] - 1);
 
         // add displayname of modules found
         $sqlResult = [];
@@ -202,8 +192,8 @@ class UserApi extends \Zikula_AbstractApi
             }
         }
 
-        $cnt = count($sqlResult);
-        for ($i = 0; $i < $cnt; $i++) {
+        $amountOfResults = count($sqlResult);
+        for ($i = 0; $i < $amountOfResults; $i++) {
             $modinfo = ModUtil::getInfoFromName($sqlResult[$i]['module']);
             $sqlResult[$i]['displayname'] = $modinfo['displayname'];
         }
@@ -246,21 +236,19 @@ class UserApi extends \Zikula_AbstractApi
         $items = [];
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_OVERVIEW)) {
+        $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
+        if (!$permissionApi->hasPermission('ZikulaSearchModule::', '::', ACCESS_OVERVIEW)) {
             return $items;
         }
 
-        // Get items
-        $qb = $this->entityManager->createQueryBuilder()
-            ->select('s')
-            ->from('ZikulaSearchModule:SearchStatEntity', 's');
+        $sorting = [];
         if (isset($args['sortorder'])) {
-            $qb->orderBy('s.'.$args['sortorder'], 'DESC');
+            $sorting[$args['sortorder']] = 'DESC';
         }
-        $query = $qb->setMaxResults($args['numitems'])
-                    ->setFirstResult($args['startnum'] - 1)
-                    ->getQuery();
-        $items = $query->execute();
+
+        // Get items
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+        $items = $entityManager->getRepository('ZikulaSearchModule:SearchStatEntity')->getStats([], $sorting, $args['numitems'], $args['startnum'] - 1);
 
         return $items;
     }
@@ -272,12 +260,10 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function countitems()
     {
-        $query = $this->entityManager->createQueryBuilder()
-            ->select('COUNT(s.id)')
-            ->from('ZikulaSearchModule:SearchStatEntity', 's')
-            ->getQuery();
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+        $amount = $entityManager->getRepository('ZikulaSearchModule:SearchStatEntity')->countStats();
 
-        return (int)$query->getSingleScalarResult();
+        return $amount;
     }
 
     /**
@@ -296,11 +282,13 @@ class UserApi extends \Zikula_AbstractApi
         // initialize the search plugins array
         $search_modules = [];
 
+        $variableApi = ServiceUtil::get('zikula_extensions_module.api.variable');
         // Attempt to load the search API for each user module
         // The modules should be determined by a select of the modules table or something like that in the future
         $usermods = ModUtil::getAllMods();
+        $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
         foreach ($usermods as $usermod) {
-            if ($loadAll || (!$this->getVar('disable_' . $usermod['name']) && SecurityUtil::checkPermission('ZikulaSearchModule::Item', "$usermod[name]::", ACCESS_READ))) {
+            if ($loadAll || (!$variableApi->get('ZikulaSearchModule', 'disable_' . $usermod['name']) && $permissionApi->Permission('ZikulaSearchModule::Item', "$usermod[name]::", ACCESS_READ))) {
                 $info = ModUtil::apiFunc($usermod['name'], 'search', 'info');
                 if ($info) {
                     $info['name'] = $usermod['name'];
@@ -326,18 +314,19 @@ class UserApi extends \Zikula_AbstractApi
             return true;
         }
 
-        $obj = $this->entityManager->getRepository('ZikulaSearchModule:SearchStatEntity')->findOneBy(['search' => $args['q']]);
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+        $obj = $entityManager->getRepository('ZikulaSearchModule:SearchStatEntity')->findOneBy(['search' => $args['q']]);
 
         if (!$obj) {
             $obj = new SearchStatEntity();
-            $this->entityManager->persist($obj);
+            $entityManager->persist($obj);
         }
 
         $obj['count'] = isset($obj['count']) ? $obj['count'] + 1 : 1;
         $obj['date'] = new \DateTime('now', new \DateTimeZone('UTC'));
         $obj['search'] = $args['q'];
 
-        $this->entityManager->flush();
+        $entityManager->flush();
 
         return true;
     }

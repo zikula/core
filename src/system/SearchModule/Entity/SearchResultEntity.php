@@ -17,8 +17,8 @@ use Zikula\Core\UrlInterface;
 /**
  * SearchResult
  *
+ * @ORM\Entity(repositoryClass="Zikula\SearchModule\Entity\Repository\SearchResultRepository")
  * @ORM\Table(name="search_result")
- * @ORM\Entity
  */
 class SearchResultEntity
 {

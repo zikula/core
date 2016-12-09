@@ -17,8 +17,8 @@ use Zikula\Core\Doctrine\EntityAccess;
 /**
  * SearchStat
  *
+ * @ORM\Entity(repositoryClass="Zikula\SearchModule\Entity\Repository\SearchStatRepository")
  * @ORM\Table(name="search_stat")
- * @ORM\Entity
  */
 class SearchStatEntity extends EntityAccess
 {

@@ -23,8 +23,8 @@ use ZLanguage;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * @deprecated remove at Core-2.0
  * API functions used by user controllers
+ * @deprecated remove at Core-2.0
  */
 class UserApi extends \Zikula_AbstractApi
 {

@@ -12,7 +12,9 @@
 namespace Zikula\AdminModule\Listener;
 
 use ModUtil;
+use ServiceUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Zikula\AdminModule\Entity\AdminModuleEntity;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\ExtensionsModule\Api\VariableApi;
@@ -59,9 +61,27 @@ class ModuleEventListener implements EventSubscriberInterface
             $modName = $modInfo['name'];
         }
 
-        if (!\System::isInstalling()) {
-            $category = $this->variableApi->get('ZikulaAdminModule', 'defaultcategory');
-            ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'addmodtocategory', ['module' => $modName, 'category' => $category]);
+        if (\System::isInstalling()) {
+            return;
         }
+
+        $category = $this->variableApi->get('ZikulaAdminModule', 'defaultcategory');
+        $moduleId = (int)ModUtil::getIdFromName($modName);
+
+        $entityManager = ServiceUtil::get('doctrine')->getManager();
+        $adminModuleRepository = $entityManager->getRepository('ZikulaAdminModule:AdminModuleEntity');
+        $sortOrder = $adminModuleRepository->countModulesByCategory($category);
+
+        //move the module
+        $item = $adminModuleRepository->findOneBy(['mid' => $moduleId]);
+        if (!$item) {
+            $item = new AdminModuleEntity();
+        }
+        $item->setMid($moduleId);
+        $item->setCid($category);
+        $item->setSortorder($sortOrder);
+
+        $entityManager->persist($item);
+        $entityManager->flush();
     }
 }

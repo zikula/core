@@ -279,10 +279,13 @@ class AdminController extends AbstractController
             $acid = -1;
         }
 
+        $entityManager = $this->get('doctrine')->getManager();
+        $adminCategoryRepository = $entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity');
+
         // Get details for selected category
         $category = null;
         if ($acid > 0) {
-            $category = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', ['cid' => $acid]);
+            $category = $adminCategoryRepository->findOneBy(['cid' => $acid]);
         }
 
         if (!$category) {
@@ -294,7 +297,7 @@ class AdminController extends AbstractController
                 throw new AccessDeniedException();
             }
 
-            $category = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', ['cid' => $acid]);
+            $category = $adminCategoryRepository->findOneBy(['cid' => $acid]);
         }
 
         // assign the category
@@ -302,8 +305,11 @@ class AdminController extends AbstractController
 
         $displayNameType = $this->getVar('displaynametype', 1);
 
+        $adminModuleRepository = $entityManager->getRepository('ZikulaAdminModule:AdminModuleEntity');
+        $moduleEntities = $adminModuleRepository->findAll();
+
         // get admin capable modules
-        $adminModules = ModUtil::getModulesCapableOf('admin');
+        $adminModules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf('admin');
         $adminLinks = [];
         $baseUrl = System::getBaseUrl();
         foreach ($adminModules as $adminModule) {
@@ -311,10 +317,18 @@ class AdminController extends AbstractController
                 continue;
             }
 
-            $catid = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodcategory',
-                    ['mid' => ModUtil::getIdFromName($adminModule['name'])]);
-            $order = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getSortOrder',
-                    ['mid' => ModUtil::getIdFromName($adminModule['name'])]);
+            $moduleCategory = $adminCategoryRepository->getModuleCategory($adminModule['id']);
+            $catid = $moduleCategory['cid'];
+
+            $sortOrder = -1;
+            foreach ($moduleEntities as $association) {
+                if ($association['mid'] != $adminModule['id']) {
+                    continue;
+                }
+
+                $sortOrder = $association['sortorder'];
+                break;
+            }
 
             if ($catid == $acid || (false == $catid && $acid == $this->getVar('defaultcategory'))) {
                 $menuText = '';
@@ -348,7 +362,7 @@ class AdminController extends AbstractController
                     'moduleName' => $adminModule['name'],
                     'adminIcon' => $baseUrl . ModUtil::getModuleImagePath($adminModule['name']),
                     'id' => $adminModule['id'],
-                    'order' => $order,
+                    'order' => $sortOrder,
                     'links' => $links
                 ];
             }
@@ -374,27 +388,29 @@ class AdminController extends AbstractController
     {
         $acid = empty($acid) ? $this->getVar('startcategory') : $acid;
 
+        $entityManager = $this->get('doctrine')->getManager();
+        $adminCategoryRepository = $entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity');
+
         // Get all categories
         $categories = [];
-        $items = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getall');
+        $items = $adminCategoryRepository->findBy([], ['sortorder' => 'ASC']);
         foreach ($items as $item) {
             if ($this->hasPermission('ZikulaAdminModule::', "$item[name]::$item[cid]", ACCESS_READ)) {
                 $categories[] = $item;
             }
         }
 
-        // get admin capable modules
-        $adminModules = ModUtil::getModulesCapableOf('admin');
-        $adminLinks = [];
+        $adminModuleRepository = $entityManager->getRepository('ZikulaAdminModule:AdminModuleEntity');
+        $moduleEntities = $adminModuleRepository->findAll();
 
+        // get admin capable modules
+        $adminModules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf('admin');
+        $adminLinks = [];
+        $baseUrl = System::getBaseUrl();
         foreach ($adminModules as $adminModule) {
             if (!$this->hasPermission($adminModule['name'] . '::', '::', ACCESS_EDIT)) {
                 continue;
             }
-
-            $catid = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodcategory', ['mid' => $adminModule['id']]);
-            $order = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getSortOrder',
-                                        ['mid' => ModUtil::getIdFromName($adminModule['name'])]);
 
             $menuText = $adminModule['displayname'];
             try {
@@ -406,14 +422,31 @@ class AdminController extends AbstractController
                 $menuText .= ' (<i class="fa fa-warning"></i> ' . $this->__('invalid route') . ')';
             }
 
+            $moduleCategory = $adminCategoryRepository->getModuleCategory($adminModule['id']);
+            $catid = $moduleCategory['cid'];
+
+            $sortOrder = -1;
+            foreach ($moduleEntities as $association) {
+                if ($association['mid'] != $adminModule['id']) {
+                    continue;
+                }
+
+                $sortOrder = $association['sortorder'];
+                break;
+            }
+
+            $menuTextUrl = isset($adminModule['capabilities']['admin']['url'])
+                ? $adminModule['capabilities']['admin']['url']
+                : $this->get('router')->generate($adminModule['capabilities']['admin']['route']);
+
             $adminLinks[$catid][] = [
                 'menuTextUrl' => $menuTextUrl,
                 'menuText' => $menuText,
                 'menuTextTitle' => $adminModule['description'],
                 'moduleName' => $adminModule['name'],
-                'order' => $order,
+                'order' => $sortOrder,
                 'id' => $adminModule['id'],
-                'icon' => ModUtil::getModuleImagePath($adminModule['name'])
+                'icon' => $baseUrl . ModUtil::getModuleImagePath($adminModule['name'])
             ];
         }
 

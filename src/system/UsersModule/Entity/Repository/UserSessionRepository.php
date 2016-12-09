@@ -16,14 +16,27 @@ use Zikula\UsersModule\Entity\RepositoryInterface\UserSessionRepositoryInterface
 
 class UserSessionRepository extends EntityRepository implements UserSessionRepositoryInterface
 {
-    public function countUsersSince(\DateTime $dateTime)
+    public function getUsersSince(\DateTime $dateTime)
     {
-        $query = $this->_em->createQueryBuilder()
-            ->select('count(s.uid)')
+        $query = $this->createQueryBuilder()
+            ->select('DISTINCT s.uid')
             ->from('ZikulaUsersModule:UserSessionEntity', 's')
             ->where('s.lastused > :activetime')
             ->setParameter('activetime', $dateTime)
-            ->andWhere('s.uid <> 0')
+            ->andWhere('s.uid != 0')
+            ->getQuery();
+
+        return $query->getArrayResult();
+    }
+
+    public function countUsersSince(\DateTime $dateTime)
+    {
+        $query = $this->createQueryBuilder()
+            ->select('COUNT(s.uid)')
+            ->from('ZikulaUsersModule:UserSessionEntity', 's')
+            ->where('s.lastused > :activetime')
+            ->setParameter('activetime', $dateTime)
+            ->andWhere('s.uid != 0')
             ->getQuery();
 
         return (int)$query->getSingleScalarResult();
@@ -31,8 +44,8 @@ class UserSessionRepository extends EntityRepository implements UserSessionRepos
 
     public function countGuestsSince(\DateTime $dateTime)
     {
-        $query = $this->_em->createQueryBuilder()
-            ->select('count(s.uid)')
+        $query = $this->createQueryBuilder()
+            ->select('COUNT(s.uid)')
             ->from('ZikulaUsersModule:UserSessionEntity', 's')
             ->where('s.lastused > :activetime')
             ->setParameter('activetime', $dateTime)
