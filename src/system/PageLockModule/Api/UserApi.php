@@ -13,6 +13,7 @@ namespace Zikula\PageLockModule\Api;
 
 /**
  * API functions used by user controllers
+ * @deprecated remove at Core-2.0
  */
 class UserApi extends \Zikula_AbstractApi
 {

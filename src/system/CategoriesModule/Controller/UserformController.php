@@ -11,7 +11,6 @@
 
 namespace Zikula\CategoriesModule\Controller;
 
-use CategoryUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use System;
-use Zikula\CategoriesModule\GenericUtil;
+use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\Core\Controller\AbstractController;
 
 /**
@@ -57,7 +56,9 @@ class UserformController extends AbstractController
             throw new \InvalidArgumentException($this->__('Error! The category ID is invalid.'));
         }
 
-        $category = CategoryUtil::getCategoryByID($cid);
+        $categoryApi = $this->get('zikula_categories_module.api.category');
+
+        $category = $categoryApi->getCategoryById($cid);
 
         if (!$category) {
             throw new \InvalidArgumentException($this->__f('Error! Cannot retrieve category with ID %s.', ['%s' => $cid]));
@@ -70,7 +71,7 @@ class UserformController extends AbstractController
             return new RedirectResponse(System::normalizeUrl($url));
         }
 
-        CategoryUtil::deleteCategoryByID($cid);
+        $categoryApi->deleteCategoryById($cid);
 
         return new RedirectResponse(System::normalizeUrl($url));
     }
@@ -109,24 +110,25 @@ class UserformController extends AbstractController
 
         // get data from post
         $data = $request->request->get('category', null);
+        $processingHelper = $this->get('zikula_categories_module.category_processing_helper');
 
-        $valid = GenericUtil::validateCategoryData($data);
+        $valid = $processingHelper->validateCategoryData($data);
         if (!$valid) {
             return new RedirectResponse(System::normalizeUrl($url));
         }
 
         // process name
-        $data['name'] = GenericUtil::processCategoryName($data['name']);
+        $data['name'] = $processingHelper->processCategoryName($data['name']);
 
         // process parent
-        $data['parent'] = GenericUtil::processCategoryParent($data['parent_id']);
+        $data['parent'] = $processingHelper->processCategoryParent($data['parent_id']);
         unset($data['parent_id']);
 
         // process display names
-        $data['display_name'] = GenericUtil::processCategoryDisplayName($data['display_name'], $data['name']);
+        $data['display_name'] = $processingHelper->processCategoryDisplayName($data['display_name'], $data['name']);
 
         // get existing category
-        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $entityManager = $this->get('doctrine')->getManager();
         $category = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $data['id']);
 
         if (!$category) {
@@ -147,18 +149,18 @@ class UserformController extends AbstractController
         $entityManager->flush();
 
         // process path and ipath
-        $category['path'] = GenericUtil::processCategoryPath($data['parent']['path'], $category['name']);
-        $category['ipath'] = GenericUtil::processCategoryIPath($data['parent']['ipath'], $category['id']);
+        $category['path'] = $processingHelper->processCategoryPath($data['parent']['path'], $category['name']);
+        $category['ipath'] = $processingHelper->processCategoryIPath($data['parent']['ipath'], $category['id']);
 
         // process category attributes
         $attrib_names = $request->request->get('attribute_name', []);
         $attrib_values = $request->request->get('attribute_value', []);
-        GenericUtil::processCategoryAttributes($category, $attrib_names, $attrib_values);
+        $processingHelper->processCategoryAttributes($category, $attrib_names, $attrib_values);
 
         $entityManager->flush();
 
         if ($category_old_name != $category['name']) {
-            CategoryUtil::rebuildPaths('path', 'name', $category['id']);
+            $this->get('zikula_categories_module.path_builder_helper')->rebuildPaths('path', 'name', $category['id']);
         }
 
         $this->addFlash('status', $this->__f('Done! Saved the %s category.', ['%s' => $category_old_name]));
@@ -189,12 +191,12 @@ class UserformController extends AbstractController
 
         $url = $request->server->get('HTTP_REFERER');
 
-        $cats1 = CategoryUtil::getSubCategories($dr, false, false, false, false);
-        $cats2 = CategoryUtil::resequence($cats1, 10);
+        $cats1 = $this->get('zikula_categories_module.api.category')->getSubCategories($dr, false, false, false, false);
+        $cats2 = $this->get('zikula_categories_module.category_sorting_helper')->resequence($cats1, 10);
 
         $sort_values = [];
 
-        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $entityManager = $this->get('doctrine')->getManager();
 
         $ak = array_keys($cats1);
         foreach ($ak as $k) {
@@ -259,40 +261,41 @@ class UserformController extends AbstractController
 
         // get data from post
         $data = $request->request->get('category', null);
+        $processingHelper = $this->get('zikula_categories_module.category_processing_helper');
 
-        $valid = GenericUtil::validateCategoryData($data);
+        $valid = $processingHelper->validateCategoryData($data);
         if (!$valid) {
             return $this->redirectToRoute('zikulacategoriesmodule_user_edit', ['dr' => $dr]);
         }
 
         // process name
-        $data['name'] = GenericUtil::processCategoryName($data['name']);
+        $data['name'] = $processingHelper->processCategoryName($data['name']);
 
         // process parent
-        $data['parent'] = GenericUtil::processCategoryParent($data['parent_id']);
+        $data['parent'] = $processingHelper->processCategoryParent($data['parent_id']);
         unset($data['parent_id']);
 
         // process display names
-        $data['display_name'] = GenericUtil::processCategoryDisplayName($data['display_name'], $data['name']);
+        $data['display_name'] = $processingHelper->processCategoryDisplayName($data['display_name'], $data['name']);
 
         // process sort value
         $data['sort_value'] = 0;
 
         // save category
-        $entityManager = $this->get('doctrine.orm.entity_manager');
-        $category = new \Zikula\CategoriesModule\Entity\CategoryEntity();
+        $entityManager = $this->get('doctrine')->getManager();
+        $category = new CategoryEntity();
         $category->merge($data);
         $entityManager->persist($category);
         $entityManager->flush();
 
         // process path and ipath
-        $category['path'] = GenericUtil::processCategoryPath($data['parent']['path'], $category['name']);
-        $category['ipath'] = GenericUtil::processCategoryIPath($data['parent']['ipath'], $category['id']);
+        $category['path'] = $processingHelper->processCategoryPath($data['parent']['path'], $category['name']);
+        $category['ipath'] = $processingHelper->processCategoryIPath($data['parent']['ipath'], $category['id']);
 
         // process category attributes
         $attrib_names = $request->request->get('attribute_name', []);
         $attrib_values = $request->request->get('attribute_value', []);
-        GenericUtil::processCategoryAttributes($category, $attrib_names, $attrib_values);
+        $processingHelper->processCategoryAttributes($category, $attrib_names, $attrib_values);
 
         $entityManager->flush();
 
@@ -322,10 +325,10 @@ class UserformController extends AbstractController
 
         $url = $request->server->get('HTTP_REFERER');
 
-        $cats1 = CategoryUtil::getSubCategories($dr, false, false, false, false);
-        $cats2 = CategoryUtil::resequence($cats1, 10);
+        $cats1 = $this->get('zikula_categories_module.api.category')->getSubCategories($dr, false, false, false, false);
+        $cats2 = $this->get('zikula_categories_module.category_sorting_helper')->resequence($cats1, 10);
 
-        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $entityManager = $this->get('doctrine')->getManager();
 
         $ak = array_keys($cats1);
         foreach ($ak as $k) {

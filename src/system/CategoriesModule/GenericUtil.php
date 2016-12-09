@@ -11,11 +11,13 @@
 
 namespace Zikula\CategoriesModule;
 
-use Symfony\Component\Finder\Finder;
+use ServiceUtil;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 
 /**
  * Helper functions for the categories module.
+ *
+ * @deprecated remove at Core-2.0
  */
 class GenericUtil
 {
@@ -32,42 +34,9 @@ class GenericUtil
      */
     public static function validateCategoryData($data)
     {
-        if (empty($data['name'])) {
-            throw new \InvalidArgumentException(__('Error! You did not enter a name for the category.'));
-        }
+        @trigger_error('GenericUtil is deprecated. please use the new category processing helper service instead.', E_USER_DEPRECATED);
 
-        if (empty($data['parent_id'])) {
-            throw new \InvalidArgumentException(__('Error! You did not provide a parent for the category.'));
-        }
-
-        // get entity manager
-        $entityManager = \ServiceUtil::get('doctrine.orm.default_entity_manager');
-
-        // process name
-        $data['name'] = self::processCategoryName($data['name']);
-
-        // check that we don't have another category with the same name
-        // on the same level
-        $qb = $entityManager->createQueryBuilder();
-        $qb->select('COUNT(c.id)')
-           ->from('ZikulaCategoriesModule:CategoryEntity', 'c')
-           ->where('c.name = :name')
-           ->andWhere('c.parent = :parentid')
-           ->setParameter('name', $data['name'])
-           ->setParameter('parentid', $data['parent_id']);
-
-        if (isset($data['id']) && is_numeric($data['id'])) {
-            $qb->andWhere('c.id != :id')
-               ->setParameter('id', $data['id']);
-        }
-
-        $query = $qb->getQuery();
-        $exists = (int)$query->getSingleScalarResult();
-        if ($exists > 0) {
-            throw new \RuntimeException(__f('Category %s must be unique under parent', $data['name']));
-        }
-
-        return true;
+        return ServiceUtil::get('zikula_categories_module.category_processing_helper')->validateCategoryData($data);
     }
 
     /**
@@ -79,96 +48,84 @@ class GenericUtil
      */
     public static function processCategoryName($name)
     {
-        // encode slash in name
-        return $name = str_replace('/', '&#47;', $name);
+        @trigger_error('GenericUtil is deprecated. please use the new category processing helper service instead.', E_USER_DEPRECATED);
+
+        return ServiceUtil::get('zikula_categories_module.category_processing_helper')->processCategoryName($name);
     }
 
     /**
      * Process the parent of a category
      *
-     * @param integer $parent_id The parent_id of the category
+     * @param integer $parentId The parent_id of the category
      *
      * @return CategoryEntity the parent entity
      */
-    public static function processCategoryParent($parent_id)
+    public static function processCategoryParent($parentId)
     {
-        $entityManager = \ServiceUtil::get('doctrine.orm.default_entity_manager');
+        @trigger_error('GenericUtil is deprecated. please use the new category processing helper service instead.', E_USER_DEPRECATED);
 
-        return $entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $parent_id);
+        return ServiceUtil::get('zikula_categories_module.category_processing_helper')->processCategoryParent($parentId);
     }
 
     /**
      * Process the display name of a category
      *
-     * @param array $displayname The display name of the category
+     * @param array $displayName The display name of the category
      * @param array $name        The name of the category
      *
      * @return array the processed display name
      */
-    public static function processCategoryDisplayName($displayname, $name)
+    public static function processCategoryDisplayName($displayName, $name)
     {
-        $languages = \ZLanguage::getInstalledLanguages();
-        foreach ($languages as $lang) {
-            if (!isset($displayname[$lang]) || !$displayname[$lang]) {
-                $displayname[$lang] = $name;
-            }
-        }
+        @trigger_error('GenericUtil is deprecated. please use the new category processing helper service instead.', E_USER_DEPRECATED);
 
-        return $displayname;
+        return ServiceUtil::get('zikula_categories_module.category_processing_helper')->processCategoryDisplayName($displayName, $name);
     }
 
     /**
      * Process the path of a category
      *
-     * @param string $parent_path   The path of the parent category
-     * @param string $category_name The name of the category
+     * @param string $parentPath   The path of the parent category
+     * @param string $categoryName The name of the category
      *
      * @return string the category path
      */
-    public static function processCategoryPath($parent_path, $category_name)
+    public static function processCategoryPath($parentPath, $categoryName)
     {
-        return $parent_path . '/' . $category_name;
+        @trigger_error('GenericUtil is deprecated. please use the new category processing helper service instead.', E_USER_DEPRECATED);
+
+        return ServiceUtil::get('zikula_categories_module.category_processing_helper')->processCategoryPath($parentPath, $categoryName);
     }
 
     /**
      * Process the ipath of a category
      *
-     * @param string $parent_ipath  The ipath of the parent category
-     * @param string $category_id   The id of the category
+     * @param string $parentIpath  The ipath of the parent category
+     * @param string $categoryId   The id of the category
      *
      * @return string the category path
      */
-    public static function processCategoryIPath($parent_ipath, $category_id)
+    public static function processCategoryIPath($parentIpath, $categoryId)
     {
-        return $parent_ipath . '/' . $category_id;
+        @trigger_error('GenericUtil is deprecated. please use the new category processing helper service instead.', E_USER_DEPRECATED);
+
+        return ServiceUtil::get('zikula_categories_module.category_processing_helper')->processCategoryIPath($parentIpath, $categoryId);
     }
 
     /**
      * Process the attributes of a category
      *
-     * @param CategoryEntity $category      The category to set the attributes for
-     * @param array          $attrib_names  The attribute names
-     * @param array          $attrib_values The attribute values
+     * @param CategoryEntity $category     The category to set the attributes for
+     * @param array          $attribNames  The attribute names
+     * @param array          $attribValues The attribute values
      *
      * @return void
      */
-    public static function processCategoryAttributes($category, $attrib_names, $attrib_values)
+    public static function processCategoryAttributes($category, $attribNames, $attribValues)
     {
-        // delete attributes
-        if (isset($category['attributes'])) {
-            foreach ($category['attributes'] as $attribute) {
-                if (!in_array($attribute['name'], $attrib_names)) {
-                    $category->delAttribute($attribute['name']);
-                }
-            }
-        }
+        @trigger_error('GenericUtil is deprecated. please use the new category processing helper service instead.', E_USER_DEPRECATED);
 
-        // add/update attributes
-        foreach ($attrib_names as $attrib_key => $attrib_name) {
-            if (!empty($attrib_name)) {
-                $category->setAttribute($attrib_name, $attrib_values[$attrib_key]);
-            }
-        }
+        return ServiceUtil::get('zikula_categories_module.category_processing_helper')->processCategoryAttributes($category, $attribNames, $attribValues);
     }
 
     /**
@@ -182,60 +139,8 @@ class GenericUtil
      */
     public static function mayCategoryBeDeletedOrMoved($category)
     {
-        // get entity manager
-        $entityManager = \ServiceUtil::get('doctrine.orm.default_entity_manager');
+        @trigger_error('GenericUtil is deprecated. please use the new category processing helper service instead.', E_USER_DEPRECATED);
 
-        // check legacy table first (as this is quickly done)
-        $legacyMappings = $entityManager->getRepository('ZikulaCategoriesModule:CategoriesMapobj')
-            ->findBy(['categoryId' => $category['id']]);
-        if (count($legacyMappings) > 0) {
-            return false;
-        }
-
-        // fetch registries
-        $registries = $entityManager->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')
-            ->findAll();
-
-        $kernel = \ServiceUtil::get('kernel');
-
-        // iterate over all registries
-        foreach ($registries as $registry) {
-            // check if the registry subtree contains our category
-            $isContained = \CategoryUtil::isSubCategory($registry['category_id'], $category);
-            if (!$isContained) {
-                continue;
-            }
-
-            // get information about responsible module
-            $module = $kernel->getModule($registry['modname']);
-            $moduleClass = get_class($module);
-            $moduleClassLevels = explode('\\', get_class($module));
-            unset($moduleClassLevels[count($moduleClassLevels) - 1]);
-            $moduleNamespace = implode('\\', $moduleClassLevels);
-
-            // collect module entities
-            $entityPath = $module->getRelativePath() . '/Entity/';
-            $finder = new Finder();
-            $finder->files()->name('*.php')->in($entityPath);
-            foreach ($finder as $file) {
-                // check if this entity implements category assignments
-                include_once $file;
-                $entityName = basename($file->getRelativePathname(), '.php');
-                $entityClass = $moduleNamespace . '\\Entity\\' . $entityName;
-                if (!is_subclass_of($entityClass, 'Zikula\\CategoriesModule\\Entity\\AbstractCategoryAssignment')) {
-                    continue;
-                }
-
-                // check if this mapping table contains a reference to the given category
-                $mappings = $entityManager->getRepository($registry['modname'] . ':' . $entityName)
-                    ->findBy(['category' => $category['id']]);
-                if (count($mappings) > 0) {
-                    // existing reference found
-                    return false;
-                }
-            }
-        }
-
-        return true;
+        return ServiceUtil::get('zikula_categories_module.category_processing_helper')->mayCategoryBeDeletedOrMoved($category);
     }
 }

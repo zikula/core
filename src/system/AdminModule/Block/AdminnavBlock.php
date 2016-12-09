@@ -33,8 +33,11 @@ class AdminnavBlock extends AbstractBlockHandler
             return;
         }
 
-        // Call the modules API to get the items
-        $items = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getall');
+        $entityManager = $this->get('doctrine')->getManager();
+        $adminCategoryRepository = $entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity');
+
+        // Get all categories
+        $items = $adminCategoryRepository->findBy([], ['sortorder' => 'ASC']);
 
         // Check for no items returned
         if (empty($items)) {
@@ -54,11 +57,8 @@ class AdminnavBlock extends AbstractBlockHandler
 
             $adminLinks = [];
             foreach ($adminModules as $adminModule) {
-                // Get all modules in the category
-                $catid = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodcategory',
-                                            ['mid' => ModUtil::getIdFromName($adminModule['name'])]);
-
-                if ($catid == $item['cid'] || (false == $catid && $item['cid'] == $defaultCategory)) {
+                $category = $adminCategoryRepository->getModuleCategory($adminModule['id']);
+                if ($category['cid'] == $item['cid'] || (false === $category['cid'] && $item['cid'] == $defaultCategory)) {
                     $moduleInfo = ModUtil::getInfoFromName($adminModule['name']);
                     $adminLinks[] = [
                         'menuTextUrl' => ModUtil::url($moduleInfo['name'], 'admin'),

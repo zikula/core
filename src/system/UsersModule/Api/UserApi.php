@@ -16,8 +16,8 @@ use ModUtil;
 use SecurityUtil;
 
 /**
- * @deprecated
  * The system-level and database-level functions for user-initiated actions for the Users module
+ * @deprecated remove at Core-2.0
  */
 class UserApi extends \Zikula_AbstractApi
 {

@@ -11,18 +11,19 @@
 
 namespace Zikula\BlocksModule\Api;
 
-use ModUtil;
-use SecurityUtil;
-use Zikula\BlocksModule\MenutreeUtil;
-use ZLanguage;
 use CategoryRegistryUtil;
 use CategoryUtil;
+use ModUtil;
+use SecurityUtil;
 use System;
 use ServiceUtil;
 use UserUtil;
+use Zikula\BlocksModule\MenutreeUtil;
+use ZLanguage;
 
 /**
  * Suppport API functions for the menutree block
+ * @deprecated remove at Core-2.0
  */
 class MenutreeApi extends \Zikula_AbstractApi
 {

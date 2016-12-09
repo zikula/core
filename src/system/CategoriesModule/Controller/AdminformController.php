@@ -11,16 +11,13 @@
 
 namespace Zikula\CategoriesModule\Controller;
 
-use CategoryUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use System;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
-use Zikula\CategoriesModule\GenericUtil;
 use Zikula\Core\Controller\AbstractController;
 
 /**
@@ -87,13 +84,15 @@ class AdminformController extends AbstractController
         }
 
         if ($request->request->get('category_user_edit', null)) {
-            $_SESSION['category_referer'] = System::serverGetVar('HTTP_REFERER');
+            $_SESSION['category_referer'] = $request->server->get('HTTP_REFERER');
             $args['dr'] = (int)$data['id'];
 
             return $this->redirectToRoute('zikulacategoriesmodule_admin_edit', $args);
         }
 
-        $valid = GenericUtil::validateCategoryData($data);
+        $processingHelper = $this->get('zikula_categories_module.category_processing_helper');
+
+        $valid = $processingHelper->validateCategoryData($data);
         if (!$valid) {
             $args = [
                 'mode' => 'edit',
@@ -104,17 +103,17 @@ class AdminformController extends AbstractController
         }
 
         // process name
-        $data['name'] = GenericUtil::processCategoryName($data['name']);
+        $data['name'] = $processingHelper->processCategoryName($data['name']);
 
         // process parent
-        $data['parent'] = GenericUtil::processCategoryParent($data['parent_id']);
+        $data['parent'] = $processingHelper->processCategoryParent($data['parent_id']);
         unset($data['parent_id']);
 
         // process display names
-        $data['display_name'] = GenericUtil::processCategoryDisplayName($data['display_name'], $data['name']);
+        $data['display_name'] = $processingHelper->processCategoryDisplayName($data['display_name'], $data['name']);
 
         // get existing category
-        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $entityManager = $this->get('doctrine')->getManager();
         $category = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $data['id']);
 
         $prevCategoryName = $category['name'];
@@ -124,19 +123,19 @@ class AdminformController extends AbstractController
         $entityManager->flush();
 
         // process path and ipath
-        $category['path'] = GenericUtil::processCategoryPath($data['parent']['path'], $category['name']);
-        $category['ipath'] = GenericUtil::processCategoryIPath($data['parent']['ipath'], $category['id']);
+        $category['path'] = $processingHelper->processCategoryPath($data['parent']['path'], $category['name']);
+        $category['ipath'] = $processingHelper->processCategoryIPath($data['parent']['ipath'], $category['id']);
 
         // process category attributes
         $attrib_names = $request->request->get('attribute_name', []);
         $attrib_values = $request->request->get('attribute_value', []);
-        GenericUtil::processCategoryAttributes($category, $attrib_names, $attrib_values);
+        $processingHelper->processCategoryAttributes($category, $attrib_names, $attrib_values);
 
         $entityManager->flush();
 
         // since a name change will change the object path, we must rebuild it here
         if ($prevCategoryName != $category['name']) {
-            CategoryUtil::rebuildPaths('path', 'name', $category['id']);
+            $this->get('zikula_categories_module.path_builder_helper')->rebuildPaths('path', 'name', $category['id']);
         }
 
         $this->addFlash('status', $this->__f('Done! Saved the %s category.', ['%s' => $prevCategoryName]));
@@ -166,37 +165,38 @@ class AdminformController extends AbstractController
 
         // get data from post
         $data = $request->request->get('category', null);
+        $processingHelper = $this->get('zikula_categories_module.category_processing_helper');
 
-        $valid = GenericUtil::validateCategoryData($data);
+        $valid = $processingHelper->validateCategoryData($data);
         if (!$valid) {
             return $this->redirectToRoute('zikulacategoriesmodule_admin_newcat');
         }
 
         // process name
-        $data['name'] = GenericUtil::processCategoryName($data['name']);
+        $data['name'] = $processingHelper->processCategoryName($data['name']);
 
         // process parent
-        $data['parent'] = GenericUtil::processCategoryParent($data['parent_id']);
+        $data['parent'] = $processingHelper->processCategoryParent($data['parent_id']);
         unset($data['parent_id']);
 
         // process display names
-        $data['display_name'] = GenericUtil::processCategoryDisplayName($data['display_name'], $data['name']);
+        $data['display_name'] = $processingHelper->processCategoryDisplayName($data['display_name'], $data['name']);
 
         // save category
-        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $entityManager = $this->get('doctrine')->getManager();
         $category = new CategoryEntity();
         $category->merge($data);
         $entityManager->persist($category);
         $entityManager->flush();
 
         // process path and ipath
-        $category['path'] = GenericUtil::processCategoryPath($data['parent']['path'], $category['name']);
-        $category['ipath'] = GenericUtil::processCategoryIPath($data['parent']['ipath'], $category['id']);
+        $category['path'] = $processingHelper->processCategoryPath($data['parent']['path'], $category['name']);
+        $category['ipath'] = $processingHelper->processCategoryIPath($data['parent']['ipath'], $category['id']);
 
         // process category attributes
         $attrib_names = $request->request->get('attribute_name', []);
         $attrib_values = $request->request->get('attribute_value', []);
-        GenericUtil::processCategoryAttributes($category, $attrib_names, $attrib_values);
+        $processingHelper->processCategoryAttributes($category, $attrib_names, $attrib_values);
 
         $entityManager->flush();
 
@@ -229,12 +229,13 @@ class AdminformController extends AbstractController
             return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
         }
 
+        $categoryApi = $this->get('zikula_categories_module.api.category');
         $cid = $request->request->get('cid', null);
-
-        $cat = CategoryUtil::getCategoryByID($cid);
+        $cat = $categoryApi->getCategoryById($cid);
+        $processingHelper = $this->get('zikula_categories_module.category_processing_helper');
 
         // prevent deletion if category is already used
-        if (!GenericUtil::mayCategoryBeDeletedOrMoved($cat)) {
+        if (!$processingHelper->mayCategoryBeDeletedOrMoved($cat)) {
             $this->addFlash('error', $this->__f('Error! Category %s can not be deleted, because it is already used.', ['%s' => $cat['name']]));
 
             return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
@@ -242,13 +243,13 @@ class AdminformController extends AbstractController
 
         // delete subdirectories
         if ($request->request->get('subcat_action') == 'delete') {
-            CategoryUtil::deleteCategoriesByPath($cat['ipath']);
+            $categoryApi->deleteCategoriesByPath($cat['ipath']);
         } elseif ($request->request->get('subcat_action') == 'move') {
             // move subdirectories
             $data = $request->request->get('category', null);
             if ($data['parent_id']) {
-                CategoryUtil::moveSubCategoriesByPath($cat['ipath'], $data['parent_id']);
-                CategoryUtil::deleteCategoryByID($cid);
+                $this->get('zikula_categories_module.copy_and_move_helper')->moveSubCategoriesByPath($cat['ipath'], $data['parent_id']);
+                $categoryApi->deleteCategoryById($cid);
             }
         }
 
@@ -282,11 +283,11 @@ class AdminformController extends AbstractController
         }
 
         $cid = $request->request->get('cid', null);
-        $cat = CategoryUtil::getCategoryByID($cid);
+        $cat = $this->get('zikula_categories_module.api.category')->getCategoryByID($cid);
 
         $data = $request->request->get('category', null);
 
-        CategoryUtil::copyCategoriesByPath($cat['ipath'], $data['parent_id']);
+        $this->get('zikula_categories_module.copy_and_move_helper')->copyCategoriesByPath($cat['ipath'], $data['parent_id']);
 
         $this->addFlash('status', $this->__f('Done! Copied the %s category.', ['%s' => $cat['name']]));
 
@@ -318,10 +319,11 @@ class AdminformController extends AbstractController
         }
 
         $cid = $request->request->get('cid', null);
-        $cat = CategoryUtil::getCategoryByID($cid);
+        $cat = $this->get('zikula_categories_module.api.category')->getCategoryById($cid);
+        $processingHelper = $this->get('zikula_categories_module.category_processing_helper');
 
         // prevent move if category is already used
-        if (!GenericUtil::mayCategoryBeDeletedOrMoved($cat)) {
+        if (!$processingHelper->mayCategoryBeDeletedOrMoved($cat)) {
             $this->addFlash('error', $this->__f('Error! Category %s can not be moved, because it is already used.', ['%s' => $cat['name']]));
 
             return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
@@ -329,7 +331,7 @@ class AdminformController extends AbstractController
 
         $data = $request->request->get('category', null);
 
-        CategoryUtil::moveCategoriesByPath($cat['ipath'], $data['parent_id']);
+        $this->get('zikula_categories_module.copy_and_move_helper')->moveCategoriesByPath($cat['ipath'], $data['parent_id']);
 
         $this->addFlash('status', $this->__f('Done! Moved the %s category.', ['%s' => $cat['name']]));
 
@@ -351,8 +353,9 @@ class AdminformController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        CategoryUtil::rebuildPaths('path', 'name');
-        CategoryUtil::rebuildPaths('ipath', 'id');
+        $pathBuilder = $this->get('zikula_categories_module.path_builder_helper');
+        $pathBuilder->rebuildPaths('path', 'name');
+        $pathBuilder->rebuildPaths('ipath', 'id');
 
         $this->addFlash('status', $this->__('Done! Rebuilt the category paths.'));
 
@@ -379,7 +382,7 @@ class AdminformController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $entityManager = $this->get('doctrine')->getManager();
 
         // delete registry
         if ($request->request->get('mode', null) == 'delete') {

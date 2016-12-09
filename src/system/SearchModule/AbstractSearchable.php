@@ -11,13 +11,13 @@
 
 namespace Zikula\SearchModule;
 
-use Zikula_View;
-use ZLanguage;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Common\I18n\Translator;
 use Zikula\Core\AbstractModule;
+use Zikula_View;
+use ZLanguage;
 
 abstract class AbstractSearchable extends Translator
 {

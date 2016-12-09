@@ -11,7 +11,6 @@
 
 namespace Zikula\CategoriesModule\Controller;
 
-use CategoryUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -22,7 +21,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
-use Zikula\CategoriesModule\GenericUtil;
 use Zikula\Core\Controller\AbstractController;
 use ZLanguage;
 
@@ -87,8 +85,8 @@ class AdminController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $cats = CategoryUtil::getSubCategories($root_id, true, true, true, true, true);
-        $menuTxt = CategoryUtil::getCategoryTreeJqueryJS($cats, true, true);
+        $cats = $this->get('zikula_categories_module.api.category')->getSubCategories($root_id, true, true, true, true, true);
+        $menuTxt = $this->get('zikula_categories_module.js_tree_helper')->getCategoryTreeJqueryJs($cats, true, true);
 
         return [
             'menuTxt' => $menuTxt
@@ -133,11 +131,12 @@ class AdminController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have permission to edit or add the category
      */
-    public function editAction(Request $request, $cid = 0, $dr = 1, $mode = "new")
+    public function editAction(Request $request, $cid = 0, $dr = 1, $mode = 'new')
     {
         $editCat = '';
 
         $languages = ZLanguage::getInstalledLanguages();
+        $categoryApi = $this->get('zikula_categories_module.api.category');
 
         // indicates that we're editing
         if ($mode == 'edit') {
@@ -151,7 +150,7 @@ class AdminController extends AbstractController
                 return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
             }
 
-            $editCat = CategoryUtil::getCategoryByID($cid);
+            $editCat = $categoryApi->getCategoryById($cid);
             if (!$editCat) {
                 $this->addFlash('error', $this->__('Sorry! No such item found.'));
 
@@ -193,7 +192,7 @@ class AdminController extends AbstractController
             }
         }
 
-        $allCats = CategoryUtil::getSubCategories($dr, true, true, true, false, true);
+        $allCats = $categoryApi->getSubCategories($dr, true, true, true, false, true);
 
         // now remove the categories which are below $editCat ...
         // you should not be able to set these as a parent category as it creates a circular hierarchy (see bug #4992)
@@ -207,7 +206,7 @@ class AdminController extends AbstractController
             }
         }
 
-        $selector = CategoryUtil::getSelector_Categories($allCats, 'id',
+        $selector = $this->get('zikula_categories_module.html_tree_helper')->getSelector($allCats, 'id',
             (isset($editCat['parent_id']) ? $editCat['parent_id'] : 0),
             'category[parent_id]',
             isset($defaultValue) ? $defaultValue : null,
@@ -233,8 +232,9 @@ class AdminController extends AbstractController
         ];
 
         if ($mode == 'edit') {
-            $templateParameters['haveSubcategories'] = CategoryUtil::haveDirectSubcategories($cid);
-            $templateParameters['haveLeafSubcategories'] = CategoryUtil::haveDirectSubcategories($cid, false, true);
+            $hierarchyHelper = $this->get('zikula_categories_module.hierarchy_helper');
+            $templateParameters['haveSubcategories'] = $hierarchyHelper->hasDirectSubcategories($cid);
+            $templateParameters['haveLeafSubcategories'] = $hierarchyHelper->hasDirectSubcategories($cid, false, true);
         }
 
         return $templateParameters;
@@ -269,7 +269,7 @@ class AdminController extends AbstractController
             $obj = $obj->toArray();
         }
 
-        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $entityManager = $this->get('doctrine')->getManager();
 
         $registries = $entityManager->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')
             ->findBy([], ['modname' => 'ASC', 'property' => 'ASC']);
@@ -321,7 +321,7 @@ class AdminController extends AbstractController
 
         $id = $request->query->get('id', 0);
 
-        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $entityManager = $this->get('doctrine')->getManager();
         $obj = $entityManager->find('ZikulaCategoriesModule:CategoryRegistryEntity', $id);
 
         $templateParameters = [
@@ -375,14 +375,17 @@ class AdminController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $category = CategoryUtil::getCategoryByID($cid);
-        $subCats = CategoryUtil::getSubCategories($cid, false, false);
-        $allCats = CategoryUtil::getSubCategories($root_id, true, true, true, false, true, $cid);
-        $selector = CategoryUtil::getSelector_Categories($allCats);
+        $categoryApi = $this->get('zikula_categories_module.api.category');
+
+        $category = $categoryApi->getCategoryById($cid);
+        $subCats = $categoryApi->getSubCategories($cid, false, false);
+        $allCats = $categoryApi->getSubCategories($root_id, true, true, true, false, true, $cid);
+        $selector = $this->get('zikula_categories_module.html_tree_helper')->getSelector($allCats);
+        $processingHelper = $this->get('zikula_categories_module.category_processing_helper');
 
         if ($op == 'delete' || $op == 'move') {
             // prevent deletion or move if category is already used
-            if (!GenericUtil::mayCategoryBeDeletedOrMoved($category)) {
+            if (!$processingHelper->mayCategoryBeDeletedOrMoved($category)) {
                 if ($op == 'delete') {
                     $this->addFlash('error', $this->__f('Error! Category %s can not be deleted, because it is already used.', ['%s' => $category['name']]));
                 } elseif ($op == 'move') {

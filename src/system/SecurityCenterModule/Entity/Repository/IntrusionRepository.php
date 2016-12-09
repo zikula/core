@@ -164,12 +164,8 @@ class IntrusionRepository extends EntityRepository
      */
     public function truncateTable()
     {
-        /*$connection = $this->getEntityManager()->getConnection();
-        $platform = $connection->getDatabasePlatform();
-        $connection->executeUpdate($platform->getTruncateTableSQL('sc_intrusion', true));*/
-
-        $qb = $this->createQueryBuilder('tbl')
-            ->delete('Zikula\RoutesModule\Entity\RouteEntity', 'tbl');
+        $qb = $this->_em->createQueryBuilder('tbl')
+            ->delete('Zikula\SecurityCenterModule\Entity\IntrusionEntity', 'tbl');
         $query = $qb->getQuery();
 
         $query->execute();

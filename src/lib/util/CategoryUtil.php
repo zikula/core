@@ -9,11 +9,13 @@
  * file that was distributed with this source code.
  */
 
-use Zikula\CategoriesModule\GenericUtil;
+use ServiceUtil;
+use Zikula\CategoriesModule\Entity\CategoryEntity;
 
 /**
  * CategoryUtil.
- * @deprecated
+ *
+ * @deprecated remove at Core-2.0
  */
 class CategoryUtil
 {
@@ -31,59 +33,9 @@ class CategoryUtil
      */
     public static function createCategory($rootPath, $name, $value = null, $displayname = null, $description = null, $attributes = null)
     {
-        if (!isset($rootPath) || !$rootPath) {
-            return LogUtil::registerError(__f("Error! Received invalid parameter '%s'", 'rootPath'));
-        }
-        if (!isset($name) || !$name) {
-            return LogUtil::registerError(__f("Error! Received invalid parameter '%s'", 'name'));
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the new category api instead.', E_USER_DEPRECATED);
 
-        if (!$displayname) {
-            $displayname = $name;
-        }
-        if (!$description) {
-            $description = $name;
-        }
-
-        $lang = ZLanguage::getLanguageCode();
-
-        /** @var \Zikula\CategoriesModule\Entity\CategoryEntity $rootCat */
-        $rootCat = self::getCategoryByPath($rootPath);
-        if (!$rootCat) {
-            return LogUtil::registerError(__f("Error! Non-existing root category '%s' received", $rootPath));
-        }
-
-        $checkCat = self::getCategoryByPath("$rootPath/$name");
-        if (!$checkCat) {
-            $cat = new \Zikula\CategoriesModule\Entity\CategoryEntity();
-            $entityManager = ServiceUtil::get('doctrine.orm.default_entity_manager');
-            $entityManager->persist($cat);
-            $data = [];
-            $data['parent'] = $entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $rootCat['id']);
-            $data['name'] = $name;
-            $data['display_name'] = [$lang => $displayname];
-            $data['display_desc'] = [$lang => $description];
-            if ($value) {
-                $data['value'] = $value;
-            }
-
-            $data['path'] = "$rootPath/$name";
-
-            $cat->merge($data);
-            $entityManager->flush();
-            $cat['ipath'] = "$rootCat[ipath]/$cat[id]";
-            if ($attributes && is_array($attributes)) {
-                foreach ($attributes as $key => $value) {
-                    $cat->setAttribute($key, $value);
-                }
-            }
-
-            $entityManager->flush();
-
-            return $cat->getId();
-        }
-
-        return false;
+        return ServiceUtil::get('zikula_categories_module.api.category')->createCategory($rootPath, $name, $value, $displayname, $description, $attributes);
     }
 
     /**
@@ -95,139 +47,41 @@ class CategoryUtil
      */
     public static function getCategoryByID($cid)
     {
-        if (!$cid) {
-            return false;
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the new category api instead.', E_USER_DEPRECATED);
 
-        // get entity manager
-        /** @var $entityManager \Doctrine\ORM\EntityManager */
-        $entityManager = ServiceUtil::get('doctrine.orm.default_entity_manager');
-
-        // get category
-        $category = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cid);
-
-        if (!isset($category)) {
-            return [];
-        }
-
-        // convert to array
-        $cat = $category->toArray();
-
-        // set name and description by languages if not set
-        $languages = ZLanguage::getInstalledLanguages();
-        foreach ($languages as $lang) {
-            if (!isset($cat['display_name'][$lang])) {
-                $cat['display_name'][$lang] = isset($cat['display_name']['en']) ? $cat['display_name']['en'] : '';
-            }
-            if (!isset($cat['display_desc'][$lang])) {
-                $cat['display_desc'][$lang] = isset($cat['display_desc']['en']) ? $cat['display_desc']['en'] : '';
-            }
-        }
-
-        // assign parent_id
-        // this makes the rootcat's parent 0 as it's stored as null in the database
-        $cat['parent_id'] = (null === $cat['parent']) ? null : $category['parent']->getId();
-
-        // get attributes
-        $cat['__ATTRIBUTES__'] = [];
-        foreach ($cat['attributes'] as $attribute) {
-            $cat['__ATTRIBUTES__'][$attribute['name']] = $attribute['value'];
-        }
-
-        return $cat;
+        return ServiceUtil::get('zikula_categories_module.api.category')->getCategoryById($cid);
     }
 
     /**
      * Return an array of categories objects according the specified where-clause and sort criteria.
      *
-     * @param string  $where                  The where clause to use in the select (optional) (default='')
-     * @param string  $sort                   The order-by clause to use in the select (optional) (default='')
-     * @param string  $assocKey               The field to use as the associated array key (optional) (default='')
-     * @param array   $columnArray            Array of columns to select (optional) (default=null)
+     * @param string  $where       The where clause to use in the select (optional) (default='')
+     * @param string  $sort        The order-by clause to use in the select (optional) (default='')
+     * @param string  $assocKey    The field to use as the associated array key (optional) (default='')
+     * @param array   $columnArray Array of columns to select (optional) (default=null)
      *
-     * @return array resulting folder object array
+     * @return array resulting category object array
      */
     public static function getCategories($where = '', $sort = '', $assocKey = '', $columnArray = null)
     {
-        if (!empty($where)) {
-            $where = 'WHERE ' . $where;
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the new category api instead.', E_USER_DEPRECATED);
 
-        if (!$sort) {
-            $sort = "ORDER BY c.sort_value, c.path";
-        }
-
-        if (!empty($columnArray)) {
-            $columns = [];
-            foreach ($columnArray as $column) {
-                $columns[] = 'c.' . $column;
-            }
-            $columns = implode(', ', $columns);
-        } else {
-            $columns = 'c';
-        }
-
-        $entityManager = ServiceUtil::get('doctrine.orm.default_entity_manager');
-
-        $dql = "SELECT $columns FROM Zikula\CategoriesModule\Entity\CategoryEntity c $where $sort";
-        $query = $entityManager->createQuery($dql);
-        $categories = $query->getResult();
-
-        $cats = [];
-        $languages = ZLanguage::getInstalledLanguages();
-        foreach ($categories as $category) {
-            $cat = $category->toArray();
-
-            // set name and description by languages if not set
-            foreach ($languages as $lang) {
-                if (!isset($cat['display_name'][$lang])) {
-                    $cat['display_name'][$lang] = isset($cat['display_name']['en']) ? $cat['display_name']['en'] : '';
-                }
-                if (!isset($cat['display_desc'][$lang])) {
-                    $cat['display_desc'][$lang] = isset($cat['display_desc']['en']) ? $cat['display_desc']['en'] : '';
-                }
-            }
-
-            // this makes the rotocat's parent 0 as it's stored as null in the database
-            $cat['parent_id'] = (null === $cat['parent']) ? null : $category['parent']->getId();
-            $cat['accessible'] = SecurityUtil::checkPermission('Categories::Category', $category['id'] . ':' . $category['path'] . ':' . $category['ipath'], ACCESS_OVERVIEW);
-
-            if (!empty($assocKey)) {
-                $cats[$category[$assocKey]] = $cat;
-            } else {
-                $cats[] = $cat;
-            }
-        }
-
-        return $cats;
+        return ServiceUtil::get('zikula_categories_module.api.category')->getCategories($where, $sort, $assocKey, $columnArray);
     }
 
     /**
-     * Return a folder object by it's path
+     * Return a category object by it's path
      *
-     * @param string $apath The path to retrieve by (simple path or array of paths)
-     * @param string $field The (path) field we search for (either path or ipath) (optional) (default='path')
+     * @param string $apath     The path to retrieve by (simple path or array of paths)
+     * @param string $pathField The (path) field we search for (either path or ipath) (optional) (default='path')
      *
-     * @return array resulting folder object
+     * @return array resulting category object
      */
-    public static function getCategoryByPath($apath, $field = 'path')
+    public static function getCategoryByPath($apath, $pathField = 'path')
     {
-        if (!is_array($apath)) {
-            $where = "c.$field = '" . DataUtil::formatForStore($apath) . "'";
-        } else {
-            $where = [];
-            foreach ($apath as $path) {
-                $where[] = "c.$field = '" . DataUtil::formatForStore($path) . "'";
-            }
-            $where = implode(' OR ', $where);
-        }
-        $cats = self::getCategories($where);
+        @trigger_error('CategoryUtil is deprecated. please use the new category api instead.', E_USER_DEPRECATED);
 
-        if (isset($cats[0]) && is_array($cats[0])) {
-            return $cats[0];
-        }
-
-        return $cats;
+        return ServiceUtil::get('zikula_categories_module.api.category')->getCategoryByPath($apath, $pathField);
     }
 
     /**
@@ -239,27 +93,9 @@ class CategoryUtil
      */
     public static function getCategoriesByRegistry($registry)
     {
-        if (!$registry || !is_array($registry)) {
-            return false;
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the new category api instead.', E_USER_DEPRECATED);
 
-        $where = [];
-        foreach ($registry as $property => $catID) {
-            $where[] = "c.id = '" . DataUtil::formatForStore($catID) . "'";
-        }
-        $where = implode(' OR ', $where);
-        $cats = self::getCategories($where, '', 'id');
-
-        $result = [];
-        if ($cats !== false) {
-            foreach ($registry as $property => $catID) {
-                if (isset($cats[$catID])) {
-                    $result[$property] = $cats[$catID];
-                }
-            }
-        }
-
-        return $result;
+        return ServiceUtil::get('zikula_categories_module.api.category')->getCategoriesByRegistry($registry);
     }
 
     /**
@@ -276,28 +112,9 @@ class CategoryUtil
      */
     public static function getCategoriesByParentID($id, $sort = '', $relative = false, $all = false, $assocKey = '', $attributes = null)
     {
-        if (!$id) {
-            return false;
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the new category api instead.', E_USER_DEPRECATED);
 
-        $id = (int)$id;
-        $where = "c.parent ='" . DataUtil::formatForStore($id) . "'";
-
-        if (!$all) {
-            $where .= " AND c.status = 'A'";
-        }
-
-        $cats = self::getCategories($where, $sort, $assocKey);
-
-        if ($cats && $relative) {
-            $category = self::getCategoryByID($id);
-            $arraykeys = array_keys($cats);
-            foreach ($arraykeys as $key) {
-                self::buildRelativePathsForCategory($category, $cats[$key], isset($includeRoot) ? $includeRoot : false);
-            }
-        }
-
-        return $cats;
+        return ServiceUtil::get('zikula_categories_module.api.category')->getCategoriesByParentId($id, $sort, $relative, $all, $assocKey = '', $attributes);
     }
 
     /**
@@ -310,24 +127,9 @@ class CategoryUtil
      */
     public static function getParentCategories($id, $assocKey = 'id')
     {
-        if (!$id) {
-            return false;
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the new category api instead.', E_USER_DEPRECATED);
 
-        $entityManager = ServiceUtil::get('doctrine.orm.default_entity_manager');
-        $cat = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $id);
-
-        $cats = [];
-        if (!$cat) {
-            return $cats;
-        }
-
-        do {
-            $cat = $cat['parent'];
-            $cats[$cat[$assocKey]] = $cat->toArray();
-        } while (null !== $cat['parent']);
-
-        return $cats;
+        return ServiceUtil::get('zikula_categories_module.api.category')->getParentCategories($id, $assocKey);
     }
 
     /**
@@ -335,7 +137,7 @@ class CategoryUtil
      *
      * @param string  $apath       The path to retrieve categories by
      * @param string  $sort        The sort field (optional) (default='')
-     * @param string  $field       The the (path) field to use (path or ipath) (optional) (default='ipath')
+     * @param string  $pathField   The (path) field to use (path or ipath) (optional) (default='ipath')
      * @param boolean $includeLeaf Whether or not to also return leaf nodes (optional) (default=true)
      * @param boolean $all         Whether or not to return all (or only active) categories (optional) (default=false)
      * @param string  $exclPath    The path to exclude from the retrieved categories (optional) (default='')
@@ -345,31 +147,11 @@ class CategoryUtil
      *
      * @return array resulting folder object array
      */
-    public static function getCategoriesByPath($apath, $sort = '', $field = 'ipath', $includeLeaf = true, $all = false, $exclPath = '', $assocKey = '', $attributes = null, $columnArray = null)
+    public static function getCategoriesByPath($apath, $sort = '', $pathField = 'ipath', $includeLeaf = true, $all = false, $exclPath = '', $assocKey = '', $attributes = null, $columnArray = null)
     {
-        $where = "(c.$field = '" . DataUtil::formatForStore($apath) . "' OR c.$field LIKE '" . DataUtil::formatForStore($apath) . "/%')";
+        @trigger_error('CategoryUtil is deprecated. please use the new category api instead.', E_USER_DEPRECATED);
 
-        if ($exclPath) {
-            $where .= " AND c.$field NOT LIKE '" . DataUtil::formatForStore($exclPath) . "%'";
-        }
-
-        if (!$includeLeaf) {
-            $where .= " AND c.is_leaf = 0";
-        }
-
-        if (!$all) {
-            $where .= " AND c.status = 'A'";
-        }
-
-        if (!$sort) {
-            $sort = "ORDER BY c.sort_value, c.path";
-        } else {
-            $sort = "ORDER BY c." . $sort;
-        }
-
-        $cats = self::getCategories($where, $sort, $assocKey, $columnArray);
-
-        return $cats;
+        return ServiceUtil::get('zikula_categories_module.api.category')->getCategoriesByPath($apath, $sort, $pathField, $includeLeaf, $all, $exclPath, $assocKey, $attributes, $columnArray);
     }
 
     /**
@@ -391,30 +173,16 @@ class CategoryUtil
      */
     public static function getSubCategories($cid, $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCid = '', $assocKey = '', $attributes = null, $sortField = 'sort_value', $columnArray = null)
     {
-        if (!$cid) {
-            return false;
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the new category api instead.', E_USER_DEPRECATED);
 
-        $rootCat = self::getCategoryByID($cid);
-        if (!$rootCat) {
-            return false;
-        }
-
-        $exclCat = '';
-        if ($excludeCid) {
-            $exclCat = self::getCategoryByID($excludeCid);
-        }
-
-        $cats = self::getSubCategoriesForCategory($rootCat, $recurse, $relative, $includeRoot, $includeLeaf, $all, $exclCat, $assocKey, $attributes, $sortField, $columnArray);
-
-        return $cats;
+        return ServiceUtil::get('zikula_categories_module.api.category')->getSubCategories($cid, $recurse, $relative, $includeRoot, $includeLeaf, $all, $excludeCid, $assocKey, $attributes, $sortField, $columnArray);
     }
 
     /**
      * Return an array of Subcategories for the specified folder
      *
      * @param string  $apath       The path to get categories by
-     * @param string  $field       The (path) field we match by (either path or ipath) (optional) (default='ipath')
+     * @param string  $pathField   The (path) field we match by (either path or ipath) (optional) (default='ipath')
      * @param boolean $recurse     Whether or not to generate a recursive subcategory result set (optional) (default=true)
      * @param boolean $relative    Whether or not to generate relative path indexes (optional) (default=true)
      * @param boolean $includeRoot Whether or not to include the root folder in the result set (optional) (default=false)
@@ -427,25 +195,11 @@ class CategoryUtil
      *
      * @return array resulting folder object array
      */
-    public static function getSubCategoriesByPath($apath, $field = 'ipath', $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCid = '', $assocKey = '', $attributes = null, $sortField = 'sort_value')
+    public static function getSubCategoriesByPath($apath, $pathField = 'ipath', $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCid = '', $assocKey = '', $attributes = null, $sortField = 'sort_value')
     {
-        if (!$apath) {
-            return false;
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the new category api instead.', E_USER_DEPRECATED);
 
-        $rootCat = self::getCategoryByPath($apath, $field);
-        if (!$rootCat) {
-            return false;
-        }
-
-        $exclCat = '';
-        if ($excludeCid) {
-            $exclCat = self::getCategoryByID($excludeCid);
-        }
-
-        $cats = self::getSubCategoriesForCategory($rootCat, $recurse, $relative, $includeRoot, $includeLeaf, $all, $exclCat, $assocKey, $attributes, $sortField);
-
-        return $cats;
+        return ServiceUtil::get('zikula_categories_module.api.category')->getSubCategoriesByPath($apath, $pathField, $recurse, $relative, $includeRoot, $includeLeaf, $all, $excludeCid, $assocKey, $attributes, $sortField);
     }
 
     /**
@@ -467,43 +221,9 @@ class CategoryUtil
      */
     public static function getSubCategoriesForCategory($category, $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCat = null, $assocKey = '', $attributes = null, $sortField = 'sort_value', $columnArray = null)
     {
-        if (!$category) {
-            return false;
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the new category api instead.', E_USER_DEPRECATED);
 
-        $cats = [];
-        $ipath = $category['ipath'];
-        if ($recurse) {
-            $ipathExcl = ($excludeCat ? $excludeCat['ipath'] : '');
-            $cats = self::getCategoriesByPath($ipath, '', 'ipath', $includeLeaf, $all, $ipathExcl, $assocKey, $attributes, $columnArray);
-        } else {
-            $cats = self::getCategoriesByParentID($category['id'], '', $relative, $all, $assocKey, $attributes);
-            array_unshift($cats, $category);
-        }
-
-        // since array_shift() resets numeric array indexes, we remove the leading element like this
-        if (!$includeRoot) {
-            foreach ($cats as $k => $v) {
-                if (isset($v['ipath']) && $v['ipath'] == $ipath) {
-                    unset($cats[$k]);
-                }
-            }
-        }
-
-        if ($cats && $relative) {
-            $arraykeys = array_keys($cats);
-            foreach ($arraykeys as $key) {
-                self::buildRelativePathsForCategory($category, $cats[$key], $includeRoot);
-            }
-        }
-
-        if ($sortField) {
-            global $_catSortField;
-            $_catSortField = $sortField;
-            $cats = self::sortCategories($cats, $sortField, $assocKey);
-        }
-
-        return $cats;
+        return ServiceUtil::get('zikula_categories_module.api.category')->getSubCategoriesForCategory($category, $recurse, $relative, $includeRoot, $includeLeaf, $all, $excludeCat, $assocKey, $attributes, $sortField, $columnArray);
     }
 
     /**
@@ -515,327 +235,139 @@ class CategoryUtil
      */
     public static function deleteCategoryByID($cid)
     {
-        $entityManager = ServiceUtil::get('doctrine.orm.default_entity_manager');
+        @trigger_error('CategoryUtil is deprecated. please use the new category api instead.', E_USER_DEPRECATED);
 
-        $category = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cid);
-        if (!isset($category)) {
-            return;
-        }
-
-        if (!GenericUtil::mayCategoryBeDeletedOrMoved($category)) {
-            return LogUtil::registerError(__f('Error! Category %s can not be deleted, because it is already used.', $category['name']));
-        }
-
-        $entityManager->remove($category);
-        $entityManager->flush();
+        return ServiceUtil::get('zikula_categories_module.api.category')->deleteCategoryById($cid);
     }
 
     /**
-     * Delete categories by Path
+     * Delete categories by path
      *
-     * @param string $apath The path we wish to delete
-     * @param string $field The (path) field we delete from (either path or ipath) (optional) (default='ipath')
+     * @param string $apath     The path we wish to delete
+     * @param string $pathField The (path) field we delete from (either path or ipath) (optional) (default='ipath')
      *
      * @return boolean|void
      */
-    public static function deleteCategoriesByPath($apath, $field = 'ipath')
+    public static function deleteCategoriesByPath($apath, $pathField = 'ipath')
     {
-        if (!$apath) {
-            return false;
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the new category api instead.', E_USER_DEPRECATED);
 
-        $entityManager = ServiceUtil::get('doctrine.orm.default_entity_manager');
-
-        $dql = "SELECT c.id FROM Zikula\CategoriesModule\Entity\CategoryEntity c WHERE c.$field LIKE :apath";
-        $query = $entityManager->createQuery($dql);
-        $query->setParameter('apath', "{$apath}%");
-        $categories = $query->getResult();
-
-        foreach ($categories as $category) {
-            self::deleteCategoryByID($category['id']);
-        }
+        return ServiceUtil::get('zikula_categories_module.api.category')->deleteCategoriesByPath($apath, $pathField);
     }
 
     /**
      * Move categories by ID (recursive move).
      *
-     * @param integer $cid          The categoryID we wish to move
-     * @param integer $newparent_id The categoryID of the new parent category
+     * @param integer $cid         The categoryID we wish to move
+     * @param integer $newParentId The categoryID of the new parent category
      *
      * @return boolean
      */
-    public static function moveCategoriesByID($cid, $newparent_id)
+    public static function moveCategoriesByID($cid, $newParentId)
     {
-        if (!$cid) {
-            return false;
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the new copy and move helper instead.', E_USER_DEPRECATED);
 
-        $cat = self::getCategoryByID($cid);
-
-        if (!$cat) {
-            $false = false;
-
-            return $false;
-        }
-
-        return self::moveCategoriesByPath($cat['ipath'], $newparent_id);
+        return ServiceUtil::get('zikula_categories_module.copy_and_move_helper')->moveCategoriesById($cid, $newParentId);
     }
 
     /**
-     * Move SubCategories by Path (recurisve move).
+     * Move SubCategories by path (recursive move).
      *
-     * @param string  $apath        The path to move from
-     * @param integer $newparent_id The categoryID of the new parent category
-     * @param string  $field        The field to use for the path reference (optional) (default='ipath')
+     * @param string  $apath       The path to move from
+     * @param integer $newParentId The categoryID of the new parent category
+     * @param string  $pathField   The field to use for the path reference (optional) (default='ipath')
      *
      * @return boolean
      */
-    public static function moveSubCategoriesByPath($apath, $newparent_id, $field = 'ipath')
+    public static function moveSubCategoriesByPath($apath, $newParentId, $pathField = 'ipath')
     {
-        return self::moveCategoriesByPath($apath, $newparent_id, $field, false);
+        @trigger_error('CategoryUtil is deprecated. please use the new copy and move helper instead.', E_USER_DEPRECATED);
+
+        return ServiceUtil::get('zikula_categories_module.copy_and_move_helper')->moveSubCategoriesByPath($apath, $newParentId, $pathField);
     }
 
     /**
-     * Move Categories by Path (recursive move).
+     * Move Categories by path (recursive move).
      *
-     * @param string  $apath        The path to move from
-     * @param integer $newparent_id The categoryID of the new parent category
-     * @param string  $field        The field to use for the path reference (optional) (default='ipath')
-     * @param boolean $includeRoot  Whether or not to also move the root folder  (optional) (default=true)
+     * @param string  $apath       The path to move from
+     * @param integer $newParentId The categoryID of the new parent category
+     * @param string  $pathField   The field to use for the path reference (optional) (default='ipath')
+     * @param boolean $includeRoot Whether or not to also move the root folder  (optional) (default=true)
      *
      * @return boolean
      */
-    public static function moveCategoriesByPath($apath, $newparent_id, $field = 'ipath', $includeRoot = true)
+    public static function moveCategoriesByPath($apath, $newParentId, $pathField = 'ipath', $includeRoot = true)
     {
-        if (!$apath) {
-            return false;
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the new copy and move helper instead.', E_USER_DEPRECATED);
 
-        $cats = self::getCategoriesByPath($apath, 'path', $field);
-        $newParent = self::getCategoryByID($newparent_id);
-
-        if (!$newParent || !$cats) {
-            return false;
-        }
-
-        $newParentIPath = $newParent['ipath'] . '/';
-        $newParentPath = $newParent['path'] . '/';
-
-        $oldParent = self::getCategoryByID($cats[0]['parent_id']);
-        $oldParentIPath = $oldParent['ipath'] . '/';
-        $oldParentPath = $oldParent['path'] . '/';
-
-        $pathField = $field;
-        $fpath = 'path';
-        $fipath = 'ipath';
-
-        $entityManager = ServiceUtil::get('doctrine.orm.default_entity_manager');
-
-        $dql = "
-            SELECT c
-            FROM Zikula\CategoriesModule\Entity\CategoryEntity c
-            WHERE c.$pathField = :apath OR c.$pathField LIKE :apathwc";
-        $query = $entityManager->createQuery($dql);
-        $query->setParameter('apath', $apath);
-        $query->setParameter('apathwc', "{$apath}/%");
-        $categories = $query->getResult();
-
-        foreach ($categories as $category) {
-            $category[$fpath] = mb_ereg_replace($oldParentPath, $newParentPath, $category[$fpath]);
-            $category[$fipath] = mb_ereg_replace($oldParentIPath, $newParentIPath, $category[$fipath]);
-        }
-
-        $entityManager->flush();
-
-        $pid = $cats[0]['id'];
-        if ($includeRoot) {
-            $dql = "UPDATE Zikula\CategoriesModule\Entity\CategoryEntity c SET c.parent = :newparent WHERE c.id = :pid";
-        } else {
-            $dql = "UPDATE Zikula\CategoriesModule\Entity\CategoryEntity c SET c.parent = :newparent WHERE c.parent = :pid";
-        }
-        $query = $entityManager->createQuery($dql);
-        $query->setParameter('newparent', $newparent_id);
-        $query->setParameter('pid', $pid);
-        $query->getResult();
-
-        return true;
+        return ServiceUtil::get('zikula_categories_module.copy_and_move_helper')->moveCategoriesByPath($apath, $newParentId, $pathField, $includeRoot);
     }
 
     /**
      * Copy categories by ID (recursive copy).
      *
-     * @param integer $cid          The categoryID we wish to copy
-     * @param integer $newparent_id The categoryID of the new parent category
+     * @param integer $cid         The categoryID we wish to copy
+     * @param integer $newParentId The categoryID of the new parent category
      *
      * @return boolean
      */
-    public static function copyCategoriesByID($cid, $newparent_id)
+    public static function copyCategoriesByID($cid, $newParentId)
     {
-        $cat = self::getCategoryByID($cid);
+        @trigger_error('CategoryUtil is deprecated. please use the new copy and move helper instead.', E_USER_DEPRECATED);
 
-        if (!$cat) {
-            return false;
-        }
-
-        return self::copyCategoriesByPath($cat['ipath'], $newparent_id);
+        return ServiceUtil::get('zikula_categories_module.copy_and_move_helper')->copyCategoriesById($cid, $newParentId);
     }
 
     /**
-     * Copy SubCategories by Path (recurisve copy).
+     * Copy subcategories by path (recursive copy).
      *
-     * @param string  $apath        The path to copy from
-     * @param integer $newparent_id The categoryID of the new parent category
-     * @param string  $field        The field to use for the path reference (optional) (default='ipath')
+     * @param string  $apath       The path to copy from
+     * @param integer $newParentId The categoryID of the new parent category
+     * @param string  $pathField   The field to use for the path reference (optional) (default='ipath')
      *
      * @return boolean
      */
-    public static function copySubCategoriesByPath($apath, $newparent_id, $field = 'ipath')
+    public static function copySubCategoriesByPath($apath, $newParentId, $pathField = 'ipath')
     {
-        return self::copyCategoriesByPath($apath, $newparent_id, $field, false);
+        @trigger_error('CategoryUtil is deprecated. please use the new copy and move helper instead.', E_USER_DEPRECATED);
+
+        return ServiceUtil::get('zikula_categories_module.copy_and_move_helper')->copySubCategoriesByPath($apath, $newParentId, $pathField);
     }
 
     /**
-     * Copy Categories by Path (recursive copy).
+     * Copy categories by path (recursive copy).
      *
-     * @param string  $apath        The path to copy from
-     * @param integer $newparent_id The categoryID of the new parent category
-     * @param string  $field        The field to use for the path reference (optional) (default='ipath')
-     * @param boolean $includeRoot  Whether or not to also move the root folder (optional) (default=true)
+     * @param string  $apath       The path to copy from
+     * @param integer $newParentId The categoryID of the new parent category
+     * @param string  $pathField   The field to use for the path reference (optional) (default='ipath')
+     * @param boolean $includeRoot Whether or not to also move the root folder (optional) (default=true)
      *
      * @return boolean
      */
-    public static function copyCategoriesByPath($apath, $newparent_id, $field = 'ipath', $includeRoot = true)
+    public static function copyCategoriesByPath($apath, $newParentId, $pathField = 'ipath', $includeRoot = true)
     {
-        if (!$apath || !$newparent_id) {
-            return false;
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the new copy and move helper instead.', E_USER_DEPRECATED);
 
-        $cats = self::getSubCategoriesByPath($apath, 'ipath', $field, true, true);
-        $newParentCats = self::getSubCategories($newparent_id, true, true, true, true, true);
-        $newParent = $newParentCats[0];
-
-        if (!$newParent || !$cats) {
-            return false;
-        }
-
-        $currentPaths = [];
-        foreach ($newParentCats as $p) {
-            $currentPaths[] = $p['path_relative'];
-        }
-
-        // need to make sure that after copying categories will have unique paths
-        foreach ($cats as $k => $cat) {
-            if ($includeRoot) {
-                // root node is included - just check path uniqueness for root
-                // subnodes will inherit it's name in paths
-                $catBasePath = $newParent['path_relative'] . '/';
-                if ($k === 0 && in_array($catBasePath . $cats[0]['name'], $currentPaths)) {
-                    // path is not unique - add arbitrary " Copy" suffix to category name
-                    $cats[0]['name'] .= ' ' . __('Copy');
-                    if (in_array($catBasePath . $cats[0]['name'], $currentPaths)) {
-                        // if there is already such name
-                        // find first free name by adding number at the end
-                        $i = 1;
-                        $name = $cats[0]['name'];
-                        while (in_array($catBasePath . $name, $currentPaths)) {
-                            $name = $cats[0]['name'] . ' ' . $i++;
-                        }
-                        $cats[0]['name'] = $name;
-                    }
-                }
-            } elseif ($k !== 0) {
-                // root node is excluded - need to check each subnode if it's path will be unique
-                // follow the same routin that for the root node
-                $catPath = explode('/', $cat['path_relative']);
-                array_shift($catPath);
-                array_pop($catPath);
-                $catBasePath = $newParent['path_relative'] . '/' . implode('/', $catPath);
-                if (in_array($catBasePath . $cats[$k]['name'], $currentPaths)) {
-                    $cats[$k]['name'] .= ' ' . __('Copy');
-                    if (in_array($catBasePath . $cats[$k]['name'], $currentPaths)) {
-                        $i = 1;
-                        $name = $cats[$k]['name'];
-                        while (in_array($catBasePath . $name, $currentPaths)) {
-                            $name = $cats[$k]['name'] . ' ' . $i++;
-                        }
-                        $cats[$k]['name'] = $name;
-                    }
-                }
-            }
-        }
-
-        $entityManager = ServiceUtil::get('doctrine.orm.default_entity_manager');
-
-        $oldToNewID = [];
-        $oldToNewID[$cats[0]['parent']['id']] = $entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $newParent['id']);
-
-        // since array_shift() resets numeric array indexes, we remove the leading element like this
-        if (!$includeRoot) {
-            foreach ($cats as $k => $v) {
-                if (isset($v['ipath']) && $v['ipath'] == $apath) {
-                    unset($cats[$k]);
-                }
-            }
-        }
-
-        $ak = array_keys($cats);
-        foreach ($ak as $v) {
-            $cat = $cats[$v];
-
-            // unset some variables
-            unset($cat['parent_id']);
-            unset($cat['accessible']);
-            unset($cat['path_relative']);
-            unset($cat['ipath_relative']);
-
-            $oldID = $cat['id'];
-            $cat['id'] = '';
-            $cat['parent'] = isset($oldToNewID[$cat['parent']['id']]) ? $oldToNewID[$cat['parent']['id']] : $entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $newParent['id']);
-
-            $catObj = new Zikula\CategoriesModule\Entity\CategoryEntity();
-            $catObj->merge($cat);
-            $entityManager->persist($catObj);
-            $entityManager->flush();
-
-            $oldToNewID[$oldID] = $entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $catObj['id']);
-        }
-
-        $entityManager->flush();
-
-        // rebuild iPath since now we have all new PathIDs
-        self::rebuildPaths('ipath', 'id');
-
-        // rebuild also paths since names could be changed
-        self::rebuildPaths();
-
-        return true;
+        return ServiceUtil::get('zikula_categories_module.copy_and_move_helper')->copyCategoriesByPath($apath, $newParentId, $pathField, $includeRoot);
     }
 
     /**
-     * Check whether $cid is a direct subcategory of $root_id.
+     * Check whether $cid is a direct subcategory of $rootId.
      *
-     * @param integer $root_id The root/parent ID
-     * @param integer $cid     The categoryID we wish to check for subcategory-ness
+     * @param integer $rootId The root/parent ID
+     * @param integer $cid    The categoryID we wish to check for subcategory-ness
      *
      * @return boolean
      */
-    public static function isDirectSubCategoryByID($root_id, $cid)
+    public static function isDirectSubCategoryByID($rootId, $cid)
     {
-        if (!$cid) {
-            return false;
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the new hierarchy helper instead.', E_USER_DEPRECATED);
 
-        $cat = self::getCategoryByID($cid);
-
-        if (isset($cat['parent_id'])) {
-            return $cat['parent_id'] == $root_id;
-        }
-
-        return false;
+        return ServiceUtil::get('zikula_categories_module.hierarchy_helper')->isDirectSubCategoryById($rootId, $cid);
     }
 
     /**
-     * Check whether $cid is a direct subcategory of $root_id.
+     * Check whether $cid is a direct subcategory of $rootId.
      *
      * @param array $rootCat The root/parent category
      * @param array $cat     The category we wish to check for subcategory-ness
@@ -844,31 +376,24 @@ class CategoryUtil
      */
     public static function isDirectSubCategory($rootCat, $cat)
     {
-        return $cat['parent_id'] == $rootCat['id'];
+        @trigger_error('CategoryUtil is deprecated. please use the new hierarchy helper instead.', E_USER_DEPRECATED);
+
+        return ServiceUtil::get('zikula_categories_module.hierarchy_helper')->isDirectSubCategory($rootCat, $cat);
     }
 
     /**
-     * Check whether $cid is a subcategory of $root_id.
+     * Check whether $cid is a subcategory of $rootId.
      *
-     * @param integer $root_id The ID of the root category we wish to check from
-     * @param integer $cid     The category-id we wish to check for subcategory-ness
+     * @param integer $rootId The ID of the root category we wish to check from
+     * @param integer $cid    The category-id we wish to check for subcategory-ness
      *
      * @return boolean
      */
-    public static function isSubCategoryByID($root_id, $cid)
+    public static function isSubCategoryByID($rootId, $cid)
     {
-        if (!$root_id || !$cid) {
-            return false;
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the new hierarchy helper instead.', E_USER_DEPRECATED);
 
-        $rootCat = self::getCategoryByID($root_id);
-        $cat = self::getCategoryByID($cid);
-
-        if (!$rootCat || !$cat) {
-            return false;
-        }
-
-        return self::isSubCategory($rootCat, $cat);
+        return ServiceUtil::get('zikula_categories_module.hierarchy_helper')->isSubCategoryById($rootId, $cid);
     }
 
     /**
@@ -881,10 +406,9 @@ class CategoryUtil
      */
     public static function isSubCategory($rootCat, $cat)
     {
-        $rPath = $rootCat['ipath'] . '/';
-        $cPath = $cat['ipath'];
+        @trigger_error('CategoryUtil is deprecated. please use the new hierarchy helper instead.', E_USER_DEPRECATED);
 
-        return strpos($cPath, $rPath) === 0;
+        return ServiceUtil::get('zikula_categories_module.hierarchy_helper')->isSubCategory($rootCat, $cat);
     }
 
     /**
@@ -898,23 +422,9 @@ class CategoryUtil
      */
     public static function haveDirectSubcategories($cid, $countOnly = false, $all = true)
     {
-        if (!$cid) {
-            return false;
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the new hierarchy helper instead.', E_USER_DEPRECATED);
 
-        $cats = self::getCategoriesByParentID($cid, '', false, $all);
-
-        if ($countOnly) {
-            return (bool)count($cats);
-        }
-
-        foreach ($cats as $cat) {
-            if ($cat['is_leaf']) {
-                return true;
-            }
-        }
-
-        return false;
+        return ServiceUtil::get('zikula_categories_module.hierarchy_helper')->hasDirectSubcategories($cid, $countOnly, $all);
     }
 
     /**
@@ -929,29 +439,9 @@ class CategoryUtil
      */
     public static function getCategoryTreeJS($cats, $doReplaceRootCat = true, $sortable = false, array $options = [])
     {
-        $leafNodes = [];
-        foreach ($cats as $i => $c) {
-            if ($doReplaceRootCat && $c['id'] == 1 && $c['name'] == '__SYSTEM__') {
-                $c['name'] = __('Root category');
-            }
-            $cats[$i] = self::getCategoryTreeJSNode($c);
-            if ($c['is_leaf']) {
-                $leafNodes[] = $c['id'];
-            }
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the js tree helper instead.', E_USER_DEPRECATED);
 
-        $tree = new Zikula_Tree();
-        $tree->setOption('id', 'categoriesTree');
-        $tree->setOption('sortable', $sortable);
-        // disable drag and drop for root category
-        $tree->setOption('disabled', [1]);
-        $tree->setOption('disabledForDrop', $leafNodes);
-        if (!empty($options)) {
-            $tree->setOptionArray($options);
-        }
-        $tree->loadArrayData($cats);
-
-        return $tree->getHTML();
+        return ServiceUtil::get('zikula_categories_module.js_tree_helper')->getCategoryTreeJs($cats, $doReplaceRootCat, $sortable, $options);
     }
 
     /**
@@ -966,58 +456,22 @@ class CategoryUtil
      */
     public static function getCategoryTreeJqueryJS($cats, $doReplaceRootCat = true, $sortable = false, array $options = [])
     {
-        $leafNodes = [];
-        foreach ($cats as $i => $c) {
-            if ($doReplaceRootCat && $c['id'] == 1 && $c['name'] == '__SYSTEM__') {
-                $c['name'] = __('Root category');
-            }
-            $cats[$i] = self::getCategoryTreeJSNode($c);
-            if ($c['is_leaf']) {
-                $leafNodes[] = $c['id'];
-            }
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the js tree helper instead.', E_USER_DEPRECATED);
 
-        $tree = new Zikula_Tree();
-        $tree->setOption('id', 'categoriesTree');
-        $tree->setOption('sortable', $sortable);
-        // disable drag and drop for root category
-        $tree->setOption('disabled', [1]);
-        $tree->setOption('disabledForDrop', $leafNodes);
-        if (!empty($options)) {
-            $tree->setOptionArray($options);
-        }
-        $tree->loadArrayData($cats);
-
-        return $tree->getJqueryHtml();
+        return ServiceUtil::get('zikula_categories_module.js_tree_helper')->getCategoryTreeJqueryJs($cats, $doReplaceRootCat, $sortable, $options);
     }
 
     /**
      * create a JSON formatted object compatible with jsTree node structure for one category (includes children)
      *
-     * @param \Zikula\CategoriesModule\Entity\CategoryEntity $category
+     * @param CategoryEntity $category
      * @return array
      */
-    public static function getJsTreeNodeFromCategory(\Zikula\CategoriesModule\Entity\CategoryEntity $category)
+    public static function getJsTreeNodeFromCategory(CategoryEntity $category)
     {
-        $lang = ZLanguage::getLanguageCode();
+        @trigger_error('CategoryUtil is deprecated. please use the js tree helper instead.', E_USER_DEPRECATED);
 
-        return [
-            'id' => 'node_' . $category->getId(),
-            'text' => $category->getDisplay_name($lang),
-            'icon' => $category->getIs_leaf() ? false : 'fa fa-folder',
-            'state' => [
-                'open' => false,
-                'disabled' => false,
-                'selected' => false
-            ],
-            'children' => self::getJsTreeNodeFromCategoryArray($category->getChildren()),
-            'li_attr' => [
-                'class' => $category->getStatus() == 'I' ? 'z-tree-unactive' : ''
-            ],
-            'a_attr' => [
-                'title' => self::createTitleAttribute($category->toArray(), $category->getDisplay_name($lang), $lang)
-            ]
-        ];
+        return ServiceUtil::get('zikula_categories_module.js_tree_helper')->getJsTreeNodeFromCategory($category);
     }
 
     /**
@@ -1028,12 +482,9 @@ class CategoryUtil
      */
     public static function getJsTreeNodeFromCategoryArray($categories)
     {
-        $result = [];
-        foreach ($categories as $category) {
-            $result[] = self::getJsTreeNodeFromCategory($category);
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the js tree helper instead.', E_USER_DEPRECATED);
 
-        return $result;
+        return ServiceUtil::get('zikula_categories_module.js_tree_helper')->getJsTreeNodeFromCategoryArray($categories);
     }
 
     /**
@@ -1045,71 +496,9 @@ class CategoryUtil
      */
     public static function getCategoryTreeJSNode($category)
     {
-        $lang = ZLanguage::getLanguageCode();
-        $params = [
-            'mode' => 'edit',
-            'cid' => $category['id']
-        ];
-        $url = ModUtil::url('ZikulaCategoriesModule', 'admin', 'edit', $params);
+        @trigger_error('CategoryUtil is deprecated. please use the js tree helper instead.', E_USER_DEPRECATED);
 
-        $request = ServiceUtil::get('request');
-        if ($request->attributes->get('_zkType') == 'admin') {
-            $url .= '#top';
-        }
-
-        if (isset($category['display_name'][$lang]) && !empty($category['display_name'][$lang])) {
-            $name = DataUtil::formatForDisplay($category['display_name'][$lang]);
-            $displayName = $name;
-        } else {
-            $name = DataUtil::formatForDisplay($category['name']);
-            $displayName = '';
-        }
-        $category['name'] = $name;
-        $category['active'] = $category['status'] == 'A' ? true : false;
-        $category['href'] = $url;
-        $category['title'] = self::createTitleAttribute($category, $displayName, $lang);
-        $category['class'] = [];
-        if ($category['is_locked']) {
-            $category['class'][] = 'locked';
-        }
-        if ($category['is_leaf']) {
-            $category['class'][] = 'leaf';
-        } else {
-            $category['class'][] = 'z-tree-fixedparent';
-        }
-        if (!$category['active']) {
-            $category['class'][] = 'z-tree-unactive';
-        }
-        $category['class'] = implode(' ', $category['class']);
-
-        if (!$category['is_leaf']) {
-            $category['icon'] = 'folder_open.png';
-        }
-
-        return $category;
-    }
-
-    /**
-     * create and format a string suitable for use as title attribute in anchor tag
-     *
-     * @param $category
-     * @param $displayName
-     * @param $lang
-     * @return string
-     */
-    private static function createTitleAttribute($category, $displayName, $lang)
-    {
-        $title = [];
-        $title[] = __('ID') . ": " . $category['id'];
-        $title[] = __('Name') . ": " . DataUtil::formatForDisplay($category['name']);
-        $title[] = __('Display name') . ": " . $displayName;
-        $title[] = __('Description') . ": " . (isset($category['display_desc'][$lang]) ? DataUtil::formatForDisplay($category['display_desc'][$lang]) : '');
-        $title[] = __('Value') . ": " . $category['value'];
-        $title[] = __('Active') . ": " . ($category['status'] == 'A' ? 'Yes' : 'No');
-        $title[] = __('Leaf') . ": " . ($category['is_leaf'] ? 'Yes' : 'No');
-        $title[] = __('Locked') . ": " . ($category['is_locked'] ? 'Yes' : 'No');
-
-        return implode('<br />', $title);
+        return ServiceUtil::get('zikula_categories_module.js_tree_helper')->getCategoryTreeJsNode($category);
     }
 
     /**
@@ -1127,23 +516,9 @@ class CategoryUtil
      */
     public static function _tree_insert(&$tree, $entry, $currentpath = null)
     {
-        if ($currentpath === null) {
-            $currentpath = $entry['ipath'];
-        }
-        $currentpath = trim($currentpath, '/ ');
-        $pathlist = explode('/', $currentpath);
-        $root = $pathlist[0];
-        if (!array_key_exists($root, $tree)) {
-            $tree[$root] = [];
-        }
-        if (count($pathlist) == 1) {
-            $tree[$root]['_/_'] = $entry;
+        @trigger_error('CategoryUtil is deprecated. please use the category sorting helper instead.', E_USER_DEPRECATED);
 
-            return $tree;
-        } else {
-            unset($pathlist[0]);
-            self::_tree_insert($tree[$root], $entry, implode('/', $pathlist));
-        }
+        return ServiceUtil::get('zikula_categories_module.category_sorting_helper')->insertTreeLeaf($tree, $entry, $currentpath);
     }
 
     /**
@@ -1156,52 +531,9 @@ class CategoryUtil
      */
     public static function _tree_sort($tree, &$cats)
     {
-        global $_catSortField;
-        $sorted = [];
-        foreach ($tree as $k => $v) {
-            if ($k == '_/_') {
-                $cats[] = $v;
-            } else {
-                if (isset($v['_/_'][$_catSortField])) {
-                    if ($v['_/_'][$_catSortField] > 0 && $v['_/_'][$_catSortField] < 2147483647) {
-                        $sorted[$k] = $v['_/_'][$_catSortField];
-                    } else {
-                        $sorted[$k] = $v['_/_']['name'];
-                    }
-                } else {
-                    $sorted[$k] = null;
-                }
-            }
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the category sorting helper instead.', E_USER_DEPRECATED);
 
-        uasort($sorted, ['self', '_tree_sort_cmp']);
-
-        foreach ($sorted as $k => $v) {
-            self::_tree_sort($tree[$k], $cats);
-        }
-    }
-
-    /**
-     * Internal callback function for int/string comparation.
-     *
-     * It is supposed to compate integer items numerically and string items as strings,
-     * so integers will be before strings (unlike SORT_REGULAR flag for array sort functions).
-     *
-     * @param string $a The first value
-     * @param string $b The second value
-     *
-     * @return int 0 if $a and $b are equal, 1 ir $a is greater then $b, -1 if $a is less than $b
-     */
-    private static function _tree_sort_cmp($a, $b)
-    {
-        if ($a === $b) {
-            return 0;
-        }
-        if (!is_numeric($a) || !is_numeric($b)) {
-            return strcmp($a, $b);
-        }
-
-        return ($a < $b) ? -1 : 1;
+        return ServiceUtil::get('zikula_categories_module.category_sorting_helper')->sortTree($tree, $cats);
     }
 
     /**
@@ -1215,35 +547,9 @@ class CategoryUtil
      */
     public static function sortCategories($cats, $sortField = '', $assocKey = '')
     {
-        if (!$cats) {
-            return $cats;
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the category sorting helper instead.', E_USER_DEPRECATED);
 
-        global $_catSortField;
-        if ($sortField) {
-            $_catSortField = $sortField;
-        } else {
-            $sortField = $_catSortField;
-        }
-
-        $tree = [];
-        foreach ($cats as $c) {
-            self::_tree_insert($tree, $c);
-        }
-        $new_cats = [];
-        self::_tree_sort($tree[1], $new_cats);
-
-        if ($assocKey) {
-            $new_cats_assoc = [];
-            foreach ($new_cats as $c) {
-                if (isset($c[$assocKey])) {
-                    $new_cats_assoc[$c[$assocKey]] = $c;
-                }
-            }
-            $new_cats = $new_cats_assoc;
-        }
-
-        return $new_cats;
+        return ServiceUtil::get('zikula_categories_module.category_sorting_helper')->sortCategories($cats, $sortField, $assocKey);
     }
 
     /**
@@ -1256,43 +562,9 @@ class CategoryUtil
      */
     public static function getCategoryTreeStructure($cats)
     {
-        $menuString = '';
-        $params = [];
-        $params['mode'] = 'edit';
+        @trigger_error('CategoryUtil is deprecated. please use the html tree helper instead.', E_USER_DEPRECATED);
 
-        //$cats = self::sortCategories($cats, 'sort_value');
-        $lang = ZLanguage::getLanguageCode();
-
-        foreach ($cats as $c) {
-            $path = $c['path'];
-            $depth = StringUtil::countInstances($path, '/');
-            // account for the fact that a single slash is a valid root
-            // path but subfolders only have a single slash as well
-            if (strlen($path) > 1) {
-                $depth++;
-            }
-            $ds = str_repeat('.', $depth);
-
-            $params['cid'] = $c['id'];
-            $url = DataUtil::formatForDisplay(ModUtil::url('ZikulaCategoriesModule', 'admin', 'edit', $params));
-
-            $request = ServiceUtil::get('request');
-            if ($request->attributes->get('_zkType') == 'admin') {
-                $url .= '#top';
-            }
-
-            if (isset($c['display_name'][$lang]) && !empty($c['display_name'][$lang])) {
-                $name = DataUtil::formatForDisplay($c['display_name'][$lang]);
-            } else {
-                $name = DataUtil::formatForDisplay($c['name']);
-            }
-
-            $menuLine = "$ds|$name|$url||||\n";
-
-            $menuString .= $menuLine;
-        }
-
-        return $menuString;
+        return ServiceUtil::get('zikula_categories_module.html_tree_helper')->getCategoryTreeStructure($cats);
     }
 
     /**
@@ -1316,86 +588,9 @@ class CategoryUtil
      */
     public static function getSelector_Categories($cats, $field = 'id', $selectedValue = '0', $name = 'category[parent_id]', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $submit = false, $displayPath = false, $doReplaceRootCat = true, $multipleSize = 1, $fieldIsAttribute = false, $cssClass = '', $lang = null)
     {
-        $line = '---------------------------------------------------------------------';
+        @trigger_error('CategoryUtil is deprecated. please use the html tree helper instead.', E_USER_DEPRECATED);
 
-        if ($multipleSize > 1 && strpos($name, '[]') === false) {
-            $name .= '[]';
-        }
-        if (!is_array($selectedValue)) {
-            $selectedValue = [
-                (string)$selectedValue
-            ];
-        }
-
-        $id = strtr($name, '[]', '__');
-        $multiple = $multipleSize > 1 ? ' multiple="multiple"' : '';
-        $multipleSize = $multipleSize > 1 ? " size=\"$multipleSize\"" : '';
-        $submit = $submit ? ' onchange="this.form.submit();"' : '';
-        $cssClass = $cssClass ? " class=\"$cssClass\"" : '';
-        $lang = (isset($lang)) ? $lang : ZLanguage::getLanguageCode();
-
-        $html = "<select name=\"$name\" id=\"$id\"{$multipleSize}{$multiple}{$submit}{$cssClass}>";
-
-        if (!empty($defaultText)) {
-            $sel = (in_array((string)$defaultValue, $selectedValue) ? ' selected="selected"' : '');
-            $html .= "<option value=\"$defaultValue\"$sel>$defaultText</option>";
-        }
-
-        if ($allText) {
-            $sel = (in_array((string)$allValue, $selectedValue) ? ' selected="selected"' : '');
-            $html .= "<option value=\"$allValue\"$sel>$allText</option>";
-        }
-
-        $count = 0;
-        if (!isset($cats) || empty($cats)) {
-            $cats = [];
-        }
-
-        foreach ($cats as $cat) {
-            if ($fieldIsAttribute) {
-                $sel = in_array((string)$cat['__ATTRIBUTES__'][$field], $selectedValue) ? ' selected="selected"' : '';
-            } else {
-                $sel = in_array((string)$cat[$field], $selectedValue) ? ' selected="selected"' : '';
-            }
-            if ($displayPath) {
-                if ($fieldIsAttribute) {
-                    $v = $cat['__ATTRIBUTES__'][$field];
-                    $html .= "<option value=\"$v\"$sel>$cat[path]</option>";
-                } else {
-                    $html .= "<option value=\"$cat[$field]\"$sel>$cat[path]</option>";
-                }
-            } else {
-                $cslash = StringUtil::countInstances(isset($cat['ipath_relative']) ? $cat['ipath_relative'] : $cat['ipath'], '/');
-                $indent = '';
-                if ($cslash > 0) {
-                    $indent = substr($line, 0, $cslash * 2);
-                }
-
-                $indent = '|' . $indent;
-
-                if (isset($cat['display_name'][$lang]) && !empty($cat['display_name'][$lang])) {
-                    $catName = $cat['display_name'][$lang];
-                } else {
-                    $catName = $cat['name'];
-                }
-
-                if ($fieldIsAttribute) {
-                    $v = $cat['__ATTRIBUTES__'][$field];
-                    $html .= "<option value=\"$v\"$sel>$indent " . DataUtil::formatForDisplayHtml($catName) . "</option>";
-                } else {
-                    $html .= "<option value=\"$cat[$field]\"$sel>$indent " . DataUtil::formatForDisplayHtml($catName) . "</option>";
-                }
-            }
-            $count++;
-        }
-
-        $html .= '</select>';
-
-        if ($doReplaceRootCat) {
-            $html = str_replace('__SYSTEM__', __('Root category'), $html);
-        }
-
-        return $html;
+        return ServiceUtil::get('zikula_categories_module.html_tree_helper')->getSelector($cats, $field, $selectedValue, $name, $defaultValue, $defaultText, $allValue = 0, $allText, $submit, $displayPath, $doReplaceRootCat, $multipleSize, $fieldIsAttribute, $cssClass, $lang);
     }
 
     /**
@@ -1408,17 +603,9 @@ class CategoryUtil
      */
     public static function cmpName($catA, $catB)
     {
-        $lang = ZLanguage::getLanguageCode();
+        @trigger_error('CategoryUtil is deprecated. please use the category sorting helper instead.', E_USER_DEPRECATED);
 
-        if (!$catA['display_name'][$lang]) {
-            $catA['display_name'][$lang] = $catA['name'];
-        }
-
-        if ($catA['display_name'][$lang] == $catB['display_name'][$lang]) {
-            return 0;
-        }
-
-        return strcmp($catA['display_name'][$lang], $catB['display_name'][$lang]);
+        return ServiceUtil::get('zikula_categories_module.category_sorting_helper')->compareName($catA, $catB);
     }
 
     /**
@@ -1431,13 +618,9 @@ class CategoryUtil
      */
     public static function cmpDesc($catA, $catB)
     {
-        $lang = ZLanguage::getLanguageCode();
+        @trigger_error('CategoryUtil is deprecated. please use the category sorting helper instead.', E_USER_DEPRECATED);
 
-        if ($catA['display_desc'][$lang] == $catB['display_desc'][$lang]) {
-            return 0;
-        }
-
-        return strcmp($catA['display_desc'][$lang], $catB['display_desc'][$lang]);
+        return ServiceUtil::get('zikula_categories_module.category_sorting_helper')->compareDesc($catA, $catB);
     }
 
     /**
@@ -1446,15 +629,15 @@ class CategoryUtil
      *  The resulting sorted category array $cats updated by reference nothing is returned.
      *
      * @param array  &$cats The categories array
-     * @param string $func Which compare function to use (determines field to be used for comparison) (optional) (defaylt='cmpName')
+     * @param string $func Which compare function to use (determines field to be used for comparison) (optional) (default='compareName')
      *
      * @return void
      */
-    public static function sortByLocale(&$cats, $func = 'cmpName')
+    public static function sortByLocale(&$cats, $func = 'compareName')
     {
-        usort($cats, $func);
+        @trigger_error('CategoryUtil is deprecated. please use the category sorting helper instead.', E_USER_DEPRECATED);
 
-        return;
+        return ServiceUtil::get('zikula_categories_module.category_sorting_helper')->sortByLocale($cats, $func);
     }
 
     /**
@@ -1467,17 +650,9 @@ class CategoryUtil
      */
     public static function resequence($cats, $step = 1)
     {
-        if (!$cats) {
-            return false;
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the category sorting helper instead.', E_USER_DEPRECATED);
 
-        $c = 0;
-        $ak = array_keys($cats);
-        foreach ($ak as $k) {
-            $cats[$k]['sort_value'] = ++$c * $step;
-        }
-
-        return $cats;
+        return ServiceUtil::get('zikula_categories_module.category_sorting_helper')->resequence($cats, $step);
     }
 
     /**
@@ -1488,7 +663,7 @@ class CategoryUtil
      * with the Property-Names too), return an (identically indexed) array
      * of category-paths based on the given field (name or id make sense).
      *
-     * @param array $rootCatIDs The root/parent categories ID
+     * @param array   $rootCatIDs  The root/parent categories ID
      * @param array   &$cats       The associative categories object array
      * @param boolean $includeRoot If true, the root portion of the path is preserved
      *
@@ -1496,19 +671,9 @@ class CategoryUtil
      */
     public static function buildRelativePaths($rootCatIDs, &$cats, $includeRoot = false)
     {
-        if (!$rootCatIDs) {
-            return false;
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the new path builder helper instead.', E_USER_DEPRECATED);
 
-        foreach ($cats as $prop => $catID) {
-            if (!isset($rootCatIDs[$prop]) || !$rootCatIDs[$prop]) {
-                continue;
-            }
-            $rootCat = self::getCategoryByID($rootCatIDs[$prop]);
-            self::buildRelativePathsForCategory($rootCat, $cats[$prop], $includeRoot);
-        }
-
-        return;
+        return ServiceUtil::get('zikula_categories_module.path_builder_helper')->buildRelativePaths($rootCatIDs, $cats, $includeRoot);
     }
 
     /**
@@ -1524,46 +689,13 @@ class CategoryUtil
      */
     public static function buildRelativePathsForCategory($rootCategory, &$cat, $includeRoot = false)
     {
-        if (!$rootCategory) {
-            return false;
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the new relative category path builder helper instead.', E_USER_DEPRECATED);
 
         if (is_numeric($rootCategory)) {
-            $rootCategory = self::getCategoryByID($rootCategory);
+            $rootCategory = ServiceUtil::get('zikula_categories_module.api.category')->getCategoryById($rootCategory);
         }
 
-        // remove the Root Category name of the paths
-        // because multilanguage names has different lengths
-        $pos = strpos($rootCategory['path'], '/', 1);
-        $rootCategory['path'] = substr($rootCategory['path'], $pos);
-
-        $pos = strpos($cat['path'], '/', 1);
-        $normalizedPath = substr($cat['path'], $pos);
-
-        // process the normalized paths
-        $ppos = strrpos($rootCategory['path'], '/') + 1;
-        $ipos = strrpos($rootCategory['ipath'], '/') + 1;
-
-        $cat['path_relative'] = substr($normalizedPath, $ppos);
-        if (isset($cat['ipath'])) {
-            $cat['ipath_relative'] = substr($cat['ipath'], $ipos);
-        }
-
-        if (!$includeRoot) {
-            $offSlashPath = strpos($cat['path_relative'], '/');
-            if (isset($cat['ipath'])) {
-                $offSlashIPath = strpos($cat['ipath_relative'], '/');
-            }
-
-            if ($offSlashPath !== false) {
-                $cat['path_relative'] = substr($cat['path_relative'], $offSlashPath + 1);
-            }
-            if (isset($cat['ipath']) && $offSlashIPath !== false) {
-                $cat['ipath_relative'] = substr($cat['ipath_relative'], $offSlashIPath + 1);
-            }
-        }
-
-        return $cat;
+        return ServiceUtil::get('zikula_categories_module.relative_category_path_builder_helper')->buildRelativePathsForCategory($rootCategory, $cat, $includeRoot);
     }
 
     /**
@@ -1580,26 +712,9 @@ class CategoryUtil
      */
     public static function buildPaths($cats, $field = 'name')
     {
-        if (!$cats) {
-            return false;
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the new path builder helper instead.', E_USER_DEPRECATED);
 
-        $paths = [];
-
-        foreach ($cats as $k => $v) {
-            $path = $v[$field];
-            $pid = (null !== $v['parent']) ? $v['parent']->getId() : null;
-
-            while ($pid > 0) {
-                $pcat = $cats[$pid];
-                $path = $pcat[$field] . '/' . $path;
-                $pid = (null !== $pcat['parent']) ? $pcat['parent']->getId() : null;
-            }
-
-            $paths[$k] = '/' . $path;
-        }
-
-        return $paths;
+        return ServiceUtil::get('zikula_categories_module.path_builder_helper')->buildPaths($cats, $field);
     }
 
     /**
@@ -1607,35 +722,17 @@ class CategoryUtil
      *
      * Note that field and sourceField go in pairs (that is, if you want sensical results)!.
      *
-     * @param string  $field       The field which we wish to populate (optional) (default='path')
+     * @param string  $pathField   The field which we wish to populate (optional) (default='path')
      * @param string  $sourceField The field we use to build the path with (optional) (default='name')
-     * @param integer $leaf_id     The leaf-category category-id (ie: we'll rebuild the path of this category and all it's parents) (optional) (default=0)
+     * @param integer $leafId      The leaf-category category-id (ie: we'll rebuild the path of this category and all it's parents) (optional) (default=0)
      *
      * @return void
      */
-    public static function rebuildPaths($field = 'path', $sourceField = 'name', $leaf_id = 0)
+    public static function rebuildPaths($pathField = 'path', $sourceField = 'name', $leafId = 0)
     {
-        if ($leaf_id > 0) {
-            $cats = self::getParentCategories($leaf_id, 'id');
-        } else {
-            $cats = self::getCategories('', '', 'id');
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the new path builder helper instead.', E_USER_DEPRECATED);
 
-        $paths = self::buildPaths($cats, $sourceField);
-
-        if ($cats && $paths) {
-            $entityManager = ServiceUtil::get('doctrine.orm.default_entity_manager');
-
-            foreach ($cats as $k => $v) {
-                if (isset($v[$field]) && isset($paths[$k]) && ($v[$field] != $paths[$k])) {
-                    $dql = "UPDATE Zikula\CategoriesModule\Entity\CategoryEntity c SET c.$field = :path WHERE c.id = :id";
-                    $query = $entityManager->createQuery($dql);
-                    $query->setParameter('path', $paths[$k]);
-                    $query->setParameter('id', $k);
-                    $query->getResult();
-                }
-            }
-        }
+        return ServiceUtil::get('zikula_categories_module.path_builder_helper')->rebuildPaths($pathField, $sourceField, $leafId);
     }
 
     /**
@@ -1652,28 +749,8 @@ class CategoryUtil
      */
     public static function hasCategoryAccess($categories, $module, $permLevel = ACCESS_OVERVIEW)
     {
-        // Always allow access to content with no categories associated
-        if (count($categories) == 0) {
-            return true;
-        }
+        @trigger_error('CategoryUtil is deprecated. please use the new category permission api instead.', E_USER_DEPRECATED);
 
-        // Check if access is required for all categories or for at least one category
-        $requireAccessForAll = ModUtil::getVar('ZikulaCategoriesModule', 'permissionsall', 0);
-
-        $accessGranted = true;
-        foreach ($categories as $propertyName => $cat) {
-            $hasAccess = SecurityUtil::checkPermission("ZikulaCategoriesModule:$propertyName:Category", "$cat[id]:$cat[path]:$cat[ipath]", $permLevel);
-            if ($requireAccessForAll && !$hasAccess) {
-                return false;
-            }
-            if (!$requireAccessForAll) {
-                if ($hasAccess) {
-                    return true;
-                }
-                $accessGranted = false;
-            }
-        }
-
-        return $accessGranted;
+        return ServiceUtil::get('zikula_categories_module.api.category_permission')->hasCategoryAccess($categories, $permLevel);
     }
 }
