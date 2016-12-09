@@ -73,10 +73,14 @@ services:
     zikula_categories_module.form_type.categories_type:
         class: %zikula_categories_module.form_type.categories_type.class%
         arguments: ["@zikula_categories_module.api.category_registry"]
+        tags:
+            - { name: form.type }
 
     zikula_categories_module.form_type.config_type:
         class: %zikula_categories_module.form_type.config_type.class%
         arguments: ["@zikula_categories_module.api.category"]
+        tags:
+            - { name: form.type }
 
     twig.extension.zikula_categories_module:
         class: %twig.extension.zikula_categories_module.class%
