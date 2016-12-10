@@ -46,15 +46,6 @@ class Zikula_Session_Storage_Legacy extends NativeSessionStorage
      */
     public function start()
     {
-        // create IP finger print
-        $current_ipaddr = '';
-        $_REMOTE_ADDR = System::serverGetVar('REMOTE_ADDR');
-        $_HTTP_X_FORWARDED_FOR = System::serverGetVar('HTTP_X_FORWARDED_FOR');
-
-        // create the ip fingerprint
-        $current_ipaddr = md5($_REMOTE_ADDR . $_HTTP_X_FORWARDED_FOR);
-
-        // start session check expiry and ip fingerprint if required
         if (parent::start()) {
             // check if session has expired or not
             $now = time();
