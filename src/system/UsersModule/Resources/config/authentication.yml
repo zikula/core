@@ -12,10 +12,10 @@ services:
         class: %zikula_users_module.form.default_registration_type.class%
         arguments: ["@translator.default"]
         tags:
-            - { name: form.type, alias: "Zikula\UsersModule\Form\RegistrationType\DefaultRegistrationType" }
+            - { name: form.type, alias: "Zikula\\UsersModule\\Form\\RegistrationType\\DefaultRegistrationType" }
 
     zikula_users_module.form.default_login_type:
         class: %zikula_users_module.form.default_login_type.class%
         arguments: ["@translator.default"]
         tags:
-            - { name: form.type, alias: "Zikula\UsersModule\Form\Type\DefaultLoginType" }
+            - { name: form.type, alias: "Zikula\\UsersModule\\Form\\Type\\DefaultLoginType" }
