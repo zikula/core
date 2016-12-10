@@ -33,4 +33,4 @@ services:
         class: %zikula_menu_module.form.type.hidden_menu_item_type.class%
         arguments: ["@zikula_menu_module.menu_item_repository", "@translator.default"]
         tags:
-            - { name: form.type, alias: "Zikula\MenuModule\Form\Type\HiddenMenuItemType" }
+            - { name: form.type, alias: "Zikula\\MenuModule\\Form\\Type\\HiddenMenuItemType" }

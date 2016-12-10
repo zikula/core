@@ -24,16 +24,16 @@ services:
         class: %zikula_zauth_module.form.authentication_method_type.uname_type.class%
         arguments: ["@translator.default"]
         tags:
-            - { name: form.type, alias: Zikula\ZAuthModule\Form\Type\UnameLoginType }
+            - { name: form.type, alias: "Zikula\\ZAuthModule\\Form\\Type\\UnameLoginType" }
 
     zikula_zauth_module.form.authentication_method_type.email_type:
         class: %zikula_zauth_module.form.authentication_method_type.email_type.class%
         arguments: ["@translator.default"]
         tags:
-            - { name: form.type, alias: Zikula\ZAuthModule\Form\Type\EmailLoginType }
+            - { name: form.type, alias: "Zikula\\ZAuthModule\\Form\\Type\\EmailLoginType" }
 
     zikula_zauth_module.form.registration_type:
         class: %zikula_zauth_module.form.registration_type.class%
         arguments: ["@translator.default", "@zikula_extensions_module.api.variable"]
         tags:
-            - { name: form.type, alias: Zikula\ZAuthModule\Form\Type\RegistrationType }
+            - { name: form.type, alias: "Zikula\\ZAuthModule\\Form\\Type\\RegistrationType" }
