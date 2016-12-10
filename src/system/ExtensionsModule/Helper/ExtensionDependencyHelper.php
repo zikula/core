@@ -14,6 +14,7 @@ namespace Zikula\ExtensionsModule\Helper;
 use Symfony\Component\HttpKernel\KernelInterface;
 use vierbergenlars\SemVer\expression;
 use vierbergenlars\SemVer\version;
+use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
@@ -72,7 +73,7 @@ class ExtensionDependencyHelper
         /** @var ExtensionDependencyEntity[] $dependents */
         $dependents = $this->extensionDependencyRepo->findBy([
             'modname' => $extension->getName(),
-            'status' => \ModUtil::DEPENDENCY_REQUIRED
+            'status' => MetaData::DEPENDENCY_REQUIRED
         ]);
         foreach ($dependents as $dependent) {
             $foundExtension = $this->extensionEntityRepo->findOneBy([
@@ -124,7 +125,7 @@ class ExtensionDependencyHelper
     private function checkForFatalDependency(ExtensionDependencyEntity $dependency)
     {
         $foundExtension = $this->extensionEntityRepo->get($dependency->getModname());
-        if ($dependency->getStatus() == \ModUtil::DEPENDENCY_REQUIRED
+        if ($dependency->getStatus() == MetaData::DEPENDENCY_REQUIRED
             && (is_null($foundExtension) // never in the filesystem
                 || $foundExtension->getState() == ExtensionApi::STATE_MISSING
                 || $foundExtension->getState() == ExtensionApi::STATE_INVALID
