@@ -8,14 +8,12 @@
     "autoload": {
         "psr-0": {
             "Zikula\\": "src/lib",
-            "Zikula_": "src/lib/legacy",
-            "DoctrineExtensions\\StandardFields\\": "src/lib/legacy"
+            "Zikula_": "src/lib/legacy"
         },
         "psr-4": {
             "Zikula\\": ["src/system", "src/themes"]
         },
         "classmap": [
-            "src/lib/util/",
             "src/lib/i18n/"
         ],
         "files": [
