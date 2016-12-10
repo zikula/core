@@ -55,7 +55,7 @@ services:
 
     zikula_core.internal.theme.add_jsconfig_listener:
         class: %zikula_core.internal.theme.add_jsconfig_listener.class%
-        arguments: ["%installed%", "@zikula_extensions_module.api.variable", "@zikula_users_module.current_user", "@templating.engine.twig", "@zikula_core.common.theme.themevars", "@zikula_core.common.theme.assets_header", "%zikula.session.name%", "%compat_layer%"]
+        arguments: ["%installed%", "@zikula_extensions_module.api.variable", "@zikula_users_module.current_user", "@templating.engine.twig", "@zikula_core.common.theme.themevars", "@zikula_core.common.theme.assets_header", "%zikula.session.name%"]
         tags:
             - { name: kernel.event_subscriber }
 
