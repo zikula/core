@@ -104,10 +104,10 @@ class BundleSyncHelper
         foreach ($newThemes as $name => $themeMetaData) {
             // PSR-0 is @deprecated - remove in Core-2.0
             foreach ($themeMetaData->getPsr0() as $ns => $path) {
-                \ZLoader::addPrefix($ns, $path);
+                $this->kernel->getAutoloader()->add($ns, $path);
             }
             foreach ($themeMetaData->getPsr4() as $ns => $path) {
-                \ZLoader::addPrefixPsr4($ns, $path);
+                $this->kernel->getAutoloader()->addPsr4($ns, $path);
             }
 
             $bundleClass = $themeMetaData->getClass();
