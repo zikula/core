@@ -18,6 +18,8 @@ use Gedmo\Mapping\Event\Adapter\ORM as BaseAdapterORM;
 /**
  * Doctrine event adapter for ORM adapted
  * for StandardFields behavior
+ *
+ * @deprecated remove in Core-2.0
  */
 final class ORM extends BaseAdapterORM implements StandardFieldsAdapter
 {

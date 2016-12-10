@@ -7,7 +7,7 @@ CHANGELOG - ZIKULA 1.4.x
     - ?
 
  - Deprecated:
-    - ?
+    - StandardFields Doctrine annotations are deprecated in favor of Gedmo\DoctrineExtensions
 
  - Fixes:
     - Improved handling calls to inactive legacy modules (#3275, #1869).

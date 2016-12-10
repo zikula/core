@@ -16,6 +16,7 @@ use Gedmo\Exception\InvalidMappingException;
 use Gedmo\Mapping\Driver\AnnotationDriverInterface;
 
 /**
+ * @deprecated remove in Core-2.0
  * This is an annotation mapping driver for StandardFields
  * behavioral extension. Used for extraction of extended
  * metadata from Annotations specificaly for StandardFields
