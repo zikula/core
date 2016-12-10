@@ -82,6 +82,13 @@ class ConfigController extends AbstractController
                 $authenticationMethodsStatus[$alias] = false;
             }
         }
+        // remove invalid values (if modules has been removed, etc)
+        foreach ($authenticationMethodsStatus as $alias => $enabled) {
+            if (!isset($allMethods[$alias])) {
+                unset($authenticationMethodsStatus[$alias]);
+            }
+        }
+        $this->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'authenticationMethodsStatus', $authenticationMethodsStatus);
 
         $form = $this->createForm('Zikula\UsersModule\Form\ConfigType\AuthenticationMethodsType',
             ['authenticationMethodsStatus' => $authenticationMethodsStatus],
