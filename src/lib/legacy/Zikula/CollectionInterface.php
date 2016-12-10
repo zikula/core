@@ -12,7 +12,7 @@
 /**
  * Class Zikula_CollectionInterface
  *
- * @deprecated
+ * @deprecated remove at Core-2.0 (move contents to \Zikula\Common\Collection\CollectionInterface)
  */
 interface Zikula_CollectionInterface extends ArrayAccess, Countable, IteratorAggregate
 {

@@ -13,6 +13,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Abstract AJAX controller.
+ * @deprecated
  */
 abstract class Zikula_Controller_AbstractAjax extends Zikula_AbstractController
 {

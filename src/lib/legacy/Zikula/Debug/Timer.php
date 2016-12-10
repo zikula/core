@@ -15,6 +15,7 @@
  * You can take multiple snapshots by calling the snap() function.
  * For multiple measurements with 1 Timer, some basic statistics
  * are computed.
+ * @deprecated
  */
 class Zikula_Debug_Timer
 {
