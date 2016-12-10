@@ -18,6 +18,18 @@ class MetaData implements \ArrayAccess
 {
     use TranslatorTrait;
 
+    const TYPE_MODULE = 2;
+
+    const TYPE_SYSTEM = 3;
+
+    const TYPE_CORE = 4;
+
+    const DEPENDENCY_REQUIRED = 1;
+
+    const DEPENDENCY_RECOMMENDED = 2;
+
+    const DEPENDENCY_CONFLICTS = 3;
+
     private $name;
 
     private $version;
@@ -74,7 +86,7 @@ class MetaData implements \ArrayAccess
         $this->oldNames = isset($json['extra']['zikula']['oldnames']) ? $json['extra']['zikula']['oldnames'] : [];
         $this->capabilities = isset($json['extra']['zikula']['capabilities']) ? $json['extra']['zikula']['capabilities'] : [];
         $this->securitySchema = isset($json['extra']['zikula']['securityschema']) ? $json['extra']['zikula']['securityschema'] : [];
-        $this->extensionType = isset($json['extensionType']) ? $json['extensionType'] : \ModUtil::TYPE_MODULE;
+        $this->extensionType = isset($json['extensionType']) ? $json['extensionType'] : self::TYPE_MODULE;
         $this->directory = $json['name'];
         $this->coreCompatibility = isset($json['extra']['zikula']['core-compatibility']) ? $json['extra']['zikula']['core-compatibility'] : '>=1.4.0 <3.0.0'; // @todo >=1.4.1
     }
@@ -209,7 +221,7 @@ class MetaData implements \ArrayAccess
                     'modname' => $package,
                     'minversion' => $version,
                     'maxversion' => $version,
-                    'status' => \ModUtil::DEPENDENCY_REQUIRED
+                    'status' => self::DEPENDENCY_REQUIRED
                 ];
             }
         } else {
@@ -217,7 +229,7 @@ class MetaData implements \ArrayAccess
                 'modname' => 'zikula/core',
                 'minversion' => '>=1.4.1 <3.0.0',
                 'maxversion' => '>=1.4.1 <3.0.0',
-                'status' => \ModUtil::DEPENDENCY_REQUIRED
+                'status' => self::DEPENDENCY_REQUIRED
             ];
         }
         if (!empty($json['suggest'])) {
@@ -233,7 +245,7 @@ class MetaData implements \ArrayAccess
                     'minversion' => $version,
                     'maxversion' => $version,
                     'reason' => $reason,
-                    'status' => \ModUtil::DEPENDENCY_RECOMMENDED
+                    'status' => self::DEPENDENCY_RECOMMENDED
                 ];
             }
         }
