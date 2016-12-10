@@ -11,7 +11,6 @@
 
 namespace Zikula\CategoriesModule\Form\Type;
 
-use CategoryUtil;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -19,12 +18,28 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\CategoriesModule\Api\CategoryApi;
 
 /**
  * Configuration form type class.
  */
 class ConfigType extends AbstractType
 {
+    /**
+     * @var CategoryApi
+     */
+    private $categoryApi;
+
+    /**
+     * ConfigType constructor.
+     *
+     * @param CategoryApi $categoryApi CategoryApi service instance
+     */
+    public function __construct(CategoryApi $categoryApi)
+    {
+        $this->categoryApi = $categoryApi;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -115,8 +130,8 @@ class ConfigType extends AbstractType
         $includeLeaf = false;
         $all = false;
 
-        $category = CategoryUtil::getCategoryByID(1);
-        $categoryList = CategoryUtil::getSubCategoriesForCategory($category, $recurse, $relative, $includeRoot, $includeLeaf, $all, '', '', null, 'sort_value');
+        $category = $this->categoryApi->getCategoryById(1);
+        $categoryList = $this->categoryApi->getSubCategoriesForCategory($category, $recurse, $relative, $includeRoot, $includeLeaf);
 
         $line = '---------------------------------------------------------------------';
 

@@ -1,0 +1,90 @@
+parameters:
+    zikula_categories_module.container.link_container.class: Zikula\CategoriesModule\Container\LinkContainer
+    zikula_categories_module.api.category.class: Zikula\CategoriesModule\Api\CategoryApi
+    zikula_categories_module.api.category_permission.class: Zikula\CategoriesModule\Api\CategoryPermissionApi
+    zikula_categories_module.api.category_registry.class: Zikula\CategoriesModule\Api\CategoryRegistryApi
+    zikula_categories_module.api.user_categories.class: Zikula\CategoriesModule\Api\UserCategoriesApi
+    zikula_categories_module.form_type.categories_type.class: Zikula\CategoriesModule\Form\Type\CategoriesType
+    zikula_categories_module.form_type.config_type.class: Zikula\CategoriesModule\Form\Type\ConfigType
+    zikula_categories_module.category_processing_helper.class: Zikula\CategoriesModule\Helper\CategoryProcessingHelper
+    zikula_categories_module.category_sorting_helper.class: Zikula\CategoriesModule\Helper\CategorySortingHelper
+    zikula_categories_module.copy_and_move_helper.class: Zikula\CategoriesModule\Helper\CopyAndMoveHelper
+    zikula_categories_module.hierarchy_helper.class: Zikula\CategoriesModule\Helper\HierarchyHelper
+    zikula_categories_module.html_tree_helper.class: Zikula\CategoriesModule\Helper\HtmlTreeHelper
+    zikula_categories_module.js_tree_helper.class: Zikula\CategoriesModule\Helper\JsTreeHelper
+    zikula_categories_module.path_builder_helper.class: Zikula\CategoriesModule\Helper\PathBuilderHelper
+    zikula_categories_module.relative_category_path_builder_helper.class: Zikula\CategoriesModule\Helper\RelativeCategoryPathBuilderHelper
+    twig.extension.zikula_categories_module.class: Zikula\CategoriesModule\Twig\Extension\CategoriesExtension
+
+services:
+    zikula_categories_module.container.link_container:
+        class: %zikula_categories_module.container.link_container.class%
+        arguments: ["@translator.default", "@jms_i18n_routing.router", "@zikula_permissions_module.api.permission", "@zikula_extensions_module.api.variable", "@request_stack"]
+        tags:
+            - { name: zikula.link_container }
+
+    zikula_categories_module.api.category:
+        class: %zikula_categories_module.api.category.class%
+        arguments: ["@translator.default", "@doctrine.orm.entity_manager", "@request_stack", "@zikula_permissions_module.api.permission", "@zikula_categories_module.category_processing_helper", "@zikula_categories_module.category_sorting_helper", "@zikula_categories_module.relative_category_path_builder_helper"]
+
+    zikula_categories_module.api.category_permission:
+        class: %zikula_categories_module.api.category_permission.class%
+        arguments: ["@zikula_permissions_module.api.permission", "@zikula_extensions_module.api.variable"]
+
+    zikula_categories_module.api.category_registry:
+        class: %zikula_categories_module.api.category_registry.class%
+        arguments: ["@translator.default", "@doctrine.orm.entity_manager", "@zikula_categories_module.api.category"]
+
+    zikula_categories_module.api.user_categories:
+        class: %zikula_categories_module.api.user_categories.class%
+        arguments: ["@translator.default", "@zikula_categories_module.api.category", "@zikula_users_module.current_user"]
+
+    zikula_categories_module.category_processing_helper:
+        class: %zikula_categories_module.category_processing_helper.class%
+        arguments: ["@translator.default", "@doctrine.orm.entity_manager", "@kernel"]
+
+    zikula_categories_module.category_sorting_helper:
+        class: %zikula_categories_module.category_sorting_helper.class%
+        arguments: ["@request_stack"]
+
+    zikula_categories_module.copy_and_move_helper:
+        class: %zikula_categories_module.copy_and_move_helper.class%
+        arguments: ["@translator.default", "@doctrine.orm.entity_manager", "@zikula_categories_module.api.category"]
+
+    zikula_categories_module.hierarchy_helper:
+        class: %zikula_categories_module.hierarchy_helper.class%
+        arguments: ["@translator.default", "@doctrine.orm.entity_manager", "@zikula_categories_module.api.category"]
+
+    zikula_categories_module.html_tree_helper:
+        class: %zikula_categories_module.html_tree_helper.class%
+        arguments: ["@translator.default", "@jms_i18n_routing.router", "@request_stack"]
+
+    zikula_categories_module.js_tree_helper:
+        class: %zikula_categories_module.js_tree_helper.class%
+        arguments: ["@translator.default", "@jms_i18n_routing.router", "@request_stack"]
+
+    zikula_categories_module.path_builder_helper:
+        class: %zikula_categories_module.path_builder_helper.class%
+        arguments: ["@doctrine.orm.entity_manager", "@zikula_categories_module.api.category", "@zikula_categories_module.relative_category_path_builder_helper"]
+
+    zikula_categories_module.relative_category_path_builder_helper:
+        class: %zikula_categories_module.relative_category_path_builder_helper.class%
+
+    zikula_categories_module.form_type.categories_type:
+        class: %zikula_categories_module.form_type.categories_type.class%
+        arguments: ["@zikula_categories_module.api.category_registry"]
+        tags:
+            - { name: form.type }
+
+    zikula_categories_module.form_type.config_type:
+        class: %zikula_categories_module.form_type.config_type.class%
+        arguments: ["@zikula_categories_module.api.category"]
+        tags:
+            - { name: form.type }
+
+    twig.extension.zikula_categories_module:
+        class: %twig.extension.zikula_categories_module.class%
+        public: true
+        arguments: ["@request_stack", "@zikula_categories_module.api.category", "@zikula_categories_module.html_tree_helper"]
+        tags:
+            - { name: twig.extension }

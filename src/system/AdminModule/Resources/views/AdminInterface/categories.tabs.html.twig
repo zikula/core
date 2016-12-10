@@ -4,16 +4,12 @@
 
 {% macro draw(links) %}
     {% for link in links %}
-        {% if link.links is defined %}
-            <li><a href="{{ link.url }}" title="{{ link.text }}"><i class="fa fa-{{ link.icon }}"></i> {{ link.text }}
-                </a>
+        <li>
+            <a href="{{ link.url }}" title="{{ link.text }}">{% if link.icon is defined %}<i class="fa fa-{{ link.icon }}"></i> {% endif %}{{ link.text|raw }}</a>
+            {% if link.links is defined %}
                 <ul class="text-left">{{ _self.draw(link.links) }}</ul>
-            </li>
-        {% else %}
-            <li><a href="{{ link.url }}" title="{{ link.text }}">{% if link.icon is defined %}<i
-                        class="fa fa-{{ link.icon }}"></i> {% endif %}{{ link.text }}</a>
-            </li>
-        {% endif %}
+            {% endif %}
+        </li>
     {% endfor %}
 {% endmacro %}
 
@@ -45,7 +41,7 @@
                         <li class="divider"></li>
                         {% for item in category.modules %}
                             {% set modname = item.modname %}
-                            <li><a href="{{ item.menutexturl }}"><img src="{{ item.icon }}" width="15" height="15" alt="{{ item.menutext|e('html_attr') }}" style="margin-right: 6px">{{ item.menutext }}</a></li>
+                            <li><a href="{{ item.menutexturl }}"><img src="{{ item.icon }}" width="15" height="15" alt="{{ item.menutext|e('html_attr') }}" style="margin-right: 6px">{{ item.menutext|raw }}</a></li>
                         {% endfor %}
                     {% endif %}
                 </ul>

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f29546ea3d24584c6abe28c22c48b35f",
-    "content-hash": "245da664f10bc9d03759de78d2978a77",
+    "hash": "bc17d63e60e9e1501d93759e6deea339",
+    "content-hash": "9af3a02d8ad929e9b5fa0c7344e641b5",
     "packages": [
         {
             "name": "abeautifulsite/jquery-minicolors",
@@ -73,6 +73,68 @@
             "description": "Defacto way to enable use of HTML5 sectioning elements in legacy Internet Explorer.",
             "homepage": "http://paulirish.com/2011/the-history-of-the-html5-shiv/",
             "time": "2015-07-20 20:04:00"
+        },
+        {
+            "name": "afarkas/webshim",
+            "version": "1.16.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aFarkas/webshim.git",
+                "reference": "1600cc692854ac06bf128681bb0f7dd3ccf6b35d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aFarkas/webshim/zipball/1600cc692854ac06bf128681bb0f7dd3ccf6b35d",
+                "reference": "1600cc692854ac06bf128681bb0f7dd3ccf6b35d",
+                "shasum": ""
+            },
+            "require": {
+                "components/jquery": ">=1.8.2 <3.0",
+                "robloach/component-installer": "^0.2"
+            },
+            "type": "component",
+            "extra": {
+                "component": {
+                    "scripts": [
+                        "js-webshim/minified/polyfiller.js"
+                    ],
+                    "files": [
+                        "js-webshim/minified/shims/**"
+                    ]
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Farkas",
+                    "homepage": "https://github.com/aFarkas/"
+                }
+            ],
+            "description": "The polyfilling, capability based loading JavaScript Library",
+            "homepage": "http://afarkas.github.com/webshim/demos/index.html",
+            "keywords": [
+                "HTML5",
+                "audio",
+                "canvas",
+                "forms",
+                "geolocation",
+                "getUserMedia",
+                "localstorage",
+                "polyfill",
+                "ui",
+                "validation",
+                "video",
+                "webshim",
+                "webshims",
+                "widgets"
+            ],
+            "support": {
+                "source": "https://github.com/aFarkas/webshim/tree/1.16.0",
+                "issues": "https://github.com/aFarkas/webshim/issues"
+            },
+            "time": "2016-11-13 20:27:50"
         },
         {
             "name": "behat/transliterator",
@@ -2733,16 +2795,16 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v5.0.14",
+            "version": "v5.0.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "e64947de9ebc37732a62f5115164484a9bee7fa6"
+                "reference": "d294b0665cf09c799e9c1993d5c776a5bf55cb85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/e64947de9ebc37732a62f5115164484a9bee7fa6",
-                "reference": "e64947de9ebc37732a62f5115164484a9bee7fa6",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/d294b0665cf09c799e9c1993d5c776a5bf55cb85",
+                "reference": "d294b0665cf09c799e9c1993d5c776a5bf55cb85",
                 "shasum": ""
             },
             "require": {
@@ -2781,7 +2843,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2016-10-30 23:18:01"
+            "time": "2016-12-06 07:29:27"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -4441,12 +4503,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "d3191164fa7848347ea1ef8617659b74f3b45a7c"
+                "reference": "5b0d6258c5852e699841343a740791533e359c9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/d3191164fa7848347ea1ef8617659b74f3b45a7c",
-                "reference": "d3191164fa7848347ea1ef8617659b74f3b45a7c",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/5b0d6258c5852e699841343a740791533e359c9c",
+                "reference": "5b0d6258c5852e699841343a740791533e359c9c",
                 "shasum": ""
             },
             "require": {
@@ -4501,7 +4563,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2016-12-03 17:44:00"
+            "time": "2016-12-09 06:09:33"
         },
         {
             "name": "zikula/profile-module",
@@ -4509,12 +4571,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "807542dcf1df10559a54f656397ee215cac61485"
+                "reference": "661d9d5e71ab50b2c5881768d276833d181dba23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/807542dcf1df10559a54f656397ee215cac61485",
-                "reference": "807542dcf1df10559a54f656397ee215cac61485",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/661d9d5e71ab50b2c5881768d276833d181dba23",
+                "reference": "661d9d5e71ab50b2c5881768d276833d181dba23",
                 "shasum": ""
             },
             "require": {
@@ -4575,7 +4637,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2016-12-05 07:27:27"
+            "time": "2016-12-09 06:01:37"
         },
         {
             "name": "zikula/wizard",

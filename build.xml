@@ -25,45 +25,6 @@
     <property name="patchdir" value="${builddir}/patch"/>
     <property name="tmpdir" value="${builddir}/tmp"/>
     <property name="ignorepaths" value="lib/vendor/*,javascript/*,system/*,themes/*,install/*,lib/legacy,plugins/*"/>
-    <property name="ownjslist" value="
-    javascript/helpers/bootstrap-zikula.js,
-    javascript/helpers/form/form.js,
-    javascript/helpers/Zikula.js,
-    javascript/helpers/Zikula.ImageViewer.js,
-    javascript/helpers/Zikula.Tree.js,
-    javascript/helpers/Zikula.itemlist.js,
-    javascript/helpers/Zikula.UI.js,
-    system/AdminModule/Resources/public/js/ZikulaAdminModule.AdminTabs.js,
-    system/AdminModule/Resources/public/js/ZikulaAdminModule.Modal.Fix.js,
-    system/AdminModule/Resources/public/js/ZikulaAdminModule.Modules.Panel.MMenuConfig.js,
-    system/AdminModule/Resources/public/js/ZikulaAdminModule.SystemNotices.js,
-    system/BlocksModule/Resources/public/js/Zikula.Blocks.Admin.Common.js,
-    system/BlocksModule/Resources/public/js/Zikula.Blocks.Admin.Modifyposition.js,
-    system/BlocksModule/Resources/public/js/contextmenu.js,
-    system/BlocksModule/Resources/public/js/functions.js,
-    system/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js,
-    system/CategoriesModule/Resources/public/js/categories_admin_edit.js,
-    system/CategoriesModule/Resources/public/js/categories_admin_view.js,
-    system/GroupsModule/Resources/public/js/groups.js,
-    system/PageLockModule/Resources/public/js/PageLock.js,
-    system/PermissionsModule/Resources/public/js/Zikula.Permission.Admin.View.js,
-    system/RoutesModule/Resources/public/js/ZikulaRoutesModule.EditFunctions.js,
-    system/RoutesModule/Resources/public/js/ZikulaRoutesModule.js,
-    system/RoutesModule/Resources/public/js/ZikulaRoutesModule.Validation.js,
-    system/SearchModule/Resources/public/js/ZikulaSearchModule.User.Form.js,
-    system/SecurityCenterModule/Resources/public/js/securitycenter_admin_allowedhtml.js,
-    system/SecurityCenterModule/Resources/public/js/securitycenter_admin_purifierconfig.js,
-    system/SettingsModule/Resources/public/js/ZikulaSettingsModule.Admin.Phpinfo.js,
-    system/ThemeModule/Resources/public/js/ZikulaThemeModule.Admin.ModifyConfig.js,
-    system/ThemeModule/Resources/public/js/ZikulaThemeModule.Admin.View.js,
-    system/ThemeModule/Resources/public/js/themeswitcher.js,
-    system/UsersModule/Resources/public/js/Zikula.Users.Admin.Config.js,
-    system/UsersModule/Resources/public/js/Zikula.Users.Admin.View.js,
-    system/UsersModule/Resources/public/js/Zikula.Users.Util.CapsLock.js,
-    system/UsersModule/Resources/public/js/ZikulaUsersModule.Admin.SearchResults.js,
-    system/ZAuthModule/Resources/public/js/Zikula.ZAuth.Admin.View.js,
-    system/ZAuthModule/Resources/public/js/Zikula.ZAuth.PassMeter.js"/>
-
 
     <!-- need a second property since phpdoc doesn't respect wildcard patterns -->
     <property name="docbloxignorepaths" value="lib/vendor/,javascript/,system/"/>
@@ -138,9 +99,6 @@
                 <include name="**/*" />
             </fileset>
         </delete>
-
-        <!-- compress JS -->
-        <foreach list="${ownjslist}" param="filename" target="compressownjs"/>
 
         <echo msg="Prepare permissions..."/>
         <chmod file="${packagepath}/app/config" mode="0777"/>
@@ -285,12 +243,5 @@
     <target name="phpcb">
         <echo msg="PHP_CodeBrowser on XML for voilations..."/>
         <exec command="phpcb --log ${builddir}/logs --output ${builddir}/phpcb"/>
-    </target>
-
-    <!-- Compress own JS -->
-    <target name="compressownjs">
-        <echo msg="YUI_Compressor for JS files..."/>
-        <!-- <exec command="BAREFILENAME=`echo ${filename}|sed 's/.js//g'`; /usr/bin/java -jar /var/lib/jenkins/yuicompressor-2.4.8.jar -o ${packagepath}/$BAREFILENAME-min.js ${packagepath}/${filename}" /> -->
-        <exec command="/usr/bin/java -jar /var/lib/jenkins/yuicompressor-2.4.8.jar -o ${packagepath}/${filename}.tmp ${packagepath}/${filename};echo '// Copyright Zikula Foundation 2010 - license GNU/LGPLv3 (or at your option, any later version).' > ${packagepath}/${filename};cat ${packagepath}/${filename}.tmp >> ${packagepath}/${filename};rm -f ${packagepath}/${filename}.tmp"/>
     </target>
 </project>

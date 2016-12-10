@@ -21,12 +21,8 @@
     {% for module in modules %}
         <tr>
             <td headers="hName">
-                {% if module.capabilities.admin is defined and module.state == 3 %}
-                    {% if module.capabilities.admin.route is defined %}
-                        <a title="{{ __("Go to the module's administration panel") }}" href="{{ path(module.capabilities.admin.route) }}"><i class="fa fa-link"></i></a>
-                    {% elseif module.capabilities.admin.url is defined %}
-                        <a title="{{ __("Go to the module's administration panel") }}" href="{{ module.capabilities.admin.url }}"><i class="fa fa-link"></i></a>
-                    {% endif %}
+                {% if adminRoutes[module.name]|default %}
+                    <a title="{{ __("Go to the module's administration panel") }}" href="{{ adminRoutes[module.name] }}"><i class="fa fa-link"></i></a>
                 {% endif %}
                 <strong>{{ module.displayname }}</strong>
                 <a data-toggle="collapse" href="#collapse-{{ module.name }}"><i class="fa fa-caret-down"></i></a>

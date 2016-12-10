@@ -12,7 +12,6 @@
 namespace Zikula\SecurityCenterModule\Controller;
 
 use FileUtil;
-use ModUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -83,21 +82,16 @@ class IdsLogController extends AbstractController
             'repository' => $this->get('zikula_securitycenter_module.intrusion_repository')
         ]);
 
-        // offset
-        $startOffset = $request->query->getDigits('startnum', 0);
-
         // number of items to show
         $pageSize = (int)$this->getVar('pagesize', 25);
 
+        // offset
+        $startOffset = $request->query->getDigits('startnum', 0);
+
         // get data
-        $queryParameters = [
-            'where' => $where,
-            'sorting' => $sorting,
-            'limit' => $pageSize,
-            'offset' => $startOffset
-        ];
-        $items = ModUtil::apiFunc('ZikulaSecurityCenterModule', 'admin', 'getAllIntrusions', $queryParameters);
-        $amountOfItems = ModUtil::apiFunc('ZikulaSecurityCenterModule', 'admin', 'countAllIntrusions', $queryParameters);
+        $repository = $this->get('zikula_securitycenter_module.intrusion_repository');
+        $items = $repository->getIntrusions($where, $sorting, $pageSize, $startOffset);
+        $amountOfItems = $repository->countIntrusions($where);
 
         $data = [];
         foreach ($items as $item) {
@@ -213,10 +207,8 @@ class IdsLogController extends AbstractController
                 }
 
                 // get data
-                $itemParams = [
-                    'sorting' => ['date' => 'DESC']
-                ];
-                $items = ModUtil::apiFunc('ZikulaSecurityCenterModule', 'admin', 'getAllIntrusions', $itemParams);
+                $repository = $this->get('zikula_securitycenter_module.intrusion_repository');
+                $items = $repository->getIntrusions([], ['date' => 'DESC']);
 
                 $objData = [];
                 foreach ($items as $item) {
@@ -298,9 +290,9 @@ class IdsLogController extends AbstractController
 
                 if ($formData['confirmation'] == 1) {
                     // delete all entries
-                    if (ModUtil::apiFunc('ZikulaSecurityCenterModule', 'admin', 'purgeidslog')) {
-                        $this->addFlash('status', $this->__('Done! Purged IDS Log.'));
-                    }
+                    $this->get('zikula_securitycenter_module.intrusion_repository')->truncateTable();
+
+                    $this->addFlash('status', $this->__('Done! Purged IDS Log.'));
                 }
             }
             if ($form->get('cancel')->isClicked()) {
@@ -328,15 +320,15 @@ class IdsLogController extends AbstractController
      */
     public function deleteentryAction(Request $request)
     {
-        // verify auth-key
-        $csrftoken = $request->get('csrftoken');
-        $tokenHandler = $this->get('zikula_core.common.csrf_token_handler');
-        $tokenHandler->validate($csrftoken);
-
         // Security check
         if (!$this->hasPermission('ZikulaSecurityCenterModule::', '::', ACCESS_DELETE)) {
             throw new AccessDeniedException();
         }
+
+        // verify auth-key
+        $csrftoken = $request->get('csrftoken');
+        $tokenHandler = $this->get('zikula_core.common.csrf_token_handler');
+        $tokenHandler->validate($csrftoken);
 
         // get parameters
         $id = (int)$request->get('id', 0);

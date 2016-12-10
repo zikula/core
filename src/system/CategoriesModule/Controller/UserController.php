@@ -11,8 +11,6 @@
 
 namespace Zikula\CategoriesModule\Controller;
 
-use CategoryUtil;
-use ModUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use System;
+use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\Core\Controller\AbstractController;
 use ZLanguage;
 
@@ -115,19 +114,21 @@ class UserController extends AbstractController
             return $this->responseForErrorMessage();
         }
 
+        $categoryApi = $this->get('zikula_categories_module.api.category');
+
         if (is_int((int)$docroot) && $docroot > 0) {
-            $rootCat = CategoryUtil::getCategoryByID($docroot);
+            $rootCat = $categoryApi->getCategoryById($docroot);
         } else {
-            $rootCat = CategoryUtil::getCategoryByPath($docroot);
+            $rootCat = $categoryApi->getCategoryByPath($docroot);
             if (!$rootCat) {
-                $rootCat = CategoryUtil::getCategoryByPath($docroot, 'ipath');
+                $rootCat = $categoryApi->getCategoryByPath($docroot, 'ipath');
             }
         }
 
         // now check if someone is trying edit another user's categories
         $userRoot = $this->getVar('userrootcat', 0);
         if ($userRoot) {
-            $userRootCat = CategoryUtil::getCategoryByPath($userRoot);
+            $userRootCat = $categoryApi->getCategoryByPath($userRoot);
             if ($userRootCat) {
                 $userRootCatIPath = $userRootCat['ipath'];
                 $rootCatIPath = $rootCat['ipath'];
@@ -147,7 +148,7 @@ class UserController extends AbstractController
         }
 
         if ($cid) {
-            $editCat = CategoryUtil::getCategoryByID($cid);
+            $editCat = $categoryApi->getCategoryById($cid);
             if ($editCat['is_locked']) {
                 $this->addFlash('error', $this->__f('Notice: The administrator has locked the category \'%category\' (ID \'%id\'). You cannot edit or delete it.', ['%category' => $editCat['name'], '%id' => $cid]));
 
@@ -165,13 +166,13 @@ class UserController extends AbstractController
 
             return $this->responseForErrorMessage();
         }
-        if ($editCat && !CategoryUtil::isDirectSubCategory($rootCat, $editCat)) {
+        if ($editCat && !$this->get('zikula_categories_module.hierarchy_helper')->isDirectSubCategory($rootCat, $editCat)) {
             $this->addFlash('error', $this->__f('Error! The specified category is not a child of the document root (%docroot; %id).', ['%docroot' => $docroot, '%id' => $cid]));
 
             return $this->responseForErrorMessage();
         }
 
-        $allCats = CategoryUtil::getSubCategoriesForCategory($rootCat, false, false, false, true, true);
+        $allCats = $categoryApi->getSubCategoriesForCategory($rootCat, false, false, false, true, true);
 
         $attributes = isset($editCat['__ATTRIBUTES__']) ? $editCat['__ATTRIBUTES__'] : [];
 
@@ -223,7 +224,9 @@ class UserController extends AbstractController
             return $this->responseForErrorMessage();
         }
 
-        $userRootCat = CategoryUtil::getCategoryByPath($userRoot);
+        $categoryApi = $this->get('zikula_categories_module.api.category');
+
+        $userRootCat = $categoryApi->getCategoryByPath($userRoot);
         if (!$userRoot) {
             $this->addFlash('error', $this->__f('Error! The user root node seems to point towards an invalid category: %s.', ['%s' => $userRoot]));
 
@@ -236,7 +239,7 @@ class UserController extends AbstractController
             return $this->responseForErrorMessage();
         }
 
-        $userCatName = $this->getusercategorynameAction();
+        $userCatName = $this->get('zikula_categories_module.api.user_categories')->getUserCategoryName();
         if (!$userCatName) {
             $this->addFlash('error', $this->__('Error! Cannot determine user category root node name.'));
 
@@ -244,7 +247,7 @@ class UserController extends AbstractController
         }
 
         $thisUserRootCatPath = $userRoot . '/' . $userCatName;
-        $thisUserRootCat = CategoryUtil::getCategoryByPath($thisUserRootCatPath);
+        $thisUserRootCat = $categoryApi->getCategoryByPath($thisUserRootCatPath);
 
         $dr = null;
         if (!$thisUserRootCat) {
@@ -255,7 +258,7 @@ class UserController extends AbstractController
                 return $this->responseForErrorMessage();
             }
 
-            $entityManager = $this->get('doctrine.orm.entity_manager');
+            $entityManager = $this->get('doctrine')->getManager();
 
             $cat = [
                 'id' => '',
@@ -267,12 +270,12 @@ class UserController extends AbstractController
                 'status' => 'A'
             ];
 
-            $obj = new \Zikula\CategoriesModule\Entity\CategoryEntity();
+            $obj = new CategoryEntity();
             $obj->merge($cat);
             $entityManager->persist($obj);
             $entityManager->flush();
 
-            // since the original insert can't construct the ipath (since
+            // since the original insert can't construct the ipath (as
             // the insert id is not known yet) we update the object here
             $obj->setIPath($userRootCat['ipath'] . '/' . $obj['id']);
             $entityManager->flush();
@@ -294,12 +297,12 @@ class UserController extends AbstractController
                     'status' => 'A'
                 ];
 
-                $obj2 = new \Zikula\CategoriesModule\Entity\CategoryEntity();
+                $obj2 = new CategoryEntity();
                 $obj2->merge($cat);
                 $entityManager->persist($obj2);
                 $entityManager->flush();
 
-                // since the original insert can't construct the ipath (since
+                // since the original insert can't construct the ipath (as
                 // the insert id is not known yet) we update the object here
                 $obj2->setIPath($obj['ipath'] . '/' . $obj2['id']);
                 $entityManager->flush();
@@ -337,7 +340,7 @@ class UserController extends AbstractController
      */
     public function getusercategoriesAction()
     {
-        return ModUtil::apiFunc('ZikulaCategoriesModule', 'user', 'getusercategories');
+        return $this->get('zikula_categories_module.api.user_categories')->getUserCategories();
     }
 
     /**
@@ -349,7 +352,7 @@ class UserController extends AbstractController
      */
     public function getusercategorynameAction()
     {
-        return ModUtil::apiFunc('ZikulaCategoriesModule', 'user', 'getusercategoryname');
+        return $this->get('zikula_categories_module.api.user_categories')->getUserCategoryName();
     }
 
     private function responseForErrorMessage()

@@ -23,7 +23,7 @@
         <ul>
             {% for category in adminMenu %}
                 <li{% if caller.category.cid == category.cid %} class="selected"{% endif %}>
-                    <a href="{{ category.url }}">{{ category.title }}</a>
+                    <a href="{{ category.url }}">{{ category.title|raw }}</a>
                     {% if category.modules|length > 0 %}
                         <ul class="text-left">
                             {% for module in category.modules %}

@@ -1,0 +1,23 @@
+parameters:
+#    session.class: Zikula_Session
+#    session.flashbag.class: Symfony\Component\HttpFoundation\Session\Flash\FlashBag
+    session.attribute_bag.class: Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag
+    session.storage.legacy.class: Zikula_Session_Storage_Legacy
+    session.handler.legacy.class: Zikula_Session_LegacyHandler
+
+services:
+    zikula_core.legacy.session_storage:
+        class: %session.storage.legacy.class%
+        public: false
+        arguments: ["@zikula_extensions_module.api.variable", "%session.storage.options%", "@=null", "@=null"]
+        calls:
+            - [setSaveHandler, ["@zikula_core.legacy.session_handler"]]
+
+    zikula_core.legacy.session_handler:
+        class: %session.handler.legacy.class%
+        public: false
+        arguments: ["%installed%"]
+        calls:
+            - [setStorage, ["@zikula_core.legacy.session_storage"]]
+            - [setConnection, ["@doctrine.dbal.default_connection"]]
+            - [setVariableApi, ["@zikula_extensions_module.api.variable"]]

@@ -120,4 +120,25 @@ class PermissionRepository extends EntityRepository implements PermissionReposit
         }
         $this->_em->flush();
     }
+
+    /**
+     * Deletes all permissions for a given group.
+     *
+     * @param int $groupId The group id
+     */
+    public function deleteGroupPermissions($groupId = 0)
+    {
+        if ($groupId < 1) {
+            return;
+        }
+
+        $qb = $this->_em->createQueryBuilder('p')
+            ->delete('ZikulaPermissionsModule:PermissionEntity', 'p')
+            ->where('p.gid = :gid')
+            ->setParameter('gid', $groupId);
+
+        $query = $qb->getQuery();
+
+        $query->execute();
+    }
 }

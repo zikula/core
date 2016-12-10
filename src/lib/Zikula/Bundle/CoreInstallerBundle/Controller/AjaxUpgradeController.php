@@ -99,6 +99,8 @@ class AjaxUpgradeController extends AbstractController
                 return $this->from142to143();
             case "from143to144":
                 return $this->from143to144();
+            case "from144to145":
+                return $this->from144to145();
             case "finalizeparameters":
                 return $this->finalizeParameters();
             case "clearcaches":
@@ -189,6 +191,15 @@ class AjaxUpgradeController extends AbstractController
         }
         // @todotemporarily disabled because of peristent errors in the build...
 //        $this->installModule('ZikulaMenuModule', $this->translator->__('Content'));
+
+        return true;
+    }
+
+    private function from144to145()
+    {
+        if (version_compare($this->currentVersion, '1.4.5', '>=')) {
+            return true;
+        }
 
         return true;
     }
