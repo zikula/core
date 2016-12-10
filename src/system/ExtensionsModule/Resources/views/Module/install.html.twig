@@ -41,7 +41,7 @@
                         {% endif %}
                     </td>
                     <td headers="hReason">{{ dependencies[checkbox.vars.name].reason }}</td>
-                    <td headers="hInstall">{{ form_widget(checkbox, {'disabled': (dependencies[checkbox.vars.name].status == constant('ModUtil::DEPENDENCY_REQUIRED')) or (checkbox.vars.data == false)}) }}</td>
+                    <td headers="hInstall">{{ form_widget(checkbox, {'disabled': (dependencies[checkbox.vars.name].status == constant('Zikula\Bundle\CoreBundle\Bundle\MetaData::DEPENDENCY_REQUIRED')) or (checkbox.vars.data == false)}) }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
@@ -284,7 +285,7 @@ class ModuleController extends AbstractController
                 $extensionsInstalled = [];
                 $data = $form->getData();
                 foreach ($data['dependencies'] as $dependencyId => $installSelected) {
-                    if (!$installSelected && $unsatisfiedDependencies[$dependencyId]->getStatus() != \ModUtil::DEPENDENCY_REQUIRED) {
+                    if (!$installSelected && $unsatisfiedDependencies[$dependencyId]->getStatus() != MetaData::DEPENDENCY_REQUIRED) {
                         continue;
                     }
                     $dependencyExtensionEntity = $this->get('zikula_extensions_module.extension_repository')->get($unsatisfiedDependencies[$dependencyId]->getModname());
