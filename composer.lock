@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1d3c5c821e7437c9e655ae3c27760700",
+    "hash": "c4c2036c630477b8b444b28e704ace92",
     "content-hash": "4d41a4defd4afa1c80b7dfbf33c3bec5",
     "packages": [
         {
@@ -4618,12 +4618,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "d3191164fa7848347ea1ef8617659b74f3b45a7c"
+                "reference": "5b0d6258c5852e699841343a740791533e359c9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/d3191164fa7848347ea1ef8617659b74f3b45a7c",
-                "reference": "d3191164fa7848347ea1ef8617659b74f3b45a7c",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/5b0d6258c5852e699841343a740791533e359c9c",
+                "reference": "5b0d6258c5852e699841343a740791533e359c9c",
                 "shasum": ""
             },
             "require": {
@@ -4678,7 +4678,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2016-12-03 17:44:00"
+            "time": "2016-12-09 06:09:33"
         },
         {
             "name": "zikula/profile-module",
@@ -4686,12 +4686,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "807542dcf1df10559a54f656397ee215cac61485"
+                "reference": "661d9d5e71ab50b2c5881768d276833d181dba23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/807542dcf1df10559a54f656397ee215cac61485",
-                "reference": "807542dcf1df10559a54f656397ee215cac61485",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/661d9d5e71ab50b2c5881768d276833d181dba23",
+                "reference": "661d9d5e71ab50b2c5881768d276833d181dba23",
                 "shasum": ""
             },
             "require": {
@@ -4752,7 +4752,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2016-12-05 07:27:27"
+            "time": "2016-12-09 06:01:37"
         },
         {
             "name": "zikula/wizard",

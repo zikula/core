@@ -15,10 +15,9 @@
             "Zikula\\": ["src/system", "src/themes"]
         },
         "classmap": [
-            "src/lib/util/",
             "src/lib/i18n/",
             "src/lib/legacy/dbobject",
-            "src/lib/legacy/util"
+            "src/lib/legacy/util/"
         ],
         "files": [
             "src/lib/i18n/ZGettextFunctions.php"
