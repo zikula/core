@@ -11,6 +11,7 @@
 
 /**
  * Pending content aggregate.
+ * @deprecated
  */
 class Zikula_Provider_AggregateItem
 {

@@ -18,6 +18,8 @@ use Gedmo\Mapping\MappedEventSubscriber;
 /**
  * The StandardFields listener handles the update of
  * user ids on creation and update.
+ *
+ * @deprecated remove in Core-2.0
  */
 class StandardFieldsListener extends MappedEventSubscriber
 {

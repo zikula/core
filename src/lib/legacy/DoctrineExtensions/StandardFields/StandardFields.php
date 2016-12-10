@@ -15,6 +15,8 @@ namespace DoctrineExtensions\StandardFields;
  * This interface is not necessary but can be implemented for
  * Entities which in some cases needs to be identified as
  * StandardFields
+ *
+ * @deprecated remove in Core-2.0
  */
 interface StandardFields
 {

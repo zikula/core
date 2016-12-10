@@ -13,6 +13,7 @@ use Zikula\Common\Collection\CollectionInterface;
 
 /**
  * Generic Collection.
+ * @deprecated remove at Core-2.0 (move contents to \Zikula\Common\Collection\Container)
  */
 class Zikula_Collection_Container implements CollectionInterface
 {

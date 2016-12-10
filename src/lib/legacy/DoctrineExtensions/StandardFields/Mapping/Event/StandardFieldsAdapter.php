@@ -17,6 +17,8 @@ use Gedmo\Mapping\Event\AdapterInterface;
 /**
  * Doctrine event adapter interface
  * for StandardFields behavior
+ *
+ * @deprecated remove in Core-2.0
  */
 interface StandardFieldsAdapter extends AdapterInterface
 {

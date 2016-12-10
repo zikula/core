@@ -15,6 +15,7 @@ use Doctrine\Common\Annotations\Annotation;
 
 /**
  * StandardFields annotation for StandardFields behavioral extension
+ * @deprecated remove in Core-2.0
  *
  * @Annotation
  */
