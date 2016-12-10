@@ -102,7 +102,7 @@ class BundleSyncHelper
         /** @var \Zikula\Bundle\CoreBundle\Bundle\MetaData $themeMetaData */
         foreach ($newThemes as $name => $themeMetaData) {
             foreach ($themeMetaData->getPsr4() as $ns => $path) {
-                \ZLoader::addPrefixPsr4($ns, $path);
+                $this->kernel->getAutoloader()->addPsr4($ns, $path);
             }
 
             $bundleClass = $themeMetaData->getClass();

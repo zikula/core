@@ -149,7 +149,7 @@ class BundleSyncHelper
         /** @var MetaData $bundleMetaData */
         foreach ($newModules as $name => $bundleMetaData) {
             foreach ($bundleMetaData->getPsr4() as $ns => $path) {
-                \ZLoader::addPrefixPsr4($ns, $path);
+                $this->kernel->getAutoloader()->addPsr4($ns, $path);
             }
 
             $bundleClass = $bundleMetaData->getClass();
