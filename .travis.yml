@@ -119,6 +119,6 @@ script:
   - git clone https://github.com/sensiolabs-de/deprecation-detector.git
   - cd deprecation-detector
   - composer install
-  - ./bin/deprecation-detector check ../src ../src/vendor
+  - ./bin/deprecation-detector check --fail ../src ../src/vendor
 #     - echo "Nothing to do.. yet!"
 #    - wget -dO - localhost/src
