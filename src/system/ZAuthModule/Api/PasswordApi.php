@@ -50,43 +50,17 @@ class PasswordApi
     private $randomStringCharacters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~@#$%^*()_+-={}|][";
 
     /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * Get an array of hash algorithms valid for hashing user passwords.
-     *
-     * Either as an array of
-     * algorithm names index by internal integer code, or as an array of internal integer algorithm
-     * codes indexed by algorithm name.
-     *
-     * @param bool $flip If false, then return an array of codes indexed by name (e.g. given $name, then $code = $methods[$name]);
-     *                          if true, return an array of names indexed by code (e.g. given $code, then $name = $methods[$code]);
-     *                          optional, default = false
-     *
-     * @return array Depending on the value of $reverse, an array of codes indexed by name or an
-     *                  array of names indexed by code
-     */
-    public function getPasswordHashMethods($flip = false)
-    {
-        $flip = is_bool($flip) ? $flip : false; // can remove in php7 and typehint to bool
-
-        return $flip ? array_flip($this->methods) : $this->methods;
-    }
-
-    /**
      * For a given password hash algorithm name, return its internal integer code.
      *
      * @param string $hashAlgorithmName The name of a hash algorithm suitable for hashing user passwords
      *
-     * @return integer|bool The internal integer code corresponding to the given algorithm name; false if the name is not valid
+     * @return integer The internal integer code corresponding to the given algorithm name
      */
-    public function getPasswordHashMethodCode($hashAlgorithmName)
+    private function getPasswordHashMethodCode($hashAlgorithmName)
     {
         if (!is_string($hashAlgorithmName) || empty($hashAlgorithmName) || !isset($this->methods[$hashAlgorithmName])
             || empty($this->methods[$hashAlgorithmName]) || !is_numeric($this->methods[$hashAlgorithmName])) {
-            throw new \InvalidArgumentException($this->translator->__f('Invalid argument %s', ['%s' => 'hashAlgorithmName']));
+            throw new \InvalidArgumentException();
         }
 
         return $this->methods[$hashAlgorithmName];
@@ -95,17 +69,17 @@ class PasswordApi
     /**
      * For a given internal password hash algorithm code, return its name suitable for use with the hash() function.
      *
-     * @param int $hashAlgorithmCode The internal code representing a hashing algorithm suitable for hashing user passwords
+     * @param integer $hashAlgorithmCode The internal code representing a hashing algorithm suitable for hashing user passwords
      *
-     * @return string|bool The hashing algorithm name corresponding to that code, suitable for use with hash(); false if the code is invalid
+     * @return string The hashing algorithm name corresponding to that code, suitable for use with hash()
      */
-    public function getPasswordHashMethodName($hashAlgorithmCode)
+    private function getPasswordHashMethodName($hashAlgorithmCode)
     {
         $hashMethodNamesByCode = array_flip($this->methods);
 
         if (!is_numeric($hashAlgorithmCode) || !isset($hashMethodNamesByCode[$hashAlgorithmCode])
             || !is_string($hashMethodNamesByCode[$hashAlgorithmCode]) || empty($hashMethodNamesByCode[$hashAlgorithmCode])) {
-            throw new \InvalidArgumentException($this->translator->__f('Invalid argument %s', ['%s' => 'hashAlgorithmCode']));
+            throw new \InvalidArgumentException();
         }
 
         return $hashMethodNamesByCode[$hashAlgorithmCode];
@@ -125,10 +99,7 @@ class PasswordApi
      *                                  the original password
      * @param string $hashAlgorithmName
      *
-     * @return array|bool An array containing two elements: 'hash' containing the hashed password, and 'hashMethodCode' containing the
-     *                      internal integer hashing algorithm code used to hash the password; false if the password does not meet the
-     * constraints of a valid password, or if the hashing method (stored in the Users module 'hash_method' var) is
-     * not valid
+     * @return string A hashed password
      */
     public function getHashedPassword($unhashedPassword, $hashMethodCode = null, $hashAlgorithmName = self::DEFAULT_HASH_METHOD)
     {
@@ -206,8 +177,7 @@ class PasswordApi
      *                                         algorithm name is included in the string returned (which could be considered less than secure!)
      * @param string $saltDelimiter The delimiter between the salt and the hash, must be a single character
      *
-     * @return string|bool The algorithm name (or code if $hashMethodNameToCode specified), salt and hashed data separated by the salt delimiter;
-     *                      false if an error occurred
+     * @return string The algorithm name (or code if $hashMethodNameToCode specified), salt and hashed data separated by the salt delimiter
      */
     public function buildSaltedHash($unhashedData, $hashMethodName, $saltStr, array $hashMethodNameToCode = [], $saltDelimiter = self::SALT_DELIM)
     {
@@ -220,7 +190,7 @@ class PasswordApi
                 if (isset($hashMethodNameToCode[$hashMethodName])) {
                     $saltedHash = $hashMethodNameToCode[$hashMethodName] . $saltDelimiter . $saltStr . $saltDelimiter . $hashedData;
                 } else {
-                    $saltedHash = false;
+                    throw new \InvalidArgumentException();
                 }
             } else {
                 $saltedHash = $hashMethodName . $saltDelimiter . $saltStr . $saltDelimiter . $hashedData;
@@ -241,8 +211,7 @@ class PasswordApi
      * @param int    $saltLength    The number of random characters to use in the salt
      * @param string $saltDelimiter The delimiter between the salt and the hash, must be a single character
      *
-     * @return string|bool The algorithm name (or code if $hashMethodNameToCode specified), salt and hashed data separated by the salt delimiter;
-     *                      false if an error occured
+     * @return string The algorithm name (or code if $hashMethodNameToCode specified), salt and hashed data separated by the salt delimiter
      */
     public function getSaltedHash($unhashedData, $hashMethodName, array $hashMethodNameToCode = [], $saltLength = 5, $saltDelimiter = self::SALT_DELIM)
     {
