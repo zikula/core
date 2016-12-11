@@ -27,9 +27,21 @@ class AdminCategoryRepository extends EntityRepository
 
     public function getModuleCategory($moduleId)
     {
-        $query = $this->createQueryBuilder('c')
-            ->where('c.mid = :mid')
+        $query = $this->_em->createQueryBuilder('m')
+            ->select('m.cid')
+            ->from('ZikulaAdminModule:AdminModuleEntity', 'm')
+            ->where('m.mid = :mid')
             ->setParameter('mid', $moduleId)
+            ->getQuery();
+
+        $categoryId = (int)$query->getSingleScalarResult();
+        if (!$categoryId) {
+            return null;
+        }
+
+        $query = $this->createQueryBuilder('c')
+            ->where('c.cid = :cid')
+            ->setParameter('cid', $categoryId)
             ->getQuery();
 
         return $query->getOneOrNullResult();
