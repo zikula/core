@@ -12,7 +12,6 @@
 namespace Zikula\ZAuthModule\Api;
 
 use RandomLib\Factory as RandomLibFactory;
-use Zikula\Common\Translator\TranslatorInterface;
 
 class PasswordApi
 {
