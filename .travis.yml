@@ -115,7 +115,6 @@ script:
   # twig linting in themes won't work because the themes are not active bundles
   - cd ..
   - phpunit
-  - cd ..
   # execute Symfony deprecation detector
   - git clone https://github.com/sensiolabs-de/deprecation-detector.git
   - cd deprecation-detector
