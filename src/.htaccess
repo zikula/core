@@ -14,9 +14,8 @@
     # Enable RewriteBase if Zikula is installed to a sub-directory
     # RewriteBase /your/path/to/Zikula
 
-    # Block access to possibly malicious vendor demo files
-    RewriteRule ^vendor/afarkas/webshim/js-webshim/dev/shims/FlashCanvasPro/(.*)$ - [F,L]
-    RewriteRule ^vendor/vakata/jstree/demo/filebrowser/(.*)$ - [F,L]
+    # Block access to vendor directory
+    RewriteRule ^vendor/(.*)$ - [F,L]
 
     # rewrite any unknown directories and files
 
