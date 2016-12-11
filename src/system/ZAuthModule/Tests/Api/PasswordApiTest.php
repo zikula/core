@@ -11,9 +11,7 @@
 
 namespace ZAuthModule\Tests\Api;
 
-
 use Zikula\ZAuthModule\Api\PasswordApi;
-
 
 class PasswordApiTest extends \PHPUnit_Framework_TestCase
 {
