@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ZAuthModule\Tests\Api;
+namespace Zikula\ZAuthModule\Tests\Api;
 
 use Zikula\ZAuthModule\Api\PasswordApi;
 
