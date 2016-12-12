@@ -12,6 +12,7 @@ CHANGELOG - ZIKULA 1.4.x
  - Fixes:
     - Improved handling calls to inactive legacy modules (#3275, #1869).
     - Avoid breaking site if capability route is invalid (#3276, #2905).
+    - Fixed css pathes in asset merger if the core is not installed in a subdirectory (#3280, #3294).
 
  - Features:
     - ?
