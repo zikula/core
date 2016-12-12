@@ -238,7 +238,8 @@ abstract class ZikulaKernel extends Kernel
      * @todo remove in Core-2.0
     public function isClassInActiveBundle($class)
     {
-        /* @var AbstractBundle $bundle * /
+        /* @var AbstractBundle $bundle */
+        /*
         foreach ($this->getBundles() as $bundle) {
             if (0 === strpos($class, $bundle->getNamespace())) {
                 if ($bundle->getState() == AbstractBundle::STATE_ACTIVE) {
@@ -250,8 +251,8 @@ abstract class ZikulaKernel extends Kernel
         }
 
         return false;
-    }
-    */
+        */
+    //}
 
     /**
      * Initializes the data structures related to the bundle management.
