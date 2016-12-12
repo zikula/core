@@ -12,14 +12,14 @@
 namespace Zikula\Bundle\FormExtensionBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LocaleType extends AbstractType
 {
     /**
-     * @param OptionsResolverInterface $resolver
+     * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'choices' => \ZLanguage::getInstalledLanguageNames(),

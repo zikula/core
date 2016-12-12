@@ -21,10 +21,10 @@ class DHTML_Calendar {
     var $calendar_theme_file;
     var $calendar_options;
 
-    function __construct($calendar_lib_path = '/calendar/',
-                         $lang              = 'en',
-                         $theme             = 'calendar-win2k-1',
-                         $stripped          = true) {
+    function DHTML_Calendar($calendar_lib_path = '/calendar/',
+                            $lang              = 'en',
+                            $theme             = 'calendar-win2k-1',
+                            $stripped          = true) {
         if ($stripped) {
             $this->calendar_file = 'calendar_stripped.js';
             $this->calendar_setup_file = 'calendar-setup_stripped.js';

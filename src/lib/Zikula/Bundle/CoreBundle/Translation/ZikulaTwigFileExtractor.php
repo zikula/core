@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\Core\AbstractBundle;
 
-class ZikulaTwigFileExtractor implements FileVisitorInterface, \Twig_NodeVisitorInterface
+class ZikulaTwigFileExtractor extends \Twig_BaseNodeVisitor implements FileVisitorInterface
 {
     /**
      * @var \SplFileInfo
@@ -76,11 +76,9 @@ class ZikulaTwigFileExtractor implements FileVisitorInterface, \Twig_NodeVisitor
     }
 
     /**
-     * @param \Twig_NodeInterface $node
-     * @param \Twig_Environment $env
-     * @return \Twig_NodeInterface
+     * {@inheritdoc}
      */
-    public function enterNode(\Twig_NodeInterface $node, \Twig_Environment $env)
+    protected function doEnterNode(\Twig_Node $node, \Twig_Environment $env)
     {
         $this->stack[] = $node;
 
@@ -166,7 +164,10 @@ class ZikulaTwigFileExtractor implements FileVisitorInterface, \Twig_NodeVisitor
         }
     }
 
-    public function leaveNode(\Twig_NodeInterface $node, \Twig_Environment $env)
+    /**
+     * {@inheritdoc}
+     */
+    protected function doLeaveNode(\Twig_Node $node, \Twig_Environment $env)
     {
         array_pop($this->stack);
 
