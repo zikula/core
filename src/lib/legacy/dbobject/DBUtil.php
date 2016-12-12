@@ -487,7 +487,7 @@ class DBUtil
         // add fields of all joins
         $alias = 'a';
         foreach ($joinInfo as &$join) {
-            $jc = $tables[$join['join_table'] . '_column'];
+            $jc = &$tables[$join['join_table'] . '_column'];
             foreach ($join['join_field'] as $k => $f) {
                 $a = $join['object_field_name'][$k];
                 if (isset($columns[$a])) {
@@ -2285,7 +2285,7 @@ class DBUtil
             $fetchedObjectCount = self::_getFetchedObjectCount();
 
             for ($i = 0, $cou = count($objArr); $i < $cou; ++$i) {
-                $obj = $objArr[$i];
+                $obj = &$objArr[$i];
                 if ($filterCallback->checkResult($obj)) {
                     $objects[] = $obj;
                 }

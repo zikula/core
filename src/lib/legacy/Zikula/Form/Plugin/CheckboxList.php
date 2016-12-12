@@ -201,7 +201,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
                 $result .= '<tr>';
             }
 
-            $item = $this->items[$i];
+            $item = &$this->items[$i];
             $idHtml = " id=\"{$this->id}_$i\"";
 
             $text = DataUtil::formatForDisplay($item['text']);

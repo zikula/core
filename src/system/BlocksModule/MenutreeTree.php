@@ -105,12 +105,12 @@ class MenutreeTree extends \Zikula_Tree
             } else {
                 $path   = $map[$a[$reflang]['parent']];
                 $path[] = $a[$reflang]['parent'];
-                $handle = $this->tree;
+                $handle = &$this->tree;
                 while (list($key, $value) = each($path)) {
                     if ($value === 0) {
                         continue;
                     }
-                    $handle = $handle[$value]['nodes'];
+                    $handle = &$handle[$value]['nodes'];
                 }
                 $handle[$a[$reflang]['id']] = $_node;
             }

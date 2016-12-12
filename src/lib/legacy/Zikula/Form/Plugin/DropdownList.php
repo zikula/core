@@ -394,7 +394,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
         if ($this->selectionMode == 'single') {
             // Check for exiting value in list (avoid tampering with post values)
             for ($i = 0, $count = count($this->items); $i < $count; ++$i) {
-                $item = $this->items[$i];
+                $item = &$this->items[$i];
 
                 if ($item['value'] == $value) {
                     $this->selectedValue = $value;
@@ -411,7 +411,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
                 $ok2 = false;
                 // Check for exiting value in list (avoid tampering with post values)
                 for ($i = 0, $icount = count($this->items); $i < $icount; ++$i) {
-                    $item = $this->items[$i];
+                    $item = &$this->items[$i];
 
                     if ($item['value'] == $value[$j]) {
                         $ok2 = true;

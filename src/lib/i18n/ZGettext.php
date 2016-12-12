@@ -215,7 +215,7 @@ class ZGettext
                 'reader' => null
             ];
         }
-        $textDomain = $_this->textDomains[$locale][$category][$domain];
+        $textDomain = &$_this->textDomains[$locale][$category][$domain];
 
         if (!$textDomain['reader']) {
             //$path = realpath($textDomain['path']."$locale/$categorypath/$domain.mo");

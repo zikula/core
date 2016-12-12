@@ -796,7 +796,7 @@ class ObjectUtil
             $obj['__META__'] = [];
         }
 
-        $meta = $obj['__META__'];
+        $meta = &$obj['__META__'];
         $meta['table'] = $tablename;
         $meta['idcolumn'] = $idcolumn;
 
