@@ -14,6 +14,7 @@ namespace Zikula\ZAuthModule\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\ZAuthModule\Api\PasswordApi;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 
 class ValidPasswordChangeValidator extends ConstraintValidator
@@ -29,14 +30,21 @@ class ValidPasswordChangeValidator extends ConstraintValidator
     private $translator;
 
     /**
+     * @var PasswordApi
+     */
+    private $passwordApi;
+
+    /**
      * ValidPasswordChangeValidator constructor.
      * @param AuthenticationMappingRepositoryInterface $repository
      * @param TranslatorInterface $translator
+     * @param PasswordApi $passwordApi
      */
-    public function __construct(AuthenticationMappingRepositoryInterface $repository, TranslatorInterface $translator)
+    public function __construct(AuthenticationMappingRepositoryInterface $repository, TranslatorInterface $translator, PasswordApi $passwordApi)
     {
         $this->repository = $repository;
         $this->translator = $translator;
+        $this->passwordApi = $passwordApi;
     }
 
     public function validate($data, Constraint $constraint)
@@ -45,7 +53,7 @@ class ValidPasswordChangeValidator extends ConstraintValidator
         if ($userEntity) {
             $currentPass = $userEntity->getPass();
             // is oldpass correct?
-            if (empty($data['oldpass']) || !\UserUtil::passwordsMatch($data['oldpass'], $currentPass)) {
+            if (empty($data['oldpass']) || !$this->passwordApi->passwordsMatch($data['oldpass'], $currentPass)) {
                 $this->context->buildViolation($this->translator->__('Old password is incorrect.'))
                     ->atPath('oldpass')
                     ->addViolation();

@@ -453,14 +453,4 @@ class PagerExtension extends \Twig_Extension
 
         return $output;
     }
-
-    /**
-     * Returns the name of the extension.
-     *
-     * @return string The extension name
-     */
-    public function getName()
-    {
-        return 'zikulacore.pager';
-    }
 }

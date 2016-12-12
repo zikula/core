@@ -29,6 +29,8 @@ class ZikulaZAuthExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(realpath(__DIR__ . '/../Resources/config')));
 
         $loader->load('services.yml');
+        $loader->load('helpers.yml');
+        $loader->load('listeners.yml');
         $loader->load('authentication.yml');
         $loader->load('validators.yml');
     }

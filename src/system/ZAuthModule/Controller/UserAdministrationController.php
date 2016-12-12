@@ -234,7 +234,7 @@ class UserAdministrationController extends AbstractController
                 /** @var AuthenticationMappingEntity $mapping */
                 $mapping = $form->getData();
                 if ($form->get('setpass')->getData()) {
-                    $mapping->setPass(\UserUtil::getHashedPassword($mapping->getPass()));
+                    $mapping->setPass($this->get('zikula_zauth_module.api.password')->getHashedPassword($mapping->getPass()));
                 } else {
                     $mapping->setPass($originalMapping->getPass());
                 }

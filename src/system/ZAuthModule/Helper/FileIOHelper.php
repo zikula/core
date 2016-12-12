@@ -30,6 +30,7 @@ use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
 use Zikula\UsersModule\Validator\Constraints\ValidEmail;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
+use Zikula\ZAuthModule\Api\PasswordApi;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 
 class FileIOHelper
@@ -72,6 +73,11 @@ class FileIOHelper
     private $currentUser;
 
     /**
+     * @var PasswordApi
+     */
+    private $passwordApi;
+
+    /**
      * RegistrationHelper constructor.
      * @param VariableApi $variableApi
      * @param PermissionApi $permissionApi
@@ -90,7 +96,8 @@ class FileIOHelper
         EntityManager $entityManager,
         MailHelper $mailHelper,
         EventDispatcherInterface $eventDispatcher,
-        CurrentUserApi $currentUserApi
+        CurrentUserApi $currentUserApi,
+        PasswordApi $passwordApi
     ) {
         $this->variableApi = $variableApi;
         $this->permissionApi = $permissionApi;
@@ -100,6 +107,7 @@ class FileIOHelper
         $this->mailHelper = $mailHelper;
         $this->eventDispatcher = $eventDispatcher;
         $this->currentUser = $currentUserApi;
+        $this->passwordApi = $passwordApi;
     }
 
     public function setTranslator($translator)
@@ -236,7 +244,7 @@ class FileIOHelper
         // create users
         foreach ($importValues as $k => $importValue) {
             $unHashedPass = $importValue['pass'];
-            $importValue['pass'] = \UserUtil::getHashedPassword($importValue['pass']);
+            $importValue['pass'] = $this->passwordApi->getHashedPassword($importValue['pass']);
             if (!$importValue['activated']) {
                 $importValues[$k]['activated'] = UsersConstant::ACTIVATED_PENDING_REG;
             } else {

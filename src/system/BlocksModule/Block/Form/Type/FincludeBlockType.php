@@ -51,7 +51,7 @@ class FincludeBlockType extends AbstractType
         ;
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'zikulablocksmodule_fincludeblock';
     }

@@ -12,6 +12,7 @@
 namespace Zikula\AdminModule\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class AdminCategoryRepository extends EntityRepository
@@ -27,9 +28,25 @@ class AdminCategoryRepository extends EntityRepository
 
     public function getModuleCategory($moduleId)
     {
-        $query = $this->createQueryBuilder('c')
-            ->where('c.mid = :mid')
+        $query = $this->_em->createQueryBuilder('m')
+            ->select('m.cid')
+            ->from('ZikulaAdminModule:AdminModuleEntity', 'm')
+            ->where('m.mid = :mid')
             ->setParameter('mid', $moduleId)
+            ->getQuery();
+
+        try {
+            $categoryId = (int)$query->getSingleScalarResult();
+        } catch (NoResultException $e) {
+            return null;
+        }
+        if (!$categoryId) {
+            return null;
+        }
+
+        $query = $this->createQueryBuilder('c')
+            ->where('c.cid = :cid')
+            ->setParameter('cid', $categoryId)
             ->getQuery();
 
         return $query->getOneOrNullResult();

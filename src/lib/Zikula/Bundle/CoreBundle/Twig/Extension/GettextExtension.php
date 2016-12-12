@@ -60,16 +60,6 @@ class GettextExtension extends \Twig_Extension
     }
 
     /**
-     * Returns the name of the extension.
-     *
-     * @return string The extension name
-     */
-    public function getName()
-    {
-        return 'zikula_gettext';
-    }
-
-    /**
      * @see __()
      */
     public function __(array $context, $message, $domain = null, $locale = null)

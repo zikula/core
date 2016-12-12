@@ -240,7 +240,7 @@ class AccountController extends AbstractController
 
             $mappingRepository = $this->get('zikula_zauth_module.authentication_mapping_repository');
             $mapping = $mappingRepository->getByZikulaId($user->getUid());
-            $mapping->setPass(\UserUtil::getHashedPassword($data['pass']));
+            $mapping->setPass($this->get('zikula_zauth_module.api.password')->getHashedPassword($data['pass']));
             $mappingRepository->persistAndFlush($mapping);
             $this->get('zikula_users_module.helper.access_helper')->login($user);
             $this->addFlash('success', $this->__('Your change has been successfully saved. You are now logged in with your new password.'));
@@ -272,7 +272,9 @@ class AccountController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $currentUser = $this->get('zikula_users_module.current_user');
-            $code = $this->get('zikula_zauth_module.user_verification_repository')->setVerificationCode($currentUser->get('uid'), ZAuthConstant::VERIFYCHGTYPE_EMAIL, $data['email']);
+            $passwordApi = $this->get('zikula_zauth_module.api.password');
+            $code = $passwordApi->generatePassword();
+            $this->get('zikula_zauth_module.user_verification_repository')->setVerificationCode($currentUser->get('uid'), ZAuthConstant::VERIFYCHGTYPE_EMAIL, $passwordApi->getHashedPassword($code), $data['email']);
             $templateArgs = [
                 'uname'    => $currentUser->get('uname'),
                 'email'    => $currentUser->get('email'),
@@ -315,7 +317,7 @@ class AccountController extends AbstractController
             'uid' => $currentUser->get('uid'),
             'changetype' => ZAuthConstant::VERIFYCHGTYPE_EMAIL
         ]);
-        $validCode = \UserUtil::passwordsMatch($code, $verificationRecord->getVerifycode());
+        $validCode = $this->get('zikula_zauth_module.api.password')->passwordsMatch($code, $verificationRecord->getVerifycode());
         if (!$validCode) {
             $this->addFlash('error', $this->__f('Error! Your e-mail has not been found. After your request you have %s days to confirm the new e-mail address.', ['%s' => $emailExpireDays]));
         } else {
@@ -375,7 +377,7 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $mapping->setPass(\UserUtil::getHashedPassword($data['pass']));
+            $mapping->setPass($this->get('zikula_zauth_module.api.password')->getHashedPassword($data['pass']));
             $userEntity = $this->get('zikula_users_module.user_repository')->find($mapping->getUid());
             $userEntity->delAttribute(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY);
             $this->get('zikula_zauth_module.authentication_mapping_repository')->persistAndFlush($mapping);

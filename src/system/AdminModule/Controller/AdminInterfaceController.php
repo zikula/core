@@ -78,13 +78,19 @@ class AdminInterfaceController extends AbstractController
         $caller = $masterRequest->attributes->all();
         $caller['info'] = $this->get('zikula_extensions_module.extension_repository')->get($caller['_zkModule']);
 
+        $requestedCid = $masterRequest->attributes->get('acid');
+        $defaultCid = empty($requestedCid) ? $this->getVar('startcategory') : $requestedCid;
+
         $cid = null;
         if ($caller['_zkModule'] == 'ZikulaAdminModule') {
-            $requested_cid = $masterRequest->attributes->get('acid');
-            $cid = empty($requested_cid) ? $this->getVar('startcategory') : $requested_cid;
+            $cid = $defaultCid;
         } else {
             $moduleRelation = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $caller['info']['id']]);
-            $cid = $moduleRelation->getCid();
+            if (null !== $moduleRelation) {
+                $cid = $moduleRelation->getCid();
+            } else {
+                $cid = $defaultCid;
+            }
         }
         $caller['category'] = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminCategoryEntity')->find($cid);
 
@@ -245,6 +251,7 @@ class AdminInterfaceController extends AbstractController
 
         $masterRequest = $this->get('request_stack')->getMasterRequest();
         $currentRequest = $this->get('request_stack')->getCurrentRequest();
+
         // get caller info
         $caller = [];
         $caller['_zkModule'] = $masterRequest->attributes->get('_zkModule');
@@ -252,15 +259,22 @@ class AdminInterfaceController extends AbstractController
         $caller['_zkFunc'] = $masterRequest->attributes->get('_zkFunc');
         $caller['path'] = $masterRequest->getPathInfo();
         $caller['info'] = !empty($caller['_zkModule']) ? $this->get('zikula_extensions_module.extension_repository')->get($caller['_zkModule']) : [];
+
         // category we are in
         $requestedCid = $masterRequest->attributes->get('acid');
+        $defaultCid = empty($requestedCid) ? $this->getVar('startcategory') : $requestedCid;
         if ($caller['_zkModule'] == 'ZikulaAdminModule' || empty($caller['_zkModule'])) {
-            $cid = empty($requestedCid) ? $this->getVar('startcategory') : $requestedCid;
+            $cid = $defaultCid;
         } else {
             $moduleRelation = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $caller['info']['id']]);
-            $cid = $moduleRelation->getCid();
+            if (null !== $moduleRelation) {
+                $cid = $moduleRelation->getCid();
+            } else {
+                $cid = $defaultCid;
+            }
         }
         $caller['category'] = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminCategoryEntity')->find($cid);
+
         // mode requested
         $mode = $currentRequest->attributes->has('mode') ? $currentRequest->attributes->get('mode') : 'categories';
         $mode = in_array($mode, ['categories', 'modules']) ? $mode : 'categories';
@@ -288,10 +302,13 @@ class AdminInterfaceController extends AbstractController
             }
 
             $categoryAssignment = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $adminModule['id']]);
-            // cat
-            $catid = $categoryAssignment->getCid();
-            // order
-            $order = $categoryAssignment->getSortorder();
+            if (null !== $categoryAssignment) {
+                $catid = $categoryAssignment->getCid();
+                $order = $categoryAssignment->getSortorder();
+            } else {
+                $catid = $this->getVar('startcategory');
+                $order = 999;
+            }
 
             $menuText = $adminModule['displayname'];
 

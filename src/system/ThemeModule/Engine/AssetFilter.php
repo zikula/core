@@ -14,14 +14,14 @@ namespace Zikula\ThemeModule\Engine;
 use Zikula\ThemeModule\Engine\Asset\ResolverInterface;
 
 /**
- * Class Filter
+ * Class AssetFilter
  *
  * This class resolves, compiles and renders all page assets and adds them to the outgoing source content
  * Recently, the accepted practice for placement of javascript has changed from header to footer. Placement in this
  * class is determined by the `scriptPosition` parameter in `app/config/parameters.yml`. In Core-2.0 this defaults to
  * footer. Scripts must be written to accommodate this.
  */
-class Filter
+class AssetFilter
 {
     /**
      * @var AssetBag

@@ -33,11 +33,6 @@ class UserInterfaceExtension extends \Twig_Extension
         $this->handler = $handler;
     }
 
-    public function getName()
-    {
-        return 'zikulaextensionsmodule.admin_interface';
-    }
-
     /**
      * Returns a list of functions to add to the existing list.
      *

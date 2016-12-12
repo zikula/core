@@ -247,7 +247,7 @@ class AjaxInstallController extends AbstractController
         $mapping->setUname($userEntity->getUname());
         $mapping->setEmail($userEntity->getEmail());
         $mapping->setVerifiedEmail(true);
-        $mapping->setPass(\UserUtil::getHashedPassword($params['password'], \UserUtil::getPasswordHashMethodCode(ZAuthConstant::DEFAULT_HASH_METHOD))); // @todo
+        $mapping->setPass($this->container->get('zikula_zauth_module.api.password')->getHashedPassword($params['password']));
         $mapping->setMethod(ZAuthConstant::AUTHENTICATION_METHOD_UNAME);
         $entityManager->persist($mapping);
 
