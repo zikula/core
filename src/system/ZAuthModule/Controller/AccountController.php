@@ -237,7 +237,7 @@ class AccountController extends AbstractController
 
             $mappingRepository = $this->get('zikula_zauth_module.authentication_mapping_repository');
             $mapping = $mappingRepository->getByZikulaId($user->getUid());
-            $mapping->setPass($this->container->get('zikula_zauth_module.api.password')->getHashedPassword($data['pass']));
+            $mapping->setPass($this->get('zikula_zauth_module.api.password')->getHashedPassword($data['pass']));
             $mappingRepository->persistAndFlush($mapping);
             $this->get('zikula_users_module.helper.access_helper')->login($user);
             $this->addFlash('success', $this->__('Your change has been successfully saved. You are now logged in with your new password.'));
@@ -375,7 +375,7 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $mapping->setPass($this->container->get('zikula_zauth_module.api.password')->getHashedPassword($data['pass']));
+            $mapping->setPass($this->get('zikula_zauth_module.api.password')->getHashedPassword($data['pass']));
             $userEntity = $this->get('zikula_users_module.user_repository')->find($mapping->getUid());
             $userEntity->delAttribute(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY);
             $this->get('zikula_zauth_module.authentication_mapping_repository')->persistAndFlush($mapping);
