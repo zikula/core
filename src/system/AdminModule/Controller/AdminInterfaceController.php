@@ -289,10 +289,13 @@ class AdminInterfaceController extends AbstractController
             }
 
             $categoryAssignment = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $adminModule['id']]);
-            // cat
-            $catid = $categoryAssignment->getCid();
-            // order
-            $order = $categoryAssignment->getSortorder();
+            if (null !== $categoryAssignment) {
+                $catid = $categoryAssignment->getCid();
+                $order = $categoryAssignment->getSortorder();
+            } else {
+                $catid = $this->getVar('startcategory');
+                $order = 999;
+            }
 
             $menuText = $adminModule['displayname'];
 
