@@ -15,6 +15,8 @@ use Zikula\ZAuthModule\Api\PasswordApi;
 
 class PasswordApiTest extends \PHPUnit_Framework_TestCase
 {
+    const ALLOWED_CHARS_REGEXP = ';[0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~@#$%^*()_+-={}|\][];';
+
     /**
      * @var PasswordApi
      */
@@ -35,17 +37,17 @@ class PasswordApiTest extends \PHPUnit_Framework_TestCase
     {
         $hashedPass = $this->api->getHashedPassword('12345678'); // default = 8 = sha256
         $this->assertEquals(72, strlen($hashedPass));
-        $this->assertRegExp(';[0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~@#$%^*()_+-={}|\][];', $hashedPass);
+        $this->assertRegExp(self::ALLOWED_CHARS_REGEXP, $hashedPass);
         $this->assertEquals(2, substr_count($hashedPass, '$'));
 
         $hashedPass = $this->api->getHashedPassword('H4ppy81rthd$y', 1); // 1 = md5
         $this->assertEquals(40, strlen($hashedPass));
-        $this->assertRegExp(';[0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~@#$%^*()_+-={}|\][];', $hashedPass);
+        $this->assertRegExp(self::ALLOWED_CHARS_REGEXP, $hashedPass);
         $this->assertEquals(2, substr_count($hashedPass, '$'));
 
         $hashedPass = $this->api->getHashedPassword('mybirthdayplusabunchofchanracters%&*&^53', 5); // 5 = sha1
         $this->assertEquals(48, strlen($hashedPass));
-        $this->assertRegExp(';[0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~@#$%^*()_+-={}|\][];', $hashedPass);
+        $this->assertRegExp(self::ALLOWED_CHARS_REGEXP, $hashedPass);
         $this->assertEquals(2, substr_count($hashedPass, '$'));
     }
 
