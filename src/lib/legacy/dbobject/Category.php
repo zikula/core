@@ -42,7 +42,7 @@ class Categories_DBObject_Category extends DBObject
     public function getDataFromInputPostProcess($data = null)
     {
         if (!$data) {
-            $data = $this->_objData;
+            $data = &$this->_objData;
         }
         if (!$data) {
             return $data;
@@ -79,7 +79,7 @@ class Categories_DBObject_Category extends DBObject
     public function selectPostProcess($data = null)
     {
         if (!$data) {
-            $data = $this->_objData;
+            $data = &$this->_objData;
         }
         if (!$data) {
             return $data;
@@ -96,7 +96,7 @@ class Categories_DBObject_Category extends DBObject
     public function insertPreProcess($data = null)
     {
         if (!$data) {
-            $data = $this->_objData;
+            $data = &$this->_objData;
         }
 
         if (!$data) {
@@ -125,7 +125,7 @@ class Categories_DBObject_Category extends DBObject
     public function insertPostProcess($data = null)
     {
         if (!$data) {
-            $data = $this->_objData;
+            $data = &$this->_objData;
         }
 
         if (!$data) {
@@ -148,7 +148,7 @@ class Categories_DBObject_Category extends DBObject
     public function updatePreProcess($data = null)
     {
         if (!$data) {
-            $data = $this->_objData;
+            $data = &$this->_objData;
         }
 
         if (!$data) {
@@ -174,7 +174,7 @@ class Categories_DBObject_Category extends DBObject
     public function updatePostProcess($data = null)
     {
         if (!$data) {
-            $data = $this->_objData;
+            $data = &$this->_objData;
         }
 
         if (!$data) {

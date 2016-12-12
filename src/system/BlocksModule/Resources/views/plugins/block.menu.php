@@ -146,12 +146,12 @@ function _smarty_block_menu_parsemenu($params)
         } else {
             $path = $map[$item['parentid']];
             $path[] = $item['parentid'];
-            $handle = $tree;
+            $handle = &$tree;
             while (list($key, $value) = each($path)) {
                 if (null === $value) {
                     continue;
                 }
-                $handle = $handle[$value]['nodes'];
+                $handle = &$handle[$value]['nodes'];
             }
             $handle[$item['id']] = $_node;
         }
