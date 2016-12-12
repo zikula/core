@@ -84,7 +84,7 @@ class RegistrationController extends AbstractController
             $userEntity = $this->get('zikula_users_module.user_repository')->findOneBy(['uname' => $data['uname']]);
             $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->getByZikulaId($userEntity->getUid());
             if (isset($data['pass'])) {
-                $mapping->setPass(\UserUtil::getHashedPassword($data['pass']));
+                $mapping->setPass($this->container->get('zikula_zauth_module.api.password')->getHashedPassword($data['pass']));
             }
             $mapping->setVerifiedEmail(true);
             $this->get('zikula_zauth_module.authentication_mapping_repository')->persistAndFlush($mapping);

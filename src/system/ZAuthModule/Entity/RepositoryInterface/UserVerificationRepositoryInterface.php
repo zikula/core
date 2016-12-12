@@ -36,5 +36,5 @@ interface UserVerificationRepositoryInterface extends ObjectRepository, Selectab
 
     public function isVerificationEmailSent($uid);
 
-    public function setVerificationCode($uid, $changeType = ZAuthConstant::VERIFYCHGTYPE_PWD, $email = null);
+    public function setVerificationCode($uid, $changeType = ZAuthConstant::VERIFYCHGTYPE_PWD, $hashedConfirmationCode = null, $email = null);
 }

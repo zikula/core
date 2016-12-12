@@ -10,13 +10,27 @@ parameters:
 services:
     zikula_zauth_module.authentication_method.native_uname:
         class: %zikula_zauth_module.authentication_method.native_uname.class%
-        arguments: ["@zikula_users_module.user_repository", "@zikula_zauth_module.authentication_mapping_repository", "@session", "@translator.default", "@zikula_extensions_module.api.variable", "@validator"]
+        arguments:
+            - "@zikula_users_module.user_repository"
+            - "@zikula_zauth_module.authentication_mapping_repository"
+            - "@session"
+            - "@translator.default"
+            - "@zikula_extensions_module.api.variable"
+            - "@validator"
+            - "@zikula_zauth_module.api.password"
         tags:
             - { name: zikula.authentication_method, alias: %zikula_zauth_module.authentication_method.alias.native_uname.value% }
 
     zikula_zauth_module.authentication_method.native_email:
         class: %zikula_zauth_module.authentication_method.native_email.class%
-        arguments: ["@zikula_users_module.user_repository", "@zikula_zauth_module.authentication_mapping_repository", "@session", "@translator.default", "@zikula_extensions_module.api.variable", "@validator"]
+        arguments:
+            - "@zikula_users_module.user_repository"
+            - "@zikula_zauth_module.authentication_mapping_repository"
+            - "@session"
+            - "@translator.default"
+            - "@zikula_extensions_module.api.variable"
+            - "@validator"
+            - "@zikula_zauth_module.api.password"
         tags:
             - { name: zikula.authentication_method, alias: %zikula_zauth_module.authentication_method.alias.native_email.value% }
 

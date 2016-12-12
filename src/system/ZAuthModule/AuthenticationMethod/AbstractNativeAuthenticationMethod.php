@@ -18,6 +18,7 @@ use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\ZAuthModule\Api\PasswordApi;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthModule\ZAuthConstant;
@@ -55,12 +56,19 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
     private $validator;
 
     /**
+     * @var PasswordApi
+     */
+    private $passwordApi;
+
+    /**
      * NativeUnameAuthenticationMethod constructor.
      * @param UserRepositoryInterface $userRepository
      * @param AuthenticationMappingRepositoryInterface $mappingRepository
      * @param Session $session
      * @param TranslatorInterface $translator
      * @param VariableApi $variableApi
+     * @param ValidatorInterface $validator
+     * @param PasswordApi $passwordApi
      */
     public function __construct(
         UserRepositoryInterface $userRepository,
@@ -68,7 +76,8 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         Session $session,
         TranslatorInterface $translator,
         VariableApi $variableApi,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        PasswordApi $passwordApi
     ) {
         $this->userRepository = $userRepository;
         $this->mappingRepository = $mappingRepository;
@@ -76,6 +85,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         $this->translator = $translator;
         $this->variableApi = $variableApi;
         $this->validator = $validator;
+        $this->passwordApi = $passwordApi;
     }
 
     /**
@@ -102,7 +112,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         if (isset($data[$field])) {
             $mapping = $this->getMapping($field, $data[$field]);
             if ($mapping) {
-                if (\UserUtil::passwordsMatch($data['pass'], $mapping->getPass())) { // @todo
+                if ($this->passwordApi->passwordsMatch($data['pass'], $mapping->getPass())) {
                     // @todo is this the place to update the hash method?
                     return $mapping->getUid();
                 } else {
@@ -178,7 +188,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         $mapping->setUid($data['uid']);
         $mapping->setUname($data['uname']);
         $mapping->setEmail($data['email']);
-        $mapping->setPass(\UserUtil::getHashedPassword($data['pass'])); // @todo replace UserUtil
+        $mapping->setPass($this->passwordApi->getHashedPassword($data['pass']));
         $mapping->setMethod($this->getAlias());
         $requireVerifiedEmail = $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED);
         $mapping->setVerifiedEmail(!$requireVerifiedEmail);

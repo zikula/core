@@ -12,6 +12,7 @@
 namespace Zikula\ZAuthModule\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Zikula\ZAuthModule\Api\PasswordApi;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\Entity\UserVerificationEntity;
 use Zikula\ZAuthModule\ZAuthConstant;
@@ -121,13 +122,14 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
      * Set a confirmation code.
      * @param integer $uid
      * @param int $changeType
-     * @param null $email
-     * @return string new confirmation code
+     * @param string $hashedConfirmationCode
+     * @param string $email
      */
-    public function setVerificationCode($uid, $changeType = ZAuthConstant::VERIFYCHGTYPE_PWD, $email = null)
+    public function setVerificationCode($uid, $changeType = ZAuthConstant::VERIFYCHGTYPE_PWD, $hashedConfirmationCode = null, $email = null)
     {
-        $confirmationCode = \UserUtil::generatePassword();
-        $hashedConfirmationCode = \UserUtil::getHashedPassword($confirmationCode);
+        if (empty($hashedConfirmationCode)) {
+            throw new \InvalidArgumentException();
+        }
         $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
 
         $query = $this->createQueryBuilder('v')
@@ -149,7 +151,5 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
         }
         $this->_em->persist($entity);
         $this->_em->flush();
-
-        return $confirmationCode;
     }
 }
