@@ -45,11 +45,6 @@ class AdminExtension extends \Twig_Extension
         $this->permissionApi = $permissionApi;
     }
 
-    public function getName()
-    {
-        return 'zikula_admin_module';
-    }
-
     /**
      * Returns a list of functions to add to the existing list.
      *

@@ -31,7 +31,7 @@ class HtmlBlockType extends AbstractType
         ;
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'zikulablocksmodule_htmlblock';
     }

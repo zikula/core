@@ -17,11 +17,6 @@ class SeaBreezeThemeExtension extends \Twig_Extension
     {
     }
 
-    public function getName()
-    {
-        return 'seabreezetheme_extension';
-    }
-
     public function getFilters()
     {
         return [

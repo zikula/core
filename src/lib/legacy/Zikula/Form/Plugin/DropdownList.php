@@ -351,9 +351,6 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
             $value = (null == $value) ? [] : (array)$value;
 
             for ($i = 0, $count = count($value); $i < $count; ++$i) {
-                if (get_magic_quotes_gpc()) {
-                    $value[$i] = stripslashes($value[$i]);
-                }
                 if ($value[$i] == '#null#') {
                     $value[$i] = null;
                 }

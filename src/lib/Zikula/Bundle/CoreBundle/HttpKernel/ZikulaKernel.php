@@ -233,22 +233,6 @@ abstract class ZikulaKernel extends Kernel
         return false;
     }
 
-    public function isClassInActiveBundle($class)
-    {
-        /* @var AbstractBundle $bundle */
-        foreach ($this->getBundles() as $bundle) {
-            if (0 === strpos($class, $bundle->getNamespace())) {
-                if ($bundle->getState() == AbstractBundle::STATE_ACTIVE) {
-                    return true;
-                } elseif (!method_exists($bundle, 'getState')) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
     /**
      * Initializes the data structures related to the bundle management.
      *

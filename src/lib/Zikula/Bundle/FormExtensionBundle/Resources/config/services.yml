@@ -8,7 +8,7 @@ services:
     zikula.form.type.locale:
         class: %zikula.form.type.locale.class%
         tags:
-            - { name: form.type, alias: zikula.form.type.locale }
+            - { name: form.type, alias: zikula_locale }
 
     zikula.form_extension.icon:
         class: %zikula.form_extension.icon.class%

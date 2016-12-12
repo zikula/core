@@ -13,7 +13,7 @@ namespace Zikula\Bundle\CoreBundle\Twig\Node;
 
 class SwitchNode extends \Twig_Node
 {
-    public function __construct(\Twig_NodeInterface $cases, \Twig_NodeInterface $default = null, \Twig_Node_Expression $expression, $lineno, $tag = null)
+    public function __construct(\Twig_Node $cases, \Twig_Node $default = null, \Twig_Node_Expression $expression, $lineno, $tag = null)
     {
         $nodes = [
             'cases' => $cases,
