@@ -79,13 +79,19 @@ class AdminInterfaceController extends AbstractController
         $caller = $masterRequest->attributes->all();
         $caller['info'] = $this->get('zikula_extensions_module.extension_repository')->get($caller['_zkModule']);
 
+        $requestedCid = $masterRequest->attributes->get('acid');
+        $defaultCid = empty($requestedCid) ? $this->getVar('startcategory') : $requestedCid;
+
         $cid = null;
         if ($caller['_zkModule'] == 'ZikulaAdminModule') {
-            $requested_cid = $masterRequest->attributes->get('acid');
-            $cid = empty($requested_cid) ? $this->getVar('startcategory') : $requested_cid;
+            $cid = $defaultCid;
         } else {
             $moduleRelation = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $caller['info']['id']]);
-            $cid = $moduleRelation->getCid();
+            if (null !== $moduleRelation) {
+                $cid = $moduleRelation->getCid();
+            } else {
+                $cid = $defaultCid;
+            }
         }
         $caller['category'] = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminCategoryEntity')->find($cid);
 
