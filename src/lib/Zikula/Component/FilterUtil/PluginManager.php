@@ -125,7 +125,7 @@ class PluginManager
      */
     private function registerPlugin($k)
     {
-        $plugin = &$this->plugins[$k];
+        $plugin = $this->plugins[$k];
         if ($plugin instanceof JoinInterface) {
             $plugin->addJoinsToQuery();
         }

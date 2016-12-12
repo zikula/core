@@ -339,7 +339,7 @@ class FilterUtil_Config
      */
     public function setJoin(&$join)
     {
-        $this->_join = &$join;
+        $this->_join = $join;
         $this->updateColumns();
     }
 

@@ -46,7 +46,7 @@ class Categories_DBObject_CategoryArray extends DBObjectArray
     public function getDataFromInputPostProcess($objArray = null)
     {
         if (!$objArray) {
-            $objArray = &$this->_objData;
+            $objArray = $this->_objData;
         }
 
         if (!$objArray) {
@@ -69,7 +69,7 @@ class Categories_DBObject_CategoryArray extends DBObjectArray
     public function selectPostProcess($objArray = null)
     {
         if (!$objArray) {
-            $objArray = &$this->_objData;
+            $objArray = $this->_objData;
         }
 
         if (!$objArray) {
@@ -87,7 +87,7 @@ class Categories_DBObject_CategoryArray extends DBObjectArray
     public function insertPreProcess($objArray = null)
     {
         if (!$objArray) {
-            $objArray = &$this->_objData;
+            $objArray = $this->_objData;
         }
 
         if (!$objArray) {
@@ -107,7 +107,7 @@ class Categories_DBObject_CategoryArray extends DBObjectArray
     public function insertPostProcess($objArray = null)
     {
         if (!$objArray) {
-            $objArray = &$this->_objData;
+            $objArray = $this->_objData;
         }
 
         if (!$objArray) {
@@ -127,7 +127,7 @@ class Categories_DBObject_CategoryArray extends DBObjectArray
     public function updatePreProcess($objArray = null)
     {
         if (!$objArray) {
-            $objArray = &$this->_objData;
+            $objArray = $this->_objData;
         }
 
         if (!$objArray) {

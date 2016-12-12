@@ -33,7 +33,7 @@ class Categories_DBObject_Registry extends DBObject
     public function insertPreProcess($data = null)
     {
         if (!$data) {
-            $data = &$this->_objData;
+            $data = $this->_objData;
         }
 
         if (!$data) {

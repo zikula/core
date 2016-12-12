@@ -55,14 +55,4 @@ class TwigExtension extends \Twig_Extension
 
         return $result;
     }
-
-    /**
-     * Returns internal name of this extension.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return 'zikulagroupsmodule_twigextension';
-    }
 }

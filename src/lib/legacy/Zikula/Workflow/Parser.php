@@ -116,9 +116,9 @@ class Zikula_Workflow_Parser
                 $action['state'] = $stateID = !empty($action['state']) ? $action['state'] : 'initial';
 
                 // change the case of array keys for parameter variables
-                $operations = &$action['operations'];
+                $operations = $action['operations'];
                 foreach (array_keys($operations) as $key) {
-                    $parameters = &$operations[$key]['parameters'];
+                    $parameters = $operations[$key]['parameters'];
                     $parameters = array_change_key_case($parameters, CASE_LOWER);
                 }
 
@@ -173,7 +173,7 @@ class Zikula_Workflow_Parser
     public function startElement($parser, $name, $attribs)
     {
         $name = strtoupper($name);
-        $state = &$this->workflow['state'];
+        $state = $this->workflow['state'];
 
         switch ($state) {
             case 'initial':
@@ -296,7 +296,7 @@ class Zikula_Workflow_Parser
     public function endElement($parser, $name)
     {
         $name = strtoupper($name);
-        $state = &$this->workflow['state'];
+        $state = $this->workflow['state'];
 
         switch ($state) {
             case 'workflow':
@@ -386,7 +386,7 @@ class Zikula_Workflow_Parser
      */
     public function characterData($parser, $data)
     {
-        $value  = &$this->workflow['value'];
+        $value = $this->workflow['value'];
         $value .= $data;
 
         return true;

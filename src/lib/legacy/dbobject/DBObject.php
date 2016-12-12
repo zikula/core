@@ -595,7 +595,7 @@ class DBObject
      */
     public function setDataField($key, $value)
     {
-        $objData = &$this->_objData;
+        $objData = $this->_objData;
         $objData[$key] = $value;
 
         return $value;

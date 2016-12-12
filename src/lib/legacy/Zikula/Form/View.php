@@ -683,7 +683,7 @@ class Zikula_Form_View extends Zikula_View
             $this->state[$region] = [];
         }
 
-        $this->state[$region][$varName] = &$varValue;
+        $this->state[$region][$varName] = $varValue;
     }
 
     /**
@@ -896,7 +896,7 @@ class Zikula_Form_View extends Zikula_View
      */
     public function raiseEvent($eventHandlerName, $args)
     {
-        $handlerClass = &$this->eventHandler;
+        $handlerClass = $this->eventHandler;
 
         if (method_exists($handlerClass, $eventHandlerName)) {
             if ($handlerClass->$eventHandlerName($this, $args) === false) {
@@ -1100,7 +1100,7 @@ class Zikula_Form_View extends Zikula_View
 
         $lim = count($plugins);
         for ($i = 0; $i < $lim; ++$i) {
-            $plugin = &$plugins[$i];
+            $plugin = $plugins[$i];
 
             // Handle sub-plugins special and clear stuff not to be serialized
             $plugin->parentPlugin = null;
@@ -1116,7 +1116,7 @@ class Zikula_Form_View extends Zikula_View
 
             $state[] = [get_class($plugin), $pluginState, $this->getPluginState_rec($subPlugins)];
 
-            $plugin->plugins = &$subPlugins;
+            $plugin->plugins = $subPlugins;
         }
 
         return $state;
@@ -1150,7 +1150,7 @@ class Zikula_Form_View extends Zikula_View
 
         // I don't know why, but the formid array doesnt GC unless this is here - drak
         unset($_SESSION['__forms'][$this->formId]);
-        $this->plugins = &$this->decodePluginState();
+        $this->plugins = $this->decodePluginState();
 
         //$this->dumpPlugins("Decoded state", $this->plugins);
     }

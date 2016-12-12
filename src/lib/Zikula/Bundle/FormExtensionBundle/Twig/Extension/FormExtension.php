@@ -50,14 +50,4 @@ class FormExtension extends \Twig_Extension
         $features = array_unique(array_merge($existingFeatures, $features));
         $themePageVars->set('polyfill_features', $features);
     }
-
-    /**
-     * Returns the name of the extension.
-     *
-     * @return string The extension name
-     */
-    public function getName()
-    {
-        return 'zikula_form_extension_bundle.form_extension';
-    }
 }

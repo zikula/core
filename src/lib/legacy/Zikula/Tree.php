@@ -319,12 +319,12 @@ class Zikula_Tree
             } else {
                 $path   = $map[$item['parent_id']];
                 $path[] = $item['parent_id'];
-                $handle = &$this->tree;
+                $handle = $this->tree;
                 while (list($key, $value) = each($path)) {
                     if ($value === $this->config['nullParent']) {
                         continue;
                     }
-                    $handle = &$handle[$value]['nodes'];
+                    $handle = $handle[$value]['nodes'];
                 }
                 $handle[$item['id']] = $node;
             }

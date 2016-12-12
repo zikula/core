@@ -42,7 +42,7 @@ class Zikula_Form_Plugin_ValidationSummary extends Zikula_Form_AbstractPlugin
      */
     public function render(Zikula_Form_View $view)
     {
-        $validators = &$view->validators;
+        $validators = $view->validators;
 
         $html = '';
         foreach ($validators as $validator) {

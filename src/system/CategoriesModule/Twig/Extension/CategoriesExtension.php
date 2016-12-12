@@ -188,9 +188,4 @@ class CategoriesExtension extends \Twig_Extension
 
         return $this->htmlTreeHelper->getSelector($categories, $field, $selectedValue, $name, $defaultValue, $defaultText, 0, '', false, false, null, 1, null, '', $lang);
     }
-
-    public function getName()
-    {
-        return 'zikulacategoriesmodule.twigextension';
-    }
 }

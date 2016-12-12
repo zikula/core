@@ -190,7 +190,7 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_AbstractPlugin implements Filt
     public function setListTable($name, $table)
     {
         $this->mndbtable[$name] = $table;
-        $dbtable = &DBUtil::getTables();
+        $dbtable = DBUtil::getTables();
         $this->mntable[$name] = $dbtable[$table];
         $this->mncolumn[$name] = $dbtable[$table . '_column'];
     }

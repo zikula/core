@@ -919,12 +919,12 @@ class DBObjectArray
     public function clean($objArray = null)
     {
         if (!$objArray) {
-            $objArray = &$this->_objData;
+            $objArray = $this->_objData;
         }
 
         $ak = array_keys($objArray);
         foreach ($ak as $k) {
-            $obj = &$objArray[$k];
+            $obj = $objArray[$k];
             $ak2 = array_keys($obj);
             foreach ($ak2 as $f) {
                 $obj[$f] = FormUtil::getPassedValue(trim($obj[$f]));
