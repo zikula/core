@@ -34,15 +34,6 @@ class LocaleType extends AbstractType
         return 'zikula_locale';
     }
 
-    /**
-     * @return string
-     * @deprecated remove at Core-2.0
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
     public function getParent()
     {
         return 'Symfony\Component\Form\Extension\Core\Type\ChoiceType';

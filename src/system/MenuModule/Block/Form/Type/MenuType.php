@@ -57,7 +57,7 @@ class MenuType extends AbstractType
         ;
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'zikulamenumodule_menu';
     }

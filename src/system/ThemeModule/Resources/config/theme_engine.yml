@@ -6,7 +6,7 @@ parameters:
     zikula_core.common.theme.assets.header.class: Zikula\ThemeModule\Engine\AssetBag
     zikula_core.common.theme.assets.footer.class: Zikula\ThemeModule\Engine\AssetBag
     zikula_core.common.theme.pagevars.class: Zikula\ThemeModule\Engine\ParameterBag
-    zikula_core.internal.theme_filter.class: Zikula\ThemeModule\Engine\Filter
+    zikula_core.internal.theme_filter.class: Zikula\ThemeModule\Engine\AssetFilter
     zikula_core.common.theme.themevars.class: Zikula\ThemeModule\Engine\ParameterBag
     zikula_core.common.theme.asset_helper.class: Zikula\ThemeModule\Engine\Asset
     zikula_core.internal.theme.js_resolver.class: Zikula\ThemeModule\Engine\Asset\JsResolver

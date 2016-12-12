@@ -24,9 +24,10 @@ class DataUtil
      */
     public static function cleanVar($var)
     {
-        if (!get_magic_quotes_gpc()) {
+        //if (!get_magic_quotes_gpc()) {
             return $var;
-        }
+        //}
+
         if (is_array($var)) {
             foreach ($var as $k => $v) {
                 $var[$k] = self::cleanVar($v);
