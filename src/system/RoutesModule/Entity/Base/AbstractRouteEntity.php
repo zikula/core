@@ -216,18 +216,16 @@ abstract class AbstractRouteEntity extends EntityAccess
     
     
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      * @Gedmo\Blameable(on="create")
-     * @Assert\Type(type="integer")
-     * @var integer $createdUserId
+     * @var string $createdUserId
      */
     protected $createdUserId;
     
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      * @Gedmo\Blameable(on="update")
-     * @Assert\Type(type="integer")
-     * @var integer $updatedUserId
+     * @var string $updatedUserId
      */
     protected $updatedUserId;
     
