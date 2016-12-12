@@ -20,7 +20,7 @@ class AdminMenu implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
-    public function adminMenu(FactoryInterface $factory, array $options)
+    public function menu(FactoryInterface $factory, array $options)
     {
         // @see https://gist.github.com/nateevans/9958390
         $menu = $factory->createItem('root');
