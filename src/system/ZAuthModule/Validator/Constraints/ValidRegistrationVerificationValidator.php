@@ -16,6 +16,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\ZAuthModule\Api\PasswordApi;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\ZAuthConstant;
 
@@ -42,21 +43,29 @@ class ValidRegistrationVerificationValidator extends ConstraintValidator
     private $userVerificationRepository;
 
     /**
+     * @var PasswordApi
+     */
+    private $passwordApi;
+
+    /**
      * @param VariableApi $variableApi
      * @param TranslatorInterface $translator
      * @param UserRepositoryInterface $userRepository
      * @param UserVerificationRepositoryInterface $userVerificationRepository
+     * @param PasswordApi $passwordApi
      */
     public function __construct(
         VariableApi $variableApi,
         TranslatorInterface $translator,
         UserRepositoryInterface $userRepository,
-        UserVerificationRepositoryInterface $userVerificationRepository
+        UserVerificationRepositoryInterface $userVerificationRepository,
+        PasswordApi $passwordApi
     ) {
         $this->variableApi = $variableApi;
         $this->translator = $translator;
         $this->userRepository = $userRepository;
         $this->userVerificationRepository = $userVerificationRepository;
+        $this->passwordApi = $passwordApi;
     }
 
     public function validate($data, Constraint $constraint)
@@ -73,7 +82,7 @@ class ValidRegistrationVerificationValidator extends ConstraintValidator
                 ->atPath('uname')
                 ->addViolation();
         }
-        $codesMatch = \UserUtil::passwordsMatch($data['verifycode'], $verifyChg['verifycode']);
+        $codesMatch = $this->passwordApi->passwordsMatch($data['verifycode'], $verifyChg['verifycode']);
         if (!$codesMatch) {
             $this->context->buildViolation($this->translator->__('The code is invalid for this username.'))
                 ->atPath('verifycode')

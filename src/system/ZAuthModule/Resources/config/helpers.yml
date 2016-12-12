@@ -1,0 +1,58 @@
+parameters:
+    zikula_zauth_module.helper.administration_actions_helper.class: Zikula\ZAuthModule\Helper\AdministrationActionsHelper
+    zikula_zauth_module.helper.file_io.class: Zikula\ZAuthModule\Helper\FileIOHelper
+    zikula_zauth_module.helper.lost_password_verification_helper.class: Zikula\ZAuthModule\Helper\LostPasswordVerificationHelper
+    zikula_zauth_module.helper.registration_verification_helper.class: Zikula\ZAuthModule\Helper\RegistrationVerificationHelper
+    zikula_zauth_module.helper.mail_helper.class: Zikula\ZAuthModule\Helper\MailHelper
+
+services:
+    zikula_zauth_module.helper.administration_actions_helper:
+        class: %zikula_zauth_module.helper.administration_actions_helper.class%
+        arguments:
+            - "@zikula_permissions_module.api.permission"
+            - "@router"
+            - "@translator.default"
+            - "@zikula_zauth_module.user_verification_repository"
+            - "@zikula_users_module.user_repository"
+
+    zikula_zauth_module.helper.file_io:
+        class: %zikula_zauth_module.helper.file_io.class%
+        lazy: true
+        arguments:
+            - "@zikula_extensions_module.api.variable"
+            - "@zikula_permissions_module.api.permission"
+            - "@translator.default"
+            - "@validator"
+            - "@doctrine.orm.default_entity_manager"
+            - "@zikula_zauth_module.helper.mail_helper"
+            - "@event_dispatcher"
+            - "@zikula_users_module.current_user"
+            - "@zikula_zauth_module.api.password"
+
+    zikula_zauth_module.helper.lost_password_verification_helper:
+        class: %zikula_zauth_module.helper.lost_password_verification_helper.class%
+        lazy: true
+        arguments:
+            - "@zikula_zauth_module.user_verification_repository"
+            - "@zikula_extensions_module.api.variable"
+            - "@zikula_zauth_module.api.password"
+
+    zikula_zauth_module.helper.registration_verification_helper:
+        class: %zikula_zauth_module.helper.registration_verification_helper.class%
+        lazy: true
+        arguments:
+            - "@zikula_permissions_module.api.permission"
+            - "@zikula_zauth_module.user_verification_repository"
+            - "@zikula_zauth_module.helper.mail_helper"
+            - "@zikula_users_module.current_user"
+            - "@zikula_users_module.user_repository"
+            - "@zikula_zauth_module.api.password"
+
+    zikula_zauth_module.helper.mail_helper:
+        class: %zikula_zauth_module.helper.mail_helper.class%
+        lazy: true
+        arguments:
+            - "@translator.default"
+            - "@twig"
+            - "@zikula_extensions_module.api.variable"
+            - "@zikula_mailer_module.api.mailer"

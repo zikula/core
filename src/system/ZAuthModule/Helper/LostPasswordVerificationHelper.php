@@ -14,6 +14,7 @@ namespace Zikula\ZAuthModule\Helper;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\ZAuthModule\Api\PasswordApi;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\Entity\UserVerificationEntity;
@@ -32,15 +33,21 @@ class LostPasswordVerificationHelper
     private $variableApi;
 
     /**
+     * @var PasswordApi
+     */
+    private $passwordApi;
+
+    /**
      * LostPasswordVerificationHelper constructor.
      *
      * @param UserVerificationRepositoryInterface $userVerificationRepository
      * @param VariableApi                         $variableApi
      */
-    public function __construct(UserVerificationRepositoryInterface $userVerificationRepository, VariableApi $variableApi)
+    public function __construct(UserVerificationRepositoryInterface $userVerificationRepository, VariableApi $variableApi, PasswordApi $passwordApi)
     {
         $this->userVerificationRepository = $userVerificationRepository;
         $this->variableApi = $variableApi;
+        $this->passwordApi = $passwordApi;
     }
 
     /**
@@ -63,10 +70,11 @@ class LostPasswordVerificationHelper
     public function createLostPasswordId(EntityAccess $record)
     {
         if (!($record instanceof UserEntity) && !($record instanceof AuthenticationMappingEntity)) {
-            throw new Exception('Record must be an instance of UserEntity or AuthenticationMappingEntity.');
+            throw new \Exception('Record must be an instance of UserEntity or AuthenticationMappingEntity.');
         }
 
-        $confirmationCode = $this->userVerificationRepository->setVerificationCode($record->getUid());
+        $confirmationCode = $this->passwordApi->generatePassword();
+        $this->userVerificationRepository->setVerificationCode($record->getUid(), ZAuthConstant::VERIFYCHGTYPE_PWD, $this->passwordApi->getHashedPassword($confirmationCode));
 
         $params = [
             $record->getUid(),
@@ -132,7 +140,7 @@ class LostPasswordVerificationHelper
             'changetype' => ZAuthConstant::VERIFYCHGTYPE_PWD
         ]);
 
-        if (!isset($userVerificationEntity) || (!\UserUtil::passwordsMatch($code, $userVerificationEntity->getVerifycode()))) {
+        if (!isset($userVerificationEntity) || (!$this->passwordApi->passwordsMatch($code, $userVerificationEntity->getVerifycode()))) {
             return false;
         }
 

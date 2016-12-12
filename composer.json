@@ -69,6 +69,7 @@
         "vierbergenlars/php-semver": "~3.0",
         "zikula/wizard": "dev-master",
         "zikula/filesystem": "dev-master",
+        "ircmaxell/random-lib": "1.*",
 
 
         "zikula/jquery-bundle": "dev-master",

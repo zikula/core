@@ -17,6 +17,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\ZAuthModule\Api\PasswordApi;
 
 class AuthenticateAdminLoginValidator extends ConstraintValidator
 {
@@ -33,16 +34,23 @@ class AuthenticateAdminLoginValidator extends ConstraintValidator
     private $databaseConnection;
 
     /**
+     * @var PasswordApi
+     */
+    private $passwordApi;
+
+    /**
      * AuthenticateAdminLoginValidator constructor.
      * @param PermissionApi $permissionApi
      * @param Connection $connection
      * @param TranslatorInterface $translator
+     * @param PasswordApi $passwordApi
      */
-    public function __construct(PermissionApi $permissionApi, Connection $connection, TranslatorInterface $translator)
+    public function __construct(PermissionApi $permissionApi, Connection $connection, TranslatorInterface $translator, PasswordApi $passwordApi)
     {
         $this->permissionApi = $permissionApi;
         $this->databaseConnection = $connection;
         $this->setTranslator($translator);
+        $this->passwordApi = $passwordApi;
     }
 
     public function setTranslator($translator)
@@ -68,7 +76,7 @@ class AuthenticateAdminLoginValidator extends ConstraintValidator
             ;
         }
 
-        if (empty($user) || ($user['uid'] <= 1) || (!\UserUtil::passwordsMatch($object['password'], $user['pass']))) { // @todo
+        if (empty($user) || ($user['uid'] <= 1) || (!$this->passwordApi->passwordsMatch($object['password'], $user['pass']))) {
             $this->context->buildViolation($this->__('Error! Could not login with provided credentials. Please try again.'))
                 ->addViolation();
         } else {

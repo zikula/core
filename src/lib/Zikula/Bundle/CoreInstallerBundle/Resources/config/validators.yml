@@ -11,6 +11,10 @@ services:
 
     zikula_core_installer_bundle.validator.constraints.authenticate_admin_login_validator:
         class: %zikula_core_installer_bundle.validator.constraints.authenticate_admin_login_validator.class%
-        arguments: ["@zikula_permissions_module.api.permission", "@doctrine.dbal.default_connection", "@translator.default"]
+        arguments:
+            - "@zikula_permissions_module.api.permission"
+            - "@doctrine.dbal.default_connection"
+            - "@translator.default"
+            - "@zikula_zauth_module.api.password"
         tags:
             - { name: validator.constraint_validator, alias: zikula.core_installer.authenticate_admin_login.validator }
