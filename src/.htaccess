@@ -15,7 +15,7 @@
     # RewriteBase /your/path/to/Zikula
 
     # Block access to vendor directory
-    RewriteCond %{REQUEST_URI} !\.(css|js)$
+    RewriteCond %{REQUEST_URI} !\.(css|js|gif|png|jpg|jpeg)$
     RewriteRule ^vendor/(.*)$ - [F,L]
 
     # rewrite any unknown directories and files
