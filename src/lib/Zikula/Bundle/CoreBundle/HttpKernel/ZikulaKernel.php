@@ -236,8 +236,9 @@ abstract class ZikulaKernel extends Kernel
     /**
      * @deprecated
      * @todo remove in Core-2.0
-    public function isClassInActiveBundle($class)
-    {
+     */
+    //public function isClassInActiveBundle($class)
+    //{
         /* @var AbstractBundle $bundle */
         /*
         foreach ($this->getBundles() as $bundle) {
