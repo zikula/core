@@ -12,7 +12,6 @@
 namespace Zikula\ZAuthModule\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Zikula\ZAuthModule\Api\PasswordApi;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\Entity\UserVerificationEntity;
 use Zikula\ZAuthModule\ZAuthConstant;
