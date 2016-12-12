@@ -3,7 +3,7 @@ PasswordApi
 
 classname: \Zikula\ZAuthModule\Api\PasswordApi
 
-service id=""
+service id="zikula_zauth_module.api.password"
 
 This class is used to manage passwords. 
 

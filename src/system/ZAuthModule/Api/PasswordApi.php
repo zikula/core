@@ -62,6 +62,7 @@ class PasswordApi
      * @param int $hashMethodCode An internal code identifying one of the valid user password hashing methods; optional
      *
      * @return string A hashed password
+     * @throws \InvalidArgumentException
      */
     public function getHashedPassword($unhashedPassword, $hashMethodCode = self::DEFAULT_HASH_METHOD_CODE)
     {
@@ -100,6 +101,7 @@ class PasswordApi
      *
      * @return bool True if the $unhashedPassword matches the $hashedPassword with the given hashing method;
      *                  false if they do not match
+     * @throws \InvalidArgumentException
      */
     public function passwordsMatch($unhashedPassword, $hashedPassword)
     {
@@ -116,6 +118,29 @@ class PasswordApi
     }
 
     /**
+     * Hashes the data with a random salt value and returns a string containing the hash method, salt and hash.
+     *
+     * @param string $unhashedData         The data to be salted and hashed
+     * @param string $hashMethodName       Any value returned by hash_algo()
+     * @param array  $hashMethodNameToCode An array indexed by algorithm names (from hash_algos()) used to encode the hashing algorithm
+     *                                         name and include it on the salted hash string; optional, if not specified, then the
+     *                                         algorithm name is included in the string returned (which could be considered less than secure!)
+     * @param int    $saltLength    The number of random characters to use in the salt
+     * @param string $saltDelimiter The delimiter between the salt and the hash, must be a single character
+     *
+     * @return string The algorithm name (or code if $hashMethodNameToCode specified), salt and hashed data separated by the salt delimiter
+     */
+    protected function getSaltedHash($unhashedData, $hashMethodName, array $hashMethodNameToCode = [], $saltLength = self::SALT_LENGTH, $saltDelimiter = self::SALT_DELIM)
+    {
+        $factory = new RandomLibFactory();
+        $generator = $factory->getMediumStrengthGenerator();
+        $chars = str_replace($saltDelimiter, '', $this->randomStringCharacters);
+        $saltStr =  $generator->generateString($saltLength, $chars);
+
+        return $this->buildSaltedHash($unhashedData, $hashMethodName, $saltStr, $hashMethodNameToCode, $saltDelimiter);
+    }
+
+    /**
      * Hashes the data with the specified salt value and returns a string containing the hash method, salt and hash.
      *
      * @param string $unhashedData         The data to be salted and hashed
@@ -128,7 +153,7 @@ class PasswordApi
      *
      * @return string The algorithm name (or code if $hashMethodNameToCode specified), salt and hashed data separated by the salt delimiter
      */
-    private function buildSaltedHash($unhashedData, $hashMethodName, $saltStr, array $hashMethodNameToCode = [], $saltDelimiter = self::SALT_DELIM)
+    protected function buildSaltedHash($unhashedData, $hashMethodName, $saltStr, array $hashMethodNameToCode = [], $saltDelimiter = self::SALT_DELIM)
     {
         $saltedHash = false;
         $algoList = hash_algos();
@@ -150,29 +175,6 @@ class PasswordApi
     }
 
     /**
-     * Hashes the data with a random salt value and returns a string containing the hash method, salt and hash.
-     *
-     * @param string $unhashedData         The data to be salted and hashed
-     * @param string $hashMethodName       Any value returned by hash_algo()
-     * @param array  $hashMethodNameToCode An array indexed by algorithm names (from hash_algos()) used to encode the hashing algorithm
-     *                                         name and include it on the salted hash string; optional, if not specified, then the
-     *                                         algorithm name is included in the string returned (which could be considered less than secure!)
-     * @param int    $saltLength    The number of random characters to use in the salt
-     * @param string $saltDelimiter The delimiter between the salt and the hash, must be a single character
-     *
-     * @return string The algorithm name (or code if $hashMethodNameToCode specified), salt and hashed data separated by the salt delimiter
-     */
-    private function getSaltedHash($unhashedData, $hashMethodName, array $hashMethodNameToCode = [], $saltLength = self::SALT_LENGTH, $saltDelimiter = self::SALT_DELIM)
-    {
-        $factory = new RandomLibFactory();
-        $generator = $factory->getMediumStrengthGenerator();
-        $chars = str_replace($saltDelimiter, '', $this->randomStringCharacters);
-        $saltStr =  $generator->generateString($saltLength, $chars);
-
-        return $this->buildSaltedHash($unhashedData, $hashMethodName, $saltStr, $hashMethodNameToCode, $saltDelimiter);
-    }
-
-    /**
      * Checks the given data against the given salted hash to see if they match.
      *
      * @param string $unhashedData  The data to be salted and hashed
@@ -181,7 +183,7 @@ class PasswordApi
      *
      * @return bool If the data matches the salted hash, then true; If the data does not match, then false
      */
-    private function checkSaltedHash($unhashedData, $saltedHash, $saltDelimiter = self::SALT_DELIM)
+    protected function checkSaltedHash($unhashedData, $saltedHash, $saltDelimiter = self::SALT_DELIM)
     {
         $dataMatches = false;
         $algoList = hash_algos();
