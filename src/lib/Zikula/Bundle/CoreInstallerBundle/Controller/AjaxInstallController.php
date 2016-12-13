@@ -115,7 +115,7 @@ class AjaxInstallController extends AbstractController
             case "protect":
                 return $this->protectFiles();
         }
-        \System::setInstalling(false);
+//        \System::setInstalling(false); @todo need to probably set a parameter for this?
 
         return true;
     }
