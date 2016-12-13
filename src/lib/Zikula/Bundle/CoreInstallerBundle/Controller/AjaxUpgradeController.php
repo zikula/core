@@ -11,6 +11,7 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
+use RandomLib\Factory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -215,11 +216,14 @@ class AjaxUpgradeController extends AbstractController
         // add new configuration parameters
         $params = $this->yamlManager->getParameters();
         unset($params['username'], $params['password']);
+        $RandomLibFactory = new Factory();
+        $generator = $RandomLibFactory->getMediumStrengthGenerator();
+
         if (!isset($params['secret']) || ($params['secret'] == 'ThisTokenIsNotSoSecretChangeIt')) {
-            $params['secret'] = \RandomUtil::getRandomString(50);
+            $params['secret'] = $generator->generateString(50);
         }
         if (!isset($params['url_secret'])) {
-            $params['url_secret'] = \RandomUtil::getRandomString(10);
+            $params['url_secret'] = $generator->generateString(10);
         }
         // Configure the Request Context
         // see http://symfony.com/doc/current/cookbook/console/sending_emails.html#configuring-the-request-context-globally
