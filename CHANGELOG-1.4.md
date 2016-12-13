@@ -27,6 +27,7 @@ CHANGELOG - ZIKULA 1.4.x
  - Vendor updates:
     - afarkas/webshim installed at 1.16.0
     - sensio/distribution-bundle updated from 5.0.14 to 5.0.15
+    - symfony updated from 2.8.14 to 2.8.15
 
 * 1.4.4 (2016-12-08)
 
