@@ -21,7 +21,7 @@ class AdminMenu implements ContainerAwareInterface
     use ContainerAwareTrait;
     use TranslatorTrait;
 
-    public function adminMenu(FactoryInterface $factory, array $options)
+    public function menu(FactoryInterface $factory, array $options)
     {
         $this->setTranslator($this->container->get('translator.default'));
         $permApi = $this->container->get('zikula_permissions_module.api.permission');

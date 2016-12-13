@@ -1,14 +1,18 @@
 {% if not reginfo.isApproved %}
     {% set heading = __('New registration pending approval') %}
-{% elseif (not reginfo.isverified) %}
+{% elseif not isVerified %}
     {% set heading = __('New registration pending e-mail verification') %}
 {% else %}
     {% set heading = __('New user activated') %}
 {% endif %}
 {{ heading }}
 
+{% if not reginfo.isApproved %}
+{{ __f('A new user account has been created but not yet activated on %s.', {"%s": getModVar('ZConfig', 'sitename')}) }}
+{% else %}
 {{ __f('A new user account has been activated on %s.', {"%s": getModVar('ZConfig', 'sitename')}) }}
-{% if admincreated %}{{ __('It was created by an administrator or sub-administrator.') }}{% endif %}
+{% endif %}
+{% if createdByAdmin %}{{ __('It was created by an administrator or sub-administrator.') }}{% endif %}
 {{ __('The account details are as follows:') }}
 
 {{ __('User name') }}: '{{ reginfo.uname }}'

@@ -87,7 +87,7 @@ class ExceptionListener implements EventSubscriberInterface
      * @param GetResponseForExceptionEvent $event
      * @param $userLoggedIn
      * @param string $message a custom error message (default: 'Access Denied') (The default message from Symfony)
-     * @see http://api.symfony.com/2.6/Symfony/Component/Security/Core/Exception/AccessDeniedException.html
+     * @see http://api.symfony.com/2.8/Symfony/Component/Security/Core/Exception/AccessDeniedException.html
      */
     private function handleAccessDeniedException(GetResponseForExceptionEvent $event, $userLoggedIn, $message = 'Access Denied')
     {

@@ -14,6 +14,10 @@
     # Enable RewriteBase if Zikula is installed to a sub-directory
     # RewriteBase /your/path/to/Zikula
 
+    # Block access to vendor directory
+    RewriteCond %{REQUEST_URI} !\.(css|js|gif|png|jpg|jpeg)$
+    RewriteRule ^vendor/(.*)$ - [F,L]
+
     # rewrite any unknown directories and files
 
     # Check if the requested path is an existing directory

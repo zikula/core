@@ -16,10 +16,12 @@
 
 {% if not reginfo.isApproved %}
     <p>{{ __('Thank you for your application for a new account. Your application has been forwarded to the site administrator for review. Please expect a message once the review process is complete.') }}</p>
-{% elseif not admincreated %}
+{% elseif not createdByAdmin %}
     <p>{{ __('Your account application has been approved. Thank you for your patience during the new account application review process.') }}</p>
-{% elseif admincreated %}
+{% elseif createdByAdmin %}
     <p>{{ __('The web site administrator has created this new account for you.') }}</p>
 {% endif %}
 
-<p>{{ __('You may now log into the web site.') }}</p>
+{% if reginfo.isApproved %}
+    <p>{{ __('You may now log into the web site.') }}</p>
+{% endif %}

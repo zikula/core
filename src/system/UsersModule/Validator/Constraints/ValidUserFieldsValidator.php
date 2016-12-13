@@ -48,7 +48,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
             ->where($qb->expr()->eq('LOWER(u.uname)', ':uname'))
             ->setParameter('uname', $data['uname']);
         // when updating an existing User, the existing Uid must be excluded.
-        if (isset($data['uid'])) {
+        if (isset($data['uid']) && is_numeric($data['uid'])) {
             $qb->andWhere('u.uid <> :excludedUid')
                 ->setParameter('excludedUid', $data['uid']);
         }

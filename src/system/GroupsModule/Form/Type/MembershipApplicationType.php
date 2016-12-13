@@ -12,6 +12,10 @@
 namespace Zikula\GroupsModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,16 +32,16 @@ class MembershipApplicationType extends AbstractType
         $translator = $options['translator'];
 
         $builder
-            ->add('gid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [])
-            ->add('theAction', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [])
-            ->add('groupType', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [])
-            ->add('groupName', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('gid', HiddenType::class)
+            ->add('theAction', HiddenType::class)
+            ->add('groupType', HiddenType::class)
+            ->add('groupName', TextType::class, [
                 'label' => $translator->__('Group name'),
                 'empty_data' => $translator->__('Not available'),
                 'required' => false,
                 'disabled' => true
             ])
-            ->add('groupDescription', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+            ->add('groupDescription', TextareaType::class, [
                 'label' => $translator->__('Description'),
                 'empty_data' => $translator->__('Not available'),
                 'required' => false,
@@ -46,7 +50,7 @@ class MembershipApplicationType extends AbstractType
         ;
 
         if ($options['theAction'] == 'subscribe' && $options['groupType'] == 2) {
-            $builder->add('applyText', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+            $builder->add('applyText', TextareaType::class, [
                 'label' => $translator->__('Comment to attach to your application'),
                 'empty_data' => '',
                 'required' => false
@@ -54,14 +58,14 @@ class MembershipApplicationType extends AbstractType
         }
 
         $builder
-            ->add('apply', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('apply', SubmitType::class, [
                 'label' => $translator->__('Apply'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [

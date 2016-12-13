@@ -1,8 +1,8 @@
-{{ pageAddAsset('javascript', pagevars.homepath ~ '/vendor/jQuery.mmenu/dist/js/jquery.mmenu.all.min.js') }}
-{{ pageAddAsset('stylesheet', pagevars.homepath ~ '/vendor/jQuery.mmenu/dist/css/jquery.mmenu.all.css') }}
-{{ pageAddAsset('javascript', zasset('@ZikulaAdminModule:js/ZikulaAdminModule.Modules.Panel.MMenuConfig.js')) }}
-{{ pageAddAsset('javascript', zasset('@ZikulaAdminModule:js/ZikulaAdminModule.Modal.Fix.js')) }}
-{{ pageAddAsset('stylesheet', zasset('@ZikulaAdminModule:css/mmenu-hiddenpanel-customwidth.css')) }}
+{{ pageAddAsset('javascript', pagevars.homepath ~ 'vendor/jQuery.mmenu/dist/js/jquery.mmenu.all.min.js', 100) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaAdminModule:js/ZikulaAdminModule.Modules.Panel.MMenuConfig.js', 101)) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaAdminModule:js/ZikulaAdminModule.Modal.Fix.js', 102)) }}
+{{ pageAddAsset('stylesheet', pagevars.homepath ~ 'vendor/jQuery.mmenu/dist/css/jquery.mmenu.all.css', 100) }}
+{{ pageAddAsset('stylesheet', zasset('@ZikulaAdminModule:css/mmenu-hiddenpanel-customwidth.css'), 101) }}
 
 {% macro draw(links, caller, module) %}
     {% for link in links %}
@@ -25,7 +25,7 @@
             {% for module in adminMenu %}
                 <li{% if caller._zkModule == module.modname %} class="selected"{% endif %}>
                     <a href="{{ module.menutexturl }}">
-                        <img src="{{ module.icon }}" alt="{{ module.menutext|e('html_attr') }}" style="height: 18px" /> {{ module.menutext }}
+                        <img src="{{ module.icon }}" alt="{{ module.menutext|e('html_attr') }}" style="height: 18px" /> {{ module.menutext|raw }}
                     </a>
                     {% if module.links|length > 0 %}
                         <ul class="text-left">

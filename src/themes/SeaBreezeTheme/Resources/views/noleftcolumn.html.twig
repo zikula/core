@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="{{ pagevars.lang }}" dir="{{ pagevars.langdirection }}">
-    <head>{% include "ZikulaSeaBreezeTheme:Include:head.html.twig" %}</head>
+    <head>{{ include('@ZikulaSeaBreezeTheme/Include/head.html.twig') }}</head>
     <body class="noleftcol">
-        {% include "ZikulaSeaBreezeTheme:Include:userheader.html.twig" %}
+        {{ include('@ZikulaSeaBreezeTheme/Include/userheader.html.twig') }}
         <div id="pagewidth">
             <div id="wrapper" class="clearfix">
                 <div id="maincol">
@@ -11,6 +11,6 @@
                 <div id="rightcol">{{ showblockposition('right') }}</div>
             </div>
         </div>
-        {% include "ZikulaSeaBreezeTheme:Include:footer.html.twig" %}
+        {{ include('@ZikulaSeaBreezeTheme/Include/footer.html.twig') }}
     </body>
 </html>

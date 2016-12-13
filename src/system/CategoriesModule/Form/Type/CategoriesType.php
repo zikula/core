@@ -16,6 +16,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\CategoriesModule\Api\CategoryRegistryApi;
 use Zikula\CategoriesModule\Form\DataTransformer\CategoriesCollectionTransformer;
 use Zikula\CategoriesModule\Form\EventListener\CategoriesMergeCollectionListener;
 
@@ -25,6 +26,21 @@ use Zikula\CategoriesModule\Form\EventListener\CategoriesMergeCollectionListener
 class CategoriesType extends AbstractType
 {
     /**
+     * @var CategoryRegistryApi
+     */
+    private $categoryRegistryApi;
+
+    /**
+     * CategoriesType constructor.
+     *
+     * @param CategoryRegistryApi $categoryRegistryApi CategoryRegistryApi service instance
+     */
+    public function __construct(CategoryRegistryApi $categoryRegistryApi)
+    {
+        $this->categoryRegistryApi = $categoryRegistryApi;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -33,10 +49,11 @@ class CategoriesType extends AbstractType
             throw new \InvalidArgumentException('empty argument!');
         }
 
-        $registries = \CategoryRegistryUtil::getRegisteredModuleCategories($options['module'], $options['entity'], 'id');
+        $registries = $this->categoryRegistryApi->getModuleCategoryIds($options['module'], $options['entity'], 'id');
 
         foreach ($registries as $registryId => $categoryId) {
             $builder->add('registry_' . $registryId, EntityType::class, [
+                'label_attr' => ['class' => 'hidden'],
                 'attr' => $options['attr'],
                 'required' => $options['required'],
                 'multiple' => $options['multiple'],

@@ -37,7 +37,7 @@ class SearchBlock extends AbstractBlockHandler
             $title = $this->__('Search');
         }
         if (!isset($properties['displaySearchBtn'])) {
-            $properties['displaySearchBtn'] = 0;
+            $properties['displaySearchBtn'] = false;
         }
         if (!isset($properties['active'])) {
             $properties['active'] = [];
@@ -70,12 +70,12 @@ class SearchBlock extends AbstractBlockHandler
     {
         $searchModules = [];
         // get all the old type search plugins
-        $search_modules = \ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins');
+        $search_modules = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins');
         foreach ($search_modules as $module) {
             $searchModules[$module['title']] = $module['name'];
         }
         // get 1.4.0+ type searchable modules and add to array
-        $searchableModules = \ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
+        $searchableModules = ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
         foreach ($searchableModules as $searchableModule) {
             $searchModules[$searchableModule['displayname']] = $searchableModule['name'];
         }

@@ -13,6 +13,10 @@
 namespace Zikula\RoutesModule\Form\Type\QuickNavigation\Base;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SearchType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -68,11 +72,11 @@ abstract class AbstractRouteQuickNavType extends AbstractType
     {
         $builder
             ->setMethod('GET')
-            ->add('all', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [
+            ->add('all', HiddenType::class, [
                 'data' => $options['all'],
                 'empty_data' => 0
             ])
-            ->add('own', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [
+            ->add('own', HiddenType::class, [
                 'data' => $options['own'],
                 'empty_data' => 0
             ])
@@ -83,7 +87,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
         $this->addSortingFields($builder, $options);
         $this->addAmountField($builder, $options);
         $this->addBooleanFields($builder, $options);
-        $builder->add('updateview', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+        $builder->add('updateview', SubmitType::class, [
             'label' => $this->__('OK'),
             'attr' => [
                 'class' => 'btn btn-default btn-sm'
@@ -106,7 +110,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
             $choices[$entry['text']] = $entry['value'];
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
-        $builder->add('workflowState', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+        $builder->add('workflowState', ChoiceType::class, [
             'label' => $this->__('Workflow state'),
             'attr' => [
                 'class' => 'input-sm'
@@ -125,7 +129,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
             $choices[$entry['text']] = $entry['value'];
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
-        $builder->add('routeType', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+        $builder->add('routeType', ChoiceType::class, [
             'label' => $this->__('Route type'),
             'attr' => [
                 'class' => 'input-sm'
@@ -185,7 +189,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
      */
     public function addSearchField(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('q', 'Symfony\Component\Form\Extension\Core\Type\SearchType', [
+        $builder->add('q', SearchType::class, [
             'label' => $this->__('Search'),
             'attr' => [
                 'class' => 'input-sm'
@@ -205,7 +209,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
     public function addSortingFields(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('sort', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('sort', ChoiceType::class, [
                 'label' => $this->__('Sort by'),
                 'attr' => [
                     'class' => 'input-sm'
@@ -237,7 +241,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
                 'required' => false,
                 'expanded' => false
             ])
-            ->add('sortdir', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('sortdir', ChoiceType::class, [
                 'label' => $this->__('Sort direction'),
                 'empty_data' => 'asc',
                 'attr' => [
@@ -261,7 +265,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
      */
     public function addAmountField(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('num', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+        $builder->add('num', ChoiceType::class, [
             'label' => $this->__('Page size'),
             'empty_data' => 20,
             'attr' => [
@@ -289,7 +293,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
      */
     public function addBooleanFields(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('prependBundlePrefix', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+        $builder->add('prependBundlePrefix', ChoiceType::class, [
             'label' => $this->__('Prepend bundle prefix'),
             'attr' => [
                 'class' => 'input-sm'
@@ -301,7 +305,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
                 $this->__('Yes') => 'yes'
             ]
         ]);
-        $builder->add('translatable', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+        $builder->add('translatable', ChoiceType::class, [
             'label' => $this->__('Translatable'),
             'attr' => [
                 'class' => 'input-sm'

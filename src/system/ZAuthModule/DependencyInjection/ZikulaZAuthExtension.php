@@ -13,7 +13,7 @@ namespace Zikula\ZAuthModule\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class ZikulaZAuthExtension extends Extension
@@ -26,10 +26,12 @@ class ZikulaZAuthExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new XmlFileLoader($container, new FileLocator(realpath(__DIR__ . '/../Resources/config')));
+        $loader = new YamlFileLoader($container, new FileLocator(realpath(__DIR__ . '/../Resources/config')));
 
-        $loader->load('services.xml');
-        $loader->load('authentication.xml');
-        $loader->load('validators.xml');
+        $loader->load('services.yml');
+        $loader->load('helpers.yml');
+        $loader->load('listeners.yml');
+        $loader->load('authentication.yml');
+        $loader->load('validators.yml');
     }
 }

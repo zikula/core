@@ -1,0 +1,48 @@
+parameters:
+    zikula_users_module.user_listener.class: Zikula\UsersModule\Listener\UserEventListener
+    zikula_users_module.pending_content_listener.class: Zikula\UsersModule\Listener\PendingContentListener
+    zikula_users_module.registration_events_listener.class: Zikula\UsersModule\Listener\RegistrationEventsListener
+    zikula_users_module.user_repository.class: Zikula\UsersModule\Entity\Repository\UserRepository
+    zikula_users_module.user_session_repository.class: Zikula\UsersModule\Entity\Repository\UserSessionRepository
+    zikula_users_module.current_user.class: Zikula\UsersModule\Api\CurrentUserApi
+    zikula_users_module.twig.extension.registration_extension.class: Zikula\UsersModule\Twig\Extension\RegistrationExtension
+    zikula_users_module.container.link_container.class: Zikula\UsersModule\Container\LinkContainer
+
+services:
+    zikula_users_module.user_listener:
+        class: %zikula_users_module.user_listener.class%
+        arguments: ["@session", "@request_stack", "@router"]
+        tags:
+            - { name: kernel.event_subscriber }
+
+    zikula_users_module.pending_content_listener:
+        class: %zikula_users_module.pending_content_listener.class%
+        arguments: ["@zikula_permissions_module.api.permission", "@zikula_users_module.user_repository"]
+        tags:
+            - { name: kernel.event_subscriber }
+
+    zikula_users_module.registration_events_listener:
+        class: %zikula_users_module.registration_events_listener.class%
+        arguments: ["@session", "@zikula_users_module.helper.mail_helper"]
+        tags:
+            - { name: kernel.event_subscriber }
+
+    zikula_users_module.user_repository:
+        class: %zikula_users_module.user_repository.class%
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["ZikulaUsersModule:UserEntity"]
+
+    zikula_users_module.user_session_repository:
+        class: %zikula_users_module.user_session_repository.class%
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["ZikulaUsersModule:UserSessionEntity"]
+
+    zikula_users_module.current_user:
+        class: %zikula_users_module.current_user.class%
+        arguments: ["@session", "@zikula_users_module.user_repository"]
+
+    zikula_users_module.container.link_container:
+        class: %zikula_users_module.container.link_container.class%
+        arguments: ["@translator.default", "@router", "@zikula_permissions_module.api.permission", "@zikula_extensions_module.api.variable", "@zikula_users_module.helper.registration_helper", "@zikula_users_module.current_user"]
+        tags:
+            - { name: zikula.link_container }

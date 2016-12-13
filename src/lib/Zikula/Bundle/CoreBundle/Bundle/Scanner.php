@@ -13,34 +13,10 @@ namespace Zikula\Bundle\CoreBundle\Bundle;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Zikula\ExtensionsModule\Helper\ComposerValidationHelper;
 
 class Scanner
 {
     private $jsons = [];
-
-    /**
-     * @var ComposerValidationHelper
-     */
-    private $composerValidationHelper;
-
-    /**
-     * @var SessionInterface
-     */
-    protected $session;
-
-    /**
-     * Scanner constructor.
-     *
-     * @param ComposerValidationHelper $composerValidationHelper Composer validation helper (optional)
-     * @param SessionInterface $session
-     */
-    public function __construct(ComposerValidationHelper $composerValidationHelper = null, SessionInterface $session = null)
-    {
-        $this->composerValidationHelper = $composerValidationHelper;
-        $this->session = $session;
-    }
 
     /**
      * Scans and loads composer.json files.
@@ -65,15 +41,6 @@ class Scanner
 
         /** @var $file SplFileInfo */
         foreach ($finder as $file) {
-            if (null !== $this->composerValidationHelper) {
-                $this->composerValidationHelper->check($file);
-                if (!$this->composerValidationHelper->isValid()) {
-                    foreach ($this->composerValidationHelper->getErrors() as $errorMessage) {
-                        $this->session->getFlashBag()->add('error', $errorMessage);
-                    }
-                }
-            }
-
             $json = $this->decode($file->getRealPath());
             if (false !== $json) {
                 $this->jsons[$json['name']] = $json;
@@ -117,7 +84,7 @@ class Scanner
                 $json['autoload']['psr-4'][$ns] = $path;
             }
             $json['extra']['zikula']['short-name'] = substr($class, strrpos($class, '\\') + 1, strlen($class));
-            $json['extensionType'] = false !== strpos($base, 'system') ? \ModUtil::TYPE_SYSTEM : \ModUtil::TYPE_MODULE;
+            $json['extensionType'] = false !== strpos($base, 'system') ? MetaData::TYPE_SYSTEM : MetaData::TYPE_MODULE;
 
             return $json;
         }

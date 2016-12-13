@@ -8,14 +8,12 @@
     "autoload": {
         "psr-0": {
             "Zikula\\": "src/lib",
-            "Zikula_": "src/lib/legacy",
-            "DoctrineExtensions\\StandardFields\\": "src/lib/legacy"
+            "Zikula_": "src/lib/legacy"
         },
         "psr-4": {
             "Zikula\\": ["src/system", "src/themes"]
         },
         "classmap": [
-            "src/lib/util/",
             "src/lib/i18n/"
         ],
         "files": [
@@ -68,6 +66,7 @@
         "vierbergenlars/php-semver": "~3.0",
         "zikula/wizard": "dev-master",
         "zikula/filesystem": "dev-master",
+        "ircmaxell/random-lib": "1.*",
 
 
         "zikula/jquery-bundle": "dev-master",
@@ -77,9 +76,10 @@
         "zikula/jquery-minicolors-bundle": "dev-master",
         "bootstrap-plus/bootstrap-media-lightbox": "3.*",
         "bootstrap-plus/bootstrap-jqueryui": "dev-master",
-        "twitter/typeahead.js": "~0.11.1",
+        "twitter/typeahead.js": "1.*",
         "vakata/jstree": "3.*",
         "afarkas/html5shiv": "3.7.*",
+        "afarkas/webshim": "1.*",
         "jquery.mmenu": "5.*",
 
 
@@ -143,6 +143,14 @@
         {
             "type": "vcs",
             "url": "https://github.com/FrDH/jQuery.mmenu"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/aFarkas/webshim"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/corejavascript/typeahead.js"
         },
         {
             "type": "vcs",

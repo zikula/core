@@ -12,6 +12,11 @@
 namespace Zikula\ZAuthModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
@@ -24,46 +29,40 @@ class LostPasswordType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('uname', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('uname', TextType::class, [
                 'required' => false,
                 'label' => $options['translator']->__('User name'),
                 'input_group' => ['left' => '<i class="fa fa-user"></i>'],
             ])
-            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\EmailType', [
+            ->add('email', EmailType::class, [
                 'required' => false,
                 'label' => $options['translator']->__('Email Address'),
                 'input_group' => ['left' => '<i class="fa fa-at"></i>'],
             ])
-            ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('submit', SubmitType::class, [
                 'label' => $options['translator']->__('Submit'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
         ;
-        if ($options['includeCode']) {
-            $builder
-                ->add('code', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                    'label' => $options['translator']->__('Confirmation code'),
-                    'input_group' => ['left' => '<i class="fa fa-code"></i>'],
-                ])
-                ->add('pass', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
-                    'type' => 'Symfony\Component\Form\Extension\Core\Type\PasswordType',
-                    'first_options' => [
-                        'label' => $options['translator']->__('Create new password'),
-                        'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
-                    ],
-                    'second_options' => [
-                        'label' => $options['translator']->__('Repeat new password'),
-                        'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
-                    ],
-                    'invalid_message' => $options['translator']->__('The passwords must match!'),
-                    'constraints' => [
-                        new NotNull(),
-                        new ValidPassword()
-                    ]
-                ])
-            ;
-        }
+        $builder
+            ->add('pass', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'first_options' => [
+                    'label' => $options['translator']->__('Create new password'),
+                    'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
+                ],
+                'second_options' => [
+                    'label' => $options['translator']->__('Repeat new password'),
+                    'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
+                ],
+                'invalid_message' => $options['translator']->__('The passwords must match!'),
+                'constraints' => [
+                    new NotNull(),
+                    new ValidPassword()
+                ]
+            ])
+        ;
     }
 
     public function getBlockPrefix()
@@ -78,9 +77,9 @@ class LostPasswordType extends AbstractType
     {
         $resolver->setDefaults([
             'translator' => null,
-            'includeCode' => false,
+            'includeReset' => false,
             'constraints' => new Callback(['callback' => function ($data, ExecutionContextInterface $context) use ($resolver) {
-                if (empty($data['uname']) && empty($data['email'])) {
+                if (!isset($data['pass']) && empty($data['uname']) && empty($data['email'])) {
                     $context->buildViolation(__('Error! You must enter either your username or email address.'))
                         ->addViolation();
                 }

@@ -28,7 +28,7 @@ class AdminModuleRepository extends EntityRepository implements ObjectRepository
     public function countModulesByCategory($cid)
     {
         $query = $this->createQueryBuilder('m')
-            ->select('count(m.amid)')
+            ->select('COUNT(m.amid)')
             ->where('m.cid = :cid')
             ->setParameter('cid', $cid)
             ->getQuery();
@@ -48,5 +48,17 @@ class AdminModuleRepository extends EntityRepository implements ObjectRepository
         $modulesInCategory = $this->countModulesByCategory($adminCategoryEntity->getCid());
         $adminModuleEntity->setSortorder($modulesInCategory);
         $this->persistAndFlush($adminModuleEntity);
+    }
+
+    public function changeCategory($oldCategory, $newCategory)
+    {
+        $query = $this->_em->createQueryBuilder()
+            ->update('ZikulaAdminModule:AdminModuleEntity', 'm')
+            ->set('m.cid', $newCategory)
+            ->where('m.cid = :cid')
+            ->setParameter('cid', $oldCategory)
+            ->getQuery();
+
+        $query->execute();
     }
 }

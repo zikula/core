@@ -18,9 +18,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class LocaleType extends AbstractType
 {
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'choices' => \ZLanguage::getInstalledLanguageNames(),

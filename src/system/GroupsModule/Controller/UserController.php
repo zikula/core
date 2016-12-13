@@ -22,6 +22,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\GroupsModule\Form\Type\MembershipApplicationType;
 use Zikula\GroupsModule\Helper\CommonHelper;
 
 /**
@@ -93,8 +94,8 @@ class UserController extends AbstractController
 
         foreach ($groups as $group) {
             if ($this->hasPermission('ZikulaGroupsModule::', $group['gid'].'::', ACCESS_OVERVIEW)) {
-                $group['typeLabel']  = $this->__(/** @ignore */$typeLabels[$group['gtype']]);
-                $group['stateLabel'] = $this->__(/** @ignore */$stateLabels[$group['state']]);
+                $group['typeLabel']  = $this->__(/** @Ignore */$typeLabels[$group['gtype']]);
+                $group['stateLabel'] = $this->__(/** @Ignore */$stateLabels[$group['state']]);
 
                 if (true == $isLoggedIn && $this->hasPermission('ZikulaGroupsModule::', $group['gid'].'::', ACCESS_READ)) {
                     // The right to apply
@@ -195,13 +196,11 @@ class UserController extends AbstractController
             'applyText' => ''
         ];
 
-        $form = $this->createForm('Zikula\GroupsModule\Form\Type\MembershipApplicationType',
-            $formData, [
-                'translator' => $this->get('translator.default'),
-                'theAction' => $action,
-                'groupType' => $group['gtype']
-            ]
-        );
+        $form = $this->createForm(MembershipApplicationType::class, $formData, [
+            'translator' => $this->get('translator.default'),
+            'theAction' => $action,
+            'groupType' => $group['gtype']
+        ]);
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('apply')->isClicked()) {

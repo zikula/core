@@ -18,7 +18,7 @@ use Zikula_Request_Http as Request;
  * This feature has been deprecated as of PHP 5.6.0. Relying on this feature is highly discouraged.
  * PHP 5.6 and later users should leave this empty and set default_charset instead.
  *
- * @link http://php.net/manual/en/mbstring.configuration.php#ini.mbstring.internal-encoding
+ * @see http://php.net/manual/en/mbstring.configuration.php#ini.mbstring.internal-encoding
  */
 if (version_compare(\PHP_VERSION, '5.6.0', '<')) {
     ini_set('mbstring.internal_encoding', 'UTF-8');
@@ -39,7 +39,7 @@ class Zikula_Core
     /**
      * The core Zikula version number.
      */
-    const VERSION_NUM = '1.4.4';
+    const VERSION_NUM = '1.4.5';
 
     /**
      * The version ID.

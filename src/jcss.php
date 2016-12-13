@@ -17,7 +17,7 @@ include 'lib/bootstrap.php';
  * This feature has been deprecated as of PHP 5.6.0. Relying on this feature is highly discouraged.
  * PHP 5.6 and later users should leave this empty and set default_charset instead.
  *
- * @link http://php.net/manual/en/mbstring.configuration.php#ini.mbstring.internal-encoding
+ * @see http://php.net/manual/en/mbstring.configuration.php#ini.mbstring.internal-encoding
  */
 if (version_compare(\PHP_VERSION, '5.6.0', '<')) {
     ini_set('mbstring.internal_encoding', 'UTF-8');
@@ -33,6 +33,7 @@ if (!$f) {
 }
 
 // clean $f
+$f = str_replace('\\', '', $f);
 $f = preg_replace('`/`', '', $f);
 
 // set full path to the file

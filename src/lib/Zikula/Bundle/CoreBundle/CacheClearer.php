@@ -46,7 +46,7 @@ class CacheClearer
 
         $this->cacheTypes = [
             'symfony.annotations' => [
-                $cacheFolder . '/annotations'
+                $cacheFolder . 'annotations'
             ],
             'symfony.routing.generator' => [
                 $cacheFolder . $cachePrefix . 'UrlGenerator.php',
@@ -72,6 +72,9 @@ class CacheClearer
             ],
             'purifier' => [
                 $cacheFolder . 'purifier'
+            ],
+            'assets' => [
+                $cacheFolder . 'assets'
             ]
         ];
     }

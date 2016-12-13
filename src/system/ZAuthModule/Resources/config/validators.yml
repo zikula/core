@@ -1,0 +1,63 @@
+parameters:
+    zikula_zauth_module.validator.constraints.valid_uname_validator.class: Zikula\ZAuthModule\Validator\Constraints\ValidUnameValidator
+    zikula_zauth_module.validator.constraints.valid_email_validator.class: Zikula\ZAuthModule\Validator\Constraints\ValidEmailValidator
+    zikula_zauth_module.validator.constraints.valid_user_fields_validator.class: Zikula\ZAuthModule\Validator\Constraints\ValidUserFieldsValidator
+    zikula_zauth_module.validator.constraints.valid_password_validator.class: Zikula\ZAuthModule\Validator\Constraints\ValidPasswordValidator
+    zikula_zauth_module.validator.constraints.valid_anti_spam_answer_validator.class: Zikula\ZAuthModule\Validator\Constraints\ValidAntiSpamAnswerValidator
+    zikula_zauth_module.validator.constraints.valid_registration_verification_validator.class: Zikula\ZAuthModule\Validator\Constraints\ValidRegistrationVerificationValidator
+    zikula_zauth_module.validator.constraints.valid_password_change_validator.class: Zikula\ZAuthModule\Validator\Constraints\ValidPasswordChangeValidator
+
+services:
+    zikula_zauth_module.validator.constraints.valid_uname_validator:
+        class: %zikula_zauth_module.validator.constraints.valid_uname_validator.class%
+        arguments: ["@zikula_extensions_module.api.variable", "@translator.default", "@validator"]
+        tags:
+            - { name: validator.constraint_validator, alias: zikula.zauth.uname.validator }
+
+    zikula_zauth_module.validator.constraints.valid_email_validator:
+        class: %zikula_zauth_module.validator.constraints.valid_email_validator.class%
+        arguments: ["@zikula_extensions_module.api.variable", "@translator.default", "@validator"]
+        tags:
+            - { name: validator.constraint_validator, alias: zikula.zauth.email.validator }
+
+    zikula_zauth_module.validator.constraints.valid_user_fields_validator:
+        class: %zikula_zauth_module.validator.constraints.valid_user_fields_validator.class%
+        arguments:
+            - "@zikula_extensions_module.api.variable"
+            - "@translator.default"
+            - "@zikula_zauth_module.authentication_mapping_repository"
+            - "@zikula_zauth_module.user_verification_repository"
+        tags:
+            - { name: validator.constraint_validator, alias: zikula.zauth.user_fields.validator }
+
+    zikula_zauth_module.validator.constraints.valid_password_validator:
+        class: %zikula_zauth_module.validator.constraints.valid_password_validator.class%
+        arguments: ["@zikula_extensions_module.api.variable", "@translator.default", "@validator"]
+        tags:
+            - { name: validator.constraint_validator, alias: zikula.zauth.password.validator }
+
+    zikula_zauth_module.validator.constraints.valid_anti_spam_answer_validator:
+        class: %zikula_zauth_module.validator.constraints.valid_anti_spam_answer_validator.class%
+        arguments: ["@zikula_extensions_module.api.variable", "@translator.default", "@validator"]
+        tags:
+            - { name: validator.constraint_validator, alias: zikula.zauth.antispam_answer.validator }
+
+    zikula_zauth_module.validator.constraints.valid_registration_verification_validator:
+        class: %zikula_zauth_module.validator.constraints.valid_registration_verification_validator.class%
+        arguments:
+            - "@zikula_extensions_module.api.variable"
+            - "@translator.default"
+            - "@zikula_users_module.user_repository"
+            - "@zikula_zauth_module.user_verification_repository"
+            - "@zikula_zauth_module.api.password"
+        tags:
+            - { name: validator.constraint_validator, alias: zikula.zauth.registration_verification.validator }
+
+    zikula_zauth_module.validator.constraints.valid_password_change_validator:
+        class: %zikula_zauth_module.validator.constraints.valid_password_change_validator.class%
+        arguments:
+            - "@zikula_zauth_module.authentication_mapping_repository"
+            - "@translator.default"
+            - "@zikula_zauth_module.api.password"
+        tags:
+            - { name: validator.constraint_validator, alias: zikula.zauth.password_change.validator }

@@ -68,16 +68,6 @@ class BlocksExtension extends \Twig_Extension
     }
 
     /**
-     * Returns the name of the extension.
-     *
-     * @return string The extension name
-     */
-    public function getName()
-    {
-        return 'zikulablocksmodule';
-    }
-
-    /**
      * Returns a list of functions to add to the existing list.
      *
      * @return array An array of functions
@@ -167,7 +157,7 @@ class BlocksExtension extends \Twig_Extension
             }
         }
 
-        return $this->themeEngine->wrapBlockContentInTheme($content, $block->getTitle(), $block->getBlocktype(), $block->getBid(), $positionName, $legacy);
+        return !empty($content) ? $this->themeEngine->wrapBlockContentInTheme($content, $block->getTitle(), $block->getBlocktype(), $block->getBid(), $positionName, $legacy) : $content;
     }
 
     /**

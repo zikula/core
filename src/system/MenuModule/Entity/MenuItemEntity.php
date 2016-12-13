@@ -20,9 +20,10 @@ use Zikula\Core\Doctrine\EntityAccess;
 /**
  * Represents one menu item in a nested set.
  * Extends NodeInterface in order to integrate with KnpMenu.
- * @Gedmo\Tree(type="nested")
- * @ORM\Table(name="menu_items")
+ *
  * @ORM\Entity(repositoryClass="Zikula\MenuModule\Entity\Repository\MenuItemRepository")
+ * @ORM\Table(name="menu_items")
+ * @Gedmo\Tree(type="nested")
  */
 class MenuItemEntity extends EntityAccess implements NodeInterface
 {

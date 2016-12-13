@@ -42,22 +42,12 @@ class FormExtension extends \Twig_Extension
     {
         $basePath = $this->container->get('request_stack')->getCurrentRequest()->getBasePath();
         $jsAssetBag = $this->container->get('zikula_core.common.theme.assets_js');
-        $jsAssetBag->add([$basePath . '/javascript/js-webshim/dev/polyfiller.js' => AssetBag::WEIGHT_JQUERY + 1]);
-        $jsAssetBag->add([$basePath . '/javascript/js-webshim/dev/polyfiller.init.js' => AssetBag::WEIGHT_JQUERY + 2]);
+        $jsAssetBag->add([$basePath . '/web/webshim/js-webshim/minified/polyfiller.js' => AssetBag::WEIGHT_JQUERY + 1]);
+        $jsAssetBag->add([$basePath . '/javascript/polyfiller.init.js' => AssetBag::WEIGHT_JQUERY + 2]);
 
         $themePageVars = $this->container->get('zikula_core.common.theme.pagevars');
         $existingFeatures = $themePageVars->get('polyfill_features', []);
         $features = array_unique(array_merge($existingFeatures, $features));
         $themePageVars->set('polyfill_features', $features);
-    }
-
-    /**
-     * Returns the name of the extension.
-     *
-     * @return string The extension name
-     */
-    public function getName()
-    {
-        return 'zikula_form_extension_bundle.form_extension';
     }
 }

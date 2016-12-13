@@ -18,6 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 
@@ -77,13 +78,19 @@ class AdminInterfaceController extends AbstractController
         $caller = $masterRequest->attributes->all();
         $caller['info'] = $this->get('zikula_extensions_module.extension_repository')->get($caller['_zkModule']);
 
+        $requestedCid = $masterRequest->attributes->get('acid');
+        $defaultCid = empty($requestedCid) ? $this->getVar('startcategory') : $requestedCid;
+
         $cid = null;
         if ($caller['_zkModule'] == 'ZikulaAdminModule') {
-            $requested_cid = $masterRequest->attributes->get('acid');
-            $cid = empty($requested_cid) ? $this->getVar('startcategory') : $requested_cid;
+            $cid = $defaultCid;
         } else {
             $moduleRelation = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $caller['info']['id']]);
-            $cid = $moduleRelation->getCid();
+            if (null !== $moduleRelation) {
+                $cid = $moduleRelation->getCid();
+            } else {
+                $cid = $defaultCid;
+            }
         }
         $caller['category'] = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminCategoryEntity')->find($cid);
 
@@ -244,6 +251,7 @@ class AdminInterfaceController extends AbstractController
 
         $masterRequest = $this->get('request_stack')->getMasterRequest();
         $currentRequest = $this->get('request_stack')->getCurrentRequest();
+
         // get caller info
         $caller = [];
         $caller['_zkModule'] = $masterRequest->attributes->get('_zkModule');
@@ -251,23 +259,32 @@ class AdminInterfaceController extends AbstractController
         $caller['_zkFunc'] = $masterRequest->attributes->get('_zkFunc');
         $caller['path'] = $masterRequest->getPathInfo();
         $caller['info'] = !empty($caller['_zkModule']) ? $this->get('zikula_extensions_module.extension_repository')->get($caller['_zkModule']) : [];
+
         // category we are in
         $requestedCid = $masterRequest->attributes->get('acid');
+        $defaultCid = empty($requestedCid) ? $this->getVar('startcategory') : $requestedCid;
         if ($caller['_zkModule'] == 'ZikulaAdminModule' || empty($caller['_zkModule'])) {
-            $cid = empty($requestedCid) ? $this->getVar('startcategory') : $requestedCid;
+            $cid = $defaultCid;
         } else {
             $moduleRelation = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $caller['info']['id']]);
-            $cid = $moduleRelation->getCid();
+            if (null !== $moduleRelation) {
+                $cid = $moduleRelation->getCid();
+            } else {
+                $cid = $defaultCid;
+            }
         }
         $caller['category'] = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminCategoryEntity')->find($cid);
+
         // mode requested
         $mode = $currentRequest->attributes->has('mode') ? $currentRequest->attributes->get('mode') : 'categories';
         $mode = in_array($mode, ['categories', 'modules']) ? $mode : 'categories';
         // template requested
         $template = $currentRequest->attributes->has('template') ? $currentRequest->attributes->get('template') : 'tabs';
         $template = in_array($template, ['tabs', 'panel']) ? $template : 'tabs';
+
         // get admin capable modules
         $adminModules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf('admin');
+
         // sort modules by displayname
         $moduleNames = [];
         foreach ($adminModules as $key => $module) {
@@ -285,12 +302,23 @@ class AdminInterfaceController extends AbstractController
             }
 
             $categoryAssignment = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $adminModule['id']]);
-            // cat
-            $catid = $categoryAssignment->getCid();
-            // order
-            $order = $categoryAssignment->getSortorder();
+            if (null !== $categoryAssignment) {
+                $catid = $categoryAssignment->getCid();
+                $order = $categoryAssignment->getSortorder();
+            } else {
+                $catid = $this->getVar('startcategory');
+                $order = 999;
+            }
+
+            $menuText = $adminModule['displayname'];
+
             // url
-            $menuTextUrl = isset($adminModule['capabilities']['admin']['route']) ? $this->get('router')->generate($adminModule['capabilities']['admin']['route']) : $adminModule['capabilities']['admin']['url'];
+            try {
+                $menuTextUrl = isset($adminModule['capabilities']['admin']['route']) ? $this->get('router')->generate($adminModule['capabilities']['admin']['route']) : $adminModule['capabilities']['admin']['url'];
+            } catch (RouteNotFoundException $routeNotFoundException) {
+                $menuTextUrl = 'javascript:void(0)';
+                $menuText .= ' (<i class="fa fa-warning"></i> ' . $this->__('invalid route') . ')';
+            }
 
             $links = $this->get('zikula.link_container_collector')->getLinks($adminModule['name'], 'admin');
             if ($links == false) {
@@ -303,7 +331,7 @@ class AdminInterfaceController extends AbstractController
 
             $module = [
                 'menutexturl' => $menuTextUrl,
-                'menutext' => $adminModule['displayname'],
+                'menutext' => $menuText,
                 'menutexttitle' => $adminModule['description'],
                 'modname' => $adminModule['name'],
                 'order' => $order,

@@ -12,6 +12,8 @@
 namespace Zikula\BlocksModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\BlocksModule\Api\BlockFilterApi;
 
@@ -34,13 +36,13 @@ class BlockFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('attribute', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('attribute', ChoiceType::class, [
                 'choices' => $this->blockFilterApi->getFilterAttributeChoices()
             ])
-            ->add('queryParameter', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('queryParameter', TextType::class, [
                 'required' => false
             ])
-            ->add('comparator', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('comparator', ChoiceType::class, [
                 'choices' => [
                     '==' => '==',
                     '!=' => '!=',
@@ -52,7 +54,7 @@ class BlockFilterType extends AbstractType
                     '!in_array' => '!in_array'
                 ]
             ])
-            ->add('value', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('value', TextType::class, [
                 'required' => false
             ])
         ;

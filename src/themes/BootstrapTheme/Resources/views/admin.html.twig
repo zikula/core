@@ -1,4 +1,4 @@
-{% include 'ZikulaBootstrapTheme:Include:header.html.twig' %}
-{% include 'ZikulaBootstrapTheme:Include:admin_menu.html.twig' %}
-{% include "ZikulaBootstrapTheme:Body:" ~ themevars.admin ~ ".html.twig" %}
-{% include 'ZikulaBootstrapTheme:Include:footer.html.twig' %}
+{{ include('@ZikulaBootstrapTheme/Include/header.html.twig') }}
+{{ include('@ZikulaBootstrapTheme/Include/admin_menu.html.twig') }}
+{{ include('@ZikulaBootstrapTheme/Body/' ~ themevars.admin ~ '.html.twig') }}
+{{ include('@ZikulaBootstrapTheme/Include/footer.html.twig') }}

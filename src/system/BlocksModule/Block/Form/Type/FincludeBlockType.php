@@ -12,6 +12,8 @@
 namespace Zikula\BlocksModule\Block\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
@@ -27,7 +29,7 @@ class FincludeBlockType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('filo', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('filo', TextType::class, [
                 'constraints' => [
                     new NotBlank(),
                     new File([
@@ -37,7 +39,7 @@ class FincludeBlockType extends AbstractType
                 'label' => __('File Path'),
                 'attr' => ['placeholder' => '/full/path/to/file.txt']
             ])
-            ->add('typo', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('typo', ChoiceType::class, [
                 'choices' => [
                     'HTML' => 0,
                     'Text' => 1,
@@ -48,7 +50,7 @@ class FincludeBlockType extends AbstractType
         ;
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'zikulablocksmodule_fincludeblock';
     }

@@ -12,6 +12,10 @@
 namespace Zikula\SecurityCenterModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,16 +32,16 @@ class IdsLogExportType extends AbstractType
         $translator = $options['translator'];
 
         $builder
-            ->add('titles', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('titles', CheckboxType::class, [
                 'label' => $translator->__('Export Title Row'),
                 'empty_data' => 1,
                 'required' => false
             ])
-            ->add('file', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('file', TextType::class, [
                 'label' => $translator->__('CSV filename'),
                 'required' => false
             ])
-            ->add('delimiter', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('delimiter', ChoiceType::class, [
                 'label' => $translator->__('CSV delimiter'),
                 'empty_data' => 1,
                 'choices' => [
@@ -49,14 +53,14 @@ class IdsLogExportType extends AbstractType
                 'multiple' => false,
                 'expanded' => false
             ])
-            ->add('export', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('export', SubmitType::class, [
                 'label' => $translator->__('Export'),
                 'icon' => 'fa-download',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [

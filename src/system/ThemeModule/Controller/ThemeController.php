@@ -16,6 +16,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -100,15 +103,15 @@ class ThemeController extends AbstractController
         }
 
         $form = $this->createFormBuilder(['themeName' => $themeName])
-            ->add('themeName', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('accept', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('themeName', HiddenType::class)
+            ->add('accept', SubmitType::class, [
                 'label' => $this->__('Accept'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
@@ -161,19 +164,19 @@ class ThemeController extends AbstractController
         }
 
         $form = $this->createFormBuilder(['themeName' => $themeName, 'deletefiles' => false])
-            ->add('themeName', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('deletefiles', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('themeName', HiddenType::class)
+            ->add('deletefiles', CheckboxType::class, [
                 'label' => $this->__('Also delete theme files, if possible'),
                 'required' => false,
             ])
-            ->add('delete', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('delete', SubmitType::class, [
                 'label' => $this->__('Delete'),
                 'icon' => 'fa-trash-o',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [

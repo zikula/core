@@ -27,11 +27,14 @@ class HtmlBlock extends AbstractBlockHandler
     public function display(array $properties)
     {
         $title = (!empty($properties['title'])) ? $properties['title'] : '';
-        if (!$this->hasPermission('HTMLblock::', "$title::", ACCESS_OVERVIEW)) {
+        if ((!$this->hasPermission('HTMLblock::', "$title::", ACCESS_OVERVIEW))
+        || (!$this->hasPermission('HTMLblock::bid', "::$properties[bid]", ACCESS_OVERVIEW))) {
             return '';
         }
 
-        return '<div>' . $properties['content'] . '</div>';
+        return $this->renderView('@ZikulaBlocksModule/Block/htmlblock.html.twig', [
+            'content' => $properties['content']
+        ]);
     }
 
     public function getFormClassName()

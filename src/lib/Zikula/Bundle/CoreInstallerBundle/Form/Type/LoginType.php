@@ -11,29 +11,33 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Zikula\Bundle\CoreInstallerBundle\Form\AbstractType;
 use Zikula\Bundle\CoreInstallerBundle\Validator\Constraints\AuthenticateAdminLogin;
+use Zikula\Common\Translator\IdentityTranslator;
 
 class LoginType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->setTranslator($options['translator']);
         $builder
-            ->add('username', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => __('User Name'),
+            ->add('username', TextType::class, [
+                'label' => $this->__('User Name'),
                 'label_attr' => [
                     'class' => 'col-sm-3'
                 ],
-                'data' => __('admin'),
+                'data' => 'admin',
                 'constraints' => [
                     new NotBlank(),
                 ]
             ])
-            ->add('password', 'Symfony\Component\Form\Extension\Core\Type\PasswordType', [
-                'label' => __('Password'),
+            ->add('password', PasswordType::class, [
+                'label' => $this->__('Password'),
                 'label_attr' => [
                     'class' => 'col-sm-3'
                 ],
@@ -54,6 +58,7 @@ class LoginType extends AbstractType
         $resolver->setDefaults([
             'constraints' => new AuthenticateAdminLogin(),
             'csrf_protection' => false,
+            'translator' => new IdentityTranslator()
 //                'csrf_field_name' => '_token',
 //                // a unique key to help generate the secret token
 //                'intention'       => '_zk_bdcreds',

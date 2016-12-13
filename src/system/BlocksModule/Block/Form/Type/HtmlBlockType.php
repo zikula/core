@@ -12,6 +12,7 @@
 namespace Zikula\BlocksModule\Block\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -23,7 +24,7 @@ class HtmlBlockType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('content', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+            ->add('content', TextareaType::class, [
                 'constraints' => [
                     new NotBlank(),
                 ]
@@ -31,7 +32,7 @@ class HtmlBlockType extends AbstractType
         ;
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'zikulablocksmodule_htmlblock';
     }

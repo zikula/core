@@ -20,6 +20,8 @@ use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Form\ConfigType\AuthenticationMethodsType;
+use Zikula\UsersModule\Form\ConfigType\ConfigType;
 use Zikula\UsersModule\UserEvents;
 
 /**
@@ -40,12 +42,11 @@ class ConfigController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm('Zikula\UsersModule\Form\ConfigType\ConfigType',
-            $this->getVars(), ['translator' => $this->get('translator.default')]
-        );
-        $form->handleRequest($request);
+        $form = $this->createForm(ConfigType::class, $this->getVars(), [
+            'translator' => $this->get('translator.default')
+        ]);
 
-        if ($form->isValid()) {
+        if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $data = $form->getData();
                 $this->setVars($data);
@@ -82,11 +83,19 @@ class ConfigController extends AbstractController
                 $authenticationMethodsStatus[$alias] = false;
             }
         }
+        // remove invalid values (if modules has been removed, etc)
+        foreach ($authenticationMethodsStatus as $alias => $enabled) {
+            if (!isset($allMethods[$alias])) {
+                unset($authenticationMethodsStatus[$alias]);
+            }
+        }
+        $this->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'authenticationMethodsStatus', $authenticationMethodsStatus);
 
-        $form = $this->createForm('Zikula\UsersModule\Form\ConfigType\AuthenticationMethodsType',
-            ['authenticationMethodsStatus' => $authenticationMethodsStatus],
-            ['translator' => $this->getTranslator()]
-        );
+        $form = $this->createForm(AuthenticationMethodsType::class, ['
+            authenticationMethodsStatus' => $authenticationMethodsStatus
+        ], [
+            'translator' => $this->getTranslator()
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

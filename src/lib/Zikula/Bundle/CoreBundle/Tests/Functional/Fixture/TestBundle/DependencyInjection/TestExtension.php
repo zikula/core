@@ -13,7 +13,7 @@ namespace Zikula\Bundle\CoreBundle\Tests\Functional\Fixture\TestBundle\Dependenc
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Zikula\Bundle\CoreBundle\DependencyInjection\CoreExtension;
 
 class TestExtension extends CoreExtension
@@ -26,8 +26,8 @@ class TestExtension extends CoreExtension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../../../../../Resources/config'));
-        $loader->load('translation.xml');
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../../../../Resources/config'));
+        $loader->load('translation.yml');
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
         $this->registerTranslatorConfiguration($config['translator'], $container);

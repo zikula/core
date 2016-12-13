@@ -25,7 +25,6 @@ class RequireJsConfigGenerator
      */
     public static function regenerateRequireJs(Event $event)
     {
-
         // Retrieve basic information about the environment and present a
         // message to the user.
         $composer = $event->getComposer();

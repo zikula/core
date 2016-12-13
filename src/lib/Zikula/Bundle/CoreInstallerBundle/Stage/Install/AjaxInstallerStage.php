@@ -11,15 +11,30 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Install;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
 
-class AjaxInstallerStage implements StageInterface
+class AjaxInstallerStage implements StageInterface, InjectContainerInterface
 {
+    use TranslatorTrait;
+
     const NAME = 'name';
     const PRE = 'pre';
     const DURING = 'during';
     const SUCCESS = 'success';
     const FAIL = 'fail';
+
+    public function __construct(ContainerInterface $container)
+    {
+        $this->setTranslator($container->get('translator.default'));
+    }
+
+    public function setTranslator($translator)
+    {
+        $this->translator = $translator;
+    }
 
     public function getName()
     {
@@ -41,192 +56,192 @@ class AjaxInstallerStage implements StageInterface
         return ['stages' => [
             1 => [
                 self::NAME => 'bundles',
-                self::PRE => __('Symfony Bundles'),
-                self::DURING => __('Persisting Symfony Bundles'),
-                self::SUCCESS => __('Symfony Bundles persisted'),
-                self::FAIL => __('There was an error persisting the Symfony Bundles')
+                self::PRE => $this->__('Symfony Bundles'),
+                self::DURING => $this->__('Persisting Symfony Bundles'),
+                self::SUCCESS => $this->__('Symfony Bundles persisted'),
+                self::FAIL => $this->__('There was an error persisting the Symfony Bundles')
             ],
             2 => [
                 self::NAME => 'install_event',
-                self::PRE => __('Fire install event'),
-                self::DURING => __('Firing install event'),
-                self::SUCCESS => __('Fired install event'),
-                self::FAIL => __('There was an error firing the install event')
+                self::PRE => $this->__('Fire install event'),
+                self::DURING => $this->__('Firing install event'),
+                self::SUCCESS => $this->__('Fired install event'),
+                self::FAIL => $this->__('There was an error firing the install event')
             ],
             3 => [
                 self::NAME => 'extensions',
-                self::PRE => __('Zikula Extension Module'),
-                self::DURING => __('Installing Zikula Extensions Module'),
-                self::SUCCESS => __('Zikula Extensions Module installed'),
-                self::FAIL => __('There was an error installing Zikula Extensions Module')
+                self::PRE => $this->__('Zikula Extension Module'),
+                self::DURING => $this->__('Installing Zikula Extensions Module'),
+                self::SUCCESS => $this->__('Zikula Extensions Module installed'),
+                self::FAIL => $this->__('There was an error installing Zikula Extensions Module')
             ],
             4 => [
                 self::NAME => 'settings',
-                self::PRE => __('Zikula Settings Module'),
-                self::DURING => __('Installing Zikula Settings Module'),
-                self::SUCCESS => __('Zikula Settings Module installed'),
-                self::FAIL => __('There was an error installing Zikula Settings Module')
+                self::PRE => $this->__('Zikula Settings Module'),
+                self::DURING => $this->__('Installing Zikula Settings Module'),
+                self::SUCCESS => $this->__('Zikula Settings Module installed'),
+                self::FAIL => $this->__('There was an error installing Zikula Settings Module')
             ],
             5 => [
                 self::NAME => 'theme',
-                self::PRE => __('Zikula Theme Module'),
-                self::DURING => __('Installing Zikula Theme Module'),
-                self::SUCCESS => __('Zikula Theme Module installed'),
-                self::FAIL => __('There was an error installing Zikula Theme Module')
+                self::PRE => $this->__('Zikula Theme Module'),
+                self::DURING => $this->__('Installing Zikula Theme Module'),
+                self::SUCCESS => $this->__('Zikula Theme Module installed'),
+                self::FAIL => $this->__('There was an error installing Zikula Theme Module')
             ],
             6 => [
                 self::NAME => 'admin',
-                self::PRE => __('Zikula Administration Module'),
-                self::DURING => __('Installing Zikula Administration Module'),
-                self::SUCCESS => __('Zikula Administration Module installed'),
-                self::FAIL => __('There was an error installing Zikula Administration Module')
+                self::PRE => $this->__('Zikula Administration Module'),
+                self::DURING => $this->__('Installing Zikula Administration Module'),
+                self::SUCCESS => $this->__('Zikula Administration Module installed'),
+                self::FAIL => $this->__('There was an error installing Zikula Administration Module')
             ],
             7 => [
                 self::NAME => 'permissions',
-                self::PRE => __('Zikula Permissions Module'),
-                self::DURING => __('Installing Zikula Permissions Module'),
-                self::SUCCESS => __('Zikula Permissions Module installed'),
-                self::FAIL => __('There was an error installing Zikula Permissions Module')
+                self::PRE => $this->__('Zikula Permissions Module'),
+                self::DURING => $this->__('Installing Zikula Permissions Module'),
+                self::SUCCESS => $this->__('Zikula Permissions Module installed'),
+                self::FAIL => $this->__('There was an error installing Zikula Permissions Module')
             ],
             8 => [
                 self::NAME => 'users',
-                self::PRE => __('Zikula Users Module'),
-                self::DURING => __('Installing Zikula Users Module'),
-                self::SUCCESS => __('Zikula Users Module installed'),
-                self::FAIL => __('There was an error installing Zikula Users Module')
+                self::PRE => $this->__('Zikula Users Module'),
+                self::DURING => $this->__('Installing Zikula Users Module'),
+                self::SUCCESS => $this->__('Zikula Users Module installed'),
+                self::FAIL => $this->__('There was an error installing Zikula Users Module')
             ],
             9 => [
                 self::NAME => 'zauth',
-                self::PRE => __('Zikula ZAuth Module'),
-                self::DURING => __('Installing Zikula ZAuth Module'),
-                self::SUCCESS => __('Zikula ZAuth Module installed'),
-                self::FAIL => __('There was an error installing Zikula ZAuth Module')
+                self::PRE => $this->__('Zikula ZAuth Module'),
+                self::DURING => $this->__('Installing Zikula ZAuth Module'),
+                self::SUCCESS => $this->__('Zikula ZAuth Module installed'),
+                self::FAIL => $this->__('There was an error installing Zikula ZAuth Module')
             ],
             10 => [
                 self::NAME => 'groups',
-                self::PRE => __('Zikula Groups Module'),
-                self::DURING => __('Installing Zikula Groups Module'),
-                self::SUCCESS => __('Zikula Groups Module installed'),
-                self::FAIL => __('There was an error installing Zikula Groups Module')
+                self::PRE => $this->__('Zikula Groups Module'),
+                self::DURING => $this->__('Installing Zikula Groups Module'),
+                self::SUCCESS => $this->__('Zikula Groups Module installed'),
+                self::FAIL => $this->__('There was an error installing Zikula Groups Module')
             ],
             11 => [
                 self::NAME => 'blocks',
-                self::PRE => __('Zikula Blocks Module'),
-                self::DURING => __('Installing Zikula Blocks Module'),
-                self::SUCCESS => __('Zikula Blocks Module installed'),
-                self::FAIL => __('There was an error installing Zikula Blocks Module')
+                self::PRE => $this->__('Zikula Blocks Module'),
+                self::DURING => $this->__('Installing Zikula Blocks Module'),
+                self::SUCCESS => $this->__('Zikula Blocks Module installed'),
+                self::FAIL => $this->__('There was an error installing Zikula Blocks Module')
             ],
             12 => [
                 self::NAME => 'security',
-                self::PRE => __('Zikula Security Module'),
-                self::DURING => __('Installing Zikula Security Module'),
-                self::SUCCESS => __('Zikula Security Module installed'),
-                self::FAIL => __('There was an error installing Zikula Security Module')
+                self::PRE => $this->__('Zikula Security Module'),
+                self::DURING => $this->__('Installing Zikula Security Module'),
+                self::SUCCESS => $this->__('Zikula Security Module installed'),
+                self::FAIL => $this->__('There was an error installing Zikula Security Module')
             ],
             13 => [
                 self::NAME => 'categories',
-                self::PRE => __('Zikula Categories Module'),
-                self::DURING => __('Installing Zikula Categories Module'),
-                self::SUCCESS => __('Zikula Categories Module installed'),
-                self::FAIL => __('There was an error installing Zikula Categories Module')
+                self::PRE => $this->__('Zikula Categories Module'),
+                self::DURING => $this->__('Installing Zikula Categories Module'),
+                self::SUCCESS => $this->__('Zikula Categories Module installed'),
+                self::FAIL => $this->__('There was an error installing Zikula Categories Module')
             ],
             14 => [
                 self::NAME => 'mailer',
-                self::PRE => __('Zikula Mailer Module'),
-                self::DURING => __('Installing Zikula Mailer Module'),
-                self::SUCCESS => __('Zikula Mailer Module installed'),
-                self::FAIL => __('There was an error installing Zikula Mailer Module')
+                self::PRE => $this->__('Zikula Mailer Module'),
+                self::DURING => $this->__('Installing Zikula Mailer Module'),
+                self::SUCCESS => $this->__('Zikula Mailer Module installed'),
+                self::FAIL => $this->__('There was an error installing Zikula Mailer Module')
             ],
             15 => [
                 self::NAME => 'search',
-                self::PRE => __('Zikula Search Module'),
-                self::DURING => __('Installing Zikula Search Module'),
-                self::SUCCESS => __('Zikula Search Module installed'),
-                self::FAIL => __('There was an error installing Zikula Search Module')
+                self::PRE => $this->__('Zikula Search Module'),
+                self::DURING => $this->__('Installing Zikula Search Module'),
+                self::SUCCESS => $this->__('Zikula Search Module installed'),
+                self::FAIL => $this->__('There was an error installing Zikula Search Module')
             ],
             16 => [
                 self::NAME => 'routes',
-                self::PRE => __('Zikula Routes Module'),
-                self::DURING => __('Installing Zikula Routes Module'),
-                self::SUCCESS => __('Zikula Routes Module installed'),
-                self::FAIL => __('There was an error installing Zikula Routes Module')
+                self::PRE => $this->__('Zikula Routes Module'),
+                self::DURING => $this->__('Installing Zikula Routes Module'),
+                self::SUCCESS => $this->__('Zikula Routes Module installed'),
+                self::FAIL => $this->__('There was an error installing Zikula Routes Module')
             ],
             17 => [
                 self::NAME => 'menu',
-                self::PRE => __('Zikula Menu Module'),
-                self::DURING => __('Installing Zikula Menu Module'),
-                self::SUCCESS => __('Zikula Menu Module installed'),
-                self::FAIL => __('There was an error installing Zikula Menu Module')
+                self::PRE => $this->__('Zikula Menu Module'),
+                self::DURING => $this->__('Installing Zikula Menu Module'),
+                self::SUCCESS => $this->__('Zikula Menu Module installed'),
+                self::FAIL => $this->__('There was an error installing Zikula Menu Module')
             ],
             18 => [
                 self::NAME => 'activatemodules',
-                self::PRE => __('Activate system modules'),
-                self::DURING => __('Activating system modules'),
-                self::SUCCESS => __('System modules activated'),
-                self::FAIL => __('There was an error activating system modules')
+                self::PRE => $this->__('Activate system modules'),
+                self::DURING => $this->__('Activating system modules'),
+                self::SUCCESS => $this->__('System modules activated'),
+                self::FAIL => $this->__('There was an error activating system modules')
             ],
             19 => [
                 self::NAME => 'categorize',
-                self::PRE => __('Module categorization'),
-                self::DURING => __('Moving modules to their default categories'),
-                self::SUCCESS => __('Modules moved to their default categories'),
-                self::FAIL => __('There was an error moving modules to their default categories')
+                self::PRE => $this->__('Module categorization'),
+                self::DURING => $this->__('Moving modules to their default categories'),
+                self::SUCCESS => $this->__('Modules moved to their default categories'),
+                self::FAIL => $this->__('There was an error moving modules to their default categories')
             ],
             20 => [
                 self::NAME => 'createblocks',
-                self::PRE => __('Create blocks'),
-                self::DURING => __('Creating default blocks'),
-                self::SUCCESS => __('Default blocks created'),
-                self::FAIL => __('There was an error creating default blocks')
+                self::PRE => $this->__('Create blocks'),
+                self::DURING => $this->__('Creating default blocks'),
+                self::SUCCESS => $this->__('Default blocks created'),
+                self::FAIL => $this->__('There was an error creating default blocks')
             ],
             21 => [
                 self::NAME => 'updateadmin',
-                self::PRE => __('Create admin account'),
-                self::DURING => __('Creating admin account'),
-                self::SUCCESS => __('Admin account created'),
-                self::FAIL => __('There was an error creating admin account')
+                self::PRE => $this->__('Create admin account'),
+                self::DURING => $this->__('Creating admin account'),
+                self::SUCCESS => $this->__('Admin account created'),
+                self::FAIL => $this->__('There was an error creating admin account')
             ],
             22 => [
                 self::NAME => 'loginadmin',
-                self::PRE => __('Login'),
-                self::DURING => __('Logging in as admin'),
-                self::SUCCESS => __('Logged in as admin'),
-                self::FAIL => __('There was an error logging in as admin')
+                self::PRE => $this->__('Login'),
+                self::DURING => $this->__('Logging in as admin'),
+                self::SUCCESS => $this->__('Logged in as admin'),
+                self::FAIL => $this->__('There was an error logging in as admin')
             ],
             23 => [
                 self::NAME => 'finalizeparameters',
-                self::PRE => __('Finalize parameters'),
-                self::DURING => __('Finalizing parameters'),
-                self::SUCCESS => __('Parameters finalized'),
-                self::FAIL => __('There was an error finalizing the parameters')
+                self::PRE => $this->__('Finalize parameters'),
+                self::DURING => $this->__('Finalizing parameters'),
+                self::SUCCESS => $this->__('Parameters finalized'),
+                self::FAIL => $this->__('There was an error finalizing the parameters')
             ],
             24 => [
                 self::NAME => 'reloadroutes',
-                self::PRE => __('Reload routes'),
-                self::DURING => __('Reloading routes (takes longer...)'),
-                self::SUCCESS => __('Routes reloaded'),
-                self::FAIL => __('There was an error reloading the routes')
+                self::PRE => $this->__('Reload routes'),
+                self::DURING => $this->__('Reloading routes (takes longer...)'),
+                self::SUCCESS => $this->__('Routes reloaded'),
+                self::FAIL => $this->__('There was an error reloading the routes')
             ],
             25 => [
                 self::NAME => 'protect',
-                self::PRE => __('Protect configuration files'),
-                self::DURING => __('Protecting configuration files'),
-                self::SUCCESS => __('Configuration files protected'),
-                self::FAIL => __('There was an error protecting configuration files')
+                self::PRE => $this->__('Protect configuration files'),
+                self::DURING => $this->__('Protecting configuration files'),
+                self::SUCCESS => $this->__('Configuration files protected'),
+                self::FAIL => $this->__('There was an error protecting configuration files')
             ],
             26 => [
                 self::NAME => 'installassets',
-                self::PRE => __('Install assets'),
-                self::DURING => __('Installing assets to /web'),
-                self::SUCCESS => __('Assets installed'),
-                self::FAIL => __('Failed to install assets')
+                self::PRE => $this->__('Install assets'),
+                self::DURING => $this->__('Installing assets to /web'),
+                self::SUCCESS => $this->__('Assets installed'),
+                self::FAIL => $this->__('Failed to install assets')
             ],
             27 => [
                 self::NAME => 'finish',
-                self::PRE => __('Finish'),
-                self::DURING => __('Finish'),
-                self::SUCCESS => __('Finish'),
-                self::FAIL => __('Finish')
+                self::PRE => $this->__('Finish'),
+                self::DURING => $this->__('Finish'),
+                self::SUCCESS => $this->__('Finish'),
+                self::FAIL => $this->__('Finish')
             ]
         ]];
     }

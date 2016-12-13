@@ -17,11 +17,6 @@ class AtomThemeExtension extends \Twig_Extension
     {
     }
 
-    public function getName()
-    {
-        return 'atomtheme_extension';
-    }
-
     /**
      * Register provided functions.
      * @return array

@@ -12,6 +12,13 @@
 namespace Zikula\ZAuthModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\ResetType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -49,13 +56,13 @@ class RegistrationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('uname', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('uname', TextType::class, [
                 'label' => $this->translator->__('User name'),
                 'help' => $this->translator->__('User names can contain letters, numbers, underscores, periods, spaces and/or dashes.'),
                 'constraints' => [new ValidUname()]
             ])
-            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
-                'type' => 'Symfony\Component\Form\Extension\Core\Type\EmailType',
+            ->add('email', RepeatedType::class, [
+                'type' => EmailType::class,
                 'first_options' => [
                     'label' => $this->translator->__('Email'),
                     'help' => $this->translator->__('You will use your e-mail address to identify yourself when you log in.'),
@@ -64,8 +71,8 @@ class RegistrationType extends AbstractType
                 'invalid_message' => $this->translator->__('The emails  must match!'),
                 'constraints' => [new ValidEmail()]
             ])
-            ->add('pass', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
-                'type' => 'Symfony\Component\Form\Extension\Core\Type\PasswordType',
+            ->add('pass', RepeatedType::class, [
+                'type' => PasswordType::class,
                 'first_options' => ['label' => $this->translator->__('Password')],
                 'second_options' => ['label' => $this->translator->__('Repeat Password')],
                 'invalid_message' => $this->translator->__('The passwords must match!'),
@@ -74,24 +81,24 @@ class RegistrationType extends AbstractType
                     new ValidPassword()
                 ]
             ])
-            ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('submit', SubmitType::class, [
                 'label' => $this->translator->__('Save'),
                 'icon' => 'fa-plus',
                 'attr' => ['class' => 'btn btn-success']
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\ButtonType', [
+            ->add('cancel', ButtonType::class, [
                 'label' => $this->translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-danger']
             ])
-            ->add('reset', 'Symfony\Component\Form\Extension\Core\Type\ResetType', [
+            ->add('reset', ResetType::class, [
                 'label' => $this->translator->__('Reset'),
                 'icon' => 'fa-refresh',
                 'attr' => ['class' => 'btn btn-primary']
             ])
         ;
         if (!empty($options['antiSpamQuestion'])) {
-            $builder->add('antispamanswer', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            $builder->add('antispamanswer', TextType::class, [
                 'mapped' => false,
                 'label' => $options['antiSpamQuestion'],
                 'constraints' => new ValidAntiSpamAnswer(),

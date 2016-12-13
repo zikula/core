@@ -29,6 +29,12 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Form\RegistrationType\ApproveRegistrationConfirmationType;
+use Zikula\UsersModule\Form\Type\AdminModifyUserType;
+use Zikula\UsersModule\Form\Type\DeleteConfirmationType;
+use Zikula\UsersModule\Form\Type\DeleteType;
+use Zikula\UsersModule\Form\Type\MailType;
+use Zikula\UsersModule\Form\Type\SearchUserType;
 use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
 
@@ -134,9 +140,9 @@ class UserAdministrationController extends AbstractController
             throw new AccessDeniedException($this->__("Error! You can't edit the guest account."));
         }
 
-        $form = $this->createForm('Zikula\UsersModule\Form\Type\AdminModifyUserType',
-            $user, ['translator' => $this->get('translator.default')]
-        );
+        $form = $this->createForm(AdminModifyUserType::class, $user, [
+            'translator' => $this->get('translator.default')
+        ]);
         $originalUserName = $user->getUname();
         $originalGroups = $user->getGroups()->toArray();
         $form->handleRequest($request);
@@ -193,48 +199,51 @@ class UserAdministrationController extends AbstractController
         if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
+
         $forceVerification = $this->hasPermission('ZikulaUsersModule', '::', ACCESS_ADMIN) && $force;
-        $form = $this->createForm('Zikula\UsersModule\Form\RegistrationType\ApproveRegistrationConfirmationType', [
+        $form = $this->createForm(ApproveRegistrationConfirmationType::class, [
             'user' => $user->getUid(),
             'force' => $forceVerification
         ], [
             'translator' => $this->get('translator.default'),
             'buttonLabel' => $this->__('Approve')
         ]);
-        if ($user->isApproved() && !$forceVerification) {
-            $this->addFlash('error', $this->__f('Warning! Nothing to do! %sub% is already approved.', ['%sub%' => $user->getUname()]));
+        $redirectToRoute = 'zikulausersmodule_useradministration_list';
 
-            return $this->redirectToRoute('zikulausersmodule_useradministration_list');
-        } elseif (!$user->isApproved() && !$forceVerification
-            && !$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
-            $this->addFlash('error', $this->__f('Error! %sub% cannot be approved.', ['%sub%' => $user->getUname()]));
+        if (!$forceVerification) {
+            if ($user->isApproved()) {
+                $this->addFlash('error', $this->__f('Warning! Nothing to do! %sub% is already approved.', ['%sub%' => $user->getUname()]));
 
-            return $this->redirectToRoute('zikulausersmodule_useradministration_list');
+                return $this->redirectToRoute($redirectToRoute);
+            }
+            if (!$user->isApproved() && !$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
+                $this->addFlash('error', $this->__f('Error! %sub% cannot be approved.', ['%sub%' => $user->getUname()]));
+
+                return $this->redirectToRoute($redirectToRoute);
+            }
         }
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('confirm')->isClicked()) {
                 $this->get('zikula_users_module.helper.registration_helper')->approve($user);
+                $mailHelper = $this->get('zikula_users_module.helper.mail_helper');
                 if ($user->getActivated() == UsersConstant::ACTIVATED_PENDING_REG) {
-                    $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendRegistrationMail($user, true, false);
+                    $notificationErrors = $mailHelper->createAndSendRegistrationMail($user, true, false);
                 } else {
-                    $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendUserMail($user, true, false);
+                    $notificationErrors = $mailHelper->createAndSendUserMail($user, true, false);
                 }
 
                 if ($notificationErrors) {
-                    foreach ($notificationErrors as $error) {
-                        $this->addFlash('error', $error);
-                    }
-                } else {
-                    $this->addFlash('status', $this->__f('Done! %sub% has been approved.', ['%sub%' => $user->getUname()]));
+                    $this->addFlash('error', implode('<br />', $notificationErrors));
                 }
+                $this->addFlash('status', $this->__f('Done! %sub% has been approved.', ['%sub%' => $user->getUname()]));
             }
             if ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirectToRoute('zikulausersmodule_useradministration_list');
+            return $this->redirectToRoute($redirectToRoute);
         }
 
         return [
@@ -258,7 +267,7 @@ class UserAdministrationController extends AbstractController
         }
         $users = new ArrayCollection();
         if ($request->getMethod() == 'POST') {
-            $deleteForm = $this->createForm('Zikula\UsersModule\Form\Type\DeleteType', [], [
+            $deleteForm = $this->createForm(DeleteType::class, [], [
                 'choices' => $this->get('zikula_users_module.user_repository')->queryBySearchForm(),
                 'action' => $this->generateUrl('zikulausersmodule_useradministration_delete'),
                 'translator' => $this->get('translator.default')
@@ -279,7 +288,7 @@ class UserAdministrationController extends AbstractController
         }
         $usersImploded = implode(',', $uids);
 
-        $deleteConfirmationForm = $this->createForm('Zikula\UsersModule\Form\Type\DeleteConfirmationType', [
+        $deleteConfirmationForm = $this->createForm(DeleteConfirmationType::class, [
             'users' => $usersImploded
         ], [
             'translator' => $this->get('translator.default')
@@ -346,13 +355,13 @@ class UserAdministrationController extends AbstractController
         if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
-        $form = $this->createForm('Zikula\UsersModule\Form\Type\SearchUserType',
-            [], ['translator' => $this->get('translator.default')]
-        );
+        $form = $this->createForm(SearchUserType::class, [], [
+            'translator' => $this->get('translator.default')
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             // @TODO the users.search.process_edit event is no longer dispatched with this method. could it be done in a Transformer?
-            $deleteForm = $this->createForm('Zikula\UsersModule\Form\Type\DeleteType', [], [
+            $deleteForm = $this->createForm(DeleteType::class, [], [
                 'choices' => $this->get('zikula_users_module.user_repository')->queryBySearchForm($form->getData()),
                 'action' => $this->generateUrl('zikulausersmodule_useradministration_delete'),
                 'translator' => $this->get('translator.default')
@@ -406,7 +415,7 @@ class UserAdministrationController extends AbstractController
     {
         $variableApi = $this->get('zikula_extensions_module.api.variable');
 
-        return $this->createForm('Zikula\UsersModule\Form\Type\MailType', [
+        return $this->createForm(MailType::class, [
             'from' => $variableApi->getSystemVar('sitename'),
             'replyto' => $variableApi->getSystemVar('adminmail'),
             'format' => 'text',

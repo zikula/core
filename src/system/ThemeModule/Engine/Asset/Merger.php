@@ -274,7 +274,7 @@ class Merger implements MergerInterface
                 $depth = substr_count($match[1], '../') * -1;
                 $path = $depth < 0 ? array_slice($relativeFilePath, 0, $depth) : $relativeFilePath;
                 $path = implode('/', $path);
-                $path = !empty($path) ? $path . '/' : '';
+                $path = !empty($path) ? $path . '/' : '/';
                 $line = str_replace($match[0], "url('{$path}{$match[2]}')", $line);
             }
         }

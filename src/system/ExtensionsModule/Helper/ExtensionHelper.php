@@ -162,7 +162,7 @@ class ExtensionHelper
     {
         if ($extension->getState() == ExtensionApi::STATE_NOTALLOWED
             || ($extension->getType() == self::TYPE_SYSTEM && $extension->getName() != 'ZikulaPageLockModule')) {
-            throw new \RuntimeException($this->translator->__f('Error! No permission to upgrade %s.', ['%s' => $extension->getDisplayname()]));
+            throw new \RuntimeException($this->translator->__f('Error! No permission to uninstall %s.', ['%s' => $extension->getDisplayname()]));
         }
         if ($extension->getState() == ExtensionApi::STATE_UNINITIALISED) {
             throw new \RuntimeException($this->translator->__f('Error! %s is not yet installed, therefore it cannot be uninstalled.', ['%s' => $extension->getDisplayname()]));

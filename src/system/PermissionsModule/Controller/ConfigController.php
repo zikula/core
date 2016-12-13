@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\PermissionsModule\Form\Type\ConfigType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -45,7 +46,7 @@ class ConfigController extends AbstractController
         $modVars['lockadmin'] = (bool)$modVars['lockadmin'];
         $modVars['filter'] = (bool)$modVars['filter'];
 
-        $form = $this->createForm('Zikula\PermissionsModule\Form\Type\ConfigType',
+        $form = $this->createForm(ConfigType::class,
             $modVars, [
                 'translator' => $this->get('translator.default')
             ]

@@ -5,21 +5,23 @@ enabled:
 
 disabled:
   - concat_without_spaces
+  - empty_return
   - multiline_array_trailing_comma
-  - single_quote
-  - unalign_double_arrow
-  - phpdoc_summary
+  - no_blank_lines_after_throw
+  - no_empty_lines_after_phpdocs
+  - php_unit_fqcn_annotation
+  - phpdoc_align
   - phpdoc_no_empty_return
   - phpdoc_scalar
-  - phpdoc_separation 
-  - unalign_equals
-  - spaces_cast
-  - no_empty_lines_after_phpdocs
+  - phpdoc_separation
+  - phpdoc_summary
   - phpdoc_to_comment
-  - phpdoc_align
-  - empty_return
-  - pre_increment
   - phpdoc_type_to_var
+  - pre_increment
+  - single_quote
+  - spaces_cast
+  - unalign_double_arrow
+  - unalign_equals
 
 finder:
   exclude:

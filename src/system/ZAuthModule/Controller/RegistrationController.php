@@ -18,6 +18,7 @@ use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\RegistrationEvents;
+use Zikula\ZAuthModule\Form\Type\VerifyRegistrationType;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
@@ -68,7 +69,7 @@ class RegistrationController extends AbstractController
                 $setPass = null == $mapping->getPass() || '' == $mapping->getPass();
             }
         }
-        $form = $this->createForm('Zikula\ZAuthModule\Form\Type\VerifyRegistrationType',
+        $form = $this->createForm(VerifyRegistrationType::class,
             [
                 'uname' => $uname,
                 'verifycode' => $verifycode
@@ -84,7 +85,7 @@ class RegistrationController extends AbstractController
             $userEntity = $this->get('zikula_users_module.user_repository')->findOneBy(['uname' => $data['uname']]);
             $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->getByZikulaId($userEntity->getUid());
             if (isset($data['pass'])) {
-                $mapping->setPass(\UserUtil::getHashedPassword($data['pass']));
+                $mapping->setPass($this->get('zikula_zauth_module.api.password')->getHashedPassword($data['pass']));
             }
             $mapping->setVerifiedEmail(true);
             $this->get('zikula_zauth_module.authentication_mapping_repository')->persistAndFlush($mapping);

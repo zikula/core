@@ -12,6 +12,9 @@
 namespace Zikula\PermissionsModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,31 +28,31 @@ class PermissionCheckType extends AbstractType
         $translator = $options['translator'];
 
         $builder
-            ->add('user', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('user', TextType::class, [
                 'label' => $translator->__('User name'),
                 'required' => false
             ])
-            ->add('component', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('component', TextType::class, [
                 'label' => $translator->__('Component to check'),
                 'data' => '.*'
             ])
-            ->add('instance', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('instance', TextType::class, [
                 'label' => $translator->__('Instance to check'),
                 'data' => '.*'
             ])
-            ->add('level', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('level', ChoiceType::class, [
                 'label' => $translator->__('Permission level'),
                 'choices' => array_flip($options['permissionLevels']),
                 'data' => ACCESS_READ
             ])
-            ->add('check', 'Symfony\Component\Form\Extension\Core\Type\ButtonType', [
+            ->add('check', ButtonType::class, [
                 'label' => $translator->__('Check permission'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-default'
                 ]
             ])
-            ->add('reset', 'Symfony\Component\Form\Extension\Core\Type\ButtonType', [
+            ->add('reset', ButtonType::class, [
                 'label' => $translator->__('Reset'),
                 'icon' => 'fa-times',
                 'attr' => [

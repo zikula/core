@@ -21,6 +21,4 @@ $loader = require __DIR__.'/../vendor/autoload.php';
 AnnotationRegistry::registerLoader([$loader, 'loadClass']);
 AnnotationReader::addGlobalIgnoredName('type');
 
-ZLoader::register($loader);
-
 return $loader;

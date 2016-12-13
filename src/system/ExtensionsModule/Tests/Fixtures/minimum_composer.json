@@ -1,0 +1,19 @@
+{
+  "name": "zikula/foo-module",
+  "description": "A foo module.",
+  "type": "zikula-module",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Zikula Team"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.1"
+  },
+  "extra": {
+    "zikula": {
+      "class": "Zikula\\SpecModule\\ZikulaFooModule"
+    }
+  }
+}

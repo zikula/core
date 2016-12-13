@@ -11,6 +11,7 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
+use RandomLib\Factory;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,7 +26,6 @@ use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\Bundle\CoreBundle\YamlDumper;
-use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\Core\CoreEvents;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\ZAuthConstant;
@@ -115,7 +115,7 @@ class AjaxInstallController extends AbstractController
             case "protect":
                 return $this->protectFiles();
         }
-        \System::setInstalling(false);
+//        \System::setInstalling(false); @todo need to probably set a parameter for this?
 
         return true;
     }
@@ -247,7 +247,7 @@ class AjaxInstallController extends AbstractController
         $mapping->setUname($userEntity->getUname());
         $mapping->setEmail($userEntity->getEmail());
         $mapping->setVerifiedEmail(true);
-        $mapping->setPass(\UserUtil::getHashedPassword($params['password'], \UserUtil::getPasswordHashMethodCode(ZAuthConstant::DEFAULT_HASH_METHOD))); // @todo
+        $mapping->setPass($this->container->get('zikula_zauth_module.api.password')->getHashedPassword($params['password']));
         $mapping->setMethod(ZAuthConstant::AUTHENTICATION_METHOD_UNAME);
         $entityManager->persist($mapping);
 
@@ -288,8 +288,10 @@ class AjaxInstallController extends AbstractController
         // add remaining parameters and remove unneeded ones
         unset($params['username'], $params['password'], $params['email'], $params['dbtabletype']);
         $params['datadir'] = !empty($params['datadir']) ? $params['datadir'] : 'userdir';
-        $params['secret'] = \RandomUtil::getRandomString(50);
-        $params['url_secret'] = \RandomUtil::getRandomString(10);
+        $RandomLibFactory = new Factory();
+        $generator = $RandomLibFactory->getMediumStrengthGenerator();
+        $params['secret'] = $generator->generateString(50);
+        $params['url_secret'] = $generator->generateString(10);
         // Configure the Request Context
         // see http://symfony.com/doc/current/cookbook/console/sending_emails.html#configuring-the-request-context-globally
         $params['router.request_context.host'] = isset($params['router.request_context.host']) ? $params['router.request_context.host'] : $this->container->get('request')->getHost();
@@ -331,9 +333,7 @@ class AjaxInstallController extends AbstractController
      */
     public function reloadRoutes()
     {
-        // fire MODULE_INSTALL event to reload all routes
-        $event = new ModuleStateEvent($this->container->get('kernel')->getModule('ZikulaRoutesModule'));
-        $this->container->get('event_dispatcher')->dispatch(CoreEvents::MODULE_POSTINSTALL, $event);
+        // this stage is now disabled because the routes do not need to be reloaded. @todo refactor and remove
 
         return true;
     }

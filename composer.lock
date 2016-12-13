@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6b1d9ca796b3e7fcc7283359416c7023",
-    "content-hash": "fa6a82914d92026989230726409e1626",
+    "hash": "1260e109af3e6b37b70a2132b2ce1e1f",
+    "content-hash": "5b454b594115190d64786eb9ae217a99",
     "packages": [
         {
             "name": "abeautifulsite/jquery-minicolors",
@@ -73,6 +73,68 @@
             "description": "Defacto way to enable use of HTML5 sectioning elements in legacy Internet Explorer.",
             "homepage": "http://paulirish.com/2011/the-history-of-the-html5-shiv/",
             "time": "2015-07-20 20:04:00"
+        },
+        {
+            "name": "afarkas/webshim",
+            "version": "1.16.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aFarkas/webshim.git",
+                "reference": "1600cc692854ac06bf128681bb0f7dd3ccf6b35d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aFarkas/webshim/zipball/1600cc692854ac06bf128681bb0f7dd3ccf6b35d",
+                "reference": "1600cc692854ac06bf128681bb0f7dd3ccf6b35d",
+                "shasum": ""
+            },
+            "require": {
+                "components/jquery": ">=1.8.2 <3.0",
+                "robloach/component-installer": "^0.2"
+            },
+            "type": "component",
+            "extra": {
+                "component": {
+                    "scripts": [
+                        "js-webshim/minified/polyfiller.js"
+                    ],
+                    "files": [
+                        "js-webshim/minified/shims/**"
+                    ]
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Farkas",
+                    "homepage": "https://github.com/aFarkas/"
+                }
+            ],
+            "description": "The polyfilling, capability based loading JavaScript Library",
+            "homepage": "http://afarkas.github.com/webshim/demos/index.html",
+            "keywords": [
+                "HTML5",
+                "audio",
+                "canvas",
+                "forms",
+                "geolocation",
+                "getUserMedia",
+                "localstorage",
+                "polyfill",
+                "ui",
+                "validation",
+                "video",
+                "webshim",
+                "webshims",
+                "widgets"
+            ],
+            "support": {
+                "source": "https://github.com/aFarkas/webshim/tree/1.16.0",
+                "issues": "https://github.com/aFarkas/webshim/issues"
+            },
+            "time": "2016-11-13 20:27:50"
         },
         {
             "name": "behat/transliterator",
@@ -714,16 +776,16 @@
         },
         {
             "name": "doctrine/common",
-            "version": "v2.6.1",
+            "version": "v2.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/common.git",
-                "reference": "a579557bc689580c19fee4e27487a67fe60defc0"
+                "reference": "7bce00698899aa2c06fe7365c76e4d78ddb15fa3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/common/zipball/a579557bc689580c19fee4e27487a67fe60defc0",
-                "reference": "a579557bc689580c19fee4e27487a67fe60defc0",
+                "url": "https://api.github.com/repos/doctrine/common/zipball/7bce00698899aa2c06fe7365c76e4d78ddb15fa3",
+                "reference": "7bce00698899aa2c06fe7365c76e4d78ddb15fa3",
                 "shasum": ""
             },
             "require": {
@@ -783,7 +845,7 @@
                 "persistence",
                 "spl"
             ],
-            "time": "2015-12-25 13:18:31"
+            "time": "2016-11-30 16:50:46"
         },
         {
             "name": "doctrine/dbal",
@@ -1567,6 +1629,107 @@
                 "image processing"
             ],
             "time": "2015-09-19 16:54:05"
+        },
+        {
+            "name": "ircmaxell/random-lib",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ircmaxell/RandomLib.git",
+                "reference": "e9e0204f40e49fa4419946c677eccd3fa25b8cf4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ircmaxell/RandomLib/zipball/e9e0204f40e49fa4419946c677eccd3fa25b8cf4",
+                "reference": "e9e0204f40e49fa4419946c677eccd3fa25b8cf4",
+                "shasum": ""
+            },
+            "require": {
+                "ircmaxell/security-lib": "^1.1",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^1.11",
+                "mikey179/vfsstream": "^1.6",
+                "phpunit/phpunit": "^4.8|^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "RandomLib": "lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anthony Ferrara",
+                    "email": "ircmaxell@ircmaxell.com",
+                    "homepage": "http://blog.ircmaxell.com"
+                }
+            ],
+            "description": "A Library For Generating Secure Random Numbers",
+            "homepage": "https://github.com/ircmaxell/RandomLib",
+            "keywords": [
+                "cryptography",
+                "random",
+                "random-numbers",
+                "random-strings"
+            ],
+            "time": "2016-09-07 15:52:06"
+        },
+        {
+            "name": "ircmaxell/security-lib",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ircmaxell/SecurityLib.git",
+                "reference": "f3db6de12c20c9bcd1aa3db4353a1bbe0e44e1b5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ircmaxell/SecurityLib/zipball/f3db6de12c20c9bcd1aa3db4353a1bbe0e44e1b5",
+                "reference": "f3db6de12c20c9bcd1aa3db4353a1bbe0e44e1b5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "1.1.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "SecurityLib": "lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anthony Ferrara",
+                    "email": "ircmaxell@ircmaxell.com",
+                    "homepage": "http://blog.ircmaxell.com"
+                }
+            ],
+            "description": "A Base Security Library",
+            "homepage": "https://github.com/ircmaxell/SecurityLib",
+            "time": "2015-03-20 14:31:23"
         },
         {
             "name": "jQuery.mmenu",
@@ -2737,16 +2900,16 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v5.0.14",
+            "version": "v5.0.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "e64947de9ebc37732a62f5115164484a9bee7fa6"
+                "reference": "d294b0665cf09c799e9c1993d5c776a5bf55cb85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/e64947de9ebc37732a62f5115164484a9bee7fa6",
-                "reference": "e64947de9ebc37732a62f5115164484a9bee7fa6",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/d294b0665cf09c799e9c1993d5c776a5bf55cb85",
+                "reference": "d294b0665cf09c799e9c1993d5c776a5bf55cb85",
                 "shasum": ""
             },
             "require": {
@@ -2785,7 +2948,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2016-10-30 23:18:01"
+            "time": "2016-12-06 07:29:27"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -3722,20 +3885,19 @@
         },
         {
             "name": "twitter/typeahead.js",
-            "version": "v0.11.1",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/twitter/typeahead.js.git",
-                "reference": "588440f66559714280628a4f9799f0c4eb880a4a"
+                "url": "https://github.com/corejavascript/typeahead.js.git",
+                "reference": "a79d0865af787f0aba2a544995fd5cc358c13689"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twitter/typeahead.js/zipball/588440f66559714280628a4f9799f0c4eb880a4a",
-                "reference": "588440f66559714280628a4f9799f0c4eb880a4a",
+                "url": "https://api.github.com/repos/corejavascript/typeahead.js/zipball/a79d0865af787f0aba2a544995fd5cc358c13689",
+                "reference": "a79d0865af787f0aba2a544995fd5cc358c13689",
                 "shasum": ""
             },
             "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3751,7 +3913,11 @@
                 "autocomplete",
                 "typeahead"
             ],
-            "time": "2015-04-27 04:02:14"
+            "support": {
+                "issues": "https://github.com/twitter/typeahead.js/issues",
+                "source": "https://github.com/corejavascript/typeahead.js/tree/v1.0.1"
+            },
+            "time": "2016-11-17 14:24:27"
         },
         {
             "name": "vakata/jstree",
@@ -4227,12 +4393,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "f3667b6f538164714945cdf29cec2b282485d07d"
+                "reference": "64a9f28c0481629c2cca685e0003f8c7610897f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/f3667b6f538164714945cdf29cec2b282485d07d",
-                "reference": "f3667b6f538164714945cdf29cec2b282485d07d",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/64a9f28c0481629c2cca685e0003f8c7610897f7",
+                "reference": "64a9f28c0481629c2cca685e0003f8c7610897f7",
                 "shasum": ""
             },
             "require": {
@@ -4287,7 +4453,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2016-11-27 18:32:45"
+            "time": "2016-12-12 12:55:41"
         },
         {
             "name": "zikula/profile-module",
@@ -4295,12 +4461,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "9f7def97050ffaeb6a1694376d73418d4320177a"
+                "reference": "a1c0bd6fe7ee28615139d48452567c8622da9ce8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/9f7def97050ffaeb6a1694376d73418d4320177a",
-                "reference": "9f7def97050ffaeb6a1694376d73418d4320177a",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/a1c0bd6fe7ee28615139d48452567c8622da9ce8",
+                "reference": "a1c0bd6fe7ee28615139d48452567c8622da9ce8",
                 "shasum": ""
             },
             "require": {
@@ -4361,7 +4527,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2016-11-27 18:17:10"
+            "time": "2016-12-12 12:55:47"
         },
         {
             "name": "zikula/wizard",

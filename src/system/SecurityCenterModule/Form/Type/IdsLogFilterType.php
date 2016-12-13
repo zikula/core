@@ -12,6 +12,7 @@
 namespace Zikula\SecurityCenterModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -58,7 +59,7 @@ class IdsLogFilterType extends AbstractType
             $choices[$entry] = $entry;
         }
 
-        $builder->add($fieldName, 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+        $builder->add($fieldName, ChoiceType::class, [
             'label' => $label,
             'attr' => [
                 'class' => 'input-sm'

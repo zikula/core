@@ -17,6 +17,8 @@ use Swift_Message;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\MailerModule\Form\Type\ConfigType;
+use Zikula\MailerModule\Form\Type\TestType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -40,7 +42,7 @@ class ConfigController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm('Zikula\MailerModule\Form\Type\ConfigType',
+        $form = $this->createForm(ConfigType::class,
             $this->getDataValues(), [
                 'translator' => $this->get('translator.default')
             ]
@@ -127,7 +129,7 @@ class ConfigController extends AbstractController
         $dumper = $this->get('zikula.dynamic_config_dumper');
         $paramHtml = $dumper->getConfigurationForHtml('swiftmailer');
 
-        $form = $this->createForm('Zikula\MailerModule\Form\Type\TestType',
+        $form = $this->createForm(TestType::class,
             $this->getDataValues(), [
                 'translator' => $this->get('translator.default')
             ]

@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
+use Zikula\UsersModule\Form\Type\ExportUsersType;
 
 /**
  * @Route("/fileIO")
@@ -37,12 +38,11 @@ class FileIOController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm('Zikula\UsersModule\Form\Type\ExportUsersType',
-            [], ['translator' => $this->get('translator.default')]
-        );
-        $form->handleRequest($request);
+        $form = $this->createForm(ExportUsersType::class, [], [
+            'translator' => $this->get('translator.default')
+        ]);
 
-        if ($form->isValid()) {
+        if ($form->handleRequest($request)->isValid()) {
             if ($form->get('download')->isClicked()) {
                 $data = $form->getData();
                 $response = new StreamedResponse();

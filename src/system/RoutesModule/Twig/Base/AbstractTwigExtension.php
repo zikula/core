@@ -14,6 +14,7 @@ namespace Zikula\RoutesModule\Twig\Base;
 
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\RoutesModule\Helper\ListEntriesHelper;
 use Zikula\RoutesModule\Helper\WorkflowHelper;
@@ -25,27 +26,27 @@ use Zikula\RoutesModule\Container\LinkContainer;
 abstract class AbstractTwigExtension extends \Twig_Extension
 {
     use TranslatorTrait;
-    
+
     /**
      * @var VariableApi
      */
     protected $variableApi;
-    
+
     /**
      * @var LinkContainer
      */
     protected $linkContainer;
-    
+
     /**
      * @var WorkflowHelper
      */
     protected $workflowHelper;
-    
+
     /**
      * @var ListEntriesHelper
      */
     protected $listHelper;
-    
+
     /**
      * Constructor.
      * Initialises member vars.
@@ -64,7 +65,7 @@ abstract class AbstractTwigExtension extends \Twig_Extension
         $this->workflowHelper = $workflowHelper;
         $this->listHelper = $listHelper;
     }
-    
+
     /**
      * Sets the translator.
      *
@@ -74,7 +75,7 @@ abstract class AbstractTwigExtension extends \Twig_Extension
     {
         $this->translator = $translator;
     }
-    
+
     /**
      * Returns a list of custom Twig functions.
      *
@@ -91,7 +92,7 @@ abstract class AbstractTwigExtension extends \Twig_Extension
             new \Twig_SimpleFunction('zikularoutesmodule_thumb', [$this, 'getImageThumb'])
         ];
     }
-    
+
     /**
      * Returns a list of custom Twig filters.
      *
@@ -104,7 +105,7 @@ abstract class AbstractTwigExtension extends \Twig_Extension
             new \Twig_SimpleFilter('zikularoutesmodule_objectState', [$this, 'getObjectState'])
         ];
     }
-    
+
     /**
      * Returns action links for a given entity.
      *
@@ -118,7 +119,7 @@ abstract class AbstractTwigExtension extends \Twig_Extension
     {
         return $this->linkContainer->getActionLinks($entity, $area, $context);
     }
-    
+
     /**
      * The zikularoutesmodule_objectState filter displays the name of a given object's workflow state.
      * Examples:
@@ -133,16 +134,16 @@ abstract class AbstractTwigExtension extends \Twig_Extension
     public function getObjectState($state = 'initial', $uiFeedback = true)
     {
         $stateInfo = $this->workflowHelper->getStateInfo($state);
-    
+
         $result = $stateInfo['text'];
         if ($uiFeedback === true) {
             $result = '<span class="label label-' . $stateInfo['ui'] . '">' . $result . '</span>';
         }
-    
+
         return $result;
     }
-    
-    
+
+
     /**
      * The zikularoutesmodule_listEntry filter displays the name
      * or names for a given list item.
@@ -161,11 +162,11 @@ abstract class AbstractTwigExtension extends \Twig_Extension
         if ((empty($value) && $value != '0') || empty($objectType) || empty($fieldName)) {
             return $value;
         }
-    
+
         return $this->listHelper->resolve($value, $objectType, $fieldName, $delimiter);
     }
-    
-    
+
+
     /**
      * The zikularoutesmodule_objectTypeSelector function provides items for a dropdown selector.
      *
@@ -174,13 +175,13 @@ abstract class AbstractTwigExtension extends \Twig_Extension
     public function getObjectTypeSelector()
     {
         $result = [];
-    
+
         $result[] = ['text' => $this->__('Routes'), 'value' => 'route'];
-    
+
         return $result;
     }
-    
-    
+
+
     /**
      * The zikularoutesmodule_templateSelector function provides items for a dropdown selector.
      *
@@ -189,14 +190,14 @@ abstract class AbstractTwigExtension extends \Twig_Extension
     public function getTemplateSelector()
     {
         $result = [];
-    
+
         $result[] = ['text' => $this->__('Only item titles'), 'value' => 'itemlist_display.html.twig'];
         $result[] = ['text' => $this->__('With description'), 'value' => 'itemlist_display_description.html.twig'];
         $result[] = ['text' => $this->__('Custom template'), 'value' => 'custom'];
-    
+
         return $result;
     }
-    
+
     /**
      * Returns the value of a user variable.
      *
@@ -211,12 +212,12 @@ abstract class AbstractTwigExtension extends \Twig_Extension
         if (!$uid) {
             $uid = -1;
         }
-    
+
         $result = \UserUtil::getVar($name, $uid, $default);
-    
+
         return $result;
     }
-    
+
     /**
      * Display the avatar of a user.
      *
@@ -243,15 +244,15 @@ abstract class AbstractTwigExtension extends \Twig_Extension
         if ($rating != '') {
             $params['rating'] = $rating;
         }
-    
+
         include_once 'lib/legacy/viewplugins/function.useravatar.php';
-    
+
         $view = \Zikula_View::getInstance('ZikulaRoutesModule');
         $result = smarty_function_useravatar($params, $view);
-    
+
         return $result;
     }
-    
+
     /**
      * Display an image thumbnail using Imagine system plugin.
      *
@@ -262,20 +263,10 @@ abstract class AbstractTwigExtension extends \Twig_Extension
     public function getImageThumb($params)
     {
         include_once 'plugins/Imagine/templates/plugins/function.thumb.php';
-    
+
         $view = \Zikula_View::getInstance('ZikulaRoutesModule');
         $result = smarty_function_thumb($params, $view);
-    
+
         return $result;
-    }
-    
-    /**
-     * Returns internal name of this extension.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return 'zikularoutesmodule_twigextension';
     }
 }

@@ -1,0 +1,53 @@
+parameters:
+    zikula_zauth_module.authentication_method.native_uname.class: Zikula\ZAuthModule\AuthenticationMethod\NativeUnameAuthenticationMethod
+    zikula_zauth_module.authentication_method.alias.native_uname.value: native_uname
+    zikula_zauth_module.authentication_method.native_email.class: Zikula\ZAuthModule\AuthenticationMethod\NativeEmailAuthenticationMethod
+    zikula_zauth_module.authentication_method.alias.native_email.value: native_email
+    zikula_zauth_module.form.authentication_method_type.uname_type.class: Zikula\ZAuthModule\Form\Type\UnameLoginType
+    zikula_zauth_module.form.authentication_method_type.email_type.class: Zikula\ZAuthModule\Form\Type\EmailLoginType
+    zikula_zauth_module.form.registration_type.class: Zikula\ZAuthModule\Form\Type\RegistrationType
+
+services:
+    zikula_zauth_module.authentication_method.native_uname:
+        class: %zikula_zauth_module.authentication_method.native_uname.class%
+        arguments:
+            - "@zikula_users_module.user_repository"
+            - "@zikula_zauth_module.authentication_mapping_repository"
+            - "@session"
+            - "@translator.default"
+            - "@zikula_extensions_module.api.variable"
+            - "@validator"
+            - "@zikula_zauth_module.api.password"
+        tags:
+            - { name: zikula.authentication_method, alias: %zikula_zauth_module.authentication_method.alias.native_uname.value% }
+
+    zikula_zauth_module.authentication_method.native_email:
+        class: %zikula_zauth_module.authentication_method.native_email.class%
+        arguments:
+            - "@zikula_users_module.user_repository"
+            - "@zikula_zauth_module.authentication_mapping_repository"
+            - "@session"
+            - "@translator.default"
+            - "@zikula_extensions_module.api.variable"
+            - "@validator"
+            - "@zikula_zauth_module.api.password"
+        tags:
+            - { name: zikula.authentication_method, alias: %zikula_zauth_module.authentication_method.alias.native_email.value% }
+
+    zikula_zauth_module.form.authentication_method_type.uname_type:
+        class: %zikula_zauth_module.form.authentication_method_type.uname_type.class%
+        arguments: ["@translator.default"]
+        tags:
+            - { name: form.type, alias: "Zikula\\ZAuthModule\\Form\\Type\\UnameLoginType" }
+
+    zikula_zauth_module.form.authentication_method_type.email_type:
+        class: %zikula_zauth_module.form.authentication_method_type.email_type.class%
+        arguments: ["@translator.default"]
+        tags:
+            - { name: form.type, alias: "Zikula\\ZAuthModule\\Form\\Type\\EmailLoginType" }
+
+    zikula_zauth_module.form.registration_type:
+        class: %zikula_zauth_module.form.registration_type.class%
+        arguments: ["@translator.default", "@zikula_extensions_module.api.variable"]
+        tags:
+            - { name: form.type, alias: "Zikula\\ZAuthModule\\Form\\Type\\RegistrationType" }

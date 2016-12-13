@@ -45,7 +45,9 @@ class CreateAdminStage implements StageInterface, FormHandlerInterface, InjectCo
 
     public function getFormOptions()
     {
-        return [];
+        return [
+            'translator' => $this->container->get('translator.default')
+        ];
     }
 
     public function getTemplateName()

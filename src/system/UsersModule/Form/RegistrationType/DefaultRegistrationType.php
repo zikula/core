@@ -12,6 +12,8 @@
 namespace Zikula\UsersModule\Form\RegistrationType;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -36,19 +38,19 @@ class DefaultRegistrationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('uname', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('uname', HiddenType::class)
+            ->add('email', HiddenType::class)
+            ->add('submit', SubmitType::class, [
                 'label' => $this->translator->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $this->translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-danger']
             ])
-            ->add('reset', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('reset', SubmitType::class, [
                 'label' => $this->translator->__('Reset'),
                 'icon' => 'fa-refresh',
                 'attr' => ['class' => 'btn btn-primary']

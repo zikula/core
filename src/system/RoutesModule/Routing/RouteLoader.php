@@ -98,9 +98,6 @@ class RouteLoader extends Loader
      */
     private function find(AbstractBundle $bundle)
     {
-        if (!\ServiceUtil::hasContainer()) {
-            \ServiceUtil::setContainer($this->container);
-        }
         try {
             $path = $this->zikulaKernel->locateResource($bundle->getRoutingConfig());
         } catch (\InvalidArgumentException $e) {

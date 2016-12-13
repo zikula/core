@@ -11,9 +11,11 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
+use RandomLib\Factory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Yaml\Yaml;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
@@ -40,7 +42,10 @@ class AjaxUpgradeController extends AbstractController
     public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
+        $originalParameters = Yaml::parse(file_get_contents($this->container->get('kernel')->getRootDir() .'/config/parameters.yml'));
         $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
+        // load and set new default values from the original parameters.yml file into the custom_parameters.yml file.
+        $this->yamlManager->setParameters(array_merge($originalParameters['parameters'], $this->yamlManager->getParameters()));
         $this->currentVersion = $this->container->getParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM);
     }
 
@@ -95,6 +100,8 @@ class AjaxUpgradeController extends AbstractController
                 return $this->from142to143();
             case "from143to144":
                 return $this->from143to144();
+            case "from144to145":
+                return $this->from144to145();
             case "finalizeparameters":
                 return $this->finalizeParameters();
             case "clearcaches":
@@ -189,6 +196,15 @@ class AjaxUpgradeController extends AbstractController
         return true;
     }
 
+    private function from144to145()
+    {
+        if (version_compare($this->currentVersion, '1.4.5', '>=')) {
+            return true;
+        }
+
+        return true;
+    }
+
     private function finalizeParameters()
     {
         $variableApi = $this->container->get('zikula_extensions_module.api.variable');
@@ -200,11 +216,14 @@ class AjaxUpgradeController extends AbstractController
         // add new configuration parameters
         $params = $this->yamlManager->getParameters();
         unset($params['username'], $params['password']);
+        $RandomLibFactory = new Factory();
+        $generator = $RandomLibFactory->getMediumStrengthGenerator();
+
         if (!isset($params['secret']) || ($params['secret'] == 'ThisTokenIsNotSoSecretChangeIt')) {
-            $params['secret'] = \RandomUtil::getRandomString(50);
+            $params['secret'] = $generator->generateString(50);
         }
         if (!isset($params['url_secret'])) {
-            $params['url_secret'] = \RandomUtil::getRandomString(10);
+            $params['url_secret'] = $generator->generateString(10);
         }
         // Configure the Request Context
         // see http://symfony.com/doc/current/cookbook/console/sending_emails.html#configuring-the-request-context-globally
@@ -214,6 +233,9 @@ class AjaxUpgradeController extends AbstractController
 
         // set currently installed version into parameters
         $params[\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM] = \ZikulaKernel::VERSION;
+
+        // disable asset combination on upgrades
+        $params['zikula_asset_manager.combine'] = false;
 
         $this->yamlManager->setParameters($params);
 

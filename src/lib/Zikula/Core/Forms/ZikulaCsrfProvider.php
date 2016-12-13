@@ -15,11 +15,14 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
  * Csrf provider based on zikula csrf system.
+ *
+ * @deprecated
+ * @todo remove for Core-2.0
  */
 class ZikulaCsrfProvider implements CsrfTokenManagerInterface
 {
     /**
-     * {@inheritdoc}
+     * Obsolete method, but kept for BC.
      */
     public function generateCsrfToken($intention)
     {
@@ -27,10 +30,42 @@ class ZikulaCsrfProvider implements CsrfTokenManagerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Obsolete method, but kept for BC.
      */
     public function isCsrfTokenValid($intention, $token)
     {
         return \SecurityUtil::validateCsrfToken($token);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getToken($tokenId)
+    {
+        return $this->generateCsrfToken('');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function refreshToken($tokenId)
+    {
+        return $this->generateCsrfToken('');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeToken($tokenId)
+    {
+        return $this->generateCsrfToken('');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isTokenValid($token)
+    {
+        return $this->isCsrfTokenValid('', $token);
     }
 }

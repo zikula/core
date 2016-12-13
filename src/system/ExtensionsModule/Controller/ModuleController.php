@@ -14,11 +14,14 @@ namespace Zikula\ExtensionsModule\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
@@ -29,6 +32,8 @@ use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\ExtensionEvents;
+use Zikula\ExtensionsModule\Form\Type\ExtensionInstallType;
+use Zikula\ExtensionsModule\Form\Type\ExtensionModifyType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -77,10 +82,38 @@ class ModuleController extends AbstractController
             ->getRepository('ZikulaExtensionsModule:ExtensionEntity')
             ->getPagedCollectionBy([], [$sortableColumns->getSortColumn()->getName() => $sortableColumns->getSortDirection()], $this->getVar('itemsperpage'), $pos);
 
+        $adminRoutes = [];
+
+        foreach ($pagedResult as $module) {
+            if (!isset($module['capabilities']['admin']) || empty($module['capabilities']['admin']) || $module['state'] != ExtensionApi::STATE_ACTIVE) {
+                continue;
+            }
+
+            $adminCapabilityInfo = $module['capabilities']['admin'];
+            $adminUrl = '';
+            if (isset($adminCapabilityInfo['route'])) {
+                try {
+                    $adminUrl = $this->get('router')->generate($adminCapabilityInfo['route']);
+                } catch (RouteNotFoundException $routeNotFoundException) {
+                    // do nothing, just skip this link
+                }
+            } elseif (isset($adminCapabilityInfo['url'])) {
+                $adminUrl = $adminCapabilityInfo['url'];
+            }
+
+            if (!empty($adminUrl)) {
+                $adminRoutes[$module['name']] = $adminUrl;
+            }
+        }
+
         return [
             'sort' => $sortableColumns->generateSortableColumns(),
-            'pager' => ['limit' => $this->getVar('itemsperpage'), 'count' => count($pagedResult)],
+            'pager' => [
+                'limit' => $this->getVar('itemsperpage'),
+                'count' => count($pagedResult)
+            ],
             'modules' => $pagedResult,
+            'adminRoutes' => $adminRoutes,
             'upgradedExtensions' => $upgradedExtensions
         ];
     }
@@ -135,7 +168,7 @@ class ModuleController extends AbstractController
         $this->get('zikula_core.common.csrf_token_handler')->validate($csrftoken);
 
         $extension = $this->getDoctrine()->getManager()->find('ZikulaExtensionsModule:ExtensionEntity', $id);
-        if (\ZikulaKernel::isCoreModule($extension->getName())) {
+        if ($extension->getName() != 'ZikulaPageLockModule' && \ZikulaKernel::isCoreModule($extension->getName())) {
             $this->addFlash('error', $this->__f('Error! You cannot deactivate this extension [%s]. It is a mandatory core extension, and is required by the system.', ['%s' => $extension->getName()]));
         } else {
             // Update state
@@ -174,7 +207,7 @@ class ModuleController extends AbstractController
             $extension->setDescription($metaData['description']);
         }
 
-        $form = $this->createForm('Zikula\ExtensionsModule\Form\Type\ExtensionModifyType', $extension, [
+        $form = $this->createForm(ExtensionModifyType::class, $extension, [
             'translator' => $this->get('translator.default')
         ]);
 
@@ -241,7 +274,7 @@ class ModuleController extends AbstractController
     public function installAction(Request $request, ExtensionEntity $extension)
     {
         $unsatisfiedDependencies = $this->get('zikula_extensions_module.extension_dependency_helper')->getUnsatisfiedExtensionDependencies($extension);
-        $form = $this->createForm('Zikula\ExtensionsModule\Form\Type\ExtensionInstallType', [
+        $form = $this->createForm(ExtensionInstallType::class, [
             'dependencies' => $this->formatDependencyCheckboxArray($unsatisfiedDependencies)
         ], [
             'translator' => $this->get('translator.default')
@@ -252,7 +285,7 @@ class ModuleController extends AbstractController
                 $extensionsInstalled = [];
                 $data = $form->getData();
                 foreach ($data['dependencies'] as $dependencyId => $installSelected) {
-                    if (!$installSelected && $unsatisfiedDependencies[$dependencyId]->getStatus() != \ModUtil::DEPENDENCY_REQUIRED) {
+                    if (!$installSelected && $unsatisfiedDependencies[$dependencyId]->getStatus() != MetaData::DEPENDENCY_REQUIRED) {
                         continue;
                     }
                     $dependencyExtensionEntity = $this->get('zikula_extensions_module.extension_repository')->get($unsatisfiedDependencies[$dependencyId]->getModname());
@@ -388,14 +421,14 @@ class ModuleController extends AbstractController
         $blocks = $this->getDoctrine()->getManager()->getRepository('ZikulaBlocksModule:BlockEntity')->findBy(['module' => $extension]);
 
         $form = $this->createFormBuilder()
-            ->add('uninstall', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('uninstall', SubmitType::class, [
                 'label' => $this->__('Delete'),
                 'icon' => 'fa-trash-o',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [

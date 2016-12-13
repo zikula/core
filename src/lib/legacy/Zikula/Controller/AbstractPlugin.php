@@ -11,6 +11,7 @@
 
 /**
  * Zikula_Controller_AbstractPlugin class.
+ * @deprecated
  */
 abstract class Zikula_Controller_AbstractPlugin extends Zikula_AbstractController
 {

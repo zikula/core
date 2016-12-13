@@ -11,7 +11,11 @@
 
 namespace Zikula\SecurityCenterModule\Helper;
 
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
 class PurifierHelper
@@ -22,18 +26,33 @@ class PurifierHelper
     private $kernel;
 
     /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    /**
+     * @var Translator
+     */
+    private $translator;
+
+    /**
      * @var VariableApi
      */
     private $variableApi;
 
     /**
      * PurifierHelper constructor.
-     * @param KernelInterface $kernel
-     * @param VariableApi $variableApi
+     *
+     * @param KernelInterface     $kernel      Kernel service instance
+     * @param SessionInterface    $session     Session service instance
+     * @param TranslatorInterface $translator  Translator service instance
+     * @param VariableApi         $variableApi VariableApi service instance
      */
-    public function __construct(KernelInterface $kernel, VariableApi $variableApi)
+    public function __construct(KernelInterface $kernel, SessionInterface $session, TranslatorInterface $translator, VariableApi $variableApi)
     {
         $this->kernel = $kernel;
+        $this->session = $session;
+        $this->translator = $translator;
         $this->variableApi = $variableApi;
     }
 
@@ -142,7 +161,18 @@ class PurifierHelper
         $config->set('Output.FlashCompat', true);
         $config->set('HTML.SafeEmbed', true);
 
-        $config->set('Cache.SerializerPath', $this->kernel->getCacheDir() . '/purifier');
+        $cacheDirectory = $this->kernel->getCacheDir() . '/purifier';
+        $config->set('Cache.SerializerPath', $cacheDirectory);
+
+        $fs = new Filesystem();
+
+        try {
+            if (!$fs->exists($cacheDirectory)) {
+                $fs->mkdir($cacheDirectory);
+            }
+        } catch (IOExceptionInterface $e) {
+            $this->session->getFlashBag()->add('error', $this->translator->__f('An error occurred while creating HTML Purifier cache directory at %path', ['%path' => $e->getPath()]));
+        }
 
         return $config;
     }

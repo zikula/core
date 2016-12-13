@@ -12,6 +12,7 @@
 namespace Zikula\ExtensionsModule\Helper;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use vierbergenlars\SemVer\expression;
@@ -140,7 +141,7 @@ class BundleSyncHelper
         // Get all bundles on filesystem
         $bundles = [];
 
-        $scanner = new Scanner($this->composerValidationHelper, $this->session);
+        $scanner = new Scanner();
         $scanner->scan($directories, 5);
         $newModules = $scanner->getModulesMetaData();
 
@@ -148,7 +149,7 @@ class BundleSyncHelper
         /** @var MetaData $bundleMetaData */
         foreach ($newModules as $name => $bundleMetaData) {
             foreach ($bundleMetaData->getPsr4() as $ns => $path) {
-                \ZLoader::addPrefixPsr4($ns, $path);
+                $this->kernel->getAutoloader()->addPsr4($ns, $path);
             }
 
             $bundleClass = $bundleMetaData->getClass();
@@ -168,8 +169,21 @@ class BundleSyncHelper
             $bundleVersionArray['securityschema'] = serialize($bundleVersionArray['securityschema']);
             $bundleVersionArray['dependencies'] = serialize($bundleVersionArray['dependencies']);
 
-            $bundles[$bundle->getName()] = $bundleVersionArray;
-            $bundles[$bundle->getName()]['oldnames'] = isset($bundleVersionArray['oldnames']) ? $bundleVersionArray['oldnames'] : '';
+            $finder = new Finder();
+            $finder->files()->in($bundle->getPath())->depth(0)->name('composer.json');
+            foreach ($finder as $splFileInfo) {
+                // there will only be one loop here
+                $this->composerValidationHelper->check($splFileInfo);
+                if ($this->composerValidationHelper->isValid()) {
+                    $bundles[$bundle->getName()] = $bundleVersionArray;
+                    $bundles[$bundle->getName()]['oldnames'] = isset($bundleVersionArray['oldnames']) ? $bundleVersionArray['oldnames'] : '';
+                } else {
+                    $this->session->getFlashBag()->add('error', $this->translator->__f('Cannot load %extension because the composer file is invalid.', ['%extension' => $bundle->getName()]));
+                    foreach ($this->composerValidationHelper->getErrors() as $error) {
+                        $this->session->getFlashBag()->add('error', $error);
+                    }
+                }
+            }
         }
 
         $this->validate($bundles);
@@ -187,32 +201,34 @@ class BundleSyncHelper
     {
         $modulenames = [];
         $displaynames = [];
+        $urls = [];
 
-        // check for duplicate names or display names
-        foreach ($extensions as $dir => $modinfo) {
-            if (isset($modulenames[strtolower($modinfo['name'])])) {
+        // check for duplicate names, display names or urls
+        foreach ($extensions as $dir => $modInfo) {
+            if (isset($modulenames[strtolower($modInfo['name'])])) {
                 throw new FatalErrorException($this->translator->__f('Fatal Error: Two extensions share the same name. [%ext1%] and [%ext2%]', [
-                    '%ext1%' => $modinfo['name'],
-                    '%ext2%' => $modulenames[strtolower($modinfo['name'])]
+                    '%ext1%' => $modInfo['name'],
+                    '%ext2%' => $modulenames[strtolower($modInfo['name'])]
                 ]));
             }
 
-            if (isset($displaynames[strtolower($modinfo['displayname'])])) {
+            if (isset($displaynames[strtolower($modInfo['displayname'])])) {
                 throw new FatalErrorException($this->translator->__f('Fatal Error: Two extensions share the same displayname. [%ext1%] and [%ext2%]', [
-                    '%ext1%' => $modinfo['displayname'],
-                    '%ext2%' => $modulenames[strtolower($modinfo['displayname'])]
+                    '%ext1%' => $modInfo['name'],
+                    '%ext2%' => $modulenames[strtolower($modInfo['name'])]
                 ]));
             }
 
-            if (isset($displaynames[strtolower($modinfo['url'])])) {
+            if (isset($urls[strtolower($modInfo['url'])])) {
                 throw new FatalErrorException($this->translator->__f('Fatal Error: Two extensions share the same url. [%ext1%] and [%ext2%]', [
-                    '%ext1%' => $modinfo['url'],
-                    '%ext2%' => $modulenames[strtolower($modinfo['url'])]
+                    '%ext1%' => $modInfo['name'],
+                    '%ext2%' => $modulenames[strtolower($modInfo['name'])]
                 ]));
             }
 
-            $modulenames[strtolower($modinfo['name'])] = $dir;
-            $displaynames[strtolower($modinfo['displayname'])] = $dir;
+            $modulenames[strtolower($modInfo['name'])] = $dir;
+            $displaynames[strtolower($modInfo['displayname'])] = $dir;
+            $urls[strtolower($modInfo['url'])] = $dir;
         }
     }
 

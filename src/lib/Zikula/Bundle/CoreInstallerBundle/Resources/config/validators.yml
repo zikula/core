@@ -1,0 +1,20 @@
+parameters:
+    zikula_core_installer_bundle.validator.constraints.valid_pdo_connection_validator.class: Zikula\Bundle\CoreInstallerBundle\Validator\Constraints\ValidPdoConnectionValidator
+    zikula_core_installer_bundle.validator.constraints.authenticate_admin_login_validator.class: Zikula\Bundle\CoreInstallerBundle\Validator\Constraints\AuthenticateAdminLoginValidator
+
+services:
+    zikula_core_installer_bundle.validator.constraints.valid_pdo_connection_validator:
+        class: %zikula_core_installer_bundle.validator.constraints.valid_pdo_connection_validator.class%
+        arguments: ["@translator.default"]
+        tags:
+            - { name: validator.constraint_validator, alias: zikula.core_installer.pdo_connection.validator }
+
+    zikula_core_installer_bundle.validator.constraints.authenticate_admin_login_validator:
+        class: %zikula_core_installer_bundle.validator.constraints.authenticate_admin_login_validator.class%
+        arguments:
+            - "@zikula_permissions_module.api.permission"
+            - "@doctrine.dbal.default_connection"
+            - "@translator.default"
+            - "@zikula_zauth_module.api.password"
+        tags:
+            - { name: validator.constraint_validator, alias: zikula.core_installer.authenticate_admin_login.validator }

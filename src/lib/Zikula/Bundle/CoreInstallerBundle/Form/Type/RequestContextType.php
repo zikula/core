@@ -11,28 +11,32 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Zikula\Bundle\CoreInstallerBundle\Form\AbstractType;
+use Zikula\Common\Translator\IdentityTranslator;
 
 class RequestContextType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->setTranslator($options['translator']);
         $builder
-            ->add('router:request_context:host', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => __('The root domain where you install Zikula, e.g. "example.com". Do not include subdirectories.'),
+            ->add('router:request_context:host', TextType::class, [
+                'label' => $this->__('The root domain where you install Zikula, e.g. "example.com". Do not include subdirectories.'),
                 'label_attr' => [
                     'class' => 'col-sm-3'
                 ],
-                'data' => __('localhost'),
+                'data' => $this->__('localhost'),
                 'constraints' => [
                     new NotBlank(),
                 ]
             ])
-            ->add('router:request_context:scheme', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => __('Please enter the scheme of where you install Zikula, can be either "http" or "https"'),
+            ->add('router:request_context:scheme', ChoiceType::class, [
+                'label' => $this->__('Please enter the scheme of where you install Zikula, can be either "http" or "https"'),
                 'label_attr' => [
                     'class' => 'col-sm-3'
                 ],
@@ -42,8 +46,8 @@ class RequestContextType extends AbstractType
                 ],
                 'data' => 'http',
             ])
-            ->add('router:request_context:base_url', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => __('Please enter the url path of the directory where you install Zikula, leave empty if you install it at the top level. Example: /my/sub-dir'),
+            ->add('router:request_context:base_url', TextType::class, [
+                'label' => $this->__('Please enter the url path of the directory where you install Zikula, leave empty if you install it at the top level. Example: /my/sub-dir'),
                 'label_attr' => [
                     'class' => 'col-sm-3'
                 ],
@@ -60,6 +64,7 @@ class RequestContextType extends AbstractType
     {
         $resolver->setDefaults([
             'csrf_protection' => false,
+            'translator' => new IdentityTranslator()
 //                'csrf_field_name' => '_token',
 //                // a unique key to help generate the secret token
 //                'intention'       => '_zk_bdcreds',

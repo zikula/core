@@ -23,6 +23,8 @@ use Zikula\Core\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
+use Zikula\SettingsModule\Form\Type\LocaleSettingsType;
+use Zikula\SettingsModule\Form\Type\MainSettingsType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use ZLanguage;
 
@@ -53,7 +55,7 @@ class SettingsController extends AbstractController
         $profileModules = $capabilityApi->getExtensionsCapableOf(CapabilityApiInterface::PROFILE);
         $messageModules = $capabilityApi->getExtensionsCapableOf(CapabilityApiInterface::MESSAGE);
 
-        $form = $this->createForm('Zikula\SettingsModule\Form\Type\MainSettingsType',
+        $form = $this->createForm(MainSettingsType::class,
             $this->getSystemVars(),
             [
                 'translator' => $this->get('translator.default'),
@@ -97,7 +99,7 @@ class SettingsController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm('Zikula\SettingsModule\Form\Type\LocaleSettingsType',
+        $form = $this->createForm(LocaleSettingsType::class,
             [
                 'multilingual' => (bool)$this->getSystemVar('multilingual'),
                 'languageurl' => $this->getSystemVar('languageurl'),
@@ -112,9 +114,8 @@ class SettingsController extends AbstractController
                 'timezones' => DateUtil::getTimezones()
             ]
         );
-        $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $data = $form->getData();
                 if (false == $data['multilingual']) {

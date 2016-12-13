@@ -44,30 +44,30 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
             $requiresUpgrade = $installed && version_compare($currentVersion, \ZikulaKernel::VERSION, '<');
         }
 
-        // can't use $request->get('_route') to get any of the following
-        // all these routes are hard-coded in xml files
-        $requestedUri = $request->getRequestUri();
-        $uriContainsInstall = strpos($requestedUri, '/install') !== false;
-        $uriContainsUpgrade = strpos($requestedUri, '/upgrade') !== false;
-        $uriContainsLogin = strpos($requestedUri, '/login') !== false;
-        $uriContainsDoc = strpos($requestedUri, '/installdoc') !== false;
-        $uriContainsWdt = strpos($requestedUri, '/_wdt') !== false;
-        $uriContainsProfiler = strpos($requestedUri, '/_profiler') !== false;
-        $uriContainsRouter = strpos($requestedUri, '/js/routing?callback=fos.Router.setData') !== false;
-        $doNotRedirect = $uriContainsProfiler || $uriContainsWdt || $uriContainsRouter || $request->isXmlHttpRequest();
+        $routeInfo = $this->container->get('router')->match($request->getPathInfo());
+        $containsInstall = $routeInfo['_route'] == 'install';
+        $containsUpgrade = $routeInfo['_route'] == 'upgrade';
+        $containsLogin = $routeInfo['_controller'] == 'Zikula\\UsersModule\\Controller\\AccessController::loginAction' || $routeInfo['_controller'] == 'Zikula\\UsersModule\\Controller\\AccessController::upgradeAdminLoginAction'; // @todo @deprecated at Core-2.0 remove later half
+        $containsDoc = $routeInfo['_route'] == 'doc';
+        $containsWdt =  $routeInfo['_route'] == '_wdt';
+        $containsProfiler = strpos($routeInfo['_route'], '_profiler') !== false;
+        $containsRouter = $routeInfo['_route'] == 'fos_js_routing_js';
+        $doNotRedirect = $containsProfiler || $containsWdt || $containsRouter || $request->isXmlHttpRequest();
 
         // check if Zikula Core is not installed
-        if (!$installed && !$uriContainsDoc && !$uriContainsInstall && !$doNotRedirect) {
+        if (!$installed && !$containsDoc && !$containsInstall && !$doNotRedirect) {
             $this->container->get('router')->getContext()->setBaseUrl($request->getBasePath()); // compensate for sub-directory installs
             $url = $this->container->get('router')->generate('install');
+            $this->loadLocales();
             $response = new RedirectResponse($url);
             $response->send();
             \System::shutDown();
         }
         // check if Zikula Core requires upgrade
-        if ($requiresUpgrade && !$uriContainsLogin && !$uriContainsDoc && !$uriContainsUpgrade && !$doNotRedirect) {
+        if ($requiresUpgrade && !$containsLogin && !$containsDoc && !$containsUpgrade && !$doNotRedirect) {
             $this->container->get('router')->getContext()->setBaseUrl($request->getBasePath()); // compensate for sub-directory installs
             $url = $this->container->get('router')->generate('upgrade');
+            $this->loadLocales();
             $response = new RedirectResponse($url);
             $response->send();
             \System::shutDown();
@@ -84,5 +84,22 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
                 ['onKernelRequest', 200]
             ],
         ];
+    }
+
+    /**
+     * Load locales from filesystem and setup jms_I18n_routing params
+     */
+    private function loadLocales()
+    {
+        // write locale choice to `config/dynamic/generated.yml`
+        $configDumper = $this->container->get('zikula.dynamic_config_dumper');
+        $config = $configDumper->getConfiguration('jms_i18n_routing');
+        $config['locales'] = \ZLanguage::getInstalledLanguages();
+        if (!in_array($this->container->getParameter('locale'), $config['locales'])) {
+            $this->container->setParameter('locale', $config['locales'][0]);
+            $config['default_locale'] = $config['locales'][0];
+        }
+        $configDumper->setConfiguration('jms_i18n_routing', $config);
+        $this->container->get('zikula.cache_clearer')->clear('symfony');
     }
 }

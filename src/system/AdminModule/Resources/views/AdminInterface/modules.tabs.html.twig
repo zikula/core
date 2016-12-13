@@ -1,15 +1,12 @@
 {{ pageAddAsset('stylesheet', zasset('@ZikulaAdminModule:css/style.css')) }}
 {% macro draw(links) %}
     {% for link in links %}
-        {% if link.links is defined %}
-            <li><a href="{{ link.url }}" title="{{ link.text }}"> <i class="fa fa-{{ link.icon }}"></i> {{ link.text }}</a>
+        <li>
+            <a href="{{ link.url }}" title="{{ link.text }}">{% if link.icon is defined %}<i class="fa fa-{{ link.icon }}"></i> {% endif %}{{ link.text|raw }}</a>
+            {% if link.links is defined %}
                 <ul class="dropdown-toggle">{{ _self.draw(link.links) }}</ul>
-            </li>
-        {% else %}
-            <li><a href="{{ link.url }}" title="{{ link.text }}">{% if link.icon is defined %}<i
-                        class="fa fa-{{ link.icon }}"></i> {% endif %}{{ link.text }}</a>
-            </li>
-        {% endif %}
+            {% endif %}
+        </li>
     {% endfor %}
 {% endmacro %}
 {% import _self as menu %}

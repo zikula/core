@@ -110,7 +110,7 @@ class AdministrationActionsHelper
         if ($hasModeratePermissionToUser) {
             $actions['sendconfirm'] = [
                 'url' => $this->router->generate('zikulazauthmodule_useradministration_sendconfirmation', ['mapping' => $mapping->getId()]),
-                'text' => $this->translator->__f('Send password recovery code to %sub%', ["%sub%" => $mapping->getUname()]),
+                'text' => $this->translator->__f('Send password recovery e-mail to %sub%', ["%sub%" => $mapping->getUname()]),
                 'icon' => 'key',
             ];
         }

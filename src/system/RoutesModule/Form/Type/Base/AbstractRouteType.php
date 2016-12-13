@@ -13,12 +13,19 @@
 namespace Zikula\RoutesModule\Form\Type\Base;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\ResetType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\RoutesModule\Entity\Factory\RouteFactory;
+use Zikula\RoutesModule\Form\Type\Field\MultiListType;
 use Zikula\RoutesModule\Helper\ListEntriesHelper;
 
 /**
@@ -87,7 +94,7 @@ abstract class AbstractRouteType extends AbstractType
             $choices[$entry['text']] = $entry['value'];
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
-        $builder->add('routeType', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+        $builder->add('routeType', ChoiceType::class, [
             'label' => $this->__('Route type') . ':',
             'empty_data' => 'additional',
             'attr' => [
@@ -99,7 +106,7 @@ abstract class AbstractRouteType extends AbstractType
             'multiple' => false,
             'expanded' => false
         ]);
-        $builder->add('replacedRouteName', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+        $builder->add('replacedRouteName', TextType::class, [
             'label' => $this->__('Replaced route name') . ':',
             'empty_data' => '',
             'attr' => [
@@ -108,7 +115,7 @@ abstract class AbstractRouteType extends AbstractType
             ],'required' => false,
             'max_length' => 255,
         ]);
-        $builder->add('bundle', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+        $builder->add('bundle', TextType::class, [
             'label' => $this->__('Bundle') . ':',
             'empty_data' => '',
             'attr' => [
@@ -117,7 +124,7 @@ abstract class AbstractRouteType extends AbstractType
             ],'required' => true,
             'max_length' => 255,
         ]);
-        $builder->add('controller', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+        $builder->add('controller', TextType::class, [
             'label' => $this->__('Controller') . ':',
             'empty_data' => '',
             'attr' => [
@@ -126,7 +133,7 @@ abstract class AbstractRouteType extends AbstractType
             ],'required' => true,
             'max_length' => 255,
         ]);
-        $builder->add('action', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+        $builder->add('action', TextType::class, [
             'label' => $this->__('Action') . ':',
             'empty_data' => '',
             'attr' => [
@@ -135,7 +142,7 @@ abstract class AbstractRouteType extends AbstractType
             ],'required' => true,
             'max_length' => 255,
         ]);
-        $builder->add('path', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+        $builder->add('path', TextType::class, [
             'label' => $this->__('Path') . ':',
             'empty_data' => '',
             'attr' => [
@@ -144,7 +151,7 @@ abstract class AbstractRouteType extends AbstractType
             ],'required' => true,
             'max_length' => 255,
         ]);
-        $builder->add('host', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+        $builder->add('host', TextType::class, [
             'label' => $this->__('Host') . ':',
             'empty_data' => '',
             'attr' => [
@@ -160,7 +167,7 @@ abstract class AbstractRouteType extends AbstractType
             $choices[$entry['text']] = $entry['value'];
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
-        $builder->add('schemes', 'Zikula\RoutesModule\Form\Type\Field\MultiListType', [
+        $builder->add('schemes', MultiListType::class, [
             'label' => $this->__('Schemes') . ':',
             'empty_data' => 'http',
             'attr' => [
@@ -179,7 +186,7 @@ abstract class AbstractRouteType extends AbstractType
             $choices[$entry['text']] = $entry['value'];
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
-        $builder->add('methods', 'Zikula\RoutesModule\Form\Type\Field\MultiListType', [
+        $builder->add('methods', MultiListType::class, [
             'label' => $this->__('Methods') . ':',
             'empty_data' => 'GET',
             'attr' => [
@@ -191,7 +198,7 @@ abstract class AbstractRouteType extends AbstractType
             'multiple' => true,
             'expanded' => false
         ]);
-        $builder->add('prependBundlePrefix', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+        $builder->add('prependBundlePrefix', CheckboxType::class, [
             'label' => $this->__('Prepend bundle prefix') . ':',
             'empty_data' => 'true',
             'attr' => [
@@ -199,7 +206,7 @@ abstract class AbstractRouteType extends AbstractType
                 'title' => $this->__('prepend bundle prefix ?')
             ],'required' => true,
         ]);
-        $builder->add('translatable', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+        $builder->add('translatable', CheckboxType::class, [
             'label' => $this->__('Translatable') . ':',
             'empty_data' => 'true',
             'attr' => [
@@ -207,7 +214,7 @@ abstract class AbstractRouteType extends AbstractType
                 'title' => $this->__('translatable ?')
             ],'required' => true,
         ]);
-        $builder->add('translationPrefix', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+        $builder->add('translationPrefix', TextType::class, [
             'label' => $this->__('Translation prefix') . ':',
             'empty_data' => '',
             'attr' => [
@@ -216,7 +223,7 @@ abstract class AbstractRouteType extends AbstractType
             ],'required' => false,
             'max_length' => 255,
         ]);
-        $builder->add('condition', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+        $builder->add('condition', TextType::class, [
             'label' => $this->__('Condition') . ':',
             'empty_data' => '',
             'attr' => [
@@ -225,7 +232,7 @@ abstract class AbstractRouteType extends AbstractType
             ],'required' => false,
             'max_length' => 255,
         ]);
-        $builder->add('description', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+        $builder->add('description', TextType::class, [
             'label' => $this->__('Description') . ':',
             'empty_data' => '',
             'attr' => [
@@ -234,7 +241,7 @@ abstract class AbstractRouteType extends AbstractType
             ],'required' => false,
             'max_length' => 255,
         ]);
-        $builder->add('sort', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+        $builder->add('sort', IntegerType::class, [
             'label' => $this->__('Sort') . ':',
             'empty_data' => '',
             'attr' => [
@@ -244,7 +251,7 @@ abstract class AbstractRouteType extends AbstractType
             'max_length' => 11,
             'scale' => 0
         ]);
-        $builder->add('group', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+        $builder->add('group', TextType::class, [
             'label' => $this->__('Group') . ':',
             'empty_data' => '',
             'attr' => [
@@ -263,7 +270,7 @@ abstract class AbstractRouteType extends AbstractType
      */
     public function addReturnControlField(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('repeatCreation', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+        $builder->add('repeatCreation', CheckboxType::class, [
             'mapped' => false,
             'label' => $this->__('Create another item after save'),
             'required' => false
@@ -279,8 +286,8 @@ abstract class AbstractRouteType extends AbstractType
     public function addSubmitButtons(FormBuilderInterface $builder, array $options)
     {
         foreach ($options['actions'] as $action) {
-            $builder->add($action['id'], 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $this->__(/** @ignore */$action['title']),
+            $builder->add($action['id'], SubmitType::class, [
+                'label' => $this->__(/** @Ignore */$action['title']),
                 'icon' => ($action['id'] == 'delete' ? 'fa-trash-o' : ''),
                 'attr' => [
                     'class' => $action['buttonClass'],
@@ -288,7 +295,7 @@ abstract class AbstractRouteType extends AbstractType
                 ]
             ]);
         }
-        $builder->add('reset', 'Symfony\Component\Form\Extension\Core\Type\ResetType', [
+        $builder->add('reset', ResetType::class, [
             'label' => $this->__('Reset'),
             'icon' => 'fa-refresh',
             'attr' => [
@@ -296,7 +303,7 @@ abstract class AbstractRouteType extends AbstractType
                 'formnovalidate' => 'formnovalidate'
             ]
         ]);
-        $builder->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+        $builder->add('cancel', SubmitType::class, [
             'label' => $this->__('Cancel'),
             'icon' => 'fa-times',
             'attr' => [

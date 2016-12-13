@@ -12,6 +12,9 @@
 namespace Zikula\ZAuthModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
@@ -21,7 +24,7 @@ class ImportUserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('file', 'Symfony\Component\Form\Extension\Core\Type\FileType', [
+            ->add('file', FileType::class, [
                 'label' => $options['translator']->__f('CSV file (Max. %sub%)', ['%sub%' => ini_get('post_max_size')]),
                 'help' => $options['translator']->__('The file must be utf8 encoded'),
                 'constraints' => [
@@ -41,7 +44,7 @@ class ImportUserType extends AbstractType
                     ])
                 ]
             ])
-            ->add('delimiter', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('delimiter', ChoiceType::class, [
                 'label' => $options['translator']->__('CSV delimiter'),
                 'choices' => [
                     ',' => ',',
@@ -49,12 +52,12 @@ class ImportUserType extends AbstractType
                     ':' => ':',
                 ]
             ])
-            ->add('upload', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('upload', SubmitType::class, [
                 'label' => $options['translator']->__('Upload'),
                 'icon' => 'fa-upload',
                 'attr' => ['class' => 'btn btn-success'],
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $options['translator']->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']

@@ -12,6 +12,8 @@
 namespace Zikula\MenuModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -26,8 +28,8 @@ class KeyValuePairType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('key', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', $options['key_options'])
-            ->add('value', 'Symfony\Component\Form\Extension\Core\Type\TextType', $options['value_options'])
+            ->add('key', ChoiceType::class, $options['key_options'])
+            ->add('value', TextType::class, $options['value_options'])
         ;
     }
 

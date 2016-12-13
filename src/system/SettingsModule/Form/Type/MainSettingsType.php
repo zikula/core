@@ -13,6 +13,13 @@ namespace Zikula\SettingsModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
@@ -59,18 +66,18 @@ class MainSettingsType extends AbstractType
 
         $builder
             ->add(
-                $builder->create('pagetitle', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+                $builder->create('pagetitle', TextType::class, [
                     'label' => $translator->__('Page title structure'),
                     'required' => false,
                     'help' => $translator->__('Possible tags: %pagetitle%, %sitename%, %modulename%')
                 ])
                 ->addModelTransformer($pageTitleLocalizationTransformer)
             )
-            ->add('adminmail', 'Symfony\Component\Form\Extension\Core\Type\EmailType', [
+            ->add('adminmail', EmailType::class, [
                 'label' => $translator->__('Admin\'s e-mail address'),
                 'constraints' => new Email()
             ])
-            ->add('siteoff', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('siteoff', ChoiceType::class, [
                 'label' => $translator->__('Disable site'),
                 'expanded' => true,
                 'choices' => [
@@ -78,20 +85,20 @@ class MainSettingsType extends AbstractType
                     $translator->__('No') => 0,
                 ]
             ])
-            ->add('siteoffreason', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+            ->add('siteoffreason', TextareaType::class, [
                 'label' => $translator->__('Reason for disabling site'),
                 'required' => false
             ])
-            ->add('startController', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('startController', TextType::class, [
                 'label' => $translator->__('Start Controller'),
                 'required' => false
             ])
-            ->add('startargs', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('startargs', TextType::class, [
                 'label' => $translator->__('Start function arguments'),
                 'required' => false,
                 'help' => $translator->__('Separate with & for example:') . ' <code>foo=2&bar=5</code>'
             ])
-            ->add('entrypoint', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('entrypoint', TextType::class, [
                 'label' => $translator->__('Site entry point (front controller)'),
                 'constraints' => new Callback([
                     'callback' => function ($data, ExecutionContextInterface $context) use ($translator) {
@@ -106,31 +113,31 @@ class MainSettingsType extends AbstractType
                     }
                 ])
             ])
-            ->add('shorturlsstripentrypoint', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('shorturlsstripentrypoint', CheckboxType::class, [
                 'label' => $translator->__('Strip entry point (front controller) from URLs'),
                 'required' => false
             ])
-            ->add('useCompression', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('useCompression', CheckboxType::class, [
                 'label' => $translator->__('Activate compression'),
                 'required' => false
             ])
-            ->add('profilemodule', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('profilemodule', ChoiceType::class, [
                 'label' => $translator->__('Module used for managing user profiles'),
                 'choices' => $options['profileModules'],
                 'placeholder' => $translator->__('No profile module'),
                 'required' => false
             ])
-            ->add('messagemodule', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('messagemodule', ChoiceType::class, [
                 'label' => $translator->__('Module used for private messaging'),
                 'choices' => $options['messageModules'],
                 'placeholder' => $translator->__('No message module'),
                 'required' => false
             ])
-            ->add('ajaxtimeout', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add('ajaxtimeout', IntegerType::class, [
                 'label' => $translator->__('Time-out for Ajax connections')
             ])
             ->add(
-                $builder->create('permasearch', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+                $builder->create('permasearch', TextType::class, [
                     'label' => $translator->__('List to search for'),
                     'constraints' => new Callback([
                         'callback' => function ($data, ExecutionContextInterface $context) use ($translator) {
@@ -143,19 +150,19 @@ class MainSettingsType extends AbstractType
                 ->addModelTransformer($spaceReplaceCallbackTransformer)
             )
             ->add(
-                $builder->create('permareplace', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+                $builder->create('permareplace', TextType::class, [
                     'label' => $translator->__('List to replace with')
                 ])
                 ->addModelTransformer($spaceReplaceCallbackTransformer)
             )
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('save', SubmitType::class, [
                 'label' => $translator->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
@@ -165,19 +172,19 @@ class MainSettingsType extends AbstractType
         ;
         foreach ($options['languages'] as $languageCode => $language) {
             $builder
-                ->add('sitename_' . $languageCode, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+                ->add('sitename_' . $languageCode, TextType::class, [
                     'label' => $translator->__('Site name')
                 ])
-                ->add('slogan_' . $languageCode, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+                ->add('slogan_' . $languageCode, TextType::class, [
                     'label' => $translator->__('Description line')
                 ])
-                ->add('defaultpagetitle_' . $languageCode, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+                ->add('defaultpagetitle_' . $languageCode, TextType::class, [
                     'label' => $translator->__('Default page title')
                 ])
-                ->add('defaultmetadescription_' . $languageCode, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+                ->add('defaultmetadescription_' . $languageCode, TextType::class, [
                     'label' => $translator->__('Default meta description')
                 ])
-                ->add('metakeywords_' . $languageCode, 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+                ->add('metakeywords_' . $languageCode, TextareaType::class, [
                     'label' => $translator->__('Default meta keywords')
                 ])
             ;

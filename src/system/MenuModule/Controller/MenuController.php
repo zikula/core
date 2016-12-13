@@ -14,11 +14,14 @@ namespace Zikula\MenuModule\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\MenuModule\Entity\MenuItemEntity;
+use Zikula\MenuModule\Form\Type\DeleteMenuItemType;
+use Zikula\MenuModule\Form\Type\MenuItemType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -111,17 +114,17 @@ class MenuController extends AbstractController
         if (!isset($menuItemEntity)) {
             $menuItemEntity = new MenuItemEntity();
         }
-        $form = $this->createForm('Zikula\MenuModule\Form\Type\MenuItemType', $menuItemEntity, [
+        $form = $this->createForm(MenuItemType::class, $menuItemEntity, [
             'translator' => $this->get('translator.default'),
         ]);
-        $form->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+        $form->add('save', SubmitType::class, [
             'label' => $this->__('Save'),
             'icon' => 'fa-check',
             'attr' => [
                 'class' => 'btn btn-success'
             ]
         ])
-        ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+        ->add('cancel', SubmitType::class, [
             'label' => $this->__('Cancel'),
             'icon' => 'fa-times',
             'attr' => [
@@ -167,7 +170,9 @@ class MenuController extends AbstractController
         if (!$this->hasPermission('ZikulaMenuModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-        $form = $this->createForm('Zikula\MenuModule\Form\Type\DeleteMenuItemType', ['entity' => $menuItemEntity], [
+        $form = $this->createForm(DeleteMenuItemType::class, [
+            'entity' => $menuItemEntity
+        ], [
             'translator' => $this->get('translator.default'),
         ]);
 

@@ -6,8 +6,8 @@
     {{ __f('Someone with the IP address %1$s has just requested the account information at %2$s associated with this e-mail address.', {"%1$s": app.request.server.get('REMOTE_ADDR'), "%2$s": getModVar('ZConfig', 'sitename')}) }}
 {% endif %}
 
-{{ __f('The user name for your account is: %1s', {"%sub%": uname}) }}
+{{ __f('The user name for your account is: %user%', {"%user%": uname}) }}
 
-{% if not requestedByAdmin %}{{ __('If the request was not made by you then you don\'t need to take any action.') }} {% endif %}
+{% if not requestedByAdmin %}{{ __('If the request was not made by you you don\'t need to worry.') }} {% endif %}
 {{ __('You are the only recipient of this message, and your user name has not been sent to any other e-mail address.') }}
 {% if not requestedByAdmin %} {{ __('You can just delete this message.') }}{% endif %}

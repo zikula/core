@@ -13,6 +13,10 @@ namespace Zikula\SearchModule\Form\Type;
 
 use ModUtil;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -29,7 +33,7 @@ class ConfigType extends AbstractType
         $translator = $options['translator'];
 
         $builder
-            ->add('itemsperpage', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add('itemsperpage', IntegerType::class, [
                 'label' => $translator->__('Items per page'),
                 'empty_data' => 10,
                 'scale' => 0,
@@ -38,13 +42,13 @@ class ConfigType extends AbstractType
                     'min' => 1
                 ]
             ])
-            ->add('limitsummary', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add('limitsummary', IntegerType::class, [
                 'label' => $translator->__('Number of characters to display in item summaries'),
                 'empty_data' => 255,
                 'scale' => 0,
                 'max_length' => 5
             ])
-            ->add('plugins', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('plugins', ChoiceType::class, [
                 'label' => $translator->__('Disabled plugins'),
                 'label_attr' => ['class' => 'checkbox-inline'],
                 'empty_data' => [],
@@ -52,22 +56,22 @@ class ConfigType extends AbstractType
                 'expanded' => true,
                 'multiple' => true
             ])
-            ->add('opensearch_enabled', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('opensearch_enabled', CheckboxType::class, [
                 'label' => $translator->__('Enable OpenSearch'),
                 'required' => false
             ])
-            ->add('opensearch_adult_content', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('opensearch_adult_content', CheckboxType::class, [
                 'label' => $translator->__('This page contains adult content'),
                 'required' => false
             ])
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('save', SubmitType::class, [
                 'label' => $translator->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [

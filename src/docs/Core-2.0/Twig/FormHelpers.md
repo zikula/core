@@ -31,26 +31,26 @@ When using `ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.
 
 Help text can be a simple text value. Input groups must be an array with the position as key and the content as value.
 
-    ->add('foo', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+    ->add('foo', TextType::class, [
         'help' => 'Foo help text.',
         'input_group' => ['left' => '<i class="fa fa-rocket"></i>', 'right' => 'some text']
     ])
 
 It is also possible to have multiple help text elements using an array:
 
-    ->add('foo', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+    ->add('foo', TextType::class, [
         'help' => ['Foo help text.', 'Bar another text.']
     ])
 
 Alert texts must be an array with the keys as the text and the value as the type:
 
-    ->add('foo', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+    ->add('foo', TextType::class, [
         'alert' => ['Foo alert text.' => 'warning', 'Bar alert text.' => 'danger']
     ])
 
 When using `ZikulaFormExtensionBundle:Form:form_div_layout.html.twig` you can specify an 'icon' parameter to button form elements. 
 
-    ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+    ->add('save', SubmitType::class, [
         'label' => $options['translator']->__('Save'),
         'icon' => 'fa-check',
         'attr' => ['class' => 'btn btn-success']

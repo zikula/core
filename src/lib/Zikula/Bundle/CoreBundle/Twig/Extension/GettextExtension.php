@@ -60,16 +60,6 @@ class GettextExtension extends \Twig_Extension
     }
 
     /**
-     * Returns the name of the extension.
-     *
-     * @return string The extension name
-     */
-    public function getName()
-    {
-        return 'zikula_gettext';
-    }
-
-    /**
      * @see __()
      */
     public function __(array $context, $message, $domain = null, $locale = null)
@@ -121,7 +111,7 @@ class GettextExtension extends \Twig_Extension
      * Translator context functions
      *
      * @todo Define how this should work
-     * @link https://www.gnu.org/software/gettext/manual/html_node/Contexts.html
+     * @see https://www.gnu.org/software/gettext/manual/html_node/Contexts.html
      */
 
     /**

@@ -69,16 +69,6 @@ class ExtensionsExtension extends \Twig_Extension
     }
 
     /**
-     * Returns the name of the extension.
-     *
-     * @return string The extension name
-     */
-    public function getName()
-    {
-        return 'zikulaextensionsmodule';
-    }
-
-    /**
      * Returns a list of functions to add to the existing list.
      *
      * @return array An array of functions
@@ -153,7 +143,7 @@ class ExtensionsExtension extends \Twig_Extension
         $actions = [];
         switch ($extension->getState()) {
             case ExtensionApi::STATE_ACTIVE:
-                if (!ZikulaKernel::isCoreModule($extension->getName())) {
+                if ($extension->getName() == 'ZikulaPageLockModule' || !ZikulaKernel::isCoreModule($extension->getName())) {
                     $actions[] = [
                         'url' => $this->router->generate('zikulaextensionsmodule_module_deactivate', ['id' => $extension->getId(), 'csrftoken' => $csrfToken]),
                         'icon' => 'minus-circle text-danger',

@@ -18,7 +18,7 @@ Or to check if the current user is logged in:
 
 The class makes the following methods available:
 
-    - public function isLoggedIn()
-    - public function get($key)
+    - isLoggedIn()
+    - get($key)
 
 The `get` method can be used to acquire any property of the UserEntity.
