@@ -225,6 +225,16 @@ class UserEntity extends EntityAccess
     }
 
     /**
+     * get the username of the user
+     *
+     * @return string the user's name
+     */
+    public function getUsername()
+    {
+        return $this->getUname();
+    }
+
+    /**
      * set the uname for the user
      *
      * @param string $uname the user's uname
