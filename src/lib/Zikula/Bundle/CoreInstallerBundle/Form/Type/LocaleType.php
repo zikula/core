@@ -29,7 +29,7 @@ class LocaleType extends AbstractType
                     'class' => 'col-sm-3'
                 ],
                 'choices' => $options['choices'],
-                'data' => $options['choice']
+                'data' => $options['choice'],
             ])
         ;
     }
