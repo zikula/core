@@ -57,7 +57,7 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
                 return [$this->user]; // must return an array of users.
             }));
         $this->session = $this
-            ->getMockBuilder('Zikula_Session')
+            ->getMockBuilder('\Symfony\Component\HttpFoundation\Session\SessionInterface')
             ->disableOriginalConstructor()
             ->getMock();
         $this->translator = $this
