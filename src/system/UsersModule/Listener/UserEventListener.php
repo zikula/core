@@ -23,7 +23,7 @@ use Zikula\UsersModule\Constant as UsersConstant;
 class UserEventListener implements EventSubscriberInterface
 {
     /**
-     * @var \Zikula_Session
+     * @var SessionInterface
      */
     private $session;
 

@@ -133,12 +133,13 @@ class CoreExtension extends \Twig_Extension
         $result = '';
         $total_messages = [];
         $messageTypeMap = [
-            \Zikula_Session::MESSAGE_ERROR => 'danger',
-            \Zikula_Session::MESSAGE_WARNING => 'warning',
-            \Zikula_Session::MESSAGE_STATUS => 'success',
+            'error' => 'danger',
+            'warning' => 'warning',
+            'status' => 'success',
             'danger' => 'danger',
             'success' => 'success',
             'info' => 'info'
+            // @todo provide some class constants to use instead of direct strings
         ];
 
         foreach ($messageTypeMap as $messageType => $bootstrapClass) {
