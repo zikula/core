@@ -11,14 +11,12 @@
 
 namespace Zikula\GroupsModule\Entity\Repository;
 
-use Doctrine\Common\Collections\Selectable;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityRepository;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
 
-class GroupRepository extends EntityRepository implements GroupRepositoryInterface, ObjectRepository, Selectable
+class GroupRepository extends EntityRepository implements GroupRepositoryInterface
 {
     /**
      * @var TranslatorInterface
@@ -74,8 +72,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
      */
     public function getGroups($filters = [], $exclusions = [], $sorting = [], $limit = 0, $offset = 0)
     {
-        $qb = $this->createQueryBuilder('tbl')
-            ->select('tbl');
+        $qb = $this->createQueryBuilder('tbl');
 
         // add clauses for where
         if (count($filters) > 0) {
@@ -123,7 +120,6 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     public function findAllAndIndexBy($indexField)
     {
         return $this->createQueryBuilder('g')
-            ->select('g')
             ->indexBy('g', 'g.' . $indexField)
             ->getQuery()
             ->getResult();
@@ -159,9 +155,8 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
             return null;
         }
 
-        $qb = $this->createQueryBuilder('g')
-            ->select('g')
-            ->where($qb->expr()->eq('g.name', ':gname'))
+        $qb = $this->createQueryBuilder('g');
+        $qb->where($qb->expr()->eq('g.name', ':gname'))
             ->setParameter('gname', $name);
 
         // Optional, used when modifying a group to check if there is

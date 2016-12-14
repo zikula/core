@@ -186,7 +186,7 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
     public function trans($id, array $parameters = [], $domain = null, $locale = null)
     {
         $domain = ($domain == null) ? $this->domain : $domain;
-        $locale = ($locale == null) ? $this->locale : $locale;
+        $locale = ($locale == null) ? $this->getLocale() : $locale;
 
         return parent::trans($id, $parameters, $domain, $locale);
     }
@@ -209,7 +209,7 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
     public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
     {
         $domain = ($domain == null) ? $this->domain : $domain;
-        $locale = ($locale == null) ? $this->locale : $locale;
+        $locale = ($locale == null) ? $this->getLocale() : $locale;
 
         return parent::transChoice($id, $number, $parameters, $domain, $locale);
     }
@@ -289,8 +289,8 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
     private function chooseMessage($m1, $m2, $n, $domain = null)
     {
         $message = $m2;
-        if (($this->locale == 'en') || ($domain == 'en')) {
-            $domains = $this->getCatalogue($this->locale)->getDomains();
+        if (($this->getLocale() == 'en') || ($domain == 'en')) {
+            $domains = $this->getCatalogue($this->getLocale())->getDomains();
             if (!in_array($this->domain, $domains)) {
                 $message = ($n == 1) ? $m1 : $m2;
             }

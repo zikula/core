@@ -101,6 +101,7 @@ class GroupEntity extends EntityAccess
      *      joinColumns={@ORM\JoinColumn(name="gid", referencedColumnName="gid", onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="uid", referencedColumnName="uid")}
      *      )
+     * @ORM\OrderBy({"uname" = "ASC"})
      **/
     private $users;
 
