@@ -35,6 +35,7 @@ class DbCredsType extends AbstractType
                     'class' => 'col-sm-3'
                 ],
                 'choices' => $this->getDbTypes(),
+                'choices_as_values' => true,
                 'data' => 'mysql'
             ])
             ->add('dbtabletype', ChoiceType::class, [
@@ -43,9 +44,10 @@ class DbCredsType extends AbstractType
                     'class' => 'col-sm-3'
                 ],
                 'choices' => [
-                    'innodb' => 'InnoDB',
-                    'myisam' => 'MyISAM'
+                    'InnoDB' => 'innodb',
+                    'MyISAM' => 'myisam'
                 ],
+                'choices_as_values' => true,
                 'data' => 'innodb'
             ])
             ->add('database_host', TextType::class, [
@@ -100,17 +102,17 @@ class DbCredsType extends AbstractType
     {
         $types = [];
         if (function_exists('mysql_connect') || function_exists('mysqli_connect')) {
-            $types['mysql'] = 'MySQL';
+            $types['MySQL'] = 'mysql';
         }
         if (function_exists('mssql_connect')) {
-            $types['mssql'] = 'MSSQL (alpha)';
+            $types['MSSQL (alpha)'] = 'mssql';
         }
         if (function_exists('OCIPLogon')) {
-            $types['oci8'] = 'Oracle (alpha) via OCI8 driver';
-            $types['oracle'] = 'Oracle (alpha) via Oracle driver';
+            $types['Oracle (alpha) via OCI8 driver'] = 'oci8';
+            $types['Oracle (alpha) via Oracle driver'] = 'oracle';
         }
         if (function_exists('pg_connect')) {
-            $types['postgres'] = 'PostgreSQL';
+            $types['PostgreSQL'] = 'postgres';
         }
 
         return $types;
