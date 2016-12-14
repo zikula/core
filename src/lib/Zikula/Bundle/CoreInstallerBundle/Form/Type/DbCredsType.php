@@ -35,7 +35,6 @@ class DbCredsType extends AbstractType
                     'class' => 'col-sm-3'
                 ],
                 'choices' => $this->getDbTypes(),
-                'choices_as_values' => true,
                 'data' => 'mysql'
             ])
             ->add('dbtabletype', ChoiceType::class, [
@@ -47,7 +46,6 @@ class DbCredsType extends AbstractType
                     'InnoDB' => 'innodb',
                     'MyISAM' => 'myisam'
                 ],
-                'choices_as_values' => true,
                 'data' => 'innodb'
             ])
             ->add('database_host', TextType::class, [

@@ -29,14 +29,12 @@ class FilterListType extends AbstractType
         $builder
             ->add('filterGroup', ChoiceType::class, [
                 'choices' => array_flip($options['groupChoices']),
-                'choices_as_values' => true,
                 'attr' => [
                     'class' => 'input-sm'
                 ]
             ])
             ->add('filterComponent', ChoiceType::class, [
                 'choices' => $options['componentChoices'],
-                'choices_as_values' => true,
                 'attr' => [
                     'class' => 'input-sm'
                 ]

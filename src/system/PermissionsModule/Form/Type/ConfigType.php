@@ -57,14 +57,12 @@ class ConfigType extends AbstractType
             ->add('rowview', ChoiceType::class, [
                 'label' => $translator->__('Minimum row height for permission rules list view (in pixels)'),
                 'empty_data' => 25,
-                'choices' => $amountChoices,
-                'choices_as_values' => true
+                'choices' => $amountChoices
             ])
             ->add('rowedit', ChoiceType::class, [
                 'label' => $translator->__('Minimum row height for rule editing view (in pixels)'),
                 'empty_data' => 35,
-                'choices' => $amountChoices,
-                'choices_as_values' => true
+                'choices' => $amountChoices
             ])
             ->add('save', SubmitType::class, [
                 'label' => $translator->__('Save'),

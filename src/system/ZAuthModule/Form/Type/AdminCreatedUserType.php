@@ -34,7 +34,6 @@ class AdminCreatedUserType extends AbstractType
         $builder
             ->add('method', ChoiceType::class, [
                 'label' => $options['translator']->__('Login method'),
-                'choices_as_values' => true,
                 'choices' => [
                     $options['translator']->__('User name or email') => ZAuthConstant::AUTHENTICATION_METHOD_EITHER,
                     $options['translator']->__('User name') => ZAuthConstant::AUTHENTICATION_METHOD_UNAME,

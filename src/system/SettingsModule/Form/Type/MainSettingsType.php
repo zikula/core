@@ -83,8 +83,7 @@ class MainSettingsType extends AbstractType
                 'choices' => [
                     $translator->__('Yes') => 1,
                     $translator->__('No') => 0,
-                ],
-                'choices_as_values' => true
+                ]
             ])
             ->add('siteoffreason', TextareaType::class, [
                 'label' => $translator->__('Reason for disabling site'),
@@ -125,14 +124,12 @@ class MainSettingsType extends AbstractType
             ->add('profilemodule', ChoiceType::class, [
                 'label' => $translator->__('Module used for managing user profiles'),
                 'choices' => $options['profileModules'],
-                'choices_as_values' => true,
                 'placeholder' => $translator->__('No profile module'),
                 'required' => false
             ])
             ->add('messagemodule', ChoiceType::class, [
                 'label' => $translator->__('Module used for private messaging'),
                 'choices' => $options['messageModules'],
-                'choices_as_values' => true,
                 'placeholder' => $translator->__('No message module'),
                 'required' => false
             ])

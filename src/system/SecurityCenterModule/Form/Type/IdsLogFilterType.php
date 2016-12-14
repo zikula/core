@@ -67,7 +67,6 @@ class IdsLogFilterType extends AbstractType
             'required' => false,
             'placeholder' => $translator->__('All'),
             'choices' => $choices,
-            'choices_as_values' => true,
             'multiple' => false,
             'expanded' => false
         ]);

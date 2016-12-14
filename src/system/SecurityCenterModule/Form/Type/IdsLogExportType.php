@@ -50,7 +50,6 @@ class IdsLogExportType extends AbstractType
                     $translator->__('Colon') . ' (:)' => 3,
                     $translator->__('Tab') => 4
                 ],
-                'choices_as_values' => true,
                 'multiple' => false,
                 'expanded' => false
             ])

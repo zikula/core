@@ -73,7 +73,6 @@ class TestType extends AbstractType
                     'HTML-formatted message' => 'html',
                     'Multi-part message' => 'multipart'
                 ],
-                'choices_as_values' => true,
                 'expanded' => false
             ])
             ->add('bodyHtml', TextareaType::class, [

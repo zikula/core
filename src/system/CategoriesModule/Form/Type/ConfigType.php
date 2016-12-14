@@ -52,7 +52,6 @@ class ConfigType extends AbstractType
                 'label' => $translator->__('Root category for user categories'),
                 'empty_data' => '/__SYSTEM__/Users',
                 'choices' => $this->getCategoryChoices($options['locale']),
-                'choices_as_values' => true,
                 'multiple' => false,
                 'expanded' => false,
                 'placeholder' => $translator->__('Choose one')

@@ -50,14 +50,12 @@ class CreateGroupType extends AbstractType
             ->add('gtype', ChoiceType::class, [
                 'label' => $translator->__('Type'),
                 'choices' => $typeChoices,
-                'choices_as_values' => true,
                 'expanded' => false,
                 'multiple' => false
             ])
             ->add('state', ChoiceType::class, [
                 'label' => $translator->__('State'),
                 'choices' => $stateChoices,
-                'choices_as_values' => true,
                 'expanded' => false,
                 'multiple' => false
             ])

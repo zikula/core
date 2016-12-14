@@ -50,8 +50,7 @@ class ImportUserType extends AbstractType
                     ',' => ',',
                     ';' => ';',
                     ':' => ':',
-                ],
-                'choices_as_values' => true
+                ]
             ])
             ->add('upload', SubmitType::class, [
                 'label' => $options['translator']->__('Upload'),

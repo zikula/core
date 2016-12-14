@@ -12,6 +12,7 @@
 namespace Zikula\CategoriesModule\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -51,23 +52,20 @@ class CategoriesType extends AbstractType
         $registries = $this->categoryRegistryApi->getModuleCategoryIds($options['module'], $options['entity'], 'id');
 
         foreach ($registries as $registryId => $categoryId) {
-            $builder->add(
-                'registry_' . $registryId,
-                'Symfony\Bridge\Doctrine\Form\Type\EntityType',
-                [
-                    'label_attr' => ['class' => 'hidden'],
-                    'attr' => $options['attr'],
-                    'required' => $options['required'],
-                    'multiple' => $options['multiple'],
-                    'class' => 'ZikulaCategoriesModule:CategoryEntity',
-                    'property' => 'name',
-                    'query_builder' => function (EntityRepository $repo) use ($categoryId) {
-                        //TODO: (move to)/use own entity repository
-                        return $repo->createQueryBuilder('e')
-                                    ->where('e.parent = :parentId')
-                                    ->setParameter('parentId', (int) $categoryId);
-                    }
-                ]);
+            $builder->add('registry_' . $registryId, EntityType::class, [
+                'label_attr' => ['class' => 'hidden'],
+                'attr' => $options['attr'],
+                'required' => $options['required'],
+                'multiple' => $options['multiple'],
+                'class' => 'ZikulaCategoriesModule:CategoryEntity',
+                'property' => 'name',
+                'query_builder' => function (EntityRepository $repo) use ($categoryId) {
+                    //TODO: (move to)/use own entity repository after CategoryUtil migration
+                    return $repo->createQueryBuilder('e')
+                                ->where('e.parent = :parentId')
+                                ->setParameter('parentId', (int) $categoryId);
+                }
+            ]);
         }
 
         $builder->addViewTransformer(new CategoriesCollectionTransformer($options), true);

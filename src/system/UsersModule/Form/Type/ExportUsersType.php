@@ -59,7 +59,6 @@ class ExportUsersType extends AbstractType
             ])
             ->add('delimiter', ChoiceType::class, [
                 'label' => $options['translator']->__('CSV delimiter'),
-                'choices_as_values' => true,
                 'choices' => [
                     ',' => ',',
                     ';' => ';',

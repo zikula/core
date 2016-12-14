@@ -36,11 +36,11 @@
         "zikula/profile-module": "dev-master",
 
 
-        "symfony/symfony": "2.8.*",
+        "symfony/symfony": "3.2.*",
         "symfony/swiftmailer-bundle": "2.3.*",
-        "symfony/monolog-bundle": "2.7.*",
+        "symfony/monolog-bundle": "2.11.*",
         "sensio/distribution-bundle": "5.0.*",
-        "sensio/framework-extra-bundle": "3.0.*",
+        "sensio/framework-extra-bundle": "dev-master",
         "sensio/generator-bundle": "3.0.*",
         "elao/web-profiler-extra-bundle" : "~2.3.3",
         "matthiasnoback/symfony-service-definition-validator": "1.2.*",
@@ -120,6 +120,12 @@
     "extra": {
         "symfony-app-dir": "src/app",
         "symfony-web-dir": "src/web",
+        "symfony-var-dir": "src/var",
+        "symfony-bin-dir": "src/bin",
+        "symfony-assets-install": "relative",
+        "incenteev-parameters": {
+            "file": "src/app/config/parameters.yml"
+        },
         "installer-paths": {
             "src/modules/{$vendor}/{$name}": ["type:zikula-module"],
             "src/themes/{$vendor}/{$name}": ["type:zikula-theme"]
@@ -145,6 +151,14 @@
         {
             "type": "vcs",
             "url": "https://github.com/corejavascript/typeahead.js"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/Guite/GeneratorBundle"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/Guite/Wizard"
         }
     ]
 }

@@ -40,8 +40,7 @@ class MenuItemType extends AbstractType
                 'entry_type' => KeyValuePairType::class,
                 'entry_options'  => [
                     'key_options' => [
-                        'choices' => $this->getKeyChoices(),
-                        'choices_as_values' => true,
+                        'choices' => $this->getKeyChoices()
                     ],
                     'value_options' => [
                         'required' => false,

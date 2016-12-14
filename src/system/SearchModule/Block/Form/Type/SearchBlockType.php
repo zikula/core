@@ -60,7 +60,6 @@ class SearchBlockType extends AbstractType
                 'required' => false,
                 'expanded' => true,
                 'multiple' => true,
-                'choices_as_values' => true,
                 'choices' => $options['activeModules'],
             ])
         ;

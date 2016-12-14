@@ -12,7 +12,7 @@ framework:
         strict_requirements: %kernel.debug%
     form:            ~
     csrf_protection: ~
-    validation:      { enabled: true, enable_annotations: true, api: auto }
+    validation:      { enable_annotations: true }
     templating:
         engines: ['twig']
     assets:

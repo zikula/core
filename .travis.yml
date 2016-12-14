@@ -30,7 +30,7 @@ install:
     - cd src
 
     # test the installer
-    - php app/console zikula:install:start -n --database_user=root --database_name=zk_test --password=12345678 --email=admin@example.com --router:request_context:host=localhost
+    - php app/console zikula:install:start -n --database_user=root --database_name=zk_test --password=12345678 --email=admin@example.com --router:request_context:host=localhost -vvv
     - php app/console zikula:install:finish -vvv
 
 # We cannot install Apache2 for now, because this requires sudo mode in which composer takes too long to install the depencencies.
