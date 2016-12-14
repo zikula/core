@@ -29,7 +29,7 @@
 /src/vendor/
 /src/web/*
 /src/ztemp/
-
+/src/var/*
 /.vagrant
 
 !/test_dbs/*.sql
