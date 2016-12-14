@@ -30,6 +30,7 @@ class LocaleType extends AbstractType
                 ],
                 'choices' => $options['choices'],
                 'data' => $options['choice'],
+                'choices_as_values' => true
             ])
         ;
     }
