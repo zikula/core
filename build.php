@@ -6,7 +6,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Helper\ProgressHelper;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Filesystem\Filesystem;
@@ -119,14 +119,13 @@ class PurgeVendorsCommand extends Command
             exit(1);
         }
 
-        /** @var ProgressHelper $progress */
-        $progress = $this->getHelperSet()->get('progress');
-        $progress->start($output, 4);
+        $progress = new ProgressBar($output, 4);
+        $progress->start();
 
         self::cleanVendors($dir, $progress);
     }
 
-    public static function cleanVendors($dir, ProgressHelper $progress)
+    public static function cleanVendors($dir, ProgressBar $progress)
     {
         $filesystem = new Filesystem();
 
@@ -175,14 +174,13 @@ class FixAutoloaderCommand extends Command
             exit(1);
         }
 
-        /** @var ProgressHelper $progress */
-        $progress = $this->getHelperSet()->get('progress');
-        $progress->start($output, 3);
+        $progress = new ProgressBar($output, 3);
+        $progress->start();
 
         self::fix($dir, $progress);
     }
 
-    public static function fix($dir, ProgressHelper $progress)
+    public static function fix($dir, ProgressBar $progress)
     {
         // fix paths in composer autoloader files removing src/ from paths
         $composerFiles = [
@@ -235,9 +233,8 @@ class BuildPackageCommand extends Command
             exit(1);
         }
 
-        /** @var ProgressHelper $progress */
-        $progress = $this->getHelperSet()->get('progress');
-        $progress->start($output, 17);
+        $progress = new ProgressBar($output, 17);
+        $progress->start();
 
         $filesystem = new Filesystem();
 
