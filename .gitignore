@@ -34,3 +34,6 @@
 
 !/test_dbs/*.sql
 /src/lib/Zikula/Bundle/CoreBundle/Tests/Functional/cache/
+
+#for working between master and 1.4 branches
+/src/var/
