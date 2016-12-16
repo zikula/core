@@ -28,7 +28,7 @@ class DoctrinePass implements CompilerPassInterface
         $definition = new Definition('Doctrine\ORM\Mapping\Driver\AnnotationDriver', [new Reference('doctrine.annotation_reader')]);
         $container->setDefinition('doctrine.annotation_driver', $definition);
 
-        $definition = new Definition('Doctrine\ORM\Mapping\Driver\DriverChain');
+        $definition = new Definition('Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain');
         $container->setDefinition('doctrine.driver_chain', $definition);
 
         $definition = new Definition('Zikula\Core\Doctrine\ExtensionsManager', [new Reference('doctrine.eventmanager'), new Reference('service_container')]);
