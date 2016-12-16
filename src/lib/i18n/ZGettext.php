@@ -215,18 +215,17 @@ class ZGettext
                 'reader' => null
             ];
         }
-        $textDomain = &$_this->textDomains[$locale][$category][$domain];
 
-        if (!$textDomain['reader']) {
-            //$path = realpath($textDomain['path']."$locale/$categorypath/$domain.mo");
+        if (!$_this->textDomains[$locale][$category][$domain]['reader']) {
+            //$path = realpath($_this->textDomains[$locale][$category][$domain]['path']."$locale/$categorypath/$domain.mo");
             // hard coding the LC type due to strange differences on various platforms
-            $path = realpath($textDomain['path']."$locale/LC_MESSAGES/$domain.mo");
+            $path = realpath($_this->textDomains[$locale][$category][$domain]['path']."$locale/LC_MESSAGES/$domain.mo");
             $reader = new StreamReader_CachedFile($path);
-            $textDomain['reader'] = new ZMO($reader, $cache);
-            $codeset = (isset($textDomain['codeset'])) ? $textDomain['codeset'] : ((version_compare(\PHP_VERSION, '5.6.0', '<')) ? ini_get('mbstring.internal_encoding') : ini_get('default_charset'));
-            $textDomain['reader']->setEncoding($codeset);
+            $_this->textDomains[$locale][$category][$domain]['reader'] = new ZMO($reader, $cache);
+            $codeset = (isset($_this->textDomains[$locale][$category][$domain]['codeset'])) ? $_this->textDomains[$locale][$category][$domain]['codeset'] : ((version_compare(\PHP_VERSION, '5.6.0', '<')) ? ini_get('mbstring.internal_encoding') : ini_get('default_charset'));
+            $_this->textDomains[$locale][$category][$domain]['reader']->setEncoding($codeset);
         }
 
-        return $textDomain['reader'];
+        return $_this->textDomains[$locale][$category][$domain]['reader'];
     }
 }
