@@ -1,6 +1,4 @@
 parameters:
-    zikula_core.internal.doctrine_connector.class: Zikula\Bundle\CoreBundle\EventListener\DoctrineListener
-
     zikula_core.internal.token.storage.class: Zikula\Core\Token\Storage\SessionStorage
     zikula_core.internal.token.generator.class: Zikula\Core\Token\Generator
     zikula_core.internal.token.validator.class: Zikula\Core\Token\Validator
@@ -25,12 +23,6 @@ services:
 
     zikula_core.common.markdown_extra_parser:
         class: %zikula_core.common.markdown_extra.class%
-
-    zikula_core.internal.doctrine_init:
-        class: %zikula_core.internal.doctrine_connector.class%
-        arguments: ["@service_container"]
-        tags:
-            - { name: kernel.event_subscriber }
 
     zikula_core.internal.token.storage:
         class: %zikula_core.internal.token.storage.class%
