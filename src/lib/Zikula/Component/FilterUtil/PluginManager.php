@@ -125,13 +125,12 @@ class PluginManager
      */
     private function registerPlugin($k)
     {
-        $plugin = &$this->plugins[$k];
-        if ($plugin instanceof JoinInterface) {
-            $plugin->addJoinsToQuery();
+        if ($this->plugins[$k] instanceof JoinInterface) {
+            $this->plugins[$k]->addJoinsToQuery();
         }
 
-        if ($plugin instanceof BuildInterface) {
-            $ops = $plugin->getOperators();
+        if ($this->plugins[$k] instanceof BuildInterface) {
+            $ops = $this->plugins[$k]->getOperators();
             if (isset($ops) && is_array($ops)) {
                 foreach ($ops as $op => $fields) {
                     $flds = [];
@@ -147,7 +146,7 @@ class PluginManager
             }
         }
 
-        if ($plugin instanceof ReplaceInterface) {
+        if ($this->plugins[$k] instanceof ReplaceInterface) {
             $this->replaces[] = $k;
         }
     }
