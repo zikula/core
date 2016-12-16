@@ -30,6 +30,8 @@ CHANGELOG - ZIKULA 1.4.x
     - afarkas/webshim installed at 1.16.0
     - sensio/distribution-bundle updated from 5.0.14 to 5.0.15
     - symfony updated from 2.8.14 to 2.8.15
+    - underscore updated from 1.4.3 to 1.8.3
+    - underscore.string updated from 2.3.0 to 3.3.4
 
 * 1.4.4 (2016-12-08)
 
