@@ -382,8 +382,7 @@ class Zikula_Workflow_Parser
      */
     public function characterData($parser, $data)
     {
-        $value = &$this->workflow['value'];
-        $value .= $data;
+        $this->workflow['value'] .= $data;
 
         return true;
     }
