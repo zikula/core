@@ -140,7 +140,8 @@ class PermissionController extends AbstractController
             throw new AccessDeniedException();
         }
         $permOrder = $request->request->get('permorder');
-        for ($cnt = 0; $cnt < count($permOrder); $cnt++) {
+        $amountOfPermOrderValues = count($permOrder);
+        for ($cnt = 0; $cnt < $amountOfPermOrderValues; $cnt++) {
             $permission = $this->get('doctrine')->getRepository('ZikulaPermissionsModule:PermissionEntity')->find($permOrder[$cnt]);
             $permission['sequence'] = $cnt + 1;
         }

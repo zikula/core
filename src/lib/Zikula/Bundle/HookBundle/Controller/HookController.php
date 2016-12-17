@@ -116,9 +116,9 @@ class HookController extends Controller
         if ($isProvider && !empty($providerAreas)) {
             /** @var ExtensionEntity[] $hooksubscribers */
             $hooksubscribers = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf(CapabilityApiInterface::HOOK_SUBSCRIBER);
-            $total_hooksubscribers = count($hooksubscribers);
-            $total_available_subscriber_areas = 0;
-            for ($i = 0; $i < $total_hooksubscribers; $i++) {
+            $amountOfHookSubscribers = count($hooksubscribers);
+            $amountOfAvailableSubscriberAreas = 0;
+            for ($i = 0; $i < $amountOfHookSubscribers; $i++) {
                 $hooksubscribers[$i] = $hooksubscribers[$i]->toArray();
                 // don't allow subscriber and provider to be the same
                 // unless subscriber has the ability to connect to it's own providers
@@ -142,7 +142,7 @@ class HookController extends Controller
                 // get the areas of the subscriber
                 $hooksubscriberAreas = $this->get('hook_dispatcher')->getSubscriberAreasByOwner($hooksubscribers[$i]['name']);
                 $hooksubscribers[$i]['areas'] = $hooksubscriberAreas;
-                $total_available_subscriber_areas += count($hooksubscriberAreas);
+                $amountOfAvailableSubscriberAreas += count($hooksubscriberAreas);
 
                 // and get the titles
                 $hooksubscriberAreasToTitles = [];
@@ -160,7 +160,7 @@ class HookController extends Controller
                 $hooksubscribers[$i]['areasToCategories'] = $hooksubscriberAreasToCategories;
             }
             $templateParameters['hooksubscribers'] = $hooksubscribers;
-            $templateParameters['total_available_subscriber_areas'] = $total_available_subscriber_areas;
+            $templateParameters['total_available_subscriber_areas'] = $$amountOfAvailableSubscriberAreas;
         } else {
             $templateParameters['total_available_subscriber_areas'] = 0;
         }
@@ -171,8 +171,9 @@ class HookController extends Controller
             // get current sorting
             $currentSortingTitles = [];
             $currentSorting = [];
-            $total_attached_provider_areas = 0;
-            for ($i = 0; $i < count($subscriberAreas); $i++) {
+            $amountOfAttachedProviderAreas = 0;
+            $amountOfSubscriberAreas = count($subscriberAreas);
+            for ($i = 0; $i < $amountOfSubscriberAreas; $i++) {
                 $sortsByArea = $this->get('hook_dispatcher')->getBindingsFor($subscriberAreas[$i]);
                 foreach ($sortsByArea as $sba) {
                     $areaname = $sba['areaname'];
@@ -187,7 +188,7 @@ class HookController extends Controller
                     }
 
                     array_push($currentSorting[$category][$subscriberAreas[$i]], $areaname);
-                    $total_attached_provider_areas++;
+                    $amountOfAttachedProviderAreas++;
 
                     // get hook provider from it's area
                     $sbaProviderModule = $this->get('hook_dispatcher')->getOwnerByArea($areaname);
@@ -205,14 +206,14 @@ class HookController extends Controller
             }
             $templateParameters['areasSorting'] = $currentSorting;
             $templateParameters['areasSortingTitles'] = $currentSortingTitles;
-            $templateParameters['total_attached_provider_areas'] = $total_attached_provider_areas;
+            $templateParameters['total_attached_provider_areas'] = $amountOfAttachedProviderAreas;
 
             // get available providers
             /** @var ExtensionEntity[] $hookproviders */
             $hookproviders = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf(CapabilityApiInterface::HOOK_PROVIDER);
-            $total_hookproviders = count($hookproviders);
-            $total_available_provider_areas = 0;
-            for ($i = 0; $i < $total_hookproviders; $i++) {
+            $amountOfHookProviders = count($hookproviders);
+            $amountOfAvailableProviderAreas = 0;
+            for ($i = 0; $i < $amountOfHookProviders; $i++) {
                 $hookproviders[$i] = $hookproviders[$i]->toArray();
                 // don't allow subscriber and provider to be the same
                 // unless subscriber has the ability to connect to it's own providers
@@ -237,7 +238,7 @@ class HookController extends Controller
                 // get the areas of the provider
                 $hookproviderAreas = $this->get('hook_dispatcher')->getProviderAreasByOwner($hookproviders[$i]['name']);
                 $hookproviders[$i]['areas'] = $hookproviderAreas;
-                $total_available_provider_areas += count($hookproviderAreas);
+                $amountOfAvailableProviderAreas += count($hookproviderAreas);
 
                 // and get the titles
                 $hookproviderAreasToTitles = [];
@@ -262,7 +263,7 @@ class HookController extends Controller
                 $hookproviders[$i]['areasAndCategories'] = $hookproviderAreasAndCategories;
             }
             $templateParameters['hookproviders'] = $hookproviders;
-            $templateParameters['total_available_provider_areas'] = $total_available_provider_areas;
+            $templateParameters['total_available_provider_areas'] = $amountOfAvailableProviderAreas;
         } else {
             $templateParameters['hookproviders'] = [];
         }
