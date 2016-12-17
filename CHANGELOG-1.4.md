@@ -28,8 +28,16 @@ CHANGELOG - ZIKULA 1.4.x
 
  - Vendor updates:
     - afarkas/webshim installed at 1.16.0
+    - composer installers updated from 1.0.25 to 1.2.0
+    - gedmo/doctrine-extensions updated from 2.4.24 to 2.4.25
+    - php-markdown updated from 1.6.0 to 1.7.0
     - sensio/distribution-bundle updated from 5.0.14 to 5.0.15
+    - sensio/framework-extra-bundle updated from 3.0.16 to 3.0.18
+    - sensio/generator-bundle updated from 3.0.11 to 3.1.2
     - symfony updated from 2.8.14 to 2.8.15
+    - symfony/swiftmailer-bundle updated from 2.3.11 to 2.4.0
+    - twig updated from 1.28.2 to 1.29.0
+    - twig-extensions updated from 1.3.0 to 1.4.1
     - underscore updated from 1.4.3 to 1.8.3
     - underscore.string updated from 2.3.0 to 3.3.4
 
@@ -88,7 +96,7 @@ CHANGELOG - ZIKULA 1.4.x
     - doctrine dbal updated from 2.5.4 to 2.5.5
     - doctrine orm updated from 2.5.4 to 2.5.5
     - font-awesome updated from 4.6.3 to 4.7.0
-    - gedmo/doctrine-extensions updates from 2.4.22 to 2.4.24
+    - gedmo/doctrine-extensions updated from 2.4.22 to 2.4.24
     - jquery.mmenu updated from 5.6.3 to 5.7.8
     - jquery ui updates from 1.12.0.1 to 1.12.1
     - justinrainbow/json-schema added in version 4.0.1
