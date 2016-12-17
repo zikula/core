@@ -115,6 +115,8 @@ class Zikula_Doctrine2_Entity_Category extends Zikula_EntityAccess
 
     public function __construct()
     {
+        @trigger_error('This category entity is deprecated.', E_USER_DEPRECATED);
+
         $this->attributes = new ArrayCollection();
     }
 

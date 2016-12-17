@@ -32,6 +32,8 @@ class ValidationUtil
      */
     public static function validateField($objectType, $object, $field, $required, $cmp_op, $cmp_value, $err_msg, $callback = null)
     {
+        @trigger_error('ValidationUtil is deprecated. please use Symfony validator instead.', E_USER_DEPRECATED);
+
         if (!is_array($object)) {
             throw new \Exception(__f('%1s: %2s is not an array.', ['ValidationUtil::validateField', 'object']));
         }
@@ -133,6 +135,8 @@ class ValidationUtil
      */
     public static function validateFieldByArray($object, $validationControl)
     {
+        @trigger_error('ValidationUtil is deprecated. please use Symfony validator instead.', E_USER_DEPRECATED);
+
         $objType = $validationControl['objectType'];
         $field = $validationControl['field'];
         $req = $validationControl['required'];
@@ -165,6 +169,8 @@ class ValidationUtil
      */
     public static function validateObject($objectType, $object, $validationControls)
     {
+        @trigger_error('ValidationUtil is deprecated. please use Symfony validator instead.', E_USER_DEPRECATED);
+
         $rc = true;
 
         foreach ($validationControls as $vc) {
@@ -200,6 +206,8 @@ class ValidationUtil
      */
     public static function validateObjectPlain($objectType, $object, $validationArray)
     {
+        @trigger_error('ValidationUtil is deprecated. please use Symfony validator instead.', E_USER_DEPRECATED);
+
         $validationControls = [];
 
         $vc = [];

@@ -22,6 +22,8 @@ class JCSSUtil
      */
     public static function getJSConfig()
     {
+        @trigger_error('JCSSUtil is deprecated. please use Twig and asset merger instead.', E_USER_DEPRECATED);
+
         $return = '';
         $config = [
             'entrypoint' => System::getVar('entrypoint', 'index.php'),
@@ -72,6 +74,8 @@ class JCSSUtil
      */
     public static function prepareJCSS($combine = false, $cache_dir = null, $themeinfo = [], $isAdminController = false)
     {
+        @trigger_error('JCSSUtil is deprecated. please use Twig and asset merger instead.', E_USER_DEPRECATED);
+
         $combine = $combine && is_writable($cache_dir);
 
         // get page vars
@@ -131,6 +135,8 @@ class JCSSUtil
      */
     public static function prepareStylesheets($stylesheets, $themeinfo = [], $isAdminController = false)
     {
+        @trigger_error('JCSSUtil is deprecated. please use Twig and asset merger instead.', E_USER_DEPRECATED);
+
         if (ThemeUtil::getVar('noCoreCss', false)) {
             $initStyle = null;
         } else {
@@ -189,6 +195,8 @@ class JCSSUtil
      */
     public static function prepareJavascripts($javascripts)
     {
+        @trigger_error('JCSSUtil is deprecated. please use Twig and asset merger instead.', E_USER_DEPRECATED);
+
         $sm = ServiceUtil::getManager();
         $javascripts = is_array($javascripts) ? $javascripts : [];
         array_unshift($javascripts, 'jquery', $sm->getParameter('zikula.javascript.bootstrap.min.path'), 'javascript/helpers/bootstrap-zikula.js');
@@ -232,6 +240,8 @@ class JCSSUtil
      */
     public static function getJSGettext()
     {
+        @trigger_error('JCSSUtil is deprecated. please use Twig and asset merger instead.', E_USER_DEPRECATED);
+
         $jsgettext = PageUtil::getVar('jsgettext');
         if (!empty($jsgettext)) {
             $params = [
@@ -267,6 +277,8 @@ class JCSSUtil
      */
     private static function resolveDependencies($javascripts, &$resolved = [])
     {
+        @trigger_error('JCSSUtil is deprecated. please use Twig and asset merger instead.', E_USER_DEPRECATED);
+
         $coreScripts = self::scriptsMap();
         $withDeps = [];
         foreach ($javascripts as $script) {
@@ -299,6 +311,8 @@ class JCSSUtil
      */
     public static function getScriptName($script)
     {
+        @trigger_error('JCSSUtil is deprecated. please use Twig and asset merger instead.', E_USER_DEPRECATED);
+
         $script = self::handleLegacy($script);
         $coreScripts = self::scriptsMap();
         $_script = strtolower($script);
@@ -325,6 +339,8 @@ class JCSSUtil
      */
     private static function handleLegacy($script)
     {
+        @trigger_error('JCSSUtil is deprecated. please use Twig and asset merger instead.', E_USER_DEPRECATED);
+
         // Handle legacy references to non-minimised scripts.
         if (strpos($script, 'javascript/livepipe/') === 0) {
             $script = 'livepipe';
@@ -378,6 +394,8 @@ class JCSSUtil
      */
     public static function scriptsMap()
     {
+        @trigger_error('JCSSUtil is deprecated. please use Twig and asset merger instead.', E_USER_DEPRECATED);
+
         $scripts = [
             'prototype' => [
                 'path' => 'javascript/ajax/proto_scriptaculous.combined.min.js',

@@ -79,6 +79,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
      */
     public function setup()
     {
+        @trigger_error('Legacy form system is deprecated, please use Symfony forms instead.', E_USER_DEPRECATED);
     }
 
     /**
@@ -211,6 +212,8 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
      */
     public function initialize(Zikula_Form_View $view)
     {
+        @trigger_error('Legacy form system is deprecated, please use Symfony forms instead.', E_USER_DEPRECATED);
+
         return true;
     }
 

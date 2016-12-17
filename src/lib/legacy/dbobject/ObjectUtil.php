@@ -17,7 +17,7 @@
 class ObjectUtil
 {
     /**
-     * Add standard PN architecture fields to the table definition.
+     * Add standard architecture fields to the table definition.
      *
      * @param array  &$columns   The column list from the tables structure for the current table
      * @param string $col_prefix Colum prefix (deprecated). Default ''
@@ -26,6 +26,8 @@ class ObjectUtil
      */
     public static function addStandardFieldsToTableDefinition(&$columns, $col_prefix = '')
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         // ensure correct handling of prefix with and without underscore
         if ($col_prefix) {
             $plen = strlen($col_prefix);
@@ -45,7 +47,7 @@ class ObjectUtil
     }
 
     /**
-     * Generate the SQL to create the standard PN architecture fields.
+     * Generate the SQL to create the standard architecture fields.
      *
      * @param array $columns The column list from the PNTables structure for the current table
      *
@@ -53,6 +55,8 @@ class ObjectUtil
      */
     public static function generateCreateSqlForStandardFields($columns)
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $sql = "$columns[obj_status] CHAR(1)  NOT NULL DEFAULT 'A',
                 $columns[cr_date]    DATETIME NOT NULL DEFAULT '1970-01-01 00:00:00',
                 $columns[cr_uid]     INTEGER  NOT NULL DEFAULT '0',
@@ -63,7 +67,7 @@ class ObjectUtil
     }
 
     /**
-     * Generate the ADODB DD field descruptors for the standard PN architecture fields.
+     * Generate the ADODB datadict field descruptors for the standard architecture fields.
      *
      * @param array &$columns The column list from the PNTables structure for the current table
      *
@@ -71,6 +75,8 @@ class ObjectUtil
      */
     public static function addStandardFieldsToTableDataDefinition(&$columns)
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $columns['obj_status'] = "C(1) NOTNULL DEFAULT 'A'";
         $columns['cr_date'] = "T NOTNULL DEFAULT '1970-01-01 00:00:00'";
         $columns['cr_uid'] = "I NOTNULL DEFAULT '0'";
@@ -81,7 +87,7 @@ class ObjectUtil
     }
 
     /**
-     * Generate the ADODB datadict entries to create the standard PN architecture fields.
+     * Generate the ADODB datadict entries to create the standard architecture fields.
      *
      * @param string $table The table to add standard fields using ADODB dictionary method
      *
@@ -89,6 +95,8 @@ class ObjectUtil
      */
     public static function generateCreateDataDictForStandardFields($table)
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $dbtables = DBUtil::getTables();
         $columns = $dbtables["{$table}_column"];
         $sql = ",
@@ -102,7 +110,7 @@ class ObjectUtil
     }
 
     /**
-     * Set the standard PN architecture fields for object creation/insert.
+     * Set the standard architecture fields for object creation/insert.
      *
      * @param array   &$obj           The object we need to set the standard fields on
      * @param boolean $preserveValues Whether or not to preserve value fields which have a valid value set (optional) (default=false)
@@ -112,6 +120,8 @@ class ObjectUtil
      */
     public static function setStandardFieldsOnObjectCreate(&$obj, $preserveValues = false, $idcolumn = 'id')
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!is_array($obj)) {
             throw new \Exception(__f('%s called on a non-object', 'ObjectUtil::setStandardFieldsOnObjectCreate'));
 
@@ -135,7 +145,7 @@ class ObjectUtil
     }
 
     /**
-     * Set the standard PN architecture fields to sane values for an object update.
+     * Set the standard architecture fields to sane values for an object update.
      *
      * @param array   &$obj           The object we need to set the standard fields on
      * @param boolean $preserveValues Whether or not to preserve value fields which have a valid value set (optional) (default=false)
@@ -144,6 +154,8 @@ class ObjectUtil
      */
     public static function setStandardFieldsOnObjectUpdate(&$obj, $preserveValues = false)
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!is_array($obj)) {
             throw new \Exception(__f('%s called on a non-object', 'ObjectUtil::setStandardFieldsOnObjectUpdate'));
 
@@ -169,6 +181,8 @@ class ObjectUtil
      */
     public static function removeStandardFieldsFromObject(&$obj)
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         unset($obj['obj_status']);
         unset($obj['cr_date']);
         unset($obj['cr_uid']);
@@ -179,7 +193,7 @@ class ObjectUtil
     }
 
     /**
-     * Create an empty object: all fields known via pntables are set to null
+     * Create an empty object: all fields known via tables array are set to null
      *
      * @param array $tablename The system tablename registered in the dbtables array
      *
@@ -187,6 +201,8 @@ class ObjectUtil
      */
     public static function createEmptyObject($tablename)
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!$tablename) {
             return LogUtil::registerError('Invalid [tablename] received');
         }
@@ -219,6 +235,8 @@ class ObjectUtil
      */
     public static function getField($obj, $field, $default = null)
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (isset($obj[$field])) {
             return $obj[$field];
         }
@@ -227,7 +245,7 @@ class ObjectUtil
     }
 
     /**
-     * Create an object of the reuqested type and set the cr_date and cr_uid fields.
+     * Create an object of the requested type and set the cr_date and cr_uid fields.
      *
      * @param string $type The type of the object to create
      *
@@ -235,6 +253,8 @@ class ObjectUtil
      */
     public static function createObject($type)
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $dbtable = DBUtil::getTables();
         if (!$dbtable[$type]) {
             throw new \Exception(__f('%1$s: Unable to reference object type [%2$s]', ['ObjectUtil::createObject', $type]));
@@ -259,6 +279,8 @@ class ObjectUtil
      */
     public static function diff($obj1, $obj2)
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!is_array($obj1)) {
             throw new \Exception(__f('%1$s: %2$s is not an object.', ['ObjectUtil::diff', 'object1']));
         }
@@ -281,6 +303,8 @@ class ObjectUtil
      */
     public static function diffExtended($a1, $a2, $detail = false, $recurse = true)
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $res = [];
 
         if (!is_array($a1) || !is_array($a2)) {
@@ -337,6 +361,8 @@ class ObjectUtil
      */
     public static function moveField($obj, $tablename, $direction = 'up', $field = 'position', $idcolumn = 'id', $field2 = '', $value2 = '')
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!is_array($obj)) {
             throw new \Exception(__f('%1$s: %2$s is not an array.', ['ObjectUtil::moveField', 'object']));
         }
@@ -408,6 +434,8 @@ class ObjectUtil
      */
     public static function retrieveObjectAttributes($obj, $type, $idcolumn = 'id')
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!$obj) {
             throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['object', __CLASS__ . '::' . __FUNCTION__]));
         }
@@ -442,6 +470,8 @@ class ObjectUtil
      */
     public static function expandObjectWithAttributes(&$obj, $type, $idcolumn = 'id')
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!isset($obj[$idcolumn]) || !$obj[$idcolumn]) {
             throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', [$type, $idcolumn]));
         }
@@ -470,6 +500,8 @@ class ObjectUtil
      */
     public static function storeObjectAttributes($obj, $type, $idcolumn = 'id', $wasUpdateQuery = true)
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!$obj) {
             throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['object', __CLASS__ . '::' . __FUNCTION__]));
         }
@@ -543,6 +575,8 @@ class ObjectUtil
      */
     public static function updateObjectAttributes($obj, $type, $idcolumn = 'id', $force = false)
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!$obj) {
             throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['object', __CLASS__ . '::' . __FUNCTION__]));
         }
@@ -604,6 +638,8 @@ class ObjectUtil
      */
     public static function deleteObjectAttributes(&$obj, $type, $idcolumn = 'id')
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!$obj) {
             throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['object', __CLASS__ . '::' . __FUNCTION__]));
         }
@@ -654,6 +690,8 @@ class ObjectUtil
      */
     public static function deleteObjectSingleAttribute($objID, $type, $attributename)
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!$objID) {
             throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['objectid', __CLASS__ . '::' . __FUNCTION__]));
         }
@@ -698,6 +736,8 @@ class ObjectUtil
      */
     public static function deleteAllObjectTypeAttributes($type)
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $dbtables = DBUtil::getTables();
         $table = $dbtables['objectdata_attributes'];
         $column = $dbtables['objectdata_attributes_column'];
@@ -725,6 +765,8 @@ class ObjectUtil
      */
     public static function deleteObjectTypeAttribute($type, $attributeName)
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $dbtables = DBUtil::getTables();
         $table = $dbtables['objectdata_attributes'];
         $column = $dbtables['objectdata_attributes_column'];
@@ -750,6 +792,8 @@ class ObjectUtil
      */
     public static function getSystemAttributes($sort = 'attribute_name')
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $dbtables = DBUtil::getTables();
         $table = $dbtables['objectdata_attributes'];
         $column = $dbtables['objectdata_attributes_column'];
@@ -773,6 +817,8 @@ class ObjectUtil
      */
     public static function getAttributeCount($atrName)
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $dbtables = DBUtil::getTables();
         $column = $dbtables['objectdata_attributes_column'];
 
@@ -792,6 +838,8 @@ class ObjectUtil
      */
     public static function fixObjectMetaData(&$obj, $tablename, $idcolumn)
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!isset($obj['__META__']) || !is_array($obj['__META__'])) {
             $obj['__META__'] = [];
         }
@@ -822,6 +870,8 @@ class ObjectUtil
      */
     public static function insertObjectMetaData(&$obj, $tablename, $idcolumn = 'id')
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $meta = self::fixObjectMetaData($obj, $tablename, $idcolumn);
         if ($meta['obj_id'] > 0) {
             $result = DBUtil::insertObject($meta, 'objectdata_meta');
@@ -849,6 +899,8 @@ class ObjectUtil
      */
     public static function updateObjectMetaData(&$obj, $tablename, $idcolumn = 'id')
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!isset($obj['__META__']['id'])) {
             return false;
         }
@@ -877,6 +929,8 @@ class ObjectUtil
      */
     public static function deleteObjectMetaData(&$obj, $tablename, $idcolumn = 'id')
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         self::fixObjectMetaData($obj, $tablename, $idcolumn);
 
         if (isset($obj['__META__']['id']) && $obj['__META__']['id']) {
@@ -913,6 +967,8 @@ class ObjectUtil
      */
     public static function retrieveObjectMetaData(&$obj, $tablename, $idcolumn = 'id')
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $meta = self::fixObjectMetaData($obj, $tablename, $idcolumn);
         if ($meta['obj_id'] > 0) {
             $dbtables = DBUtil::getTables();
@@ -940,6 +996,8 @@ class ObjectUtil
      */
     public static function expandObjectWithMeta(&$obj, $tablename, $idcolumn = 'id')
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!isset($obj[$idcolumn]) || !$obj[$idcolumn]) {
             throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', [$type, $idcolumn]));
         }
@@ -966,6 +1024,8 @@ class ObjectUtil
      */
     public static function storeObjectCategories($obj, $tablename, $idcolumn = 'id', $wasUpdateQuery = true)
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!$obj) {
             throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['object', __CLASS__ . '::' . __FUNCTION__]));
         }
@@ -1051,6 +1111,8 @@ class ObjectUtil
      */
     public static function deleteObjectCategories($obj, $tablename, $idcolumn = 'obj_id')
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!ModUtil::dbInfoLoad('ZikulaCategoriesModule')) {
             return false;
         }
@@ -1077,6 +1139,8 @@ class ObjectUtil
      */
     public static function retrieveObjectCategoriesList($obj, $tablename, $idcolumn = 'id')
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         static $cache;
 
         $key = $tablename . '_' . $obj[$idcolumn];
@@ -1122,6 +1186,8 @@ class ObjectUtil
      */
     public static function retrieveObjectCategoriesObjects($obj, $tablename, $idcolumn = 'id', $assocKey = '', $enablePermissionCheck = true)
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $catlist = self::retrieveObjectCategoriesList($obj, $tablename, $idcolumn);
         if (!$catlist) {
             return [];
@@ -1154,6 +1220,8 @@ class ObjectUtil
      */
     public static function expandObjectArrayWithCategories(&$objArray, $tablename, $idcolumn = 'id', $field = 'id', $locale = 'en')
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!ModUtil::dbInfoLoad('ZikulaCategoriesModule')) {
             return false;
         }
@@ -1247,6 +1315,8 @@ class ObjectUtil
      */
     public static function expandObjectWithCategories(&$obj, $tablename, $idcolumn = 'id', $assocKey = '')
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!isset($obj[$idcolumn]) || !$obj[$idcolumn]) {
             throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', [$type, $idcolumn]));
         }
@@ -1277,6 +1347,8 @@ class ObjectUtil
      */
     public static function postProcessExpandedObjectArrayCategories(&$objArray, $rootCats, $includeRoot = false)
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!$objArray) {
             throw new \Exception(__f('Invalid object in %s', 'postProcessExpandedObjectArrayCategories'));
         }
@@ -1302,6 +1374,8 @@ class ObjectUtil
      */
     public static function postProcessExpandedObjectCategories(&$obj, $rootCatsIDs, $includeRoot = false)
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!$obj) {
             throw new \Exception(__f('Invalid object in %s', 'postProcessExpandedObjectCategories'));
         }
@@ -1339,6 +1413,8 @@ class ObjectUtil
      */
     private static function makeBC(&$obj)
     {
+        @trigger_error('ObjectUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         foreach ($obj as &$prop) {
             unset($prop['parent'], $prop['children']);
             $prop['attributes'] = isset($prop['attributes']) && ($prop['attributes'] instanceof \Doctrine\ORM\PersistentCollection) ? $prop['attributes']->toArray() : [];

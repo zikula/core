@@ -42,6 +42,8 @@ class Zikula_Session_LegacyHandler implements \SessionHandlerInterface
      */
     public function __construct($installed)
     {
+        @trigger_error('Old session storage is deprecated, please use Symfony session instead.', E_USER_DEPRECATED);
+
         $this->installed = $installed;
     }
 

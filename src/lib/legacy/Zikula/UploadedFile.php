@@ -27,6 +27,8 @@ class Zikula_UploadedFile extends \Symfony\Component\HttpFoundation\File\Uploade
      */
     public function offsetExists($offset)
     {
+        @trigger_error('Zikula_UploadedFile is deprecated, please use Symfony\'s UploadedFile instead.', E_USER_DEPRECATED);
+
         $value = $this->offsetGet($offset);
 
         return isset($value);
@@ -41,6 +43,8 @@ class Zikula_UploadedFile extends \Symfony\Component\HttpFoundation\File\Uploade
      */
     public function offsetGet($offset)
     {
+        @trigger_error('Zikula_UploadedFile is deprecated, please use Symfony\'s UploadedFile instead.', E_USER_DEPRECATED);
+
         LogUtil::log('Array Access to file properties is deprecated. Please use SPL methods.', E_USER_DEPRECATED);
 
         switch ($offset) {

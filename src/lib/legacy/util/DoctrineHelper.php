@@ -20,6 +20,8 @@ class DoctrineHelper
 {
     public static function createSchema(EntityManager $em, array $classes)
     {
+        @trigger_error('DoctrineHelper is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tool = new SchemaTool($em);
         $metaClasses = [];
         foreach ($classes as $class) {
@@ -34,6 +36,8 @@ class DoctrineHelper
 
     public static function dropSchema(EntityManager $em, array $classes)
     {
+        @trigger_error('DoctrineHelper is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tool = new SchemaTool($em);
         $metaClasses = [];
         foreach ($classes as $class) {
@@ -48,6 +52,8 @@ class DoctrineHelper
 
     public static function updateSchema(EntityManager $em, array $classes, $saveMode = true)
     {
+        @trigger_error('DoctrineHelper is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tool = new SchemaTool($em);
         $metaClasses = [];
         foreach ($classes as $class) {

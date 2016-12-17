@@ -23,6 +23,8 @@ class Zikula_Doctrine_Model_Category extends Doctrine_Record
      */
     public function setTableDefinition()
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $this->setTableName('categories_category');
 
         $this->hasColumn('id as id', 'integer', 4, ['primary' => true, 'autoincrement' => true]);

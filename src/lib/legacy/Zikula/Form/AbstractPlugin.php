@@ -252,6 +252,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      */
     public function setup()
     {
+        @trigger_error('Legacy form system is deprecated, please use Symfony forms instead.', E_USER_DEPRECATED);
     }
 
     /**
@@ -293,6 +294,8 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      */
     public function getId()
     {
+        @trigger_error('Legacy form system is deprecated, please use Symfony forms instead.', E_USER_DEPRECATED);
+
         return $this->id;
     }
 
@@ -383,6 +386,8 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      */
     public function readParameters(Zikula_Form_View $view, &$params)
     {
+        @trigger_error('Legacy form system is deprecated, please use Symfony forms instead.', E_USER_DEPRECATED);
+
         $varInfo = get_class_vars(get_class($this));
 
         // adds the zparameters to the $params if exists

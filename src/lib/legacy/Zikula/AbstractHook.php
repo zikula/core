@@ -46,6 +46,8 @@ class Zikula_AbstractHook extends Hook
      */
     public function getCaller()
     {
+        @trigger_error('Zikula_AbstractHook is deprecated, please use Hook bundle instead.', E_USER_DEPRECATED);
+
         return $this->caller;
     }
 
@@ -58,6 +60,8 @@ class Zikula_AbstractHook extends Hook
      */
     public function setCaller($caller)
     {
+        @trigger_error('Zikula_AbstractHook is deprecated, please use Hook bundle instead.', E_USER_DEPRECATED);
+
         $this->caller = $caller;
 
         return $this;
@@ -70,6 +74,8 @@ class Zikula_AbstractHook extends Hook
      */
     public function getId()
     {
+        @trigger_error('Zikula_AbstractHook is deprecated, please use Hook bundle instead.', E_USER_DEPRECATED);
+
         return $this->id;
     }
 
@@ -80,6 +86,8 @@ class Zikula_AbstractHook extends Hook
      */
     public function getAreaId()
     {
+        @trigger_error('Zikula_AbstractHook is deprecated, please use Hook bundle instead.', E_USER_DEPRECATED);
+
         return $this->areaId;
     }
 
@@ -92,6 +100,8 @@ class Zikula_AbstractHook extends Hook
      */
     public function setAreaId($areaId)
     {
+        @trigger_error('Zikula_AbstractHook is deprecated, please use Hook bundle instead.', E_USER_DEPRECATED);
+
         $this->areaId = $areaId;
 
         return $this;
@@ -104,6 +114,8 @@ class Zikula_AbstractHook extends Hook
      */
     public function stop()
     {
+        @trigger_error('Zikula_AbstractHook is deprecated, please use Hook bundle instead.', E_USER_DEPRECATED);
+
         $this->stopPropagation();
 
         return $this;
@@ -116,6 +128,8 @@ class Zikula_AbstractHook extends Hook
      */
     public function isStopped()
     {
+        @trigger_error('Zikula_AbstractHook is deprecated, please use Hook bundle instead.', E_USER_DEPRECATED);
+
         return $this->isPropagationStopped();
     }
 
@@ -128,6 +142,8 @@ class Zikula_AbstractHook extends Hook
      */
     public function setEventManager(Zikula_EventManagerInterface $eventManager)
     {
+        @trigger_error('Zikula_AbstractHook is deprecated, please use Hook bundle instead.', E_USER_DEPRECATED);
+
         $this->setDispatcher($eventManager);
     }
 
@@ -138,6 +154,8 @@ class Zikula_AbstractHook extends Hook
      */
     public function getEventManager()
     {
+        @trigger_error('Zikula_AbstractHook is deprecated, please use Hook bundle instead.', E_USER_DEPRECATED);
+
         return $this->getDispatcher();
     }
 }

@@ -73,6 +73,8 @@ class Zikula_Workflow
      */
     public function __construct($schema, $module)
     {
+        @trigger_error('Old workflow system is deprecated, please use Symfony workflows instead.', E_USER_DEPRECATED);
+
         // load workflow schema
         $schema = Zikula_Workflow_Util::loadSchema($schema, $module);
 

@@ -46,6 +46,8 @@ class Zikula_Session extends Session
      */
     public function hasStarted()
     {
+        @trigger_error('Zikula_Session is deprecated, please use Symfony session instead.', E_USER_DEPRECATED);
+
         return $this->isStarted();
     }
 
@@ -58,6 +60,8 @@ class Zikula_Session extends Session
      */
     public function expire()
     {
+        @trigger_error('Zikula_Session is deprecated, please use Symfony session instead.', E_USER_DEPRECATED);
+
         $this->invalidate();
     }
 
@@ -70,6 +74,8 @@ class Zikula_Session extends Session
      */
     public function regenerate()
     {
+        @trigger_error('Zikula_Session is deprecated, please use Symfony session instead.', E_USER_DEPRECATED);
+
         $this->migrate();
     }
 
@@ -83,6 +89,8 @@ class Zikula_Session extends Session
      */
     public function addMessage($type, $value)
     {
+        @trigger_error('Zikula_Session is deprecated, please use Symfony session instead.', E_USER_DEPRECATED);
+
         $this->getFlashBag()->add($type, $value);
     }
 
@@ -96,6 +104,8 @@ class Zikula_Session extends Session
      */
     public function getMessages($type, $default = [])
     {
+        @trigger_error('Zikula_Session is deprecated, please use Symfony session instead.', E_USER_DEPRECATED);
+
         return $this->getFlashBag()->get($type, $default);
     }
 
@@ -108,6 +118,8 @@ class Zikula_Session extends Session
      */
     public function hasMessages($type)
     {
+        @trigger_error('Zikula_Session is deprecated, please use Symfony session instead.', E_USER_DEPRECATED);
+
         return $this->getFlashBag()->has($type);
     }
 
@@ -120,6 +132,8 @@ class Zikula_Session extends Session
      */
     public function clearMessages($type = null)
     {
+        @trigger_error('Zikula_Session is deprecated, please use Symfony session instead.', E_USER_DEPRECATED);
+
         $this->getFlashBag()->get($type);
     }
 
@@ -136,6 +150,8 @@ class Zikula_Session extends Session
      */
     public function get($key, $default = null, $namespace = '/')
     {
+        @trigger_error('Zikula_Session is deprecated, please use Symfony session instead.', E_USER_DEPRECATED);
+
         return parent::get($key, $default);
     }
 
@@ -152,6 +168,8 @@ class Zikula_Session extends Session
      */
     public function set($key, $value, $namespace = '/')
     {
+        @trigger_error('Zikula_Session is deprecated, please use Symfony session instead.', E_USER_DEPRECATED);
+
         parent::set($key, $value);
     }
 
@@ -167,6 +185,8 @@ class Zikula_Session extends Session
      */
     public function del($key, $namespace = '/')
     {
+        @trigger_error('Zikula_Session is deprecated, please use Symfony session instead.', E_USER_DEPRECATED);
+
         parent::remove($key);
     }
 
@@ -182,6 +202,8 @@ class Zikula_Session extends Session
      */
     public function has($key, $namespace = '/')
     {
+        @trigger_error('Zikula_Session is deprecated, please use Symfony session instead.', E_USER_DEPRECATED);
+
         return parent::has($key);
     }
 
@@ -200,6 +222,8 @@ class Zikula_Session extends Session
      */
     public function clearNamespace($namespace)
     {
+        @trigger_error('Zikula_Session is deprecated, please use Symfony session instead.', E_USER_DEPRECATED);
+
         $this->remove($namespace);
     }
 }

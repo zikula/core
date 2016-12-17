@@ -28,6 +28,8 @@ abstract class Zikula_Request_AbstractRequest extends Request
      */
     public function getModuleName()
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         return FormUtil::getPassedValue('module', '');
     }
 
@@ -40,6 +42,8 @@ abstract class Zikula_Request_AbstractRequest extends Request
      */
     public function getControllerName()
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         return FormUtil::getPassedValue('func', '');
     }
 
@@ -52,6 +56,8 @@ abstract class Zikula_Request_AbstractRequest extends Request
      */
     public function getActionName()
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         return FormUtil::getPassedValue('type', '');
     }
 
@@ -68,6 +74,8 @@ abstract class Zikula_Request_AbstractRequest extends Request
      */
     public function addRequest($module, $controller, $action)
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         $this->requests->append([
             'module' => $module,
             'controller' => $controller,
@@ -84,6 +92,8 @@ abstract class Zikula_Request_AbstractRequest extends Request
      */
     public function getRequests()
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         return $this->requests;
     }
 
@@ -96,6 +106,8 @@ abstract class Zikula_Request_AbstractRequest extends Request
      */
     public function getArgs()
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         return $this->attributes->all();
     }
 
@@ -110,6 +122,8 @@ abstract class Zikula_Request_AbstractRequest extends Request
      */
     public function setArgs(array $args)
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         $this->attributes->$args;
     }
 
@@ -125,6 +139,8 @@ abstract class Zikula_Request_AbstractRequest extends Request
      */
     public function getArg($key, $default = null)
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         return $this->attributes->get($key, $default);
     }
 
@@ -140,6 +156,8 @@ abstract class Zikula_Request_AbstractRequest extends Request
      */
     public function setArg($key, $value)
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         $this->attributes->set($key, $value);
     }
 
@@ -154,6 +172,8 @@ abstract class Zikula_Request_AbstractRequest extends Request
      */
     public function hasArg($key)
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         return $this->attributes->has($key);
     }
 
@@ -168,6 +188,8 @@ abstract class Zikula_Request_AbstractRequest extends Request
      */
     public function unsetArg($key)
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         $this->attributes->remove($key);
     }
 }

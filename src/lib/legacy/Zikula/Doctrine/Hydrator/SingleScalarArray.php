@@ -48,6 +48,8 @@ class Zikula_Doctrine_Hydrator_SingleScalarArray extends Doctrine_Hydrator_Abstr
      */
     public function hydrateResultSet($stmt)
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         // setup aliases and assoc informations.
         reset($this->_queryComponents);
         $rootAlias = key($this->_queryComponents);

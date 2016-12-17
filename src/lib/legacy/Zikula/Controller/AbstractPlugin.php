@@ -45,6 +45,8 @@ abstract class Zikula_Controller_AbstractPlugin extends Zikula_AbstractControlle
      */
     public function __construct(Zikula_ServiceManager $serviceManager, Zikula_AbstractPlugin $plugin, array $options = [])
     {
+        @trigger_error('Plugins are deprecated, please use tagged services instead.', E_USER_DEPRECATED);
+
         $this->plugin = $plugin;
         parent::__construct($serviceManager, null, $options);
     }
@@ -58,6 +60,8 @@ abstract class Zikula_Controller_AbstractPlugin extends Zikula_AbstractControlle
      */
     protected function _configureBase($bundle = null)
     {
+        @trigger_error('Plugins are deprecated, please use tagged services instead.', E_USER_DEPRECATED);
+
         $this->systemBaseDir = realpath('.');
         $separator = (false === strpos(get_class($this), '_')) ? '\\' : '_';
         $parts = explode($separator, get_class($this));
@@ -85,6 +89,8 @@ abstract class Zikula_Controller_AbstractPlugin extends Zikula_AbstractControlle
      */
     protected function setView(Zikula_View $view = null)
     {
+        @trigger_error('Plugins are deprecated, please use tagged services instead.', E_USER_DEPRECATED);
+
         // please note the docblock param signature is deliberately different to the method signature - drak
         if (is_null($view)) {
             if ($this->plugin->getPluginType() == Zikula_AbstractPlugin::TYPE_MODULE) {
@@ -113,6 +119,8 @@ abstract class Zikula_Controller_AbstractPlugin extends Zikula_AbstractControlle
      */
     public function setPlugin(Zikula_AbstractPlugin $plugin)
     {
+        @trigger_error('Plugins are deprecated, please use tagged services instead.', E_USER_DEPRECATED);
+
         $this->plugin = $plugin;
     }
 }

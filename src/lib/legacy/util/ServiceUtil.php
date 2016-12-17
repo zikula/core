@@ -48,6 +48,8 @@ class ServiceUtil
      */
     public static function getManager(Zikula_Core $core = null)
     {
+        @trigger_error('ServiceUtil is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         if (self::$serviceManager) {
             return self::$serviceManager;
         }
@@ -59,11 +61,15 @@ class ServiceUtil
 
     public static function hasContainer()
     {
+        @trigger_error('ServiceUtil is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         return self::$serviceManager !== null;
     }
 
     public static function setContainer(ContainerInterface $container)
     {
+        @trigger_error('ServiceUtil is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         self::$serviceManager = $container;
     }
 
@@ -79,6 +85,8 @@ class ServiceUtil
      */
     public static function getService($id)
     {
+        @trigger_error('ServiceUtil is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         return self::getManager()->get($id);
     }
 
@@ -91,6 +99,8 @@ class ServiceUtil
      */
     public static function get($id)
     {
+        @trigger_error('ServiceUtil is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         return self::getManager()->get($id);
     }
 
@@ -107,6 +117,8 @@ class ServiceUtil
      */
     public static function registerPersistentService($id, Zikula_ServiceManager_Definition $definition, $shared = true)
     {
+        @trigger_error('ServiceUtil is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         $handlers = ModUtil::getVar(self::HANDLERS, 'definitions', []);
         $handlers[$id] = [
             'definition' => $definition,
@@ -126,6 +138,8 @@ class ServiceUtil
      */
     public static function unRegisterPersistentService($id)
     {
+        @trigger_error('ServiceUtil is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         $handlers = ModUtil::getVar(self::HANDLERS, 'definitions', false);
         if (!$handlers) {
             return;
@@ -145,6 +159,8 @@ class ServiceUtil
      */
     public static function loadPersistentServices()
     {
+        @trigger_error('ServiceUtil is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         $handlers = ModUtil::getVar(self::HANDLERS, 'definitions', []);
         if (!$handlers) {
             return;

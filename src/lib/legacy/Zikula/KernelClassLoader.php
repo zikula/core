@@ -46,6 +46,8 @@ class Zikula_KernelClassLoader
      */
     public function register($namespace, $path = '', $separator = '\\')
     {
+        @trigger_error('Zikula_KernelClassLoader is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         if (isset($this->namespaces[$namespace])) {
             throw new LogicException(sprintf('%s is already registered with this autoloader', $namespace));
         }
@@ -70,6 +72,8 @@ class Zikula_KernelClassLoader
      */
     public function unregister($namespace)
     {
+        @trigger_error('Zikula_KernelClassLoader is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         if (!isset($this->namespaces[$namespace])) {
             throw new LogicException(sprintf('%s is not registered with this autoloader', $namespace));
         }
@@ -86,6 +90,8 @@ class Zikula_KernelClassLoader
      */
     public function hasAutoloader($namespace)
     {
+        @trigger_error('Zikula_KernelClassLoader is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         return (bool)array_key_exists($namespace, $this->namespaces);
     }
 
@@ -98,6 +104,8 @@ class Zikula_KernelClassLoader
      */
     public function spl_autoload_register()
     {
+        @trigger_error('Zikula_KernelClassLoader is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         if (!$this->registered) {
             spl_autoload_register([$this, 'autoload']);
             $this->registered = true;
@@ -115,6 +123,8 @@ class Zikula_KernelClassLoader
      */
     public function spl_autoload_unregister()
     {
+        @trigger_error('Zikula_KernelClassLoader is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         if ($this->registered) {
             spl_autoload_unregister([$this, 'autoload']);
             $this->registered = false;
@@ -134,6 +144,8 @@ class Zikula_KernelClassLoader
      */
     public function getClassIncludePath($namespace, array $array, $class)
     {
+        @trigger_error('Zikula_KernelClassLoader is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         // execute only if namespace is empty or namespace+separator matches in the beginning of the requested class:
         // namespace 'Foo', class Another\BadFoo\Class should not match (namespace somewhere in path).
         // namespace 'Foo', class Foo\BadFoo\Class should match and become Foo/BadFoo/Class.php
@@ -166,6 +178,8 @@ class Zikula_KernelClassLoader
      */
     public function autoload($class)
     {
+        @trigger_error('Zikula_KernelClassLoader is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         foreach ($this->namespaces as $namespace => $array) {
             $file = $this->getClassIncludePath($namespace, $array, $class);
             if ($file) {

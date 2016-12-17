@@ -24,6 +24,8 @@ class RandomUtil
      */
     public static function getSeed()
     {
+        @trigger_error('RandomUtil is deprecated, please use Symfony or native PHP instead.', E_USER_DEPRECATED);
+
         $factor = 95717; // prime
         list($usec, $sec) = explode(" ", microtime());
 
@@ -40,6 +42,8 @@ class RandomUtil
      */
     public static function getInteger($floor, $ceil)
     {
+        @trigger_error('RandomUtil is deprecated, please use Symfony or native PHP instead.', E_USER_DEPRECATED);
+
         $diff = $ceil - $floor;
 
         $inc = mt_rand(0, $diff);
@@ -58,6 +62,8 @@ class RandomUtil
      */
     public static function getRandomString($length)
     {
+        @trigger_error('RandomUtil is deprecated, please use Symfony or native PHP instead.', E_USER_DEPRECATED);
+
         $res = '';
 
         while (strlen($res) < $length) {
@@ -85,6 +91,8 @@ class RandomUtil
      */
     public static function getString($minLen, $maxLen, $leadingCapital = true, $useUpper = true, $useLower = true, $useSpace = false, $useNumber = false, $useSpecial = false, $seed = false, $dontuse = null)
     {
+        @trigger_error('RandomUtil is deprecated, please use Symfony or native PHP instead.', E_USER_DEPRECATED);
+
         $rnd = '';
         $chars = '';
         $upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -145,6 +153,8 @@ class RandomUtil
      */
     public static function getStringForPassword($minLength = 5, $maxLength = null)
     {
+        @trigger_error('RandomUtil is deprecated, please use Symfony or native PHP instead.', E_USER_DEPRECATED);
+
         if (!is_numeric($minLength) || ((int)$minLength != $minLength) || ($minLength <= 0)) {
             return false;
         }
@@ -173,6 +183,8 @@ class RandomUtil
      */
     public static function getSentence($nWords, $dictArray)
     {
+        @trigger_error('RandomUtil is deprecated, please use Symfony or native PHP instead.', E_USER_DEPRECATED);
+
         if (!$dictArray) {
             throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['dictArray', 'RandomUtil::getSentence']));
         }
@@ -225,6 +237,8 @@ class RandomUtil
      */
     public static function getParagraphs($nParas, $dict = '', $irndS = 0, $irndW = 0, $startCustomary = false)
     {
+        @trigger_error('RandomUtil is deprecated, please use Symfony or native PHP instead.', E_USER_DEPRECATED);
+
         if (!$dict) {
             throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['dictionary', 'RandomUtil::getParagraphs']));
         }
@@ -277,6 +291,8 @@ class RandomUtil
      */
     public static function getDate($startDate, $endDate, $format = DATEFORMAT_FIXED)
     {
+        @trigger_error('RandomUtil is deprecated, please use Symfony or native PHP instead.', E_USER_DEPRECATED);
+
         $t1 = strtotime($startDate);
         $t2 = strtotime($endDate);
 
@@ -295,6 +311,8 @@ class RandomUtil
      */
     public static function getUserID()
     {
+        @trigger_error('RandomUtil is deprecated, please use Symfony or native PHP instead.', E_USER_DEPRECATED);
+
         $fa = DBUtil::selectFieldArray('users', 'uid');
         $pos = self::getInteger(0, count($fa));
 

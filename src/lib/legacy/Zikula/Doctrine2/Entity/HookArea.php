@@ -59,6 +59,11 @@ class Zikula_Doctrine2_Entity_HookArea
      */
     private $areaname;
 
+    public function __construct()
+    {
+        @trigger_error('This hook area entity is deprecated.', E_USER_DEPRECATED);
+    }
+
     /**
      * Get Row Id
      * @return integer

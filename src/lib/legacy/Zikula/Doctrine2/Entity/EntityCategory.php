@@ -45,6 +45,8 @@ abstract class Zikula_Doctrine2_Entity_EntityCategory extends Zikula_EntityAcces
                                 Zikula_Doctrine2_Entity_Category $category,
                                 $entity)
     {
+        @trigger_error('This entity category entity is deprecated.', E_USER_DEPRECATED);
+
         $this->categoryRegistryId = $registryId;
         $this->category = $category;
         $this->setEntity($entity);

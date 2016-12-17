@@ -69,6 +69,8 @@ class Zikula_Provider_AggregateItem
      */
     public function __construct($type, $description, $number, $controller, $method, array $args = [])
     {
+        @trigger_error('AggregateItem is deprecated.', E_USER_DEPRECATED);
+
         $this->type = (string)$type;
         $this->description = (string)$description;
         $this->number = (int)$number;

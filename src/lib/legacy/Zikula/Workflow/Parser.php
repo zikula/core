@@ -38,6 +38,8 @@ class Zikula_Workflow_Parser
      */
     public function __construct()
     {
+        @trigger_error('Old workflow system is deprecated, please use Symfony workflows instead.', E_USER_DEPRECATED);
+
         $this->workflow = ['state' => 'initial'];
 
         // create xml parser

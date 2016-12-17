@@ -202,6 +202,8 @@ class Zikula_Core
      */
     public function __construct($handlerDir = 'lib/EventHandlers')
     {
+        @trigger_error('Zikula_Core is deprecated.', E_USER_DEPRECATED);
+
         $this->handlerDir = $handlerDir;
         $this->baseMemory = memory_get_usage();
     }

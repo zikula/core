@@ -76,6 +76,8 @@ class PageUtil
      */
     public static function registerVar($varname, $multivalue = false, $default = null)
     {
+        @trigger_error('PageUtil is deprecated, please use asset bag instead.', E_USER_DEPRECATED);
+
         global $_pageVars;
 
         if (System::isLegacyMode()) {
@@ -125,6 +127,8 @@ class PageUtil
      */
     public static function resetVar($varname)
     {
+        @trigger_error('PageUtil is deprecated, please use asset bag instead.', E_USER_DEPRECATED);
+
         global $_pageVars;
 
         if (System::isLegacyMode()) {
@@ -182,6 +186,8 @@ class PageUtil
      */
     public static function getVar($varname, $default = null)
     {
+        @trigger_error('PageUtil is deprecated, please use asset bag instead.', E_USER_DEPRECATED);
+
         global $_pageVars;
 
         if (System::isLegacyMode() && in_array($varname, ['description', 'keywords', 'rawtext'])) {
@@ -246,6 +252,8 @@ class PageUtil
      */
     public static function setVar($varname, $value)
     {
+        @trigger_error('PageUtil is deprecated, please use asset bag instead.', E_USER_DEPRECATED);
+
         global $_pageVars;
 
         if (System::isLegacyMode()) {
@@ -306,6 +314,8 @@ class PageUtil
      */
     private static function fixJQueryThemesPath($path)
     {
+        @trigger_error('PageUtil is deprecated, please use asset bag instead.', E_USER_DEPRECATED);
+
         if (is_array($path)) {
             $return = [];
             foreach ($path as $key => $value) {
@@ -333,6 +343,8 @@ class PageUtil
      */
     public static function addVar($varname, $value, $features = 'forms')
     {
+        @trigger_error('PageUtil is deprecated, please use asset bag instead.', E_USER_DEPRECATED);
+
         if (empty($varname) || empty($value)) {
             throw new \InvalidArgumentException('empty parameter!');
         }
@@ -406,6 +418,8 @@ class PageUtil
      */
     public static function isHomepage()
     {
+        @trigger_error('PageUtil is deprecated, please use asset bag instead.', E_USER_DEPRECATED);
+
         $moduleGetName = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
 
         return empty($moduleGetName) ? true : false;

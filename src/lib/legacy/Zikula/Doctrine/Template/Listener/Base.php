@@ -26,6 +26,8 @@ abstract class Zikula_Doctrine_Template_Listener_Base extends Doctrine_Record_Li
      */
     protected function getTableFromEvent(Doctrine_Event $event)
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $treatedRecord = $event->getInvoker();
         if ($treatedRecord instanceof Doctrine_Record) {
             $recordClass = get_class($treatedRecord);
@@ -47,6 +49,8 @@ abstract class Zikula_Doctrine_Template_Listener_Base extends Doctrine_Record_Li
      */
     protected function getTableNameFromEvent(Doctrine_Event $event)
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tableRef = $this->getTableFromEvent($event);
         sscanf($tableRef->getTableName(), Doctrine_Manager::getInstance()->getAttribute(Doctrine::ATTR_TBLNAME_FORMAT), $tableName);
 
@@ -62,6 +66,8 @@ abstract class Zikula_Doctrine_Template_Listener_Base extends Doctrine_Record_Li
      */
     protected function getIdColumnFromEvent(Doctrine_Event $event)
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tableRef = $this->getTableFromEvent($event);
 
         $idColumn = $tableRef->getIdentifier();

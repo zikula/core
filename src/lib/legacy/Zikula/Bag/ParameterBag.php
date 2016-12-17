@@ -32,6 +32,8 @@ class Zikula_Bag_ParameterBag extends \Symfony\Component\HttpFoundation\Paramete
      */
     public function filter($key, $default = null, $deep = false, $filter = FILTER_DEFAULT, $options = [])
     {
+        @trigger_error('ParameterBag is deprecated, please use Symfony\'s ParameterBag instead.', E_USER_DEPRECATED);
+
         if (func_num_args() > 2) {
             if (is_bool(func_get_arg(2))) {
                 // usage is compatible with normal ParameterBag

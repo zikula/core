@@ -189,6 +189,8 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
      */
     public function __construct($bundle = null)
     {
+        @trigger_error('Zikula_AbstractVersion is deprecated.', E_USER_DEPRECATED);
+
         $this->systemBaseDir = realpath('.');
         if (null !== $bundle) {
             $this->name = $bundle->getName();

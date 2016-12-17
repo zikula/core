@@ -36,6 +36,8 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      */
     public function attachService($id, $service, $shared = true)
     {
+        @trigger_error('ServiceManager is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         $scope = $shared ? self::SCOPE_CONTAINER : self::SCOPE_PROTOTYPE;
         $this->set($id, $service, $scope);
 
@@ -58,6 +60,8 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      */
     public function detachService($id)
     {
+        @trigger_error('ServiceManager is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         $this->unregisterService($id);
     }
 
@@ -79,6 +83,8 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      */
     public function registerService($id, $definition, $shared = true)
     {
+        @trigger_error('ServiceManager is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         if (!($definition instanceof Zikula_ServiceManager_Definition) && !($definition instanceof \Symfony\Component\DependencyInjection\Definition)) {
             throw new InvalidArgumentException(sprintf('%s must be an instance of Zikula_ServiceManager_Definition or Symfony\Component\DependencyInjection\Definition', $definition));
         }
@@ -105,11 +111,15 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      */
     public function unregisterService($id)
     {
+        @trigger_error('ServiceManager is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         $this->removeDefinition($id);
     }
 
     public function get($id, $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE)
     {
+        @trigger_error('ServiceManager is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         if ($id === 'request' && isset($GLOBALS['__request'])) {
             return $GLOBALS['__request'];
         }
@@ -137,6 +147,8 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      */
     public function getService($id)
     {
+        @trigger_error('ServiceManager is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         return $this->get($id);
     }
 
@@ -152,6 +164,8 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      */
     public function hasService($id)
     {
+        @trigger_error('ServiceManager is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         return $this->has($id);
     }
 
@@ -164,6 +178,8 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      */
     public function listServices($prefix = '')
     {
+        @trigger_error('ServiceManager is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         $list = [];
         foreach ($this->getServiceIds() as $service) {
             if (empty($prefix) || strpos($service, $prefix) === 0) {
@@ -184,6 +200,8 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      */
     public function getArguments()
     {
+        @trigger_error('ServiceManager is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         return $this->getParameterBag()->all();
     }
 
@@ -199,6 +217,8 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      */
     public function setArguments(array $array)
     {
+        @trigger_error('ServiceManager is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         // todo $this->getParameterBag()->clear();
         foreach ($array as $key => $value) {
             $this->setParameter($key, $value);
@@ -217,6 +237,8 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      */
     public function hasArgument($id)
     {
+        @trigger_error('ServiceManager is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         return $this->hasParameter($id);
     }
 
@@ -233,6 +255,8 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      */
     public function setArgument($id, $value)
     {
+        @trigger_error('ServiceManager is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         $this->setParameter($id, $value);
     }
 
@@ -250,6 +274,8 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      */
     public function getArgument($id)
     {
+        @trigger_error('ServiceManager is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         return $this->getParameter($id);
     }
 
@@ -265,6 +291,8 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      */
     public function loadArguments(array $array)
     {
+        @trigger_error('ServiceManager is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         $this->setArguments($array);
     }
 
@@ -277,6 +305,8 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      */
     public function offsetGet($id)
     {
+        @trigger_error('ServiceManager is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         return $this->getArgument($id);
     }
 
@@ -290,6 +320,8 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      */
     public function offsetSet($id, $value)
     {
+        @trigger_error('ServiceManager is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         $this->setArgument($id, $value);
     }
 
@@ -302,6 +334,8 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      */
     public function offsetExists($id)
     {
+        @trigger_error('ServiceManager is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         return $this->hasArgument($id);
     }
 
@@ -314,6 +348,8 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      */
     public function offsetUnset($id)
     {
+        @trigger_error('ServiceManager is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         if ($this->hasArgument($id)) {
             $this->getParameterBag()->set($id, null);
         }

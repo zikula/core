@@ -103,6 +103,8 @@ abstract class Zikula_AbstractThemeVersion implements ArrayAccess
      */
     public function __construct($bundle)
     {
+        @trigger_error('Zikula_AbstractThemeVersion is deprecated.', E_USER_DEPRECATED);
+
         $this->name = $bundle->getName();
         $this->baseDir = $bundle->getPath();
         $this->domain = ZLanguage::getThemeDomain($this->name);

@@ -126,6 +126,8 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      */
     public function __construct(Zikula_ServiceManager $serviceManager, AbstractModule $bundle = null)
     {
+        @trigger_error('Zikula_AbstractBase is deprecated.', E_USER_DEPRECATED);
+
         $this->setContainer($serviceManager);
         $this->dispatcher = $this->getContainer()->get('event_dispatcher');
         $this->eventManager = $this->dispatcher;

@@ -30,6 +30,8 @@ class CookieUtil
      */
     public static function setCookie($name, $value = '', $expires = null, $path = null, $domain = null, $secure = null, $signed = true)
     {
+        @trigger_error('CookieUtil is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         if (!$name) {
             throw new \Exception(__f("Error! In 'setCookie', you must specify at least the cookie name '%s'.", DataUtil::formatForDisplay($name)));
         }
@@ -57,6 +59,8 @@ class CookieUtil
      */
     public static function getCookie($name, $signed = true, $default = '')
     {
+        @trigger_error('CookieUtil is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         $request = \ServiceUtil::get('request');
 
         if (!$request->cookies->has($name)) {
@@ -83,6 +87,8 @@ class CookieUtil
      */
     public static function deleteCookie($name)
     {
+        @trigger_error('CookieUtil is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         return self::setCookie($name, '', time());
     }
 }

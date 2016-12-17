@@ -104,7 +104,7 @@ class Zikula_Doctrine_Template_Listener_Attributable extends Zikula_Doctrine_Tem
      */
     public function postDelete(Doctrine_Event $event)
     {
-        $data = $event->getInvoker();
+       $data = $event->getInvoker();
         if (!isset($data['__ATTRIBUTES__'])) {
             return;
         }

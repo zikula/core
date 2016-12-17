@@ -51,6 +51,11 @@ class Zikula_Doctrine2_Entity_CategoryRegistry
      */
     private $tablename;
 
+    public function __construct()
+    {
+        @trigger_error('This category registry entity is deprecated.', E_USER_DEPRECATED);
+    }
+
     public function getId()
     {
         return $this->id;

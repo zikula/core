@@ -198,6 +198,8 @@ class DBObjectArray
      */
     public function __construct($init = null, $where = null, $orderBy = null, $limitOffset = -1, $limitNumRows = -1, $assocKey = null)
     {
+        @trigger_error('DBObjectArray is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $this->_init($init, $where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
     }
 

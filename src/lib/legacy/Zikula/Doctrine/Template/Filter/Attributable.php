@@ -28,6 +28,8 @@ class Zikula_Doctrine_Template_Filter_Attributable extends Doctrine_Record_Filte
      */
     public function filterSet(Doctrine_Record $record, $name, $value)
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if ($name == '__ATTRIBUTES__') {
             $record->mapValue('__ATTRIBUTES__', new ArrayObject($value, ArrayObject::ARRAY_AS_PROPS));
             if ($record->state() == Doctrine_Record::STATE_CLEAN) {
@@ -49,6 +51,8 @@ class Zikula_Doctrine_Template_Filter_Attributable extends Doctrine_Record_Filte
      */
     public function filterGet(Doctrine_Record $record, $name)
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if ($name == '__ATTRIBUTES__') {
             $value = new ArrayObject([], ArrayObject::ARRAY_AS_PROPS);
 

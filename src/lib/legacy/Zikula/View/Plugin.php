@@ -33,6 +33,8 @@ class Zikula_View_Plugin extends Zikula_View
      */
     public function __construct(Zikula_ServiceManager $serviceManager, $module, $pluginName, $caching = null)
     {
+        @trigger_error('Plugin system is deprecated, please use tagged services instead.', E_USER_DEPRECATED);
+
         $module = isset($module) ? $module : 'zikula';
         parent::__construct($serviceManager, $module, $caching);
 

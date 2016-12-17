@@ -19,6 +19,8 @@ class Zikula_Hook_ValidationResponse extends Zikula\Bundle\HookBundle\Hook\Valid
 {
     public function __construct($key, $object)
     {
+        @trigger_error('Old hook class is deprecated, please use Hook bundle instead.', E_USER_DEPRECATED);
+
         LogUtil::log(__f('Warning! Class %s is deprecated.', [__CLASS__], E_USER_DEPRECATED));
         parent::__construct($key, $object);
     }

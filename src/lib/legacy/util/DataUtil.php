@@ -24,6 +24,8 @@ class DataUtil
      */
     public static function cleanVar($var)
     {
+        @trigger_error('DataUtil is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         return $var;
     }
 
@@ -36,6 +38,8 @@ class DataUtil
      */
     public static function decode($value)
     {
+        @trigger_error('DataUtil is deprecated, please use Symfony or native PHP functions instead.', E_USER_DEPRECATED);
+
         return base64_decode($value);
     }
 
@@ -50,6 +54,8 @@ class DataUtil
      */
     public static function decodeNVP($nvpstr, $separator = '&', $urldecode = true)
     {
+        @trigger_error('DataUtil is deprecated, please use Symfony or native PHP functions instead.', E_USER_DEPRECATED);
+
         $assoc = [];
         $items = explode($separator, $nvpstr);
         foreach ($items as $item) {
@@ -75,6 +81,8 @@ class DataUtil
      */
     public static function decrypt($value, $key = null, $alg = null, $encoded = true)
     {
+        @trigger_error('DataUtil is deprecated, please use Symfony or native PHP functions instead.', E_USER_DEPRECATED);
+
         $res = false;
         $key = ($key ? $key : 'ZikulaEncryptionKey');
         $val = ($encoded ? self::decode($value) : $value);
@@ -98,6 +106,8 @@ class DataUtil
      */
     public static function encode($value)
     {
+        @trigger_error('DataUtil is deprecated, please use Symfony or native PHP functions instead.', E_USER_DEPRECATED);
+
         return base64_encode($value);
     }
 
@@ -113,6 +123,8 @@ class DataUtil
      */
     public static function encodeNVP($key, $value, $separator = '&', $includeEmpty = true)
     {
+        @trigger_error('DataUtil is deprecated, please use Symfony or native PHP functions instead.', E_USER_DEPRECATED);
+
         if (!$key) {
             return LogUtil::registerError('Invalid NVP key received');
         }
@@ -134,6 +146,8 @@ class DataUtil
      */
     public static function encodeNVPArray($nvps, $separator = '&', $includeEmpty = true)
     {
+        @trigger_error('DataUtil is deprecated, please use Symfony or native PHP functions instead.', E_USER_DEPRECATED);
+
         if (!is_array($nvps)) {
             return LogUtil::registerError('NVPS array is not an array');
         }
@@ -158,6 +172,8 @@ class DataUtil
      */
     public static function encrypt($value, $key = null, $alg = null, $encoded = true)
     {
+        @trigger_error('DataUtil is deprecated, please use Symfony or native PHP functions instead.', E_USER_DEPRECATED);
+
         $res = false;
         $key = ($key ? $key : 'ZikulaEncryptionKey');
         if (function_exists('mcrypt_create_iv') && function_exists('mcrypt_decrypt')) {
@@ -180,6 +196,8 @@ class DataUtil
      */
     public static function formatForDisplay($var)
     {
+        @trigger_error('DataUtil is deprecated, please use Twig escaping instead.', E_USER_DEPRECATED);
+
         if (is_array($var)) {
             foreach ($var as $k => $v) {
                 $var[$k] = self::formatForDisplay($v);
@@ -209,6 +227,8 @@ class DataUtil
      */
     public static function formatForDisplayHTML($var)
     {
+        @trigger_error('DataUtil is deprecated, please use Twig safeHtml filter instead.', E_USER_DEPRECATED);
+
         static $allowedtags = null;
         static $outputfilter;
         static $event;
@@ -288,6 +308,8 @@ class DataUtil
      */
     public static function formatForDisplayHTML_callback($m)
     {
+        @trigger_error('DataUtil is deprecated, please use Twig safeHtml filter instead.', E_USER_DEPRECATED);
+
         if (!$m) {
             return;
         }
@@ -309,6 +331,8 @@ class DataUtil
      */
     public static function formatForStore($var)
     {
+        @trigger_error('DataUtil is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (is_array($var)) {
             foreach ($var as $k => $v) {
                 $var[$k] = self::formatForStore($v);
@@ -335,6 +359,8 @@ class DataUtil
      */
     public static function formatForOS($var, $absolute = true)
     {
+        @trigger_error('DataUtil is deprecated.', E_USER_DEPRECATED);
+
         if (is_array($var)) {
             foreach ($var as $k => $v) {
                 $var[$k] = self::formatForOS($v);
@@ -404,6 +430,8 @@ class DataUtil
      */
     public static function formatForURL($var)
     {
+        @trigger_error('DataUtil is deprecated, please use Doctrine slug extension instead.', E_USER_DEPRECATED);
+
         return self::formatPermalink($var);
     }
 
@@ -416,6 +444,8 @@ class DataUtil
      */
     public static function formatPermalink($var)
     {
+        @trigger_error('DataUtil is deprecated, please use Doctrine slug extension instead.', E_USER_DEPRECATED);
+
         // replace all chars $permasearch with the one in $permareplace
         $permaSearch = explode(',', System::getVar('permasearch'));
         $permaReplace = explode(',', System::getVar('permareplace'));
@@ -443,6 +473,8 @@ class DataUtil
      */
     public static function formatTransliterate($var)
     {
+        @trigger_error('DataUtil is deprecated, please use Doctrine slug extension instead.', E_USER_DEPRECATED);
+
         $strIsUpper = (strcmp($var, mb_strtoupper($var)) == 0);
         // replace all chars $permasearch with the one in $permareplace
         $permaSearch = explode(',', System::getVar('permasearch'));
@@ -471,6 +503,8 @@ class DataUtil
      */
     public static function hash($string, $type = 'sha1')
     {
+        @trigger_error('DataUtil is deprecated, please use Symfony or native PHP functions instead.', E_USER_DEPRECATED);
+
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', ['DataUtil::hash()', 'hash()']), E_USER_DEPRECATED);
 
         return hash(strtolower($type), $string);
@@ -490,6 +524,8 @@ class DataUtil
      */
     public static function getBooleanIniValue($ini_key)
     {
+        @trigger_error('DataUtil is deprecated, please use Symfony or native PHP functions instead.', E_USER_DEPRECATED);
+
         $ini_val = ini_get($ini_key);
         switch (strtolower($ini_val)) {
             case 'off':
@@ -525,6 +561,8 @@ class DataUtil
      */
     public static function is_serialized($string, $checkmb = true)
     {
+        @trigger_error('DataUtil is deprecated, please use Symfony or native PHP functions instead.', E_USER_DEPRECATED);
+
         if ($string == 'b:0;') {
             return true;
         }
@@ -548,6 +586,8 @@ class DataUtil
      */
     public static function mb_unserialize($string)
     {
+        @trigger_error('DataUtil is deprecated, please use Symfony or native PHP functions instead.', E_USER_DEPRECATED);
+
         // we use a callback here to avoid problems with certain characters (single quotes and dollarsign) - drak
         return @unserialize(preg_replace_callback('#s:(\d+):"(.*?)";#s', create_function('$m', 'return DataUtil::_mb_unserialize_callback($m);'), $string));
     }
@@ -563,6 +603,8 @@ class DataUtil
      */
     public static function _mb_unserialize_callback($match)
     {
+        @trigger_error('DataUtil is deprecated, please use Symfony or native PHP functions instead.', E_USER_DEPRECATED);
+
         $length = strlen($match[2]);
 
         return "s:$length:\"$match[2]\";";
@@ -579,6 +621,8 @@ class DataUtil
      */
     public static function convertToUTF8($input = '')
     {
+        @trigger_error('DataUtil is deprecated, please use Symfony or native PHP functions instead.', E_USER_DEPRECATED);
+
         if (is_array($input)) {
             $return = [];
             foreach ($input as $key => $value) {
@@ -608,6 +652,8 @@ class DataUtil
      */
     public static function convertFromUTF8($input = '')
     {
+        @trigger_error('DataUtil is deprecated, please use Symfony or native PHP functions instead.', E_USER_DEPRECATED);
+
         if (is_array($input)) {
             $return = [];
             foreach ($input as $key => $value) {
@@ -637,6 +683,8 @@ class DataUtil
      */
     public static function transformNumberInternal($number)
     {
+        @trigger_error('DataUtil is deprecated, please use Symfony or native PHP functions instead.', E_USER_DEPRECATED);
+
         $i18n = ZI18n::getInstance();
 
         return $i18n->transformNumberInternal($number);
@@ -651,6 +699,8 @@ class DataUtil
      */
     public static function transformCurrencyInternal($number)
     {
+        @trigger_error('DataUtil is deprecated, please use Symfony or native PHP functions instead.', E_USER_DEPRECATED);
+
         $i18n = ZI18n::getInstance();
 
         return $i18n->transformCurrencyInternal($number);
@@ -665,6 +715,8 @@ class DataUtil
      */
     public static function formatCurrency($number)
     {
+        @trigger_error('DataUtil is deprecated, please use Symfony or Twig extensions instead.', E_USER_DEPRECATED);
+
         $i18n = ZI18n::getInstance();
 
         return $i18n->transformCurrencyDisplay($number);
@@ -680,6 +732,8 @@ class DataUtil
      */
     public static function formatNumber($number, $decimal_points = null)
     {
+        @trigger_error('DataUtil is deprecated, please use Symfony or Twig extensions instead.', E_USER_DEPRECATED);
+
         $i18n = ZI18n::getInstance();
 
         return $i18n->transformNumberDisplay($number, $decimal_points);
@@ -697,6 +751,8 @@ class DataUtil
      */
     public static function parseIniFile($iniFile, $process_sections = true)
     {
+        @trigger_error('DataUtil is deprecated, please use Symfony or native PHP functions instead.', E_USER_DEPRECATED);
+
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', ['DataUtil::parseIniFile()', 'parse_ini_file()']), E_USER_DEPRECATED);
 
         return parse_ini_file($iniFile, $process_sections);
@@ -712,6 +768,8 @@ class DataUtil
      */
     public static function urlsafeJsonEncode($data, $json = true)
     {
+        @trigger_error('DataUtil is deprecated, please use Symfony or native PHP functions instead.', E_USER_DEPRECATED);
+
         if ($json) {
             $data = json_encode($data);
         }
@@ -729,6 +787,8 @@ class DataUtil
      */
     public static function urlsafeJsonDecode($data, $json = true)
     {
+        @trigger_error('DataUtil is deprecated, please use Symfony or native PHP functions instead.', E_USER_DEPRECATED);
+
         $data = urldecode($data);
         if ($json) {
             $data = json_decode($data, true);

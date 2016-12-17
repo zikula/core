@@ -40,6 +40,8 @@ class Zikula_Exception_Redirect extends Zikula_Exception
      */
     public function __construct($url, $type = 302)
     {
+        @trigger_error('This exception is deprecated, please use RedirectResponse instead.', E_USER_DEPRECATED);
+
         $this->url = $url;
         $this->type = $type;
 

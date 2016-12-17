@@ -37,6 +37,8 @@ class Zikula_Session_Storage_Legacy extends NativeSessionStorage
      */
     public function __construct(VariableApi $variableApi, array $options = [], $handler = null, MetadataBag $metaBag = null)
     {
+        @trigger_error('Old session storage is deprecated, please use Symfony session instead.', E_USER_DEPRECATED);
+
         parent::__construct($options, $handler, $metaBag);
         $this->variableApi = $variableApi;
     }
