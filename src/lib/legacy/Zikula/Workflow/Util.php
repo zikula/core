@@ -188,19 +188,19 @@ class Zikula_Workflow_Util
       */
      public static function deleteWorkflowsForModule($module)
      {
-        @trigger_error('Old workflow system is deprecated, please use Symfony workflows instead.', E_USER_DEPRECATED);
+         @trigger_error('Old workflow system is deprecated, please use Symfony workflows instead.', E_USER_DEPRECATED);
 
-        $theModule = isset($module) ? $module : ModUtil::getName();
+         $theModule = isset($module) ? $module : ModUtil::getName();
 
-        //This is a static function, so we have to use ServiceUtil to get the entity manager
-        $entityManager = ServiceUtil::getManager()->get('doctrine.orm.default_entity_manager');
+         //This is a static function, so we have to use ServiceUtil to get the entity manager
+         $entityManager = ServiceUtil::getManager()->get('doctrine.orm.default_entity_manager');
 
-        //create the dql query.
-        $query = $entityManager->createQueryBuilder()
-            ->delete('Zikula\Core\Doctrine\Entity\WorkflowEntity', 'w')
-            ->where('w.module = :module')
-            ->setParameter('module', $theModule)
-            ->getQuery();
+         //create the dql query.
+         $query = $entityManager->createQueryBuilder()
+             ->delete('Zikula\Core\Doctrine\Entity\WorkflowEntity', 'w')
+             ->where('w.module = :module')
+             ->setParameter('module', $theModule)
+             ->getQuery();
 
          $result = $query->execute();
 
