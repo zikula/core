@@ -14,7 +14,6 @@ namespace Zikula\RoutesModule\Controller;
 
 use Zikula\RoutesModule\Controller\Base\AbstractAjaxController;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Core\Response\Ajax\AjaxResponse;

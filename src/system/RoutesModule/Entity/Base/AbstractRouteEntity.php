@@ -17,11 +17,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-use DataUtil;
 use FormUtil;
 use RuntimeException;
 use ServiceUtil;
-use UserUtil;
 use Zikula_Workflow_Util;
 use Zikula\Core\Doctrine\EntityAccess;
 

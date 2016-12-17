@@ -18,8 +18,6 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 use ServiceUtil;
 use Zikula\Core\Doctrine\EntityAccess;
-use Zikula\RoutesModule\RoutesEvents;
-use Zikula\RoutesModule\Event\FilterRouteEvent;
 
 /**
  * Event subscriber base class for entity lifecycle events.

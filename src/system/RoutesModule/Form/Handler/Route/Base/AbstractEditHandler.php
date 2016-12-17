@@ -14,12 +14,8 @@ namespace Zikula\RoutesModule\Form\Handler\Route\Base;
 
 use Zikula\RoutesModule\Form\Handler\Common\EditHandler;
 
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use ModUtil;
 use RuntimeException;
-use System;
-use UserUtil;
 
 /**
  * This handler class handles the page events of editing forms.
