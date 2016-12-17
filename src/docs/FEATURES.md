@@ -41,7 +41,7 @@ Features of Zikula
  - Formicula (Contact form generator)
  - Piwik
 
-#####Legacy Modules not yet converted but inteded to be done
+#####Legacy Modules not yet converted but intended to be done
 
  - News (blog)
  - PostCalendar
