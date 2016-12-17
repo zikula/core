@@ -2,7 +2,7 @@
 [![StyleCI](https://styleci.io/repos/781544/shield?branch=master)](https://styleci.io/repos/781544)
 [![Code Climate](https://codeclimate.com/github/zikula/core/badges/gpa.svg)](https://codeclimate.com/github/zikula/core)
 [![Code Climate Coverage](https://codeclimate.com/github/zikula/core/badges/coverage.svg)](https://codeclimate.com/github/zikula/core)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/cc7028a5-80d5-4835-a4a4-0a179a690487/mini.png)](https://insight.sensiolabs.com/projects/cc7028a5-80d5-4835-a4a4-0a179a690487/mini.png)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/cc7028a5-80d5-4835-a4a4-0a179a690487/mini.png)](https://insight.sensiolabs.com/projects/cc7028a5-80d5-4835-a4a4-0a179a690487)
 [![Scrutinizer](https://scrutinizer-ci.com/g/zikula/core/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/zikula/core/)
 [![Scrutinizer Coverage](https://scrutinizer-ci.com/g/zikula/core/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/zikula/core/)
 
