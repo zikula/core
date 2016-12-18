@@ -13,7 +13,6 @@ namespace Zikula\GroupsModule\Controller;
 
 use ModUtil;
 use UserUtil;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,10 +21,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\Response\PlainResponse;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
-use Zikula\UsersModule\Constant as UsersConstant;
 
 /**
  * @Route("/admin")
@@ -36,148 +33,32 @@ class AdminController extends AbstractController
 {
     /**
      * @Route("/membership/{gid}/{letter}/{startNum}", requirements={"gid" = "^[1-9]\d*$", "letter" = "[a-zA-Z]|\*", "startNum" = "\d+"})
-     * @Method("GET")
-     * @Theme("admin")
-     * @Template
-     *
-     * Display all members of a group.
-     *
-     * @param integer $gid the id of the group to list membership for
-     * @param string $letter the letter from the alpha filter
-     * @param integer $startNum the start item number for the pager
-     *
-     * @return array
-     *
-     * @throws \InvalidArgumentException Thrown if the requested group id is invalid
-     * @throws AccessDeniedException Thrown if the user doesn't have edit access to the group
      */
     public function groupmembershipAction($gid = 0, $letter = '*', $startNum = 0)
     {
-        if (!$this->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
-        $group = $this->get('zikula_groups_module.group_repository')->find($gid);
-        if (!$group) {
-            throw new \InvalidArgumentException($this->__('Invalid Group ID.'));
-        }
+        @trigger_error('This method is deprecated. Please use MembershipAdministrationController::listAction', E_USER_DEPRECATED);
 
-        return [
-            'group' => $group,
-//            'pager' => [
-//                'amountOfItems' => count($usersNotInGroup),
-//                'itemsPerPage' => $this->getVar('itemsperpage', 25);
-//            ],
-            'csrfToken' => $this->get('zikula_core.common.csrf_token_handler')->generate()
-        ];
+        return $this->redirectToRoute('zikulagroupsmodule_membershipadministration_list', ['gid' => $gid, 'letter' => $letter, 'startNum' => $startNum]);
     }
 
     /**
      * @Route("/adduser/{uid}/{gid}/{csrfToken}", requirements={"gid" = "^[1-9]\d*$", "uid" = "^[1-9]\d*$"})
-     *
-     * Add user to a group.
-     *
-     * @param $uid
-     * @param $gid
-     * @param $csrfToken
-     * @return RedirectResponse
      */
     public function adduserAction($uid, $gid, $csrfToken)
     {
-        $this->get('zikula_core.common.csrf_token_handler')->validate($csrfToken);
-        if (!$this->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
-        $group = $this->get('zikula_groups_module.group_repository')->find($gid);
-        if (!$group) {
-            throw new \InvalidArgumentException($this->__('Sorry! No such group found.'));
-        }
-        $userEntity = $this->get('zikula_users_module.user_repository')->find($uid);
-        if (!$userEntity) {
-            throw new \InvalidArgumentException($this->__('Sorry! No such user found.'));
-        }
+        @trigger_error('This method is deprecated. Please use MembershipAdministrationController::addAction', E_USER_DEPRECATED);
 
-        $userEntity->addGroup($group);
-        $this->get('doctrine')->getManager()->flush();
-        $this->addFlash('status', $this->__('Done! The user was added to the group.'));
-
-        return $this->redirectToRoute('zikulagroupsmodule_admin_groupmembership', ['gid' => $gid]);
+        return $this->redirectToRoute('zikulagroupsmodule_membershipadministration_add', ['uid' => $uid, 'gid' => $gid, 'csrfToken' => $csrfToken]);
     }
 
     /**
-     * @Route("/removeuser")
-     * @Theme("admin")
-     * @Template
-     *
-     * Remove a user from a group.
-     *
-     * @param Request $request
-     *
-     * @return mixed Response|void symfony response object if confirmation isn't provided, void otherwise
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have edit access to the group
-     * @throws \InvalidArgumentException Thrown if the requested group id or User id is invalid
+     * @Route("/removeuser/{gid}/{uid}", requirements={"gid" = "^[1-9]\d*$", "uid" = "^[1-9]\d*$"})
      */
-    public function removeuserAction(Request $request)
+    public function removeuserAction(Request $request, $gid = 0, $uid = 0)
     {
-        $gid = $uid = 0;
-        if ($request->isMethod('GET')) {
-            $gid = $request->query->getDigits('gid');
-            $uid = $request->query->getDigits('uid');
-        } elseif ($request->isMethod('POST')) {
-            $postVars = $request->request->get('zikulagroupsmodule_removeuser');
-            $gid = isset($postVars['gid']) ? $postVars['gid'] : 0;
-            $uid = isset($postVars['uid']) ? $postVars['uid'] : 0;
-        }
-        if ($gid < 1 || $uid < 1) {
-            throw new \InvalidArgumentException($this->__('Invalid Group ID or User ID.'));
-        }
+        @trigger_error('This method is deprecated. Please use MembershipAdministrationController::addAction', E_USER_DEPRECATED);
 
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', ['gid' => $gid]);
-        if (!$group) {
-            throw new NotFoundHttpException($this->__('Sorry! No such group found.'));
-        }
-
-        if (!$this->hasPermission('ZikulaGroupsModule::', $gid.'::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
-
-        $formValues = [
-            'gid' => $gid,
-            'uid' => $uid
-        ];
-
-        $form = $this->createForm('Zikula\GroupsModule\Form\Type\RemoveUserType', $formValues, [
-            'translator' => $this->get('translator.default')
-        ]);
-
-        if ($form->handleRequest($request)->isValid()) {
-            if ($form->get('remove')->isClicked()) {
-                $formData = $form->getData();
-
-                try {
-                    // remove user
-                    if (ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'removeuser', ['gid' => $formData['gid'], 'uid' => $formData['uid']])) {
-                        // Success
-                        $this->addFlash('status', $this->__('Done! The user was removed from the group.'));
-                    } else {
-                        $this->addFlash('error', $this->__('Error! A problem occurred while attempting to remove the user. The user has not been removed from the group.'));
-                    }
-                } catch (\RuntimeException $e) {
-                    $this->addFlash('error', $e->getMessage());
-                }
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
-            }
-
-            return $this->redirectToRoute('zikulagroupsmodule_admin_groupmembership', ['gid' => $formData['gid']]);
-        }
-
-        return [
-            'form' => $form->createView(),
-            'group' => $group,
-            'uname' => UserUtil::getVar('uname', $uid)
-        ];
+        return $this->redirectToRoute('zikulagroupsmodule_membershipadministration_remove', ['uid' => $uid, 'gid' => $gid, 'request' => $request]);
     }
 
     /**
@@ -286,37 +167,6 @@ class AdminController extends AbstractController
             'form' => $form->createView(),
             'action' => $action
         ];
-    }
-
-    /**
-     * Called from UsersModule/Resources/public/js/Zikula.Users.Admin.View.js
-     * to populate a username search
-     *
-     * @Route("/getusersbyfragmentastable", options={"expose"=true})
-     * @Method("POST")
-     * @param Request $request
-     * @return Response
-     */
-    public function getUsersByFragmentAsTableAction(Request $request)
-    {
-        if (!$this->hasPermission('ZikulaGroupsodule', '::', ACCESS_MODERATE)) {
-            return new PlainResponse('');
-        }
-        $fragment = $request->request->get('fragment');
-        $filter = [
-            'activated' => ['operator' => 'notIn', 'operand' => [
-                UsersConstant::ACTIVATED_PENDING_REG,
-                UsersConstant::ACTIVATED_PENDING_DELETE
-            ]],
-            'uname' => ['operator' => 'like', 'operand' => "$fragment%"]
-        ];
-        $users = $this->get('zikula_users_module.user_repository')->query($filter);
-
-        return $this->render('@ZikulaGroupsModule/Admin/userlist.html.twig', [
-            'users' => $users,
-            'gid' => $request->get('gid'),
-            'csrfToken' => $request->get('csrfToken')
-        ], new PlainResponse());
     }
 
     /**

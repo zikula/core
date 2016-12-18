@@ -72,7 +72,7 @@ class GroupController extends AbstractController
 
             $routeArgs = ['gid' => $item->getGid()];
             $editUrl = $router->generate('zikulagroupsmodule_group_edit', $routeArgs);
-            $membersUrl = $router->generate('zikulagroupsmodule_admin_groupmembership', $routeArgs);
+            $membersUrl = $router->generate('zikulagroupsmodule_membershipadministration_list', $routeArgs);
 
             $options[] = [
                 'url' => $router->generate('zikulagroupsmodule_group_edit', $routeArgs),
@@ -90,7 +90,7 @@ class GroupController extends AbstractController
             }
 
             $options[] = [
-                'url' => $router->generate('zikulagroupsmodule_admin_groupmembership', $routeArgs),
+                'url' => $router->generate('zikulagroupsmodule_membershipadministration_list', $routeArgs),
                 'title'   => $this->__('Group membership'),
                 'icon' => 'users'
             ];
