@@ -23,8 +23,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\Core\Response\PlainResponse;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
+use Zikula\UsersModule\Constant as UsersConstant;
 
 /**
  * @Route("/admin")
@@ -34,7 +36,7 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 class AdminController extends AbstractController
 {
     /**
-     * @Route("/membership/{gid}/{letter}/{startnum}", requirements={"gid" = "^[1-9]\d*$", "letter" = "[a-zA-Z]|\*", "startnum" = "\d+"})
+     * @Route("/membership/{gid}/{letter}/{startNum}", requirements={"gid" = "^[1-9]\d*$", "letter" = "[a-zA-Z]|\*", "startNum" = "\d+"})
      * @Method("GET")
      * @Theme("admin")
      * @Template
@@ -43,187 +45,61 @@ class AdminController extends AbstractController
      *
      * @param integer $gid the id of the group to list membership for
      * @param string $letter the letter from the alpha filter
-     * @param integer $startnum the start item number for the pager
+     * @param integer $startNum the start item number for the pager
      *
-     * @return Response symfony response object
+     * @return array
      *
      * @throws \InvalidArgumentException Thrown if the requested group id is invalid
      * @throws AccessDeniedException Thrown if the user doesn't have edit access to the group
      */
-    public function groupmembershipAction($gid = 0, $letter = '*', $startnum = 0)
+    public function groupmembershipAction($gid = 0, $letter = '*', $startNum = 0)
     {
-        if ($gid < 1) {
+        if (!$this->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_EDIT)) {
+            throw new AccessDeniedException();
+        }
+        $group = $this->get('zikula_groups_module.group_repository')->find($gid);
+        if (!$group) {
             throw new \InvalidArgumentException($this->__('Invalid Group ID.'));
         }
 
-        // The user API function is called.
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', [
-            'gid'      => $gid,
-            'startnum' => $startnum,
-            'numitems' => $this->getVar('itemsperpage')
-        ]);
-
-        if (!$this->hasPermission('ZikulaGroupsModule::', $group['gid'].'::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
-
-        $users = $group['members'];
-
-        $currentUid = UserUtil::getVar('uid');
-        $defaultGroup = $this->getVar('defaultgroup', 1);
-        $primaryAdminGroup = $this->getVar('primaryadmingroup', 2);
-
-        $groupMembers = [];
-
-        if (is_array($users)) {
-            foreach ($users as $user) {
-                $options = [];
-
-                if ($user['uid'] == $currentUid
-                    && ($group['gid'] == $defaultGroup || $group['gid'] == $primaryAdminGroup)) {
-                    $options[] = [];
-                } else {
-                    $options[] = [
-                        'url' => $this->get('router')->generate('zikulagroupsmodule_admin_removeuser', ['gid' => $group['gid'], 'uid' => $user['uid']]),
-                        'icon' => 'user-times',
-                        'uid'     => $user['uid'],
-                        'title'   => $this->__('Remove user from group')
-                    ];
-                }
-
-                $isRegistration = UserUtil::isRegistration($user['uid']);
-                $groupMembers[] = [
-                    'uname'   => UserUtil::getVar('uname', $user['uid'], null, $isRegistration),
-                    'name'    => UserUtil::getVar('name', $user['uid'], null, $isRegistration),
-                    'email'   => UserUtil::getVar('email', $user['uid'], null, $isRegistration),
-                    'uid'     => $user['uid'],
-                    'options' => $options
-                ];
-            }
-        }
-
-        // sort alphabetically.
-        $sortAarr = [];
-        foreach ($groupMembers as $res) {
-            $sortAarr[] = strtolower($res['uname']);
-        }
-        array_multisort($sortAarr, SORT_ASC, $groupMembers);
-
-        // check for a letter parameter
-        if (strlen($letter) != 1) {
-            $letter = '*';
-        }
-
-        switch ($letter) {
-            case '*':
-                // read allusers
-                $field = '';
-                $expression = '';
-                break;
-
-            default:
-                $field = 'uname';
-                $expression = $letter . '%';
-        }
-
-        $users = UserUtil::getAll('uname', 'ASC', null, null, '', $field, $expression);
-
-        $allUsers = [];
-        foreach ($users as $user) {
-            if ($user['uid'] == 0 || strtolower($user['uname']) == 'anonymous' || strtolower($user['uname']) == 'guest'
-                || $user['uname'] == $this->getVar(Users_Constant::MODVAR_ANONYMOUS_DISPLAY_NAME)
-            ) {
-                continue;
-            }
-            $alias = '';
-            if (!empty($user['name'])) {
-                $alias = ' (' . $user['name'] . ')';
-            }
-            $allUsers[$user['uid']] = $user['uname'] . $alias;
-        }
-
-        // Now lets remove the users that are currently part of the group
-        // flip the array so we have the user id's as the key
-        // this makes the array the same is the group members array
-        // from the get function
-        $flippedUsers = array_flip($allUsers);
-        // now lets diff the array
-        $diffedUsers = array_diff($flippedUsers, array_keys($group['members']));
-        // now flip the array back
-        $allUsers = array_flip($diffedUsers);
-        // sort the users by user name
-        natcasesort($allUsers);
-
         return [
             'group' => $group,
-            'groupMembers' => $groupMembers,
-            // the users not in the group
-            'pager' => [
-                'amountOfItems' => ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'countgroupmembers', ['gid' => $gid]),
-                'itemsPerPage' => $this->getVar('itemsperpage')
-            ],
-            'uids' => $allUsers,
+//            'pager' => [
+//                'amountOfItems' => count($usersNotInGroup),
+//                'itemsPerPage' => $this->getVar('itemsperpage', 25);
+//            ],
             'csrfToken' => $this->get('zikula_core.common.csrf_token_handler')->generate()
         ];
     }
 
     /**
-     * @Route("/adduser")
-     * @Method("POST")
+     * @Route("/adduser/{uid}/{gid}/{csrfToken}", requirements={"gid" = "^[1-9]\d*$", "uid" = "^[1-9]\d*$"})
      *
-     * Add user(s) to a group.
+     * Add user to a group.
      *
-     * @param Request $request
-     *
-     *       int   $gid The id of the group
-     *       mixed $uid The id of the user (int) or an array of userids
-     *
+     * @param $uid
+     * @param $gid
+     * @param $csrfToken
      * @return RedirectResponse
-     *
-     * @throws \InvalidArgumentException Thrown if the requested group id is invalid
      */
-    public function adduserAction(Request $request)
+    public function adduserAction($uid, $gid, $csrfToken)
     {
-        $this->get('zikula_core.common.csrf_token_handler')->validate($request->request->get('csrftoken'));
-
-        // Get parameters from the request
-        $gid = $request->request->getDigits('gid', 0);
-        $uid = $request->request->get('uid', null);
-
-        if ($gid < 1) {
-            throw new \InvalidArgumentException($this->__('Invalid Group ID.'));
+        $this->get('zikula_core.common.csrf_token_handler')->validate($csrfToken);
+        if (!$this->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_EDIT)) {
+            throw new AccessDeniedException();
         }
-
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', ['gid' => $gid]);
+        $group = $this->get('zikula_groups_module.group_repository')->find($gid);
         if (!$group) {
-            throw new NotFoundHttpException($this->__('Sorry! No such group found.'));
+            throw new \InvalidArgumentException($this->__('Sorry! No such group found.'));
+        }
+        $userEntity = $this->get('zikula_users_module.user_repository')->find($uid);
+        if (!$userEntity) {
+            throw new \InvalidArgumentException($this->__('Sorry! No such user found.'));
         }
 
-        if (is_array($uid)) {
-            $totalUsersAdded = 0;
-            $totalUsersNotadded = 0;
-
-            foreach ($uid as $id) {
-                if (!ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'adduser', ['gid' => $gid, 'uid' => $id])) {
-                    $totalUsersNotadded++;
-                } else {
-                    $totalUsersAdded++;
-                }
-            }
-
-            if ($totalUsersAdded > 0) {
-                $this->addFlash('status', $this->_fn('Done! %s user was added to the group.', 'Done! %s users were added to the group.', $totalUsersAdded, ['%s' => $totalUsersAdded]));
-            }
-            if ($totalUsersNotadded > 0) {
-                $this->addFlash('error', $this->_fn('Error! %s user was not added to the group.', 'Error! %s users were not added to the group.', $totalUsersNotadded, ['%s' => $totalUsersNotadded]));
-            }
-        } else {
-            if (!ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'adduser', ['gid' => $gid, 'uid' => $uid])) {
-                $this->addFlash('error', $this->__('Error! A problem occurred and the user was not added to the group.'));
-            } else {
-                $this->addFlash('status', $this->__('Done! The user was added to the group.'));
-            }
-        }
+        $userEntity->addGroup($group);
+        $this->get('doctrine')->getManager()->flush();
+        $this->addFlash('status', $this->__('Done! The user was added to the group.'));
 
         return $this->redirectToRoute('zikulagroupsmodule_admin_groupmembership', ['gid' => $gid]);
     }
@@ -411,6 +287,37 @@ class AdminController extends AbstractController
             'form' => $form->createView(),
             'action' => $action
         ];
+    }
+
+    /**
+     * Called from UsersModule/Resources/public/js/Zikula.Users.Admin.View.js
+     * to populate a username search
+     *
+     * @Route("/getusersbyfragmentastable", options={"expose"=true})
+     * @Method("POST")
+     * @param Request $request
+     * @return Response
+     */
+    public function getUsersByFragmentAsTableAction(Request $request)
+    {
+        if (!$this->hasPermission('ZikulaGroupsodule', '::', ACCESS_MODERATE)) {
+            return new PlainResponse('');
+        }
+        $fragment = $request->request->get('fragment');
+        $filter = [
+            'activated' => ['operator' => 'notIn', 'operand' => [
+                UsersConstant::ACTIVATED_PENDING_REG,
+                UsersConstant::ACTIVATED_PENDING_DELETE
+            ]],
+            'uname' => ['operator' => 'like', 'operand' => "$fragment%"]
+        ];
+        $users = $this->get('zikula_users_module.user_repository')->query($filter);
+
+        return $this->render('@ZikulaGroupsModule/Admin/userlist.html.twig', [
+            'users' => $users,
+            'gid' => $request->get('gid'),
+            'csrfToken' => $request->get('csrfToken')
+        ], new PlainResponse());
     }
 
     /**

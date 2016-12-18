@@ -18,9 +18,8 @@ class UserSessionRepository extends EntityRepository implements UserSessionRepos
 {
     public function getUsersSince(\DateTime $dateTime)
     {
-        $query = $this->createQueryBuilder()
+        $query = $this->createQueryBuilder('s')
             ->select('DISTINCT s.uid')
-            ->from('ZikulaUsersModule:UserSessionEntity', 's')
             ->where('s.lastused > :activetime')
             ->setParameter('activetime', $dateTime)
             ->andWhere('s.uid != 0')
@@ -31,9 +30,8 @@ class UserSessionRepository extends EntityRepository implements UserSessionRepos
 
     public function countUsersSince(\DateTime $dateTime)
     {
-        $query = $this->createQueryBuilder()
+        $query = $this->createQueryBuilder('s')
             ->select('COUNT(s.uid)')
-            ->from('ZikulaUsersModule:UserSessionEntity', 's')
             ->where('s.lastused > :activetime')
             ->setParameter('activetime', $dateTime)
             ->andWhere('s.uid != 0')
@@ -44,9 +42,8 @@ class UserSessionRepository extends EntityRepository implements UserSessionRepos
 
     public function countGuestsSince(\DateTime $dateTime)
     {
-        $query = $this->createQueryBuilder()
+        $query = $this->createQueryBuilder('s')
             ->select('COUNT(s.uid)')
-            ->from('ZikulaUsersModule:UserSessionEntity', 's')
             ->where('s.lastused > :activetime')
             ->setParameter('activetime', $dateTime)
             ->andWhere('s.uid = 0')

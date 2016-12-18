@@ -16,6 +16,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Zikula\Core\Doctrine\WhereFromFilterTrait;
+use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
@@ -162,5 +163,27 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
         $qb = $this->createQueryBuilder('u');
 
         return $qb->getQuery()->iterate();
+    }
+
+    public function getUsersNotInGroup(GroupEntity $groupEntity, $limit = 0, $offset = 0)
+    {
+        $query = $this->createQueryBuilder('u')
+            ->where(':targetGroup NOT MEMBER OF u.groups')
+            ->setParameter('targetGroup', $groupEntity)
+            ->andWhere('u.uid != :guestUserId')
+            ->setParameter('guestUserId',1)
+            ->orderBy('u.uname', 'ASC')
+            ->getQuery()
+        ;
+
+        if ($limit > 0) {
+            $query->setMaxResults($limit);
+            $query->setFirstResult($offset);
+            $paginator = new Paginator($query);
+
+            return $paginator;
+        } else {
+            return $query->getResult();
+        }
     }
 }
