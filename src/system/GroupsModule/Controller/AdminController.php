@@ -13,7 +13,6 @@ namespace Zikula\GroupsModule\Controller;
 
 use ModUtil;
 use UserUtil;
-use Users_Constant;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
