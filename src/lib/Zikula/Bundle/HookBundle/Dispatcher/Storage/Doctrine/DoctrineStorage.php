@@ -287,9 +287,9 @@ class DoctrineStorage implements StorageInterface
                 $binding->setServiceid($provider['serviceid']);
                 $binding->setPriority(10);
                 $this->em->persist($binding);
-                $this->em->flush();
             }
         }
+        $this->em->flush();
 
         return true;
     }
