@@ -22,13 +22,13 @@ class RelativeCategoryPathBuilderHelper
      * Given a category with its parent category return an (idenically indexed) array of category-paths
      * based on the given field (name or id make sense).
      *
-     * @param CategoryEntity $rootCategory The root/parent category
-     * @param array          &$cat         The category to process
-     * @param boolean        $includeRoot  If true, the root portion of the path is preserved
+     * @param CategoryEntity|array $rootCategory The root/parent category
+     * @param array                &$cat         The category to process
+     * @param boolean              $includeRoot  If true, the root portion of the path is preserved
      *
      * @return The resulting folder path array (which is also altered in place)
      */
-    public function buildRelativePathsForCategory(CategoryEntity $rootCategory, &$cat, $includeRoot = false)
+    public function buildRelativePathsForCategory($rootCategory, &$cat, $includeRoot = false)
     {
         if (!$rootCategory) {
             return false;
