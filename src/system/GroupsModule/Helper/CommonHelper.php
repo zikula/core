@@ -10,6 +10,7 @@
  */
 
 namespace Zikula\GroupsModule\Helper;
+
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
