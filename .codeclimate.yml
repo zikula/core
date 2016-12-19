@@ -17,7 +17,7 @@ engines:
       - FIXME
       - HACK
       - TODO
-      - @todo
+      - @@todo
   markdownlint:
     enabled: true
   phan:
