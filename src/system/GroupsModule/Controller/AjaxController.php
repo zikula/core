@@ -99,7 +99,7 @@ class AjaxController extends AbstractController
         }
 
         // Setting various defines
-        $groupsCommon = new CommonHelper();
+        $groupsCommon = new CommonHelper($this->getTranslator());
         $typelabel = $groupsCommon->gtypeLabels();
         $statelabel = $groupsCommon->stateLabels();
 
@@ -130,7 +130,7 @@ class AjaxController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $groupsCommon = new CommonHelper();
+        $groupsCommon = new CommonHelper($this->getTranslator());
         $typeLabels = $groupsCommon->gtypeLabels();
         $stateLabels = $groupsCommon->stateLabels();
 

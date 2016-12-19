@@ -87,7 +87,7 @@ class UserController extends AbstractController
 
         $groupItems = [];
 
-        $groupsCommon = new CommonHelper();
+        $groupsCommon = new CommonHelper($this->getTranslator());
         $typeLabels = $groupsCommon->gtypeLabels();
         $stateLabels = $groupsCommon->stateLabels();
 
@@ -284,7 +284,7 @@ class UserController extends AbstractController
             throw new NotFoundHttpException($this->__('Error! Could not load data.'));
         }
 
-        $groupsCommon = new CommonHelper();
+        $groupsCommon = new CommonHelper($this->getTranslator());
         $typeLabels = $groupsCommon->gtypeLabels();
         $stateLabels = $groupsCommon->stateLabels();
 
