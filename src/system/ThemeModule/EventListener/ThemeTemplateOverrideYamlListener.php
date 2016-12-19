@@ -41,6 +41,9 @@ class ThemeTemplateOverrideYamlListener implements EventSubscriberInterface
             // pre-1.4.0 style theme
             $this->_overrideMap = Yaml::parse(file_get_contents("themes/$themeName/templates/overrides.yml"));
         }
+        if (!is_array($this->overrideMap)) {
+            $this->overrideMap = [];
+        }
     }
 
     /**

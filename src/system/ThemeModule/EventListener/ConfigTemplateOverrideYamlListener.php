@@ -34,6 +34,9 @@ class ConfigTemplateOverrideYamlListener implements EventSubscriberInterface
     {
         if (is_readable('config/template_overrides.yml')) {
             $this->overrideMap = Yaml::parse(file_get_contents('config/template_overrides.yml'));
+            if (!is_array($this->overrideMap)) {
+                $this->overrideMap = [];
+            }
         }
     }
 
