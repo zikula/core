@@ -1,0 +1,8 @@
+exclude_paths:
+- "src/lib/legacy/"
+- "src/javascript/jquery-plugins/"
+- "src/javascript/plugins/"
+- "src/javascript/underscore/"
+- "*.min.js"
+- "**/tests/"
+- "**/vendor/"
