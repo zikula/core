@@ -67,7 +67,6 @@ class CoreExtension extends \Twig_Extension
             new \Twig_SimpleFunction('getModVar', [$this, 'getModVar']),
             new \Twig_SimpleFunction('getSystemVar', [$this, 'getSystemVar']),
             new \Twig_SimpleFunction('setMetaTag', [$this, 'setMetaTag']),
-            new \Twig_SimpleFunction('hasPermission', [$this, 'hasPermission']),
             new \Twig_SimpleFunction('defaultPath', [new DefaultPathSimpleFunction($this), 'getDefaultPath']),
             new \Twig_SimpleFunction('modAvailable', [$this, 'modAvailable']),
             new \Twig_SimpleFunction('callFunc', [$this, 'callFunc']),
@@ -501,24 +500,6 @@ class CoreExtension extends \Twig_Extension
         $metaTags = $this->container->hasParameter('zikula_view.metatags') ? $this->container->getParameter('zikula_view.metatags') : [];
         $metaTags[$name] = \DataUtil::formatForDisplay($value);
         $this->container->setParameter('zikula_view.metatags', $metaTags);
-    }
-
-    /**
-     * @param string $component
-     * @param string $instance
-     * @param string $level
-     * @return bool
-     */
-    public function hasPermission($component, $instance, $level)
-    {
-        if (empty($component) || empty($instance) || empty($level)) {
-            $translator = $this->container->get('translator.default');
-            throw new \InvalidArgumentException($translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
-        }
-
-        $result = $this->container->get('zikula_permissions_module.api.permission')->hasPermission($component, $instance, constant($level));
-
-        return (bool) $result;
     }
 
     /**

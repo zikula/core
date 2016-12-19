@@ -3,6 +3,7 @@ parameters:
     zikula_permissions_module.api.permission.class: Zikula\PermissionsModule\Api\PermissionApi
     zikula_permissions_module.permission_repository.class: Zikula\PermissionsModule\Entity\Repository\PermissionRepository
     zikula_permissions_module.helper.schema_helper.class: Zikula\PermissionsModule\Helper\SchemaHelper
+    twig.extension.zikula_permissions_module.class: Zikula\PermissionsModule\Twig\Extension\PermissionsExtension
 
 services:
     zikula_permissions_module.container.link_container:
@@ -23,3 +24,10 @@ services:
     zikula_permissions_module.helper.schema_helper:
         class: %zikula_permissions_module.helper.schema_helper.class%
         arguments: ["@zikula_extensions_module.extension_repository"]
+
+    twig.extension.zikula_permissions_module:
+        class: %twig.extension.zikula_permissions_module.class%
+        public: false
+        arguments: ["@service_container"]
+        tags:
+            - { name: twig.extension }
