@@ -1,3 +1,39 @@
+engines:
+  csslint:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+        javascript:
+        php:
+#  eslint:
+#    enabled: true
+#    channel: "eslint-3"
+  fixme:
+    enabled: true
+    config:
+      strings:
+      - FIXME
+      - HACK
+      - TODO
+      - @todo
+  markdownlint:
+    enabled: true
+  phan:
+    enabled: true
+  phpcodesniffer:
+    enabled: true
+  phpmd:
+    enabled: true
+
+ratings:
+  paths:
+    - "**.css"
+    - "**.js"
+    - "**.md"
+    - "**.php"
+
 exclude_paths:
 - "src/lib/legacy/"
 - "src/javascript/jquery-plugins/"
