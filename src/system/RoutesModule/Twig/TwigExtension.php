@@ -12,6 +12,7 @@
 
 namespace Zikula\RoutesModule\Twig;
 
+use DataUtil;
 use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\Twig\Base\AbstractTwigExtension;
 use ZLanguage;
@@ -88,12 +89,12 @@ class TwigExtension extends AbstractTwigExtension
             }
         }
 
-        $prefix = \DataUtil::formatForDisplay($prefix);
-        $path = \DataUtil::formatForDisplay($route->getPathWithBundlePrefix());
+        $prefix = DataUtil::formatForDisplay($prefix);
+        $path = DataUtil::formatForDisplay($route->getPathWithBundlePrefix());
         $container = \ServiceUtil::getManager();
 
         $path = preg_replace_callback('#%(.*?)%#', function ($matches) use ($container) {
-            return '<abbr title="' . \DataUtil::formatForDisplay($matches[0]) . '">' . \DataUtil::formatForDisplay($container->getParameter($matches[1])) . '</abbr>';
+            return '<abbr title="' . DataUtil::formatForDisplay($matches[0]) . '">' . DataUtil::formatForDisplay($container->getParameter($matches[1])) . '</abbr>';
         }, $path);
 
         $defaults = $route->getDefaults();
@@ -101,7 +102,7 @@ class TwigExtension extends AbstractTwigExtension
         $path = preg_replace_callback('#{(.*?)}#', function ($matches) use ($container, $defaults, $requirements) {
             $title = '';
             if (isset($defaults[$matches[1]])) {
-                $title .= $this->translator->__f('Default: %s', ['%s' => \DataUtil::formatForDisplay($defaults[$matches[1]])]);
+                $title .= $this->translator->__f('Default: %s', ['%s' => DataUtil::formatForDisplay($defaults[$matches[1]])]);
             }
             if (isset($requirements[$matches[1]])) {
                 if ($title != '') {

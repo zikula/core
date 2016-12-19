@@ -27,14 +27,13 @@ use Zikula\Core\Response\Ajax\AjaxResponse;
 class AjaxController extends AbstractAjaxController
 {
     /**
-     * This method is the default function handling the main area called without defining arguments.
+     * This is the default function handling the main area called without defining arguments.
      *
      * @Route("/ajax",
      *        methods = {"GET"}
      * )
      *
      * @param Request $request Current request instance
-     * @param string  $ot      Treated object type
      *
      * @return mixed Output
      *

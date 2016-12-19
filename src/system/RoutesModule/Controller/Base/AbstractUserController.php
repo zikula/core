@@ -24,13 +24,13 @@ use Zikula\Core\RouteUrl;
 use Zikula\Core\Response\PlainResponse;
 
 /**
- * Admin controller class.
+ * User controller class.
  */
-abstract class AbstractAdminController extends AbstractController
+abstract class AbstractUserController extends AbstractController
 {
 
     /**
-     * This is the default action handling the main area called without defining arguments.
+     * This is the default action handling the index area called without defining arguments.
      *
      * @param Request  $request      Current request instance
      *
@@ -43,13 +43,13 @@ abstract class AbstractAdminController extends AbstractController
         // parameter specifying which type of objects we are treating
         $objectType = $request->query->getAlnum('ot', 'route');
         
-        $permLevel = ACCESS_ADMIN;
+        $permLevel = ACCESS_OVERVIEW;
         if (!$this->hasPermission($this->name . '::', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
         
         // redirect to view action
-        $routeArea = 'admin';
+        $routeArea = '';
         
         return $this->redirectToRoute('zikularoutesmodule_' . strtolower($objectType) . '_' . $routeArea . 'view');
     }

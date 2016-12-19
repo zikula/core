@@ -19,7 +19,6 @@ use DataUtil;
 use ModUtil;
 use RuntimeException;
 use System;
-use ZLanguage;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\RouteUrl;
 use Zikula\Core\Response\Ajax\AjaxResponse;
@@ -28,7 +27,6 @@ use Zikula\Core\Response\Ajax\FatalResponse;
 use Zikula\Core\Response\Ajax\NotFoundResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Zikula\Core\Response\PlainResponse;
-use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Ajax controller class.

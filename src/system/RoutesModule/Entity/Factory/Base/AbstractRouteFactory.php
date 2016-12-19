@@ -58,7 +58,7 @@ abstract class AbstractRouteFactory
     }
 
     /**
-     * Gets the class name.
+     * Returns the class name.
      *
      * @return string
      */
@@ -80,7 +80,7 @@ abstract class AbstractRouteFactory
     }
     
     /**
-     * Gets the object manager.
+     * Returns the object manager.
      *
      * @return ObjectManager
      */
@@ -102,7 +102,7 @@ abstract class AbstractRouteFactory
     }
     
     /**
-     * Gets the repository.
+     * Returns the repository.
      *
      * @return EntityRepository
      */

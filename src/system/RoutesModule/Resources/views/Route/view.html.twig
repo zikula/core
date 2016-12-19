@@ -72,7 +72,7 @@
 
     {{ block('page_nav_links') }}
 
-    {# { include('@ZikulaRoutesModule/Route/viewQuickNav.html.twig', { all: showAllEntries, own: showOwnEntries, workflowStateFilter: false }) }}{# see template file for available options #}
+    {# { include('@ZikulaRoutesModule/Route/viewQuickNav.html.twig', { workflowStateFilter: false }) }}{# see template file for available options #}
 
     {% if routeArea == 'admin' %}
     <form action="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'handleselectedentries') }}" method="post" id="routesViewForm" class="form-horizontal" role="form">
@@ -205,10 +205,18 @@
                     {{ route.methods|zikularoutesmodule_listEntry('route', 'methods') }}
                 </td>
                 <td headers="hPrependBundlePrefix" class="text-center">
-                    {{ route.prependBundlePrefix|yesNo(true) }}
+                    {% if route.prependBundlePrefix %}
+                        <i class="fa fa-check" title="{{ __('Yes') }}"></i>
+                    {% else %}
+                        <i class="fa fa-times" title="{{ __('No') }}"></i>
+                    {% endif %}
                 </td>
                 <td headers="hTranslatable" class="text-center">
-                    {{ route.translatable|yesNo(true) }}
+                    {% if route.translatable %}
+                        <i class="fa fa-check" title="{{ __('Yes') }}"></i>
+                    {% else %}
+                        <i class="fa fa-times" title="{{ __('No') }}"></i>
+                    {% endif %}
                 </td>
                 <td headers="hTranslationPrefix" class="text-left">
                     {{ route.translationPrefix }}
@@ -254,7 +262,7 @@
         </table>
         </div>
         
-        {% if showAllEntries != 1 %}
+        {% if showAllEntries != 1 and pager|default %}
             {{ pager({ rowcount: pager.numitems, limit: pager.itemsperpage, display: 'page', route: 'zikularoutesmodule_route_' ~ routeArea ~ 'view'}) }}
         {% endif %}
     {% if routeArea == 'admin' %}
@@ -283,9 +291,7 @@
         {% endif %}
     {% endif %}
     {#
-    {% set own = showOwnEntries is defined and showOwnEntries == 1 ? 1 : 0 %}
-    {% set all = showAllEntries is defined and showAllEntries == 1 ? 1 : 0 %}
-    {% if all == 1 %}
+    {% if showAllEntries == 1 %}
         {% set linkTitle = __('Back to paginated view') %}
         <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'view') }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
     {% else %}
@@ -306,9 +312,8 @@
             {% if routeArea == 'admin' %}
                 {# init the "toggle all" functionality #}
                 if ($('#toggleRoutes').length > 0) {
-                    $('#toggleRoutes').on('click', function (e) {
-                        Zikula.toggleInput('routesViewForm');
-                        e.preventDefault();
+                    $('#toggleRoutes').click(function (event) {
+                        $('routes-checkbox').prop('checked', $(this).prop('checked'));
                     });
                 }
             {% endif %}

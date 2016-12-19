@@ -15,7 +15,7 @@ namespace Zikula\RoutesModule\Helper;
 use Zikula\RoutesModule\Helper\Base\AbstractWorkflowHelper;
 
 /**
- * Utility implementation class for workflow helper methods.
+ * Helper implementation class for workflow methods.
  */
 class WorkflowHelper extends AbstractWorkflowHelper
 {
