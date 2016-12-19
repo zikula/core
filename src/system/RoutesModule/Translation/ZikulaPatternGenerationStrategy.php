@@ -129,7 +129,8 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
     }
 
     /**
-     * customized method to cache the url string for modules
+     * Customized method to cache the url string for modules.
+     *
      * @param $moduleName
      * @return string
      */

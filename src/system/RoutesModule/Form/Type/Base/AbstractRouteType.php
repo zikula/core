@@ -196,7 +196,6 @@ abstract class AbstractRouteType extends AbstractType
         ]);
         $builder->add('prependBundlePrefix', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
             'label' => $this->__('Prepend bundle prefix') . ':',
-            'empty_data' => 'true',
             'attr' => [
                 'class' => '',
                 'title' => $this->__('prepend bundle prefix ?')
@@ -204,7 +203,6 @@ abstract class AbstractRouteType extends AbstractType
         ]);
         $builder->add('translatable', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
             'label' => $this->__('Translatable') . ':',
-            'empty_data' => 'true',
             'attr' => [
                 'class' => '',
                 'title' => $this->__('translatable ?')

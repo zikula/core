@@ -1,5 +1,6 @@
 {# purpose of this template: routes display view #}
 {% extends routeArea == 'admin' ? 'ZikulaRoutesModule::adminBase.html.twig' : 'ZikulaRoutesModule::base.html.twig' %}
+{% block pageTitle %}{{ route.getTitleFromDisplayPattern()|default(__('Route')) }}{% endblock %}
 {% block title %}
     {% set templateTitle = route.getTitleFromDisplayPattern()|default(__('Route')) %}
     {{ templateTitle }}
@@ -52,9 +53,19 @@
         <dt>{{ __('Methods') }}</dt>
         <dd>{{ route.methods|zikularoutesmodule_listEntry('route', 'methods') }}</dd>
         <dt>{{ __('Prepend bundle prefix') }}</dt>
-        <dd>{{ route.prependBundlePrefix|yesNo(true) }}</dd>
+        <dd>{% if route.prependBundlePrefix %}
+            <i class="fa fa-check" title="{{ __('Yes') }}"></i>
+        {% else %}
+            <i class="fa fa-times" title="{{ __('No') }}"></i>
+        {% endif %}
+        </dd>
         <dt>{{ __('Translatable') }}</dt>
-        <dd>{{ route.translatable|yesNo(true) }}</dd>
+        <dd>{% if route.translatable %}
+            <i class="fa fa-check" title="{{ __('Yes') }}"></i>
+        {% else %}
+            <i class="fa fa-times" title="{{ __('No') }}"></i>
+        {% endif %}
+        </dd>
         <dt>{{ __('Translation prefix') }}</dt>
         <dd>{{ route.translationPrefix }}</dd>
         <dt>{{ __('Defaults') }}</dt>

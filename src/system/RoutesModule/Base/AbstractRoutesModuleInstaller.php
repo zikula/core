@@ -13,7 +13,9 @@
 namespace Zikula\RoutesModule\Base;
 
 use Doctrine\DBAL\Connection;
+use EventUtil;
 use RuntimeException;
+use UserUtil;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula_Workflow_Util;
 
@@ -83,10 +85,140 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
                     return false;
                 }
         }
+    
+        // Note there are several helpers available for making migration of your extension easier.
+        // The following convenience methods are each responsible for a single aspect of upgrading to Zikula 1.4.0.
+    
+        // here is a possible usage example
+        // of course 1.2.3 should match the number you used for the last stable 1.3.x module version.
+        /* if ($oldVersion = '1.2.3') {
+            // update extension information about this app
+            $this->updateExtensionInfoFor14();
+            
+            // rename existing permission rules
+            $this->renamePermissionsFor14();
+            
+            // rename all tables
+            $this->renameTablesFor14();
+            
+            // remove event handler definitions from database
+            $this->dropEventHandlersFromDatabase();
+            
+            // update module name in the workflows table
+            $this->updateWorkflowsFor14();
+        } * /
     */
     
         // update successful
         return true;
+    }
+    
+    /**
+     * Renames this application in the core's extensions table.
+     */
+    protected function updateExtensionInfoFor14()
+    {
+        $conn = $this->getConnection();
+        $dbName = $this->getDbName();
+    
+        $conn->executeQuery("
+            UPDATE $dbName.modules
+            SET name = 'ZikulaRoutesModule',
+                directory = 'Zikula/RoutesModule'
+            WHERE name = 'Routes';
+        ");
+    }
+    
+    /**
+     * Renames all permission rules stored for this app.
+     */
+    protected function renamePermissionsFor14()
+    {
+        $conn = $this->getConnection();
+        $dbName = $this->getDbName();
+    
+        $componentLength = strlen('Routes') + 1;
+    
+        $conn->executeQuery("
+            UPDATE $dbName.group_perms
+            SET component = CONCAT('ZikulaRoutesModule', SUBSTRING(component, $componentLength))
+            WHERE component LIKE 'Routes%';
+        ");
+    }
+    
+    /**
+     * Renames all (existing) tables of this app.
+     */
+    protected function renameTablesFor14()
+    {
+        $conn = $this->getConnection();
+        $dbName = $this->getDbName();
+    
+        $oldPrefix = 'routes_';
+        $oldPrefixLength = strlen($oldPrefix);
+        $newPrefix = 'zikula_routes_';
+    
+        $sm = $conn->getSchemaManager();
+        $tables = $sm->listTables();
+        foreach ($tables as $table) {
+            $tableName = $table->getName();
+            if (substr($tableName, 0, $oldPrefixLength) != $oldPrefix) {
+                continue;
+            }
+    
+            $newTableName = str_replace($oldPrefix, $newPrefix, $tableName);
+    
+            $conn->executeQuery("
+                RENAME TABLE $dbName.$tableName
+                TO $dbName.$newTableName;
+            ");
+        }
+    }
+    
+    /**
+     * Removes event handlers from database as they are now described by service definitions and managed by dependency injection.
+     */
+    protected function dropEventHandlersFromDatabase()
+    {
+        EventUtil::unregisterPersistentModuleHandlers('Routes');
+    }
+    
+    /**
+     * Updates the module name in the workflows table.
+     */
+    protected function updateWorkflowsFor14()
+    {
+        $conn = $this->getConnection();
+        $dbName = $this->getDbName();
+    
+        $conn->executeQuery("
+            UPDATE $dbName.workflows
+            SET module = 'ZikulaRoutesModule'
+            WHERE module = 'Routes';
+        ");
+    }
+    
+    /**
+     * Returns connection to the database.
+     *
+     * @return Connection the current connection
+     */
+    protected function getConnection()
+    {
+        $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
+        $connection = $entityManager->getConnection();
+    
+        return $connection;
+    }
+    
+    /**
+     * Returns the name of the default system database.
+     *
+     * @return string the database name
+     */
+    protected function getDbName()
+    {
+        return $this->container->getParameter('database_name');
     }
     
     /**
@@ -102,7 +234,7 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
     
         // delete stored object workflows
         $result = Zikula_Workflow_Util::deleteWorkflowsForModule('ZikulaRoutesModule');
-        if ($result === false) {
+        if (false === $result) {
             $this->addFlash('error', $this->__f('An error was encountered while removing stored object workflows for the %s extension.', ['%s' => 'ZikulaRoutesModule']));
             $logger->error('{app}: Could not remove stored object workflows during uninstallation.', ['app' => 'ZikulaRoutesModule']);
     
@@ -148,6 +280,7 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
     {
         $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
         $logger = $this->container->get('logger');
+        $request = $this->container->get('request_stack')->getMasterRequest();
         
         $entityClass = 'Zikula\RoutesModule\Entity\RouteEntity';
         $entityManager->getRepository($entityClass)->truncateTable($logger);

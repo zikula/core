@@ -13,6 +13,7 @@
 namespace Zikula\RoutesModule\Listener;
 
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use ServiceUtil;
 use Zikula\RoutesModule\Listener\Base\AbstractEntityLifecycleListener;
 
 /**
@@ -34,7 +35,7 @@ class EntityLifecycleListener extends AbstractEntityLifecycleListener
             return;
         }
 
-        $serviceManager = \ServiceUtil::getManager();
+        $serviceManager = ServiceUtil::getManager();
         $requestStack = $serviceManager->get('request_stack');
         if (null === $requestStack->getCurrentRequest()) {
             return;

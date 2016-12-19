@@ -97,11 +97,38 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
 
         
         if (LinkContainerInterface::TYPE_ADMIN == $type) {
+            if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
+                $links[] = [
+                    'url' => $this->router->generate('zikularoutesmodule_user_index'),
+                    'text' => $this->__('Frontend'),
+                    'title' => $this->__('Switch to user area.'),
+                    'icon' => 'home'
+                ];
+            }
             
             if (in_array('route', $allowedObjectTypes)
                 && $this->permissionApi->hasPermission($this->getBundleName() . ':Route:', '::', $permLevel)) {
                 $links[] = [
                     'url' => $this->router->generate('zikularoutesmodule_route_adminview'),
+                     'text' => $this->__('Routes'),
+                     'title' => $this->__('Route list')
+                 ];
+            }
+        }
+        if (LinkContainerInterface::TYPE_USER == $type) {
+            if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
+                $links[] = [
+                    'url' => $this->router->generate('zikularoutesmodule_admin_index'),
+                    'text' => $this->__('Backend'),
+                    'title' => $this->__('Switch to administration area.'),
+                    'icon' => 'wrench'
+                ];
+            }
+            
+            if (in_array('route', $allowedObjectTypes)
+                && $this->permissionApi->hasPermission($this->getBundleName() . ':Route:', '::', $permLevel)) {
+                $links[] = [
+                    'url' => $this->router->generate('zikularoutesmodule_route_view'),
                      'text' => $this->__('Routes'),
                      'title' => $this->__('Route list')
                  ];
@@ -131,12 +158,18 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
         
         if ($entity instanceof RouteEntity) {
             $component = 'ZikulaRoutesModule:Route:';
-            $instance = $this->id . '::';
+            $instance = $entity['id'] . '::';
         
         if ($currentLegacyControllerType == 'admin') {
             if (in_array($currentFunc, ['index', 'view'])) {
                 $links[] = [
-                    'url' => $this->router->generate('zikularoutesmodule_route_admindisplay', ['id' => $this['id']]),
+                    'url' => $this->router->generate('zikularoutesmodule_route_display', ['id' => $entity['id']]),
+                    'icon' => 'search-plus',
+                    'linkTitle' => $this->__('Open preview page'),
+                    'linkText' => $this->__('Preview')
+                ];
+                $links[] = [
+                    'url' => $this->router->generate('zikularoutesmodule_route_admindisplay', ['id' => $entity['id']]),
                     'icon' => 'eye',
                     'linkTitle' => str_replace('"', '', $entity->getTitleFromDisplayPattern()),
                     'linkText' => $this->__('Details')
@@ -145,13 +178,13 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
             if (in_array($currentFunc, ['index', 'view', 'display'])) {
                 if ($this->permissionApi->hasPermission($component, $instance, ACCESS_EDIT)) {
                     $links[] = [
-                        'url' => $this->router->generate('zikularoutesmodule_route_adminedit', ['id' => $this['id']]),
+                        'url' => $this->router->generate('zikularoutesmodule_route_adminedit', ['id' => $entity['id']]),
                         'icon' => 'pencil-square-o',
                         'linkTitle' => $this->__('Edit'),
                         'linkText' => $this->__('Edit')
                     ];
                     $links[] = [
-                        'url' => $this->router->generate('zikularoutesmodule_route_adminedit', ['astemplate' => $this['id']]),
+                        'url' => $this->router->generate('zikularoutesmodule_route_adminedit', ['astemplate' => $entity['id']]),
                         'icon' => 'files-o',
                         'linkTitle' => $this->__('Reuse for new item'),
                         'linkText' => $this->__('Reuse')
@@ -159,7 +192,7 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
                 }
                 if ($this->permissionApi->hasPermission($component, $instance, ACCESS_DELETE)) {
                     $links[] = [
-                        'url' => $this->router->generate('zikularoutesmodule_route_admindelete', ['id' => $this['id']]),
+                        'url' => $this->router->generate('zikularoutesmodule_route_admindelete', ['id' => $entity['id']]),
                         'icon' => 'trash-o',
                         'linkTitle' => $this->__('Delete'),
                         'linkText' => $this->__('Delete')
@@ -169,6 +202,48 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
             if ($currentFunc == 'display') {
                 $links[] = [
                     'url' => $this->router->generate('zikularoutesmodule_route_adminview'),
+                    'icon' => 'reply',
+                    'linkTitle' => $this->__('Back to overview'),
+                    'linkText' => $this->__('Back to overview')
+                ];
+            }
+        }
+        if ($currentLegacyControllerType == 'user') {
+            if (in_array($currentFunc, ['index', 'view'])) {
+                $links[] = [
+                    'url' => $this->router->generate('zikularoutesmodule_route_display', ['id' => $entity['id']]),
+                    'icon' => 'eye',
+                    'linkTitle' => str_replace('"', '', $entity->getTitleFromDisplayPattern()),
+                    'linkText' => $this->__('Details')
+                ];
+            }
+            if (in_array($currentFunc, ['index', 'view', 'display'])) {
+                if ($this->permissionApi->hasPermission($component, $instance, ACCESS_EDIT)) {
+                    $links[] = [
+                        'url' => $this->router->generate('zikularoutesmodule_route_edit', ['id' => $entity['id']]),
+                        'icon' => 'pencil-square-o',
+                        'linkTitle' => $this->__('Edit'),
+                        'linkText' => $this->__('Edit')
+                    ];
+                    $links[] = [
+                        'url' => $this->router->generate('zikularoutesmodule_route_edit', ['astemplate' => $entity['id']]),
+                        'icon' => 'files-o',
+                        'linkTitle' => $this->__('Reuse for new item'),
+                        'linkText' => $this->__('Reuse')
+                    ];
+                }
+                if ($this->permissionApi->hasPermission($component, $instance, ACCESS_DELETE)) {
+                    $links[] = [
+                        'url' => $this->router->generate('zikularoutesmodule_route_delete', ['id' => $entity['id']]),
+                        'icon' => 'trash-o',
+                        'linkTitle' => $this->__('Delete'),
+                        'linkText' => $this->__('Delete')
+                    ];
+                }
+            }
+            if ($currentFunc == 'display') {
+                $links[] = [
+                    'url' => $this->router->generate('zikularoutesmodule_route_view'),
                     'icon' => 'reply',
                     'linkTitle' => $this->__('Back to overview'),
                     'linkText' => $this->__('Back to overview')

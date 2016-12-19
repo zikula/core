@@ -18,7 +18,7 @@ div#z-maincontent.z-module-routes table tbody tr td {
 /* validation */
 div.form-group input:required, div.form-group textarea:required, div.form-group select:required {
     /*border: 1px solid #00a8e6;*/
-    background-color: #ffffff;
+    background-color: #fff;
 }
 div.form-group input:required:valid, div.form-group textarea:required:valid, div.form-group select:required:valid {
     /*border: 1px solid green;*/
@@ -44,6 +44,10 @@ div.zikularoutesmodule-view form.zikularoutesmodule-quicknav fieldset {
 div.zikularoutesmodule-view form.zikularoutesmodule-quicknav fieldset h3 {
     margin-top: 0;
     display: none;
+}
+
+div.zikularoutesmodule-view form.zikularoutesmodule-quicknav fieldset label {
+    margin-right: 5px;
 }
 
 div.zikularoutesmodule-view form.zikularoutesmodule-quicknav fieldset #num {

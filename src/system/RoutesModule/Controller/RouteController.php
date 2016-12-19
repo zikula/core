@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\RoutesModule\Entity\RouteEntity;
 
 /**
@@ -32,6 +33,7 @@ class RouteController extends AbstractRouteController
      * @Route("/admin/routes",
      *        methods = {"GET"}
      * )
+     * @Theme("admin")
      *
      * @param Request $request Current request instance
      *
@@ -70,6 +72,7 @@ class RouteController extends AbstractRouteController
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 0, "_format" = "html"},
      *        methods = {"GET"}
      * )
+     * @Theme("admin")
      *
      * @param Request $request Current request instance
      * @param string  $sort    Sorting field
@@ -129,6 +132,7 @@ class RouteController extends AbstractRouteController
      *        defaults = {"_format" = "html"},
      *        methods = {"GET"}
      * )
+     * @Theme("admin")
      *
      * @param Request     $request Current request instance
      * @param RouteEntity $route   Treated route instance
@@ -173,6 +177,7 @@ class RouteController extends AbstractRouteController
      *        defaults = {"id" = "0", "_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
+     * @Theme("admin")
      *
      * @param Request $request Current request instance
      *
@@ -217,6 +222,7 @@ class RouteController extends AbstractRouteController
      *        defaults = {"_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
+     * @Theme("admin")
      *
      * @param Request     $request Current request instance
      * @param RouteEntity $route   Treated route instance
@@ -261,6 +267,7 @@ class RouteController extends AbstractRouteController
      * @Route("/admin/routes/reload",
      *        methods = {"GET", "POST"}
      * )
+     * @Theme("admin")
      *
      * @param Request $request Current request instance
      *
@@ -319,6 +326,7 @@ class RouteController extends AbstractRouteController
      * @Route("/admin/routes/renew",
      *        methods = {"GET", "POST"}
      * )
+     * @Theme("admin")
      *
      * @param Request $request Current request instance
      *
@@ -368,6 +376,7 @@ class RouteController extends AbstractRouteController
      * @Route("/routes/handleSelectedEntries",
      *        methods = {"POST"}
      * )
+     * @Theme("admin")
      *
      * @param Request $request Current request instance
      *
@@ -409,6 +418,7 @@ class RouteController extends AbstractRouteController
      *        name = "zikularoutesmodule_route_dumpjsroutes",
      *        methods = {"GET"}
      * )
+     * @Theme("admin")
      *
      * @param Request $request Current request instance
      *

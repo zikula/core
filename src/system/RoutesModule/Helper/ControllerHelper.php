@@ -15,7 +15,7 @@ namespace Zikula\RoutesModule\Helper;
 use Zikula\RoutesModule\Helper\Base\AbstractControllerHelper;
 
 /**
- * Utility implementation class for controller helper methods.
+ * Helper implementation class for controller layer methods.
  */
 class ControllerHelper extends AbstractControllerHelper
 {

@@ -55,8 +55,6 @@ abstract class AbstractRouteRepository extends SortableRepository
     public function getAllowedSortingFields()
     {
         return [
-            'id',
-            'workflowState',
             'routeType',
             'replacedRouteName',
             'bundle',
@@ -69,8 +67,6 @@ abstract class AbstractRouteRepository extends SortableRepository
             'prependBundlePrefix',
             'translatable',
             'translationPrefix',
-            'defaults',
-            'requirements',
             'condition',
             'description',
             'sort',
@@ -83,7 +79,7 @@ abstract class AbstractRouteRepository extends SortableRepository
     }
 
     /**
-     * Gets the default sorting field.
+     * Returns the default sorting field.
      *
      * @return string
      */
@@ -105,7 +101,7 @@ abstract class AbstractRouteRepository extends SortableRepository
     }
     
     /**
-     * Gets the request.
+     * Returns the request.
      *
      * @return Request
      */
@@ -571,24 +567,7 @@ abstract class AbstractRouteRepository extends SortableRepository
             }
         }
     
-        if (!$hasFilters) {
-            $session = null !== $this->getRequest() ? $this->getRequest()->getSession() : null;
-            if ($page > 1 || isset($_GET['pos'])) {
-                // store current page in session
-                if (null !== $session) {
-                    $session->set('ZikulaRoutesModuleRoutesCurrentPage', $page);
-                }
-            } else {
-                // restore current page from session
-                if (null !== $session) {
-                    $page = $session->get('ZikulaRoutesModuleRoutesCurrentPage', 1);
-                    if (null !== $this->getRequest()) {
-                        $this->getRequest()->query->set('pos', $page);
-                    }
-                }
-            }
-        }
-    
+        
         list($query, $count) = $this->getSelectWherePaginatedQuery($qb, $page, $resultsPerPage);
     
         return $this->retrieveCollectionResult($query, $orderBy, true);
@@ -814,7 +793,7 @@ abstract class AbstractRouteRepository extends SortableRepository
         $useJoins = false;
     
         $selection = 'COUNT(tbl.id) AS numRoutes';
-        if ($useJoins === true) {
+        if (true === $useJoins) {
             $selection .= $this->addJoinsToSelection();
         }
     
@@ -822,7 +801,7 @@ abstract class AbstractRouteRepository extends SortableRepository
         $qb->select($selection)
            ->from('Zikula\RoutesModule\Entity\RouteEntity', 'tbl');
     
-        if ($useJoins === true) {
+        if (true === $useJoins) {
             $this->addJoinsToFrom($qb);
         }
     
@@ -891,7 +870,7 @@ abstract class AbstractRouteRepository extends SortableRepository
         // normally we select the whole table
         $selection = 'tbl';
     
-        if ($slimMode === true) {
+        if (true === $slimMode) {
             // but for the slim version we select only the basic fields, and no joins
     
             $selection = 'tbl.id';
@@ -905,7 +884,7 @@ abstract class AbstractRouteRepository extends SortableRepository
             $useJoins = false;
         }
     
-        if ($useJoins === true) {
+        if (true === $useJoins) {
             $selection .= $this->addJoinsToSelection();
         }
     
@@ -913,7 +892,7 @@ abstract class AbstractRouteRepository extends SortableRepository
         $qb->select($selection)
            ->from('Zikula\RoutesModule\Entity\RouteEntity', 'tbl');
     
-        if ($useJoins === true) {
+        if (true === $useJoins) {
             $this->addJoinsToFrom($qb);
         }
     
@@ -1018,7 +997,7 @@ abstract class AbstractRouteRepository extends SortableRepository
     
         // add order by clause
         if (!empty($orderBy)) {
-            if (strpos($orderBy, '.') === false) {
+            if (false === strpos($orderBy, '.')) {
                 $orderBy = 'tbl.' . $orderBy;
             }
             $qb->add('orderBy', $orderBy);

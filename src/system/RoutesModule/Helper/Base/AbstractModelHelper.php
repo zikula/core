@@ -15,7 +15,7 @@ namespace Zikula\RoutesModule\Helper\Base;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * Utility base class for model helper methods.
+ * Helper base class for model layer methods.
  */
 abstract class AbstractModelHelper
 {

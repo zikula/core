@@ -1,43 +1,75 @@
 {# purpose of this template: routes view filter form #}
 {% if hasPermission('ZikulaRoutesModule:Route:', '::', 'ACCESS_EDIT') %}
     {% form_theme quickNavForm with [
-        '@ZikulaRoutesModule/Form/bootstrap_3.html.twig',
-        'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+        'bootstrap_3_layout.html.twig'
     ] %}
     {{ form_start(quickNavForm, {attr: {id: 'zikulaRoutesModuleRouteQuickNavForm', class: 'zikularoutesmodule-quicknav navbar-form', role: 'navigation'}}) }}
     {{ form_errors(quickNavForm) }}
     <fieldset>
         <h3>{{ __('Quick navigation') }}</h3>
-        {% if workflowStateFilter is not defined or workflowStateFilter == true %}
+        {% if workflowStateFilter is defined and workflowStateFilter != true %}
+            <div class="hidden">
+        {% endif %}
             {{ form_row(quickNavForm.workflowState) }}
+        {% if workflowStateFilter is defined and workflowStateFilter != true %}
+            </div>
         {% endif %}
-        {% if routeTypeFilter is not defined or routeTypeFilter == true %}
+        {% if routeTypeFilter is defined and routeTypeFilter != true %}
+            <div class="hidden">
+        {% endif %}
             {{ form_row(quickNavForm.routeType) }}
+        {% if routeTypeFilter is defined and routeTypeFilter != true %}
+            </div>
         {% endif %}
-        {% if schemesFilter is not defined or schemesFilter == true %}
+        {% if schemesFilter is defined and schemesFilter != true %}
+            <div class="hidden">
+        {% endif %}
             {{ form_row(quickNavForm.schemes) }}
+        {% if schemesFilter is defined and schemesFilter != true %}
+            </div>
         {% endif %}
-        {% if methodsFilter is not defined or methodsFilter == true %}
+        {% if methodsFilter is defined and methodsFilter != true %}
+            <div class="hidden">
+        {% endif %}
             {{ form_row(quickNavForm.methods) }}
+        {% if methodsFilter is defined and methodsFilter != true %}
+            </div>
         {% endif %}
-        {% if searchFilter is not defined or searchFilter == true %}
+        {% if searchFilter is defined and searchFilter != true %}
+            <div class="hidden">
+        {% endif %}
             {{ form_row(quickNavForm.q) }}
+        {% if searchFilter is defined and searchFilter != true %}
+            </div>
         {% endif %}
-        {% if sorting is not defined or sorting == true %}
+        {% if sorting is defined and sorting != true %}
+            <div class="hidden">
+        {% endif %}
             {{ form_row(quickNavForm.sort) }}
             {{ form_row(quickNavForm.sortdir) }}
-        {% else %}
-            {{ form_row(quickNavForm.sort, {attr: {class: 'hidden'}}) }}
-            {{ form_row(quickNavForm.sortdir, {attr: {class: 'hidden'}}) }}
+        {% if sorting is defined and sorting != true %}
+            </div>
         {% endif %}
-        {% if pageSizeSelector is not defined or pageSizeSelector == true %}
+        {% if pageSizeSelector is defined and pageSizeSelector != true %}
+            <div class="hidden">
+        {% endif %}
             {{ form_row(quickNavForm.num) }}
+        {% if pageSizeSelector is defined and pageSizeSelector != true %}
+            </div>
         {% endif %}
-        {% if prependBundlePrefixFilter is not defined or prependBundlePrefixFilter == true %}
+        {% if prependBundlePrefixFilter is defined and prependBundlePrefixFilter != true %}
+            <div class="hidden">
+        {% endif %}
             {{ form_row(quickNavForm.prependBundlePrefix) }}
+        {% if prependBundlePrefixFilter is defined and prependBundlePrefixFilter != true %}
+            </div>
         {% endif %}
-        {% if translatableFilter is not defined or translatableFilter == true %}
+        {% if translatableFilter is defined and translatableFilter != true %}
+            <div class="hidden">
+        {% endif %}
             {{ form_row(quickNavForm.translatable) }}
+        {% if translatableFilter is defined and translatableFilter != true %}
+            </div>
         {% endif %}
         {{ form_widget(quickNavForm.updateview) }}
     </fieldset>

@@ -23,7 +23,7 @@ use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Response\PlainResponse;
 
 /**
- * Utility base class for view helper methods.
+ * Helper base class for view layer methods.
  */
 abstract class AbstractViewHelper
 {
@@ -90,7 +90,7 @@ abstract class AbstractViewHelper
     }
 
     /**
-     * Utility method for managing view templates.
+     * Helper method for managing view templates.
      *
      * @param Twig_Environment $twig     Reference to view object
      * @param string           $type     Current controller (name of currently treated entity)
@@ -120,7 +120,7 @@ abstract class AbstractViewHelper
         }
     
         $response = null;
-        if ($raw == true) {
+        if (true === $raw) {
             // standalone output
             if ($templateExtension == 'pdf.twig') {
                 $template = str_replace('.pdf', '.html', $template);

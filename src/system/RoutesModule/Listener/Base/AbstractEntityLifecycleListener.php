@@ -61,9 +61,9 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber
         $dispatcher = $serviceManager->get('event_dispatcher');
         
         // create the filter event and dispatch it
-        $filterEventClass = 'Filter' . ucfirst($entity->get_objectType()) . 'Event';
+        $filterEventClass = '\\Zikula\\RoutesModule\\Event\\Filter' . ucfirst($entity->get_objectType()) . 'Event';
         $event = new $filterEventClass($entity);
-        $dispatcher->dispatch(constant('ZikulaRoutesModuleEvents::' . strtoupper($entity->get_objectType()) . '_PRE_REMOVE'), $event);
+        $dispatcher->dispatch(constant('\\Zikula\\RoutesModule\\RoutesEvents::' . strtoupper($entity->get_objectType()) . '_PRE_REMOVE'), $event);
         if ($event->isPropagationStopped()) {
             return false;
         }
@@ -82,7 +82,7 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber
             } catch (\Exception $e) {
                 $result = false;
             }
-            if ($result === false) {
+            if (false === $result) {
                 $flashBag = $serviceManager->get('session')->getFlashBag();
                 $flashBag->add('error', $serviceManager->get('translator.default')->__('Error! Could not remove stored workflow. Deletion has been aborted.'));
         
@@ -121,9 +121,9 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber
         $dispatcher = $serviceManager->get('event_dispatcher');
         
         // create the filter event and dispatch it
-        $filterEventClass = 'Filter' . ucfirst($objectType) . 'Event';
+        $filterEventClass = '\\Zikula\\RoutesModule\\Event\\Filter' . ucfirst($objectType) . 'Event';
         $event = new $filterEventClass($entity);
-        $dispatcher->dispatch(constant('ZikulaRoutesModuleEvents::' . strtoupper($objectType) . '_POST_REMOVE'), $event);
+        $dispatcher->dispatch(constant('\\Zikula\\RoutesModule\\RoutesEvents::' . strtoupper($objectType) . '_POST_REMOVE'), $event);
     }
 
     /**
@@ -143,13 +143,12 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber
             return;
         }
 
-        $serviceManager = ServiceUtil::getManager();
-        $dispatcher = $serviceManager->get('event_dispatcher');
+        $dispatcher = ServiceUtil::get('event_dispatcher');
         
         // create the filter event and dispatch it
-        $filterEventClass = 'Filter' . ucfirst($entity->get_objectType()) . 'Event';
+        $filterEventClass = '\\Zikula\\RoutesModule\\Event\\Filter' . ucfirst($entity->get_objectType()) . 'Event';
         $event = new $filterEventClass($entity);
-        $dispatcher->dispatch(constant('ZikulaRoutesModuleEvents::' . strtoupper($entity->get_objectType()) . '_PRE_PERSIST'), $event);
+        $dispatcher->dispatch(constant('\\Zikula\\RoutesModule\\RoutesEvents::' . strtoupper($entity->get_objectType()) . '_PRE_PERSIST'), $event);
         if ($event->isPropagationStopped()) {
             return false;
         }
@@ -178,9 +177,9 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber
         $dispatcher = $serviceManager->get('event_dispatcher');
         
         // create the filter event and dispatch it
-        $filterEventClass = 'Filter' . ucfirst($entity->get_objectType()) . 'Event';
+        $filterEventClass = '\\Zikula\\RoutesModule\\Event\\Filter' . ucfirst($entity->get_objectType()) . 'Event';
         $event = new $filterEventClass($entity);
-        $dispatcher->dispatch(constant('ZikulaRoutesModuleEvents::' . strtoupper($entity->get_objectType()) . '_POST_PERSIST'), $event);
+        $dispatcher->dispatch(constant('\\Zikula\\RoutesModule\\RoutesEvents::' . strtoupper($entity->get_objectType()) . '_POST_PERSIST'), $event);
     }
 
     /**
@@ -202,9 +201,9 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber
         $dispatcher = $serviceManager->get('event_dispatcher');
         
         // create the filter event and dispatch it
-        $filterEventClass = 'Filter' . ucfirst($entity->get_objectType()) . 'Event';
+        $filterEventClass = '\\Zikula\\RoutesModule\\Event\\Filter' . ucfirst($entity->get_objectType()) . 'Event';
         $event = new $filterEventClass($entity);
-        $dispatcher->dispatch(constant('ZikulaRoutesModuleEvents::' . strtoupper($entity->get_objectType()) . '_PRE_UPDATE'), $event);
+        $dispatcher->dispatch(constant('\\Zikula\\RoutesModule\\RoutesEvents::' . strtoupper($entity->get_objectType()) . '_PRE_UPDATE'), $event);
         if ($event->isPropagationStopped()) {
             return false;
         }
@@ -232,9 +231,9 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber
         $dispatcher = $serviceManager->get('event_dispatcher');
         
         // create the filter event and dispatch it
-        $filterEventClass = 'Filter' . ucfirst($entity->get_objectType()) . 'Event';
+        $filterEventClass = '\\Zikula\\RoutesModule\\Event\\Filter' . ucfirst($entity->get_objectType()) . 'Event';
         $event = new $filterEventClass($entity);
-        $dispatcher->dispatch(constant('ZikulaRoutesModuleEvents::' . strtoupper($entity->get_objectType()) . '_POST_UPDATE'), $event);
+        $dispatcher->dispatch(constant('\\Zikula\\RoutesModule\\RoutesEvents::' . strtoupper($entity->get_objectType()) . '_POST_UPDATE'), $event);
     }
 
     /**
@@ -257,14 +256,12 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber
 
         
         $serviceManager = ServiceUtil::getManager();
-        $dispatcher = $serviceManager->get('event_dispatcher');
+        $dispatcher = ServiceUtil::get('event_dispatcher');
         
         // create the filter event and dispatch it
-        $filterEventClass = 'Filter' . ucfirst($entity->get_objectType()) . 'Event';
+        $filterEventClass = '\\Zikula\\RoutesModule\\Event\\Filter' . ucfirst($entity->get_objectType()) . 'Event';
         $event = new $filterEventClass($entity);
-        $dispatcher->dispatch(constant('ZikulaRoutesModuleEvents::' . strtoupper($entity->get_objectType()) . '_POST_LOAD'), $event);
-        
-        $this->processedPostLoad = true;
+        $dispatcher->dispatch(constant('\\Zikula\\RoutesModule\\RoutesEvents::' . strtoupper($entity->get_objectType()) . '_POST_LOAD'), $event);
     }
 
     /**
@@ -282,6 +279,6 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber
 
         $entityClassParts = explode('\\', get_class($entity));
 
-        return ($entityClassParts[0] == 'Zikula' && $entityClassParts[1] == 'Routes');
+        return ($entityClassParts[0] == 'Zikula' && $entityClassParts[1] == 'RoutesModule');
     }
 }

@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 
 /**
- * Utility base class for controller helper methods.
+ * Helper base class for controller layer methods.
  */
 abstract class AbstractControllerHelper
 {

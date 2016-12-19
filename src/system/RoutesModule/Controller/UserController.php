@@ -12,21 +12,21 @@
 
 namespace Zikula\RoutesModule\Controller;
 
-use Zikula\RoutesModule\Controller\Base\AbstractAdminController;
+use Zikula\RoutesModule\Controller\Base\AbstractUserController;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
- * Admin controller class providing navigation and interaction functionality.
+ * User controller class providing navigation and interaction functionality.
  */
-class AdminController extends AbstractAdminController
+class UserController extends AbstractUserController
 {
     /**
-     * This is the default action handling the main area called without defining arguments.
+     * This is the default action handling the index area called without defining arguments.
      *
-     * @Route("/admin",
+     * @Route("/user",
      *        methods = {"GET"}
      * )
      *

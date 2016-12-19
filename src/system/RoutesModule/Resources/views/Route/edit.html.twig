@@ -126,6 +126,7 @@
     /* <![CDATA[ */
 
                 var formButtons;
+                var triggerValidation = true;
 
                 function executeCustomValidationConstraints()
                 {
@@ -143,10 +144,12 @@
                 }
 
                 function handleFormSubmit (event) {
-                    triggerFormValidation();
-                    if (!document.getElementById('routeEditForm').checkValidity()) {
-                        event.preventDefault();
-                        return false;
+                    if (triggerValidation) {
+                        triggerFormValidation();
+                        if (!document.getElementById('routeEditForm').checkValidity()) {
+                            event.preventDefault();
+                            return false;
+                        }
                     }
 
                     // hide form buttons to prevent double submits by accident
@@ -164,10 +167,13 @@
                         allFormFields.change(executeCustomValidationConstraints);
 
                         formButtons = $('#routeEditForm .form-buttons input');
-                        $('.btn-danger').first().bind('click keypress', function (e) {
+                        $('.btn-danger').first().bind('click keypress', function (event) {
                             if (!window.confirm('{{ __('Really delete this route?') }}')) {
-                                e.preventDefault();
+                                event.preventDefault();
                             }
+                        });
+                        $('#routeEditForm button[type=submit]').bind('click keypress', function (event) {
+                            triggerValidation = !$(this).attr('formnovalidate');
                         });
                         $('#routeEditForm').submit(handleFormSubmit);
 
