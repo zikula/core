@@ -8,10 +8,13 @@
         - <a href="{{ path('zikulagroupsmodule_user_memberslist', { gid: gid }) }}" title="{{ __('Members list') }}">{{ __('Members list') }}</a>
     {% endif %}
 </td>
-{% if nbumax == 0 %}
-    {% set nbumax = __('Unlimited') %}
-{% endif %}
-<td headers="hMaximum">{{ nbumax }}</td>
+<td headers="hMaximum">
+    {% if nbumax == 0 %}
+        {{ __('Unlimited') }}
+    {% else %}
+        {{ nbumax }}
+    {% endif %}
+</td>
 <td headers="hFunctions">
     {% if state > 0 %}
         {% if status == true %}
