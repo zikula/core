@@ -36,6 +36,7 @@ application "Routes" {
             CHANGELOG.md
         "
         markFiles "
+            Base/AbstractRoutesModuleInstaller.php,
             Container/LinkContainer.php,
             Controller/AjaxController.php,
             Controller/RouteController.php,
