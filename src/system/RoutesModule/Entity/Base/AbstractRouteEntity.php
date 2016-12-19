@@ -14,7 +14,6 @@ namespace Zikula\RoutesModule\Entity\Base;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -217,16 +216,16 @@ abstract class AbstractRouteEntity extends EntityAccess
     
     
     /**
-     * @ORM\Column(type="integer")
-     * @ZK\StandardFields(type="userid", on="create")
-     * @var integer $createdUserId
+     * @ORM\Column(type="string")
+     * @Gedmo\Blameable(on="create")
+     * @var string $createdUserId
      */
     protected $createdUserId;
     
     /**
-     * @ORM\Column(type="integer")
-     * @ZK\StandardFields(type="userid", on="update")
-     * @var integer $updatedUserId
+     * @ORM\Column(type="string")
+     * @Gedmo\Blameable(on="update")
+     * @var string $updatedUserId
      */
     protected $updatedUserId;
     
