@@ -13,7 +13,6 @@ namespace Zikula\CategoriesModule\Helper;
 
 use Doctrine\ORM\EntityManager;
 use Zikula\CategoriesModule\Api\CategoryApi;
-use Zikula\CategoriesModule\Entity\CategoryEntity;
 
 /**
  * Path building helper functions for the categories module.

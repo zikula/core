@@ -14,16 +14,7 @@ namespace Zikula\RoutesModule\Controller\Base;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use ModUtil;
-use RuntimeException;
-use System;
-use ZLanguage;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\RouteUrl;
-use Zikula\Core\Response\PlainResponse;
-use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Admin controller class.

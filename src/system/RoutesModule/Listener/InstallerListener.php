@@ -13,7 +13,6 @@
 namespace Zikula\RoutesModule\Listener;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;

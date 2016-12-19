@@ -13,7 +13,6 @@ namespace Zikula\Composer\Process;
 
 use ComponentInstaller\Process\Process;
 use Assetic\Asset\StringAsset;
-use Composer\Config;
 use Composer\Json\JsonFile;
 use Assetic\Asset\AssetCollection;
 use Assetic\Asset\FileAsset;
