@@ -101,7 +101,7 @@ class UserController extends AbstractController
                     $groupItems[] = $this->get('twig')->render('@ZikulaGroupsModule/User/grouprow_read.html.twig', $group);
                 } else {
                     // No right to apply
-                    $groupItems[] = $this->get('twig')->render('@ZikulaGroupsModule/User/grouprow_overview.tpl', $group);
+                    $groupItems[] = $this->get('twig')->render('@ZikulaGroupsModule/User/grouprow_overview.html.twig', $group);
                 }
             }
         }
