@@ -19,7 +19,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Response\PlainResponse;
+use Zikula\GroupsModule\GroupEvents;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
@@ -100,6 +102,9 @@ class MembershipAdministrationController extends AbstractController
             $userEntity->addGroup($group);
             $this->get('doctrine')->getManager()->flush();
             $this->addFlash('status', $this->__('Done! The user was added to the group.'));
+            // Let other modules know that we have updated a group.
+            $adduserEvent = new GenericEvent(['gid' => $gid, 'uid' => $uid]);
+            $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_ADD_USER, $adduserEvent);
         }
 
         return $this->redirectToRoute('zikulagroupsmodule_membershipadministration_list', ['gid' => $gid]);
@@ -151,6 +156,8 @@ class MembershipAdministrationController extends AbstractController
                 $user->removeGroup($group);
                 $this->get('doctrine')->getManager()->flush();
                 $this->addFlash('status', $this->__('Done! The user was removed from the group.'));
+                $removeuserEvent = new GenericEvent(null, ['gid' => $gid, 'uid' => $uid]);
+                $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_REMOVE_USER, $removeuserEvent);
             }
             if ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));

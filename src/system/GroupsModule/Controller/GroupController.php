@@ -18,7 +18,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\Core\Event\GenericEvent;
 use Zikula\GroupsModule\Entity\GroupEntity;
+use Zikula\GroupsModule\GroupEvents;
 use Zikula\GroupsModule\Helper\CommonHelper;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -160,6 +162,7 @@ class GroupController extends AbstractController
                 $groupEntity = $form->getData();
                 $this->get('doctrine')->getManager()->persist($groupEntity);
                 $this->get('doctrine')->getManager()->flush();
+                $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_CREATE, new GenericEvent($groupEntity));
                 $this->addFlash('status', $this->__('Done! Created the group.'));
             }
             if ($form->get('cancel')->isClicked()) {
@@ -200,6 +203,7 @@ class GroupController extends AbstractController
                 $groupEntity = $form->getData();
                 $this->get('doctrine')->getManager()->persist($groupEntity); // this isn't technically required
                 $this->get('doctrine')->getManager()->flush();
+                $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_UPDATE, new GenericEvent($groupEntity));
                 $this->addFlash('status', $this->__('Done! Updated the group.'));
             }
             if ($form->get('cancel')->isClicked()) {
@@ -256,6 +260,7 @@ class GroupController extends AbstractController
                 $groupEntity = $form->getData();
                 $this->get('doctrine')->getManager()->remove($groupEntity);
                 $this->get('doctrine')->getManager()->flush();
+                $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_DELETE, new GenericEvent($groupEntity));
                 $this->addFlash('status', $this->__('Done! Group deleted.'));
             }
             if ($form->get('cancel')->isClicked()) {
