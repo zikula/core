@@ -46,90 +46,17 @@ class GroupController extends AbstractController
     public function listAction($startnum = 0)
     {
         $itemsPerPage = $this->getVar('itemsperpage', 25);
-
-        // get the default user group
-        $defaultGroup = $this->getVar('defaultgroup');
-
-        // get the primary admin group
-        $primaryAdminGroup = $this->getVar('primaryadmingroup', 2);
-
-        $items = $this->get('doctrine')->getManager()->getRepository('ZikulaGroupsModule:GroupEntity')->findBy([], [], $itemsPerPage, $startnum);
-
-        // Setting various defines
-        $groupsCommon = new CommonHelper();
-        $typeLabels = $groupsCommon->gtypeLabels();
-        $stateLabels = $groupsCommon->stateLabels();
-
-        $groups = [];
-        $router = $this->get('router');
-
-        /** @var GroupEntity $item */
-        foreach ($items as $item) {
-            if (!$this->hasPermission('ZikulaGroupsModule::', $item->getGid() . '::', ACCESS_EDIT)) {
-                continue;
-            }
-
-            // Options for the item.
-            $options = [];
-
-            $routeArgs = ['gid' => $item->getGid()];
-            $editUrl = $router->generate('zikulagroupsmodule_group_edit', $routeArgs);
-            $membersUrl = $router->generate('zikulagroupsmodule_membershipadministration_list', $routeArgs);
-
-            $options[] = [
-                'url' => $router->generate('zikulagroupsmodule_group_edit', $routeArgs),
-                'title'   => $this->__('Edit'),
-                'icon' => 'pencil'
-            ];
-
-            if ($this->hasPermission('ZikulaGroupsModule::', $item->getGid() . '::', ACCESS_DELETE)
-                    && $item->getGid() != $defaultGroup && $item->getGid() != $primaryAdminGroup) {
-                $options[] = [
-                    'url' => $router->generate('zikulagroupsmodule_group_remove', $routeArgs),
-                    'title'   => $this->__('Delete'),
-                    'icon' => 'trash-o'
-                ];
-            }
-
-            $options[] = [
-                'url' => $router->generate('zikulagroupsmodule_membershipadministration_list', $routeArgs),
-                'title'   => $this->__('Group membership'),
-                'icon' => 'users'
-            ];
-
-            $groups[] = [
-                'name'        => $item->getName(),
-                'gid'         => $item->getGid(),
-                'gtype'       => $item->getGtype(),
-                'gtypelbl'    => $this->__(/** @Ignore */$typeLabels[$item->getGtype()]),
-                'description' => $item->getDescription(),
-                'prefix'      => $item->getPrefix(),
-                'state'       => $item->getState(),
-                'statelbl'    => $this->__(/** @Ignore */$stateLabels[$item->getState()]),
-                'nbuser'      => $item->getUsers()->count(),
-                'nbumax'      => $item->getNbumax(),
-                'link'        => $item->getLink(),
-                'uidmaster'   => $item->getUidmaster(),
-                'options'     => $options,
-                'editurl'     => $editUrl,
-                'membersurl'  => $membersUrl
-            ];
-        }
-
-        if (count($groups) == 0) {
-            // groups array is empty
-            throw new AccessDeniedException();
-        }
-
+        $groupsCommon = new CommonHelper($this->getTranslator());
+        $groups = $this->get('doctrine')->getManager()->getRepository('ZikulaGroupsModule:GroupEntity')->findBy([], [], $itemsPerPage, $startnum);
         $users = $this->get('zikula_groups_module.group_application_repository')->getFilteredApplications();
 
         return [
             'groups' => $groups,
-            //'groupTypes' => $typeLabels,
-            //'states' => $stateLabels,
+            'groupTypes' => $groupsCommon->gtypeLabels(),
+            'states' => $groupsCommon->stateLabels(),
             'userItems' => $users,
-            'defaultGroup' => $defaultGroup,
-            'primaryAdminGroup' => $primaryAdminGroup,
+            'defaultGroup' => $this->getVar('defaultgroup'),
+            'primaryAdminGroup' => $this->getVar('primaryadmingroup', 2),
             'pager' => [
                 'amountOfItems' => count($groups),
                 'itemsPerPage' => $itemsPerPage
