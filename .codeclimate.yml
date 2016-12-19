@@ -7,9 +7,9 @@ engines:
       languages:
         javascript:
         php:
-#  eslint:
-#    enabled: true
-#    channel: "eslint-3"
+  eslint:
+    enabled: true
+    channel: "eslint-3"
   fixme:
     enabled: true
     config:
@@ -29,10 +29,10 @@ engines:
 
 ratings:
   paths:
-    - "**.css"
-    - "**.js"
-    - "**.md"
-    - "**.php"
+  - "**.css"
+  - "**.js"
+  - "**.md"
+  - "**.php"
 
 exclude_paths:
 - "src/lib/legacy/"
