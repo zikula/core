@@ -22,7 +22,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\GroupsModule\Form\Type\ManageApplicationType;
-use Zikula\GroupsModule\Form\Type\RemoveUserType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
