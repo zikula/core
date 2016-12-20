@@ -19,7 +19,6 @@ use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Api\CurrentUserApi;
-use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\Helper\ControllerHelper;
 
 /**
@@ -133,123 +132,6 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
                      'title' => $this->__('Route list')
                  ];
             }
-        }
-
-        return $links;
-    }
-
-    /**
-     * Returns action links for a given entity.
-     *
-     * @param EntityAccess $entity  The entity
-     * @param string       $area    The context area name (e.g. admin or nothing for user)
-     * @param string       $context The context page name (e.g. view, display, edit, delete)
-     *
-     * @return array Array of action links
-     */
-    public function getActionLinks(EntityAccess $entity, $area = '', $context = 'view')
-    {
-        // Create an array of links to return
-        $links = [];
-
-        
-        $currentLegacyControllerType = $area != '' ? $area : 'user';
-        $currentFunc = $context;
-        
-        if ($entity instanceof RouteEntity) {
-            $component = 'ZikulaRoutesModule:Route:';
-            $instance = $entity['id'] . '::';
-        
-        if ($currentLegacyControllerType == 'admin') {
-            if (in_array($currentFunc, ['index', 'view'])) {
-                $links[] = [
-                    'url' => $this->router->generate('zikularoutesmodule_route_display', ['id' => $entity['id']]),
-                    'icon' => 'search-plus',
-                    'linkTitle' => $this->__('Open preview page'),
-                    'linkText' => $this->__('Preview')
-                ];
-                $links[] = [
-                    'url' => $this->router->generate('zikularoutesmodule_route_admindisplay', ['id' => $entity['id']]),
-                    'icon' => 'eye',
-                    'linkTitle' => str_replace('"', '', $entity->getTitleFromDisplayPattern()),
-                    'linkText' => $this->__('Details')
-                ];
-            }
-            if (in_array($currentFunc, ['index', 'view', 'display'])) {
-                if ($this->permissionApi->hasPermission($component, $instance, ACCESS_EDIT)) {
-                    $links[] = [
-                        'url' => $this->router->generate('zikularoutesmodule_route_adminedit', ['id' => $entity['id']]),
-                        'icon' => 'pencil-square-o',
-                        'linkTitle' => $this->__('Edit'),
-                        'linkText' => $this->__('Edit')
-                    ];
-                    $links[] = [
-                        'url' => $this->router->generate('zikularoutesmodule_route_adminedit', ['astemplate' => $entity['id']]),
-                        'icon' => 'files-o',
-                        'linkTitle' => $this->__('Reuse for new item'),
-                        'linkText' => $this->__('Reuse')
-                    ];
-                }
-                if ($this->permissionApi->hasPermission($component, $instance, ACCESS_DELETE)) {
-                    $links[] = [
-                        'url' => $this->router->generate('zikularoutesmodule_route_admindelete', ['id' => $entity['id']]),
-                        'icon' => 'trash-o',
-                        'linkTitle' => $this->__('Delete'),
-                        'linkText' => $this->__('Delete')
-                    ];
-                }
-            }
-            if ($currentFunc == 'display') {
-                $links[] = [
-                    'url' => $this->router->generate('zikularoutesmodule_route_adminview'),
-                    'icon' => 'reply',
-                    'linkTitle' => $this->__('Back to overview'),
-                    'linkText' => $this->__('Back to overview')
-                ];
-            }
-        }
-        if ($currentLegacyControllerType == 'user') {
-            if (in_array($currentFunc, ['index', 'view'])) {
-                $links[] = [
-                    'url' => $this->router->generate('zikularoutesmodule_route_display', ['id' => $entity['id']]),
-                    'icon' => 'eye',
-                    'linkTitle' => str_replace('"', '', $entity->getTitleFromDisplayPattern()),
-                    'linkText' => $this->__('Details')
-                ];
-            }
-            if (in_array($currentFunc, ['index', 'view', 'display'])) {
-                if ($this->permissionApi->hasPermission($component, $instance, ACCESS_EDIT)) {
-                    $links[] = [
-                        'url' => $this->router->generate('zikularoutesmodule_route_edit', ['id' => $entity['id']]),
-                        'icon' => 'pencil-square-o',
-                        'linkTitle' => $this->__('Edit'),
-                        'linkText' => $this->__('Edit')
-                    ];
-                    $links[] = [
-                        'url' => $this->router->generate('zikularoutesmodule_route_edit', ['astemplate' => $entity['id']]),
-                        'icon' => 'files-o',
-                        'linkTitle' => $this->__('Reuse for new item'),
-                        'linkText' => $this->__('Reuse')
-                    ];
-                }
-                if ($this->permissionApi->hasPermission($component, $instance, ACCESS_DELETE)) {
-                    $links[] = [
-                        'url' => $this->router->generate('zikularoutesmodule_route_delete', ['id' => $entity['id']]),
-                        'icon' => 'trash-o',
-                        'linkTitle' => $this->__('Delete'),
-                        'linkText' => $this->__('Delete')
-                    ];
-                }
-            }
-            if ($currentFunc == 'display') {
-                $links[] = [
-                    'url' => $this->router->generate('zikularoutesmodule_route_view'),
-                    'icon' => 'reply',
-                    'linkTitle' => $this->__('Back to overview'),
-                    'linkText' => $this->__('Back to overview')
-                ];
-            }
-        }
         }
 
         return $links;

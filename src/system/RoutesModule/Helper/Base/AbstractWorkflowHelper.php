@@ -308,7 +308,7 @@ abstract class AbstractWorkflowHelper
     {
         $repository = $this->container->get('zikula_routes_module.' . $objectType . '_factory')->getRepository();
     
-        $where = 'tbl.workflowState = \'' . $state . '\'';
+        $where = 'tbl.workflowState:eq:' . $state;
         $parameters = ['workflowState' => $state];
         $useJoins = false;
         $amount = $repository->selectCount($where, $useJoins, $parameters);
