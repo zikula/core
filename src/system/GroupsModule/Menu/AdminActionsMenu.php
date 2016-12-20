@@ -42,7 +42,7 @@ class AdminActionsMenu implements ContainerAwareInterface
         ])->setAttribute('icon', 'fa fa-pencil');
         if ($permissionApi->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_DELETE)
             && $gid != $defaultGroup && $gid != $primaryAdminGroup) {
-            $menu->addChild($this->__f('Delete :name', [':name' => $options['group']->getName()]), [
+            $menu->addChild($this->__f('Delete ":name" group', [':name' => $options['group']->getName()]), [
                 'route' => 'zikulagroupsmodule_group_remove',
                 'routeParameters' => $routeParams,
             ])->setAttribute('icon', 'fa fa-trash-o');
