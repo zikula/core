@@ -14,8 +14,8 @@ namespace Zikula\RoutesModule\Form\Handler\Route\Base;
 
 use Zikula\RoutesModule\Form\Handler\Common\EditHandler;
 
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use ModUtil;
 use RuntimeException;
 use System;
@@ -45,9 +45,6 @@ abstract class AbstractEditHandler extends EditHandler
         $this->hasPageLockSupport = true;
     
         $result = parent::processForm($templateParameters);
-        if (false === $result) {
-            return $result;
-        }
     
         if ($this->templateParameters['mode'] == 'create') {
             $modelHelper = $this->container->get('zikula_routes_module.model_helper');
@@ -71,8 +68,7 @@ abstract class AbstractEditHandler extends EditHandler
         // assign data to template as array (makes translatable support easier)
         $this->templateParameters[$this->objectTypeLower] = $entityData;
     
-        // everything okay, no initialisation errors occured
-        return true;
+        return $result;
     }
     
     /**
@@ -112,11 +108,22 @@ abstract class AbstractEditHandler extends EditHandler
      */
     protected function getDefaultReturnUrl($args)
     {
+        $objectIsPersisted = $args['commandName'] != 'delete' && !($this->templateParameters['mode'] == 'create' && $args['commandName'] == 'cancel');
+    
+        if (null !== $this->returnTo) {
+            
+            $isDisplayOrEditPage = substr($this->returnTo, -7) == 'display' || substr($this->returnTo, -4) == 'edit';
+            if (!$isDisplayOrEditPage || $objectIsPersisted) {
+                // return to referer
+                return $this->returnTo;
+            }
+        }
+    
         $routeArea = array_key_exists('routeArea', $this->templateParameters) ? $this->templateParameters['routeArea'] : '';
     
         // redirect to the list of routes
         $viewArgs = [];
-        $url = $this->router->generate('zikularoutesmodule_' . strtolower($this->objectType) . '_' . $routeArea . 'view', $viewArgs);
+        $url = $this->router->generate('zikularoutesmodule_' . $this->objectTypeLower . '_' . $routeArea . 'view', $viewArgs);
     
         return $url;
     }
@@ -130,11 +137,18 @@ abstract class AbstractEditHandler extends EditHandler
      *
      * @return mixed Redirect or false on errors
      */
-    public function handleCommand(&$args)
+    public function handleCommand($args = [])
     {
         $result = parent::handleCommand($args);
         if (false === $result) {
             return $result;
+        }
+    
+        // build $args for BC (e.g. used by redirect handling)
+        foreach ($this->templateParameters['actions'] as $action) {
+            if ($this->form->get($action['id'])->isClicked()) {
+                $args['commandName'] = $action['id'];
+            }
         }
     
         return new RedirectResponse($this->getRedirectUrl($args), 302);
@@ -198,7 +212,7 @@ abstract class AbstractEditHandler extends EditHandler
             $workflowHelper = $this->container->get('zikula_routes_module.workflow_helper');
             $success = $workflowHelper->executeAction($entity, $action);
         } catch(\Exception $e) {
-            $flashBag->add('error', $this->__f('Sorry, but an unknown error occured during the %action% action. Please apply the changes again!', ['%action%' => $action]));
+            $flashBag->add('error', $this->__f('Sorry, but an error occured during the %action% action. Please apply the changes again!', ['%action%' => $action]) . ' ' . $e->getMessage());
             $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->container->get('zikula_users_module.current_user')->get('uname'), 'entity' => 'route', 'id' => $entity->createCompositeIdentifier(), 'errorMessage' => $e->getMessage()];
             $logger->error('{app}: User {user} tried to edit the {entity} with id {id}, but failed. Error details: {errorMessage}.', $logArgs);
         }
@@ -228,6 +242,10 @@ abstract class AbstractEditHandler extends EditHandler
             return $this->repeatReturnUrl;
         }
     
+        if ($this->request->getSession()->has('referer')) {
+            $this->request->getSession()->del('referer');
+        }
+    
         // normal usage, compute return url from given redirect code
         if (!in_array($this->returnTo, $this->getRedirectCodes())) {
             // invalid return code, so return the default url
@@ -237,15 +255,27 @@ abstract class AbstractEditHandler extends EditHandler
         // parse given redirect code and return corresponding url
         switch ($this->returnTo) {
             case 'admin':
-                return $this->router->generate('zikularoutesmodule_' . strtolower($this->objectType) . '_adminindex');
+                return $this->router->generate('zikularoutesmodule_' . $this->objectTypeLower . '_adminindex');
             case 'adminView':
-                return $this->router->generate('zikularoutesmodule_' . strtolower($this->objectType) . '_adminview');
+                return $this->router->generate('zikularoutesmodule_' . $this->objectTypeLower . '_adminview');
             case 'adminDisplay':
                 if ($args['commandName'] != 'delete' && !($this->templateParameters['mode'] == 'create' && $args['commandName'] == 'cancel')) {
                     foreach ($this->idFields as $idField) {
                         $urlArgs[$idField] = $this->idValues[$idField];
                     }
-                    return $this->router->generate('zikularoutesmodule_' . strtolower($this->objectType) . '_admindisplay', $urlArgs);
+                    return $this->router->generate('zikularoutesmodule_' . $this->objectTypeLower . '_admindisplay', $urlArgs);
+                }
+                return $this->getDefaultReturnUrl($args);
+            case 'user':
+                return $this->router->generate('zikularoutesmodule_' . $this->objectTypeLower . '_index');
+            case 'userView':
+                return $this->router->generate('zikularoutesmodule_' . $this->objectTypeLower . '_view');
+            case 'userDisplay':
+                if ($args['commandName'] != 'delete' && !($this->templateParameters['mode'] == 'create' && $args['commandName'] == 'cancel')) {
+                    foreach ($this->idFields as $idField) {
+                        $urlArgs[$idField] = $this->idValues[$idField];
+                    }
+                    return $this->router->generate('zikularoutesmodule_' . $this->objectTypeLower . '_display', $urlArgs);
                 }
                 return $this->getDefaultReturnUrl($args);
             default:

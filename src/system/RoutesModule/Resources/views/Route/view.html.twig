@@ -72,7 +72,7 @@
 
     {{ block('page_nav_links') }}
 
-    {# { include('@ZikulaRoutesModule/Route/viewQuickNav.html.twig', { all: showAllEntries, own: showOwnEntries, workflowStateFilter: false }) }}{# see template file for available options #}
+    {# { include('@ZikulaRoutesModule/Route/viewQuickNav.html.twig', { workflowStateFilter: false }) }}{# see template file for available options #}
 
     {% if routeArea == 'admin' %}
     <form action="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'handleselectedentries') }}" method="post" id="routesViewForm" class="form-horizontal" role="form">
@@ -157,7 +157,7 @@
                 <th id="hGroup" scope="col" class="text-left">
                     <a href="{{ sort.group.url }}" title="{{ __f('Sort by %s', {'%s': 'group'}) }}" class="{{ sort.group.class }}">{{ __('Group') }}</a>
                 </th>#}
-                <th id="hItemActions" scope="col" class="z-order-unsorted">{{ __('Actions') }}</th>
+                <th id="hItemActions" scope="col" class="text-right z-order-unsorted">{{ __('Actions') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -205,10 +205,18 @@
                     {{ route.methods|zikularoutesmodule_listEntry('route', 'methods') }}
                 </td>
                 <td headers="hPrependBundlePrefix" class="text-center">
-                    {{ route.prependBundlePrefix|yesNo(true) }}
+                    {% if route.prependBundlePrefix %}
+                        <i class="fa fa-check" title="{{ __('Yes') }}"></i>
+                    {% else %}
+                        <i class="fa fa-times" title="{{ __('No') }}"></i>
+                    {% endif %}
                 </td>
                 <td headers="hTranslatable" class="text-center">
-                    {{ route.translatable|yesNo(true) }}
+                    {% if route.translatable %}
+                        <i class="fa fa-check" title="{{ __('Yes') }}"></i>
+                    {% else %}
+                        <i class="fa fa-times" title="{{ __('No') }}"></i>
+                    {% endif %}
                 </td>
                 <td headers="hTranslationPrefix" class="text-left">
                     {{ route.translationPrefix }}
@@ -225,20 +233,13 @@
                 <td headers="hGroup" class="text-left">
                     {{ route.group }}
                 </td>#}
-                <td id="itemActions{{ route.id }}" headers="hItemActions" class="actions nowrap z-w02">
-                    {% set actionLinks = zikularoutesmodule_actions(entity=route, area=routeArea, context='view') %}
-                    {% if actionLinks|length > 0 %}
-                        <div class="dropdown">
-                            <a id="itemActions{{ route.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
-                            
-                            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="itemActions{{ route.id }}DropDownToggle">
-                                {% for option in actionLinks %}
-                                    <li role="presentation"><a href="{{ option.url }}" title="{{ option.linkTitle|e('html_attr') }}" role="menuitem" tabindex="-1" class="fa fa-{{ option.icon }}">{{ option.linkText }}</a></li>
-                                    
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    {% endif %}
+                <td id="itemActions{{ route.id }}" headers="hItemActions" class="actions text-right nowrap z-w02">
+                    {% set itemActions = knp_menu_get('ZikulaRoutesModule:ItemActionsMenu:menu', [], { entity: route, area: routeArea, context: 'view' }) %}
+                    <div class="dropdown">
+                        <a id="itemActions{{ route.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
+                        
+                        {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
+                    </div>
                 </td>
             </tr>
             {% set groupOld = route.group %}
@@ -254,7 +255,7 @@
         </table>
         </div>
         
-        {% if showAllEntries != 1 %}
+        {% if showAllEntries != 1 and pager|default %}
             {{ pager({ rowcount: pager.numitems, limit: pager.itemsperpage, display: 'page', route: 'zikularoutesmodule_route_' ~ routeArea ~ 'view'}) }}
         {% endif %}
     {% if routeArea == 'admin' %}
@@ -283,9 +284,7 @@
         {% endif %}
     {% endif %}
     {#
-    {% set own = showOwnEntries is defined and showOwnEntries == 1 ? 1 : 0 %}
-    {% set all = showAllEntries is defined and showAllEntries == 1 ? 1 : 0 %}
-    {% if all == 1 %}
+    {% if showAllEntries == 1 %}
         {% set linkTitle = __('Back to paginated view') %}
         <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'view') }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
     {% else %}
@@ -301,14 +300,17 @@
 /* <![CDATA[ */
     ( function($) {
         $(document).ready(function() {
-            $('.dropdown-toggle').dropdown();
-            $('a.fa-zoom-in').attr('target', '_blank');
+            $('.dropdown > ul').removeClass('list-inline').addClass('list-unstyled dropdown-menu dropdown-menu-right');
+            $('.dropdown > ul a').each(function (index) {
+                $(this).html($(this).html() + $(this).find('i').first().data('original-title'));
+            });
+            $('.dropdown > ul a i').addClass('fa-fw');
+            $('.dropdown-toggle').removeClass('hidden').dropdown();
             {% if routeArea == 'admin' %}
                 {# init the "toggle all" functionality #}
                 if ($('#toggleRoutes').length > 0) {
-                    $('#toggleRoutes').on('click', function (e) {
-                        Zikula.toggleInput('routesViewForm');
-                        e.preventDefault();
+                    $('#toggleRoutes').click(function (event) {
+                        $('routes-checkbox').prop('checked', $(this).prop('checked'));
                     });
                 }
             {% endif %}

@@ -43,7 +43,7 @@ abstract class AbstractController extends Controller
         $this->name = $bundle->getName();
         $this->extensionName = $this->name; // for ExtensionVariablesTrait
         $this->variableApi = $bundle->getContainer()->get('zikula_extensions_module.api.variable'); // for ExtensionVariablesTrait
-        $this->setTranslator($bundle->getContainer()->get('translator'));
+        $this->setTranslator($bundle->getContainer()->get('translator.default'));
         $this->translator->setDomain($bundle->getTranslationDomain());
         $this->boot($bundle);
     }

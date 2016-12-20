@@ -91,7 +91,7 @@ abstract class AbstractSelectionHelper
      */
     protected function hasCompositeKeys($objectType)
     {
-        return $controllerHelper->hasCompositeKeys($objectType);
+        return $this->controllerHelper->hasCompositeKeys($objectType);
     }
     
     /**

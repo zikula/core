@@ -35,7 +35,7 @@ class CreateGroupType extends AbstractType
     {
         $translator = $options['translator'];
 
-        $groupsCommon = new CommonHelper();
+        $groupsCommon = new CommonHelper($translator);
         $typeChoices = array_flip($groupsCommon->gtypeLabels());
         $stateChoices = array_flip($groupsCommon->stateLabels());
 

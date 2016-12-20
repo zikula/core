@@ -63,6 +63,8 @@ abstract class Zikula_AbstractEventHandler
      */
     public function __construct(EventDispatcherInterface $eventManager)
     {
+        @trigger_error('Zikula_AbstractEventHandler is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         $this->eventManager = $eventManager;
         $this->serviceManager = $this->eventManager->getContainer();
         $this->setupHandlerDefinitions();

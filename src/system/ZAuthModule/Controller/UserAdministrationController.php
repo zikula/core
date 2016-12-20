@@ -95,7 +95,7 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
-     * Called from ZAuthModule/Resources/public/js/Zikula.ZAuth.Admin.View.js
+     * Called from UsersModule/Resources/public/js/Zikula.Users.Admin.View.js
      * to populate a username search
      *
      * @Route("/getusersbyfragmentastable", options={"expose"=true})

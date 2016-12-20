@@ -15,7 +15,7 @@ namespace Zikula\RoutesModule\Helper\Base;
 use Zikula\Common\Translator\TranslatorInterface;
 
 /**
- * Utility base class for list field entries related methods.
+ * Helper base class for list field entries related methods.
  */
 abstract class AbstractListEntriesHelper
 {
@@ -52,14 +52,14 @@ abstract class AbstractListEntriesHelper
         }
     
         $isMulti = $this->hasMultipleSelection($objectType, $fieldName);
-        if ($isMulti === true) {
+        if (true === $isMulti) {
             $value = $this->extractMultiList($value);
         }
     
         $options = $this->getEntries($objectType, $fieldName);
         $result = '';
     
-        if ($isMulti === true) {
+        if (true === $isMulti) {
             foreach ($options as $option) {
                 if (!in_array($option['value'], $value)) {
                     continue;

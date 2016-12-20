@@ -18,7 +18,7 @@ use Zikula\Core\Doctrine\EntityAccess;
 use Zikula_Workflow_Util;
 
 /**
- * Utility base class for workflow helper methods.
+ * Helper base class for workflow methods.
  */
 abstract class AbstractWorkflowHelper
 {
@@ -232,7 +232,7 @@ abstract class AbstractWorkflowHelper
     
         $result = Zikula_Workflow_Util::executeAction($schemaName, $entity, $actionId, $objectType, 'ZikulaRoutesModule', $idColumn);
     
-        if ($result !== false && !$recursive) {
+        if (false !== $result && !$recursive) {
             $entities = $entity->getRelatedObjectsToPersist();
             foreach ($entities as $rel) {
                 if ($rel->getWorkflowState() == 'initial') {
@@ -241,7 +241,7 @@ abstract class AbstractWorkflowHelper
             }
         }
     
-        return ($result !== false);
+        return (false !== $result);
     }
     /**
      * Performs a conversion of the workflow object back to an array.
@@ -308,7 +308,7 @@ abstract class AbstractWorkflowHelper
     {
         $repository = $this->container->get('zikula_routes_module.' . $objectType . '_factory')->getRepository();
     
-        $where = 'tbl.workflowState = \'' . $state . '\'';
+        $where = 'tbl.workflowState:eq:' . $state;
         $parameters = ['workflowState' => $state];
         $useJoins = false;
         $amount = $repository->selectCount($where, $useJoins, $parameters);

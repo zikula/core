@@ -256,12 +256,11 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function __construct()
     {
-        $this->workflowState = 'initial';
         $this->initWorkflow();
     }
     
     /**
-     * Gets the _object type.
+     * Returns the _object type.
      *
      * @return string
      */
@@ -283,7 +282,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     }
     
     /**
-     * Gets the _bypass validation.
+     * Returns the _bypass validation.
      *
      * @return boolean
      */
@@ -305,7 +304,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     }
     
     /**
-     * Gets the __ w o r k f l o w__.
+     * Returns the __ w o r k f l o w__.
      *
      * @return array
      */
@@ -321,14 +320,14 @@ abstract class AbstractRouteEntity extends EntityAccess
      *
      * @return void
      */
-    public function set__WORKFLOW__(array $__WORKFLOW__ = [])
+    public function set__WORKFLOW__($__WORKFLOW__ = [])
     {
         $this->__WORKFLOW__ = $__WORKFLOW__;
     }
     
     
     /**
-     * Gets the id.
+     * Returns the id.
      *
      * @return integer
      */
@@ -346,11 +345,11 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setId($id)
     {
-        $this->id = $id;
+        $this->id = intval($id);
     }
     
     /**
-     * Gets the workflow state.
+     * Returns the workflow state.
      *
      * @return string
      */
@@ -368,11 +367,11 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setWorkflowState($workflowState)
     {
-        $this->workflowState = $workflowState;
+        $this->workflowState = isset($workflowState) ? $workflowState : '';
     }
     
     /**
-     * Gets the route type.
+     * Returns the route type.
      *
      * @return string
      */
@@ -390,11 +389,11 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setRouteType($routeType)
     {
-        $this->routeType = $routeType;
+        $this->routeType = isset($routeType) ? $routeType : '';
     }
     
     /**
-     * Gets the replaced route name.
+     * Returns the replaced route name.
      *
      * @return string
      */
@@ -416,7 +415,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     }
     
     /**
-     * Gets the bundle.
+     * Returns the bundle.
      *
      * @return string
      */
@@ -434,11 +433,11 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setBundle($bundle)
     {
-        $this->bundle = $bundle;
+        $this->bundle = isset($bundle) ? $bundle : '';
     }
     
     /**
-     * Gets the controller.
+     * Returns the controller.
      *
      * @return string
      */
@@ -456,11 +455,11 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setController($controller)
     {
-        $this->controller = $controller;
+        $this->controller = isset($controller) ? $controller : '';
     }
     
     /**
-     * Gets the action.
+     * Returns the action.
      *
      * @return string
      */
@@ -478,11 +477,11 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setAction($action)
     {
-        $this->action = $action;
+        $this->action = isset($action) ? $action : '';
     }
     
     /**
-     * Gets the path.
+     * Returns the path.
      *
      * @return string
      */
@@ -500,11 +499,11 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setPath($path)
     {
-        $this->path = $path;
+        $this->path = isset($path) ? $path : '';
     }
     
     /**
-     * Gets the host.
+     * Returns the host.
      *
      * @return string
      */
@@ -526,7 +525,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     }
     
     /**
-     * Gets the schemes.
+     * Returns the schemes.
      *
      * @return string
      */
@@ -544,11 +543,11 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setSchemes($schemes)
     {
-        $this->schemes = $schemes;
+        $this->schemes = isset($schemes) ? $schemes : '';
     }
     
     /**
-     * Gets the methods.
+     * Returns the methods.
      *
      * @return string
      */
@@ -566,11 +565,11 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setMethods($methods)
     {
-        $this->methods = $methods;
+        $this->methods = isset($methods) ? $methods : '';
     }
     
     /**
-     * Gets the prepend bundle prefix.
+     * Returns the prepend bundle prefix.
      *
      * @return boolean
      */
@@ -594,7 +593,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     }
     
     /**
-     * Gets the translatable.
+     * Returns the translatable.
      *
      * @return boolean
      */
@@ -618,7 +617,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     }
     
     /**
-     * Gets the translation prefix.
+     * Returns the translation prefix.
      *
      * @return string
      */
@@ -640,7 +639,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     }
     
     /**
-     * Gets the defaults.
+     * Returns the defaults.
      *
      * @return array
      */
@@ -658,11 +657,11 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setDefaults($defaults)
     {
-        $this->defaults = $defaults;
+        $this->defaults = isset($defaults) ? $defaults : '';
     }
     
     /**
-     * Gets the requirements.
+     * Returns the requirements.
      *
      * @return array
      */
@@ -680,11 +679,11 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setRequirements($requirements)
     {
-        $this->requirements = $requirements;
+        $this->requirements = isset($requirements) ? $requirements : '';
     }
     
     /**
-     * Gets the condition.
+     * Returns the condition.
      *
      * @return string
      */
@@ -706,7 +705,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     }
     
     /**
-     * Gets the description.
+     * Returns the description.
      *
      * @return string
      */
@@ -728,7 +727,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     }
     
     /**
-     * Gets the sort.
+     * Returns the sort.
      *
      * @return integer
      */
@@ -746,11 +745,11 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setSort($sort)
     {
-        $this->sort = $sort;
+        $this->sort = intval($sort);
     }
     
     /**
-     * Gets the group.
+     * Returns the group.
      *
      * @return string
      */
@@ -768,13 +767,13 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setGroup($group)
     {
-        $this->group = $group;
+        $this->group = isset($group) ? $group : '';
     }
     
     /**
-     * Gets the created user id.
+     * Returns the created user id.
      *
-     * @return integer
+     * @return string
      */
     public function getCreatedUserId()
     {
@@ -784,7 +783,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     /**
      * Sets the created user id.
      *
-     * @param integer $createdUserId
+     * @param string $createdUserId
      *
      * @return void
      */
@@ -794,9 +793,9 @@ abstract class AbstractRouteEntity extends EntityAccess
     }
     
     /**
-     * Gets the updated user id.
+     * Returns the updated user id.
      *
-     * @return integer
+     * @return string
      */
     public function getUpdatedUserId()
     {
@@ -806,7 +805,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     /**
      * Sets the updated user id.
      *
-     * @param integer $updatedUserId
+     * @param string $updatedUserId
      *
      * @return void
      */
@@ -816,7 +815,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     }
     
     /**
-     * Gets the created date.
+     * Returns the created date.
      *
      * @return \DateTime
      */
@@ -838,7 +837,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     }
     
     /**
-     * Gets the updated date.
+     * Returns the updated date.
      *
      * @return \DateTime
      */
@@ -895,7 +894,7 @@ abstract class AbstractRouteEntity extends EntityAccess
         $helper = $serviceManager->get('zikula_routes_module.listentries_helper');
         $listEntries = $helper->getWorkflowStateEntriesForRoute();
     
-        $allowedValues = [];
+        $allowedValues = ['initial'];
         foreach ($listEntries as $entry) {
             $allowedValues[] = $entry['value'];
         }
@@ -1052,7 +1051,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function validate()
     {
-        if ($this->_bypassValidation === true) {
+        if (true === $this->_bypassValidation) {
             return true;
         }
     
@@ -1143,7 +1142,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function __toString()
     {
-        return $this->getId();
+        return 'Route ' . $this->createCompositeIdentifier();
     }
     
     /**

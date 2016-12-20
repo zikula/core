@@ -2,7 +2,7 @@
 {% macro draw(links) %}
     {% for link in links %}
         <li>
-            <a href="{{ link.url }}" title="{{ link.text }}">{% if link.icon is defined %}<i class="fa fa-{{ link.icon }}"></i> {% endif %}{{ link.text|raw }}</a>
+            <a href="{{ link.url }}" title="{{ link.text|e('html_attr') }}">{% if link.icon is defined %}<i class="fa fa-{{ link.icon }}"></i> {% endif %}{{ link.text|raw }}</a>
             {% if link.links is defined %}
                 <ul class="dropdown-toggle">{{ _self.draw(link.links) }}</ul>
             {% endif %}
@@ -15,7 +15,7 @@
     <ul id="admintabs" class="nav nav-mouseover nav-tabs nav-tabs-admin">
         {% for module in adminMenu %}
             <li class="dropdown droppable nowrap{% if caller._zkModule == module.modname %} active{% endif %}">
-                <a class="dropdown-toggle" href="#" data-toggle="dropdown" title="{{ module.menutext }}">
+                <a class="dropdown-toggle" href="#" data-toggle="dropdown" title="{{ module.menutext|e('html_attr') }}">
                     <span class="fa fa-arrows admintabs-lock"></span>
                     <span><img src="{{ app.request.basePath }}/{{ module.icon }}" style="height:18px;"/></span>
                     <span class="fa fa-caret-down"></span>

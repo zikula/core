@@ -27,7 +27,7 @@
             "displayname": "Routes",
             "url": "routes",
             "capabilities": {
-                "user": {"route": "zikularoutesmodule_route_index"},
+                "user": {"route": "zikularoutesmodule_user_index"},
                 "admin": {"route": "zikularoutesmodule_admin_index"}
             },
             "securityschema": {

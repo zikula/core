@@ -19,7 +19,6 @@ use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\RoutesModule\Helper\ListEntriesHelper;
@@ -72,14 +71,8 @@ abstract class AbstractRouteQuickNavType extends AbstractType
     {
         $builder
             ->setMethod('GET')
-            ->add('all', HiddenType::class, [
-                'data' => $options['all'],
-                'empty_data' => 0
-            ])
-            ->add('own', HiddenType::class, [
-                'data' => $options['own'],
-                'empty_data' => 0
-            ])
+            ->add('all', HiddenType::class)
+            ->add('own', HiddenType::class)
         ;
 
         $this->addListFields($builder, $options);
@@ -111,7 +104,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
         $builder->add('workflowState', ChoiceType::class, [
-            'label' => $this->__('Workflow state'),
+            'label' => $this->__('State'),
             'attr' => [
                 'class' => 'input-sm'
             ],
@@ -214,8 +207,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
                 'attr' => [
                     'class' => 'input-sm'
                 ],
-                'choices' => [
-                    $this->__('Id') => 'id',
+                'choices' =>             [
                     $this->__('Route type') => 'routeType',
                     $this->__('Replaced route name') => 'replacedRouteName',
                     $this->__('Bundle') => 'bundle',
@@ -228,8 +220,6 @@ abstract class AbstractRouteQuickNavType extends AbstractType
                     $this->__('Prepend bundle prefix') => 'prependBundlePrefix',
                     $this->__('Translatable') => 'translatable',
                     $this->__('Translation prefix') => 'translationPrefix',
-                    $this->__('Defaults') => 'defaults',
-                    $this->__('Requirements') => 'requirements',
                     $this->__('Condition') => 'condition',
                     $this->__('Description') => 'description',
                     $this->__('Sort') => 'sort',
@@ -325,23 +315,5 @@ abstract class AbstractRouteQuickNavType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikularoutesmodule_routequicknav';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver
-            ->setDefaults([
-                'all' => 0,
-                'own' => 0
-            ])
-            ->setRequired(['all', 'own'])
-            ->setAllowedValues([
-                'all' => [0, 1],
-                'own' => [0, 1]
-            ])
-        ;
     }
 }

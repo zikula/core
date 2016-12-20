@@ -122,7 +122,7 @@ class BlockController extends AbstractController
 
             return $this->redirectToRoute('zikulablocksmodule_admin_view');
         }
-        if ($form->isSubmitted() and $form->get('cancel')->isClicked()) {
+        if ($form->isSubmitted() && $form->get('cancel')->isClicked()) {
             $this->addFlash('status', $this->__('Operation cancelled.'));
 
             return $this->redirectToRoute('zikulablocksmodule_admin_view');

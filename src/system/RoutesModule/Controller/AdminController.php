@@ -16,6 +16,7 @@ use Zikula\RoutesModule\Controller\Base\AbstractAdminController;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Admin controller class providing navigation and interaction functionality.
@@ -29,7 +30,7 @@ class AdminController extends AbstractAdminController
      *        methods = {"GET"}
      * )
      *
-     * @param Request $request Current request instance
+     * @param Request  $request      Current request instance
      *
      * @return mixed Output
      *

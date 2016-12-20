@@ -11,11 +11,15 @@
 
 namespace Zikula\GroupsModule\Helper;
 
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
+
 /**
  * Common helper functions and constants.
  */
-class CommonHelper extends \Zikula_AbstractHelper
+class CommonHelper
 {
+    use TranslatorTrait;
     /**
      * Constant value for core type groups.
      */
@@ -44,8 +48,14 @@ class CommonHelper extends \Zikula_AbstractHelper
     /**
      * Constructs an instance of this helper class.
      */
-    public function __construct()
+    public function __construct(TranslatorInterface $translator)
     {
+        $this->setTranslator($translator);
+    }
+
+    public function setTranslator($translator)
+    {
+        $this->translator = $translator;
     }
 
     /**

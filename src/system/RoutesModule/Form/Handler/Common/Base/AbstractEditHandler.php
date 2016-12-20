@@ -26,7 +26,6 @@ use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\Core\RouteUrl;
 use ModUtil;
 use RuntimeException;
-use System;
 use UserUtil;
 
 /**
@@ -120,6 +119,7 @@ abstract class AbstractEditHandler
      * @var boolean
      */
     protected $hasPageLockSupport = false;
+
     /**
      * @var ContainerBuilder
      */
@@ -198,9 +198,21 @@ abstract class AbstractEditHandler
     
     
         // initialise redirect goal
-        $this->returnTo = $this->request->query->getAlnum('returnTo', null);
+        $this->returnTo = $this->request->query->get('returnTo', null);
+        if (null === $this->returnTo) {
+            // default to referer
+            if ($this->request->getSession()->has('referer')) {
+                $this->returnTo = $this->request->getSession()->get('referer');
+            } elseif ($this->request->headers->has('referer')) {
+                $this->returnTo = $this->request->headers->get('referer');
+                $this->request->getSession()->set('referer', $this->returnTo);
+            } elseif ($this->request->server->has('HTTP_REFERER')) {
+                $this->returnTo = $this->request->server->get('HTTP_REFERER');
+                $this->request->getSession()->set('referer', $this->returnTo);
+            }
+        }
         // store current uri for repeated creations
-        $this->repeatReturnUrl = System::getCurrentURI();
+        $this->repeatReturnUrl = $this->request->getSchemeAndHttpHost() . $this->request->getBasePath() . $this->request->getPathInfo();
     
         $this->permissionComponent = 'ZikulaRoutesModule:' . $this->objectTypeCapital . ':';
     
@@ -228,8 +240,7 @@ abstract class AbstractEditHandler
                 return false;
             }
     
-            $kernel = $this->container->get('kernel');
-            if (true === $this->hasPageLockSupport && null !== $kernel->getModule('ZikulaPageLockModule')) {
+            if (true === $this->hasPageLockSupport && \ModUtil::available('ZikulaPageLockModule')) {
                 // try to guarantee that only one person at a time can be editing this entity
                 $lockingApi = $this->container->get('zikula_pagelock_module.api.locking');
                 $lockName = 'ZikulaRoutesModule' . $this->objectTypeCapital . $this->createCompositeIdentifier();
@@ -264,9 +275,19 @@ abstract class AbstractEditHandler
             return false;
         }
     
-        // handle form request and check validity constraints of $task
-        if ($this->form->handleRequest($this->request)->isValid()) {
-            return $this->handleCommand();
+        // handle form request and check validity constraints of edited entity
+        if ($this->form->handleRequest($this->request) && $this->form->isSubmitted()) {
+            if ($this->form->isValid()) {
+                $result = $this->handleCommand();
+                if (false === $result) {
+                    $this->templateParameters['form'] = $this->form->createView();
+                }
+    
+                return $result;
+            }
+            if ($this->form->get('cancel')->isClicked()) {
+                return new RedirectResponse($this->getRedirectUrl(['commandName' => 'cancel']), 302);
+            }
         }
     
         $this->templateParameters['form'] = $this->form->createView();
@@ -285,7 +306,7 @@ abstract class AbstractEditHandler
     }
     
     /**
-     * Gets the template parameters.
+     * Returns the template parameters.
      *
      * @return array
      */
@@ -392,6 +413,12 @@ abstract class AbstractEditHandler
         $codes[] = 'adminDisplay';
         // index page of ajax area
         $codes[] = 'ajax';
+        // index page of user area
+        $codes[] = 'user';
+        // user list of entities
+        $codes[] = 'userView';
+        // user display page of treated entity
+        $codes[] = 'userDisplay';
     
         return $codes;
     }
@@ -403,7 +430,7 @@ abstract class AbstractEditHandler
      *
      * @return mixed Redirect or false on errors
      */
-    public function handleCommand(&$args)
+    public function handleCommand($args = [])
     {
         // build $args for BC (e.g. used by redirect handling)
         foreach ($this->templateParameters['actions'] as $action) {
@@ -413,13 +440,10 @@ abstract class AbstractEditHandler
         }
     
         $action = $args['commandName'];
-        $isRegularAction = !in_array($action, ['delete', 'reset', 'cancel']);
+        $isRegularAction = !in_array($action, ['delete', 'cancel']);
     
         if ($isRegularAction || $action == 'delete') {
-            $unmappedFormData = $this->fetchInputData($args);
-            if (false === $unmappedFormData) {
-                return false;
-            }
+            $this->fetchInputData($args);
         }
     
         // get treated entity reference from persisted member var
@@ -433,8 +457,7 @@ abstract class AbstractEditHandler
             }
         }
     
-        $kernel = $this->container->get('kernel');
-        if (true === $this->hasPageLockSupport && $this->templateParameters['mode'] == 'edit' && null !== $kernel->getModule('ZikulaPageLockModule')) {
+        if (true === $this->hasPageLockSupport && $this->templateParameters['mode'] == 'edit' && \ModUtil::available('ZikulaPageLockModule')) {
             $lockingApi = $this->container->get('zikula_pagelock_module.api.locking');
             $lockName = 'ZikulaRoutesModule' . $this->objectTypeCapital . $this->createCompositeIdentifier();
             $lockingApi->releaseLock($lockName);
@@ -511,27 +534,19 @@ abstract class AbstractEditHandler
      * Input data processing called by handleCommand method.
      *
      * @param array $args Additional arguments
-     *
-     * @return array form data after processing
      */
-    public function fetchInputData(&$args)
+    public function fetchInputData($args)
     {
         // fetch posted data input values as an associative array
         $formData = $this->form->getData();
     
-        // get treated entity reference from persisted member var
-        $entity = $this->entityRef;
-    
-        if ($this->templateParameters['mode'] == 'create' && isset($formData['repeatCreation']) && $formData['repeatCreation']) {
-            $this->repeatCreateAction = $formData['repeatCreation'];
+        if ($this->templateParameters['mode'] == 'create' && isset($this->form['repeatCreation']) && $this->form['repeatCreation']->getData() == 1) {
+            $this->repeatCreateAction = true;
         }
     
-        if (isset($formData['additionalNotificationRemarks']) && $formData['additionalNotificationRemarks'] != '') {
-            $this->request->getSession()->set('ZikulaRoutesModuleAdditionalNotificationRemarks', $formData['additionalNotificationRemarks']);
+        if (isset($this->form['additionalNotificationRemarks']) && $this->form['additionalNotificationRemarks']->getData() != '') {
+            $this->request->getSession()->set('ZikulaRoutesModuleAdditionalNotificationRemarks', $this->form['additionalNotificationRemarks']->getData());
         }
-    
-        // save updated entity
-        $this->entityRef = $entity;
     
         // return remaining form data
         return $formData;
@@ -549,5 +564,4 @@ abstract class AbstractEditHandler
         // stub for subclasses
         return false;
     }
-
 }

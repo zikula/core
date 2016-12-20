@@ -72,6 +72,8 @@ abstract class Zikula_AbstractHelper implements Zikula_TranslatableInterface
      */
     public function __construct($object)
     {
+        @trigger_error('Zikula_AbstractHelper is deprecated.', E_USER_DEPRECATED);
+
         $this->_setup($object);
     }
 

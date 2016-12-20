@@ -1,4 +1,3 @@
-{#{{ pageAddAsset('javascript', zasset('@ZikulaGroupsModule:js/groups.js')) }}#}
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-list"></span>
@@ -30,7 +29,8 @@
         </tr>
     </thead>
     <tbody>
-    {% for group in groups %}
+    {% set groupCount = 0 %}
+    {% for group in groups if hasPermission('ZikulaGroupsModule::', group.gid ~ '::', 'ACCESS_EDIT') %}
         <tr id="group_{{ group.gid }}">
             <td headers="hId" id="groupgid_{{ group.gid }}" class="z-itemcell z-w05">
                 <input type="hidden" id="gtypeid_{{ group.gid }}" value="{{ group.gtype }}" />
@@ -47,13 +47,13 @@
                 {% endif %}
             </td>
             <td headers="hType" id="groupgtype_{{ group.gid }}" class="zikulagroupsmodule-edit ">
-                <span>{{ group.gtypelbl }}</span>
+                <span>{{ groupTypes[group.gtype] }}</span>
             </td>
             <td headers="hDescription" id="groupdescription_{{ group.gid }}">
                 {{ group.description }}&nbsp;
             </td>
             <td headers="hState" id="groupstate_{{ group.gid }}">
-                {{ group.statelbl }}
+                {{ states[group.state] }}
             </td>
             <td headers="hMembers" id="groupnbuser_{{ group.gid }}" class="text-center">
                 {{ group.nbuser }}
@@ -61,19 +61,10 @@
             <td headers="hMaximum" id="groupnbumax_{{ group.gid }}" class="text-center">
                 {{ group.nbumax }}
             </td>
-            {% set options = group.options %}
-            {% set strEditGroup = __f('Edit: %s', { '%s': group.name }) %}
-            {% set strDeleteGroup = __f('Delete: %s', { '%s': group.name }) %}
-            <td headers="hActions" id="groupaction_{{ group.gid }}" class="actions">
-                <a id="modify_{{ group.gid }}" href="{{ group.editurl|e('html_attr') }}" title="{{ strEditGroup }}" class="tooltips fa fa-pencil"></a>
-                <a href="{{ group.membersurl }}" title="{{ __('Group membership') }}" class="fa fa-users tooltips"></a>
-                {% if group.gid not in [defaultGroup, primaryAdminGroup] %}
-                <a href="{{ path('zikulagroupsmodule_group_remove', { gid: group.gid }) }}" data-gid="{{ group.gid }}" title="{{ strDeleteGroup }}" data-confirm="{{ __('Do you really want to delete this group?') }}" class="fa fa-trash-o con-fixed-width tooltips"></a>
-                {% else %}
-                <span class="fa-fw"></span>
-                {% endif %}
-            </td>
+            {% set rowActions = knp_menu_get('ZikulaGroupsModule:AdminActionsMenu:menu', [], {group: group}) %}
+            <th headers="hActions" id="groupaction_{{ group.gid }}" class="actions text-right">{{ knp_menu_render(rowActions, {template: 'ZikulaMenuModule:Override:actions.html.twig'}) }}</th>
         </tr>
+        {% set groupCount = groupCount + 1 %}
     {% endfor %}
     </tbody>
 </table>
@@ -118,5 +109,5 @@
 </table>
 {% endif %}
 
-{{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, posvar: 'startnum', route: 'zikulagroupsmodule_group_list'}) }}
+{{ pager({ rowcount: groupCount, limit: pager.itemsPerPage, posvar: 'startnum', route: 'zikulagroupsmodule_group_list'}) }}
 {{ adminFooter() }}

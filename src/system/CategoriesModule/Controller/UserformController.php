@@ -194,7 +194,7 @@ class UserformController extends AbstractController
         $cats1 = $this->get('zikula_categories_module.api.category')->getSubCategories($dr, false, false, false, false);
         $cats2 = $this->get('zikula_categories_module.category_sorting_helper')->resequence($cats1, 10);
 
-        $sort_values = [];
+        $sortValues = [];
 
         $entityManager = $this->get('doctrine')->getManager();
 
@@ -202,7 +202,7 @@ class UserformController extends AbstractController
         foreach ($ak as $k) {
             $obj = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cats1[$k]['id']);
             $obj['sort_value'] = $cats2[$k]['sort_value'];
-            $sort_values[] = [
+            $sortValues[] = [
                 'id' => $obj['id'],
                 'sort_value' => $obj['sort_value']
             ];
@@ -212,15 +212,16 @@ class UserformController extends AbstractController
 
         $obj = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cid);
 
-        for ($i = 0; $i < count($sort_values); $i++) {
-            if ($sort_values[$i]['id'] == $cid) {
+        $amountOfSortValues = count($sortValues);
+        for ($i = 0; $i < $amountOfSortValues; $i++) {
+            if ($sortValues[$i]['id'] == $cid) {
                 if ($direction == 'up') {
-                    if ($sort_values[$i - 1]['sort_value']) {
-                        $obj['sort_value'] = $sort_values[$i - 1]['sort_value'] - 1;
+                    if ($sortValues[$i - 1]['sort_value']) {
+                        $obj['sort_value'] = $sortValues[$i - 1]['sort_value'] - 1;
                     }
                 } else {
-                    if ($sort_values[$i + 1]['sort_value']) {
-                        $obj['sort_value'] = $sort_values[$i + 1]['sort_value'] + 1;
+                    if ($sortValues[$i + 1]['sort_value']) {
+                        $obj['sort_value'] = $sortValues[$i + 1]['sort_value'] + 1;
                     }
                 }
             }

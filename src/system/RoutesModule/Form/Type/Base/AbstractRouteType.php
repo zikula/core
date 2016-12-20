@@ -200,7 +200,6 @@ abstract class AbstractRouteType extends AbstractType
         ]);
         $builder->add('prependBundlePrefix', CheckboxType::class, [
             'label' => $this->__('Prepend bundle prefix') . ':',
-            'empty_data' => 'true',
             'attr' => [
                 'class' => '',
                 'title' => $this->__('prepend bundle prefix ?')
@@ -208,7 +207,6 @@ abstract class AbstractRouteType extends AbstractType
         ]);
         $builder->add('translatable', CheckboxType::class, [
             'label' => $this->__('Translatable') . ':',
-            'empty_data' => 'true',
             'attr' => [
                 'class' => '',
                 'title' => $this->__('translatable ?')

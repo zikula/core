@@ -19,11 +19,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use ModUtil;
 use RuntimeException;
 use System;
-use ZLanguage;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\RouteUrl;
 use Zikula\Core\Response\PlainResponse;
-use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Admin controller class.

@@ -186,6 +186,6 @@ class CategoriesExtension extends \Twig_Extension
 
         $categories = $this->categoryApi->getSubCategoriesForCategory($category, $recurse, $relative, $includeRoot, $includeLeaf);
 
-        return $this->htmlTreeHelper->getSelector($categories, $field, $selectedValue, $name, $defaultValue, $defaultText, 0, '', false, false, null, 1, null, '', $lang);
+        return $this->htmlTreeHelper->getSelector_Categories($categories, $field, $selectedValue, $name, $defaultValue, $defaultText, 0, '', false, false, null, 1, null, '', $lang);
     }
 }

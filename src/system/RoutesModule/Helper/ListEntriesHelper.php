@@ -15,7 +15,7 @@ namespace Zikula\RoutesModule\Helper;
 use Zikula\RoutesModule\Helper\Base\AbstractListEntriesHelper;
 
 /**
- * Utility implementation class for list field entries related methods.
+ * Helper implementation class for list field entries related methods.
  */
 class ListEntriesHelper extends AbstractListEntriesHelper
 {
