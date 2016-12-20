@@ -4,29 +4,26 @@
 {% block title %}
     {% set templateTitle = route.getTitleFromDisplayPattern()|default(__('Route')) %}
     {{ templateTitle }}
-    {% set actionLinks = zikularoutesmodule_actions(entity=route, area=routeArea, context='display') %}
-    {% if actionLinks|length > 0 %}
-        <div class="dropdown">
-            <a id="itemActions{{ route.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
-            
-            <ul class="dropdown-menu" role="menu" aria-labelledby="itemActions{{ route.id }}DropDownToggle">
-                {% for option in actionLinks %}
-                    <li role="presentation"><a href="{{ option.url }}" title="{{ option.linkTitle|e('html_attr') }}" role="menuitem" tabindex="-1" class="fa fa-{{ option.icon }}">{{ option.linkText }}</a></li>
-                    
-                {% endfor %}
-            </ul>
-        </div>
-        <script type="text/javascript">
-        /* <![CDATA[ */
-            ( function($) {
-                $(document).ready(function() {
-                    $('.dropdown-toggle').dropdown();
-                    $('a.fa-zoom-in').attr('target', '_blank');
+    {% set itemActions = knp_menu_get('ZikulaRoutesModule:ItemActionsMenu:menu', [], { entity: route, area: routeArea, context: 'display' }) %}
+    <div class="dropdown">
+        <a id="itemActions{{ route.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
+        
+        {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
+    </div>
+    <script type="text/javascript">
+    /* <![CDATA[ */
+        ( function($) {
+            $(document).ready(function() {
+                $('.dropdown > ul').removeClass('list-inline').addClass('list-unstyled dropdown-menu dropdown-menu-right');
+                $('.dropdown > ul a').each(function (index) {
+                    $(this).html($(this).html() + $(this).find('i').first().data('original-title'));
                 });
-            })(jQuery);
-        /* ]]> */
-        </script>
-    {% endif %}
+                $('.dropdown > ul a i').addClass('fa-fw');
+                $('.dropdown-toggle').removeClass('hidden').dropdown();
+            });
+        })(jQuery);
+    /* ]]> */
+    </script>
 {% endblock %}
 {% block admin_page_icon 'eye' %}
 {% block content %}
