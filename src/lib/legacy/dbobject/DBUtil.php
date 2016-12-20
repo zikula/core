@@ -39,6 +39,8 @@ class DBUtil
      */
     public static function hasObjectCache($tablename)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!self::$cache_enabled) {
             self::$cache_enabled = ServiceUtil::getManager()->getParameter('dbcache.enable');
         }
@@ -56,6 +58,8 @@ class DBUtil
      */
     public static function getCache($table, $key)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (self::hasObjectCache($table)) {
             $key = md5($key);
             $databases = ServiceUtil::getManager()->getParameter('databases');
@@ -80,6 +84,8 @@ class DBUtil
      */
     public static function setCache($table, $key, $fields)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (self::hasObjectCache($table)) {
             $key = md5($key);
             $databases = ServiceUtil::getManager()->getParameter('databases');
@@ -99,6 +105,8 @@ class DBUtil
      */
     public static function flushCache($table)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (self::hasObjectCache($table)) {
             $databases = ServiceUtil::getManager()->getParameter('databases');
             $connName = Doctrine_Manager::getInstance()->getCurrentConnection()->getName();
@@ -115,6 +123,8 @@ class DBUtil
      */
     public static function serverInfo()
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $connection = Doctrine_Manager::getInstance()->getCurrentConnection();
 
         // we will form an array to keep formally compatible to the old ado-db style for now
@@ -135,6 +145,8 @@ class DBUtil
      */
     public static function createDatabase($dbname, $optionsarray = false)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (empty($dbname)) {
             throw new Exception(__f('The parameter %s must not be empty', 'dbname'));
         }
@@ -161,6 +173,8 @@ class DBUtil
      */
     public static function metaDatabases()
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         return Doctrine_Manager::getInstance()->getCurrentConnection()->import->listDatabases();
     }
 
@@ -175,6 +189,8 @@ class DBUtil
      */
     public static function metaTables($ttype = false, $showSchema = false, $mask = false)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         return Doctrine_Manager::getInstance()->getCurrentConnection()->import->listTables();
     }
 
@@ -185,6 +201,8 @@ class DBUtil
      */
     public static function getTables()
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         return ServiceUtil::getManager()->getParameter('dbtables');
     }
 
@@ -198,6 +216,8 @@ class DBUtil
      */
     public static function getDefaultTableOptions()
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tableoptions = [];
         $serviceManager = ServiceUtil::getManager();
 
@@ -230,6 +250,8 @@ class DBUtil
      */
     public static function getTableOptions($table = '')
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if ($table != '') {
             $tables = self::getTables();
             if (isset($tables[$table . '_def'])) {
@@ -254,6 +276,8 @@ class DBUtil
      */
     public static function executeSQL($sql, $limitOffset = -1, $limitNumRows = -1, $exitOnError = true, $verbose = true)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!$sql) {
             throw new Exception(__('No SQL statement to execute'));
         }
@@ -327,6 +351,8 @@ class DBUtil
      */
     public static function _typesafeQuotedValue($table, $field, $value)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tables     = self::getTables();
         $columns    = $tables["{$table}_column"];
         $columnsDef = $tables["{$table}_column_def"];
@@ -363,6 +389,8 @@ class DBUtil
      */
     public static function _getAllColumns($table, $columnArray = null)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tables = self::getTables();
         $columns = $tables["{$table}_column"];
         if (!$columns) {
@@ -395,6 +423,8 @@ class DBUtil
      */
     public static function _getAllColumnsQualified($table, $tablealias, $columnArray = null)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $search = ['+', '-', '*', '/', '%'];
         $replace = [''];
 
@@ -433,6 +463,8 @@ class DBUtil
      */
     public static function getColumnsArray($table, $columnArray = null)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $columnArrayResult = [];
 
         $tables = self::getTables();
@@ -474,6 +506,8 @@ class DBUtil
      */
     public static function expandColumnsWithJoinInfo($columns, $joinInfo)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (count($joinInfo) <= 0) {
             return $columns;
         }
@@ -517,6 +551,8 @@ class DBUtil
      */
     public static function renameColumn($table, $oldcolumn, $newcolumn, $definition = null)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (empty($table)) {
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
@@ -569,6 +605,8 @@ class DBUtil
      */
     public static function addColumn($table, array $fields)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (empty($table)) {
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
@@ -616,6 +654,8 @@ class DBUtil
      */
     public static function dropColumn($table, $fields)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (empty($table)) {
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
@@ -659,6 +699,8 @@ class DBUtil
      */
     public static function _formatForStore($value)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (is_int($value)) {
             // No need to DataUtil::formatForStore when casted to int
             return (int)$value;
@@ -690,6 +732,8 @@ class DBUtil
      */
     public static function insertObject(array &$object, $table, $idfield = 'id', $preserve = false, $force = false)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tables = self::getTables();
         $tableName = $tables[$table];
 
@@ -819,6 +863,8 @@ class DBUtil
      */
     public static function updateObject(array &$object, $table, $where = '', $idfield = 'id', $force = false, $updateid = false)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!isset($object[$idfield]) && !$where) {
             throw new Exception(__('Neither object ID nor where parameters are provided'));
         }
@@ -928,6 +974,8 @@ class DBUtil
      */
     public static function insertObjectArray(array &$objects, $table, $idfield = 'id', $preserve = false, $force = false)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $res = false;
         foreach (array_keys($objects) as $k) {
             $res = self::insertObject($objects[$k], $table, $idfield, $preserve, $force);
@@ -951,6 +999,8 @@ class DBUtil
      */
     public static function updateObjectArray(array &$objects, $table, $idfield = 'id', $force = false)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $res = true;
 
         foreach (array_keys($objects) as $k) {
@@ -982,6 +1032,8 @@ class DBUtil
      */
     private static function _savePostProcess($object, $table, $idfield, $update = false)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tables = self::getTables();
         $enableAllServices = (isset($tables["{$table}_db_extra_enable_all"]) && $tables["{$table}_db_extra_enable_all"]);
 
@@ -1052,6 +1104,8 @@ class DBUtil
      */
     public static function incrementObjectFieldByID($table, $incfield, $id, $idfield = 'id', $inccount = 1)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tables = self::getTables();
         $tableName = $tables[$table];
         $columns = $tables["{$table}_column"];
@@ -1085,6 +1139,8 @@ class DBUtil
      */
     public static function decrementObjectFieldByID($table, $decfield, $id, $idfield = 'id', $deccount = 1)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         return self::incrementObjectFieldByID($table, $decfield, $id, $idfield, 0 - $deccount);
     }
 
@@ -1103,6 +1159,8 @@ class DBUtil
      */
     public static function deleteObject(array $object, $table, $where = '', $idfield = 'id')
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if ($object && $where) {
             throw new Exception(__("Can't specify both object and where-clause"));
         }
@@ -1154,6 +1212,8 @@ class DBUtil
      */
     public static function deleteObjectsFromKeyArray(array $keyarray, $table, $field = 'id')
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tables = self::getTables();
         $tableName = $tables[$table];
         $columns = $tables["{$table}_column"];
@@ -1188,6 +1248,8 @@ class DBUtil
      */
     public static function deleteObjectByID($table, $id, $idFieldName = 'id')
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $object = [];
         $object[$idFieldName] = $id;
 
@@ -1204,6 +1266,8 @@ class DBUtil
      */
     public static function deleteWhere($table, $where)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if ($table == 'categories_mapobj') {
             // table no longer exists >= 1.4.0
             return true;
@@ -1233,6 +1297,8 @@ class DBUtil
      */
     private static function _deletePostProcess($object, $table, $idfield)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tables = self::getTables();
         $enableAllServices = (isset($tables["{$table}_db_extra_enable_all"]) && $tables["{$table}_db_extra_enable_all"]);
 
@@ -1285,6 +1351,8 @@ class DBUtil
      */
     public static function _checkWhereClause($where)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!strlen(trim($where))) {
             return $where;
         }
@@ -1308,6 +1376,8 @@ class DBUtil
      */
     public static function _checkOrderByClause($orderby, $table)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $orderby = trim($orderby);
         if (!strlen($orderby)) {
             return $orderby;
@@ -1437,6 +1507,8 @@ class DBUtil
      */
     public static function _checkOrderByField($table = '', $field = '')
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $orderby = '';
 
         if (empty($field) || empty($table)) {
@@ -1479,6 +1551,8 @@ class DBUtil
      */
     public static function _getSelectAllColumnsFrom($table, $where = '', $orderBy = '', $columnArray = null, $distinct = false)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tables = self::getTables();
         $tableName = $tables[$table];
 
@@ -1507,6 +1581,8 @@ class DBUtil
      */
     public static function _setFetchedObjectCount($count = 0)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         // TODO D [remove PHP4 stuff in DBUtil] (Guite)
         $GLOBALS['DBUtilFetchObjectCount'] = $count;
 
@@ -1523,6 +1599,8 @@ class DBUtil
      */
     public static function _getFetchedObjectCount()
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         // TODO D [remove PHP4 stuff in DBUtil] (Guite)
         if (isset($GLOBALS['DBUtilFetchObjectCount'])) {
             return (int)$GLOBALS['DBUtilFetchObjectCount'];
@@ -1544,6 +1622,8 @@ class DBUtil
      */
     public static function marshallFieldArray($result, $closeResultSet = true, $assocKey = '', $clean = true)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!$result) {
             throw new Exception(__f('The parameter %s must not be empty', 'result'));
         }
@@ -1580,6 +1660,8 @@ class DBUtil
      */
     public static function marshallObjects($result, $objectColumns = null, $closeResultSet = true, $assocKey = '', $clean = true, $permissionFilter = null, $tablename = null)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!$result) {
             throw new Exception(__f('The parameter %s must not be empty', 'result'));
         }
@@ -1697,6 +1779,8 @@ class DBUtil
      */
     public static function selectScalar($sql, $exitOnError = true)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $res = self::executeSQL($sql);
         if ($res === false) {
             return false;
@@ -1733,6 +1817,8 @@ class DBUtil
      */
     public static function selectField($table, $field, $where = '')
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $fieldArray = self::selectFieldArray($table, $field, $where, '', false, '', 0, 1);
 
         if (count($fieldArray) > 0) {
@@ -1754,6 +1840,8 @@ class DBUtil
      */
     public static function selectFieldByID($tableName, $field, $id, $idfield = 'id')
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tables = self::getTables();
         $cols = $tables["{$tableName}_column"];
         $idFieldName = $cols[$idfield];
@@ -1779,6 +1867,8 @@ class DBUtil
      */
     public static function selectFieldArray($table, $field, $where = '', $orderby = '', $distinct = false, $assocKey = '', $limitOffset = -1, $limitNumRows = -1)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $key = $field . $where . $orderby . $distinct . $assocKey;
         $objects = self::getCache($table, $key);
         if ($objects !== false) {
@@ -1845,6 +1935,8 @@ class DBUtil
      */
     public static function selectFieldArrayByID($tableName, $field, $id, $idfield = 'id', $orderby = '', $distinct = false, $assocKey = '', $limitOffset = -1, $limitNumRows = -1)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tables = self::getTables();
         $cols = $tables["{$tableName}_column"];
         $idFieldName = $cols[$idfield];
@@ -1866,6 +1958,8 @@ class DBUtil
      */
     public static function selectFieldMax($table, $field, $option = 'MAX', $where = '')
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tables = self::getTables();
         $tableName = $tables[$table];
         $columns = $tables["{$table}_column"];
@@ -1902,6 +1996,8 @@ class DBUtil
      */
     public static function selectFieldMaxArray($table, $field, $option = 'MAX', $where = '', $assocKey = '')
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tables = self::getTables();
         $tableName = $tables[$table];
         $columns = $tables["{$table}_column"];
@@ -1941,6 +2037,8 @@ class DBUtil
      */
     private static function _generateCategoryFilter($tablename, $categoryFilter, $returnArray = false)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!$categoryFilter) {
             return '';
         }
@@ -2031,6 +2129,8 @@ class DBUtil
      */
     public static function generateCategoryFilterWhere($table, $where, $categoryFilter, $returnArray = false, $useJoins = false)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tables = self::getTables();
         $idlist = self::_generateCategoryFilter($table, $categoryFilter);
         if ($idlist) {
@@ -2058,6 +2158,8 @@ class DBUtil
      */
     public static function selectObjectSQL($sql, $table, $columnArray = null, $permissionFilter = null)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $permissionFilterKey = '';
         if (is_array($permissionFilter)) {
             foreach ($permissionFilter as $permissionRule) {
@@ -2091,6 +2193,8 @@ class DBUtil
      */
     public static function selectObject($table, $where = '', $columnArray = null, $permissionFilter = null, $categoryFilter = null)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $key = $where . serialize($columnArray) . serialize($permissionFilter) . serialize($categoryFilter);
         $objects = self::getCache($table, $key);
         if ($objects !== false) {
@@ -2135,6 +2239,8 @@ class DBUtil
      */
     public static function selectObjectByID($table, $id, $field = 'id', $columnArray = null, $permissionFilter = null, $categoryFilter = null, $cacheObject = true, $transformFunc = null)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tables = self::getTables();
         if (!$id) {
             throw new Exception(__f('The parameter %s must not be empty', 'id'));
@@ -2173,6 +2279,8 @@ class DBUtil
      */
     public static function selectObjectArray($table, $where = '', $orderby = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = '', $permissionFilter = null, $categoryFilter = null, $columnArray = null, $distinct = '')
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $key = $where . $orderby . $limitOffset . $limitNumRows . $assocKey . serialize($permissionFilter) . serialize($categoryFilter) . serialize($columnArray) . ($distinct ? '1' : '0');
         $objects = self::getCache($table, $key);
         if ($objects !== false) {
@@ -2255,6 +2363,8 @@ class DBUtil
      */
     public static function selectObjectArrayFilter($table, $where, $orderby, $limitOffset, $limitNumRows, $assocKey, $filterCallback, $categoryFilter = null, $columnArray = null)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         // set default values
         $where = isset($where) ? $where : '';
         $orderby = isset($orderby) ? $orderby : '';
@@ -2312,6 +2422,8 @@ class DBUtil
      */
     public static function selectObjectSum($table, $column, $where = '', $categoryFilter = null, $subquery = null)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $key = $column . $where. serialize($categoryFilter) . $subquery;
         $sum = self::getCache($table, $key);
         if ($sum !== false) {
@@ -2361,6 +2473,8 @@ class DBUtil
      */
     public static function selectObjectCount($table, $where = '', $column = '1', $distinct = false, $categoryFilter = null, $subquery = null)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $key = $column . $where. (int)$distinct . serialize($categoryFilter) . $subquery;
         $sum = self::getCache($table, $key);
         if ($sum !== false) {
@@ -2421,6 +2535,8 @@ class DBUtil
      */
     public static function selectObjectCountByID($table, $id, $field = 'id', $transformFunc = '')
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!$id) {
             throw new Exception(__f('The parameter %s must not be empty', 'id'));
         }
@@ -2456,6 +2572,8 @@ class DBUtil
      */
     public static function selectNestedExpressionsObject($table, $sqlExpressionArray, $columns, $id = 1, $field = 'id')
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!is_array($sqlExpressionArray)) {
             throw new Exception(__f('The parameter %s must be an array', 'sqlExpressionArray'));
         }
@@ -2507,6 +2625,8 @@ class DBUtil
      */
     public static function selectExpandedFieldArray($table, $joinInfo, $field, $where = '', $orderby = '', $distinct = false, $assocKey = '', $permissionFilter = null, $limitOffset = -1, $limitNumRows = -1)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $key = $field . $where . $orderby . $distinct . $assocKey . serialize($joinInfo) . serialize($permissionFilter);
         $objects = self::getCache($table, $key);
         if ($objects !== false) {
@@ -2559,6 +2679,8 @@ class DBUtil
      */
     public static function selectExpandedObject($table, $joinInfo, $where = '', $columnArray = null, $permissionFilter = null, $categoryFilter = null)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $objects = self::selectExpandedObjectArray($table, $joinInfo, $where, '', 0, 1, '', $permissionFilter, $categoryFilter, $columnArray);
 
         if (count($objects)) {
@@ -2584,6 +2706,8 @@ class DBUtil
      */
     public static function selectExpandedObjectByID($table, $joinInfo, $id, $field = 'id', $columnArray = null, $permissionFilter = null, $categoryFilter = null, $transformFunc = null)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tables = self::getTables();
         $columns = $tables["{$table}_column"];
         $fieldName = $columns[$field];
@@ -2618,6 +2742,8 @@ class DBUtil
      */
     public static function selectExpandedObjectArray($table, $joinInfo, $where = '', $orderby = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = '', $permissionFilter = null, $categoryFilter = null, $columnArray = null, $distinct = false)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $key = serialize($joinInfo) . $where . $orderby . $limitOffset . $limitNumRows . serialize($assocKey) . serialize($permissionFilter) . serialize($categoryFilter) . serialize($columnArray) . ($distinct ? '1' : '0');
         $objects = self::getCache($table, $key);
         if ($objects !== false) {
@@ -2762,6 +2888,8 @@ class DBUtil
      */
     public static function selectExpandedObjectCount($table, $joinInfo, $where = '', $distinct = false, $categoryFilter = null)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         self::_setFetchedObjectCount(0);
 
         $tables = self::getTables();
@@ -2812,6 +2940,8 @@ class DBUtil
      */
     private static function _processJoinArray($table, $joinInfo, $columnArray = null, &$alias = null)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tables = self::getTables();
         $columns = $tables["{$table}_column"];
 
@@ -2900,6 +3030,8 @@ class DBUtil
      */
     public static function _selectPostProcess($objects, $table, $idFieldName)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         // nothing to do if objects is empty
         if (is_array($objects) && count($objects) == 0) {
             return $objects;
@@ -2967,6 +3099,8 @@ class DBUtil
      */
     public static function selectObjectArraySQL($sql, $table, $columnArray = null, $permissionFilter = null, $limitOffSet = -1, $limitNumRows = -1)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $key = $sql . serialize($columnArray) . serialize($permissionFilter) . $limitOffSet . $limitNumRows;
         $objects = self::getCache($table, $key);
         if ($objects !== false) {
@@ -2998,6 +3132,8 @@ class DBUtil
      */
     public static function getInsertID($table, $field = 'id', $exitOnError = true, $verbose = true)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tables = self::getTables();
         $tableName = $tables[$table];
         $column = $tables["{$table}_column"];
@@ -3039,6 +3175,8 @@ class DBUtil
      */
     public static function getTableDefinition($table)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (empty($table)) {
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
@@ -3208,6 +3346,8 @@ class DBUtil
      */
     public static function _getTableDefinition($table)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (empty($table)) {
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
@@ -3249,6 +3389,8 @@ class DBUtil
      */
     public static function getTableConstraints($table)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (empty($table)) {
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
@@ -3300,6 +3442,8 @@ class DBUtil
      */
     public static function getTablePrefix($table)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!isset($table)) {
             return false;
         }
@@ -3317,6 +3461,8 @@ class DBUtil
      */
     public static function verifyTableDefinitionConsistency($table)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (empty($table)) {
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
@@ -3378,6 +3524,8 @@ class DBUtil
      */
     public static function createTable($table, $definition = null, $tabopt = null)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (empty($table)) {
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
@@ -3453,6 +3601,8 @@ class DBUtil
      */
     public static function changeTable($table, $definition = null, $tabopt = null, $dropColumns = false)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (empty($table)) {
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
@@ -3569,6 +3719,8 @@ class DBUtil
      */
     public static function truncateTable($table)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (empty($table)) {
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
@@ -3603,6 +3755,8 @@ class DBUtil
      */
     public static function renameTable($table, $newTable)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (empty($table)) {
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
@@ -3643,6 +3797,8 @@ class DBUtil
      */
     public static function dropTable($table)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (empty($table)) {
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
@@ -3679,6 +3835,8 @@ class DBUtil
      */
     public static function createIndex($idxname, $table, $flds, $idxoptarray = false)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (empty($idxname)) {
             throw new Exception(__f('The parameter %s must not be empty', 'idxname'));
         }
@@ -3752,6 +3910,8 @@ class DBUtil
      */
     public static function dropIndex($idxname, $table)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (empty($idxname)) {
             throw new Exception(__f('The parameter %s must not be empty', 'idxname'));
         }
@@ -3787,6 +3947,8 @@ class DBUtil
      */
     public static function metaColumns($table, $assoc = false, $notcasesensitive = true)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $rows = self::metaColumnNames($table, $assoc);
         $array = [];
         if ($notcasesensitive) {
@@ -3811,6 +3973,8 @@ class DBUtil
      */
     public static function metaColumnNames($table, $numericIndex = false)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (empty($table)) {
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
@@ -3846,6 +4010,8 @@ class DBUtil
      */
     public static function metaIndexes($table, $primary = false)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (empty($table)) {
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
@@ -3884,6 +4050,8 @@ class DBUtil
      */
     public static function getLimitedTablename($table, $dbDriverName = '')
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!$dbDriverName) {
             $dbDriverName = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
         }
@@ -3928,6 +4096,8 @@ class DBUtil
      */
     public static function buildDoctrineModuleClass($table, $className = null)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $className = (is_null($className) ? "{$table}_DBUtilRecord" : $className);
 
         $def = self::getTableDefinition($table);
@@ -3985,6 +4155,8 @@ class {$className}Table extends Doctrine_Table {}
      */
     public static function loadDBUtilDoctrineModel($table, $className = null)
     {
+        @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         // don't double load
         $className = (is_null($className) ? "{$table}_DBUtilRecord" : $className);
         if (class_exists($className, false)) {

@@ -43,6 +43,8 @@ class Zikula_Event extends GenericEvent
      */
     public function __construct($name, $subject = null, array $args = [], $data = null)
     {
+        @trigger_error('Zikula_Event is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         $this->setName($name);
         $this->data = $data;
 
@@ -59,6 +61,8 @@ class Zikula_Event extends GenericEvent
      */
     public function stop()
     {
+        @trigger_error('Zikula_Event is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         $this->stopPropagation();
     }
 
@@ -72,6 +76,8 @@ class Zikula_Event extends GenericEvent
      */
     public function isStopped()
     {
+        @trigger_error('Zikula_Event is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         return $this->isPropagationStopped();
     }
 
@@ -88,6 +94,8 @@ class Zikula_Event extends GenericEvent
      */
     public function setArg($key, $value)
     {
+        @trigger_error('Zikula_Event is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         return $this->setArgument($key, $value);
     }
 
@@ -103,6 +111,8 @@ class Zikula_Event extends GenericEvent
      */
     public function setArgs(array $args = [])
     {
+        @trigger_error('Zikula_Event is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         return $this->setArguments($args);
     }
 
@@ -120,6 +130,8 @@ class Zikula_Event extends GenericEvent
      */
     public function getArg($key)
     {
+        @trigger_error('Zikula_Event is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         return $this->getArgument($key);
     }
 
@@ -132,6 +144,8 @@ class Zikula_Event extends GenericEvent
      */
     public function setData($data)
     {
+        @trigger_error('Zikula_Event is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         $this->data = $data;
 
         return $this;
@@ -147,6 +161,8 @@ class Zikula_Event extends GenericEvent
      */
     public function getArgs()
     {
+        @trigger_error('Zikula_Event is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         return $this->getArguments();
     }
 
@@ -157,6 +173,8 @@ class Zikula_Event extends GenericEvent
      */
     public function getData()
     {
+        @trigger_error('Zikula_Event is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         return $this->data;
     }
 
@@ -172,6 +190,8 @@ class Zikula_Event extends GenericEvent
      */
     public function hasArg($key)
     {
+        @trigger_error('Zikula_Event is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         return $this->hasArgument($key);
     }
 
@@ -184,6 +204,8 @@ class Zikula_Event extends GenericEvent
      */
     public function getException()
     {
+        @trigger_error('Zikula_Event is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         if (!$this->hasException()) {
             throw new RuntimeException('No exception was set during this event notification.');
         }
@@ -204,6 +226,8 @@ class Zikula_Event extends GenericEvent
      */
     public function setException($exception)
     {
+        @trigger_error('Zikula_Event is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         $this->exception = $exception;
     }
 
@@ -214,6 +238,8 @@ class Zikula_Event extends GenericEvent
      */
     public function hasException()
     {
+        @trigger_error('Zikula_Event is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         return (bool)$this->exception;
     }
 
@@ -229,6 +255,8 @@ class Zikula_Event extends GenericEvent
      */
     public function setEventManager(EventDispatcherInterface $eventManager)
     {
+        @trigger_error('Zikula_Event is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         $this->setDispatcher($eventManager);
     }
 
@@ -242,6 +270,8 @@ class Zikula_Event extends GenericEvent
      */
     public function getEventManager()
     {
+        @trigger_error('Zikula_Event is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         return $this->getDispatcher();
     }
 }

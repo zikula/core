@@ -24,6 +24,8 @@ class CacheUtil
      */
     public static function getLocalDir($dir = null)
     {
+        @trigger_error('CacheUtil is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         $array = [];
         $tmpDir = ServiceUtil::get('service_container')->getParameter('temp_dir');
         $array[] = DataUtil::formatForOS($tmpDir, true);
@@ -48,6 +50,8 @@ class CacheUtil
      */
     public static function createLocalDir($dir, $mode = 0777, $absolute = true)
     {
+        @trigger_error('CacheUtil is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         $path = DataUtil::formatForOS(System::getVar('temp'), true) . '/' . $dir;
 
         $mode = isset($mode) ? $mode : ServiceUtil::getManager()->getParameter('system.chmod_dir');
@@ -69,6 +73,8 @@ class CacheUtil
      */
     public static function removeLocalDir($dir, $absolute = false)
     {
+        @trigger_error('CacheUtil is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         $path = DataUtil::formatForOS(System::getVar('temp'), true) . '/' . $dir;
 
         return FileUtil::deldir($path, $absolute);
@@ -83,6 +89,8 @@ class CacheUtil
      */
     public static function clearLocalDir($dir)
     {
+        @trigger_error('CacheUtil is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         self::removeLocalDir($dir, true);
         self::createLocalDir($dir, null, true);
     }

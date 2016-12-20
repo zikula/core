@@ -43,6 +43,8 @@ class DoctrineUtil
      */
     public static function createTablesFromModels($modname, $path = null)
     {
+        @trigger_error('DoctrineUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $modname = (isset($modname) ? strtolower((string)$modname) : '');
         $modinfo = ModUtil::getInfoFromName($modname);
         $osdir = DataUtil::formatForOS($modinfo['directory']);
@@ -70,6 +72,8 @@ class DoctrineUtil
      */
     public static function loadModels($modname)
     {
+        @trigger_error('DoctrineUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $modname = (isset($modname) ? strtolower((string)$modname) : '');
         $modinfo = ModUtil::getInfoFromName($modname);
         $osdir = DataUtil::formatForOS($modinfo['directory']);
@@ -94,6 +98,8 @@ class DoctrineUtil
      */
     public static function clearResultCache()
     {
+        @trigger_error('DoctrineUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!(System::getVar('CACHE_ENABLE') && System::getVar('CACHE_RESULT'))) {
             return;
         }
@@ -109,6 +115,8 @@ class DoctrineUtil
      */
     public static function clearQueryCache()
     {
+        @trigger_error('DoctrineUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!System::getVar('CACHE_ENABLE')) {
             return;
         }
@@ -126,6 +134,8 @@ class DoctrineUtil
      */
     public static function useResultsCache($query)
     {
+        @trigger_error('DoctrineUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         if (!System::getVar('CACHE_ENABLE')) {
             return $query;
         }
@@ -142,6 +152,8 @@ class DoctrineUtil
      */
     public static function decorateTableName($tableName)
     {
+        @trigger_error('DoctrineUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         return Doctrine_Manager::connection()->formatter->getTableName($tableName);
     }
 
@@ -156,6 +168,8 @@ class DoctrineUtil
      */
     public static function createTable($tableName, array $columns, array $options = [])
     {
+        @trigger_error('DoctrineUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tableName = self::decorateTableName($tableName);
         Doctrine_Manager::connection()->export->createTable($tableName, $columns, $options);
     }
@@ -169,6 +183,8 @@ class DoctrineUtil
      */
     public static function dropTable($tableName)
     {
+        @trigger_error('DoctrineUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tableName = self::decorateTableName($tableName);
         Doctrine_Manager::connection()->export->dropTable($tableName);
     }
@@ -184,6 +200,8 @@ class DoctrineUtil
      */
     public static function renameTable($oldTableName, $newTableName, $check = false)
     {
+        @trigger_error('DoctrineUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $oldTableName = self::decorateTableName($oldTableName);
         $newTableName = self::decorateTableName($newTableName);
         Doctrine_Manager::connection()->export->alterTable($oldTableName, ['name' => $newTableName], $check);
@@ -201,6 +219,8 @@ class DoctrineUtil
      */
     public static function createColumn($tableName, $columnName, $options = [], $check = false)
     {
+        @trigger_error('DoctrineUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tableName = self::decorateTableName($tableName);
         Doctrine_Manager::connection()->export->alterTable($tableName, ['add' => [$columnName => $options]], $check);
     }
@@ -216,6 +236,8 @@ class DoctrineUtil
      */
     public static function dropColumn($tableName, $columnName, $check = false)
     {
+        @trigger_error('DoctrineUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tableName = self::decorateTableName($tableName);
         Doctrine_Manager::connection()->export->alterTable($tableName, ['remove' => [$columnName => []]], $check);
     }
@@ -232,6 +254,8 @@ class DoctrineUtil
      */
     public static function renameColumn($tableName, $oldColumnName, $newColumnName, $check = false)
     {
+        @trigger_error('DoctrineUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tableName = self::decorateTableName($tableName);
         $columnList = Doctrine_Manager::connection()->import->listTableColumns($tableName);
         if (isset($columnList[$oldColumnName])) {
@@ -264,6 +288,8 @@ class DoctrineUtil
      */
     public static function alterColumn($tableName, $columnName, $column = [], $check = false)
     {
+        @trigger_error('DoctrineUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $options = [];
         $options = $column['options'];
         $options['type'] = $column['type'];
@@ -282,6 +308,8 @@ class DoctrineUtil
      */
     public static function createIndex($tableName, $index, array $definition)
     {
+        @trigger_error('DoctrineUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tableName = self::decorateTableName($tableName);
         Doctrine_Manager::connection()->export->createIndex($tableName, $indexName, $definition);
     }
@@ -296,6 +324,8 @@ class DoctrineUtil
      */
     public static function dropIndex($tableName, $indexName)
     {
+        @trigger_error('DoctrineUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tableName = self::decorateTableName($tableName);
         Doctrine_Manager::connection()->export->dropIndex($tableName, $indexName);
     }
@@ -311,6 +341,8 @@ class DoctrineUtil
      */
     public static function createConstraint($tableName, $constraintName, array $definition)
     {
+        @trigger_error('DoctrineUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tableName = self::decorateTableName($tableName);
         Doctrine_Manager::connection()->export->createConstraint($tableName, $constraintName, $definition);
     }
@@ -326,6 +358,8 @@ class DoctrineUtil
      */
     public static function dropConstraint($tableName, $constraintName, array $definition)
     {
+        @trigger_error('DoctrineUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tableName = self::decorateTableName($tableName);
         Doctrine_Manager::connection()->export->dropConstraint($tableName, $constraintName, isset($definition['primary']) && $definition['primary']);
     }
@@ -340,6 +374,8 @@ class DoctrineUtil
      */
     public static function createForeignKey($tableName, array $definition)
     {
+        @trigger_error('DoctrineUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tableName = self::decorateTableName($tableName);
         Doctrine_Manager::connection()->export->createForeignKey($tableName, $definition);
     }
@@ -354,6 +390,8 @@ class DoctrineUtil
      */
     public static function dropForeignKey($tableName, array $definition)
     {
+        @trigger_error('DoctrineUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $tableName = self::decorateTableName($tableName);
         Doctrine_Manager::connection()->export->dropForeignKey($tableName, $definition['name']);
     }
@@ -375,6 +413,8 @@ class DoctrineUtil
      */
     public static function changeTable($className, $dropColumns = false)
     {
+        @trigger_error('DoctrineUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $connection = Doctrine_Manager::connection();
 
         if (!class_exists($className)) {

@@ -37,6 +37,8 @@ class Zikula_EventManager extends EventDispatcher
      */
     public function attach($name, $handler, $priority = 10)
     {
+        @trigger_error('Zikula_EventManager is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         // using this method will adjust the listener priority automatically for
         // Sf Event Dispatcher where higher is executed first.
         $priority = 0 - (int)$priority;
@@ -62,6 +64,8 @@ class Zikula_EventManager extends EventDispatcher
      */
     public function detach($name, $handler)
     {
+        @trigger_error('Zikula_EventManager is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         $this->removeListener($name, $handler);
     }
 
@@ -77,6 +81,8 @@ class Zikula_EventManager extends EventDispatcher
      */
     public function notify(Event $event)
     {
+        @trigger_error('Zikula_EventManager is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         return $this->dispatch($event->getName(), $event);
     }
 
@@ -90,6 +96,8 @@ class Zikula_EventManager extends EventDispatcher
      */
     public function dispatch($name, Event $event = null)
     {
+        @trigger_error('Zikula_EventManager is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         $dispatcher = func_num_args() === 3 ? func_get_arg(2) : null;
 
         return parent::dispatch($name, $event, $dispatcher);
@@ -104,6 +112,8 @@ class Zikula_EventManager extends EventDispatcher
      */
     public function flushHandlers()
     {
+        @trigger_error('Zikula_EventManager is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         $array = $this->getListeners();
         foreach ($array as $name => $callable) {
             $this->removeListener($name, $callable);
@@ -121,6 +131,8 @@ class Zikula_EventManager extends EventDispatcher
      */
     public function getServiceManager()
     {
+        @trigger_error('Zikula_EventManager is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         return $this->getContainer();
     }
 
@@ -133,6 +145,8 @@ class Zikula_EventManager extends EventDispatcher
      */
     public function hasServiceManager()
     {
+        @trigger_error('Zikula_EventManager is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         return (bool)$this->getContainer();
     }
 }

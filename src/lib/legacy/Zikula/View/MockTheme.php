@@ -19,6 +19,7 @@ class Zikula_View_MockTheme extends Zikula_View_Theme
 {
     public function __construct(Zikula_ServiceManager $serviceManager, $themeName)
     {
+        @trigger_error('Old theme system is deprecated, please use Twig instead.', E_USER_DEPRECATED);
     }
 
     protected function startOutputBuffering()

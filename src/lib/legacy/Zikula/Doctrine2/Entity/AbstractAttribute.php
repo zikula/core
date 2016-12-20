@@ -49,6 +49,8 @@ abstract class Zikula_Doctrine2_Entity_AbstractAttribute extends Zikula_EntityAc
 
     public function __construct($objectId, $objectType, $objectStatus, $name, $value)
     {
+        @trigger_error('AbstractAttribute is deprecated.', E_USER_DEPRECATED);
+
         $this->SetObjectID($objectId);
         $this->objectType = $objectType;
         $this->objectStatus = $objectStatus;

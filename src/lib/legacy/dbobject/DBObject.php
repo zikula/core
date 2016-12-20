@@ -148,6 +148,8 @@ class DBObject
      */
     public function __construct($init = null, $key = null, $field = null)
     {
+        @trigger_error('DBObject is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $this->_objField = $field ? $field : 'id';
         $this->_objPath = 'DBOBJECT_PATH';
         $this->_objSessionPath = null;

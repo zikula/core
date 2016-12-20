@@ -28,6 +28,8 @@ class StringUtil
      */
     public static function countInstances($haystack, $needle)
     {
+        @trigger_error('StringUtil is deprecated, please use Symfony or native PHP instead.', E_USER_DEPRECATED);
+
         return mb_substr_count($haystack, $needle);
     }
 
@@ -42,6 +44,8 @@ class StringUtil
      */
     public static function getTruncatedString($string, $limit = 80, $appendDots = true)
     {
+        @trigger_error('StringUtil is deprecated, please use Symfony or native PHP instead.', E_USER_DEPRECATED);
+
         $len = strlen($string);
 
         if ($len > $limit) {
@@ -67,6 +71,8 @@ class StringUtil
      */
     public static function nl2html($string)
     {
+        @trigger_error('StringUtil is deprecated, please use Symfony or native PHP instead.', E_USER_DEPRECATED);
+
         $str = str_replace("\n", '<br />', $string);
         $str = str_replace("\r", '', $str);
 
@@ -86,6 +92,8 @@ class StringUtil
      */
     public static function tokenize($string, $delimeter, $max = 999999)
     {
+        @trigger_error('StringUtil is deprecated, please use Symfony or native PHP instead.', E_USER_DEPRECATED);
+
         return explode($delimeter, $string, $max);
     }
 
@@ -100,6 +108,8 @@ class StringUtil
      */
     public static function stripos($haystack, $needle, $offset = 0)
     {
+        @trigger_error('StringUtil is deprecated, please use Symfony or native PHP instead.', E_USER_DEPRECATED);
+
         return mb_strpos(mb_strtoupper($haystack), mb_strtoupper($needle), $offset);
     }
 
@@ -115,6 +125,8 @@ class StringUtil
      */
     public static function left($string, $left = 0)
     {
+        @trigger_error('StringUtil is deprecated, please use Symfony or native PHP instead.', E_USER_DEPRECATED);
+
         $len = mb_strlen($string);
         if ($len > $left) {
             $string = mb_substr($string, 0, $left);
@@ -135,6 +147,8 @@ class StringUtil
      */
     public static function right($string, $right = 0)
     {
+        @trigger_error('StringUtil is deprecated, please use Symfony or native PHP instead.', E_USER_DEPRECATED);
+
         $len = mb_strlen($string);
         if ($len > $right) {
             $string = mb_substr($string, $len - $right, $right);
@@ -156,6 +170,8 @@ class StringUtil
      */
     public static function highlightWords($text, $wordStr, $contextSize = 200)
     {
+        @trigger_error('StringUtil is deprecated, please use Symfony or native PHP instead.', E_USER_DEPRECATED);
+
         // Strip HTML tags and special chars completely
         $text = strip_tags($text);
         $text = html_entity_decode($text, null, 'UTF-8');
@@ -224,6 +240,8 @@ class StringUtil
      */
     public static function camelize($string, $separator = '_')
     {
+        @trigger_error('StringUtil is deprecated, please use Symfony or native PHP instead.', E_USER_DEPRECATED);
+
         if (strpos($string, $separator) !== false) {
             $c = $string;
             $result = '';
@@ -246,6 +264,8 @@ class StringUtil
      */
     public static function getMarkdownParser()
     {
+        @trigger_error('StringUtil is deprecated, please use Symfony or native PHP instead.', E_USER_DEPRECATED);
+
         $sm = ServiceUtil::getManager();
 
         return $sm->get('zikula_core.common.markdown_parser');
@@ -258,6 +278,8 @@ class StringUtil
      */
     public static function getMarkdownExtraParser()
     {
+        @trigger_error('StringUtil is deprecated, please use Symfony or native PHP instead.', E_USER_DEPRECATED);
+
         $sm = ServiceUtil::getManager();
 
         return $sm->get('zikula_core.common.markdown_extra_parser');

@@ -28,6 +28,8 @@ class Zikula_Routing_UrlRouter
      */
     public function __construct()
     {
+        @trigger_error('UrlRoute is deprecated, please use Symfony routing instead.', E_USER_DEPRECATED);
+
         $this->routes = [];
     }
 

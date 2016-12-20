@@ -169,6 +169,8 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      */
     public function __construct(Zikula_ServiceManager $serviceManager, $moduleName = '', $caching = null)
     {
+        @trigger_error('Smarty is deprecated, please use Twig instead.', E_USER_DEPRECATED);
+
         $this->serviceManager = $serviceManager;
         $this->eventManager = $this->serviceManager->get('event_dispatcher');
         $this->request = $this->serviceManager->get('request_stack')->getCurrentRequest();

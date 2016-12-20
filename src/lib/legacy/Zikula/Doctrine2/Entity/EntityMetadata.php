@@ -138,6 +138,8 @@ abstract class Zikula_Doctrine2_Entity_EntityMetadata extends Zikula_EntityAcces
 
     public function __construct($entity)
     {
+        @trigger_error('This entity metadata entity is deprecated.', E_USER_DEPRECATED);
+
         $this->setEntity($entity);
     }
 

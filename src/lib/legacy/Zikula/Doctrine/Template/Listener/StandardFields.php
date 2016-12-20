@@ -28,6 +28,8 @@ class Zikula_Doctrine_Template_Listener_StandardFields extends Doctrine_Record_L
      */
     public function __construct()
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $this->_uid = UserUtil::getVar('uid');
     }
 
@@ -40,6 +42,8 @@ class Zikula_Doctrine_Template_Listener_StandardFields extends Doctrine_Record_L
      */
     public function preInsert(Doctrine_Event $event)
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $event->getInvoker()->cr_date = DateUtil::getDatetime();
         $event->getInvoker()->cr_uid = $this->_uid;
         $event->getInvoker()->lu_date = DateUtil::getDatetime();
@@ -55,6 +59,8 @@ class Zikula_Doctrine_Template_Listener_StandardFields extends Doctrine_Record_L
      */
     public function preUpdate(Doctrine_Event $event)
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $event->getInvoker()->lu_date = DateUtil::getDatetime();
         $event->getInvoker()->lu_uid = $this->_uid;
     }

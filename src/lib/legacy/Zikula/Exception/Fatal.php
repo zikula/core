@@ -19,4 +19,8 @@ use Zikula\Core\Exception\FatalErrorException;
  */
 class Zikula_Exception_Fatal extends FatalErrorException
 {
+    public function __construct()
+    {
+        @trigger_error('This exception is deprecated, please use FatalErrorException instead.', E_USER_DEPRECATED);
+    }
 }

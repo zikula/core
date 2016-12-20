@@ -137,6 +137,8 @@ abstract class Zikula_AbstractPlugin extends Zikula_AbstractEventHandler impleme
      */
     public function __construct(Zikula_ServiceManager $serviceManager)
     {
+        @trigger_error('Zikula_AbstractPlugin is deprecated, please use tagged services instead.', E_USER_DEPRECATED);
+
         $this->serviceManager = $serviceManager;
         $this->eventManager = $this->serviceManager->get('event_dispatcher');
         $this->_setup();

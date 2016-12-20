@@ -30,6 +30,8 @@ class StandardFieldsListener extends MappedEventSubscriber
      */
     public function getSubscribedEvents()
     {
+        @trigger_error('StandardFields extension is deprecated, please use Blameable and Timestampable instead.', E_USER_DEPRECATED);
+
         return [
             'prePersist',
             'onFlush',
@@ -46,6 +48,8 @@ class StandardFieldsListener extends MappedEventSubscriber
      */
     public function loadClassMetadata(EventArgs $eventArgs)
     {
+        @trigger_error('StandardFields extension is deprecated, please use Blameable and Timestampable instead.', E_USER_DEPRECATED);
+
         $ea = $this->getEventAdapter($eventArgs);
         $this->loadMetadataForObjectClass($ea->getObjectManager(), $eventArgs->getClassMetadata());
     }
@@ -60,6 +64,8 @@ class StandardFieldsListener extends MappedEventSubscriber
      */
     public function onFlush(EventArgs $args)
     {
+        @trigger_error('StandardFields extension is deprecated, please use Blameable and Timestampable instead.', E_USER_DEPRECATED);
+
         $ea = $this->getEventAdapter($args);
         $om = $ea->getObjectManager();
         $uow = $om->getUnitOfWork();
@@ -134,6 +140,8 @@ class StandardFieldsListener extends MappedEventSubscriber
      */
     public function prePersist(EventArgs $args)
     {
+        @trigger_error('StandardFields extension is deprecated, please use Blameable and Timestampable instead.', E_USER_DEPRECATED);
+
         $ea = $this->getEventAdapter($args);
         $om = $ea->getObjectManager();
         $object = $ea->getObject();

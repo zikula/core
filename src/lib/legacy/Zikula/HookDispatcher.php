@@ -59,6 +59,8 @@ class Zikula_HookDispatcher implements HookDispatcherInterface
      */
     public function __construct(StorageInterface $storage, EventDispatcherInterface $dispatcher, ServiceFactory $factory)
     {
+        @trigger_error('Old hook class is deprecated, please use Hook bundle instead.', E_USER_DEPRECATED);
+
         $this->storage = $storage;
         $this->dispatcher = $dispatcher;
         $this->factory = $factory;

@@ -33,6 +33,8 @@ class HtmlUtil
      */
     public static function buildCalendarInputBox($objectname, $htmlname, $dateFormat, $defaultString = '', $defaultDate = '')
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         $html = '';
 
         if (!$htmlname) {
@@ -98,6 +100,8 @@ class HtmlUtil
      */
     public static function getSelector_Generic($name = 'genericSelector', $data = [], $selectedValue = null, $defaultValue = null, $defaultText = null, $allValue = null, $allText = null, $submit = false, $disabled = false, $multipleSize = 1, $id = null, $class = null, $required = false, $title = null)
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         if (!$name) {
             return LogUtil::registerError(__f('Invalid %1$s [%2$s] passed to %3$s.', ['name', $name, 'HtmlUtil::getSelector_Generic']));
         }
@@ -158,6 +162,8 @@ class HtmlUtil
      */
     public static function getSelector_ObjectArray($modname, $objectType, $name, $field = '', $displayField = 'name', $where = '', $sort = '', $selectedValue = '', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $displayField2 = null, $submit = true, $disabled = false, $fieldSeparator = ', ', $multipleSize = 1)
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         if (!$modname) {
             throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['modname', 'HtmlUtil::getSelector_ObjectArray']));
         }
@@ -227,6 +233,8 @@ class HtmlUtil
      */
     public static function getSelector_EntityArray($modname, $entity, $name, $field = '', $displayField = 'name', $where = '', $sort = '', $selectedValue = '', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $displayField2 = null, $submit = true, $disabled = false, $fieldSeparator = ', ', $multipleSize = 1)
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         if (!$modname) {
             throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['modname', 'HtmlUtil::getSelector_EntityArray']));
         }
@@ -284,6 +292,8 @@ class HtmlUtil
      */
     public static function getSelector_FieldArray($modname, $tablekey, $name, $field = 'id', $where = '', $sort = '', $selectedValue = '', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $assocKey = '', $distinct = false, $submit = true, $disabled = false, $truncate = 0, $multipleSize = 1)
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         if (!$tablekey) {
             throw new \Exception(__f('Invalid %1$s [%2$s] passed to %3$s.', ['tablekey', $modname, 'HtmlUtil::getSelector_FieldArray']));
         }
@@ -330,6 +340,8 @@ class HtmlUtil
      */
     public static function getSelector_Categories($cats, $name, $field = 'id', $selectedValue = '0', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $submit = false, $displayPath = false, $doReplaceRootCat = true, $multipleSize = 1)
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         return CategoryUtil::getSelector_Categories($cats, $field, $selectedValue, $name, $defaultValue, $defaultText, $allValue, $allText, $submit, $displayPath, $doReplaceRootCat, $multipleSize);
     }
 
@@ -346,6 +358,8 @@ class HtmlUtil
      */
     public static function getCheckboxes_CategoryField($categoryPath, $values = [], $namePrefix = '', $excludeList = null, $disabled = false)
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         if (!$categoryPath) {
             throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['category', 'HtmlUtil::getCheckboxes_CategoryField']));
         }
@@ -398,6 +412,8 @@ class HtmlUtil
      */
     public static function getSelector_ModuleTables($modname, $name, $selectedValue = '', $defaultValue = 0, $defaultText = '', $submit = false, $remove = '', $disabled = false, $nStripChars = 0, $multipleSize = 1)
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         if (!$modname) {
             throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['modname', 'HtmlUtil::getSelector_ModuleTables']));
         }
@@ -554,6 +570,8 @@ class HtmlUtil
      */
     public static function getSelector_TableFields($modname, $tablename, $name, $selectedValue = '', $defaultValue = 0, $defaultText = '', $submit = false, $showSystemColumns = false, $disabled = false, $multipleSize = 1)
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         if (!$modname) {
             throw new \Exception(__f('Invalid %1$s passed to %2$s.', ['modname', 'HtmlUtil::getSelector_TableFields']));
         }
@@ -603,6 +621,8 @@ class HtmlUtil
      */
     public static function getSelector_YesNo($selected = '1', $name = '')
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         if (!$name) {
             $name = 'permission';
         }
@@ -621,6 +641,8 @@ class HtmlUtil
      */
     public static function getSelectorValue_YesNo($val)
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         $vals = [__('No'), __('Yes')];
 
         return $vals[$val];
@@ -635,6 +657,8 @@ class HtmlUtil
      */
     public static function getSelectorData_Language($includeAll = true)
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         $langlist = [];
         $dropdown = [];
 
@@ -662,6 +686,8 @@ class HtmlUtil
      */
     public static function getSelectorValue_Permission($value)
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         $perms = [];
         $perms[_Z_PERMISSION_BASIC_PRIVATE] = __('Private');
         $perms[_Z_PERMISSION_BASIC_GROUP] = __('Group');
@@ -681,6 +707,8 @@ class HtmlUtil
      */
     public static function getSelector_Permission($name = 'permission', $selectedValue = 'U')
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         if (!$name) {
             $name = 'permission';
         }
@@ -704,6 +732,8 @@ class HtmlUtil
      */
     public static function getSelector_PermissionLevel($name = 'permission', $selectedValue = '0')
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         $perms = [];
         $perms[_Z_PERMISSION_LEVEL_NONE] = __('No access');
         $perms[_Z_PERMISSION_LEVEL_READ] = __('Read access');
@@ -730,6 +760,8 @@ class HtmlUtil
      */
     public static function getSelector_Group($name = 'groupid', $selectedValue = 0, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $excludeList = '', $submit = false, $disabled = false, $multipleSize = 1)
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         $data = [];
         $grouplist = UserUtil::getGroups([], ['name' => 'ASC']);
         foreach ($grouplist as $k => $v) {
@@ -762,6 +794,8 @@ class HtmlUtil
      */
     public static function getSelector_User($name = 'userid', $gid = null, $selectedValue = 0, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $excludeList = '', $submit = false, $disabled = false, $multipleSize = 1)
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         $where = '';
         if ($excludeList) {
             $where = "WHERE uid NOT IN ($excludeList)";
@@ -802,6 +836,8 @@ class HtmlUtil
      */
     public static function getSelector_Module($name = 'moduleName', $selectedValue = 0, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $submit = false, $disabled = false, $multipleSize = 1, $field = 'name')
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         $data = [];
         $modules = ModUtil::getModulesByState(3, 'displayname');
         foreach ($modules as $module) {
@@ -826,6 +862,8 @@ class HtmlUtil
      */
     public static function getSelector_DatetimeDay($selectedValue = 0, $name = 'day', $submit = false, $disabled = false, $multipleSize = 1)
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         if (!$name) {
             $name = 'day';
         }
@@ -852,6 +890,8 @@ class HtmlUtil
      */
     public static function getSelector_DatetimeHour($selectedValue = 0, $name = 'hour', $submit = false, $disabled = false, $multipleSize = 1)
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         if (!$name) {
             $name = 'hour';
         }
@@ -878,6 +918,8 @@ class HtmlUtil
      */
     public static function getSelector_DatetimeMinute($selectedValue = 0, $name = 'minute', $submit = false, $disabled = false, $multipleSize = 1)
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         if (!$name) {
             $name = 'minute';
         }
@@ -905,6 +947,8 @@ class HtmlUtil
      */
     public static function getSelector_DatetimeMonth($selected = 0, $name = 'month', $submit = false, $disabled = false, $multipleSize = 1, $text = 0)
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         if (!$name) {
             $name = 'month';
         }
@@ -949,6 +993,8 @@ class HtmlUtil
      */
     public static function getSelector_DatetimeYear($selectedValue = 2009, $name = 'year', $first = 2003, $last = 2008, $submit = false, $disabled = false, $multipleSize = 1)
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         if (!$name) {
             $name = 'year';
         }
@@ -983,6 +1029,8 @@ class HtmlUtil
      */
     public static function getSelector_Countries($name = 'countries', $selectedValue = '', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $submit = false, $disabled = false, $multipleSize = 1, $id = null, $class = null, $required = false, $title = null)
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         $countries = ZLanguage::countryMap();
         asort($countries);
 
@@ -1004,6 +1052,8 @@ class HtmlUtil
      */
     public static function FormSelectMultipleSubmit($fieldname, $data, $multiple = 0, $size = 1, $selected = '', $accesskey = '', $onchange = '')
     {
+        @trigger_error('HtmlUtil is deprecated. please use Twig extensions and Symfony forms instead.', E_USER_DEPRECATED);
+
         if (empty($fieldname)) {
             return '';
         }

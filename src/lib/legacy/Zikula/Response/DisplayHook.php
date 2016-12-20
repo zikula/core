@@ -21,6 +21,8 @@ class Zikula_Response_DisplayHook extends Zikula\Bundle\HookBundle\Hook\DisplayH
 {
     public function __construct($area, Zikula_View $view, $template)
     {
+        @trigger_error('Old hook class is deprecated, please use Hook bundle instead.', E_USER_DEPRECATED);
+
         LogUtil::log(__f('Warning! Class %s is deprecated.', [__CLASS__], E_USER_DEPRECATED));
         $response = $view->fetch($template);
         parent::__construct($area, $response);

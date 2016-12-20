@@ -43,6 +43,8 @@ class SecurityUtil
      */
     public static function getSchemas()
     {
+        @trigger_error('SecurityUtil is deprecated, please use PermissionApi instead.', E_USER_DEPRECATED);
+
         return self::$schemas;
     }
 
@@ -55,6 +57,8 @@ class SecurityUtil
      */
     public static function setSchemas($schemas)
     {
+        @trigger_error('SecurityUtil is deprecated, please use PermissionApi instead.', E_USER_DEPRECATED);
+
         self::$schemas = $schemas;
     }
 
@@ -69,6 +73,8 @@ class SecurityUtil
      */
     public static function generateCsrfToken(Zikula_ServiceManager $serviceManager = null, $forceUnique = false)
     {
+        @trigger_error('SecurityUtil is deprecated, please use Symfony CSRF protection instead.', E_USER_DEPRECATED);
+
         if (!$serviceManager) {
             $serviceManager = ServiceUtil::getManager();
         }
@@ -87,6 +93,8 @@ class SecurityUtil
      */
     public static function validateCsrfToken($token, Zikula_ServiceManager $serviceManager = null)
     {
+        @trigger_error('SecurityUtil is deprecated, please use Symfony CSRF protection instead.', E_USER_DEPRECATED);
+
         if (!$serviceManager) {
             $serviceManager = ServiceUtil::getManager();
         }
@@ -106,6 +114,8 @@ class SecurityUtil
      */
     public static function checkPermission($component = null, $instance = null, $level = null, $user = null)
     {
+        @trigger_error('SecurityUtil is deprecated, please use PermissionApi instead.', E_USER_DEPRECATED);
+
         static $groupperms = [];
 
         if (!is_numeric($level)) {
@@ -138,6 +148,8 @@ class SecurityUtil
      */
     public static function registerPermissionSchema($component, $schema)
     {
+        @trigger_error('SecurityUtil is deprecated, please use PermissionApi instead.', E_USER_DEPRECATED);
+
         if (!empty(self::$schemas[$component])) {
             return false;
         }
@@ -159,6 +171,8 @@ class SecurityUtil
      */
     public static function confirmAuthKey($modname = '', $varname = 'authid')
     {
+        @trigger_error('SecurityUtil is deprecated, please use Symfony CSRF protection instead.', E_USER_DEPRECATED);
+
         LogUtil::log(__f('Warning! Static call %1$s is deprecated. Please use %2$s instead.', [
             'SecurityUtil::confirmAuthKey()',
             'SecurityUtil::validateCsrfToken()']), E_USER_DEPRECATED);
@@ -234,6 +248,8 @@ class SecurityUtil
      */
     public static function generateAuthKey($modname = '')
     {
+        @trigger_error('SecurityUtil is deprecated, please use Symfony CSRF protection instead.', E_USER_DEPRECATED);
+
         // Ugly hack for Zikula_Response_Ajax which for BC reasons needs to add authid to response
         // So when this method is called by Zikula_Response_Ajax  or Zikula_Response_Ajax_Error class
         // do not mark it as deprecated.
@@ -292,6 +308,8 @@ class SecurityUtil
      */
     public static function getAuthInfo($user = null)
     {
+        @trigger_error('SecurityUtil is deprecated, please use PermissionApi instead.', E_USER_DEPRECATED);
+
         // Empty arrays
         $groupperms = [];
 
@@ -383,6 +401,8 @@ class SecurityUtil
      */
     public static function getSecurityLevel($perms, $component, $instance)
     {
+        @trigger_error('SecurityUtil is deprecated, please use PermissionApi instead.', E_USER_DEPRECATED);
+
         $level = ACCESS_INVALID;
 
         // If we get a test component or instance purely consisting of ':' signs
@@ -489,6 +509,8 @@ class SecurityUtil
      */
     public static function _fixsecuritystring($string)
     {
+        @trigger_error('SecurityUtil is deprecated, please use PermissionApi instead.', E_USER_DEPRECATED);
+
         if (empty($string)) {
             $string = '.*';
         }
@@ -512,6 +534,8 @@ class SecurityUtil
      */
     public static function signData($data)
     {
+        @trigger_error('SecurityUtil is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         $key = System::getVar('signingkey');
         $unsignedData = json_encode($data);
         $signature = sha1($unsignedData . $key);
@@ -529,6 +553,8 @@ class SecurityUtil
      */
     public static function checkSignedData($data)
     {
+        @trigger_error('SecurityUtil is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         $key = System::getVar('signingkey');
         $signedData = json_decode($data, true);
         $signature = sha1($signedData[0] . $key);
@@ -555,6 +581,8 @@ class SecurityUtil
      */
     public static function buildSaltedHash($unhashedData, $hashMethodName, $saltStr, array $hashMethodNameToCode = [], $saltDelimeter = self::SALT_DELIM)
     {
+        @trigger_error('SecurityUtil is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         $saltedHash = false;
         $algoList = hash_algos();
 
@@ -590,6 +618,8 @@ class SecurityUtil
      */
     public static function getSaltedHash($unhashedData, $hashMethodName, array $hashMethodNameToCode = [], $saltLength = 5, $saltDelimeter = self::SALT_DELIM)
     {
+        @trigger_error('SecurityUtil is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         $saltedHash = false;
         $saltStr = RandomUtil::getString($saltLength, $saltLength, false, true, true, true, true, true, false, [$saltDelimeter]);
 
@@ -611,6 +641,8 @@ class SecurityUtil
      */
     public static function checkSaltedHash($unhashedData, $saltedHash, array $hashMethodCodeToName = [], $saltDelimeter = self::SALT_DELIM)
     {
+        @trigger_error('SecurityUtil is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         $dataMatches = false;
 
         $algoList = hash_algos();
@@ -652,6 +684,8 @@ class SecurityUtil
      */
     public static function accesslevelname($level)
     {
+        @trigger_error('SecurityUtil is deprecated, please use PermissionApi instead.', E_USER_DEPRECATED);
+
         $accessnames = self::accesslevelnames();
 
         return $accessnames[$level];
@@ -664,6 +698,8 @@ class SecurityUtil
      */
     public static function accesslevelnames()
     {
+        @trigger_error('SecurityUtil is deprecated, please use PermissionApi instead.', E_USER_DEPRECATED);
+
         static $accessnames = null;
         if (!is_array($accessnames)) {
             $accessnames = [

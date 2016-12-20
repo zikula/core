@@ -23,6 +23,8 @@ class Zikula_Doctrine_Model_EntityCategory extends Doctrine_Record
      */
     public function setTableDefinition()
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $this->setTableName('categories_mapobj');
 
         $this->hasColumn('tablename as table', 'string', 60, ['primary' => true]);
@@ -43,6 +45,8 @@ class Zikula_Doctrine_Model_EntityCategory extends Doctrine_Record
      */
     public function setUp()
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $this->actAs('Zikula_Doctrine_Template_StandardFields');
 
         $this->hasOne('Zikula_Doctrine_Model_Registry as Registry', [
@@ -65,6 +69,8 @@ class Zikula_Doctrine_Model_EntityCategory extends Doctrine_Record
      */
     public function preSave($event)
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $subclasses = ModUtil::getVar('ZikulaCategoriesModule', 'EntityCategorySubclasses', []);
 
         // get the registry object

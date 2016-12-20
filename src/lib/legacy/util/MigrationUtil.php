@@ -23,6 +23,8 @@ class MigrationUtil
 {
     public static function loadModuleAnnotations($entityNamespace, $path)
     {
+        @trigger_error('MigrationUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         /** @var $em EntityManager */
         $em = ServiceUtil::get('doctrine.orm.entity_manager');
         /** @var $ORMConfig Configuration */

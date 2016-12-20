@@ -74,6 +74,8 @@ class Zikula_Routing_UrlRoute
      */
     public function __construct($urlPattern, array $defaults, array $requirements)
     {
+        @trigger_error('UrlRoute is deprecated, please use Symfony routing instead.', E_USER_DEPRECATED);
+
         // check if given url pattern ends with a trailing slash
         if (substr($urlPattern, -1) != '/') {
             // add missing trailing slash

@@ -158,6 +158,8 @@ class Zikula_Form_View extends Zikula_View
      */
     public function __construct(Zikula_ServiceManager $serviceManager, $module, $caching = null)
     {
+        @trigger_error('Legacy form system is deprecated, please use Symfony forms instead.', E_USER_DEPRECATED);
+
         // override behaviour of anonymous sessions
         SessionUtil::requireSession();
 

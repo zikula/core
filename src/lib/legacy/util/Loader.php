@@ -28,6 +28,8 @@ class Loader
      */
     public static function loadFile($fileName, $path = null, $exitOnError = true, $returnVar = null)
     {
+        @trigger_error('Loader is deprecated. please use Composer and namespaces instead.', E_USER_DEPRECATED);
+
         if (!$fileName) {
             throw new \Exception(__f("Error! Invalid file specification '%s'.", $fileName));
         }
@@ -69,6 +71,8 @@ class Loader
      */
     public static function loadAllFiles($files, $path = null, $exitOnError = false)
     {
+        @trigger_error('Loader is deprecated. please use Composer and namespaces instead.', E_USER_DEPRECATED);
+
         return self::loadFiles($files, $path, true, $exitOnError);
     }
 
@@ -84,6 +88,8 @@ class Loader
      */
     public static function loadOneFile($files, $path = null, $exitOnError = false)
     {
+        @trigger_error('Loader is deprecated. please use Composer and namespaces instead.', E_USER_DEPRECATED);
+
         return self::loadFiles($files, $path, false, $exitOnError);
     }
 
@@ -102,6 +108,8 @@ class Loader
      */
     public static function loadFiles($files, $path = null, $all = false, $exitOnError = false, $returnVar = '')
     {
+        @trigger_error('Loader is deprecated. please use Composer and namespaces instead.', E_USER_DEPRECATED);
+
         if (!is_array($files) || !$files) {
             throw new \Exception(__('Error! Invalid file array specification.'));
         }
@@ -141,6 +149,8 @@ class Loader
      */
     public static function loadClass($className, $classPath = 'lib', $exitOnError = true)
     {
+        @trigger_error('Loader is deprecated. please use Composer and namespaces instead.', E_USER_DEPRECATED);
+
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', [__CLASS__ . '#' . __FUNCTION__, 'autoloading'], E_USER_DEPRECATED));
         if (!$className) {
             throw new \Exception(__f("Error! Invalid class specification '%s'.", $className));
@@ -175,6 +185,8 @@ class Loader
      */
     public static function loadClassFromModule($module, $base_obj_type, $array = false, $exitOnError = false, $prefix = 'PN')
     {
+        @trigger_error('Loader is deprecated. please use Composer and namespaces instead.', E_USER_DEPRECATED);
+
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', [__CLASS__ . '#' . __FUNCTION__, 'autoloading'], E_USER_DEPRECATED));
         if (!$module) {
             throw new \Exception(__f("Error! Invalid module specification '%s'.", $module));
@@ -244,6 +256,8 @@ class Loader
      */
     public static function loadArrayClassFromModule($module, $base_obj_type, $exitOnError = false, $prefix = 'PN')
     {
+        @trigger_error('Loader is deprecated. please use Composer and namespaces instead.', E_USER_DEPRECATED);
+
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', [__CLASS__ . '#' . __FUNCTION__, 'autoloading'], E_USER_DEPRECATED));
 
         return self::loadClassFromModule($module, $base_obj_type, true, $exitOnError, $prefix);
@@ -257,6 +271,8 @@ class Loader
      */
     public static function includeOnce($file)
     {
+        @trigger_error('Loader is deprecated. please use Composer and namespaces instead.', E_USER_DEPRECATED);
+
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use autoloading or only if absolutely necessary, %2$s instead.', [__CLASS__ . '#' . __FUNCTION__, 'include_once'], E_USER_DEPRECATED));
         if (strpos($file, 'includes/') === 0) {
             return true;
@@ -274,6 +290,8 @@ class Loader
      */
     public static function requireOnce($file)
     {
+        @trigger_error('Loader is deprecated. please use Composer and namespaces instead.', E_USER_DEPRECATED);
+
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use autoloading or only if absolutely necessary, %2$s instead.', [__CLASS__ . '#' . __FUNCTION__, 'require_once'], E_USER_DEPRECATED));
         if (strpos($file, 'includes/') === 0) {
             return true;

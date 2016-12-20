@@ -23,6 +23,8 @@ class Zikula_Doctrine_Template_MetaData extends Doctrine_Template
      */
     public function setUp()
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $this->addListener(new Zikula_Doctrine_Template_Listener_MetaData());
         $this->_table->unshiftFilter(new Zikula_Doctrine_Template_Filter_MetaData());
     }
@@ -39,6 +41,8 @@ class Zikula_Doctrine_Template_MetaData extends Doctrine_Template
      */
     public function set_META_($value)
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $this->getInvoker()->__META__ = $value;
     }
 }

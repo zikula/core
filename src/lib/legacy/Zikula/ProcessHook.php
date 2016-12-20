@@ -21,7 +21,8 @@ class Zikula_ProcessHook extends Zikula\Bundle\HookBundle\Hook\ProcessHook
 {
     public function __construct($name, $id, UrlInterface $url = null)
     {
-        @trigger_error(__f('Warning! Class %s is deprecated.', [__CLASS__], E_USER_DEPRECATED));
+        @trigger_error('Old hook system is deprecated, please use Hook bundle instead.', E_USER_DEPRECATED);
+
         $this->setName($name);
         parent::__construct($id, $url);
     }

@@ -153,6 +153,8 @@ class Zikula_View_Theme extends Zikula_View
      */
     public function __construct(Zikula_ServiceManager $serviceManager, $themeName)
     {
+        @trigger_error('Old theme system is deprecated, please use Twig instead.', E_USER_DEPRECATED);
+
         // store our theme information
         $this->themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themeName));
         // prevents any case mismatch

@@ -23,6 +23,8 @@ class Zikula_Doctrine_Template_Logging extends Doctrine_Template
      */
     public function setUp()
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $this->addListener(new Zikula_Doctrine_Template_Listener_Logging());
     }
 }

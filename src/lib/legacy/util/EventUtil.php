@@ -45,6 +45,8 @@ class EventUtil
      */
     public static function getManager(Zikula_Core $core = null)
     {
+        @trigger_error('EventUtil is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         if (self::$eventManager) {
             return self::$eventManager;
         }
@@ -56,6 +58,8 @@ class EventUtil
 
     public static function setManager($manager)
     {
+        @trigger_error('EventUtil is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         self::$eventManager = $manager;
     }
 
@@ -71,6 +75,8 @@ class EventUtil
      */
     public static function notify(Zikula_Event $event)
     {
+        @trigger_error('EventUtil is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         return self::getManager()->dispatch($event->getName(), $event);
     }
 
@@ -84,6 +90,8 @@ class EventUtil
      */
     public static function dispatch($name, Event $event = null)
     {
+        @trigger_error('EventUtil is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         return self::getManager()->dispatch($name, $event);
     }
 
@@ -97,6 +105,8 @@ class EventUtil
      */
     public static function attach($name, $handler)
     {
+        @trigger_error('EventUtil is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         self::getManager()->addListener($name, $handler);
     }
 
@@ -110,6 +120,8 @@ class EventUtil
      */
     public static function detach($name, $handler)
     {
+        @trigger_error('EventUtil is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         self::getManager()->removeListener($name, $handler);
     }
 
@@ -122,6 +134,8 @@ class EventUtil
      */
     public static function attachCustomHandlers($dir)
     {
+        @trigger_error('EventUtil is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         self::$eventManager->getContainer()->get('zikula')->attachHandlers($dir);
     }
 
@@ -136,6 +150,8 @@ class EventUtil
      */
     public static function attachEventHandler($className)
     {
+        @trigger_error('EventUtil is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         $serviceManager = ServiceUtil::getManager();
         $serviceManager->get('zikula')->attachEventHandler($className);
     }
@@ -156,6 +172,8 @@ class EventUtil
      */
     public static function registerPersistentModuleHandler($moduleName, $eventName, $callable, $weight = 10)
     {
+        @trigger_error('EventUtil is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         if (!is_callable($callable)) {
             if (is_array($callable)) {
                 throw new InvalidArgumentException(sprintf('[%s, %s] is not a valid PHP callable', $callable[0], $callable[1]));
@@ -207,6 +225,8 @@ class EventUtil
      */
     public static function unregisterPersistentModuleHandler($moduleName, $eventName, $callable, $weight = 10)
     {
+        @trigger_error('EventUtil is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, false);
         if (!$handlers) {
             return;
@@ -234,6 +254,8 @@ class EventUtil
      */
     public static function registerPersistentEventHandlerClass($moduleName, $className)
     {
+        @trigger_error('EventUtil is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         if (!class_exists($className)) {
             throw new InvalidArgumentException(sprintf('Class %s does not exist or cannot be found', $className));
         }
@@ -276,6 +298,8 @@ class EventUtil
      */
     public static function unregisterPersistentStaticHandler($moduleName, $className)
     {
+        @trigger_error('EventUtil is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, false);
         if (!$handlers) {
             return;
@@ -298,6 +322,8 @@ class EventUtil
      */
     public static function unregisterPersistentModuleHandlers($moduleName)
     {
+        @trigger_error('EventUtil is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         ModUtil::delVar(self::HANDLERS, $moduleName);
     }
 
@@ -312,6 +338,8 @@ class EventUtil
      */
     public static function loadPersistentEvents()
     {
+        @trigger_error('EventUtil is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
+
         $handlerGroup = ModUtil::getVar(self::HANDLERS);
         if (!$handlerGroup) {
             return;

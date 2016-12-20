@@ -40,6 +40,8 @@ class Zikula_Debug_Timer
      */
     public function __construct($name = '')
     {
+        @trigger_error('Debug timer is deprecated, please use Symfony StopWatch instead.', E_USER_DEPRECATED);
+
         $this->name = $name;
         $this->times = [];
         $this->start();
@@ -54,6 +56,8 @@ class Zikula_Debug_Timer
      */
     public function reset($name = '')
     {
+        @trigger_error('Debug timer is deprecated, please use Symfony StopWatch instead.', E_USER_DEPRECATED);
+
         $this->name = $name;
         $this->times = [];
         $this->start();
@@ -66,6 +70,8 @@ class Zikula_Debug_Timer
      */
     public function get_microtime()
     {
+        @trigger_error('Debug timer is deprecated, please use Symfony StopWatch instead.', E_USER_DEPRECATED);
+
         return microtime(true);
     }
 
@@ -76,6 +82,8 @@ class Zikula_Debug_Timer
      */
     public function start()
     {
+        @trigger_error('Debug timer is deprecated, please use Symfony StopWatch instead.', E_USER_DEPRECATED);
+
         $this->times[] = $this->get_microtime();
     }
 
@@ -88,6 +96,8 @@ class Zikula_Debug_Timer
      */
     public function stop($insertNewRecord = true)
     {
+        @trigger_error('Debug timer is deprecated, please use Symfony StopWatch instead.', E_USER_DEPRECATED);
+
         if ($insertNewRecord) {
             $this->times[] = $this->get_microtime();
         }
@@ -106,6 +116,8 @@ class Zikula_Debug_Timer
      */
     public function stop_single()
     {
+        @trigger_error('Debug timer is deprecated, please use Symfony StopWatch instead.', E_USER_DEPRECATED);
+
         $start = $this->times[0];
         $stop = $this->times[1];
         $diff = $stop - $start;
@@ -125,6 +137,8 @@ class Zikula_Debug_Timer
      */
     public function stop_multiple()
     {
+        @trigger_error('Debug timer is deprecated, please use Symfony StopWatch instead.', E_USER_DEPRECATED);
+
         $min = 9999999;
         $max = -9999999;
         $sum = 0;
@@ -176,6 +190,8 @@ class Zikula_Debug_Timer
      */
     public function snap($doStats = false)
     {
+        @trigger_error('Debug timer is deprecated, please use Symfony StopWatch instead.', E_USER_DEPRECATED);
+
         $this->times[] = $this->get_microtime();
         if ($doStats) {
             return $this->stop_multiple();

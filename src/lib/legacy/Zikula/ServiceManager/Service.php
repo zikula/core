@@ -58,6 +58,8 @@ class Zikula_ServiceManager_Service
      */
     public function __construct($id, Zikula_ServiceManager_Definition $definition = null, $shared = true)
     {
+        @trigger_error('ServiceManager is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         $this->id = $id;
         $this->definition = $definition;
         $this->shared = $shared;

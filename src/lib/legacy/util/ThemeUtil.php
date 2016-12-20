@@ -42,6 +42,8 @@ class ThemeUtil
      */
     public static function getVar($name = null, $default = null)
     {
+        @trigger_error('UserUtil is deprecated, please use Twig instead.', E_USER_DEPRECATED);
+
         $themevars = Zikula_View_Theme::getInstance()->get_template_vars();
 
         // if no variable name is present then return all theme vars
@@ -71,6 +73,8 @@ class ThemeUtil
      */
     public static function setVar($name, $value)
     {
+        @trigger_error('UserUtil is deprecated, please use Twig instead.', E_USER_DEPRECATED);
+
         // if no variable name is present does nothing
         if (!$name) {
             return;
@@ -96,6 +100,8 @@ class ThemeUtil
      */
     public static function getAllThemes($filter = self::FILTER_ALL, $state = self::STATE_ACTIVE, $type = self::TYPE_ALL)
     {
+        @trigger_error('UserUtil is deprecated, please use Theme entity instead.', E_USER_DEPRECATED);
+
         static $themesarray = [];
 
         $key = md5((string)$filter . (string)$state . (string)$type);
@@ -159,6 +165,8 @@ class ThemeUtil
      */
     public static function getIDFromName($theme)
     {
+        @trigger_error('UserUtil is deprecated, please use Theme entity instead.', E_USER_DEPRECATED);
+
         // define input, all numbers and booleans to strings
         $theme = (isset($theme) ? strtolower((string)$theme) : '');
 
@@ -208,6 +216,8 @@ class ThemeUtil
      * */
     public static function getInfo($themeid)
     {
+        @trigger_error('UserUtil is deprecated, please use Theme entity instead.', E_USER_DEPRECATED);
+
         if ($themeid == 0 || !is_numeric($themeid)) {
             return false;
         }
@@ -240,6 +250,8 @@ class ThemeUtil
      */
     public static function getThemesTable()
     {
+        @trigger_error('UserUtil is deprecated, please use Theme entity instead.', E_USER_DEPRECATED);
+
         static $themestable;
         if (!isset($themestable) || System::isInstalling()) {
             /** @var $entityManager Doctrine\ORM\EntityManager */
@@ -266,6 +278,8 @@ class ThemeUtil
      */
     public static function getModuleStylesheet($modname = '', $stylesheet = '')
     {
+        @trigger_error('UserUtil is deprecated, please use Twig instead.', E_USER_DEPRECATED);
+
         // default for the module
         if (empty($modname)) {
             $modname = ModUtil::getName();
@@ -332,6 +346,8 @@ class ThemeUtil
      */
     public static function getTheme($themeName)
     {
+        @trigger_error('UserUtil is deprecated, please use Theme entity instead.', E_USER_DEPRECATED);
+
         try {
             $sm = ServiceUtil::getManager();
             if (null === $sm) {
@@ -356,6 +372,8 @@ class ThemeUtil
      */
     public static function getThemeRelativePath($themeName)
     {
+        @trigger_error('UserUtil is deprecated.', E_USER_DEPRECATED);
+
         $theme = self::getTheme($themeName);
         $path = false;
         if ($theme) {

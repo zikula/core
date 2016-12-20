@@ -24,6 +24,8 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
      */
     public function setUp()
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $record = $this->getInvoker();
 
         $recordClass  = get_class($record);
@@ -95,6 +97,8 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
      */
     public function setCategories(array $categories)
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         foreach ($categories as $prop => $category) {
             $this->setCategory($prop, $category);
         }
@@ -111,6 +115,8 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
      */
     public function setCategory($prop, $category)
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $rec = $this->getInvoker();
         sscanf($rec->getTable()->getTableName(), Doctrine_Manager::getInstance()->getAttribute(Doctrine::ATTR_TBLNAME_FORMAT), $tableName);
 

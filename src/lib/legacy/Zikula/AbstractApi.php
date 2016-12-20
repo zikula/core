@@ -26,6 +26,8 @@ abstract class Zikula_AbstractApi extends Zikula_AbstractBase
      */
     public function __call($method, $args)
     {
+        @trigger_error('Zikula_AbstractApi is deprecated.', E_USER_DEPRECATED);
+
         $event = new \Zikula\Core\Event\GenericEvent($this, ['method' => $method, 'args' => $args]);
         $this->eventManager->dispatch('api.method_not_found', $event);
         if ($event->isPropagationStopped()) {
