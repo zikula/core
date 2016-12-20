@@ -36,7 +36,7 @@ class AdminActionsMenu implements ContainerAwareInterface
         $routeParams = ['gid' => $gid];
         $menu = $factory->createItem('adminActions');
         $menu->setChildrenAttribute('class', 'list-inline');
-        $menu->addChild($this->__f('Edit :name', [':name' => $options['group']->getName()]), [
+        $menu->addChild($this->__f('Edit ":name" group', [':name' => $options['group']->getName()]), [
             'route' => 'zikulagroupsmodule_group_edit',
             'routeParameters' => $routeParams,
         ])->setAttribute('icon', 'fa fa-pencil');
