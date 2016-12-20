@@ -41,8 +41,8 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
      */
     public function countGroups($groupType = null, $excludedState = null)
     {
-        $qb = $this->createQueryBuilder('tbl')
-            ->select('COUNT(tbl.gid)');
+        $qb = $this->createQueryBuilder('g')
+            ->select('COUNT(g.gid)');
 
         if (null !== $groupType) {
             $qb->where('g.gtype = :gtype')
@@ -72,13 +72,13 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
      */
     public function getGroups($filters = [], $exclusions = [], $sorting = [], $limit = 0, $offset = 0)
     {
-        $qb = $this->createQueryBuilder('tbl');
+        $qb = $this->createQueryBuilder('g');
 
         // add clauses for where
         if (count($filters) > 0) {
             $i = 1;
             foreach ($filters as $w_key => $w_value) {
-                $qb->andWhere($qb->expr()->eq('tbl.' . $w_key, '?' . $i))
+                $qb->andWhere($qb->expr()->eq('g.' . $w_key, '?' . $i))
                    ->setParameter($i, $w_value);
                 $i++;
             }
@@ -86,7 +86,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
         if (count($exclusions) > 0) {
             $i = 1;
             foreach ($exclusions as $w_key => $w_value) {
-                $qb->andWhere($qb->expr()->neq('tbl.' . $w_key, '?' . $i))
+                $qb->andWhere($qb->expr()->neq('g.' . $w_key, '?' . $i))
                    ->setParameter($i, $w_value);
                 $i++;
             }
@@ -95,7 +95,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
         // add clause for ordering
         if (count($sorting) > 0) {
             foreach ($sorting as $sort => $sortdir) {
-                $qb->addOrderBy('tbl.' . $sort, $sortdir);
+                $qb->addOrderBy('g.' . $sort, $sortdir);
             }
         }
 

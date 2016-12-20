@@ -113,7 +113,7 @@ class LinkContainer implements LinkContainerInterface
         if ($groups) {
             $links[] = [
                 'url' => $this->router->generate('zikulagroupsmodule_user_view'),
-                'text' => $this->__('Groups manager'),
+                'text' => $this->translator->__('Groups manager'),
                 'icon' => 'group'
             ];
         }

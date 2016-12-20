@@ -1,0 +1,12 @@
+{% for user in users %}
+    <tr class="user">
+        <td headers="hUserId">{{ user.uid }}</td>
+        <td headers="hUserName">{{ user.uname }}</td>
+        <td headers="hEmail">{{ user.email }}</td>
+        <td headers="hActions" class="actions">
+            <a class="fa fa-fw fa-user-plus tooltips" href="{{ path('zikulagroupsmodule_membershipadministration_add', {uid:user.uid, gid:gid, csrfToken:csrfToken}) }}" title="{{ __('Add user to this group') }}"></a>
+        </td>
+    </tr>
+{% else %}
+    <tr class="info"><td colspan="4" class="text-center">{{ __('No records found.') }}</td></tr>
+{% endfor %}

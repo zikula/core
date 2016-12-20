@@ -99,7 +99,7 @@ class AjaxController extends AbstractController
         }
 
         // Setting various defines
-        $groupsCommon = new CommonHelper();
+        $groupsCommon = new CommonHelper($this->getTranslator());
         $typelabel = $groupsCommon->gtypeLabels();
         $statelabel = $groupsCommon->stateLabels();
 
@@ -130,7 +130,7 @@ class AjaxController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $groupsCommon = new CommonHelper();
+        $groupsCommon = new CommonHelper($this->getTranslator());
         $typeLabels = $groupsCommon->gtypeLabels();
         $stateLabels = $groupsCommon->stateLabels();
 
@@ -160,7 +160,7 @@ class AjaxController extends AbstractController
 
         $group['statelbl'] = $stateLabels[$group['state']];
         $group['gtypelbl'] = $typeLabels[$group['gtype']];
-        $group['membersurl'] = $this->get('router')->generate('zikulagroupsmodule_admin_groupmembership', ['gid' => $group_id]);
+        $group['membersurl'] = $this->get('router')->generate('zikulagroupsmodule_membershipadministration_list', ['gid' => $group_id]);
 
         return new AjaxResponse($group);
     }
