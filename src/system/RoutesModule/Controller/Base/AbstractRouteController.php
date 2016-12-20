@@ -729,7 +729,7 @@ abstract class AbstractRouteController extends AbstractController
         
             $success = false;
             try {
-                if (!$entity->validate()) {
+                if ($action != 'delete' && !$entity->validate()) {
                     continue;
                 }
                 // execute the workflow action
