@@ -27,7 +27,7 @@ class EntityLifecycleListener extends AbstractEntityLifecycleListener
     public function postLoad(LifecycleEventArgs $args)
     {
         $entity = $args->getObject();
-        if (!$this->isEntityManagedByThisBundle($entity)) {
+        if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
         }
 
