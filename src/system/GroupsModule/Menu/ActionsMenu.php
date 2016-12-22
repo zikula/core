@@ -83,7 +83,7 @@ class ActionsMenu implements ContainerAwareInterface
                     'route' => 'zikulagroupsmodule_user_membership',
                     'routeParameters' => ['action' => 'unsubscribe', 'gid' => $gid],
                 ])->setAttribute('icon', 'fa fa-user-times text-danger');
-            } else if ($group->getState() !== CommonHelper::STATE_CLOSED) {
+            } elseif ($group->getState() !== CommonHelper::STATE_CLOSED) {
                 $menu->addChild($this->__f('Apply to membership of ":name" group', [':name' => $group->getName()]), [
                     'route' => 'zikulagroupsmodule_user_membership',
                     'routeParameters' => ['action' => 'subscribe', 'gid' => $gid],
