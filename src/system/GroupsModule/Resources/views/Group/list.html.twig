@@ -1,16 +1,13 @@
-{{ adminHeader() }}
+{{ moduleHeader('user', __('Groups'), '', true, true, false, true) }}
 <h3>
     <span class="fa fa-list"></span>
     {{ __('Groups list') }}
-    {{ pageSetVar('title', __('Groups list')) }}
 </h3>
-
 <table id="grouplist" class="table table-bordered table-striped">
     <colgroup>
-        <col id="cId" />
         <col id="cName" />
-        <col id="cType" />
         <col id="cDescription" />
+        <col id="cType" />
         <col id="cState" />
         <col id="cMembers" />
         <col id="cMaximum" />
@@ -18,10 +15,9 @@
     </colgroup>
     <thead>
         <tr>
-            <th id="hId" scope="col">{{ __('Internal ID') }}</th>
             <th id="hName" scope="col">{{ __('Name') }}</th>
-            <th id="hType" scope="col">{{ __('Type') }}</th>
             <th id="hDescription" scope="col">{{ __('Description') }}</th>
+            <th id="hType" scope="col">{{ __('Type') }}</th>
             <th id="hState" scope="col">{{ __('State') }}</th>
             <th id="hMembers" scope="col" class="text-center">{{ __('Members') }}</th>
             <th id="hMaximum" scope="col" class="text-center">{{ __('Maximum membership') }}</th>
@@ -29,85 +25,34 @@
         </tr>
     </thead>
     <tbody>
-    {% set groupCount = 0 %}
-    {% for group in groups if hasPermission('ZikulaGroupsModule::', group.gid ~ '::', 'ACCESS_EDIT') %}
+    {% for group in groups if hasPermission('ZikulaGroupsModule::', group.gid ~ '::', 'ACCESS_OVERVIEW') %}
         <tr id="group_{{ group.gid }}">
-            <td headers="hId" id="groupgid_{{ group.gid }}" class="z-itemcell z-w05">
-                <input type="hidden" id="gtypeid_{{ group.gid }}" value="{{ group.gtype }}" />
-                <input type="hidden" id="stateid_{{ group.gid }}" value="{{ group.state }}" />
-                <input type="hidden" id="modifystatus_{{ group.gid }}" value="0" />
-                {{ group.gid }}
-            </td>
             <td headers="hName" id="groupname_{{ group.gid }}">
                 {{ group.name }}
-                {% if group.gid == defaultGroup %}
-                *
-                {% elseif group.gid == primaryAdminGroup %}
-                **
-                {% endif %}
-            </td>
-            <td headers="hType" id="groupgtype_{{ group.gid }}" class="zikulagroupsmodule-edit ">
-                <span>{{ groupTypes[group.gtype] }}</span>
             </td>
             <td headers="hDescription" id="groupdescription_{{ group.gid }}">
                 {{ group.description }}&nbsp;
+            </td>
+            <td headers="hType" id="groupgtype_{{ group.gid }}" class="zikulagroupsmodule-edit ">
+                <span>{{ groupTypes[group.gtype] }}</span>
             </td>
             <td headers="hState" id="groupstate_{{ group.gid }}">
                 {{ states[group.state] }}
             </td>
             <td headers="hMembers" id="groupnbuser_{{ group.gid }}" class="text-center">
-                {{ group.nbuser }}
+                {{ group.users.count }}
             </td>
             <td headers="hMaximum" id="groupnbumax_{{ group.gid }}" class="text-center">
-                {{ group.nbumax }}
+                {{ (group.nbumax == false or group.nbumax == 0) ? __('Unlimited') : group.nbumax }}
             </td>
-            {% set rowActions = knp_menu_get('ZikulaGroupsModule:AdminActionsMenu:menu', [], {group: group}) %}
+            {% set rowActions = knp_menu_get('ZikulaGroupsModule:ActionsMenu:userMenu', [], {group: group}) %}
             <th headers="hActions" id="groupaction_{{ group.gid }}" class="actions text-right">{{ knp_menu_render(rowActions, {template: 'ZikulaMenuModule:Override:actions.html.twig'}) }}</th>
         </tr>
-        {% set groupCount = groupCount + 1 %}
+    {% else %}
+        <p class="alert alert-warning">{{ __('There are currently no groups that can be joined.') }}</p>
     {% endfor %}
     </tbody>
 </table>
-<p class="italic">* {{ __('Default user group. Cannot be deleted.') }}</p>
-<p class="italic">** {{ __('Primary administrators group. Cannot be deleted.') }}</p>
 
-{% if userItems %}
-<h3>{{ __('Pending applications') }}</h3>
-<table class="table table-bordered table-striped">
-    <colgroup>
-        <col id="cUserId" />
-        <col id="cUserName" />
-        <col id="cGroupName" />
-        <col id="cComment" />
-        <col id="cActions" />
-    </colgroup>
-    <thead>
-        <tr>
-            <th id="hUserId" scope="col">{{ __('User ID') }}</th>
-            <th id="hUserName" scope="col">{{ __('User name') }}</th>
-            <th id="hGroupName" scope="col">{{ __('Group name to join') }}</th>
-            <th id="hComment" scope="col">{{ __('Comment') }}</th>
-            <th id="hActions" scope="col">{{ __('Actions') }}</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for userItem in userItems %}
-        <tr>
-            <td headers="hUserId">{{ userItem.userid }}</td>
-            <td headers="hUserName">{{ userItem.username|zikulagroupsmodule_profileLink }}</td>
-            <td headers="hGroupName">{{ userItem.gname }}</td>
-            <td headers="hComment">{{ userItem.application }}</td>
-            <td headers="hActions">
-                <a href="{{ path('zikulagroupsmodule_admin_userpending', { gid: userItem.appgid, userid: userItem.userid, action: 'accept' }) }}" title="{{ __f('Accept %username', { '%username': userItem.username }) }}" class="fa fa-user-plus tooltips"></a>&nbsp;
-                <a href="{{ path('zikulagroupsmodule_admin_userpending', { gid: userItem.appgid, userid: userItem.userid, action: 'deny' }) }}" title="{{ __f('Deny %username', { '%username': userItem.username }) }}" class="fa fa-user-times tooltips"></a>
-            </td>
-        </tr>
-        {% else %}
-        <tr><td colspan="5">{{ __('No items found.') }}</td></tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endif %}
-
-{{ pager({ rowcount: groupCount, limit: pager.itemsPerPage, posvar: 'startnum', route: 'zikulagroupsmodule_group_list'}) }}
-{{ adminFooter() }}
+{{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, posvar: 'startnum', route: 'zikulagroupsmodule_group_list'}) }}
+{{ moduleFooter() }}

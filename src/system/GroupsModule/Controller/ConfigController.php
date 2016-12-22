@@ -85,7 +85,7 @@ class ConfigController extends AbstractController
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirectToRoute('zikulagroupsmodule_group_list');
+            return $this->redirectToRoute('zikulagroupsmodule_group_adminlist');
         }
 
         return [

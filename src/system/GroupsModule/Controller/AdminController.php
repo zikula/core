@@ -159,7 +159,7 @@ class AdminController extends AbstractController
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirectToRoute('zikulagroupsmodule_group_list');
+            return $this->redirectToRoute('zikulagroupsmodule_group_adminlist');
         }
 
         return [
@@ -175,7 +175,7 @@ class AdminController extends AbstractController
     {
         @trigger_error('This method is deprecated. Please use GroupController::listAction', E_USER_DEPRECATED);
 
-        return $this->redirectToRoute('zikulagroupsmodule_group_list');
+        return $this->redirectToRoute('zikulagroupsmodule_group_adminlist');
     }
 
     /**
@@ -185,7 +185,7 @@ class AdminController extends AbstractController
     {
         @trigger_error('This method is deprecated. Please use GroupController::listAction', E_USER_DEPRECATED);
 
-        return $this->redirectToRoute('zikulagroupsmodule_group_list', ['startnum' => $startnum]);
+        return $this->redirectToRoute('zikulagroupsmodule_group_adminlist', ['startnum' => $startnum]);
     }
 
     /**

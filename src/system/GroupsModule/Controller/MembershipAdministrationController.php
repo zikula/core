@@ -184,7 +184,7 @@ class MembershipAdministrationController extends AbstractController
      */
     public function getUsersByFragmentAsTableAction(Request $request)
     {
-        if (!$this->hasPermission('ZikulaGroupsodule', '::', ACCESS_MODERATE)) {
+        if (!$this->hasPermission('ZikulaGroupsodule', '::', ACCESS_EDIT)) {
             return new PlainResponse('');
         }
         $fragment = $request->request->get('fragment');

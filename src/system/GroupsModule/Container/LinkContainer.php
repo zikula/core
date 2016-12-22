@@ -76,7 +76,7 @@ class LinkContainer implements LinkContainerInterface
 
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
             $links[] = [
-                'url' => $this->router->generate('zikulagroupsmodule_group_list'),
+                'url' => $this->router->generate('zikulagroupsmodule_group_adminlist'),
                 'text' => $this->translator->__('Groups list'),
                 'icon' => 'list'
             ];
@@ -104,6 +104,30 @@ class LinkContainer implements LinkContainerInterface
      *
      * @return array
      */
+    private function getUser()
+    {
+        $links = [];
+        $links[] = [
+            'url' => $this->router->generate('zikulagroupsmodule_group_list'),
+            'text' => $this->translator->__('Group list'),
+            'icon' => 'group'
+        ];
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_EDIT)) {
+            $links[] = [
+                'url' => $this->router->generate('zikulagroupsmodule_group_adminlist'),
+                'text' => $this->translator->__('Groups admin'),
+                'icon' => 'list'
+            ];
+        }
+
+        return $links;
+    }
+
+    /**
+     * get the Account links for this extension
+     *
+     * @return array
+     */
     private function getAccount()
     {
         $links = [];
@@ -112,7 +136,7 @@ class LinkContainer implements LinkContainerInterface
         $groups = ModUtil::apiFunc($this->getBundleName(), 'user', 'getallgroups');
         if ($groups) {
             $links[] = [
-                'url' => $this->router->generate('zikulagroupsmodule_user_view'),
+                'url' => $this->router->generate('zikulagroupsmodule_group_list'),
                 'text' => $this->translator->__('Groups manager'),
                 'icon' => 'group'
             ];
