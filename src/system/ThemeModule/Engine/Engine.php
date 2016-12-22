@@ -77,8 +77,7 @@ class Engine
     private $kernel;
 
     /**
-     * The filter service.
-     * @var Filter
+     * @var AssetFilter
      */
     private $filterService;
 
@@ -97,11 +96,11 @@ class Engine
      * @param RequestStack $requestStack
      * @param Reader $annotationReader
      * @param ZikulaKernel $kernel
-     * @param Filter $filter
+     * @param AssetFilter $filter
      * @param BlockApi $blockApi
      * @param VariableApi $variableApi
      */
-    public function __construct(RequestStack $requestStack, Reader $annotationReader, ZikulaKernel $kernel, $filter, BlockApi $blockApi, VariableApi $variableApi)
+    public function __construct(RequestStack $requestStack, Reader $annotationReader, ZikulaKernel $kernel, AssetFilter $filter, BlockApi $blockApi, VariableApi $variableApi)
     {
         $this->requestStack = $requestStack;
         $this->annotationReader = $annotationReader;
@@ -160,7 +159,7 @@ class Engine
      * @param integer $bid
      * @param string $positionName
      * @param bool $legacy @deprecated param
-     * @return Response
+     * @return string
      */
     public function wrapBlockContentInTheme($content, $title, $blockType, $bid, $positionName, $legacy)
     {
