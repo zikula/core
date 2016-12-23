@@ -8,7 +8,12 @@ parameters:
 services:
     zikula_groups_module.container.link_container:
         class: %zikula_groups_module.container.link_container.class%
-        arguments: ["@translator.default", "@jms_i18n_routing.router", "@zikula_permissions_module.api.permission"]
+        arguments: [
+          "@translator.default",
+          "@jms_i18n_routing.router",
+          "@zikula_permissions_module.api.permission",
+          "@zikula_groups_module.group_repository"
+        ]
         tags:
             - { name: zikula.link_container }
 
