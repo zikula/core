@@ -160,7 +160,7 @@ class AjaxController extends AbstractController
 
         $group['statelbl'] = $stateLabels[$group['state']];
         $group['gtypelbl'] = $typeLabels[$group['gtype']];
-        $group['membersurl'] = $this->get('router')->generate('zikulagroupsmodule_membershipadministration_list', ['gid' => $group_id]);
+        $group['membersurl'] = $this->get('router')->generate('zikulagroupsmodule_membership_adminlist', ['gid' => $group_id]);
 
         return new AjaxResponse($group);
     }

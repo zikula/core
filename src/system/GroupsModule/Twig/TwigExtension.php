@@ -24,7 +24,7 @@ class TwigExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('zikulagroupsmodule_profileLink', [$this, 'profileLink'])
+            new \Twig_SimpleFilter('zikulagroupsmodule_profileLink', [$this, 'profileLink'], ['is_safe' => ['html']])
         ];
     }
 

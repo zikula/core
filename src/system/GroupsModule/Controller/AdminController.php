@@ -35,9 +35,9 @@ class AdminController extends AbstractController
      */
     public function groupmembershipAction($gid = 0, $letter = '*', $startNum = 0)
     {
-        @trigger_error('This method is deprecated. Please use MembershipAdministrationController::listAction', E_USER_DEPRECATED);
+        @trigger_error('This method is deprecated. Please use MembershipController::adminListAction', E_USER_DEPRECATED);
 
-        return $this->redirectToRoute('zikulagroupsmodule_membershipadministration_list', ['gid' => $gid, 'letter' => $letter, 'startNum' => $startNum]);
+        return $this->redirectToRoute('zikulagroupsmodule_membership_adminlist', ['gid' => $gid, 'letter' => $letter, 'startNum' => $startNum]);
     }
 
     /**
@@ -45,9 +45,9 @@ class AdminController extends AbstractController
      */
     public function adduserAction($uid, $gid, $csrfToken)
     {
-        @trigger_error('This method is deprecated. Please use MembershipAdministrationController::addAction', E_USER_DEPRECATED);
+        @trigger_error('This method is deprecated. Please use MembershipController::addAction', E_USER_DEPRECATED);
 
-        return $this->redirectToRoute('zikulagroupsmodule_membershipadministration_add', ['uid' => $uid, 'gid' => $gid, 'csrfToken' => $csrfToken]);
+        return $this->redirectToRoute('zikulagroupsmodule_membership_add', ['uid' => $uid, 'gid' => $gid, 'csrfToken' => $csrfToken]);
     }
 
     /**
@@ -55,9 +55,9 @@ class AdminController extends AbstractController
      */
     public function removeuserAction(Request $request, $gid = 0, $uid = 0)
     {
-        @trigger_error('This method is deprecated. Please use MembershipAdministrationController::addAction', E_USER_DEPRECATED);
+        @trigger_error('This method is deprecated. Please use MembershipController::addAction', E_USER_DEPRECATED);
 
-        return $this->redirectToRoute('zikulagroupsmodule_membershipadministration_remove', ['uid' => $uid, 'gid' => $gid, 'request' => $request]);
+        return $this->redirectToRoute('zikulagroupsmodule_membership_remove', ['uid' => $uid, 'gid' => $gid, 'request' => $request]);
     }
 
     /**

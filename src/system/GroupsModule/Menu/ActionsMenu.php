@@ -14,6 +14,7 @@ namespace Zikula\GroupsModule\Menu;
 use Knp\Menu\FactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\GroupsModule\Helper\CommonHelper;
@@ -52,7 +53,7 @@ class ActionsMenu implements ContainerAwareInterface
             ])->setAttribute('icon', 'fa fa-trash-o');
         }
         $menu->addChild($this->__('Group membership'), [
-            'route' => 'zikulagroupsmodule_membershipadministration_list',
+            'route' => 'zikulagroupsmodule_membership_adminlist',
             'routeParameters' => $routeParams,
         ])->setAttribute('icon', 'fa fa-users');
 
@@ -68,10 +69,12 @@ class ActionsMenu implements ContainerAwareInterface
         $gid = $group->getGid();
         $menu = $factory->createItem('userActions');
         $menu->setChildrenAttribute('class', 'list-inline');
+        $requestAttributes = $this->container->get('request')->attributes->all();
 
-        if ($permissionApi->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_READ)) {
+        if ($permissionApi->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_READ)
+            && ('zikulagroupsmodule_membership_list' != $requestAttributes['_route'])) {
             $menu->addChild($this->__f('View membership of ":name" group', [':name' => $group->getName()]), [
-                'route' => 'zikulagroupsmodule_user_memberslist',
+                'route' => 'zikulagroupsmodule_membership_list',
                 'routeParameters' => ['gid' => $gid],
             ])->setAttribute('icon', 'fa fa-users');
         }
@@ -89,6 +92,12 @@ class ActionsMenu implements ContainerAwareInterface
                     'routeParameters' => ['action' => 'subscribe', 'gid' => $gid],
                 ])->setAttribute('icon', 'fa fa-user-plus text-success');
             }
+        } else {
+            $returnUrl = $this->container->get('router')->generate('zikulagroupsmodule_membership_list', ['gid' => $gid], UrlGeneratorInterface::ABSOLUTE_URL);
+            $menu->addChild($this->__('Log in or register'), [
+                'route' => 'zikulausersmodule_access_login',
+                'routeParameters' => ['returnUrl' => $returnUrl]
+            ])->setAttribute('icon', 'fa fa-key');
         }
 
         return $menu;

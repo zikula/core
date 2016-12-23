@@ -23,9 +23,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\GroupsModule\Helper\CommonHelper;
 
-/**
- * User controllers for the groups module
- */
 class UserController extends AbstractController
 {
     /**
@@ -33,7 +30,7 @@ class UserController extends AbstractController
      */
     public function indexAction()
     {
-        @trigger_error('The zikulagroupsmodule_user_index route is deprecated. please use zikulagroupsmodule_user_view instead.', E_USER_DEPRECATED);
+        @trigger_error('The zikulagroupsmodule_user_index route is deprecated. please use zikulagroupsmodule_group_list instead.', E_USER_DEPRECATED);
 
         return $this->redirectToRoute('zikulagroupsmodule_group_list');
     }
@@ -43,7 +40,7 @@ class UserController extends AbstractController
      */
     public function viewAction($startnum = 0)
     {
-        @trigger_error('The zikulagroupsmodule_user_view route is deprecated. please use zikulagroupsmodule_user_view instead.', E_USER_DEPRECATED);
+        @trigger_error('The zikulagroupsmodule_user_view route is deprecated. please use zikulagroupsmodule_group_list instead.', E_USER_DEPRECATED);
 
         return $this->redirectToRoute('zikulagroupsmodule_group_list', ['startnum' => $startnum]);
     }
@@ -180,97 +177,11 @@ class UserController extends AbstractController
 
     /**
      * @Route("/memberlist/{gid}/{startnum}", requirements={"gid" = "^[1-9]\d*$", "startnum" = "\d+"})
-     * @Method("GET")
-     * @Template
-     *
-     * display the membership of a group
-     *
-     * @param integer $gid
-     * @param integer $startnum
-     *
-     * @return Response symfony response object
-     *
-     * @throws \InvalidArgumentException Thrown if the gid < 1
-     * @throws NotFoundHttpException Thrown if the requested group isn't found
-     * @throws AccessDeniedException Thrown if the user doesn't have overview access to the memberslist component of the module
      */
     public function memberslistAction($gid = 0, $startnum = 0)
     {
-        if ($gid < 1) {
-            throw new \InvalidArgumentException($this->__('Invalid Group ID received'));
-        }
+        @trigger_error('The zikulagroupsmodule_user_memberslist route is deprecated. please use zikulagroupsmodule_membership_list instead.', E_USER_DEPRECATED);
 
-        if (!$this->hasPermission('ZikulaGroupsModule::memberslist', '::', ACCESS_OVERVIEW)) {
-            throw new AccessDeniedException();
-        }
-
-        $itemsPerPage = $this->getVar('itemsperpage', 25);
-
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', [
-            'gid' => $gid,
-            'numitems' => $itemsPerPage,
-            'startnum' => $startnum
-        ]);
-
-        if (!$group) {
-            throw new NotFoundHttpException($this->__('Error! Could not load data.'));
-        }
-
-        $groupsCommon = new CommonHelper($this->getTranslator());
-        $typeLabels = $groupsCommon->gtypeLabels();
-        $stateLabels = $groupsCommon->stateLabels();
-
-        $group['typelbl']  = $typeLabels[$group['gtype']];
-        $group['statelbl'] = $stateLabels[$group['state']];
-
-        $templateParameters = [
-            'mainPage' => false,
-            'group' => $group
-        ];
-
-        $members = false;
-        if ($group['members']) {
-            $onlines = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'whosonline');
-
-            $members = [];
-            foreach ($group['members'] as $userid) {
-                $userInfo = UserUtil::getVars($userid['uid']);
-
-                $userInfo['isonline'] = false;
-                if (is_array($onlines)) {
-                    foreach ($onlines as $online) {
-                        if ($online['uid'] == $userid['uid']) {
-                            $userInfo['isonline'] = true;
-                            break;
-                        }
-                    }
-                }
-                $members[] = $userInfo;
-            }
-
-            // test of sorting data
-            if (!empty($members)) {
-                $sortAarr = [];
-                foreach ($members as $res) {
-                    $sortAarr[] = strtolower($res['uname']);
-                }
-                array_multisort($sortAarr, SORT_ASC, $members);
-            }
-        }
-
-        $currentUserApi = $this->get('zikula_users_module.current_user');
-        $isMember = false;
-        if ($currentUserApi->isLoggedIn()) {
-            $isMember = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember', ['gid' => $gid, 'uid' => $currentUserApi->get('uid')]);
-        }
-
-        $templateParameters['members'] = $members;
-        $templateParameters['isMember'] = $isMember;
-        $templateParameters['pager'] = [
-            'amountOfItems' => ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'countgroupmembers', ['gid' => $gid]),
-            'itemsPerPage' => $itemsPerPage
-        ];
-
-        return $templateParameters;
+        return $this->redirectToRoute('zikulagroupsmodule_membership_list', ['gid' => $gid, 'startnum' => $startnum]);
     }
 }
