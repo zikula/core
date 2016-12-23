@@ -11,10 +11,10 @@
 
 namespace Zikula\GroupsModule\Container;
 
-use ModUtil;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
+use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
 
 class LinkContainer implements LinkContainerInterface
@@ -35,17 +35,28 @@ class LinkContainer implements LinkContainerInterface
     private $permissionApi;
 
     /**
+     * @var GroupRepositoryInterface
+     */
+    private $groupRepository;
+
+    /**
      * LinkContainer constructor.
      *
-     * @param TranslatorInterface $translator    TranslatorInterface service instance
-     * @param RouterInterface     $router        RouterInterface service instance
-     * @param PermissionApi       $permissionApi PermissionApi service instance
+     * @param TranslatorInterface $translator TranslatorInterface service instance
+     * @param RouterInterface $router RouterInterface service instance
+     * @param PermissionApi $permissionApi PermissionApi service instance
+     * @param GroupRepositoryInterface $groupRepository
      */
-    public function __construct(TranslatorInterface $translator, RouterInterface $router, PermissionApi $permissionApi)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        RouterInterface $router,
+        PermissionApi $permissionApi,
+        GroupRepositoryInterface $groupRepository
+    ) {
         $this->translator = $translator;
         $this->router = $router;
         $this->permissionApi = $permissionApi;
+        $this->groupRepository = $groupRepository;
     }
 
     /**
@@ -76,7 +87,7 @@ class LinkContainer implements LinkContainerInterface
 
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
             $links[] = [
-                'url' => $this->router->generate('zikulagroupsmodule_group_list'),
+                'url' => $this->router->generate('zikulagroupsmodule_group_adminlist'),
                 'text' => $this->translator->__('Groups list'),
                 'icon' => 'list'
             ];
@@ -104,15 +115,39 @@ class LinkContainer implements LinkContainerInterface
      *
      * @return array
      */
+    private function getUser()
+    {
+        $links = [];
+        $links[] = [
+            'url' => $this->router->generate('zikulagroupsmodule_group_list'),
+            'text' => $this->translator->__('Group list'),
+            'icon' => 'group'
+        ];
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_EDIT)) {
+            $links[] = [
+                'url' => $this->router->generate('zikulagroupsmodule_group_adminlist'),
+                'text' => $this->translator->__('Groups admin'),
+                'icon' => 'wrench'
+            ];
+        }
+
+        return $links;
+    }
+
+    /**
+     * get the Account links for this extension
+     *
+     * @return array
+     */
     private function getAccount()
     {
         $links = [];
 
         // Check if there is at least one group to show
-        $groups = ModUtil::apiFunc($this->getBundleName(), 'user', 'getallgroups');
-        if ($groups) {
+        $groups = $this->groupRepository->findAll();
+        if (count($groups) > 0) {
             $links[] = [
-                'url' => $this->router->generate('zikulagroupsmodule_user_view'),
+                'url' => $this->router->generate('zikulagroupsmodule_group_list'),
                 'text' => $this->translator->__('Groups manager'),
                 'icon' => 'group'
             ];

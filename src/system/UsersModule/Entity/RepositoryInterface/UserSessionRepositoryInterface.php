@@ -16,6 +16,11 @@ use Doctrine\Common\Persistence\ObjectRepository;
 
 interface UserSessionRepositoryInterface extends ObjectRepository, Selectable
 {
+    /**
+     * Return an array of UID's that have logged in since the provided datetime
+     * @param \DateTime $dateTime
+     * @return mixed
+     */
     public function getUsersSince(\DateTime $dateTime);
 
     public function countUsersSince(\DateTime $dateTime);

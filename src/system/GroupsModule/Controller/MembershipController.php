@@ -22,24 +22,24 @@ use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\GroupsModule\GroupEvents;
+use Zikula\GroupsModule\Helper\CommonHelper;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
 
 /**
- * @Route("/admin/membership")
+ * @Route("/membership")
  *
  * Administrative controllers for the groups module
  */
-class MembershipAdministrationController extends AbstractController
+class MembershipController extends AbstractController
 {
     /**
      * @Route("/list/{gid}/{letter}/{startNum}", requirements={"gid" = "^[1-9]\d*$", "letter" = "[a-zA-Z]|\*", "startNum" = "\d+"})
      * @Method("GET")
-     * @Theme("admin")
      * @Template
      *
-     * Display all members of a group.
+     * Display all members of a group to a user
      *
      * @param integer $gid the id of the group to list membership for
      * @param string $letter the letter from the alpha filter
@@ -52,6 +52,49 @@ class MembershipAdministrationController extends AbstractController
      */
     public function listAction($gid = 0, $letter = '*', $startNum = 0)
     {
+        if (!$this->hasPermission('ZikulaGroupsModule::memberslist', '::', ACCESS_OVERVIEW)) {
+            throw new AccessDeniedException();
+        }
+        $group = $this->get('zikula_groups_module.group_repository')->find($gid);
+        if (!$group) {
+            throw new \InvalidArgumentException($this->__('Invalid Group ID.'));
+        }
+        $groupsCommon = new CommonHelper($this->getTranslator());
+        $inactiveLimit = $this->get('zikula_extensions_module.api.variable')->getSystemVar('secinactivemins');
+        $dateTime = new \DateTime();
+        $dateTime->modify('-' . $inactiveLimit . 'minutes');
+
+        return [
+            'group' => $group,
+            'groupTypes' => $groupsCommon->gtypeLabels(),
+            'states' => $groupsCommon->stateLabels(),
+            'usersOnline' => $this->get('zikula_users_module.user_session_repository')->getUsersSince($dateTime),
+            'pager' => [
+                'amountOfItems' => $group->getUsers()->count(),
+                'itemsPerPage' => $this->getVar('itemsperpage', 25)
+            ],
+        ];
+    }
+
+    /**
+     * @Route("/admin/list/{gid}/{letter}/{startNum}", requirements={"gid" = "^[1-9]\d*$", "letter" = "[a-zA-Z]|\*", "startNum" = "\d+"})
+     * @Method("GET")
+     * @Theme("admin")
+     * @Template
+     *
+     * Display all members of a group to an admin
+     *
+     * @param integer $gid the id of the group to list membership for
+     * @param string $letter the letter from the alpha filter
+     * @param integer $startNum the start item number for the pager
+     *
+     * @return array
+     *
+     * @throws \InvalidArgumentException Thrown if the requested group id is invalid
+     * @throws AccessDeniedException Thrown if the user doesn't have edit access to the group
+     */
+    public function adminListAction($gid = 0, $letter = '*', $startNum = 0)
+    {
         if (!$this->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
@@ -62,16 +105,16 @@ class MembershipAdministrationController extends AbstractController
 
         return [
             'group' => $group,
-//            'pager' => [
-//                'amountOfItems' => count($usersNotInGroup),
-//                'itemsPerPage' => $this->getVar('itemsperpage', 25);
-//            ],
+            'pager' => [
+                'amountOfItems' => $group->getUsers()->count(),
+                'itemsPerPage' => $this->getVar('itemsperpage', 25)
+            ],
             'csrfToken' => $this->get('zikula_core.common.csrf_token_handler')->generate()
         ];
     }
 
     /**
-     * @Route("/add/{uid}/{gid}/{csrfToken}", requirements={"gid" = "^[1-9]\d*$", "uid" = "^[1-9]\d*$"})
+     * @Route("/admin/add/{uid}/{gid}/{csrfToken}", requirements={"gid" = "^[1-9]\d*$", "uid" = "^[1-9]\d*$"})
      *
      * Add user to a group.
      *
@@ -107,11 +150,11 @@ class MembershipAdministrationController extends AbstractController
             $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_ADD_USER, $adduserEvent);
         }
 
-        return $this->redirectToRoute('zikulagroupsmodule_membershipadministration_list', ['gid' => $gid]);
+        return $this->redirectToRoute('zikulagroupsmodule_membership_adminlist', ['gid' => $gid]);
     }
 
     /**
-     * @Route("/remove/{gid}/{uid}", requirements={"gid" = "^[1-9]\d*$", "uid" = "^[1-9]\d*$"})
+     * @Route("/admin/remove/{gid}/{uid}", requirements={"gid" = "^[1-9]\d*$", "uid" = "^[1-9]\d*$"})
      * @Theme("admin")
      * @Template
      *
@@ -163,7 +206,7 @@ class MembershipAdministrationController extends AbstractController
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirectToRoute('zikulagroupsmodule_membershipadministration_list', ['gid' => $group->getGid()]);
+            return $this->redirectToRoute('zikulagroupsmodule_membership_adminlist', ['gid' => $group->getGid()]);
         }
 
         return [
@@ -177,14 +220,14 @@ class MembershipAdministrationController extends AbstractController
      * Called from UsersModule/Resources/public/js/Zikula.Users.Admin.View.js
      * to populate a username search
      *
-     * @Route("/getusersbyfragmentastable", options={"expose"=true})
+     * @Route("/admin/getusersbyfragmentastable", options={"expose"=true})
      * @Method("POST")
      * @param Request $request
      * @return Response
      */
     public function getUsersByFragmentAsTableAction(Request $request)
     {
-        if (!$this->hasPermission('ZikulaGroupsodule', '::', ACCESS_MODERATE)) {
+        if (!$this->hasPermission('ZikulaGroupsodule', '::', ACCESS_EDIT)) {
             return new PlainResponse('');
         }
         $fragment = $request->request->get('fragment');
@@ -197,7 +240,7 @@ class MembershipAdministrationController extends AbstractController
         ];
         $users = $this->get('zikula_users_module.user_repository')->query($filter);
 
-        return $this->render('@ZikulaGroupsModule/MembershipAdministration/userlist.html.twig', [
+        return $this->render('@ZikulaGroupsModule/Membership/userlist.html.twig', [
             'users' => $users,
             'gid' => $request->get('gid'),
             'csrfToken' => $request->get('csrfToken')

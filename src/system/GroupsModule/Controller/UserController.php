@@ -12,108 +12,35 @@
 namespace Zikula\GroupsModule\Controller;
 
 use ModUtil;
-use UserUtil;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\GroupsModule\Helper\CommonHelper;
 
-/**
- * User controllers for the groups module
- */
 class UserController extends AbstractController
 {
     /**
      * @Route("")
-     *
-     * Groups Module main user function
-     *
-     * @return RedirectResponse
      */
     public function indexAction()
     {
-        @trigger_error('The zikulagroupsmodule_user_index route is deprecated. please use zikulagroupsmodule_user_view instead.', E_USER_DEPRECATED);
+        @trigger_error('The zikulagroupsmodule_user_index route is deprecated. please use zikulagroupsmodule_group_list instead.', E_USER_DEPRECATED);
 
-        return $this->redirectToRoute('zikulagroupsmodule_user_view');
+        return $this->redirectToRoute('zikulagroupsmodule_group_list');
     }
 
     /**
      * @Route("/view/{startnum}", requirements={"startnum" = "\d+"})
-     * @Method("GET")
-     * @Template
-     *
-     * Display items
-     *
-     * @param integer $startnum
-     *
-     * @return Response symfony response object
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have overview access to the module
      */
     public function viewAction($startnum = 0)
     {
-        if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_OVERVIEW)) {
-            throw new AccessDeniedException();
-        }
+        @trigger_error('The zikulagroupsmodule_user_view route is deprecated. please use zikulagroupsmodule_group_list instead.', E_USER_DEPRECATED);
 
-        $itemsPerPage = $this->getVar('itemsperpage', 25);
-
-        $currentUserApi = $this->get('zikula_users_module.current_user');
-        $isLoggedIn = $currentUserApi->isLoggedIn();
-
-        // get groups (not core, only private and public ones)
-        $groups = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getallgroups', [
-            'startnum' => $startnum,
-            'numitems' => $itemsPerPage
-        ]);
-
-        $templateParameters = [
-            'mainPage' => true
-        ];
-
-        // The return value of the function is checked here, and if the function
-        // failed then an appropriate message is posted.
-        if (!$groups) {
-            $templateParameters['nogroups'] = true;
-
-            return $templateParameters;
-        }
-
-        $groupItems = [];
-
-        $groupsCommon = new CommonHelper($this->getTranslator());
-        $typeLabels = $groupsCommon->gtypeLabels();
-        $stateLabels = $groupsCommon->stateLabels();
-
-        foreach ($groups as $group) {
-            if ($this->hasPermission('ZikulaGroupsModule::', $group['gid'].'::', ACCESS_OVERVIEW)) {
-                $group['typeLabel']  = $this->__(/** @Ignore */$typeLabels[$group['gtype']]);
-                $group['stateLabel'] = $this->__(/** @Ignore */$stateLabels[$group['state']]);
-
-                if (true == $isLoggedIn && $this->hasPermission('ZikulaGroupsModule::', $group['gid'].'::', ACCESS_READ)) {
-                    // The right to apply
-                    $groupItems[] = $this->get('twig')->render('@ZikulaGroupsModule/User/grouprow_read.html.twig', $group);
-                } else {
-                    // No right to apply
-                    $groupItems[] = $this->get('twig')->render('@ZikulaGroupsModule/User/grouprow_overview.html.twig', $group);
-                }
-            }
-        }
-
-        $templateParameters['nogroups'] = false;
-        $templateParameters['items'] = $groupItems;
-        $templateParameters['pager'] = [
-            'amountOfItems' => ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'countitems'),
-            'itemsPerPage' => $itemsPerPage
-        ];
-
-        return $templateParameters;
+        return $this->redirectToRoute('zikulagroupsmodule_group_list', ['startnum' => $startnum]);
     }
 
     /**
@@ -162,27 +89,27 @@ class UserController extends AbstractController
             if (ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember', ['gid' => $gid, 'uid' => $currentUserApi->get('uid')])) {
                 $this->addFlash('error', $this->__('Error! You are already a member of this group.'));
 
-                return $this->redirectToRoute('zikulagroupsmodule_user_view');
+                return $this->redirectToRoute('zikulagroupsmodule_group_list');
             }
 
             if ($group['gtype'] == CommonHelper::GTYPE_CORE) {
                 $this->addFlash('error', $this->__('Sorry! You cannot apply for membership of that group.'));
 
-                return $this->redirectToRoute('zikulagroupsmodule_user_view');
+                return $this->redirectToRoute('zikulagroupsmodule_group_list');
             }
 
             if ($group['nbumax'] != 0) {
                 if (($group['nbumax'] - $group['nbuser']) <= 0) {
                     $this->addFlash('error', $this->__('Sorry! That group has reached full membership.'));
 
-                    return $this->redirectToRoute('zikulagroupsmodule_user_view');
+                    return $this->redirectToRoute('zikulagroupsmodule_group_list');
                 }
             }
 
             if ($group['state'] == CommonHelper::STATE_CLOSED) {
                 $this->addFlash('error', $this->__('Sorry! That group is closed.'));
 
-                return $this->redirectToRoute('zikulagroupsmodule_user_view');
+                return $this->redirectToRoute('zikulagroupsmodule_group_list');
             }
         }
 
@@ -235,7 +162,7 @@ class UserController extends AbstractController
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirectToRoute('zikulagroupsmodule_user_view');
+            return $this->redirectToRoute('zikulagroupsmodule_group_list');
         }
 
         return [
@@ -248,97 +175,11 @@ class UserController extends AbstractController
 
     /**
      * @Route("/memberlist/{gid}/{startnum}", requirements={"gid" = "^[1-9]\d*$", "startnum" = "\d+"})
-     * @Method("GET")
-     * @Template
-     *
-     * display the membership of a group
-     *
-     * @param integer $gid
-     * @param integer $startnum
-     *
-     * @return Response symfony response object
-     *
-     * @throws \InvalidArgumentException Thrown if the gid < 1
-     * @throws NotFoundHttpException Thrown if the requested group isn't found
-     * @throws AccessDeniedException Thrown if the user doesn't have overview access to the memberslist component of the module
      */
     public function memberslistAction($gid = 0, $startnum = 0)
     {
-        if ($gid < 1) {
-            throw new \InvalidArgumentException($this->__('Invalid Group ID received'));
-        }
+        @trigger_error('The zikulagroupsmodule_user_memberslist route is deprecated. please use zikulagroupsmodule_membership_list instead.', E_USER_DEPRECATED);
 
-        if (!$this->hasPermission('ZikulaGroupsModule::memberslist', '::', ACCESS_OVERVIEW)) {
-            throw new AccessDeniedException();
-        }
-
-        $itemsPerPage = $this->getVar('itemsperpage', 25);
-
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', [
-            'gid' => $gid,
-            'numitems' => $itemsPerPage,
-            'startnum' => $startnum
-        ]);
-
-        if (!$group) {
-            throw new NotFoundHttpException($this->__('Error! Could not load data.'));
-        }
-
-        $groupsCommon = new CommonHelper($this->getTranslator());
-        $typeLabels = $groupsCommon->gtypeLabels();
-        $stateLabels = $groupsCommon->stateLabels();
-
-        $group['typelbl']  = $typeLabels[$group['gtype']];
-        $group['statelbl'] = $stateLabels[$group['state']];
-
-        $templateParameters = [
-            'mainPage' => false,
-            'group' => $group
-        ];
-
-        $members = false;
-        if ($group['members']) {
-            $onlines = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'whosonline');
-
-            $members = [];
-            foreach ($group['members'] as $userid) {
-                $userInfo = UserUtil::getVars($userid['uid']);
-
-                $userInfo['isonline'] = false;
-                if (is_array($onlines)) {
-                    foreach ($onlines as $online) {
-                        if ($online['uid'] == $userid['uid']) {
-                            $userInfo['isonline'] = true;
-                            break;
-                        }
-                    }
-                }
-                $members[] = $userInfo;
-            }
-
-            // test of sorting data
-            if (!empty($members)) {
-                $sortAarr = [];
-                foreach ($members as $res) {
-                    $sortAarr[] = strtolower($res['uname']);
-                }
-                array_multisort($sortAarr, SORT_ASC, $members);
-            }
-        }
-
-        $currentUserApi = $this->get('zikula_users_module.current_user');
-        $isMember = false;
-        if ($currentUserApi->isLoggedIn()) {
-            $isMember = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember', ['gid' => $gid, 'uid' => $currentUserApi->get('uid')]);
-        }
-
-        $templateParameters['members'] = $members;
-        $templateParameters['isMember'] = $isMember;
-        $templateParameters['pager'] = [
-            'amountOfItems' => ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'countgroupmembers', ['gid' => $gid]),
-            'itemsPerPage' => $itemsPerPage
-        ];
-
-        return $templateParameters;
+        return $this->redirectToRoute('zikulagroupsmodule_membership_list', ['gid' => $gid, 'startnum' => $startnum]);
     }
 }

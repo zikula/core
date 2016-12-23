@@ -11,7 +11,6 @@
 
 namespace Zikula\GroupsModule\Controller;
 
-use ModUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,9 +49,9 @@ class ConfigController extends AbstractController
 
         // build a groups array suitable for the form choices
         $groupsList = [];
-        $groups = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getall');
+        $groups = $this->get('zikula_groups_module.group_repository')->findAll();
         foreach ($groups as $group) {
-            $groupsList[$group['gid']] = $group['name'];
+            $groupsList[$group->getName()] = $group->getGid();
         }
 
         $form = $this->createForm('Zikula\GroupsModule\Form\Type\ConfigType',
@@ -85,7 +84,7 @@ class ConfigController extends AbstractController
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirectToRoute('zikulagroupsmodule_group_list');
+            return $this->redirectToRoute('zikulagroupsmodule_group_adminlist');
         }
 
         return [

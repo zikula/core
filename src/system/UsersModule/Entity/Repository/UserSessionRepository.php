@@ -24,8 +24,13 @@ class UserSessionRepository extends EntityRepository implements UserSessionRepos
             ->setParameter('activetime', $dateTime)
             ->andWhere('s.uid != 0')
             ->getQuery();
+        $users = $query->getArrayResult();
+        $result = [];
+        foreach ($users as $user) {
+            $result[] = $user['uid'];
+        }
 
-        return $query->getArrayResult();
+        return $result;
     }
 
     public function countUsersSince(\DateTime $dateTime)

@@ -14,6 +14,7 @@ namespace Zikula\GroupsModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\GroupsModule\Helper\CommonHelper;
 
 /**
  * Membership application form type class.
@@ -45,7 +46,7 @@ class MembershipApplicationType extends AbstractType
             ])
         ;
 
-        if ($options['theAction'] == 'subscribe' && $options['groupType'] == 2) {
+        if ($options['theAction'] == 'subscribe' && $options['groupType'] == CommonHelper::GTYPE_PRIVATE) {
             $builder->add('applyText', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
                 'label' => $translator->__('Comment to attach to your application'),
                 'empty_data' => '',

@@ -30,17 +30,17 @@ use Zikula\UsersModule\Exception\InvalidAuthenticationMethodLoginFormException;
 class AccessController extends AbstractController
 {
     /**
-     * @Route("/login/{returnUrl}", options={"zkNoBundlePrefix"=1})
+     * @Route("/login", options={"zkNoBundlePrefix"=1})
      * @param Request $request
-     * @param null $returnUrl
      * @return string
      * @throws InvalidAuthenticationMethodLoginFormException
      */
-    public function loginAction(Request $request, $returnUrl = null)
+    public function loginAction(Request $request)
     {
         if ($this->get('zikula_users_module.current_user')->isLoggedIn()) {
             return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
+        $returnUrl = $request->query->get('returnUrl', null);
 
         $authenticationMethodCollector = $this->get('zikula_users_module.internal.authentication_method_collector');
         $selectedMethod = $request->query->get('authenticationMethod', $request->getSession()->get('authenticationMethod', null));

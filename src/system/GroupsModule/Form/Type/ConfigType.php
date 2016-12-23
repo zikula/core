@@ -40,7 +40,7 @@ class ConfigType extends AbstractType
             ->add('defaultgroup', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Initial user group'),
                 'empty_data' => 1,
-                'choices' => array_flip($options['groups']),
+                'choices' => $options['groups'],
                 'choices_as_values' => true,
                 'expanded' => false,
                 'multiple' => false
