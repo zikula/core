@@ -25,6 +25,7 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * @Route("/admin")
+ * @deprecated
  *
  * Administrative controllers for the groups module
  */

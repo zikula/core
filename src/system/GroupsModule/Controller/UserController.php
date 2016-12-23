@@ -21,6 +21,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\GroupsModule\Helper\CommonHelper;
 
+/**
+ * Class UserController
+ * @deprecated
+ */
 class UserController extends AbstractController
 {
     /**
