@@ -53,7 +53,7 @@
     <tbody>
         {% for user in group.users %}
         <tr>
-            <td headers="hUserName">{{ user.uid|zikulagroupsmodule_profileLink }}</td>
+            <td headers="hUserName">{{ user.uid|profileLinkByUserId }}</td>
             <td headers="hStatus"><span class="label {% if user.uid in usersOnline %}label-success">{{ __('Online') }}{% else %}label-danger">{{ __('Offline') }}{% endif %}</span></td>
         </tr>
         {% else %}
