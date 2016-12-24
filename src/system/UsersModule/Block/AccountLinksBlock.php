@@ -24,7 +24,7 @@ class AccountLinksBlock extends AbstractBlockHandler
         $renderedOutput = '';
 
         if ($this->hasPermission('Accountlinks::', $properties['title'] . "::", ACCESS_READ)) {
-            if (\ModUtil::available('ZikulaUsersModule')) {
+            if ($this->get('kernel')->isBundle('ZikulaUsersModule')) {
                 $accountLinks = $this->get('zikula_users_module.helper.account_links_helper')->getAllAccountLinks();
                 if (!empty($accountLinks)) {
                     $renderedOutput = $this->renderView('@ZikulaUsersModule/Block/accountLinks.html.twig', [
