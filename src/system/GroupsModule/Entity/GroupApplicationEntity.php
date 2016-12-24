@@ -13,6 +13,7 @@ namespace Zikula\GroupsModule\Entity;
 
 use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
+use Zikula\UsersModule\Entity\UserEntity;
 
 /**
  * GroupApplication entity class.
@@ -33,17 +34,19 @@ class GroupApplicationEntity extends EntityAccess
 
     /**
      * user id of the applicant
-     *
-     * @ORM\Column(type="integer")
+     * This is a unidirectional relationship with UserEntity
+     * @ORM\ManyToOne(targetEntity="Zikula\UsersModule\Entity\UserEntity")
+     * @ORM\JoinColumn(name="uid", referencedColumnName="uid")
      */
-    private $uid;
+    private $user;
 
     /**
      * group id for the application
-     *
-     * @ORM\Column(type="integer")
+     * This is a bidirectional relationship with GroupEntity
+     * @ORM\ManyToOne(targetEntity="Zikula\GroupsModule\Entity\GroupEntity", inversedBy="applications")
+     * @ORM\JoinColumn(name="gid", referencedColumnName="gid")
      */
-    private $gid;
+    private $group;
 
     /**
      * Details of the application
@@ -59,112 +62,65 @@ class GroupApplicationEntity extends EntityAccess
      */
     private $status;
 
-    /**
-     * constructor
-     */
     public function __construct()
     {
-        $this->uid = 0;
-        $this->gid = 0;
+        $this->user = null;
+        $this->group = null;
         $this->application = '';
         $this->status = 0;
     }
 
-    /**
-     * get the app_id of the group's application
-     *
-     * @return integer the group's application's app_id
-     */
-    public function getApp_id()
+    public function getAppId()
     {
         return $this->app_id;
     }
 
-    /**
-     * set the app_id for the group's application
-     *
-     * @param integer $app_id the group's application's app_id
-     */
-    public function setApp_id($app_id)
+    public function setAppId($app_id)
     {
         $this->app_id = $app_id;
     }
 
     /**
-     * get the uid of the group's application
-     *
-     * @return integer the group's application's uid
+     * @return UserEntity
      */
-    public function getUid()
+    public function getUser()
     {
-        return $this->uid;
+        return $this->user;
+    }
+
+    public function setUser(UserEntity $user)
+    {
+        $this->user = $user;
     }
 
     /**
-     * set the uid for the group's application
-     *
-     * @param integer $uid the group's application's uid
+     * @return GroupEntity
      */
-    public function setUid($uid)
+    public function getGroup()
     {
-        $this->uid = $uid;
+        return $this->group;
     }
 
-    /**
-     * get the gid of the group's application
-     *
-     * @return integer the group's application's gid
-     */
-    public function getGid()
+    public function setGroup(GroupEntity $group)
     {
-        return $this->gid;
+        $this->group = $group;
     }
 
-    /**
-     * set the gid for the group's application
-     *
-     * @param integer $gid the group's application's gid
-     */
-    public function setGid($gid)
-    {
-        $this->gid = $gid;
-    }
-
-    /**
-     * get the application of the group's application
-     *
-     * @return string the group's application's application
-     */
     public function getApplication()
     {
         return $this->application;
     }
 
-    /**
-     * set the application for the group's application
-     *
-     * @param string $application the group's application's application
-     */
     public function setApplication($application)
     {
         $this->application = $application;
     }
 
-    /**
-     * get the status of the group's application
-     *
-     * @return integer the group's application's status
-     */
     public function getStatus()
     {
         return $this->status;
     }
 
-    /**
-     * set the status for the group's application
-     *
-     * @param integer $status the group's application's status
-     */
     public function setStatus($status)
     {
         $this->status = $status;

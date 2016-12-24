@@ -11,13 +11,8 @@
 
 namespace Zikula\GroupsModule\Controller;
 
-use ModUtil;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\GroupsModule\Helper\CommonHelper;
 
@@ -32,7 +27,7 @@ class UserController extends AbstractController
      */
     public function indexAction()
     {
-        @trigger_error('The zikulagroupsmodule_user_index route is deprecated. please use zikulagroupsmodule_group_list instead.', E_USER_DEPRECATED);
+        @trigger_error('The zikulagroupsmodule_user_index route is deprecated. Please use zikulagroupsmodule_group_list instead.', E_USER_DEPRECATED);
 
         return $this->redirectToRoute('zikulagroupsmodule_group_list');
     }
@@ -42,139 +37,25 @@ class UserController extends AbstractController
      */
     public function viewAction($startnum = 0)
     {
-        @trigger_error('The zikulagroupsmodule_user_view route is deprecated. please use zikulagroupsmodule_group_list instead.', E_USER_DEPRECATED);
+        @trigger_error('The zikulagroupsmodule_user_view route is deprecated. Please use zikulagroupsmodule_group_list instead.', E_USER_DEPRECATED);
 
         return $this->redirectToRoute('zikulagroupsmodule_group_list', ['startnum' => $startnum]);
     }
 
     /**
      * @Route("/membership/{action}/{gid}", requirements={"action" = "subscribe|unsubscribe|cancel", "gid" = "^[1-9]\d*$"})
-     * @Template
-     *
-     * Display the membership of a public group.
-     *
-     * @param Request $request
-     * @param string $action
-     * @param integer $gid
-     *
-     * @return Response symfony response object
-     *
-     * @throws \InvalidArgumentException Thrown if the group id is < 1
-     * @throws AccessDeniedException Thrown if the user isn't logged in or
-     *                                          if the user doesn't have overview access to the module
-     * @throws NotFoundHttpException Thrown if the group cannot be found
      */
     public function membershipAction(Request $request, $action = 'cancel', $gid = 0)
     {
-        if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_OVERVIEW)) {
-            throw new AccessDeniedException();
+        @trigger_error('The zikulagroupsmodule_user_membership route is deprecated.', E_USER_DEPRECATED);
+        $group = $this->get('zikula_groups_module.group_repository')->find($gid);
+        if ($action == 'unsubscribe') {
+            return $this->redirectToRoute('zikulagroupsmodule_membership_leave', ['gid' => $gid]);
+        } elseif ($action == 'subscribe' && $group->getType() == CommonHelper::GTYPE_PRIVATE) {
+            return $this->redirectToRoute('zikulagroupsmodule_application_create', ['gid' => $gid]);
         }
 
-        if ($gid < 1) {
-            throw new \InvalidArgumentException($this->__('Invalid Group ID received'));
-        }
-
-        $currentUserApi = $this->get('zikula_users_module.current_user');
-
-        if (!$currentUserApi->isLoggedIn()) {
-            throw new AccessDeniedException($this->__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
-        }
-
-        // Check if the group exists
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', ['gid' => $gid]);
-        if (!$group) {
-            throw new NotFoundHttpException($this->__('Error! That group does not exist.'));
-        }
-
-        // And lastly, we must check if he didn't rewrote the url,
-        // that is he applying to an open group and that the group is open
-        // $isopen = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getginfo', ['gid' => $gid]);
-        if ($action == 'subscribe') {
-            if (ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember', ['gid' => $gid, 'uid' => $currentUserApi->get('uid')])) {
-                $this->addFlash('error', $this->__('Error! You are already a member of this group.'));
-
-                return $this->redirectToRoute('zikulagroupsmodule_group_list');
-            }
-
-            if ($group['gtype'] == CommonHelper::GTYPE_CORE) {
-                $this->addFlash('error', $this->__('Sorry! You cannot apply for membership of that group.'));
-
-                return $this->redirectToRoute('zikulagroupsmodule_group_list');
-            }
-
-            if ($group['nbumax'] != 0) {
-                if (($group['nbumax'] - $group['nbuser']) <= 0) {
-                    $this->addFlash('error', $this->__('Sorry! That group has reached full membership.'));
-
-                    return $this->redirectToRoute('zikulagroupsmodule_group_list');
-                }
-            }
-
-            if ($group['state'] == CommonHelper::STATE_CLOSED) {
-                $this->addFlash('error', $this->__('Sorry! That group is closed.'));
-
-                return $this->redirectToRoute('zikulagroupsmodule_group_list');
-            }
-        }
-
-        $formData = [
-            'gid' => $gid,
-            'theAction' => $action,
-            'groupType' => $group['gtype'],
-            'groupName' => $group['name'],
-            'groupDescription' => $group['description'],
-            'applyText' => ''
-        ];
-
-        $form = $this->createForm('Zikula\GroupsModule\Form\Type\MembershipApplicationType',
-            $formData, [
-                'translator' => $this->get('translator.default'),
-                'theAction' => $action,
-                'groupType' => $group['gtype']
-            ]
-        );
-
-        if ($form->handleRequest($request)->isValid()) {
-            if ($form->get('apply')->isClicked()) {
-                $formData = $form->getData();
-
-                $gid = $formData['gid'];
-                $action = $formData['theAction'];
-                $groupType = $formData['groupType'];
-
-                if (empty($gid) || !is_numeric($gid) || empty($action)) {
-                    throw new \InvalidArgumentException($this->__('Invalid arguments received'));
-                }
-
-                $applyText = '';
-                if ($action == 'subscribe' && $groupType == CommonHelper::GTYPE_PRIVATE) {
-                    $applyText = isset($formData['applyText']) ? $formData['applyText'] : '';
-                }
-
-                $result = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'userupdate', [
-                    'gid'       => $gid,
-                    'action'    => $action,
-                    'gtype'     => $groupType,
-                    'applytext' => $applyText
-                ]);
-
-                if (true == $result) {
-                    $this->addFlash('status', $this->__('Done! Saved the action.'));
-                }
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
-            }
-
-            return $this->redirectToRoute('zikulagroupsmodule_group_list');
-        }
-
-        return [
-            'mainPage' => false,
-            'form' => $form->createView(),
-            'groupType' => $group['gtype'],
-            'theAction' => $action
-        ];
+        return $this->redirectToRoute('zikulagroupsmodule_membership_join', ['gid' => $gid]);
     }
 
     /**
@@ -182,7 +63,7 @@ class UserController extends AbstractController
      */
     public function memberslistAction($gid = 0, $startnum = 0)
     {
-        @trigger_error('The zikulagroupsmodule_user_memberslist route is deprecated. please use zikulagroupsmodule_membership_list instead.', E_USER_DEPRECATED);
+        @trigger_error('The zikulagroupsmodule_user_memberslist route is deprecated. Please use zikulagroupsmodule_membership_list instead.', E_USER_DEPRECATED);
 
         return $this->redirectToRoute('zikulagroupsmodule_membership_list', ['gid' => $gid, 'startnum' => $startnum]);
     }

@@ -13,8 +13,8 @@ namespace Zikula\GroupsModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
@@ -34,18 +34,13 @@ class ConfigController extends AbstractController
      *
      * @param Request $request
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
-     * @return Response
+     * @return array|RedirectResponse
      */
     public function configAction(Request $request)
     {
         if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-
-        $variableApi = $this->get('zikula_extensions_module.api.variable');
-        $modVars = $variableApi->getAll('ZikulaGroupsModule');
-        $modVars['mailwarning'] = (bool)$modVars['mailwarning'];
-        $modVars['hideclosed'] = (bool)$modVars['hideclosed'];
 
         // build a groups array suitable for the form choices
         $groupsList = [];
@@ -54,8 +49,7 @@ class ConfigController extends AbstractController
             $groupsList[$group->getName()] = $group->getGid();
         }
 
-        $form = $this->createForm('Zikula\GroupsModule\Form\Type\ConfigType',
-            $modVars, [
+        $form = $this->createForm('Zikula\GroupsModule\Form\Type\ConfigType', $this->getVars(), [
                 'translator' => $this->get('translator.default'),
                 'groups' => $groupsList
             ]
@@ -63,21 +57,7 @@ class ConfigController extends AbstractController
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {
-                $formData = $form->getData();
-
-                // Update module variables.
-                $itemsPerPage = isset($formData['itemsperpage']) ? $formData['itemsperpage'] : 25;
-                $variableApi->set('ZikulaGroupsModule', 'itemsperpage', $itemsPerPage);
-
-                $defaultGroup = isset($formData['defaultgroup']) ? $formData['defaultgroup'] : 1;
-                $variableApi->set('ZikulaGroupsModule', 'defaultgroup', $defaultGroup);
-
-                $mailWarning = isset($formData['mailwarning']) ? (bool)$formData['mailwarning'] : false;
-                $variableApi->set('ZikulaGroupsModule', 'mailwarning', $mailWarning);
-
-                $hideClosed = isset($formData['hideclosed']) ? (bool)$formData['hideclosed'] : false;
-                $variableApi->set('ZikulaGroupsModule', 'hideclosed', $hideClosed);
-
+                $this->setVars($form->getData());
                 $this->addFlash('status', $this->__('Done! Module configuration updated.'));
             }
             if ($form->get('cancel')->isClicked()) {

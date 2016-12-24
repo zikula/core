@@ -5,21 +5,20 @@
     {{ pageSetVar('title', __('Groups list')) }}
 </h3>
 <div class="alert alert-info">
+    {{ __('Types') }}:
     <ul>
-        <li>{{ __('Types') }}:
-            <ul>
-                <li>{{ __('Core: Users can only be added by an administrator (ACCESS_EDIT) - groups are not visible to users in public list') }}</li>
-                <li>{{ __('Public: Users can add themselves with no moderation - groups are visible in public list') }}</li>
-                <li>{{ __('Private: Users must apply for membership - groups are not visible to users in public list') }}</li>
-            </ul>
-        </li>
-        <li>{{ __('States') }}:
-            <ul>
-                <li>{{ __('Open: Users may apply/add themselves') }}</li>
-                <li>{{ __('Closed: only the core or administrator (ACCESS_EDIT) may add users. closed groups may be hidden by config setting') }}</li>
-            </ul>
-        </li>
+        <li>{{ __('Core: Users can only be added by an administrator (ACCESS_EDIT) - groups are not visible to users in public list') }}</li>
+        <li>{{ __('Public: Users can add themselves with no moderation - groups are visible in public list') }}</li>
+        <li>{{ __('Private: Users must apply for membership - groups are not visible to users in public list') }}</li>
     </ul>
+    {{ __('States') }}:
+    <ul>
+        <li>{{ __('Open: Users may apply/add themselves') }}</li>
+        <li>{{ __('Closed: only the core or administrator (ACCESS_EDIT) may add users. closed groups may be hidden by config setting') }}</li>
+    </ul>
+    <br />
+    <p class="italic">* {{ __('Default user group. Cannot be deleted.') }}</p>
+    <p class="italic">** {{ __('Primary administrators group. Cannot be deleted.') }}</p>
 </div>
 <table id="grouplist" class="table table-bordered table-striped">
     <colgroup>
@@ -82,45 +81,43 @@
     {% endfor %}
     </tbody>
 </table>
-<p class="italic">* {{ __('Default user group. Cannot be deleted.') }}</p>
-<p class="italic">** {{ __('Primary administrators group. Cannot be deleted.') }}</p>
 
 {% if applications %}
-<h3>{{ __('Pending applications') }}</h3>
-<table class="table table-bordered table-striped">
-    <colgroup>
-        <col id="cUserId" />
-        <col id="cUserName" />
-        <col id="cGroupName" />
-        <col id="cComment" />
-        <col id="cActions" />
-    </colgroup>
-    <thead>
-        <tr>
-            <th id="hUserId" scope="col">{{ __('User ID') }}</th>
-            <th id="hUserName" scope="col">{{ __('User name') }}</th>
-            <th id="hGroupName" scope="col">{{ __('Group name to join') }}</th>
-            <th id="hComment" scope="col">{{ __('Comment') }}</th>
-            <th id="hActions" scope="col">{{ __('Actions') }}</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for application in applications %}
-        <tr>
-            <td headers="hUserId">{{ application.userid }}</td>
-            <td headers="hUserName">{{ application.username|zikulagroupsmodule_profileLink }}</td>
-            <td headers="hGroupName">{{ application.gname }}</td>
-            <td headers="hComment">{{ application.application }}</td>
-            <td headers="hActions">
-                <a href="{{ path('zikulagroupsmodule_admin_userpending', { gid: application.appgid, userid: application.userid, action: 'accept' }) }}" title="{{ __f('Accept %username', { '%username': application.username }) }}" class="fa fa-user-plus tooltips"></a>&nbsp;
-                <a href="{{ path('zikulagroupsmodule_admin_userpending', { gid: application.appgid, userid: application.userid, action: 'deny' }) }}" title="{{ __f('Deny %username', { '%username': application.username }) }}" class="fa fa-user-times tooltips"></a>
-            </td>
-        </tr>
-        {% else %}
-        <tr><td colspan="5">{{ __('No items found.') }}</td></tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <a id="applications"></a><h3>{{ __('Pending applications') }}</h3>
+    <table class="table table-bordered table-striped">
+        <colgroup>
+            <col id="cUserId" />
+            <col id="cUserName" />
+            <col id="cGroupName" />
+            <col id="cComment" />
+            <col id="cActions" />
+        </colgroup>
+        <thead>
+            <tr>
+                <th id="hUserId" scope="col">{{ __('User ID') }}</th>
+                <th id="hUserName" scope="col">{{ __('User name') }}</th>
+                <th id="hGroupName" scope="col">{{ __('Applying to group') }}</th>
+                <th id="hComment" scope="col">{{ __('Comment') }}</th>
+                <th id="hActions" scope="col">{{ __('Actions') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for application in applications if hasPermission('ZikulaGroupsModule::', application.group.gid ~ '::', 'ACCESS_EDIT') %}
+            <tr>
+                <td headers="hUserId">{{ application.user.uid }}</td>
+                <td headers="hUserName">{{ application.user.uid|zikulagroupsmodule_profileLink }}</td>
+                <td headers="hGroupName">{{ application.group.name }}</td>
+                <td headers="hComment">{{ application.application }}</td>
+                <td headers="hActions" class="text-right">
+                    <a href="{{ path('zikulagroupsmodule_application_admin', { app_id: application.appId, action: 'accept' }) }}" title="{{ __f('Accept %username', { '%username': application.user.uname }) }}" class="fa fa-user-plus fa-lg tooltips"></a>&nbsp;
+                    <a href="{{ path('zikulagroupsmodule_application_admin', { app_id: application.appId, action: 'deny' }) }}" title="{{ __f('Deny %username', { '%username': application.user.uname     }) }}" class="fa fa-user-times fa-lg tooltips"></a>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5">{{ __('No items found.') }}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endif %}
 
 {{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, posvar: 'startnum', route: 'zikulagroupsmodule_group_adminlist'}) }}

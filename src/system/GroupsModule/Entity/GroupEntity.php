@@ -106,6 +106,11 @@ class GroupEntity extends EntityAccess
     private $users;
 
     /**
+     * @ORM\OneToMany(targetEntity="Zikula\GroupsModule\Entity\GroupApplicationEntity", mappedBy="group")
+     */
+    private $applications;
+
+    /**
      * constructor
      */
     public function __construct()
@@ -120,6 +125,23 @@ class GroupEntity extends EntityAccess
         $this->link = 0;
         $this->uidmaster = 0;
         $this->users = new ArrayCollection();
+        $this->applications = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getApplications()
+    {
+        return $this->applications;
+    }
+
+    /**
+     * @param mixed $applications
+     */
+    public function setApplications($applications)
+    {
+        $this->applications = $applications;
     }
 
     /**
