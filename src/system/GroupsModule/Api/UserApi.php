@@ -24,8 +24,7 @@ use Zikula\UsersModule\Entity\UserEntity;
 /**
  * User API functions for the groups module
  *
- * @deprecated
- * @todo Needs a service replacement for removal in Core-2.0
+ * @deprecated remove at Core-2.0
  */
 class UserApi
 {
