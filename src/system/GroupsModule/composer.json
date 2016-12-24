@@ -1,6 +1,6 @@
 {
     "name": "zikula/groups-module",
-    "version": "2.4.0",
+    "version": "2.4.1",
     "description": "User group administration",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
@@ -23,8 +23,8 @@
             "displayname": "Groups",
             "url": "groups",
             "capabilities": {
-                "admin": {"route": "zikulagroupsmodule_group_list"},
-                "user": {"route": "zikulagroupsmodule_user_view"}
+                "admin": {"route": "zikulagroupsmodule_group_adminlist"},
+                "user": {"route": "zikulagroupsmodule_group_list"}
             },
             "securityschema": {
                 "ZikulaGroupsModule::": "Group ID::",

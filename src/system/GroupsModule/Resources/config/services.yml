@@ -4,11 +4,17 @@ parameters:
     zikula_groups_module.group_application_repository.class: Zikula\GroupsModule\Entity\Repository\GroupApplicationRepository
     zikula_groups_module.group_repository.class: Zikula\GroupsModule\Entity\Repository\GroupRepository
     zikula_groups_module.validator.constraints.group_name_validator.class: Zikula\GroupsModule\Validator\Constraints\ValidGroupNameValidator
+    zikula_groups_module.listener.group_event_listener.class: Zikula\GroupsModule\Listener\GroupEventListener
 
 services:
     zikula_groups_module.container.link_container:
         class: %zikula_groups_module.container.link_container.class%
-        arguments: ["@translator.default", "@jms_i18n_routing.router", "@zikula_permissions_module.api.permission"]
+        arguments:
+          - "@translator.default"
+          - "@jms_i18n_routing.router"
+          - "@zikula_permissions_module.api.permission"
+          - "@zikula_groups_module.group_repository"
+          - "@zikula_groups_module.group_application_repository"
         tags:
             - { name: zikula.link_container }
 
@@ -22,8 +28,6 @@ services:
         class: %zikula_groups_module.group_application_repository.class%
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
         arguments: ["ZikulaGroupsModule:GroupApplicationEntity"]
-        calls:
-            - [setPermissionApi, ["@zikula_permissions_module.api.permission"]]
 
     zikula_groups_module.group_repository:
         class: %zikula_groups_module.group_repository.class%
@@ -37,3 +41,13 @@ services:
         arguments: ["@translator.default", "@zikula_groups_module.group_repository"]
         tags:
             - { name: validator.constraint_validator, alias: zikula.groups.group_name.validator }
+
+    zikula_groups_module.listener.group_event_listener:
+        class: %zikula_groups_module.listener.group_event_listener.class%
+        arguments: 
+          - "@zikula_extensions_module.api.variable"
+          - "@translator.default"
+          - "@zikula_mailer_module.api.mailer"
+          - "@router"
+        tags:
+            - { name: kernel.event_subscriber }

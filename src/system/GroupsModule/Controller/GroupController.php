@@ -11,6 +11,7 @@
 
 namespace Zikula\GroupsModule\Controller;
 
+use Doctrine\Common\Collections\Criteria;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -27,37 +28,76 @@ use Zikula\GroupsModule\GroupEvents;
 use Zikula\GroupsModule\Helper\CommonHelper;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
-/**
- * @Route("/admin")
- *
- * Administrative controllers for the groups module
- */
 class GroupController extends AbstractController
 {
     /**
      * @Route("/list/{startnum}", requirements={"startnum" = "\d+"})
      * @Method("GET")
-     * @Theme("admin")
      * @Template
      *
-     * View a list of all groups
+     * View a list of all groups (user view)
      *
      * @param integer $startnum
      * @return array
-     * @throws AccessDeniedException Thrown if the user hasn't permissions to administer any groups
+     * @throws AccessDeniedException Thrown if the user hasn't permissions to view any groups
      */
     public function listAction($startnum = 0)
     {
+        if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_OVERVIEW)) {
+            throw new AccessDeniedException();
+        }
+
         $itemsPerPage = $this->getVar('itemsperpage', 25);
         $groupsCommon = new CommonHelper($this->getTranslator());
-        $groups = $this->get('doctrine')->getManager()->getRepository('ZikulaGroupsModule:GroupEntity')->findBy([], [], $itemsPerPage, $startnum);
-        $users = $this->get('zikula_groups_module.group_application_repository')->getFilteredApplications();
+        $excludedGroups = [CommonHelper::GTYPE_CORE];
+        if ($this->getVar('hidePrivate')) {
+            $excludedGroups[] = CommonHelper::GTYPE_PRIVATE;
+        }
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->notIn("gtype", $excludedGroups))
+            ->setMaxResults($itemsPerPage)
+            ->setFirstResult($startnum);
+        $groups = $this->get('doctrine')->getManager()->getRepository('ZikulaGroupsModule:GroupEntity')->matching($criteria);
 
         return [
             'groups' => $groups,
             'groupTypes' => $groupsCommon->gtypeLabels(),
             'states' => $groupsCommon->stateLabels(),
-            'userItems' => $users,
+            'defaultGroup' => $this->getVar('defaultgroup'),
+            'pager' => [
+                'amountOfItems' => count($groups),
+                'itemsPerPage' => $itemsPerPage
+            ]
+        ];
+    }
+
+    /**
+     * @Route("/admin/list/{startnum}", requirements={"startnum" = "\d+"})
+     * @Method("GET")
+     * @Theme("admin")
+     * @Template
+     *
+     * View a list of all groups (admin view)
+     *
+     * @param integer $startnum
+     * @return array
+     * @throws AccessDeniedException Thrown if the user hasn't permissions to administer any groups
+     */
+    public function adminListAction($startnum = 0)
+    {
+        if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_EDIT)) {
+            throw new AccessDeniedException();
+        }
+
+        $itemsPerPage = $this->getVar('itemsperpage', 25);
+        $groupsCommon = new CommonHelper($this->getTranslator());
+        $groups = $this->get('doctrine')->getManager()->getRepository('ZikulaGroupsModule:GroupEntity')->findBy([], [], $itemsPerPage, $startnum);
+
+        return [
+            'groups' => $groups,
+            'groupTypes' => $groupsCommon->gtypeLabels(),
+            'states' => $groupsCommon->stateLabels(),
+            'applications' => $this->get('zikula_groups_module.group_application_repository')->findAll(),
             'defaultGroup' => $this->getVar('defaultgroup'),
             'primaryAdminGroup' => $this->getVar('primaryadmingroup', 2),
             'pager' => [
@@ -68,7 +108,7 @@ class GroupController extends AbstractController
     }
 
     /**
-     * @Route("/create")
+     * @Route("/admin/create")
      * @Theme("admin")
      * @Template
      *
@@ -99,7 +139,7 @@ class GroupController extends AbstractController
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirectToRoute('zikulagroupsmodule_group_list');
+            return $this->redirectToRoute('zikulagroupsmodule_group_adminlist');
         }
 
         return [
@@ -108,7 +148,7 @@ class GroupController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{gid}", requirements={"gid" = "^[1-9]\d*$"})
+     * @Route("/admin/edit/{gid}", requirements={"gid" = "^[1-9]\d*$"})
      * @Theme("admin")
      * @Template
      *
@@ -140,7 +180,7 @@ class GroupController extends AbstractController
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirectToRoute('zikulagroupsmodule_group_list');
+            return $this->redirectToRoute('zikulagroupsmodule_group_adminlist');
         }
 
         return [
@@ -149,7 +189,7 @@ class GroupController extends AbstractController
     }
 
     /**
-     * @Route("/remove/{gid}", requirements={"gid"="\d+"})
+     * @Route("/admin/remove/{gid}", requirements={"gid"="\d+"})
      * @Theme("admin")
      * @Template
      *
@@ -170,7 +210,7 @@ class GroupController extends AbstractController
         if ($groupEntity->getGid() == $defaultGroup) {
             $this->addFlash('error', $this->__('Error! You cannot delete the default user group.'));
 
-            return $this->redirectToRoute('zikulagroupsmodule_group_list');
+            return $this->redirectToRoute('zikulagroupsmodule_group_adminlist');
         }
 
         // get the primary admin group - we do not allow its deletion
@@ -178,7 +218,7 @@ class GroupController extends AbstractController
         if ($groupEntity->getGid() == $primaryAdminGroup) {
             $this->addFlash('error', $this->__('Error! You cannot delete the primary administration group.'));
 
-            return $this->redirectToRoute('zikulagroupsmodule_group_list');
+            return $this->redirectToRoute('zikulagroupsmodule_group_adminlist');
         }
 
         $form = $this->createForm(DeleteGroupType::class, $groupEntity, [
@@ -197,7 +237,7 @@ class GroupController extends AbstractController
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirectToRoute('zikulagroupsmodule_group_list');
+            return $this->redirectToRoute('zikulagroupsmodule_group_adminlist');
         }
 
         return [

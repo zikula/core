@@ -63,16 +63,19 @@ class CategoryPermissionApi
         $requireAccessForAll = $this->variableApi->get('ZikulaCategoriesModule', 'permissionsall', 0);
 
         $accessGranted = true;
-        foreach ($categories as $propertyName => $cat) {
-            $hasAccess = $this->permissionApi->hasPermission("ZikulaCategoriesModule:$propertyName:Category", "$cat[id]:$cat[path]:$cat[ipath]", $permLevel);
-            if ($requireAccessForAll && !$hasAccess) {
-                return false;
-            }
-            if (!$requireAccessForAll) {
-                if ($hasAccess) {
-                    return true;
+        foreach ($categories as $propertyName => $cats) {
+            $categoriesForProperty = is_array($cats) ? $cats : [$cats];
+            foreach ($categoriesForProperty as $cat) {
+                $hasAccess = $this->permissionApi->hasPermission("ZikulaCategoriesModule:$propertyName:Category", "$cat[id]:$cat[path]:$cat[ipath]", $permLevel);
+                if ($requireAccessForAll && !$hasAccess) {
+                    return false;
                 }
-                $accessGranted = false;
+                if (!$requireAccessForAll) {
+                    if ($hasAccess) {
+                        return true;
+                    }
+                    $accessGranted = false;
+                }
             }
         }
 

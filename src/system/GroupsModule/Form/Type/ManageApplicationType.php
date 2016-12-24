@@ -31,47 +31,30 @@ class ManageApplicationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $translator = $options['translator'];
-
+        $reason = $options['data']['theAction'] == 'accept'
+            ? $translator->__('Congratulations! Your group application has been accepted. You have been granted all the privileges assigned to the group of which you are now member.')
+            : $translator->__('Sorry! This is a message to inform you with regret that your application for membership of the requested private group has been rejected.');
         $builder
-            ->add('gid', HiddenType::class)
-            ->add('userid', HiddenType::class)
             ->add('theAction', HiddenType::class)
-            ->add('userName', TextType::class, [
-                'label' => $translator->__('User name'),
-                'empty_data' => '',
-                'required' => false,
-                'disabled' => true
+            ->add('application', HiddenType::class, [
+                'property_path' => '[application].app_id'
             ])
-            ->add('application', TextType::class, [
-                'label' => $translator->__('Membership application'),
-                'empty_data' => '',
-                'required' => false,
-                'disabled' => true
-            ])
-        ;
-
-        if ($options['theAction'] == 'deny') {
-            $builder->add('reason', TextareaType::class, [
-                'label' => $translator->__('Reason'),
-                'empty_data' => '',
+            ->add('reason', TextareaType::class, [
+                'label' => $translator->__('Email content'),
+                'data' => $reason,
                 'required' => false
-            ]);
-        }
-
-        $builder
+            ])
             ->add('sendtag', ChoiceType::class, [
                 'label' => $translator->__('Notification type'),
-                'empty_data' => 0,
+                'data' => 1,
                 'choices' => [
                     $translator->__('None') => 0,
                     $translator->__('E-mail') => 1
                 ],
-                'expanded' => false,
-                'multiple' => false
             ])
-            ->add('apply', SubmitType::class, [
-                'label' => $options['theAction'] == 'deny' ? $translator->__('Deny') : $translator->__('Accept'),
-                'icon' => $options['theAction'] == 'deny' ? 'fa-user-times' : 'fa-user-plus',
+            ->add('save', SubmitType::class, [
+                'label' => $options['data']['theAction'] == 'deny' ? $translator->__('Deny') : $translator->__('Accept'),
+                'icon' => $options['data']['theAction'] == 'deny' ? 'fa-user-times' : 'fa-user-plus',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
@@ -101,8 +84,6 @@ class ManageApplicationType extends AbstractType
     {
         $resolver->setDefaults([
             'translator' => null,
-            'theAction' => 'accept'
         ]);
-        $resolver->setAllowedValues('theAction', ['accept', 'deny']);
     }
 }

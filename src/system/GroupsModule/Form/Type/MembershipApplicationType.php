@@ -32,32 +32,17 @@ class MembershipApplicationType extends AbstractType
         $translator = $options['translator'];
 
         $builder
-            ->add('gid', HiddenType::class)
-            ->add('theAction', HiddenType::class)
-            ->add('groupType', HiddenType::class)
-            ->add('groupName', TextType::class, [
-                'label' => $translator->__('Group name'),
-                'empty_data' => $translator->__('Not available'),
-                'required' => false,
-                'disabled' => true
+            ->add('group', HiddenType::class, [
+                'property_path' => 'group.gid'
             ])
-            ->add('groupDescription', TextareaType::class, [
-                'label' => $translator->__('Description'),
-                'empty_data' => $translator->__('Not available'),
-                'required' => false,
-                'disabled' => true
+            ->add('user', HiddenType::class, [
+                'property_path' => 'user.uid'
             ])
-        ;
-
-        if ($options['theAction'] == 'subscribe' && $options['groupType'] == 2) {
-            $builder->add('applyText', TextareaType::class, [
+            ->add('status', HiddenType::class)
+            ->add('application', TextareaType::class, [
                 'label' => $translator->__('Comment to attach to your application'),
-                'empty_data' => '',
                 'required' => false
-            ]);
-        }
-
-        $builder
+            ])
             ->add('apply', SubmitType::class, [
                 'label' => $translator->__('Apply'),
                 'icon' => 'fa-check',
@@ -90,9 +75,6 @@ class MembershipApplicationType extends AbstractType
     {
         $resolver->setDefaults([
             'translator' => null,
-            'theAction' => 'subscribe',
-            'groupType' => 0
         ]);
-        $resolver->setAllowedValues('theAction', ['subscribe', 'unsubscribe', 'cancel']);
     }
 }

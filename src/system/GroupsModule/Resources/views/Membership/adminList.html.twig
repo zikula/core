@@ -28,7 +28,7 @@
             <td headers="hEmail">{{ user.email }}</td>
             <td headers="hActions" class="text-right">
                 {% if user.uid != currentUser.uid %}
-                    <a href="{{ path('zikulagroupsmodule_membershipadministration_remove', {gid:group.gid, uid:user.uid}) }}" id="user-{{ user.uid }}" class="group-membership-removeuser" rel="{{ group.gid }}:{{ user.uid }}" title="{{ __('Remove user from group') }}"><span class="fa fa-user-times"></span></a>
+                    <a href="{{ path('zikulagroupsmodule_membership_remove', {gid:group.gid, uid:user.uid}) }}" id="user-{{ user.uid }}" class="group-membership-removeuser" rel="{{ group.gid }}:{{ user.uid }}" title="{{ __('Remove user from group') }}"><span class="fa fa-lg fa-user-times"></span></a>
                 {% endif %}
             </td>
         </tr>
@@ -37,13 +37,13 @@
         {% endfor %}
     </tbody>
 </table>
-{#{{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, posvar: 'startNum', route: 'zikulagroupsmodule_membershipadministration_list'}) }}#}
+{#{{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, posvar: 'startNum', route: 'zikulagroupsmodule_membership_adminlist'}) }}#}
 
 <h3><i class="fa fa-user-plus"></i> {{ __('Add user to this group') }}</h3>
 <h4>{{ __('Seach by username') }}</h4>
 <div id="user-search-container" class="form hide">
     <div class="input-group">
-        <input placeholder="{{ __('Search') }}" id="user-search" class="form-control" size="25" maxlength="25" type="text" value="" data-route="zikulagroupsmodule_membershipadministration_getusersbyfragmentastable" data-route-params='{"gid":"{{ group.gid }}", "csrfToken":"{{ csrfToken }}"}' />
+        <input placeholder="{{ __('Search') }}" id="user-search" class="form-control" size="25" maxlength="25" type="text" value="" data-route="zikulagroupsmodule_membership_getusersbyfragmentastable" data-route-params='{"gid":"{{ group.gid }}", "csrfToken":"{{ csrfToken }}"}' />
         <span class="input-group-addon"><i class="fa fa-times pointer" id="user-search-discard"></i></span>
     </div>
 </div>

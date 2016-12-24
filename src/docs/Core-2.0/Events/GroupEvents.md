@@ -32,3 +32,14 @@ Class: `\Zikula\GroupsModule\GroupEvents`
      * available as the subject.
      */
     const GROUP_REMOVE_USER = 'group.removeuser';
+
+    /**
+     * Occurs after a group application has been processed. The subject is the GroupApplicationEntity.
+     * Arguments are the form data from \Zikula\GroupsModule\Form\Type\ManageApplicationType
+     */
+    const GROUP_APPLICATION_PROCESSED = 'group.application.processed';
+
+    /**
+     * Occurs after the successful creation of a group application. The subject is the GroupApplicationEntity.
+     */
+    const GROUP_NEW_APPLICATION = 'group.application.new';
