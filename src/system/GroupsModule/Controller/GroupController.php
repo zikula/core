@@ -47,7 +47,7 @@ class GroupController extends AbstractController
         $itemsPerPage = $this->getVar('itemsperpage', 25);
         $groupsCommon = new CommonHelper($this->getTranslator());
         $excludedGroups = [CommonHelper::GTYPE_CORE];
-        if (false) { // @todo add mod var
+        if ($this->getVar('hidePrivate')) {
             $excludedGroups[] = CommonHelper::GTYPE_PRIVATE;
         }
         $criteria = Criteria::create()

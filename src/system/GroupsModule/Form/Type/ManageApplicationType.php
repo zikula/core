@@ -26,47 +26,31 @@ class ManageApplicationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $translator = $options['translator'];
-
+        $reason = $options['data']['theAction'] == 'accept'
+            ? $translator->__('Congratulations! Your group application has been accepted. You have been granted all the privileges assigned to the group of which you are now member.')
+            : $translator->__('Sorry! This is a message to inform you with regret that your application for membership of the requested private group has been rejected.');
         $builder
-            ->add('gid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('userid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
             ->add('theAction', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('userName', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $translator->__('User name'),
-                'empty_data' => '',
-                'required' => false,
-                'disabled' => true
+            ->add('application', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [
+                'property_path' => '[application].app_id'
             ])
-            ->add('application', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $translator->__('Membership application'),
-                'empty_data' => '',
-                'required' => false,
-                'disabled' => true
-            ])
-        ;
-        if ($options['data']['theAction'] == 'deny') {
-            $builder->add('reason', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
-                'label' => $translator->__('Reason'),
-                'empty_data' => '',
+            ->add('reason', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+                'label' => $translator->__('Email content'),
+                'data' => $reason,
                 'required' => false
-            ]);
-        }
-
-        $builder
+            ])
             ->add('sendtag', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Notification type'),
-                'empty_data' => 0,
+                'data' => 1,
                 'choices' => [
                     $translator->__('None') => 0,
                     $translator->__('E-mail') => 1
                 ],
                 'choices_as_values' => true,
-                'expanded' => false,
-                'multiple' => false
             ])
             ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $options['theAction'] == 'deny' ? $translator->__('Deny') : $translator->__('Accept'),
-                'icon' => $options['theAction'] == 'deny' ? 'fa-user-times' : 'fa-user-plus',
+                'label' => $options['data']['theAction'] == 'deny' ? $translator->__('Deny') : $translator->__('Accept'),
+                'icon' => $options['data']['theAction'] == 'deny' ? 'fa-user-times' : 'fa-user-plus',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
@@ -96,8 +80,6 @@ class ManageApplicationType extends AbstractType
     {
         $resolver->setDefaults([
             'translator' => null,
-            'theAction' => 'accept'
         ]);
-        $resolver->setAllowedValues('theAction', ['accept', 'deny']);
     }
 }

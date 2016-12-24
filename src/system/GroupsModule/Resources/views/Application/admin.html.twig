@@ -1,4 +1,4 @@
-{% set templateTitle = __('Membership application') %}
+{% set templateTitle = __('Administrate membership application') %}
 {% form_theme form with [
     'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
     'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
@@ -7,7 +7,7 @@
 <div class="container-fluid">
     <div class="row">
         <h3>
-            <span class="fa fa-plus"></span>
+            <span class="fa fa-{% if action == 'accept' %}user-plus{% else %}user-times{% endif %}"></span>
             {{ templateTitle }}
             {{ pageSetVar('title', templateTitle) }}
         </h3>
@@ -16,18 +16,10 @@
         {{ form_errors(form) }}
 
         <fieldset>
-            <legend>{{ templateTitle }}</legend>
-
-            {{ form_row(form.gid) }}
-            {{ form_row(form.userid) }}
-            {{ form_row(form.theAction) }}
-
-            {{ form_row(form.userName) }}
-            {{ form_row(form.application) }}
-            {% if form.vars.value.theAction == 'deny' %}
-                {{ form_row(form.reason) }}
-            {% endif %}
+            <legend>{{ __f('%action application for %user to %group group', {"%action":action|capitalize, "%user":"<strong>"~application.user.uname~"</strong>", "%group":"<strong>"~application.group.name~"</strong>"})|raw }}</legend>
+            <div class="alert alert-info"><h4>{{ __('Application comments') }}</h4>{{ application.application }}</div>
             {{ form_row(form.sendtag) }}
+            {{ form_row(form.reason) }}
         </fieldset>
 
         <div class="form-group">

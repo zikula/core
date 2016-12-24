@@ -28,7 +28,7 @@
             <td headers="hEmail">{{ user.email }}</td>
             <td headers="hActions" class="text-right">
                 {% if user.uid != currentUser.uid %}
-                    <a href="{{ path('zikulagroupsmodule_membership_remove', {gid:group.gid, uid:user.uid}) }}" id="user-{{ user.uid }}" class="group-membership-removeuser" rel="{{ group.gid }}:{{ user.uid }}" title="{{ __('Remove user from group') }}"><span class="fa fa-user-times"></span></a>
+                    <a href="{{ path('zikulagroupsmodule_membership_remove', {gid:group.gid, uid:user.uid}) }}" id="user-{{ user.uid }}" class="group-membership-removeuser" rel="{{ group.gid }}:{{ user.uid }}" title="{{ __('Remove user from group') }}"><span class="fa fa-lg fa-user-times"></span></a>
                 {% endif %}
             </td>
         </tr>

@@ -38,8 +38,9 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
         // set all our module vars
         $this->setVar('itemsperpage', 25);
         $this->setVar('defaultgroup', 1);
-        $this->setVar('mailwarning', 0);
-        $this->setVar('hideclosed', 0);
+        $this->setVar('mailwarning', false);
+        $this->setVar('hideclosed', false);
+        $this->setVar('hidePrivate', false);
 
         // Set the primary admin group gid as a module var so it is accessible by other modules,
         // but it should not be editable at this time. For now it is read-only.
@@ -64,6 +65,11 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '2.3.2':
+            case '2.4.0':
+                $this->setVar('mailwarning', (bool) $this->getVar('mailwarning'));
+                $this->setVar('hideclosed', (bool) $this->getVar('hideclosed'));
+                $this->setVar('hidePrivate', false);
+            case '2.4.1':
             // future upgrade routines
         }
 

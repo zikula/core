@@ -17,8 +17,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\Core\Event\GenericEvent;
 use Zikula\GroupsModule\Entity\GroupApplicationEntity;
 use Zikula\GroupsModule\Entity\GroupEntity;
+use Zikula\GroupsModule\GroupEvents;
 use Zikula\GroupsModule\Helper\CommonHelper;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -39,19 +41,15 @@ class ApplicationController extends AbstractController
      * @param GroupApplicationEntity $groupApplicationEntity
      * @return array|RedirectResponse
      */
-    public function adminAction(Request $request, $action = 'accept', GroupApplicationEntity $groupApplicationEntity)
+    public function adminAction(Request $request, $action, GroupApplicationEntity $groupApplicationEntity)
     {
-        $formValues = [
-            'gid' => $gid,
-            'userid' => $userid,
-            'theAction' => $action,
-            'userName' => UserUtil::getVar('uname', $userid),
-            'application' => $appInfo['application']
-        ];
-        if ($action == 'deny') {
-            $formValues['reason'] = $this->__('Sorry! This is a message to inform you with regret that your application for membership of the aforementioned private group has been rejected.');
+        if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_EDIT)) {
+            throw new AccessDeniedException();
         }
-
+        $formValues = [
+            'theAction' => $action,
+            'application' => $groupApplicationEntity,
+        ];
         $form = $this->createForm('Zikula\GroupsModule\Form\Type\ManageApplicationType', $formValues, [
             'translator' => $this->get('translator.default')
         ]);
@@ -59,54 +57,20 @@ class ApplicationController extends AbstractController
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $formData = $form->getData();
-
-                $sendtag = isset($formData['sendtag']) ? $formData['sendtag'] : 0;
-                $reason = isset($formData['reason']) ? $formData['reason'] : '';
-
-                $reasonTitle = '';
-                if ($action == 'deny') {
-                    $reasonTitle = $this->__f('Concerning your %s group membership application', ['%s' => $group['name']]);
-                    if (empty($reason)) {
-                        // Get Default TEXT
-                        $reason = $this->__('Sorry! This is a message to inform you with regret that your application for membership of the aforementioned private group has been rejected.');
-                    }
-                } elseif ($action == 'accept') {
-                    $reasonTitle = $this->__f('Done! The user has been added to the %s group.', ['%s' => $group['name']]);
-                    if (empty($reason)) {
-                        // Get Default TEXT
-                        $reason = $this->__('Done! Your application has been accepted. You have been granted all the privileges assigned to the group of which you are now member.');
-                    }
+                $groupApplicationEntity = $formData['application'];
+                $this->get('doctrine')->getManager()->remove($groupApplicationEntity);
+                if ($action == 'accept') {
+                    $groupApplicationEntity->getUser()->addGroup($groupApplicationEntity->getGroup());
+                    $addUserEvent = new GenericEvent(['gid' => $groupApplicationEntity->getGroup()->getGid(), 'uid' => $groupApplicationEntity->getUser()->getUid()]);
+                    $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_ADD_USER, $addUserEvent);
                 }
-
-                try {
-                    $result = ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'pendingaction', [
-                        'userid'      => $userid,
-                        'gid'         => $gid,
-                        'sendtag'     => $sendtag,
-                        'reason'      => $reason,
-                        'reasontitle' => $reasonTitle,
-                        'action'      => $action
-                    ]);
-
-                    if (!$result) {
-                        if ($action == 'deny') {
-                            $this->addFlash('error', $this->__("Error! Could not execute 'Reject' action."));
-                        } else {
-                            $this->addFlash('error', $this->__("Error! Could not execute 'Accept' action."));
-                        }
-                    } else {
-                        if ($action == 'accept') {
-                            $this->addFlash('status', $this->__('Done! The user was added to the group.'));
-                        } else {
-                            $this->addFlash('status', $this->__("Done! The user's application for group membership has been rejected."));
-                        }
-                    }
-                } catch (\RuntimeException $e) {
-                    $this->addFlash('error', $e->getMessage());
-                }
+                $this->get('doctrine')->getManager()->flush();
+                $applicationProcessedEvent = new GenericEvent($groupApplicationEntity, $formData);
+                $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_APPLICATION_PROCESSED, $applicationProcessedEvent);
+                $this->addFlash('success', $this->__f('Application processed (%action %user)', ['%action' => $action, '%user' => $groupApplicationEntity->getUser()->getUname()]));
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('success', $this->__('Operation cancelled.'));
             }
 
             return $this->redirectToRoute('zikulagroupsmodule_group_adminlist');
@@ -114,7 +78,8 @@ class ApplicationController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'action' => $action
+            'action' => $action,
+            'application' => $groupApplicationEntity,
         ];
     }
 
@@ -165,6 +130,8 @@ class ApplicationController extends AbstractController
                 $groupApplicationEntity = $form->getData();
                 $this->get('doctrine')->getManager()->persist($groupApplicationEntity);
                 $this->get('doctrine')->getManager()->flush();
+                $newApplicationEvent = new GenericEvent($groupApplicationEntity);
+                $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_NEW_APPLICATION, $newApplicationEvent);
                 $this->addFlash('status', $this->__('Done! The application has been sent. You will be notified by email when the application is processed.'));
             }
             if ($form->get('cancel')->isClicked()) {

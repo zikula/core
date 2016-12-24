@@ -249,7 +249,7 @@ class MembershipController extends AbstractController
         $this->addFlash('success', $this->__f('Left the "%group" group', ['%group' => $group->getName()]));
         // Let other modules know that we have updated a group.
         $removeUserEvent = new GenericEvent(['gid' => $group->getGid(), 'uid' => $userEntity->getUid()]);
-        $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_ADD_USER, $removeUserEvent);
+        $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_REMOVE_USER, $removeUserEvent);
 
         return $this->redirectToRoute('zikulagroupsmodule_group_list');
     }

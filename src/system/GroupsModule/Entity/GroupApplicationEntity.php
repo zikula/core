@@ -70,12 +70,12 @@ class GroupApplicationEntity extends EntityAccess
         $this->status = 0;
     }
 
-    public function getApp_id()
+    public function getAppId()
     {
         return $this->app_id;
     }
 
-    public function setApp_id($app_id)
+    public function setAppId($app_id)
     {
         $this->app_id = $app_id;
     }
