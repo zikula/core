@@ -46,8 +46,12 @@ class GroupController extends AbstractController
 
         $itemsPerPage = $this->getVar('itemsperpage', 25);
         $groupsCommon = new CommonHelper($this->getTranslator());
+        $excludedGroups = [CommonHelper::GTYPE_CORE];
+        if (false) { // @todo add mod var
+            $excludedGroups[] = CommonHelper::GTYPE_PRIVATE;
+        }
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->notIn("gtype", [CommonHelper::GTYPE_CORE, CommonHelper::GTYPE_PRIVATE]))
+            ->where(Criteria::expr()->notIn("gtype", $excludedGroups))
             ->setMaxResults($itemsPerPage)
             ->setFirstResult($startnum);
         $groups = $this->get('doctrine')->getManager()->getRepository('ZikulaGroupsModule:GroupEntity')->matching($criteria);
@@ -90,7 +94,7 @@ class GroupController extends AbstractController
             'groups' => $groups,
             'groupTypes' => $groupsCommon->gtypeLabels(),
             'states' => $groupsCommon->stateLabels(),
-            'applications' => $this->get('zikula_groups_module.group_application_repository')->getFilteredApplications(),
+            'applications' => $this->get('zikula_groups_module.group_application_repository')->findAll(),
             'defaultGroup' => $this->getVar('defaultgroup'),
             'primaryAdminGroup' => $this->getVar('primaryadmingroup', 2),
             'pager' => [

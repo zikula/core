@@ -82,14 +82,19 @@ class ActionsMenu implements ContainerAwareInterface
         if (null !== $currentUserId) {
             $currentUser = $this->container->get('zikula_users_module.user_repository')->find($currentUserId);
             if ($group->getUsers()->contains($currentUser)) {
-                $menu->addChild($this->__f('Resign membership of ":name" group', [':name' => $group->getName()]), [
-                    'route' => 'zikulagroupsmodule_user_membership',
-                    'routeParameters' => ['action' => 'unsubscribe', 'gid' => $gid],
+                $menu->addChild($this->__f('Leave ":name" group', [':name' => $group->getName()]), [
+                    'route' => 'zikulagroupsmodule_membership_leave',
+                    'routeParameters' => ['gid' => $gid],
                 ])->setAttribute('icon', 'fa fa-user-times text-danger');
-            } elseif ($group->getState() !== CommonHelper::STATE_CLOSED) {
+            } elseif ($group->getGtype() == CommonHelper::GTYPE_PRIVATE) {
                 $menu->addChild($this->__f('Apply to membership of ":name" group', [':name' => $group->getName()]), [
-                    'route' => 'zikulagroupsmodule_user_membership',
-                    'routeParameters' => ['action' => 'subscribe', 'gid' => $gid],
+                    'route' => 'zikulagroupsmodule_application_create',
+                    'routeParameters' => ['gid' => $gid],
+                ])->setAttribute('icon', 'fa fa-paper-plane');
+            } elseif ($group->getState() !== CommonHelper::STATE_CLOSED) {
+                $menu->addChild($this->__f('Join ":name" group', [':name' => $group->getName()]), [
+                    'route' => 'zikulagroupsmodule_membership_join',
+                    'routeParameters' => ['gid' => $gid],
                 ])->setAttribute('icon', 'fa fa-user-plus text-success');
             }
         } else {

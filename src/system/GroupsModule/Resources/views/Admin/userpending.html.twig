@@ -24,7 +24,7 @@
 
             {{ form_row(form.userName) }}
             {{ form_row(form.application) }}
-            {% if theAction == 'deny' %}
+            {% if form.vars.value.theAction == 'deny' %}
                 {{ form_row(form.reason) }}
             {% endif %}
             {{ form_row(form.sendtag) }}

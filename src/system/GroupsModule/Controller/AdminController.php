@@ -95,7 +95,7 @@ class AdminController extends AbstractController
         $formValues = [
             'gid' => $gid,
             'userid' => $userid,
-            'action' => $action,
+            'theAction' => $action,
             'userName' => UserUtil::getVar('uname', $userid),
             'application' => $appInfo['application']
         ];

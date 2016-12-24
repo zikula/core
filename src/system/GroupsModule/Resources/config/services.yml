@@ -26,8 +26,6 @@ services:
         class: %zikula_groups_module.group_application_repository.class%
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
         arguments: ["ZikulaGroupsModule:GroupApplicationEntity"]
-        calls:
-            - [setPermissionApi, ["@zikula_permissions_module.api.permission"]]
 
     zikula_groups_module.group_repository:
         class: %zikula_groups_module.group_repository.class%

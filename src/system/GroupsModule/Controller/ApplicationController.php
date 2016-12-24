@@ -13,11 +13,12 @@ namespace Zikula\GroupsModule\Controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\GroupsModule\Entity\GroupApplicationEntity;
+use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\GroupsModule\Helper\CommonHelper;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -27,40 +28,23 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 class ApplicationController extends AbstractController
 {
     /**
-     * @Route("/pending/{action}/{userid}/{gid}", requirements={"action" = "deny|accept", "userid" = "^[1-9]\d*$", "gid" = "^[1-9]\d*$"})
+     * @Route("/admin/{action}/{app_id}", requirements={"action" = "deny|accept", "app_id" = "^[1-9]\d*$"})
      * @Theme("admin")
      * @Template
      *
      * display a list of group applications
      *
      * @param Request $request
-     * @param string  $action  Name of desired action
-     * @param int     $userid  Id of the user
-     * @param int     $gid     Id of the group
-     *
+     * @param string $action Name of desired action
+     * @param GroupApplicationEntity $groupApplicationEntity
      * @return array|RedirectResponse
-     *
-     * @throws \InvalidArgumentException Thrown if either the gid or userid parameters are not provided or
-     *                                          if the action parameter isn't one of 'deny' or 'accept'
-     * @throws \RuntimeException Thrown if the requested action couldn't be carried out
      */
-    public function pendingAction(Request $request, $action = 'accept', $userid = 0, $gid = 0)
+    public function adminAction(Request $request, $action = 'accept', GroupApplicationEntity $groupApplicationEntity)
     {
-        if ($gid < 1 || $userid < 1) {
-            throw new \InvalidArgumentException($this->__('Invalid Group ID or User ID.'));
-        }
-
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', ['gid' => $gid]);
-        if (!$group) {
-            throw new NotFoundHttpException($this->__('Sorry! No such group found.'));
-        }
-
-        $appInfo = ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'getapplicationinfo', ['gid' => $gid, 'userid' => $userid]);
-
         $formValues = [
             'gid' => $gid,
             'userid' => $userid,
-            'action' => $action,
+            'theAction' => $action,
             'userName' => UserUtil::getVar('uname', $userid),
             'application' => $appInfo['application']
         ];
@@ -135,132 +119,64 @@ class ApplicationController extends AbstractController
     }
 
     /**
-     * @Route("/update/{action}/{gid}", requirements={"action" = "subscribe|unsubscribe|cancel", "gid" = "^[1-9]\d*$"})
+     * @Route("/create/{gid}", requirements={"gid" = "^[1-9]\d*$"})
      * @Template
      *
-     * Display the membership of a public group.
+     * Create an application to a group
      *
      * @param Request $request
-     * @param string $action
-     * @param integer $gid
-     *
+     * @param GroupEntity $group
      * @return array|RedirectResponse
-     *
-     * @throws \InvalidArgumentException Thrown if the group id is < 1
-     * @throws AccessDeniedException Thrown if the user isn't logged in or
-     *                                          if the user doesn't have overview access to the module
-     * @throws NotFoundHttpException Thrown if the group cannot be found
      */
-    public function updateAction(Request $request, $action = 'cancel', $gid = 0)
+    public function createAction(Request $request, GroupEntity $group)
     {
         if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_OVERVIEW)) {
             throw new AccessDeniedException();
         }
-
-        if ($gid < 1) {
-            throw new \InvalidArgumentException($this->__('Invalid Group ID received'));
-        }
-
         $currentUserApi = $this->get('zikula_users_module.current_user');
-
         if (!$currentUserApi->isLoggedIn()) {
             throw new AccessDeniedException($this->__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
         }
+        $userEntity = $this->get('zikula_users_module.user_repository')->find($currentUserApi->get('uid'));
+        if (($group->getGtype() == CommonHelper::GTYPE_CORE)
+            || ($group->getState() == CommonHelper::STATE_CLOSED)
+            || ($group->getNbumax() > 0 && $group->getUsers()->count() > $group->getNbumax())
+            || ($group->getUsers()->contains($userEntity))) {
+            $this->addFlash('error', $this->__('Sorry!, You cannot apply to join the requested group')); // @todo more specific info would be better
 
-        // Check if the group exists
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', ['gid' => $gid]);
-        if (!$group) {
-            throw new NotFoundHttpException($this->__('Error! That group does not exist.'));
+            return $this->redirectToRoute('zikulagroupsmodule_group_list');
+        }
+        $existingApplication = $this->get('zikula_groups_module.group_application_repository')->findOneBy(['group' => $group, 'user' => $userEntity]);
+        if ($existingApplication) {
+            $this->addFlash('info', $this->__('You already have a pending application. Please wait until the administrator notifies you.'));
+
+            return $this->redirectToRoute('zikulagroupsmodule_group_list');
         }
 
-        // And lastly, we must check if he didn't rewrote the url,
-        // that is he applying to an open group and that the group is open
-        // $isopen = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getginfo', ['gid' => $gid]);
-        if ($action == 'subscribe') {
-            if (ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember', ['gid' => $gid, 'uid' => $currentUserApi->get('uid')])) {
-                $this->addFlash('error', $this->__('Error! You are already a member of this group.'));
-
-                return $this->redirectToRoute('zikulagroupsmodule_group_list');
-            }
-
-            if ($group['gtype'] == CommonHelper::GTYPE_CORE) {
-                $this->addFlash('error', $this->__('Sorry! You cannot apply for membership of that group.'));
-
-                return $this->redirectToRoute('zikulagroupsmodule_group_list');
-            }
-
-            if ($group['nbumax'] != 0) {
-                if (($group['nbumax'] - $group['nbuser']) <= 0) {
-                    $this->addFlash('error', $this->__('Sorry! That group has reached full membership.'));
-
-                    return $this->redirectToRoute('zikulagroupsmodule_group_list');
-                }
-            }
-
-            if ($group['state'] == CommonHelper::STATE_CLOSED) {
-                $this->addFlash('error', $this->__('Sorry! That group is closed.'));
-
-                return $this->redirectToRoute('zikulagroupsmodule_group_list');
-            }
-        }
-
-        $formData = [
-            'gid' => $gid,
-            'theAction' => $action,
-            'groupType' => $group['gtype'],
-            'groupName' => $group['name'],
-            'groupDescription' => $group['description'],
-            'applyText' => ''
-        ];
-
-        $form = $this->createForm('Zikula\GroupsModule\Form\Type\MembershipApplicationType',
-            $formData, [
+        $groupApplicationEntity = new GroupApplicationEntity();
+        $groupApplicationEntity->setGroup($group);
+        $groupApplicationEntity->setUser($userEntity);
+        $form = $this->createForm('Zikula\GroupsModule\Form\Type\MembershipApplicationType', $groupApplicationEntity, [
                 'translator' => $this->get('translator.default'),
-                'theAction' => $action,
-                'groupType' => $group['gtype']
             ]
         );
-
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('apply')->isClicked()) {
-                $formData = $form->getData();
-
-                $gid = $formData['gid'];
-                $action = $formData['theAction'];
-                $groupType = $formData['groupType'];
-
-                if (empty($gid) || !is_numeric($gid) || empty($action)) {
-                    throw new \InvalidArgumentException($this->__('Invalid arguments received'));
-                }
-
-                $applyText = '';
-                if ($action == 'subscribe' && $groupType == CommonHelper::GTYPE_PRIVATE) {
-                    $applyText = isset($formData['applyText']) ? $formData['applyText'] : '';
-                }
-
-                $result = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'userupdate', [
-                    'gid'       => $gid,
-                    'action'    => $action,
-                    'gtype'     => $groupType,
-                    'applytext' => $applyText
-                ]);
-
-                if (true == $result) {
-                    $this->addFlash('status', $this->__('Done! Saved the action.'));
-                }
+                $groupApplicationEntity = $form->getData();
+                $this->get('doctrine')->getManager()->persist($groupApplicationEntity);
+                $this->get('doctrine')->getManager()->flush();
+                $this->addFlash('status', $this->__('Done! The application has been sent. You will be notified by email when the application is processed.'));
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->__('Application cancelled.'));
             }
 
             return $this->redirectToRoute('zikulagroupsmodule_group_list');
         }
 
         return [
-            'mainPage' => false,
             'form' => $form->createView(),
-            'groupType' => $group['gtype'],
-            'theAction' => $action
+            'group' => $group,
         ];
     }
 }

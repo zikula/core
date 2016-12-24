@@ -28,9 +28,9 @@ class ManageApplicationType extends AbstractType
         $translator = $options['translator'];
 
         $builder
-            ->add('gid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [])
-            ->add('userid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [])
-            ->add('theAction', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [])
+            ->add('gid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
+            ->add('userid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
+            ->add('theAction', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
             ->add('userName', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $translator->__('User name'),
                 'empty_data' => '',
@@ -44,8 +44,7 @@ class ManageApplicationType extends AbstractType
                 'disabled' => true
             ])
         ;
-
-        if ($options['theAction'] == 'deny') {
+        if ($options['data']['theAction'] == 'deny') {
             $builder->add('reason', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
                 'label' => $translator->__('Reason'),
                 'empty_data' => '',
@@ -65,7 +64,7 @@ class ManageApplicationType extends AbstractType
                 'expanded' => false,
                 'multiple' => false
             ])
-            ->add('apply', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'label' => $options['theAction'] == 'deny' ? $translator->__('Deny') : $translator->__('Accept'),
                 'icon' => $options['theAction'] == 'deny' ? 'fa-user-times' : 'fa-user-plus',
                 'attr' => [

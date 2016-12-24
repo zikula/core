@@ -99,21 +99,21 @@
         <tr>
             <th id="hUserId" scope="col">{{ __('User ID') }}</th>
             <th id="hUserName" scope="col">{{ __('User name') }}</th>
-            <th id="hGroupName" scope="col">{{ __('Group name to join') }}</th>
+            <th id="hGroupName" scope="col">{{ __('Applying to group') }}</th>
             <th id="hComment" scope="col">{{ __('Comment') }}</th>
             <th id="hActions" scope="col">{{ __('Actions') }}</th>
         </tr>
     </thead>
     <tbody>
-        {% for application in applications %}
+        {% for application in applications if hasPermission('ZikulaGroupsModule::', application.group.gid ~ '::', 'ACCESS_EDIT') %}
         <tr>
-            <td headers="hUserId">{{ application.userid }}</td>
-            <td headers="hUserName">{{ application.username|zikulagroupsmodule_profileLink }}</td>
-            <td headers="hGroupName">{{ application.gname }}</td>
+            <td headers="hUserId">{{ application.user.uid }}</td>
+            <td headers="hUserName">{{ application.user.uid|zikulagroupsmodule_profileLink }}</td>
+            <td headers="hGroupName">{{ application.group.name }}</td>
             <td headers="hComment">{{ application.application }}</td>
             <td headers="hActions">
-                <a href="{{ path('zikulagroupsmodule_admin_userpending', { gid: application.appgid, userid: application.userid, action: 'accept' }) }}" title="{{ __f('Accept %username', { '%username': application.username }) }}" class="fa fa-user-plus tooltips"></a>&nbsp;
-                <a href="{{ path('zikulagroupsmodule_admin_userpending', { gid: application.appgid, userid: application.userid, action: 'deny' }) }}" title="{{ __f('Deny %username', { '%username': application.username }) }}" class="fa fa-user-times tooltips"></a>
+                <a href="{{ path('zikulagroupsmodule_admin_userpending', { app_id: application.app_id, action: 'accept' }) }}" title="{{ __f('Accept %username', { '%username': application.user.uname }) }}" class="fa fa-user-plus tooltips"></a>&nbsp;
+                <a href="{{ path('zikulagroupsmodule_admin_userpending', { app_id: application.app_id, action: 'deny' }) }}" title="{{ __f('Deny %username', { '%username': application.user.uname     }) }}" class="fa fa-user-times tooltips"></a>
             </td>
         </tr>
         {% else %}

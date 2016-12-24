@@ -1,0 +1,31 @@
+{% form_theme form with [
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ moduleHeader('user', __('Membership application'), '', true, true, false, true) }}
+<h3>
+    <span class="fa fa-key"></span>
+    {{ __('Membership application') }}
+</h3>
+
+<div class="container-fluid">
+    <div class="row">
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        <fieldset>
+            <legend><i class="fa fa-users"></i> {{ group.name }} {{ __('group') }}</legend>
+            {{ group.description }}
+            {{ form_row(form.application) }}
+        </fieldset>
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.apply) }}
+                {{ form_widget(form.cancel) }}
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>
