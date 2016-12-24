@@ -51,7 +51,7 @@ class UserController extends AbstractController
         $group = $this->get('zikula_groups_module.group_repository')->find($gid);
         if ($action == 'unsubscribe') {
             return $this->redirectToRoute('zikulagroupsmodule_membership_leave', ['gid' => $gid]);
-        } else if ($action == 'subscribe' && $group->getType() == CommonHelper::GTYPE_PRIVATE) {
+        } elseif ($action == 'subscribe' && $group->getType() == CommonHelper::GTYPE_PRIVATE) {
             return $this->redirectToRoute('zikulagroupsmodule_application_create', ['gid' => $gid]);
         }
 
