@@ -39,11 +39,8 @@
             <td class="nowrap">
                 {{ stateLabel(module, upgradedExtensions) }}
             </td>
-            <td headers="hActions" class="actions">
-                {% for action in extensionActions(module) %}
-                    <a href="{{ action.url|default('#') }}" class="fa fa-{{ action.icon }} tooltips" style="color:{{ action.color }}" title="{{ action.title }}"></a>&nbsp;
-                {% endfor %}
-            </td>
+            {% set rowActions = knp_menu_get('ZikulaExtensionsModule:ActionsMenu:adminExtensionsMenu', [], {extension: module}) %}
+            <th headers="hActions" class="actions text-right">{{ knp_menu_render(rowActions, {template: 'ZikulaMenuModule:Override:actions.html.twig'}) }}</th>
         </tr>
     {% endfor %}
     </tbody>
