@@ -26,7 +26,8 @@ class ExtensionsExtension extends \Twig_Extension
      * ExtensionsExtension constructor.
      * @param TranslatorInterface $translator
      */
-    public function __construct(TranslatorInterface $translator) {
+    public function __construct(TranslatorInterface $translator)
+    {
         $this->translator = $translator;
     }
 
