@@ -151,10 +151,8 @@ class ConfigController extends AbstractController
                 }
 
                 // add swiftmailer config to message for testing
-                $dumper = $this->get('zikula.dynamic_config_dumper');
                 $swiftConfigHtml = "<h4>Swiftmailer Config:</h4>\n";
-                $swiftConfigHtml .= $dumper->getConfigurationForHtml('swiftmailer');
-                $swiftConfigHtml = preg_replace('/<li><strong>password:(.*?)<\/li>/is', '', $swiftConfigHtml);
+                $swiftConfigHtml .= $paramHtml;
 
                 if ($html) {
                     $msgBody .= $swiftConfigHtml;
