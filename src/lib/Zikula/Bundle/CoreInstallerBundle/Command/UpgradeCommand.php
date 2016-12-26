@@ -81,7 +81,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $initStage->isNecessary(); // runs init and upgradeUsersModule methods and intentionally returns false
         $io->success($this->translator->__('Initialization complete'));
 
-        $controllerHelper = $this->getContainer()->get('zikula_core_installer.controller.util');
+        $controllerHelper = $this->getContainer()->get('zikula_core_installer.controller.helper');
 
         $warnings = $controllerHelper->initPhp();
         if (!empty($warnings)) {

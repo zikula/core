@@ -53,7 +53,7 @@ class LoginStage implements StageInterface, FormHandlerInterface, InjectContaine
 
     public function handleFormResult(FormInterface $form)
     {
-        $this->container->get('zikula_core_installer.controller.util')->writeEncodedAdminCredentials($this->yamlManager, $form->getData());
+        $this->container->get('zikula_core_installer.controller.helper')->writeEncodedAdminCredentials($this->yamlManager, $form->getData());
     }
 
     public function isNecessary()

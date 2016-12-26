@@ -16,8 +16,8 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
-use Zikula\Bundle\CoreInstallerBundle\Util\ControllerUtil;
-use Zikula\Bundle\CoreInstallerBundle\Util\ConfigUtil;
+use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
+use Zikula\Bundle\CoreInstallerBundle\Helper\ConfigHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
@@ -44,9 +44,9 @@ abstract class AbstractController
     protected $templatingService;
 
     /**
-     * @var ControllerUtil
+     * @var ControllerHelper
      */
-    protected $util;
+    protected $controllerHelper;
 
     /**
      * @var FormFactory
@@ -54,9 +54,9 @@ abstract class AbstractController
     protected $form;
 
     /**
-     * @var ConfigUtil
+     * @var ConfigHelper
      */
-    protected $configUtil;
+    protected $configHelper;
 
     /**
      * @var TranslatorInterface
@@ -74,8 +74,8 @@ abstract class AbstractController
         $this->router = $this->container->get('router');
         $this->templatingService = $this->container->get('templating');
         $this->form = $this->container->get('form.factory');
-        $this->util = $this->container->get('zikula_core_installer.controller.util');
-        $this->configUtil = $this->container->get('zikula_core_installer.config.util');
+        $this->controllerHelper = $this->container->get('zikula_core_installer.controller.helper');
+        $this->configHelper = $this->container->get('zikula_core_installer.config.helper');
         $this->translator = $container->get('translator.default');
     }
 

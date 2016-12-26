@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\CoreInstallerBundle\Util;
+namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Symfony\Component\Filesystem\Filesystem;
 
-class ConfigUtil
+class ConfigHelper
 {
     private $kernel;
 
