@@ -140,7 +140,9 @@ class AjaxUpgradeController extends AbstractController
         $result = [];
         foreach ($coreModulesInPriorityUpgradeOrder as $moduleName) {
             $extensionEntity = $this->container->get('zikula_extensions_module.extension_repository')->get($moduleName);
-            $result[$moduleName] = $this->container->get('zikula_extensions_module.extension_helper')->upgrade($extensionEntity);
+            if ($extensionEntity) {
+                $result[$moduleName] = $this->container->get('zikula_extensions_module.extension_helper')->upgrade($extensionEntity);
+            }
         }
 
         return $result;
