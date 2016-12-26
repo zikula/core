@@ -126,6 +126,7 @@ class ConfigController extends AbstractController
         $variableApi = $this->get('zikula_extensions_module.api.variable');
         $dumper = $this->get('zikula.dynamic_config_dumper');
         $paramHtml = $dumper->getConfigurationForHtml('swiftmailer');
+        $paramHtml = preg_replace('/<li><strong>password:(.*?)<\/li>/is', '', $paramHtml);
 
         $form = $this->createForm('Zikula\MailerModule\Form\Type\TestType',
             $this->getDataValues(), [
@@ -153,6 +154,7 @@ class ConfigController extends AbstractController
                 $dumper = $this->get('zikula.dynamic_config_dumper');
                 $swiftConfigHtml = "<h4>Swiftmailer Config:</h4>\n";
                 $swiftConfigHtml .= $dumper->getConfigurationForHtml('swiftmailer');
+                $swiftConfigHtml = preg_replace('/<li><strong>password:(.*?)<\/li>/is', '', $swiftConfigHtml);
 
                 if ($html) {
                     $msgBody .= $swiftConfigHtml;
