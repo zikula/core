@@ -112,13 +112,38 @@ class AjaxUpgradeController extends AbstractController
         return true;
     }
 
+    /**
+     * Attempt to upgrade ALL the core modules. Some will need it, some will not.
+     * Modules that do not need upgrading return TRUE as a result of the upgrade anyway.
+     * @return array
+     */
     private function upgradeModules()
     {
-        // force load the modules admin API
-        \ModUtil::loadApi('ZikulaExtensionsModule', 'admin', true);
-        // this also regenerates all the modules
-        return \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'upgradeall');
-        // returns [[modname => boolean]]
+        $coreModulesInPriorityUpgradeOrder = [
+            'ZikulaExtensionsModule',
+            'ZikulaUsersModule',
+            'ZikulaZAuthModule',
+            'ZikulaGroupsModule',
+            'ZikulaPermissionsModule',
+            'ZikulaAdminModule',
+            'ZikulaBlocksModule',
+            'ZikulaThemeModule',
+            'ZikulaSettingsModule',
+            'ZikulaCategoriesModule',
+            'ZikulaSecurityCenterModule',
+            'ZikulaRoutesModule',
+            'ZikulaMailerModule',
+            'ZikulaSearchModule',
+            'ZikulaMenuModule',
+            'ZikulaPageLockModule'
+        ];
+        $result = [];
+        foreach ($coreModulesInPriorityUpgradeOrder as $moduleName) {
+            $extensionEntity = $this->container->get('zikula_extensions_module.extension_repository')->get($moduleName);
+            $result[$moduleName] = $this->container->get('zikula_extensions_module.extension_helper')->upgrade($extensionEntity);
+        }
+
+        return $result;
     }
 
     private function regenerateThemes()
