@@ -16,6 +16,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Added `getUsername` method to `UserEntity` required by Blameable.
     - Fixed link to admin image on hooks editing page.
     - Fixed adding absolute urls as pagevars (#3325).
+    - Fixed reflection of updated values after editing permission rules (#3311).
 
  - Features:
     - ?

@@ -111,7 +111,7 @@ var currentDelete;
         /* Save permission changes */
         $('#save-permission').click(function () {
             var pid = $('#zikulapermissionsmodule_permission_pid').val();
-            if (pid == "") {
+            if (pid == '') {
                 pid = '-1';
             } else if (pid == adminpermission && lockadmin == 1) {
                 return;
@@ -123,7 +123,9 @@ var currentDelete;
             });
             $.ajax({
                 type: 'POST',
-                url: Routing.generate('zikulapermissionsmodule_permission_edit', {pid: pid}),
+                url: Routing.generate('zikulapermissionsmodule_permission_edit', {
+                    pid: pid
+                }),
                 data: pars
             }).done(function(result) {
                 var data = result.data;
@@ -136,9 +138,9 @@ var currentDelete;
                         $('#permission-component-' + pid).text(data.permission.component);
                         $('#permission-instance-' + pid).text(data.permission.instance);
                         $('#permission-group-' + pid).data('id', data.permission.gid);
-                        $('#permission-group-' + pid).text($('#permission-group').find('option:selected').text());
+                        $('#permission-group-' + pid).text($('#zikulapermissionsmodule_permission_gid').find('option:selected').text());
                         $('#permission-level-' + pid).data('id', data.permission.level);
-                        $('#permission-level-' + pid).text($('#permission-level').find('option:selected').text());
+                        $('#permission-level-' + pid).text($('#zikulapermissionsmodule_permission_level').find('option:selected').text());
                     } else {
                         var existingIndexRow = $('#permission-list tr').eq(data.permission.sequence);
                         if (existingIndexRow.length !== 0) {
