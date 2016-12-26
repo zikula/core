@@ -86,10 +86,11 @@ class AjaxUpgradeController extends AbstractController
                     // this stage is not necessary to upgrade from 1.4.0 -> 1.4.x
                     return true;
                 }
+                $this->installModule('ZikulaRoutesModule');
+                $this->reSyncAndActivateModules();
+                $this->setModuleCategory('ZikulaRoutesModule', $this->translator->__('System'));
 
-                return $this->installModule('ZikulaRoutesModule', $this->translator->__('System'));
-            case "reloadroutes":
-                return $this->container->get('zikula_core_installer.controller.ajaxinstall')->reloadRoutes();
+                return true;
             case "regenthemes":
                 return $this->regenerateThemes();
             case "from140to141":
@@ -207,7 +208,9 @@ class AjaxUpgradeController extends AbstractController
         if (version_compare($this->currentVersion, '1.4.3', '>=')) {
             return true;
         }
-        $this->installModule('ZikulaZAuthModule', $this->translator->__('Users'));
+        $this->installModule('ZikulaZAuthModule');
+        $this->reSyncAndActivateModules();
+        $this->setModuleCategory('ZikulaZAuthModule', $this->translator->__('Users'));
 
         return true;
     }
@@ -218,7 +221,9 @@ class AjaxUpgradeController extends AbstractController
             return true;
         }
         // @todotemporarily disabled because of peristent errors in the build...
-//        $this->installModule('ZikulaMenuModule', $this->translator->__('Content'));
+//        $this->installModule('ZikulaMenuModule');
+//        $this->reSyncAndActivateModules();
+//        $this->setModuleCategory('ZikulaMenuModule', $this->translator->__('Content'));
 
         return true;
     }
@@ -296,49 +301,6 @@ class AjaxUpgradeController extends AbstractController
 
         // finally remove upgrading flag in parameters
         $this->yamlManager->delParameter('upgrading');
-
-        return true;
-    }
-
-    /**
-     * Install a module
-     *
-     * @param string $moduleName
-     * @param string $translatedAdminCategory
-     * @return bool
-     */
-    private function installModule($moduleName, $translatedAdminCategory)
-    {
-        // install MenuModule
-        $kernel = $this->container->get('kernel');
-        $install = $this->container->get('zikula_core_installer.controller.ajaxinstall')->installModule($moduleName);
-        if (!$install) {
-            // error
-            return false;
-        }
-
-        // regenerate modules list
-        $modApi = new \Zikula\ExtensionsModule\Api\AdminApi($kernel->getContainer(), new \Zikula\ExtensionsModule\ZikulaExtensionsModule());
-        \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'regenerate', ['filemodules' => $modApi->getfilemodules()]);
-
-        // determine module id
-        $mid = \ModUtil::getIdFromName($moduleName);
-
-        // force load the modules admin API
-        \ModUtil::loadApi('ZikulaExtensionsModule', 'admin', true);
-
-        // set module to active
-        \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate', ['id' => $mid, 'state' => \ModUtil::STATE_INACTIVE]);
-        \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate', ['id' => $mid, 'state' => \ModUtil::STATE_ACTIVE]);
-
-        // add the module to the appropriate category
-        $categories = \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getall');
-        $modscat = [];
-        foreach ($categories as $category) {
-            $modscat[$category['name']] = $category['cid'];
-        }
-        $destinationCategoryId = isset($modscat[$translatedAdminCategory]) ? $modscat[$translatedAdminCategory] : \ModUtil::getVar('ZikulaAdminModule', 'defaultcategory');
-        \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'addmodtocategory', ['module' => $moduleName, 'category' => (int)$destinationCategoryId]);
 
         return true;
     }

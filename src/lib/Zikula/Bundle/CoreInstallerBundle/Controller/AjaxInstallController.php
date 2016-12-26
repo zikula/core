@@ -12,19 +12,14 @@
 namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
 use RandomLib\Factory;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
-use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 use Zikula\Bundle\CoreBundle\Bundle\Bootstrap as CoreBundleBootstrap;
 use Zikula\Core\Event\GenericEvent;
-use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\ExtensionsModule\Entity\ExtensionEntity;
-use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Core\CoreEvents;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
@@ -101,15 +96,13 @@ class AjaxInstallController extends AbstractController
             case "loginadmin":
                 return $this->loginAdmin();
             case "activatemodules":
-                return $this->activateModules();
+                return $this->reSyncAndActivateModules();
             case "categorize":
                 return $this->categorizeModules();
             case "createblocks":
                 return $this->createBlocks();
             case "finalizeparameters":
                 return $this->finalizeParameters();
-            case "reloadroutes":
-                return $this->reloadRoutes();
             case "plugins":
                 return $this->installPlugins();
             case "installassets":
@@ -136,47 +129,6 @@ class AjaxInstallController extends AbstractController
         return true;
     }
 
-    /**
-     * public because called by AjaxUpgradeController also
-     * @param $moduleName
-     * @return bool
-     */
-    public function installModule($moduleName)
-    {
-        $module = $this->container->get('kernel')->getModule($moduleName);
-        /** @var AbstractCoreModule $module */
-        $className = $module->getInstallerClass();
-        $reflectionInstaller = new \ReflectionClass($className);
-        $installer = $reflectionInstaller->newInstance();
-        $installer->setBundle($module);
-        if ($installer instanceof ContainerAwareInterface) {
-            $installer->setContainer($this->container);
-        }
-
-        if ($installer->install()) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private function activateModules()
-    {
-        $extensionsInFileSystem = $this->container->get('zikula_extensions_module.bundle_sync_helper')->scanForBundles();
-        $this->container->get('zikula_extensions_module.bundle_sync_helper')->syncExtensions($extensionsInFileSystem);
-
-        /** @var ExtensionEntity[] $extensions */
-        $extensions = $this->container->get('zikula_extensions_module.extension_repository')->findAll();
-        foreach ($extensions as $extension) {
-            if ($extension->getName() != 'ZikulaPageLockModule' && \ZikulaKernel::isCoreModule($extension->getName())) {
-                $extension->setState(ExtensionApi::STATE_ACTIVE);
-            }
-        }
-        $this->container->get('doctrine.orm.entity_manager')->flush();
-
-        return true;
-    }
-
     private function categorizeModules()
     {
         reset(\ZikulaKernel::$coreModules);
@@ -199,14 +151,8 @@ class AjaxInstallController extends AbstractController
             'ZikulaPageLockModule' => $this->translator->__('Content'),
         ];
 
-        $modulesCategories = $this->container->get('doctrine')
-            ->getRepository('ZikulaAdminModule:AdminCategoryEntity')->getIndexedCollection('name');
-
         foreach (\ZikulaKernel::$coreModules as $systemModule => $bundleClass) {
-            $category = $systemModulesCategories[$systemModule];
-            $this->container->get('doctrine')
-                ->getRepository('ZikulaAdminModule:AdminModuleEntity')
-                ->setModuleCategory($systemModule, $modulesCategories[$category]);
+            $this->setModuleCategory($systemModule, $systemModulesCategories[$systemModule]);
         }
 
         return true;
@@ -236,15 +182,14 @@ class AjaxInstallController extends AbstractController
         $username = mb_strtolower($params['username']);
 
         $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
-        $nowUTCStr = $nowUTC->format(UsersConstant::DATETIME_FORMAT);
 
         /** @var \Zikula\UsersModule\Entity\UserEntity $userEntity */
         $userEntity = $entityManager->find('ZikulaUsersModule:UserEntity', 2);
         $userEntity->setUname($params['username']);
         $userEntity->setEmail($params['email']);
         $userEntity->setActivated(1);
-        $userEntity->setUser_Regdate($nowUTCStr);
-        $userEntity->setLastlogin($nowUTCStr);
+        $userEntity->setUser_Regdate($nowUTC);
+        $userEntity->setLastlogin($nowUTC);
         $entityManager->persist($userEntity);
 
         $mapping = new AuthenticationMappingEntity();
@@ -330,17 +275,6 @@ class AjaxInstallController extends AbstractController
         }
 
         return $params;
-    }
-
-    /**
-     * public because called by AjaxUpgradeController also
-     * @return bool
-     */
-    public function reloadRoutes()
-    {
-        // this stage is now disabled because the routes do not need to be reloaded. @todo refactor and remove
-
-        return true;
     }
 
     /**

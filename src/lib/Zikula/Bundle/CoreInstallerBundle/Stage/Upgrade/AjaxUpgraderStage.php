@@ -71,69 +71,62 @@ class AjaxUpgraderStage implements StageInterface, InjectContainerInterface
                 AjaxInstallerStage::FAIL => $this->__('There was an error installing Zikula Routes Module')
             ],
             4 => [
-                AjaxInstallerStage::NAME => 'reloadroutes',
-                AjaxInstallerStage::PRE => $this->__('Reload routes'),
-                AjaxInstallerStage::DURING => $this->__('Reloading routes (takes longer...)'),
-                AjaxInstallerStage::SUCCESS => $this->__('Routes reloaded'),
-                AjaxInstallerStage::FAIL => $this->__('There was an error reloading the routes')
-            ],
-            5 => [
                 AjaxInstallerStage::NAME => 'regenthemes',
                 AjaxInstallerStage::PRE => $this->__('Regenerate themes'),
                 AjaxInstallerStage::DURING => $this->__('Regenerating themes'),
                 AjaxInstallerStage::SUCCESS => $this->__('Themes regenerated'),
                 AjaxInstallerStage::FAIL => $this->__('There was an error regenerating the themes')
             ],
-            6 => [
+            5 => [
                 AjaxInstallerStage::NAME => 'from140to141',
                 AjaxInstallerStage::PRE => $this->__('Upgrade from Core 1.4.0 to Core 1.4.1'),
                 AjaxInstallerStage::DURING => $this->__('Upgrading to Core 1.4.1'),
                 AjaxInstallerStage::SUCCESS => $this->__('Upgraded to Core 1.4.1'),
                 AjaxInstallerStage::FAIL => $this->__('There was an error upgrading to Core 1.4.1')
             ],
-            7 => [
+            6 => [
                 AjaxInstallerStage::NAME => 'from141to142',
                 AjaxInstallerStage::PRE => $this->__('Upgrade from Core 1.4.1 to Core 1.4.2'),
                 AjaxInstallerStage::DURING => $this->__('Upgrading to Core 1.4.2'),
                 AjaxInstallerStage::SUCCESS => $this->__('Upgraded to Core 1.4.2'),
                 AjaxInstallerStage::FAIL => $this->__('There was an error upgrading to Core 1.4.2')
             ],
-            8 => [
+            7 => [
                 AjaxInstallerStage::NAME => 'from142to143',
                 AjaxInstallerStage::PRE => $this->__('Upgrade from Core 1.4.2 to Core 1.4.3'),
                 AjaxInstallerStage::DURING => $this->__('Upgrading to Core 1.4.3'),
                 AjaxInstallerStage::SUCCESS => $this->__('Upgraded to Core 1.4.3'),
                 AjaxInstallerStage::FAIL => $this->__('There was an error upgrading to Core 1.4.3')
             ],
-            9 => [
+            8 => [
                 AjaxInstallerStage::NAME => 'from143to144',
                 AjaxInstallerStage::PRE => $this->__('Upgrade from Core 1.4.3 to Core 1.4.4'),
                 AjaxInstallerStage::DURING => $this->__('Upgrading to Core 1.4.4'),
                 AjaxInstallerStage::SUCCESS => $this->__('Upgraded to Core 1.4.4'),
                 AjaxInstallerStage::FAIL => $this->__('There was an error upgrading to Core 1.4.4')
             ],
-            10 => [
+            9 => [
                 AjaxInstallerStage::NAME => 'from144to145',
                 AjaxInstallerStage::PRE => $this->__('Upgrade from Core 1.4.4 to Core 1.4.5'),
                 AjaxInstallerStage::DURING => $this->__('Upgrading to Core 1.4.5'),
                 AjaxInstallerStage::SUCCESS => $this->__('Upgraded to Core 1.4.5'),
                 AjaxInstallerStage::FAIL => $this->__('There was an error upgrading to Core 1.4.5')
             ],
-            11 => [
+            10 => [
                 AjaxInstallerStage::NAME => 'finalizeparameters',
                 AjaxInstallerStage::PRE => $this->__('Finalize parameters'),
                 AjaxInstallerStage::DURING => $this->__('Finalizing parameters'),
                 AjaxInstallerStage::SUCCESS => $this->__('Parameters finalized'),
                 AjaxInstallerStage::FAIL => $this->__('There was an error finalizing the parameters')
             ],
-            12 => [
+            11 => [
                 AjaxInstallerStage::NAME => 'clearcaches',
                 AjaxInstallerStage::PRE => $this->__('Clear caches'),
                 AjaxInstallerStage::DURING => $this->__('Clearing caches'),
                 AjaxInstallerStage::SUCCESS => $this->__('Caches cleared'),
                 AjaxInstallerStage::FAIL => $this->__('There was an error clearing caches')
             ],
-            13 => [
+            12 => [
                 AjaxInstallerStage::NAME => 'finish',
                 AjaxInstallerStage::PRE => $this->__('Finish'),
                 AjaxInstallerStage::DURING => $this->__('Finish'),

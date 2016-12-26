@@ -216,34 +216,27 @@ class AjaxInstallerStage implements StageInterface, InjectContainerInterface
                 self::FAIL => $this->__('There was an error finalizing the parameters')
             ],
             24 => [
-                self::NAME => 'reloadroutes',
-                self::PRE => $this->__('Reload routes'),
-                self::DURING => $this->__('Reloading routes (takes longer...)'),
-                self::SUCCESS => $this->__('Routes reloaded'),
-                self::FAIL => $this->__('There was an error reloading the routes')
-            ],
-            25 => [
                 self::NAME => 'plugins',
                 self::PRE => $this->__('System Plugins'),
                 self::DURING => $this->__('Installing System Plugins'),
                 self::SUCCESS => $this->__('System Plugins installed'),
                 self::FAIL => $this->__('There was an error installing System Plugins')
             ],
-            26 => [
+            25 => [
                 self::NAME => 'protect',
                 self::PRE => $this->__('Protect configuration files'),
                 self::DURING => $this->__('Protecting configuration files'),
                 self::SUCCESS => $this->__('Configuration files protected'),
                 self::FAIL => $this->__('There was an error protecting configuration files')
             ],
-            27 => [
+            26 => [
                 self::NAME => 'installassets',
                 self::PRE => $this->__('Install assets'),
                 self::DURING => $this->__('Installing assets to /web'),
                 self::SUCCESS => $this->__('Assets installed'),
                 self::FAIL => $this->__('Failed to install assets')
             ],
-            28 => [
+            27 => [
                 self::NAME => 'finish',
                 self::PRE => $this->__('Finish'),
                 self::DURING => $this->__('Finish'),
