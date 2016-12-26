@@ -17,6 +17,7 @@ use Zikula\Component\Wizard\AbortStageException;
 use Zikula\Component\Wizard\StageInterface;
 use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController;
+use Zikula\ExtensionsModule\Api\VariableApi;
 
 class NotUpgradedStage implements StageInterface, InjectContainerInterface
 {
@@ -55,9 +56,9 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
         // make sure selected language is installed
         $DBLocale = $this->fetchDBLocale();
         if (!in_array($DBLocale, \ZLanguage::getInstalledLanguages())) {
-            \System::setVar('language_i18n', 'en');
-            \System::setVar('language', 'eng');
-            \System::setVar('locale', 'en');
+            $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'language_i18n', 'en');
+            $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'language', 'eng');
+            $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'locale', 'en');
             \ZLanguage::setLocale('en');
         }
 
@@ -75,7 +76,7 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
      */
     private function fetchDBLocale()
     {
-        $conn = $this->container->get('doctrine.dbal.default_connection');
+        $conn = $this->container->get('doctrine')->getConnection();
         $serializedValue = $conn->fetchColumn("
             SELECT value
             FROM module_vars
