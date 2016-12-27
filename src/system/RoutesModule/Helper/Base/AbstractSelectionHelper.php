@@ -54,7 +54,7 @@ abstract class AbstractSelectionHelper
     public function __construct(ContainerBuilder $container, ObjectManager $om, TranslatorInterface $translator, ControllerHelper $controllerHelper)
     {
         $this->container = $container;
-        $this->om = $om;
+        $this->objectManager = $om;
         $this->translator = $translator;
         $this->controllerHelper = $controllerHelper;
     }
@@ -71,7 +71,7 @@ abstract class AbstractSelectionHelper
         $objectType = $this->determineObjectType($objectType, 'getIdFields');
         $entityClass = 'ZikulaRoutesModule:' . ucfirst($objectType) . 'Entity';
     
-        $meta = $this->om->getClassMetadata($entityClass);
+        $meta = $this->objectManager->getClassMetadata($entityClass);
     
         if ($this->hasCompositeKeys($objectType)) {
             $idFields = $meta->getIdentifierFieldNames();
