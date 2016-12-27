@@ -68,14 +68,6 @@ Mapstraction 3.0.0
     Location in Zikula: plugins/Mapstraction/lib/vendor/mxn
     Patch details: none
 
-Webshim 1.15.6
-
-    Vendor website: http://afarkas.github.io/webshim/demos/index.html
-    Downloaded from: https://github.com/aFarkas/webshim/
-    License: MIT
-    Location in Zikula: javascript/js-webshim
-    Patch details: none
-
 Modernizr 2.6.2
 
     Vendor website: http://modernizr.com
@@ -97,7 +89,7 @@ jQuery contextMenu git-master at time of inclusion
     Vendor website: http://medialize.github.com/jQuery-contextMenu/
     Downloaded from: https://github.com/medialize/jQuery-contextMenu
     License: MIT & GPLv3
-    Location in Zikula: javascript/jQuery-contextMenu
+    Location in Zikula: javascript/plugins/jQuery-contextMenu
     Patch details: none
 
 json2.js 2012-10-08
@@ -117,20 +109,12 @@ Storage
     Location in Zikula: javascript/polyfills/storage
     Patch details: none
 
-Underscore.js 1.4.3
+Underscore.js 1.8.3
 
     Vendor website: http://underscorejs.org
     Downloaded from: http://underscorejs.org
     License: MIT
     Location in Zikula: javascript/underscore
-    Patch details: none
-
-jQuery.mmenu 5.6.3
-
-    Vendor website: http://mmenu.frebsite.nl/
-    Downloaded from: http://mmenu.frebsite.nl/
-    License: MIT
-    Location in Zikula: system/AdminModule/Resources/public/js/jQuery.mmenu-5.6.3
     Patch details: none
 
 ICON LIBRARIES
