@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\CoreInstallerBundle\Util;
+namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Core\Exception\FatalErrorException;
@@ -18,7 +18,7 @@ use Zikula\Bundle\CoreBundle\YamlDumper;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Zikula\Component\Wizard\AbortStageException;
 
-class ControllerUtil
+class ControllerHelper
 {
     /**
      * return an array of variables to assign to all installer templates

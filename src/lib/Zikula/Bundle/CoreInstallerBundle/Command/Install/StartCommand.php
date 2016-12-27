@@ -59,7 +59,7 @@ class StartCommand extends AbstractCoreInstallerCommand
             return;
         }
 
-        $controllerHelper = $this->getContainer()->get('zikula_core_installer.controller.util');
+        $controllerHelper = $this->getContainer()->get('zikula_core_installer.controller.helper');
 
         $warnings = $controllerHelper->initPhp();
         if (!empty($warnings)) {

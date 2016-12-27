@@ -1,6 +1,6 @@
 parameters:
     zikula_core_installer.install_upgrade_check.class: Zikula\Bundle\CoreInstallerBundle\EventListener\InstallUpgradeCheckListener
-    zikula_core_installer.controller.util.class: Zikula\Bundle\CoreInstallerBundle\Util\ControllerUtil
+    zikula_core_installer.controller.helper.class: Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper
     zikula_core_installer.controller.installer.class: Zikula\Bundle\CoreInstallerBundle\Controller\InstallerController
     zikula_core_installer.controller.upgrader.class: Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController
     zikula_core_installer.controller.doc.class: Zikula\Bundle\CoreInstallerBundle\Controller\DocController
@@ -14,8 +14,8 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    zikula_core_installer.controller.util:
-        class: %zikula_core_installer.controller.util.class%
+    zikula_core_installer.controller.helper:
+        class: %zikula_core_installer.controller.helper.class%
 
     zikula_core_installer.controller.installer:
         class: %zikula_core_installer.controller.installer.class%
