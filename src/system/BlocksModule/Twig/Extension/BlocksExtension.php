@@ -119,11 +119,9 @@ class BlocksExtension extends \Twig_Extension
         if (!isset($blocksModuleInstance)) {
             return "Blocks not currently available.";
         }
-        // Check if providing module not available, if block is inactive, if block filter prevents display.
+        // Check if block is inactive, if block filter prevents display.
         $moduleInstance = $this->extensionApi->getModuleInstanceOrNull($block->getModule()->getName());
-        if (/* @todo reenable at Core-2.0 !isset($moduleInstance)
-            || */(!$block->getActive())
-            || (!$this->blockFilter->isDisplayable($block))) {
+        if (!$block->getActive() || !$this->blockFilter->isDisplayable($block)) {
             return '';
         }
 
@@ -146,6 +144,10 @@ class BlocksExtension extends \Twig_Extension
         $legacy = false;
         $content = '';
         if ($blockInstance instanceof BlockHandlerInterface) {
+            // Check if providing module is available
+            if (!isset($moduleInstance)) {
+                return '';
+            }
             $blockProperties = $block->getContent();
             $blockProperties['bid'] = $block->getBid();
             $blockProperties['title'] = $block->getTitle();
