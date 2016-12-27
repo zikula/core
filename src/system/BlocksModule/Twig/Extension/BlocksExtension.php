@@ -154,6 +154,9 @@ class BlocksExtension extends \Twig_Extension
             $blockProperties['position'] = $positionName;
             $content = $blockInstance->display($blockProperties);
         } elseif ($blockInstance instanceof \Zikula_Controller_AbstractBlock) { // @todo remove at Core-2.0
+            if (!\ModUtil::available($block->getModule()->getName())) {
+                return '';
+            }
             $legacy = true;
             $args = \BlockUtil::getBlockInfo($block->getBid());
             $args['position'] = $positionName;
