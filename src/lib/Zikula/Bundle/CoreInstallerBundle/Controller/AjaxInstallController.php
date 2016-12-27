@@ -94,7 +94,9 @@ class AjaxInstallController extends AbstractController
             case "updateadmin":
                 return $this->updateAdmin();
             case "loginadmin":
-                return $this->loginAdmin();
+                $params = $this->decodeParameters($this->yamlManager->getParameters());
+
+                return $this->loginAdmin($params);
             case "activatemodules":
                 return $this->reSyncAndActivateModules();
             case "categorize":
@@ -175,7 +177,7 @@ class AjaxInstallController extends AbstractController
      */
     private function updateAdmin()
     {
-        $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
+        $entityManager = $this->container->get('doctrine')->getManager();
         $params = $this->decodeParameters($this->yamlManager->getParameters());
 
         // prepare the data
@@ -202,22 +204,6 @@ class AjaxInstallController extends AbstractController
         $entityManager->persist($mapping);
 
         $entityManager->flush();
-
-        return true;
-    }
-
-    /**
-     * public because called by AjaxUpgradeController also
-     * @return bool
-     */
-    public function loginAdmin()
-    {
-        $params = $this->decodeParameters($this->yamlManager->getParameters());
-        $user = $this->container->get('zikula_users_module.user_repository')->findOneBy(['uname' => $params['username']]);
-        $request = $this->container->get('request_stack')->getCurrentRequest();
-        if (isset($request) && $request->hasSession()) {
-            $this->container->get('zikula_users_module.helper.access_helper')->login($user, true);
-        }
 
         return true;
     }
@@ -254,27 +240,6 @@ class AjaxInstallController extends AbstractController
         $this->container->get('zikula.cache_clearer')->clear('symfony.config');
 
         return true;
-    }
-
-    /**
-     * remove base64 encoding for admin params
-     *
-     * @param $params
-     * @return mixed
-     */
-    private function decodeParameters($params)
-    {
-        if (!empty($params['password'])) {
-            $params['password'] = base64_decode($params['password']);
-        }
-        if (!empty($params['username'])) {
-            $params['username'] = base64_decode($params['username']);
-        }
-        if (!empty($params['email'])) {
-            $params['email'] = base64_decode($params['email']);
-        }
-
-        return $params;
     }
 
     /**

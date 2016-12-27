@@ -138,4 +138,39 @@ abstract class AbstractController
             ->getRepository('ZikulaAdminModule:AdminModuleEntity')
             ->setModuleCategory($moduleEntity, $modulesCategories[$translatedCategoryName]);
     }
+
+    /**
+     * @return bool
+     */
+    protected function loginAdmin($params)
+    {
+        $user = $this->container->get('zikula_users_module.user_repository')->findOneBy(['uname' => $params['username']]);
+        $request = $this->container->get('request_stack')->getCurrentRequest();
+        if (isset($request) && $request->hasSession()) {
+            $this->container->get('zikula_users_module.helper.access_helper')->login($user, true);
+        }
+
+        return true;
+    }
+
+    /**
+     * remove base64 encoding for admin params
+     *
+     * @param $params
+     * @return mixed
+     */
+    protected function decodeParameters($params)
+    {
+        if (!empty($params['password'])) {
+            $params['password'] = base64_decode($params['password']);
+        }
+        if (!empty($params['username'])) {
+            $params['username'] = base64_decode($params['username']);
+        }
+        if (!empty($params['email'])) {
+            $params['email'] = base64_decode($params['email']);
+        }
+
+        return $params;
+    }
 }

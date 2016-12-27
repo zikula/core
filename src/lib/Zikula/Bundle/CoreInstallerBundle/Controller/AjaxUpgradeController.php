@@ -73,7 +73,9 @@ class AjaxUpgradeController extends AbstractController
     {
         switch ($stageName) {
             case "loginadmin":
-                return $this->container->get('zikula_core_installer.controller.ajaxinstall')->loginAdmin();
+                $params = $this->decodeParameters($this->yamlManager->getParameters());
+
+                return $this->loginAdmin($params);
             case "upgrademodules":
                 $result = $this->upgradeModules();
                 if (count($result) === 0) {
@@ -220,10 +222,9 @@ class AjaxUpgradeController extends AbstractController
         if (version_compare($this->currentVersion, '1.4.4', '>=')) {
             return true;
         }
-        // @todotemporarily disabled because of peristent errors in the build...
-//        $this->installModule('ZikulaMenuModule');
-//        $this->reSyncAndActivateModules();
-//        $this->setModuleCategory('ZikulaMenuModule', $this->translator->__('Content'));
+        $this->installModule('ZikulaMenuModule');
+        $this->reSyncAndActivateModules();
+        $this->setModuleCategory('ZikulaMenuModule', $this->translator->__('Content'));
 
         return true;
     }
