@@ -58,7 +58,7 @@ services:
     twig.extension.zikula_extensions_module:
         class: %twig.extension.zikula_extensions_module.class%
         public: false
-        arguments: ["@translator.default", "@zikula_permissions_module.api.permission", "@zikula_core.common.csrf_token_handler", "@router", "@zikula_extensions_module.api.extension"]
+        arguments: ["@translator.default"]
         tags:
             - { name: twig.extension }
 

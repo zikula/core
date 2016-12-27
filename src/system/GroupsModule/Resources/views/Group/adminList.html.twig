@@ -105,7 +105,7 @@
             {% for application in applications if hasPermission('ZikulaGroupsModule::', application.group.gid ~ '::', 'ACCESS_EDIT') %}
             <tr>
                 <td headers="hUserId">{{ application.user.uid }}</td>
-                <td headers="hUserName">{{ application.user.uid|zikulagroupsmodule_profileLink }}</td>
+                <td headers="hUserName">{{ application.user.uid|profileLinkByUserId }}</td>
                 <td headers="hGroupName">{{ application.group.name }}</td>
                 <td headers="hComment">{{ application.application }}</td>
                 <td headers="hActions" class="text-right">

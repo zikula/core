@@ -151,8 +151,6 @@ class LinkContainer implements LinkContainerInterface
 
     private function getUser()
     {
-        $isLoggedIn = \UserUtil::isLoggedIn();
-
         $links = [];
         $links[] = [
             'icon' => 'wrench',
@@ -160,7 +158,7 @@ class LinkContainer implements LinkContainerInterface
             'url' => $this->router->generate('zikulausersmodule_account_menu')
         ];
 
-        if (!$isLoggedIn) {
+        if (!$this->currentUser->isLoggedIn()) {
             $links[] = [
                 'icon' => 'sign-in',
                 'text' => $this->translator->__('Log in'),

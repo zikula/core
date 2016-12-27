@@ -36,7 +36,7 @@ class GroupEntity extends EntityAccess
     /**
      * group name
      *
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $name;
 
@@ -56,6 +56,7 @@ class GroupEntity extends EntityAccess
 
     /**
      * group prefix
+     * @deprecated unused
      * @ORM\Column(type="string", length=25)
      */
     private $prefix;
@@ -69,7 +70,7 @@ class GroupEntity extends EntityAccess
 
     /**
      * number of members of the group
-     *
+     * @deprecated unused
      * @ORM\Column(type="integer")
      */
     private $nbuser;
@@ -83,14 +84,14 @@ class GroupEntity extends EntityAccess
 
     /**
      * link for the group
-     *
+     * @deprecated unused
      * @ORM\Column(type="integer")
      */
     private $link;
 
     /**
      * master uid for the group
-     *
+     * @deprecated unused
      * @ORM\Column(type="integer")
      */
     private $uidmaster;

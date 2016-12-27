@@ -124,12 +124,12 @@ class FileIOHelper
     {
         $defaultGroup = $this->variableApi->get('ZikulaGroupsModule', 'defaultgroup');
         // get available groups
-        $allGroups = \ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getall');
+        $allGroups = $this->entityManager->getRepository('ZikulaGroupsModule:GroupEntity')->findAllAndIndexBy('gid');
         // create an array with the groups identities where the user can add other users
         $allGroupsArray = [];
-        foreach ($allGroups as $group) {
+        foreach ($allGroups as $gid => $group) {
             if ($this->permissionApi->hasPermission('ZikulaGroupsModule::', $group['gid'] . '::', ACCESS_EDIT)) {
-                $allGroupsArray[] = $group['gid'];
+                $allGroupsArray[] = $gid;
             }
         }
 

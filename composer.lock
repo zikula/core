@@ -1268,22 +1268,22 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "v2.5.5",
+            "version": "v2.5.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/doctrine2.git",
-                "reference": "73e4be7c7b3ba26f96b781a40b33feba4dfa6d45"
+                "reference": "e6c434196c8ef058239aaa0724b4aadb0107940b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/73e4be7c7b3ba26f96b781a40b33feba4dfa6d45",
-                "reference": "73e4be7c7b3ba26f96b781a40b33feba4dfa6d45",
+                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/e6c434196c8ef058239aaa0724b4aadb0107940b",
+                "reference": "e6c434196c8ef058239aaa0724b4aadb0107940b",
                 "shasum": ""
             },
             "require": {
                 "doctrine/cache": "~1.4",
                 "doctrine/collections": "~1.2",
-                "doctrine/common": ">=2.5-dev,<2.7-dev",
+                "doctrine/common": ">=2.5-dev,<2.8-dev",
                 "doctrine/dbal": ">=2.5-dev,<2.6-dev",
                 "doctrine/instantiator": "~1.0.1",
                 "ext-pdo": "*",
@@ -1340,7 +1340,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2016-09-10 18:51:13"
+            "time": "2016-12-18 15:42:34"
         },
         {
             "name": "elao/web-profiler-extra-bundle",
@@ -1955,16 +1955,16 @@
         },
         {
             "name": "justinrainbow/json-schema",
-            "version": "4.0.1",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/justinrainbow/json-schema.git",
-                "reference": "10d1f6977f6be5f177dded8f585a11debdc27591"
+                "reference": "d39c56a46b3ebe1f3696479966cd2b9f50aaa24f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/10d1f6977f6be5f177dded8f585a11debdc27591",
-                "reference": "10d1f6977f6be5f177dded8f585a11debdc27591",
+                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/d39c56a46b3ebe1f3696479966cd2b9f50aaa24f",
+                "reference": "d39c56a46b3ebe1f3696479966cd2b9f50aaa24f",
                 "shasum": ""
             },
             "require": {
@@ -2017,7 +2017,7 @@
                 "json",
                 "schema"
             ],
-            "time": "2016-11-09 16:32:33"
+            "time": "2016-12-22 16:43:46"
         },
         {
             "name": "knplabs/knp-menu",
@@ -3580,16 +3580,16 @@
         },
         {
             "name": "symfony/swiftmailer-bundle",
-            "version": "v2.4.0",
+            "version": "v2.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/swiftmailer-bundle.git",
-                "reference": "d7b7bd6bb6e9b32ebc5f9778f94d4b4e4af5d069"
+                "reference": "ad751095576ce0c12a284e30e3fff80c91f27225"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/swiftmailer-bundle/zipball/d7b7bd6bb6e9b32ebc5f9778f94d4b4e4af5d069",
-                "reference": "d7b7bd6bb6e9b32ebc5f9778f94d4b4e4af5d069",
+                "url": "https://api.github.com/repos/symfony/swiftmailer-bundle/zipball/ad751095576ce0c12a284e30e3fff80c91f27225",
+                "reference": "ad751095576ce0c12a284e30e3fff80c91f27225",
                 "shasum": ""
             },
             "require": {
@@ -3635,7 +3635,7 @@
             ],
             "description": "Symfony SwiftmailerBundle",
             "homepage": "http://symfony.com",
-            "time": "2016-10-27 17:59:30"
+            "time": "2016-12-20 04:44:33"
         },
         {
             "name": "symfony/symfony",
@@ -3833,16 +3833,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.29.0",
+            "version": "v1.30.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "74f723e542368ca2080b252740be5f1113ebb898"
+                "reference": "c6ff71094fde15d12398eaba029434b013dc5e59"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/74f723e542368ca2080b252740be5f1113ebb898",
-                "reference": "74f723e542368ca2080b252740be5f1113ebb898",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/c6ff71094fde15d12398eaba029434b013dc5e59",
+                "reference": "c6ff71094fde15d12398eaba029434b013dc5e59",
                 "shasum": ""
             },
             "require": {
@@ -3855,7 +3855,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.29-dev"
+                    "dev-master": "1.30-dev"
                 }
             },
             "autoload": {
@@ -3890,20 +3890,20 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2016-12-13 17:28:18"
+            "time": "2016-12-23 11:06:22"
         },
         {
             "name": "twitter/typeahead.js",
-            "version": "v1.0.1",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/corejavascript/typeahead.js.git",
-                "reference": "a79d0865af787f0aba2a544995fd5cc358c13689"
+                "reference": "a47d4b5cea82178ecb3aee80fb63d95465762e44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/corejavascript/typeahead.js/zipball/a79d0865af787f0aba2a544995fd5cc358c13689",
-                "reference": "a79d0865af787f0aba2a544995fd5cc358c13689",
+                "url": "https://api.github.com/repos/corejavascript/typeahead.js/zipball/a47d4b5cea82178ecb3aee80fb63d95465762e44",
+                "reference": "a47d4b5cea82178ecb3aee80fb63d95465762e44",
                 "shasum": ""
             },
             "type": "library",
@@ -3924,9 +3924,9 @@
             ],
             "support": {
                 "issues": "https://github.com/twitter/typeahead.js/issues",
-                "source": "https://github.com/corejavascript/typeahead.js/tree/v1.0.1"
+                "source": "https://github.com/corejavascript/typeahead.js/tree/v1.1.0"
             },
-            "time": "2016-11-17 14:24:27"
+            "time": "2016-12-19 15:11:01"
         },
         {
             "name": "vakata/jstree",
@@ -4470,12 +4470,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "a1c0bd6fe7ee28615139d48452567c8622da9ce8"
+                "reference": "4518d212a3dea87d57ad3a00681dcf34d444faf2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/a1c0bd6fe7ee28615139d48452567c8622da9ce8",
-                "reference": "a1c0bd6fe7ee28615139d48452567c8622da9ce8",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/4518d212a3dea87d57ad3a00681dcf34d444faf2",
+                "reference": "4518d212a3dea87d57ad3a00681dcf34d444faf2",
                 "shasum": ""
             },
             "require": {
@@ -4536,7 +4536,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2016-12-12 12:55:47"
+            "time": "2016-12-22 05:16:17"
         },
         {
             "name": "zikula/wizard",
