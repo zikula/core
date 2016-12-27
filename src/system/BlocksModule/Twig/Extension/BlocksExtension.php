@@ -121,8 +121,8 @@ class BlocksExtension extends \Twig_Extension
         }
         // Check if providing module not available, if block is inactive, if block filter prevents display.
         $moduleInstance = $this->extensionApi->getModuleInstanceOrNull($block->getModule()->getName());
-        if (!isset($moduleInstance)
-            || (!$block->getActive())
+        if (/* @todo reenable at Core-2.0 !isset($moduleInstance)
+            || */(!$block->getActive())
             || (!$this->blockFilter->isDisplayable($block))) {
             return '';
         }
