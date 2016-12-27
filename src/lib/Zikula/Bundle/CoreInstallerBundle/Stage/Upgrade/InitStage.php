@@ -57,7 +57,7 @@ class InitStage implements StageInterface, InjectContainerInterface
 
     private function init()
     {
-        $conn = $this->container->get('doctrine.dbal.default_connection');
+        $conn = $this->container->get('doctrine')->getConnection();
         /** @var \ZikulaKernel $kernel */
         $kernel = $this->container->get('kernel');
 

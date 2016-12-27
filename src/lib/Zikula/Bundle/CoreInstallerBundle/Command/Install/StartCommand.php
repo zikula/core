@@ -60,7 +60,7 @@ class StartCommand extends AbstractCoreInstallerCommand
             return;
         }
 
-        $controllerHelper = $this->getContainer()->get('zikula_core_installer.controller.util');
+        $controllerHelper = $this->getContainer()->get('zikula_core_installer.controller.helper');
 
         $warnings = $controllerHelper->initPhp();
         if (!empty($warnings)) {
@@ -123,7 +123,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         $params['database_server_version'] = $dbh->getAttribute(\PDO::ATTR_SERVER_VERSION);
         $params['database_driver'] = 'pdo_' . $params['database_driver']; // doctrine requires prefix in custom_parameters.yml
         $yamlManager->setParameters($params);
-        $this->getContainer()->get('zikula_core_installer.config.util')->writeLegacyConfig($params);
+        $this->getContainer()->get('zikula_core_installer.config.helper')->writeLegacyConfig($params);
         $this->getContainer()->get('zikula.cache_clearer')->clear('symfony.config');
 
         $io->success($this->translator->__('First stage of installation complete. Run `php app/console zikula:install:finish` to complete the installation.'));
