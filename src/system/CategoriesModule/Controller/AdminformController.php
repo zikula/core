@@ -256,48 +256,4 @@ class AdminformController extends AbstractController
 
         return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
     }
-
-    /**
-     * @Route("/move")
-     * @Method("POST")
-     *
-     * Moves a category.
-     *
-     * @param Request $request
-     *
-     * @return RedirectResponse
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have permission to edit a category
-     */
-    public function moveAction(Request $request)
-    {
-        $this->get('zikula_core.common.csrf_token_handler')->validate($request->request->get('csrfToken'));
-
-        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
-
-        if ($request->request->get('category_cancel', null)) {
-            return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
-        }
-
-        $cid = $request->request->get('cid', null);
-        $cat = $this->get('zikula_categories_module.api.category')->getCategoryById($cid);
-        $processingHelper = $this->get('zikula_categories_module.category_processing_helper');
-
-        // prevent move if category is already used
-        if (!$processingHelper->mayCategoryBeDeletedOrMoved($cat)) {
-            $this->addFlash('error', $this->__f('Error! Category %s can not be moved, because it is already used.', ['%s' => $cat['name']]));
-
-            return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
-        }
-
-        $data = $request->request->get('category', null);
-
-        $this->get('zikula_categories_module.copy_and_move_helper')->moveCategoriesByPath($cat['ipath'], $data['parent_id']);
-
-        $this->addFlash('status', $this->__f('Done! Moved the %s category.', ['%s' => $cat['name']]));
-
-        return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
-    }
 }

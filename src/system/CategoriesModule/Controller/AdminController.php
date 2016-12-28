@@ -17,6 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
@@ -183,10 +184,8 @@ class AdminController extends AbstractController
             }
 
             $editCat = $categoryApi->getCategoryById($cid);
-            if (!$editCat) {
-                $this->addFlash('error', $this->__('Sorry! No such item found.'));
-
-                return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
+            if (null === $editCat) {
+                throw new NotFoundHttpException($this->__('Category not found.'));
             }
         } else {
             // new category creation
@@ -343,9 +342,12 @@ class AdminController extends AbstractController
      */
     public function opAction(Request $request)
     {
-        $cid = $request->query->get('cid', 1);
+        $cid = $request->query->getInt('cid', 1);
         $root_id = $request->query->get('dr', 1);
         $op = $request->query->get('op', 'NOOP');
+        if (!in_array($op, ['copy', 'move', 'delete'])) {
+            throw new AccessDeniedException();
+        }
 
         if (!$this->hasPermission('ZikulaCategoriesModule::category', "ID::$cid", ACCESS_DELETE)) {
             throw new AccessDeniedException();
@@ -353,23 +355,44 @@ class AdminController extends AbstractController
 
         $categoryApi = $this->get('zikula_categories_module.api.category');
         $category = $categoryApi->getCategoryById($cid);
+        if (null === $category) {
+            throw new NotFoundHttpException($this->__('Category not found.'));
+        }
+
+        if ($op == 'delete' || $op == 'move') {
+            // prevent deletion or move if category is already used
+            $processingHelper = $this->get('zikula_categories_module.category_processing_helper');
+            if (!$processingHelper->mayCategoryBeDeletedOrMoved($category)) {
+                if ($op == 'delete') {
+                    $this->addFlash('error', $this->__f('Error! Category %s can not be deleted, because it is already used.', ['%s' => $category['name']]));
+                } elseif ($op == 'move') {
+                    $this->addFlash('error', $this->__f('Error! Category %s can not be moved, because it is already used.', ['%s' => $category['name']]));
+                }
+
+                return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
+            }
+        }
 
         $templateParameters = [];
 
-        if ($op == 'copy') {
-            if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADD)) {
-                throw new AccessDeniedException();
-            }
+        if (in_array($op, ['copy', 'move'])) {
+            $isCopy = $op == 'copy';
+            $parentLabel = $isCopy
+                ? $this->__('Copy this category and all sub-categories of this category into')
+                : $this->__('Move this category and all sub-categories of this category into');
+            $actionLabel = $isCopy ? $this->__('Copy') : $this->__('Move');
+            $actionIcon = $isCopy ? 'files-o' : 'scissors';
+
             $form = $this->createFormBuilder()
                 ->add('parent', 'Zikula\CategoriesModule\Form\Type\CategoryTreeType', [
-                    'label' => $this->__('Copy this category and all sub-categories of this category into'),
+                    'label' => $parentLabel,
                     'empty_data' => '/__SYSTEM__',
                     'translator' => $this->get('translator.default'),
                     'includeRoot' => true
                 ])
-                ->add('copy', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                    'label' => $this->__('Copy'),
-                    'icon' => 'fa-files-o',
+                ->add($op, 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                    'label' => $actionLabel,
+                    'icon' => 'fa-' . $actionIcon,
                     'attr' => [
                         'class' => 'btn btn-success'
                     ]
@@ -384,12 +407,18 @@ class AdminController extends AbstractController
                 ->getForm();
 
             if ($form->handleRequest($request)->isValid()) {
-                if ($form->get('copy')->isClicked()) {
+                if ($form->get($op)->isClicked()) {
                     $formData = $form->getData();
 
-                    $this->get('zikula_categories_module.copy_and_move_helper')->copyCategoriesByPath($category['ipath'], $formData['parent']);
+                    if ($op == 'copy') {
+                        $this->get('zikula_categories_module.copy_and_move_helper')->copyCategoriesByPath($category['ipath'], $formData['parent']);
 
-                    $this->addFlash('status', $this->__f('Done! Copied the %s category.', ['%s' => $category['name']]));
+                        $this->addFlash('status', $this->__f('Done! Copied the %s category.', ['%s' => $category['name']]));
+                    } elseif ($op == 'move') {
+                        $this->get('zikula_categories_module.copy_and_move_helper')->moveCategoriesByPath($category['ipath'], $formData['parent']);
+
+                        $this->addFlash('status', $this->__f('Done! Moved the %s category.', ['%s' => $category['name']]));
+                    }
                 }
                 if ($form->get('cancel')->isClicked()) {
                     $this->addFlash('status', $this->__('Operation cancelled.'));
@@ -406,20 +435,6 @@ class AdminController extends AbstractController
             $subCats = $categoryApi->getSubCategories($cid, false, false);
             $allCats = $categoryApi->getSubCategories($root_id, true, true, true, false, true, $cid);
             $selector = $this->get('zikula_categories_module.html_tree_helper')->getSelector_Categories($allCats);
-            $processingHelper = $this->get('zikula_categories_module.category_processing_helper');
-
-            if ($op == 'delete' || $op == 'move') {
-                // prevent deletion or move if category is already used
-                if (!$processingHelper->mayCategoryBeDeletedOrMoved($category)) {
-                    if ($op == 'delete') {
-                        $this->addFlash('error', $this->__f('Error! Category %s can not be deleted, because it is already used.', ['%s' => $category['name']]));
-                    } elseif ($op == 'move') {
-                        $this->addFlash('error', $this->__f('Error! Category %s can not be moved, because it is already used.', ['%s' => $category['name']]));
-                    }
-
-                    return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
-                }
-            }
 
             $templateParameters = [
                 'category' => $category,
