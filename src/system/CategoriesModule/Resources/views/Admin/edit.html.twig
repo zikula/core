@@ -7,7 +7,7 @@
     {{ templateTitle }}
     {{ pageSetVar('title', templateTitle) }}
 </h3>
-<form class="form-horizontal" role="form" action="{{ path('zikulacategoriesmodule_adminform_' ~ ((mode == 'edit') ? 'edit' : 'newcat')) }}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{{ path('zikulacategoriesmodule_admin_' ~ ((mode == 'edit') ? 'update' : 'newcat')) }}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset>
         <input type="hidden" name="csrftoken" value="{{ csrfToken }}" />
         {% set catID = category.id|default %}

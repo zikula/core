@@ -6,19 +6,21 @@
 
 {% set dr = app.request.isMethod('POST') ? app.request.request.get('dr', 0) : app.request.query.get('dr', 0) %}
 
-<ul class="navbar navbar-default navbar-modulelinks navbar-modulelinks-main">
-    {% if referer %}
-    <li><a class="fa fa-eye" href="{{ path('zikulacategoriesmodule_user_referback') }}"> {{ __('Return to referring page') }}</a></li>
-    {% endif %}
-    <li><a class="fa fa-refresh" href="{{ path('zikulacategoriesmodule_userform_resequence', { assign: 'resq', dr: dr }) }}"> {{ __('Resequence') }}</a></li>
-</ul>
+<div class="navbar navbar-default navbar-modulelinks">
+    <ul class="navbar-nav">
+        {% if referer %}
+            <li><a class="fa fa-eye" href="{{ path('zikulacategoriesmodule_user_referback') }}"> {{ __('Return to referring page') }}</a></li>
+        {% endif %}
+        <li><a class="fa fa-refresh" href="{{ path('zikulacategoriesmodule_user_resequence', { assign: 'resq', dr: dr }) }}"> {{ __('Resequence') }}</a></li>
+    </ul>
+</div>
 
 {{ showflashes() }}
 {{ include('@ZikulaCategoriesModule/User/list.html.twig') }}
 
 <h3>{{ templateTitle }}</h3>
 
-<form class="form-horizontal" role="form" action="{{ path('zikulacategoriesmodule_userform_' ~ (category ? 'edit' : 'newcat')) }}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{{ path('zikulacategoriesmodule_user_' ~ (category ? 'update' : 'new')) }}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset>
         <legend>{{ __('Category') }}</legend>
         <input type="hidden" name="csrftoken" value="{{ csrfToken }}" />

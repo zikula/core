@@ -141,7 +141,7 @@ class LinkContainer implements LinkContainerInterface
             }
 
             $links[] = [
-                'url' => $this->router->generate('zikulacategoriesmodule_user_edituser'),
+                'url' => $this->router->generate('zikulacategoriesmodule_user_index'),
                 'text' => $this->translator->__('Categories manager'),
                 'icon' => 'server'
             ];
