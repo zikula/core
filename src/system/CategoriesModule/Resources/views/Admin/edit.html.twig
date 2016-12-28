@@ -12,7 +12,7 @@
         <input type="hidden" name="csrftoken" value="{{ csrfToken }}" />
         {% set catID = category.id|default %}
         {% if catID %}
-        <input type="hidden" id="category_id" name="category[id]" value="{{ category.id }}" />
+            <input type="hidden" id="category_id" name="category[id]" value="{{ category.id }}" />
         {% endif %}
         <legend>{{ __('General settings') }}</legend>
         <div class="form-group">

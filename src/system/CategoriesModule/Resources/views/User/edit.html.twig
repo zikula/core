@@ -18,7 +18,7 @@
 {{ showflashes() }}
 {{ include('@ZikulaCategoriesModule/User/list.html.twig') }}
 
-<h3>{{ templateTitle }}</h3>
+<h3><i class="fa fa-{{ category ? 'pencil' : 'plus' }}"></i> {{ templateTitle }}</h3>
 
 <form class="form-horizontal" role="form" action="{{ path('zikulacategoriesmodule_user_' ~ (category ? 'update' : 'newcat')) }}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset>
