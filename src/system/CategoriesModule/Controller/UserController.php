@@ -90,8 +90,8 @@ class UserController extends AbstractController
      */
     public function editAction(Request $request)
     {
-        $docroot = $request->query->get('dr', 0);
-        $cid = $request->query->get('cid', 0);
+        $docroot = $request->query->getInt('dr', 0);
+        $cid = $request->query->getInt('cid', 0);
 
         if (!$this->hasPermission('ZikulaCategoriesModule::category', "ID::$docroot", ACCESS_EDIT)) {
             throw new AccessDeniedException();
@@ -117,7 +117,7 @@ class UserController extends AbstractController
 
         $categoryApi = $this->get('zikula_categories_module.api.category');
 
-        if (is_int((int)$docroot) && $docroot > 0) {
+        if ($docroot > 0) {
             $rootCat = $categoryApi->getCategoryById($docroot);
         } else {
             $rootCat = $categoryApi->getCategoryByPath($docroot);
