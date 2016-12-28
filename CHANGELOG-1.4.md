@@ -18,7 +18,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Fixed adding absolute urls as pagevars (#3325).
     - Fixed reflection of updated values after editing permission rules (#3311).
     - Fixed event initialisation for newly added permission rules (#3317).
-    - Allow display of legacy blocks.
+    - Allow display of legacy blocks (#3332).
 
  - Features:
     - ?
