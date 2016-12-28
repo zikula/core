@@ -157,15 +157,12 @@ class YamlDumper
     /**
      * Returns configuration in html format.
      *
-     * @param string $name         The requested configuration's name
-     * @param bool   $fetchDefault Whether or not to return the values specified in the dynamic_config_default.yml file
-     *                             if no configuration is set in the dynamic_config.yml file
-     *
+     * @param string $name The requested configuration's name
      * @return string
      */
-    public function getConfigurationForHtml($name, $fetchDefault = true)
+    public function getConfigurationForHtml($name)
     {
-        $config = $this->getConfiguration($name, $fetchDefault);
+        $config = $this->getConfiguration($name);
         $html = $this->formatValue($config);
 
         return $html;
@@ -187,11 +184,11 @@ class YamlDumper
         $html = '';
 
         foreach ($value as $key => $val) {
-            $html .= '<li><strong>' . \DataUtil::formatForDisplay($key) . ':</strong>';
+            $html .= '<li><strong>' . htmlspecialchars($key, ENT_QUOTES) . ':</strong>';
             if (is_array($val)) {
                 $html .= $this->formatValue($val) . "</li>\n";
             } else {
-                $val = !empty($val) ? \DataUtil::formatForDisplay($val) : '<em>null</em>';
+                $val = !empty($val) ? htmlspecialchars($val, ENT_QUOTES) : '<em>null</em>';
                 $html .= " " . $val . "</li>\n";
             }
         }

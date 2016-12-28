@@ -11,18 +11,20 @@
 
 namespace Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine;
 
-use DataUtil;
 use Doctrine\ORM\EntityManager;
-use LogUtil;
-use System;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\Exception\InvalidArgumentException;
 use Zikula\Bundle\HookBundle\Dispatcher\StorageInterface;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Doctrine class.
  */
 class DoctrineStorage implements StorageInterface
 {
+    use TranslatorTrait;
+
     const PROVIDER = 'p';
     const SUBSCRIBER = 's';
 
@@ -33,9 +35,21 @@ class DoctrineStorage implements StorageInterface
      */
     private $em;
 
-    public function __construct(EntityManager $em)
+    /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    public function __construct(EntityManager $em, SessionInterface $session, TranslatorInterface $translator)
     {
         $this->em = $em;
+        $this->session = $session;
+        $this->setTranslator($translator);
+    }
+
+    public function setTranslator($translator)
+    {
+        $this->translator = $translator;
     }
 
     public function registerSubscriber($owner, $subOwner, $areaName, $areaType, $category, $eventName)
@@ -45,15 +59,10 @@ class DoctrineStorage implements StorageInterface
         // Now we have an areaId we can register a subscriber, but first test if the subscriber is already registered.
         $existingSubscriber = $this->getSubscriberByEventName($eventName);
         if (!empty($existingSubscriber)) {
-            if (System::isDevelopmentMode()) {
-                LogUtil::registerWarning(__f('The hook subscriber "%1$s" could not be registered for "%2$s" because it is registered already.', [$eventName, $owner]));
-            } else {
-                $warns = LogUtil::getWarningMessages(false);
-                $msg = __f('Hook subscribers could not be registered for "%1$s" because they are registered already.', [$owner]);
-                if (!in_array(DataUtil::formatForDisplayHTML($msg), $warns)) {
-                    LogUtil::registerWarning($msg);
-                }
-            }
+            $this->session->getFlashBag()->add('warning', $this->__f('The hook subscriber "%sub" could not be registered for "%own" because it is registered already.', [
+                '%sub' => $eventName,
+                '%own' => $owner
+            ]));
 
             return;
         }
@@ -116,15 +125,11 @@ class DoctrineStorage implements StorageInterface
 
         $existingProvider = $this->getProviderByAreaAndType($pareaId, $hookType);
         if (!empty($existingProvider)) {
-            if (System::isDevelopmentMode()) {
-                LogUtil::registerWarning(__f('The hook provider for area "%1$s" of type "%2$s" could not be registered for "%3$s" because it already exists.', [$pareaId, $hookType, $owner]));
-            } else {
-                $warns = LogUtil::getWarningMessages(false);
-                $msg = __f('Hook providers could not be registered for "%1$s" because they already exist.', [$owner]);
-                if (!in_array(DataUtil::formatForDisplayHTML($msg), $warns)) {
-                    LogUtil::registerWarning($msg);
-                }
-            }
+            $this->session->getFlashBag()->add('warning', $this->__f('The hook provider for area "%parea" of type "%type" could not be registered for "%own" because it already exists.', [
+                '%parea' => $pareaId,
+                '%type' => $hookType,
+                '%own' => $owner
+            ]));
 
             return;
         }

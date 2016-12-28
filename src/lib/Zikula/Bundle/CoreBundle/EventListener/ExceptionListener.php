@@ -11,7 +11,6 @@
 
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
-use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -22,6 +21,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Core\Exception\ExtensionNotAvailableException;
+use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Api\CurrentUserApi;
 
 /**
@@ -29,26 +29,58 @@ use Zikula\UsersModule\Api\CurrentUserApi;
  */
 class ExceptionListener implements EventSubscriberInterface
 {
-    private $logger;
+    /**
+     * @var RouterInterface
+     */
     private $router;
+
+    /**
+     * @var EventDispatcherInterface
+     */
     private $dispatcher;
+
+    /**
+     * @var CacheClearer
+     */
     private $cacheClearer;
+
+    /**
+     * @var CurrentUserApi
+     */
     private $currentUserApi;
+
+    /**
+     * @var PermissionApi
+     */
+    private $permissionApi;
+
+    /**
+     * @var bool
+     */
     private $installed;
 
+    /**
+     * ExceptionListener constructor.
+     * @param RouterInterface $router
+     * @param EventDispatcherInterface $dispatcher
+     * @param CacheClearer $cacheClearer
+     * @param CurrentUserApi $currentUserApi
+     * @param PermissionApi $permissionApi
+     * @param bool $installed
+     */
     public function __construct(
-        LoggerInterface $logger = null,
-        RouterInterface $router = null,
-        EventDispatcherInterface $dispatcher = null,
+        RouterInterface $router,
+        EventDispatcherInterface $dispatcher,
         CacheClearer $cacheClearer,
         CurrentUserApi $currentUserApi,
+        PermissionApi $permissionApi,
         $installed
     ) {
-        $this->logger = $logger;
         $this->router = $router;
         $this->dispatcher = $dispatcher;
         $this->cacheClearer = $cacheClearer;
         $this->currentUserApi = $currentUserApi;
+        $this->permissionApi = $permissionApi;
         $this->installed = $installed;
     }
 
@@ -131,9 +163,9 @@ class ExceptionListener implements EventSubscriberInterface
     {
         $message = $event->getException()->getMessage();
         $event->getRequest()->getSession()->getFlashBag()->add('error', $message);
-        if ($userLoggedIn && \SecurityUtil::checkPermission('ZikulaRoutesModule::', '::', ACCESS_ADMIN)) {
+        if ($userLoggedIn && $this->permissionApi->hasPermission('ZikulaRoutesModule::', '::', ACCESS_ADMIN)) {
             try {
-                $url = $this->router->generate('zikularoutesmodule_route_reload', ['lct' => 'admin'], RouterInterface::ABSOLUTE_URL);
+                $url = $this->router->generate('zikularoutesmodule_route_adminreload', [], RouterInterface::ABSOLUTE_URL);
                 $link = '<a href="' . $url . '" title="' . __('Re-load the routes') . '">' .  __('re-loading the routes') . '</a>';
                 $event->getRequest()->getSession()->getFlashBag()->add('error', __f('You might try %s for the extension in question.', $link));
             } catch (RouteNotFoundException $e) {

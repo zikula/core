@@ -23,6 +23,7 @@ use Zikula_Event;
 
 /**
  * Doctrine listeners.
+ * @deprecated remove at Core-2.0
  */
 class Doctrine1ConnectorListener implements EventSubscriberInterface
 {
