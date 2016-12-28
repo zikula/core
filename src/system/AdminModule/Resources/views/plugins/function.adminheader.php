@@ -27,7 +27,7 @@ function smarty_function_adminheader($params, $view)
     try {
         $router->generate('zikulaadminmodule_admininterface_header');
     } catch (\Symfony\Component\Routing\Exception\RouteNotFoundException $e) {
-        $url = $view->getContainer()->get('router')->generate('zikularoutesmodule_route_reload', ['lct' => 'admin', 'confirm' => 1]);
+        $url = $view->getContainer()->get('router')->generate('zikularoutesmodule_route_adminreload', ['confirm' => 1]);
 
         return '<div class="alert alert-danger"><i class="fa fa-exclamation-triangle fa-2x"></i> ' . __f('Routes must be reloaded. Click %s to reload all routes.', '<a href="' . $url . '">' . __('here') . '</a>') . '</div>';
     }
