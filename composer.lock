@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "4ea21f1126d919d76a7f5913190ffe9f",
+    "content-hash": "46d4265ac3e82097b1fbbd439ce7a679",
     "packages": [
         {
             "name": "abeautifulsite/jquery-minicolors",
@@ -4816,7 +4816,7 @@
         },
         {
             "name": "zikula/wizard",
-            "version": "dev-master",
+            "version": "1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/Wizard.git",
@@ -4857,13 +4857,13 @@
                 "step",
                 "wizard"
             ],
-            "time": "2016-03-10 00:37:26"
+            "time": "2016-03-10T00:37:26+00:00"
         }
     ],
     "packages-dev": [
         {
             "name": "zikula/generator-bundle",
-            "version": "dev-master",
+            "version": "1.4",
             "target-dir": "Zikula/Bundle/GeneratorBundle",
             "source": {
                 "type": "git",
@@ -4903,18 +4903,16 @@
             ],
             "authors": [
                 {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
-                },
-                {
                     "name": "Zikula Community",
                     "homepage": "http://zikula.org/"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
                 }
             ],
             "description": "This module generates code for you",
-            "time": "2014-01-26 10:33:58"
+            "time": "2014-01-26T10:33:58+00:00"
         }
     ],
     "aliases": [],
@@ -4923,7 +4921,6 @@
         "zikula/legal-module": 20,
         "zikula/profile-module": 20,
         "phpids/phpids": 20,
-        "zikula/wizard": 20,
         "zikula/filesystem": 20,
         "zikula/jquery-bundle": 20,
         "zikula/jquery-ui-bundle": 20,
@@ -4933,8 +4930,7 @@
         "bootstrap-plus/bootstrap-jqueryui": 20,
         "drak/doctrine1": 20,
         "drak/smarty": 20,
-        "oyejorge/less.php": 20,
-        "zikula/generator-bundle": 20
+        "oyejorge/less.php": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
