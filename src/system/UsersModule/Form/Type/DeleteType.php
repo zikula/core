@@ -33,7 +33,9 @@ class DeleteType extends AbstractType
             ->add('delete', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'label' => $options['translator']->__('Delete selected users'),
                 'icon' => 'fa-trash-o',
-                'attr' => ['class' => 'btn btn-danger'],
+                'attr' => [
+                    'class' => 'btn btn-danger'
+                ],
             ])
         ;
     }

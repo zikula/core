@@ -20,7 +20,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
-use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 use Zikula\Core\Controller\AbstractController;
 use ZLanguage;
 
@@ -254,52 +253,9 @@ class AdminController extends AbstractController
      */
     public function editregistryAction(Request $request)
     {
-        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
+        @trigger_error('The zikulcategoriesmodule_admin_editregistry action is deprecated. please use zikulacategoriesmodule_registry_edit instead.', E_USER_DEPRECATED);
 
-        $root_id = $request->query->get('dr', 1);
-        $id = $request->query->get('id', 0);
-
-        $obj = new CategoryRegistryEntity();
-
-        $category_registry = $request->query->get('category_registry', null);
-        if ($category_registry) {
-            $obj->merge($category_registry);
-            $obj = $obj->toArray();
-        }
-
-        $entityManager = $this->get('doctrine')->getManager();
-
-        $registries = $entityManager->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')
-            ->findBy([], ['modname' => 'ASC', 'property' => 'ASC']);
-        $modules = $entityManager->getRepository('ZikulaExtensionsModule:ExtensionEntity')
-            ->findBy(['state' => 3], ['displayname' => 'ASC']);
-
-        $moduleOptions = [];
-        foreach ($modules as $module) {
-            $bundle = \ModUtil::getModule($module['name']);
-            if (null !== $bundle && !class_exists($bundle->getVersionClass())) {
-                // this check just confirming a Core-2.0 spec bundle - remove in 2.0.0
-                // then instead of getting MetaData, could just do ModUtil::getCapabilitiesOf($module['name'])
-                $capabilities = $bundle->getMetaData()->getCapabilities();
-                if (!isset($capabilities['categorizable'])) {
-                    continue; // skip this module if not categorizable
-                }
-            }
-            $moduleOptions[$module['name']] = $module['displayname'];
-        }
-
-        $templateParameters = [
-            'objectArray' => $registries,
-            'moduleOptions' => $moduleOptions,
-            'newobj' => $obj,
-            'root_id' => $root_id,
-            'id' => $id,
-            'csrfToken' => $this->get('zikula_core.common.csrf_token_handler')->generate()
-        ];
-
-        return $this->render('@ZikulaCategoriesModule/Admin/registry_edit.html.twig', $templateParameters);
+        return $this->redirectToRoute('zikulacategoriesmodule_registry_edit', $request->query->all());
     }
 
     /**
@@ -315,22 +271,9 @@ class AdminController extends AbstractController
      */
     public function deleteregistryAction(Request $request)
     {
-        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
+        @trigger_error('The zikulcategoriesmodule_admin_deleteregistry action is deprecated. please use zikulacategoriesmodule_registry_delete instead.', E_USER_DEPRECATED);
 
-        $id = $request->query->get('id', 0);
-
-        $entityManager = $this->get('doctrine')->getManager();
-        $obj = $entityManager->find('ZikulaCategoriesModule:CategoryRegistryEntity', $id);
-
-        $templateParameters = [
-            'data' => $obj->toArray(),
-            'id' => $id,
-            'csrfToken' => $this->get('zikula_core.common.csrf_token_handler')->generate()
-        ];
-
-        return $this->render('@ZikulaCategoriesModule/Admin/registry_delete.html.twig', $templateParameters);
+        return $this->redirectToRoute('zikulacategoriesmodule_registry_delete', $request->query->all());
     }
 
     /**
@@ -376,7 +319,6 @@ class AdminController extends AbstractController
         }
 
         $categoryApi = $this->get('zikula_categories_module.api.category');
-
         $category = $categoryApi->getCategoryById($cid);
         $subCats = $categoryApi->getSubCategories($cid, false, false);
         $allCats = $categoryApi->getSubCategories($root_id, true, true, true, false, true, $cid);

@@ -24,12 +24,16 @@ class DeleteConfirmationType extends AbstractType
             ->add('delete', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'label' => $options['translator']->__('Confirm deletion'),
                 'icon' => 'fa-trash-o',
-                'attr' => ['class' => 'btn btn-success'],
+                'attr' => [
+                    'class' => 'btn btn-danger'
+                ],
             ])
             ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'label' => $options['translator']->__('Cancel'),
                 'icon' => 'fa-times',
-                'attr' => ['class' => 'btn btn-default']
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
             ])
         ;
     }

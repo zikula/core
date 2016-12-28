@@ -34,7 +34,7 @@ class DeletePermissionType extends AbstractType
                 'label' => $translator->__('Delete'),
                 'icon' => 'fa-trash-o',
                 'attr' => [
-                    'class' => 'btn btn-success'
+                    'class' => 'btn btn-danger'
                 ]
             ])
             ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [

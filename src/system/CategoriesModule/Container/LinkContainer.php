@@ -105,7 +105,7 @@ class LinkContainer implements LinkContainerInterface
         }
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             $links[] = [
-                'url' => $this->router->generate('zikulacategoriesmodule_admin_editregistry'),
+                'url' => $this->router->generate('zikulacategoriesmodule_registry_edit'),
                 'text' => $this->translator->__('Category registry'),
                 'icon' => 'archive'
             ];
@@ -115,7 +115,7 @@ class LinkContainer implements LinkContainerInterface
                 'icon' => 'refresh'
             ];
             $links[] = [
-                'url' => $this->router->generate('zikulacategoriesmodule_admin_preferences'),
+                'url' => $this->router->generate('zikulacategoriesmodule_config_config'),
                 'text' => $this->translator->__('Settings'),
                 'icon' => 'wrench'
             ];
