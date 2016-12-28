@@ -410,7 +410,7 @@ class UserController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $dr = $request->request->request->getInt('dr', 0);
+        $dr = $request->request->getInt('dr', 0);
         $ref = $request->server->get('HTTP_REFERER');
 
         if (!$dr) {
@@ -418,7 +418,7 @@ class UserController extends AbstractController
         }
 
         $returnfunc = false !== strpos($ref, 'edituser') ? 'edituser' : 'edit';
-        $url = $this->get('router')->generate('zikulacategoriesmodule_user_' . $returnfunc, ['dr' => $dr], RouterInterface::ABSOLUTE_URL);
+        $url = $this->get('router')->generate('zikulacategoriesmodule_user_' . $returnfunc, ['dr' => $dr]);
 
         // get data from post
         $data = $request->request->get('category', null);
