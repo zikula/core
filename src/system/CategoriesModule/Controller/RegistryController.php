@@ -11,7 +11,6 @@
 
 namespace Zikula\CategoriesModule\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,11 +30,10 @@ class RegistryController extends AbstractController
 {
     /**
      * @Route("/edit")
-     * @Method("GET")
      * @Template
      * @Theme("admin")
      *
-     * Edits a category registry.
+     * Creates or edits a category registry.
      *
      * @param Request $request
      *
@@ -49,118 +47,100 @@ class RegistryController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $root_id = $request->query->get('dr', 1);
-        $id = $request->query->get('id', 0);
+        if ($request->isMethod('POST')) {
+            $this->get('zikula_core.common.csrf_token_handler')->validate($request->request->get('csrfToken'));
 
-        $obj = new CategoryRegistryEntity();
-
-        $category_registry = $request->query->get('category_registry', null);
-        if ($category_registry) {
-            $obj->merge($category_registry);
-            $obj = $obj->toArray();
-        }
-
-        $entityManager = $this->get('doctrine')->getManager();
-
-        $registries = $entityManager->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')
-            ->findBy([], ['modname' => 'ASC', 'property' => 'ASC']);
-        $modules = $entityManager->getRepository('ZikulaExtensionsModule:ExtensionEntity')
-            ->findBy(['state' => 3], ['displayname' => 'ASC']);
-
-        $moduleOptions = [];
-        foreach ($modules as $module) {
-            $bundle = \ModUtil::getModule($module['name']);
-            if (null !== $bundle && !class_exists($bundle->getVersionClass())) {
-                // this check just confirming a Core-2.0 spec bundle - remove in 2.0.0
-                // then instead of getting MetaData, could just do ModUtil::getCapabilitiesOf($module['name'])
-                $capabilities = $bundle->getMetaData()->getCapabilities();
-                if (!isset($capabilities['categorizable'])) {
-                    continue; // skip this module if not categorizable
-                }
+            if (!$request->request->get('category_submit', null)) {
+                // got here through selector auto-submit
+                return $this->redirectToRoute('zikulacategoriesmodule_registry_edit', [
+                    'category_registry' => $request->request->get('category_registry', null)
+                ]);
             }
-            $moduleOptions[$module['name']] = $module['displayname'];
-        }
 
-        $templateParameters = [
-            'objectArray' => $registries,
-            'moduleOptions' => $moduleOptions,
-            'newobj' => $obj,
-            'root_id' => $root_id,
-            'id' => $id,
-            'csrfToken' => $this->get('zikula_core.common.csrf_token_handler')->generate()
-        ];
+            // get data from post
+            $data = $request->request->get('category_registry', null);
 
-        return $templateParameters;
-    }
+            // do some validation
+            $valid = true;
+            if (empty($data['modname'])) {
+                $this->addFlash('error', $this->__('Error! You did not select a module.'));
+                $valid = false;
+            }
+            if (empty($data['entityname'])) {
+                $this->addFlash('error', $this->__('Error! You did not select an entity.'));
+                $valid = false;
+            }
+            if (empty($data['property'])) {
+                $this->addFlash('error', $this->__('Error! You did not enter a property name.'));
+                $valid = false;
+            }
+            if ((int)$data['category_id'] == 0) {
+                $this->addFlash('error', $this->__('Error! You did not select a category.'));
+                $valid = false;
+            }
+            if (!$valid) {
+                return $this->redirectToRoute('zikulacategoriesmodule_registry_edit');
+            }
 
-    /**
-     * @Route("/edit")
-     * @Method("POST")
-     *
-     * Creates, updates a category registry.
-     *
-     * @param Request $request
-     *
-     * @return RedirectResponse
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
-     */
-    public function updateAction(Request $request)
-    {
-        $this->get('zikula_core.common.csrf_token_handler')->validate($request->request->get('csrfToken'));
+            $entityManager = $this->get('doctrine')->getManager();
+            if (isset($data['id']) && (int)$data['id'] > 0) {
+                // update existing registry
+                $registry = $entityManager->find('ZikulaCategoriesModule:CategoryRegistryEntity', $data['id']);
+                if (null === $registry) {
+                    throw new NotFoundHttpException($this->__('Registry entry not found.'));
+                }
+            } else {
+                // create new registry
+                $registry = new CategoryRegistryEntity();
+            }
+            $registry->merge($data);
+            $entityManager->persist($registry);
+            $entityManager->flush();
+            $this->addFlash('status', $this->__('Done! Saved the category registry entry.'));
 
-        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
-        if (!$request->request->get('category_submit', null)) {
-            // got here through selector auto-submit
-            $routeArgs = [
-                'category_registry' => $request->request->get('category_registry', null)
-            ];
-
-            return $this->redirectToRoute('zikulacategoriesmodule_registry_edit', $routeArgs);
-        }
-
-        // get data from post
-        $data = $request->request->get('category_registry', null);
-
-        // do some validation
-        $valid = true;
-        if (empty($data['modname'])) {
-            $this->addFlash('error', $this->__('Error! You did not select a module.'));
-            $valid = false;
-        }
-        if (empty($data['entityname'])) {
-            $this->addFlash('error', $this->__('Error! You did not select an entity.'));
-            $valid = false;
-        }
-        if (empty($data['property'])) {
-            $this->addFlash('error', $this->__('Error! You did not enter a property name.'));
-            $valid = false;
-        }
-        if ((int)$data['category_id'] == 0) {
-            $this->addFlash('error', $this->__('Error! You did not select a category.'));
-            $valid = false;
-        }
-        if (!$valid) {
             return $this->redirectToRoute('zikulacategoriesmodule_registry_edit');
-        }
-
-        $entityManager = $this->get('doctrine')->getManager();
-        if (isset($data['id']) && (int)$data['id'] > 0) {
-            // update existing registry
-            $obj = $entityManager->find('ZikulaCategoriesModule:CategoryRegistryEntity', $data['id']);
         } else {
-            // create new registry
-            $obj = new CategoryRegistryEntity();
-        }
-        $obj->merge($data);
-        $entityManager->persist($obj);
-        $entityManager->flush();
-        $this->addFlash('status', $this->__('Done! Saved the category registry entry.'));
+            $rootId = $request->query->get('dr', 1);
+            $id = $request->query->get('id', 0);
 
-        return $this->redirectToRoute('zikulacategoriesmodule_registry_edit');
+            $newRegistry = new CategoryRegistryEntity();
+
+            $category_registry = $request->query->get('category_registry', null);
+            if ($category_registry) {
+                $newRegistry->merge($category_registry);
+                $newRegistry = $newRegistry->toArray();
+            }
+
+            $entityManager = $this->get('doctrine')->getManager();
+
+            $registries = $entityManager->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')
+                ->findBy([], ['modname' => 'ASC', 'property' => 'ASC']);
+            $modules = $entityManager->getRepository('ZikulaExtensionsModule:ExtensionEntity')
+                ->findBy(['state' => 3], ['displayname' => 'ASC']);
+
+            $moduleOptions = [];
+            foreach ($modules as $module) {
+                $bundle = \ModUtil::getModule($module['name']);
+                if (null !== $bundle && !class_exists($bundle->getVersionClass())) {
+                    // this check just confirming a Core-2.0 spec bundle - remove in 2.0.0
+                    // then instead of getting MetaData, could just do $capabilityApi->getCapabilitiesOf($module['name'])
+                    $capabilities = $bundle->getMetaData()->getCapabilities();
+                    if (!isset($capabilities['categorizable'])) {
+                        continue; // skip this module if not categorizable
+                    }
+                }
+                $moduleOptions[$module['name']] = $module['displayname'];
+            }
+
+            return [
+                'registries' => $registries,
+                'moduleOptions' => $moduleOptions,
+                'newRegistry' => $newRegistry,
+                'root_id' => $rootId,
+                'id' => $id,
+                'csrfToken' => $this->get('zikula_core.common.csrf_token_handler')->generate()
+            ];
+        }
     }
 
     /**

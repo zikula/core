@@ -21,46 +21,46 @@
             </colgroup>
             <thead>
                 <tr>
-                    <th id="hModule" scope="col">{{ __('Module') }}</th>
-                    <th id="hEntity" scope="col">{{ __('Entity/Table') }}</th>
-                    <th id="hProperty" scope="col">{{ __('Property name') }}</th>
-                    <th id="hCategory" scope="col">{{ __('Category') }}</th>
-                    <th id="hActions" scope="col">{{ __('Actions') }}</th>
+                    <th id="hModule" scope="col"><label for="category_registry__id__">{{ __('Module') }}</label></th>
+                    <th id="hEntity" scope="col"><label{% if id != 0 or newRegistry.modname is not empty %} for="category_registry_entityname_"{% endif %}>{{ __('Entity/Table') }}</label></th>
+                    <th id="hProperty" scope="col"><label for="category_registry_property">{{ __('Property name') }}</label></th>
+                    <th id="hCategory" scope="col"><label for="category_registry_category_id_">{{ __('Category') }}</label></th>
+                    <th id="hActions" scope="col"><label>{{ __('Actions') }}</label></th>
                 </tr>
             </thead>
             <tbody>
-            {% for obj in objectArray %}
+            {% for registry in registries %}
                 <tr>
-                {% if obj.id == id %}
+                {% if registry.id == id %}
                     <td headers="hModule">
-                        <input id="category_registry_id" name="category_registry[id]" value="{{ obj.id|e('html_attr') }}" type="hidden" />
+                        <input id="category_registry_id" name="category_registry[id]" value="{{ registry.id|e('html_attr') }}" type="hidden" />
                         <select name="category_registry[modname]" id="category_registry__id__" onchange="this.form.submit();">
                             {% for value, text in moduleOptions %}
-                                <option value="{{ value|e('html_attr') }}"{{ value == obj.modname ? ' selected="selected"' : '' }}>{{ text }}</option>
+                                <option value="{{ value|e('html_attr') }}"{{ value == registry.modname ? ' selected="selected"' : '' }}>{{ text }}</option>
                             {% endfor %}
                         </select>
                     </td>
                     <td headers="hEntity">
-                        {% if obj.modname %}{{ zikulacategoriesmodule_moduleTableSelector(modname=obj.modname, name='category_registry[entityname]', selectedValue=obj.entityname, defaultValue='', defaultText=chooseEntity) }}
+                        {% if registry.modname %}{{ zikulacategoriesmodule_moduleTableSelector(modname=registry.modname, name='category_registry[entityname]', selectedValue=registry.entityname, defaultValue='', defaultText=chooseEntity) }}
                         {% else %}----------
                         {% endif %}
                     </td>
                     <td headers="hProperty">
-                        <input id="category_registry_property" name="category_registry[property]" value="{{ obj.property|e('html_attr') }}" type="text" class="form-control" size="20" maxlength="32" />
+                        <input id="category_registry_property" name="category_registry[property]" value="{{ registry.property|e('html_attr') }}" type="text" class="form-control" size="20" maxlength="32" />
                     </td>
                     <td headers="hCategory">
-                        {{ zikulacategoriesmodule_categorySelector(category=root_id, name='category_registry[category_id]', includeLeaf=false, selectedValue=obj.category_id) }}
+                        {{ zikulacategoriesmodule_categorySelector(category=root_id, name='category_registry[category_id]', includeLeaf=false, selectedValue=registry.category_id) }}
                     </td>
                     <td headers="hActions">&nbsp;</td>
                 {% else %}
-                    {#modgetinfo assign='dModname' info='displayname' modname=$obj.modname default=$obj.modname#}
-                    <td headers="hModule">{# dModname #}{{ obj.modname }}</td>
-                    <td headers="hEntity">{% if obj.entityname|default %}{{ obj.entityname }}{% endif %}</td>
-                    <td headers="hProperty">{{ obj.property }}</td>
-                    <td headers="hCategory">{{ categoryPath(id=obj.category_id, html=true) }}</td>
+                    {#modgetinfo assign='dModname' info='displayname' modname=$registry.modname default=$registry.modname#}
+                    <td headers="hModule">{# dModname #}{{ registry.modname }}</td>
+                    <td headers="hEntity">{% if registry.entityname|default %}{{ registry.entityname }}{% endif %}</td>
+                    <td headers="hProperty">{{ registry.property }}</td>
+                    <td headers="hCategory">{{ categoryPath(id=registry.category_id, html=true) }}</td>
                     <td headers="hActions" class="actions">
-                        <a class="fa fa-pencil tooltips" href="{{ path('zikulacategoriesmodule_registry_edit', { id: obj.id }) }}" title="{{ __('Edit') }}" ></a>
-                        <a class="fa fa-trash-o tooltips" href="{{ path('zikulacategoriesmodule_registry_delete', { id: obj.id }) }}" title="{{ __('Delete') }}"></a>
+                        <a class="fa fa-pencil tooltips" href="{{ path('zikulacategoriesmodule_registry_edit', { id: registry.id }) }}" title="{{ __('Edit') }}" ></a>
+                        <a class="fa fa-trash-o tooltips" href="{{ path('zikulacategoriesmodule_registry_delete', { id: registry.id }) }}" title="{{ __('Delete') }}"></a>
                     </td>
                 {% endif %}
                 </tr>
@@ -71,23 +71,23 @@
                     <td headers="hModule">
                         <span class="required"></span>
                         <select name="category_registry[modname]" id="category_registry__id__" onchange="this.form.submit();">
-                            <option value="0"{% if newobj.modname is empty %} selected="selected"{% endif %}>{{ chooseModule }}</option>
+                            <option value="0"{% if newRegistry.modname is empty %} selected="selected"{% endif %}>{{ chooseModule }}</option>
                             {% for value, text in moduleOptions %}
-                                <option value="{{ value|e('html_attr') }}"{{ value == newobj.modname|default ? ' selected="selected"' : '' }}>{{ text }}</option>
+                                <option value="{{ value|e('html_attr') }}"{{ value == newRegistry.modname|default ? ' selected="selected"' : '' }}>{{ text }}</option>
                             {% endfor %}
                         </select>
                     </td>
                     <td headers="hEntity">
-                        {% if newobj.modname is not empty %}
-                        <span class="required"></span>{{ zikulacategoriesmodule_moduleTableSelector(modname=newobj.modname, name='category_registry[entityname]', selectedValue=newobj.entityname, defaultValue='', defaultText=chooseEntity) }}
+                        {% if newRegistry.modname is not empty %}
+                        <span class="required"></span>{{ zikulacategoriesmodule_moduleTableSelector(modname=newRegistry.modname, name='category_registry[entityname]', selectedValue=newRegistry.entityname, defaultValue='', defaultText=chooseEntity) }}
                         {% else %}----------
                         {% endif %}
                     </td>
                     <td headers="hProperty">
-                        <span class="required"></span><input id="category_registry_property" name="category_registry[property]" value="{{ newobj.property|default('Main')|e('html_attr') }}" type="text" class="form-control" size="20" maxlength="32" />
+                        <span class="required"></span><input id="category_registry_property" name="category_registry[property]" value="{{ newRegistry.property|default('Main')|e('html_attr') }}" type="text" class="form-control" size="20" maxlength="32" />
                     </td>
                     <td headers="hCategory">
-                        <span class="required"></span>{{ zikulacategoriesmodule_categorySelector(category=root_id, name='category_registry[category_id]', includeLeaf=false, selectedValue=newobj.category_id, defaultText=chooseCategory) }}
+                        <span class="required"></span>{{ zikulacategoriesmodule_categorySelector(category=root_id, name='category_registry[category_id]', includeLeaf=false, selectedValue=newRegistry.category_id, defaultText=chooseCategory) }}
                     </td>
                     <td headers="hActions">&nbsp;</td>
                 </tr>
