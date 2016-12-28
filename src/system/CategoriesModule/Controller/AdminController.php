@@ -373,76 +373,99 @@ class AdminController extends AbstractController
             }
         }
 
-        $templateParameters = [];
+        $isCopy = $op == 'copy';
+        $isMove = $op == 'move';
+        $isDelete = $op == 'delete';
 
-        if (in_array($op, ['copy', 'move'])) {
-            $isCopy = $op == 'copy';
-            $parentLabel = $isCopy
-                ? $this->__('Copy this category and all sub-categories of this category into')
-                : $this->__('Move this category and all sub-categories of this category into');
-            $actionLabel = $isCopy ? $this->__('Copy') : $this->__('Move');
-            $actionIcon = $isCopy ? 'files-o' : 'scissors';
+        $parentLabel = $isCopy
+            ? $this->__('Copy this category and all sub-categories of this category into')
+            : $this->__('Move this category and all sub-categories of this category into');
+        $actionLabel = $isCopy ? $this->__('Copy') : ($isMove ? $this->__('Move') : $this->__('Delete'));
+        $actionIcon = $isCopy ? 'files-o' : ($isMove ? 'scissors' : 'trash-o');
 
-            $form = $this->createFormBuilder()
-                ->add('parent', 'Zikula\CategoriesModule\Form\Type\CategoryTreeType', [
-                    'label' => $parentLabel,
-                    'empty_data' => '/__SYSTEM__',
-                    'translator' => $this->get('translator.default'),
-                    'includeRoot' => true
-                ])
-                ->add($op, 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                    'label' => $actionLabel,
-                    'icon' => 'fa-' . $actionIcon,
-                    'attr' => [
-                        'class' => 'btn btn-success'
-                    ]
-                ])
-                ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                    'label' => $this->__('Cancel'),
-                    'icon' => 'fa-times',
-                    'attr' => [
-                        'class' => 'btn btn-default'
-                    ]
-                ])
-                ->getForm();
+        $amountOfSubCategories = 0;
 
-            if ($form->handleRequest($request)->isValid()) {
-                if ($form->get($op)->isClicked()) {
-                    $formData = $form->getData();
+        $builder = $this->createFormBuilder()
+            ->add($op, 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $actionLabel,
+                'icon' => 'fa-' . $actionIcon,
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
+            ])
+            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Cancel'),
+                'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
+            ]);
 
-                    if ($op == 'copy') {
-                        $this->get('zikula_categories_module.copy_and_move_helper')->copyCategoriesByPath($category['ipath'], $formData['parent']);
+        $templateParameters = [
+            'category' => $category
+        ];
 
-                        $this->addFlash('status', $this->__f('Done! Copied the %s category.', ['%s' => $category['name']]));
-                    } elseif ($op == 'move') {
-                        $this->get('zikula_categories_module.copy_and_move_helper')->moveCategoriesByPath($category['ipath'], $formData['parent']);
+        if ($isDelete) {
+            $subCategories = $categoryApi->getSubCategories($cid, false, false);
+            $amountOfSubCategories = count($subCategories);
+            if ($amountOfSubCategories > 0) {
+                $builder->add('subcatAction', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+                    'label' => $this->__('Action for sub-categories'),
+                    'choices' => [
+                        $this->__('Delete all sub-categories') => 'delete',
+                        $this->__('Move all sub-categories into') => 'move'
+                    ],
+                    'choices_as_values' => true,
+                    'expanded' => true
+                ]);
+            }
+            $templateParameters['amountOfSubCategories'] = $amountOfSubCategories;
+        }
 
-                        $this->addFlash('status', $this->__f('Done! Moved the %s category.', ['%s' => $category['name']]));
+        if (!$isDelete || $amountOfSubCategories > 0) {
+            $builder->add('parent', 'Zikula\CategoriesModule\Form\Type\CategoryTreeType', [
+                'label' => $parentLabel,
+                'empty_data' => '/__SYSTEM__',
+                'translator' => $this->get('translator.default'),
+                'includeRoot' => true
+            ]);
+        }
+
+        $form = $builder->getForm();
+
+        if ($form->handleRequest($request)->isValid()) {
+            if ($form->get($op)->isClicked()) {
+                $formData = $form->getData();
+                $copyAndMoveHelper = $this->get('zikula_categories_module.copy_and_move_helper');
+
+                if ($isCopy) {
+                    $copyAndMoveHelper->copyCategoriesByPath($category['ipath'], $formData['parent']);
+                    $this->addFlash('status', $this->__f('Done! Copied the %s category.', ['%s' => $category['name']]));
+                } elseif ($isMove) {
+                    $copyAndMoveHelper->moveCategoriesByPath($category['ipath'], $formData['parent']);
+                    $this->addFlash('status', $this->__f('Done! Moved the %s category.', ['%s' => $category['name']]));
+                } elseif ($isDelete) {
+                    if ($amountOfSubCategories > 0) {
+                        if ($formData['subcatAction'] == 'delete') {
+                            // delete subdirectories
+                            $categoryApi->deleteCategoriesByPath($category['ipath']);
+                        } elseif ($formData['subcatAction'] == 'move') {
+                            // move subdirectories
+                            $copyAndMoveHelper->moveSubCategoriesByPath($category['ipath'], $formData['parent']);
+                            $categoryApi->deleteCategoryById($cid);
+                        }
                     }
+                    $this->addFlash('status', $this->__f('Done! Deleted the %s category.', ['%s' => $category['name']]));
                 }
-                if ($form->get('cancel')->isClicked()) {
-                    $this->addFlash('status', $this->__('Operation cancelled.'));
-                }
-
-                return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
+            }
+            if ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            $templateParameters = [
-                'category' => $category,
-                'form' => $form->createView()
-            ];
-        } else {
-            $subCats = $categoryApi->getSubCategories($cid, false, false);
-            $allCats = $categoryApi->getSubCategories($root_id, true, true, true, false, true, $cid);
-            $selector = $this->get('zikula_categories_module.html_tree_helper')->getSelector_Categories($allCats);
-
-            $templateParameters = [
-                'category' => $category,
-                'numSubcats' => count($subCats),
-                'categorySelector' => $selector,
-                'csrfToken' => $this->get('zikula_core.common.csrf_token_handler')->generate()
-            ];
+            return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
         }
+
+        $templateParameters['form'] = $form->createView();
 
         return $this->render('@ZikulaCategoriesModule/Admin/' . $op . '.html.twig', $templateParameters);
     }

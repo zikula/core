@@ -101,7 +101,7 @@ class UserformController extends AbstractController
         $dr = $request->request->request->getInt('dr', 0);
         $ref = $request->server->get('HTTP_REFERER');
 
-        $returnfunc = false !== strpos($ref, 'useredit') ? 'useredit' : 'edit';
+        $returnfunc = false !== strpos($ref, 'edituser') ? 'edituser' : 'edit';
         $url = $this->get('router')->generate('zikulacategoriesmodule_user_' . $returnfunc, ['dr' => $dr], RouterInterface::ABSOLUTE_URL);
 
         if (!$dr) {
