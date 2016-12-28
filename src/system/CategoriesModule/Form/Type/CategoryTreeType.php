@@ -53,7 +53,7 @@ class CategoryTreeType extends AbstractType
             'translator'
         ]);
         $resolver->setDefaults([
-            'translator' => null,
+            'translator' => new \Zikula\Common\Translator\IdentityTranslator(),
             'locale' => 'en',
             'choices_as_values' => true,
             'recurse' => true,
