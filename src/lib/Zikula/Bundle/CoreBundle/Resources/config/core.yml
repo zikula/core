@@ -59,7 +59,12 @@ services:
 
     zikula_core.common.csrf_token_handler:
         class: %zikula_core.common.csrf_token_handler.class%
-        arguments: ["@zikula_core.internal.token.generator", "@zikula_core.internal.token.validator", "@request_stack", "@zikula_extensions_module.api.variable", "@session"]
+        arguments:
+          - "@zikula_core.internal.token.generator"
+          - "@zikula_core.internal.token.validator"
+          - "@request_stack"
+          - "@zikula_extensions_module.api.variable"
+          - "@session"
 
     zikula_core.internal.clickjack_protection_listener:
         class: %zikula_core.internal.clickjack_protection_listener.class%
@@ -69,7 +74,14 @@ services:
 
     zikula_core.internal.site_off_listener:
         class: %zikula_core.internal.site_off_listener.class%
-        arguments: ["@zikula_extensions_module.api.variable", "@zikula_permissions_module.api.permission", "@zikula_users_module.current_user", "@templating", "@form.factory", "@router", "%installed%"]
+        arguments:
+          - "@zikula_extensions_module.api.variable"
+          - "@zikula_permissions_module.api.permission"
+          - "@zikula_users_module.current_user"
+          - "@templating"
+          - "@form.factory"
+          - "@router"
+          - "%installed%"
         tags:
             - { name: kernel.event_subscriber }
 
@@ -81,7 +93,14 @@ services:
 
     zikula_core.internal.exception_listener:
         class: %zikula_core.internal.exception_listener.class%
-        arguments: ["@?logger", "@router", "@event_dispatcher", "@zikula.cache_clearer", "@zikula_users_module.current_user", "%installed%"]
+        arguments:
+          - "@?logger"
+          - "@router"
+          - "@event_dispatcher"
+          - "@zikula.cache_clearer"
+          - "@zikula_users_module.current_user"
+          - "@zikula_permissions_module.api.permission"
+          - "%installed%"
         tags:
             - { name: kernel.event_subscriber }
             - { name: monolog.logger, channel: request }

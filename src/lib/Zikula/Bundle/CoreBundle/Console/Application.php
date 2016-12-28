@@ -64,6 +64,7 @@ class Application extends BaseApplication
     /**
      * Grants admin access for console commands (#1908).
      * This avoids subsequent permission problems from any components used.
+     * @deprecated remove at Core-2.0
      */
     protected function loginAsAdministrator()
     {
