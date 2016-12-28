@@ -19,6 +19,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Fixed reflection of updated values after editing permission rules (#3311).
     - Fixed event initialisation for newly added permission rules (#3317).
     - Allow display of legacy blocks (#3332).
+    - Several fixes for the Categories module (#3334).
 
  - Features:
     - ?
