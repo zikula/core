@@ -343,7 +343,7 @@ class CoreExtension extends \Twig_Extension
         if (empty($userDisplayName)) {
             $userDisplayName = $user->getUname();
         }
-        $class = !empty($class) ? ' class="' . htmlspecialchars($class, ENT_QUOTES) . '"': '';
+        $class = !empty($class) ? ' class="' . htmlspecialchars($class, ENT_QUOTES) . '"' : '';
 
         if (!empty($imagePath)) {
             $show = '<img src="' . htmlspecialchars($imagePath, ENT_QUOTES) . '" alt="' . htmlspecialchars($userDisplayName, ENT_QUOTES) . '" />';
