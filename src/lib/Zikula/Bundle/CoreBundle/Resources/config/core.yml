@@ -94,7 +94,6 @@ services:
     zikula_core.internal.exception_listener:
         class: %zikula_core.internal.exception_listener.class%
         arguments:
-          - "@?logger"
           - "@router"
           - "@event_dispatcher"
           - "@zikula.cache_clearer"
