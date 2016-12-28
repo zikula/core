@@ -31,7 +31,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Removed custom JS compression from Jenkins build in favor of AssetMerger service (#3272, #3250).
     - Template overrides are also considered in sub requests (e.g. embedding a Formicula form into a Content page) (#3234).
     - Implemented PasswordApi in ZAuthModule (#3175, #3289).
-    - Migrated Categories module to Symfony forms (#2924, #3334).
+    - Migrated many parts of the Categories module to Symfony forms (#2924, #3334).
 
  - Vendor updates:
     - afarkas/webshim installed at 1.16.0
