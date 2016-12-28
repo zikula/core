@@ -407,12 +407,11 @@ class AdminController extends AbstractController
         // process display names
         $data['display_name'] = $processingHelper->processCategoryDisplayName($data['display_name'], $data['name']);
 
+        $entityManager = $this->get('doctrine')->getManager();
         if ($mode == 'create') {
-            $entityManager = $this->get('doctrine')->getManager();
             $category = new CategoryEntity();
         } else {
             // get existing category
-            $entityManager = $this->get('doctrine')->getManager();
             $category = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $data['id']);
             if (null === $category) {
                 throw new NotFoundHttpException($this->__('Category not found.'));
