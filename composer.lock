@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "dff32c43cf91bf5344f83394afb5cb79",
+    "content-hash": "5d3a908f95bd1071d0e177640d40fc8a",
     "packages": [
         {
             "name": "abeautifulsite/jquery-minicolors",
@@ -4487,13 +4487,13 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Guite/Wizard.git",
-                "reference": "99e6b518bc69a8ec14c59c95008e201044380bba"
+                "url": "https://github.com/zikula/Wizard.git",
+                "reference": "232379014ca958f480780e3ae1a6d8684e82f1e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Guite/Wizard/zipball/99e6b518bc69a8ec14c59c95008e201044380bba",
-                "reference": "99e6b518bc69a8ec14c59c95008e201044380bba",
+                "url": "https://api.github.com/repos/zikula/Wizard/zipball/232379014ca958f480780e3ae1a6d8684e82f1e7",
+                "reference": "232379014ca958f480780e3ae1a6d8684e82f1e7",
                 "shasum": ""
             },
             "require": {
@@ -4506,6 +4506,7 @@
                     "Zikula\\Component\\Wizard\\": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -4518,16 +4519,13 @@
             "description": "Wizard for multi-stage interaction including Symfony Forms",
             "homepage": "http://zikula.org",
             "keywords": [
-                "forms",
+                "Forms",
+                "Symfony2",
                 "stage",
                 "step",
-                "symfony2",
                 "wizard"
             ],
-            "support": {
-                "source": "https://github.com/Guite/Wizard/tree/master"
-            },
-            "time": "2016-11-18 18:19:56"
+            "time": "2016-12-28 08:22:18"
         }
     ],
     "packages-dev": [
@@ -4537,13 +4535,13 @@
             "target-dir": "Zikula/Bundle/GeneratorBundle",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Guite/GeneratorBundle.git",
-                "reference": "9b1d9863e4a1427dea64e2903ac1296e55999c94"
+                "url": "https://github.com/zikula/GeneratorBundle.git",
+                "reference": "e39f6176e6b0eaf011f495236cdda3e2a3009289"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Guite/GeneratorBundle/zipball/9b1d9863e4a1427dea64e2903ac1296e55999c94",
-                "reference": "9b1d9863e4a1427dea64e2903ac1296e55999c94",
+                "url": "https://api.github.com/repos/zikula/GeneratorBundle/zipball/e39f6176e6b0eaf011f495236cdda3e2a3009289",
+                "reference": "e39f6176e6b0eaf011f495236cdda3e2a3009289",
                 "shasum": ""
             },
             "require": {
@@ -4567,6 +4565,7 @@
                     "Zikula\\Bundle\\GeneratorBundle\\": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -4581,10 +4580,7 @@
                 }
             ],
             "description": "This module generates code for you",
-            "support": {
-                "source": "https://github.com/Guite/GeneratorBundle/tree/master"
-            },
-            "time": "2016-11-18T18:35:37+00:00"
+            "time": "2016-12-28T08:22:40+00:00"
         }
     ],
     "aliases": [],

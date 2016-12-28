@@ -153,14 +153,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/corejavascript/typeahead.js"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/Guite/GeneratorBundle"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/Guite/Wizard"
         }
     ]
 }
