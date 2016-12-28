@@ -457,7 +457,7 @@ class AdminController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have permission to add a category
      */
-    public function newcatAction(Request $request)
+    public function savenewcatAction(Request $request)
     {
         $this->get('zikula_core.common.csrf_token_handler')->validate($request->request->get('csrfToken'));
 
