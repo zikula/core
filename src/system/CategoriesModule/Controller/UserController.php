@@ -72,7 +72,7 @@ class UserController extends AbstractController
     {
         @trigger_error('The zikulcategoriesmodule_user_main action is deprecated. please use the index action instead.', E_USER_DEPRECATED);
 
-        return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
+        return $this->redirectToRoute('zikulacategoriesmodule_user_index');
     }
 
     /**

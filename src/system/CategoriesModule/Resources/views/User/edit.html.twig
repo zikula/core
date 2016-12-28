@@ -59,7 +59,7 @@
                 {% if category.display_name|default or not catID %}
                 {% for language in languages %}
                     <div class="z-formlist">
-                        {% set displayName = category.display_name[language] %}
+                        {% set displayName = category.display_name[language]|default %}
                         <input id="category_display_name_{{ language }}" name="category[display_name][{{ language }}]" value="{{ displayName|e('html_attr') }}" type="text" class="form-control" size="50" maxlength="255" />
                         <label for="category_display_name_{{ language }}">({{ language }})</label>
                     </div>
@@ -73,7 +73,7 @@
                 {% if category.display_desc|default or not catID %}
                 {% for language in languages %}
                     <div class="z-formlist">
-                        {% set displayDesc = category.display_desc[language] %}
+                        {% set displayDesc = category.display_desc[language]|default %}
                         <textarea class="form-control" id="category_display_desc_{{ language }}" name="category[display_desc][{{ language }}]" rows="4" cols="56">{{ displayDesc }}</textarea>
                         <label for="category_display_desc_{{ language }}">({{ language }})</label>
                     </div>
