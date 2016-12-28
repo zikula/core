@@ -173,7 +173,7 @@ class ThemeController extends AbstractController
                 'label' => $this->__('Delete'),
                 'icon' => 'fa-trash-o',
                 'attr' => [
-                    'class' => 'btn btn-success'
+                    'class' => 'btn btn-danger'
                 ]
             ])
             ->add('cancel', SubmitType::class, [

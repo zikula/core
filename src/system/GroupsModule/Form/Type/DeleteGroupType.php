@@ -35,7 +35,7 @@ class DeleteGroupType extends AbstractType
                 'label' => $translator->__('Delete'),
                 'icon' => 'fa-trash-o',
                 'attr' => [
-                    'class' => 'btn btn-success'
+                    'class' => 'btn btn-danger'
                 ]
             ])
             ->add('cancel', SubmitType::class, [

@@ -156,7 +156,7 @@ class BlockController extends AbstractController
                 'label' => $this->__('Delete'),
                 'icon' => 'fa-trash-o',
                 'attr' => [
-                    'class' => 'btn btn-default'
+                    'class' => 'btn btn-danger'
                 ]
             ])
             ->add('cancel', SubmitType::class, [

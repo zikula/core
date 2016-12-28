@@ -63,7 +63,7 @@
         "phpids/phpids": "dev-master",
         "twig/extensions": "1.4.*",
         "vierbergenlars/php-semver": "~3.0",
-        "zikula/wizard": "dev-master",
+        "zikula/wizard": "1.4.*",
         "zikula/filesystem": "dev-master",
         "ircmaxell/random-lib": "1.*",
 

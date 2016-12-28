@@ -37,17 +37,24 @@ class CopyAndMoveHelper
     private $categoryApi;
 
     /**
+     * @var PathBuilderHelper
+     */
+    private $pathBuilder;
+
+    /**
      * CopyAndMoveHelper constructor.
      *
      * @param TranslatorInterface $translator    TranslatorInterface service instance
      * @param EntityManager       $entityManager EntityManager service instance
      * @param CategoryApi         $categoryApi   CategoryApi service instance
+     * @param PathBuilderHelper   $pathBuilder   PathBuilderHelper service instance
      */
-    public function __construct(TranslatorInterface $translator, EntityManager $entityManager, CategoryApi $categoryApi)
+    public function __construct(TranslatorInterface $translator, EntityManager $entityManager, CategoryApi $categoryApi, PathBuilderHelper $pathBuilder)
     {
         $this->translator = $translator;
         $this->entityManager = $entityManager;
         $this->categoryApi = $categoryApi;
+        $this->pathBuilder = $pathBuilder;
     }
 
     /**
@@ -265,10 +272,10 @@ class CopyAndMoveHelper
         $this->entityManager->flush();
 
         // rebuild iPath since now we have all new PathIDs
-        $this->categoryApi->rebuildPaths('ipath', 'id');
+        $this->pathBuilder->rebuildPaths('ipath', 'id');
 
         // rebuild also paths since names could be changed
-        $this->categoryApi->rebuildPaths();
+        $this->pathBuilder->rebuildPaths();
 
         return true;
     }

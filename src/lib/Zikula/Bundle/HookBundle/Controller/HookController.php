@@ -149,7 +149,7 @@ class HookController extends Controller
                 $hooksubscribers[$i]['areasToCategories'] = $hooksubscriberAreasToCategories;
             }
             $templateParameters['hooksubscribers'] = $hooksubscribers;
-            $templateParameters['total_available_subscriber_areas'] = $$amountOfAvailableSubscriberAreas;
+            $templateParameters['total_available_subscriber_areas'] = $amountOfAvailableSubscriberAreas;
         } else {
             $templateParameters['total_available_subscriber_areas'] = 0;
         }
@@ -289,6 +289,7 @@ class HookController extends Controller
         if (empty($subscriber)) {
             throw new \InvalidArgumentException($this->get('translator.default')->__f('Module "%s" is not a valid subscriber.', $subscriber));
         }
+        // @todo @deprecated in Core-2.0 use `$this->get('kernel')->isBundle($subscriber)`
         if (!\ModUtil::available($subscriber)) {
             throw new \RuntimeException($this->get('translator.default')->__f('Subscriber module "%s" is not available.', $subscriber));
         }
@@ -307,6 +308,7 @@ class HookController extends Controller
         if (empty($provider)) {
             throw new \InvalidArgumentException($this->get('translator.default')->__f('Module "%s" is not a valid provider.', $provider));
         }
+        // @todo @deprecated in Core-2.0 use `$this->get('kernel')->isBundle($provider)`
         if (!\ModUtil::available($provider)) {
             throw new \RuntimeException($this->get('translator.default')->__f('Provider module "%s" is not available.', $provider));
         }
@@ -369,6 +371,7 @@ class HookController extends Controller
         if (empty($subscriber)) {
             throw new \InvalidArgumentException($this->get('translator.default')->__f('Module "%s" is not a valid subscriber.', $subscriber));
         }
+        // @todo @deprecated in Core-2.0 use `$this->get('kernel')->isBundle($subscriber)`
         if (!\ModUtil::available($subscriber)) {
             throw new \RuntimeException($this->get('translator.default')->__f('Subscriber module "%s" is not available.', $subscriber));
         }

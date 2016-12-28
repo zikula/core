@@ -11,7 +11,6 @@
 
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
-use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -27,22 +26,46 @@ use Zikula\UsersModule\Api\CurrentUserApi;
  */
 class ExceptionListener implements EventSubscriberInterface
 {
-    private $logger;
+    /**
+     * @var RouterInterface
+     */
     private $router;
+
+    /**
+     * @var EventDispatcherInterface
+     */
     private $dispatcher;
+
+    /**
+     * @var CacheClearer
+     */
     private $cacheClearer;
+
+    /**
+     * @var CurrentUserApi
+     */
     private $currentUserApi;
+
+    /**
+     * @var bool
+     */
     private $installed;
 
+    /**
+     * ExceptionListener constructor.
+     * @param RouterInterface $router
+     * @param EventDispatcherInterface $dispatcher
+     * @param CacheClearer $cacheClearer
+     * @param CurrentUserApi $currentUserApi
+     * @param bool $installed
+     */
     public function __construct(
-        LoggerInterface $logger = null,
-        RouterInterface $router = null,
-        EventDispatcherInterface $dispatcher = null,
+        RouterInterface $router,
+        EventDispatcherInterface $dispatcher,
         CacheClearer $cacheClearer,
         CurrentUserApi $currentUserApi,
         $installed
     ) {
-        $this->logger = $logger;
         $this->router = $router;
         $this->dispatcher = $dispatcher;
         $this->cacheClearer = $cacheClearer;
