@@ -23,7 +23,7 @@ services:
 
     hook_dispatcher.storage:
         class: Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\DoctrineStorage
-        arguments: ["@doctrine.orm.default_entity_manager"]
+        arguments: ["@doctrine.orm.default_entity_manager", "@session", "@translator.default"]
 
     hook_dispatcher.servicefactory:
         class: Zikula\Bundle\HookBundle\Dispatcher\ServiceFactory

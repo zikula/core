@@ -56,6 +56,7 @@ class HookController extends Controller
 
         // create an instance of the module's version
         // we will use it to get the bundles
+        // @todo @deprecated in Core-2.0 use `$bundle->getMetaData()` and assume instance of MetaData
         $moduleVersionObj = ExtensionsUtil::getVersionMeta($moduleName);
         if ($moduleVersionObj instanceof MetaData) {
             // Core-2.0 Spec module
@@ -133,6 +134,7 @@ class HookController extends Controller
                 }
 
                 // create an instance of the subscriber's version
+                // @todo @deprecated in Core-2.0 use `$bundle->getMetaData()` and assume instance of MetaData
                 $hooksubscriberVersionObj = ExtensionsUtil::getVersionMeta($hooksubscribers[$i]['name']);
                 if ($hooksubscriberVersionObj instanceof MetaData) {
                     // Core-2.0 Spec module
@@ -160,7 +162,7 @@ class HookController extends Controller
                 $hooksubscribers[$i]['areasToCategories'] = $hooksubscriberAreasToCategories;
             }
             $templateParameters['hooksubscribers'] = $hooksubscribers;
-            $templateParameters['total_available_subscriber_areas'] = $$amountOfAvailableSubscriberAreas;
+            $templateParameters['total_available_subscriber_areas'] = $amountOfAvailableSubscriberAreas;
         } else {
             $templateParameters['total_available_subscriber_areas'] = 0;
         }
@@ -194,6 +196,7 @@ class HookController extends Controller
                     $sbaProviderModule = $this->get('hook_dispatcher')->getOwnerByArea($areaname);
 
                     // create an instance of the provider's version
+                    // @todo @deprecated in Core-2.0 use `$bundle->getMetaData()` and assume instance of MetaData
                     $sbaProviderModuleVersionObj = ExtensionsUtil::getVersionMeta($sbaProviderModule);
                     if ($sbaProviderModuleVersionObj instanceof MetaData) {
                         // Core-2.0 Spec module
@@ -229,6 +232,7 @@ class HookController extends Controller
                 }
 
                 // create an instance of the provider's version
+                // @todo @deprecated in Core-2.0 use `$bundle->getMetaData()` and assume instance of MetaData
                 $hookproviderVersionObj = ExtensionsUtil::getVersionMeta($hookproviders[$i]['name']);
                 if ($hookproviderVersionObj instanceof MetaData) {
                     // Core-2.0 Spec module
@@ -308,6 +312,7 @@ class HookController extends Controller
         if (empty($subscriber)) {
             throw new \InvalidArgumentException($this->get('translator.default')->__f('Module "%s" is not a valid subscriber.', $subscriber));
         }
+        // @todo @deprecated in Core-2.0 use `$this->get('kernel')->isBundle($subscriber)`
         if (!\ModUtil::available($subscriber)) {
             throw new \RuntimeException($this->get('translator.default')->__f('Subscriber module "%s" is not available.', $subscriber));
         }
@@ -326,6 +331,7 @@ class HookController extends Controller
         if (empty($provider)) {
             throw new \InvalidArgumentException($this->get('translator.default')->__f('Module "%s" is not a valid provider.', $provider));
         }
+        // @todo @deprecated in Core-2.0 use `$this->get('kernel')->isBundle($provider)`
         if (!\ModUtil::available($provider)) {
             throw new \RuntimeException($this->get('translator.default')->__f('Provider module "%s" is not available.', $provider));
         }
@@ -388,6 +394,7 @@ class HookController extends Controller
         if (empty($subscriber)) {
             throw new \InvalidArgumentException($this->get('translator.default')->__f('Module "%s" is not a valid subscriber.', $subscriber));
         }
+        // @todo @deprecated in Core-2.0 use `$this->get('kernel')->isBundle($subscriber)`
         if (!\ModUtil::available($subscriber)) {
             throw new \RuntimeException($this->get('translator.default')->__f('Subscriber module "%s" is not available.', $subscriber));
         }
