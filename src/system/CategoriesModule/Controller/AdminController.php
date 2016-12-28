@@ -363,7 +363,6 @@ class AdminController extends AbstractController
             $data['status'] = 'I';
         }
 
-
         $args = [];
         if ($mode != 'create') {
             foreach (['copy', 'move', 'delete'] as $op) {
