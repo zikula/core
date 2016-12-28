@@ -336,28 +336,4 @@ class AdminformController extends AbstractController
 
         return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
     }
-
-    /**
-     * @Route("/rebuild")
-     *
-     * Rebuilds path structure.
-     *
-     * @return RedirectResponse
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
-     */
-    public function rebuildPathsAction()
-    {
-        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
-        $pathBuilder = $this->get('zikula_categories_module.path_builder_helper');
-        $pathBuilder->rebuildPaths('path', 'name');
-        $pathBuilder->rebuildPaths('ipath', 'id');
-
-        $this->addFlash('status', $this->__('Done! Rebuilt the category paths.'));
-
-        return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
-    }
 }

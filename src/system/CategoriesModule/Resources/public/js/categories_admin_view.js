@@ -248,9 +248,9 @@
         var deleteModal = $('#categoryDeleteModal');
 
         if (subCats > 0) {
-            deleteModal.find('#cat_delete').hide();
-            deleteModal.find('#cat_delete_all').show();
-            deleteModal.find('#cat_delete_move').show();
+            deleteModal.find('#cat_delete').addClass('hidden');
+            deleteModal.find('#cat_delete_all').removeClass('hidden');
+            deleteModal.find('#cat_delete_move').removeClass('hidden');
         }
         $('#subcat_move').remove();
 
@@ -276,8 +276,8 @@
                         }).success(function(result) {
                             var subcat_move = result.data.result;
                             deleteModal.find('.modal-body').append(subcat_move);
-                            deleteModal.find('#cat_delete_move').hide();
-                            deleteModal.find('#cat_delete_move_action').show();
+                            deleteModal.find('#cat_delete_move').addClass('hidden');
+                            deleteModal.find('#cat_delete_move_action').removeClass('hidden');
                         }).error(function(result) {
                             alert(result.status + ': ' + result.statusText);
                         }).always(function() {
@@ -300,10 +300,10 @@
         deleteModal.modal();
         deleteModal.on('hidden.bs.modal', function (e) {
             // reset modal to initial state
-            deleteModal.find('#cat_delete').show();
-            deleteModal.find('#cat_delete_all').hide();
-            deleteModal.find('#cat_delete_move').hide();
-            deleteModal.find('#cat_delete_move_action').hide();
+            deleteModal.find('#cat_delete').removeClass('hidden');
+            deleteModal.find('#cat_delete_all').addClass('hidden');
+            deleteModal.find('#cat_delete_move').addClass('hidden');
+            deleteModal.find('#cat_delete_move_action').addClass('hidden');
             $('#button-spinner').remove();
             $('#subcat_move').remove();
         });

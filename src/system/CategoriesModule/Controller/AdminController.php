@@ -94,23 +94,56 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/rebuild")
-     * @Method("GET")
      * @Template
      *
      * Displays page for rebuilding pathes.
+     *
+     * @param Request $request
      *
      * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have administrative permission for this module
      */
-    public function rebuildAction()
+    public function rebuildAction(Request $request)
     {
         if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
+        $form = $this->createFormBuilder()
+            ->add('rebuild', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Rebuild paths'),
+                'icon' => 'fa-refresh',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
+            ])
+            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Cancel'),
+                'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
+            ])
+            ->getForm();
+
+        if ($form->handleRequest($request)->isValid()) {
+            if ($form->get('rebuild')->isClicked()) {
+                $pathBuilder = $this->get('zikula_categories_module.path_builder_helper');
+                $pathBuilder->rebuildPaths('path', 'name');
+                $pathBuilder->rebuildPaths('ipath', 'id');
+
+                $this->addFlash('status', $this->__('Done! Rebuilt the category paths.'));
+            }
+            if ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', $this->__('Operation cancelled.'));
+            }
+
+            return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
+        }
+
         return [
-            'csrfToken' => $this->get('zikula_core.common.csrf_token_handler')->generate()
+            'form' => $form->createView()
         ];
     }
 
@@ -205,7 +238,7 @@ class AdminController extends AbstractController
             }
         }
 
-        $selector = $this->get('zikula_categories_module.html_tree_helper')->getSelector($allCats, 'id',
+        $selector = $this->get('zikula_categories_module.html_tree_helper')->getSelector_Categories($allCats, 'id',
             (isset($editCat['parent_id']) ? $editCat['parent_id'] : 0),
             'category[parent_id]',
             isset($defaultValue) ? $defaultValue : null,
@@ -322,7 +355,7 @@ class AdminController extends AbstractController
         $category = $categoryApi->getCategoryById($cid);
         $subCats = $categoryApi->getSubCategories($cid, false, false);
         $allCats = $categoryApi->getSubCategories($root_id, true, true, true, false, true, $cid);
-        $selector = $this->get('zikula_categories_module.html_tree_helper')->getSelector($allCats);
+        $selector = $this->get('zikula_categories_module.html_tree_helper')->getSelector_Categories($allCats);
         $processingHelper = $this->get('zikula_categories_module.category_processing_helper');
 
         if ($op == 'delete' || $op == 'move') {

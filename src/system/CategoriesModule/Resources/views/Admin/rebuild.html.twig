@@ -1,22 +1,26 @@
+{% form_theme form with [
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
 {{ adminHeader() }}
-<h3>
-    <span class="fa fa-refresh"></span>
-    {{ __('Rebuild paths') }}
-    {{ pageSetVar('title', __('Rebuild paths')) }}
-</h3>
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-refresh"></span> {{ __('Rebuild paths') }}
+            {{ pageSetVar('title', __('Rebuild paths')) }}
+        </h3>
 
-<p class="alert alert-warning">{{ __('Are you sure you want to rebuild all the internal paths for categories?') }}&nbsp;{{ __('Warning! If you have a large number of categories then this action may time out, or may exceed the memory limit configured within your PHP installation.') }}</p>
+        <p class="alert alert-warning">{{ __('Are you sure you want to rebuild all the internal paths for categories?') }}&nbsp;{{ __('Warning! If you have a large number of categories then this action may time out, or may exceed the memory limit configured within your PHP installation.') }}</p>
 
-<form class="form-horizontal" role="form" action="{{ path('zikulacategoriesmodule_adminform_rebuildpaths') }}" method="post" enctype="application/x-www-form-urlencoded">
-    <fieldset>
-        <legend>{{ __('Confirmation prompt') }}</legend>
-        <input type="hidden" name="csrftoken" value="{{ csrfToken }}" />
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-9">
-                <button class="btn btn-success" title="{{ __('Rebuild paths') }}"><i class="fa fa-refresh"></i> {{ __('Rebuild paths') }}</button>
-                <a class="btn btn-default" href="{{ path('zikulacategoriesmodule_admin_view') }}" title="{{ __('Cancel') }}"><i class="fa fa-times"></i> {{ __('Cancel') }}</a>
+                {{ form_widget(form.rebuild) }}
+                {{ form_widget(form.cancel) }}
             </div>
         </div>
-    </fieldset>
-</form>
+        {{ form_end(form) }}
+    </div>
+</div>
 {{ adminFooter() }}
