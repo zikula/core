@@ -20,7 +20,7 @@
 
 <h3><i class="fa fa-{{ category ? 'pencil' : 'plus' }}"></i> {{ templateTitle }}</h3>
 
-<form class="form-horizontal" role="form" action="{{ path('zikulacategoriesmodule_user_' ~ (category ? 'update' : 'newcat')) }}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{{ path('zikulacategoriesmodule_user_update') }}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset>
         <legend>{{ __('Category') }}</legend>
         <input type="hidden" name="csrftoken" value="{{ csrfToken }}" />
@@ -28,6 +28,7 @@
         <input type="hidden" name="category[parent_id]" value="{{ rootCat.id }}" />
         <input type="hidden" name="category[is_locked]" value="0" />
         <input type="hidden" name="category[is_leaf]" value="1" />
+        <input type="hidden" name="mode" value="{% if category %}edit{% else %}create{% endif %}" />
         {% set catID = category.id|default %}
         {% if catID %}
             <input type="hidden" name="category[id]" value="{{ category.id }}" />
