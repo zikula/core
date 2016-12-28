@@ -48,7 +48,6 @@
         "elao/web-profiler-extra-bundle" : "~2.3.3",
         "matthiasnoback/symfony-service-definition-validator": "1.2.*",
         "matthiasnoback/symfony-console-form": "1.*",
-        "zikula/generator-bundle": "dev-master",
 
 
         "jms/i18n-routing-bundle": "2.0.0",
@@ -95,6 +94,9 @@
         "oyejorge/less.php": "dev-master",
         "knplabs/knp-menu-bundle": "^2.0",
         "liip/imagine-bundle": "^1.6.0"
+    },
+    "require-dev": {
+        "zikula/generator-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
