@@ -363,12 +363,7 @@ class UserController extends AbstractController
         }
 
         $cid = $request->query->getInt('cid', 0);
-        $dr = $request->query->getInt('dr', 0);
         $url = $request->server->get('HTTP_REFERER');
-
-        if (!$dr) {
-            throw new \InvalidArgumentException($this->__('Error! The document root is invalid.'));
-        }
 
         if (!$cid) {
             throw new \InvalidArgumentException($this->__('Error! The category ID is invalid.'));
@@ -383,7 +378,6 @@ class UserController extends AbstractController
         }
 
         if ($category['is_locked']) {
-            //! %1$s is the id, %2$s is the name
             $this->addFlash('error', $this->__f('Notice: The administrator has locked the category \'%category\' (ID \'%id\'). You cannot edit or delete it.', ['%category' => $category['name'], '%id' => $cid]));
 
             return new RedirectResponse(System::normalizeUrl($url));
@@ -419,12 +413,12 @@ class UserController extends AbstractController
         $dr = $request->request->request->getInt('dr', 0);
         $ref = $request->server->get('HTTP_REFERER');
 
-        $returnfunc = false !== strpos($ref, 'edituser') ? 'edituser' : 'edit';
-        $url = $this->get('router')->generate('zikulacategoriesmodule_user_' . $returnfunc, ['dr' => $dr], RouterInterface::ABSOLUTE_URL);
-
         if (!$dr) {
             throw new \InvalidArgumentException($this->__('Error! The document root is invalid.'));
         }
+
+        $returnfunc = false !== strpos($ref, 'edituser') ? 'edituser' : 'edit';
+        $url = $this->get('router')->generate('zikulacategoriesmodule_user_' . $returnfunc, ['dr' => $dr], RouterInterface::ABSOLUTE_URL);
 
         // get data from post
         $data = $request->request->get('category', null);

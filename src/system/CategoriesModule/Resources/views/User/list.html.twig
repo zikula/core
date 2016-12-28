@@ -67,7 +67,7 @@
                     <i class="fa fa-lock" title="{{ __('Category is locked') }}"></i>
                 {% else %}
                     {% set delPrompt = __f("Do you really want to delete the category '%catName'?", { '%catName': cat.name }) %}
-                    <a href="{{ path('zikulacategoriesmodule_user_delete', { dr: rootCat.id, cid: cat.id }) }}" onclick="return confirm('{{ delPrompt|e('js') }}');">
+                    <a href="{{ path('zikulacategoriesmodule_user_delete', { cid: cat.id }) }}" onclick="return confirm('{{ delPrompt|e('js') }}');">
                         <i class="fa fa-trash" title="{{ __('Delete') }}"></i>
                     </a>
                 {% endif %}
