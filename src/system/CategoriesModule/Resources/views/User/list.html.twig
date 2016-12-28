@@ -43,14 +43,14 @@
             {% endif %}
             <td class="text-center">
                 {% if not loop.last %}
-                    <a href="{{ path('zikulacategoriesmodule_userform_movefield', { dr: rootCat.id, cid: cat.id, direction: 'down', append: '#top' }) }}"><i class="fa fa-arrow-down" title="{{ __('Down') }}"></i></a>
+                    <a href="{{ path('zikulacategoriesmodule_user_movefield', { dr: rootCat.id, cid: cat.id, direction: 'down', append: '#top' }) }}"><i class="fa fa-arrow-down" title="{{ __('Down') }}"></i></a>
                 {% else %}
                     &nbsp;
                 {% endif %}
             </td>
             <td class="text-center">
                 {% if not loop.first %}
-                    <a href="{{ path('zikulacategoriesmodule_userform_movefield', { dr: rootCat.id, cid: cat.id, direction: 'up', append: '#top' }) }}"><i class="fa fa-arrow-up" title="{{ __('Up') }}"></i></a>
+                    <a href="{{ path('zikulacategoriesmodule_user_movefield', { dr: rootCat.id, cid: cat.id, direction: 'up', append: '#top' }) }}"><i class="fa fa-arrow-up" title="{{ __('Up') }}"></i></a>
                 {% else %}
                     &nbsp;
                 {% endif %}
@@ -63,10 +63,14 @@
                 {% endif %}
             </td>
             <td class="text-center">
-                {% set delPrompt = __f("Do you really want to delete the category '%catName'?", { '%catName': cat.name }) %}
-                <a href="{{ path('zikulacategoriesmodule_userform_delete', { dr: rootCat.id, cid: cat.id }) }}" onclick="return confirm('{{ delPrompt|e('js') }}');">
-                    <i clas="fa fa-trash" title="{{ __('Delete') }}"></i>
-                </a>
+                {% if cat.is_locked %}
+                    <i class="fa fa-lock" title="{{ __('Category is locked') }}"></i>
+                {% else %}
+                    {% set delPrompt = __f("Do you really want to delete the category '%catName'?", { '%catName': cat.name }) %}
+                    <a href="{{ path('zikulacategoriesmodule_user_delete', { cid: cat.id }) }}" onclick="return confirm('{{ delPrompt|e('js') }}');">
+                        <i class="fa fa-trash" title="{{ __('Delete') }}"></i>
+                    </a>
+                {% endif %}
             </td>
         </tr>
     </tbody>

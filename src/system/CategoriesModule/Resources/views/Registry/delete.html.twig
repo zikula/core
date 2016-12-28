@@ -6,17 +6,22 @@
 <div class="container-fluid">
     <div class="row">
         <h3>
-            <span class="fa fa-refresh"></span> {{ __('Rebuild paths') }}
-            {{ pageSetVar('title', __('Rebuild paths')) }}
+            <span class="fa fa-trash-o"></span> {{ __('Delete registry entry') }}
+            {{ pageSetVar('title', __('Delete registry entry')) }}
         </h3>
 
-        <p class="alert alert-warning">{{ __('Are you sure you want to rebuild all the internal paths for categories?') }}&nbsp;{{ __('Warning! If you have a large number of categories then this action may time out, or may exceed the memory limit configured within your PHP installation.') }}</p>
+        <p class="alert alert-warning">
+            {{ __('Do you really want to delete this registry entry?') }}<br />
+            {{ __('Module') }}: <strong>{{ registry.modname }}</strong><br />
+            {{ __('Entity') }}: <strong>{{ registry.entityname }}</strong><br />
+            {{ __('Property name') }}: <strong>{{ registry.property }}</strong>
+        </p>
 
         {{ form_start(form) }}
         {{ form_errors(form) }}
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-9">
-                {{ form_widget(form.rebuild) }}
+                {{ form_widget(form.delete) }}
                 {{ form_widget(form.cancel) }}
             </div>
         </div>
