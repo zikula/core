@@ -41,7 +41,7 @@ class AdminController extends AbstractController
      */
     public function mainAction()
     {
-        @trigger_error('The zikulcategoriesmodule_admin_main action is deprecated. please use zikulacategoriesmodule_admin_view instead.', E_USER_DEPRECATED);
+        @trigger_error('The zikulacategoriesmodule_admin_main action is deprecated. please use zikulacategoriesmodule_admin_view instead.', E_USER_DEPRECATED);
 
         return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
     }
@@ -55,7 +55,7 @@ class AdminController extends AbstractController
      */
     public function indexAction()
     {
-        @trigger_error('The zikulcategoriesmodule_admin_index route is deprecated. please use zikulacategoriesmodule_admin_view instead.', E_USER_DEPRECATED);
+        @trigger_error('The zikulacategoriesmodule_admin_index route is deprecated. please use zikulacategoriesmodule_admin_view instead.', E_USER_DEPRECATED);
 
         return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
     }
@@ -253,7 +253,7 @@ class AdminController extends AbstractController
      */
     public function editregistryAction(Request $request)
     {
-        @trigger_error('The zikulcategoriesmodule_admin_editregistry action is deprecated. please use zikulacategoriesmodule_registry_edit instead.', E_USER_DEPRECATED);
+        @trigger_error('The zikulacategoriesmodule_admin_editregistry action is deprecated. please use zikulacategoriesmodule_registry_edit instead.', E_USER_DEPRECATED);
 
         return $this->redirectToRoute('zikulacategoriesmodule_registry_edit', $request->query->all());
     }
@@ -271,7 +271,7 @@ class AdminController extends AbstractController
      */
     public function deleteregistryAction(Request $request)
     {
-        @trigger_error('The zikulcategoriesmodule_admin_deleteregistry action is deprecated. please use zikulacategoriesmodule_registry_delete instead.', E_USER_DEPRECATED);
+        @trigger_error('The zikulacategoriesmodule_admin_deleteregistry action is deprecated. please use zikulacategoriesmodule_registry_delete instead.', E_USER_DEPRECATED);
 
         return $this->redirectToRoute('zikulacategoriesmodule_registry_delete', $request->query->all());
     }
@@ -364,7 +364,7 @@ class AdminController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        @trigger_error('The zikulcategoriesmodule_admin_preferences route is deprecated. please use zikulacategoriesmodule_config_config instead.', E_USER_DEPRECATED);
+        @trigger_error('The zikulacategoriesmodule_admin_preferences route is deprecated. please use zikulacategoriesmodule_config_config instead.', E_USER_DEPRECATED);
 
         return $this->redirectToRoute('zikulacategoriesmodule_config_config');
     }
