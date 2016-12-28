@@ -5,6 +5,7 @@ parameters:
     zikula_categories_module.api.category_registry.class: Zikula\CategoriesModule\Api\CategoryRegistryApi
     zikula_categories_module.api.user_categories.class: Zikula\CategoriesModule\Api\UserCategoriesApi
     zikula_categories_module.form_type.categories_type.class: Zikula\CategoriesModule\Form\Type\CategoriesType
+    zikula_categories_module.form_type.category_tree_type.class: Zikula\CategoriesModule\Form\Type\CategoryTreeType
     zikula_categories_module.form_type.config_type.class: Zikula\CategoriesModule\Form\Type\ConfigType
     zikula_categories_module.category_processing_helper.class: Zikula\CategoriesModule\Helper\CategoryProcessingHelper
     zikula_categories_module.category_sorting_helper.class: Zikula\CategoriesModule\Helper\CategorySortingHelper
@@ -73,6 +74,12 @@ services:
     zikula_categories_module.form_type.categories_type:
         class: %zikula_categories_module.form_type.categories_type.class%
         arguments: ["@zikula_categories_module.api.category_registry"]
+        tags:
+            - { name: form.type }
+
+    zikula_categories_module.form_type.category_tree_type:
+        class: %zikula_categories_module.form_type.category_tree_type.class%
+        arguments: ["@zikula_categories_module.api.category"]
         tags:
             - { name: form.type }
 

@@ -209,8 +209,8 @@ class AdminController extends AbstractController
                 $category = new CategoryEntity(); // need this for validation info
             } elseif (count($validationErrors) > 0) {
                 // if we're back from validation get the posted data from session
-                $newCatActionData = \SessionUtil::getVar('newCatActionData');
-                \SessionUtil::delVar('newCatActionData');
+                $newCatActionData = $request->getSession()->get('newCatActionData');
+                $request->getSession()->del('newCatActionData');
                 $editCat = new CategoryEntity();
                 $editCat = $editCat->toArray();
                 $editCat = array_merge($editCat, $newCatActionData);

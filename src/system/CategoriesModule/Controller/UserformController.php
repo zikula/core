@@ -44,8 +44,8 @@ class UserformController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $cid = (int)$request->query->get('cid', 0);
-        $dr = (int)$request->query->get('dr', 0);
+        $cid = $request->query->getInt('cid', 0);
+        $dr = $request->query->getInt('dr', 0);
         $url = $request->server->get('HTTP_REFERER');
 
         if (!$dr) {
@@ -98,7 +98,7 @@ class UserformController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $dr = (int)$request->request->request->get('dr', 0);
+        $dr = $request->request->request->getInt('dr', 0);
         $ref = $request->server->get('HTTP_REFERER');
 
         $returnfunc = false !== strpos($ref, 'useredit') ? 'useredit' : 'edit';
@@ -253,7 +253,7 @@ class UserformController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $dr = (int)$request->request->get('dr', 0);
+        $dr = $request->request->getInt('dr', 0);
         $url = $request->server->get('HTTP_REFERER');
 
         if (!$dr) {
