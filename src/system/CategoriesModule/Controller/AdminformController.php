@@ -258,42 +258,6 @@ class AdminformController extends AbstractController
     }
 
     /**
-     * @Route("/copy")
-     * @Method("POST")
-     *
-     * Copies a category.
-     *
-     * @param Request $request
-     *
-     * @return RedirectResponse
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have permission to add a category
-     */
-    public function copyAction(Request $request)
-    {
-        $this->get('zikula_core.common.csrf_token_handler')->validate($request->request->get('csrfToken'));
-
-        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADD)) {
-            throw new AccessDeniedException();
-        }
-
-        if ($request->request->get('category_cancel', null)) {
-            return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
-        }
-
-        $cid = $request->request->get('cid', null);
-        $cat = $this->get('zikula_categories_module.api.category')->getCategoryByID($cid);
-
-        $data = $request->request->get('category', null);
-
-        $this->get('zikula_categories_module.copy_and_move_helper')->copyCategoriesByPath($cat['ipath'], $data['parent_id']);
-
-        $this->addFlash('status', $this->__f('Done! Copied the %s category.', ['%s' => $cat['name']]));
-
-        return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
-    }
-
-    /**
      * @Route("/move")
      * @Method("POST")
      *

@@ -55,31 +55,37 @@ class CategoryTreeType extends AbstractType
         $resolver->setDefaults([
             'translator' => null,
             'locale' => 'en',
-            'choices_as_values' => true
+            'choices_as_values' => true,
+            'recurse' => true,
+            'relative' => true,
+            'includeRoot' => false,
+            'includeLeaf' => false,
+            'all' => false,
+            'valueField' => 'id'
         ]);
+        $resolver->setAllowedTypes('recurse', 'bool');
+        $resolver->setAllowedTypes('relative', 'bool');
+        $resolver->setAllowedTypes('includeRoot', 'bool');
+        $resolver->setAllowedTypes('includeLeaf', 'bool');
+        $resolver->setAllowedTypes('all', 'bool');
+        $resolver->setAllowedTypes('valueField', 'string');
 
         $resolver->setNormalizer('label', function (Options $options, $label) {
             if (null === $label || empty($label)) {
                 $isMultiple = $options['multiple'];
                 $translator = $options['translator'];
 
-                if (null === $translator) {
-                    $label = $isMultiple ? 'Categories' : 'Category';
-                } else {
-                    $label = $isMultiple ? $translator->__('Categories') : $translator->__('Category');
-                }
+                $label = $isMultiple ? $translator->__('Categories') : $translator->__('Category');
             }
 
             return $label;
         });
         $resolver->setNormalizer('placeholder', function (Options $options, $placeholder) {
-            if (null == $placeholder || empty($placeholder)) {
-                $isMultiple = $options['multiple'];
-                $translator = $options['translator'];
+            if (!$options['required']) {
+                if (null == $placeholder || empty($placeholder)) {
+                    $isMultiple = $options['multiple'];
+                    $translator = $options['translator'];
 
-                if (null === $translator) {
-                    $placeholder = $isMultiple ? 'Choose categories' : 'Choose a category';
-                } else {
                     $placeholder = $isMultiple ? $translator->__('Choose categories') : $translator->__('Choose a category');
                 }
             }
@@ -88,7 +94,7 @@ class CategoryTreeType extends AbstractType
         });
         $resolver->setNormalizer('choices', function (Options $options, $choices) {
             if (empty($choices)) {
-                $choices = $this->getCategoryChoices($options['locale']);
+                $choices = $this->getCategoryChoices($options);
             }
 
             return $choices;
@@ -109,16 +115,17 @@ class CategoryTreeType extends AbstractType
      * @param string $locale
      * @return array
      */
-    private function getCategoryChoices($locale = '')
+    private function getCategoryChoices($options)
     {
         $choices = [];
+        $locale = $options['locale'];
 
-        // TODO expose these flags as form options maybe
-        $recurse = true;
-        $relative = true;
-        $includeRoot = false;
-        $includeLeaf = false;
-        $all = false;
+        $recurse = isset($options['recurse']) ? $options['recurse'] : true;
+        $relative = isset($options['relative']) ? $options['relative'] : true;
+        $includeRoot = isset($options['includeRoot']) ? $options['includeRoot'] : false;
+        $includeLeaf = isset($options['includeLeaf']) ? $options['includeLeaf'] : false;
+        $all = isset($options['all']) ? $options['all'] : false;
+        $valueField = isset($options['valueField']) ? $options['valueField'] : 'id';
 
         $category = $this->categoryApi->getCategoryById(1);
         $categoryList = $this->categoryApi->getSubCategoriesForCategory($category, $recurse, $relative, $includeRoot, $includeLeaf);
@@ -137,7 +144,7 @@ class CategoryTreeType extends AbstractType
                 $catName = $cat['name'];
             }
 
-            $choices[$indent . ' ' . $catName] = $cat['path'];
+            $choices[$indent . ' ' . $catName] = $cat[$valueField];
         }
 
         return $choices;
