@@ -24,6 +24,7 @@ CHANGELOG - ZIKULA 1.4.x
     - ?
 
  - Core-2.0 Features:
+    - Added new category apis (#3208, #3215).
     - Convert all service definitions from xml to yml (#3269, #3217).
     - Fetch Webshim (vendor) using composer (#3271, #3262).
     - Removed custom JS compression from Jenkins build in favor of AssetMerger service (#3272, #3250).
