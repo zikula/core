@@ -65,6 +65,11 @@ class ZikulaJsFileExtractor implements FileVisitorInterface
         }
     }
 
-    public function visitPhpFile(\SplFileInfo $file, MessageCatalogue $catalogue, array $ast) { }
-    public function visitTwigFile(\SplFileInfo $file, MessageCatalogue $catalogue, \Twig_Node $node) { }
+    public function visitPhpFile(\SplFileInfo $file, MessageCatalogue $catalogue, array $ast)
+    {
+    }
+
+    public function visitTwigFile(\SplFileInfo $file, MessageCatalogue $catalogue, \Twig_Node $node)
+    {
+    }
 }
