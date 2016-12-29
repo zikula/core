@@ -27,8 +27,14 @@ use Zikula\ThemeModule\Engine\Engine;
  */
 class DefaultPageAssetSetterListener implements EventSubscriberInterface
 {
+    /**
+     * @var AssetBag
+     */
     private $cssAssetBag;
 
+    /**
+     * @var AssetBag
+     */
     private $jsAssetBag;
 
     /**
@@ -41,14 +47,38 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
      */
     private $themeEngine;
 
+    /**
+     * @var string
+     */
     private $rootdir;
 
+    /**
+     * @var array
+     */
     private $params;
 
+    /**
+     * @var bool
+     */
     private $compatLayer;
 
-    public function __construct(AssetBag $jsAssetBag, AssetBag $cssAssetBag, RouterInterface $router, Engine $themeEngine, $rootdir, $compatLayer)
-    {
+    /**
+     * DefaultPageAssetSetterListener constructor.
+     * @param AssetBag $jsAssetBag
+     * @param AssetBag $cssAssetBag
+     * @param RouterInterface $router
+     * @param Engine $themeEngine
+     * @param string $rootdir
+     * @param bool $compatLayer
+     */
+    public function __construct(
+        AssetBag $jsAssetBag,
+        AssetBag $cssAssetBag,
+        RouterInterface $router,
+        Engine $themeEngine,
+        $rootdir,
+        $compatLayer
+    ) {
         $this->jsAssetBag = $jsAssetBag;
         $this->cssAssetBag = $cssAssetBag;
         $this->router = $router;
@@ -89,6 +119,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
             ]
         );
         $this->addFosJsRouting($basePath);
+        $this->addJsTranslation($basePath);
 
         // add default stylesheets to cssAssetBag
         $this->addBootstrapCss($basePath);
@@ -136,6 +167,19 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
                 $routeScript => AssetBag::WEIGHT_ROUTES_JS
             ]);
         }
+    }
+
+    private function addJsTranslation($basePath)
+    {
+        // @todo consider option of dumping the translations to /web
+        // @todo add bundle translations? need domain name e.g. zikulapagesmodule
+        $jsScript = $this->router->generate('bazinga_jstranslation_js', ['domain' => 'zikula'], RouterInterface::ABSOLUTE_URL);
+        $jsScriptM = $this->router->generate('bazinga_jstranslation_js', ['domain' => 'messages'], RouterInterface::ABSOLUTE_URL);
+        $this->jsAssetBag->add([
+            $basePath . "/web/bundles/bazingajstranslation/js/translator.min.js" => AssetBag::WEIGHT_JS_TRANSLATOR,
+            $jsScript => AssetBag::WEIGHT_JS_TRANSLATIONS,
+            $jsScriptM => AssetBag::WEIGHT_JS_TRANSLATIONS
+        ]);
     }
 
     private function addBootstrapCss($basePath)

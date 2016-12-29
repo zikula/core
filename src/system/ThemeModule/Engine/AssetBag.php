@@ -32,6 +32,8 @@ class AssetBag implements \IteratorAggregate, \Countable
     const WEIGHT_HTML5SHIV = 23;
     const WEIGHT_ROUTER_JS = 24;
     const WEIGHT_ROUTES_JS = 25;
+    const WEIGHT_JS_TRANSLATOR = 26;
+    const WEIGHT_JS_TRANSLATIONS = 27;
     const WEIGHT_DEFAULT = 100;
 
     /**
