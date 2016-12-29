@@ -1,3 +1,8 @@
+CHANGELOG - ZIKULA 1.3.12
+-------------------------
+
+- Upgraded to PHPMailer 5.2.21
+
 CHANGELOG - ZIKULA 1.3.11
 -------------------------
 
