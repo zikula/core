@@ -22,8 +22,6 @@ parameters:
     # see https://github.com/doctrine/dbal/issues/990
     # the actual value is written on install
 
-    pagerendertime:    false
-
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
     url_secret:        ~
