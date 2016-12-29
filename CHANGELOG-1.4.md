@@ -46,6 +46,7 @@ CHANGELOG - ZIKULA 1.4.x
     - sensio/generator-bundle updated from 3.0.11 to 3.1.2
     - symfony updated from 2.8.14 to 2.8.15
     - symfony/swiftmailer-bundle updated from 2.3.11 to 2.4.2
+    - swiftmailer updated from 5.4.3 to 5.4.5
     - twig updated from 1.28.2 to 1.30.0
     - twig-extensions updated from 1.3.0 to 1.4.1
     - typeahead.js updated from 1.0.1 to 1.1.0
