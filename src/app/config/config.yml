@@ -155,6 +155,11 @@ stof_doctrine_extensions:
         uploadable:           Gedmo\Uploadable\UploadableListener
         reference_integrity:  Gedmo\ReferenceIntegrity\ReferenceIntegrityListener
 
+bazinga_js_translation:
+    default_domain: zikula_javascript
+    locale_fallback: "%jms_i18n_routing.default_locale%"
+    active_locales: "%jms_i18n_routing.locales%"
+
 parameters:
     # zikula core stylesheet and javascript component locations
     zikula.stylesheet.bootstrap-font-awesome.path: web/bootstrap-font-awesome.css

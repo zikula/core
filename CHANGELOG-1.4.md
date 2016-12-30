@@ -32,6 +32,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Template overrides are also considered in sub requests (e.g. embedding a Formicula form into a Content page) (#3234).
     - Implemented PasswordApi in ZAuthModule (#3175, #3289).
     - Migrated many parts of the Categories module to Symfony forms (#2924, #3334).
+    - Added new Javascript Translation via BazingaJsTranslationBundle (#2601, #2487, #3338)
 
  - Vendor updates:
     - afarkas/webshim installed at 1.16.0
@@ -45,11 +46,13 @@ CHANGELOG - ZIKULA 1.4.x
     - sensio/generator-bundle updated from 3.0.11 to 3.1.2
     - symfony updated from 2.8.14 to 2.8.15
     - symfony/swiftmailer-bundle updated from 2.3.11 to 2.4.2
+    - swiftmailer updated from 5.4.3 to 5.4.5
     - twig updated from 1.28.2 to 1.30.0
     - twig-extensions updated from 1.3.0 to 1.4.1
     - typeahead.js updated from 1.0.1 to 1.1.0
     - underscore updated from 1.4.3 to 1.8.3
     - underscore.string updated from 2.3.0 to 3.3.4
+    - willdurand/js-translation-bundle installed at 2.6.2
 
 * 1.4.4 (2016-12-08)
 

@@ -24,6 +24,12 @@ services:
         tags:
             - { name: jms_translation.file_visitor }
 
+    zikula_core.internal.translation_extractor.file.js_extractor:
+        class: Zikula\Bundle\CoreBundle\Translation\ZikulaJsFileExtractor
+        public: false
+        tags:
+            - { name: jms_translation.file_visitor }
+
     zikula_core.internal.translation_dumper.pot_dumper:
         class: %zikula.dumper.pot_dumper.class%
         public: false
