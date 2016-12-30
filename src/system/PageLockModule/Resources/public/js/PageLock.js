@@ -23,7 +23,7 @@ var PageLock = {};
     // Button event handler for "break lock"
     PageLock.BreakLock = function()
     {
-        if (confirm(/*Zikula.__(*/'Are you sure you want to break this lock?'/*)*/) == false) {
+        if (confirm(Translator.__('Are you sure you want to break this lock?')) == false) {
             return;
         }
 
