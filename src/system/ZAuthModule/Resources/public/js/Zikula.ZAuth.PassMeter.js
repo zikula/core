@@ -165,12 +165,10 @@ var currentCalculator;
             messages: {},
             colors:  ['#ff0000', '#FFCC33', '#00FF00', '#008000'],
             scores: [20, 40, 60],
-//             verdicts: [Zikula.__('Weak'), Zikula.__('Normal'), Zikula.__('Strong'), Zikula.__('Very Strong')],
-            verdicts: ['Weak', 'Normal', 'Strong', 'Very Strong']
+            verdicts: [Translator.__('Weak'), Translator.__('Normal'), Translator.__('Strong'), Translator.__('Very Strong')]
         }, options || { });
         options.messages = $.extend({
-//             minLength: Zikula.__f('The minimum length for user passwords is %s characters.', options.minLength)
-            minLength: 'The minimum length for user passwords is ' + options.minLength + ' characters.'
+            minLength: Translator.__f('The minimum length for user passwords is %amount% characters.', { amount: options.minLength })
         }, options.messages);
         currentCalculator = ZikulaZAuthPassCalc.initialize(options);
         if ($('#' + options.username).length > 0) {
@@ -178,8 +176,7 @@ var currentCalculator;
                 test: function(word) {
                     return word ==='' || word != $('#' + options.username).val();
                 },
-//                 msg: Zikula.__('Password can not match the username, choose a different password.')
-                msg: 'Password can not match the username, choose a different password.'
+                msg: Translator.__('Password can not match the username, choose a different password.')
             };
         }
         if (!options.onChange) {
