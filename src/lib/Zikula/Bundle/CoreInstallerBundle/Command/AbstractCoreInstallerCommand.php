@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NullSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula_Core;
 
 /**
  * Class AbstractCoreInstallerCmd

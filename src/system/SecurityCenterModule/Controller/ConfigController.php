@@ -16,7 +16,6 @@ use DataUtil;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use HTMLPurifier_VarParser;
-use Zikula_Core;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
