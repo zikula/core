@@ -332,6 +332,9 @@ class CoreExtension extends \Twig_Extension
         } else {
             $user = $this->container->get('zikula_users_module.user_repository')->findBy(['uname' => $userName]);
         }
+        if (!$user) {
+            return $userId . $userName; // one or the other is empty
+        }
 
         $profileModule = $this->container->get('zikula_extensions_module.api.variable')->getSystemVar('profilemodule', '');
         if (empty($profileModule) || !$this->container->get('kernel')->isBundle($profileModule)) {
