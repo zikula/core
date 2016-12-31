@@ -330,7 +330,7 @@ class CoreExtension extends \Twig_Extension
         if ($userId) {
             $user = $this->container->get('zikula_users_module.user_repository')->find($userId);
         } else {
-            $user = $this->container->get('zikula_users_module.user_repository')->findBy(['uname' => $userName]);
+            $user = $this->container->get('zikula_users_module.user_repository')->findOneBy(['uname' => $userName]);
         }
         if (!$user) {
             return $userId . $userName; // one or the other is empty
