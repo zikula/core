@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request as BaseRequest;
 
 /**
  * ZLanguage class.
+ * @deprecated remove at Core-2.0
  */
 class ZLanguage
 {
