@@ -39,27 +39,28 @@ class Zikula_Core
     /**
      * The core Zikula version number.
      */
-    const VERSION_NUM = '1.4.6';
+    const VERSION_NUM = \ZikulaKernel::VERSION;
 
     /**
      * The version ID.
+     * @deprecated
      */
     const VERSION_ID = 'Zikula';
 
     /**
      * The version sub-ID.
      */
-    const VERSION_SUB = 'Overture'; // 2.0.0 to be named 'Concerto'
+    const VERSION_SUB = \ZikulaKernel::VERSION_SUB;
 
     /**
      * The minimum required PHP version for this release of core.
      */
-    const PHP_MINIMUM_VERSION = '5.4.1';
+    const PHP_MINIMUM_VERSION = \ZikulaKernel::PHP_MINIMUM_VERSION;
 
     /**
      * The parameter name identifying the currently installed version of the core.
      */
-    const CORE_INSTALLED_VERSION_PARAM = 'core_installed_version';
+    const CORE_INSTALLED_VERSION_PARAM = \ZikulaKernel::CORE_INSTALLED_VERSION_PARAM;
 
     const STAGE_NONE = 0;
     const STAGE_PRE = 1;

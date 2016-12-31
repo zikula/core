@@ -94,7 +94,7 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
 
     protected function bootstrap($disableSessions = true, $fakeRequest = true)
     {
-        define('_ZINSTALLVER', \Zikula_Core::VERSION_NUM);
+        define('_ZINSTALLVER', \ZikulaKernel::VERSION);
         if ($disableSessions) {
             // Disable sessions.
             $this->getContainer()->set('session.storage', new MockArraySessionStorage());
@@ -130,7 +130,7 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
     private function errorCodeToMessage($key)
     {
         $messages = [
-            'phpsatisfied' => $this->translator->__f("You have got a problem! Your PHP version is %actual, which does not satisfy the Zikula system requirement of version %required or later.", ['%actual' => phpversion(), '%required' => Zikula_Core::PHP_MINIMUM_VERSION]),
+            'phpsatisfied' => $this->translator->__f("You have got a problem! Your PHP version is %actual, which does not satisfy the Zikula system requirement of version %required or later.", ['%actual' => phpversion(), '%required' => \ZikulaKernel::PHP_MINIMUM_VERSION]),
             'datetimezone' => $this->translator->__("date.timezone is currently not set.  It needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin."),
             'pdo' => $this->translator->__("Your PHP installation doesn't have the PDO extension loaded."),
             'phptokens' => $this->translator->__("You have got a problem! Your PHP installation does not have the token functions available, but they are necessary for Zikula's output system."),

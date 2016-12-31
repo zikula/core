@@ -75,7 +75,7 @@ class ConfigController extends AbstractController
 
                 // if update checks are disabled, reset values to force new update check if re-enabled
                 if ($updateCheck == 0) {
-                    $this->setSystemVar('updateversion', Zikula_Core::VERSION_NUM);
+                    $this->setSystemVar('updateversion', \ZikulaKernel::VERSION);
                     $this->setSystemVar('updatelastchecked', 0);
                 }
 

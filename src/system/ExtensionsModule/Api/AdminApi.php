@@ -1414,7 +1414,7 @@ class AdminApi extends \Zikula_AbstractApi
      */
     private function isCoreCompatible($compatibilityString)
     {
-        $coreVersion = new version(Zikula_Core::VERSION_NUM);
+        $coreVersion = new version(\ZikulaKernel::VERSION);
         $requiredVersionExpression = new expression($compatibilityString);
 
         return $requiredVersionExpression->satisfiedBy($coreVersion);

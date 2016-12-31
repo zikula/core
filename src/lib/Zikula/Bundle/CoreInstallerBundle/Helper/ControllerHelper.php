@@ -30,7 +30,7 @@ class ControllerHelper
         $globals = [
             'lang' => \ZLanguage::getLanguageCode(),
             'charset' => \ZLanguage::getEncoding(),
-            'version' => \Zikula_Core::VERSION_NUM,
+            'version' => \ZikulaKernel::VERSION,
             'currentstage' => $currentStage->getName()
         ];
 
@@ -83,7 +83,7 @@ class ControllerHelper
 
         $x = explode('.', str_replace('-', '.', phpversion()));
         $phpVersion = "$x[0].$x[1].$x[2]";
-        $results['phpsatisfied'] = version_compare($phpVersion, \Zikula_Core::PHP_MINIMUM_VERSION, ">=");
+        $results['phpsatisfied'] = version_compare($phpVersion, \ZikulaKernel::PHP_MINIMUM_VERSION, ">=");
 
         $results['pdo'] = extension_loaded('pdo');
         $isEnabled = @preg_match('/^\p{L}+$/u', 'TheseAreLetters');
@@ -114,7 +114,7 @@ class ControllerHelper
             return true;
         }
         $results['phpversion'] = phpversion();
-        $results['phpcoreminversion'] = \Zikula_Core::PHP_MINIMUM_VERSION;
+        $results['phpcoreminversion'] = \ZikulaKernel::PHP_MINIMUM_VERSION;
 
         return $results;
     }

@@ -32,7 +32,7 @@ class Application extends BaseApplication
         $this->kernel = $kernel;
 
         $this->setName('Zikula');
-        $this->setVersion(\Zikula_Core::VERSION_NUM.' - '.$kernel->getName().'/'.$kernel->getEnvironment().($kernel->isDebug() ? '/debug' : ''));
+        $this->setVersion(\ZikulaKernel::VERSION.' - '.$kernel->getName().'/'.$kernel->getEnvironment().($kernel->isDebug() ? '/debug' : ''));
     }
 
     protected function registerCommands()
@@ -46,9 +46,9 @@ class Application extends BaseApplication
         if ($this->kernel->getContainer()->getParameter('installed') === true) {
             // don't attempt to login if the Core needs an upgrade
             VersionUtil::defineCurrentInstalledCoreVersion($this->kernel->getContainer());
-            $currentVersion = $this->kernel->getContainer()->getParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM);
+            $currentVersion = $this->kernel->getContainer()->getParameter(\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
             // @todo login is pointless for CLI isn't it?
-            if (version_compare($currentVersion, \Zikula_Core::VERSION_NUM, '==')) {
+            if (version_compare($currentVersion, \ZikulaKernel::VERSION, '==')) {
                 try {
                     $this->loginAsAdministrator();
                 } catch (\Exception $e) {
