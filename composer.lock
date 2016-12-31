@@ -1454,7 +1454,7 @@
                 }
             ],
             "description": "Smarty repository for Zikula Core",
-            "time": "2014-02-18T09:33:52+00:00"
+            "time": "2014-02-18 09:33:52"
         },
         {
             "name": "elao/web-profiler-extra-bundle",
@@ -3017,16 +3017,16 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v5.0.15",
+            "version": "v5.0.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "d294b0665cf09c799e9c1993d5c776a5bf55cb85"
+                "reference": "68e3dc02e66fec5036557d457cfdffa332a40da4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/d294b0665cf09c799e9c1993d5c776a5bf55cb85",
-                "reference": "d294b0665cf09c799e9c1993d5c776a5bf55cb85",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/68e3dc02e66fec5036557d457cfdffa332a40da4",
+                "reference": "68e3dc02e66fec5036557d457cfdffa332a40da4",
                 "shasum": ""
             },
             "require": {
@@ -3065,7 +3065,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2016-12-06T07:29:27+00:00"
+            "time": "2016-12-31T08:39:25+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -4547,9 +4547,7 @@
             "authors": [
                 {
                     "name": "Karma Dordrak",
-                    "email": "drak@zikula.org",
-                    "homepage": "http://zikula.org",
-                    "role": "OO & PSR-4 migration"
+                    "email": "drak@zikula.org"
                 },
                 {
                     "name": "Kyle Giovannetti",
@@ -4744,12 +4742,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "64a9f28c0481629c2cca685e0003f8c7610897f7"
+                "reference": "dc54a72c493ddb424e4534ef29576b4ff0568780"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/64a9f28c0481629c2cca685e0003f8c7610897f7",
-                "reference": "64a9f28c0481629c2cca685e0003f8c7610897f7",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/dc54a72c493ddb424e4534ef29576b4ff0568780",
+                "reference": "dc54a72c493ddb424e4534ef29576b4ff0568780",
                 "shasum": ""
             },
             "require": {
@@ -4804,7 +4802,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2016-12-12 12:55:41"
+            "time": "2016-12-31 15:11:48"
         },
         {
             "name": "zikula/profile-module",
@@ -4812,12 +4810,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "4518d212a3dea87d57ad3a00681dcf34d444faf2"
+                "reference": "a764e15ce5ce8338cbc9e601c7431699d53987e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/4518d212a3dea87d57ad3a00681dcf34d444faf2",
-                "reference": "4518d212a3dea87d57ad3a00681dcf34d444faf2",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/a764e15ce5ce8338cbc9e601c7431699d53987e1",
+                "reference": "a764e15ce5ce8338cbc9e601c7431699d53987e1",
                 "shasum": ""
             },
             "require": {
@@ -4878,7 +4876,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2016-12-22 05:16:17"
+            "time": "2016-12-31 14:52:24"
         },
         {
             "name": "zikula/wizard",
