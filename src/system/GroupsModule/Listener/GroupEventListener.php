@@ -81,7 +81,7 @@ class GroupEventListener implements EventSubscriberInterface
         $message->setFrom([$adminMail => $siteName]);
         $user = $applicationEntity->getUser();
         $message->setTo([$user->getEmail() => $user->getUname()]);
-        $this->mailer->sendMessage($message, $title, $title . '<br><br>' . $formData['reason']);
+        $this->mailer->sendMessage($message, $title, $title . '\n\n' . $formData['reason']);
     }
 
     /**
@@ -97,7 +97,7 @@ class GroupEventListener implements EventSubscriberInterface
         $body = $this->translator->__f('A new application has been created by %user to %group. Please attend to this request at %url', [
             '%user' => $applicationEntity->getUser()->getUname(),
             '%group' => $applicationEntity->getGroup()->getName(),
-            '%url' => $this->router->generate('zikula_groupsmodule_group_adminlist', [], RouterInterface::ABSOLUTE_URL)
+            '%url' => $this->router->generate('zikulagroupsmodule_group_adminlist', [], RouterInterface::ABSOLUTE_URL)
         ]);
         $adminMail = $this->variableApi->getSystemVar('adminmail');
         $siteName = $this->variableApi->getSystemVar('sitename');

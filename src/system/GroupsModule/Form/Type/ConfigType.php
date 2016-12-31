@@ -46,12 +46,15 @@ class ConfigType extends AbstractType
             ])
             ->add('hideclosed', CheckboxType::class, [
                 'label' => $translator->__('Hide closed groups'),
+                'required' => false
             ])
             ->add('hidePrivate', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $translator->__('Hide private groups'),
+                'required' => false
             ])
             ->add('mailwarning', CheckboxType::class, [
                 'label' => $translator->__('Receive e-mail alert when there are new applicants'),
+                'required' => false
             ])
             ->add('save', SubmitType::class, [
                 'label' => $translator->__('Save'),
