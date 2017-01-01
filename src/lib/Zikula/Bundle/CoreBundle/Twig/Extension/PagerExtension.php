@@ -69,7 +69,7 @@ class PagerExtension extends \Twig_Extension
     public function pager($params)
     {
         /** @var Request $request */
-        $request = $this->container->get('request');
+        $request = $this->container->get('request_stack')->getMasterRequest();
 
         if (empty($params['rowcount'])) {
             $params['rowcount'] = 0;
@@ -327,7 +327,7 @@ class PagerExtension extends \Twig_Extension
             throw new \InvalidArgumentException('route is a required parameter.');
         }
         /** @var Request $request */
-        $request = $this->container->get('request');
+        $request = $this->container->get('request_stack')->getMasterRequest();
         if (!isset($params['posvar'])) {
             $params['posvar'] = 'letter';
         }
