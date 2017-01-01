@@ -59,18 +59,14 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
             $this->container->get('router')->getContext()->setBaseUrl($request->getBasePath()); // compensate for sub-directory installs
             $url = $this->container->get('router')->generate('install');
             $this->loadLocales();
-            $response = new RedirectResponse($url);
-            $response->send();
-            \System::shutDown();
+            $event->setResponse(new RedirectResponse($url));
         }
         // check if Zikula Core requires upgrade
         if ($requiresUpgrade && !$containsLogin && !$containsDoc && !$containsUpgrade && !$doNotRedirect) {
             $this->container->get('router')->getContext()->setBaseUrl($request->getBasePath()); // compensate for sub-directory installs
             $url = $this->container->get('router')->generate('upgrade');
             $this->loadLocales();
-            $response = new RedirectResponse($url);
-            $response->send();
-            \System::shutDown();
+            $event->setResponse(new RedirectResponse($url));
         }
     }
 
