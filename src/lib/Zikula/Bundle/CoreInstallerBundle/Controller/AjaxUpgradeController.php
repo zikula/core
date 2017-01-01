@@ -269,9 +269,10 @@ class AjaxUpgradeController extends AbstractController
         }
         // Configure the Request Context
         // see http://symfony.com/doc/current/cookbook/console/sending_emails.html#configuring-the-request-context-globally
-        $params['router.request_context.host'] = isset($params['router.request_context.host']) ? $params['router.request_context.host'] : $this->container->get('request')->getHost();
+        $request = $this->container->get('request_stack')->getMasterRequest();
+        $params['router.request_context.host'] = isset($params['router.request_context.host']) ? $params['router.request_context.host'] : $request->getHost();
         $params['router.request_context.scheme'] = isset($params['router.request_context.scheme']) ? $params['router.request_context.scheme'] : 'http';
-        $params['router.request_context.base_url'] = isset($params['router.request_context.base_url']) ? $params['router.request_context.base_url'] : $this->container->get('request')->getBasePath();
+        $params['router.request_context.base_url'] = isset($params['router.request_context.base_url']) ? $params['router.request_context.base_url'] : $request->getBasePath();
 
         // set currently installed version into parameters
         $params[\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM] = \ZikulaKernel::VERSION;
