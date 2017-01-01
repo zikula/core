@@ -90,9 +90,9 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('permareplace', $this->__('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue'));
 
         $this->setSystemVar('language', ZLanguage::getLanguageCodeLegacy());
-        $request = $this->container->get('request_stack')->getMasterRequest();
-        $this->setSystemVar('locale', $request->getLocale());
-        $this->setSystemVar('language_i18n', $request->getLocale());
+        $locale = $this->container->getParameter('locale');
+        $this->setSystemVar('locale', $locale);
+        $this->setSystemVar('language_i18n', $locale);
 
         $this->setSystemVar('idnnames', 1);
 
