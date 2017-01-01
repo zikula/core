@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
  */
 class System
 {
-//    private static $installing = null;
+    // private static $installing = null;
 
     /**
      * Internals cache.

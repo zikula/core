@@ -11,7 +11,6 @@
 
 namespace Zikula\BlocksModule\Api;
 
-use System;
 use SecurityUtil;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use ModUtil;
