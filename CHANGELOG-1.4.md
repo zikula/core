@@ -10,7 +10,7 @@ CHANGELOG - ZIKULA 1.4.x
     - ?
 
  - Fixes:
-    - ?
+    - Fixed broken categories selector (#3356).
 
  - Features:
     - ?
