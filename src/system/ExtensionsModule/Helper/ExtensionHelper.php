@@ -255,7 +255,7 @@ class ExtensionHelper
      */
     private function forceLoadExtension(ExtensionEntity $extension)
     {
-        $osDir = \DataUtil::formatForOS($extension->getDirectory());
+        $osDir = $extension->getDirectory();
         $scanner = new Scanner();
         $directory = \ZikulaKernel::isCoreModule($extension->getName()) ? 'system' : 'modules';
         $scanner->scan(["$directory/$osDir"], 1);
@@ -266,13 +266,7 @@ class ExtensionHelper
             // moduleMetaData only exists for bundle-type modules
             $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
             $boot->addAutoloaders($this->container->get('kernel'), $moduleMetaData->getAutoload());
-            if ($extension->getType() == self::TYPE_MODULE) {
-                if (is_dir("modules/$osDir/Resources/locale")) {
-                    \ZLanguage::bindModuleDomain($extension->getName());
-                }
-            }
             $moduleClass = $moduleMetaData->getClass();
-
             $bundle = new $moduleClass();
             $bootstrap = $bundle->getPath() . "/bootstrap.php";
             if (file_exists($bootstrap)) {
