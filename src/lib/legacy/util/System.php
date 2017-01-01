@@ -1126,9 +1126,8 @@ class System
         @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
 
         $sm = ServiceUtil::getManager();
-        $upgrading = $sm->hasParameter('upgrading') ? $sm->getParameter('upgrading') : false;
 
-        return $upgrading || array_key_exists('_ZikulaUpgrader', $GLOBALS);
+        return $sm->hasParameter('upgrading') ? $sm->getParameter('upgrading') : false;
     }
 
     /**

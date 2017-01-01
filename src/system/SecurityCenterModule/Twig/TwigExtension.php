@@ -25,6 +25,11 @@ class TwigExtension extends \Twig_Extension
     private $isInstalled;
 
     /**
+     * @var bool
+     */
+    private $upgrading;
+
+    /**
      * @var VariableApi
      */
     private $variableApi;
@@ -37,12 +42,15 @@ class TwigExtension extends \Twig_Extension
     /**
      * TwigExtension constructor.
      *
-     * @param bool        $isInstalled Installed flag
+     * @param bool $isInstalled Installed flag
+     * @param $upgrading
      * @param VariableApi $variableApi VariableApi service instance
+     * @param PurifierHelper $purifierHelper
      */
-    public function __construct($isInstalled, VariableApi $variableApi, PurifierHelper $purifierHelper)
+    public function __construct($isInstalled, $upgrading, VariableApi $variableApi, PurifierHelper $purifierHelper)
     {
         $this->isInstalled = $isInstalled;
+        $this->upgrading = $upgrading;
         $this->variableApi = $variableApi;
         $this->purifierHelper = $purifierHelper;
     }
@@ -62,10 +70,7 @@ class TwigExtension extends \Twig_Extension
     {
         $string = \DataUtil::formatForDisplayHTML($string);
 
-        if (!$this->isInstalled) {
-            return $string;
-        }
-        if (\System::isUpgrading()) {
+        if (!$this->isInstalled || $this->upgrading) {
             return $string;
         }
 

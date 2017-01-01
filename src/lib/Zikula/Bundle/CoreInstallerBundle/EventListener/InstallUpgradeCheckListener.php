@@ -71,9 +71,6 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
             $response->send();
             \System::shutDown();
         }
-        if (!$installed || $requiresUpgrade || $this->container->hasParameter('upgrading')) {
-            // temp do nothing - investigate the upgrading thing
-        }
     }
 
     public static function getSubscribedEvents()

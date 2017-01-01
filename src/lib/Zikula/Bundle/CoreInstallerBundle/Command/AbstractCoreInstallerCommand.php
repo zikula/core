@@ -93,7 +93,6 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
 
     protected function bootstrap($disableSessions = true, $fakeRequest = true)
     {
-        define('_ZINSTALLVER', \ZikulaKernel::VERSION);
         if ($disableSessions) {
             // Disable sessions.
             $this->getContainer()->set('session.storage', new MockArraySessionStorage());

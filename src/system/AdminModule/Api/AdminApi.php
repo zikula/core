@@ -181,7 +181,8 @@ class AdminApi
 
         // Security check
         $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
-        if (!System::isUpgrading() && !$permissionApi->hasPermission('ZikulaAdminModule::', '::', ACCESS_READ)) {
+        $isUpgrading = \ServiceUtil::getManager()->hasParameter('upgrading') && \ServiceUtil::getManager()->getParameter('upgrading');
+        if (!$isUpgrading && !$permissionApi->hasPermission('ZikulaAdminModule::', '::', ACCESS_READ)) {
             return $items;
         }
 

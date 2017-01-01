@@ -199,7 +199,7 @@ class ModUtil
         // The cast to (array) is for the odd instance where self::$modvars[$modname] is set to null--not sure if this is really needed.
         $varExists = isset(self::$modvars[$modname]) && array_key_exists($name, (array)self::$modvars[$modname]);
 
-        if (!$varExists && System::isUpgrading()) {
+        if (!$varExists && \ServiceUtil::getManager()->hasParameter('upgrading') && \ServiceUtil::getManager()->getParameter('upgrading')) {
             // Handle the upgrade edge case--the call to getVar() ensures vars for the module are loaded if newly available.
             $modvars = self::getVar($modname);
             $varExists = array_key_exists($name, (array)$modvars);
@@ -245,7 +245,7 @@ class ModUtil
         // if we haven't got vars for this module (or pseudo-module) yet then lets get them
         if (!array_key_exists($modname, self::$modvars)) {
             // A query out to the database should only be needed if the system is upgrading. Use the installing flag to determine this.
-            if (System::isUpgrading()) {
+            if (\ServiceUtil::getManager()->hasParameter('upgrading') && \ServiceUtil::getManager()->getParameter('upgrading')) {
                 self::initCoreVars(true);
             } else {
                 // Prevent a re-query for the same module in the future, where the module does not define any module variables.
