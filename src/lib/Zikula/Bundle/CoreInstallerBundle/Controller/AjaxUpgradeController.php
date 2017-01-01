@@ -105,6 +105,8 @@ class AjaxUpgradeController extends AbstractController
                 return $this->from143to144();
             case "from144to145":
                 return $this->from144to145();
+            case "from145to146":
+                return $this->from145to146();
             case "finalizeparameters":
                 return $this->finalizeParameters();
             case "clearcaches":
@@ -232,6 +234,15 @@ class AjaxUpgradeController extends AbstractController
     private function from144to145()
     {
         if (version_compare($this->currentVersion, '1.4.5', '>=')) {
+            return true;
+        }
+
+        return true;
+    }
+
+    private function from145to146()
+    {
+        if (version_compare($this->currentVersion, '1.4.6', '>=')) {
             return true;
         }
 
