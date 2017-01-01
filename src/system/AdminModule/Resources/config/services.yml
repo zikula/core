@@ -22,15 +22,10 @@ services:
 
     zikula_admin_module.module_event_listener:
         class: %zikula_admin_module.module_event_listener.class%
-        arguments: ["@zikula_extensions_module.api.variable"]
-        tags:
-            - { name: kernel.event_subscriber }
-
-    zikula_admin_module.module_event_listener:
-        class: %zikula_admin_module.module_event_listener.class%
         arguments: ["@zikula_extensions_module.api.variable", "%installed%"]
         tags:
             - { name: kernel.event_subscriber }
+
     zikulaadminmodule.module_event_listener:
         alias: zikula_admin_module.module_event_listener
         deprecated: The "%service_id%" service is deprecated since 1.4.3 and will be removed in 2.0.
@@ -40,9 +35,6 @@ services:
         public: true
         arguments: ["@zikula_extensions_module.api.variable", "@request_stack"]
 
-    zikula_admin_module.update_check_helper:
-        class: %zikula_admin_module.update_check_helper.class%
-        arguments: ["@zikula_extensions_module.api.variable", "@request_stack"]
     zikulaadminmodule.update_check_helper:
         alias: zikula_admin_module.update_check_helper
         deprecated: The "%service_id%" service is deprecated since 1.4.3 and will be removed in 2.0.
