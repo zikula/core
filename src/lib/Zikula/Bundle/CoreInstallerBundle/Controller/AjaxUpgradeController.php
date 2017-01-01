@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
 use Zikula\Bundle\CoreBundle\YamlDumper;
+use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 
@@ -145,7 +146,7 @@ class AjaxUpgradeController extends AbstractController
         $result = [];
         foreach ($coreModulesInPriorityUpgradeOrder as $moduleName) {
             $extensionEntity = $this->container->get('zikula_extensions_module.extension_repository')->get($moduleName);
-            if ($extensionEntity) {
+            if (isset($extensionEntity) && $extensionEntity->getState() == ExtensionApi::STATE_ACTIVE) {
                 $result[$moduleName] = $this->container->get('zikula_extensions_module.extension_helper')->upgrade($extensionEntity);
             }
         }
