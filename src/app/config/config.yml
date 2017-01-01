@@ -113,12 +113,12 @@ doctrine_cache:
             namespace: js_assets
             file_system:
                 extension: ".combined.js"
-                directory: "%kernel.root_dir%/cache/%env%/assets/js"
+                directory: "%kernel.cache_dir%/assets/js"
         zikula_css_asset_cache:
             namespace: css_assets
             file_system:
                 extension: ".combined.css"
-                directory: "%kernel.root_dir%/cache/%env%/assets/css"
+                directory: "%kernel.cache_dir%/assets/css"
 
 services:
     standardfields.listener:
