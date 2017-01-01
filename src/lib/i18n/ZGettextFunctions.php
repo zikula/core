@@ -9,6 +9,10 @@
  * file that was distributed with this source code.
  */
 
+/**
+ * @deprecated remove at Core-2.0
+ */
+
 if (!defined('LC_MESSAGES')) {
     define('LC_MESSAGES', 5);
 }

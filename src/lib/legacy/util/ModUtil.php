@@ -116,7 +116,7 @@ class ModUtil
         ]);
 
         // don't init vars during the installer or upgrader
-        if (!$force && System::isInstalling()) {
+        if (!$force && !ServiceUtil::getManager()->getParameter('installed')) {
             return;
         }
 
@@ -159,7 +159,7 @@ class ModUtil
         @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
 
         // prevent access to missing vars when the system is not installed yet
-        if (System::isInstalling()) {
+        if (!\ServiceUtil::getManager()->getParameter('installed')) {
             return true;
         }
 
@@ -199,7 +199,7 @@ class ModUtil
         // The cast to (array) is for the odd instance where self::$modvars[$modname] is set to null--not sure if this is really needed.
         $varExists = isset(self::$modvars[$modname]) && array_key_exists($name, (array)self::$modvars[$modname]);
 
-        if (!$varExists && System::isUpgrading()) {
+        if (!$varExists && \ServiceUtil::getManager()->hasParameter('upgrading') && \ServiceUtil::getManager()->getParameter('upgrading')) {
             // Handle the upgrade edge case--the call to getVar() ensures vars for the module are loaded if newly available.
             $modvars = self::getVar($modname);
             $varExists = array_key_exists($name, (array)$modvars);
@@ -245,7 +245,7 @@ class ModUtil
         // if we haven't got vars for this module (or pseudo-module) yet then lets get them
         if (!array_key_exists($modname, self::$modvars)) {
             // A query out to the database should only be needed if the system is upgrading. Use the installing flag to determine this.
-            if (System::isUpgrading()) {
+            if (\ServiceUtil::getManager()->hasParameter('upgrading') && \ServiceUtil::getManager()->getParameter('upgrading')) {
                 self::initCoreVars(true);
             } else {
                 // Prevent a re-query for the same module in the future, where the module does not define any module variables.
@@ -449,7 +449,7 @@ class ModUtil
             self::$cache['modid'] = null;
         }
 
-        if (!is_array(self::$cache['modid']) || System::isInstalling()) {
+        if (!is_array(self::$cache['modid']) || !\ServiceUtil::getManager()->getParameter('installed')) {
             $modules = self::getModsTable();
 
             if ($modules === false) {
@@ -501,7 +501,7 @@ class ModUtil
             return false;
         }
 
-        if (!is_array(self::$modinfo) || System::isInstalling()) {
+        if (!is_array(self::$modinfo) || !\ServiceUtil::getManager()->getParameter('installed')) {
             self::$modinfo = self::getModsTable();
 
             if (!self::$modinfo) {
@@ -978,7 +978,7 @@ class ModUtil
      */
     private static function _loadStyleSheets($modname, $api, $type)
     {
-        if (!System::isInstalling() && !$api) {
+        if (\ServiceUtil::getManager()->getParameter('installed') && !$api) {
             $moduleStylesheet = ThemeUtil::getModuleStylesheet($modname);
             if (!empty($moduleStylesheet)) {
                 PageUtil::addVar('stylesheet', $moduleStylesheet);
@@ -1821,7 +1821,7 @@ class ModUtil
             self::$cache['modstable'] = [];
         }
 
-        if (!self::$cache['modstable'] || System::isInstalling()) {
+        if (!self::$cache['modstable'] || !\ServiceUtil::getManager()->getParameter('installed')) {
             // get entityManager
             $sm = ServiceUtil::getManager();
             $entityManager = $sm->get('doctrine.orm.default_entity_manager');

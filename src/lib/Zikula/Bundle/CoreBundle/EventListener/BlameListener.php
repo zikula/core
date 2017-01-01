@@ -39,14 +39,21 @@ class BlameListener implements EventSubscriberInterface
      */
     private $session;
 
+    /**
+     * @var bool
+     */
+    private $installed;
+
     public function __construct(
         BlameableListener $blameableListener,
         EntityManagerInterface $entityManager,
-        SessionInterface $session
+        SessionInterface $session,
+        $installed
     ) {
         $this->blameableListener = $blameableListener;
         $this->entityManager = $entityManager;
         $this->session = $session;
+        $this->installed = $installed;
     }
 
     /**
@@ -55,7 +62,7 @@ class BlameListener implements EventSubscriberInterface
     public function onKernelRequest(GetResponseEvent $event)
     {
         try {
-            if (\System::isInstalling()) {
+            if (!$this->installed) {
                 $uid = 2;
             } else {
                 $uid = $this->session->isStarted() ? $this->session->get('uid', PermissionApi::UNREGISTERED_USER) : PermissionApi::UNREGISTERED_USER;

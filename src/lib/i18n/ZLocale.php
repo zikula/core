@@ -11,6 +11,7 @@
 
 /**
  * ZLocale class
+ * @deprecated remove at Core-2.0
  */
 class ZLocale implements ArrayAccess
 {

@@ -13,6 +13,7 @@
  * String reader.
  *
  * Reads buffer as stream.
+ * @deprecated remove at Core-2.0
  */
 class StreamReader_String extends StreamReader_Abstract
 {

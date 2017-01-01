@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
  */
 class System
 {
-    private static $installing = null;
+    // private static $installing = null;
 
     /**
      * Internals cache.
@@ -738,7 +738,7 @@ class System
     {
         @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
 
-        if (self::isInstalling()) {
+        if (!\ServiceUtil::getManager()->getParameter('installed')) {
             return;
         }
 
@@ -1100,11 +1100,12 @@ class System
     {
         @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
 
-        return (null === self::$installing) ? (bool)defined('_ZINSTALLVER') : self::$installing;
+        return !\ServiceUtil::getManager()->getParameter('installed');
     }
 
     /**
      * Set installing status
+     * this function no longer does anything!
      *
      * @param $flag
      */
@@ -1112,7 +1113,7 @@ class System
     {
         @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
 
-        self::$installing = (bool) $flag;
+//        self::$installing = (bool) $flag;
     }
 
     /**
@@ -1125,9 +1126,8 @@ class System
         @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
 
         $sm = ServiceUtil::getManager();
-        $upgrading = $sm->hasParameter('upgrading') ? $sm->getParameter('upgrading') : false;
 
-        return $upgrading || array_key_exists('_ZikulaUpgrader', $GLOBALS);
+        return $sm->hasParameter('upgrading') ? $sm->getParameter('upgrading') : false;
     }
 
     /**

@@ -20,8 +20,8 @@ function requirementCheck($parameters)
 {
     // on install or upgrade, check if system requirements are met.
     if (($parameters['installed'] == false)
-        || (!empty($parameters[\Zikula_Core::CORE_INSTALLED_VERSION_PARAM])
-            && version_compare($parameters[\Zikula_Core::CORE_INSTALLED_VERSION_PARAM], \Zikula_Core::VERSION_NUM, '<'))) {
+        || (!empty($parameters[\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM])
+            && version_compare($parameters[\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM], \ZikulaKernel::VERSION, '<'))) {
         $versionChecker = new ZikulaRequirements();
         $versionChecker->runSymfonyChecks($parameters);
         if (!empty($versionChecker->requirementsErrors)) {

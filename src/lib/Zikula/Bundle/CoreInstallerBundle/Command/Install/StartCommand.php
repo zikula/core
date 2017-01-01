@@ -15,7 +15,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Zikula_Core;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
 
@@ -78,7 +77,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         if ($input->isInteractive()) {
             $env = $this->getContainer()->get('kernel')->getEnvironment();
             $io->comment($this->translator->__f('Configuring Zikula installation in %env% environment.', ['%env%' => $env]));
-            $io->comment($this->translator->__f('Please follow the instructions to install Zikula %version%.', ['%version%' => Zikula_Core::VERSION_NUM]));
+            $io->comment($this->translator->__f('Please follow the instructions to install Zikula %version%.', ['%version%' => \ZikulaKernel::VERSION]));
         }
 
         // get the settings from user input

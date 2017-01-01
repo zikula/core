@@ -112,7 +112,6 @@ class AjaxInstallController extends AbstractController
             case "protect":
                 return $this->protectFiles();
         }
-        \System::setInstalling(false);
 
         return true;
     }
@@ -284,7 +283,7 @@ class AjaxInstallController extends AbstractController
         $params = $this->yamlManager->getParameters();
         $params['installed'] = true;
         // set currently installed version into parameters
-        $params[\Zikula_Core::CORE_INSTALLED_VERSION_PARAM] = \Zikula_Core::VERSION_NUM;
+        $params[\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM] = \ZikulaKernel::VERSION;
 
         $this->yamlManager->setParameters($params);
         // clear the cache

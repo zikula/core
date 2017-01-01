@@ -265,7 +265,7 @@ class DataUtil
             }
         }
         if (!isset($outputfilter)) {
-            if (ModUtil::available('ZikulaSecurityCenterModule') && !System::isInstalling()) {
+            if (ModUtil::available('ZikulaSecurityCenterModule') && ServiceUtil::getManager()->getParameter('installed')) {
                 $outputfilter = System::getVar('outputfilter', 0);
             } else {
                 $outputfilter = 0;

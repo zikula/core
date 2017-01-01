@@ -13,6 +13,7 @@
  * File reader with seek capability.
  *
  * Reads file as required.
+ * @deprecated remove at Core-2.0
  */
 class StreamReader_File extends StreamReader_Abstract
 {

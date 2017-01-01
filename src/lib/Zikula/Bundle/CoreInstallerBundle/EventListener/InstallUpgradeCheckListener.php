@@ -39,8 +39,8 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
         $requiresUpgrade = false;
         if ($installed) {
             VersionUtil::defineCurrentInstalledCoreVersion($this->container);
-            $currentVersion = $this->container->getParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM);
-            $requiresUpgrade = $installed && version_compare($currentVersion, \Zikula_Core::VERSION_NUM, '<');
+            $currentVersion = $this->container->getParameter(\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
+            $requiresUpgrade = $installed && version_compare($currentVersion, \ZikulaKernel::VERSION, '<');
         }
 
         $routeInfo = $this->container->get('router')->match($request->getPathInfo());
@@ -70,9 +70,6 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
             $response = new RedirectResponse($url);
             $response->send();
             \System::shutDown();
-        }
-        if (!$installed || $requiresUpgrade || $this->container->hasParameter('upgrading')) {
-            \System::setInstalling(true);
         }
     }
 

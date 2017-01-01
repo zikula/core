@@ -7,7 +7,11 @@ CHANGELOG - ZIKULA 1.4.x
     - ?
 
  - Deprecated:
-    - ?
+    - \StreamReader_*
+    - all classes in zrc/lib/i18n (e.g. ZGettext, ZLanguage, etc)
+    - \Zikula_Core::VERSION_* constants are replaced by constants in \ZikulaKernel
+        (\Zikula_Core was already deprecated long ago)
+    - \Zikula_Core::VERSION_ID will not be continued in Core-2.0
 
  - Fixes:
     - Fixed broken categories selector for legacy extensions (#3356).

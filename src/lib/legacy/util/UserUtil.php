@@ -971,7 +971,7 @@ class UserUtil
 
             // Do not fire update event/hook unless the update happened, it was not a registration record, it was not
             // the password being updated, and the system is not currently being installed.
-            if ($varIsSet && ($name != 'pass') && !System::isInstalling()) {
+            if ($varIsSet && ($name != 'pass') && \ServiceUtil::getManager()->getParameter('installed')) {
                 // Fire the event
                 $eventName = $isRegistration ? 'user.registration.update' : 'user.account.update';
                 $eventArgs = [
@@ -1295,7 +1295,7 @@ class UserUtil
 
             // Do not fire update event/hook unless the update happened, it was not a registration record, it was not
             // the password being updated, and the system is not currently being installed.
-            if ($varIsDeleted && ($name != 'pass') && !System::isInstalling()) {
+            if ($varIsDeleted && ($name != 'pass') && \ServiceUtil::getManager()->getParameter('installed')) {
                 // Fire the event
                 $eventArgs = [
                     'action'    => 'delVar',
@@ -1487,7 +1487,7 @@ class UserUtil
             return $themeName;
         }
 
-        if (!System::isInstalling()) {
+        if (\ServiceUtil::getManager()->getParameter('installed')) {
             throw new RuntimeException(__('UserUtil::getTheme() is unable to calculate theme name.'));
         }
     }

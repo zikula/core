@@ -11,6 +11,7 @@
 
 /**
  * ZI18n class
+ * @deprecated remove at Core-2.0
  */
 class ZI18n
 {
