@@ -46,7 +46,7 @@ class AjaxUpgradeController extends AbstractController
         $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
         // load and set new default values from the original parameters.yml file into the custom_parameters.yml file.
         $this->yamlManager->setParameters(array_merge($originalParameters['parameters'], $this->yamlManager->getParameters()));
-        $this->currentVersion = $this->container->getParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM);
+        $this->currentVersion = $this->container->getParameter(\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
     }
 
     public function ajaxAction(Request $request)
@@ -84,7 +84,7 @@ class AjaxUpgradeController extends AbstractController
 
                 return $result;
             case "installroutes":
-                if (version_compare(\Zikula_Core::VERSION_NUM, '1.4.0', '>') && version_compare($this->currentVersion, '1.4.0', '>=')) {
+                if (version_compare(\ZikulaKernel::VERSION, '1.4.0', '>') && version_compare($this->currentVersion, '1.4.0', '>=')) {
                     // this stage is not necessary to upgrade from 1.4.0 -> 1.4.x
                     return true;
                 }
@@ -105,12 +105,13 @@ class AjaxUpgradeController extends AbstractController
                 return $this->from143to144();
             case "from144to145":
                 return $this->from144to145();
+            case "from145to146":
+                return $this->from145to146();
             case "finalizeparameters":
                 return $this->finalizeParameters();
             case "clearcaches":
                 return $this->clearCaches();
         }
-        \System::setInstalling(false);
 
         return true;
     }
@@ -138,12 +139,11 @@ class AjaxUpgradeController extends AbstractController
             'ZikulaMailerModule',
             'ZikulaSearchModule',
             'ZikulaMenuModule',
-            'ZikulaPageLockModule'
         ];
         $result = [];
         foreach ($coreModulesInPriorityUpgradeOrder as $moduleName) {
             $extensionEntity = $this->container->get('zikula_extensions_module.extension_repository')->get($moduleName);
-            if ($extensionEntity) {
+            if (isset($extensionEntity)) {
                 $result[$moduleName] = $this->container->get('zikula_extensions_module.extension_helper')->upgrade($extensionEntity);
             }
         }
@@ -232,6 +232,15 @@ class AjaxUpgradeController extends AbstractController
     private function from144to145()
     {
         if (version_compare($this->currentVersion, '1.4.5', '>=')) {
+            return true;
+        }
+
+        return true;
+    }
+
+    private function from145to146()
+    {
+        if (version_compare($this->currentVersion, '1.4.6', '>=')) {
             return true;
         }
 

@@ -88,14 +88,14 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
         }
 
         // set some defaults
-        $this->pageVars->set('lang', $event->getRequest()->getLocale()); // @deprecated use app.request.locale
-        $this->pageVars->set('langdirection', $this->localeApi->language_direction()); // @deprecated use localeApi.language_direction
+        $this->pageVars->set('lang', $event->getRequest()->getLocale()); // @deprecated use app.request.locale in the template
+        $this->pageVars->set('langdirection', $this->localeApi->language_direction()); // @deprecated use localeApi.language_direction in the template
         $this->pageVars->set('title', $this->variableApi->getSystemVar('defaultpagetitle'));
         $this->pageVars->set('meta.charset', $this->kernel->getCharset());
         $this->pageVars->set('meta.description', $this->variableApi->getSystemVar('defaultmetadescription'));
         $this->pageVars->set('meta.keywords', $this->variableApi->getSystemVar('metakeywords'));
         $this->pageVars->set('homepath', $this->router->generate('home'));
-        $this->pageVars->set('coredata', ['version' => \ZikulaKernel::VERSION]);
+        $this->pageVars->set('coredata', ['version' => \ZikulaKernel::VERSION]); // @todo add more info?
     }
 
     public static function getSubscribedEvents()

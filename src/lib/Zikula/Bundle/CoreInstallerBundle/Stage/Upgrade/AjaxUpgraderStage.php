@@ -113,20 +113,27 @@ class AjaxUpgraderStage implements StageInterface, InjectContainerInterface
                 AjaxInstallerStage::FAIL => $this->__('There was an error upgrading to Core 1.4.5')
             ],
             10 => [
+                AjaxInstallerStage::NAME => 'from145to146',
+                AjaxInstallerStage::PRE => $this->__('Upgrade from Core 1.4.5 to Core 1.4.6'),
+                AjaxInstallerStage::DURING => $this->__('Upgrading to Core 1.4.6'),
+                AjaxInstallerStage::SUCCESS => $this->__('Upgraded to Core 1.4.6'),
+                AjaxInstallerStage::FAIL => $this->__('There was an error upgrading to Core 1.4.6')
+            ],
+            11 => [
                 AjaxInstallerStage::NAME => 'finalizeparameters',
                 AjaxInstallerStage::PRE => $this->__('Finalize parameters'),
                 AjaxInstallerStage::DURING => $this->__('Finalizing parameters'),
                 AjaxInstallerStage::SUCCESS => $this->__('Parameters finalized'),
                 AjaxInstallerStage::FAIL => $this->__('There was an error finalizing the parameters')
             ],
-            11 => [
+            12 => [
                 AjaxInstallerStage::NAME => 'clearcaches',
                 AjaxInstallerStage::PRE => $this->__('Clear caches'),
                 AjaxInstallerStage::DURING => $this->__('Clearing caches'),
                 AjaxInstallerStage::SUCCESS => $this->__('Caches cleared'),
                 AjaxInstallerStage::FAIL => $this->__('There was an error clearing caches')
             ],
-            12 => [
+            13 => [
                 AjaxInstallerStage::NAME => 'finish',
                 AjaxInstallerStage::PRE => $this->__('Finish'),
                 AjaxInstallerStage::DURING => $this->__('Finish'),

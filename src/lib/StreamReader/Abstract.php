@@ -11,6 +11,7 @@
 
 /**
  * StreamReader Base.
+ * @deprecated remove at Core-2.0
  */
 abstract class StreamReader_Abstract
 {

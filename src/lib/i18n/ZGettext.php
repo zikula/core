@@ -11,6 +11,7 @@
 
 /**
  * ZL10n Translation class.
+ * @deprecated remove at Core-2.0
  */
 class ZGettext
 {

@@ -19,7 +19,11 @@ services:
 
     twig.extension.zikula_securitycenter_module:
         class: %twig.extension.zikula_securitycenter_module.class%
-        arguments: ["%installed%", "@zikula_extensions_module.api.variable", "@zikula_security_center_module.helper.purifier_helper"]
+        arguments:
+          - "%installed%"
+          - "@=container.hasParameter('upgrading') ? parameter('upgrading') : false"
+          - "@zikula_extensions_module.api.variable"
+          - "@zikula_security_center_module.helper.purifier_helper"
         tags:
             - { name: twig.extension }
 

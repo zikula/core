@@ -101,7 +101,7 @@ abstract class AbstractController
      */
     protected function reSyncAndActivateModules()
     {
-        $extensionsInFileSystem = $this->container->get('zikula_extensions_module.bundle_sync_helper')->scanForBundles();
+        $extensionsInFileSystem = $this->container->get('zikula_extensions_module.bundle_sync_helper')->scanForBundles(['system']);
         $this->container->get('zikula_extensions_module.bundle_sync_helper')->syncExtensions($extensionsInFileSystem);
 
         /** @var ExtensionEntity[] $extensions */

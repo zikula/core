@@ -11,6 +11,7 @@
 
 /**
  * ZL10n class.
+ * @deprecated remove at Core-2.0
  */
 class ZL10n implements Zikula_TranslatableInterface
 {

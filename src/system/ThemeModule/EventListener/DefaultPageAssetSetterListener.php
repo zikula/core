@@ -83,6 +83,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
     {
         $this->params = [
             'env' => $container->getParameter('env'),
+            'installed' => $container->getParameter('installed'),
             'zikula.javascript.bootstrap.min.path' => $container->getParameter('zikula.javascript.bootstrap.min.path'),
             'zikula.stylesheet.bootstrap-font-awesome.path' => $container->getParameter('zikula.stylesheet.bootstrap-font-awesome.path'),
             'zikula.stylesheet.fontawesome.min.path' => $container->getParameter('zikula.stylesheet.fontawesome.min.path'),
@@ -168,7 +169,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
     private function addBootstrapCss($basePath)
     {
         $overrideBootstrapPath = '';
-        if (!\System::isInstalling()) {
+        if ($this->params['installed']) {
             // Check for override of bootstrap css path
             if (!empty($this->params['zikula.stylesheet.bootstrap.min.path'])) {
                 $overrideBootstrapPath = $this->params['zikula.stylesheet.bootstrap.min.path'];
