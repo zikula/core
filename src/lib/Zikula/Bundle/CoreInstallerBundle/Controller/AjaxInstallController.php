@@ -112,7 +112,6 @@ class AjaxInstallController extends AbstractController
             case "protect":
                 return $this->protectFiles();
         }
-        \System::setInstalling(false);
 
         return true;
     }

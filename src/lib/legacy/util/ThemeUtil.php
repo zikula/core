@@ -253,7 +253,7 @@ class ThemeUtil
         @trigger_error('UserUtil is deprecated, please use Theme entity instead.', E_USER_DEPRECATED);
 
         static $themestable;
-        if (!isset($themestable) || System::isInstalling()) {
+        if (!isset($themestable) || !\ServiceUtil::getManager()->getParameter('installed')) {
             /** @var $entityManager Doctrine\ORM\EntityManager */
             $entityManager = ServiceUtil::get('doctrine.orm.default_entity_manager');
             /** @var $array ThemeEntity[] */

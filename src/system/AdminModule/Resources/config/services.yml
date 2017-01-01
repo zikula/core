@@ -28,7 +28,7 @@ services:
 
     zikula_admin_module.module_event_listener:
         class: %zikula_admin_module.module_event_listener.class%
-        arguments: ["@zikula_extensions_module.api.variable"]
+        arguments: ["@zikula_extensions_module.api.variable", "%installed%"]
         tags:
             - { name: kernel.event_subscriber }
     zikulaadminmodule.module_event_listener:

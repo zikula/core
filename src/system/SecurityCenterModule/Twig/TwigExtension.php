@@ -65,7 +65,7 @@ class TwigExtension extends \Twig_Extension
         if (!$this->isInstalled) {
             return $string;
         }
-        if (\System::isInstalling() || \System::isUpgrading()) {
+        if (\System::isUpgrading()) {
             return $string;
         }
 

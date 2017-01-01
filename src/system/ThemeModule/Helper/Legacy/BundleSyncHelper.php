@@ -69,7 +69,7 @@ class BundleSyncHelper
         try {
             \ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'deleterunningconfig', ['themename' => $name]);
         } catch (\Exception $e) {
-            if (\System::isInstalling()) {
+            if (\ServiceUtil::getManager()->getParameter('installed')) {
                 // silent fail when installing or upgrading
             } else {
                 throw $e;

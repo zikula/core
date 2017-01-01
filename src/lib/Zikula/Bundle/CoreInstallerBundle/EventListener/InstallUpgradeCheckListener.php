@@ -72,7 +72,7 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
             \System::shutDown();
         }
         if (!$installed || $requiresUpgrade || $this->container->hasParameter('upgrading')) {
-            \System::setInstalling(true);
+            // temp do nothing - investigate the upgrading thing
         }
     }
 

@@ -688,16 +688,12 @@ class ZLanguage
      */
     private function setEncoding()
     {
-        if (preg_match('#utf([-]{0,1})8#', $this->dbCharset)) {
+        if (!ServiceUtil::getManager()->getParameter('installed')) {
             $this->encoding = 'utf-8';
-
-            return;
+        } elseif (preg_match('#utf([-]{0,1})8#', $this->dbCharset)) {
+            $this->encoding = 'utf-8';
         } elseif (preg_match('#^latin([0-9]{1,2})#', $this->dbCharset)) {
             $this->encoding = preg_replace('#latin([0-9]{1,2})#', 'iso-8859-$1', $this->dbCharset);
-
-            return;
-        } elseif (System::isInstalling()) {
-            $this->encoding = 'utf-8';
         } else {
             $this->registerError(__f("Error! Could not set encoding based on database character set '%s'.", $this->dbCharset));
         }

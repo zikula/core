@@ -45,7 +45,7 @@ class DBUtil
             self::$cache_enabled = ServiceUtil::getManager()->getParameter('dbcache.enable');
         }
 
-        return $tablename != 'session_info' && !System::isInstalling() && self::$cache_enabled;
+        return $tablename != 'session_info' && ServiceUtil::getManager()->getParameter('installed') && self::$cache_enabled;
     }
 
     /**
@@ -284,7 +284,7 @@ class DBUtil
 
         $connection = Doctrine_Manager::getInstance()->getCurrentConnection();
 
-        if (!$connection && System::isInstalling()) {
+        if (!$connection && !\ServiceUtil::getManager()->getParameter('installed')) {
             return false;
         }
 

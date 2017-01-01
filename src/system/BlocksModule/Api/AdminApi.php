@@ -57,9 +57,8 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Security check
-        // this function is called during the init process so we have to check in _ZINSTALLVER
         // is set as alternative to the correct permission check
-        if (!System::isInstalling() && !SecurityUtil::checkPermission('ZikulaBlocksModule::', "$args[bkey]:$args[title]:$args[bid]", ACCESS_EDIT)) {
+        if (\ServiceUtil::getManager()->getParameter('installed') && !SecurityUtil::checkPermission('ZikulaBlocksModule::', "$args[bkey]:$args[title]:$args[bid]", ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
@@ -125,7 +124,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Security check
-        if (!System::isInstalling() && !SecurityUtil::checkPermission('ZikulaBlocksModule::', "$args[bkey]:$args[title]:", ACCESS_ADD)) {
+        if (\ServiceUtil::getManager()->getParameter('installed') && !SecurityUtil::checkPermission('ZikulaBlocksModule::', "$args[bkey]:$args[title]:", ACCESS_ADD)) {
             throw new AccessDeniedException();
         }
 
@@ -310,7 +309,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Security check
-        if (!System::isInstalling() && !SecurityUtil::checkPermission('ZikulaBlocksModule::position', "$args[name]::", ACCESS_ADD)) {
+        if (\ServiceUtil::getManager()->getParameter('installed') && !SecurityUtil::checkPermission('ZikulaBlocksModule::position', "$args[name]::", ACCESS_ADD)) {
             throw new AccessDeniedException();
         }
 

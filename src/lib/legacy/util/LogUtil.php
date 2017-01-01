@@ -459,7 +459,7 @@ class LogUtil
     {
         @trigger_error('LogUtil is deprecated. please use Symfony flashbag instead.', E_USER_DEPRECATED);
 
-        if (System::isInstalling()) {
+        if (!ServiceUtil::getManager()->getParameter('installed')) {
             return;
         }
 

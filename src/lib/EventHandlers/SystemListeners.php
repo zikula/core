@@ -130,7 +130,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function systemPlugins(Zikula_Event $event)
     {
         if ($event['stage'] & Zikula_Core::STAGE_TABLES) {
-            if (!System::isInstalling()) {
+            if (ServiceUtil::getManager()->getParameter('installed')) {
                 ServiceUtil::loadPersistentServices();
                 PluginUtil::loadPlugins(realpath(realpath('.').'/plugins'), "SystemPlugin");
                 EventUtil::loadPersistentEvents();

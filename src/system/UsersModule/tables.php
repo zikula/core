@@ -28,7 +28,7 @@ function ZikulaUsersModule_tables($forVersion = null)
             return Users_tables_for_113();
         }
 
-        if (System::isInstalling()) {
+        if (\ServiceUtil::getManager()->getParameter('installed')) {
             // new installs
             return Users_tables_for_220();
         }

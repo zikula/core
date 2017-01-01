@@ -113,7 +113,6 @@ class AjaxUpgradeController extends AbstractController
             case "clearcaches":
                 return $this->clearCaches();
         }
-        \System::setInstalling(false);
 
         return true;
     }

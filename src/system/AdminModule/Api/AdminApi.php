@@ -259,7 +259,7 @@ class AdminApi
         // this function is called during the init process so we have to check in installing
         // is set as alternative to the correct permission check
         $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
-        if (!System::isInstalling() && !$permissionApi->hasPermission('ZikulaAdminModule::Category', "::", ACCESS_ADD)) {
+        if (ServiceUtil::getManager()->getParameter('installed') && !$permissionApi->hasPermission('ZikulaAdminModule::Category', "::", ACCESS_ADD)) {
             throw new AccessDeniedException();
         }
 

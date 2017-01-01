@@ -419,14 +419,14 @@ class Zikula_Core
         if (($stage & self::STAGE_PRE) && ($this->stage & ~self::STAGE_PRE)) {
             ModUtil::flushCache();
             System::flushCache();
-            $args = !System::isInstalling() ? ['lazy' => true] : [];
+            $args = ServiceUtil::getManager()->getParameter('installed') ? ['lazy' => true] : [];
             $this->dispatcher->dispatch('core.preinit', new GenericEvent($this, $args));
         }
 
         // Initialise and load configuration
         if ($stage & self::STAGE_CONFIG) {
             // for BC only. remove this code in 2.0.0
-            if (!System::isInstalling()) {
+            if (ServiceUtil::getManager()->getParameter('installed')) {
                 $this->dispatcher->dispatch('setup.errorreporting', new GenericEvent(null, ['stage' => $stage]));
             }
 
@@ -445,7 +445,7 @@ class Zikula_Core
                 $dbEvent = new GenericEvent($this, ['stage' => self::STAGE_DB]);
                 $this->dispatcher->dispatch('core.init', $dbEvent);
             } catch (PDOException $e) {
-                if (!System::isInstalling()) {
+                if (ServiceUtil::getManager()->getParameter('installed')) {
                     header('HTTP/1.1 503 Service Unavailable');
                     require_once System::getSystemErrorTemplate('dbconnectionerror.tpl');
                     System::shutDown();
@@ -465,7 +465,7 @@ class Zikula_Core
             ModUtil::dbInfoLoad('ZikulaCategoriesModule', 'ZikulaCategoriesModule');
 
             // Add AutoLoading for non-symfony 1.3 modules in /modules
-            if (!System::isInstalling()) {
+            if (ServiceUtil::getManager()->getParameter('installed')) {
                 ModUtil::registerAutoloaders();
             }
 
@@ -498,7 +498,7 @@ class Zikula_Core
         // end block
 
         if ($stage & self::STAGE_MODS) {
-            if (!System::isInstalling()) {
+            if (ServiceUtil::getManager()->getParameter('installed')) {
                 ModUtil::load('ZikulaSecurityCenterModule');
             }
 
@@ -531,7 +531,7 @@ class Zikula_Core
         }
 
         // check the users status, if not 1 then log him out
-        if (!System::isInstalling() && UserUtil::isLoggedIn()) {
+        if (ServiceUtil::getManager()->getParameter('installed') && UserUtil::isLoggedIn()) {
             $userstatus = UserUtil::getVar('activated');
             if ($userstatus != Users_Constant::ACTIVATED_ACTIVE) {
                 UserUtil::logout();
