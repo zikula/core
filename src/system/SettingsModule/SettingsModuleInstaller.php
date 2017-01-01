@@ -47,7 +47,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('startpage', '');
         $this->setSystemVar('Version_Num', \ZikulaKernel::VERSION);
         $this->setSystemVar('Version_ID', \Zikula_Core::VERSION_ID); // @deprecated
-        $this->setSystemVar('Version_Sub', \ZikulaKernel::VERSION);
+        $this->setSystemVar('Version_Sub', \ZikulaKernel::VERSION_SUB);
         $this->setSystemVar('debug_sql', '0');
         $this->setSystemVar('multilingual', '1');
         $this->setSystemVar('useflags', '0');
