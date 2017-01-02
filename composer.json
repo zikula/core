@@ -15,9 +15,6 @@
         },
         "classmap": [
             "src/lib/i18n/"
-        ],
-        "files": [
-            "src/lib/i18n/ZGettextFunctions.php"
         ]
     },
     "authors": [
