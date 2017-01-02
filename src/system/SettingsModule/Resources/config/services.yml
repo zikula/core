@@ -18,12 +18,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    zikula_settings_module.module_listener:
-        class: "%zikula_settings_module.module_listener.class%"
-        arguments: ["@zikula_extensions_module.api.variable", "@session"]
-        tags:
-            - { name: kernel.event_subscriber }
-        deprecated: The "%service_id%" service is deprecated since 1.4.4 and will be removed in 2.0.
     zikulasettingsmodule.module_listener:
         alias: zikula_settings_module.module_listener
         deprecated: The "%service_id%" service is deprecated since 1.4.4 and will be removed in 2.0.
