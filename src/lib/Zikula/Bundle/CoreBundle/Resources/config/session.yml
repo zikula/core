@@ -7,14 +7,14 @@ parameters:
 
 services:
     zikula_core.legacy.session_storage:
-        class: %session.storage.legacy.class%
+        class: "%session.storage.legacy.class%"
         public: false
         arguments: ["@zikula_extensions_module.api.variable", "%session.storage.options%", "@=null", "@=null"]
         calls:
             - [setSaveHandler, ["@zikula_core.legacy.session_handler"]]
 
     zikula_core.legacy.session_handler:
-        class: %session.handler.legacy.class%
+        class: "%session.handler.legacy.class%"
         public: false
         arguments: ["%installed%"]
         calls:

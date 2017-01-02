@@ -7,19 +7,19 @@ parameters:
 
 services:
     zikula_settings_module.container.link_container:
-        class: %zikula_settings_module.container.link_container.class%
+        class: "%zikula_settings_module.container.link_container.class%"
         arguments: ["@translator.default", "@jms_i18n_routing.router", "@zikula_permissions_module.api.permission"]
         tags:
             - { name: zikula.link_container }
 
     zikula_settings_module.module_listener:
-        class: %zikula_settings_module.module_listener.class%
+        class: "%zikula_settings_module.module_listener.class%"
         arguments: ["@zikula_extensions_module.api.variable", "@session"]
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_settings_module.module_listener:
-        class: %zikula_settings_module.module_listener.class%
+        class: "%zikula_settings_module.module_listener.class%"
         arguments: ["@zikula_extensions_module.api.variable", "@session"]
         tags:
             - { name: kernel.event_subscriber }
@@ -29,16 +29,16 @@ services:
         deprecated: The "%service_id%" service is deprecated since 1.4.4 and will be removed in 2.0.
 
     zikula_settings_module.locale_api:
-        class: %zikula_settings_module.locale_api.class%
+        class: "%zikula_settings_module.locale_api.class%"
 
     zikula_settings_module.listener.locale_listener:
-        class: %zikula_settings_module.listener.locale_listener.class%
+        class: "%zikula_settings_module.listener.locale_listener.class%"
         arguments: ["@kernel", "@zikula_settings_module.locale_api"]
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_settings_module.listener.localized_variable_listener:
-        class: %zikula_settings_module.listener.localized_variable_listener.class%
+        class: "%zikula_settings_module.listener.localized_variable_listener.class%"
         arguments: ["@zikula_extensions_module.api.variable"]
         tags:
             - { name: kernel.event_subscriber }

@@ -11,14 +11,14 @@ parameters:
 
 services:
     zikula_core.internal.theme.create_themed_response_listener:
-        class: %zikula_core.internal.theme.create_themed_response_listener.class%
+        class: "%zikula_core.internal.theme.create_themed_response_listener.class%"
         arguments: ["%installed%", "@zikula_core.common.theme_engine", "@zikula_extensions_module.api.variable"]
         tags:
             - { name: kernel.event_subscriber }
             - { name: monolog.logger, channel: request }
 
     zikula_core.internal.theme.default_page_asset_setter_listener:
-        class: %zikula_core.internal.theme.default_page_asset_setter_listener.class%
+        class: "%zikula_core.internal.theme.default_page_asset_setter_listener.class%"
         arguments: ["@zikula_core.common.theme.assets_js", "@zikula_core.common.theme.assets_css", "@router", "@zikula_core.common.theme_engine", "%kernel.root_dir%", "%compat_layer%"]
         calls:
             - [setParameters, ["@service_container"]]
@@ -27,46 +27,46 @@ services:
             - { name: monolog.logger, channel: request }
 
     zikula_core.internal.theme.default_page_var_setter_listener:
-        class: %zikula_core.internal.theme.default_page_var_setter_listener.class%
+        class: "%zikula_core.internal.theme.default_page_var_setter_listener.class%"
         arguments: ["@zikula_core.common.theme.pagevars", "@router", "@zikula_extensions_module.api.variable", "@kernel", "@zikula_settings_module.locale_api", "%installed%"]
         tags:
             - { name: kernel.event_subscriber }
             #- { name: monolog.logger, channel: request }
 
     zikula_core.internal.theme.controller_annotation_reader_listener:
-        class: %zikula_core.internal.theme.controller_annotation_reader_listener.class%
+        class: "%zikula_core.internal.theme.controller_annotation_reader_listener.class%"
         arguments: ["@zikula_core.common.theme_engine"]
         tags:
             - { name: kernel.event_subscriber }
             - { name: monolog.logger, channel: request }
 
     zikula_core.internal.theme.template_path_override_listener:
-        class: %zikula_core.internal.theme.template_path_override_listener.class%
+        class: "%zikula_core.internal.theme.template_path_override_listener.class%"
         arguments: ["@twig.loader", "@zikula_core.common.theme_engine"]
         tags:
             - { name: kernel.event_subscriber }
             - { name: monolog.logger, channel: request }
 
     zikula_core.internal.theme.module_stylesheet_insert_listener:
-        class: %zikula_core.internal.theme.module_stylesheet_insert_listener.class%
+        class: "%zikula_core.internal.theme.module_stylesheet_insert_listener.class%"
         arguments: ["@kernel"]
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_core.internal.theme.add_jsconfig_listener:
-        class: %zikula_core.internal.theme.add_jsconfig_listener.class%
+        class: "%zikula_core.internal.theme.add_jsconfig_listener.class%"
         arguments: ["%installed%", "@zikula_extensions_module.api.variable", "@zikula_users_module.current_user", "@templating.engine.twig", "@zikula_core.common.theme.themevars", "@zikula_core.common.theme.assets_header", "%zikula.session.name%", "%compat_layer%"]
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_core.internal.theme.template_name_expose_listener:
-        class: %zikula_core.internal.theme.template_name_expose_listener.class%
+        class: "%zikula_core.internal.theme.template_name_expose_listener.class%"
         arguments: ["%env%"]
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_core.internal.theme.extension_installation_listener:
-        class: %zikula_core.internal.theme.extension_installation_listener.class%
+        class: "%zikula_core.internal.theme.extension_installation_listener.class%"
         arguments: ["@zikula.cache_clearer"]
         tags:
             - { name: kernel.event_subscriber }

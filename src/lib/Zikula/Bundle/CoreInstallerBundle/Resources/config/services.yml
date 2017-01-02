@@ -10,34 +10,34 @@ parameters:
 
 services:
     zikula_core_installer.install_upgrade_check:
-        class: %zikula_core_installer.install_upgrade_check.class%
+        class: "%zikula_core_installer.install_upgrade_check.class%"
         arguments: ["@service_container"]
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_core_installer.controller.helper:
-        class: %zikula_core_installer.controller.helper.class%
+        class: "%zikula_core_installer.controller.helper.class%"
 
     zikula_core_installer.config.helper:
         class: %zikula_core_installer.config.helper.class%
         arguments: ["@kernel"]
 
     zikula_core_installer.controller.installer:
-        class: %zikula_core_installer.controller.installer.class%
+        class: "%zikula_core_installer.controller.installer.class%"
         arguments: ["@service_container"]
 
     zikula_core_installer.controller.upgrader:
-        class: %zikula_core_installer.controller.upgrader.class%
+        class: "%zikula_core_installer.controller.upgrader.class%"
         arguments: ["@service_container"]
 
     zikula_core_installer.controller.ajaxinstall:
-        class: %zikula_core_installer.controller.ajaxinstall.class%
+        class: "%zikula_core_installer.controller.ajaxinstall.class%"
         arguments: ["@service_container"]
 
     zikula_core_installer.controller.ajaxupgrade:
-        class: %zikula_core_installer.controller.ajaxupgrade.class%
+        class: "%zikula_core_installer.controller.ajaxupgrade.class%"
         arguments: ["@service_container"]
 
     zikula_core_installer.controller.doc:
-        class: %zikula_core_installer.controller.doc.class%
+        class: "%zikula_core_installer.controller.doc.class%"
         arguments: ["@kernel", "@router", "@templating", "@zikula_core.common.markdown_extra_parser", "@translator.default"]

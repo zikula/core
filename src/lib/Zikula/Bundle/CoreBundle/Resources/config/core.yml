@@ -22,43 +22,43 @@ parameters:
 
 services:
     zikula_core.common.markdown_parser:
-        class: %zikula_core.common.markdown.class%
+        class: "%zikula_core.common.markdown.class%"
     markdown_parser:
         alias: zikula_core.common.markdown_parser
         deprecated: The "%service_id%" service is deprecated since 1.4.4 and will be removed in 2.0.
 
     zikula_core.common.markdown_extra_parser:
-        class: %zikula_core.common.markdown_extra.class%
+        class: "%zikula_core.common.markdown_extra.class%"
     markdown_extra_parser:
         alias: zikula_core.common.markdown_extra_parser
         deprecated: The "%service_id%" service is deprecated since 1.4.4 and will be removed in 2.0.
 
     zikula_core.internal.doctrine1_init:
-        class: %zikula_core.internal.doctrine1_connector.class%
+        class: "%zikula_core.internal.doctrine1_connector.class%"
         arguments: ["@service_container", "@event_dispatcher"]
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_core.internal.doctrine_init:
-        class: %zikula_core.internal.doctrine_connector.class%
+        class: "%zikula_core.internal.doctrine_connector.class%"
         arguments: ["@service_container"]
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_core.internal.token.storage:
-        class: %zikula_core.internal.token.storage.class%
+        class: "%zikula_core.internal.token.storage.class%"
         arguments: ["@session"]
 
     zikula_core.internal.token.generator:
-        class: %zikula_core.internal.token.generator.class%
+        class: "%zikula_core.internal.token.generator.class%"
         arguments: ["@zikula_core.internal.token.storage", "_dummy", "%zikula_core.internal.token.max_life%"]
 
     zikula_core.internal.token.validator:
-        class: %zikula_core.internal.token.validator.class%
+        class: "%zikula_core.internal.token.validator.class%"
         arguments: ["@zikula_core.internal.token.generator"]
 
     zikula_core.common.csrf_token_handler:
-        class: %zikula_core.common.csrf_token_handler.class%
+        class: "%zikula_core.common.csrf_token_handler.class%"
         arguments:
           - "@zikula_core.internal.token.generator"
           - "@zikula_core.internal.token.validator"
@@ -67,13 +67,13 @@ services:
           - "@session"
 
     zikula_core.internal.clickjack_protection_listener:
-        class: %zikula_core.internal.clickjack_protection_listener.class%
+        class: "%zikula_core.internal.clickjack_protection_listener.class%"
         arguments: ["%security.x_frame_options%"]
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_core.internal.site_off_listener:
-        class: %zikula_core.internal.site_off_listener.class%
+        class: "%zikula_core.internal.site_off_listener.class%"
         arguments:
           - "@zikula_extensions_module.api.variable"
           - "@zikula_permissions_module.api.permission"
@@ -86,13 +86,13 @@ services:
             - { name: kernel.event_subscriber }
 
     zikula_core.internal.session_expire_listener:
-        class: %zikula_core.internal.session_expire_listener.class%
+        class: "%zikula_core.internal.session_expire_listener.class%"
         arguments: ["%installed%"]
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_core.internal.exception_listener:
-        class: %zikula_core.internal.exception_listener.class%
+        class: "%zikula_core.internal.exception_listener.class%"
         arguments:
           - "@router"
           - "@event_dispatcher"
@@ -105,19 +105,19 @@ services:
             - { name: monolog.logger, channel: request }
 
     zikula_core.internal.output_compression_listener:
-        class: %zikula_core.internal.output_compression_listener.class%
+        class: "%zikula_core.internal.output_compression_listener.class%"
         arguments: ["@zikula_extensions_module.api.variable", "%installed%"]
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_core.internal.strip_front_controller_listener:
-        class: %zikula_core.internal.strip_front_controller_listener.class%
+        class: "%zikula_core.internal.strip_front_controller_listener.class%"
         arguments: ["@zikula_extensions_module.api.variable", "%installed%"]
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_core.common.doctrine.schema_tool:
-        class: %zikula_core.common.doctrine.schema_tool.class%
+        class: "%zikula_core.common.doctrine.schema_tool.class%"
         lazy: true
         arguments: ["@doctrine.orm.default_entity_manager"]
     zikula.doctrine.schema_tool:
@@ -125,5 +125,5 @@ services:
         deprecated: The "%service_id%" service is deprecated since 1.4.4 and will be removed in 2.0.
 
     zikula_core.internal.bootstrap_helper:
-        class: %zikula_core.internal.bootstrap_helper.class%
+        class: "%zikula_core.internal.bootstrap_helper.class%"
         arguments: ["@doctrine.dbal.default_connection", "@zikula.cache_clearer"]

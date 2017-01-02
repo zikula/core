@@ -9,7 +9,7 @@ parameters:
 
 services:
     zikula_zauth_module.authentication_method.native_uname:
-        class: %zikula_zauth_module.authentication_method.native_uname.class%
+        class: "%zikula_zauth_module.authentication_method.native_uname.class%"
         arguments:
             - "@zikula_users_module.user_repository"
             - "@zikula_zauth_module.authentication_mapping_repository"
@@ -19,10 +19,10 @@ services:
             - "@validator"
             - "@zikula_zauth_module.api.password"
         tags:
-            - { name: zikula.authentication_method, alias: %zikula_zauth_module.authentication_method.alias.native_uname.value% }
+            - { name: zikula.authentication_method, alias: "%zikula_zauth_module.authentication_method.alias.native_uname.value%" }
 
     zikula_zauth_module.authentication_method.native_email:
-        class: %zikula_zauth_module.authentication_method.native_email.class%
+        class: "%zikula_zauth_module.authentication_method.native_email.class%"
         arguments:
             - "@zikula_users_module.user_repository"
             - "@zikula_zauth_module.authentication_mapping_repository"
@@ -32,22 +32,22 @@ services:
             - "@validator"
             - "@zikula_zauth_module.api.password"
         tags:
-            - { name: zikula.authentication_method, alias: %zikula_zauth_module.authentication_method.alias.native_email.value% }
+            - { name: zikula.authentication_method, alias: "%zikula_zauth_module.authentication_method.alias.native_email.value%" }
 
     zikula_zauth_module.form.authentication_method_type.uname_type:
-        class: %zikula_zauth_module.form.authentication_method_type.uname_type.class%
+        class: "%zikula_zauth_module.form.authentication_method_type.uname_type.class%"
         arguments: ["@translator.default"]
         tags:
             - { name: form.type, alias: "Zikula\\ZAuthModule\\Form\\Type\\UnameLoginType" }
 
     zikula_zauth_module.form.authentication_method_type.email_type:
-        class: %zikula_zauth_module.form.authentication_method_type.email_type.class%
+        class: "%zikula_zauth_module.form.authentication_method_type.email_type.class%"
         arguments: ["@translator.default"]
         tags:
             - { name: form.type, alias: "Zikula\\ZAuthModule\\Form\\Type\\EmailLoginType" }
 
     zikula_zauth_module.form.registration_type:
-        class: %zikula_zauth_module.form.registration_type.class%
+        class: "%zikula_zauth_module.form.registration_type.class%"
         arguments: ["@translator.default", "@zikula_extensions_module.api.variable"]
         tags:
             - { name: form.type, alias: "Zikula\\ZAuthModule\\Form\\Type\\RegistrationType" }

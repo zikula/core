@@ -6,10 +6,10 @@ imports:
 framework:
     #esi:             ~
     translator:      { fallbacks: en }
-    secret:          %secret%
+    secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
-        strict_requirements: %kernel.debug%
+        strict_requirements: "%kernel.debug%"
     form:            ~
     csrf_protection: ~
     validation:      { enabled: true, enable_annotations: true, api: auto }
@@ -17,14 +17,14 @@ framework:
         engines: ['twig']
     assets:
         base_path: web/
-        version: %assets_version%
+        version: "%assets_version%"
         packages:
             zikula_default:
                 base_path: ''
     default_locale:  "%locale%"
     trusted_proxies: ~
     session:
-        name: %zikula.session.name%
+        name: "%zikula.session.name%"
         handler_id: zikula_core.legacy.session_handler
         storage_id: zikula_core.legacy.session_storage
         cookie_httponly: false
@@ -32,8 +32,8 @@ framework:
 
 # Twig Configuration
 twig:
-    debug:            %kernel.debug%
-    strict_variables: %kernel.debug%
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
     globals:
         pagevars:     "@zikula_core.common.theme.pagevars"
         themevars:    "@zikula_core.common.theme.themevars"
@@ -46,19 +46,19 @@ doctrine:
         default_connection: default
         connections:
             default:
-                driver:   %database_driver%
-                host:     %database_host%
-                port:     %database_port%
-                dbname:   %database_name%
-                user:     %database_user%
-                password: %database_password%
+                driver:   "%database_driver%"
+                host:     "%database_host%"
+                port:     "%database_port%"
+                dbname:   "%database_name%"
+                user:     "%database_user%"
+                password: "%database_password%"
                 charset:  UTF8
-                path:     %database_path%
-                server_version: %database_server_version%
+                path:     "%database_path%"
+                server_version: "%database_server_version%"
 
     orm:
         proxy_namespace: DoctrineProxy
-        proxy_dir: %kernel.cache_dir%/doctrine/orm/DoctrineProxy
+        proxy_dir: "%kernel.cache_dir%/doctrine/orm/DoctrineProxy"
         default_entity_manager: default
         auto_generate_proxy_classes: true
         entity_managers:
