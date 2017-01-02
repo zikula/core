@@ -8,7 +8,7 @@ parameters:
 
 services:
     zikula_groups_module.container.link_container:
-        class: %zikula_groups_module.container.link_container.class%
+        class: "%zikula_groups_module.container.link_container.class%"
         arguments:
           - "@translator.default"
           - "@jms_i18n_routing.router"
@@ -19,26 +19,26 @@ services:
             - { name: zikula.link_container }
 
     zikula_groups_module.group_application_repository:
-        class: %zikula_groups_module.group_application_repository.class%
+        class: "%zikula_groups_module.group_application_repository.class%"
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
         arguments: ["ZikulaGroupsModule:GroupApplicationEntity"]
 
     zikula_groups_module.group_repository:
-        class: %zikula_groups_module.group_repository.class%
+        class: "%zikula_groups_module.group_repository.class%"
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
         arguments: ["ZikulaGroupsModule:GroupEntity"]
         calls:
             - [setTranslator, ["@translator.default"]]
 
     zikula_groups_module.validator.constraints.group_name_validator:
-        class: %zikula_groups_module.validator.constraints.group_name_validator.class%
+        class: "%zikula_groups_module.validator.constraints.group_name_validator.class%"
         arguments: ["@translator.default", "@zikula_groups_module.group_repository"]
         tags:
             - { name: validator.constraint_validator, alias: zikula.groups.group_name.validator }
 
     zikula_groups_module.listener.group_event_listener:
-        class: %zikula_groups_module.listener.group_event_listener.class%
-        arguments: 
+        class: "%zikula_groups_module.listener.group_event_listener.class%"
+        arguments:
           - "@zikula_extensions_module.api.variable"
           - "@translator.default"
           - "@zikula_mailer_module.api.mailer"

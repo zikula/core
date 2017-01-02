@@ -5,7 +5,7 @@ parameters:
     script_position:  foot
     # script_position defines the location where javascripts will be placed in the page
     # choices are `head` or `foot`
-    temp_dir:         %kernel.cache_dir%/ztemp
+    temp_dir:         "%kernel.cache_dir%/ztemp"
     datadir:          userdata
     system.chmod_dir: 0777
 

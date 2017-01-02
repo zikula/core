@@ -23,7 +23,7 @@ class LoginBlock extends AbstractBlockHandler
     {
         if ($this->hasPermission('Loginblock::', $properties['title'].'::', ACCESS_READ)) {
             if (!$this->get('zikula_users_module.current_user')->isLoggedIn()) {
-                $request = $this->get('request_stack')->getCurrentRequest();
+                $request = $this->get('request_stack')->getMasterRequest();
 
                 $authenticationMethodCollector = $this->get('zikula_users_module.internal.authentication_method_collector');
                 $template = '@ZikulaUsersModule/Block/login.html.twig';

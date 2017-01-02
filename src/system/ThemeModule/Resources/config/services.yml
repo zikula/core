@@ -6,25 +6,25 @@ parameters:
 
 services:
     zikula_theme_module.container.link_container:
-        class: %zikula_theme_module.container.link_container.class%
+        class: "%zikula_theme_module.container.link_container.class%"
         arguments: ["@translator.default", "@jms_i18n_routing.router", "@zikula_permissions_module.api.permission", "@zikula_extensions_module.api.variable"]
         tags:
             - { name: zikula.link_container }
 
     zikula_theme_module.twig.extension.theme_extension:
-        class: %zikula_theme_module.twig.extension.theme_extension.class%
+        class: "%zikula_theme_module.twig.extension.theme_extension.class%"
         arguments: ["@zikula_core.common.theme.asset_helper"]
         tags:
             - { name: twig.extension }
 
     zikula_theme_module.theme_entity.repository:
-        class: %zikula_theme_module.theme_entity.repository.class%
+        class: "%zikula_theme_module.theme_entity.repository.class%"
         factory: ["@doctrine", getRepository]
         arguments: ["ZikulaThemeModule:ThemeEntity"]
         calls:
             - [setKernel, ["@kernel"]]
 
     zikula_theme_module.helper.bundle_sync_helper:
-        class: %zikula_theme_module.helper.bundle_sync_helper.class%
+        class: "%zikula_theme_module.helper.bundle_sync_helper.class%"
         lazy: true
         arguments: ["@kernel", "@zikula_theme_module.theme_entity.repository", "@zikula_core.internal.bootstrap_helper", "@translator.default", "@zikula_extensions_module.composer_validation_helper", "@session"]

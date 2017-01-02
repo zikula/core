@@ -9,19 +9,19 @@ parameters:
 
 services:
     zikula_zauth_module.validator.constraints.valid_uname_validator:
-        class: %zikula_zauth_module.validator.constraints.valid_uname_validator.class%
+        class: "%zikula_zauth_module.validator.constraints.valid_uname_validator.class%"
         arguments: ["@zikula_extensions_module.api.variable", "@translator.default", "@validator"]
         tags:
             - { name: validator.constraint_validator, alias: zikula.zauth.uname.validator }
 
     zikula_zauth_module.validator.constraints.valid_email_validator:
-        class: %zikula_zauth_module.validator.constraints.valid_email_validator.class%
+        class: "%zikula_zauth_module.validator.constraints.valid_email_validator.class%"
         arguments: ["@zikula_extensions_module.api.variable", "@translator.default", "@validator"]
         tags:
             - { name: validator.constraint_validator, alias: zikula.zauth.email.validator }
 
     zikula_zauth_module.validator.constraints.valid_user_fields_validator:
-        class: %zikula_zauth_module.validator.constraints.valid_user_fields_validator.class%
+        class: "%zikula_zauth_module.validator.constraints.valid_user_fields_validator.class%"
         arguments:
             - "@zikula_extensions_module.api.variable"
             - "@translator.default"
@@ -31,19 +31,19 @@ services:
             - { name: validator.constraint_validator, alias: zikula.zauth.user_fields.validator }
 
     zikula_zauth_module.validator.constraints.valid_password_validator:
-        class: %zikula_zauth_module.validator.constraints.valid_password_validator.class%
+        class: "%zikula_zauth_module.validator.constraints.valid_password_validator.class%"
         arguments: ["@zikula_extensions_module.api.variable", "@translator.default", "@validator"]
         tags:
             - { name: validator.constraint_validator, alias: zikula.zauth.password.validator }
 
     zikula_zauth_module.validator.constraints.valid_anti_spam_answer_validator:
-        class: %zikula_zauth_module.validator.constraints.valid_anti_spam_answer_validator.class%
+        class: "%zikula_zauth_module.validator.constraints.valid_anti_spam_answer_validator.class%"
         arguments: ["@zikula_extensions_module.api.variable", "@translator.default", "@validator"]
         tags:
             - { name: validator.constraint_validator, alias: zikula.zauth.antispam_answer.validator }
 
     zikula_zauth_module.validator.constraints.valid_registration_verification_validator:
-        class: %zikula_zauth_module.validator.constraints.valid_registration_verification_validator.class%
+        class: "%zikula_zauth_module.validator.constraints.valid_registration_verification_validator.class%"
         arguments:
             - "@zikula_extensions_module.api.variable"
             - "@translator.default"
@@ -54,7 +54,7 @@ services:
             - { name: validator.constraint_validator, alias: zikula.zauth.registration_verification.validator }
 
     zikula_zauth_module.validator.constraints.valid_password_change_validator:
-        class: %zikula_zauth_module.validator.constraints.valid_password_change_validator.class%
+        class: "%zikula_zauth_module.validator.constraints.valid_password_change_validator.class%"
         arguments:
             - "@zikula_zauth_module.authentication_mapping_repository"
             - "@translator.default"

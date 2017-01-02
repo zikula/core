@@ -8,18 +8,18 @@ parameters:
 
 services:
     zikula_core.controller.main_controller:
-        class: %zikula_core.controller.main_controller.class%
+        class: "%zikula_core.controller.main_controller.class%"
         arguments: ["@kernel", "@zikula_extensions_module.api.variable"]
 
     data_collector.zikula_version:
-        class: %zikula.data_collector.class%
+        class: "%zikula.data_collector.class%"
         public: false
         arguments: ["@zikula_core.common.theme_engine"]
         tags:
             - { name: data_collector, template: "CoreBundle:Collector:ZikulaVersion.html.twig", id: zikula_version, priority: 300 }
 
     zikula.dynamic_config_dumper:
-        class: %zikula.dynamic_config_dumper.class%
+        class: "%zikula.dynamic_config_dumper.class%"
         arguments: ["@=service('kernel').getRootDir() ~ '/config'"]
 
     zikula.cache_clearer:
@@ -27,5 +27,5 @@ services:
         arguments: ["%kernel.cache_dir%", "%router.cache_class_prefix%", "%kernel.container_class%", "@fos_js_routing.extractor", "%jms_i18n_routing.locales%"]
 
     zikula.link_container_collector:
-        class: %zikula.link_container_collector.class%
+        class: "%zikula.link_container_collector.class%"
         arguments: ["@event_dispatcher"]

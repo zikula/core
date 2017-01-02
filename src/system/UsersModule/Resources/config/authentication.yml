@@ -5,17 +5,17 @@ parameters:
 
 services:
     zikula_users_module.internal.authentication_method_collector:
-        class: %zikula_users_module.internal.authentication_method_collector.class%
+        class: "%zikula_users_module.internal.authentication_method_collector.class%"
         arguments: ["@zikula_extensions_module.api.variable"]
 
     zikula_users_module.form.default_registration_type:
-        class: %zikula_users_module.form.default_registration_type.class%
+        class: "%zikula_users_module.form.default_registration_type.class%"
         arguments: ["@translator.default"]
         tags:
             - { name: form.type, alias: "Zikula\\UsersModule\\Form\\RegistrationType\\DefaultRegistrationType" }
 
     zikula_users_module.form.default_login_type:
-        class: %zikula_users_module.form.default_login_type.class%
+        class: "%zikula_users_module.form.default_login_type.class%"
         arguments: ["@translator.default"]
         tags:
             - { name: form.type, alias: "Zikula\\UsersModule\\Form\\Type\\DefaultLoginType" }

@@ -4,13 +4,13 @@ parameters:
 
 services:
     zikula_core_installer_bundle.validator.constraints.valid_pdo_connection_validator:
-        class: %zikula_core_installer_bundle.validator.constraints.valid_pdo_connection_validator.class%
+        class: "%zikula_core_installer_bundle.validator.constraints.valid_pdo_connection_validator.class%"
         arguments: ["@translator.default"]
         tags:
             - { name: validator.constraint_validator, alias: zikula.core_installer.pdo_connection.validator }
 
     zikula_core_installer_bundle.validator.constraints.authenticate_admin_login_validator:
-        class: %zikula_core_installer_bundle.validator.constraints.authenticate_admin_login_validator.class%
+        class: "%zikula_core_installer_bundle.validator.constraints.authenticate_admin_login_validator.class%"
         arguments:
             - "@zikula_permissions_module.api.permission"
             - "@doctrine.dbal.default_connection"
