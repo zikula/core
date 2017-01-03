@@ -4,7 +4,7 @@ CHANGELOG - ZIKULA 1.4.x
 * 1.4.6 (?)
 
  - BC Breaks:
-    - ?
+    - LocaleApi (introduced in 1.4.4) has been refactored and eliminates access to locale metadata.
 
  - Deprecated:
     - \StreamReader_*
