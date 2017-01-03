@@ -465,7 +465,7 @@ class UserApi
 
         $entityManager = ServiceUtil::get('doctrine')->getManager();
         $applications = $entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')
-            ->findBy(['gid' => $args['gid'], 'uid' => $args['uid']]);
+            ->findBy(['group' => $args['gid'], 'uid' => $args['uid']]);
 
         return count($applications) > 0;
     }
