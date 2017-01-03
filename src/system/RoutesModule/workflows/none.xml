@@ -48,6 +48,7 @@
             <description>Delete content permanently.</description>
             <permission>delete</permission>
             <state>approved</state>
+            <nextState>deleted</nextState>
         
             <operation>delete</operation>
         </action>

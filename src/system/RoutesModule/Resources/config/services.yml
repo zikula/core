@@ -7,3 +7,4 @@ imports:
   - { resource: 'helpers.yml' }
   - { resource: 'twig.yml' }
   - { resource: 'logger.yml' }
+  - { resource: 'custom_services.yml' }

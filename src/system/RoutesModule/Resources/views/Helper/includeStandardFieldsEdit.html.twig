@@ -1,5 +1,5 @@
 {# purpose of this template: reusable editing of standard fields #}
-{% if (obj.createdUserId is defined and obj.createdUserId) or (obj.updatedUserId is defined and obj.updatedUserId) %}
+{% if obj.createdBy|default or obj.updatedBy|default %}
     {% if panel|default(false) == true %}
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -12,14 +12,12 @@
     {% endif %}
         <legend>{{ __('Creation and update') }}</legend>
         <ul>
-        {% if obj.createdUserId|default %}
-            {% set username = zikularoutesmodule_userVar('uname', obj.createdUserId) %}
-            <li>{{ __f('Created by %user', {'%user': username}) }}</li>
+        {% if obj.createdBy|default %}
+            <li>{{ __f('Created by %user', {'%user': obj.createdBy.getUname()}) }}</li>
             <li>{{ __f('Created on %date', {'%date': obj.createdDate|localizeddate('medium', 'short')}) }}</li>
         {% endif %}
-        {% if obj.updatedUserId|default %}
-            {% set username = zikularoutesmodule_userVar('uname', obj.updatedUserId) %}
-            <li>{{ __f('Updated by %user', {'%user': username}) }}</li>
+        {% if obj.updatedBy|default %}
+            <li>{{ __f('Updated by %user', {'%user': obj.updatedBy.getUname()}) }}</li>
             <li>{{ __f('Updated on %date', {'%date': obj.updatedDate|localizeddate('medium', 'short')}) }}</li>
         {% endif %}
         </ul>

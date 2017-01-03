@@ -2,7 +2,7 @@ services:
     # Helper classes
     zikula_routes_module.controller_helper:
         class: Zikula\RoutesModule\Helper\ControllerHelper
-        arguments: ["@service_container", "@translator.default", "@session", "@logger"]
+        arguments: ["@service_container", "@translator.default"]
     
     zikula_routes_module.listentries_helper:
         class: Zikula\RoutesModule\Helper\ListEntriesHelper
@@ -26,4 +26,4 @@ services:
 
     zikula_routes_module.multilingual_routing_helper:
         class: Zikula\RoutesModule\Helper\MultilingualRoutingHelper
-        arguments: ["@zikula_extensions_module.api.variable", "@zikula.dynamic_config_dumper", "@zikula.cache_clearer", '%locale%']
+        arguments: ["@zikula_extensions_module.api.variable", "@zikula.dynamic_config_dumper", "@zikula.cache_clearer", "%locale%"]

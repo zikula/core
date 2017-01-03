@@ -24,3 +24,9 @@ services:
         arguments: ["@translator.default"]
         tags:
             - { name: form.type }
+    
+    zikula_routes_module.form.type.appsettings:
+        class: Zikula\RoutesModule\Form\AppSettingsType
+        arguments: ["@translator.default", "@zikula_extensions_module.api.variable"]
+        tags:
+            - { name: form.type }

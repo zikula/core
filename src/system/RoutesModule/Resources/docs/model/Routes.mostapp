@@ -32,26 +32,26 @@ application "Routes" {
         writeModelToDocs true
         skipFiles "
             .travis.yml,
-            README.md,
-            CHANGELOG.md
-        "
-        markFiles "
-            Base/AbstractRoutesModuleInstaller.php,
             Container/LinkContainer.php,
-            Controller/AjaxController.php,
-            Controller/RouteController.php,
-            DependencyInjection/ZikulaRoutesExtension.php,
-            Entity/RouteEntity.php,
             Entity/Repository/RouteRepository.php,
             Form/Handler/Route/EditHandler.php,
             Form/Type/RouteType.php,
             Helper/ViewHelper.php,
             Listener/EntityLifecycleListener.php,
+            README.md,
+            Resources/public/images/admin.png,
+            CHANGELOG.md
+        "
+        markFiles "
+            Base/AbstractRoutesModuleInstaller.php,
+            Controller/AjaxController.php,
+            Controller/RouteController.php,
+            Entity/RouteEntity.php,
             Listener/InstallerListener.php,
             Resources/config/eventSubscriber.yml,
             Resources/config/helpers.yml,
             Resources/config/routing.yml,
-            Resources/public/images/admin.png,
+            Resources/config/services.yml,
             Resources/views/Helper/includeStandardFieldsDisplay.html.twig,
             Resources/views/Route/display.html.twig,
             Resources/views/Route/edit.html.twig,

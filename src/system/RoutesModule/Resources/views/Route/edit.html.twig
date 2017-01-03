@@ -121,67 +121,66 @@
     {% set editImage = '<span class="fa fa-pencil-square-o"></span>' %}
     {% set deleteImage = '<span class="fa fa-trash-o"></span>' %}
 
-
     <script type="text/javascript">
     /* <![CDATA[ */
 
-                var formButtons;
-                var triggerValidation = true;
+        var formButtons;
+        var triggerValidation = true;
 
-                function executeCustomValidationConstraints()
-                {
-                    zikulaRoutesPerformCustomValidationRules('route', '{% if mode != 'create' %}{{ route.id }}{% endif %}');
+        function executeCustomValidationConstraints()
+        {
+            zikulaRoutesPerformCustomValidationRules('route', '{% if mode != 'create' %}{{ route.id }}{% endif %}');
+        }
+
+        function triggerFormValidation()
+        {
+            executeCustomValidationConstraints();
+            if (!document.getElementById('routeEditForm').checkValidity()) {
+                // This does not really submit the form,
+                // but causes the browser to display the error message
+                jQuery('#routeEditForm').find(':submit').first().click();
+            }
+        }
+
+        function handleFormSubmit (event) {
+            if (triggerValidation) {
+                triggerFormValidation();
+                if (!document.getElementById('routeEditForm').checkValidity()) {
+                    event.preventDefault();
+                    return false;
                 }
+            }
 
-                function triggerFormValidation()
-                {
-                    executeCustomValidationConstraints();
-                    if (!document.getElementById('routeEditForm').checkValidity()) {
-                        // This does not really submit the form,
-                        // but causes the browser to display the error message
-                        jQuery('#routeEditForm').find(':submit').first().click();
+            // hide form buttons to prevent double submits by accident
+            formButtons.each(function (index) {
+                jQuery(this).addClass('hidden');
+            });
+
+            return true;
+        }
+
+        ( function($) {
+            $(document).ready(function() {
+
+                var allFormFields = $('#routeEditForm input, #routeEditForm select, #routeEditForm textarea');
+                allFormFields.change(executeCustomValidationConstraints);
+
+                formButtons = $('#routeEditForm .form-buttons input');
+                $('.btn-danger').first().bind('click keypress', function (event) {
+                    if (!window.confirm('{{ __('Really delete this route?') }}')) {
+                        event.preventDefault();
                     }
-                }
+                });
+                $('#routeEditForm button[type=submit]').bind('click keypress', function (event) {
+                    triggerValidation = !$(this).attr('formnovalidate');
+                });
+                $('#routeEditForm').submit(handleFormSubmit);
 
-                function handleFormSubmit (event) {
-                    if (triggerValidation) {
-                        triggerFormValidation();
-                        if (!document.getElementById('routeEditForm').checkValidity()) {
-                            event.preventDefault();
-                            return false;
-                        }
-                    }
-
-                    // hide form buttons to prevent double submits by accident
-                    formButtons.each(function (index) {
-                        jQuery(this).addClass('hidden');
-                    });
-
-                    return true;
-                }
-
-                ( function($) {
-                    $(document).ready(function() {
-
-                        var allFormFields = $('#routeEditForm input, #routeEditForm select, #routeEditForm textarea');
-                        allFormFields.change(executeCustomValidationConstraints);
-
-                        formButtons = $('#routeEditForm .form-buttons input');
-                        $('.btn-danger').first().bind('click keypress', function (event) {
-                            if (!window.confirm('{{ __('Really delete this route?') }}')) {
-                                event.preventDefault();
-                            }
-                        });
-                        $('#routeEditForm button[type=submit]').bind('click keypress', function (event) {
-                            triggerValidation = !$(this).attr('formnovalidate');
-                        });
-                        $('#routeEditForm').submit(handleFormSubmit);
-
-                        {% if mode != 'create' %}
-                            triggerFormValidation();
-                        {% endif %}
-                    });
-                })(jQuery);
+                {% if mode != 'create' %}
+                    triggerFormValidation();
+                {% endif %}
+            });
+        })(jQuery);
     /* ]]> */
     </script>
 {% endblock %}
