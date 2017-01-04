@@ -139,6 +139,7 @@ class SettingsController extends AbstractController
         }
 
         return [
+            'intl_installed' => extension_loaded('intl'),
             'form' => $form->createView(),
         ];
     }
