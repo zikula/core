@@ -28,8 +28,6 @@ class ControllerHelper
     public function getTemplateGlobals(StageInterface $currentStage)
     {
         $globals = [
-            'lang' => \ZLanguage::getLanguageCode(),
-            'charset' => \ZLanguage::getEncoding(),
             'version' => \ZikulaKernel::VERSION,
             'currentstage' => $currentStage->getName()
         ];

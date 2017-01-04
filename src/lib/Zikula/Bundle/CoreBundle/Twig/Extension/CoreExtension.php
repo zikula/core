@@ -108,6 +108,7 @@ class CoreExtension extends \Twig_Extension
      * Available parameters:
      *     - fs:  safe for filesystem.
      * @return string The language
+     * @deprecated remove at Core-2.0 use app.request.locale
      */
     public function lang($fs = false)
     {
@@ -120,6 +121,7 @@ class CoreExtension extends \Twig_Extension
      * Function to get the language direction
      *
      * @return string   the language direction
+     * @deprecated remove at Core-2.0 use dir="auto"
      */
     public function langDirection()
     {

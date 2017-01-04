@@ -121,8 +121,6 @@ class CategoryApi
             $description = $name;
         }
 
-        $lang = ZLanguage::getLanguageCode();
-
         /** @var CategoryEntity $rootCat */
         $rootCat = $this->getCategoryByPath($rootPath);
         if (!$rootCat) {
@@ -141,8 +139,9 @@ class CategoryApi
         $data = [];
         $data['parent'] = $this->entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $rootCat['id']);
         $data['name'] = $name;
-        $data['display_name'] = [$lang => $displayname];
-        $data['display_desc'] = [$lang => $description];
+        $locale = $this->requestStack->getMasterRequest()->getLocale();
+        $data['display_name'] = [$locale => $displayname];
+        $data['display_desc'] = [$locale => $description];
         if ($value) {
             $data['value'] = $value;
         }
