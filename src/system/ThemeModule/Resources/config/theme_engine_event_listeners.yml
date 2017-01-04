@@ -19,7 +19,13 @@ services:
 
     zikula_core.internal.theme.default_page_asset_setter_listener:
         class: "%zikula_core.internal.theme.default_page_asset_setter_listener.class%"
-        arguments: ["@zikula_core.common.theme.assets_js", "@zikula_core.common.theme.assets_css", "@router", "@zikula_core.common.theme_engine", "%kernel.root_dir%", "%compat_layer%"]
+        arguments:
+          - "@zikula_core.common.theme.assets_js"
+          - "@zikula_core.common.theme.assets_css"
+          - "@router"
+          - "@zikula_core.common.theme_engine"
+          - "%kernel.root_dir%"
+          - "%compat_layer%"
         calls:
             - [setParameters, ["@service_container"]]
         tags:
@@ -28,7 +34,12 @@ services:
 
     zikula_core.internal.theme.default_page_var_setter_listener:
         class: "%zikula_core.internal.theme.default_page_var_setter_listener.class%"
-        arguments: ["@zikula_core.common.theme.pagevars", "@router", "@zikula_extensions_module.api.variable", "@kernel", "@zikula_settings_module.locale_api", "%installed%"]
+        arguments:
+          - "@zikula_core.common.theme.pagevars"
+          - "@router"
+          - "@zikula_extensions_module.api.variable"
+          - "@kernel"
+          - "%installed%"
         tags:
             - { name: kernel.event_subscriber }
             #- { name: monolog.logger, channel: request }
@@ -55,7 +66,15 @@ services:
 
     zikula_core.internal.theme.add_jsconfig_listener:
         class: "%zikula_core.internal.theme.add_jsconfig_listener.class%"
-        arguments: ["%installed%", "@zikula_extensions_module.api.variable", "@zikula_users_module.current_user", "@templating.engine.twig", "@zikula_core.common.theme.themevars", "@zikula_core.common.theme.assets_header", "%zikula.session.name%", "%compat_layer%"]
+        arguments:
+          - "%installed%"
+          - "@zikula_extensions_module.api.variable"
+          - "@zikula_users_module.current_user"
+          - "@templating.engine.twig"
+          - "@zikula_core.common.theme.themevars"
+          - "@zikula_core.common.theme.assets_header"
+          - "%zikula.session.name%"
+          - "%compat_layer%"
         tags:
             - { name: kernel.event_subscriber }
 
