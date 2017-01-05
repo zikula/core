@@ -14,13 +14,13 @@ namespace Zikula\SearchModule;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Zikula\Common\I18n\Translator;
+use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\AbstractModule;
-use Zikula_View;
-use ZLanguage;
 
-abstract class AbstractSearchable extends Translator
+abstract class AbstractSearchable
 {
+    use TranslatorTrait;
+
     const SEARCHABLE = 'searchable';
 
     /**
@@ -39,7 +39,7 @@ abstract class AbstractSearchable extends Translator
     protected $container;
 
     /**
-     * @var Zikula_View
+     * @var \Zikula_View
      */
     protected $view;
 
@@ -57,10 +57,15 @@ abstract class AbstractSearchable extends Translator
     public function __construct(ContainerInterface $container, AbstractModule $bundle)
     {
         $this->container = $container;
-        $this->entityManager = $container->get('doctrine.orm.default_entity_manager');
+        $this->entityManager = $container->get('doctrine')->getManager();
         $this->name = $bundle->getName();
-        $this->view = Zikula_View::getInstance($this->name);
-        parent::__construct(ZLanguage::getModuleDomain($this->name));
+        $this->view = \Zikula_View::getInstance($this->name);
+        $this->setTranslator($this->container->get('translator.default'));
+    }
+
+    public function setTranslator($translator)
+    {
+        $this->translator = $translator;
     }
 
     /**
