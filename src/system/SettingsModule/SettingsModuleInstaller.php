@@ -13,7 +13,6 @@ namespace Zikula\SettingsModule;
 
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use ZLanguage;
 
 /**
  * Installation and upgrade routines for the settings module.
