@@ -136,30 +136,4 @@ class ControllerHelper
             throw new AbortStageException(__f('Cannot write parameters to %s file.', 'custom_parameters.yml'));
         }
     }
-
-    /**
-     * @TODO unused at the moment. probably is needed in the controller to display translations?
-     * Load the right language.
-     *
-     * @return string
-     */
-    public function setupLang(ContainerInterface $container)
-    {
-        $lang = 'en';
-        // @TODO read this from parameters, not ini
-        if (is_readable('config/installer.ini')) {
-            $ini = parse_ini_file('config/installer.ini');
-            $lang = isset($ini['language']) ? $ini['language'] : 'en';
-        }
-
-        // setup multilingual
-        $GLOBALS['ZConfig']['System']['language_i18n'] = $lang;
-        $GLOBALS['ZConfig']['System']['multilingual'] = true;
-        $GLOBALS['ZConfig']['System']['languageurl'] = true;
-        $GLOBALS['ZConfig']['System']['language_detect'] = false;
-        $container->loadArguments($GLOBALS['ZConfig']['System']);
-
-        $zLang = \ZLanguage::getInstance();
-        $zLang->setup($container->get('request'));
-    }
 }
