@@ -60,7 +60,6 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
             $variableApi->set(VariableApi::CONFIG, 'language_i18n', 'en');
             $variableApi->set(VariableApi::CONFIG, 'language', 'eng');
             $variableApi->set(VariableApi::CONFIG, 'locale', 'en');
-            \ZLanguage::setLocale('en'); // @deprecated remove at Core-2.0
         }
 
         return true;

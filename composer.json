@@ -12,10 +12,7 @@
         },
         "psr-4": {
             "Zikula\\": ["src/system", "src/themes"]
-        },
-        "classmap": [
-            "src/lib/i18n/"
-        ]
+        }
     },
     "authors": [
         {

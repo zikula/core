@@ -46,7 +46,6 @@ class LocaleApi
                     }
                 }
             }
-            $this->addLegacyLocales(); // @deprecated remove at Core-2.0
         }
 
         return $this->supportedLocales;
@@ -66,19 +65,5 @@ class LocaleApi
         }
 
         return $namedLocales;
-    }
-
-    /**
-     * Read legacy locale.ini files and add those locales
-     * @deprecated remove at Core-2.0
-     */
-    private function addLegacyLocales()
-    {
-        $legacyLocales = \ZLanguage::getInstalledLanguages();
-        foreach ($legacyLocales as $locale) {
-            if (!in_array($locale, $this->supportedLocales)) {
-                $this->supportedLocales[] = $locale;
-            }
-        }
     }
 }
