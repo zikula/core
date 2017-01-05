@@ -17,7 +17,6 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\SettingsModule\Api\LocaleApi;
-use ZLanguage;
 
 /**
  * Category processing helper functions for the categories module.

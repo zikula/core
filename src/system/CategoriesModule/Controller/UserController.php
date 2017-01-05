@@ -22,7 +22,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use System;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\Core\Controller\AbstractController;
-use ZLanguage;
 
 /**
  * User controllers for the categories module.

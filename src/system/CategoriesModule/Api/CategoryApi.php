@@ -21,7 +21,6 @@ use Zikula\CategoriesModule\Helper\RelativeCategoryPathBuilderHelper;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\SettingsModule\Api\LocaleApi;
-use ZLanguage;
 
 /**
  * CategoryApi
@@ -196,7 +195,7 @@ class CategoryApi
         $cat = $category->toArray();
 
         // set name and description by languages if not set
-        $languages = $this->localeApi->getSupportedLocales();;
+        $languages = $this->localeApi->getSupportedLocales();
         foreach ($languages as $lang) {
             if (!isset($cat['display_name'][$lang])) {
                 $cat['display_name'][$lang] = isset($cat['display_name']['en']) ? $cat['display_name']['en'] : '';
@@ -262,7 +261,7 @@ class CategoryApi
         $categories = $this->entityManager->getRepository('ZikulaCategoriesModule:CategoryEntity')->freeSelect($where, $sort, $columnArray);
 
         $cats = [];
-        $languages = $this->localeApi->getSupportedLocales();;
+        $languages = $this->localeApi->getSupportedLocales();
         foreach ($categories as $category) {
             $cat = $category->toArray();
 

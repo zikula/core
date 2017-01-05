@@ -20,7 +20,6 @@ use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\Core\Response\Ajax\BadDataResponse;
 use Zikula\Core\Response\Ajax\ForbiddenResponse;
 use Zikula\Core\Response\Ajax\NotFoundResponse;
-use ZLanguage;
 
 /**
  * @Route("/ajax")
