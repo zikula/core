@@ -20,7 +20,6 @@ use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\Core\Response\Ajax\BadDataResponse;
 use Zikula\Core\Response\Ajax\ForbiddenResponse;
 use Zikula\Core\Response\Ajax\NotFoundResponse;
-use ZLanguage;
 
 /**
  * @Route("/ajax")
@@ -133,7 +132,7 @@ class AjaxController extends AbstractController
             'mode' => $mode,
             'category' => $editCat,
             'attributes' => $attributes,
-            'languages' => ZLanguage::getInstalledLanguages()
+            'languages' => $this->get('zikula_settings_module.locale_api')->getSupportedLocales()
         ];
 
         $result = [

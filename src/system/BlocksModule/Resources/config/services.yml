@@ -45,7 +45,11 @@ services:
 
     zikula_blocks_module.form.block_type:
         class: "%zikula_blocks_module.form.block_type.class%"
-        arguments: ["@zikula_blocks_module.api.block", "@zikula_blocks_module.api.block_filter", "@translator.default"]
+        arguments:
+          - "@zikula_blocks_module.api.block"
+          - "@zikula_blocks_module.api.block_filter"
+          - "@translator.default"
+          - "@zikula_settings_module.locale_api"
         tags:
             - { name: form.type }
 

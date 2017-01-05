@@ -65,7 +65,7 @@ class ConfigType extends AbstractType
             ->add('charset', TextType::class, [
                 'label' => $translator->__('Character set'),
                 'max_length' => 20,
-                'help' => $translator->__f("Default: '%s'", ['%s' => 'utf-8' /* @todo! \ZLanguage::getEncoding() */])
+                'help' => $translator->__f("Default: '%s'", ['%s' => $options['charset']])
             ])
             ->add('encoding', ChoiceType::class, [
                 'label' => $translator->__('Encoding'),
@@ -177,7 +177,8 @@ class ConfigType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => null
+            'translator' => null,
+            'charset' => 'utf-8'
         ]);
     }
 }

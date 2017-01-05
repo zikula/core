@@ -55,11 +55,11 @@ class AccountController extends AbstractController
         if (!$this->get('zikula_users_module.current_user')->isLoggedIn()) {
             throw new AccessDeniedException();
         }
-        $installedLanguages = \ZLanguage::getInstalledLanguageNames();
+        $installedLanguages = $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames();
         $form = $this->createFormBuilder()
             ->add('language', ChoiceType::class, [
                 'label' => $this->__('Choose language'),
-                'choices' => array_flip($installedLanguages),
+                'choices' => $installedLanguages,
                 'placeholder' => $this->__('Site default'),
                 'required' => false,
                 'data' => $request->getLocale()
@@ -81,7 +81,7 @@ class AccountController extends AbstractController
                 $data = $form->getData();
                 if ($data['language']) {
                     $request->getSession()->set('language', $data['language']);
-                    $this->addFlash('success', $this->__f('Language changed to %lang', ['%lang' => $installedLanguages[$data['language']]]));
+                    $this->addFlash('success', $this->__f('Language changed to %lang', ['%lang' => array_search($data['language'], $installedLanguages[])]));
                 } else {
                     $request->getSession()->remove('language');
                     $this->addFlash('success', $this->__('Language set to site default.'));

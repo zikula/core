@@ -41,10 +41,9 @@ class LocaleType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $installedLangs = \ZLanguage::getInstalledLanguageNames(); // @todo
         $resolver->setDefaults([
             'csrf_protection' => false,
-            'choices' => array_flip($installedLangs), // flip for proper Symfony 3 choices_as_values
+            'choices' => ['English' => 'en'],
             'choice' => 'en',
             'translator' => new IdentityTranslator()
 //                'csrf_field_name' => '_token',

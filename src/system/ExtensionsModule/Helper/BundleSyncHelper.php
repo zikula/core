@@ -159,12 +159,6 @@ class BundleSyncHelper
             $bundleMetaData->setTranslator($this->translator);
             $bundleMetaData->setDirectoryFromBundle($bundle);
             $bundleVersionArray = $bundleMetaData->getFilteredVersionInfoArray();
-
-            // loads the gettext domain for 3rd party bundles
-            if (!strpos($bundle->getPath(), 'bundles') === false) {
-                \ZLanguage::bindModuleDomain($bundle->getName());
-            }
-
             $bundleVersionArray['capabilities'] = serialize($bundleVersionArray['capabilities']);
             $bundleVersionArray['securityschema'] = serialize($bundleVersionArray['securityschema']);
             $bundleVersionArray['dependencies'] = serialize($bundleVersionArray['dependencies']);

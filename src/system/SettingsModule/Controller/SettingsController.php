@@ -26,7 +26,6 @@ use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\SettingsModule\Form\Type\LocaleSettingsType;
 use Zikula\SettingsModule\Form\Type\MainSettingsType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
-use ZLanguage;
 
 /**
  * Class SettingsController
@@ -49,7 +48,7 @@ class SettingsController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $installedLanguageNames = ZLanguage::getInstalledLanguageNames();
+        $installedLanguageNames = $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames();
 
         $capabilityApi = $this->get('zikula_extensions_module.api.capability');
         $profileModules = $capabilityApi->getExtensionsCapableOf(CapabilityApiInterface::PROFILE);
@@ -110,7 +109,7 @@ class SettingsController extends AbstractController
             ],
             [
                 'translator' => $this->get('translator.default'),
-                'languages' => ZLanguage::getInstalledLanguageNames(),
+                'languages' => $this->container->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(),
                 'timezones' => DateUtil::getTimezones()
             ]
         );
@@ -138,6 +137,7 @@ class SettingsController extends AbstractController
         }
 
         return [
+            'intl_installed' => extension_loaded('intl'),
             'form' => $form->createView(),
         ];
     }

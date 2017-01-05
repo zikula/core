@@ -3,27 +3,32 @@ services:
     zikula_routes_module.controller_helper:
         class: Zikula\RoutesModule\Helper\ControllerHelper
         arguments: ["@service_container", "@translator.default", "@session", "@logger"]
-    
+
     zikula_routes_module.listentries_helper:
         class: Zikula\RoutesModule\Helper\ListEntriesHelper
         arguments: ["@translator.default"]
-    
+
     zikula_routes_module.model_helper:
         class: Zikula\RoutesModule\Helper\ModelHelper
         arguments: ["@service_container"]
-    
+
     zikula_routes_module.selection_helper:
         class: Zikula\RoutesModule\Helper\SelectionHelper
         arguments: ["@service_container", "@doctrine.orm.entity_manager", "@translator.default", "@zikula_routes_module.controller_helper"]
-    
+
     zikula_routes_module.view_helper:
         class: Zikula\RoutesModule\Helper\ViewHelper
         arguments: ["@service_container", "@translator.default"]
-    
+
     zikula_routes_module.workflow_helper:
         class: Zikula\RoutesModule\Helper\WorkflowHelper
         arguments: ["@service_container", "@translator.default"]
 
     zikula_routes_module.multilingual_routing_helper:
         class: Zikula\RoutesModule\Helper\MultilingualRoutingHelper
-        arguments: ["@zikula_extensions_module.api.variable", "@zikula.dynamic_config_dumper", "@zikula.cache_clearer", '%locale%']
+        arguments:
+          - "@zikula_extensions_module.api.variable"
+          - "@zikula.dynamic_config_dumper"
+          - "@zikula.cache_clearer"
+          - "@zikula_settings_module.locale_api"
+          - '%locale%'

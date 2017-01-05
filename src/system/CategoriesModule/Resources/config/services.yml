@@ -26,7 +26,15 @@ services:
 
     zikula_categories_module.api.category:
         class: "%zikula_categories_module.api.category.class%"
-        arguments: ["@translator.default", "@doctrine.orm.entity_manager", "@request_stack", "@zikula_permissions_module.api.permission", "@zikula_categories_module.category_processing_helper", "@zikula_categories_module.category_sorting_helper", "@zikula_categories_module.relative_category_path_builder_helper"]
+        arguments:
+          - "@translator.default"
+          - "@doctrine.orm.entity_manager"
+          - "@request_stack"
+          - "@zikula_permissions_module.api.permission"
+          - "@zikula_categories_module.category_processing_helper"
+          - "@zikula_categories_module.category_sorting_helper"
+          - "@zikula_categories_module.relative_category_path_builder_helper"
+          - "@zikula_settings_module.locale_api"
 
     zikula_categories_module.api.category_permission:
         class: "%zikula_categories_module.api.category_permission.class%"
@@ -42,7 +50,7 @@ services:
 
     zikula_categories_module.category_processing_helper:
         class: "%zikula_categories_module.category_processing_helper.class%"
-        arguments: ["@translator.default", "@doctrine.orm.entity_manager", "@kernel"]
+        arguments: ["@translator.default", "@doctrine.orm.entity_manager", "@kernel", "@zikula_settings_module.locale_api"]
 
     zikula_categories_module.category_sorting_helper:
         class: "%zikula_categories_module.category_sorting_helper.class%"

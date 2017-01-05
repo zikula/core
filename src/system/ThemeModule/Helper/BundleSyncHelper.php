@@ -117,9 +117,6 @@ class BundleSyncHelper
             array_shift($directory);
             $themeVersionArray['directory'] = implode('/', $directory);
 
-            // loads the gettext domain for theme
-//            \ZLanguage::bindThemeDomain($bundle->getName()); // @todo how to replace?
-
             // set defaults for all themes
             $themeVersionArray['type'] = 3;
             $themeVersionArray['state'] = ThemeEntityRepository::STATE_INACTIVE;

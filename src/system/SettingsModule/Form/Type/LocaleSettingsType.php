@@ -40,9 +40,9 @@ class LocaleSettingsType extends AbstractType
                 'label' => $translator->__('Prepend language to URL'),
                 'expanded' => true,
                 'choices' => [
-                    1 => $translator->__('Always'),
-                    0 => $translator->__('Only for non-default languages'),
-                ]
+                    $translator->__('Always') => 1,
+                    $translator->__('Only for non-default languages') => 0,
+                ],
             ])
             ->add('language_detect', CheckboxType::class, [
                 'label' => $translator->__('Automatically detect language from browser settings'),
@@ -51,9 +51,9 @@ class LocaleSettingsType extends AbstractType
             ])
             ->add('language_i18n', ChoiceType::class, [
                 'label' => $translator->__('Default language to use for this site'),
-                'choices' => $options['languages']
+                'choices' => $options['languages'],
             ])
-            ->add('timezone_offset', ChoiceType::class, [
+            ->add('timezone_offset', ChoiceType::class, [ // @todo convert to TimezoneType
                 'choices' => $options['timezones'],
                 'label' => $translator->__('Time zone for anonymous guests'),
                 'help' => $translator->__('Server time zone') . ': ' . DateUtil::getTimezoneAbbr()
@@ -97,8 +97,8 @@ class LocaleSettingsType extends AbstractType
     {
         $resolver->setDefaults([
             'translator' => null,
-            'languages' => [],
-            'timezones' => []
+            'languages' => ["English" => 'en'],
+            'timezones' => [0 => "GMT"]
         ]);
     }
 }

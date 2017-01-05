@@ -22,7 +22,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use System;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\Core\Controller\AbstractController;
-use ZLanguage;
 
 /**
  * User controllers for the categories module.
@@ -183,7 +182,7 @@ class UserController extends AbstractController
             'category' => $editCat,
             'attributes' => $attributes,
             'allCats' => $allCats,
-            'languages' => ZLanguage::getInstalledLanguages(),
+            'languages' => $this->get('zikula_settings_module.locale_api')->getSupportedLocales(),
             'userlanguage' => $request->getLocale(),
             'referer' => $request->getSession()->get('categories_referer'),
             'csrfToken' => $this->get('zikula_core.common.csrf_token_handler')->generate()

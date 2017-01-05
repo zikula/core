@@ -23,10 +23,10 @@ class LocaleType extends AbstractType
     public function configureDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'choices' => \ZLanguage::getInstalledLanguageNames(),
+            'choices' => ['English' => 'en'],
             'label' => __('Locale'),
             'required' => false,
-            'placeholder' => __('All')
+            'placeholder' => __('All'),
         ]);
     }
 

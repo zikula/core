@@ -3,6 +3,11 @@
     'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
 {{ adminHeader() }}
+{% if not intl_installed|default(false) %}
+    <div class="alert alert-danger">
+        {{ __f('WARNING: The PHP Extension %ext is not loaded. All functions using this will default to %locale. Seek assistance from your provider to install.', {"%ext": "<code>INTL</code>", "%locale": "<code>EN</code>"})|raw }}
+    </div>
+{% endif %}
 <div class="container-fluid">
     <div class="row">
         <h3>

@@ -12,6 +12,7 @@
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Intl\Intl;
 use Zikula\Bundle\CoreBundle\Twig;
 use Zikula\Bundle\CoreBundle\Twig\Extension\SimpleFunction\DefaultPathSimpleFunction;
 use Zikula\Bundle\CoreBundle\Twig\Extension\SimpleFunction\DispatchEventSimpleFunction;
@@ -101,16 +102,6 @@ class CoreExtension extends \Twig_Extension
         return $this->container->get('zikula_core.common.theme.asset_helper')->resolve($path);
     }
 
-    /**
-     * Function to get the language direction
-     *
-     * @return string   the language direction
-     */
-    public function langDirection()
-    {
-        return \ZLanguage::getDirection();
-    }
-
     public function button()
     {
     }
@@ -197,7 +188,7 @@ class CoreExtension extends \Twig_Extension
      */
     public function languageName($code)
     {
-        return \ZLanguage::getLanguageName($code);
+        return Intl::getLanguageBundle()->getLanguageName($code);
     }
 
     public function yesNo($string)

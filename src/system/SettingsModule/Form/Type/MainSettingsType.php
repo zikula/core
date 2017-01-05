@@ -170,7 +170,7 @@ class MainSettingsType extends AbstractType
                 ]
             ])
         ;
-        foreach ($options['languages'] as $languageCode => $language) {
+        foreach ($options['languages'] as $language => $languageCode) {
             $builder
                 ->add('sitename_' . $languageCode, TextType::class, [
                     'label' => $translator->__('Site name')
