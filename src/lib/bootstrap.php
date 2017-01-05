@@ -29,6 +29,9 @@ if ((isset($kernelConfig['umask'])) && (!is_null($kernelConfig['umask']))) {
     umask($kernelConfig['umask']);
 }
 
+// set default locale for Intl classes
+\Locale::setDefault($kernelConfig['locale']);
+
 // on install or upgrade, check if system requirements are met.
 requirementCheck($kernelConfig);
 

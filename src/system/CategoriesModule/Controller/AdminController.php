@@ -22,7 +22,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\Core\Controller\AbstractController;
-use ZLanguage;
 
 /**
  * @Route("/admin")
@@ -168,7 +167,7 @@ class AdminController extends AbstractController
     {
         $editCat = '';
 
-        $languages = ZLanguage::getInstalledLanguages();
+        $languages = $this->get('zikula_settings_module.locale_api')->getSupportedLocales();
         $categoryApi = $this->get('zikula_categories_module.api.category');
 
         // indicates that we're editing

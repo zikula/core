@@ -42,7 +42,8 @@ class ConfigController extends AbstractController
 
         $form = $this->createForm('Zikula\MailerModule\Form\Type\ConfigType',
             $this->getDataValues(), [
-                'translator' => $this->get('translator.default')
+                'translator' => $this->get('translator.default'),
+                'charset' => $this->container->get('kernel')->getCharset()
             ]
         );
 

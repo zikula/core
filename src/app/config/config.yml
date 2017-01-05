@@ -38,7 +38,7 @@ twig:
         pagevars:     "@zikula_core.common.theme.pagevars"
         themevars:    "@zikula_core.common.theme.themevars"
         currentUser:  "@zikula_users_module.current_user"
-        localeApi:    "@zikula_settings_module.locale_api"
+        localeApi:    { "language_direction": "auto" }
 
 # Doctrine Configuration
 doctrine:

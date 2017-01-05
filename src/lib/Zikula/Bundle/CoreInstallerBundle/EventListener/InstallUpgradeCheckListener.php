@@ -91,7 +91,7 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
         // write locale choice to `config/dynamic/generated.yml`
         $configDumper = $this->container->get('zikula.dynamic_config_dumper');
         $config = $configDumper->getConfiguration('jms_i18n_routing');
-        $config['locales'] = \ZLanguage::getInstalledLanguages();
+        $config['locales'] = $this->container->get('zikula_settings_module.locale_api')->getSupportedLocales();
         if (!in_array($this->container->getParameter('locale'), $config['locales'])) {
             $this->container->setParameter('locale', $config['locales'][0]);
             $config['default_locale'] = $config['locales'][0];

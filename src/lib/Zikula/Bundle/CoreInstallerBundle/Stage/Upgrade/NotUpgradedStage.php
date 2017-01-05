@@ -55,12 +55,12 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
         }
         // make sure selected language is installed
         $DBLocale = $this->fetchDBLocale();
-        if (!in_array($DBLocale, \ZLanguage::getInstalledLanguages())) {
+        if (!in_array($DBLocale, $this->container->get('zikula_settings_module.locale_api')->getSupportedLocales())) {
             $variableApi = $this->container->get('zikula_extensions_module.api.variable');
             $variableApi->set(VariableApi::CONFIG, 'language_i18n', 'en');
             $variableApi->set(VariableApi::CONFIG, 'language', 'eng');
             $variableApi->set(VariableApi::CONFIG, 'locale', 'en');
-            \ZLanguage::setLocale('en');
+            \ZLanguage::setLocale('en'); // @deprecated remove at Core-2.0
         }
 
         return true;

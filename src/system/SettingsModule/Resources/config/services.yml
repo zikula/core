@@ -2,7 +2,6 @@ parameters:
     zikula_settings_module.container.link_container.class: Zikula\SettingsModule\Container\LinkContainer
     zikula_settings_module.module_listener.class: Zikula\SettingsModule\Listener\ModuleListener
     zikula_settings_module.locale_api.class: Zikula\SettingsModule\Api\LocaleApi
-    zikula_settings_module.listener.locale_listener.class: Zikula\SettingsModule\Listener\LocaleListener
     zikula_settings_module.listener.localized_variable_listener.class: Zikula\SettingsModule\Listener\LocalizedVariableListener
 
 services:
@@ -24,12 +23,6 @@ services:
 
     zikula_settings_module.locale_api:
         class: "%zikula_settings_module.locale_api.class%"
-
-    zikula_settings_module.listener.locale_listener:
-        class: "%zikula_settings_module.listener.locale_listener.class%"
-        arguments: ["@kernel", "@zikula_settings_module.locale_api"]
-        tags:
-            - { name: kernel.event_subscriber }
 
     zikula_settings_module.listener.localized_variable_listener:
         class: "%zikula_settings_module.listener.localized_variable_listener.class%"

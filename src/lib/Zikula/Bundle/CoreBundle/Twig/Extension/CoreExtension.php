@@ -12,6 +12,7 @@
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Intl\Intl;
 use Zikula\Bundle\CoreBundle\Twig;
 use Zikula\Bundle\CoreBundle\Twig\Extension\SimpleFunction\DefaultPathSimpleFunction;
 use Zikula\Bundle\CoreBundle\Twig\Extension\SimpleFunction\DispatchEventSimpleFunction;
@@ -108,6 +109,7 @@ class CoreExtension extends \Twig_Extension
      * Available parameters:
      *     - fs:  safe for filesystem.
      * @return string The language
+     * @deprecated remove at Core-2.0 use app.request.locale
      */
     public function lang($fs = false)
     {
@@ -120,6 +122,7 @@ class CoreExtension extends \Twig_Extension
      * Function to get the language direction
      *
      * @return string   the language direction
+     * @deprecated remove at Core-2.0 use dir="auto"
      */
     public function langDirection()
     {
@@ -210,7 +213,7 @@ class CoreExtension extends \Twig_Extension
      */
     public function languageName($code)
     {
-        return \ZLanguage::getLanguageName($code);
+        return Intl::getLanguageBundle()->getLanguageName($code);
     }
 
     public function yesNo($string)

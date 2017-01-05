@@ -46,7 +46,7 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
     {
         $this->container = $container;
         $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml', 'parameters.yml');
-        $this->installedLanguages = \ZLanguage::getInstalledLanguages();
+        $this->installedLanguages = $container->get('zikula_settings_module.locale_api')->getSupportedLocales();
         $detector = new \ZLanguageBrowser($this->installedLanguages);
         $this->matchedLocale = $detector->discover();
     }
@@ -64,7 +64,7 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
     public function getFormOptions()
     {
         return [
-            'choices' => \ZLanguage::getInstalledLanguageNames(),
+            'choices' => $this->container->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(),
             'choice' => $this->matchedLocale,
             'translator' => $this->container->get('translator.default')
         ];

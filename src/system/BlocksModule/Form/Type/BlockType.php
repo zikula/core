@@ -17,6 +17,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\BlocksModule\Api\BlockApi;
 use Zikula\BlocksModule\Api\BlockFilterApi;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\SettingsModule\Api\LocaleApi;
 
 class BlockType extends AbstractType
 {
@@ -31,21 +33,28 @@ class BlockType extends AbstractType
     private $blockFilterApi;
 
     /**
-     * @var
+     * @var TranslatorInterface
      */
     private $translator;
+
+    /**
+     * @var LocaleApi
+     */
+    private $localeApi;
 
     /**
      * BlockType constructor.
      * @param BlockApi $blockApi
      * @param BlockFilterApi $blockFilterApi
-     * @param $translator
+     * @param TranslatorInterface $translator
+     * @param LocaleApi $localeApi
      */
-    public function __construct(BlockApi $blockApi, BlockFilterApi $blockFilterApi, $translator)
+    public function __construct(BlockApi $blockApi, BlockFilterApi $blockFilterApi, TranslatorInterface $translator, LocaleApi $localeApi)
     {
         $this->blockApi = $blockApi;
         $this->blockFilterApi = $blockFilterApi;
         $this->translator = $translator;
+        $this->localeApi = $localeApi;
     }
 
     /**
@@ -64,7 +73,8 @@ class BlockType extends AbstractType
                 'required' => false
             ])->addModelTransformer(new NullToEmptyTransformer()))
             ->add($builder->create('language', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'choices' => \ZLanguage::getInstalledLanguageNames(),
+                'choices' => $this->localeApi->getSupportedLocaleNames(),
+                'choices_as_values' => true,
                 'required' => false,
                 'placeholder' => $this->translator->__('All')
             ])->addModelTransformer(new NullToEmptyTransformer()))

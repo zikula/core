@@ -37,9 +37,10 @@ class LocaleSettingsType extends AbstractType
                 'label' => $translator->__('Prepend language to URL'),
                 'expanded' => true,
                 'choices' => [
-                    1 => $translator->__('Always'),
-                    0 => $translator->__('Only for non-default languages'),
-                ]
+                    $translator->__('Always') => 1,
+                    $translator->__('Only for non-default languages') => 0,
+                ],
+                'choices_as_values' => true
             ])
             ->add('language_detect', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $translator->__('Automatically detect language from browser settings'),
@@ -48,9 +49,10 @@ class LocaleSettingsType extends AbstractType
             ])
             ->add('language_i18n', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Default language to use for this site'),
-                'choices' => $options['languages']
+                'choices' => $options['languages'],
+                'choices_as_values' => true
             ])
-            ->add('timezone_offset', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('timezone_offset', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [ // @todo convert to TimezoneType
                 'choices' => $options['timezones'],
                 'label' => $translator->__('Time zone for anonymous guests'),
                 'help' => $translator->__('Server time zone') . ': ' . DateUtil::getTimezoneAbbr()
@@ -94,8 +96,8 @@ class LocaleSettingsType extends AbstractType
     {
         $resolver->setDefaults([
             'translator' => null,
-            'languages' => [],
-            'timezones' => []
+            'languages' => ["English" => 'en'],
+            'timezones' => [0 => "GMT"]
         ]);
     }
 }
