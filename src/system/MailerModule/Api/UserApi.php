@@ -78,7 +78,7 @@ class UserApi extends \Zikula_AbstractApi
         $mailer = $this->getContainer()->get('zikula_mailer_module.api.mailer');
         $variableApi = $this->getContainer()->get('zikula_extensions_module.api.variable');
 
-        $sitename = $variableApi->getSystemVar('sitename_' . ZLanguage::getLanguageCode(), $variableApi->getSystemVar('sitename_en'));
+        $sitename = $variableApi->getSystemVar('sitename');
         $adminMail = $variableApi->getSystemVar('adminmail');
 
         // create new message instance
