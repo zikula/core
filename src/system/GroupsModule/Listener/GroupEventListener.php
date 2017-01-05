@@ -13,7 +13,6 @@ namespace Zikula\GroupsModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\Common\I18n\TranslatableInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\VariableApi;
@@ -28,7 +27,7 @@ class GroupEventListener implements EventSubscriberInterface
     protected $variableApi;
 
     /**
-     * @var TranslatableInterface
+     * @var TranslatorInterface
      */
     protected $translator;
 

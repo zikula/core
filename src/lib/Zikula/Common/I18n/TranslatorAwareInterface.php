@@ -10,7 +10,10 @@
  */
 
 namespace Zikula\Common\I18n;
-
+/**
+ * Interface TranslatorAwareInterface
+ * @deprecated remove at Core-2.0
+ */
 interface TranslatorAwareInterface
 {
     /**

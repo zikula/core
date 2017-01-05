@@ -12,6 +12,7 @@ CHANGELOG - ZIKULA 1.4.x
     - \Zikula_Core::VERSION_* constants are replaced by constants in \ZikulaKernel
         (\Zikula_Core was already deprecated long ago)
     - \Zikula_Core::VERSION_ID will not be continued in Core-2.0
+    - \Zikula\Common\I18n\*
 
  - Fixes:
     - Fixed broken categories selector for legacy extensions (#3356).
