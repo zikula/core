@@ -14,6 +14,7 @@ namespace Zikula\Bundle\FormExtensionBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\IdentityTranslator;
 
 class LocaleType extends AbstractType
 {
@@ -24,9 +25,10 @@ class LocaleType extends AbstractType
     {
         $resolver->setDefaults([
             'choices' => ['English' => 'en'],
-            'label' => __('Locale'),
+            'label' => 'Locale',
             'required' => false,
-            'placeholder' => __('All'),
+            'placeholder' => 'All',
+            'translator' => new IdentityTranslator()
         ]);
     }
 
