@@ -64,7 +64,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('shorturlstype', '0');
         $this->setSystemVar('shorturlsseparator', '-');
         // Multilingual support
-        foreach (ZLanguage::getInstalledLanguages() as $lang) {
+        foreach ($this->container->get('zikula_settings_module.locale_api')->getSupportedLocales() as $lang) {
             $this->setSystemVar('sitename_' . $lang, $this->__('Site name'));
             $this->setSystemVar('slogan_' . $lang, $this->__('Site description'));
             $this->setSystemVar('metakeywords_' . $lang, $this->__('zikula, portal, open source, web site, website, weblog, blog, content management system, cms, application framework'));
@@ -131,6 +131,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
      */
     public function upgrade($oldversion)
     {
+        $request = $this->container->get('request_stack')->getMasterRequest();
         // Upgrade dependent on old version number
         switch ($oldversion) {
             case '2.9.7':
@@ -145,7 +146,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                 }
                 $locale = $this->getSystemVar('locale');
                 if (empty($locale)) {
-                    $this->setSystemVar('locale', ZLanguage::getLocale());
+                    $this->setSystemVar('locale', $request->getLocale());
                 }
 
             case '2.9.9':
@@ -156,7 +157,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                 /** @var \Zikula\ExtensionsModule\Entity\ExtensionVarEntity $modVar */
                 foreach ($SystemVars as $modVar) {
                     if (in_array($modVar->getName(), $varsToChange)) {
-                        foreach (ZLanguage::getInstalledLanguages() as $langcode) {
+                        foreach ($this->container->get('zikula_settings_module.locale_api')->getSupportedLocales() as $langcode) {
                             $newModVar = clone $modVar;
                             $newModVar->setName($modVar->getName() . '_' . $langcode);
                             $this->entityManager->persist($newModVar);

@@ -32,18 +32,21 @@ class LocaleApi
         if (empty($this->supportedLocales)) {
             $this->supportedLocales[] = 'en';
             $finder = new Finder();
-            $files = $finder->files()
-                ->in(['app/Resources/translations'])
-                ->depth(0)
-                ->name('*.po')
-                ->notName('*.template.*');
-            foreach ($files as $file) {
-                $fileName = $file->getBasename('.po');
-                list($domain, $locale) = explode('.', $fileName);
-                if (!in_array($locale, $this->supportedLocales)) {
-                    $this->supportedLocales[] = $locale;
+            if (is_dir('app/Resources/translations')) {
+                $files = $finder->files()
+                    ->in(['app/Resources/translations'])
+                    ->depth(0)
+                    ->name('*.po')
+                    ->notName('*.template.*');
+                foreach ($files as $file) {
+                    $fileName = $file->getBasename('.po');
+                    list($domain, $locale) = explode('.', $fileName);
+                    if (!in_array($locale, $this->supportedLocales)) {
+                        $this->supportedLocales[] = $locale;
+                    }
                 }
             }
+            $this->addLegacyLocales(); // @deprecated remove at Core-2.0
         }
 
         return $this->supportedLocales;
@@ -63,5 +66,19 @@ class LocaleApi
         }
 
         return $namedLocales;
+    }
+
+    /**
+     * Read legacy locale.ini files and add those locales
+     * @deprecated remove at Core-2.0
+     */
+    private function addLegacyLocales()
+    {
+        $legacyLocales = \ZLanguage::getInstalledLanguages();
+        foreach ($legacyLocales as $locale) {
+            if (!in_array($locale, $this->supportedLocales)) {
+                $this->supportedLocales[] = $locale;
+            }
+        }
     }
 }

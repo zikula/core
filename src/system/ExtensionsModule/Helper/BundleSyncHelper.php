@@ -194,7 +194,7 @@ class BundleSyncHelper
 
             // loads the gettext domain for 3rd party bundles
             if (!strpos($bundle->getPath(), 'bundles') === false) {
-                \ZLanguage::bindModuleDomain($bundle->getName());
+                \ZLanguage::bindModuleDomain($bundle->getTranslationDomain());
             }
 
             $bundleVersionArray['capabilities'] = serialize($bundleVersionArray['capabilities']);

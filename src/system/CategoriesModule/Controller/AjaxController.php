@@ -133,7 +133,7 @@ class AjaxController extends AbstractController
             'mode' => $mode,
             'category' => $editCat,
             'attributes' => $attributes,
-            'languages' => ZLanguage::getInstalledLanguages()
+            'languages' => $this->get('zikula_settings_module.locale_api')->getSupportedLocales()
         ];
 
         $result = [

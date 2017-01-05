@@ -12,6 +12,7 @@
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Intl\Intl;
 use Zikula\Bundle\CoreBundle\Twig;
 use Zikula\Bundle\CoreBundle\Twig\Extension\SimpleFunction\DefaultPathSimpleFunction;
 use Zikula\Bundle\CoreBundle\Twig\Extension\SimpleFunction\DispatchEventSimpleFunction;
@@ -212,7 +213,7 @@ class CoreExtension extends \Twig_Extension
      */
     public function languageName($code)
     {
-        return \ZLanguage::getLanguageName($code);
+        return Intl::getLanguageBundle()->getLanguageName($code);
     }
 
     public function yesNo($string)

@@ -47,7 +47,7 @@ class SettingsController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $installedLanguageNames = ZLanguage::getInstalledLanguageNames();
+        $installedLanguageNames = $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames();
 
         $capabilityApi = $this->get('zikula_extensions_module.api.capability');
         $userModules = $capabilityApi->getExtensionsCapableOf(CapabilityApiInterface::USER);
@@ -110,7 +110,7 @@ class SettingsController extends AbstractController
             ],
             [
                 'translator' => $this->get('translator.default'),
-                'languages' => ZLanguage::getInstalledLanguageNames(),
+                'languages' => $this->container->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(),
                 'timezones' => DateUtil::getTimezones()
             ]
         );

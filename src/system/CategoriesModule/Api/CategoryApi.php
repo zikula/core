@@ -20,6 +20,7 @@ use Zikula\CategoriesModule\Helper\CategorySortingHelper;
 use Zikula\CategoriesModule\Helper\RelativeCategoryPathBuilderHelper;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\SettingsModule\Api\LocaleApi;
 use ZLanguage;
 
 /**
@@ -63,15 +64,21 @@ class CategoryApi
     private $pathBuilder;
 
     /**
+     * @var LocaleApi
+     */
+    private $localeApi;
+
+    /**
      * CategoryApi constructor.
      *
-     * @param TranslatorInterface               $translator       TranslatorInterface service instance
-     * @param EntityManager                     $entityManager    EntityManager service instance
-     * @param RequestStack                      $requestStack     RequestStack service instance
-     * @param PermissionApi                     $permissionApi    PermissionApi service instance
-     * @param CategoryProcessingHelper          $processingHelper CategoryProcessingHelper service instance
-     * @param CategorySortingHelper             $sortingHelper    CategorySortingHelper service instance
-     * @param RelativeCategoryPathBuilderHelper $pathBuilder      RelativeCategoryPathBuilderHelper service instance
+     * @param TranslatorInterface $translator TranslatorInterface service instance
+     * @param EntityManager $entityManager EntityManager service instance
+     * @param RequestStack $requestStack RequestStack service instance
+     * @param PermissionApi $permissionApi PermissionApi service instance
+     * @param CategoryProcessingHelper $processingHelper CategoryProcessingHelper service instance
+     * @param CategorySortingHelper $sortingHelper CategorySortingHelper service instance
+     * @param RelativeCategoryPathBuilderHelper $pathBuilder RelativeCategoryPathBuilderHelper service instance
+     * @param LocaleApi $localeApi
      */
     public function __construct(
         TranslatorInterface $translator,
@@ -80,7 +87,8 @@ class CategoryApi
         PermissionApi $permissionApi,
         CategoryProcessingHelper $processingHelper,
         CategorySortingHelper $sortingHelper,
-        RelativeCategoryPathBuilderHelper $pathBuilder
+        RelativeCategoryPathBuilderHelper $pathBuilder,
+        LocaleApi $localeApi
     ) {
         $this->translator = $translator;
         $this->entityManager = $entityManager;
@@ -89,6 +97,7 @@ class CategoryApi
         $this->processingHelper = $processingHelper;
         $this->sortingHelper = $sortingHelper;
         $this->pathBuilder = $pathBuilder;
+        $this->localeApi = $localeApi;
     }
 
     /**
@@ -187,7 +196,7 @@ class CategoryApi
         $cat = $category->toArray();
 
         // set name and description by languages if not set
-        $languages = ZLanguage::getInstalledLanguages();
+        $languages = $this->localeApi->getSupportedLocales();;
         foreach ($languages as $lang) {
             if (!isset($cat['display_name'][$lang])) {
                 $cat['display_name'][$lang] = isset($cat['display_name']['en']) ? $cat['display_name']['en'] : '';
@@ -253,7 +262,7 @@ class CategoryApi
         $categories = $this->entityManager->getRepository('ZikulaCategoriesModule:CategoryEntity')->freeSelect($where, $sort, $columnArray);
 
         $cats = [];
-        $languages = ZLanguage::getInstalledLanguages();
+        $languages = $this->localeApi->getSupportedLocales();;
         foreach ($categories as $category) {
             $cat = $category->toArray();
 
