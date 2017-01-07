@@ -17,6 +17,7 @@ services:
 
     zikula_core_installer.controller.helper:
         class: "%zikula_core_installer.controller.helper.class%"
+        arguments: ["@translator.default"]
 
     zikula_core_installer.config.helper:
         class: %zikula_core_installer.config.helper.class%
