@@ -68,7 +68,7 @@ class RouteDumperHelper
             try {
                 unlink($targetPath);
             } catch (\Exception $e) {
-                $errors .= __f("Error: Could not delete '%s' because %s", [$targetPath, $e->getMessage()]);
+                $errors .= $this->container->get('translator.default')->__f("Error: Could not delete '%path' because %msg", ['%path' => $targetPath, '%msg' => $e->getMessage()]);
             }
         }
 
