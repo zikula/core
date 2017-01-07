@@ -23,7 +23,7 @@ class LoginBlock extends AbstractBlockHandler
     {
         if ($this->hasPermission('Loginblock::', $properties['title'].'::', ACCESS_READ)) {
             if (!$this->get('zikula_users_module.current_user')->isLoggedIn()) {
-                $request = $this->get('request_stack')->getMasterRequest();
+                $request = $this->get('request_stack')->getCurrentRequest();
 
                 $authenticationMethodCollector = $this->get('zikula_users_module.internal.authentication_method_collector');
                 $template = '@ZikulaUsersModule/Block/login.html.twig';
@@ -34,9 +34,11 @@ class LoginBlock extends AbstractBlockHandler
                 ];
                 if (count($authenticationMethodCollector->getActiveKeys()) == 1) {
                     $selectedMethod = $authenticationMethodCollector->getActiveKeys()[0];
-                    $request->getSession()->set('authenticationMethod', $selectedMethod);
-                    if (!$request->getSession()->has('returnUrl')) {
-                        $request->getSession()->set('returnUrl', $request->isMethod('GET') ? $request->getUri() : '');
+                    if ($request->hasSession()) {
+                        $request->getSession()->set('authenticationMethod', $selectedMethod);
+                        if (!$request->getSession()->has('returnUrl')) {
+                            $request->getSession()->set('returnUrl', $request->isMethod('GET') ? $request->getUri() : '');
+                        }
                     }
                     $authenticationMethod = $authenticationMethodCollector->get($selectedMethod);
                     if ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface) {
