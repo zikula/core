@@ -100,6 +100,7 @@ class LocaleApi
                 $matchedLanguage = $languageCode;
             }
         }
+
         return $matchedLanguage != '' ? $matchedLanguage : $default;
     }
 
