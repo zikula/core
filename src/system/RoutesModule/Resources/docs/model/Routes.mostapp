@@ -8,6 +8,7 @@ application "Routes" {
     prefix "routes"
     generatorSettings {
         settingsContainer "Settings"
+        targetCoreVersion ZK14DEV
         isSystemModule true
         generateAccountApi false
         generateSearchApi false
