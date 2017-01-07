@@ -1,23 +1,36 @@
-parameters:
-#    session.class: Zikula_Session
-#    session.flashbag.class: Symfony\Component\HttpFoundation\Session\Flash\FlashBag
-    session.attribute_bag.class: Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag
-    session.storage.legacy.class: Zikula_Session_Storage_Legacy
-    session.handler.legacy.class: Zikula_Session_LegacyHandler
-
 services:
-    zikula_core.legacy.session_storage:
-        class: "%session.storage.legacy.class%"
-        public: false
-        arguments: ["@zikula_extensions_module.api.variable", "%session.storage.options%", "@=null", "@=null"]
-        calls:
-            - [setSaveHandler, ["@zikula_core.legacy.session_handler"]]
+#    zikula_core.legacy.session_storage:
+#        class: Zikula_Session_Storage_Legacy
+#        public: false
+#        arguments: ["@zikula_extensions_module.api.variable", "%session.storage.options%", "@=null", "@=null"]
+#        calls:
+#            - [setSaveHandler, ["@zikula_core.legacy.session_handler"]]
+#
+#    zikula_core.legacy.session_handler:
+#        class: Zikula_Session_LegacyHandler
+#        public: false
+#        arguments: ["%installed%"]
+#        calls:
+#            - [setStorage, ["@zikula_core.legacy.session_storage"]]
+#            - [setConnection, ["@doctrine.dbal.default_connection"]]
+#            - [setVariableApi, ["@zikula_extensions_module.api.variable"]]
 
-    zikula_core.legacy.session_handler:
-        class: "%session.handler.legacy.class%"
+    zikula_core.bridge.http_foundation.doctrine_session_handler:
+        class: Zikula\Bridge\HttpFoundation\DoctrineSessionHandler
         public: false
-        arguments: ["%installed%"]
+        arguments:
+            - "@zikula_core.bridge.http_foundation.zikula_session_storage"
+            - "@zikula_users_module.user_session_repository"
+            - "@zikula_extensions_module.api.variable"
+            - "%installed%"
+
+
+    zikula_core.bridge.http_foundation.zikula_session_storage:
+        class: Zikula\Bridge\HttpFoundation\ZikulaSessionStorage
+        arguments:
+            - "@zikula_extensions_module.api.variable"
+            - "%session.storage.options%"
+            - "@=null"
+            - "@=null"
         calls:
-            - [setStorage, ["@zikula_core.legacy.session_storage"]]
-            - [setConnection, ["@doctrine.dbal.default_connection"]]
-            - [setVariableApi, ["@zikula_extensions_module.api.variable"]]
+            - [setSaveHandler, ["@zikula_core.bridge.http_foundation.doctrine_session_handler"]]

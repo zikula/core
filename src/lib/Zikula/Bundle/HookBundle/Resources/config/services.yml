@@ -12,9 +12,13 @@ services:
 
     zikula_hook_bundle.listener.hooks_listener:
         class: Zikula\Bundle\HookBundle\Listener\HooksListener
-        arguments: ["@zikula_permissions_module.api.permission", "@zikula_extensions_module.api.capability", "@router"]
+        arguments:
+          - "@zikula_permissions_module.api.permission"
+          - "@zikula_extensions_module.api.capability"
+          - "@router"
+          - "@translator.default"
         tags:
-        - { name: kernel.event_subscriber }
+          - { name: kernel.event_subscriber }
 
     twig.extension.zikula_hook:
         class: Zikula\Bundle\HookBundle\Twig\Extension\HookExtension

@@ -31,7 +31,7 @@ class ActionsMenu implements ContainerAwareInterface
 
     public function adminMenu(FactoryInterface $factory, array $options)
     {
-        $this->setTranslator($this->container->get('translator'));
+        $this->setTranslator($this->container->get('translator.default'));
         $permissionApi = $this->container->get('zikula_permissions_module.api.permission');
         $defaultGroup = $this->container->get('zikula_extensions_module.api.variable')->get('ZikulaGroupsModule', 'defaultgroup');
         $primaryAdminGroup = $this->container->get('zikula_extensions_module.api.variable')->get('ZikulaGroupsModule', 'primaryadmingroup', 2);

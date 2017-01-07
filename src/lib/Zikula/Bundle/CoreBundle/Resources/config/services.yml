@@ -1,5 +1,4 @@
 parameters:
-    controller_resolver.class: Zikula\Bundle\CoreBundle\Controller\ControllerResolver
     zikula_core.controller.main_controller.class: Zikula\Bundle\CoreBundle\Controller\MainController
     zikula.data_collector.class: Zikula\Bundle\CoreBundle\DataCollector\ZikulaVersionDataCollector
     zikula.dynamic_config_dumper.class: Zikula\Bundle\CoreBundle\DynamicConfigDumper

@@ -12,6 +12,7 @@
 namespace Zikula\Bundle\HookBundle\Listener;
 
 use Symfony\Component\Routing\RouterInterface;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
@@ -22,21 +23,43 @@ use Zikula\PermissionsModule\Api\PermissionApi;
  */
 class HooksListener implements EventSubscriberInterface
 {
+    /**
+     * @var PermissionApi
+     */
     private $permissionsApi;
+
+    /**
+     * @var CapabilityApiInterface
+     */
     private $capabilityApi;
+
+    /**
+     * @var RouterInterface
+     */
     private $router;
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
 
     /**
      * ExtensionServicesListener constructor.
      * @param PermissionApi $permissionApi
      * @param CapabilityApiInterface $capabilityApi
      * @param RouterInterface $router
+     * @param TranslatorInterface $translator
      */
-    public function __construct(PermissionApi $permissionApi, CapabilityApiInterface $capabilityApi, RouterInterface $router)
-    {
+    public function __construct(
+        PermissionApi $permissionApi,
+        CapabilityApiInterface $capabilityApi,
+        RouterInterface $router,
+        TranslatorInterface $translator
+    ) {
         $this->permissionsApi = $permissionApi;
         $this->capabilityApi = $capabilityApi;
         $this->router = $router;
+        $this->translator = $translator;
     }
 
     public static function getSubscribedEvents()
@@ -68,7 +91,7 @@ class HooksListener implements EventSubscriberInterface
         }
         $event->data[] = [
             'url' => $this->router->generate('zikula_hook_hook_edit', ['moduleName' => $event['modname']]),
-            'text' => __('Hooks'),
+            'text' => $this->translator->__('Hooks'),
             'icon' => 'paperclip'
         ];
     }

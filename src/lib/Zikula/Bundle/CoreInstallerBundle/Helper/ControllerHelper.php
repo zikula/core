@@ -12,6 +12,7 @@
 namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Exception\FatalErrorException;
 use Zikula\Component\Wizard\StageInterface;
 use Zikula\Bundle\CoreBundle\YamlDumper;
@@ -20,6 +21,20 @@ use Zikula\Component\Wizard\AbortStageException;
 
 class ControllerHelper
 {
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * ControllerHelper constructor.
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * return an array of variables to assign to all installer templates
      *
@@ -46,26 +61,50 @@ class ControllerHelper
         if (version_compare(\PHP_VERSION, '5.6.0', '<') && false === ini_set('mbstring.internal_encoding', 'UTF-8')) {
             // mbstring.internal_encoding is deprecated in php 5.6.0
             $currentSetting = ini_get('mbstring.internal_encoding');
-            $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The install or upgrade process may fail at your current setting of %4$s.', ['ini_set', 'mbstring.internal_encoding', 'UTF-8', $currentSetting]);
+            $warnings[] = $this->translator->__f('Could not use %1$s to set the %2$s to the value of %3$s. The install or upgrade process may fail at your current setting of %4$s.', [
+                '%1$s' => 'ini_set',
+                '%2$s' => 'mbstring.internal_encoding',
+                '%3$s' => 'UTF-8',
+                '%4$s' => $currentSetting
+            ]);
         }
         if (false === ini_set('default_charset', 'UTF-8')) {
             $currentSetting = ini_get('default_charset');
-            $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The install or upgrade process may fail at your current setting of %4$s.', ['ini_set', 'default_charset', 'UTF-8', $currentSetting]);
+            $warnings[] = $this->translator->__f('Could not use %1$s to set the %2$s to the value of %3$s. The install or upgrade process may fail at your current setting of %4$s.', [
+                '%1$s' => 'ini_set',
+                '%2$s' => 'default_charset',
+                '%3$s' => 'UTF-8',
+                '%4$s' => $currentSetting
+            ]);
         }
         if (false === mb_regex_encoding('UTF-8')) {
             $currentSetting = mb_regex_encoding();
-            $warnings[] = __f('Could not set %1$s to the value of %2$s. The install or upgrade process may fail at your current setting of %3$s.', ['mb_regex_encoding', 'UTF-8', $currentSetting]);
+            $warnings[] = $this->translator->__f('Could not set %1$s to the value of %2$s. The install or upgrade process may fail at your current setting of %3$s.', [
+                '%1$s' => 'mb_regex_encoding',
+                '%2$s' => 'UTF-8',
+                '%3$s' => $currentSetting
+            ]);
         }
         if (false === ini_set('memory_limit', '128M')) {
             $currentSetting = ini_get('memory_limit');
-            $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The install or upgrade process may fail at your current setting of %4$s.', ['ini_set', 'memory_limit', '128M', $currentSetting]);
+            $warnings[] = $this->translator->__f('Could not use %1$s to set the %2$s to the value of %3$s. The install or upgrade process may fail at your current setting of %4$s.', [
+                '%1$s' => 'ini_set',
+                '%2$s' => 'memory_limit',
+                '%3$s' => '128M',
+                '%4$s' => $currentSetting
+            ]);
         }
         if (false === ini_set('max_execution_time', 86400)) {
             // 86400 = 24 hours
             $currentSetting = ini_get('max_execution_time');
             if ($currentSetting > 0) {
                 // 0 = unlimited time
-                $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The install or upgrade process may fail at your current setting of %4$s.', ['ini_set', 'max_execution_time', '86400', $currentSetting]);
+                $warnings[] = $this->translator->__f('Could not use %1$s to set the %2$s to the value of %3$s. The install or upgrade process may fail at your current setting of %4$s.', [
+                    '%1$s' => 'ini_set',
+                    '%2$s' => 'max_execution_time',
+                    '%3$s' => '86400',
+                    '%4$s' => $currentSetting
+                ]);
             }
         }
 
@@ -132,7 +171,7 @@ class ControllerHelper
         try {
             $yamlManager->setParameters($params);
         } catch (IOException $e) {
-            throw new AbortStageException(__f('Cannot write parameters to %s file.', 'custom_parameters.yml'));
+            throw new AbortStageException($this->translator->__f('Cannot write parameters to %s file.', ['%s' => 'custom_parameters.yml']));
         }
     }
 }

@@ -35,7 +35,7 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
     /**
      * @var array
      */
-    private $installedLanguages;
+    private $installedLocales;
 
     /**
      * @var string
@@ -46,9 +46,8 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
     {
         $this->container = $container;
         $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml', 'parameters.yml');
-        $this->installedLanguages = $container->get('zikula_settings_module.locale_api')->getSupportedLocales();
-        $detector = new \ZLanguageBrowser($this->installedLanguages);
-        $this->matchedLocale = $detector->discover();
+        $this->installedLocales = $container->get('zikula_settings_module.locale_api')->getSupportedLocales();
+        $this->matchedLocale = $container->get('zikula_settings_module.locale_api')->getBrowserLocale();
     }
 
     public function getName()
@@ -77,8 +76,8 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
 
     public function isNecessary()
     {
-        if (count($this->installedLanguages) == 1) {
-            $this->writeParams(['locale' => $this->matchedLocale]);
+        if (count($this->installedLocales) == 1) {
+            $this->writeParams(['locale' => $this->installedLocales[0]]);
 
             return false;
         }
@@ -103,7 +102,7 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
         try {
             $this->yamlManager->setParameters($params);
         } catch (IOException $e) {
-            throw new AbortStageException($this->container->get('translator.default')->__f('Cannot write parameters to %s file.', 'custom_parameters.yml'));
+            throw new AbortStageException($this->container->get('translator.default')->__f('Cannot write parameters to %s file.', ['%s' => 'custom_parameters.yml']));
         }
         // setup multilingual
         $this->container->setParameter('language_i18n', $data['locale']);

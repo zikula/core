@@ -66,4 +66,40 @@ class LocaleApi
 
         return $namedLocales;
     }
+
+    /**
+     * Detect languages preferred by browser and make best match to available provided languages.
+     *
+     * Adapted from StackOverflow response by Noel Whitemore
+     * @see http://stackoverflow.com/a/26169603/2600812
+     *
+     * @param string $default
+     * @return string
+     */
+    public function getBrowserLocale($default = 'en')
+    {
+        if (!isset($_SERVER["HTTP_ACCEPT_LANGUAGE"])) {
+            return $default;
+        }
+        preg_match_all('~([\w-]+)(?:[^,\d]+([\d.]+))?~', strtolower($_SERVER["HTTP_ACCEPT_LANGUAGE"]), $matches, PREG_SET_ORDER);
+        $availableLanguages = [];
+        foreach ($matches as $match) {
+            list($languageCode, $unusedVar) = explode('-', $match[1]) + ['', ''];
+            $priority = isset($match[2]) ? (float) $match[2] : 1.0;
+            $availableLanguages[][$languageCode] = $priority;
+        }
+        $defaultPriority = (float) 0;
+        $matchedLanguage = '';
+        foreach ($availableLanguages as $key => $value) {
+            $languageCode = key($value);
+            $priority = $value[$languageCode];
+            $supportedLocales = $this->getSupportedLocales();
+            if ($priority > $defaultPriority && array_key_exists($languageCode, $supportedLocales)) {
+                $defaultPriority = $priority;
+                $matchedLanguage = $languageCode;
+            }
+        }
+
+        return $matchedLanguage != '' ? $matchedLanguage : $default;
+    }
 }
