@@ -43,7 +43,7 @@ class ControllerResolver extends BaseControllerResolver
         }
 
         // Own logic
-        if (is_subclass_of($class, 'Zikula_AbstractBase') || is_subclass_of($class, 'Zikula\Core\Controller\AbstractController')) {
+        if (is_subclass_of($class, 'Zikula\Core\Controller\AbstractController')) {
             $kernel = $this->container->get("kernel");
             $bundleNamespace = substr($class, 0, strpos($class, '\Controller'));
             $bundles = $kernel->getBundles();
@@ -60,11 +60,7 @@ class ControllerResolver extends BaseControllerResolver
                 throw new \LogicException(sprintf('Unable to calculate the bundle from controller "%s".', $class));
             }
 
-            if (is_subclass_of($class, 'Zikula_AbstractBase')) {
-                $controller = new $class($this->container, $currentBundle);
-            } else {
-                $controller = new $class($currentBundle);
-            }
+            $controller = new $class($currentBundle);
         } else {
             $controller = new $class();
         }
