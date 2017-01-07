@@ -33,6 +33,7 @@ class CoreExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
+        $loader->load('symfony_overrides.yml');
         $loader->load('session.yml');
         $loader->load('services.yml');
         $loader->load('core.yml');
