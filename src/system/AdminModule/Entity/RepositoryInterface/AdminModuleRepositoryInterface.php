@@ -11,7 +11,6 @@
 
 namespace Zikula\AdminModule\Entity\RepositoryInterface;
 
-
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
