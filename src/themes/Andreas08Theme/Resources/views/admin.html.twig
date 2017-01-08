@@ -16,7 +16,7 @@
         <li><a href="{{ path('zikulausersmodule_useradministration_list') }}">{{ __('Users') }}</a></li>
         {% endif %}
         {% if hasPermission('ZikulaGroupsModule::','::','ACCESS_EDIT') %}
-        <li><a href="{{ path('zikulagroupsmodule_admin_index') }}">{{ __('Groups') }}</a></li>
+        <li><a href="{{ path('zikulagroupsmodule_group_adminlist') }}">{{ __('Groups') }}</a></li>
         {% endif %}
         {% if hasPermission('ZikulaPermissionsModule::','::','ACCESS_ADMIN') %}
         <li><a href="{{ path('zikulapermissionsmodule_admin_index') }}">{{ __('Permission rules') }}</a></li>
