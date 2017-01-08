@@ -1,30 +1,23 @@
-parameters:
-    zikula_core.controller.main_controller.class: Zikula\Bundle\CoreBundle\Controller\MainController
-    zikula.data_collector.class: Zikula\Bundle\CoreBundle\DataCollector\ZikulaVersionDataCollector
-    zikula.dynamic_config_dumper.class: Zikula\Bundle\CoreBundle\DynamicConfigDumper
-    zikula.cache_clearer.class: Zikula\Bundle\CoreBundle\CacheClearer
-    zikula.link_container_collector.class: Zikula\Core\LinkContainer\LinkContainerCollector
-
 services:
     zikula_core.controller.main_controller:
-        class: "%zikula_core.controller.main_controller.class%"
+        class: Zikula\Bundle\CoreBundle\Controller\MainController
         arguments: ["@kernel", "@zikula_extensions_module.api.variable"]
 
     data_collector.zikula_version:
-        class: "%zikula.data_collector.class%"
+        class: Zikula\Bundle\CoreBundle\DataCollector\ZikulaVersionDataCollector
         public: false
         arguments: ["@zikula_core.common.theme_engine"]
         tags:
             - { name: data_collector, template: "CoreBundle:Collector:ZikulaVersion.html.twig", id: zikula_version, priority: 300 }
 
     zikula.dynamic_config_dumper:
-        class: "%zikula.dynamic_config_dumper.class%"
+        class: Zikula\Bundle\CoreBundle\DynamicConfigDumper
         arguments: ["@=service('kernel').getRootDir() ~ '/config'"]
 
     zikula.cache_clearer:
-        class: "%zikula.cache_clearer.class%"
+        class: Zikula\Bundle\CoreBundle\CacheClearer
         arguments: ["%kernel.cache_dir%", "%router.cache_class_prefix%", "%kernel.container_class%", "@fos_js_routing.extractor", "%jms_i18n_routing.locales%"]
 
     zikula.link_container_collector:
-        class: "%zikula.link_container_collector.class%"
+        class: Zikula\Core\LinkContainer\LinkContainerCollector
         arguments: ["@event_dispatcher"]

@@ -1,50 +1,38 @@
-parameters:
-    zikula_blocks_module.container.link_container.class: Zikula\BlocksModule\Container\LinkContainer
-    zikula_blocks_module.block_position_repository.class: Zikula\BlocksModule\Entity\Repository\BlockPositionRepository
-    zikula_blocks_module.api.block_factory.class: Zikula\BlocksModule\Api\BlockFactoryApi
-    zikula_blocks_module.api.block.class: Zikula\BlocksModule\Api\BlockApi
-    zikula_blocks_module.api.block_filter.class: Zikula\BlocksModule\Api\BlockFilterApi
-    zikula_blocks_module.internal.block_collector.class: Zikula\BlocksModule\Collector\BlockCollector
-    zikula_blocks_module.form.block_filter_type.class: Zikula\BlocksModule\Form\Type\BlockFilterType
-    zikula_blocks_module.form.block_type.class: Zikula\BlocksModule\Form\Type\BlockType
-    twig.extension.zikula_blocks_module.class: Zikula\BlocksModule\Twig\Extension\BlocksExtension
-    zikula_blocks_module.listener.collapseable_block_listener.class: Zikula\BlocksModule\Listener\CollapseableBlockListener
-
 services:
     zikula_blocks_module.container.link_container:
-        class: "%zikula_blocks_module.container.link_container.class%"
+        class: Zikula\BlocksModule\Container\LinkContainer
         arguments: ["@translator.default", "@jms_i18n_routing.router", "@zikula_permissions_module.api.permission"]
         tags:
             - { name: zikula.link_container }
 
     zikula_blocks_module.block_position_repository:
-        class: "%zikula_blocks_module.block_position_repository.class%"
+        class: Zikula\BlocksModule\Entity\Repository\BlockPositionRepository
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
         arguments: ["ZikulaBlocksModule:BlockPositionEntity"]
 
     zikula_blocks_module.api.block_factory:
-        class: "%zikula_blocks_module.api.block_factory.class%"
+        class: Zikula\BlocksModule\Api\BlockFactoryApi
         arguments: ["@service_container"]
 
     zikula_blocks_module.api.block:
-        class: "%zikula_blocks_module.api.block.class%"
+        class: Zikula\BlocksModule\Api\BlockApi
         arguments: ["@zikula_blocks_module.block_position_repository", "@zikula_blocks_module.api.block_factory", "@zikula_extensions_module.extension_repository", "@zikula_blocks_module.internal.block_collector", "@kernel"]
 
     zikula_blocks_module.api.block_filter:
-        class: "%zikula_blocks_module.api.block_filter.class%"
+        class: Zikula\BlocksModule\Api\BlockFilterApi
         arguments: ["@request_stack"]
 
     zikula_blocks_module.internal.block_collector:
-        class: "%zikula_blocks_module.internal.block_collector.class%"
+        class: Zikula\BlocksModule\Collector\BlockCollector
 
     zikula_blocks_module.form.block_filter_type:
-        class: "%zikula_blocks_module.form.block_filter_type.class%"
+        class: Zikula\BlocksModule\Form\Type\BlockFilterType
         arguments: ["@zikula_blocks_module.api.block_filter"]
         tags:
             - { name: form.type }
 
     zikula_blocks_module.form.block_type:
-        class: "%zikula_blocks_module.form.block_type.class%"
+        class: Zikula\BlocksModule\Form\Type\BlockType
         arguments:
           - "@zikula_blocks_module.api.block"
           - "@zikula_blocks_module.api.block_filter"
@@ -54,14 +42,14 @@ services:
             - { name: form.type }
 
     twig.extension.zikula_blocks_module:
-        class: "%twig.extension.zikula_blocks_module.class%"
+        class: Zikula\BlocksModule\Twig\Extension\BlocksExtension
         public: false
         arguments: ["@zikula_blocks_module.api.block", "@zikula_blocks_module.api.block_filter", "@zikula_core.common.theme_engine", "@kernel", "@twig.loader"]
         tags:
             - { name: twig.extension }
 
     zikula_blocks_module.listener.collapseable_block_listener:
-        class: "%zikula_blocks_module.listener.collapseable_block_listener.class%"
+        class: Zikula\BlocksModule\Listener\CollapseableBlockListener
         arguments: ["@zikula_core.common.theme.assets_js", "@zikula_extensions_module.api.variable", "@zikula_core.common.theme.asset_helper", "%installed%", "@=container.hasParameter('upgrading') ? parameter('upgrading') : false"]
         tags:
             - { name: kernel.event_subscriber }

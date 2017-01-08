@@ -1,60 +1,45 @@
-parameters:
-    zikula_core.common.theme_engine.class: Zikula\ThemeModule\Engine\Engine
-    zikula_core.internal.theme.merger.class: Zikula\ThemeModule\Engine\Asset\Merger
-    zikula_core.common.theme.assets.js.class: Zikula\ThemeModule\Engine\AssetBag
-    zikula_core.common.theme.assets.css.class: Zikula\ThemeModule\Engine\AssetBag
-    zikula_core.common.theme.assets.header.class: Zikula\ThemeModule\Engine\AssetBag
-    zikula_core.common.theme.assets.footer.class: Zikula\ThemeModule\Engine\AssetBag
-    zikula_core.common.theme.pagevars.class: Zikula\ThemeModule\Engine\ParameterBag
-    zikula_core.internal.theme_filter.class: Zikula\ThemeModule\Engine\AssetFilter
-    zikula_core.common.theme.themevars.class: Zikula\ThemeModule\Engine\ParameterBag
-    zikula_core.common.theme.asset_helper.class: Zikula\ThemeModule\Engine\Asset
-    zikula_core.internal.theme.js_resolver.class: Zikula\ThemeModule\Engine\Asset\JsResolver
-    zikula_core.internal.theme.css_resolver.class: Zikula\ThemeModule\Engine\Asset\CssResolver
-    zikula_core.internal.theme.decorated_twig_engine.class: Zikula\ThemeModule\Bridge\Twig\EventEnabledTwigEngine
-
 services:
     zikula_core.common.theme_engine:
-        class: "%zikula_core.common.theme_engine.class%"
+        class: Zikula\ThemeModule\Engine\Engine
         arguments: ["@request_stack", "@annotation_reader", "@kernel", "@zikula_core.internal.theme_filter", "@zikula_blocks_module.api.block", "@zikula_extensions_module.api.variable"]
 
     zikula_core.common.theme.assets_js:
-        class: "%zikula_core.common.theme.assets.js.class%"
+        class: Zikula\ThemeModule\Engine\AssetBag
     zikula_core.common.theme.assets_css:
-        class: "%zikula_core.common.theme.assets.css.class%"
+        class: Zikula\ThemeModule\Engine\AssetBag
     zikula_core.common.theme.assets_header:
-        class: "%zikula_core.common.theme.assets.header.class%"
+        class: Zikula\ThemeModule\Engine\AssetBag
     zikula_core.common.theme.assets_footer:
-        class: "%zikula_core.common.theme.assets.footer.class%"
+        class: Zikula\ThemeModule\Engine\AssetBag
 
     zikula_core.common.theme.pagevars:
-        class: "%zikula_core.common.theme.pagevars.class%"
+        class: Zikula\ThemeModule\Engine\ParameterBag
 
     zikula_core.internal.theme_filter:
-        class: "%zikula_core.internal.theme_filter.class%"
+        class: Zikula\ThemeModule\Engine\AssetFilter
         arguments: ["@zikula_core.common.theme.assets_header", "@zikula_core.common.theme.assets_footer", "@zikula_core.internal.theme.js_resolver", "@zikula_core.internal.theme.css_resolver", "%script_position%"]
 
     zikula_core.common.theme.themevars:
-        class: "%zikula_core.common.theme.themevars.class%"
+        class: Zikula\ThemeModule\Engine\ParameterBag
 
     zikula_core.internal.theme.merger:
-        class: "%zikula_core.internal.theme.merger.class%"
+        class: Zikula\ThemeModule\Engine\Asset\Merger
         arguments: ["@router.default", "@doctrine_cache.providers.zikula_js_asset_cache", "@doctrine_cache.providers.zikula_css_asset_cache", "%kernel.root_dir%", "%zikula_asset_manager.lifetime%", "%zikula_asset_manager.minify%", "%zikula_asset_manager.compress%"]
 
     zikula_core.internal.theme.js_resolver:
-        class: "%zikula_core.internal.theme.js_resolver.class%"
+        class: Zikula\ThemeModule\Engine\Asset\JsResolver
         arguments: ["@zikula_core.common.theme.assets_js", "@zikula_core.internal.theme.merger", "%env%", "%zikula_asset_manager.combine%"]
 
     zikula_core.internal.theme.css_resolver:
-        class: "%zikula_core.internal.theme.css_resolver.class%"
+        class: Zikula\ThemeModule\Engine\Asset\CssResolver
         arguments: ["@zikula_core.common.theme.assets_css", "@zikula_core.internal.theme.merger", "%env%", "%zikula_asset_manager.combine%"]
 
     zikula_core.common.theme.asset_helper:
-        class: "%zikula_core.common.theme.asset_helper.class%"
+        class: Zikula\ThemeModule\Engine\Asset
         arguments: ["@kernel", "@assets.packages"]
 
     templating.engine.decorating_twig:
-        class: "%zikula_core.internal.theme.decorated_twig_engine.class%"
+        class: Zikula\ThemeModule\Bridge\Twig\EventEnabledTwigEngine
         decorates: templating.engine.twig
         public: false
         arguments: ["@twig", "@templating.name_parser", "@templating.locator"]

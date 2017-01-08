@@ -1,43 +1,27 @@
 parameters:
-    zikula_core.internal.token.storage.class: Zikula\Core\Token\Storage\SessionStorage
-    zikula_core.internal.token.generator.class: Zikula\Core\Token\Generator
-    zikula_core.internal.token.validator.class: Zikula\Core\Token\Validator
-    zikula_core.common.csrf_token_handler.class: Zikula\Core\Token\CsrfTokenHandler
     zikula_core.internal.token.max_life: 3600
-
-    zikula_core.common.markdown.class: Michelf\Markdown
-    zikula_core.common.markdown_extra.class: Michelf\MarkdownExtra
-
-    zikula_core.internal.clickjack_protection_listener.class: Zikula\Bundle\CoreBundle\EventListener\ClickjackProtectionListener
-    zikula_core.internal.site_off_listener.class: Zikula\Bundle\CoreBundle\EventListener\SiteOffListener
-    zikula_core.internal.session_expire_listener.class: Zikula\Bundle\CoreBundle\EventListener\SessionExpireListener
-    zikula_core.internal.exception_listener.class: Zikula\Bundle\CoreBundle\EventListener\ExceptionListener
-    zikula_core.internal.output_compression_listener.class: Zikula\Bundle\CoreBundle\EventListener\OutputCompressionListener
-    zikula_core.internal.strip_front_controller_listener.class: Zikula\Bundle\CoreBundle\EventListener\StripFrontControllerListener
-    zikula_core.common.doctrine.schema_tool.class: Zikula\Core\Doctrine\Helper\SchemaHelper
-    zikula_core.internal.bootstrap_helper.class: Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper
 
 services:
     zikula_core.common.markdown_parser:
-        class: "%zikula_core.common.markdown.class%"
+        class: Michelf\MarkdownExtra
 
     zikula_core.common.markdown_extra_parser:
-        class: "%zikula_core.common.markdown_extra.class%"
+        class: Michelf\MarkdownExtra
 
     zikula_core.internal.token.storage:
-        class: "%zikula_core.internal.token.storage.class%"
+        class: Zikula\Core\Token\Storage\SessionStorage
         arguments: ["@session"]
 
     zikula_core.internal.token.generator:
-        class: "%zikula_core.internal.token.generator.class%"
+        class: Zikula\Core\Token\Generator
         arguments: ["@zikula_core.internal.token.storage", "_dummy", "%zikula_core.internal.token.max_life%"]
 
     zikula_core.internal.token.validator:
-        class: "%zikula_core.internal.token.validator.class%"
+        class: Zikula\Core\Token\Validator
         arguments: ["@zikula_core.internal.token.generator"]
 
     zikula_core.common.csrf_token_handler:
-        class: "%zikula_core.common.csrf_token_handler.class%"
+        class: Zikula\Core\Token\CsrfTokenHandler
         arguments:
           - "@zikula_core.internal.token.generator"
           - "@zikula_core.internal.token.validator"
@@ -46,13 +30,13 @@ services:
           - "@session"
 
     zikula_core.internal.clickjack_protection_listener:
-        class: "%zikula_core.internal.clickjack_protection_listener.class%"
+        class: Zikula\Bundle\CoreBundle\EventListener\ClickjackProtectionListener
         arguments: ["%security.x_frame_options%"]
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_core.internal.site_off_listener:
-        class: "%zikula_core.internal.site_off_listener.class%"
+        class: Zikula\Bundle\CoreBundle\EventListener\SiteOffListener
         arguments:
           - "@zikula_extensions_module.api.variable"
           - "@zikula_permissions_module.api.permission"
@@ -65,13 +49,13 @@ services:
             - { name: kernel.event_subscriber }
 
     zikula_core.internal.session_expire_listener:
-        class: "%zikula_core.internal.session_expire_listener.class%"
+        class: Zikula\Bundle\CoreBundle\EventListener\SessionExpireListener
         arguments: ["%installed%"]
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_core.internal.exception_listener:
-        class: "%zikula_core.internal.exception_listener.class%"
+        class: Zikula\Bundle\CoreBundle\EventListener\ExceptionListener
         arguments:
           - "@router"
           - "@event_dispatcher"
@@ -83,22 +67,22 @@ services:
             - { name: monolog.logger, channel: request }
 
     zikula_core.internal.output_compression_listener:
-        class: "%zikula_core.internal.output_compression_listener.class%"
+        class: Zikula\Bundle\CoreBundle\EventListener\OutputCompressionListener
         arguments: ["@zikula_extensions_module.api.variable", "%installed%"]
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_core.internal.strip_front_controller_listener:
-        class: "%zikula_core.internal.strip_front_controller_listener.class%"
+        class: Zikula\Bundle\CoreBundle\EventListener\StripFrontControllerListener
         arguments: ["@zikula_extensions_module.api.variable", "%installed%"]
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_core.common.doctrine.schema_tool:
-        class: "%zikula_core.common.doctrine.schema_tool.class%"
+        class: Zikula\Core\Doctrine\Helper\SchemaHelper
         lazy: true
         arguments: ["@doctrine.orm.default_entity_manager"]
 
     zikula_core.internal.bootstrap_helper:
-        class: "%zikula_core.internal.bootstrap_helper.class%"
+        class: Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper
         arguments: ["@doctrine.dbal.default_connection", "@zikula.cache_clearer"]

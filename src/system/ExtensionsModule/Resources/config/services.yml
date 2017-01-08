@@ -1,92 +1,75 @@
-parameters:
-    zikula_extensions_module.container.link_container.class: Zikula\ExtensionsModule\Container\LinkContainer
-    zikula_extensions_module.listener.extension_services_listener.class: Zikula\ExtensionsModule\Listener\ExtensionServicesListener
-    zikula_extensions_module.api.variable.class: Zikula\ExtensionsModule\Api\VariableApi
-    zikula_extensions_module.api.extension.class: Zikula\ExtensionsModule\Api\ExtensionApi
-    zikula_extensions_module.api.capability.class: Zikula\ExtensionsModule\Api\CapabilityApi
-    zikula_extensions_module.extension_var_repository.class: Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository
-    zikula_extensions_module.extension_repository.class: Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository
-    zikula_extensions_module.extension_dependency_repository.class: Zikula\ExtensionsModule\Entity\Repository\ExtensionDependencyRepository
-    twig.extension.zikula_extensions_module.class: Zikula\ExtensionsModule\Twig\Extension\ExtensionsExtension
-    twig.extension.zikula_extensions_module.user_interface.class: Zikula\ExtensionsModule\Twig\Extension\UserInterfaceExtension
-    zikula_extensions_module.bundle_sync_helper.class: Zikula\ExtensionsModule\Helper\BundleSyncHelper
-    zikula_extensions_module.extension_state_helper.class: Zikula\ExtensionsModule\Helper\ExtensionStateHelper
-    zikula_extensions_module.extension_helper.class: Zikula\ExtensionsModule\Helper\ExtensionHelper
-    zikula_extensions_module.extension_dependency_helper.class: Zikula\ExtensionsModule\Helper\ExtensionDependencyHelper
-    zikula_extensions_module.composer_validation_helper.class: Zikula\ExtensionsModule\Helper\ComposerValidationHelper
-
 services:
     zikula_extensions_module.container.link_container:
-        class: "%zikula_extensions_module.container.link_container.class%"
+        class: Zikula\ExtensionsModule\Container\LinkContainer
         arguments: ["@translator.default", "@jms_i18n_routing.router", "@zikula_permissions_module.api.permission"]
         tags:
             - { name: zikula.link_container }
 
     zikula_extensions_module.listener.extension_services_listener:
-        class: "%zikula_extensions_module.listener.extension_services_listener.class%"
+        class: Zikula\ExtensionsModule\Listener\ExtensionServicesListener
         arguments: ["@event_dispatcher", "@router"]
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_extensions_module.extension_var_repository:
-        class: "%zikula_extensions_module.extension_var_repository.class%"
+        class: Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
         arguments: ["ZikulaExtensionsModule:ExtensionVarEntity"]
 
     zikula_extensions_module.extension_repository:
-        class: "%zikula_extensions_module.extension_repository.class%"
+        class: Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
         arguments: ["ZikulaExtensionsModule:ExtensionEntity"]
 
     zikula_extensions_module.extension_dependency_repository:
-        class: "%zikula_extensions_module.extension_dependency_repository.class%"
+        class: Zikula\ExtensionsModule\Entity\Repository\ExtensionDependencyRepository
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
         arguments: ["ZikulaExtensionsModule:ExtensionDependencyEntity"]
 
     zikula_extensions_module.api.variable:
-        class: "%zikula_extensions_module.api.variable.class%"
+        class: Zikula\ExtensionsModule\Api\VariableApi
         arguments: ["%installed%", "@zikula_extensions_module.extension_var_repository", "@kernel", "%multisites%"]
 
     zikula_extensions_module.api.extension:
-        class: "%zikula_extensions_module.api.extension.class%"
+        class: Zikula\ExtensionsModule\Api\ExtensionApi
         arguments: ["@kernel"]
 
     zikula_extensions_module.api.capability:
-        class: "%zikula_extensions_module.api.capability.class%"
+        class: Zikula\ExtensionsModule\Api\CapabilityApi
         arguments: ["@zikula_extensions_module.extension_repository"]
 
     twig.extension.zikula_extensions_module:
-        class: "%twig.extension.zikula_extensions_module.class%"
+        class: Zikula\ExtensionsModule\Twig\Extension\ExtensionsExtension
         public: false
         arguments: ["@translator.default"]
         tags:
             - { name: twig.extension }
 
     twig.extension.zikula_extensions_module.user_interface:
-        class: "%twig.extension.zikula_extensions_module.user_interface.class%"
+        class: Zikula\ExtensionsModule\Twig\Extension\UserInterfaceExtension
         public: true
         arguments: ["@fragment.handler"]
         tags:
             - { name: twig.extension }
 
     zikula_extensions_module.bundle_sync_helper:
-        class: "%zikula_extensions_module.bundle_sync_helper.class%"
+        class: Zikula\ExtensionsModule\Helper\BundleSyncHelper
         lazy: true
         arguments: ["@kernel", "@zikula_extensions_module.extension_repository", "@zikula_extensions_module.extension_var_repository", "@zikula_extensions_module.extension_dependency_repository", "@translator.default", "@event_dispatcher", "@zikula_extensions_module.extension_state_helper", "@zikula_core.internal.bootstrap_helper", "@zikula_extensions_module.composer_validation_helper", "@session"]
 
     zikula_extensions_module.extension_state_helper:
-        class: "%zikula_extensions_module.extension_state_helper.class%"
+        class: Zikula\ExtensionsModule\Helper\ExtensionStateHelper
         lazy: true
         arguments: ["@event_dispatcher", "@zikula.cache_clearer", "@zikula_extensions_module.extension_repository", "@translator.default", "@kernel"]
 
     zikula_extensions_module.extension_helper:
-        class: "%zikula_extensions_module.extension_helper.class%"
+        class: Zikula\ExtensionsModule\Helper\ExtensionHelper
         arguments: ["@service_container"]
 
     zikula_extensions_module.extension_dependency_helper:
-        class: "%zikula_extensions_module.extension_dependency_helper.class%"
+        class: Zikula\ExtensionsModule\Helper\ExtensionDependencyHelper
         arguments: ["@zikula_extensions_module.extension_dependency_repository", "@zikula_extensions_module.extension_repository", "@kernel"]
 
     zikula_extensions_module.composer_validation_helper:
-        class: "%zikula_extensions_module.composer_validation_helper.class%"
+        class: Zikula\ExtensionsModule\Helper\ComposerValidationHelper
         arguments: ["@kernel", "@translator.default"]

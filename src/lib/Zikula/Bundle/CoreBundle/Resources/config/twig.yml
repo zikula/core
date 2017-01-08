@@ -1,54 +1,45 @@
-parameters:
-    twig.extension.zikula_gettext.class: Zikula\Bundle\CoreBundle\Twig\Extension\GettextExtension
-    twig.extension.zikula_core.class: Zikula\Bundle\CoreBundle\Twig\Extension\CoreExtension
-    twig.extension.zikula_pager.class: Zikula\Bundle\CoreBundle\Twig\Extension\PagerExtension
-    twig.extension.text.class: Twig_Extensions_Extension_Text
-    twig.extension.intl.class: Twig_Extensions_Extension_Intl
-    twig.extension.date.class: Twig_Extensions_Extension_Date
-    twig.extension.array.class: Twig_Extensions_Extension_Array
-
 services:
     twig.extension.zikula_gettext:
-        class: "%twig.extension.zikula_gettext.class%"
+        class: Zikula\Bundle\CoreBundle\Twig\Extension\GettextExtension
         public: false
         arguments: ["@translator.default", "@kernel"]
         tags:
             - { name: twig.extension }
 
     twig.extension.zikula_core:
-        class: "%twig.extension.zikula_core.class%"
+        class: Zikula\Bundle\CoreBundle\Twig\Extension\CoreExtension
         public: false
         arguments: ["@service_container"]
         tags:
             - { name: twig.extension }
 
     twig.extension.zikula_pager:
-        class: "%twig.extension.zikula_pager.class%"
+        class: Zikula\Bundle\CoreBundle\Twig\Extension\PagerExtension
         public: false
         arguments: ["@service_container"]
         tags:
             - { name: twig.extension }
 
     twig.extension.text:
-        class: "%twig.extension.text.class%"
+        class: Twig_Extensions_Extension_Text
         public: false
         tags:
             - { name: twig.extension }
 
     twig.extension.intl:
-        class: "%twig.extension.intl.class%"
+        class: Twig_Extensions_Extension_Intl
         public: false
         tags:
             - { name: twig.extension }
 
     twig.extension.date:
-        class: "%twig.extension.date.class%"
+        class: Twig_Extensions_Extension_Date
         public: false
         tags:
             - { name: twig.extension }
 
     twig.extension.array:
-        class: "%twig.extension.array.class%"
+        class: Twig_Extensions_Extension_Array
         public: false
         tags:
             - { name: twig.extension }

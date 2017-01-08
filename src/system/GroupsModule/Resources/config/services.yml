@@ -1,14 +1,6 @@
-parameters:
-    zikula_groups_module.container.link_container.class: Zikula\GroupsModule\Container\LinkContainer
-    twig.extension.zikula_groups_module.class: Zikula\GroupsModule\Twig\TwigExtension
-    zikula_groups_module.group_application_repository.class: Zikula\GroupsModule\Entity\Repository\GroupApplicationRepository
-    zikula_groups_module.group_repository.class: Zikula\GroupsModule\Entity\Repository\GroupRepository
-    zikula_groups_module.validator.constraints.group_name_validator.class: Zikula\GroupsModule\Validator\Constraints\ValidGroupNameValidator
-    zikula_groups_module.listener.group_event_listener.class: Zikula\GroupsModule\Listener\GroupEventListener
-
 services:
     zikula_groups_module.container.link_container:
-        class: "%zikula_groups_module.container.link_container.class%"
+        class: Zikula\GroupsModule\Container\LinkContainer
         arguments:
           - "@translator.default"
           - "@jms_i18n_routing.router"
@@ -19,25 +11,25 @@ services:
             - { name: zikula.link_container }
 
     zikula_groups_module.group_application_repository:
-        class: "%zikula_groups_module.group_application_repository.class%"
+        class: Zikula\GroupsModule\Entity\Repository\GroupApplicationRepository
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
         arguments: ["ZikulaGroupsModule:GroupApplicationEntity"]
 
     zikula_groups_module.group_repository:
-        class: "%zikula_groups_module.group_repository.class%"
+        class: Zikula\GroupsModule\Entity\Repository\GroupRepository
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
         arguments: ["ZikulaGroupsModule:GroupEntity"]
         calls:
             - [setTranslator, ["@translator.default"]]
 
     zikula_groups_module.validator.constraints.group_name_validator:
-        class: "%zikula_groups_module.validator.constraints.group_name_validator.class%"
+        class: Zikula\GroupsModule\Validator\Constraints\ValidGroupNameValidator
         arguments: ["@translator.default", "@zikula_groups_module.group_repository"]
         tags:
             - { name: validator.constraint_validator, alias: zikula.groups.group_name.validator }
 
     zikula_groups_module.listener.group_event_listener:
-        class: "%zikula_groups_module.listener.group_event_listener.class%"
+        class: Zikula\GroupsModule\Listener\GroupEventListener
         arguments:
           - "@zikula_extensions_module.api.variable"
           - "@translator.default"
