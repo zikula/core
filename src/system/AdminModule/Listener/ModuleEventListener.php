@@ -81,16 +81,8 @@ class ModuleEventListener implements EventSubscriberInterface
             return;
         }
         $module = $event->getModule();
-        if ($module) {
-            $modName = $module->getName();
-        } else {
-            // Legacy for non Symfony-styled modules.
-            // @deprecated remove at Core-2.0
-            $modInfo = $event->modinfo;
-            $modName = $modInfo['name'];
-        }
         $category = $this->variableApi->get('ZikulaAdminModule', 'defaultcategory');
-        $module = $this->extensionRepository->findOneBy(['name' => $modName]);
+        $module = $this->extensionRepository->findOneBy(['name' => $module->getName()]);
         $sortOrder = $this->adminModuleRepository->countModulesByCategory($category);
 
         //move the module

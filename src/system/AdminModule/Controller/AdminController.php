@@ -341,23 +341,14 @@ class AdminController extends AbstractController
                 }
 
                 try {
-                    $menuTextUrl = isset($adminModule['capabilities']['admin']['url'])
-                        ? $adminModule['capabilities']['admin']['url']
-                        : $this->get('router')->generate($adminModule['capabilities']['admin']['route']);
+                    $menuTextUrl = $this->get('router')->generate($adminModule['capabilities']['admin']['route']);
                 } catch (RouteNotFoundException $routeNotFoundException) {
                     $menuTextUrl = 'javascript:void(0)';
                     $menuText .= ' (<i class="fa fa-warning"></i> ' . $this->__('invalid route') . ')';
                 }
 
                 $links = $this->get('zikula.link_container_collector')->getLinks($adminModule['name'], 'admin');
-                // @deprecated remove at Core-2.0
-                $links = (false == $links) ? (array) ModUtil::apiFunc($adminModule['name'], 'admin', 'getLinks') : $links;
-                try {
-                    $adminIconPath = $this->get('zikula_core.common.theme.asset_helper')->resolve('@' . $adminModule['name'] . ':images/admin.png');
-                } catch (\Exception $e) {
-                    // @deprecated remove at Core-2.0
-                    $adminIconPath = $baseUrl . ModUtil::getModuleImagePath($adminModule['name']);
-                }
+                $adminIconPath = $this->get('zikula_core.common.theme.asset_helper')->resolve('@' . $adminModule['name'] . ':images/admin.png');
 
                 $adminLinks[] = [
                     'menuTextUrl' => $menuTextUrl,
@@ -410,7 +401,6 @@ class AdminController extends AbstractController
         // get admin capable modules
         $adminModules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf('admin');
         $adminLinks = [];
-        $baseUrl = $request->getBaseUrl();
         foreach ($adminModules as $adminModule) {
             if (!$this->hasPermission($adminModule['name'] . '::', '::', ACCESS_EDIT)) {
                 continue;
@@ -418,9 +408,7 @@ class AdminController extends AbstractController
 
             $menuText = $adminModule['displayname'];
             try {
-                $menuTextUrl = isset($adminModule['capabilities']['admin']['url'])
-                    ? $adminModule['capabilities']['admin']['url']
-                    : $this->get('router')->generate($adminModule['capabilities']['admin']['route']);
+                $menuTextUrl = $this->get('router')->generate($adminModule['capabilities']['admin']['route']);
             } catch (RouteNotFoundException $routeNotFoundException) {
                 $menuTextUrl = 'javascript:void(0)';
                 $menuText .= ' (<i class="fa fa-warning"></i> ' . $this->__('invalid route') . ')';
@@ -439,15 +427,7 @@ class AdminController extends AbstractController
                 break;
             }
 
-            $menuTextUrl = isset($adminModule['capabilities']['admin']['url'])
-                ? $adminModule['capabilities']['admin']['url']
-                : $this->get('router')->generate($adminModule['capabilities']['admin']['route']);
-            try {
-                $adminIconPath = $this->get('zikula_core.common.theme.asset_helper')->resolve('@' . $adminModule['name'] . ':images/admin.png');
-            } catch (\Exception $e) {
-                // @deprecated remove at Core-2.0
-                $adminIconPath = $baseUrl . ModUtil::getModuleImagePath($adminModule['name']);
-            }
+            $adminIconPath = $this->get('zikula_core.common.theme.asset_helper')->resolve('@' . $adminModule['name'] . ':images/admin.png');
 
             $adminLinks[$catid][] = [
                 'menuTextUrl' => $menuTextUrl,
