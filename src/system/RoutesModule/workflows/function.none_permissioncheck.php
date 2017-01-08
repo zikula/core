@@ -24,7 +24,6 @@
  */
 function ZikulaRoutesModule_workflow_none_permissioncheck($obj, $permLevel, $currentUser, $actionId)
 {
-
     // calculate the permission component
     $objectType = $obj['_objectType'];
     $component = 'ZikulaRoutesModule:' . ucfirst($objectType) . ':';

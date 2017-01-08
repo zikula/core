@@ -15,10 +15,10 @@ namespace Zikula\RoutesModule\Controller;
 use Zikula\RoutesModule\Controller\Base\AbstractRouteController;
 
 use RuntimeException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\RoutesModule\Entity\RouteEntity;
 
@@ -28,7 +28,7 @@ use Zikula\RoutesModule\Entity\RouteEntity;
 class RouteController extends AbstractRouteController
 {
     /**
-     * This is the default action handling the main admin area called without defining arguments.
+     * {@inheritdoc}
      *
      * @Route("/admin/routes",
      *        methods = {"GET"}
@@ -37,7 +37,7 @@ class RouteController extends AbstractRouteController
      *
      * @param Request $request Current request instance
      *
-     * @return mixed Output
+     * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
@@ -47,7 +47,7 @@ class RouteController extends AbstractRouteController
     }
     
     /**
-     * This is the default action handling the main area called without defining arguments.
+     * {@inheritdoc}
      *
      * @Route("/routes",
      *        methods = {"GET"}
@@ -55,7 +55,7 @@ class RouteController extends AbstractRouteController
      *
      * @param Request $request Current request instance
      *
-     * @return mixed Output
+     * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
@@ -63,24 +63,23 @@ class RouteController extends AbstractRouteController
     {
         return parent::indexAction($request);
     }
-
     /**
-     * This action provides an item list overview in the admin area.
+     * {@inheritdoc}
      *
      * @Route("/admin/routes/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
      *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|kml"},
-     *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 0, "_format" = "html"},
+     *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
      * @Theme("admin")
      *
      * @param Request $request Current request instance
-     * @param string  $sort    Sorting field
-     * @param string  $sortdir Sorting direction
-     * @param int     $pos     Current pager position
-     * @param int     $num     Amount of entries to display
+     * @param string $sort         Sorting field
+     * @param string $sortdir      Sorting direction
+     * @param int    $pos          Current pager position
+     * @param int    $num          Amount of entries to display
      *
-     * @return mixed Output
+     * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
@@ -88,23 +87,23 @@ class RouteController extends AbstractRouteController
     {
         return parent::adminViewAction($request, $sort, $sortdir, $pos, $num);
     }
-
+    
     /**
-     * This action provides an item list overview.
+     * {@inheritdoc}
      *
      * @Route("/routes/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
      *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|kml"},
-     *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 0, "_format" = "html"},
+     *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
      *
      * @param Request $request Current request instance
-     * @param string  $sort    Sorting field
-     * @param string  $sortdir Sorting direction
-     * @param int     $pos     Current pager position
-     * @param int     $num     Amount of entries to display
+     * @param string $sort         Sorting field
+     * @param string $sortdir      Sorting direction
+     * @param int    $pos          Current pager position
+     * @param int    $num          Amount of entries to display
      *
-     * @return mixed Output
+     * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
@@ -112,20 +111,8 @@ class RouteController extends AbstractRouteController
     {
         return parent::viewAction($request, $sort, $sortdir, $pos, $num);
     }
-
     /**
-     * This method includes the common implementation code for adminView() and view().
-     */
-    protected function viewInternal(Request $request, $sort, $sortdir, $pos, $num, $isAdmin = false)
-    {
-        // Always force to see all entries to make sortable working.
-        $request->query->set('all', 1);
-
-        return parent::viewInternal($request, $sort, $sortdir, $pos, $num, $isAdmin);
-    }
-
-    /**
-     * This action provides a item detail view in the admin area.
+     * {@inheritdoc}
      *
      * @Route("/admin/route/{id}.{_format}",
      *        requirements = {"id" = "\d+", "_format" = "html|kml|ics"},
@@ -134,10 +121,10 @@ class RouteController extends AbstractRouteController
      * )
      * @Theme("admin")
      *
-     * @param Request     $request Current request instance
-     * @param RouteEntity $route   Treated route instance
+     * @param Request $request Current request instance
+     * @param RouteEntity $route Treated route instance
      *
-     * @return mixed Output
+     * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      * @throws NotFoundHttpException Thrown by param converter if item to be displayed isn't found
@@ -146,9 +133,9 @@ class RouteController extends AbstractRouteController
     {
         return parent::adminDisplayAction($request, $route);
     }
-
+    
     /**
-     * This action provides a item detail view.
+     * {@inheritdoc}
      *
      * @Route("/route/{id}.{_format}",
      *        requirements = {"id" = "\d+", "_format" = "html|kml|ics"},
@@ -156,10 +143,10 @@ class RouteController extends AbstractRouteController
      *        methods = {"GET"}
      * )
      *
-     * @param Request     $request Current request instance
-     * @param RouteEntity $route   Treated route instance
+     * @param Request $request Current request instance
+     * @param RouteEntity $route Treated route instance
      *
-     * @return mixed Output
+     * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      * @throws NotFoundHttpException Thrown by param converter if item to be displayed isn't found
@@ -168,9 +155,8 @@ class RouteController extends AbstractRouteController
     {
         return parent::displayAction($request, $route);
     }
-
     /**
-     * This action provides a handling of edit requests in the admin area.
+     * {@inheritdoc}
      *
      * @Route("/admin/route/edit/{id}.{_format}",
      *        requirements = {"id" = "\d+", "_format" = "html"},
@@ -181,7 +167,7 @@ class RouteController extends AbstractRouteController
      *
      * @param Request $request Current request instance
      *
-     * @return mixed Output
+     * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      * @throws NotFoundHttpException Thrown by form handler if item to be edited isn't found
@@ -191,9 +177,9 @@ class RouteController extends AbstractRouteController
     {
         return parent::adminEditAction($request);
     }
-
+    
     /**
-     * This action provides a handling of edit requests.
+     * {@inheritdoc}
      *
      * @Route("/route/edit/{id}.{_format}",
      *        requirements = {"id" = "\d+", "_format" = "html"},
@@ -203,7 +189,7 @@ class RouteController extends AbstractRouteController
      *
      * @param Request $request Current request instance
      *
-     * @return mixed Output
+     * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      * @throws NotFoundHttpException Thrown by form handler if item to be edited isn't found
@@ -213,9 +199,8 @@ class RouteController extends AbstractRouteController
     {
         return parent::editAction($request);
     }
-
     /**
-     * This action provides a handling of simple delete requests in the admin area.
+     * {@inheritdoc}
      *
      * @Route("/admin/route/delete/{id}.{_format}",
      *        requirements = {"id" = "\d+", "_format" = "html"},
@@ -224,10 +209,10 @@ class RouteController extends AbstractRouteController
      * )
      * @Theme("admin")
      *
-     * @param Request     $request Current request instance
-     * @param RouteEntity $route   Treated route instance
+     * @param Request $request Current request instance
+     * @param RouteEntity $route Treated route instance
      *
-     * @return mixed Output
+     * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      * @throws NotFoundHttpException Thrown by param converter if item to be deleted isn't found
@@ -237,9 +222,9 @@ class RouteController extends AbstractRouteController
     {
         return parent::adminDeleteAction($request, $route);
     }
-
+    
     /**
-     * This action provides a handling of simple delete requests.
+     * {@inheritdoc}
      *
      * @Route("/route/delete/{id}.{_format}",
      *        requirements = {"id" = "\d+", "_format" = "html"},
@@ -247,10 +232,10 @@ class RouteController extends AbstractRouteController
      *        methods = {"GET", "POST"}
      * )
      *
-     * @param Request     $request Current request instance
-     * @param RouteEntity $route   Treated route instance
+     * @param Request $request Current request instance
+     * @param RouteEntity $route Treated route instance
      *
-     * @return mixed Output
+     * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      * @throws NotFoundHttpException Thrown by param converter if item to be deleted isn't found
@@ -262,7 +247,7 @@ class RouteController extends AbstractRouteController
     }
 
     /**
-     * This is a custom action in the admin area.
+     * {@inheritdoc}
      *
      * @Route("/admin/routes/reload",
      *        methods = {"GET", "POST"}
@@ -271,7 +256,7 @@ class RouteController extends AbstractRouteController
      *
      * @param Request $request Current request instance
      *
-     * @return mixed Output
+     * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
@@ -303,7 +288,7 @@ class RouteController extends AbstractRouteController
     }
 
     /**
-     * This is a custom action.
+     * {@inheritdoc}
      *
      * @Route("/routes/reload",
      *        methods = {"GET", "POST"}
@@ -311,7 +296,7 @@ class RouteController extends AbstractRouteController
      *
      * @param Request $request Current request instance
      *
-     * @return mixed Output
+     * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
@@ -321,7 +306,7 @@ class RouteController extends AbstractRouteController
     }
 
     /**
-     * This is a custom action in the admin area.
+     * {@inheritdoc}
      *
      * @Route("/admin/routes/renew",
      *        methods = {"GET", "POST"}
@@ -330,7 +315,7 @@ class RouteController extends AbstractRouteController
      *
      * @param Request $request Current request instance
      *
-     * @return mixed Output
+     * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
@@ -350,7 +335,7 @@ class RouteController extends AbstractRouteController
     }
 
     /**
-     * This is a custom action.
+     * {@inheritdoc}
      *
      * @Route("/routes/renew",
      *        methods = {"GET", "POST"}
@@ -358,13 +343,13 @@ class RouteController extends AbstractRouteController
      *
      * @param Request $request Current request instance
      *
-     * @return mixed Output
+     * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function renewAction(Request $request)
     {
-        throw new AccessDeniedException();
+        return parent::renewAction($request);
     }
 
     /**
@@ -376,7 +361,6 @@ class RouteController extends AbstractRouteController
      * @Route("/routes/handleSelectedEntries",
      *        methods = {"POST"}
      * )
-     * @Theme("admin")
      *
      * @param Request $request Current request instance
      *
@@ -388,7 +372,6 @@ class RouteController extends AbstractRouteController
     {
         return parent::adminHandleSelectedEntriesAction($request);
     }
-
     /**
      * Process status changes for multiple items.
      *
@@ -411,8 +394,7 @@ class RouteController extends AbstractRouteController
     }
 
     /**
-     * This is a custom method.
-     * Dump the routes exposed to javascript to '/web/js/fos_js_routes.js'
+     * Dumps the routes exposed to javascript to '/web/js/fos_js_routes.js'.
      *
      * @Route("/routes/dump/{lang}",
      *        name = "zikularoutesmodule_route_dumpjsroutes",
@@ -422,7 +404,7 @@ class RouteController extends AbstractRouteController
      *
      * @param Request $request Current request instance
      *
-     * @return mixed Output
+     * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */

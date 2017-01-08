@@ -39,32 +39,31 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
     protected $permissionApi;
 
     /**
-     * @var ControllerHelper
-     */
-    protected $controllerHelper;
-
-    /**
      * @var CurrentUserApi
      */
     private $currentUserApi;
 
     /**
-     * Constructor.
-     * Initialises member vars.
+     * @var ControllerHelper
+     */
+    protected $controllerHelper;
+
+    /**
+     * LinkContainer constructor.
      *
      * @param TranslatorInterface $translator       Translator service instance
      * @param Routerinterface     $router           Router service instance
      * @param PermissionApi       $permissionApi    PermissionApi service instance
-     * @param ControllerHelper    $controllerHelper ControllerHelper service instance
      * @param CurrentUserApi      $currentUserApi   CurrentUserApi service instance
+     * @param ControllerHelper    $controllerHelper ControllerHelper service instance
      */
-    public function __construct(TranslatorInterface $translator, RouterInterface $router, PermissionApi $permissionApi, ControllerHelper $controllerHelper, CurrentUserApi $currentUserApi)
+    public function __construct(TranslatorInterface $translator, RouterInterface $router, PermissionApi $permissionApi, CurrentUserApi $currentUserApi, ControllerHelper $controllerHelper)
     {
         $this->setTranslator($translator);
         $this->router = $router;
         $this->permissionApi = $permissionApi;
-        $this->controllerHelper = $controllerHelper;
         $this->currentUserApi = $currentUserApi;
+        $this->controllerHelper = $controllerHelper;
     }
 
     /**
@@ -86,68 +85,51 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
      */
     public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
     {
-        $utilArgs = ['api' => 'linkContainer', 'action' => 'getLinks'];
-        $allowedObjectTypes = $this->controllerHelper->getObjectTypes('api', $utilArgs);
+        $contextArgs = ['api' => 'linkContainer', 'action' => 'getLinks'];
+        $allowedObjectTypes = $this->controllerHelper->getObjectTypes('api', $contextArgs);
 
         $permLevel = LinkContainerInterface::TYPE_ADMIN == $type ? ACCESS_ADMIN : ACCESS_READ;
 
         // Create an array of links to return
         $links = [];
 
-        
+
+        $routeArea = LinkContainerInterface::TYPE_ADMIN == $type ? 'admin' : '';
         if (LinkContainerInterface::TYPE_ADMIN == $type) {
             if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
                 $links[] = [
-                    'url' => $this->router->generate('zikularoutesmodule_user_index'),
+                    'url' => $this->router->generate('zikularoutesmodule_route_index'),
                     'text' => $this->__('Frontend'),
                     'title' => $this->__('Switch to user area.'),
                     'icon' => 'home'
                 ];
             }
-            
-            if (in_array('route', $allowedObjectTypes)
-                && $this->permissionApi->hasPermission($this->getBundleName() . ':Route:', '::', $permLevel)) {
-                $links[] = [
-                    'url' => $this->router->generate('zikularoutesmodule_route_adminview'),
-                    'text' => $this->__('Routes'),
-                    'title' => $this->__('Route list')
-                ];
-            }
+        } else {
             if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
                 $links[] = [
-                    'url' => $this->router->generate('zikularoutesmodule_config_config'),
-                    'text' => $this->__('Configuration'),
-                    'title' => $this->__('Manage settings for this application'),
-                    'icon' => 'wrench'
-                ];
-            }
-        }
-        if (LinkContainerInterface::TYPE_USER == $type) {
-            if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
-                $links[] = [
-                    'url' => $this->router->generate('zikularoutesmodule_admin_index'),
+                    'url' => $this->router->generate('zikularoutesmodule_route_adminindex'),
                     'text' => $this->__('Backend'),
                     'title' => $this->__('Switch to administration area.'),
                     'icon' => 'wrench'
                 ];
             }
-            
-            if (in_array('route', $allowedObjectTypes)
-                && $this->permissionApi->hasPermission($this->getBundleName() . ':Route:', '::', $permLevel)) {
-                $links[] = [
-                    'url' => $this->router->generate('zikularoutesmodule_route_view'),
-                    'text' => $this->__('Routes'),
-                    'title' => $this->__('Route list')
-                ];
-            }
-            if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
-                $links[] = [
-                    'url' => $this->router->generate('zikularoutesmodule_config_config'),
-                    'text' => $this->__('Configuration'),
-                    'title' => $this->__('Manage settings for this application'),
-                    'icon' => 'wrench'
-                ];
-            }
+        }
+        
+        if (in_array('route', $allowedObjectTypes)
+            && $this->permissionApi->hasPermission($this->getBundleName() . ':Route:', '::', $permLevel)) {
+            $links[] = [
+                'url' => $this->router->generate('zikularoutesmodule_route_' . $routeArea . 'view'),
+                'text' => $this->__('Routes'),
+                'title' => $this->__('Route list')
+            ];
+        }
+        if ($routeArea == 'admin' && $this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
+            $links[] = [
+                'url' => $this->router->generate('zikularoutesmodule_config_config'),
+                'text' => $this->__('Configuration'),
+                'title' => $this->__('Manage settings for this application'),
+                'icon' => 'wrench'
+            ];
         }
 
         return $links;

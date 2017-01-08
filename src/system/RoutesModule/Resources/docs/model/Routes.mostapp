@@ -8,6 +8,7 @@ application "Routes" {
     prefix "routes"
     generatorSettings {
         settingsContainer "Settings"
+        targetCoreVersion ZK14DEV
         isSystemModule true
         generateAccountApi false
         generateSearchApi false
@@ -32,6 +33,7 @@ application "Routes" {
         writeModelToDocs true
         skipFiles "
             .travis.yml,
+            CHANGELOG.md
             Container/LinkContainer.php,
             Entity/Repository/RouteRepository.php,
             Form/Handler/Route/EditHandler.php,
@@ -40,7 +42,6 @@ application "Routes" {
             Listener/EntityLifecycleListener.php,
             README.md,
             Resources/public/images/admin.png,
-            CHANGELOG.md
         "
         markFiles "
             Base/AbstractRoutesModuleInstaller.php,
@@ -145,18 +146,6 @@ application "Routes" {
                 deleteAction "Delete",
                 customAction "Reload",
                 customAction "Renew"
-            }
-        }
-    }
-    controllers {
-        adminController "Admin" {
-            actions {
-                mainAction "Main"
-            }
-        },
-        ajaxController "Ajax" {
-            actions {
-                mainAction "Main"
             }
         }
     }

@@ -7,26 +7,12 @@
     {% set itemActions = knp_menu_get('ZikulaRoutesModule:ItemActionsMenu:menu', [], { entity: route, area: routeArea, context: 'display' }) %}
     <div class="dropdown">
         <a id="itemActions{{ route.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
-        
         {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
     </div>
-    <script type="text/javascript">
-    /* <![CDATA[ */
-        ( function($) {
-            $(document).ready(function() {
-                $('h2 .dropdown > ul, h3 .dropdown > ul').removeClass('list-inline').addClass('list-unstyled dropdown-menu');
-                $('h2 .dropdown > ul a, h3 .dropdown > ul a').each(function (index) {
-                    $(this).html($(this).html() + $(this).find('i').first().data('original-title'));
-                });
-                $('h2 .dropdown > ul a i, h3 .dropdown > ul a i').addClass('fa-fw');
-                $('h2 .dropdown-toggle, h3 .dropdown-toggle').removeClass('hidden').dropdown();
-            });
-        })(jQuery);
-    /* ]]> */
-    </script>
 {% endblock %}
 {% block admin_page_icon 'eye' %}
 {% block content %}
+    {% set isQuickView = app.request.query.getBoolean('raw', false) %}
     <div class="zikularoutesmodule-route zikularoutesmodule-display">
 
 
@@ -117,10 +103,7 @@
     </dl>
     {{ include('@ZikulaRoutesModule/Helper/includeStandardFieldsDisplay.html.twig', { obj: route }) }}
 
-    {% if app.request.query.get('theme') != 'ZikulaPrinterTheme' %}
+    {% if not isQuickView %}
     {% endif %}
 </div>
-{% endblock %}
-{% block footer %}
-    {{ parent() }}
 {% endblock %}

@@ -13,17 +13,18 @@
 namespace Zikula\RoutesModule\Controller;
 
 use Zikula\RoutesModule\Controller\Base\AbstractConfigController;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
- * config controller class providing navigation and interaction functionality.
+ * Config controller implementation class.
+ *
+ * @Route("/config")
  */
 class ConfigController extends AbstractConfigController
 {
-
     /**
      * This method takes care of the application configuration.
      *
@@ -43,5 +44,5 @@ class ConfigController extends AbstractConfigController
         return parent::configAction($request);
     }
 
-    // feel free to add your own controller methods here
+    // feel free to add your own config controller methods here
 }

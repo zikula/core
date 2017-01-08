@@ -12,10 +12,10 @@
 
 namespace Zikula\RoutesModule\Helper\Base;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula_Workflow_Util;
+use Zikula\RoutesModule\Helper\ListEntriesHelper;
 
 /**
  * Helper base class for workflow methods.
@@ -30,29 +30,28 @@ abstract class AbstractWorkflowHelper
     protected $name;
 
     /**
-     * @var ContainerBuilder
-     */
-    protected $container;
-
-    /**
      * @var TranslatorInterface
      */
     protected $translator;
 
     /**
-     * Constructor.
-     * Initialises member vars.
+     * @var ListEntriesHelper
+     */
+    protected $listEntriesHelper;
+
+    /**
+     * WorkflowHelper constructor.
      *
-     * @param ContainerBuilder    $container  ContainerBuilder service instance
-     * @param TranslatorInterface $translator Translator service instance
+     * @param TranslatorInterface $translator        Translator service instance
+     * @param ListEntriesHelper   $listEntriesHelper ListEntriesHelper service instance
      *
      * @return void
      */
-    public function __construct(ContainerBuilder $container, TranslatorInterface $translator)
+    public function __construct(TranslatorInterface $translator, ListEntriesHelper $listEntriesHelper)
     {
         $this->name = 'ZikulaRoutesModule';
-        $this->container = $container;
         $this->translator = $translator;
+        $this->listEntriesHelper = $listEntriesHelper;
     }
 
     /**
@@ -65,17 +64,17 @@ abstract class AbstractWorkflowHelper
          $states = [];
          $states[] = [
              'value' => 'initial',
-             'text' => $this->translator__('Initial'),
+             'text' => $this->translator->__('Initial'),
              'ui' => 'danger'
          ];
          $states[] = [
              'value' => 'approved',
-             'text' => $this->translator__('Approved'),
+             'text' => $this->translator->__('Approved'),
              'ui' => 'success'
          ];
          $states[] = [
              'value' => 'deleted',
-             'text' => $this->translator__('Deleted'),
+             'text' => $this->translator->__('Deleted'),
              'ui' => 'danger'
          ];
     
@@ -159,8 +158,7 @@ abstract class AbstractWorkflowHelper
         $wfActions = Zikula_Workflow_Util::getActionsForObject($entity, $objectType, $idColumn, $this->name);
     
         // as we use the workflows for multiple object types we must maybe filter out some actions
-        $listHelper = $this->container->get('zikula_routes_module.listentries_helper');
-        $states = $listHelper->getEntries($objectType, 'workflowState');
+        $states = $this->listEntriesHelper->getEntries($objectType, 'workflowState');
         $allowedStates = [];
         foreach ($states as $state) {
             $allowedStates[] = $state['value'];
@@ -304,7 +302,7 @@ abstract class AbstractWorkflowHelper
      */
     public function getAmountOfModerationItems($objectType, $state)
     {
-        $repository = $this->container->get('zikula_routes_module.' . $objectType . '_factory')->getRepository();
+        $repository = $this->entityFactory->getRepository($objectType);
     
         $where = 'tbl.workflowState:eq:' . $state;
         $parameters = ['workflowState' => $state];

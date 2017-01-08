@@ -154,7 +154,7 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
     {
         $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
         $logger = $this->container->get('logger');
-        $request = $this->container->get('request_stack')->getMasterRequest();
+        $request = $this->container->get('request_stack')->getCurrentRequest();
         
         $entityClass = 'Zikula\RoutesModule\Entity\RouteEntity';
         $entityManager->getRepository($entityClass)->truncateTable($logger);

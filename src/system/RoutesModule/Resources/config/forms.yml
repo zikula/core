@@ -3,30 +3,53 @@ services:
     
     zikula_routes_module.form.type.routequicknav:
         class: Zikula\RoutesModule\Form\Type\QuickNavigation\RouteQuickNavType
-        arguments: ["@translator.default", "@request_stack", "@zikula_routes_module.listentries_helper"]
+        arguments:
+            - "@translator.default"
+            - "@zikula_routes_module.listentries_helper"
         tags:
             - { name: form.type }
     
     zikula_routes_module.form.handler.route:
         class: Zikula\RoutesModule\Form\Handler\Route\EditHandler
-        arguments: ["@service_container", "@translator.default", "@request_stack", "@router"]
+        arguments:
+            - "@kernel"
+            - "@translator.default"
+            - "@form.factory"
+            - "@request_stack"
+            - "@router"
+            - "@logger"
+            - "@zikula_permissions_module.api.permission"
+            - "@zikula_users_module.current_user"
+            - "@zikula_routes_module.entity_factory"
+            - "@zikula_routes_module.controller_helper"
+            - "@zikula_routes_module.model_helper"
+            - "@zikula_routes_module.selection_helper"
+            - "@zikula_routes_module.workflow_helper"
+        calls:
+            - [setLockingApi, ["@?zikula_pagelock_module.api.locking"]]
         tags:
             - { name: form.type }
     
     zikula_routes_module.form.type.route:
         class: Zikula\RoutesModule\Form\Type\RouteType
-        arguments: ["@translator.default", "@zikula_routes_module.route_factory", "@zikula_routes_module.listentries_helper"]
+        arguments:
+            - "@translator.default"
+            - "@zikula_routes_module.entity_factory"
+            - "@zikula_routes_module.listentries_helper"
         tags:
             - { name: form.type }
     
     zikula_routes_module.form.type.deleteentity:
         class: Zikula\RoutesModule\Form\DeleteEntityType
-        arguments: ["@translator.default"]
+        arguments:
+            - "@translator.default"
         tags:
             - { name: form.type }
     
     zikula_routes_module.form.type.appsettings:
         class: Zikula\RoutesModule\Form\AppSettingsType
-        arguments: ["@translator.default", "@zikula_extensions_module.api.variable"]
+        arguments:
+            - "@translator.default"
+            - "@zikula_extensions_module.api.variable"
         tags:
             - { name: form.type }

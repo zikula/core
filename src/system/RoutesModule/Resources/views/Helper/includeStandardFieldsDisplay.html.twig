@@ -11,17 +11,17 @@
         <h3 class="standard-fields">{{ __('Creation and update') }}</h3>
     {% endif %}
     <dl class="propertylist">
-    {% if obj.createdUserId|default %}
+    {% if obj.createdBy|default %}
         <dt>{{ __('Creation') }}</dt>
         {% set profileLink = obj.createdBy.getUid()|profileLinkByUserId() %}
         {#<dd class="avatar">{{ zikularoutesmodule_userAvatar(uid=obj.createdBy.getUid(), rating='g') }}</dd>#}
-        <dd>{{ __f('Created by %user on %date', {'%user': profileLink, '%date': obj.createdDate|localizeddate('medium', 'short')}) }}</dd>
+        <dd>{{ __f('Created by %user on %date', {'%user': profileLink, '%date': obj.createdDate|localizeddate('medium', 'short')})|raw }}</dd>
     {% endif %}
-    {% if obj.updatedUserId|default %}
+    {% if obj.updatedBy|default %}
         <dt>{{ __('Last update') }}</dt>
         {% set profileLink = obj.updatedBy.getUid()|profileLinkByUserId() %}
         {#<dd class="avatar">{{ zikularoutesmodule_userAvatar(uid=obj.updatedBy.getUid(), rating='g') }}</dd>#}
-        <dd>{{ __f('Updated by %user on %date', {'%user': profileLink, '%date': obj.updatedDate|localizeddate('medium', 'short')}) }}</dd>
+        <dd>{{ __f('Updated by %user on %date', {'%user': profileLink, '%date': obj.updatedDate|localizeddate('medium', 'short')})|raw }}</dd>
     {% endif %}
     </dl>
     {% if panel|default(false) == true %}

@@ -57,6 +57,11 @@ services:
     
 #    zikula_routes_module.user_listener:
 #        class: Zikula\RoutesModule\Listener\UserListener
+#        arguments:
+#            - "@translator.default"
+#            - "@zikula_routes_module.entity_factory"
+#            - "@zikula_users_module.current_user"
+#            - "@logger"
 #        tags:
 #            - { name: kernel.event_subscriber }
     

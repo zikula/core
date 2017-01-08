@@ -74,17 +74,4 @@
         {{ form_widget(quickNavForm.updateview) }}
     </fieldset>
     {{ form_end(quickNavForm) }}
-    <script type="text/javascript">
-    /* <![CDATA[ */
-        ( function($) {
-            $(document).ready(function() {
-                zikulaRoutesInitQuickNavigation('route');
-                {% if searchFilter|default and searchFilter == false %}
-                    {# we can hide the submit button if we have no quick search field #}
-                    $('#zikularoutesmodule_routequicknav_updateview').addClass('hidden');
-                {% endif %}
-            });
-        })(jQuery);
-    /* ]]> */
-    </script>
 {% endif %}

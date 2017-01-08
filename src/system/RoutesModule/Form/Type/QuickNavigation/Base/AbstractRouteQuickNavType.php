@@ -14,7 +14,6 @@ namespace Zikula\RoutesModule\Form\Type\QuickNavigation\Base;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\RoutesModule\Helper\ListEntriesHelper;
@@ -27,11 +26,6 @@ abstract class AbstractRouteQuickNavType extends AbstractType
     use TranslatorTrait;
 
     /**
-     * @var RequestStack
-     */
-    protected $requestStack;
-
-    /**
      * @var ListEntriesHelper
      */
     protected $listHelper;
@@ -40,13 +34,11 @@ abstract class AbstractRouteQuickNavType extends AbstractType
      * RouteQuickNavType constructor.
      *
      * @param TranslatorInterface $translator   Translator service instance
-     * @param RequestStack        $requestStack RequestStack service instance
      * @param ListEntriesHelper   $listHelper   ListEntriesHelper service instance
      */
-    public function __construct(TranslatorInterface $translator, RequestStack $requestStack, ListEntriesHelper $listHelper)
+    public function __construct(TranslatorInterface $translator, ListEntriesHelper $listHelper)
     {
         $this->setTranslator($translator);
-        $this->requestStack = $requestStack;
         $this->listHelper = $listHelper;
     }
 
