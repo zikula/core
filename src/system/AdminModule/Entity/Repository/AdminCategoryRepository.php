@@ -14,8 +14,9 @@ namespace Zikula\AdminModule\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Zikula\AdminModule\Entity\RepositoryInterface\AdminCategoryRepositoryInterface;
 
-class AdminCategoryRepository extends EntityRepository
+class AdminCategoryRepository extends EntityRepository implements AdminCategoryRepositoryInterface
 {
     public function countCategories()
     {
