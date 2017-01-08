@@ -4,7 +4,6 @@ div#z-maincontent.z-module-routes table tbody tr td {
 }
 
 /* display pages */
-
 .zikularoutesmodule-display div.col-sm-3 h3 {
     color: #333;
     font-weight: 400;
@@ -53,4 +52,9 @@ div.zikularoutesmodule-view form.zikularoutesmodule-quicknav fieldset label {
 div.zikularoutesmodule-view form.zikularoutesmodule-quicknav fieldset #num {
     width: 50px;
     text-align: right;
+}
+
+div.zikularoutesmodule-view .avatar img {
+    width: auto;
+    max-height: 24px;
 }

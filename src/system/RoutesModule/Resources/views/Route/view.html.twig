@@ -106,7 +106,7 @@
             <tr>
                 {% if routeArea == 'admin' %}
                     <th id="hSelect" scope="col" class="text-center">
-                        <input type="checkbox" id="toggleRoutes" />
+                        <input type="checkbox" class="zikularoutes-mass-toggle" />
                     </th>
                 {% endif %}
                 <th id="hRouteType" scope="col" class="text-left">
@@ -174,7 +174,7 @@
             <tr id="row_{{ route.id }}"{% if route.group in sortableGroups %} class="sortable"{% endif %}>
                 {% if routeArea == 'admin' %}
                     <td headers="hSelect" class="text-center">
-                        <input type="checkbox" name="items[]" value="{{ route.id }}" class="routes-checkbox" />
+                        <input type="checkbox" name="items[]" value="{{ route.id }}" class="zikularoutes-toggle-checkbox" />
                     </td>
                 {% endif %}
                 <td headers="hRouteType" class="text-left">
@@ -237,7 +237,6 @@
                     {% set itemActions = knp_menu_get('ZikulaRoutesModule:ItemActionsMenu:menu', [], { entity: route, area: routeArea, context: 'view' }) %}
                     <div class="dropdown">
                         <a id="itemActions{{ route.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
-                        
                         {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
                     </div>
                 </td>
@@ -256,7 +255,7 @@
         </div>
         
         {% if showAllEntries != 1 and pager|default %}
-            {{ pager({ rowcount: pager.numitems, limit: pager.itemsperpage, display: 'page', route: 'zikularoutesmodule_route_' ~ routeArea ~ 'view'}) }}
+            {{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'zikularoutesmodule_route_' ~ routeArea ~ 'view'}) }}
         {% endif %}
     {% if routeArea == 'admin' %}
             <fieldset>
@@ -283,39 +282,11 @@
             {# disabled for now <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'edit') }}" title="{{ createTitle|e('html_attr') }}" class="fa fa-plus">{{ createTitle }}</a>#}
         {% endif %}
     {% endif %}
-    {#
-    {% if showAllEntries == 1 %}
+    {#{% if showAllEntries == 1 %}
         {% set linkTitle = __('Back to paginated view') %}
         <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'view') }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
     {% else %}
         {% set linkTitle = __('Show all entries') %}
         <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'view', { all: 1 }) }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
-    {% endif %}
-    #}
-{% endblock %}
-{% block footer %}
-    {{ parent() }}
-
-<script type="text/javascript">
-/* <![CDATA[ */
-    ( function($) {
-        $(document).ready(function() {
-            $('.dropdown > ul').removeClass('list-inline').addClass('list-unstyled dropdown-menu dropdown-menu-right');
-            $('.dropdown > ul a').each(function (index) {
-                $(this).html($(this).html() + $(this).find('i').first().data('original-title'));
-            });
-            $('.dropdown > ul a i').addClass('fa-fw');
-            $('.dropdown-toggle').removeClass('hidden').dropdown();
-            {% if routeArea == 'admin' %}
-                {# init the "toggle all" functionality #}
-                if ($('#toggleRoutes').length > 0) {
-                    $('#toggleRoutes').click(function (event) {
-                        $('routes-checkbox').prop('checked', $(this).prop('checked'));
-                    });
-                }
-            {% endif %}
-        });
-    })(jQuery);
-/* ]]> */
-</script>
+    {% endif %}#}
 {% endblock %}

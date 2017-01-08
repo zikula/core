@@ -6,59 +6,28 @@ function zikulaRoutesCapitaliseFirstLetter(string)
 }
 
 /**
- * Submits a quick navigation form.
- */
-function zikulaRoutesSubmitQuickNavForm(objectType)
-{
-    jQuery('#zikularoutesmodule' + zikulaRoutesCapitaliseFirstLetter(objectType) + 'QuickNavForm').submit();
-}
-
-/**
  * Initialise the quick navigation panel in list views.
  */
-function zikulaRoutesInitQuickNavigation(objectType)
+function zikulaRoutesInitQuickNavigation()
 {
-    if (jQuery('#zikularoutesmodule' + zikulaRoutesCapitaliseFirstLetter(objectType) + 'QuickNavForm').length < 1) {
+    var quickNavForm;
+    var objectType;
+
+    if (jQuery('.zikularoutesmodule-quicknav').length < 1) {
         return;
     }
 
-    var fieldPrefix = 'zikularoutesmodule_' + objectType.toLowerCase() + 'quicknav_';
-    if (jQuery('#' + fieldPrefix + 'catid').length > 0) {
-        jQuery('#' + fieldPrefix + 'catid').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
-    }
-    if (jQuery('#' + fieldPrefix + 'sortBy').length > 0) {
-        jQuery('#' + fieldPrefix + 'sortBy').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
-    }
-    if (jQuery('#' + fieldPrefix + 'sortDir').length > 0) {
-        jQuery('#' + fieldPrefix + 'sortDir').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
-    }
-    if (jQuery('#' + fieldPrefix + 'num').length > 0) {
-        jQuery('#' + fieldPrefix + 'num').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
-    }
+    quickNavForm = jQuery('.zikularoutesmodule-quicknav').first();
+    objectType = quickNavForm.attr('id').replace('zikulaRoutesModule', '').replace('QuickNavForm', '');
 
-    switch (objectType) {
-    case 'route':
-        if (jQuery('#' + fieldPrefix + 'workflowState').length > 0) {
-            jQuery('#' + fieldPrefix + 'workflowState').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
-        }
-        if (jQuery('#' + fieldPrefix + 'routeType').length > 0) {
-            jQuery('#' + fieldPrefix + 'routeType').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
-        }
-        if (jQuery('#' + fieldPrefix + 'schemes').length > 0) {
-            jQuery('#' + fieldPrefix + 'schemes').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
-        }
-        if (jQuery('#' + fieldPrefix + 'methods').length > 0) {
-            jQuery('#' + fieldPrefix + 'methods').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
-        }
-        if (jQuery('#' + fieldPrefix + 'prependBundlePrefix').length > 0) {
-            jQuery('#' + fieldPrefix + 'prependBundlePrefix').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
-        }
-        if (jQuery('#' + fieldPrefix + 'translatable').length > 0) {
-            jQuery('#' + fieldPrefix + 'translatable').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
-        }
-        break;
-    default:
-        break;
+    quickNavForm.find('select').change(function (event) {
+        quickNavForm.submit();
+    });
+
+    var fieldPrefix = 'zikularoutesmodule_' + objectType.toLowerCase() + 'quicknav_';
+    // we can hide the submit button if we have no visible quick search field
+    if (jQuery('#' + fieldPrefix + 'q').length < 1 || jQuery('#' + fieldPrefix + 'q').parent().parent().hasClass('hidden')) {
+        jQuery('#' + fieldPrefix + 'updateview').addClass('hidden');
     }
 }
 
@@ -83,3 +52,66 @@ function zikulaRoutesSimpleAlert(beforeElem, title, content, alertId, cssClass)
         jQuery(this).remove();
     });
 }
+
+/**
+ * Initialises the mass toggle functionality for admin view pages.
+ */
+function zikulaRoutesInitMassToggle()
+{
+    if (jQuery('.zikularoutes-mass-toggle').length > 0) {
+        jQuery('.zikularoutes-mass-toggle').click(function (event) {
+            jQuery('.zikularoutes-toggle-checkbox').prop('checked', jQuery(this).prop('checked'));
+        });
+    }
+}
+
+/**
+ * Creates a dropdown menu for the item actions.
+ */
+function zikulaRoutesInitItemActions(context)
+{
+    var containerSelector;
+    var containers;
+    var listClasses;
+
+    containerSelector = '';
+    if (context == 'view') {
+        containerSelector = '.zikularoutesmodule-view';
+        listClasses = 'list-unstyled dropdown-menu dropdown-menu-right';
+    } else if (context == 'display') {
+        containerSelector = 'h2, h3';
+        listClasses = 'list-unstyled dropdown-menu';
+    }
+
+    if (containerSelector == '') {
+        return;
+    }
+
+    containers = jQuery(containerSelector);
+    if (containers.length < 1) {
+        return;
+    }
+
+    containers.find('.dropdown > ul').removeClass('list-inline').addClass(listClasses);
+    containers.find('.dropdown > ul a').each(function (index) {
+        jQuery(this).html(jQuery(this).html() + jQuery(this).find('i').first().data('original-title'));
+    });
+    containers.find('.dropdown > ul a i').addClass('fa-fw');
+    containers.find('.dropdown-toggle').removeClass('hidden').dropdown();
+}
+
+jQuery(document).ready(function() {
+    var isViewPage;
+    var isDisplayPage;
+
+    isViewPage = jQuery('.zikularoutesmodule-view').length > 0;
+    isDisplayPage = jQuery('.zikularoutesmodule-display').length > 0;
+
+    if (isViewPage) {
+        zikulaRoutesInitQuickNavigation();
+        zikulaRoutesInitMassToggle();
+        zikulaRoutesInitItemActions('view');
+    } else if (isDisplayPage) {
+        zikulaRoutesInitItemActions('display');
+    }
+});
