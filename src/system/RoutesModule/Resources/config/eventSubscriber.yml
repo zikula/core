@@ -2,59 +2,66 @@ services:
     # Event subscriber and listener classes
     zikula_routes_module.entity_lifecycle_listener:
         class: Zikula\RoutesModule\Listener\EntityLifecycleListener
+        arguments: ["@service_container"]
         tags:
             - { name: doctrine.event_subscriber }
-    
+
 #    zikula_routes_module.core_listener:
 #        class: Zikula\RoutesModule\Listener\CoreListener
 #        tags:
 #            - { name: kernel.event_subscriber }
-    
+
 #    zikula_routes_module.kernel_listener:
 #        class: Zikula\RoutesModule\Listener\KernelListener
 #        tags:
 #            - { name: kernel.event_subscriber }
-    
+
     zikula_routes_module.installer_listener:
         class: Zikula\RoutesModule\Listener\InstallerListener
+        arguments:
+          - "@doctrine.orm.default_entity_manager"
+          - "@zikula_routes_module.routing_finder"
+          - "@zikula.cache_clearer"
+          - "@zikula_routes_module.route_dumper_helper"
+          - "@zikula_routes_module.multilingual_routing_helper"
         tags:
             - { name: kernel.event_subscriber }
-    
+
 #    zikula_routes_module.moduledispatch_listener:
 #        class: Zikula\RoutesModule\Listener\ModuleDispatchListener
 #        tags:
 #            - { name: kernel.event_subscriber }
-    
+
 #    zikula_routes_module.mailer_listener:
 #        class: Zikula\RoutesModule\Listener\MailerListener
 #        tags:
 #            - { name: kernel.event_subscriber }
-    
+
 #    zikula_routes_module.page_listener:
 #        class: Zikula\RoutesModule\Listener\PageListener
 #        tags:
 #            - { name: kernel.event_subscriber }
-    
+
 #    zikula_routes_module.theme_listener:
 #        class: Zikula\RoutesModule\Listener\ThemeListener
 #        tags:
 #            - { name: kernel.event_subscriber }
-    
+
 #    zikula_routes_module.view_listener:
 #        class: Zikula\RoutesModule\Listener\ViewListener
 #        tags:
 #            - { name: kernel.event_subscriber }
-    
+
 #    zikula_routes_module.userlogin_listener:
 #        class: Zikula\RoutesModule\Listener\UserLoginListener
 #        tags:
 #            - { name: kernel.event_subscriber }
-    
+
 #    zikula_routes_module.userlogout_listener:
 #        class: Zikula\RoutesModule\Listener\UserLogoutListener
 #        tags:
 #            - { name: kernel.event_subscriber }
-    
+
 #    zikula_routes_module.user_listener:
 #        class: Zikula\RoutesModule\Listener\UserListener
 #        arguments:
@@ -64,19 +71,19 @@ services:
 #            - "@logger"
 #        tags:
 #            - { name: kernel.event_subscriber }
-    
+
 #    zikula_routes_module.userregistration_listener:
 #        class: Zikula\RoutesModule\Listener\UserRegistrationListener
 #        tags:
 #            - { name: kernel.event_subscriber }
-    
+
 #    zikula_routes_module.users_listener:
 #        class: Zikula\RoutesModule\Listener\UsersListener
 #        tags:
 #            - { name: kernel.event_subscriber }
-    
+
 #    zikula_routes_module.group_listener:
 #        class: Zikula\RoutesModule\Listener\GroupListener
 #        tags:
 #            - { name: kernel.event_subscriber }
-    
+

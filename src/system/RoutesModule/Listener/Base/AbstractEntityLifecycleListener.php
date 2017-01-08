@@ -18,6 +18,7 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\RoutesModule\RoutesEvents;
 use Zikula\RoutesModule\Event\FilterRouteEvent;
@@ -32,9 +33,9 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
     /**
      * EntityLifecycleListener constructor.
      */
-    public function __construct()
+    public function __construct(ContainerInterface $container)
     {
-        $this->setContainer(\ServiceUtil::getManager());
+        $this->setContainer($container);
     }
 
     /**
@@ -75,13 +76,13 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         if ($event->isPropagationStopped()) {
             return false;
         }
-        
+
         // delete workflow for this entity
         $workflowHelper = $this->container->get('zikula_routes_module.workflow_helper');
         $workflowHelper->normaliseWorkflowData($entity);
         $workflow = $entity['__WORKFLOW__'];
         if ($workflow['id'] > 0) {
-            $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
+            $entityManager = $this->container->get('doctrine.orm.default_entity_manager'); // @todo maybe $args->getObjectManager()
             $result = true;
             try {
                 $workflow = $entityManager->find('Zikula\Core\Doctrine\Entity\WorkflowEntity', $workflow['id']);
@@ -93,7 +94,7 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
             if (false === $result) {
                 $flashBag = $this->container->get('session')->getFlashBag();
                 $flashBag->add('error', $this->container->get('translator.default')->__('Error! Could not remove stored workflow. Deletion has been aborted.'));
-        
+
                 return false;
             }
         }
@@ -118,12 +119,12 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
 
         $objectType = $entity->get_objectType();
         $objectId = $entity->createCompositeIdentifier();
-        
-        
+
+
         $logger = $this->container->get('logger');
         $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->container->get('zikula_users_module.current_user')->get('uname'), 'entity' => $objectType, 'id' => $objectId];
         $logger->debug('{app}: User {user} removed the {entity} with id {id}.', $logArgs);
-        
+
         // create the filter event and dispatch it
         $filterEventClass = '\\Zikula\\RoutesModule\\Event\\Filter' . ucfirst($objectType) . 'Event';
         $event = new $filterEventClass($entity);
@@ -148,7 +149,7 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         }
 
         $dispatcher = ServiceUtil::get('event_dispatcher');
-        
+
         // create the filter event and dispatch it
         $filterEventClass = '\\Zikula\\RoutesModule\\Event\\Filter' . ucfirst($entity->get_objectType()) . 'Event';
         $event = new $filterEventClass($entity);
@@ -176,7 +177,7 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         $logger = $this->container->get('logger');
         $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->container->get('zikula_users_module.current_user')->get('uname'), 'entity' => $entity->get_objectType(), 'id' => $objectId];
         $logger->debug('{app}: User {user} created the {entity} with id {id}.', $logArgs);
-        
+
         // create the filter event and dispatch it
         $filterEventClass = '\\Zikula\\RoutesModule\\Event\\Filter' . ucfirst($entity->get_objectType()) . 'Event';
         $event = new $filterEventClass($entity);
@@ -198,7 +199,7 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
             return;
         }
 
-        
+
         // create the filter event and dispatch it
         $filterEventClass = '\\Zikula\\RoutesModule\\Event\\Filter' . ucfirst($entity->get_objectType()) . 'Event';
         $event = new $filterEventClass($entity);
@@ -225,7 +226,7 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         $logger = $this->container->get('logger');
         $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->container->get('zikula_users_module.current_user')->get('uname'), 'entity' => $entity->get_objectType(), 'id' => $objectId];
         $logger->debug('{app}: User {user} updated the {entity} with id {id}.', $logArgs);
-        
+
         // create the filter event and dispatch it
         $filterEventClass = '\\Zikula\\RoutesModule\\Event\\Filter' . ucfirst($entity->get_objectType()) . 'Event';
         $event = new $filterEventClass($entity);
@@ -250,7 +251,7 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
             return;
         }
 
-        
+
         // create the filter event and dispatch it
         $filterEventClass = '\\Zikula\\RoutesModule\\Event\\Filter' . ucfirst($entity->get_objectType()) . 'Event';
         $event = new $filterEventClass($entity);
