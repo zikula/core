@@ -11,8 +11,9 @@
 
 namespace Zikula\AdminModule\Block;
 
-use ModUtil;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Zikula\BlocksModule\AbstractBlockHandler;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 /**
  * Administrative navigation block
@@ -33,8 +34,7 @@ class AdminnavBlock extends AbstractBlockHandler
             return;
         }
 
-        $entityManager = $this->get('doctrine')->getManager();
-        $adminCategoryRepository = $entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity');
+        $adminCategoryRepository = $this->get('zikula_admin_module.admin_category_repository');
 
         // Get all categories
         $items = $adminCategoryRepository->findBy([], ['sortorder' => 'ASC']);
@@ -56,13 +56,21 @@ class AdminnavBlock extends AbstractBlockHandler
             }
 
             $adminLinks = [];
+            /** @var ExtensionEntity[] $adminModules */
             foreach ($adminModules as $adminModule) {
-                $category = $adminCategoryRepository->getModuleCategory($adminModule['id']);
+                $category = $adminCategoryRepository->getModuleCategory($adminModule->getId());
                 if ($category['cid'] == $item['cid'] || (false === $category['cid'] && $item['cid'] == $defaultCategory)) {
-                    $moduleInfo = ModUtil::getInfoFromName($adminModule['name']);
+                    $menuText = $adminModule->getDisplayname();
+                    // url
+                    try {
+                        $menuTextUrl = isset($adminModule['capabilities']['admin']['route']) ? $this->get('router')->generate($adminModule['capabilities']['admin']['route']) : $adminModule['capabilities']['admin']['url'];
+                    } catch (RouteNotFoundException $routeNotFoundException) {
+                        $menuTextUrl = 'javascript:void(0)';
+                        $menuText .= ' (<i class="fa fa-warning"></i> ' . $this->__('invalid route') . ')';
+                    }
                     $adminLinks[] = [
-                        'menuTextUrl' => ModUtil::url($moduleInfo['name'], 'admin'),
-                        'menuTextTitle' => $moduleInfo['displayname']
+                        'menuTextUrl' => $menuTextUrl,
+                        'menuTextTitle' => $menuText
                     ];
                 }
             }
