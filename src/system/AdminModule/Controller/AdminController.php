@@ -11,7 +11,6 @@
 
 namespace Zikula\AdminModule\Controller;
 
-use ModUtil;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
