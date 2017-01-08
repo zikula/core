@@ -436,9 +436,6 @@ class AdminController extends AbstractController
                 break;
             }
 
-            $menuTextUrl = isset($adminModule['capabilities']['admin']['url'])
-                ? $adminModule['capabilities']['admin']['url']
-                : $this->get('router')->generate($adminModule['capabilities']['admin']['route']);
             try {
                 $adminIconPath = $this->get('zikula_core.common.theme.asset_helper')->resolve('@' . $adminModule['name'] . ':images/admin.png');
             } catch (\Exception $e) {
