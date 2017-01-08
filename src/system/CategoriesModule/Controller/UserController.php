@@ -333,8 +333,8 @@ class UserController extends AbstractController
     {
         $this->get('zikula_core.common.csrf_token_handler')->validate($request->request->get('csrfToken'));
 
-        $mode = $request->request->get('mode', '');
-        $accessLevel = $mode == 'create' ? ACCESS_ADD : ACCESS_EDIT;
+        $mode = $request->request->get('mode', 'new');
+        $accessLevel = $mode == 'new' ? ACCESS_ADD : ACCESS_EDIT;
         if (!$this->hasPermission('ZikulaCategoriesModule::', '::', $accessLevel)) {
             throw new AccessDeniedException();
         }

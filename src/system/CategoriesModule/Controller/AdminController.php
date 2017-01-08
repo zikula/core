@@ -157,7 +157,7 @@ class AdminController extends AbstractController
      * @param Request $request
      * @param integer $cid
      * @param integer $dr
-     * @param string $mode new|edit
+     * @param string  $mode new|edit
      *
      * @return Response symfony response object
      *
@@ -344,8 +344,8 @@ class AdminController extends AbstractController
     {
         $this->get('zikula_core.common.csrf_token_handler')->validate($request->request->get('csrfToken'));
 
-        $mode = $request->request->get('mode', '');
-        $accessLevel = $mode == 'create' ? ACCESS_ADD : ACCESS_EDIT;
+        $mode = $request->request->get('mode', 'new');
+        $accessLevel = $mode == 'new' ? ACCESS_ADD : ACCESS_EDIT;
         if (!$this->hasPermission('ZikulaCategoriesModule::', '::', $accessLevel)) {
             throw new AccessDeniedException();
         }
@@ -363,7 +363,7 @@ class AdminController extends AbstractController
         }
 
         $args = [];
-        if ($mode != 'create') {
+        if ($mode != 'new') {
             foreach (['copy', 'move', 'delete'] as $op) {
                 if ($request->request->get('category_' . $op, null)) {
                     $args['op'] = $op;
@@ -384,7 +384,7 @@ class AdminController extends AbstractController
         $processingHelper = $this->get('zikula_categories_module.category_processing_helper');
         $valid = $processingHelper->validateCategoryData($data);
         if (!$valid) {
-            if ($mode == 'create') {
+            if ($mode == 'new') {
                 return $this->redirectToRoute('zikulacategoriesmodule_admin_newcat');
             } else {
                 $args = [
@@ -407,7 +407,7 @@ class AdminController extends AbstractController
         $data['display_name'] = $processingHelper->processCategoryDisplayName($data['display_name'], $data['name']);
 
         $entityManager = $this->get('doctrine')->getManager();
-        if ($mode == 'create') {
+        if ($mode == 'new') {
             $category = new CategoryEntity();
         } else {
             // get existing category
@@ -435,7 +435,7 @@ class AdminController extends AbstractController
 
         $entityManager->flush();
 
-        if ($mode == 'create') {
+        if ($mode == 'new') {
             $this->addFlash('status', $this->__f('Done! Inserted the %s category.', ['%s' => $category['name']]));
         } else {
             // since a name change will change the object path, we must rebuild it here

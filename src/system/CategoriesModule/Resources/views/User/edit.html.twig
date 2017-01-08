@@ -28,7 +28,7 @@
         <input type="hidden" name="category[parent_id]" value="{{ rootCat.id }}" />
         <input type="hidden" name="category[is_locked]" value="0" />
         <input type="hidden" name="category[is_leaf]" value="1" />
-        <input type="hidden" name="mode" value="{% if category %}edit{% else %}create{% endif %}" />
+        <input type="hidden" name="mode" value="{% if category %}edit{% else %}new{% endif %}" />
         {% set catID = category.id|default %}
         {% if catID %}
             <input type="hidden" name="category[id]" value="{{ category.id }}" />
