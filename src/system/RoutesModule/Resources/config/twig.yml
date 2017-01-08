@@ -2,7 +2,11 @@ services:
     # Twig extension
     zikula_routes_module.twig_extension:
         class: Zikula\RoutesModule\Twig\TwigExtension
-        arguments: ["@translator.default", "@zikula_extensions_module.api.variable", "@zikula_routes_module.workflow_helper", "@zikula_routes_module.listentries_helper"]
+        arguments:
+            - "@translator.default"
+            - "@zikula_extensions_module.api.variable"
+            - "@zikula_routes_module.workflow_helper"
+            - "@zikula_routes_module.listentries_helper"
         public: false
         tags:
             - { name: twig.extension }

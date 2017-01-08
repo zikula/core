@@ -5,6 +5,7 @@
     <form id="categories_ajax_form" class="form-horizontal" role="form" action="#" method="post" enctype="application/x-www-form-urlencoded">
         <fieldset>
             <legend>{{ __('General settings') }}</legend>
+            <input type="hidden" name="mode" value="{{ mode|default('new') }}" />
             <input type="hidden" id="category_parent_id" name="category[parent_id]" value="{{ category.parent_id }}" />
             {% set catID = category.id %}
             {% if category.id|default %}

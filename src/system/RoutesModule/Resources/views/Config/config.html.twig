@@ -1,0 +1,30 @@
+{# purpose of this template: module configuration page #}
+{% extends 'ZikulaRoutesModule::adminBase.html.twig' %}
+{% block title __('Settings') %}
+{% block admin_page_icon 'wrench' %}
+{% block content %}
+    <div class="zikularoutesmodule-config">
+        {% form_theme form with [
+            '@ZikulaRoutesModule/Form/bootstrap_3.html.twig',
+            'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+        ] %}
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        {% set tabTitle = __('Listviews') %}
+        <fieldset>
+            <legend>{{ tabTitle }}</legend>
+        
+            <p class="alert alert-info">{{ __('Here you can configure parameters for list views.')|nl2br }}</p>
+        
+            {{ form_row(form.routeEntriesPerPage) }}
+        </fieldset>
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.save) }}
+                {{ form_widget(form.cancel) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

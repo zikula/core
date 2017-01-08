@@ -234,6 +234,10 @@ class CategoryProcessingHelper
             }
 
             // get information about responsible module
+            if (!$this->kernel->isBundle($registry['modname'])) {
+                continue;
+            }
+
             $module = $this->kernel->getModule($registry['modname']);
             $moduleClass = get_class($module);
             $moduleClassLevels = explode('\\', get_class($module));

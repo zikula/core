@@ -2,33 +2,50 @@ services:
     # Helper classes
     zikula_routes_module.controller_helper:
         class: Zikula\RoutesModule\Helper\ControllerHelper
-        arguments: ["@service_container", "@translator.default", "@session", "@logger"]
-
+        arguments:
+            - "@request_stack"
+            - "@form.factory"
+            - "@zikula_extensions_module.api.variable"
+            - "@zikula_routes_module.entity_factory"
+            - "@zikula_routes_module.model_helper"
+            - "@zikula_routes_module.selection_helper"
+    
     zikula_routes_module.listentries_helper:
         class: Zikula\RoutesModule\Helper\ListEntriesHelper
-        arguments: ["@translator.default"]
-
+        arguments:
+            - "@translator.default"
+    
     zikula_routes_module.model_helper:
         class: Zikula\RoutesModule\Helper\ModelHelper
-        arguments: ["@service_container"]
-
+        arguments:
+            - "@zikula_routes_module.entity_factory"
+    
     zikula_routes_module.selection_helper:
         class: Zikula\RoutesModule\Helper\SelectionHelper
-        arguments: ["@service_container", "@doctrine.orm.entity_manager", "@translator.default", "@zikula_routes_module.controller_helper"]
-
+        arguments:
+            - "@translator.default"
+            - "@zikula_routes_module.entity_factory"
+    
     zikula_routes_module.view_helper:
         class: Zikula\RoutesModule\Helper\ViewHelper
-        arguments: ["@service_container", "@translator.default"]
-
+        arguments:
+            - "@templating"
+            - "@request_stack"
+            - "@zikula_permissions_module.api.permission"
+            - "@zikula_extensions_module.api.variable"
+            - "@zikula_routes_module.controller_helper"
+    
     zikula_routes_module.workflow_helper:
         class: Zikula\RoutesModule\Helper\WorkflowHelper
-        arguments: ["@service_container", "@translator.default"]
+        arguments:
+            - "@translator.default"
+            - "@zikula_routes_module.listentries_helper"
 
     zikula_routes_module.multilingual_routing_helper:
         class: Zikula\RoutesModule\Helper\MultilingualRoutingHelper
         arguments:
-          - "@zikula_extensions_module.api.variable"
-          - "@zikula.dynamic_config_dumper"
-          - "@zikula.cache_clearer"
-          - "@zikula_settings_module.locale_api"
-          - '%locale%'
+            - "@zikula_extensions_module.api.variable"
+            - "@zikula.dynamic_config_dumper"
+            - "@zikula.cache_clearer"
+            - "@zikula_settings_module.locale_api"
+            - "%locale%"

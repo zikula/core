@@ -22,13 +22,13 @@
     },
     "extra": {
         "zikula": {
-            "core-compatibility": ">=1.4.4",
+            "core-compatibility": "~1.4.5",
             "class": "Zikula\\RoutesModule\\ZikulaRoutesModule",
             "displayname": "Routes",
             "url": "routes",
             "capabilities": {
-                "user": {"route": "zikularoutesmodule_user_index"},
-                "admin": {"route": "zikularoutesmodule_admin_index"}
+                "user": {"route": "zikularoutesmodule_route_index"},
+                "admin": {"route": "zikularoutesmodule_route_adminindex"}
             },
             "securityschema": {
                 "ZikulaRoutesModule::": "::",
