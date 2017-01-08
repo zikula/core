@@ -11,17 +11,18 @@
 
 namespace Zikula\AdminModule\Controller;
 
-use DataUtil;
-use ModUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
+use Zikula\AdminModule\Entity\AdminModuleEntity;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\Core\Response\Ajax\BadDataResponse;
 use Zikula\Core\Response\Ajax\FatalResponse;
 use Zikula\Core\Response\Ajax\ForbiddenResponse;
 use Zikula\Core\Response\Ajax\NotFoundResponse;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 /**
  * @Route("/ajax")
@@ -37,10 +38,7 @@ class AjaxController extends AbstractController
      *
      * @param Request $request
      *
-     * @return ForbiddenResponse on perm check failure
-     * @return NotFoundResponse if module name cannot be found
-     * @return FatalResponse if cannot add module to category
-     * @return AjaxResponse Ajax response containing the moduleid on success
+     * @return Response
      */
     public function changeModuleCategoryAction(Request $request)
     {
@@ -51,36 +49,29 @@ class AjaxController extends AbstractController
         $moduleId = $request->request->get('modid');
         $newParentCat = $request->request->getDigits('cat');
 
-        //get info on the module
-        $module = ModUtil::getInfo($moduleId);
+        /** @var ExtensionEntity $module */
+        $module = $this->get('zikula_extensions_module.extension_repository')->find($moduleId);
         if (!$module) {
             return new NotFoundResponse($this->__f('Error! Could not get module name for id %s.', ['%s' => $moduleId]));
         }
 
         //get the module name
-        $displayname = DataUtil::formatForDisplay($module['displayname']);
+        $displayname = $module->getDisplayName();
         $url = isset($module['capabilities']['admin']['url'])
             ? $module['capabilities']['admin']['url']
             : $this->get('router')->generate($module['capabilities']['admin']['route']);
-
-        $entityManager = $this->get('doctrine')->getManager();
-        $adminCategoryRepository = $entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity');
-        $adminModuleRepository = $entityManager->getRepository('ZikulaAdminModule:AdminModuleEntity');
-
-        $oldCategory = $adminCategoryRepository->getModuleCategory($moduleId);
-        $sortOrder = $adminModuleRepository->countModulesByCategory($newParentCat);
+        $oldCategory = $this->get('zikula_admin_module.admin_category_repository')->getModuleCategory($moduleId);
+        $sortOrder = $this->get('zikula_admin_module.admin_module_repository')->countModulesByCategory($newParentCat);
 
         //move the module
-        $item = $adminModuleRepository->findOneBy(['mid' => $moduleId]);
-        if (!$item) {
-            $item = new AdminModuleEntity();
+        $adminModuleEntity = $this->get('zikula_admin_module.admin_module_repository')->findOneBy(['mid' => $moduleId]);
+        if (!$adminModuleEntity) {
+            $adminModuleEntity = new AdminModuleEntity();
         }
-        $item->setMid($moduleId);
-        $item->setCid($newParentCat);
-        $item->setSortorder($sortOrder);
-
-        $entityManager->persist($item);
-        $entityManager->flush();
+        $adminModuleEntity->setMid($moduleId);
+        $adminModuleEntity->setCid($newParentCat);
+        $adminModuleEntity->setSortorder($sortOrder);
+        $this->get('zikula_admin_module.admin_module_repository')->persistAndFlush($adminModuleEntity);
 
         $output = [
             'id' => $moduleId,
@@ -100,10 +91,7 @@ class AjaxController extends AbstractController
      *
      * @param Request $request
      *
-     * @return ForbiddenResponse on perm check failure
-     * @return FatalResponse if category cannot be created
-     * @return BadDataResponse if category name already exists
-     * @return AjaxResponse Ajax response containing the new cid on success
+     * @return Response
      */
     public function addCategoryAction(Request $request)
     {
@@ -157,9 +145,9 @@ class AjaxController extends AbstractController
         $entityManager->flush();
 
         $output = [
-            'id' => $result,
+            'id' => $item->getCid(),
             'name' => $name,
-            'url' => $this->get('router')->generate('zikulaadminmodule_admin_adminpanel', ['acid' => $result]),
+            'url' => $this->get('router')->generate('zikulaadminmodule_admin_adminpanel', ['acid' => $item->getCid()]),
         ];
 
         return new AjaxResponse($output);
@@ -172,10 +160,7 @@ class AjaxController extends AbstractController
      *
      * @param Request $request
      *
-     * @return ForbiddenResponse on perm check failure
-     * @return NotFoundResponse if category not found
-     * @return FatalResponse if cannot delete
-     * @return AjaxResponse Ajax response containing the category id on success
+     * @return Response
      */
     public function deleteCategoryAction(Request $request)
     {
@@ -232,11 +217,7 @@ class AjaxController extends AbstractController
      *
      * @param Request $request
      *
-     * @return ForbiddenResponse on perm check failure
-     * @return NotFoundResponse if category not found
-     * @return FatalResponse if cannot save changes
-     * @return BadDataResponse if category name|id not set or category already exists
-     * @return AjaxResponse Ajax response containing the name of the edited category
+     * @return Response
      */
     public function editCategoryAction(Request $request)
     {
@@ -313,10 +294,7 @@ class AjaxController extends AbstractController
      *
      * @param Request $request
      *
-     * @return ForbiddenResponse on perm check failure
-     * @return NotFoundResponse if category not found
-     * @return FatalResponse if cannot make the category the default
-     * @return AjaxResponse Ajax response containing a success message
+     * @return Response
      */
     public function defaultCategoryAction(Request $request)
     {
@@ -359,8 +337,7 @@ class AjaxController extends AbstractController
      *
      * @param Request $request
      *
-     * @return ForbiddenResponse on perm check failure
-     * @return AjaxResponse Ajax response containing a null array on success
+     * @return Response
      */
     public function sortCategoriesAction(Request $request)
     {
@@ -389,8 +366,7 @@ class AjaxController extends AbstractController
      *
      * @param Request $request
      *
-     * @return ForbiddenResponse on perm check failure
-     * @return AjaxResponse Ajax response containing a null array on success
+     * @return Response
      */
     public function sortModulesAction(Request $request)
     {
