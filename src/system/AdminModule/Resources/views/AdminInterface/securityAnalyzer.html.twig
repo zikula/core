@@ -23,11 +23,6 @@
                                 <a href="{{ adminHelpUrl }}#admin_magic_quotes_warning">{{ __("PHP 'magic_quotes_gpc' setting is ON, but should be OFF.") }}</a>
                             </p>
                         {% endif %}
-                        {% if security.register_globals %}
-                            <p>
-                                <a href="{{ adminHelpUrl }}#admin_register_globals_warning">{{ __("PHP 'register_globals' setting is ON, but should be OFF.") }}</a>
-                            </p>
-                        {% endif %}
                         {% if not security.app_htaccess %}
                             <p>
                                 <a href="{{ adminHelpUrl }}#admin_app_htaccess_warning">{{ __("There is no '.htaccess' file in the application directory '/app', but one should be present.") }}</a>

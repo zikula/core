@@ -11,9 +11,7 @@
 
 namespace Zikula\AdminModule\Controller;
 
-use DataUtil;
 use ModUtil;
-use StringUtil;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -177,7 +175,7 @@ class AdminInterfaceController extends AbstractController
         if ($appDir) {
             // check if we have an absolute path which is possibly not within the document root
             $docRoot = $request->server->get('DOCUMENT_ROOT');
-            if (StringUtil::left($appDir, 1) == '/' && false === strpos($appDir, $docRoot)) {
+            if (mb_substr($appDir, 0, 1) == '/' && false === strpos($appDir, $docRoot)) {
                 // temp dir is outside the webroot, no .htaccess file needed
                 $app_htaccess = true;
             } else {
@@ -202,8 +200,7 @@ class AdminInterfaceController extends AbstractController
         return $this->render('@ZikulaAdminModule/AdminInterface/securityAnalyzer.html.twig', [
             'security' => [
                 'config_php' => is_writable('config/config.php'),
-                'magic_quotes_gpc' => DataUtil::getBooleanIniValue('magic_quotes_gpc'),
-                'register_globals' => DataUtil::getBooleanIniValue('register_globals'),
+                'magic_quotes_gpc' => (bool) get_magic_quotes_gpc(), // should be off anyway...
                 'app_htaccess' => $app_htaccess,
                 'updatecheck' => $variableApi->getSystemVar('updatecheck'),
                 'scactive' => $hasSecurityCenter,
@@ -324,6 +321,7 @@ class AdminInterfaceController extends AbstractController
 
             $links = $this->get('zikula.link_container_collector')->getLinks($adminModule['name'], 'admin');
             if ($links == false) {
+                // @deprecated remove at Core-2.0
                 $links = \ModUtil::apiFunc($adminModule['name'], 'admin', 'getLinks');
                 if ($links == false) {
                     $links = [];
@@ -332,6 +330,7 @@ class AdminInterfaceController extends AbstractController
             try {
                 $adminIconPath = $this->get('zikula_core.common.theme.asset_helper')->resolve('@' . $adminModule['name'] . ':images/admin.png');
             } catch (\Exception $e) {
+                // @deprecated remove at Core-2.0
                 $adminIconPath = $baseUrl . ModUtil::getModuleImagePath($adminModule['name']);
             }
 
