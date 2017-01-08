@@ -17,6 +17,7 @@ CHANGELOG - ZIKULA 1.4.x
  - Fixes:
     - Fixed broken categories selector for legacy extensions (#3356).
     - Fixed problems in categories editing (#3372).
+    - Fixed deleting categories for legacy extensions (#3373).
     - Fixed accidentally activated ZikulaPageLockModule on core upgrade (#3355)
     - Fixed wrong join criteria in Groups user api (#3361).
 
