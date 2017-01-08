@@ -11,14 +11,13 @@
 
 namespace Zikula\AdminModule\Entity\Repository;
 
-use Doctrine\Common\Collections\Selectable;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityRepository;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Zikula\AdminModule\Entity\AdminModuleEntity;
+use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
-class AdminModuleRepository extends EntityRepository implements ObjectRepository, Selectable
+class AdminModuleRepository extends EntityRepository implements AdminModuleRepositoryInterface
 {
     public function persistAndFlush($entity)
     {

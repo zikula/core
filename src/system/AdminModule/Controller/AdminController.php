@@ -12,7 +12,6 @@
 namespace Zikula\AdminModule\Controller;
 
 use ModUtil;
-use System;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -239,13 +238,11 @@ class AdminController extends AbstractController
      *
      * Display main admin panel for a category
      *
+     * @param Request $request
      * @param integer $acid
-     *
      * @return Response symfony response object
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions to the module
      */
-    public function adminpanelAction($acid = null)
+    public function adminpanelAction(Request $request, $acid = null)
     {
         if (!$this->hasPermission('::', '::', ACCESS_EDIT)) {
             // suppress admin display - return to index.
@@ -314,7 +311,7 @@ class AdminController extends AbstractController
         // get admin capable modules
         $adminModules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf('admin');
         $adminLinks = [];
-        $baseUrl = System::getBaseUrl();
+        $baseUrl = $request->getBaseUrl();
         foreach ($adminModules as $adminModule) {
             if (!$this->hasPermission($adminModule['name'] . '::', 'ANY', ACCESS_EDIT)) {
                 continue;
@@ -352,18 +349,22 @@ class AdminController extends AbstractController
                     $menuText .= ' (<i class="fa fa-warning"></i> ' . $this->__('invalid route') . ')';
                 }
 
-                $linkCollection = $this->get('zikula.link_container_collector')->getLinks($adminModule['name'], 'admin');
-                $links = (false == $linkCollection)
-                    ? (array) ModUtil::apiFunc($adminModule['name'], 'admin', 'getLinks')
-                    : $linkCollection
-                ;
+                $links = $this->get('zikula.link_container_collector')->getLinks($adminModule['name'], 'admin');
+                // @deprecated remove at Core-2.0
+                $links = (false == $links) ? (array) ModUtil::apiFunc($adminModule['name'], 'admin', 'getLinks') : $links;
+                try {
+                    $adminIconPath = $this->get('zikula_core.common.theme.asset_helper')->resolve('@' . $adminModule['name'] . ':images/admin.png');
+                } catch (\Exception $e) {
+                    // @deprecated remove at Core-2.0
+                    $adminIconPath = $baseUrl . ModUtil::getModuleImagePath($adminModule['name']);
+                }
 
                 $adminLinks[] = [
                     'menuTextUrl' => $menuTextUrl,
                     'menuText' => $menuText,
                     'menuTextTitle' => $adminModule['description'],
                     'moduleName' => $adminModule['name'],
-                    'adminIcon' => $baseUrl . ModUtil::getModuleImagePath($adminModule['name']),
+                    'adminIcon' => $adminIconPath,
                     'id' => $adminModule['id'],
                     'order' => $sortOrder,
                     'links' => $links
@@ -383,11 +384,11 @@ class AdminController extends AbstractController
      *
      * Main category menu.
      *
+     * @param Request $request
      * @param integer $acid
-     *
      * @return Response symfony response object
      */
-    public function categorymenuAction($acid = null)
+    public function categorymenuAction(Request $request, $acid = null)
     {
         $acid = empty($acid) ? $this->getVar('startcategory') : $acid;
 
@@ -409,7 +410,7 @@ class AdminController extends AbstractController
         // get admin capable modules
         $adminModules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf('admin');
         $adminLinks = [];
-        $baseUrl = System::getBaseUrl();
+        $baseUrl = $request->getBaseUrl();
         foreach ($adminModules as $adminModule) {
             if (!$this->hasPermission($adminModule['name'] . '::', '::', ACCESS_EDIT)) {
                 continue;
@@ -441,6 +442,12 @@ class AdminController extends AbstractController
             $menuTextUrl = isset($adminModule['capabilities']['admin']['url'])
                 ? $adminModule['capabilities']['admin']['url']
                 : $this->get('router')->generate($adminModule['capabilities']['admin']['route']);
+            try {
+                $adminIconPath = $this->get('zikula_core.common.theme.asset_helper')->resolve('@' . $adminModule['name'] . ':images/admin.png');
+            } catch (\Exception $e) {
+                // @deprecated remove at Core-2.0
+                $adminIconPath = $baseUrl . ModUtil::getModuleImagePath($adminModule['name']);
+            }
 
             $adminLinks[$catid][] = [
                 'menuTextUrl' => $menuTextUrl,
@@ -449,7 +456,7 @@ class AdminController extends AbstractController
                 'moduleName' => $adminModule['name'],
                 'order' => $sortOrder,
                 'id' => $adminModule['id'],
-                'icon' => $baseUrl . ModUtil::getModuleImagePath($adminModule['name'])
+                'icon' => $adminIconPath
             ];
         }
 

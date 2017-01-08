@@ -1,41 +1,42 @@
-parameters:
-    zikula_admin_module.container.link_container.class: Zikula\AdminModule\Container\LinkContainer
-    twig.extension.zikula_admin_module.class: Zikula\AdminModule\Twig\Extension\AdminExtension
-    zikula_admin_module.module_event_listener.class: Zikula\AdminModule\Listener\ModuleEventListener
-    zikula_admin_module.update_check_helper.class: Zikula\AdminModule\Helper\UpdateCheckHelper
-    zikula_admin_module.admin_module_repository.class: Zikula\AdminModule\Entity\Repository\AdminModuleRepository
-    zikula_admin_module.helper.admin_module_helper.class: Zikula\AdminModule\Helper\AdminModuleHelper
-
 services:
     zikula_admin_module.container.link_container:
-        class: "%zikula_admin_module.container.link_container.class%"
+        class: Zikula\AdminModule\Container\LinkContainer
         arguments: ["@translator.default", "@jms_i18n_routing.router", "@zikula_permissions_module.api.permission"]
         tags:
             - { name: zikula.link_container }
 
     twig.extension.zikula_admin_module:
-        class: "%twig.extension.zikula_admin_module.class%"
+        class: Zikula\AdminModule\Twig\Extension\AdminExtension
         public: true
         arguments: ["@fragment.handler", "@zikula_permissions_module.api.permission"]
         tags:
             - { name: twig.extension }
 
     zikula_admin_module.module_event_listener:
-        class: "%zikula_admin_module.module_event_listener.class%"
-        arguments: ["@zikula_extensions_module.api.variable", "%installed%"]
+        class: Zikula\AdminModule\Listener\ModuleEventListener
+        arguments:
+          - "@zikula_admin_module.admin_module_repository"
+          - "@zikula_extensions_module.extension_repository"
+          - "@zikula_extensions_module.api.variable"
+          - "%installed%"
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_admin_module.update_check_helper:
-        class: "%zikula_admin_module.update_check_helper.class%"
+        class: Zikula\AdminModule\Helper\UpdateCheckHelper
         public: true
         arguments: ["@zikula_extensions_module.api.variable", "@request_stack"]
 
     zikula_admin_module.admin_module_repository:
-        class: "%zikula_admin_module.admin_module_repository.class%"
+        class: Zikula\AdminModule\Entity\Repository\AdminModuleRepository
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
         arguments: ["ZikulaAdminModule:AdminModuleEntity"]
 
+    zikula_admin_module.admin_category_repository:
+        class: Zikula\AdminModule\Entity\Repository\AdminCategoryRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["ZikulaAdminModule:AdminCategoryEntity"]
+
     zikula_admin_module.helper.admin_module_helper:
-        class: "%zikula_admin_module.helper.admin_module_helper.class%"
+        class: Zikula\AdminModule\Helper\AdminModuleHelper
         arguments: ["@zikula_admin_module.admin_module_repository"]

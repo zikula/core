@@ -11,16 +11,26 @@
 
 namespace Zikula\AdminModule\Listener;
 
-use ModUtil;
-use ServiceUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\AdminModule\Entity\AdminModuleEntity;
+use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 
 class ModuleEventListener implements EventSubscriberInterface
 {
+    /**
+     * @var AdminModuleRepositoryInterface
+     */
+    protected $adminModuleRepository;
+
+    /**
+     * @var ExtensionRepositoryInterface
+     */
+    protected $extensionRepository;
+
     /**
      * @var VariableApi
      */
@@ -41,11 +51,19 @@ class ModuleEventListener implements EventSubscriberInterface
     /**
      * UpdateCheckHelper constructor.
      *
+     * @param AdminModuleRepositoryInterface $adminModuleRepository
+     * @param ExtensionRepositoryInterface $extensionRepository
      * @param VariableApi $variableApi VariableApi service instance
      * @param bool $installed
      */
-    public function __construct(VariableApi $variableApi, $installed)
-    {
+    public function __construct(
+        AdminModuleRepositoryInterface $adminModuleRepository,
+        ExtensionRepositoryInterface $extensionRepository,
+        VariableApi $variableApi,
+        $installed
+    ) {
+        $this->adminModuleRepository = $adminModuleRepository;
+        $this->extensionRepository = $extensionRepository;
         $this->variableApi = $variableApi;
         $this->installed = $installed;
     }
@@ -59,36 +77,31 @@ class ModuleEventListener implements EventSubscriberInterface
      */
     public function moduleInstall(ModuleStateEvent $event)
     {
+        if (!$this->installed) {
+            return;
+        }
         $module = $event->getModule();
         if ($module) {
             $modName = $module->getName();
         } else {
             // Legacy for non Symfony-styled modules.
+            // @deprecated remove at Core-2.0
             $modInfo = $event->modinfo;
             $modName = $modInfo['name'];
         }
-
-        if (!$this->installed) {
-            return;
-        }
-
         $category = $this->variableApi->get('ZikulaAdminModule', 'defaultcategory');
-        $moduleId = (int)ModUtil::getIdFromName($modName);
-
-        $entityManager = ServiceUtil::get('doctrine')->getManager();
-        $adminModuleRepository = $entityManager->getRepository('ZikulaAdminModule:AdminModuleEntity');
-        $sortOrder = $adminModuleRepository->countModulesByCategory($category);
+        $module = $this->extensionRepository->findOneBy(['name' => $modName]);
+        $sortOrder = $this->adminModuleRepository->countModulesByCategory($category);
 
         //move the module
-        $item = $adminModuleRepository->findOneBy(['mid' => $moduleId]);
-        if (!$item) {
-            $item = new AdminModuleEntity();
+        $adminModuleEntity = $this->adminModuleRepository->findOneBy(['mid' => $module->getId()]);
+        if (!$adminModuleEntity) {
+            $adminModuleEntity = new AdminModuleEntity();
         }
-        $item->setMid($moduleId);
-        $item->setCid($category);
-        $item->setSortorder($sortOrder);
+        $adminModuleEntity->setMid($module->getId());
+        $adminModuleEntity->setCid($category);
+        $adminModuleEntity->setSortorder($sortOrder);
 
-        $entityManager->persist($item);
-        $entityManager->flush();
+        $this->adminModuleRepository->persistAndFlush($adminModuleEntity);
     }
 }
