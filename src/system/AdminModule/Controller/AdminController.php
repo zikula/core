@@ -236,13 +236,11 @@ class AdminController extends AbstractController
      *
      * Display main admin panel for a category
      *
+     * @param Request $request
      * @param integer $acid
-     *
      * @return Response symfony response object
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions to the module
      */
-    public function adminpanelAction($acid = null)
+    public function adminpanelAction(Request $request, $acid = null)
     {
         if (!$this->hasPermission('::', '::', ACCESS_EDIT)) {
             // suppress admin display - return to index.
@@ -311,7 +309,7 @@ class AdminController extends AbstractController
         // get admin capable modules
         $adminModules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf('admin');
         $adminLinks = [];
-        $baseUrl = System::getBaseUrl();
+        $baseUrl = $request->getBaseUrl();
         foreach ($adminModules as $adminModule) {
             if (!$this->hasPermission($adminModule['name'] . '::', 'ANY', ACCESS_EDIT)) {
                 continue;
@@ -380,11 +378,11 @@ class AdminController extends AbstractController
      *
      * Main category menu.
      *
+     * @param Request $request
      * @param integer $acid
-     *
      * @return Response symfony response object
      */
-    public function categorymenuAction($acid = null)
+    public function categorymenuAction(Request $request, $acid = null)
     {
         $acid = empty($acid) ? $this->getVar('startcategory') : $acid;
 
@@ -406,7 +404,7 @@ class AdminController extends AbstractController
         // get admin capable modules
         $adminModules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf('admin');
         $adminLinks = [];
-        $baseUrl = System::getBaseUrl();
+        $baseUrl = $request->getBaseUrl();
         foreach ($adminModules as $adminModule) {
             if (!$this->hasPermission($adminModule['name'] . '::', '::', ACCESS_EDIT)) {
                 continue;

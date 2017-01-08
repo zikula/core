@@ -14,7 +14,7 @@ namespace Zikula\AdminModule\Controller;
 use DataUtil;
 use ModUtil;
 use StringUtil;
-use System;
+use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -162,9 +162,10 @@ class AdminInterfaceController extends AbstractController
      *
      * Add security analyzer
      *
+     * @param Request $request
      * @return Response symfony response object
      */
-    public function securityanalyzerAction()
+    public function securityanalyzerAction(Request $request)
     {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -175,7 +176,7 @@ class AdminInterfaceController extends AbstractController
         $appDir = $this->get('kernel')->getRootDir();
         if ($appDir) {
             // check if we have an absolute path which is possibly not within the document root
-            $docRoot = System::serverGetVar('DOCUMENT_ROOT');
+            $docRoot = $request->server->get('DOCUMENT_ROOT');
             if (StringUtil::left($appDir, 1) == '/' && false === strpos($appDir, $docRoot)) {
                 // temp dir is outside the webroot, no .htaccess file needed
                 $app_htaccess = true;
