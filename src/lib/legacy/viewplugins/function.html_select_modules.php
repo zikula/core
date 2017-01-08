@@ -65,7 +65,7 @@ function smarty_function_html_select_modules($params, Zikula_View $view)
     $installerArray = ['ZikulaBlocksModule', 'ZikulaErrorsModule', 'ZikulaPermissionsModule', 'ZikulaCategoriesModule', 'ZikulaGroupsModule', 'ZikulaThemeModule', 'ZikulaUsersModule', 'ZikulaSearchModule'];
     if (!empty($modules)) {
         foreach ($modules as $module) {
-            if (!(System::isInstalling() && in_array($module['name'], $installerArray))) {
+            if (!(!\ServiceUtil::getManager()->getParameter('installed') && in_array($module['name'], $installerArray))) {
                 $moduleslist[$module['name']] = $module['displayname'];
             }
         }

@@ -36,6 +36,8 @@ class FormUtil
      */
     public static function getPassedValue($key, $default = null, $source = null, $filter = null, array $args = [], $objectType = null)
     {
+        @trigger_error('FormUtil is deprecated. please use Symfony request instead.', E_USER_DEPRECATED);
+
         if (!$key) {
             throw new \Exception(__f('Empty %1$s passed to %2$s.', ['key', 'FormUtil::getPassedValue']));
         }
@@ -130,6 +132,8 @@ class FormUtil
      */
     public static function isRequiredField($validationInfo, $field)
     {
+        @trigger_error('FormUtil is deprecated. please use Symfony validator instead.', E_USER_DEPRECATED);
+
         if (!$validationInfo) {
             throw new \Exception(__f('Empty %1$s passed to %2$s.', ['validationInfo', 'FormUtil::isRequiredField']));
         }
@@ -173,6 +177,8 @@ class FormUtil
      */
     public static function clearValidationErrors($objectType = null)
     {
+        @trigger_error('FormUtil is deprecated. please use Symfony validator instead.', E_USER_DEPRECATED);
+
         if ($objectType) {
             if (isset($_SESSION['validationErrors'][$objectType])) {
                 unset($_SESSION['validationErrors'][$objectType]);
@@ -193,6 +199,8 @@ class FormUtil
      */
     public static function clearValidationFailedObjects($objectType = null)
     {
+        @trigger_error('FormUtil is deprecated. please use Symfony validator instead.', E_USER_DEPRECATED);
+
         if ($objectType) {
             if (isset($_SESSION['validationFailedObjects'][$objectType])) {
                 unset($_SESSION['validationFailedObjects'][$objectType]);
@@ -211,6 +219,8 @@ class FormUtil
      */
     public static function getValidationErrors()
     {
+        @trigger_error('FormUtil is deprecated. please use Symfony validator instead.', E_USER_DEPRECATED);
+
         static $ve = null;
 
         if (null === $ve) {
@@ -234,6 +244,8 @@ class FormUtil
      */
     public static function getFailedValidationObjects($objectType = null)
     {
+        @trigger_error('FormUtil is deprecated. please use Symfony validator instead.', E_USER_DEPRECATED);
+
         static $objects = [];
         if (!isset($objects[$objectType])) {
             if (isset($_SESSION['validationFailedObjects']) && is_array($_SESSION['validationFailedObjects'])) {
@@ -264,6 +276,8 @@ class FormUtil
      */
     public static function hasValidationErrors($objectType, $field = null)
     {
+        @trigger_error('FormUtil is deprecated. please use Symfony validator instead.', E_USER_DEPRECATED);
+
         if (!$objectType) {
             throw new \Exception(__f('Empty %1$s passed to %2$s.', ['objectType', 'FormUtil::hasValidationErrors']));
         }
@@ -290,6 +304,8 @@ class FormUtil
      */
     public static function getValidationFieldMarker($objectType, $field)
     {
+        @trigger_error('FormUtil is deprecated. please use Symfony validator instead.', E_USER_DEPRECATED);
+
         if (self::hasValidationErrors($objectType, $field)) {
             return HtmlUtil::VALIDATION_MARKER;
         }
@@ -307,6 +323,8 @@ class FormUtil
      */
     public static function getValidationError($objectType, $field)
     {
+        @trigger_error('FormUtil is deprecated. please use Symfony validator instead.', E_USER_DEPRECATED);
+
         if (!self::hasValidationErrors($objectType, $field)) {
             return '';
         }
@@ -331,6 +349,8 @@ class FormUtil
      */
     public static function getFieldMarker($objectType, $validationInfo, $field)
     {
+        @trigger_error('FormUtil is deprecated. please use Symfony validator instead.', E_USER_DEPRECATED);
+
         if (self::hasValidationErrors($objectType, $field)) {
             return HtmlUtil::VALIDATION_MARKER;
         } elseif (self::isRequiredField($validationInfo, $field)) {
@@ -351,6 +371,8 @@ class FormUtil
      */
     public static function newForm($name, Zikula_AbstractController $controller = null, $className = null)
     {
+        @trigger_error('FormUtil is deprecated. please use Symfony forms instead.', E_USER_DEPRECATED);
+
         $serviceManager = $controller->getContainer();
         if ($className && !class_exists($className)) {
             throw new RuntimeException(__f('%s does not exist', $className));

@@ -2,35 +2,42 @@ parameters:
     translator.class: Zikula\Common\Translator\Translator
     zikula.extractor.file.php_extractor.class: Zikula\Bundle\CoreBundle\Translation\ZikulaPhpFileExtractor
     zikula.extractor.file.twig_extractor.class: Zikula\Bundle\CoreBundle\Translation\ZikulaTwigFileExtractor
+    zikula.extractor.file.js_extractor.class: Zikula\Bundle\CoreBundle\Translation\ZikulaJsFileExtractor
     zikula.dumper.pot_dumper.class: Zikula\Bundle\CoreBundle\Translation\Dumper\PotDumper
     zikula.translation.loader.pot.class: Zikula\Bundle\CoreBundle\Translation\SymfonyLoader\MockPotFileLoader
 
 services:
     translator.default:
-        class: %translator.class%
-        arguments: ["@service_container", "@translator.selector", {}, { cache_dir: "%kernel.cache_dir%/translations", debug: %kernel.debug% }]
+        class: "%translator.class%"
+        arguments: ["@service_container", "@translator.selector", {}, { cache_dir: "%kernel.cache_dir%/translations", debug: "%kernel.debug%" }]
 
     zikula_core.internal.translation_extractor.file.php_extractor:
-        class: %zikula.extractor.file.php_extractor.class%
+        class: "%zikula.extractor.file.php_extractor.class%"
         public: false
         arguments: ["@jms_translation.doc_parser", "@kernel"]
         tags:
             - { name: jms_translation.file_visitor }
 
     zikula_core.internal.translation_extractor.file.twig_extractor:
-        class: %zikula.extractor.file.twig_extractor.class%
+        class: "%zikula.extractor.file.twig_extractor.class%"
         public: false
         arguments: ["@twig", "@kernel"]
         tags:
             - { name: jms_translation.file_visitor }
 
+    zikula_core.internal.translation_extractor.file.js_extractor:
+        class: "%zikula.extractor.file.js_extractor.class%"
+        public: false
+        tags:
+            - { name: jms_translation.file_visitor }
+
     zikula_core.internal.translation_dumper.pot_dumper:
-        class: %zikula.dumper.pot_dumper.class%
+        class: "%zikula.dumper.pot_dumper.class%"
         public: false
         tags:
             - { name: jms_translation.dumper, format: pot }
 
     zikula_core.internal.translation_loader.pot:
-        class: %zikula.translation.loader.pot.class%
+        class: "%zikula.translation.loader.pot.class%"
         tags:
             - { name: translation.loader, alias: pot }

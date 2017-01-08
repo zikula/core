@@ -10,11 +10,11 @@ services:
         class: Zikula\RoutesModule\Routing\RouteFinder
 
     zikula_routes_module.route_dumper_helper:
-        class: %zikula_routes_module.route_dumper_helper.class%
+        class: "%zikula_routes_module.route_dumper_helper.class%"
         arguments: ["@service_container"]
 
     zikula_routes_module.console_command_listener:
-        class: %zikula_routes_module.console_command_listener.class%
+        class: "%zikula_routes_module.console_command_listener.class%"
         tags:
             - { name: kernel.event_subscriber }
 

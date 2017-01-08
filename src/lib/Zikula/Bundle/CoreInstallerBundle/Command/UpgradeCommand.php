@@ -61,7 +61,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $currentVersion = $this->getContainer()->getParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM);
+        $currentVersion = $this->getContainer()->getParameter(\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
         if (version_compare($currentVersion, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<=')) {
             $output->writeln($this->translator->__f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', ['%1$s' => $currentVersion, '%2$s' => UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
 
@@ -70,7 +70,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
 
         $io = new SymfonyStyle($input, $output);
         $io->title($this->translator->__('Zikula Upgrader Script'));
-        $io->section($this->translator->__f('*** UPGRADING TO ZIKULA CORE %version% ***', ['%version%' => \Zikula_Core::VERSION_NUM]));
+        $io->section($this->translator->__f('*** UPGRADING TO ZIKULA CORE %version% ***', ['%version%' => \ZikulaKernel::VERSION]));
         $env = $this->getContainer()->get('kernel')->getEnvironment();
         $io->text($this->translator->__f('Upgrading Zikula in %env% environment.', ['%env%' => $env]));
 
@@ -81,7 +81,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $initStage->isNecessary(); // runs init and upgradeUsersModule methods and intentionally returns false
         $io->success($this->translator->__('Initialization complete'));
 
-        $controllerHelper = $this->getContainer()->get('zikula_core_installer.controller.util');
+        $controllerHelper = $this->getContainer()->get('zikula_core_installer.controller.helper');
 
         $warnings = $controllerHelper->initPhp();
         if (!empty($warnings)) {

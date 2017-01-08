@@ -15,6 +15,7 @@ namespace Zikula\RoutesModule\Helper;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\SettingsModule\Api\LocaleApi;
 
 class MultilingualRoutingHelper
 {
@@ -34,22 +35,34 @@ class MultilingualRoutingHelper
     private $cacheClearer;
 
     /**
+     * @var LocaleApi
+     */
+    private $localeApi;
+
+    /**
      * @var string
      */
     private $locale;
 
     /**
      * MultilingualRoutingHelper constructor.
-     * @param VariableApi         $variableApi
+     * @param VariableApi $variableApi
      * @param DynamicConfigDumper $configDumper
-     * @param CacheClearer        $cacheClearer
-     * @param string              $locale
+     * @param CacheClearer $cacheClearer
+     * @param LocaleApi $localeApi
+     * @param string $locale
      */
-    public function __construct(VariableApi $variableApi, DynamicConfigDumper $configDumper, CacheClearer $cacheClearer, $locale)
-    {
+    public function __construct(
+        VariableApi $variableApi,
+        DynamicConfigDumper $configDumper,
+        CacheClearer $cacheClearer,
+        LocaleApi $localeApi,
+        $locale
+    ) {
         $this->variableApi = $variableApi;
         $this->configDumper = $configDumper;
         $this->cacheClearer = $cacheClearer;
+        $this->localeApi = $localeApi;
         $this->locale = $locale;
     }
 
@@ -61,7 +74,7 @@ class MultilingualRoutingHelper
     public function reloadMultilingualRoutingSettings()
     {
         $defaultLocale = $this->variableApi->getSystemVar('language_i18n', $this->locale);
-        $installedLanguages = \ZLanguage::getInstalledLanguages();
+        $installedLanguages = $this->localeApi->getSupportedLocales();
         $isRequiredLangParameter = $this->variableApi->getSystemVar('languageurl', 0);
 
         $this->configDumper->setConfiguration('jms_i18n_routing', [

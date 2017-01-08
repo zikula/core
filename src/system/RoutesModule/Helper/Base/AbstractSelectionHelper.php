@@ -80,9 +80,9 @@ abstract class AbstractSelectionHelper
         switch ($objectType) {
             case 'route':
                 return false;
-                default:
-                    return false;
         }
+
+        return false;
     }
     
     /**

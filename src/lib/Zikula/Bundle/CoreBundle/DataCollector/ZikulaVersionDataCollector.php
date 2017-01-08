@@ -35,7 +35,7 @@ class ZikulaVersionDataCollector extends DataCollector
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
         $this->data = [
-            'version' => \Zikula_Core::VERSION_NUM,
+            'version' => \ZikulaKernel::VERSION,
             'ghZikulaCoreUrl' => 'https://www.github.com/zikula/core',
             'ghZikulaDocsUrl' => 'https://www.github.com/zikula/zikula-docs',
             'ghZikulaBootstrapDocsUrl' => 'http://zikula.github.io/bootstrap-docs'

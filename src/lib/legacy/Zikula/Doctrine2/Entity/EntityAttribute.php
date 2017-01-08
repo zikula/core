@@ -44,6 +44,8 @@ abstract class Zikula_Doctrine2_Entity_EntityAttribute extends Zikula_EntityAcce
                                 $value,
                                 $entity)
     {
+        @trigger_error('This entity attribute entity is deprecated.', E_USER_DEPRECATED);
+
         $this->name = $name;
         $this->value = $value;
         $this->setEntity($entity);

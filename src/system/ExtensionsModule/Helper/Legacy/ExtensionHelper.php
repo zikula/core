@@ -123,7 +123,7 @@ class ExtensionHelper
         $theme->clear_cssjscombinecache();
         $serviceManager->get('zikula.cache_clearer')->clear('symfony');
 
-        if (!\System::isInstalling()) {
+        if (\ServiceUtil::getManager()->getParameter('installed')) {
             $event = new ModuleStateEvent(null, $extension->toArray());
             $serviceManager->get('event_dispatcher')->dispatch(CoreEvents::MODULE_UPGRADE, $event);
         }

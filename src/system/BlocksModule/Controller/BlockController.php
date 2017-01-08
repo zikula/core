@@ -110,7 +110,7 @@ class BlockController extends AbstractController
             $renderedPropertiesForm = $this->formContentModify($request, $blockEntity);
         }
 
-        if ($form->isSubmitted() and $form->get('save')->isClicked() and $form->isValid()) {
+        if ($form->isSubmitted() && $form->get('save')->isClicked() && $form->isValid()) {
             if ($blockInstance instanceof \Zikula_Controller_AbstractBlock) { // @todo remove this BC at Core-2.0
                 if ($blockInstance->info()['form_content']) {
                     $content = $this->formContentModify($request);
@@ -136,7 +136,7 @@ class BlockController extends AbstractController
 
             return $this->redirectToRoute('zikulablocksmodule_admin_view');
         }
-        if ($form->isSubmitted() and $form->get('cancel')->isClicked()) {
+        if ($form->isSubmitted() && $form->get('cancel')->isClicked()) {
             $this->addFlash('status', $this->__('Operation cancelled.'));
 
             return $this->redirectToRoute('zikulablocksmodule_admin_view');
@@ -171,7 +171,7 @@ class BlockController extends AbstractController
                 'label' => $this->__('Delete'),
                 'icon' => 'fa-trash-o',
                 'attr' => [
-                    'class' => 'btn btn-default'
+                    'class' => 'btn btn-danger'
                 ]
             ])
             ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [

@@ -24,8 +24,7 @@ use Zikula\UsersModule\Entity\UserEntity;
 /**
  * User API functions for the groups module
  *
- * @deprecated
- * @todo Needs a service replacement for removal in Core-2.0
+ * @deprecated remove at Core-2.0
  */
 class UserApi
 {
@@ -466,7 +465,7 @@ class UserApi
 
         $entityManager = ServiceUtil::get('doctrine')->getManager();
         $applications = $entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')
-            ->findBy(['gid' => $args['gid'], 'uid' => $args['uid']]);
+            ->findBy(['group' => $args['gid'], 'user' => $args['uid']]);
 
         return count($applications) > 0;
     }

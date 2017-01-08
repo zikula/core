@@ -15,7 +15,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Zikula_Core;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
 
@@ -60,7 +59,7 @@ class StartCommand extends AbstractCoreInstallerCommand
             return;
         }
 
-        $controllerHelper = $this->getContainer()->get('zikula_core_installer.controller.util');
+        $controllerHelper = $this->getContainer()->get('zikula_core_installer.controller.helper');
 
         $warnings = $controllerHelper->initPhp();
         if (!empty($warnings)) {
@@ -78,11 +77,14 @@ class StartCommand extends AbstractCoreInstallerCommand
         if ($input->isInteractive()) {
             $env = $this->getContainer()->get('kernel')->getEnvironment();
             $io->comment($this->translator->__f('Configuring Zikula installation in %env% environment.', ['%env%' => $env]));
-            $io->comment($this->translator->__f('Please follow the instructions to install Zikula %version%.', ['%version%' => Zikula_Core::VERSION_NUM]));
+            $io->comment($this->translator->__f('Please follow the instructions to install Zikula %version%.', ['%version%' => \ZikulaKernel::VERSION]));
         }
 
         // get the settings from user input
-        $settings = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType', $input, $output, ['translator' => $this->translator]);
+        $settings = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType', $input, $output, [
+            'translator' => $this->translator,
+            'choices' => $this->getContainer()->get('zikula_settings_module.locale_api')->getSupportedLocaleNames()
+        ]);
         $data = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType', $input, $output, ['translator' => $this->translator]);
         foreach ($data as $k => $v) {
             $newKey = str_replace(':', '.', $k);
@@ -123,7 +125,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         $params['database_server_version'] = $dbh->getAttribute(\PDO::ATTR_SERVER_VERSION);
         $params['database_driver'] = 'pdo_' . $params['database_driver']; // doctrine requires prefix in custom_parameters.yml
         $yamlManager->setParameters($params);
-        $this->getContainer()->get('zikula_core_installer.config.util')->writeLegacyConfig($params);
+        $this->getContainer()->get('zikula_core_installer.config.helper')->writeLegacyConfig($params);
         $this->getContainer()->get('zikula.cache_clearer')->clear('symfony.config');
 
         $io->success($this->translator->__('First stage of installation complete. Run `php app/console zikula:install:finish` to complete the installation.'));

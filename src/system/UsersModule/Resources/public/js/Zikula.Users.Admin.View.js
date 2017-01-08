@@ -84,12 +84,10 @@
             userSearchListTable.find('tbody').empty().append('<tr><td colspan="7"><i class="fa fa-spinner fa-spin"></i></td></tr>');
 
             // get search result from database
-            if (ajax !== null) {
-                ajax.abort;
-            }
+            // route must be defined as a data-attribute of the text field e.g. data-route="my_special_route"
+            // route-params *may* also be defined if desired and they will be included e.g. data-route-params='{"gid":"{{ group.gid }}"}'
             ajax = $.ajax({
-                // url: Zikula.Config.baseURL + 'index.php?module=users&type=ajax&func=getUsersAsTable',
-                url: Routing.generate('zikulausersmodule_useradministration_getusersbyfragmentastable'),
+                url: Routing.generate($(this).data('route'), $(this).data('route-params')),
                 dataType: 'html',
                 type: 'POST',
                 data: {

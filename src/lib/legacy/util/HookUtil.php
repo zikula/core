@@ -49,6 +49,8 @@ class HookUtil
      */
     public static function getHookProviders()
     {
+        @trigger_error('HookUtil is deprecated. please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         return ModUtil::getModulesCapableOf(self::PROVIDER_CAPABLE);
     }
 
@@ -61,6 +63,8 @@ class HookUtil
      */
     public static function getHookSubscribers()
     {
+        @trigger_error('HookUtil is deprecated. please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         return ModUtil::getModulesCapableOf(self::SUBSCRIBER_CAPABLE);
     }
 
@@ -73,6 +77,8 @@ class HookUtil
      */
     public static function isProviderCapable($module)
     {
+        @trigger_error('HookUtil is deprecated. please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         return (bool)ModUtil::isCapable($module, self::PROVIDER_CAPABLE);
     }
 
@@ -87,6 +93,8 @@ class HookUtil
      */
     public static function isSubscriberSelfCapable($module)
     {
+        @trigger_error('HookUtil is deprecated. please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         $capabilities = ModUtil::getCapabilitiesOf($module);
 
         if (isset($capabilities[self::SUBSCRIBER_CAPABLE][self::SUBSCRIBE_OWN])) {
@@ -105,6 +113,8 @@ class HookUtil
      */
     public static function isSubscriberCapable($module)
     {
+        @trigger_error('HookUtil is deprecated. please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         return ModUtil::isCapable($module, self::SUBSCRIBER_CAPABLE);
     }
 
@@ -119,6 +129,8 @@ class HookUtil
      */
     public static function registerProviderBundles(array $bundles)
     {
+        @trigger_error('HookUtil is deprecated. please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         $hookManager = ServiceUtil::getManager()->get('hook_dispatcher');
         foreach ($bundles as $bundle) {
             $hookManager->registerProviderBundle($bundle);
@@ -138,6 +150,8 @@ class HookUtil
      */
     public static function unregisterProviderBundles(array $bundles)
     {
+        @trigger_error('HookUtil is deprecated. please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         $hookManager = ServiceUtil::getManager()->get('hook_dispatcher');
         foreach ($bundles as $bundle) {
             $hookManager->unregisterProviderBundle($bundle);
@@ -155,6 +169,8 @@ class HookUtil
      */
     public static function registerSubscriberBundles(array $bundles)
     {
+        @trigger_error('HookUtil is deprecated. please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         $hookManager = ServiceUtil::getManager()->get('hook_dispatcher');
         foreach ($bundles as $bundle) {
             $hookManager->registerSubscriberBundle($bundle);
@@ -174,6 +190,8 @@ class HookUtil
      */
     public static function unregisterSubscriberBundles(array $bundles)
     {
+        @trigger_error('HookUtil is deprecated. please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         $hookManager = ServiceUtil::getManager()->get('hook_dispatcher');
         foreach ($bundles as $bundle) {
             $hookManager->unregisterSubscriberBundle($bundle);
@@ -184,6 +202,8 @@ class HookUtil
 
     public static function getProviderAreasByOwner($moduleName)
     {
+        @trigger_error('HookUtil is deprecated. please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         $hookManager = ServiceUtil::getManager()->get('hook_dispatcher');
 
         return $hookManager->getProviderAreasByOwner($moduleName);
@@ -191,6 +211,8 @@ class HookUtil
 
     public static function getSubscriberAreasByOwner($moduleName)
     {
+        @trigger_error('HookUtil is deprecated. please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         $hookManager = ServiceUtil::getManager()->get('hook_dispatcher');
 
         return $hookManager->getSubscriberAreasByOwner($moduleName);
@@ -198,6 +220,8 @@ class HookUtil
 
     public static function getOwnerByArea($areaName)
     {
+        @trigger_error('HookUtil is deprecated. please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         $hookManager = ServiceUtil::getManager()->get('hook_dispatcher');
 
         return $hookManager->getOwnerByArea($areaName);
@@ -205,6 +229,8 @@ class HookUtil
 
     public static function getBindingsFor($areaName)
     {
+        @trigger_error('HookUtil is deprecated. please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         $hookManager = ServiceUtil::getManager()->get('hook_dispatcher');
 
         return $hookManager->getBindingsFor($areaName);
@@ -212,6 +238,8 @@ class HookUtil
 
     public static function setBindOrder($subscriberAreaName, array $providerAreas)
     {
+        @trigger_error('HookUtil is deprecated. please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         $hookManager = ServiceUtil::getManager()->get('hook_dispatcher');
 
         return $hookManager->setBindOrder($subscriberAreaName, $providerAreas);
@@ -219,6 +247,8 @@ class HookUtil
 
     public static function getBindingBetweenAreas($subscriberArea, $providerArea)
     {
+        @trigger_error('HookUtil is deprecated. please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         $hookManager = ServiceUtil::getManager()->get('hook_dispatcher');
 
         return $hookManager->getBindingBetweenAreas($subscriberArea, $providerArea);
@@ -226,6 +256,8 @@ class HookUtil
 
     public static function isAllowedBindingBetweenAreas($subscriberArea, $providerArea)
     {
+        @trigger_error('HookUtil is deprecated. please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         $hookManager = ServiceUtil::getManager()->get('hook_dispatcher');
 
         return $hookManager->isAllowedBindingBetweenAreas($subscriberArea, $providerArea);
@@ -233,6 +265,8 @@ class HookUtil
 
     public static function getBindingsBetweenOwners($subscriberOwner, $providerOwner)
     {
+        @trigger_error('HookUtil is deprecated. please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         $hookManager = ServiceUtil::getManager()->get('hook_dispatcher');
 
         return $hookManager->getBindingsBetweenOwners($subscriberOwner, $providerOwner);

@@ -13,6 +13,7 @@ namespace Zikula\Common\I18n;
 
 /**
  * Zikula Translate helper.
+ * @deprecated remove at Core-2.0
  */
 class Translator implements TranslatableInterface
 {

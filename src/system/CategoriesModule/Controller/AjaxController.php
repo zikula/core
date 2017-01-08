@@ -20,7 +20,6 @@ use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\Core\Response\Ajax\BadDataResponse;
 use Zikula\Core\Response\Ajax\ForbiddenResponse;
 use Zikula\Core\Response\Ajax\NotFoundResponse;
-use ZLanguage;
 
 /**
  * @Route("/ajax")
@@ -133,7 +132,7 @@ class AjaxController extends AbstractController
             'mode' => $mode,
             'category' => $editCat,
             'attributes' => $attributes,
-            'languages' => ZLanguage::getInstalledLanguages()
+            'languages' => $this->get('zikula_settings_module.locale_api')->getSupportedLocales()
         ];
 
         $result = [
@@ -324,7 +323,7 @@ class AjaxController extends AbstractController
         $cid = $request->request->get('cid');
 
         $allCats = $this->get('zikula_categories_module.api.category')->getSubCategories(1, true, true, true, false, true, $cid);
-        $selector = $this->get('zikula_categories_module.html_tree_helper')->getSelector($allCats, 'id', '0', 'category[parent_id]', 0, '', 0, '', false, false, true, 1, false, 'form-control');
+        $selector = $this->get('zikula_categories_module.html_tree_helper')->getSelector_Categories($allCats, 'id', '0', 'category[parent_id]', 0, '', 0, '', false, false, true, 1, false, 'form-control');
 
         $result = [
             'result' => $this->renderView('@ZikulaCategoriesModule/Ajax/delete.html.twig', [

@@ -36,6 +36,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         parent::initialize($query, $request, $attributes, $cookies, $files, $server, $content);
         $this->query = new Zikula_Bag_ParameterBag($query);
         $this->request = new Zikula_Bag_ParameterBag($request);
@@ -49,6 +51,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function getMethod()
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         return $this->server->get('REQUEST_METHOD');
     }
 
@@ -61,6 +65,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function getGet()
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         LogUtil::log('Zikula_Request_Http->getGet() is deprecated, please use $request->query', E_USER_DEPRECATED);
 
         return $this->query;
@@ -75,6 +81,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function getPost()
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         LogUtil::log('Zikula_Request_Http->getPost() is deprecated, please use $request->request', E_USER_DEPRECATED);
 
         return $this->request;
@@ -87,6 +95,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function getCookie()
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         return $this->cookies;
     }
 
@@ -99,6 +109,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function getServer()
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         LogUtil::log('Zikula_Request_Http->getServer() is deprecated, please use $request->server', E_USER_DEPRECATED);
 
         return $this->server;
@@ -111,6 +123,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function getEnv()
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         // this is not defined!
         //return $this->env;
         return null;
@@ -123,6 +137,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function getArgs()
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         return $this->attributes->all();
     }
 
@@ -135,6 +151,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function getFiles()
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         LogUtil::log('Zikula_Request_Http->getFiles() is deprecated, please use $request->files', E_USER_DEPRECATED);
 
         return $this->files;
@@ -147,6 +165,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function getSession()
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         return $this->session;
     }
 
@@ -159,6 +179,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function setSession(SessionInterface $session)
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         $this->session = $session;
     }
 
@@ -172,6 +194,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function isGet()
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         LogUtil::log(sprintf('%s is deprecated use isMethod(\'GET\') instead', __METHOD__), E_USER_DEPRECATED);
 
         return $this->isMethod('GET');
@@ -187,6 +211,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function isPost()
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         LogUtil::log(sprintf('%s is deprecated use isMethod(\'POST\') instead', __METHOD__), E_USER_DEPRECATED);
 
         return $this->isMethod('POST');
@@ -202,6 +228,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function isPut()
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         LogUtil::log(sprintf('%s is deprecated use isMethod(\'PUT\') instead', __METHOD__), E_USER_DEPRECATED);
 
         return $this->isMethod('PUT');
@@ -217,6 +245,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function isDelete()
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         LogUtil::log(sprintf('%s is deprecated use isMethod(\'DELETE\') instead', __METHOD__), E_USER_DEPRECATED);
 
         return $this->isMethod('DELETE');
@@ -232,6 +262,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function isHead()
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         LogUtil::log(sprintf('%s is deprecated use isMethod(\'HEAD\') instead', __METHOD__), E_USER_DEPRECATED);
 
         return $this->isMethod('HEAD');
@@ -247,6 +279,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function isOptions()
     {
+        @trigger_error('AbstractRequest is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         LogUtil::log(sprintf('%s is deprecated use isMethod(\'OPTIONS\') instead', __METHOD__), E_USER_DEPRECATED);
 
         return $this->isMethod('OPTIONS');

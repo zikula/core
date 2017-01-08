@@ -42,7 +42,7 @@ class InstallerController extends AbstractController
         }
 
         // check php
-        $ini_warnings = $this->util->initPhp();
+        $ini_warnings = $this->controllerHelper->initPhp();
         if (count($ini_warnings) > 0) {
             $request->getSession()->getFlashBag()->add('warning', implode('<hr>', $ini_warnings));
         }
@@ -54,7 +54,7 @@ class InstallerController extends AbstractController
         if ($currentStage instanceof WizardCompleteInterface) {
             return $currentStage->getResponse($request);
         }
-        $templateParams = $this->util->getTemplateGlobals($currentStage);
+        $templateParams = $this->controllerHelper->getTemplateGlobals($currentStage);
         $templateParams['headertemplate'] = '@ZikulaCoreInstaller/installheader.html.twig';
         if ($wizard->isHalted()) {
             $request->getSession()->getFlashBag()->add('danger', $wizard->getWarning());

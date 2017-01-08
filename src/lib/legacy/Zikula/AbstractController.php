@@ -29,6 +29,8 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
 
     public function __construct(Zikula_ServiceManager $serviceManager, \Zikula\Core\AbstractModule $bundle = null)
     {
+        @trigger_error('Zikula_AbstractController is deprecated, please use AbstractController instead.', E_USER_DEPRECATED);
+
         parent::__construct($serviceManager, $bundle);
 
         if ($bundle !== null) {

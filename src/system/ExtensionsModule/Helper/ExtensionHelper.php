@@ -155,7 +155,7 @@ class ExtensionHelper
 
         $this->container->get('zikula.cache_clearer')->clear('symfony');
 
-        if (!\System::isInstalling()) {
+        if ($this->container->getParameter('installed')) {
             // Upgrade succeeded, issue event.
             $event = new ModuleStateEvent($bundle, $extension->toArray());
             $this->container->get('event_dispatcher')->dispatch(CoreEvents::MODULE_UPGRADE, $event);
@@ -281,11 +281,6 @@ class ExtensionHelper
             // moduleMetaData only exists for bundle-type modules
             $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
             $boot->addAutoloaders($this->container->get('kernel'), $moduleMetaData->getAutoload());
-            if ($extension->getType() == self::TYPE_MODULE) {
-                if (is_dir("modules/$osDir/Resources/locale")) {
-                    \ZLanguage::bindModuleDomain($extension->getName());
-                }
-            }
             $moduleClass = $moduleMetaData->getClass();
 
             $bundle = new $moduleClass();

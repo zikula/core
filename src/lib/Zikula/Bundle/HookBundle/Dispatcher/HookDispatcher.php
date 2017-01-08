@@ -87,9 +87,8 @@ class HookDispatcher implements HookDispatcherInterface
             $this->loadRuntimeHandlers();
             $this->loaded = true;
         }
-        $hook->setName($name);
 
-        $this->decorateHook($hook);
+        $this->decorateHook($name, $hook);
         if (!$hook->getAreaId()) {
             return $hook;
         }
@@ -322,11 +321,12 @@ class HookDispatcher implements HookDispatcherInterface
     /**
      * Decorate hook with required metadata.
      *
+     * @param $name
      * @param Hook $hook
      */
-    private function decorateHook(Hook $hook)
+    private function decorateHook($name, Hook $hook)
     {
-        $owningSide = $this->storage->getRuntimeMetaByEventName($hook->getName());
+        $owningSide = $this->storage->getRuntimeMetaByEventName($name);
         if ($owningSide) {
             $hook->setAreaId($owningSide['areaid']);
             if (!$hook->getCaller()) {

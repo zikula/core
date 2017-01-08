@@ -23,6 +23,7 @@ use Zikula_Event;
 
 /**
  * Doctrine listeners.
+ * @deprecated remove at Core-2.0
  */
 class Doctrine1ConnectorListener implements EventSubscriberInterface
 {
@@ -33,7 +34,14 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
      */
     protected $doctrineManager;
 
+    /**
+     * @var ContainerInterface
+     */
     private $container;
+
+    /**
+     * @var EventDispatcherInterface
+     */
     private $dispatcher;
 
     public function __construct(ContainerInterface $container, EventDispatcherInterface $dispatcher)
@@ -141,9 +149,7 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
                 $connection->setCollate($connectionInfo['collate']);
             }
         } catch (\Exception $e) {
-            //if (!System::isInstalling()) {
-            //    throw new Exception(__('Error setting database characterset and collation.'));
-            //}
+            // do nothing
         }
 
         if ($connectionInfo['dbdriver'] != 'oracle') {
@@ -171,7 +177,7 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
     public function configureCache(Zikula_Event $event)
     {
         $manager = $event->getSubject();
-        if (!System::isInstalling() && $this->container['dbcache.enable']) {
+        if ($this->container->getParameter('installed') && $this->container['dbcache.enable']) {
             $type = $this->container['dbcache.type'];
 
             // Setup Doctrine Caching

@@ -35,8 +35,7 @@ class EntityLifecycleListener extends AbstractEntityLifecycleListener
             return;
         }
 
-        $requestStack = ServiceUtil::get('request_stack');
-        if (null === $requestStack->getCurrentRequest()) {
+        if (null === $this->container->get('request_stack')->getCurrentRequest()) {
             return;
         }
 

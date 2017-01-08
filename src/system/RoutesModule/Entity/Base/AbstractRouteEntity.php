@@ -277,7 +277,6 @@ abstract class AbstractRouteEntity extends EntityAccess
         $this->_bypassValidation = $_bypassValidation;
     }
     
-    
     /**
      * Returns the id.
      *

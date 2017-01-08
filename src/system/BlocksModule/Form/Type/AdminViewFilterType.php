@@ -15,6 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\BlocksModule\Api\BlockApi;
+use Zikula\Common\Translator\IdentityTranslator;
 
 class AdminViewFilterType extends AbstractType
 {
@@ -43,7 +44,8 @@ class AdminViewFilterType extends AbstractType
                 ]
             ])
             ->add('language', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'choices' => \ZLanguage::getInstalledLanguageNames(),
+                'choices' => $options['localeChoices'],
+                'choices_as_values' => true,
                 'required' => false,
                 'placeholder' => $options['translator']->__('All'),
                 'attr' => [
@@ -52,9 +54,10 @@ class AdminViewFilterType extends AbstractType
             ])
             ->add('active', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'choices' => [
-                    BlockApi::BLOCK_ACTIVE => $options['translator']->__('Active'),
-                    BlockApi::BLOCK_INACTIVE => $options['translator']->__('Inactive'),
+                    $options['translator']->__('Active') => BlockApi::BLOCK_ACTIVE,
+                    $options['translator']->__('Inactive') => BlockApi::BLOCK_INACTIVE,
                 ],
+                'choices_as_values' => true,
                 'required' => false,
                 'placeholder' => $options['translator']->__('All'),
                 'attr' => [
@@ -88,9 +91,10 @@ class AdminViewFilterType extends AbstractType
             'attr' => [
                 'class' => 'form form-inline',
             ],
-            'translator' => null,
+            'translator' => new IdentityTranslator(),
             'moduleChoices' => [],
-            'positionChoices' => []
+            'positionChoices' => [],
+            'localeChoices' => ['English' => 'en']
         ]);
     }
 }

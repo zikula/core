@@ -191,12 +191,6 @@ class BundleSyncHelper
             if (empty($bundleVersionArray['capabilities']['user']) && file_exists($bundle->getPath().'/Controller/UserController.php')) {
                 $bundleVersionArray['capabilities']['user'] = ['url' => \ModUtil::url($bundle->getName(), 'user', 'index')];
             }
-
-            // loads the gettext domain for 3rd party bundles
-            if (!strpos($bundle->getPath(), 'bundles') === false) {
-                \ZLanguage::bindModuleDomain($bundle->getName());
-            }
-
             $bundleVersionArray['capabilities'] = serialize($bundleVersionArray['capabilities']);
             $bundleVersionArray['securityschema'] = serialize($bundleVersionArray['securityschema']);
             $bundleVersionArray['dependencies'] = serialize($bundleVersionArray['dependencies']);
@@ -488,7 +482,7 @@ class BundleSyncHelper
      */
     private function isCoreCompatible($compatibilityString)
     {
-        $coreVersion = new version(\Zikula_Core::VERSION_NUM);
+        $coreVersion = new version(\ZikulaKernel::VERSION);
         $requiredVersionExpression = new expression($compatibilityString);
 
         return $requiredVersionExpression->satisfiedBy($coreVersion);

@@ -28,6 +28,8 @@ final class ORM extends BaseAdapterORM implements StandardFieldsAdapter
      */
     public function getUserIdValue(ClassMetadata $meta, $field)
     {
+        @trigger_error('StandardFields extension is deprecated, please use Blameable and Timestampable instead.', E_USER_DEPRECATED);
+
         return \SessionUtil::getVar('uid', 0);
     }
 }

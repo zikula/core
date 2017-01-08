@@ -7,7 +7,7 @@ parameters:
 
 services:
     zikula_zauth_module.helper.administration_actions_helper:
-        class: %zikula_zauth_module.helper.administration_actions_helper.class%
+        class: "%zikula_zauth_module.helper.administration_actions_helper.class%"
         arguments:
             - "@zikula_permissions_module.api.permission"
             - "@router"
@@ -16,7 +16,7 @@ services:
             - "@zikula_users_module.user_repository"
 
     zikula_zauth_module.helper.file_io:
-        class: %zikula_zauth_module.helper.file_io.class%
+        class: "%zikula_zauth_module.helper.file_io.class%"
         lazy: true
         arguments:
             - "@zikula_extensions_module.api.variable"
@@ -30,7 +30,7 @@ services:
             - "@zikula_zauth_module.api.password"
 
     zikula_zauth_module.helper.lost_password_verification_helper:
-        class: %zikula_zauth_module.helper.lost_password_verification_helper.class%
+        class: "%zikula_zauth_module.helper.lost_password_verification_helper.class%"
         lazy: true
         arguments:
             - "@zikula_zauth_module.user_verification_repository"
@@ -38,7 +38,7 @@ services:
             - "@zikula_zauth_module.api.password"
 
     zikula_zauth_module.helper.registration_verification_helper:
-        class: %zikula_zauth_module.helper.registration_verification_helper.class%
+        class: "%zikula_zauth_module.helper.registration_verification_helper.class%"
         lazy: true
         arguments:
             - "@zikula_permissions_module.api.permission"
@@ -49,7 +49,7 @@ services:
             - "@zikula_zauth_module.api.password"
 
     zikula_zauth_module.helper.mail_helper:
-        class: %zikula_zauth_module.helper.mail_helper.class%
+        class: "%zikula_zauth_module.helper.mail_helper.class%"
         lazy: true
         arguments:
             - "@translator.default"

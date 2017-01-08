@@ -34,6 +34,9 @@ application "Routes" {
         skipFiles "
             .travis.yml,
             CHANGELOG.md
+        "
+        markFiles "
+            Base/AbstractRoutesModuleInstaller.php,
             Container/LinkContainer.php,
             Entity/Repository/RouteRepository.php,
             Form/Handler/Route/EditHandler.php,

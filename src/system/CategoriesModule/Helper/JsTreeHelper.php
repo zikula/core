@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula_Tree;
 
 /**
  * JS Tree helper functions for the categories module.

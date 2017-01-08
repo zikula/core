@@ -1,7 +1,36 @@
 CHANGELOG - ZIKULA 1.4.x
 ------------------------
 
-* 1.4.5 (?)
+* 1.4.6 (?)
+
+ - BC Breaks:
+    - LocaleApi (introduced in 1.4.4) has been refactored and eliminates access to locale metadata.
+
+ - Deprecated:
+    - \StreamReader_*
+    - all classes in zrc/lib/i18n (e.g. ZGettext, ZLanguage, etc)
+    - \Zikula_Core::VERSION_* constants are replaced by constants in \ZikulaKernel
+        (\Zikula_Core was already deprecated long ago)
+    - \Zikula_Core::VERSION_ID will not be continued in Core-2.0
+    - \Zikula\Common\I18n\*
+
+ - Fixes:
+    - Fixed broken categories selector for legacy extensions (#3356).
+    - Fixed problems in categories editing (#3372).
+    - Fixed deleting categories for legacy extensions (#3373).
+    - Fixed accidentally activated ZikulaPageLockModule on core upgrade (#3355)
+    - Fixed wrong join criteria in Groups user api (#3361).
+
+ - Features:
+    - ?
+
+ - Core-2.0 Features:
+    - ?
+
+ - Vendor updates:
+    - ?
+
+* 1.4.5 (2017-01-01)
 
  - BC Breaks:
     - ?
@@ -15,31 +44,44 @@ CHANGELOG - ZIKULA 1.4.x
     - Fixed css pathes in asset merger if the core is not installed in a subdirectory (#3280, #3294).
     - Added `getUsername` method to `UserEntity` required by Blameable.
     - Fixed link to admin image on hooks editing page.
+    - Fixed adding absolute urls as pagevars (#3325).
+    - Fixed reflection of updated values after editing permission rules (#3311).
+    - Fixed event initialisation for newly added permission rules (#3317).
+    - Allow display of legacy blocks (#3332).
+    - Several fixes for the Categories module (#3334).
 
  - Features:
     - ?
 
  - Core-2.0 Features:
+    - Added new category apis (#3208, #3215).
     - Convert all service definitions from xml to yml (#3269, #3217).
     - Fetch Webshim (vendor) using composer (#3271, #3262).
     - Removed custom JS compression from Jenkins build in favor of AssetMerger service (#3272, #3250).
     - Template overrides are also considered in sub requests (e.g. embedding a Formicula form into a Content page) (#3234).
-    - Implement PasswordApi in ZAuthModule (#3175, #3289)
+    - Implemented PasswordApi in ZAuthModule (#3175, #3289).
+    - Migrated many parts of the Categories module to Symfony forms (#2924, #3334).
+    - Added new Javascript Translation via BazingaJsTranslationBundle (#2601, #2487, #3338)
 
  - Vendor updates:
     - afarkas/webshim installed at 1.16.0
     - composer installers updated from 1.0.25 to 1.2.0
-    - gedmo/doctrine-extensions updated from 2.4.24 to 2.4.25
+    - doctrine orm updated from 2.5.5 to 2.5.6
+    - gedmo/doctrine-extensions updated from 2.4.24 to 2.4.26
+    - justinrainbow/json-schema updated from 4.0.1 to 4.1.0
     - php-markdown updated from 1.6.0 to 1.7.0
     - sensio/distribution-bundle updated from 5.0.14 to 5.0.15
     - sensio/framework-extra-bundle updated from 3.0.16 to 3.0.18
     - sensio/generator-bundle updated from 3.0.11 to 3.1.2
     - symfony updated from 2.8.14 to 2.8.15
-    - symfony/swiftmailer-bundle updated from 2.3.11 to 2.4.0
-    - twig updated from 1.28.2 to 1.29.0
+    - symfony/swiftmailer-bundle updated from 2.3.11 to 2.4.2
+    - swiftmailer updated from 5.4.3 to 5.4.5
+    - twig updated from 1.28.2 to 1.30.0
     - twig-extensions updated from 1.3.0 to 1.4.1
+    - typeahead.js updated from 1.0.1 to 1.1.0
     - underscore updated from 1.4.3 to 1.8.3
     - underscore.string updated from 2.3.0 to 3.3.4
+    - willdurand/js-translation-bundle installed at 2.6.2
 
 * 1.4.4 (2016-12-08)
 

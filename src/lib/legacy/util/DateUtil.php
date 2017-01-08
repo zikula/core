@@ -32,6 +32,8 @@ class DateUtil
      */
     public static function getDatetime($time = null, $format = null, $translateFormat = true)
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         if (is_null($format)) {
             $format = DATEFORMAT_FIXED;
         }
@@ -96,6 +98,8 @@ class DateUtil
      */
     public static function transformInternalDateTime($timestamp)
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         return self::strftime(DATEFORMAT_FIXED, $timestamp);
     }
 
@@ -108,6 +112,8 @@ class DateUtil
      */
     public static function transformInternalDate($timestamp)
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         return self::strftime(DATEONLYFORMAT_FIXED, $timestamp);
     }
 
@@ -122,6 +128,8 @@ class DateUtil
      */
     public static function formatDatetime($datetime = null, $format = DATEFORMAT_FIXED, $TZadjust = null)
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         if ($datetime === null) {
             return '';
         }
@@ -171,6 +179,8 @@ class DateUtil
      */
     public static function buildDatetime($year, $month, $day, $hour = 0, $minute = 0, $second = 0, $format = DATEFORMAT_FIXED)
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         $dTime = mktime($hour, $minute, $second, $month, $day, $year);
 
         return self::strftime($format, $dTime);
@@ -192,6 +202,8 @@ class DateUtil
      */
     public static function getDatetime_NextDay($num = 1, $format = DATEFORMAT_FIXED, $year = null, $month = null, $day = null, $hour = null, $minute = null, $second = null)
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         $next = mktime($hour != null ? (int)$hour : date('H'),
                         $minute != null ? (int)$minute : date('i'),
                         $second != null ? (int)$second : date('s'),
@@ -218,6 +230,8 @@ class DateUtil
      */
     public static function getDatetime_NextWeek($num = 1, $format = DATEFORMAT_FIXED, $year = null, $month = null, $day = null, $hour = null, $minute = null, $second = null)
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         $num *= 7;
         $next = mktime($hour != null ? (int)$hour : date('H'),
                         $minute != null ? (int)$minute : date('i'),
@@ -245,6 +259,8 @@ class DateUtil
      */
     public static function getDatetime_NextMonth($num = 1, $format = DATEFORMAT_FIXED, $year = null, $month = null, $day = null, $hour = null, $minute = null, $second = null)
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         $next = mktime($hour != null ? (int)$hour : date('H'),
                         $minute != null ? (int)$minute : date('i'),
                         $second != null ? (int)$second : date('s'),
@@ -271,6 +287,8 @@ class DateUtil
      */
     public static function getDatetime_NextYear($num = 1, $format = DATEFORMAT_FIXED, $year = null, $month = null, $day = null, $hour = null, $minute = null, $second = null)
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         $next = mktime($hour != null ? (int)$hour : date('H'),
                         $minute != null ? (int)$minute : date('i'),
                         $second != null ? (int)$second : date('s'),
@@ -291,6 +309,8 @@ class DateUtil
      */
     public static function getDatetime_Date($datetime = '', $format = DATEFORMAT_FIXED)
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         if (!$datetime) {
             $datetime = self::getDatetime();
         }
@@ -317,6 +337,8 @@ class DateUtil
      */
     public static function getDatetime_Time($datetime = '', $format = DATEFORMAT_FIXED)
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         if (!$datetime) {
             $datetime = self::getDatetime();
         }
@@ -352,6 +374,8 @@ class DateUtil
      */
     public static function getDatetime_Field($datetime, $field)
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         if (!$datetime) {
             $datetime = self::getDatetime();
         }
@@ -393,6 +417,8 @@ class DateUtil
      */
     public static function getDatetimeDiff($date1, $date2)
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         if (!is_numeric($date1)) {
             $date1 = strtotime($date1);
         }
@@ -432,6 +458,8 @@ class DateUtil
      */
     public static function getDatetimeDiff_AsField($date1, $date2, $field = 5)
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         if (!is_numeric($date1)) {
             $date1 = strtotime($date1);
         }
@@ -472,6 +500,8 @@ class DateUtil
      */
     public static function getDateofKW($day, $kw, $year, $flag = 's')
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         $wday = date('w', mktime(0, 0, 0, 1, 1, $year)); // 1=Monday,...,7 = Sunday
 
         if ($wday <= 4) {
@@ -505,6 +535,8 @@ class DateUtil
      */
     public static function getDaysInMonth($month, $year)
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         if ($month < 1 || $month > 12) {
             return 0;
         }
@@ -539,6 +571,8 @@ class DateUtil
      */
     public static function getWeekdaysInMonth($month, $year)
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         $nDays = self::getDaysInMonth($month, $year);
 
         $weekdays = [];
@@ -561,6 +595,8 @@ class DateUtil
      */
     public static function getMonthDates($month, $year)
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         $dates = [];
         $days = self::getDaysInMonth($month, $year);
 
@@ -581,6 +617,8 @@ class DateUtil
      */
     public static function parseUIDate($text, $format = null)
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         return self::parseUIDateTime($text, $format);
     }
 
@@ -594,6 +632,8 @@ class DateUtil
      */
     public static function parseUIDateTime($text, $dateformat = null)
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         $format = self::getDateFormatData($dateformat);
         $yearPos = $format['matches']['year'];
         $monthPos = $format['matches']['month'];
@@ -648,6 +688,8 @@ class DateUtil
      */
     public static function makeTimestamp($string = '')
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         if (empty($string)) {
             // use 'now'
             $time = time();
@@ -679,6 +721,8 @@ class DateUtil
      */
     public static function getTimezone()
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         $ts = self::makeTimestamp();
         $tz = date('O', $ts);
 
@@ -700,6 +744,8 @@ class DateUtil
      */
     public static function getTimezoneText($tz = null)
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         if (!is_numeric($tz)) {
             return false;
         }
@@ -720,6 +766,8 @@ class DateUtil
      */
     public static function getTimezones()
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         return [
             '-12' => __('(GMT -12:00 hours) Baker Island'),
             '-11' => __('(GMT -11:00 hours) Midway Island, Samoa'),
@@ -771,6 +819,8 @@ class DateUtil
      */
     public static function getTimezoneAbbr()
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         $ts = self::makeTimestamp();
 
         return date('T', $ts);
@@ -783,6 +833,8 @@ class DateUtil
      */
     public static function getTimezoneUserDiff()
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         $srv_tz = System::getVar('timezone_server');
         $usr_tz = UserUtil::getVar('tzoffset') ? UserUtil::getVar('tzoffset') : System::getVar('timezone_offset');
 
@@ -799,6 +851,8 @@ class DateUtil
      */
     public static function strftime($format, $timestamp = null)
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         if (empty($format)) {
             return null;
         }
@@ -855,6 +909,8 @@ class DateUtil
      */
     public static function getDateFormatData($dateformat = null)
     {
+        @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
+
         if (is_null($dateformat)) {
             $dateformat = __('%Y-%m-%d');
         }
@@ -884,7 +940,6 @@ class DateUtil
             $matchCount = count($matches);
             // validate separator
             if ($matches[2] != $matches[4]) {
-                // TODO A throw exception here (dateformat separators must match) - drak
                 throw new \Exception(__f('Dateformat separators must be the same in %s', $dateformat));
             }
 
@@ -913,7 +968,6 @@ class DateUtil
             $format[] = $matches[5]; // position 3
             if ($matchCount > 8) {
                 if ($matchCount == 11 && $matches[7] != $matches[9]) {
-                    // TODO A throw exception here (dateformat separators must match) - drak
                     throw new \Exception(__f('Dateformat time separators must be the same in %s', $dateformat));
                 }
 
@@ -959,7 +1013,6 @@ class DateUtil
             ];
         }
 
-        // TODO A throw exception here in 1.3.0 - drak
         throw new \Exception(__f('Dateformat did not match known format in %s', $dateformat));
     }
 }

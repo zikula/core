@@ -29,6 +29,8 @@ class Zikula_Workflow_Util
      */
     public static function loadSchema($schema = 'standard', $module = null)
     {
+        @trigger_error('Old workflow system is deprecated, please use Symfony workflows instead.', E_USER_DEPRECATED);
+
         static $workflows;
 
         if (!isset($workflows)) {
@@ -84,6 +86,8 @@ class Zikula_Workflow_Util
      */
     public static function _findpath($file, $module = null)
     {
+        @trigger_error('Old workflow system is deprecated, please use Symfony workflows instead.', E_USER_DEPRECATED);
+
         // if no module specified, default to calling module
         if (empty($module)) {
             $module = ModUtil::getName();
@@ -145,6 +149,8 @@ class Zikula_Workflow_Util
      */
     public static function executeAction($schema, &$obj, $actionID, $table = null, $module = null, $idcolumn = 'id')
     {
+        @trigger_error('Old workflow system is deprecated, please use Symfony workflows instead.', E_USER_DEPRECATED);
+
         if (!isset($obj)) {
             throw new \Exception(__f('%1$s: %2$s not set.', ['Zikula_Workflow_Util', 'obj']));
         }
@@ -182,17 +188,19 @@ class Zikula_Workflow_Util
       */
      public static function deleteWorkflowsForModule($module)
      {
+         @trigger_error('Old workflow system is deprecated, please use Symfony workflows instead.', E_USER_DEPRECATED);
+
          $theModule = isset($module) ? $module : ModUtil::getName();
 
-        //This is a static function, so we have to use ServiceUtil to get the entity manager
-        $entityManager = ServiceUtil::getManager()->get('doctrine.orm.default_entity_manager');
+         //This is a static function, so we have to use ServiceUtil to get the entity manager
+         $entityManager = ServiceUtil::getManager()->get('doctrine.orm.default_entity_manager');
 
-        //create the dql query.
-        $query = $entityManager->createQueryBuilder()
-            ->delete('Zikula\Core\Doctrine\Entity\WorkflowEntity', 'w')
-            ->where('w.module = :module')
-            ->setParameter('module', $theModule)
-            ->getQuery();
+         //create the dql query.
+         $query = $entityManager->createQueryBuilder()
+             ->delete('Zikula\Core\Doctrine\Entity\WorkflowEntity', 'w')
+             ->where('w.module = :module')
+             ->setParameter('module', $theModule)
+             ->getQuery();
 
          $result = $query->execute();
 
@@ -208,6 +216,8 @@ class Zikula_Workflow_Util
      */
     public static function deleteWorkflow($obj)
     {
+        @trigger_error('Old workflow system is deprecated, please use Symfony workflows instead.', E_USER_DEPRECATED);
+
         $workflow = $obj['__WORKFLOW__'];
         $idColumn = $workflow['obj_idcolumn'];
 
@@ -240,6 +250,8 @@ class Zikula_Workflow_Util
      */
     public static function getActionsByState($schemaName, $module = null, $state = 'initial', $obj = [])
     {
+        @trigger_error('Old workflow system is deprecated, please use Symfony workflows instead.', E_USER_DEPRECATED);
+
         if (!isset($module)) {
             $module = ModUtil::getName();
         }
@@ -275,6 +287,8 @@ class Zikula_Workflow_Util
      */
     public static function getActionTitlesByState($schemaName, $module = null, $state = 'initial', $obj = [])
     {
+        @trigger_error('Old workflow system is deprecated, please use Symfony workflows instead.', E_USER_DEPRECATED);
+
         $allowedActions = self::getActionsByState($schemaName, $module, $state, $obj);
 
         if ($allowedActions) {
@@ -301,6 +315,8 @@ class Zikula_Workflow_Util
      */
     public static function getActionsByStateArray($schemaName, $module = null, $state = 'initial', $obj = [])
     {
+        @trigger_error('Old workflow system is deprecated, please use Symfony workflows instead.', E_USER_DEPRECATED);
+
         return self::getActionsByState($schemaName, $module, $state, $obj);
     }
 
@@ -316,6 +332,8 @@ class Zikula_Workflow_Util
      */
     public static function getActionsForObject(&$obj, $dbTable, $idcolumn = 'id', $module = null)
     {
+        @trigger_error('Old workflow system is deprecated, please use Symfony workflows instead.', E_USER_DEPRECATED);
+
         if (!is_array($obj) && !is_object($obj)) {
             throw new \Exception(__f('%1$s: %2$s is not an array nor an object.', ['Zikula_Workflow_Util::getActionsForObject', 'object']));
         }
@@ -353,6 +371,8 @@ class Zikula_Workflow_Util
      */
     public static function getWorkflowForObject(&$obj, $dbTable, $idcolumn = 'id', $module = null)
     {
+        @trigger_error('Old workflow system is deprecated, please use Symfony workflows instead.', E_USER_DEPRECATED);
+
         if (empty($module)) {
             $module = ModUtil::getName();
         }
@@ -429,6 +449,8 @@ class Zikula_Workflow_Util
      */
     public static function getWorkflowState(&$obj, $table, $idcolumn = 'id', $module = null)
     {
+        @trigger_error('Old workflow system is deprecated, please use Symfony workflows instead.', E_USER_DEPRECATED);
+
         if (empty($module)) {
             $module = ModUtil::getName();
         }
@@ -457,6 +479,8 @@ class Zikula_Workflow_Util
      */
     public static function permissionCheck($module, $schema, $obj = [], $permLevel = 'overview', $actionId = null)
     {
+        @trigger_error('Old workflow system is deprecated, please use Symfony workflows instead.', E_USER_DEPRECATED);
+
         // translate permission to something meaningful
         $permLevel = self::translatePermission($permLevel);
 
@@ -503,6 +527,8 @@ class Zikula_Workflow_Util
      */
     public static function translatePermission($permission)
     {
+        @trigger_error('Old workflow system is deprecated, please use Symfony workflows instead.', E_USER_DEPRECATED);
+
         switch (strtolower($permission)) {
             case 'invalid':
                 return ACCESS_INVALID;

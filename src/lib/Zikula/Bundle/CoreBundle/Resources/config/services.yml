@@ -1,6 +1,5 @@
 parameters:
     event_dispatcher.class: Zikula_EventManager
-    controller_resolver.class: Zikula\Bundle\CoreBundle\Controller\ControllerResolver
     zikula_core.controller.main_controller.class: Zikula\Bundle\CoreBundle\Controller\MainController
     zikula_core.controller.legacy_controller.class: Zikula\Bundle\CoreBundle\Controller\LegacyController
     zikula.data_collector.class: Zikula\Bundle\CoreBundle\DataCollector\ZikulaVersionDataCollector
@@ -10,28 +9,28 @@ parameters:
 
 services:
     zikula_core.controller.main_controller:
-        class: %zikula_core.controller.main_controller.class%
+        class: "%zikula_core.controller.main_controller.class%"
         arguments: ["@kernel", "@zikula_extensions_module.api.variable", "@zikula_core.controller.legacy_controller"]
 
     zikula_core.controller.legacy_controller:
-        class: %zikula_core.controller.legacy_controller.class%
+        class: "%zikula_core.controller.legacy_controller.class%"
         arguments: ["@zikula_extensions_module.api.variable", "@zikula_permissions_module.api.permission", "@zikula_extensions_module.extension_repository"]
 
     data_collector.zikula_version:
-        class: %zikula.data_collector.class%
+        class: "%zikula.data_collector.class%"
         public: false
         arguments: ["@zikula_core.common.theme_engine"]
         tags:
             - { name: data_collector, template: "CoreBundle:Collector:ZikulaVersion.html.twig", id: zikula_version, priority: 300 }
 
     zikula.dynamic_config_dumper:
-        class: %zikula.dynamic_config_dumper.class%
+        class: "%zikula.dynamic_config_dumper.class%"
         arguments: ["@=service('kernel').getRootDir() ~ '/config'"]
 
     zikula.cache_clearer:
-        class: %zikula.cache_clearer.class%
+        class: "%zikula.cache_clearer.class%"
         arguments: ["%kernel.cache_dir%", "%router.cache_class_prefix%", "%kernel.container_class%", "@fos_js_routing.extractor", "%jms_i18n_routing.locales%", "@=container.hasParameter('temp_dir') ? parameter('temp_dir') : null"]
 
     zikula.link_container_collector:
-        class: %zikula.link_container_collector.class%
+        class: "%zikula.link_container_collector.class%"
         arguments: ["@event_dispatcher"]

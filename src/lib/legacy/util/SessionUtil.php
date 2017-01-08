@@ -28,6 +28,8 @@ class SessionUtil
      */
     public static function getVar($name, $default = false, $path = '/', $autocreate = true, $overwriteExistingVar = false)
     {
+        @trigger_error('SessionUtil is deprecated, please use Symfony session instead.', E_USER_DEPRECATED);
+
         $session = ServiceUtil::getManager()->get('session');
 
         return $session->get($name, $default, $path);
@@ -46,6 +48,8 @@ class SessionUtil
      */
     public static function setVar($name, $value, $path = '/', $autocreate = true, $overwriteExistingVar = false)
     {
+        @trigger_error('SessionUtil is deprecated, please use Symfony session instead.', E_USER_DEPRECATED);
+
         $session = ServiceUtil::getManager()->get('session');
 
         if ($name == 'uid') {
@@ -66,6 +70,8 @@ class SessionUtil
      */
     public static function delVar($name, $default = false, $path = '/')
     {
+        @trigger_error('SessionUtil is deprecated, please use Symfony session instead.', E_USER_DEPRECATED);
+
         $session = ServiceUtil::getManager()->get('session');
         $value = $session->get($name, $default, $path);
         $session->del($name, $path);
@@ -82,6 +88,8 @@ class SessionUtil
      */
     public static function requireSession()
     {
+        @trigger_error('SessionUtil is deprecated, please use Symfony session instead.', E_USER_DEPRECATED);
+
         EventUtil::getManager()->dispatch('session.require', new \Zikula\Core\Event\GenericEvent());
     }
 
@@ -92,6 +100,8 @@ class SessionUtil
      */
     public static function expire()
     {
+        @trigger_error('SessionUtil is deprecated, please use Symfony session instead.', E_USER_DEPRECATED);
+
         if (self::getVar('uid') == '0') {
             // no need to display expiry for anon users with sessions since it's invisible anyway
             // handle expired sessions differently
@@ -112,6 +122,8 @@ class SessionUtil
      */
     public static function hasExpired()
     {
+        @trigger_error('SessionUtil is deprecated, please use Symfony session instead.', E_USER_DEPRECATED);
+
         return self::getVar('session_expired', false);
     }
 
@@ -124,6 +136,8 @@ class SessionUtil
      */
     public static function regenerate($force = false)
     {
+        @trigger_error('SessionUtil is deprecated, please use Symfony session instead.', E_USER_DEPRECATED);
+
         $session = ServiceUtil::getManager()->get('session');
         $session->migrate($force);
 
@@ -137,6 +151,8 @@ class SessionUtil
      */
     public static function getCookieName()
     {
+        @trigger_error('SessionUtil is deprecated, please use Symfony session instead.', E_USER_DEPRECATED);
+
         // Include number of dots in session name such that we use a different session for
         // www.domain.xx and domain.xx. Otherwise we run into problems with both cookies for
         // www.domain.xx as well as domain.xx being sent to www.domain.xx simultaneously!

@@ -16,6 +16,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityRepository;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Zikula\AdminModule\Entity\AdminModuleEntity;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 class AdminModuleRepository extends EntityRepository implements ObjectRepository, Selectable
 {
@@ -36,9 +37,12 @@ class AdminModuleRepository extends EntityRepository implements ObjectRepository
         return (int)$query->getSingleScalarResult();
     }
 
-    public function setModuleCategory($moduleName, AdminCategoryEntity $adminCategoryEntity)
+    /**
+     * @param ExtensionEntity $moduleEntity
+     * @param AdminCategoryEntity $adminCategoryEntity
+     */
+    public function setModuleCategory(ExtensionEntity $moduleEntity, AdminCategoryEntity $adminCategoryEntity)
     {
-        $moduleEntity = $this->_em->getRepository('ZikulaExtensionsModule:ExtensionEntity')->findOneBy(['name' => $moduleName]);
         $adminModuleEntity = $this->findOneBy(['mid' => $moduleEntity->getId()]);
         if (!isset($adminModuleEntity)) {
             $adminModuleEntity = new AdminModuleEntity();
@@ -50,6 +54,10 @@ class AdminModuleRepository extends EntityRepository implements ObjectRepository
         $this->persistAndFlush($adminModuleEntity);
     }
 
+    /**
+     * @param int $oldCategory
+     * @param int $newCategory
+     */
     public function changeCategory($oldCategory, $newCategory)
     {
         $query = $this->_em->createQueryBuilder()

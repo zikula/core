@@ -41,6 +41,8 @@ class Zikula_ServiceHandler
      */
     public function __construct($id, $methodName)
     {
+        @trigger_error('ServiceHandler is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         $this->id = $id;
         $this->methodName = $methodName;
     }
@@ -52,6 +54,8 @@ class Zikula_ServiceHandler
      */
     public function getId()
     {
+        @trigger_error('ServiceHandler is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         return $this->id;
     }
 
@@ -62,6 +66,8 @@ class Zikula_ServiceHandler
      */
     public function getMethodName()
     {
+        @trigger_error('ServiceHandler is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         return $this->methodName;
     }
 }

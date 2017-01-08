@@ -17,12 +17,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
-use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 use Zikula\Core\Controller\AbstractController;
-use ZLanguage;
 
 /**
  * @Route("/admin")
@@ -42,7 +41,7 @@ class AdminController extends AbstractController
      */
     public function mainAction()
     {
-        @trigger_error('The zikulcategoriesmodule_admin_main action is deprecated. please use zikulacategoriesmodule_admin_view instead.', E_USER_DEPRECATED);
+        @trigger_error('The zikulacategoriesmodule_admin_main action is deprecated. please use zikulacategoriesmodule_admin_view instead.', E_USER_DEPRECATED);
 
         return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
     }
@@ -56,7 +55,7 @@ class AdminController extends AbstractController
      */
     public function indexAction()
     {
-        @trigger_error('The zikulcategoriesmodule_admin_index route is deprecated. please use zikulacategoriesmodule_admin_view instead.', E_USER_DEPRECATED);
+        @trigger_error('The zikulacategoriesmodule_admin_index route is deprecated. please use zikulacategoriesmodule_admin_view instead.', E_USER_DEPRECATED);
 
         return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
     }
@@ -95,23 +94,56 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/rebuild")
-     * @Method("GET")
      * @Template
      *
      * Displays page for rebuilding pathes.
+     *
+     * @param Request $request
      *
      * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have administrative permission for this module
      */
-    public function rebuildAction()
+    public function rebuildAction(Request $request)
     {
         if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
+        $form = $this->createFormBuilder()
+            ->add('rebuild', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Rebuild paths'),
+                'icon' => 'fa-refresh',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
+            ])
+            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Cancel'),
+                'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
+            ])
+            ->getForm();
+
+        if ($form->handleRequest($request)->isValid()) {
+            if ($form->get('rebuild')->isClicked()) {
+                $pathBuilder = $this->get('zikula_categories_module.path_builder_helper');
+                $pathBuilder->rebuildPaths('path', 'name');
+                $pathBuilder->rebuildPaths('ipath', 'id');
+
+                $this->addFlash('status', $this->__('Done! Rebuilt the category paths.'));
+            }
+            if ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', $this->__('Operation cancelled.'));
+            }
+
+            return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
+        }
+
         return [
-            'csrfToken' => $this->get('zikula_core.common.csrf_token_handler')->generate()
+            'form' => $form->createView()
         ];
     }
 
@@ -125,7 +157,7 @@ class AdminController extends AbstractController
      * @param Request $request
      * @param integer $cid
      * @param integer $dr
-     * @param string $mode new|edit
+     * @param string  $mode new|edit
      *
      * @return Response symfony response object
      *
@@ -135,7 +167,7 @@ class AdminController extends AbstractController
     {
         $editCat = '';
 
-        $languages = ZLanguage::getInstalledLanguages();
+        $languages = $this->get('zikula_settings_module.locale_api')->getSupportedLocales();
         $categoryApi = $this->get('zikula_categories_module.api.category');
 
         // indicates that we're editing
@@ -151,10 +183,8 @@ class AdminController extends AbstractController
             }
 
             $editCat = $categoryApi->getCategoryById($cid);
-            if (!$editCat) {
-                $this->addFlash('error', $this->__('Sorry! No such item found.'));
-
-                return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
+            if (null === $editCat) {
+                throw new NotFoundHttpException($this->__('Category not found.'));
             }
         } else {
             // new category creation
@@ -177,8 +207,8 @@ class AdminController extends AbstractController
                 $category = new CategoryEntity(); // need this for validation info
             } elseif (count($validationErrors) > 0) {
                 // if we're back from validation get the posted data from session
-                $newCatActionData = \SessionUtil::getVar('newCatActionData');
-                \SessionUtil::delVar('newCatActionData');
+                $newCatActionData = $request->getSession()->get('newCatActionData');
+                $request->getSession()->del('newCatActionData');
                 $editCat = new CategoryEntity();
                 $editCat = $editCat->toArray();
                 $editCat = array_merge($editCat, $newCatActionData);
@@ -206,7 +236,7 @@ class AdminController extends AbstractController
             }
         }
 
-        $selector = $this->get('zikula_categories_module.html_tree_helper')->getSelector($allCats, 'id',
+        $selector = $this->get('zikula_categories_module.html_tree_helper')->getSelector_Categories($allCats, 'id',
             (isset($editCat['parent_id']) ? $editCat['parent_id'] : 0),
             'category[parent_id]',
             isset($defaultValue) ? $defaultValue : null,
@@ -254,52 +284,9 @@ class AdminController extends AbstractController
      */
     public function editregistryAction(Request $request)
     {
-        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
+        @trigger_error('The zikulacategoriesmodule_admin_editregistry action is deprecated. please use zikulacategoriesmodule_registry_edit instead.', E_USER_DEPRECATED);
 
-        $root_id = $request->query->get('dr', 1);
-        $id = $request->query->get('id', 0);
-
-        $obj = new CategoryRegistryEntity();
-
-        $category_registry = $request->query->get('category_registry', null);
-        if ($category_registry) {
-            $obj->merge($category_registry);
-            $obj = $obj->toArray();
-        }
-
-        $entityManager = $this->get('doctrine')->getManager();
-
-        $registries = $entityManager->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')
-            ->findBy([], ['modname' => 'ASC', 'property' => 'ASC']);
-        $modules = $entityManager->getRepository('ZikulaExtensionsModule:ExtensionEntity')
-            ->findBy(['state' => 3], ['displayname' => 'ASC']);
-
-        $moduleOptions = [];
-        foreach ($modules as $module) {
-            $bundle = \ModUtil::getModule($module['name']);
-            if (null !== $bundle && !class_exists($bundle->getVersionClass())) {
-                // this check just confirming a Core-2.0 spec bundle - remove in 2.0.0
-                // then instead of getting MetaData, could just do ModUtil::getCapabilitiesOf($module['name'])
-                $capabilities = $bundle->getMetaData()->getCapabilities();
-                if (!isset($capabilities['categorizable'])) {
-                    continue; // skip this module if not categorizable
-                }
-            }
-            $moduleOptions[$module['name']] = $module['displayname'];
-        }
-
-        $templateParameters = [
-            'objectArray' => $registries,
-            'moduleOptions' => $moduleOptions,
-            'newobj' => $obj,
-            'root_id' => $root_id,
-            'id' => $id,
-            'csrfToken' => $this->get('zikula_core.common.csrf_token_handler')->generate()
-        ];
-
-        return $this->render('@ZikulaCategoriesModule/Admin/registry_edit.html.twig', $templateParameters);
+        return $this->redirectToRoute('zikulacategoriesmodule_registry_edit', $request->query->all());
     }
 
     /**
@@ -315,22 +302,9 @@ class AdminController extends AbstractController
      */
     public function deleteregistryAction(Request $request)
     {
-        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
+        @trigger_error('The zikulacategoriesmodule_admin_deleteregistry action is deprecated. please use zikulacategoriesmodule_registry_delete instead.', E_USER_DEPRECATED);
 
-        $id = $request->query->get('id', 0);
-
-        $entityManager = $this->get('doctrine')->getManager();
-        $obj = $entityManager->find('ZikulaCategoriesModule:CategoryRegistryEntity', $id);
-
-        $templateParameters = [
-            'data' => $obj->toArray(),
-            'id' => $id,
-            'csrfToken' => $this->get('zikula_core.common.csrf_token_handler')->generate()
-        ];
-
-        return $this->render('@ZikulaCategoriesModule/Admin/registry_delete.html.twig', $templateParameters);
+        return $this->redirectToRoute('zikulacategoriesmodule_registry_delete', $request->query->all());
     }
 
     /**
@@ -355,6 +329,127 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @Route("/update")
+     * @Method("POST")
+     *
+     * Updates a category.
+     *
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
+     */
+    public function updateAction(Request $request)
+    {
+        $this->get('zikula_core.common.csrf_token_handler')->validate($request->request->get('csrfToken'));
+
+        $mode = $request->request->get('mode', 'new');
+        $accessLevel = $mode == 'new' ? ACCESS_ADD : ACCESS_EDIT;
+        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', $accessLevel)) {
+            throw new AccessDeniedException();
+        }
+
+        // get data from post
+        $data = $request->request->get('category', null);
+        if (!isset($data['is_locked'])) {
+            $data['is_locked'] = 0;
+        }
+        if (!isset($data['is_leaf'])) {
+            $data['is_leaf'] = 0;
+        }
+        if (!isset($data['status'])) {
+            $data['status'] = 'I';
+        }
+
+        $args = [];
+        if ($mode != 'new') {
+            foreach (['copy', 'move', 'delete'] as $op) {
+                if ($request->request->get('category_' . $op, null)) {
+                    $args['op'] = $op;
+                    $args['cid'] = (int)$data['id'];
+
+                    return $this->redirectToRoute('zikulacategoriesmodule_admin_op', $args);
+                }
+            }
+
+            if ($request->request->get('category_user_edit', null)) {
+                $_SESSION['category_referer'] = $request->server->get('HTTP_REFERER');
+                $args['dr'] = (int)$data['id'];
+
+                return $this->redirectToRoute('zikulacategoriesmodule_admin_edit', $args);
+            }
+        }
+
+        $processingHelper = $this->get('zikula_categories_module.category_processing_helper');
+        $valid = $processingHelper->validateCategoryData($data);
+        if (!$valid) {
+            if ($mode == 'new') {
+                return $this->redirectToRoute('zikulacategoriesmodule_admin_newcat');
+            } else {
+                $args = [
+                    'mode' => 'edit',
+                    'cid' => (int)$data['id']
+                ];
+
+                return $this->redirectToRoute('zikulacategoriesmodule_admin_edit', $args);
+            }
+        }
+
+        // process name
+        $data['name'] = $processingHelper->processCategoryName($data['name']);
+
+        // process parent
+        $data['parent'] = $processingHelper->processCategoryParent($data['parent_id']);
+        unset($data['parent_id']);
+
+        // process display names
+        $data['display_name'] = $processingHelper->processCategoryDisplayName($data['display_name'], $data['name']);
+
+        $entityManager = $this->get('doctrine')->getManager();
+        if ($mode == 'new') {
+            $category = new CategoryEntity();
+        } else {
+            // get existing category
+            $category = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $data['id']);
+            if (null === $category) {
+                throw new NotFoundHttpException($this->__('Category not found.'));
+            }
+
+            $prevCategoryName = $category['name'];
+        }
+
+        // save category
+        $category->merge($data);
+        $entityManager->persist($category);
+        $entityManager->flush();
+
+        // process path and ipath
+        $category['path'] = $processingHelper->processCategoryPath($data['parent']['path'], $category['name']);
+        $category['ipath'] = $processingHelper->processCategoryIPath($data['parent']['ipath'], $category['id']);
+
+        // process category attributes
+        $attrib_names = $request->request->get('attribute_name', []);
+        $attrib_values = $request->request->get('attribute_value', []);
+        $processingHelper->processCategoryAttributes($category, $attrib_names, $attrib_values);
+
+        $entityManager->flush();
+
+        if ($mode == 'new') {
+            $this->addFlash('status', $this->__f('Done! Inserted the %s category.', ['%s' => $category['name']]));
+        } else {
+            // since a name change will change the object path, we must rebuild it here
+            if ($prevCategoryName != $category['name']) {
+                $this->get('zikula_categories_module.path_builder_helper')->rebuildPaths('path', 'name', $category['id']);
+            }
+
+            $this->addFlash('status', $this->__f('Done! Saved the %s category.', ['%s' => $prevCategoryName]));
+        }
+
+        return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
+    }
+
+    /**
      * @Route("/op")
      *
      * Generic function to handle copy, delete and move operations.
@@ -367,24 +462,26 @@ class AdminController extends AbstractController
      */
     public function opAction(Request $request)
     {
-        $cid = $request->query->get('cid', 1);
+        $cid = $request->query->getInt('cid', 1);
         $root_id = $request->query->get('dr', 1);
         $op = $request->query->get('op', 'NOOP');
+        if (!in_array($op, ['copy', 'move', 'delete'])) {
+            throw new AccessDeniedException();
+        }
 
         if (!$this->hasPermission('ZikulaCategoriesModule::category', "ID::$cid", ACCESS_DELETE)) {
             throw new AccessDeniedException();
         }
 
         $categoryApi = $this->get('zikula_categories_module.api.category');
-
         $category = $categoryApi->getCategoryById($cid);
-        $subCats = $categoryApi->getSubCategories($cid, false, false);
-        $allCats = $categoryApi->getSubCategories($root_id, true, true, true, false, true, $cid);
-        $selector = $this->get('zikula_categories_module.html_tree_helper')->getSelector($allCats);
-        $processingHelper = $this->get('zikula_categories_module.category_processing_helper');
+        if (null === $category) {
+            throw new NotFoundHttpException($this->__('Category not found.'));
+        }
 
         if ($op == 'delete' || $op == 'move') {
             // prevent deletion or move if category is already used
+            $processingHelper = $this->get('zikula_categories_module.category_processing_helper');
             if (!$processingHelper->mayCategoryBeDeletedOrMoved($category)) {
                 if ($op == 'delete') {
                     $this->addFlash('error', $this->__f('Error! Category %s can not be deleted, because it is already used.', ['%s' => $category['name']]));
@@ -396,12 +493,99 @@ class AdminController extends AbstractController
             }
         }
 
+        $isCopy = $op == 'copy';
+        $isMove = $op == 'move';
+        $isDelete = $op == 'delete';
+
+        $parentLabel = $isCopy
+            ? $this->__('Copy this category and all sub-categories of this category into')
+            : $this->__('Move this category and all sub-categories of this category into');
+        $actionLabel = $isCopy ? $this->__('Copy') : ($isMove ? $this->__('Move') : $this->__('Delete'));
+        $actionIcon = $isCopy ? 'files-o' : ($isMove ? 'scissors' : 'trash-o');
+
+        $amountOfSubCategories = 0;
+
+        $builder = $this->createFormBuilder()
+            ->add($op, 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $actionLabel,
+                'icon' => 'fa-' . $actionIcon,
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
+            ])
+            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Cancel'),
+                'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
+            ]);
+
         $templateParameters = [
-            'category' => $category,
-            'numSubcats' => count($subCats),
-            'categorySelector' => $selector,
-            'csrfToken' => $this->get('zikula_core.common.csrf_token_handler')->generate()
+            'category' => $category
         ];
+
+        if ($isDelete) {
+            $subCategories = $categoryApi->getSubCategories($cid, false, false);
+            $amountOfSubCategories = count($subCategories);
+            if ($amountOfSubCategories > 0) {
+                $builder->add('subcatAction', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+                    'label' => $this->__('Action for sub-categories'),
+                    'choices' => [
+                        $this->__('Delete all sub-categories') => 'delete',
+                        $this->__('Move all sub-categories into') => 'move'
+                    ],
+                    'choices_as_values' => true,
+                    'expanded' => true
+                ]);
+            }
+            $templateParameters['amountOfSubCategories'] = $amountOfSubCategories;
+        }
+
+        if (!$isDelete || $amountOfSubCategories > 0) {
+            $builder->add('parent', 'Zikula\CategoriesModule\Form\Type\CategoryTreeType', [
+                'label' => $parentLabel,
+                'empty_data' => '/__SYSTEM__',
+                'translator' => $this->get('translator.default'),
+                'includeRoot' => true
+            ]);
+        }
+
+        $form = $builder->getForm();
+
+        if ($form->handleRequest($request)->isValid()) {
+            if ($form->get($op)->isClicked()) {
+                $formData = $form->getData();
+                $copyAndMoveHelper = $this->get('zikula_categories_module.copy_and_move_helper');
+
+                if ($isCopy) {
+                    $copyAndMoveHelper->copyCategoriesByPath($category['ipath'], $formData['parent']);
+                    $this->addFlash('status', $this->__f('Done! Copied the %s category.', ['%s' => $category['name']]));
+                } elseif ($isMove) {
+                    $copyAndMoveHelper->moveCategoriesByPath($category['ipath'], $formData['parent']);
+                    $this->addFlash('status', $this->__f('Done! Moved the %s category.', ['%s' => $category['name']]));
+                } elseif ($isDelete) {
+                    if ($amountOfSubCategories > 0) {
+                        if ($formData['subcatAction'] == 'delete') {
+                            // delete subdirectories
+                            $categoryApi->deleteCategoriesByPath($category['ipath']);
+                        } elseif ($formData['subcatAction'] == 'move') {
+                            // move subdirectories
+                            $copyAndMoveHelper->moveSubCategoriesByPath($category['ipath'], $formData['parent']);
+                            $categoryApi->deleteCategoryById($cid);
+                        }
+                    }
+                    $this->addFlash('status', $this->__f('Done! Deleted the %s category.', ['%s' => $category['name']]));
+                }
+            }
+            if ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', $this->__('Operation cancelled.'));
+            }
+
+            return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
+        }
+
+        $templateParameters['form'] = $form->createView();
 
         return $this->render('@ZikulaCategoriesModule/Admin/' . $op . '.html.twig', $templateParameters);
     }
@@ -422,7 +606,7 @@ class AdminController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        @trigger_error('The zikulcategoriesmodule_admin_preferences route is deprecated. please use zikulacategoriesmodule_config_config instead.', E_USER_DEPRECATED);
+        @trigger_error('The zikulacategoriesmodule_admin_preferences route is deprecated. please use zikulacategoriesmodule_config_config instead.', E_USER_DEPRECATED);
 
         return $this->redirectToRoute('zikulacategoriesmodule_config_config');
     }

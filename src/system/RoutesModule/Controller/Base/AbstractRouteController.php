@@ -373,8 +373,13 @@ abstract class AbstractRouteController extends AbstractController
             throw new \RuntimeException($this->__('Error! Could not determine workflow actions.'));
         }
         
-        // redirect to the list of routes
-        $redirectRoute = 'zikularoutesmodule_route_' . ($isAdmin ? 'admin' : '') . 'view';
+        if ($isAdmin) {
+            // redirect to the list of routes
+            $redirectRoute = 'zikularoutesmodule_route_' . ($isAdmin ? 'admin' : '') . 'view';
+        } else {
+            // redirect to the list of routes
+            $redirectRoute = 'zikularoutesmodule_route_' . ($isAdmin ? 'admin' : '') . 'view';
+        }
         
         // check whether deletion is allowed
         $deleteActionId = 'delete';

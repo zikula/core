@@ -44,19 +44,19 @@ class RouteDumperHelper
     public function dumpJsRoutes($lang = null)
     {
         // determine list of supported languages
-        $langs = [];
-        $installedLanguages = \ZLanguage::getInstalledLanguages();
+        $variableApi = $this->container->get('zikula_extensions_module.api.variable');
+        $installedLanguages = $this->container->get('zikula_settings_module.locale_api')->getSupportedLocales();
         if (isset($lang) && in_array($lang, $installedLanguages)) {
             // use provided lang if available
             $langs = [$lang];
         } else {
-            $multilingual = (bool)\System::getVar('multilingual', 0);
+            $multilingual = (bool)$variableApi->getSystemVar('multilingual', false);
             if ($multilingual) {
                 // get all available locales
                 $langs = $installedLanguages;
             } else {
                 // get only the default locale
-                $langs = [\System::getVar('language_i18n', 'en')]; //$this->container->getParameter('locale');
+                $langs = [$variableApi->getSystemVar('language_i18n', 'en')]; //$this->container->getParameter('locale');
             }
         }
 
@@ -68,7 +68,7 @@ class RouteDumperHelper
             try {
                 unlink($targetPath);
             } catch (\Exception $e) {
-                $errors .= __f("Error: Could not delete '%s' because %s", [$targetPath, $e->getMessage()]);
+                $errors .= $this->container->get('translator.default')->__f("Error: Could not delete '%path' because %msg", ['%path' => $targetPath, '%msg' => $e->getMessage()]);
             }
         }
 

@@ -51,6 +51,8 @@ class Zikula_Tree
      */
     public function __construct(array $config = [])
     {
+        @trigger_error('Zikula_Tree is deprecated.', E_USER_DEPRECATED);
+
         $this->config = [
             'objid'         => 'id',
             'customJSClass' => '',

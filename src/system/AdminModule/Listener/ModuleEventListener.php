@@ -26,6 +26,11 @@ class ModuleEventListener implements EventSubscriberInterface
      */
     protected $variableApi;
 
+    /**
+     * @var bool
+     */
+    private $installed;
+
     public static function getSubscribedEvents()
     {
         return [
@@ -37,10 +42,12 @@ class ModuleEventListener implements EventSubscriberInterface
      * UpdateCheckHelper constructor.
      *
      * @param VariableApi $variableApi VariableApi service instance
+     * @param bool $installed
      */
-    public function __construct(VariableApi $variableApi)
+    public function __construct(VariableApi $variableApi, $installed)
     {
         $this->variableApi = $variableApi;
+        $this->installed = $installed;
     }
 
     /**
@@ -61,7 +68,7 @@ class ModuleEventListener implements EventSubscriberInterface
             $modName = $modInfo['name'];
         }
 
-        if (\System::isInstalling()) {
+        if (!$this->installed) {
             return;
         }
 

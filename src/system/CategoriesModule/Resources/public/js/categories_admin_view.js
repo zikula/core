@@ -10,49 +10,49 @@
         }
         var actions = {
             editItem: {
-                label: /*Zikula.__(*/'Edit'/*)*/,
+                label: Translator.__('Edit'),
                 action: function (obj) {
                     performCategoryContextMenuAction(node, 'edit');
                 },
                 icon: 'fa fa-edit'
             },
             deleteItem: {
-                label: /*Zikula.__(*/'Delete'/*)*/,
+                label: Translator.__('Delete'),
                 action: function (obj) {
                     getCategoryDeleteMenuAction(node);
                 },
                 icon: 'fa fa-remove'
             },
             copyItem: {
-                label: /*Zikula.__(*/'Copy'/*)*/,
+                label: Translator.__('Copy'),
                 action: function (obj) {
                     performCategoryContextMenuAction(node, 'copy');
                 },
                 icon: 'fa fa-copy'
             },
             activateItem: {
-                label: /*Zikula.__(*/'Activate'/*)*/,
+                label: Translator.__('Activate'),
                 action: function (obj) {
                     performCategoryContextMenuAction(node, 'activate');
                 },
                 icon: 'fa fa-check-square-o'
             },
             deactivateItem: {
-                label: /*Zikula.__(*/'Deactivate'/*)*/,
+                label: Translator.__('Deactivate'),
                 action: function (obj) {
                     performCategoryContextMenuAction(node, 'deactivate');
                 },
                 icon: 'fa fa-square-o'
             },
             addItemAfter: {
-                label: /*Zikula.__(*/'Add category (after selected)'/*)*/,
+                label: Translator.__('Add category (after selected)'),
                 action: function (obj) {
                     performCategoryContextMenuAction(node, 'addafter');
                 },
                 icon: 'fa fa-level-up fa-rotate-90'
             },
             addItemInto: {
-                label: /*Zikula.__(*/'Add subcategory (into selected)'/*)*/,
+                label: Translator.__('Add subcategory (into selected)'),
                 action: function (obj) {
                     performCategoryContextMenuAction(node, 'addchild');
                 },
@@ -237,10 +237,9 @@
     function getCategoryDeleteMenuAction(node) {
         var subCats = node.children.length;
         if (subCats > 0) {
-            //var info = Zikula.__f('It contains %s direct sub-categories.', subCats)
-            var info = 'It contains ' + subCats + ' direct sub-categories.'
+            var info = Translator.__f('It contains %amount% direct sub-categories.', {amount: subCats})
                 + ' '
-                + /*Zikula.__(*/"Please choose what to do with this category's sub-categories."/*)*/;
+                + Translator.__("Please choose what to do with this category's sub-categories.");
             $('#deleteWithSubCatInfo').addClass('alert alert-warning').text(info);
         } else {
             $('#deleteWithSubCatInfo').removeClass('alert alert-warning').text('');
@@ -248,9 +247,9 @@
         var deleteModal = $('#categoryDeleteModal');
 
         if (subCats > 0) {
-            deleteModal.find('#cat_delete').hide();
-            deleteModal.find('#cat_delete_all').show();
-            deleteModal.find('#cat_delete_move').show();
+            deleteModal.find('#cat_delete').addClass('hidden');
+            deleteModal.find('#cat_delete_all').removeClass('hidden');
+            deleteModal.find('#cat_delete_move').removeClass('hidden');
         }
         $('#subcat_move').remove();
 
@@ -276,8 +275,8 @@
                         }).success(function(result) {
                             var subcat_move = result.data.result;
                             deleteModal.find('.modal-body').append(subcat_move);
-                            deleteModal.find('#cat_delete_move').hide();
-                            deleteModal.find('#cat_delete_move_action').show();
+                            deleteModal.find('#cat_delete_move').addClass('hidden');
+                            deleteModal.find('#cat_delete_move_action').removeClass('hidden');
                         }).error(function(result) {
                             alert(result.status + ': ' + result.statusText);
                         }).always(function() {
@@ -300,10 +299,10 @@
         deleteModal.modal();
         deleteModal.on('hidden.bs.modal', function (e) {
             // reset modal to initial state
-            deleteModal.find('#cat_delete').show();
-            deleteModal.find('#cat_delete_all').hide();
-            deleteModal.find('#cat_delete_move').hide();
-            deleteModal.find('#cat_delete_move_action').hide();
+            deleteModal.find('#cat_delete').removeClass('hidden');
+            deleteModal.find('#cat_delete_all').addClass('hidden');
+            deleteModal.find('#cat_delete_move').addClass('hidden');
+            deleteModal.find('#cat_delete_move_action').addClass('hidden');
             $('#button-spinner').remove();
             $('#subcat_move').remove();
         });

@@ -25,6 +25,8 @@ class FileUtil
      */
     public static function getFilebase($filename, $keepDot = false)
     {
+        @trigger_error('FileUtil is deprecated, please use Symfony filesystem and finder components instead.', E_USER_DEPRECATED);
+
         if (!$filename) {
             throw new \Exception(__f('%1$s: %2$s is empty', ['FileUtil::getFilename', 'filename']));
         }
@@ -51,6 +53,8 @@ class FileUtil
      */
     public static function getBasename($filename)
     {
+        @trigger_error('FileUtil is deprecated, please use Symfony filesystem and finder components instead.', E_USER_DEPRECATED);
+
         if (!$filename) {
             throw new \Exception(__f('%1$s: %2$s is empty', ['FileUtil::getBasename', 'filename']));
         }
@@ -68,6 +72,8 @@ class FileUtil
      */
     public static function getExtension($filename, $keepDot = false)
     {
+        @trigger_error('FileUtil is deprecated, please use Symfony filesystem and finder components instead.', E_USER_DEPRECATED);
+
         if (!$filename) {
             throw new \Exception(__f('%1$s: %2$s is empty', ['FileUtil::getExtension', 'filename']));
         }
@@ -94,6 +100,8 @@ class FileUtil
      */
     public static function stripExtension($filename, $keepDot = false)
     {
+        @trigger_error('FileUtil is deprecated, please use Symfony filesystem and finder components instead.', E_USER_DEPRECATED);
+
         if (!$filename) {
             throw new \Exception(__f('%1$s: %2$s is empty', ['FileUtil::stripExtension', 'filename']));
         }
@@ -123,6 +131,8 @@ class FileUtil
      */
     public static function generateRandomFilename($min, $max, $useupper = false, $usenumbers = true, $usespecial = false)
     {
+        @trigger_error('FileUtil is deprecated, please use Symfony filesystem and finder components instead.', E_USER_DEPRECATED);
+
         $rnd = '';
         $chars = 'abcdefghijklmnopqrstuvwxyz';
 
@@ -164,6 +174,8 @@ class FileUtil
      */
     public static function getFiles($rootPath, $recurse = true, $relativePath = true, $extensions = null, $type = null, $nestedData = false, $regexpMatch = null, $regexpMatchCaseSensitive = true)
     {
+        @trigger_error('FileUtil is deprecated, please use Symfony filesystem and finder components instead.', E_USER_DEPRECATED);
+
         $files = [];
         $type  = strtolower($type);
 
@@ -263,6 +275,8 @@ class FileUtil
      */
     public static function mkdirs($path, $mode = 0777, $absolute = false)
     {
+        @trigger_error('FileUtil is deprecated, please use Symfony filesystem and finder components instead.', E_USER_DEPRECATED);
+
         if (is_dir($path)) {
             return true;
         }
@@ -285,6 +299,8 @@ class FileUtil
      */
     public static function deldir($path, $absolute = false)
     {
+        @trigger_error('FileUtil is deprecated, please use Symfony filesystem and finder components instead.', E_USER_DEPRECATED);
+
         $path = DataUtil::formatForOS($path, $absolute);
 
         if ($dh = opendir($path)) {
@@ -311,6 +327,8 @@ class FileUtil
      */
     public static function readFile($filename, $absolute = false)
     {
+        @trigger_error('FileUtil is deprecated, please use Symfony filesystem and finder components instead.', E_USER_DEPRECATED);
+
         if (!strlen($filename)) {
             throw new \Exception(__f('%1$s: %2$s is empty', ['FileUtil::readFile', 'filename']));
         }
@@ -330,6 +348,8 @@ class FileUtil
      */
     public static function readFileLines($filename, $absolute = false)
     {
+        @trigger_error('FileUtil is deprecated, please use Symfony filesystem and finder components instead.', E_USER_DEPRECATED);
+
         $lines = false;
         if ($data = self::readFile($filename, $absolute)) {
             $lines = explode("\n", $data);
@@ -348,6 +368,8 @@ class FileUtil
      */
     public static function readSerializedFile($filename, $absolute = false)
     {
+        @trigger_error('FileUtil is deprecated, please use Symfony filesystem and finder components instead.', E_USER_DEPRECATED);
+
         return unserialize(self::readFile($filename, $absolute));
     }
 
@@ -361,6 +383,8 @@ class FileUtil
      */
     public static function randomizeFilename($filename, $dir)
     {
+        @trigger_error('FileUtil is deprecated, please use Symfony filesystem and finder components instead.', E_USER_DEPRECATED);
+
         $ext = '';
         $time = time();
 
@@ -398,6 +422,8 @@ class FileUtil
      */
     public static function writeFile($filename, $data = '', $absolute = false)
     {
+        @trigger_error('FileUtil is deprecated, please use Symfony filesystem and finder components instead.', E_USER_DEPRECATED);
+
         if (!$filename) {
             throw new \Exception(__f('%1$s: %2$s is empty', ['FileUtil::writeFile', 'filename']));
         }
@@ -418,6 +444,8 @@ class FileUtil
      */
     public static function writeSerializedFile($filename, $data, $absolute = false)
     {
+        @trigger_error('FileUtil is deprecated, please use Symfony filesystem and finder components instead.', E_USER_DEPRECATED);
+
         return self::writeFile($filename, serialize($data), $absolute);
     }
 
@@ -433,6 +461,8 @@ class FileUtil
      */
     public static function uploadFile($key, $destination, $newName = '', $absolute = false)
     {
+        @trigger_error('FileUtil is deprecated, please use Symfony filesystem and finder components instead.', E_USER_DEPRECATED);
+
         if (!$key) {
             throw new \Exception(__f('%s: called with invalid %s.', ['FileUtil::uploadFile', 'key']));
         }
@@ -479,6 +509,8 @@ class FileUtil
      */
     public static function uploadErrorMsg($code)
     {
+        @trigger_error('FileUtil is deprecated, please use Symfony filesystem and finder components instead.', E_USER_DEPRECATED);
+
         $msg = '';
 
         switch ($code) {
@@ -515,6 +547,8 @@ class FileUtil
      */
     public static function exportCSV($datarows, $titlerow = [], $delimiter = ',', $enclosure = '"', $filename = null)
     {
+        @trigger_error('FileUtil is deprecated, please use Symfony filesystem and finder components instead.', E_USER_DEPRECATED);
+
         // check if $datarows is array
         if (!is_array($datarows)) {
             throw new \Exception(__f('%1$s: %2$s is not an array', ['FileUtil::exportCSV', 'datarows']));
@@ -566,6 +600,8 @@ class FileUtil
      */
     public static function getDataDirectory()
     {
+        @trigger_error('FileUtil is deprecated, please use Symfony filesystem and finder components instead.', E_USER_DEPRECATED);
+
         return DataUtil::formatForOS(System::getVar('datadir'));
     }
 }

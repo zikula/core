@@ -589,7 +589,7 @@ class CategoryUtil
     {
         @trigger_error('CategoryUtil is deprecated. please use the html tree helper instead.', E_USER_DEPRECATED);
 
-        return ServiceUtil::get('zikula_categories_module.html_tree_helper')->getSelector($cats, $field, $selectedValue, $name, $defaultValue, $defaultText, $allValue = 0, $allText, $submit, $displayPath, $doReplaceRootCat, $multipleSize, $fieldIsAttribute, $cssClass, $lang);
+        return ServiceUtil::get('zikula_categories_module.html_tree_helper')->getSelector_Categories($cats, $field, $selectedValue, $name, $defaultValue, $defaultText, $allValue = 0, $allText, $submit, $displayPath, $doReplaceRootCat, $multipleSize, $fieldIsAttribute, $cssClass, $lang);
     }
 
     /**

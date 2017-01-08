@@ -6,22 +6,22 @@ parameters:
 
 services:
     zikula.form.type.locale:
-        class: %zikula.form.type.locale.class%
+        class: "%zikula.form.type.locale.class%"
         tags:
             - { name: form.type, alias: zikula_locale }
 
     zikula.form_extension.icon:
-        class: %zikula.form_extension.icon.class%
+        class: "%zikula.form_extension.icon.class%"
         tags:
             - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\ButtonType }
 
     zikula.form_extension.help:
-        class: %zikula.form_extension.help.class%
+        class: "%zikula.form_extension.help.class%"
         tags:
             - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
 
     zikula_form_extension_bundle.form_extension:
-        class: %zikula_form_extension_bundle.form_extension.class%
+        class: "%zikula_form_extension_bundle.form_extension.class%"
         arguments: ["@service_container"]
         tags:
             - { name: twig.extension }

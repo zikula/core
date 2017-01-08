@@ -233,7 +233,7 @@ class AdminInterfaceController extends AbstractController
                 '_route' => $masterRequest->attributes->get('_route'),
                 '_route_params' => $masterRequest->attributes->get('_route_params')
             ],
-            'updateCheckHelper' => $this->get('zikulaadminmodule.update_check_helper')
+            'updateCheckHelper' => $this->get('zikula_admin_module.update_check_helper')
         ]);
     }
 

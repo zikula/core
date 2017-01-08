@@ -36,7 +36,7 @@ class GroupEntity extends EntityAccess
     /**
      * group name
      *
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $name;
 
@@ -56,6 +56,7 @@ class GroupEntity extends EntityAccess
 
     /**
      * group prefix
+     * @deprecated unused
      * @ORM\Column(type="string", length=25)
      */
     private $prefix;
@@ -69,7 +70,7 @@ class GroupEntity extends EntityAccess
 
     /**
      * number of members of the group
-     *
+     * @deprecated unused
      * @ORM\Column(type="integer")
      */
     private $nbuser;
@@ -83,14 +84,14 @@ class GroupEntity extends EntityAccess
 
     /**
      * link for the group
-     *
+     * @deprecated unused
      * @ORM\Column(type="integer")
      */
     private $link;
 
     /**
      * master uid for the group
-     *
+     * @deprecated unused
      * @ORM\Column(type="integer")
      */
     private $uidmaster;
@@ -104,6 +105,11 @@ class GroupEntity extends EntityAccess
      * @ORM\OrderBy({"uname" = "ASC"})
      **/
     private $users;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Zikula\GroupsModule\Entity\GroupApplicationEntity", mappedBy="group")
+     */
+    private $applications;
 
     /**
      * constructor
@@ -120,6 +126,23 @@ class GroupEntity extends EntityAccess
         $this->link = 0;
         $this->uidmaster = 0;
         $this->users = new ArrayCollection();
+        $this->applications = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getApplications()
+    {
+        return $this->applications;
+    }
+
+    /**
+     * @param mixed $applications
+     */
+    public function setApplications($applications)
+    {
+        $this->applications = $applications;
     }
 
     /**

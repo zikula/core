@@ -28,6 +28,8 @@ class BlockUtil
      */
     public static function displayPosition($side, $echo = true, $implode = true)
     {
+        @trigger_error('BlockUtil is deprecated. please use new APIs or Twig extensions instead.', E_USER_DEPRECATED);
+
         static $blockplacements = [];
         static $positions = [];
         static $modname;
@@ -176,6 +178,8 @@ class BlockUtil
      */
     public static function show($modname, $blockname, $blockinfo = [], $blockEntity = null)
     {
+        @trigger_error('BlockUtil is deprecated. please use new APIs or Twig extensions instead.', E_USER_DEPRECATED);
+
         global $blocks_modules;
         $content = '';
         $blockInstance = self::load($modname, $blockname);
@@ -210,6 +214,8 @@ class BlockUtil
      */
     public static function themeBlock($blockinfo)
     {
+        @trigger_error('BlockUtil is deprecated. please use new APIs or Twig extensions instead.', E_USER_DEPRECATED);
+
         static $themeinfo, $themedir, $upb, $downb;
         if (!isset($blockinfo['bid'])) {
             $blockinfo['bid'] = '';
@@ -286,6 +292,8 @@ class BlockUtil
      */
     public static function load($modname, $block)
     {
+        @trigger_error('BlockUtil is deprecated. please use new APIs or Twig extensions instead.', E_USER_DEPRECATED);
+
         $sm = ServiceUtil::getManager();
         $modinfo = ModUtil::getInfoFromName($modname);
         if ($modinfo['state'] != \ModUtil::STATE_ACTIVE) {
@@ -355,6 +363,8 @@ class BlockUtil
      */
     public static function loadAll()
     {
+        @trigger_error('BlockUtil is deprecated. please use new APIs or Twig extensions instead.', E_USER_DEPRECATED);
+
         return \ServiceUtil::get('zikula_blocks_module.api.block')->getAvailableBlockTypes();
         // returns [[ModuleName:FqBlockClassName => ModuleDisplayName/BlockDisplayName]]
         // [[serviceId => ModuleDisplayName/BlockDisplayName]]
@@ -369,6 +379,8 @@ class BlockUtil
      */
     public static function varsFromContent($content)
     {
+        @trigger_error('BlockUtil is deprecated. please use new APIs or Twig extensions instead.', E_USER_DEPRECATED);
+
         // content is now automatically unserialized at the entity level
         return $content;
     }
@@ -382,6 +394,8 @@ class BlockUtil
      */
     public static function varsToContent($vars)
     {
+        @trigger_error('BlockUtil is deprecated. please use new APIs or Twig extensions instead.', E_USER_DEPRECATED);
+
         // content is now automatically serialized at the entity level
         return $vars;
     }
@@ -398,6 +412,8 @@ class BlockUtil
      */
     public static function checkUserBlock($blockinfo)
     {
+        @trigger_error('BlockUtil is deprecated. please use new APIs or Twig extensions instead.', E_USER_DEPRECATED);
+
         if (UserUtil::isLoggedIn()) {
             $uid = UserUtil::getVar('uid');
             $sm = ServiceUtil::getManager();
@@ -425,6 +441,8 @@ class BlockUtil
      */
     public static function getBlocksInfo()
     {
+        @trigger_error('BlockUtil is deprecated. please use new APIs or Twig extensions instead.', E_USER_DEPRECATED);
+
         return ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getall');
     }
 
@@ -438,6 +456,8 @@ class BlockUtil
      */
     public static function getBlockInfo($value, $assocKey = 'bid')
     {
+        @trigger_error('BlockUtil is deprecated. please use new APIs or Twig extensions instead.', E_USER_DEPRECATED);
+
         static $blockinfo = [];
         if (!isset($blockinfo[$assocKey]) || empty($blockinfo[$assocKey])) {
             $blockinfo[$assocKey] = [];
@@ -465,6 +485,8 @@ class BlockUtil
      */
     public static function getInfoByTitle($title)
     {
+        @trigger_error('BlockUtil is deprecated. please use new APIs or Twig extensions instead.', E_USER_DEPRECATED);
+
         return self::getBlockInfo($title, 'title');
     }
 
@@ -477,6 +499,8 @@ class BlockUtil
      */
     public static function blocks($side)
     {
+        @trigger_error('BlockUtil is deprecated. please use new APIs or Twig extensions instead.', E_USER_DEPRECATED);
+
         return self::displayPosition($side);
     }
 
@@ -489,6 +513,8 @@ class BlockUtil
      */
     public static function themesideblock($blockinfo)
     {
+        @trigger_error('BlockUtil is deprecated. please use new APIs or Twig extensions instead.', E_USER_DEPRECATED);
+
         return self::themeBlock($blockinfo);
     }
 }

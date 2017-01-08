@@ -34,6 +34,8 @@ class Zikula_Doctrine_Template_StandardFields extends Doctrine_Template
      */
     public function __construct(array $options = [])
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         parent::__construct($options);
     }
 
@@ -44,6 +46,8 @@ class Zikula_Doctrine_Template_StandardFields extends Doctrine_Template
      */
     public function setTableDefinition()
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         // historical prefix
         $oldPrefix = isset($this->_options['oldColumnPrefix']) ? $this->_options['oldColumnPrefix'] : '';
 
@@ -61,6 +65,8 @@ class Zikula_Doctrine_Template_StandardFields extends Doctrine_Template
      */
     public function setUp()
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         // take care for setting these values automatically
         $this->addListener(new Zikula_Doctrine_Template_Listener_StandardFields());
     }

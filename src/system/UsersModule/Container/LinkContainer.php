@@ -16,6 +16,7 @@ use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\SettingsModule\Api\LocaleApi;
 use Zikula\UsersModule\Api\CurrentUserApi;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Helper\RegistrationHelper;
@@ -53,6 +54,11 @@ class LinkContainer implements LinkContainerInterface
     private $currentUser;
 
     /**
+     * @var LocaleApi
+     */
+    private $localeApi;
+
+    /**
      * constructor.
      *
      * @param TranslatorInterface $translator
@@ -61,6 +67,7 @@ class LinkContainer implements LinkContainerInterface
      * @param VariableApi $variableApi
      * @param RegistrationHelper $registrationHelper
      * @param CurrentUserApi $currentUserApi
+     * @param LocaleApi $localeApi
      */
     public function __construct(
         TranslatorInterface $translator,
@@ -68,7 +75,8 @@ class LinkContainer implements LinkContainerInterface
         PermissionApi $permissionApi,
         VariableApi $variableApi,
         RegistrationHelper $registrationHelper,
-        CurrentUserApi $currentUserApi
+        CurrentUserApi $currentUserApi,
+        LocaleApi $localeApi
     ) {
         $this->translator = $translator;
         $this->router = $router;
@@ -76,6 +84,7 @@ class LinkContainer implements LinkContainerInterface
         $this->variableApi = $variableApi;
         $this->registrationHelper = $registrationHelper;
         $this->currentUser = $currentUserApi;
+        $this->localeApi = $localeApi;
     }
 
     /**
@@ -151,8 +160,6 @@ class LinkContainer implements LinkContainerInterface
 
     private function getUser()
     {
-        $isLoggedIn = \UserUtil::isLoggedIn();
-
         $links = [];
         $links[] = [
             'icon' => 'wrench',
@@ -160,7 +167,7 @@ class LinkContainer implements LinkContainerInterface
             'url' => $this->router->generate('zikulausersmodule_account_menu')
         ];
 
-        if (!$isLoggedIn) {
+        if (!$this->currentUser->isLoggedIn()) {
             $links[] = [
                 'icon' => 'sign-in',
                 'text' => $this->translator->__('Log in'),
@@ -187,7 +194,8 @@ class LinkContainer implements LinkContainerInterface
         }
 
         if ($this->variableApi->getSystemVar('multilingual')) {
-            if (count(\ZLanguage::getInstalledLanguages()) > 1) {
+            $locales = $this->localeApi->getSupportedLocales();
+            if (count($locales) > 1) {
                 $links[] = [
                     'url'   => $this->router->generate('zikulausersmodule_account_changelanguage'),
                     'text' => $this->translator->__('Language switcher'),

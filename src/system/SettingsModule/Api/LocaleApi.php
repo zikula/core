@@ -11,200 +11,109 @@
 
 namespace Zikula\SettingsModule\Api;
 
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
-use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Intl\Intl;
 
 class LocaleApi
 {
     /**
-     * @var bool has locale been loaded?
+     * Locales with translations present
+     * @var array
      */
-    private $loaded = false;
+    private $supportedLocales = [];
 
     /**
-     * @var string local name
+     * Get array of supported locales
+     *
+     * @return array
      */
-    private $locale = 'en';
-
-    /**
-     * @var string ltr or rtl for left or right
-     */
-    private $language_direction = 'ltr';
-
-    /**
-     * @var string decimal point character
-     */
-    private $decimal_point = '.';
-
-    /**
-     * @var string thousands separator
-     */
-    private $thousands_sep = ',';
-
-    /**
-     * @var string international currency symbol (i.e. EUR)
-     */
-    private $int_curr_symbol = 'EUR';
-
-    /**
-     * @var string local currency symbol (i.e. €)
-     */
-    private $currency_symbol = '€';
-
-    /**
-     * @var string monetary decimal point character
-     */
-    private $mon_decimal_point = '.';
-
-    /**
-     * @var string monetary thousands separator
-     */
-    private $mon_thousands_sep = ',';
-
-    /**
-     * @var string sign for positive values
-     */
-    private $positive_sign = '';
-
-    /**
-     * @var string sign for negative values
-     */
-    private $negative_sign = '-';
-
-    /**
-     * @var int international fractional digits
-     */
-    private $int_frac_digits = 2;
-
-    /**
-     * @var int local fractional digits
-     */
-    private $frac_digits = 2;
-
-    /**
-     * @var bool TRUE if currency_symbol precedes a positive value, FALSE if it succeeds one
-     */
-    private $p_cs_precedes = true;
-
-    /**
-     * @var bool TRUE if a space separates currency_symbol from a positive value, FALSE otherwise
-     */
-    private $p_sep_by_space = true;
-
-    /**
-     * @var bool TRUE if currency_symbol precedes a negative value, FALSE if it succeeds one
-     */
-    private $n_cs_precedes = true;
-
-    /**
-     * @var bool TRUE if a space separates currency_symbol from a negative value, FALSE otherwise
-     */
-    private $n_sep_by_space = true;
-
-    /**
-     * @var int
-     * 0 - parentheses surround the quantity and currency_symbol
-     * 1 - The sign string precedes the quantity and currency_symbol
-     * 2 - The sign string succeeds the quantity and currency_symbol
-     * 3 - The sign string immediately precedes the currency_symbol
-     * 4 - The sign string immediately succeeds the currency_symbol
-     */
-    private $p_sign_posn = 1;
-
-    /**
-     * @var int
-     * 0 - parentheses surround the quantity and currency_symbol
-     * 1 - The sign string precedes the quantity and currency_symbol
-     * 2 - The sign string succeeds the quantity and currency_symbol
-     * 3 - The sign string immediately precedes the currency_symbol
-     * 4 - The sign string immediately succeeds the currency_symbol
-     */
-    private $n_sign_posn = 2;
-
-    /**
-     * @var int 0 = Sunday, 1 Monday etc
-     */
-    private $firstweekday = 0;
-
-    /**
-     * @var string Use 12/24 depending on country
-     */
-    private $timeformat = '24';
-
-    /**
-     * @var array An array containing numeric groupings
-     */
-    private $grouping = [];
-
-    /**
-     * @var array An array containing monetary groupings
-     */
-    private $mon_grouping = [];
-
-    /**
-     * @see \Zikula\SettingsModule\Listener\LocaleListener
-     * @param $locale
-     * @param $rootDir
-     */
-    public function load($locale, $rootDir)
+    public function getSupportedLocales()
     {
-        if ($this->loaded) {
-            return;
+        if (empty($this->supportedLocales)) {
+            $this->supportedLocales[] = 'en';
+            $finder = new Finder();
+            if (is_dir('app/Resources/translations')) {
+                $files = $finder->files()
+                    ->in(['app/Resources/translations'])
+                    ->depth(0)
+                    ->name('*.po')
+                    ->notName('*.template.*');
+                foreach ($files as $file) {
+                    $fileName = $file->getBasename('.po');
+                    list($domain, $locale) = explode('.', $fileName);
+                    if (!in_array($locale, $this->supportedLocales)) {
+                        $this->supportedLocales[] = $locale;
+                    }
+                }
+            }
+            $this->addLegacyLocales(); // @deprecated remove at Core-2.0
         }
-        $this->locale = $locale;
-        $fs = new Filesystem();
-        $path = $rootDir . '/Resources/locale/' . $this->locale . '/locale.ini';
-        if ($fs->exists($path)) {
-            $this->parseIniFile($path);
-        } else {
-            throw new InvalidConfigurationException('Could not load the locale configuration.');
-        }
-        $this->loaded = true;
+
+        return $this->supportedLocales;
     }
 
     /**
-     * Allows Twig to fetch properties without use of ArrayAccess
+     * Get array of supported locales with their translated name
      *
-     * ArrayAccess is problematic because Twig uses isset() to
-     * check if property field exists, so it's not possible
-     * to get using default values, ie, empty.
+     * @return array
+     */
+    public function getSupportedLocaleNames()
+    {
+        $locales = $this->getSupportedLocales();
+        $namedLocales = [];
+        foreach ($locales as $locale) {
+            $namedLocales[Intl::getLanguageBundle()->getLanguageName($locale)] = $locale;
+        }
+
+        return $namedLocales;
+    }
+
+    /**
+     * Detect languages preferred by browser and make best match to available provided languages.
      *
-     * @param $key
-     * @param $args
+     * Adapted from StackOverflow response by Noel Whitemore
+     * @see http://stackoverflow.com/a/26169603/2600812
      *
+     * @param string $default
      * @return string
      */
-    public function __call($key, $args)
+    public function getBrowserLocale($default = 'en')
     {
-        if (!$this->loaded) {
-            throw new InvalidConfigurationException('Did not load the locale configuration.');
+        if (!isset($_SERVER["HTTP_ACCEPT_LANGUAGE"])) {
+            return $default;
+        }
+        preg_match_all('~([\w-]+)(?:[^,\d]+([\d.]+))?~', strtolower($_SERVER["HTTP_ACCEPT_LANGUAGE"]), $matches, PREG_SET_ORDER);
+        $availableLanguages = [];
+        foreach ($matches as $match) {
+            list($languageCode, $unusedVar) = explode('-', $match[1]) + ['', ''];
+            $priority = isset($match[2]) ? (float) $match[2] : 1.0;
+            $availableLanguages[][$languageCode] = $priority;
+        }
+        $defaultPriority = (float) 0;
+        $matchedLanguage = '';
+        foreach ($availableLanguages as $key => $value) {
+            $languageCode = key($value);
+            $priority = $value[$languageCode];
+            $supportedLocales = $this->getSupportedLocales();
+            if ($priority > $defaultPriority && array_key_exists($languageCode, $supportedLocales)) {
+                $defaultPriority = $priority;
+                $matchedLanguage = $languageCode;
+            }
         }
 
-        return $this->$key;
+        return $matchedLanguage != '' ? $matchedLanguage : $default;
     }
 
     /**
-     * Parse an .ini file and set the object properties based on their current type.
-     * @param $path
+     * Read legacy locale.ini files and add those locales
+     * @deprecated remove at Core-2.0
      */
-    private function parseIniFile($path)
+    private function addLegacyLocales()
     {
-        $iniFile = parse_ini_file($path, false);
-        foreach ($iniFile as $key => $data) {
-            if (property_exists($this, $key)) {
-                switch (true) {
-                    case is_bool($this->$key):
-                        $this->$key = (bool) $data;
-                        break;
-                    case is_array($this->$key):
-                        $this->$key = explode(',', $data);
-                        break;
-                    case is_int($this->$key):
-                        $this->$key = (int) $data;
-                        break;
-                    default:
-                        $this->$key = $data;
-                }
+        $legacyLocales = \ZLanguage::getInstalledLanguages();
+        foreach ($legacyLocales as $locale) {
+            if (!in_array($locale, $this->supportedLocales)) {
+                $this->supportedLocales[] = $locale;
             }
         }
     }

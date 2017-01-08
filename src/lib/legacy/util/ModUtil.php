@@ -78,6 +78,8 @@ class ModUtil
      */
     public static function getModvars()
     {
+        @trigger_error('ModUtil class is deprecated, please use VariableApi instead.', E_USER_DEPRECATED);
+
         return self::$modvars;
     }
 
@@ -88,6 +90,8 @@ class ModUtil
      */
     public static function flushCache()
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         self::$cache = [];
     }
 
@@ -102,6 +106,8 @@ class ModUtil
      */
     public static function initCoreVars($force = false)
     {
+        @trigger_error('ModUtil class is deprecated, please use VariableApi instead.', E_USER_DEPRECATED);
+
         // The empty arrays for handlers and settings are required to prevent messages with E_ALL error reporting
         self::$modvars = new ArrayObject([
             EventUtil::HANDLERS => [],
@@ -110,7 +116,7 @@ class ModUtil
         ]);
 
         // don't init vars during the installer or upgrader
-        if (!$force && System::isInstalling()) {
+        if (!$force && !ServiceUtil::getManager()->getParameter('installed')) {
             return;
         }
 
@@ -150,8 +156,10 @@ class ModUtil
      */
     public static function setupMultilingual()
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         // prevent access to missing vars when the system is not installed yet
-        if (System::isInstalling()) {
+        if (!\ServiceUtil::getManager()->getParameter('installed')) {
             return true;
         }
 
@@ -177,6 +185,8 @@ class ModUtil
      */
     public static function hasVar($modname, $name)
     {
+        @trigger_error('ModUtil class is deprecated, please use VariableApi instead.', E_USER_DEPRECATED);
+
         // define input, all numbers and booleans to strings
         $modname = static::convertModuleName(isset($modname) ? ((string)$modname) : '');
         $name = isset($name) ? ((string)$name) : '';
@@ -189,7 +199,7 @@ class ModUtil
         // The cast to (array) is for the odd instance where self::$modvars[$modname] is set to null--not sure if this is really needed.
         $varExists = isset(self::$modvars[$modname]) && array_key_exists($name, (array)self::$modvars[$modname]);
 
-        if (!$varExists && System::isUpgrading()) {
+        if (!$varExists && \ServiceUtil::getManager()->hasParameter('upgrading') && \ServiceUtil::getManager()->getParameter('upgrading')) {
             // Handle the upgrade edge case--the call to getVar() ensures vars for the module are loaded if newly available.
             $modvars = self::getVar($modname);
             $varExists = array_key_exists($name, (array)$modvars);
@@ -222,6 +232,8 @@ class ModUtil
      */
     public static function getVar($modname, $name = '', $default = false)
     {
+        @trigger_error('ModUtil class is deprecated, please use VariableApi instead.', E_USER_DEPRECATED);
+
         // if we don't know the modname then lets assume it is the current
         // active module
         if (!isset($modname)) {
@@ -233,7 +245,7 @@ class ModUtil
         // if we haven't got vars for this module (or pseudo-module) yet then lets get them
         if (!array_key_exists($modname, self::$modvars)) {
             // A query out to the database should only be needed if the system is upgrading. Use the installing flag to determine this.
-            if (System::isUpgrading()) {
+            if (\ServiceUtil::getManager()->hasParameter('upgrading') && \ServiceUtil::getManager()->getParameter('upgrading')) {
                 self::initCoreVars(true);
             } else {
                 // Prevent a re-query for the same module in the future, where the module does not define any module variables.
@@ -274,6 +286,8 @@ class ModUtil
      */
     public static function setVar($modname, $name, $value = '')
     {
+        @trigger_error('ModUtil class is deprecated, please use VariableApi instead.', E_USER_DEPRECATED);
+
         // define input, all numbers and booleans to strings
         $modname = isset($modname) ? ((string)$modname) : '';
         $modname = static::convertModuleName($modname);
@@ -318,6 +332,8 @@ class ModUtil
      */
     public static function setVars($modname, array $vars)
     {
+        @trigger_error('ModUtil class is deprecated, please use VariableApi instead.', E_USER_DEPRECATED);
+
         $ok = true;
         foreach ($vars as $var => $value) {
             $ok = $ok && self::setVar($modname, $var, $value);
@@ -343,6 +359,8 @@ class ModUtil
      */
     public static function delVar($modname, $name = '')
     {
+        @trigger_error('ModUtil class is deprecated, please use VariableApi instead.', E_USER_DEPRECATED);
+
         // define input, all numbers and booleans to strings
         $modname = isset($modname) ? ((string)$modname) : '';
         $modname = static::convertModuleName($modname);
@@ -401,6 +419,8 @@ class ModUtil
      */
     public static function getInfoFromName($module)
     {
+        @trigger_error('ModUtil class is deprecated, please use ExtensionApi instead.', E_USER_DEPRECATED);
+
         return self::getInfo(self::getIdFromName($module));
     }
 
@@ -413,6 +433,8 @@ class ModUtil
      */
     public static function getIdFromName($module)
     {
+        @trigger_error('ModUtil class is deprecated, please use ExtensionApi instead.', E_USER_DEPRECATED);
+
         // define input, all numbers and booleans to strings
         $alias = (isset($module) ? strtolower((string)$module) : '');
         $module = static::convertModuleName($module);
@@ -427,7 +449,7 @@ class ModUtil
             self::$cache['modid'] = null;
         }
 
-        if (!is_array(self::$cache['modid']) || System::isInstalling()) {
+        if (!is_array(self::$cache['modid']) || !\ServiceUtil::getManager()->getParameter('installed')) {
             $modules = self::getModsTable();
 
             if ($modules === false) {
@@ -472,12 +494,14 @@ class ModUtil
      */
     public static function getInfo($modid = 0)
     {
+        @trigger_error('ModUtil class is deprecated, please use ExtensionApi instead.', E_USER_DEPRECATED);
+
         // a $modid of 0 is associated with the core ( blocks.mid, ... ).
         if (!is_numeric($modid)) {
             return false;
         }
 
-        if (!is_array(self::$modinfo) || System::isInstalling()) {
+        if (!is_array(self::$modinfo) || !\ServiceUtil::getManager()->getParameter('installed')) {
             self::$modinfo = self::getModsTable();
 
             if (!self::$modinfo) {
@@ -507,6 +531,8 @@ class ModUtil
      */
     public static function getUserMods()
     {
+        @trigger_error('ModUtil class is deprecated, please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         return self::getTypeMods('user');
     }
 
@@ -519,6 +545,8 @@ class ModUtil
      */
     public static function getProfileMods()
     {
+        @trigger_error('ModUtil class is deprecated, please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         return self::getTypeMods('profile');
     }
 
@@ -529,6 +557,8 @@ class ModUtil
      */
     public static function getMessageMods()
     {
+        @trigger_error('ModUtil class is deprecated, please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         return self::getTypeMods('message');
     }
 
@@ -541,6 +571,8 @@ class ModUtil
      */
     public static function getAdminMods()
     {
+        @trigger_error('ModUtil class is deprecated, please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         return self::getTypeMods('admin');
     }
 
@@ -556,6 +588,8 @@ class ModUtil
      */
     public static function getModulesCapableOf($capability = 'user')
     {
+        @trigger_error('ModUtil class is deprecated, please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         if (!isset(self::$cache['modcache'])) {
             self::$cache['modcache'] = [];
         }
@@ -584,6 +618,8 @@ class ModUtil
      */
     public static function getTypeMods($type = 'user')
     {
+        @trigger_error('ModUtil class is deprecated, please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         return self::getModulesCapableOf($type);
     }
 
@@ -600,6 +636,8 @@ class ModUtil
      */
     public static function isCapable($module, $capability)
     {
+        @trigger_error('ModUtil class is deprecated, please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         $modinfo = self::getInfoFromName($module);
         if (!$modinfo) {
             return false;
@@ -620,6 +658,8 @@ class ModUtil
      */
     public static function getCapabilitiesOf($module)
     {
+        @trigger_error('ModUtil class is deprecated, please use CapabilityApi instead.', E_USER_DEPRECATED);
+
         $modules = self::getAllMods();
         if (array_key_exists($module, $modules)) {
             return $modules[$module]['capabilities'];
@@ -635,6 +675,8 @@ class ModUtil
      */
     public static function getAllMods()
     {
+        @trigger_error('ModUtil class is deprecated, please use ExtensionApi instead.', E_USER_DEPRECATED);
+
         if (!isset(self::$cache['modsarray'])) {
             self::$cache['modsarray'] = [];
         }
@@ -665,6 +707,8 @@ class ModUtil
      */
     public static function dbInfoLoad($modname, $directory = '', $force = false)
     {
+        @trigger_error('ModUtil class is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $moduleName = $modname;
         // define input, all numbers and booleans to strings
         $modname = (isset($modname) ? strtolower((string)$modname) : '');
@@ -791,6 +835,8 @@ class ModUtil
      */
     public static function load($modname, $type = 'user', $force = false)
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         if (strtolower(substr($type, -3)) == 'api') {
             return false;
         }
@@ -809,6 +855,8 @@ class ModUtil
      */
     public static function loadApi($modname, $type = 'user', $force = false)
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         return self::loadGeneric($modname, $type, $force, true);
     }
 
@@ -834,6 +882,8 @@ class ModUtil
      */
     public static function loadGeneric($modname, $type = 'user', $force = false, $api = false)
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         // define input, all numbers and booleans to strings
         $osapi = ($api ? 'api' : '');
         $modname = isset($modname) ? ((string)$modname) : '';
@@ -900,6 +950,8 @@ class ModUtil
      */
     public static function loadAll()
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         $modules = self::getModsTable();
         unset($modules[0]);
         foreach ($modules as $module) {
@@ -926,7 +978,7 @@ class ModUtil
      */
     private static function _loadStyleSheets($modname, $api, $type)
     {
-        if (!System::isInstalling() && !$api) {
+        if (\ServiceUtil::getManager()->getParameter('installed') && !$api) {
             $moduleStylesheet = ThemeUtil::getModuleStylesheet($modname);
             if (!empty($moduleStylesheet)) {
                 PageUtil::addVar('stylesheet', $moduleStylesheet);
@@ -950,6 +1002,8 @@ class ModUtil
      */
     public static function getClass($modname, $type, $api = false, $force = false)
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         if ($api) {
             $result = self::loadApi($modname, $type);
         } else {
@@ -1000,6 +1054,8 @@ class ModUtil
      */
     public static function hasController($modname, $type)
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         return (bool)self::getClass($modname, $type);
     }
 
@@ -1013,6 +1069,8 @@ class ModUtil
      */
     public static function hasApi($modname, $type)
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         return (bool)self::getClass($modname, $type, true);
     }
 
@@ -1026,6 +1084,8 @@ class ModUtil
      */
     public static function getObject($className, $modname)
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         if (!$className) {
             return false;
         }
@@ -1074,6 +1134,8 @@ class ModUtil
      */
     public static function getCallable($modname, $type, $func, $api = false, $force = false)
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         $className = self::getClass($modname, $type, $api, $force);
         if (!$className) {
             return false;
@@ -1109,6 +1171,8 @@ class ModUtil
      */
     public static function exec($modname, $type = 'user', $func = 'main', $args = [], $api = false, $instanceof = null)
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         // define input, all numbers and booleans to strings
         $modname = isset($modname) ? ((string)$modname) : '';
         $modname = static::convertModuleName($modname);
@@ -1264,6 +1328,8 @@ class ModUtil
      */
     public static function func($modname, $type = 'user', $func = 'main', $args = [], $instanceof = null)
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         return self::exec($modname, $type, $func, $args, false, $instanceof);
     }
 
@@ -1280,6 +1346,8 @@ class ModUtil
      */
     public static function apiFunc($modname, $type = 'user', $func = 'main', $args = [], $instanceof = null)
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         if (empty($type)) {
             $type = 'user';
         } elseif (!System::varValidate($type, 'api')) {
@@ -1371,6 +1439,8 @@ class ModUtil
      */
     public static function url($modname, $type = null, $func = null, $args = [], $ssl = null, $fragment = null, $fqurl = null, $forcelongurl = false, $forcelang = false)
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony routing instead.', E_USER_DEPRECATED);
+
         // define input, all numbers and booleans to strings
         $modname = isset($modname) ? ((string)$modname) : '';
         $modname = static::convertModuleName($modname);
@@ -1589,6 +1659,8 @@ class ModUtil
      */
     public static function available($modname = null, $force = false)
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         // define input, all numbers and booleans to strings
         $modname = (isset($modname) ? strtolower((string)$modname) : '');
         $modname = static::convertModuleName($modname);
@@ -1631,6 +1703,8 @@ class ModUtil
      */
     public static function getName()
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         if (!isset(self::$cache['modgetname'])) {
             self::$cache['modgetname'] = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
 
@@ -1673,6 +1747,8 @@ class ModUtil
      */
     public static function registerAutoloaders()
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         $modules = self::getModsTable();
         unset($modules[0]);
         foreach ($modules as $module) {
@@ -1709,6 +1785,8 @@ class ModUtil
      */
     public static function getBaseDir($modname = '')
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         if (empty($modname)) {
             $modname = self::getName();
         }
@@ -1737,11 +1815,13 @@ class ModUtil
      */
     public static function getModsTable()
     {
+        @trigger_error('ModUtil class is deprecated, please use ExtensionApi instead.', E_USER_DEPRECATED);
+
         if (!isset(self::$cache['modstable'])) {
             self::$cache['modstable'] = [];
         }
 
-        if (!self::$cache['modstable'] || System::isInstalling()) {
+        if (!self::$cache['modstable'] || !\ServiceUtil::getManager()->getParameter('installed')) {
             // get entityManager
             $sm = ServiceUtil::getManager();
             $entityManager = $sm->get('doctrine.orm.default_entity_manager');
@@ -1785,6 +1865,8 @@ class ModUtil
      */
     public static function getModules($where = [], $sort = 'displayname')
     {
+        @trigger_error('ModUtil class is deprecated, please use ExtensionApi instead.', E_USER_DEPRECATED);
+
         // get entityManager
         $sm = ServiceUtil::getManager();
         $entityManager = $sm->get('doctrine.orm.default_entity_manager');
@@ -1808,6 +1890,8 @@ class ModUtil
      */
     public static function getModulesByState($state = self::STATE_ACTIVE, $sort = 'displayname')
     {
+        @trigger_error('ModUtil class is deprecated, please use ExtensionApi instead.', E_USER_DEPRECATED);
+
         $sm = ServiceUtil::getManager();
         $entityManager = $sm->get('doctrine.orm.default_entity_manager');
         $modules = $entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionEntity')->findBy(['state' => $state], [$sort => 'ASC']);
@@ -1824,6 +1908,8 @@ class ModUtil
      */
     public static function initOOModule($moduleName)
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         if (self::isInitialized($moduleName)) {
             return true;
         }
@@ -1871,6 +1957,8 @@ class ModUtil
      */
     public static function isInitialized($moduleName)
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         return self::isOO($moduleName) && self::$ooModules[$moduleName]['initialized'];
     }
 
@@ -1885,6 +1973,8 @@ class ModUtil
      */
     public static function isOO($moduleName)
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         if (!isset(self::$ooModules[$moduleName])) {
             self::$ooModules[$moduleName] = [];
             self::$ooModules[$moduleName]['initialized'] = false;
@@ -1913,6 +2003,8 @@ class ModUtil
      */
     public static function getModuleBaseDir($moduleName)
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         if (in_array(strtolower($moduleName), ['zikulaadminmodule', 'zikulablocksmodule', 'zikulacategoriesmodule', 'zikularoutesmodule', 'zikulaextensionsmodule', 'zikulagroupsmodule', 'zikulamailermodule', 'zikulamenumodule', 'zikulapagelockmodule', 'zikulapermissionsmodule', 'zikulasearchmodule', 'zikulasecuritycentermodule', 'zikulasettingsmodule', 'zikulathememodule', 'zikulausersmodule', 'zikulazauthmodule'])) {
             $directory = 'system';
         } else {
@@ -1934,6 +2026,8 @@ class ModUtil
      */
     public static function getModuleImagePath($moduleName)
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         if ($moduleName == '') {
             return false;
         }
@@ -1978,6 +2072,8 @@ class ModUtil
      */
     public static function convertModuleName($name)
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         if (in_array($name, [
             'Blocks', 'Errors', 'Extensions', 'Groups', 'Mailer', 'Permissions',
             'PageLock', 'Search', 'SecurityCenter', 'Settings', 'Theme', 'Users',
@@ -1999,6 +2095,8 @@ class ModUtil
      */
     public static function getModule($moduleName, $force = false)
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         /** @var $kernel Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel */
         $kernel = ServiceUtil::getManager()->get('kernel');
         try {
@@ -2045,6 +2143,8 @@ class ModUtil
      */
     public static function getModuleRelativePath($modName)
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         $module = self::getModule($modName);
         $path = false;
         if ($module) {
@@ -2064,6 +2164,8 @@ class ModUtil
      */
     public static function isCore($module)
     {
+        @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         return ('system' === self::getModuleBaseDir($module)) ? true : false;
     }
 }

@@ -288,7 +288,7 @@ class UserApi
         $usermods = ModUtil::getAllMods();
         $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
         foreach ($usermods as $usermod) {
-            if ($loadAll || (!$variableApi->get('ZikulaSearchModule', 'disable_' . $usermod['name']) && $permissionApi->Permission('ZikulaSearchModule::Item', "$usermod[name]::", ACCESS_READ))) {
+            if ($loadAll || (!$variableApi->get('ZikulaSearchModule', 'disable_' . $usermod['name']) && $permissionApi->hasPermission('ZikulaSearchModule::Item', "$usermod[name]::", ACCESS_READ))) {
                 $info = ModUtil::apiFunc($usermod['name'], 'search', 'info');
                 if ($info) {
                     $info['name'] = $usermod['name'];

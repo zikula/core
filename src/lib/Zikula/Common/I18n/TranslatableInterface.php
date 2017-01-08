@@ -13,6 +13,7 @@ namespace Zikula\Common\I18n;
 
 /**
  * Zikula Translate interface.
+ * @deprecated remove at Core-2.0
  */
 interface TranslatableInterface
 {

@@ -11,6 +11,10 @@
 
 namespace Zikula\Common\I18n;
 
+/**
+ * Interface TranslationAwareInterface
+ * @deprecated remove at Core-2.0
+ */
 interface TranslationAwareInterface
 {
     /**

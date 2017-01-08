@@ -27,8 +27,14 @@ use Zikula\ThemeModule\Engine\Engine;
  */
 class DefaultPageAssetSetterListener implements EventSubscriberInterface
 {
+    /**
+     * @var AssetBag
+     */
     private $cssAssetBag;
 
+    /**
+     * @var AssetBag
+     */
     private $jsAssetBag;
 
     /**
@@ -41,14 +47,38 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
      */
     private $themeEngine;
 
+    /**
+     * @var string
+     */
     private $rootdir;
 
+    /**
+     * @var array
+     */
     private $params;
 
+    /**
+     * @var bool
+     */
     private $compatLayer;
 
-    public function __construct(AssetBag $jsAssetBag, AssetBag $cssAssetBag, RouterInterface $router, Engine $themeEngine, $rootdir, $compatLayer)
-    {
+    /**
+     * DefaultPageAssetSetterListener constructor.
+     * @param AssetBag $jsAssetBag
+     * @param AssetBag $cssAssetBag
+     * @param RouterInterface $router
+     * @param Engine $themeEngine
+     * @param string $rootdir
+     * @param bool $compatLayer
+     */
+    public function __construct(
+        AssetBag $jsAssetBag,
+        AssetBag $cssAssetBag,
+        RouterInterface $router,
+        Engine $themeEngine,
+        $rootdir,
+        $compatLayer
+    ) {
         $this->jsAssetBag = $jsAssetBag;
         $this->cssAssetBag = $cssAssetBag;
         $this->router = $router;
@@ -61,6 +91,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
     {
         $this->params = [
             'env' => $container->getParameter('env'),
+            'installed' => $container->getParameter('installed'),
             'zikula.javascript.bootstrap.min.path' => $container->getParameter('zikula.javascript.bootstrap.min.path'),
             'zikula.stylesheet.bootstrap-font-awesome.path' => $container->getParameter('zikula.stylesheet.bootstrap-font-awesome.path'),
             'zikula.stylesheet.fontawesome.min.path' => $container->getParameter('zikula.stylesheet.fontawesome.min.path'),
@@ -89,6 +120,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
             ]
         );
         $this->addFosJsRouting($basePath);
+        $this->addJsTranslation($basePath);
 
         // add default stylesheets to cssAssetBag
         $this->addBootstrapCss($basePath);
@@ -138,10 +170,22 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         }
     }
 
+    private function addJsTranslation($basePath)
+    {
+        // @todo consider option of dumping the translations to /web
+        // @todo add bundle translations? need domain name e.g. zikulapagesmodule
+        $jsScript = $this->router->generate('bazinga_jstranslation_js', ['domain' => 'zikula_javascript'], RouterInterface::ABSOLUTE_URL);
+        $this->jsAssetBag->add([
+            $basePath . "/web/bundles/bazingajstranslation/js/translator.min.js" => AssetBag::WEIGHT_JS_TRANSLATOR,
+            $basePath . "/web/bundles/core/js/Zikula.Translator.js" => AssetBag::WEIGHT_ZIKULA_JS_TRANSLATOR,
+            $jsScript => AssetBag::WEIGHT_JS_TRANSLATIONS,
+        ]);
+    }
+
     private function addBootstrapCss($basePath)
     {
         $overrideBootstrapPath = '';
-        if (!\System::isInstalling()) {
+        if ($this->params['installed']) {
             // Check for override of bootstrap css path
             if (!empty($this->params['zikula.stylesheet.bootstrap.min.path'])) {
                 // Core-2.0 Site method

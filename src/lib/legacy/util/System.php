@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
  */
 class System
 {
-    private static $installing = null;
+    // private static $installing = null;
 
     /**
      * Internals cache.
@@ -38,6 +38,8 @@ class System
      */
     public static function flushCache()
     {
+        @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         self::$cache = [];
     }
 
@@ -54,6 +56,8 @@ class System
      */
     public static function getVar($name, $default = null)
     {
+        @trigger_error('System class is deprecated, please use VariableApi instead.', E_USER_DEPRECATED);
+
         if (!isset($name)) {
             return null;
         }
@@ -90,6 +94,8 @@ class System
      */
     public static function setVar($name, $value = '')
     {
+        @trigger_error('System class is deprecated, please use VariableApi instead.', E_USER_DEPRECATED);
+
         $name = isset($name) ? (string)$name : '';
 
         // The database parameter are not allowed to change
@@ -122,6 +128,8 @@ class System
      */
     public static function delVar($name)
     {
+        @trigger_error('System class is deprecated, please use VariableApi instead.', E_USER_DEPRECATED);
+
         if (!isset($name)) {
             return false;
         }
@@ -157,6 +165,8 @@ class System
      */
     public static function stripslashes(&$value)
     {
+        @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         if (empty($value)) {
             return;
         }
@@ -180,6 +190,8 @@ class System
      */
     public static function varValidate($var, $type)
     {
+        @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         if (!isset($var) || !isset($type)) {
             return false;
         }
@@ -303,6 +315,8 @@ class System
      */
     public static function getBaseUri()
     {
+        @trigger_error('System class is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         if (!array_key_exists('baseuri.path', self::$cache)) {
             self::$cache['baseuri.path'] = null;
         }
@@ -341,6 +355,8 @@ class System
      */
     public static function getBaseUrl()
     {
+        @trigger_error('System class is deprecated, please use Symfony request instead.', E_USER_DEPRECATED);
+
         $server = self::serverGetVar('HTTP_HOST');
 
         // IIS sets HTTPS=off
@@ -363,6 +379,8 @@ class System
      */
     public static function getHomepageUrl()
     {
+        @trigger_error('System class is deprecated, please use Symfony routing instead.', E_USER_DEPRECATED);
+
         // check the use of friendly url setup
         $shorturls = self::getVar('shorturls', false);
         $langRequired = ZLanguage::isRequiredLangParam();
@@ -401,6 +419,8 @@ class System
      */
     public static function redirect($redirecturl, $additionalheaders = [], $type = 302, $response = false)
     {
+        @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         // very basic input validation against HTTP response splitting
         $redirecturl = str_replace(['\r', '\n', '%0d', '%0a'], '', $redirecturl);
 
@@ -424,6 +444,8 @@ class System
 
     public static function normalizeUrl($url)
     {
+        @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         if (preg_match('!^(?:http|https|ftp|ftps):\/\/!', $url)) {
             // Absolute URL - simple redirect
         } elseif (substr($url, 0, 1) == '/') {
@@ -450,6 +472,8 @@ class System
      */
     public static function localReferer($strict = false)
     {
+        @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         $server = self::serverGetVar('HTTP_HOST');
         $referer = self::serverGetVar('HTTP_REFERER');
 
@@ -485,6 +509,8 @@ class System
      */
     public static function mail($to, $subject, $message = '', $headers = '', $html = 0, $debug = 0, $altbody = '')
     {
+        @trigger_error('System class is deprecated, please use MailerApi instead.', E_USER_DEPRECATED);
+
         if (empty($to) || !isset($subject)) {
             return false;
         }
@@ -525,6 +551,8 @@ class System
      */
     public static function serverGetVar($name, $default = null)
     {
+        @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         // Check the relevant superglobals
         if (!empty($name) && isset($_SERVER[$name])) {
             return $_SERVER[$name];
@@ -545,6 +573,8 @@ class System
      */
     public static function getHost()
     {
+        @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         $server = self::serverGetVar('HTTP_HOST');
 
         if (empty($server)) {
@@ -570,6 +600,8 @@ class System
      */
     public static function getCurrentUri($args = [])
     {
+        @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         // get current URI
         $request = self::serverGetVar('REQUEST_URI');
 
@@ -642,6 +674,8 @@ class System
      */
     public static function serverGetProtocol()
     {
+        @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         if (preg_match('/^http:/', self::getCurrentUri())) {
             return 'http';
         }
@@ -663,6 +697,8 @@ class System
      */
     public static function getCurrentUrl($args = [])
     {
+        @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         $server = self::getHost();
         $protocol = self::serverGetProtocol();
         $baseurl = $protocol . '://' . $server;
@@ -700,7 +736,9 @@ class System
      */
     public static function queryStringDecode(Request $request)
     {
-        if (self::isInstalling()) {
+        @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
+        if (!\ServiceUtil::getManager()->getParameter('installed')) {
             return;
         }
 
@@ -797,6 +835,8 @@ class System
      */
     public static function resolveLegacyShortUrl(Request $request, $setValues = true)
     {
+        @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         // user language is not set at this stage
         $lang = self::getVar('language_i18n', '');
         $customentrypoint = self::getVar('entrypoint');
@@ -979,6 +1019,8 @@ class System
      */
     public static function queryStringSetVar($name, $value, Request $request = null)
     {
+        @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         if (!isset($name)) {
             return false;
         }
@@ -1034,6 +1076,8 @@ class System
      */
     public static function shutDown($exit_param = '')
     {
+        @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         // we must deliberately cause the session to close down because if we
         // rely on PHP to do so after an exit is called, the framework gets shutdown
         // by PHP and no longer functions correctly.
@@ -1054,17 +1098,22 @@ class System
      */
     public static function isInstalling()
     {
-        return (null === self::$installing) ? (bool)defined('_ZINSTALLVER') : self::$installing;
+        @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
+        return !\ServiceUtil::getManager()->getParameter('installed');
     }
 
     /**
      * Set installing status
+     * this function no longer does anything!
      *
      * @param $flag
      */
     public static function setInstalling($flag)
     {
-        self::$installing = (bool) $flag;
+        @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
+//        self::$installing = (bool) $flag;
     }
 
     /**
@@ -1074,10 +1123,11 @@ class System
      */
     public static function isUpgrading()
     {
-        $sm = ServiceUtil::getManager();
-        $upgrading = $sm->hasParameter('upgrading') ? $sm->getParameter('upgrading') : false;
+        @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
 
-        return $upgrading || array_key_exists('_ZikulaUpgrader', $GLOBALS);
+        $sm = ServiceUtil::getManager();
+
+        return $sm->hasParameter('upgrading') ? $sm->getParameter('upgrading') : false;
     }
 
     /**
@@ -1090,6 +1140,8 @@ class System
      */
     public static function isLegacyMode($targetVersion = null)
     {
+        @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         $minVersion = ServiceUtil::getManager()->getParameter('compat_layer');
 
         if (!is_bool($minVersion)) {
@@ -1107,6 +1159,8 @@ class System
      */
     public static function isDevelopmentMode()
     {
+        @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         $s = ServiceUtil::getManager();
 
         return $s->getParameter('kernel.environment') !== 'dev' ? false : true;
@@ -1121,6 +1175,8 @@ class System
      */
     public static function getSystemErrorTemplate($templateFile)
     {
+        @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         $templatePath = "system/ThemeModule/Resources/views/system/$templateFile";
         $override = Zikula_View::getTemplateOverride($templatePath);
         if ($override !== false) {
@@ -1143,6 +1199,8 @@ class System
      */
     public static function dump($var, $maxDepth = 2, $stripTags = true)
     {
+        @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
+
         echo "<pre style='text-align:left'>";
         Doctrine\Common\Util\Debug::dump($var, $maxDepth, $stripTags);
         echo "</pre>";

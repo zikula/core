@@ -29,6 +29,8 @@ class LogUtil
      */
     public static function getStatusMessages($delete = true, $override = true, $reverse = true)
     {
+        @trigger_error('LogUtil is deprecated. please use Symfony flashbag instead.', E_USER_DEPRECATED);
+
         $session = ServiceUtil::getManager()->get('session');
         $msgs = $session->getFlashBag()->peek(Zikula_Session::MESSAGE_STATUS);
         $errs = $session->getFlashBag()->peek(Zikula_Session::MESSAGE_ERROR);
@@ -62,6 +64,8 @@ class LogUtil
      */
     public static function getStatusMessagesText($delimiter = '<br />', $delete = true, $override = true)
     {
+        @trigger_error('LogUtil is deprecated. please use Symfony flashbag instead.', E_USER_DEPRECATED);
+
         $msgs = self::getStatusMessages($delete, $override);
 
         return implode($delimiter, $msgs);
@@ -78,6 +82,8 @@ class LogUtil
      */
     public static function getWarningMessages($delete = true, $override = true, $reverse = true)
     {
+        @trigger_error('LogUtil is deprecated. please use Symfony flashbag instead.', E_USER_DEPRECATED);
+
         $session = ServiceUtil::getManager()->get('session');
         $warns = $session->getFlashBag()->peek(Zikula_Session::MESSAGE_WARNING);
         $errs =  $session->getFlashBag()->peek(Zikula_Session::MESSAGE_ERROR);
@@ -109,6 +115,8 @@ class LogUtil
      */
     public static function getWarningMessagesText($delimiter = '<br />', $delete = true, $override = true)
     {
+        @trigger_error('LogUtil is deprecated. please use Symfony flashbag instead.', E_USER_DEPRECATED);
+
         $msgs = self::getWarningMessages($delete, $override);
 
         return implode($delimiter, $msgs);
@@ -124,6 +132,8 @@ class LogUtil
      */
     public static function getErrorMessages($delete = true, $reverse = true)
     {
+        @trigger_error('LogUtil is deprecated. please use Symfony flashbag instead.', E_USER_DEPRECATED);
+
         $session = ServiceUtil::getManager()->get('session');
         $msgs = $session->getFlashBag()->peek(Zikula_Session::MESSAGE_ERROR);
 
@@ -149,6 +159,8 @@ class LogUtil
      */
     public static function getErrorMessagesText($delimeter = '<br />', $delete = true)
     {
+        @trigger_error('LogUtil is deprecated. please use Symfony flashbag instead.', E_USER_DEPRECATED);
+
         $msgs = self::getErrorMessages($delete);
 
         return implode($delimeter, $msgs);
@@ -161,6 +173,8 @@ class LogUtil
      */
     public static function getErrorType()
     {
+        @trigger_error('LogUtil is deprecated. please use Symfony flashbag instead.', E_USER_DEPRECATED);
+
         return (int)SessionUtil::getVar('_ZErrorMsgType');
     }
 
@@ -171,6 +185,8 @@ class LogUtil
      */
     public static function hasErrors()
     {
+        @trigger_error('LogUtil is deprecated. please use Symfony flashbag instead.', E_USER_DEPRECATED);
+
         $msgs = self::getErrorMessages(false);
 
         return (bool)!empty($msgs);
@@ -186,6 +202,8 @@ class LogUtil
      */
     public static function registerStatus($message, $url = null)
     {
+        @trigger_error('LogUtil is deprecated. please use Symfony flashbag instead.', E_USER_DEPRECATED);
+
         $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
 
         self::addStatusPopup($message);
@@ -208,6 +226,8 @@ class LogUtil
      */
     public static function registerWarning($message, $url = null)
     {
+        @trigger_error('LogUtil is deprecated. please use Symfony flashbag instead.', E_USER_DEPRECATED);
+
         $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
 
         self::addWarningPopup($message);
@@ -231,6 +251,8 @@ class LogUtil
      */
     public static function addStatusPopup($message)
     {
+        @trigger_error('LogUtil is deprecated. please use Symfony flashbag instead.', E_USER_DEPRECATED);
+
         $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
         self::_addPopup($message, Log::INFO);
     }
@@ -246,6 +268,8 @@ class LogUtil
      */
     public static function addWarningPopup($message)
     {
+        @trigger_error('LogUtil is deprecated. please use Symfony flashbag instead.', E_USER_DEPRECATED);
+
         $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
         self::_addPopup($message, Log::WARNING);
     }
@@ -261,6 +285,8 @@ class LogUtil
      */
     public static function addErrorPopup($message)
     {
+        @trigger_error('LogUtil is deprecated. please use Symfony flashbag instead.', E_USER_DEPRECATED);
+
         $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
         self::_addPopup($message, E_USER_ERROR);
     }
@@ -302,6 +328,8 @@ class LogUtil
      */
     public static function registerAuthidError($url = null)
     {
+        @trigger_error('LogUtil is deprecated. please use Symfony flashbag instead.', E_USER_DEPRECATED);
+
         return self::registerError(self::getErrorMsgAuthid(), null, $url);
     }
 
@@ -317,6 +345,8 @@ class LogUtil
      */
     public static function registerPermissionError($url = null, $redirect = true)
     {
+        @trigger_error('LogUtil is deprecated. please use Symfony flashbag instead.', E_USER_DEPRECATED);
+
         $code = 403;
         if (!UserUtil::isLoggedIn() && $redirect) {
             if (is_null($url)) {
@@ -347,6 +377,8 @@ class LogUtil
      */
     public static function registerError($message, $type = 500, $url = null)
     {
+        @trigger_error('LogUtil is deprecated. please use Symfony flashbag instead.', E_USER_DEPRECATED);
+
         self::log(__f('Deprecated call %s - depending on where this is called you may need to throw an exception instead', __METHOD__), Log::INFO);
         $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
 
@@ -372,6 +404,8 @@ class LogUtil
      */
     public static function registerArgsError($url = null)
     {
+        @trigger_error('LogUtil is deprecated. please use Symfony flashbag instead.', E_USER_DEPRECATED);
+
         self::log(__f('Deprecated call %s - throw an exception instead', __METHOD__), Log::INFO);
 
         return self::registerError(self::getErrorMsgArgs(), null, $url);
@@ -384,6 +418,8 @@ class LogUtil
      */
     public static function getErrorMsgAuthid()
     {
+        @trigger_error('LogUtil is deprecated. please use Symfony flashbag instead.', E_USER_DEPRECATED);
+
         return __("Sorry! Invalid authorisation key ('authkey'). This is probably either because you pressed the 'Back' button to return to a page which does not allow that, or else because the page's authorisation key expired due to prolonged inactivity. Please refresh the page and try again.");
     }
 
@@ -394,6 +430,8 @@ class LogUtil
      */
     public static function getErrorMsgPermission()
     {
+        @trigger_error('LogUtil is deprecated. please use Symfony flashbag instead.', E_USER_DEPRECATED);
+
         return __('Sorry! You have not been granted access to this page.');
     }
 
@@ -404,6 +442,8 @@ class LogUtil
      */
     public static function getErrorMsgArgs()
     {
+        @trigger_error('LogUtil is deprecated. please use Symfony flashbag instead.', E_USER_DEPRECATED);
+
         return __('Error! The action you wanted to perform was not successful for some reason, maybe because of a problem with what you input. Please check and try again.');
     }
 
@@ -417,7 +457,9 @@ class LogUtil
      */
     public static function log($msg, $level = Log::DEBUG)
     {
-        if (System::isInstalling()) {
+        @trigger_error('LogUtil is deprecated. please use Symfony flashbag instead.', E_USER_DEPRECATED);
+
+        if (!ServiceUtil::getManager()->getParameter('installed')) {
             return;
         }
 

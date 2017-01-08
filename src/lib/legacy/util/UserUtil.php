@@ -53,6 +53,8 @@ class UserUtil
      */
     public static function getUsers($where = [], $orderBy = [], $limitOffset = null, $limitNumRows = null, $assocKey = 'uid')
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         // first check for string based parameters and use dbutil if found
         if (System::isLegacyMode() && (is_string($where) || is_string($orderBy))) {
             if ($where == []) {
@@ -88,6 +90,8 @@ class UserUtil
      */
     public static function getGroup($gid)
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         return ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', ['gid' => $gid]);
     }
 
@@ -104,6 +108,8 @@ class UserUtil
      */
     public static function getGroups($where = [], array $orderBy = [], $limitOffset = null, $limitNumRows = null, $assocKey = 'gid')
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
         $groups = $em->getRepository('ZikulaGroupsModule:GroupEntity')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
 
@@ -126,6 +132,8 @@ class UserUtil
      */
     public static function getUserIdList($where = '', $orderBy = '', $separator = ',')
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         $userdata = self::getUsers($where, $orderBy);
 
         $list = '-1';
@@ -149,6 +157,8 @@ class UserUtil
      */
     public static function getGroupIdList($where = [], array $orderBy = [], $separator = ',')
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         $groupdata = self::getGroups($where, $orderBy);
 
         $list = '';
@@ -170,6 +180,8 @@ class UserUtil
      */
     public static function getGroupsForUser($uid)
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         if (empty($uid)) {
             return [];
         }
@@ -187,6 +199,8 @@ class UserUtil
      */
     public static function getGroupListForUser($uid = null, $separator = ',')
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         if (!$uid) {
             $uid = self::getVar('uid');
         }
@@ -218,6 +232,8 @@ class UserUtil
      */
     public static function getUsersForGroup($gid)
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         if (!$gid) {
             return [];
         }
@@ -247,6 +263,8 @@ class UserUtil
      */
     public static function getGidCacheString($uid = null)
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         $str = self::getGroupListForUser($uid, '_');
 
         return $str == '-1' ? 'guest' : 'groups_'.$str;
@@ -264,6 +282,8 @@ class UserUtil
      */
     public static function getUidCacheString($uid = null)
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         $uid = $uid ? (int)$uid : self::getVar('uid');
 
         return !$uid ? 'guest' : 'uid_'.$uid;
@@ -276,6 +296,8 @@ class UserUtil
      */
     public static function getDynamicDataFields()
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         // decide if we have to use the (obsolete) DUDs from the Profile module
         $profileModule = System::getVar('profilemodule', '');
 
@@ -299,6 +321,8 @@ class UserUtil
      */
     public static function getSelectorData_Group($defaultValue = 0, $defaultText = '', $ignore = [], $includeAll = 0, $allText = '')
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         $dropdown = [];
 
         if ($defaultText) {
@@ -350,6 +374,8 @@ class UserUtil
      */
     public static function getSelectorData_User($defaultValue = 0, $defaultText = '', array $ignore = [], $includeAll = 0, $allText = '', $exclude = '')
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         $dropdown = [];
 
         if ($defaultText) {
@@ -405,6 +431,8 @@ class UserUtil
      */
     public static function getUserAccountRecoveryInfo($uid = -1)
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         if (!isset($uid) || !is_numeric($uid) || ((string)((int)$uid) != $uid) || (($uid < -1) || ($uid == 0) || ($uid == 1))) {
             throw new \InvalidArgumentException('Attempt to get authentication information for an invalid user id.');
         }
@@ -442,6 +470,8 @@ class UserUtil
      */
     public static function logout()
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         if (self::isLoggedIn()) {
             $userObj = self::getVars(self::getVar('uid'));
             $authenticationMethod = SessionUtil::delVar('authentication_method', ['modname' => '', 'method' => ''], 'Zikula_Users');
@@ -459,6 +489,8 @@ class UserUtil
      */
     public static function isLoggedIn()
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         return ServiceUtil::get('session')->isStarted() && (bool)SessionUtil::getVar('uid');
     }
 
@@ -472,6 +504,8 @@ class UserUtil
      */
     public static function getUnameUsageCount($uname, $excludeUid = 0)
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         if (!is_numeric($excludeUid) || ((int)$excludeUid != $excludeUid)) {
             return false;
         }
@@ -483,7 +517,7 @@ class UserUtil
 
         // count of uname appearances in users table
         $qb = $em->createQueryBuilder()
-                 ->select('count(u.uid)')
+                 ->select('COUNT(u.uid)')
                  ->from('ZikulaUsersModule:UserEntity', 'u')
                  ->where('u.uname = :uname')
                  ->setParameter('uname', $uname);
@@ -508,6 +542,8 @@ class UserUtil
      */
     public static function getEmailUsageCount($emailAddress, $excludeUid = 0)
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         if (!is_numeric($excludeUid) || ((int)$excludeUid != $excludeUid)) {
             return false;
         }
@@ -519,7 +555,7 @@ class UserUtil
 
         // count of email appearances in users table
         $qb = $em->createQueryBuilder()
-                 ->select('count(u.uid)')
+                 ->select('COUNT(u.uid)')
                  ->from('ZikulaUsersModule:UserEntity', 'u')
                  ->where('u.email = :email')
                  ->setParameter('email', $emailAddress);
@@ -535,7 +571,7 @@ class UserUtil
 
         // count of email appearances in users verification table
         $qb = $em->createQueryBuilder()
-                 ->select('count(v.uid)')
+                 ->select('COUNT(v.uid)')
                  ->from('ZikulaZAuthModule:UserVerificationEntity', 'v')
                  ->where('v.newemail = :email')
                  ->andWhere('v.changetype = :chgtype')
@@ -564,6 +600,8 @@ class UserUtil
      */
     public static function postProcessGetRegistration(&$userObj)
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         if ($userObj['activated'] == UsersConstant::ACTIVATED_PENDING_REG) {
             // Get isverified from the attributes.
             if (isset($userObj['__ATTRIBUTES__']['_Users_isVerified'])) {
@@ -619,6 +657,8 @@ class UserUtil
      */
     public static function getVars($id, $force = false, $idfield = '', $getRegistration = false)
     {
+        @trigger_error('UserUtil is deprecated, please use CurrentUserApi instead.', E_USER_DEPRECATED);
+
         if (empty($id)) {
             return false;
         }
@@ -739,6 +779,8 @@ class UserUtil
      */
     public static function getVar($name, $uid = -1, $default = false, $getRegistration = false)
     {
+        @trigger_error('UserUtil is deprecated, please use CurrentUserApi instead.', E_USER_DEPRECATED);
+
         if (empty($name)) {
             return null;
         }
@@ -784,6 +826,8 @@ class UserUtil
      */
     private static function convertOldDynamicUserDataAlias($name)
     {
+        @trigger_error('UserUtil is deprecated.', E_USER_DEPRECATED);
+
         $attributeName = false;
 
         if (isset($name) && !empty($name)) {
@@ -855,6 +899,8 @@ class UserUtil
      */
     public static function setVar($name, $value, $uid = -1)
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         if (empty($name)) {
             return false;
         }
@@ -925,7 +971,7 @@ class UserUtil
 
             // Do not fire update event/hook unless the update happened, it was not a registration record, it was not
             // the password being updated, and the system is not currently being installed.
-            if ($varIsSet && ($name != 'pass') && !System::isInstalling()) {
+            if ($varIsSet && ($name != 'pass') && \ServiceUtil::getManager()->getParameter('installed')) {
                 // Fire the event
                 $eventName = $isRegistration ? 'user.registration.update' : 'user.account.update';
                 $eventArgs = [
@@ -962,6 +1008,8 @@ class UserUtil
      */
     public static function getPasswordHashMethods($reverse = false)
     {
+        @trigger_error('UserUtil is deprecated, please use PasswordApi instead.', E_USER_DEPRECATED);
+
         // NOTICE: Be extremely cautious about removing entries from this array! If a hash method is no longer
         // to be used, then it probably should be removed from the available options at display time. If an entry is
         // removed from this array but a user's password has been hashed with that method, then that user will no
@@ -999,6 +1047,8 @@ class UserUtil
      */
     public static function getPasswordHashMethodCode($hashAlgorithmName)
     {
+        @trigger_error('UserUtil is deprecated, please use PasswordApi instead.', E_USER_DEPRECATED);
+
         static $hashMethodCodesByName;
 
         if (!isset($hashMethodCodesByName)) {
@@ -1022,6 +1072,8 @@ class UserUtil
      */
     public static function getPasswordHashMethodName($hashAlgorithmCode)
     {
+        @trigger_error('UserUtil is deprecated, please use PasswordApi instead.', E_USER_DEPRECATED);
+
         static $hashMethodNamesByCode;
 
         if (!isset($hashMethodNamesByCode)) {
@@ -1056,6 +1108,8 @@ class UserUtil
      */
     public static function getHashedPassword($unhashedPassword, $hashMethodCode = null)
     {
+        @trigger_error('UserUtil is deprecated, please use PasswordApi instead.', E_USER_DEPRECATED);
+
         if (isset($hashMethodCode)) {
             if (!is_numeric($hashMethodCode) || ((int)$hashMethodCode != $hashMethodCode)) {
                 throw new \InvalidArgumentException(__('Invalid arguments array received'));
@@ -1088,6 +1142,8 @@ class UserUtil
      */
     public static function generatePassword()
     {
+        @trigger_error('UserUtil is deprecated, please use PasswordApi instead.', E_USER_DEPRECATED);
+
         $minLength = ModUtil::getVar('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH);
         if (!is_numeric($minLength) || ((int)$minLength != $minLength) || ($minLength < 5)) {
             $minLength = 5;
@@ -1109,7 +1165,7 @@ class UserUtil
      */
     public static function setPassword($unhashedPassword, $uid = -1)
     {
-        @trigger_error('This method is deprecated. Update the password via the entity instead.', E_USER_DEPRECATED);
+        @trigger_error('UserUtil is deprecated, please update the password via the entity instead.', E_USER_DEPRECATED);
     }
 
     /**
@@ -1126,6 +1182,8 @@ class UserUtil
      */
     public static function passwordsMatch($unhashedPassword, $hashedPassword)
     {
+        @trigger_error('UserUtil is deprecated, please use PasswordApi instead.', E_USER_DEPRECATED);
+
         $passwordsMatch = false;
 
         if (!isset($unhashedPassword) || !is_string($unhashedPassword) || empty($unhashedPassword)) {
@@ -1164,6 +1222,8 @@ class UserUtil
      */
     public static function delVar($name, $uid = -1)
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         // Prevent deletion of core fields (duh)
         if (empty($name) || ($name == 'uid') || ($name == 'email') || ($name == 'pass') || ($name == 'uname')
                 || ($name == 'activated')) {
@@ -1235,7 +1295,7 @@ class UserUtil
 
             // Do not fire update event/hook unless the update happened, it was not a registration record, it was not
             // the password being updated, and the system is not currently being installed.
-            if ($varIsDeleted && ($name != 'pass') && !System::isInstalling()) {
+            if ($varIsDeleted && ($name != 'pass') && \ServiceUtil::getManager()->getParameter('installed')) {
                 // Fire the event
                 $eventArgs = [
                     'action'    => 'delVar',
@@ -1275,6 +1335,8 @@ class UserUtil
      */
     public static function getTheme($force = false)
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         // if this method is called from the command line scope, always return a default core theme (ZikulaAndreas08Theme)
         // this prevents calls for the Request object or other unwanted behaviors.
         if (php_sapi_name() == 'cli') {
@@ -1425,7 +1487,7 @@ class UserUtil
             return $themeName;
         }
 
-        if (!System::isInstalling()) {
+        if (\ServiceUtil::getManager()->getParameter('installed')) {
             throw new RuntimeException(__('UserUtil::getTheme() is unable to calculate theme name.'));
         }
     }
@@ -1440,6 +1502,8 @@ class UserUtil
      */
     private static function _getThemeFilterEvent($themeName, $type)
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         $event = new GenericEvent(null, ['type' => $type], $themeName);
 
         return EventUtil::dispatch('user.gettheme', $event)->getData();
@@ -1461,6 +1525,8 @@ class UserUtil
      */
     public static function getAll($sortbyfield = 'uname', $sortorder = 'ASC', $limit = null, $offset = null, $activated = '', $field = '', $expression = '', $where = '')
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         $user = new \Zikula\UsersModule\Entity\UserEntity();
 
         if (empty($where)) {
@@ -1525,6 +1591,8 @@ class UserUtil
      */
     public static function getIdFromName($uname, $forRegistration = false)
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         $result = self::getVars($uname, false, 'uname', $forRegistration);
 
         return $result && isset($result['uid']) ? $result['uid'] : false;
@@ -1540,6 +1608,8 @@ class UserUtil
      */
     public static function getIdFromEmail($email, $forRegistration = false)
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         $result = self::getVars($email, false, 'email', $forRegistration);
 
         return $result && isset($result['uid']) ? $result['uid'] : false;
@@ -1556,6 +1626,8 @@ class UserUtil
      */
     public static function fieldAlias($label)
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         $isFieldAlias = false;
 
         // no change in uid or uname allowed, empty label is not an alias
@@ -1574,6 +1646,8 @@ class UserUtil
      */
     public static function isGuestUser()
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         return !SessionUtil::getVar('uid', 0);
     }
 
@@ -1588,6 +1662,8 @@ class UserUtil
      */
     public static function isRegistration($uid)
     {
+        @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
+
         if (!isset($uid) || !is_numeric($uid)
                 || (!is_int($uid) && ((string)((int)$uid) != $uid))
                 ) {

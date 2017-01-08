@@ -33,6 +33,8 @@ class ZLoader
      */
     public static function register($autoloader)
     {
+        @trigger_error('ZLoader is deprecated. please use Composer and namespaces instead.', E_USER_DEPRECATED);
+
         spl_autoload_register(['ZLoader', 'autoload']);
         self::$autoloader = $autoloader;
     }
@@ -49,6 +51,8 @@ class ZLoader
      */
     public static function addAutoloader($namespace, $paths = '', $separator = '_')
     {
+        @trigger_error('ZLoader is deprecated. please use Composer and namespaces instead.', E_USER_DEPRECATED);
+
         $separator = $separator === '\\' ? '' : $separator;
 
         self::$autoloader->add($namespace.$separator, $paths);
@@ -56,11 +60,15 @@ class ZLoader
 
     public static function addPrefix($prefix, $paths)
     {
+        @trigger_error('ZLoader is deprecated. please use Composer and namespaces instead.', E_USER_DEPRECATED);
+
         self::$autoloader->add($prefix, $paths);
     }
 
     public static function addPrefixPsr4($prefix, $paths)
     {
+        @trigger_error('ZLoader is deprecated. please use Composer and namespaces instead.', E_USER_DEPRECATED);
+
         self::$autoloader->addPsr4($prefix, $paths);
     }
 
@@ -73,6 +81,8 @@ class ZLoader
      */
     public static function autoload($class)
     {
+        @trigger_error('ZLoader is deprecated. please use Composer and namespaces instead.', E_USER_DEPRECATED);
+
         // Classloader for SystemPlugin
         if (strpos($class, 'SystemPlugin') === 0) {
             $array = explode('_', $class);

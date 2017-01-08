@@ -40,6 +40,8 @@ class PluginUtil
      */
     public static function getState($name, $default = null)
     {
+        @trigger_error('PluginUtil is deprecated, please use tagged services instead of module plugins.', E_USER_DEPRECATED);
+
         return ModUtil::getVar(self::CONFIG, $name, $default);
     }
 
@@ -52,6 +54,8 @@ class PluginUtil
      */
     public static function delState($name)
     {
+        @trigger_error('PluginUtil is deprecated, please use tagged services instead of module plugins.', E_USER_DEPRECATED);
+
         return ModUtil::delVar(self::CONFIG, $name);
     }
 
@@ -65,6 +69,8 @@ class PluginUtil
      */
     public static function setState($name, $value)
     {
+        @trigger_error('PluginUtil is deprecated, please use tagged services instead of module plugins.', E_USER_DEPRECATED);
+
         return ModUtil::setVar(self::CONFIG, $name, $value);
     }
 
@@ -75,6 +81,8 @@ class PluginUtil
      */
     public static function getDefaultState()
     {
+        @trigger_error('PluginUtil is deprecated, please use tagged services instead of module plugins.', E_USER_DEPRECATED);
+
         return self::$defaultState;
     }
 
@@ -89,6 +97,8 @@ class PluginUtil
      */
     public static function loadPlugins($path, $namespace)
     {
+        @trigger_error('PluginUtil is deprecated, please use tagged services instead of module plugins.', E_USER_DEPRECATED);
+
         static $loaded;
 
         $path = realpath($path);
@@ -137,6 +147,8 @@ class PluginUtil
      */
     public static function loadPlugin($className)
     {
+        @trigger_error('PluginUtil is deprecated, please use tagged services instead of module plugins.', E_USER_DEPRECATED);
+
         $sm = ServiceUtil::getManager();
         $serviceId = self::getServiceId($className);
         if ($sm->has($serviceId)) {
@@ -174,6 +186,8 @@ class PluginUtil
      */
     public static function getPlugin($className)
     {
+        @trigger_error('PluginUtil is deprecated, please use tagged services instead of module plugins.', E_USER_DEPRECATED);
+
         $sm = ServiceUtil::getManager();
         $serviceId = self::getServiceId($className);
         if ($sm->has($serviceId)) {
@@ -188,6 +202,8 @@ class PluginUtil
      */
     public static function getAllPlugins()
     {
+        @trigger_error('PluginUtil is deprecated, please use tagged services instead of module plugins.', E_USER_DEPRECATED);
+
         return array_merge(self::getAllSystemPlugins(), self::getAllModulePlugins());
     }
 
@@ -198,6 +214,8 @@ class PluginUtil
      */
     public static function getAllModulePlugins()
     {
+        @trigger_error('PluginUtil is deprecated, please use tagged services instead of module plugins.', E_USER_DEPRECATED);
+
         $pluginsArray = [];
 
         $dirs = ['system', 'modules'];
@@ -222,6 +240,8 @@ class PluginUtil
      */
     public static function getAllSystemPlugins()
     {
+        @trigger_error('PluginUtil is deprecated, please use tagged services instead of module plugins.', E_USER_DEPRECATED);
+
         return FileUtil::getFiles('plugins', false, false, null, 'd');
     }
 
@@ -232,6 +252,8 @@ class PluginUtil
      */
     public static function loadAllPlugins()
     {
+        @trigger_error('PluginUtil is deprecated, please use tagged services instead of module plugins.', E_USER_DEPRECATED);
+
         return array_merge(self::loadAllSystemPlugins(), self::loadAllModulePlugins());
     }
 
@@ -242,6 +264,8 @@ class PluginUtil
      */
     public static function loadAllSystemPlugins()
     {
+        @trigger_error('PluginUtil is deprecated, please use tagged services instead of module plugins.', E_USER_DEPRECATED);
+
         $classNames = [];
         $plugins = self::getAllSystemPlugins();
         foreach ($plugins as $plugin) {
@@ -264,6 +288,8 @@ class PluginUtil
      */
     public static function loadAllModulePlugins()
     {
+        @trigger_error('PluginUtil is deprecated, please use tagged services instead of module plugins.', E_USER_DEPRECATED);
+
         $classNames = [];
         $plugins = self::getAllModulePlugins();
         foreach ($plugins as $plugin) {
@@ -307,6 +333,8 @@ class PluginUtil
      */
     public static function hasModulePlugins($modulename)
     {
+        @trigger_error('PluginUtil is deprecated, please use tagged services instead of module plugins.', E_USER_DEPRECATED);
+
         $pluginClasses = self::loadAllPlugins();
         $hasPlugins = false;
 
@@ -332,6 +360,8 @@ class PluginUtil
      */
     public static function install($className)
     {
+        @trigger_error('PluginUtil is deprecated, please use tagged services instead of module plugins.', E_USER_DEPRECATED);
+
         $plugin = self::loadPlugin($className);
         if ($plugin instanceof Zikula_Plugin_AlwaysOnInterface) {
             // as it stands, these plugins cannot be installed since they are always on
@@ -367,6 +397,8 @@ class PluginUtil
      */
     public static function upgrade($className)
     {
+        @trigger_error('PluginUtil is deprecated, please use tagged services instead of module plugins.', E_USER_DEPRECATED);
+
         $plugin = self::loadPlugin($className);
         if (!$plugin->isInstalled()) {
             throw new LogicException(__f('Plugin %s is not installed', $className));
@@ -398,6 +430,8 @@ class PluginUtil
      */
     public static function uninstall($className)
     {
+        @trigger_error('PluginUtil is deprecated, please use tagged services instead of module plugins.', E_USER_DEPRECATED);
+
         $plugin = self::loadPlugin($className);
         if (!$plugin->isInstalled()) {
             throw new LogicException(__f('Plugin %s is not installed', $className));
@@ -424,6 +458,8 @@ class PluginUtil
      */
     public static function disable($className)
     {
+        @trigger_error('PluginUtil is deprecated, please use tagged services instead of module plugins.', E_USER_DEPRECATED);
+
         $plugin = self::loadPlugin($className);
         if (!$plugin->isInstalled()) {
             throw new LogicException(__f('Plugin %s is not installed', $className));
@@ -447,6 +483,8 @@ class PluginUtil
      */
     public static function enable($className)
     {
+        @trigger_error('PluginUtil is deprecated, please use tagged services instead of module plugins.', E_USER_DEPRECATED);
+
         $plugin = self::loadPlugin($className);
         if (!$plugin->isInstalled()) {
             throw new LogicException(__f('Plugin %s is not installed', $className));
@@ -469,6 +507,8 @@ class PluginUtil
      */
     public static function isAvailable($id)
     {
+        @trigger_error('PluginUtil is deprecated, please use tagged services instead of module plugins.', E_USER_DEPRECATED);
+
         $sm = ServiceUtil::getManager();
         if (!$sm->has($id)) {
             return false;
@@ -491,6 +531,8 @@ class PluginUtil
      */
     public static function getServiceId($className)
     {
+        @trigger_error('PluginUtil is deprecated, please use tagged services instead of module plugins.', E_USER_DEPRECATED);
+
         $p = explode('_', $className);
         if (count($p) == 3) {
             $className = "{$p[0]}_{$p[1]}";

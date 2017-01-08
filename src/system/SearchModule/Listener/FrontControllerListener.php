@@ -11,7 +11,6 @@
 
 namespace Zikula\SearchModule\Listener;
 
-use DataUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -99,8 +98,8 @@ class FrontControllerListener implements EventSubscriberInterface
 
         // The current user has the rights to search the page.
         $linkType = 'application/opensearchdescription+xml';
-        $siteName = DataUtil::formatForDisplay($this->variableApi->getSystemVar('sitename'));
-        $searchUrl = DataUtil::formatForDisplay($this->router->generate('zikulasearchmodule_user_opensearch'));
+        $siteName = htmlspecialchars($this->variableApi->getSystemVar('sitename'), ENT_QUOTES);
+        $searchUrl = htmlentities($this->router->generate('zikulasearchmodule_user_opensearch'));
 
         $headerCode = '<link rel="search" type="' . $linkType . '" title="' . $siteName . '" href="' . $searchUrl . '" />';
         $this->headerAssetBag->add($headerCode);

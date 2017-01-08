@@ -28,7 +28,7 @@ function ZikulaUsersModule_tables($forVersion = null)
             return Users_tables_for_113();
         }
 
-        if (System::isInstalling()) {
+        if (\ServiceUtil::getManager()->getParameter('installed')) {
             // new installs
             return Users_tables_for_220();
         }
@@ -74,8 +74,6 @@ function Users_tables_for_220()
     //                      delimited from the hash with a dollar sign character ($). The hash algorithm is stored as a numeric code
     //                      in the hash_method field. This field may be blank in instances where the user registered with an
     //                      alternative authentication module (e.g., OpenID) and did not also establish a password for his web site account.
-    // passreminder     - Password reminder: Set during registration or password changes, to remind the user what his password is.
-    //                      This field may be blank if pass is blank.
     // activated        - Account State: The user's current state, see Users_Constant::ACTIVE_* for defined constants. A state
     //                      represented by a negative integer means that the user's account is in a pending state, and
     //                      should not yet be considered a "real" user account. For example, user
@@ -134,7 +132,6 @@ function Users_tables_for_220()
         'uname'         => 'uname',
         'email'         => 'email',
         'pass'          => 'pass',
-        'passreminder'  => 'passreminder',
         'activated'     => 'activated',
         'approved_date' => 'approved_date',
         'approved_by'   => 'approved_by',
@@ -151,7 +148,6 @@ function Users_tables_for_220()
         'uname'         => "C(25) NOTNULL DEFAULT ''",
         'email'         => "C(60) NOTNULL DEFAULT ''",
         'pass'          => "C(138) NOTNULL DEFAULT ''",
-        'passreminder'  => "C(255) NOTNULL DEFAULT ''",
         'activated'     => "I2 NOTNULL DEFAULT 0",
         'approved_date' => "T DEFDATETIME NOTNULL DEFAULT '1970-01-01 00:00:00'",
         'approved_by'   => "I4 NOTNULL DEFAULT 0",

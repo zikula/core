@@ -16,7 +16,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\Common\Translator\TranslatorInterface;
-use ZLanguage;
+use Zikula\SettingsModule\Api\LocaleApi;
 
 /**
  * Category processing helper functions for the categories module.
@@ -39,17 +39,28 @@ class CategoryProcessingHelper
     private $kernel;
 
     /**
+     * @var LocaleApi
+     */
+    private $localeApi;
+
+    /**
      * CategoryProcessingHelper constructor.
      *
-     * @param TranslatorInterface $translator    TranslatorInterface service instance
-     * @param EntityManager       $entityManager EntityManager service instance
-     * @param KernelInterface     $kernel        KernelInterface service instance
+     * @param TranslatorInterface $translator TranslatorInterface service instance
+     * @param EntityManager $entityManager EntityManager service instance
+     * @param KernelInterface $kernel KernelInterface service instance
+     * @param LocaleApi $localeApi
      */
-    public function __construct(TranslatorInterface $translator, EntityManager $entityManager, KernelInterface $kernel)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        EntityManager $entityManager,
+        KernelInterface $kernel,
+        LocaleApi $localeApi
+    ) {
         $this->translator = $translator;
         $this->entityManager = $entityManager;
         $this->kernel = $kernel;
+        $this->localeApi = $localeApi;
     }
 
     /**
@@ -125,7 +136,7 @@ class CategoryProcessingHelper
      */
     public function processCategoryDisplayName($displayName, $name)
     {
-        $languages = ZLanguage::getInstalledLanguages();
+        $languages = $this->localeApi->getSupportedLocales();
         foreach ($languages as $lang) {
             if (!isset($displayName[$lang]) || !$displayName[$lang]) {
                 $displayName[$lang] = $name;
@@ -223,6 +234,10 @@ class CategoryProcessingHelper
             }
 
             // get information about responsible module
+            if (!$this->kernel->isBundle($registry['modname'])) {
+                continue;
+            }
+
             $module = $this->kernel->getModule($registry['modname']);
             $moduleClass = get_class($module);
             $moduleClassLevels = explode('\\', get_class($module));

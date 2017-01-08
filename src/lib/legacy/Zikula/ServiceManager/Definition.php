@@ -36,6 +36,8 @@ class Zikula_ServiceManager_Definition extends \Symfony\Component\DependencyInje
      */
     public function __construct($className, array $constructorArgs = [], array $methods = [])
     {
+        @trigger_error('ServiceManager is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         parent::__construct($className, $constructorArgs);
 
         if ($methods) {

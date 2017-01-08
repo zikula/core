@@ -47,6 +47,8 @@ abstract class Zikula_Controller_AbstractBlock extends Zikula_AbstractController
      */
     public function modify($blockinfo)
     {
+        @trigger_error('Old block is deprecated, please use new block interface instead.', E_USER_DEPRECATED);
+
         return '';
     }
 
@@ -59,6 +61,8 @@ abstract class Zikula_Controller_AbstractBlock extends Zikula_AbstractController
      */
     public function update($blockinfo)
     {
+        @trigger_error('Old block is deprecated, please use new block interface instead.', E_USER_DEPRECATED);
+
         return $blockinfo;
     }
 
@@ -74,6 +78,8 @@ abstract class Zikula_Controller_AbstractBlock extends Zikula_AbstractController
      */
     public function __call($method, $args)
     {
+        @trigger_error('Old block is deprecated, please use new block interface instead.', E_USER_DEPRECATED);
+
         $event = new \Zikula\Core\Event\GenericEvent($this, ['method' => $method, 'args' => $args]);
         $this->eventManager->dispatch('block.method_not_found', $event);
         if ($event->isPropagationStopped()) {
@@ -85,6 +91,8 @@ abstract class Zikula_Controller_AbstractBlock extends Zikula_AbstractController
 
     public function getType()
     {
+        @trigger_error('Old block is deprecated, please use new block interface instead.', E_USER_DEPRECATED);
+
         // default to the ClassName without the `Block` suffix
         // note: This string is intentionally left untranslated.
         $fqCn = get_class($this);

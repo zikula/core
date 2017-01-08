@@ -28,32 +28,17 @@ class MembershipApplicationType extends AbstractType
         $translator = $options['translator'];
 
         $builder
-            ->add('gid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [])
-            ->add('theAction', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [])
-            ->add('groupType', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [])
-            ->add('groupName', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $translator->__('Group name'),
-                'empty_data' => $translator->__('Not available'),
-                'required' => false,
-                'disabled' => true
+            ->add('group', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [
+                'property_path' => 'group.gid'
             ])
-            ->add('groupDescription', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
-                'label' => $translator->__('Description'),
-                'empty_data' => $translator->__('Not available'),
-                'required' => false,
-                'disabled' => true
+            ->add('user', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [
+                'property_path' => 'user.uid'
             ])
-        ;
-
-        if ($options['theAction'] == 'subscribe' && $options['groupType'] == 2) {
-            $builder->add('applyText', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+            ->add('status', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
+            ->add('application', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
                 'label' => $translator->__('Comment to attach to your application'),
-                'empty_data' => '',
                 'required' => false
-            ]);
-        }
-
-        $builder
+            ])
             ->add('apply', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'label' => $translator->__('Apply'),
                 'icon' => 'fa-check',
@@ -86,9 +71,6 @@ class MembershipApplicationType extends AbstractType
     {
         $resolver->setDefaults([
             'translator' => null,
-            'theAction' => 'subscribe',
-            'groupType' => 0
         ]);
-        $resolver->setAllowedValues('theAction', ['subscribe', 'unsubscribe', 'cancel']);
     }
 }

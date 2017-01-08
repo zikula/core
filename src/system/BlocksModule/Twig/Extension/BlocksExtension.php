@@ -119,11 +119,9 @@ class BlocksExtension extends \Twig_Extension
         if (!isset($blocksModuleInstance)) {
             return "Blocks not currently available.";
         }
-        // Check if providing module not available, if block is inactive, if block filter prevents display.
+        // Check if block is inactive, if block filter prevents display.
         $moduleInstance = $this->extensionApi->getModuleInstanceOrNull($block->getModule()->getName());
-        if (!isset($moduleInstance)
-            || (!$block->getActive())
-            || (!$this->blockFilter->isDisplayable($block))) {
+        if (!$block->getActive() || !$this->blockFilter->isDisplayable($block)) {
             return '';
         }
 
@@ -146,12 +144,19 @@ class BlocksExtension extends \Twig_Extension
         $legacy = false;
         $content = '';
         if ($blockInstance instanceof BlockHandlerInterface) {
+            // Check if providing module is available
+            if (!isset($moduleInstance)) {
+                return '';
+            }
             $blockProperties = $block->getContent();
             $blockProperties['bid'] = $block->getBid();
             $blockProperties['title'] = $block->getTitle();
             $blockProperties['position'] = $positionName;
             $content = $blockInstance->display($blockProperties);
         } elseif ($blockInstance instanceof \Zikula_Controller_AbstractBlock) { // @todo remove at Core-2.0
+            if (!\ModUtil::available($block->getModule()->getName())) {
+                return '';
+            }
             $legacy = true;
             $args = \BlockUtil::getBlockInfo($block->getBid());
             $args['position'] = $positionName;

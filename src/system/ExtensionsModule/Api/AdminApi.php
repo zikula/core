@@ -149,7 +149,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function listmodules($args)
     {
         // Security check
-        if (!System::isInstalling()) {
+        if (\ServiceUtil::getManager()->getParameter('installed')) {
             if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
                 throw new AccessDeniedException();
             }
@@ -244,7 +244,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Security check
-        if (!System::isInstalling()) {
+        if (\ServiceUtil::getManager()->getParameter('installed')) {
             if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_EDIT)) {
                 throw new AccessDeniedException();
             }
@@ -471,7 +471,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         $directories = empty($directories) ? ['system', 'modules'] : $directories;
         // Security check
-        if (!System::isInstalling()) {
+        if (\ServiceUtil::getManager()->getParameter('installed')) {
             if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
                 throw new AccessDeniedException();
             }
@@ -698,7 +698,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function regenerate($args)
     {
         // Security check
-        if (!System::isInstalling()) {
+        if (\ServiceUtil::getManager()->getParameter('installed')) {
             if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
                 throw new AccessDeniedException();
             }
@@ -1122,7 +1122,7 @@ class AdminApi extends \Zikula_AbstractApi
         $cacheClearer = $this->get('zikula.cache_clearer');
         $cacheClearer->clear('symfony.config');
 
-        if (!System::isInstalling()) {
+        if (\ServiceUtil::getManager()->getParameter('installed')) {
             // Upgrade succeeded, issue event.
             // remove this legacy in 1.5.0
             $event = new GenericEvent(null, $modinfo);
@@ -1331,7 +1331,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function checkconsistency($args)
     {
         // Security check
-        if (!System::isInstalling()) {
+        if (\ServiceUtil::getManager()->getParameter('installed')) {
             if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
                 throw new AccessDeniedException();
             }
@@ -1414,7 +1414,7 @@ class AdminApi extends \Zikula_AbstractApi
      */
     private function isCoreCompatible($compatibilityString)
     {
-        $coreVersion = new version(Zikula_Core::VERSION_NUM);
+        $coreVersion = new version(\ZikulaKernel::VERSION);
         $requiredVersionExpression = new expression($compatibilityString);
 
         return $requiredVersionExpression->satisfiedBy($coreVersion);

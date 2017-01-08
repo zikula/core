@@ -361,6 +361,7 @@ class RouteController extends AbstractRouteController
      * @Route("/routes/handleSelectedEntries",
      *        methods = {"POST"}
      * )
+     * @Theme("admin")
      *
      * @param Request $request Current request instance
      *

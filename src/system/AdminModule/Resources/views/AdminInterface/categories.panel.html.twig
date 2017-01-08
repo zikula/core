@@ -28,7 +28,7 @@
                         <ul class="text-left">
                             {% for module in category.modules %}
                                 <li{% if caller.path == module.menutexturl %} class="selected"{% endif %}>
-                                    <a href="{{ module.menutexturl }}"><img src="/{{ module.icon }}" alt="{{ module.menutext|e('html_attr') }}" style="height: 18px" /> {{ module.menutext }}</a>
+                                    <a href="{{ module.menutexturl }}" title="{{ module.menutext|e('html_attr') }}"><img src="/{{ module.icon }}" alt="{{ module.menutext|e('html_attr') }}" style="height: 18px" /> {{ module.menutext }}</a>
                                     {% if module.links|length > 0 %}
                                         <ul class="text-left">{{ menu.draw(module.links, caller, module) }}</ul>
                                     {% endif %}

@@ -32,6 +32,8 @@ class Zikula_Exception extends Exception
      */
     public function __construct($message = '', $code = 0, $debug = null)
     {
+        @trigger_error('Zikula_Exception is deprecated.', E_USER_DEPRECATED);
+
         parent::__construct($message, $code);
         $this->debug = $debug;
     }

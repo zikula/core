@@ -101,7 +101,7 @@ class TwigExtension extends AbstractTwigExtension
         $path = preg_replace_callback('#{(.*?)}#', function ($matches) use ($container, $defaults, $requirements) {
             $title = '';
             if (isset($defaults[$matches[1]])) {
-                $title .= $this->translator->__f('Default: %s', ['%s' => DataUtil::formatForDisplay($defaults[$matches[1]])]);
+                $title .= $this->__f('Default: %s', ['%s' => DataUtil::formatForDisplay($defaults[$matches[1]])]);
             }
             if (isset($requirements[$matches[1]])) {
                 if ($title != '') {

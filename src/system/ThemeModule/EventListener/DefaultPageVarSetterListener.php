@@ -16,7 +16,6 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\SettingsModule\Api\LocaleApi;
 use Zikula\ThemeModule\Engine\ParameterBag;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
@@ -48,11 +47,6 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
     private $kernel;
 
     /**
-     * @var LocaleApi
-     */
-    private $localeApi;
-
-    /**
      * @var bool
      */
     private $isInstalled;
@@ -62,14 +56,12 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
         RouterInterface $routerInterface,
         VariableApi $variableApi,
         KernelInterface $kernel,
-        LocaleApi $localeApi,
         $isInstalled
     ) {
         $this->pageVars = $pageVars;
         $this->router = $routerInterface;
         $this->variableApi = $variableApi;
         $this->kernel = $kernel;
-        $this->localeApi = $localeApi;
         $this->isInstalled = $isInstalled;
     }
 
@@ -88,14 +80,13 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
         }
 
         // set some defaults
-        $this->pageVars->set('lang', $event->getRequest()->getLocale()); // @deprecated use app.request.locale
-        $this->pageVars->set('langdirection', $this->localeApi->language_direction()); // @deprecated use localeApi.language_direction
+        $this->pageVars->set('lang', $event->getRequest()->getLocale()); // @deprecated use app.request.locale in the template
         $this->pageVars->set('title', $this->variableApi->getSystemVar('defaultpagetitle'));
         $this->pageVars->set('meta.charset', $this->kernel->getCharset());
         $this->pageVars->set('meta.description', $this->variableApi->getSystemVar('defaultmetadescription'));
         $this->pageVars->set('meta.keywords', $this->variableApi->getSystemVar('metakeywords'));
         $this->pageVars->set('homepath', $this->router->generate('home'));
-        $this->pageVars->set('coredata', ['version' => \Zikula_Core::VERSION_NUM]); // @todo
+        $this->pageVars->set('coredata', ['version' => \ZikulaKernel::VERSION]); // @todo add more info?
     }
 
     public static function getSubscribedEvents()

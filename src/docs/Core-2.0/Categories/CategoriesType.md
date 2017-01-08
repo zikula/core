@@ -150,5 +150,6 @@ PageType
 
 ###Optional Options
 
- - `required` - (boolean) is the field required (default true).
- - `multiple` - (boolean) allow multiple selections (default false).
+ - `required` - (boolean) is the field required (default `true`).
+ - `multiple` - (boolean) allow multiple selections (default `false`).
+ 

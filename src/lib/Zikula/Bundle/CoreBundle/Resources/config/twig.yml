@@ -9,46 +9,46 @@ parameters:
 
 services:
     twig.extension.zikula_gettext:
-        class: %twig.extension.zikula_gettext.class%
+        class: "%twig.extension.zikula_gettext.class%"
         public: false
         arguments: ["@translator.default", "@kernel"]
         tags:
             - { name: twig.extension }
 
     twig.extension.zikula_core:
-        class: %twig.extension.zikula_core.class%
+        class: "%twig.extension.zikula_core.class%"
         public: false
         arguments: ["@service_container"]
         tags:
             - { name: twig.extension }
 
     twig.extension.zikula_pager:
-        class: %twig.extension.zikula_pager.class%
+        class: "%twig.extension.zikula_pager.class%"
         public: false
         arguments: ["@service_container"]
         tags:
             - { name: twig.extension }
 
     twig.extension.text:
-        class: %twig.extension.text.class%
+        class: "%twig.extension.text.class%"
         public: false
         tags:
             - { name: twig.extension }
 
     twig.extension.intl:
-        class: %twig.extension.intl.class%
+        class: "%twig.extension.intl.class%"
         public: false
         tags:
             - { name: twig.extension }
 
     twig.extension.date:
-        class: %twig.extension.date.class%
+        class: "%twig.extension.date.class%"
         public: false
         tags:
             - { name: twig.extension }
 
     twig.extension.array:
-        class: %twig.extension.array.class%
+        class: "%twig.extension.array.class%"
         public: false
         tags:
             - { name: twig.extension }

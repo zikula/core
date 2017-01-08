@@ -27,8 +27,8 @@ class ConfigController extends AbstractController
 {
     /**
      * @Route("/config")
-     * @Theme("admin")
      * @Template
+     * @Theme("admin")
      *
      * @param Request $request
      *

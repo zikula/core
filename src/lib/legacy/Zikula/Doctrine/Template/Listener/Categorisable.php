@@ -25,6 +25,8 @@ class Zikula_Doctrine_Template_Listener_Categorisable extends Doctrine_Record_Li
      */
     public function preDqlSelect(Doctrine_Event $event)
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $query = $event->getQuery();
         $params = $event->getParams();
 

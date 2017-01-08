@@ -19,4 +19,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class Zikula_Exception_Forbidden extends AccessDeniedException
 {
+    public function __construct()
+    {
+        @trigger_error('This exception is deprecated, please use AccessDeniedException instead.', E_USER_DEPRECATED);
+    }
 }

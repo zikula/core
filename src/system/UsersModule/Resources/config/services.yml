@@ -10,39 +10,46 @@ parameters:
 
 services:
     zikula_users_module.user_listener:
-        class: %zikula_users_module.user_listener.class%
+        class: "%zikula_users_module.user_listener.class%"
         arguments: ["@session", "@request_stack", "@router"]
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_users_module.pending_content_listener:
-        class: %zikula_users_module.pending_content_listener.class%
+        class: "%zikula_users_module.pending_content_listener.class%"
         arguments: ["@zikula_permissions_module.api.permission", "@zikula_users_module.user_repository"]
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_users_module.registration_events_listener:
-        class: %zikula_users_module.registration_events_listener.class%
+        class: "%zikula_users_module.registration_events_listener.class%"
         arguments: ["@session", "@zikula_users_module.helper.mail_helper"]
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_users_module.user_repository:
-        class: %zikula_users_module.user_repository.class%
+        class: "%zikula_users_module.user_repository.class%"
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
         arguments: ["ZikulaUsersModule:UserEntity"]
 
     zikula_users_module.user_session_repository:
-        class: %zikula_users_module.user_session_repository.class%
+        class: "%zikula_users_module.user_session_repository.class%"
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
         arguments: ["ZikulaUsersModule:UserSessionEntity"]
 
     zikula_users_module.current_user:
-        class: %zikula_users_module.current_user.class%
+        class: "%zikula_users_module.current_user.class%"
         arguments: ["@session", "@zikula_users_module.user_repository"]
 
     zikula_users_module.container.link_container:
-        class: %zikula_users_module.container.link_container.class%
-        arguments: ["@translator.default", "@router", "@zikula_permissions_module.api.permission", "@zikula_extensions_module.api.variable", "@zikula_users_module.helper.registration_helper", "@zikula_users_module.current_user"]
+        class: "%zikula_users_module.container.link_container.class%"
+        arguments:
+          - "@translator.default"
+          - "@router"
+          - "@zikula_permissions_module.api.permission"
+          - "@zikula_extensions_module.api.variable"
+          - "@zikula_users_module.helper.registration_helper"
+          - "@zikula_users_module.current_user"
+          - "@zikula_settings_module.locale_api"
         tags:
             - { name: zikula.link_container }

@@ -93,7 +93,6 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
         // Create an array of links to return
         $links = [];
 
-
         $routeArea = LinkContainerInterface::TYPE_ADMIN == $type ? 'admin' : '';
         if (LinkContainerInterface::TYPE_ADMIN == $type) {
             if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {

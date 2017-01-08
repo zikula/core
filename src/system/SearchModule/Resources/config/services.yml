@@ -7,26 +7,26 @@ parameters:
 
 services:
     zikula_search_module.container.link_container:
-        class: %zikula_search_module.container.link_container.class%
+        class: "%zikula_search_module.container.link_container.class%"
         arguments: ["@translator.default", "@jms_i18n_routing.router", "@zikula_permissions_module.api.permission", "@zikula_users_module.current_user"]
         tags:
             - { name: zikula.link_container }
 
     zikula_search_module.form.type.block.search:
-        class: %zikula_search_module.form.type.block.search.class%
+        class: "%zikula_search_module.form.type.block.search.class%"
         arguments: ["@translator.default"]
         tags:
             - { name: form.type }
 
     twig.extension.zikula_search_module:
-        class: %twig.extension.zikula_search_module.class%
+        class: "%twig.extension.zikula_search_module.class%"
         public: false
         arguments: ["@zikula_extensions_module.api.variable"]
         tags:
             - { name: twig.extension }
 
     zikula_search_module.front_controller_listener:
-        class: %zikula_search_module.front_controller_listener.class%
+        class: "%zikula_search_module.front_controller_listener.class%"
         arguments: ["@router", "@zikula_permissions_module.api.permission", "@zikula_extensions_module.api.variable", "@zikula_core.common.theme.assets_header", "%installed%", "@=container.hasParameter('upgrading') ? parameter('upgrading') : false"]
         tags:
             - { name: kernel.event_subscriber }
@@ -36,7 +36,7 @@ services:
         deprecated: The "%service_id%" service is deprecated since 1.4.4 and will be removed in 2.0.
 
     zikula_search_module.module_event_listener:
-        class: %zikula_search_module.module_event_listener.class%
+        class: "%zikula_search_module.module_event_listener.class%"
         tags:
             - { name: kernel.event_subscriber }
 

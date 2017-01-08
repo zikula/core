@@ -46,6 +46,8 @@ abstract class Zikula_Form_AbstractStyledPlugin extends Zikula_Form_AbstractPlug
      */
     public function getStyleAttributes()
     {
+        @trigger_error('Legacy form system is deprecated, please use Symfony forms instead.', E_USER_DEPRECATED);
+
         return $this->styleAttributes;
     }
 
@@ -58,6 +60,8 @@ abstract class Zikula_Form_AbstractStyledPlugin extends Zikula_Form_AbstractPlug
      */
     public function renderAttributes(Zikula_Form_View $view)
     {
+        @trigger_error('Legacy form system is deprecated, please use Symfony forms instead.', E_USER_DEPRECATED);
+
         static $styleElements = ['width', 'height', 'color', 'background_color', 'border', 'padding', 'margin', 'float', 'display', 'position', 'visibility', 'overflow', 'clip', 'font', 'font_family', 'font_style', 'font_weight', 'font_size'];
 
         $attr = '';

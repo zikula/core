@@ -147,6 +147,7 @@ class CategoryRepository extends EntityRepository implements ObjectRepository, S
         }
 
         if ($sort != '') {
+            $sort = str_replace('ORDER BY', '', $sort);
             if (false !== stripos($sort, 'ASC')) {
                 $qb->orderBy(str_ireplace('ASC', '', $sort), 'ASC');
             } elseif (false !== stripos($sort, 'DESC')) {

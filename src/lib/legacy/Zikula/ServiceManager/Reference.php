@@ -24,6 +24,8 @@ class Zikula_ServiceManager_Reference extends \Symfony\Component\DependencyInjec
      */
     public function getId()
     {
+        @trigger_error('ServiceManager is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
+
         return $this->__toString();
     }
 }

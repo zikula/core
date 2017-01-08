@@ -32,6 +32,8 @@ class Zikula_Bag_FileBag extends \Symfony\Component\HttpFoundation\FileBag
      */
     protected function convertFileInformation($file)
     {
+        @trigger_error('FileBag is deprecated, please use Symfony\'s FileBag instead.', E_USER_DEPRECATED);
+
         if ($file instanceof \Symfony\Component\HttpFoundation\File\UploadedFile) {
             return $file;
         }

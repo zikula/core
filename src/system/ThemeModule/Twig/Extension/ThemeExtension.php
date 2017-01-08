@@ -67,7 +67,7 @@ class ThemeExtension extends \Twig_Extension
         $theme = \ThemeUtil::getTheme($themeInfo['name']);
         $imagePath = null;
         if (null === $theme) {
-            if (file_exists($this->assetHelper->getSiteRoot() . "themes/{$themeInfo['directory']}/images/preview_{$size}.png")) {
+            if (file_exists($this->assetHelper->getSiteRoot() . "/themes/{$themeInfo['directory']}/images/preview_{$size}.png")) {
                 $imagePath = $this->assetHelper->getSiteRoot() . "/themes/{$themeInfo['directory']}/images/preview_{$size}.png";
             }
         } else {

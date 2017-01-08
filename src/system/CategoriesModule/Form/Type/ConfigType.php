@@ -44,14 +44,11 @@ class ConfigType extends AbstractType
         $translator = $options['translator'];
 
         $builder
-            ->add('userrootcat', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('userrootcat', 'Zikula\CategoriesModule\Form\Type\CategoryTreeType', [
                 'label' => $translator->__('Root category for user categories'),
                 'empty_data' => '/__SYSTEM__/Users',
-                'choices' => $this->getCategoryChoices($options['locale']),
-                'choices_as_values' => true,
-                'multiple' => false,
-                'expanded' => false,
-                'placeholder' => $translator->__('Choose one')
+                'translator' => $translator,
+                'valueField' => 'path'
             ])
             ->add('allowusercatedit', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $translator->__('Allow users to edit their own categories'),
@@ -108,44 +105,5 @@ class ConfigType extends AbstractType
             'translator' => null,
             'locale' => 'en'
         ]);
-    }
-
-    /**
-     * Returns choices for category selection.
-     *
-     * @param string $locale
-     * @return array
-     */
-    private function getCategoryChoices($locale = '')
-    {
-        $choices = [];
-
-        $recurse = true;
-        $relative = true;
-        $includeRoot = false;
-        $includeLeaf = false;
-        $all = false;
-
-        $category = $this->categoryApi->getCategoryById(1);
-        $categoryList = $this->categoryApi->getSubCategoriesForCategory($category, $recurse, $relative, $includeRoot, $includeLeaf);
-
-        $line = '---------------------------------------------------------------------';
-
-        foreach ($categoryList as $cat) {
-            $amountOfSlashes = mb_substr_count(isset($cat['ipath_relative']) ? $cat['ipath_relative'] : $cat['ipath'], '/');
-
-            $indent = $amountOfSlashes > 0 ? substr($line, 0, $amountOfSlashes * 2) : '';
-            $indent = '|' . $indent;
-
-            if (isset($cat['display_name'][$locale]) && !empty($cat['display_name'][$locale])) {
-                $catName = $cat['display_name'][$locale];
-            } else {
-                $catName = $cat['name'];
-            }
-
-            $choices[$indent . ' ' . $catName] = $cat['path'];
-        }
-
-        return $choices;
     }
 }

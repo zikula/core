@@ -100,7 +100,7 @@ class PermissionApi
         if (!is_numeric($level)) {
             throw new \InvalidArgumentException('Invalid security level');
         }
-        if (isset($user) and !is_numeric($user)) {
+        if (isset($user) && !is_numeric($user)) {
             throw new \InvalidArgumentException('User argument must be an integer.');
         }
         if (!isset($user)) {

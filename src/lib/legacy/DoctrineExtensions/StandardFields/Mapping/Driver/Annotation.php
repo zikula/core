@@ -55,6 +55,8 @@ class Annotation implements AnnotationDriverInterface
      */
     public function setAnnotationReader($reader)
     {
+        @trigger_error('StandardFields extension is deprecated, please use Blameable and Timestampable instead.', E_USER_DEPRECATED);
+
         $this->reader = $reader;
     }
 
@@ -63,6 +65,7 @@ class Annotation implements AnnotationDriverInterface
      */
     public function validateFullMetadata(ClassMetadata $meta, array $config)
     {
+        @trigger_error('StandardFields extension is deprecated, please use Blameable and Timestampable instead.', E_USER_DEPRECATED);
     }
 
     /**
@@ -70,6 +73,8 @@ class Annotation implements AnnotationDriverInterface
      */
     public function readExtendedMetadata($meta, array &$config)
     {
+        @trigger_error('StandardFields extension is deprecated, please use Blameable and Timestampable instead.', E_USER_DEPRECATED);
+
         $class = $meta->getReflectionClass();
         // property annotations
         foreach ($class->getProperties() as $property) {
@@ -133,6 +138,8 @@ class Annotation implements AnnotationDriverInterface
      */
     public function setOriginalDriver($driver)
     {
+        @trigger_error('StandardFields extension is deprecated, please use Blameable and Timestampable instead.', E_USER_DEPRECATED);
+
         $this->_originalDriver = $driver;
     }
 }

@@ -33,8 +33,8 @@ class UpgraderController extends AbstractController
      */
     public function upgradeAction(Request $request, $stage)
     {
-        $currentVersion = $this->container->getParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM);
-        if (version_compare($currentVersion, \Zikula_Core::VERSION_NUM, '=')) {
+        $currentVersion = $this->container->getParameter(\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
+        if (version_compare($currentVersion, \ZikulaKernel::VERSION, '=')) {
             $stage = 'complete';
         }
         // notinstalled?
@@ -43,7 +43,7 @@ class UpgraderController extends AbstractController
         }
 
         // check php
-        $ini_warnings = $this->util->initPhp();
+        $ini_warnings = $this->controllerHelper->initPhp();
         if (count($ini_warnings) > 0) {
             $request->getSession()->getFlashBag()->add('warning', implode('<hr>', $ini_warnings));
         }
@@ -57,7 +57,7 @@ class UpgraderController extends AbstractController
         if ($currentStage instanceof WizardCompleteInterface) {
             return $currentStage->getResponse($request);
         }
-        $templateParams = $this->util->getTemplateGlobals($currentStage);
+        $templateParams = $this->controllerHelper->getTemplateGlobals($currentStage);
         $templateParams['headertemplate'] = '@ZikulaCoreInstaller/upgradeheader.html.twig';
         if ($wizard->isHalted()) {
             $request->getSession()->getFlashBag()->add('danger', $wizard->getWarning());

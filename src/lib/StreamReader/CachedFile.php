@@ -13,6 +13,7 @@
  * File reader with seek ability.
  *
  * Reads whole file at once.
+ * @deprecated remove at Core-2.0
  */
 class StreamReader_CachedFile extends StreamReader_String
 {

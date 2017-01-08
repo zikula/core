@@ -32,6 +32,8 @@ abstract class Zikula_AbstractInstaller extends Zikula_AbstractBase
      */
     protected function _configureBase($bundle = null)
     {
+        @trigger_error('Zikula_AbstractInstaller is deprecated, please use AbstractExtensionInstaller instead.', E_USER_DEPRECATED);
+
         $this->systemBaseDir = realpath('.');
         if (null !== $bundle) {
             $this->name = $bundle->getName();

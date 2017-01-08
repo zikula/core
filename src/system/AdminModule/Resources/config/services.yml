@@ -8,50 +8,42 @@ parameters:
 
 services:
     zikula_admin_module.container.link_container:
-        class: %zikula_admin_module.container.link_container.class%
+        class: "%zikula_admin_module.container.link_container.class%"
         arguments: ["@translator.default", "@jms_i18n_routing.router", "@zikula_permissions_module.api.permission"]
         tags:
             - { name: zikula.link_container }
 
     twig.extension.zikula_admin_module:
-        class: %twig.extension.zikula_admin_module.class%
+        class: "%twig.extension.zikula_admin_module.class%"
         public: true
         arguments: ["@fragment.handler", "@zikula_permissions_module.api.permission"]
         tags:
             - { name: twig.extension }
 
     zikula_admin_module.module_event_listener:
-        class: %zikula_admin_module.module_event_listener.class%
-        arguments: ["@zikula_extensions_module.api.variable"]
+        class: "%zikula_admin_module.module_event_listener.class%"
+        arguments: ["@zikula_extensions_module.api.variable", "%installed%"]
         tags:
             - { name: kernel.event_subscriber }
 
-    zikula_admin_module.module_event_listener:
-        class: %zikula_admin_module.module_event_listener.class%
-        arguments: ["@zikula_extensions_module.api.variable"]
-        tags:
-            - { name: kernel.event_subscriber }
     zikulaadminmodule.module_event_listener:
         alias: zikula_admin_module.module_event_listener
         deprecated: The "%service_id%" service is deprecated since 1.4.3 and will be removed in 2.0.
 
     zikula_admin_module.update_check_helper:
-        class: %zikula_admin_module.update_check_helper.class%
+        class: "%zikula_admin_module.update_check_helper.class%"
         public: true
         arguments: ["@zikula_extensions_module.api.variable", "@request_stack"]
 
-    zikula_admin_module.update_check_helper:
-        class: %zikula_admin_module.update_check_helper.class%
-        arguments: ["@zikula_extensions_module.api.variable", "@request_stack"]
     zikulaadminmodule.update_check_helper:
         alias: zikula_admin_module.update_check_helper
         deprecated: The "%service_id%" service is deprecated since 1.4.3 and will be removed in 2.0.
 
     zikula_admin_module.admin_module_repository:
-        class: %zikula_admin_module.admin_module_repository.class%
+        class: "%zikula_admin_module.admin_module_repository.class%"
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
         arguments: ["ZikulaAdminModule:AdminModuleEntity"]
 
     zikula_admin_module.helper.admin_module_helper:
-        class: %zikula_admin_module.helper.admin_module_helper.class%
+        class: "%zikula_admin_module.helper.admin_module_helper.class%"
         arguments: ["@zikula_admin_module.admin_module_repository"]

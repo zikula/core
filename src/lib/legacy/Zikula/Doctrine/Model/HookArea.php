@@ -23,6 +23,8 @@ class Zikula_Doctrine_Model_HookArea extends Doctrine_Record
      */
     public function setTableDefinition()
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $this->setTableName('hook_area');
 
         $this->hasColumn('id', 'integer', 4, [
@@ -102,6 +104,8 @@ class Zikula_Doctrine_Model_HookArea extends Doctrine_Record
      */
     public function setUp()
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         parent::setUp();
     }
 }

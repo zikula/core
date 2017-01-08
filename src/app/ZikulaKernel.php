@@ -27,6 +27,17 @@ define('ACCESS_ADMIN', 800);
 
 class ZikulaKernel extends Kernel
 {
+    const VERSION = '1.4.6';
+
+    const VERSION_SUB = 'Overture';
+
+    const PHP_MINIMUM_VERSION = '5.4.1';
+
+    /**
+     * The parameter name identifying the currently installed version of the core.
+     */
+    const CORE_INSTALLED_VERSION_PARAM = 'core_installed_version';
+
     /**
      * Public list of core modules and their bundle class.
      * @var array
@@ -74,6 +85,7 @@ class ZikulaKernel extends Kernel
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
             new Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
+            new Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle(),
         ];
 
         $this->registerCoreModules($bundles);

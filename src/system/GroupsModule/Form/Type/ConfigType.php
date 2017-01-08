@@ -30,7 +30,6 @@ class ConfigType extends AbstractType
         $builder
             ->add('itemsperpage', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $translator->__('Items per page'),
-                'empty_data' => 25,
                 'scale' => 0,
                 'max_length' => 3,
                 'attr' => [
@@ -39,14 +38,15 @@ class ConfigType extends AbstractType
             ])
             ->add('defaultgroup', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Initial user group'),
-                'empty_data' => 1,
-                'choices' => array_flip($options['groups']),
+                'choices' => $options['groups'],
                 'choices_as_values' => true,
-                'expanded' => false,
-                'multiple' => false
             ])
             ->add('hideclosed', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $translator->__('Hide closed groups'),
+                'required' => false
+            ])
+            ->add('hidePrivate', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+                'label' => $translator->__('Hide private groups'),
                 'required' => false
             ])
             ->add('mailwarning', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [

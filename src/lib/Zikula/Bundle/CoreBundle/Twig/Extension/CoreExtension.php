@@ -12,9 +12,11 @@
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Intl\Intl;
 use Zikula\Bundle\CoreBundle\Twig;
 use Zikula\Bundle\CoreBundle\Twig\Extension\SimpleFunction\DefaultPathSimpleFunction;
 use Zikula\Bundle\CoreBundle\Twig\Extension\SimpleFunction\DispatchEventSimpleFunction;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ThemeModule\Engine\AssetBag;
 
 class CoreExtension extends \Twig_Extension
@@ -24,9 +26,15 @@ class CoreExtension extends \Twig_Extension
      */
     private $container;
 
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
     public function __construct(ContainerInterface $container = null)
     {
         $this->container = $container;
+        $this->translator = $container->get('translator.default');
     }
 
     /**
@@ -67,7 +75,6 @@ class CoreExtension extends \Twig_Extension
             new \Twig_SimpleFunction('getModVar', [$this, 'getModVar']),
             new \Twig_SimpleFunction('getSystemVar', [$this, 'getSystemVar']),
             new \Twig_SimpleFunction('setMetaTag', [$this, 'setMetaTag']),
-            new \Twig_SimpleFunction('hasPermission', [$this, 'hasPermission']),
             new \Twig_SimpleFunction('defaultPath', [new DefaultPathSimpleFunction($this), 'getDefaultPath']),
             new \Twig_SimpleFunction('modAvailable', [$this, 'modAvailable']),
             new \Twig_SimpleFunction('callFunc', [$this, 'callFunc']),
@@ -102,6 +109,7 @@ class CoreExtension extends \Twig_Extension
      * Available parameters:
      *     - fs:  safe for filesystem.
      * @return string The language
+     * @deprecated remove at Core-2.0 use app.request.locale
      */
     public function lang($fs = false)
     {
@@ -114,6 +122,7 @@ class CoreExtension extends \Twig_Extension
      * Function to get the language direction
      *
      * @return string   the language direction
+     * @deprecated remove at Core-2.0 use dir="auto"
      */
     public function langDirection()
     {
@@ -204,7 +213,7 @@ class CoreExtension extends \Twig_Extension
      */
     public function languageName($code)
     {
-        return \ZLanguage::getLanguageName($code);
+        return Intl::getLanguageBundle()->getLanguageName($code);
     }
 
     public function yesNo($string)
@@ -213,9 +222,7 @@ class CoreExtension extends \Twig_Extension
             return $string;
         }
 
-        $translator = $this->container->get('translator.default');
-
-        return (bool)$string ? $translator->__('Yes') : $translator->__('No');
+        return (bool)$string ? $this->translator->__('Yes') : $this->translator->__('No');
     }
 
     /**
@@ -278,10 +285,7 @@ class CoreExtension extends \Twig_Extension
             return $userId;
         }
 
-        $userId = (int)$userId;
-        $userName = \UserUtil::getVar('uname', $userId);
-
-        return $this->determineProfileLink($userId, $userName, $class, $image, $maxLength);
+        return $this->determineProfileLink((int)$userId, null, $class, $image, $maxLength);
     }
 
     /**
@@ -308,9 +312,7 @@ class CoreExtension extends \Twig_Extension
             return $userName;
         }
 
-        $userId = \UserUtil::getIdFromName($userName);
-
-        return $this->determineProfileLink($userId, $userName, $class, $image, $maxLength);
+        return $this->determineProfileLink(null, $userName, $class, $image, $maxLength);
     }
 
     /**
@@ -319,45 +321,50 @@ class CoreExtension extends \Twig_Extension
      * @param integer $userId    The users uid
      * @param string  $userName  The users name
      * @param string  $class     The class name for the link (optional)
-     * @param string  $image     Path to the image to show instead of the username (optional)
+     * @param string  $imagePath Path to the image to show instead of the username (optional)
      * @param integer $maxLength If set then user names are truncated to x chars
      * @return string The output
      */
-    private function determineProfileLink($userId, $userName, $class = '', $image = '', $maxLength = 0)
+    private function determineProfileLink($userId = null, $userName = null, $class = '', $imagePath = '', $maxLength = 0)
     {
-        $profileLink = '';
-
-        $profileModule = \System::getVar('profilemodule', '');
-
-        if ($userId && $userId > 1 && !empty($profileModule) && \ModUtil::available($profileModule)) {
-            $userDisplayName = \ModUtil::apiFunc($profileModule, 'user', 'getUserDisplayName', ['uid' => $userId]);
-            if (empty($userDisplayName)) {
-                $userDisplayName = $userName;
-            }
-
-            if (!empty($class)) {
-                $class = ' class="' . \DataUtil::formatForDisplay($class) . '"';
-            }
-
-            if (!empty($image)) {
-                $show = '<img src="' . \DataUtil::formatForDisplay($image) . '" alt="' . \DataUtil::formatForDisplay($userDisplayName) . '" />';
-            } elseif ($maxLength > 0) {
-                // truncate the user name to $maxLength chars
-                $length = strlen($userDisplayName);
-                $truncEnd = ($maxLength > $length) ? $length : $maxLength;
-                $show  = \DataUtil::formatForDisplay(substr($userDisplayName, 0, $truncEnd));
-            } else {
-                $show = \DataUtil::formatForDisplay($userDisplayName);
-            }
-
-            $profileLink = '<a' . $class . ' title="' . \DataUtil::formatForDisplay(__('Profile')) . ': ' . \DataUtil::formatForDisplay($userDisplayName) . '" href="' . \DataUtil::formatForDisplay(\ModUtil::url($profileModule, 'user', 'view', ['uid' => $userId], null, null, true)) . '">' . $show . '</a>';
-        } elseif (!empty($image)) {
-            $profileLink = ''; // image for anonymous user should be "empty"
+        if (!isset($userId) && !isset($userName)) {
+            throw new \InvalidArgumentException();
+        }
+        if ($userId) {
+            $user = $this->container->get('zikula_users_module.user_repository')->find($userId);
         } else {
-            $profileLink = \DataUtil::formatForDisplay($userName);
+            $user = $this->container->get('zikula_users_module.user_repository')->findOneBy(['uname' => $userName]);
+        }
+        if (!$user) {
+            return $userId . $userName; // one or the other is empty
         }
 
-        return $profileLink;
+        $profileModule = $this->container->get('zikula_extensions_module.api.variable')->getSystemVar('profilemodule', '');
+        if (empty($profileModule) || !$this->container->get('kernel')->isBundle($profileModule)) {
+            return $user->getUname();
+        }
+
+        // @todo replace with ProfileInterface usage
+        $userDisplayName = \ModUtil::apiFunc($profileModule, 'user', 'getUserDisplayName', ['uid' => $user->getUid()]);
+        if (empty($userDisplayName)) {
+            $userDisplayName = $user->getUname();
+        }
+        $class = !empty($class) ? ' class="' . htmlspecialchars($class, ENT_QUOTES) . '"' : '';
+
+        if (!empty($imagePath)) {
+            $show = '<img src="' . htmlspecialchars($imagePath, ENT_QUOTES) . '" alt="' . htmlspecialchars($userDisplayName, ENT_QUOTES) . '" />';
+        } elseif ($maxLength > 0) {
+            // truncate the user name to $maxLength chars
+            $length = strlen($userDisplayName);
+            $truncEnd = ($maxLength > $length) ? $length : $maxLength;
+            $show  = htmlspecialchars(substr($userDisplayName, 0, $truncEnd), ENT_QUOTES);
+        } else {
+            $show = htmlspecialchars($userDisplayName, ENT_QUOTES);
+        }
+        // @todo replace with ProfileInterface usage
+        $href = htmlspecialchars(\ModUtil::url($profileModule, 'user', 'view', ['uid' => $userId], null, null, true));
+
+        return '<a' . $class . ' title="' . (__('Profile')) . ': ' . htmlspecialchars($userDisplayName, ENT_QUOTES) . '" href="' . $href . '">' . $show . '</a>';
     }
 
     /**
@@ -370,8 +377,7 @@ class CoreExtension extends \Twig_Extension
     public function pageSetVar($name, $value)
     {
         if (empty($name) || empty($value)) {
-            $translator = $this->container->get('translator.default');
-            throw new \InvalidArgumentException($translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+            throw new \InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
         $this->container->get('zikula_core.common.theme.pagevars')->set($name, $value);
@@ -409,12 +415,10 @@ class CoreExtension extends \Twig_Extension
     public function pageAddAsset($type, $value, $weight = AssetBag::WEIGHT_DEFAULT)
     {
         if (empty($type) || empty($value)) {
-            $translator = $this->container->get('translator.default');
-            throw new \InvalidArgumentException($translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+            throw new \InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
         if (!in_array($type, ['stylesheet', 'javascript', 'header', 'footer']) || !is_numeric($weight)) {
-            $translator = $this->container->get('translator.default');
-            throw new \InvalidArgumentException($translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+            throw new \InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
         // ensure proper variable types
@@ -449,8 +453,7 @@ class CoreExtension extends \Twig_Extension
     public function pageGetVar($name, $default = null)
     {
         if (empty($name)) {
-            $translator = $this->container->get('translator.default');
-            throw new \InvalidArgumentException($translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+            throw new \InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
         return $this->container->get('zikula_core.common.theme.pagevars')->get($name, $default);
@@ -465,8 +468,7 @@ class CoreExtension extends \Twig_Extension
     public function getModVar($module, $name, $default = null)
     {
         if (empty($module) || empty($name)) {
-            $translator = $this->container->get('translator.default');
-            throw new \InvalidArgumentException($translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+            throw new \InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
         return $this->container->get('zikula_extensions_module.api.variable')->get($module, $name, $default);
@@ -480,8 +482,7 @@ class CoreExtension extends \Twig_Extension
     public function getSystemVar($name, $default = null)
     {
         if (empty($name)) {
-            $translator = $this->container->get('translator.default');
-            throw new \InvalidArgumentException($translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+            throw new \InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
         return $this->container->get('zikula_extensions_module.api.variable')->getSystemVar($name, $default);
@@ -494,34 +495,16 @@ class CoreExtension extends \Twig_Extension
     public function setMetaTag($name, $value)
     {
         if (empty($name) || empty($value)) {
-            $translator = $this->container->get('translator.default');
-            throw new \InvalidArgumentException($translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+            throw new \InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
         $metaTags = $this->container->hasParameter('zikula_view.metatags') ? $this->container->getParameter('zikula_view.metatags') : [];
-        $metaTags[$name] = \DataUtil::formatForDisplay($value);
+        $metaTags[$name] = htmlspecialchars($value, ENT_QUOTES);
         $this->container->setParameter('zikula_view.metatags', $metaTags);
     }
 
     /**
-     * @param string $component
-     * @param string $instance
-     * @param string $level
-     * @return bool
-     */
-    public function hasPermission($component, $instance, $level)
-    {
-        if (empty($component) || empty($instance) || empty($level)) {
-            $translator = $this->container->get('translator.default');
-            throw new \InvalidArgumentException($translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
-        }
-
-        $result = $this->container->get('zikula_permissions_module.api.permission')->hasPermission($component, $instance, constant($level));
-
-        return (bool) $result;
-    }
-
-    /**
+     * @deprecated remove at Core-2.0
      * @param string $modname
      * @param bool $force
      * @return bool
@@ -535,17 +518,15 @@ class CoreExtension extends \Twig_Extension
 
     /**
      * Call a php callable with parameters.
-     * @param array|string $callable
+     * @param callable $callable
      * @param array $params
      * @return mixed
      */
-    public function callFunc($callable, array $params = [])
+    public function callFunc(callable $callable, array $params = [])
     {
-        if (function_exists($callable) && is_callable($callable)) {
+        if (function_exists($callable)) {
             return call_user_func_array($callable, $params);
         }
-
-        $translator = $this->container->get('translator.default');
-        throw new \InvalidArgumentException($translator->__('Function does not exist or is not callable.') . ':' . __FILE__ . '::' . __LINE__);
+        throw new \InvalidArgumentException($this->translator->__('Function does not exist or is not callable.') . ':' . __FILE__ . '::' . __LINE__);
     }
 }

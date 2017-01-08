@@ -29,6 +29,8 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
      */
     public function preQuery(Doctrine_Event $event)
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $event->start();
     }
 
@@ -41,6 +43,8 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
      */
     public function postQuery(Doctrine_Event $event)
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $event->end();
         $zevent = new \Zikula\Core\Event\GenericEvent(null, [
             'time'  => $event->getElapsedSecs(),
@@ -58,6 +62,8 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
      */
     public function preExec(Doctrine_Event $event)
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $event->start();
     }
 
@@ -70,6 +76,8 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
      */
     public function postExec(Doctrine_Event $event)
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $event->end();
         $zevent = new \Zikula\Core\Event\GenericEvent(null, [
             'time'  => $event->getElapsedSecs(),
@@ -87,6 +95,8 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
      */
     public function preStmtExecute(Doctrine_Event $event)
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $event->start();
     }
 
@@ -99,6 +109,8 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
      */
     public function postStmtExecute(Doctrine_Event $event)
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         $event->end();
         $zevent = new \Zikula\Core\Event\GenericEvent(null, [
             'time'  => $event->getElapsedSecs(),

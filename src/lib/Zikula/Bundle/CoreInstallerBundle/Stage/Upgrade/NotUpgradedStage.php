@@ -17,6 +17,7 @@ use Zikula\Component\Wizard\AbortStageException;
 use Zikula\Component\Wizard\StageInterface;
 use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController;
+use Zikula\ExtensionsModule\Api\VariableApi;
 
 class NotUpgradedStage implements StageInterface, InjectContainerInterface
 {
@@ -48,17 +49,18 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
 
     public function isNecessary()
     {
-        $currentVersion = $this->container->getParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM);
+        $currentVersion = $this->container->getParameter(\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
         if (version_compare($currentVersion, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<=')) {
             throw new AbortStageException($this->translator->__f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', ['%1$s' => $currentVersion, '%2$s' => UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
         }
         // make sure selected language is installed
         $DBLocale = $this->fetchDBLocale();
-        if (!in_array($DBLocale, \ZLanguage::getInstalledLanguages())) {
-            \System::setVar('language_i18n', 'en');
-            \System::setVar('language', 'eng');
-            \System::setVar('locale', 'en');
-            \ZLanguage::setLocale('en');
+        if (!in_array($DBLocale, $this->container->get('zikula_settings_module.locale_api')->getSupportedLocales())) {
+            $variableApi = $this->container->get('zikula_extensions_module.api.variable');
+            $variableApi->set(VariableApi::CONFIG, 'language_i18n', 'en');
+            $variableApi->set(VariableApi::CONFIG, 'language', 'eng');
+            $variableApi->set(VariableApi::CONFIG, 'locale', 'en');
+            \ZLanguage::setLocale('en'); // @deprecated remove at Core-2.0
         }
 
         return true;
@@ -75,7 +77,7 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
      */
     private function fetchDBLocale()
     {
-        $conn = $this->container->get('doctrine.dbal.default_connection');
+        $conn = $this->container->get('doctrine')->getConnection();
         $serializedValue = $conn->fetchColumn("
             SELECT value
             FROM module_vars

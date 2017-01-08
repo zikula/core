@@ -16,7 +16,6 @@ use DataUtil;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use HTMLPurifier_VarParser;
-use Zikula_Core;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -75,7 +74,7 @@ class ConfigController extends AbstractController
 
                 // if update checks are disabled, reset values to force new update check if re-enabled
                 if ($updateCheck == 0) {
-                    $this->setSystemVar('updateversion', Zikula_Core::VERSION_NUM);
+                    $this->setSystemVar('updateversion', \ZikulaKernel::VERSION);
                     $this->setSystemVar('updatelastchecked', 0);
                 }
 

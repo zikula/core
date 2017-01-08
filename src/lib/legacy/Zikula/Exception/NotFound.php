@@ -19,4 +19,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class Zikula_Exception_NotFound extends NotFoundHttpException
 {
+    public function __construct()
+    {
+        @trigger_error('This exception is deprecated, please use NotFoundHttpException instead.', E_USER_DEPRECATED);
+    }
 }

@@ -5,19 +5,19 @@ parameters:
 
 services:
     zikula_zauth_module.listener.user_delete_listener:
-        class: %zikula_zauth_module.user_delete_listener.class%
+        class: "%zikula_zauth_module.user_delete_listener.class%"
         arguments: ["@zikula_zauth_module.authentication_mapping_repository", "@zikula_zauth_module.user_verification_repository"]
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_zauth_module.listener.registration_listener:
-        class: %zikula_zauth_module.registration_listener.class%
+        class: "%zikula_zauth_module.registration_listener.class%"
         arguments: ["@zikula_users_module.current_user", "@zikula_permissions_module.api.permission", "@zikula_extensions_module.api.variable", "@zikula_zauth_module.authentication_mapping_repository", "@zikula_zauth_module.helper.registration_verification_helper"]
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_zauth_module.listener.user_event_listener:
-        class: %zikula_zauth_module.user_event_listener.class%
+        class: "%zikula_zauth_module.user_event_listener.class%"
         arguments: ["@session", "@router"]
         tags:
             - { name: kernel.event_subscriber }

@@ -13,6 +13,7 @@ namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Zikula\ExtensionsModule\Api\VariableApi;
 
 class PagerExtension extends \Twig_Extension
 {
@@ -68,7 +69,7 @@ class PagerExtension extends \Twig_Extension
     public function pager($params)
     {
         /** @var Request $request */
-        $request = $this->container->get('request');
+        $request = $this->container->get('request_stack')->getMasterRequest();
 
         if (empty($params['rowcount'])) {
             $params['rowcount'] = 0;
@@ -91,6 +92,7 @@ class PagerExtension extends \Twig_Extension
         $templateName = (isset($params['template'])) ? $params['template'] : 'CoreBundle:Pager:pagercss.html.twig';
         $processDetailLinks = isset($params['processDetailLinks']) ? (bool)$params['processDetailLinks'] : ($templateName != 'CoreBundle:Pager:pagerimage.html.twig');
         $anchorText = isset($params['anchorText']) ? '#' . $params['anchorText'] : '';
+        $systemVars = $this->container->get('zikula_extensions_module.api.variable')->getAll(VariableApi::CONFIG);
 
         $routeParams = [];
         if ($request->attributes->has('_route_params')) {
@@ -135,7 +137,7 @@ class PagerExtension extends \Twig_Extension
                         }
                         break;
                     case 'lang':
-                        $addcurrentlang2url = \System::getVar('languageurl');
+                        $addcurrentlang2url = $systemVars['languageurl'];
                         if ($addcurrentlang2url == 0) {
                             $pager['args'][$k] =  $v;
                         }
@@ -171,21 +173,21 @@ class PagerExtension extends \Twig_Extension
             }
         }
 
-        $pagerUrl = function ($pager) use ($routeName) {
-            if (!$routeName) {
-                // only case where this should be true is if this is the homepage
-                $startargs   = explode(',', \System::getVar('startargs'));
-                foreach ($startargs as $arg) {
-                    if (!empty($arg)) {
-                        $argument = explode('=', $arg);
-                        $pager['args'][$argument[0]] = $argument[1];
-                    }
-                }
+        $pagerUrl = function ($pager) use ($routeName, $systemVars) {
+            if ($routeName) {
+                return $this->container->get('router')->generate($routeName, $pager['args']);
+            }
+            // only case where this should be true is if this is the homepage
+            parse_str($systemVars['startargs'], $pager['args']);
+            if ($systemVars['startController']) {
+                $route = strtolower(str_replace(':', '_', $systemVars['startController']));
 
-                return \ModUtil::url(\System::getVar('startpage'), \System::getVar('starttype'), \System::getVar('startfunc'), $pager['args']);
+                return $this->container->get('router')->generate($route, $pager['args']);
             }
 
-            return $this->container->get('router')->generate($routeName, $pager['args']);
+            // @todo @deprecated remove at Core-2.0
+            // replace with `return $this->container->get('router')->generate('home', $pager['args'])`
+            return \ModUtil::url($systemVars['startpage'], $systemVars['starttype'], $systemVars['startfunc'], $pager['args']);
         };
 
         // build links to items / pages
@@ -230,14 +232,14 @@ class PagerExtension extends \Twig_Extension
                 $pager['pages'][$currItem]['pagenr'] = $currItem;
                 $pager['pages'][$currItem]['isCurrentPage'] = ($pager['pages'][$currItem]['pagenr'] == $pager['currentPage']);
                 $pager['pages'][$currItem]['isVisible'] = $currItemVisible;
-                $pager['pages'][$currItem]['url'] = \DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
+                $pager['pages'][$currItem]['url'] = $pagerUrl($pager) . $anchorText;
             }
             unset($pager['args'][$pager['posvar']]);
         }
 
         // link to first & prev page
         $pager['args'][$pager['posvar']] = $pager['first'] = '1';
-        $pager['firstUrl'] = \DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
+        $pager['firstUrl'] = $pagerUrl($pager) . $anchorText;
 
         if ($displayType == 'page') {
             $pager['prev'] = ($pager['currentPage'] - 1);
@@ -245,7 +247,7 @@ class PagerExtension extends \Twig_Extension
             $pager['prev'] = ($leftMargin - 1) * $pager['perpage'] - $pager['perpage'] + $pager['first'];
         }
         $pager['args'][$pager['posvar']] = ($pager['prev'] > 1) ? $pager['prev'] : 1;
-        $pager['prevUrl'] = \DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
+        $pager['prevUrl'] = $pagerUrl($pager) . $anchorText;
 
         // link to next & last page
         if ($displayType == 'page') {
@@ -254,7 +256,7 @@ class PagerExtension extends \Twig_Extension
             $pager['next'] = $rightMargin * $pager['perpage'] + 1;
         }
         $pager['args'][$pager['posvar']] = ($pager['next'] < $pager['total']) ? $pager['next'] : $pager['next'] - $pager['perpage'];
-        $pager['nextUrl'] = \DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
+        $pager['nextUrl'] = $pagerUrl($pager) . $anchorText;
 
         if ($displayType == 'page') {
             $pager['last'] = $pager['countPages'];
@@ -262,7 +264,7 @@ class PagerExtension extends \Twig_Extension
             $pager['last'] = $pager['countPages'] * $pager['perpage'] - $pager['perpage'] + 1;
         }
         $pager['args'][$pager['posvar']] = $pager['last'];
-        $pager['lastUrl'] = \DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
+        $pager['lastUrl'] = $pagerUrl($pager) . $anchorText;
 
         $pager['itemStart'] = ($pager['currentPage'] * $pager['perpage']) - $pager['perpage'] + 1;
         $pager['itemEnd'] = $pager['itemStart'] + $pager['perpage'] - 1;
@@ -284,7 +286,7 @@ class PagerExtension extends \Twig_Extension
      *
      *  Examples:
      *    code:
-     *    {{ pagerabc({route:'acmefoomodule_user_view', posvar:'letter', class:'abcpager', class_num:'abclink', class_numon:'abclink_on', separator:' - ', names:'A,B;C,D;E,F;G,H;I,J;K,L;M,N,O;P,Q,R;S,T;U,V,W,X,Y,Z') }}
+     *    {{ pagerabc({route:'acmefoomodule_user_view', posvar:'letter', class:'abcpager', class_num:'abclink', class_numon:'abclink_on', separator:' - ', names:'A,B;C,D;E,F;G,H;I,J;K,L;M,N,O;P,Q,R;S,T;U,V,W,X,Y,Z'}) }}
      *
      *    result
      * <span class="abcpager">
@@ -325,7 +327,7 @@ class PagerExtension extends \Twig_Extension
             throw new \InvalidArgumentException('route is a required parameter.');
         }
         /** @var Request $request */
-        $request = $this->container->get('request');
+        $request = $this->container->get('request_stack')->getMasterRequest();
         if (!isset($params['posvar'])) {
             $params['posvar'] = 'letter';
         }

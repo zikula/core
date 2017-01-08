@@ -41,6 +41,8 @@ class Zikula_ClassProperties
      */
     public static function load($object, array $properties)
     {
+        @trigger_error('Zikula_ClassProperties is deprecated.', E_USER_DEPRECATED);
+
         if (!$properties) {
             return;
         }

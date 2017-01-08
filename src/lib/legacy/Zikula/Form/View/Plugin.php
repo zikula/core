@@ -22,6 +22,8 @@ class Zikula_Form_View_Plugin extends Zikula_Form_View
 {
     public function __construct(Zikula_ServiceManager $serviceManager, $module, $pluginName, $caching = null)
     {
+        @trigger_error('Legacy form system is deprecated, please use Symfony forms instead.', E_USER_DEPRECATED);
+
         parent::__construct($serviceManager, $module, $caching);
 
         $this->pluginName = $pluginName;

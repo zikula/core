@@ -46,6 +46,8 @@ class Zikula_Doctrine_Query extends Doctrine_Query
      */
     public function addWhereCategories($categories, $joinWithAnd = false)
     {
+        @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
+
         // getRootAlias() triggers from parsing => getRoot() works now
         $rootAlias = $this->getRootAlias();
 

@@ -46,7 +46,7 @@ class AjaxUpgradeController extends AbstractController
         $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
         // load and set new default values from the original parameters.yml file into the custom_parameters.yml file.
         $this->yamlManager->setParameters(array_merge($originalParameters['parameters'], $this->yamlManager->getParameters()));
-        $this->currentVersion = $this->container->getParameter(\Zikula_Core::CORE_INSTALLED_VERSION_PARAM);
+        $this->currentVersion = $this->container->getParameter(\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
     }
 
     public function ajaxAction(Request $request)
@@ -73,7 +73,9 @@ class AjaxUpgradeController extends AbstractController
     {
         switch ($stageName) {
             case "loginadmin":
-                return $this->container->get('zikula_core_installer.controller.ajaxinstall')->loginAdmin();
+                $params = $this->decodeParameters($this->yamlManager->getParameters());
+
+                return $this->loginAdmin($params);
             case "upgrademodules":
                 $result = $this->upgradeModules();
                 if (count($result) === 0) {
@@ -82,14 +84,15 @@ class AjaxUpgradeController extends AbstractController
 
                 return $result;
             case "installroutes":
-                if (version_compare(\Zikula_Core::VERSION_NUM, '1.4.0', '>') && version_compare($this->currentVersion, '1.4.0', '>=')) {
+                if (version_compare(\ZikulaKernel::VERSION, '1.4.0', '>') && version_compare($this->currentVersion, '1.4.0', '>=')) {
                     // this stage is not necessary to upgrade from 1.4.0 -> 1.4.x
                     return true;
                 }
+                $this->installModule('ZikulaRoutesModule');
+                $this->reSyncAndActivateModules();
+                $this->setModuleCategory('ZikulaRoutesModule', $this->translator->__('System'));
 
-                return $this->installModule('ZikulaRoutesModule', $this->translator->__('System'));
-            case "reloadroutes":
-                return $this->container->get('zikula_core_installer.controller.ajaxinstall')->reloadRoutes();
+                return true;
             case "regenthemes":
                 return $this->regenerateThemes();
             case "from140to141":
@@ -102,23 +105,50 @@ class AjaxUpgradeController extends AbstractController
                 return $this->from143to144();
             case "from144to145":
                 return $this->from144to145();
+            case "from145to146":
+                return $this->from145to146();
             case "finalizeparameters":
                 return $this->finalizeParameters();
             case "clearcaches":
                 return $this->clearCaches();
         }
-        \System::setInstalling(false);
 
         return true;
     }
 
+    /**
+     * Attempt to upgrade ALL the core modules. Some will need it, some will not.
+     * Modules that do not need upgrading return TRUE as a result of the upgrade anyway.
+     * @return array
+     */
     private function upgradeModules()
     {
-        // force load the modules admin API
-        \ModUtil::loadApi('ZikulaExtensionsModule', 'admin', true);
-        // this also regenerates all the modules
-        return \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'upgradeall');
-        // returns [[modname => boolean]]
+        $coreModulesInPriorityUpgradeOrder = [
+            'ZikulaExtensionsModule',
+            'ZikulaUsersModule',
+            'ZikulaZAuthModule',
+            'ZikulaGroupsModule',
+            'ZikulaPermissionsModule',
+            'ZikulaAdminModule',
+            'ZikulaBlocksModule',
+            'ZikulaThemeModule',
+            'ZikulaSettingsModule',
+            'ZikulaCategoriesModule',
+            'ZikulaSecurityCenterModule',
+            'ZikulaRoutesModule',
+            'ZikulaMailerModule',
+            'ZikulaSearchModule',
+            'ZikulaMenuModule',
+        ];
+        $result = [];
+        foreach ($coreModulesInPriorityUpgradeOrder as $moduleName) {
+            $extensionEntity = $this->container->get('zikula_extensions_module.extension_repository')->get($moduleName);
+            if (isset($extensionEntity)) {
+                $result[$moduleName] = $this->container->get('zikula_extensions_module.extension_helper')->upgrade($extensionEntity);
+            }
+        }
+
+        return $result;
     }
 
     private function regenerateThemes()
@@ -180,7 +210,9 @@ class AjaxUpgradeController extends AbstractController
         if (version_compare($this->currentVersion, '1.4.3', '>=')) {
             return true;
         }
-        $this->installModule('ZikulaZAuthModule', $this->translator->__('Users'));
+        $this->installModule('ZikulaZAuthModule');
+        $this->reSyncAndActivateModules();
+        $this->setModuleCategory('ZikulaZAuthModule', $this->translator->__('Users'));
 
         return true;
     }
@@ -190,8 +222,9 @@ class AjaxUpgradeController extends AbstractController
         if (version_compare($this->currentVersion, '1.4.4', '>=')) {
             return true;
         }
-        // @todotemporarily disabled because of peristent errors in the build...
-//        $this->installModule('ZikulaMenuModule', $this->translator->__('Content'));
+        $this->installModule('ZikulaMenuModule');
+        $this->reSyncAndActivateModules();
+        $this->setModuleCategory('ZikulaMenuModule', $this->translator->__('Content'));
 
         return true;
     }
@@ -199,6 +232,15 @@ class AjaxUpgradeController extends AbstractController
     private function from144to145()
     {
         if (version_compare($this->currentVersion, '1.4.5', '>=')) {
+            return true;
+        }
+
+        return true;
+    }
+
+    private function from145to146()
+    {
+        if (version_compare($this->currentVersion, '1.4.6', '>=')) {
             return true;
         }
 
@@ -227,12 +269,15 @@ class AjaxUpgradeController extends AbstractController
         }
         // Configure the Request Context
         // see http://symfony.com/doc/current/cookbook/console/sending_emails.html#configuring-the-request-context-globally
-        $params['router.request_context.host'] = isset($params['router.request_context.host']) ? $params['router.request_context.host'] : $this->container->get('request')->getHost();
+        $request = $this->container->get('request_stack')->getMasterRequest();
+        $hostFromRequest = isset($request) ? $request->getHost() : null;
+        $basePathFromRequest = isset($request) ? $request->getBasePath() : null;
+        $params['router.request_context.host'] = isset($params['router.request_context.host']) ? $params['router.request_context.host'] : $hostFromRequest;
         $params['router.request_context.scheme'] = isset($params['router.request_context.scheme']) ? $params['router.request_context.scheme'] : 'http';
-        $params['router.request_context.base_url'] = isset($params['router.request_context.base_url']) ? $params['router.request_context.base_url'] : $this->container->get('request')->getBasePath();
+        $params['router.request_context.base_url'] = isset($params['router.request_context.base_url']) ? $params['router.request_context.base_url'] : $basePathFromRequest;
 
         // set currently installed version into parameters
-        $params[\Zikula_Core::CORE_INSTALLED_VERSION_PARAM] = \Zikula_Core::VERSION_NUM;
+        $params[\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM] = \ZikulaKernel::VERSION;
 
         // disable asset combination on upgrades
         $params['zikula_asset_manager.combine'] = false;
@@ -240,9 +285,9 @@ class AjaxUpgradeController extends AbstractController
         $this->yamlManager->setParameters($params);
 
         // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
-        $variableApi->set(VariableApi::CONFIG, 'Version_Num', \Zikula_Core::VERSION_NUM);
-        $variableApi->set(VariableApi::CONFIG, 'Version_ID', \Zikula_Core::VERSION_ID);
-        $variableApi->set(VariableApi::CONFIG, 'Version_Sub', \Zikula_Core::VERSION_SUB);
+        $variableApi->set(VariableApi::CONFIG, 'Version_Num', \ZikulaKernel::VERSION);
+        $variableApi->set(VariableApi::CONFIG, 'Version_ID', \Zikula_Core::VERSION_ID); // @deprecated
+        $variableApi->set(VariableApi::CONFIG, 'Version_Sub', \ZikulaKernel::VERSION_SUB);
 
         // set the 'start' page information to empty to avoid missing module errors.
         $variableApi->set(VariableApi::CONFIG, 'startpage', '');
@@ -269,49 +314,6 @@ class AjaxUpgradeController extends AbstractController
 
         // finally remove upgrading flag in parameters
         $this->yamlManager->delParameter('upgrading');
-
-        return true;
-    }
-
-    /**
-     * Install a module
-     *
-     * @param string $moduleName
-     * @param string $translatedAdminCategory
-     * @return bool
-     */
-    private function installModule($moduleName, $translatedAdminCategory)
-    {
-        // install MenuModule
-        $kernel = $this->container->get('kernel');
-        $install = $this->container->get('zikula_core_installer.controller.ajaxinstall')->installModule($moduleName);
-        if (!$install) {
-            // error
-            return false;
-        }
-
-        // regenerate modules list
-        $modApi = new \Zikula\ExtensionsModule\Api\AdminApi($kernel->getContainer(), new \Zikula\ExtensionsModule\ZikulaExtensionsModule());
-        \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'regenerate', ['filemodules' => $modApi->getfilemodules()]);
-
-        // determine module id
-        $mid = \ModUtil::getIdFromName($moduleName);
-
-        // force load the modules admin API
-        \ModUtil::loadApi('ZikulaExtensionsModule', 'admin', true);
-
-        // set module to active
-        \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate', ['id' => $mid, 'state' => \ModUtil::STATE_INACTIVE]);
-        \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate', ['id' => $mid, 'state' => \ModUtil::STATE_ACTIVE]);
-
-        // add the module to the appropriate category
-        $categories = \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getall');
-        $modscat = [];
-        foreach ($categories as $category) {
-            $modscat[$category['name']] = $category['cid'];
-        }
-        $destinationCategoryId = isset($modscat[$translatedAdminCategory]) ? $modscat[$translatedAdminCategory] : \ModUtil::getVar('ZikulaAdminModule', 'defaultcategory');
-        \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'addmodtocategory', ['module' => $moduleName, 'category' => (int)$destinationCategoryId]);
 
         return true;
     }
