@@ -51,14 +51,6 @@ class ActionsMenu implements ContainerAwareInterface
                     ->setLinkAttribute('class', 'text-danger');
                     // or set style text-color #0c00
                 }
-                if (\PluginUtil::hasModulePlugins($extension->getName())) {
-                    $menu->addChild($this->__f('Plugins for %s', ['%s' => $extension->getDisplayname()]), [
-                        'route' => 'zikulaextensionsmodule_admin_viewplugins',
-                        'routeParameters' => ['bymodule' => $extension->getName(),
-                            'csrftoken' => $csrfToken],
-                    ])->setAttribute('icon', 'fa fa-plug')
-                        ->setLinkAttribute('style', 'color:black');
-                }
                 break;
             case ExtensionApi::STATE_INACTIVE:
                 $menu->addChild($this->__f('Activate %s', ['%s' => $extension->getDisplayname()]), [
