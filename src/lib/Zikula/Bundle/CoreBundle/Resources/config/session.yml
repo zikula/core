@@ -1,7 +1,4 @@
 parameters:
-    session.class: Zikula_Session
-    session.flashbag.class: Symfony\Component\HttpFoundation\Session\Flash\FlashBag
-#    session.attribute_bag.class: Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag
 #    session.storage.legacy.class: Zikula_Session_Storage_Legacy
 #    session.handler.legacy.class: Zikula_Session_LegacyHandler
 

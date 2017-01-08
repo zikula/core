@@ -1,6 +1,4 @@
 parameters:
-    zikula_routes_module.console_command_listener.class: Zikula\RoutesModule\Translation\ConsoleCommandListener
-    zikula_routes_module.route_dumper_helper.class: Zikula\RoutesModule\Helper\RouteDumperHelper
     jms_i18n_routing.route_exclusion_strategy.class: Zikula\RoutesModule\Translation\DefaultRouteExclusionStrategy
     jms_i18n_routing.pattern_generation_strategy.class: Zikula\RoutesModule\Translation\ZikulaPatternGenerationStrategy
     jms_i18n_routing.route_translation_extractor.class: Zikula\RoutesModule\Translation\ZikulaRouteTranslationExtractor
@@ -10,11 +8,11 @@ services:
         class: Zikula\RoutesModule\Routing\RouteFinder
 
     zikula_routes_module.route_dumper_helper:
-        class: "%zikula_routes_module.route_dumper_helper.class%"
+        class: Zikula\RoutesModule\Helper\RouteDumperHelper
         arguments: ["@service_container"]
 
     zikula_routes_module.console_command_listener:
-        class: "%zikula_routes_module.console_command_listener.class%"
+        class: Zikula\RoutesModule\Translation\ConsoleCommandListener
         tags:
             - { name: kernel.event_subscriber }
 

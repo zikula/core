@@ -1,27 +1,21 @@
-parameters:
-    zikula.form.type.locale.class: Zikula\Bundle\FormExtensionBundle\Form\Type\LocaleType
-    zikula.form_extension.icon.class: Zikula\Bundle\FormExtensionBundle\Form\Extension\ButtonTypeIconExtension
-    zikula.form_extension.help.class: Zikula\Bundle\FormExtensionBundle\Form\Extension\FormTypeHelpExtension
-    zikula_form_extension_bundle.form_extension.class: Zikula\Bundle\FormExtensionBundle\Twig\Extension\FormExtension
-
 services:
     zikula.form.type.locale:
-        class: "%zikula.form.type.locale.class%"
+        class: Zikula\Bundle\FormExtensionBundle\Form\Type\LocaleType
         tags:
             - { name: form.type, alias: zikula_locale }
 
     zikula.form_extension.icon:
-        class: "%zikula.form_extension.icon.class%"
+        class: Zikula\Bundle\FormExtensionBundle\Form\Extension\ButtonTypeIconExtension
         tags:
             - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\ButtonType }
 
     zikula.form_extension.help:
-        class: "%zikula.form_extension.help.class%"
+        class: Zikula\Bundle\FormExtensionBundle\Form\Extension\FormTypeHelpExtension
         tags:
             - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
 
     zikula_form_extension_bundle.form_extension:
-        class: "%zikula_form_extension_bundle.form_extension.class%"
+        class: Zikula\Bundle\FormExtensionBundle\Twig\Extension\FormExtension
         arguments: ["@service_container"]
         tags:
             - { name: twig.extension }

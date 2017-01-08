@@ -1,23 +1,18 @@
-parameters:
-    zikula_users_module.validator.constraints.valid_uname_validator.class: Zikula\UsersModule\Validator\Constraints\ValidUnameValidator
-    zikula_users_module.validator.constraints.valid_email_validator.class: Zikula\UsersModule\Validator\Constraints\ValidEmailValidator
-    zikula_users_module.validator.constraints.valid_user_fields_validator.class: Zikula\UsersModule\Validator\Constraints\ValidUserFieldsValidator
-
 services:
     zikula_users_module.validator.constraints.valid_uname_validator:
-        class: "%zikula_users_module.validator.constraints.valid_uname_validator.class%"
+        class: Zikula\UsersModule\Validator\Constraints\ValidUnameValidator
         arguments: ["@zikula_extensions_module.api.variable", "@translator.default", "@validator", "@zikula_permissions_module.api.permission"]
         tags:
             - { name: validator.constraint_validator, alias: zikula.users.uname.validator }
 
     zikula_users_module.validator.constraints.valid_email_validator:
-        class: "%zikula_users_module.validator.constraints.valid_email_validator.class%"
+        class: Zikula\UsersModule\Validator\Constraints\ValidEmailValidator
         arguments: ["@zikula_extensions_module.api.variable", "@translator.default", "@validator"]
         tags:
             - { name: validator.constraint_validator, alias: zikula.users.email.validator }
 
     zikula_users_module.validator.constraints.valid_user_fields_validator:
-        class: "%zikula_users_module.validator.constraints.valid_user_fields_validator.class%"
+        class: Zikula\UsersModule\Validator\Constraints\ValidUserFieldsValidator
         arguments: ["@translator.default", "@zikula_users_module.user_repository"]
         tags:
             - { name: validator.constraint_validator, alias: zikula.users.user_fields.validator }

@@ -1,14 +1,10 @@
-parameters:
-    zikula_mailer_module.container.link_container.class: Zikula\MailerModule\Container\LinkContainer
-    zikula_mailer_module.api.mailer.class: Zikula\MailerModule\Api\MailerApi
-
 services:
     zikula_mailer_module.container.link_container:
-        class: "%zikula_mailer_module.container.link_container.class%"
+        class: Zikula\MailerModule\Container\LinkContainer
         arguments: ["@translator.default", "@jms_i18n_routing.router", "@zikula_permissions_module.api.permission"]
         tags:
             - { name: zikula.link_container }
 
     zikula_mailer_module.api.mailer:
-        class: "%zikula_mailer_module.api.mailer.class%"
+        class: Zikula\MailerModule\Api\MailerApi
         arguments: ["%installed%", "@kernel", "@translator.default", "@event_dispatcher", "@zikula.dynamic_config_dumper", "@zikula_extensions_module.api.variable", "@mailer"]
