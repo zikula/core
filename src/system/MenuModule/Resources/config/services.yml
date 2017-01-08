@@ -1,36 +1,29 @@
-parameters:
-    zikula_menu_module.menu_item_repository.class: Zikula\MenuModule\Entity\Repository\MenuItemRepository
-    zikula_menu_module.menu.voter.request.class: Zikula\MenuModule\Voter\RequestVoter
-    zikula_menu_module.provider.custom_menu_provider.class: Zikula\MenuModule\Provider\DoctrineTreeProvider
-    zikula_menu_module.container.link_container.class: Zikula\MenuModule\Container\LinkContainer
-    zikula_menu_module.form.type.hidden_menu_item_type.class: Zikula\MenuModule\Form\Type\HiddenMenuItemType
-
 services:
     zikula_menu_module.menu_item_repository:
-        class: "%zikula_menu_module.menu_item_repository.class%"
+        class: Zikula\MenuModule\Entity\Repository\MenuItemRepository
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
         arguments: ["ZikulaMenuModule:MenuItemEntity"]
 
     zikula_menu_module.menu.voter.request:
-        class: "%zikula_menu_module.menu.voter.request.class%"
+        class: Zikula\MenuModule\Voter\RequestVoter
         arguments: ["@request_stack"]
         tags:
             - { name: knp_menu.voter }
 
     zikula_menu_module.provider.custom_menu_provider:
-        class: "%zikula_menu_module.provider.custom_menu_provider.class%"
+        class: Zikula\MenuModule\Provider\DoctrineTreeProvider
         arguments: ["@knp_menu.factory", "@zikula_menu_module.menu_item_repository"]
         tags:
             - { name: knp_menu.provider }
 
     zikula_menu_module.container.link_container:
-        class: "%zikula_menu_module.container.link_container.class%"
+        class: Zikula\MenuModule\Container\LinkContainer
         arguments: ["@translator.default", "@jms_i18n_routing.router", "@zikula_permissions_module.api.permission"]
         tags:
             - { name: zikula.link_container }
 
     zikula_menu_module.form.type.hidden_menu_item_type:
-        class: "%zikula_menu_module.form.type.hidden_menu_item_type.class%"
+        class: Zikula\MenuModule\Form\Type\HiddenMenuItemType
         arguments: ["@zikula_menu_module.menu_item_repository", "@translator.default"]
         tags:
             - { name: form.type, alias: "Zikula\\MenuModule\\Form\\Type\\HiddenMenuItemType" }

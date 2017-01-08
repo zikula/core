@@ -1,4 +1,5 @@
 services:
+    # this is required for our controllers in all Core versions since 1.4.0
     controller_resolver:
         class: Zikula\Bundle\CoreBundle\Controller\ControllerResolver
         arguments:
@@ -8,5 +9,19 @@ services:
         tags:
             - { name: monolog.logger, channel: request }
 
+    # remove in Core-2.0 and use native event dispatcher
+    event_dispatcher:
+        class: Zikula_EventManager
+        arguments: ["@service_container"]
+
+    # remove in Core-2.0 and use native session
+    session:
+        class: Zikula_Session
+
+    # @todo check if this is required in Core-2.0 (may be the default - or may default to AttributeBag)
     session.attribute_bag:
         class: Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag
+
+    # @todo check if this is required in Core-2.0 (may be the default)
+    session.flashbag:
+        class: Symfony\Component\HttpFoundation\Session\Flash\FlashBag

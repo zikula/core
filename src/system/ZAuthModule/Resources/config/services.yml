@@ -1,25 +1,19 @@
-parameters:
-    zikula_zauth_module.api.password.class: Zikula\ZAuthModule\Api\PasswordApi
-    zikula_zauth_module.authentication_mapping_repository.class: Zikula\ZAuthModule\Entity\Repository\AuthenticationMappingRepository
-    zikula_zauth_module.user_verification_repository.class: Zikula\ZAuthModule\Entity\Repository\UserVerificationRepository
-    zikula_zauth_module.container.link_container.class: Zikula\ZAuthModule\Container\LinkContainer
-
 services:
     zikula_zauth_module.api.password:
-        class: "%zikula_zauth_module.api.password.class%"
+        class: Zikula\ZAuthModule\Api\PasswordApi
 
     zikula_zauth_module.authentication_mapping_repository:
-        class: "%zikula_zauth_module.authentication_mapping_repository.class%"
+        class: Zikula\ZAuthModule\Entity\Repository\AuthenticationMappingRepository
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
         arguments: ["ZikulaZAuthModule:AuthenticationMappingEntity"]
 
     zikula_zauth_module.user_verification_repository:
-        class: "%zikula_zauth_module.user_verification_repository.class%"
+        class: Zikula\ZAuthModule\Entity\Repository\UserVerificationRepository
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
         arguments: ["ZikulaZAuthModule:UserVerificationEntity"]
 
     zikula_zauth_module.container.link_container:
-        class: "%zikula_zauth_module.container.link_container.class%"
+        class: Zikula\ZAuthModule\Container\LinkContainer
         arguments: ["@translator.default", "@router", "@zikula_permissions_module.api.permission", "@zikula_extensions_module.api.variable", "@zikula_users_module.current_user", "@zikula_zauth_module.authentication_mapping_repository"]
         tags:
             - { name: zikula.link_container }
