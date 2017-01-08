@@ -15,6 +15,7 @@
  * Admin
  * {adminfooter}
  *
+ * @deprecated remove at Core-2.0
  * @see          function.adminfooter.php::smarty_function_adminfooter()
  * @param        array       $params      All attributes passed to this function from the template
  * @param        \Zikula_View $view        Reference to the Zikula_View object

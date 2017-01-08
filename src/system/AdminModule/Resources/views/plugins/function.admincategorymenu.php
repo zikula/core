@@ -16,6 +16,7 @@
  * Admin
  * {admincategorymenu}
  *
+ * @deprecated remove at Core-2.0
  * @see          function.admincategorymenu.php::smarty_function_admincategorymenu()
  * @param        array       $params      All attributes passed to this function from the template
  * @param        \Zikula_View $view        Reference to the Zikula_View object
