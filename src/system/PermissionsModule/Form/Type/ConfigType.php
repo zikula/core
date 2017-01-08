@@ -48,7 +48,7 @@ class ConfigType extends AbstractType
                 'label' => $translator->__('ID of main administration permission rule'),
                 'empty_data' => 1,
                 'scale' => 0,
-                'max_length' => 3
+                'attr' => ['max_length' => 3],
             ])
             ->add('filter', CheckboxType::class, [
                 'label' => $translator->__('Enable filtering of group permissions'),

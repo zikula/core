@@ -64,7 +64,7 @@ class ConfigType extends AbstractType
             ->add('transport', ChoiceType::class, $transportOptions)
             ->add('charset', TextType::class, [
                 'label' => $translator->__('Character set'),
-                'max_length' => 20,
+                'attr' => ['max_length' => 20],
                 'help' => $translator->__f("Default: '%s'", ['%s' => $options['charset']])
             ])
             ->add('encoding', ChoiceType::class, [
@@ -85,7 +85,7 @@ class ConfigType extends AbstractType
             ->add('wordwrap', IntegerType::class, [
                 'label' => $translator->__('Word wrap'),
                 'scale' => 0,
-                'max_length' => 3,
+                'attr' => ['max_length' => 3],
                 'help' => $translator->__f("Default: '%s'", ['%s' => '50'])
             ])
             ->add('enableLogging', CheckboxType::class, [
@@ -94,14 +94,14 @@ class ConfigType extends AbstractType
             ])
             ->add('host', TextType::class, [
                 'label' => $translator->__('SMTP host server'),
-                'max_length' => 255,
+                'attr' => ['max_length' => 255],
                 'required' => false,
                 'help' => $translator->__f("Default: '%s'", ['%s' => 'localhost'])
             ])
             ->add('port', IntegerType::class, [
                 'label' => $translator->__('SMTP port'),
                 'scale' => 0,
-                'max_length' => 5,
+                'attr' => ['max_length' => 5],
                 'required' => false,
                 'help' => $translator->__f("Default: '%s'", ['%s' => '25'])
             ])
@@ -126,23 +126,23 @@ class ConfigType extends AbstractType
             ])
             ->add('username', TextType::class, [
                 'label' => $translator->__('SMTP user name'),
-                'max_length' => 50,
+                'attr' => ['max_length' => 50],
                 'required' => false
             ])
             ->add('password', PasswordType::class, [
                 'label' => $translator->__('SMTP password'),
-                'max_length' => 50,
+                'attr' => ['max_length' => 50],
                 'always_empty' => false,
                 'required' => false
             ])
             ->add('usernameGmail', TextType::class, [
                 'label' => $translator->__('Gmail user name'),
-                'max_length' => 50,
+                'attr' => ['max_length' => 50],
                 'required' => false
             ])
             ->add('passwordGmail', PasswordType::class, [
                 'label' => $translator->__('Gmail password'),
-                'max_length' => 50,
+                'attr' => ['max_length' => 50],
                 'always_empty' => false,
                 'required' => false
             ])

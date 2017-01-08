@@ -44,7 +44,7 @@ class EditGroupType extends AbstractType
             ->add('gid', HiddenType::class)
             ->add('name', TextType::class, [
                 'label' => $translator->__('Name'),
-                'max_length' => 30,
+                'attr' => ['max_length' => 30],
                 'constraints' => [new NotBlank()]
             ])
             ->add('gtype', ChoiceType::class, [
@@ -61,8 +61,8 @@ class EditGroupType extends AbstractType
             ])
             ->add('nbumax', IntegerType::class, [
                 'label' => $translator->__('Maximum membership'),
-                'max_length' => 10,
                 'attr' => [
+                    'max_length' => 10,
                     'min' => 0
                 ],
                 'required' => false

@@ -58,7 +58,7 @@ class ConfigType extends AbstractType
                 'label' => $translator->__("Time limit for authorisation keys ('authkeys') in seconds (default: 0)"),
                 'empty_data' => 0,
                 'scale' => 0,
-                'max_length' => 4
+                'attr' => ['max_length' => 4]
             ])
             ->add('sessionauthkeyua', ChoiceType::class, [
                 'label' => $translator->__("Bind authkey to user agent ('UserAgent')"),
@@ -73,7 +73,7 @@ class ConfigType extends AbstractType
             ->add('secure_domain', TextType::class, [
                 'label' => $translator->__('Secure host name'),
                 'empty_data' => '',
-                'max_length' => 100,
+                'attr' => ['max_length' => 100],
                 'required' => false,
                 'alert' => [$translator->__("Notice: If you use a different host name for HTTPS secure sessions and you insert an address in the 'Secure host name' box, make sure you include a trailing slash at the end of the address.") => 'info']
             ])
@@ -90,7 +90,7 @@ class ConfigType extends AbstractType
             ->add('signingkey', TextType::class, [
                 'label' => $translator->__('Signing key'),
                 'empty_data' => sha1(mt_rand(0, time())),
-                'max_length' => 100,
+                'attr' => ['max_length' => 100],
                 'required' => false
             ])
             ->add('seclevel', ChoiceType::class, [
@@ -109,14 +109,14 @@ class ConfigType extends AbstractType
                 'label' => $translator->__('Automatically log user out after'),
                 'empty_data' => 7,
                 'scale' => 0,
-                'max_length' => 3,
+                'attr' => ['max_length' => 3],
                 'input_group' => ['right' => '<em>' . $translator->__("days (if 'Remember me' is activated)") . '</em>']
             ])
             ->add('secinactivemins', IntegerType::class, [
                 'label' => $translator->__('Expire session after'),
                 'empty_data' => 20,
                 'scale' => 0,
-                'max_length' => 4,
+                'attr' => ['max_length' => 4],
                 'input_group' => ['right' => '<em>' . $translator->__('minutes of inactivity') . '</em>'],
                 'help' => $translator->__('More information: http://www.php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime')
             ])
@@ -142,7 +142,7 @@ class ConfigType extends AbstractType
                 'label' => $translator->__('Garbage collection probability'),
                 'empty_data' => 100,
                 'scale' => 0,
-                'max_length' => 5,
+                'attr' => ['max_length' => 5],
                 'input_group' => ['right' => $translator->__('/10000')],
                 'help' => $translator->__('More information: http://www.php.net/manual/en/session.configuration.php#ini.session.gc-probability')
             ])
@@ -181,7 +181,7 @@ class ConfigType extends AbstractType
                 'label' => $translator->__('Regeneration probability'),
                 'empty_data' => 10,
                 'scale' => 0,
-                'max_length' => 3,
+                'attr' => ['max_length' => 3],
                 'input_group' => ['right' => $translator->__('% (0 to disable)')]
             ])
             ->add('sessionipcheck', ChoiceType::class, [

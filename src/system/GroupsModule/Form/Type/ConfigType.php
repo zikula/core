@@ -35,8 +35,8 @@ class ConfigType extends AbstractType
             ->add('itemsperpage', IntegerType::class, [
                 'label' => $translator->__('Items per page'),
                 'scale' => 0,
-                'max_length' => 3,
                 'attr' => [
+                    'max_length' => 3,
                     'min' => 1
                 ]
             ])

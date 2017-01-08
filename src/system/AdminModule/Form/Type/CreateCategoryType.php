@@ -33,7 +33,7 @@ class CreateCategoryType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => $translator->__('Name'),
-                'max_length' => 50
+                'attr' => ['max_length' => 50],
             ])
             ->add('description', TextareaType::class, [
                 'label' => $translator->__('Description'),

@@ -42,7 +42,7 @@ class CreateGroupType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => $translator->__('Name'),
-                'max_length' => 30,
+                'attr' => ['max_length' => 30],
                 'constraints' => [
                     new NotBlank()
                 ]
@@ -61,7 +61,7 @@ class CreateGroupType extends AbstractType
             ])
             ->add('nbumax', IntegerType::class, [
                 'label' => $translator->__('Maximum membership'),
-                'max_length' => 10,
+                'attr' => ['max_length' => 10],
                 'required' => false,
                 'help' => $translator->__('Set as 0 for unlimited.')
             ])

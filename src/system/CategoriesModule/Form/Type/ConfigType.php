@@ -72,7 +72,7 @@ class ConfigType extends AbstractType
             ->add('userdefaultcatname', TextType::class, [
                 'label' => $translator->__('Default user category'),
                 'empty_data' => $translator->__('Default'),
-                'max_length' => 255
+                'attr' => ['max_length' => 255],
             ])
             ->add('save', SubmitType::class, [
                 'label' => $translator->__('Save'),

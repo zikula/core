@@ -178,10 +178,10 @@ abstract class AbstractRouteQuickNavType extends AbstractType
         $builder->add('q', SearchType::class, [
             'label' => $this->__('Search'),
             'attr' => [
+                'max_length' => 255,
                 'class' => 'input-sm'
             ],
             'required' => false,
-            'max_length' => 255
         ]);
     }
 

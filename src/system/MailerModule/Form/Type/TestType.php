@@ -48,7 +48,7 @@ class TestType extends AbstractType
                 'constraints' => [
                     new NotBlank()
                 ],
-                'max_length' => 50
+                'attr' => ['max_length' => 50],
             ])
             ->add('toAddress', EmailType::class, [
                 'label' => $translator->__('Recipient\'s e-mail address'),
@@ -56,14 +56,14 @@ class TestType extends AbstractType
                     new NotBlank(),
                     new Email()
                 ],
-                'max_length' => 50
+                'attr' => ['max_length' => 50],
             ])
             ->add('subject', TextType::class, [
                 'label' => $translator->__('Subject'),
                 'constraints' => [
                     new NotBlank()
                 ],
-                'max_length' => 50
+                'attr' => ['max_length' => 50],
             ])
             ->add('messageType', ChoiceType::class, [
                 'label' => $translator->__('Message type'),

@@ -53,13 +53,13 @@ class ConfigType extends AbstractType
                 'label' => $translator->__('Modules per page in module categories list'),
                 'empty_data' => 5,
                 'scale' => 0,
-                'max_length' => 3
+                'attr' => ['max_length' => 3],
             ])
             ->add('modulesperrow', IntegerType::class, [
                 'label' => $translator->__('Modules per row in admin panel'),
                 'empty_data' => 5,
                 'scale' => 0,
-                'max_length' => 3
+                'attr' => ['max_length' => 3],
             ])
             ->add('admintheme', ChoiceType::class, [
                 'label' => $translator->__('Theme to use'),

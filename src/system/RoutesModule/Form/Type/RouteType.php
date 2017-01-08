@@ -59,11 +59,11 @@ class RouteType extends AbstractRouteType
             'label' => $this->__('Controller') . ':',
             'empty_data' => '',
             'attr' => [
+                'max_length' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the controller of the route')
             ],
             'required' => true,
-            'max_length' => 255,
             'help' => $this->__('Insert the name of the controller, which was called "type" in earlier versions of Zikula.')
         ]);
 
@@ -71,11 +71,11 @@ class RouteType extends AbstractRouteType
             'label' => $this->__('Action') . ':',
             'empty_data' => '',
             'attr' => [
+                'max_length' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the action of the route')
             ],
             'required' => true,
-            'max_length' => 255,
             'help' => $this->__('Insert the name of the action, which was called "func" in earlier versions of Zikula.')
         ]);
 
@@ -83,11 +83,11 @@ class RouteType extends AbstractRouteType
             'label' => $this->__('Path') . ':',
             'empty_data' => '',
             'attr' => [
+                'max_length' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the path of the route')
             ],
             'required' => true,
-            'max_length' => 255,
             'help' => $this->__('The path must start with a "/" and can be a regular expression. Example: "/login"'),
             'input_group' => ['left' => '<span class="input-group-addon" id="pathPrefix"></span>']
         ]);
@@ -96,11 +96,11 @@ class RouteType extends AbstractRouteType
             'label' => $this->__('Host') . ':',
             'empty_data' => '',
             'attr' => [
+                'max_length' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the host of the route')
             ],
             'required' => false,
-            'max_length' => 255,
             'help' => $this->__f('Advanced setting, see %s', ['%s' => 'http://symfony.com/doc/current/components/routing/hostname_pattern.html'])
         ]);
 
@@ -108,11 +108,11 @@ class RouteType extends AbstractRouteType
             'label' => $this->__('Condition') . ':',
             'empty_data' => '',
             'attr' => [
+                'max_length' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the condition of the route')
             ],
             'required' => false,
-            'max_length' => 255,
             'help' => $this->__f('Advanced setting, see %s', ['%s' => 'http://symfony.com/doc/current/book/routing.html#completely-customized-route-matching-with-conditions'])
         ]);
 
@@ -120,11 +120,11 @@ class RouteType extends AbstractRouteType
             'label' => $this->__('Description') . ':',
             'empty_data' => '',
             'attr' => [
+                'max_length' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the description of the route')
             ],
             'required' => false,
-            'max_length' => 255,
             'help' => $this->__('Insert a brief description of the route, to explain why you created it. It is only shown in the admin interface.')
         ]);
     }
