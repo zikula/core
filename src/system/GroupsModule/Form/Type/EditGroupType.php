@@ -38,7 +38,7 @@ class EditGroupType extends AbstractType
             ->add('gid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
             ->add('name', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $translator->__('Name'),
-                'max_length' => 30,
+                'attr' => ['max_length' => 30],
                 'constraints' => [new NotBlank()]
             ])
             ->add('gtype', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
@@ -57,8 +57,8 @@ class EditGroupType extends AbstractType
             ])
             ->add('nbumax', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $translator->__('Maximum membership'),
-                'max_length' => 10,
                 'attr' => [
+                    'max_length' => 10,
                     'min' => 0
                 ],
                 'required' => false

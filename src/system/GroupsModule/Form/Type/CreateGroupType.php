@@ -37,8 +37,10 @@ class CreateGroupType extends AbstractType
         $builder
             ->add('name', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $translator->__('Name'),
-                'max_length' => 30,
-                'constraints' => [new NotBlank()]
+                'attr' => ['max_length' => 30],
+                'constraints' => [
+                    new NotBlank()
+                ]
             ])
             ->add('gtype', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Type'),
@@ -56,7 +58,7 @@ class CreateGroupType extends AbstractType
             ])
             ->add('nbumax', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $translator->__('Maximum membership'),
-                'max_length' => 10,
+                'attr' => ['max_length' => 10],
                 'required' => false,
                 'help' => $translator->__('Set as 0 for unlimited.')
             ])

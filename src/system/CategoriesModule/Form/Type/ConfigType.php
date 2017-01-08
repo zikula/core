@@ -69,7 +69,7 @@ class ConfigType extends AbstractType
             ->add('userdefaultcatname', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $translator->__('Default user category'),
                 'empty_data' => $translator->__('Default'),
-                'max_length' => 255
+                'attr' => ['max_length' => 255],
             ])
             ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'label' => $translator->__('Save'),

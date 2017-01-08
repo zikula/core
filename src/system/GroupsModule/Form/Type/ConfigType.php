@@ -31,8 +31,8 @@ class ConfigType extends AbstractType
             ->add('itemsperpage', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $translator->__('Items per page'),
                 'scale' => 0,
-                'max_length' => 3,
                 'attr' => [
+                    'max_length' => 3,
                     'min' => 1
                 ]
             ])

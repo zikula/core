@@ -80,7 +80,7 @@ abstract class AbstractRouteType extends AbstractType
      */
     public function addEntityFields(FormBuilderInterface $builder, array $options)
     {
-        
+
         $listEntries = $this->listHelper->getEntries('route', 'routeType');
         $choices = [];
         $choiceAttributes = [];
@@ -105,62 +105,62 @@ abstract class AbstractRouteType extends AbstractType
             'label' => $this->__('Replaced route name') . ':',
             'empty_data' => '',
             'attr' => [
+                'max_length' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the replaced route name of the route')
             ],'required' => false,
-            'max_length' => 255,
         ]);
         
         $builder->add('bundle', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
             'label' => $this->__('Bundle') . ':',
             'empty_data' => '',
             'attr' => [
+                'max_length' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the bundle of the route')
             ],'required' => true,
-            'max_length' => 255,
         ]);
         
         $builder->add('controller', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
             'label' => $this->__('Controller') . ':',
             'empty_data' => '',
             'attr' => [
+                'max_length' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the controller of the route')
             ],'required' => true,
-            'max_length' => 255,
         ]);
         
         $builder->add('action', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
             'label' => $this->__('Action') . ':',
             'empty_data' => '',
             'attr' => [
+                'max_length' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the action of the route')
             ],'required' => true,
-            'max_length' => 255,
         ]);
         
         $builder->add('path', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
             'label' => $this->__('Path') . ':',
             'empty_data' => '',
             'attr' => [
+                'max_length' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the path of the route')
             ],'required' => true,
-            'max_length' => 255,
         ]);
         
         $builder->add('host', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
             'label' => $this->__('Host') . ':',
             'empty_data' => '',
             'attr' => [
+                'max_length' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the host of the route')
             ],'required' => false,
-            'max_length' => 255,
         ]);
-        
+
         $listEntries = $this->listHelper->getEntries('route', 'schemes');
         $choices = [];
         $choiceAttributes = [];
@@ -180,7 +180,7 @@ abstract class AbstractRouteType extends AbstractType
             'multiple' => true,
             'expanded' => false
         ]);
-        
+
         $listEntries = $this->listHelper->getEntries('route', 'methods');
         $choices = [];
         $choiceAttributes = [];
@@ -221,36 +221,37 @@ abstract class AbstractRouteType extends AbstractType
             'label' => $this->__('Translation prefix') . ':',
             'empty_data' => '',
             'attr' => [
+                'max_length' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the translation prefix of the route')
             ],'required' => false,
-            'max_length' => 255,
         ]);
         
         $builder->add('condition', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
             'label' => $this->__('Condition') . ':',
             'empty_data' => '',
             'attr' => [
+                'max_length' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the condition of the route')
             ],'required' => false,
-            'max_length' => 255,
         ]);
         
         $builder->add('description', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
             'label' => $this->__('Description') . ':',
             'empty_data' => '',
             'attr' => [
+                'max_length' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the description of the route')
             ],'required' => false,
-            'max_length' => 255,
         ]);
         
         $builder->add('sort', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
             'label' => $this->__('Sort') . ':',
             'empty_data' => '',
             'attr' => [
+                'max_length' => 255,
                 'class' => ' validate-digits',
                 'title' => $this->__('Enter the sort of the route. Only digits are allowed.')
             ],'required' => false,
@@ -262,10 +263,10 @@ abstract class AbstractRouteType extends AbstractType
             'label' => $this->__('Group') . ':',
             'empty_data' => '',
             'attr' => [
+                'max_length' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the group of the route')
             ],'required' => false,
-            'max_length' => 255,
         ]);
     }
 

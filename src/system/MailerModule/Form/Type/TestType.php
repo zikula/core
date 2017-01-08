@@ -43,7 +43,7 @@ class TestType extends AbstractType
                 'constraints' => [
                     new NotBlank()
                 ],
-                'max_length' => 50
+                'attr' => ['max_length' => 50],
             ])
             ->add('toAddress', 'Symfony\Component\Form\Extension\Core\Type\EmailType', [
                 'label' => $translator->__('Recipient\'s e-mail address'),
@@ -51,14 +51,14 @@ class TestType extends AbstractType
                     new NotBlank(),
                     new Email()
                 ],
-                'max_length' => 50
+                'attr' => ['max_length' => 50],
             ])
             ->add('subject', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $translator->__('Subject'),
                 'constraints' => [
                     new NotBlank()
                 ],
-                'max_length' => 50
+                'attr' => ['max_length' => 50],
             ])
             ->add('messageType', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Message type'),

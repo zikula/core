@@ -33,8 +33,8 @@ class ConfigType extends AbstractType
                 'label' => $translator->__('Items per page'),
                 'empty_data' => 10,
                 'scale' => 0,
-                'max_length' => 3,
                 'attr' => [
+                    'max_length' => 3,
                     'min' => 1
                 ]
             ])
@@ -42,7 +42,7 @@ class ConfigType extends AbstractType
                 'label' => $translator->__('Number of characters to display in item summaries'),
                 'empty_data' => 255,
                 'scale' => 0,
-                'max_length' => 5
+                'attr' => ['max_length' => 5]
             ])
             ->add('plugins', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Disabled plugins'),

@@ -31,7 +31,7 @@ class EditCategoryType extends AbstractType
             ->add('cid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [])
             ->add('name', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $translator->__('Name'),
-                'max_length' => 50
+                'attr' => ['max_length' => 50],
             ])
             ->add('description', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
                 'label' => $translator->__('Description'),
