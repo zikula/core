@@ -12,7 +12,7 @@ services:
     # remove in Core-2.0 and use native event dispatcher
     event_dispatcher:
         class: Zikula_EventManager
-        arguments: service_container
+        arguments: ["@service_container"]
 
     # remove in Core-2.0 and use native session
     session:
