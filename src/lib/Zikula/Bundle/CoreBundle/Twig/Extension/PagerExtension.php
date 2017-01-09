@@ -185,9 +185,7 @@ class PagerExtension extends \Twig_Extension
                 return $this->container->get('router')->generate($route, $pager['args']);
             }
 
-            // @todo @deprecated remove at Core-2.0
-            // replace with `return $this->container->get('router')->generate('home', $pager['args'])`
-            return \ModUtil::url($systemVars['startpage'], $systemVars['starttype'], $systemVars['startfunc'], $pager['args']);
+            return $this->container->get('router')->generate('home', $pager['args']);
         };
 
         // build links to items / pages
