@@ -51,8 +51,8 @@ class AtomThemeExtension extends \Twig_Extension
         $startDate = $this->variableApi->getSystemVar('startdate');
         $starttimestamp = strtotime($startDate);
         $startdate = strftime('%Y-%m-%d', $starttimestamp);
-
         $sitename = Sluggable\Urlizer::urlize($this->variableApi->getSystemVar('sitename'));
+
         return "tag:{$host},{$startdate}:{$sitename}";
     }
 
