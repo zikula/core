@@ -31,8 +31,8 @@ install:
     - cd src
 
     # test the installer
-    - php app/console zikula:install:start -n --database_user=root --database_name=zk_test --password=12345678 --email=admin@example.com --router:request_context:host=localhost -vvv
-    - php app/console zikula:install:finish -vvv
+    - php bin/console zikula:install:start -n --database_user=root --database_name=zk_test --password=12345678 --email=admin@example.com --router:request_context:host=localhost -vvv
+    - php bin/console zikula:install:finish -vvv
 
 # We cannot install Apache2 for now, because this requires sudo mode in which composer takes too long to install the depencencies.
 #before_script:
@@ -49,11 +49,11 @@ install:
 #    - sudo service apache2 restart
 #
 script:
-  - php app/console lint:yaml app/config/
-  - php app/console lint:yaml system/
-  - php app/console lint:yaml themes/
-  - php app/console lint:yaml lib/Zikula/
-  - php app/console lint:twig system/ lib/Zikula/
+  - php bin/console lint:yaml app/config/
+  - php bin/console lint:yaml system/
+  - php bin/console lint:yaml themes/
+  - php bin/console lint:yaml lib/Zikula/
+  - php bin/console lint:twig system/ lib/Zikula/
   # twig linting in themes won't work because the themes are not active bundles
   - cd ..
   - phpunit
