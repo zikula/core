@@ -11,10 +11,26 @@
 
 namespace Zikula\AtomTheme\Twig;
 
+use Gedmo\Sluggable\Util as Sluggable;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Zikula\ExtensionsModule\Api\VariableApi;
+
 class AtomThemeExtension extends \Twig_Extension
 {
-    public function __construct()
+    /**
+     * @var VariableApi
+     */
+    private $variableApi;
+
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    public function __construct(VariableApi $variableApi, RequestStack $requestStack)
     {
+        $this->variableApi = $variableApi;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -31,18 +47,13 @@ class AtomThemeExtension extends \Twig_Extension
 
     public function id()
     {
-        $baseurl = \System::getBaseUrl();
-
-        $parts = parse_url($baseurl);
-
-        $starttimestamp = strtotime(\System::getVar('startdate'));
+        $host = $this->requestStack->getMasterRequest()->getSchemeAndHttpHost();
+        $startDate = $this->variableApi->getSystemVar('startdate');
+        $starttimestamp = strtotime($startDate);
         $startdate = strftime('%Y-%m-%d', $starttimestamp);
 
-        $sitename = \System::getVar('sitename');
-        $sitename = preg_replace('/[^a-zA-Z0-9-\s]/', '', $sitename);
-        $sitename = \DataUtil::formatForURL($sitename);
-
-        return "tag:{$parts['host']},{$startdate}:{$sitename}";
+        $sitename = Sluggable\Urlizer::urlize($this->variableApi->getSystemVar('sitename'));
+        return "tag:{$host},{$startdate}:{$sitename}";
     }
 
     public function atomFeedLastUpdated()
