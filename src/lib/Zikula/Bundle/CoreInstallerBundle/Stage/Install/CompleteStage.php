@@ -20,7 +20,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Swift_Mailer;
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
 
 class CompleteStage implements StageInterface, WizardCompleteInterface, InjectContainerInterface
 {
