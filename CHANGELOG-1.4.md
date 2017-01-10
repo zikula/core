@@ -29,7 +29,8 @@ CHANGELOG - ZIKULA 1.4.x
     - ?
 
  - Vendor updates:
-    - ?
+    - liip/imagine-bundle updated from 1.6.0 to 1.7.0
+    - sensio/distribution-bundle updated from 5.0.16 to 5.0.17
 
 * 1.4.5 (2017-01-01)
 
@@ -71,7 +72,7 @@ CHANGELOG - ZIKULA 1.4.x
     - gedmo/doctrine-extensions updated from 2.4.24 to 2.4.26
     - justinrainbow/json-schema updated from 4.0.1 to 4.1.0
     - php-markdown updated from 1.6.0 to 1.7.0
-    - sensio/distribution-bundle updated from 5.0.14 to 5.0.15
+    - sensio/distribution-bundle updated from 5.0.14 to 5.0.16
     - sensio/framework-extra-bundle updated from 3.0.16 to 3.0.18
     - sensio/generator-bundle updated from 3.0.11 to 3.1.2
     - symfony updated from 2.8.14 to 2.8.15
