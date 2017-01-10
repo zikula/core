@@ -66,23 +66,14 @@ class Scanner
             // add base-path for future use
             $json['extra']['zikula']['base-path'] = $base;
 
-            // calculate PSR-0/4 autoloading path for this namespace
+            // calculate PSR-4 autoloading path for this namespace
             $class = $json['extra']['zikula']['class'];
             $ns = substr($class, 0, strrpos($class, '\\') + 1);
-            if (false === isset($json['autoload']['psr-0'][$ns]) &&
-                false === isset($json['autoload']['psr-4'][$ns])
-            ) {
+            if (false === isset($json['autoload']['psr-4'][$ns])) {
                 return false;
             }
-
-            $nsShort = str_replace('\\', '/', substr($class, 0, strrpos($class, '\\')));
-            if (isset($json['autoload']['psr-0'][$ns])) {
-                $path = $json['extra']['zikula']['root-path'] = substr($base, 0, strpos($base, $nsShort) - 1);
-                $json['autoload']['psr-0'][$ns] = $path;
-            } elseif (isset($json['autoload']['psr-4'][$ns])) {
-                $path = $json['extra']['zikula']['root-path'] = $base;
-                $json['autoload']['psr-4'][$ns] = $path;
-            }
+            $path = $json['extra']['zikula']['root-path'] = $base;
+            $json['autoload']['psr-4'][$ns] = $path;
             $json['extra']['zikula']['short-name'] = substr($class, strrpos($class, '\\') + 1, strlen($class));
             $json['extensionType'] = false !== strpos($base, 'system') ? MetaData::TYPE_SYSTEM : MetaData::TYPE_MODULE;
 
@@ -107,12 +98,6 @@ class Scanner
         return $this->getMetaData('zikula-theme', $indexByShortName);
     }
 
-    // @todo remove for 2.0
-    public function getPluginsMetaData($indexByShortName = false)
-    {
-        return $this->getMetaData('zikula-plugin', $indexByShortName);
-    }
-
     // @todo this can probably be removed in favour of ComposerValidationHelper
     private function validateBasic($json)
     {
@@ -123,15 +108,12 @@ class Scanner
         switch ($json['type']) {
             case 'zikula-module':
             case 'zikula-theme':
-            // @todo remove for 2.0
-            case 'zikula-plugin':
                 break;
             default:
                 return false;
         }
 
-        // @todo remove psr-0 for 2.0
-        if (!isset($json['autoload']['psr-0']) && !isset($json['autoload']['psr-4'])) {
+        if (!isset($json['autoload']['psr-4'])) {
             return false;
         }
 
