@@ -7,7 +7,7 @@ services:
 
     zikula_settings_module.module_listener:
         class: Zikula\SettingsModule\Listener\ModuleListener
-        arguments: ["@zikula_extensions_module.api.variable", "@session"]
+        arguments: ["@zikula_extensions_module.api.variable", "@session", "@translator.default"]
         tags:
             - { name: kernel.event_subscriber }
 

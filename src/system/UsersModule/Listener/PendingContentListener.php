@@ -35,7 +35,7 @@ class PendingContentListener implements EventSubscriberInterface
     /**
      * @var TranslatorInterface
      */
-    private  $translator;
+    private $translator;
 
     /**
      * PendingContentListener constructor.
