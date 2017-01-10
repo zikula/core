@@ -80,6 +80,8 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
             case '3.7.12':
                 $this->setVar('itemsperpage', 40);
             case '3.7.13':
+                $this->schemaTool->update(['Zikula\ExtensionsModule\Entity\ExtensionEntity']);
+            case '3.7.14':
                 // future upgrade routines
         }
 

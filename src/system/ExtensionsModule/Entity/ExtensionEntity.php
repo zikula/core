@@ -97,13 +97,13 @@ class ExtensionEntity extends EntityAccess
     private $securityschema = [];
 
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="string", length=64)
      * @var string
      */
     private $core_min;
 
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="string", length=64)
      * @var string
      */
     private $core_max;
