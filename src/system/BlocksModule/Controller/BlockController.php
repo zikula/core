@@ -45,7 +45,7 @@ class BlockController extends AbstractController
         $form = $this->createFormBuilder()
             ->add('bkey', ChoiceType::class, [
                 'placeholder' => 'Choose a block type',
-                'choices' => $this->get('zikula_blocks_module.api.block')->getAvailableBlockTypes(),
+                'choices' => array_flip($this->get('zikula_blocks_module.api.block')->getAvailableBlockTypes()),
                 'label' => 'Block type'
             ])
             ->add('choose', SubmitType::class, [
