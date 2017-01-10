@@ -85,7 +85,6 @@ To delete a block position, click on the 'Delete' icon and confirm the action in
     <colgroup>
         <col id="cPosName" />
         <col id="cPosDescription" />
-        <col id="cPosSmarty" />
         <col id="cPosTwig" />
         <col id="cPosActions" />
     </colgroup>
@@ -93,7 +92,6 @@ To delete a block position, click on the 'Delete' icon and confirm the action in
         <tr>
             <th id="hPosName" scope="col">{{ __('Name') }}</th>
             <th id="hPosDescription" scope="col">{{ __('Description') }}</th>
-            <th id="hPosSmarty" scope="col">{{ __('Smarty tag') }}</th>
             <th id="hPosTwig" scope="col">{{ __('Twig tag') }}</th>
             <th id="hPosActions" scope="col" class="text-right">{{ __('Actions') }}</th>
         </tr>
@@ -106,7 +104,6 @@ To delete a block position, click on the 'Delete' icon and confirm the action in
             {% if not positionavailable(position.name) %} <i class="fa fa-exclamation-triangle text-danger tooltips" title="{{ __('Position not available in current default theme.') }}"></i>{% endif %}
         </td>
         <td headers="hPosDescription">{{ position.description|slice(0, 25)|safeHtml }}</td>
-        <td headers="hPosSmarty"><code>&#123;blockposition name='{{ position.name }}'&#125;</code></td>
         <td headers="hPosTwig"><code>&#123;&#123; showblockposition('{{ position.name }}') &#125;&#125;</code></td>
         <td headers="hPosActions" class="actions">
             <a class="fa fa-cubes tooltips" href="{{ path('zikulablocksmodule_placement_edit', {pid:position.pid}) }}" title="{{ __('Edit block placements') }}"></a>
