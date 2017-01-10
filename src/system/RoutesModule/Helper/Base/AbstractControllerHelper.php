@@ -275,8 +275,8 @@ abstract class AbstractControllerHelper
             $additionalUrlParameters[$parameterName] = $parameterValue;
         }
     
-        $templateParameters['own'] = $showAllEntries;
-        $templateParameters['all'] = $showOwnEntries;
+        $templateParameters['all'] = $showAllEntries;
+        $templateParameters['own'] = $showOwnEntries;
         $templateParameters['num'] = $resultsPerPage;
         $templateParameters['tpl'] = $request->query->getAlnum('tpl', '');
     

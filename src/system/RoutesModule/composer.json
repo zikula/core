@@ -22,7 +22,7 @@
     },
     "extra": {
         "zikula": {
-            "core-compatibility": ">=1.4.5 <3.0",
+            "core-compatibility": ">=1.4.5",
             "class": "Zikula\\RoutesModule\\ZikulaRoutesModule",
             "displayname": "Routes",
             "url": "routes",

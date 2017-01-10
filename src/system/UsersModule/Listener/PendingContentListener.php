@@ -14,6 +14,7 @@ namespace Zikula\UsersModule\Listener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Common\Collection\Collectible\PendingContentCollectible;
 use Zikula\Common\Collection\Container;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -32,14 +33,21 @@ class PendingContentListener implements EventSubscriberInterface
     private $userRepository;
 
     /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
      * PendingContentListener constructor.
      * @param PermissionApi $permissionApi
      * @param UserRepositoryInterface $userRepository
+     * @param TranslatorInterface $translator
      */
-    public function __construct(PermissionApi $permissionApi, UserRepositoryInterface $userRepository)
+    public function __construct(PermissionApi $permissionApi, UserRepositoryInterface $userRepository, TranslatorInterface $translator)
     {
         $this->permissionApi = $permissionApi;
         $this->userRepository = $userRepository;
+        $this->translator = $translator;
     }
 
     public static function getSubscribedEvents()
@@ -72,7 +80,7 @@ class PendingContentListener implements EventSubscriberInterface
 
             if (!empty($numPendingApproval)) {
                 $collection = new Container(UsersConstant::MODNAME);
-                $collection->add(new PendingContentCollectible('user_registrations', __('Users pending approval'), $numPendingApproval, 'zikulausersmodule_useradministration_list'));
+                $collection->add(new PendingContentCollectible('user_registrations', $this->translator->__('Users pending approval'), $numPendingApproval, 'zikulausersmodule_useradministration_list'));
                 $event->getSubject()->add($collection);
             }
         }

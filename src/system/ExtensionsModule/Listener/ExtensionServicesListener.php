@@ -13,6 +13,7 @@ namespace Zikula\ExtensionsModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -26,16 +27,27 @@ class ExtensionServicesListener implements EventSubscriberInterface
      */
     private $eventDispatcher;
 
+    /**
+     * @var RouterInterface
+     */
     private $router;
 
     /**
-     * ExtensionServicesListener constructor.
-     * @param $eventDispatcher
+     * @var TranslatorInterface
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher, RouterInterface $router)
+    private $translator;
+
+    /**
+     * ExtensionServicesListener constructor.
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param RouterInterface $router
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(EventDispatcherInterface $eventDispatcher, RouterInterface $router, TranslatorInterface $translator)
     {
         $this->eventDispatcher = $eventDispatcher;
         $this->router = $router;
+        $this->translator = $translator;
     }
 
     public static function getSubscribedEvents()
@@ -67,7 +79,7 @@ class ExtensionServicesListener implements EventSubscriberInterface
         if (!empty($sublinks)) {
             $event->data[] = [
                 'url' => $this->router->generate('zikulaextensionsmodule_services_moduleservices', ['moduleName' => $event['modname']]),
-                'text' => __('Services'),
+                'text' => $this->translator->__('Services'),
                 'icon' => 'cogs',
                 'links' => $sublinks
             ];

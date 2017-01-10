@@ -15,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
@@ -32,7 +33,7 @@ class ConfigController extends AbstractController
      * @Template
      *
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return array|RedirectResponse
      */
     public function configAction(Request $request)
     {
@@ -64,10 +65,10 @@ class ConfigController extends AbstractController
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $this->setVars($form->getData());
-                $this->addFlash('status', __('Done! Module configuration updated.'));
+                $this->addFlash('status', $this->__('Done! Module configuration updated.'));
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', __('Operation cancelled.'));
+                $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
             return $this->redirectToRoute('zikulablocksmodule_admin_view');

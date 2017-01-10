@@ -7,7 +7,7 @@ services:
 
     zikula_extensions_module.listener.extension_services_listener:
         class: Zikula\ExtensionsModule\Listener\ExtensionServicesListener
-        arguments: ["@event_dispatcher", "@router"]
+        arguments: ["@event_dispatcher", "@router", "@translator.default"]
         tags:
             - { name: kernel.event_subscriber }
 
@@ -28,7 +28,11 @@ services:
 
     zikula_extensions_module.api.variable:
         class: Zikula\ExtensionsModule\Api\VariableApi
-        arguments: ["%installed%", "@zikula_extensions_module.extension_var_repository", "@kernel", "%multisites%"]
+        arguments:
+          - "%installed%"
+          - "@zikula_extensions_module.extension_var_repository"
+          - "@kernel"
+          - "%multisites%"
 
     zikula_extensions_module.api.extension:
         class: Zikula\ExtensionsModule\Api\ExtensionApi
@@ -55,12 +59,27 @@ services:
     zikula_extensions_module.bundle_sync_helper:
         class: Zikula\ExtensionsModule\Helper\BundleSyncHelper
         lazy: true
-        arguments: ["@kernel", "@zikula_extensions_module.extension_repository", "@zikula_extensions_module.extension_var_repository", "@zikula_extensions_module.extension_dependency_repository", "@translator.default", "@event_dispatcher", "@zikula_extensions_module.extension_state_helper", "@zikula_core.internal.bootstrap_helper", "@zikula_extensions_module.composer_validation_helper", "@session"]
+        arguments:
+          - "@kernel"
+          - "@zikula_extensions_module.extension_repository"
+          - "@zikula_extensions_module.extension_var_repository"
+          - "@zikula_extensions_module.extension_dependency_repository"
+          - "@translator.default"
+          - "@event_dispatcher"
+          - "@zikula_extensions_module.extension_state_helper"
+          - "@zikula_core.internal.bootstrap_helper"
+          - "@zikula_extensions_module.composer_validation_helper"
+          - "@session"
 
     zikula_extensions_module.extension_state_helper:
         class: Zikula\ExtensionsModule\Helper\ExtensionStateHelper
         lazy: true
-        arguments: ["@event_dispatcher", "@zikula.cache_clearer", "@zikula_extensions_module.extension_repository", "@translator.default", "@kernel"]
+        arguments:
+          - "@event_dispatcher"
+          - "@zikula.cache_clearer"
+          - "@zikula_extensions_module.extension_repository"
+          - "@translator.default"
+          - "@kernel"
 
     zikula_extensions_module.extension_helper:
         class: Zikula\ExtensionsModule\Helper\ExtensionHelper
@@ -68,7 +87,10 @@ services:
 
     zikula_extensions_module.extension_dependency_helper:
         class: Zikula\ExtensionsModule\Helper\ExtensionDependencyHelper
-        arguments: ["@zikula_extensions_module.extension_dependency_repository", "@zikula_extensions_module.extension_repository", "@kernel"]
+        arguments:
+          - "@zikula_extensions_module.extension_dependency_repository"
+          - "@zikula_extensions_module.extension_repository"
+          - "@kernel"
 
     zikula_extensions_module.composer_validation_helper:
         class: Zikula\ExtensionsModule\Helper\ComposerValidationHelper

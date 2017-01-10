@@ -12,7 +12,6 @@
 namespace Zikula\SecurityCenterModule\Listener;
 
 use CacheUtil;
-use DateUtil;
 use Doctrine\ORM\EntityManagerInterface;
 use IDS\Init as IdsInit;
 use IDS\Monitor as IdsMonitor;
@@ -24,6 +23,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use System;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\MailerModule\Api\MailerApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
@@ -41,6 +41,9 @@ class FilterListener implements EventSubscriberInterface
      */
     private $isInstalled;
 
+    /**
+     * @var bool
+     */
     private $isUpgrading;
 
     /**
@@ -58,6 +61,37 @@ class FilterListener implements EventSubscriberInterface
      */
     private $mailer;
 
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * FilterListener constructor.
+     *
+     * @param bool $isInstalled Installed flag
+     * @param $isUpgrading
+     * @param VariableApi $variableApi VariableApi service instance
+     * @param EntityManagerInterface $em Doctrine entity manager
+     * @param MailerApi $mailer MailerApi service instance
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(
+        $isInstalled,
+        $isUpgrading,
+        VariableApi $variableApi,
+        EntityManagerInterface $em,
+        MailerApi $mailer,
+        TranslatorInterface $translator
+    ) {
+        $this->isInstalled = $isInstalled;
+        $this->isUpgrading = $isUpgrading;
+        $this->variableApi = $variableApi;
+        $this->em = $em;
+        $this->mailer = $mailer;
+        $this->translator = $translator;
+    }
+
     public static function getSubscribedEvents()
     {
         return [
@@ -65,23 +99,6 @@ class FilterListener implements EventSubscriberInterface
                 ['idsInputFilter', 100]
             ]
         ];
-    }
-
-    /**
-     * FilterListener constructor.
-     *
-     * @param bool                   $isInstalled    Installed flag
-     * @param VariableApi            $variableApi    VariableApi service instance
-     * @param EntityManagerInterface $em             Doctrine entity manager
-     * @param MailerApi              $mailer         MailerApi service instance
-     */
-    public function __construct($isInstalled, $isUpgrading, VariableApi $variableApi, EntityManagerInterface $em, MailerApi $mailer)
-    {
-        $this->isInstalled = $isInstalled;
-        $this->isUpgrading = $isUpgrading;
-        $this->variableApi = $variableApi;
-        $this->em = $em;
-        $this->mailer = $mailer;
     }
 
     /**
@@ -167,7 +184,7 @@ class FilterListener implements EventSubscriberInterface
             }
         } catch (\Exception $e) {
             // sth went wrong - maybe the filter rules weren't found
-            throw new \Exception(__f('An error occured during executing PHPIDS: %s', $e->getMessage()));
+            throw new \Exception($this->translator->__f('An error occured during executing PHPIDS: %s', ['%s' => $e->getMessage()]));
         }
     }
 
@@ -309,6 +326,7 @@ class FilterListener implements EventSubscriberInterface
                 $malVar = explode('.', $eventName, 2);
 
                 $filters = [];
+                /** @var \IDS\Event $event */
                 foreach ($event as $filter) {
                     array_push($filters, [
                         'id' => $filter->getId(),
@@ -354,26 +372,26 @@ class FilterListener implements EventSubscriberInterface
 
         if ($this->getSystemVar('idsmail') && $usedImpact > $impactThresholdTwo) {
             // mail admin
-
             // prepare mail text
-            $mailBody = __('The following attack has been detected by PHPIDS') . "\n\n";
-            $mailBody .= __f('IP: %s', $ipAddress) . "\n";
-            $mailBody .= __f('UserID: %s', $currentUid) . "\n";
-            $mailBody .= __f('Date: %s', DateUtil::strftime(__('%b %d, %Y'), time())) . "\n";
+            $mailBody = $this->translator->__('The following attack has been detected by PHPIDS') . "\n\n";
+            $mailBody .= isset($ipAddress) ? $this->translator->__f('IP: %s', ['%s' => $ipAddress]) . "\n" : '';
+            $mailBody .= isset($currentUid) ? $this->translator->__f('UserID: %s', ['%s' => $currentUid]) . "\n" : '';
+            $currentDate = new \DateTime();
+            $mailBody .= $this->translator->__f('Date: %s', ['%s' => $currentDate->format('%b %d, %Y')]) . "\n";
             if ($idsImpactMode == 1) {
-                $mailBody .= __f('Request Impact: %d', $requestImpact) . "\n";
+                $mailBody .= $this->translator->__f('Request Impact: %d', ['%d' => $requestImpact]) . "\n";
             } else {
-                $mailBody .= __f('Session Impact: %d', $sessionImpact) . "\n";
+                $mailBody .= $this->translator->__f('Session Impact: %d', ['%d' => $sessionImpact]) . "\n";
             }
-            $mailBody .= __f('Affected tags: %s', implode(' ', $result->getTags())) . "\n";
+            $mailBody .= $this->translator->__f('Affected tags: %s', implode(' ', $result->getTags())) . "\n";
 
             $attackedParameters = '';
             foreach ($result as $event) {
                 $attackedParameters .= $event->getName() . '=' . urlencode($event->getValue()) . ", ";
             }
 
-            $mailBody .= __f('Affected parameters: %s', trim($attackedParameters)) . "\n";
-            $mailBody .= __f('Request URI: %s', urlencode($currentPage));
+            $mailBody .= $this->translator->__f('Affected parameters: %s', trim($attackedParameters)) . "\n";
+            $mailBody .= isset($currentPage) ? $this->translator->__f('Request URI: %s', urlencode($currentPage)) : '';
 
             // prepare other mail arguments
             $siteName = $this->getSystemVar('sitename', $this->getSystemVar('sitename_en'));
@@ -384,9 +402,9 @@ class FilterListener implements EventSubscriberInterface
             $message = Swift_Message::newInstance();
 
             $message->setFrom([$adminMail => $siteName]);
-            $message->setTo([$adminMail => 'Site Administrator']);
+            $message->setTo([$adminMail => $this->translator->__('Site Administrator')]);
 
-            $subject = __('Intrusion attempt detected by PHPIDS');
+            $subject = $this->translator->__('Intrusion attempt detected by PHPIDS');
             $rc = $this->mailer->sendMessage($message, $subject, $mailBody);
         }
 
@@ -395,9 +413,9 @@ class FilterListener implements EventSubscriberInterface
 
             if ($this->getSystemVar('idssoftblock')) {
                 // warn only for debugging the ruleset
-                throw new \RuntimeException(__('Malicious request code / a hacking attempt was detected. This request has NOT been blocked!'));
+                throw new \RuntimeException($this->translator->__('Malicious request code / a hacking attempt was detected. This request has NOT been blocked!'));
             } else {
-                throw new AccessDeniedException(__('Malicious request code / a hacking attempt was detected. Thus this request has been blocked.'), null, $result);
+                throw new AccessDeniedException($this->translator->__('Malicious request code / a hacking attempt was detected. Thus this request has been blocked.'), null, $result);
             }
         }
 

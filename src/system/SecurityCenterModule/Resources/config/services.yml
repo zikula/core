@@ -1,7 +1,11 @@
 services:
     zikula_securitycenter_module.container.link_container:
         class: Zikula\SecurityCenterModule\Container\LinkContainer
-        arguments: ["@translator.default", "@jms_i18n_routing.router", "@zikula_permissions_module.api.permission", "@zikula_extensions_module.api.variable"]
+        arguments:
+          - "@translator.default"
+          - "@jms_i18n_routing.router"
+          - "@zikula_permissions_module.api.permission"
+          - "@zikula_extensions_module.api.variable"
         tags:
             - { name: zikula.link_container }
 
@@ -22,10 +26,20 @@ services:
 
     zikula_securitycenter_module.filter_listener:
         class: Zikula\SecurityCenterModule\Listener\FilterListener
-        arguments: ["%installed%", "@=container.hasParameter('upgrading') ? parameter('upgrading') : false", "@zikula_extensions_module.api.variable", "@doctrine.orm.entity_manager", "@zikula_mailer_module.api.mailer"]
+        arguments:
+          - "%installed%"
+          - "@=container.hasParameter('upgrading') ? parameter('upgrading') : false"
+          - "@zikula_extensions_module.api.variable"
+          - "@doctrine.orm.entity_manager"
+          - "@zikula_mailer_module.api.mailer"
+          - "@translator.default"
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_security_center_module.helper.purifier_helper:
         class: Zikula\SecurityCenterModule\Helper\PurifierHelper
-        arguments: ["@kernel", "@session", "@translator.default", "@zikula_extensions_module.api.variable"]
+        arguments:
+          - "@kernel"
+          - "@session"
+          - "@translator.default"
+          - "@zikula_extensions_module.api.variable"

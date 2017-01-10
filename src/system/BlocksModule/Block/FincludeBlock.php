@@ -47,6 +47,11 @@ class FincludeBlock extends AbstractBlockHandler
         return 'Zikula\BlocksModule\Block\Form\Type\FincludeBlockType';
     }
 
+    public function getFormOptions()
+    {
+        return ['translator' => $this->getTranslator()];
+    }
+
     public function getType()
     {
         return $this->__("File Include");
