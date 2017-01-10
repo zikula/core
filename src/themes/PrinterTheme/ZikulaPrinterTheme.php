@@ -60,9 +60,10 @@ class ZikulaPrinterTheme extends AbstractCoreTheme
      */
     private function renderFootnotes()
     {
+        $translator = $this->getContainer()->get('translator.default');
         $text = '';
         if (!empty($this->links)) {
-            $text .= '<div><strong>' . __('Links') . '</strong>';
+            $text .= '<div><strong>' . $translator->__('Links') . '</strong>';
             $text .= '<ol>';
             $this->links = array_unique($this->links);
             foreach ($this->links as $key => $link) {
@@ -73,8 +74,8 @@ class ZikulaPrinterTheme extends AbstractCoreTheme
                 } else {
                     $linkText = $link;
                 }
-                $linkText = \DataUtil::formatForDisplay($linkText);
-                $link = \DataUtil::formatForDisplay($link);
+                $linkText = htmlspecialchars($linkText, ENT_QUOTES);
+                $link = htmlspecialchars($link, ENT_QUOTES);
                 // output link
                 $text .= '<li><a class="print-normal" href="' . $link . '">' . $linkText . '</a></li>' . "\n";
             }

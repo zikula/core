@@ -50,9 +50,10 @@ class ThemeEntityRepository extends EntityRepository
     private function getKernel()
     {
         if (!$this->kernel instanceof KernelInterface) {
-            $message = __('The "kernel" attribute is NULL. ')
-                . __('Did you retrieved this repository using "$doctrine->getRepository()"? ')
-                . __('If so, retrieve it instead directly from the container');
+            // no need to translate this message as it will only be seen by developers.
+            $message = 'The "kernel" attribute is NULL. '
+                . 'Did you retrieved this repository using `$doctrine->getRepository()`? '
+                . 'If so, retrieve it instead directly from the container';
             throw new \LogicException($message);
         }
 

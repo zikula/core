@@ -13,6 +13,6 @@ services:
 
     zikula_zauth_module.listener.user_event_listener:
         class: Zikula\ZAuthModule\Listener\UserEventListener
-        arguments: ["@session", "@router"]
+        arguments: ["@session", "@router", "@translator.default"]
         tags:
             - { name: kernel.event_subscriber }

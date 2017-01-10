@@ -14,6 +14,7 @@ namespace Zikula\ZAuthModule\Listener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -32,6 +33,11 @@ class UserEventListener implements EventSubscriberInterface
      */
     private $router;
 
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
     public static function getSubscribedEvents()
     {
         return [
@@ -39,10 +45,17 @@ class UserEventListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(SessionInterface $session, RouterInterface $router)
+    /**
+     * UserEventListener constructor.
+     * @param SessionInterface $session
+     * @param RouterInterface $router
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(SessionInterface $session, RouterInterface $router, TranslatorInterface $translator)
     {
         $this->session = $session;
         $this->router = $router;
+        $this->translator = $translator;
     }
 
     /**
@@ -68,7 +81,7 @@ class UserEventListener implements EventSubscriberInterface
             $this->session->set('authenticationMethod', $event->getArgument('authenticationMethod'));
             $this->session->set(UsersConstant::FORCE_PASSWORD_SESSION_UID_KEY, $user->getUid());
 
-            $this->session->getFlashBag()->add('error', __("Your log-in request was not completed. You must change your web site account's password first."));
+            $this->session->getFlashBag()->add('error', $this->translator->__("Your log-in request was not completed. You must change your web site account's password first."));
         }
     }
 }

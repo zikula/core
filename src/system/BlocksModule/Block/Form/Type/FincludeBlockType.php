@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Zikula\Common\Translator\IdentityTranslator;
 
 /**
  * Class FincludeBlockType
@@ -26,6 +27,7 @@ class FincludeBlockType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $translator = $options['translator'];
         $builder
             ->add('filo', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'constraints' => [
@@ -34,7 +36,7 @@ class FincludeBlockType extends AbstractType
                         'mimeTypes' => ['text/html', 'text/plain'],
                     ])
                 ],
-                'label' => __('File Path'),
+                'label' => $translator->__('File Path'),
                 'attr' => ['placeholder' => '/full/path/to/file.txt']
             ])
             ->add('typo', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
@@ -44,7 +46,7 @@ class FincludeBlockType extends AbstractType
                     'PHP' => 2
                 ],
                 'choices_as_values' => true, // defaults to true in Sy3.0
-                'label' => __('File type')
+                'label' => $translator->__('File type')
             ])
         ;
     }
@@ -59,6 +61,7 @@ class FincludeBlockType extends AbstractType
         // add a constraint to the entire form
         $resolver->setDefaults([
             'constraints' => new Callback(['callback' => [$this, 'validateFileAgainstMimeType']]),
+            'translator' => new IdentityTranslator()
         ]);
     }
 
@@ -71,7 +74,7 @@ class FincludeBlockType extends AbstractType
     public function validateFileAgainstMimeType($data, ExecutionContextInterface $context)
     {
         if (('text/html' == mime_content_type($data['filo'])) && (0 !== $data['typo'])) {
-            $context->addViolation(__('For Html files please select the Html file type.'));
+            $context->addViolation('For Html files please select the Html file type.'); // @todo get translator instance from somewhere?
         }
     }
 }
