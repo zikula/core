@@ -231,27 +231,17 @@ class BundleSyncHelper
         $displaynames = [];
         $urls = [];
 
-        // check for duplicate names, display names or urls
+        // check for duplicate name, displayname or url
         foreach ($extensions as $dir => $modInfo) {
-            if (isset($modulenames[strtolower($modInfo['name'])])) {
-                throw new FatalErrorException($this->translator->__f('Fatal Error: Two extensions share the same name. [%ext1%] and [%ext2%]', [
-                    '%ext1%' => $modInfo['name'],
-                    '%ext2%' => $modulenames[strtolower($modInfo['name'])]
-                ]));
-            }
-
-            if (isset($displaynames[strtolower($modInfo['displayname'])])) {
-                throw new FatalErrorException($this->translator->__f('Fatal Error: Two extensions share the same displayname. [%ext1%] and [%ext2%]', [
-                    '%ext1%' => $modInfo['name'],
-                    '%ext2%' => $modulenames[strtolower($modInfo['name'])]
-                ]));
-            }
-
-            if (isset($urls[strtolower($modInfo['url'])])) {
-                throw new FatalErrorException($this->translator->__f('Fatal Error: Two extensions share the same url. [%ext1%] and [%ext2%]', [
-                    '%ext1%' => $modInfo['name'],
-                    '%ext2%' => $modulenames[strtolower($modInfo['name'])]
-                ]));
+            $fields = ['name', 'displayname', 'url'];
+            foreach ($fields as $field) {
+                if (isset($modulenames[strtolower($modInfo[$field])])) {
+                    throw new FatalErrorException($this->translator->__f('Fatal Error: Two extensions share the same %field. [%ext1%] and [%ext2%]', [
+                        '%field' => $field,
+                        '%ext1%' => $modInfo['name'],
+                        '%ext2%' => $modulenames[strtolower($modInfo['name'])]
+                    ]));
+                }
             }
 
             $modulenames[strtolower($modInfo['name'])] = $dir;
