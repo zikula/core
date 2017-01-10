@@ -41,7 +41,6 @@ class BootstrapHelper
         $scanner = new Scanner();
         $scanner->scan(['modules', 'themes'], 5);
         $array = array_merge($scanner->getModulesMetaData(), $scanner->getThemesMetaData());
-        $array = array_merge($array, $scanner->getPluginsMetaData());
         $this->sync($array);
     }
 
