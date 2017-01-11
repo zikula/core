@@ -73,6 +73,6 @@ services:
 
     zikula_core.internal.theme.extension_installation_listener:
         class: Zikula\ThemeModule\EventListener\ExtensionInstallationListener
-        arguments: ["@zikula.cache_clearer"]
+        arguments: ["%zikula_asset_manager.combine%", "@zikula.cache_clearer"]
         tags:
             - { name: kernel.event_subscriber }

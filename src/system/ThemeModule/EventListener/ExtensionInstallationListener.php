@@ -20,16 +20,32 @@ use Zikula\Core\CoreEvents;
  */
 class ExtensionInstallationListener implements EventSubscriberInterface
 {
+    /**
+     * @var bool
+     */
+    private $mergerActive;
+
+    /**
+     * @var CacheClearer
+     */
     private $cacheClearer;
 
-    public function __construct(CacheClearer $cacheClearer)
+    /**
+     * ExtensionInstallationListener constructor.
+     * @param bool $active
+     * @param CacheClearer $cacheClearer
+     */
+    public function __construct($active, CacheClearer $cacheClearer)
     {
+        $this->mergerActive = $active;
         $this->cacheClearer = $cacheClearer;
     }
 
     public function clearCombinedAssetCache()
     {
-        $this->cacheClearer->clear('assets');
+        if ($this->mergerActive) {
+            $this->cacheClearer->clear('assets');
+        }
     }
 
     public static function getSubscribedEvents()

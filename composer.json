@@ -83,7 +83,7 @@
 
         "oyejorge/less.php": "dev-master",
         "knplabs/knp-menu-bundle": "^2.0",
-        "liip/imagine-bundle": "^1.6.0"
+        "liip/imagine-bundle": "1.*"
     },
     "require-dev": {
         "zikula/generator-bundle": "dev-master"
