@@ -1,6 +1,7 @@
 services:
     zikula_core.legacy.theme_template_override_listener:
         class: Zikula\ThemeModule\EventListener\ThemeTemplateOverrideYamlListener
+        arguments: ["%installed%"]
         tags:
             - { name: kernel.event_subscriber }
         deprecated: The "%service_id%" service is deprecated since 1.4.4 and will be removed in 2.0.

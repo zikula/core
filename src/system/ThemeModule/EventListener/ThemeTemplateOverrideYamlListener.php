@@ -30,8 +30,11 @@ class ThemeTemplateOverrideYamlListener implements EventSubscriberInterface
      */
     private $overrideMap = [];
 
-    public function __construct()
+    public function __construct($installed)
     {
+        if (!$installed) {
+            return;
+        }
         $themeName = \UserUtil::getTheme();
         $theme = \ThemeUtil::getTheme($themeName);
         if (null !== $theme && is_readable($path = $theme->getConfigPath() . '/overrides.yml')) {
