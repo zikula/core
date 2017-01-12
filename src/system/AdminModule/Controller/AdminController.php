@@ -268,7 +268,7 @@ class AdminController extends AbstractController
 
         $templateParameters = [
             // Add category menu to output
-            'menu' => $this->categorymenuAction($acid)->getContent()
+            'menu' => $this->categorymenuAction($request, $acid)->getContent()
         ];
 
         // Check to see if we have access to the requested category.
