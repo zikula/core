@@ -59,34 +59,6 @@ abstract class ZikulaKernel extends Kernel
     private $autoloader;
 
     /**
-     * @deprecated - Remove when inclusion of files inside the constructor is removed!
-     * @var bool
-     */
-    private static $included = false;
-
-    public function __construct($env, $debug)
-    {
-        parent::__construct($env, $debug);
-
-        if (self::$included) {
-            return;
-        }
-        self::$included = true;
-
-        // this is all to be deprecated (todo drak)
-        $paths = [
-            $this->rootDir . '/../config/config.php',
-            $this->rootDir . '/../config/personal_config.php',
-        ];
-
-        foreach ($paths as $path) {
-            if (is_readable($path)) {
-                include $path;
-            }
-        }
-    }
-
-    /**
      * Flag determines if container is dumped or not
      *
      * @param $flag
