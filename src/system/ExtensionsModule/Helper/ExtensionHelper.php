@@ -173,7 +173,7 @@ class ExtensionHelper
     public function uninstall(ExtensionEntity $extension)
     {
         if ($extension->getState() == ExtensionApi::STATE_NOTALLOWED
-            || ($extension->getType() == self::TYPE_SYSTEM && $extension->getName() != 'ZikulaPageLockModule')) {
+            || (\ZikulaKernel::isCoreModule($extension->getName()))) {
             throw new \RuntimeException($this->translator->__f('Error! No permission to uninstall %s.', ['%s' => $extension->getDisplayname()]));
         }
         if ($extension->getState() == ExtensionApi::STATE_UNINITIALISED) {

@@ -43,7 +43,7 @@ class ActionsMenu implements ContainerAwareInterface
 
         switch ($extension->getState()) {
             case ExtensionApi::STATE_ACTIVE:
-                if ($extension->getName() == 'ZikulaPageLockModule' || !\ZikulaKernel::isCoreModule($extension->getName())) {
+                if (!\ZikulaKernel::isCoreModule($extension->getName())) {
                     $menu->addChild($this->__f('Deactivate %s', ['%s' => $extension->getDisplayname()]), [
                         'route' => 'zikulaextensionsmodule_module_deactivate',
                         'routeParameters' => ['id' => $extension->getId(), 'csrftoken' => $csrfToken],

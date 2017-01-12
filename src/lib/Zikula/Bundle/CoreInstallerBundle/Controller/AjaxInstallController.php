@@ -149,7 +149,6 @@ class AjaxInstallController extends AbstractController
             'ZikulaSettingsModule' => $this->translator->__('System'),
             'ZikulaRoutesModule' => $this->translator->__('System'),
             'ZikulaMenuModule' => $this->translator->__('Content'),
-            'ZikulaPageLockModule' => $this->translator->__('Content'),
         ];
 
         foreach (\ZikulaKernel::$coreModules as $systemModule => $bundleClass) {

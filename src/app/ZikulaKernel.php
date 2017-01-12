@@ -57,7 +57,6 @@ class ZikulaKernel extends Kernel
         'ZikulaThemeModule' => 'Zikula\ThemeModule\ZikulaThemeModule',
         'ZikulaUsersModule' => 'Zikula\UsersModule\ZikulaUsersModule',
         'ZikulaZAuthModule' => 'Zikula\ZAuthModule\ZikulaZAuthModule',
-        'ZikulaPageLockModule' => 'Zikula\PageLockModule\ZikulaPageLockModule',
         'ZikulaMenuModule' => 'Zikula\MenuModule\ZikulaMenuModule',
     ];
 

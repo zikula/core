@@ -114,7 +114,7 @@ abstract class AbstractController
         /** @var ExtensionEntity[] $extensions */
         $extensions = $this->container->get('zikula_extensions_module.extension_repository')->findAll();
         foreach ($extensions as $extension) {
-            if ($extension->getName() != 'ZikulaPageLockModule' && \ZikulaKernel::isCoreModule($extension->getName())) {
+            if (\ZikulaKernel::isCoreModule($extension->getName())) {
                 $extension->setState(ExtensionApi::STATE_ACTIVE);
             }
         }
