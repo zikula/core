@@ -30,7 +30,10 @@ CHANGELOG - ZIKULA 1.4.x
 
  - Vendor updates:
     - liip/imagine-bundle updated from 1.6.0 to 1.7.0
-    - sensio/distribution-bundle updated from 5.0.16 to 5.0.17
+    - sensio/distribution-bundle updated from 5.0.16 to 5.0.18
+    - sensio/framework-extra-bundle updated from 3.0.18 to 3.0.19
+    - symfony/monolog-bundle updated from 2.7.1 to 2.12.1
+    - twig updated from 1.30.0 to 1.31.0
 
 * 1.4.5 (2017-01-01)
 
