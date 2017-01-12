@@ -1402,12 +1402,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "5070404376d3b4287ce5c6bfae13e888b464742d"
+                "reference": "f2ad0618db4f667f127da2c401ef9d0e7d339f88"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/5070404376d3b4287ce5c6bfae13e888b464742d",
-                "reference": "5070404376d3b4287ce5c6bfae13e888b464742d",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/f2ad0618db4f667f127da2c401ef9d0e7d339f88",
+                "reference": "f2ad0618db4f667f127da2c401ef9d0e7d339f88",
                 "shasum": ""
             },
             "require": {
@@ -1441,7 +1441,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2016-10-29 07:01:19"
+            "time": "2017-01-06 17:02:37"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -3841,16 +3841,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.30.0",
+            "version": "v1.31.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "c6ff71094fde15d12398eaba029434b013dc5e59"
+                "reference": "ddc9e3e20ee9c0b6908f401ac8353635b750eca7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/c6ff71094fde15d12398eaba029434b013dc5e59",
-                "reference": "c6ff71094fde15d12398eaba029434b013dc5e59",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/ddc9e3e20ee9c0b6908f401ac8353635b750eca7",
+                "reference": "ddc9e3e20ee9c0b6908f401ac8353635b750eca7",
                 "shasum": ""
             },
             "require": {
@@ -3858,12 +3858,12 @@
             },
             "require-dev": {
                 "symfony/debug": "~2.7",
-                "symfony/phpunit-bridge": "~3.2@dev"
+                "symfony/phpunit-bridge": "~3.2"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.30-dev"
+                    "dev-master": "1.31-dev"
                 }
             },
             "autoload": {
@@ -3898,7 +3898,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2016-12-23 11:06:22"
+            "time": "2017-01-11 19:36:15"
         },
         {
             "name": "twitter/typeahead.js",
