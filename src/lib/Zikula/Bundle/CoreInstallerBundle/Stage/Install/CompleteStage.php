@@ -74,7 +74,7 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
     private function sendEmailToAdmin(Request $request)
     {
         $adminUser = $this->container->get('zikula_users_module.user_repository')->find(2);
-        $uName = $adminUser->get('uname');
+        $uName = $adminUser->getUname();
         $url = $request->getSchemeAndHttpHost() . $request->getBasePath();
 
         $body = <<<EOF
@@ -88,8 +88,8 @@ visit <a href="http://zikula.org">zikula.org</a></p>
 EOF;
         $message = \Swift_Message::newInstance()
             ->setSubject($this->__('Zikula installation completed!'))
-            ->setFrom($adminUser->get('email'))
-            ->setTo($adminUser->get('email'))
+            ->setFrom($adminUser->getEmail())
+            ->setTo($adminUser->getEmail())
             ->setBody($body)
             ->setContentType('text/html')
         ;
