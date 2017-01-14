@@ -11,32 +11,31 @@
 
 namespace Zikula\ExtensionsModule\Api;
 
-use LogUtil;
-use SecurityUtil;
-use ModUtil;
-use System;
 use DataUtil;
+use EventUtil;
+use FileUtil;
+use HookUtil;
+use LogUtil;
+use ModUtil;
+use ReflectionClass;
+use SecurityUtil;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use vierbergenlars\SemVer\expression;
+use vierbergenlars\SemVer\version;
+use Zikula;
+use Zikula\Bundle\CoreBundle\Bundle\MetaData;
+use Zikula\Bundle\CoreBundle\Bundle\Scanner;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
-use ZLoader;
-use Zikula\ExtensionsModule\Util as ExtensionsUtil;
-use ZLanguage;
-use ReflectionClass;
-use HookUtil;
-use EventUtil;
-use Zikula;
-use FileUtil;
-use Zikula_AbstractVersion;
-use Zikula_Core;
-use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity;
-use Zikula\Bundle\CoreBundle\Bundle\Scanner;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use vierbergenlars\SemVer\expression;
-use vierbergenlars\SemVer\version;
-use Zikula\Bundle\CoreBundle\Bundle\MetaData;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
+use Zikula\ExtensionsModule\Util as ExtensionsUtil;
+use Zikula_AbstractVersion;
+use ZLanguage;
+use ZLoader;
 
 /**
  * Administrative API functions for the Extensions module.
@@ -1414,7 +1413,7 @@ class AdminApi extends \Zikula_AbstractApi
      */
     private function isCoreCompatible($compatibilityString)
     {
-        $coreVersion = new version(\ZikulaKernel::VERSION);
+        $coreVersion = new version(ZikulaKernel::VERSION);
         $requiredVersionExpression = new expression($compatibilityString);
 
         return $requiredVersionExpression->satisfiedBy($coreVersion);

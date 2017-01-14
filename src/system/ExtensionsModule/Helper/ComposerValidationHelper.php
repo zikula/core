@@ -14,13 +14,13 @@ namespace Zikula\ExtensionsModule\Helper;
 use JsonSchema\Uri\UriRetriever;
 use JsonSchema\Validator;
 use Symfony\Component\Finder\SplFileInfo;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 
 class ComposerValidationHelper
 {
     /**
-     * @var KernelInterface
+     * @var ZikulaHttpKernelInterface
      */
     private $kernel;
 
@@ -75,10 +75,10 @@ class ComposerValidationHelper
     /**
      * ComposerValidationHelper constructor.
      *
-     * @param KernelInterface $kernel
+     * @param ZikulaHttpKernelInterface $kernel
      * @param TranslatorInterface $translator
      */
-    public function __construct(KernelInterface $kernel, TranslatorInterface $translator)
+    public function __construct(ZikulaHttpKernelInterface $kernel, TranslatorInterface $translator)
     {
         $this->kernel = $kernel;
         $this->translator = $translator;

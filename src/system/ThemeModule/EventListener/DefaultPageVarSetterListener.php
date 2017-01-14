@@ -14,8 +14,9 @@ namespace Zikula\ThemeModule\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\ThemeModule\Engine\ParameterBag;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
@@ -42,7 +43,7 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
     private $variableApi;
 
     /**
-     * @var KernelInterface
+     * @var ZikulaHttpKernelInterface
      */
     private $kernel;
 
@@ -51,11 +52,19 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
      */
     private $isInstalled;
 
+    /**
+     * DefaultPageVarSetterListener constructor.
+     * @param ParameterBag $pageVars
+     * @param RouterInterface $routerInterface
+     * @param VariableApi $variableApi
+     * @param ZikulaHttpKernelInterface $kernel
+     * @param bool $isInstalled
+     */
     public function __construct(
         ParameterBag $pageVars,
         RouterInterface $routerInterface,
         VariableApi $variableApi,
-        KernelInterface $kernel,
+        ZikulaHttpKernelInterface $kernel,
         $isInstalled
     ) {
         $this->pageVars = $pageVars;
@@ -86,7 +95,7 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
         $this->pageVars->set('meta.description', $this->variableApi->getSystemVar('defaultmetadescription'));
         $this->pageVars->set('meta.keywords', $this->variableApi->getSystemVar('metakeywords'));
         $this->pageVars->set('homepath', $this->router->generate('home'));
-        $this->pageVars->set('coredata', ['version' => \ZikulaKernel::VERSION]); // @todo add more info?
+        $this->pageVars->set('coredata', ['version' => ZikulaKernel::VERSION]); // @todo add more info?
     }
 
     public static function getSubscribedEvents()

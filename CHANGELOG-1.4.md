@@ -10,7 +10,7 @@ CHANGELOG - ZIKULA 1.4.x
  - Deprecated:
     - \StreamReader_*
     - all classes in zrc/lib/i18n (e.g. ZGettext, ZLanguage, etc)
-    - \Zikula_Core::VERSION_* constants are replaced by constants in \ZikulaKernel
+    - \Zikula_Core::VERSION_* constants are replaced by constants in \Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel
         (\Zikula_Core was already deprecated long ago)
     - \Zikula_Core::VERSION_ID will not be continued in Core-2.0
     - \Zikula\Common\I18n\*
@@ -26,7 +26,8 @@ CHANGELOG - ZIKULA 1.4.x
     - ?
 
  - Core-2.0 Features:
-    - ?
+    - \Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface created and implemented. Use this for typehinting
+        the core kernel.
 
  - Vendor updates:
     - doctrine dbal updated from 2.5.5 to 2.5.6

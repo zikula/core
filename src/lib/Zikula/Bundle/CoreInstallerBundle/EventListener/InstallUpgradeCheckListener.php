@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreInstallerBundle\Util\VersionUtil;
 use Zikula\Core\Event\GenericEvent;
 
@@ -39,8 +40,8 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
         $requiresUpgrade = false;
         if ($installed) {
             VersionUtil::defineCurrentInstalledCoreVersion($this->container);
-            $currentVersion = $this->container->getParameter(\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
-            $requiresUpgrade = $installed && version_compare($currentVersion, \ZikulaKernel::VERSION, '<');
+            $currentVersion = $this->container->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
+            $requiresUpgrade = $installed && version_compare($currentVersion, ZikulaKernel::VERSION, '<');
         }
 
         $routeInfo = $this->container->get('router')->match($request->getPathInfo());

@@ -11,6 +11,7 @@
 
 namespace Zikula\Bundle\CoreBundle\Bundle;
 
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -84,7 +85,7 @@ class Scanner
                 $json['autoload']['psr-4'][$ns] = $path;
             }
             $json['extra']['zikula']['short-name'] = substr($class, strrpos($class, '\\') + 1, strlen($class));
-            $json['extensionType'] = \ZikulaKernel::isCoreModule($json['extra']['zikula']['short-name']) ? MetaData::TYPE_SYSTEM : MetaData::TYPE_MODULE;
+            $json['extensionType'] = ZikulaKernel::isCoreModule($json['extra']['zikula']['short-name']) ? MetaData::TYPE_SYSTEM : MetaData::TYPE_MODULE;
 
             return $json;
         }

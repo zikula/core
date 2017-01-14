@@ -11,7 +11,7 @@
 
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
-use Symfony\Component\HttpKernel\KernelInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 
 /**
@@ -25,16 +25,16 @@ class GettextExtension extends \Twig_Extension
     private $translator;
 
     /**
-     * @var KernelInterface
+     * @var ZikulaHttpKernelInterface
      */
     private $kernel;
 
     /**
      * GettextExtension constructor.
      * @param TranslatorInterface $translator
-     * @param KernelInterface $kernel
+     * @param ZikulaHttpKernelInterface $kernel
      */
-    public function __construct(TranslatorInterface $translator, KernelInterface $kernel)
+    public function __construct(TranslatorInterface $translator, ZikulaHttpKernelInterface $kernel)
     {
         $this->translator = $translator;
         $this->kernel = $kernel;

@@ -15,8 +15,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Michelf\MarkdownExtra;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Response\PlainResponse;
 
@@ -25,29 +25,52 @@ use Zikula\Core\Response\PlainResponse;
  */
 class DocController
 {
+    /**
+     * @var ZikulaHttpKernelInterface
+     */
     private $kernel;
 
+    /**
+     * @var RouterInterface
+     */
     private $router;
 
+    /**
+     * @var EngineInterface
+     */
     private $templatingService;
 
+    /**
+     * @var MarkdownExtra
+     */
     private $parser;
 
+    /**
+     * @var
+     */
     private $basePath;
 
+    /**
+     * @var TranslatorInterface
+     */
     private $translator;
 
     /**
      * Constructor.
      *
-     * @param KernelInterface $kernel
+     * @param ZikulaHttpKernelInterface $kernel
      * @param RouterInterface $router The route generator
      * @param EngineInterface $templatingService
      * @param MarkdownExtra $parser
      * @param TranslatorInterface $translator
      */
-    public function __construct(KernelInterface $kernel, RouterInterface $router, EngineInterface $templatingService, MarkdownExtra $parser, TranslatorInterface $translator)
-    {
+    public function __construct(
+        ZikulaHttpKernelInterface $kernel,
+        RouterInterface $router,
+        EngineInterface $templatingService,
+        MarkdownExtra $parser,
+        TranslatorInterface $translator
+    ) {
         $this->kernel = $kernel;
         $this->router = $router;
         $this->templatingService = $templatingService;

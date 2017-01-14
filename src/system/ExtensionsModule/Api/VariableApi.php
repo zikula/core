@@ -11,7 +11,7 @@
 
 namespace Zikula\ExtensionsModule\Api;
 
-use Symfony\Component\HttpKernel\KernelInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionVarRepositoryInterface;
 
@@ -38,7 +38,7 @@ class VariableApi
     private $repository;
 
     /**
-     * @var KernelInterface
+     * @var ZikulaHttpKernelInterface
      */
     private $kernel;
 
@@ -57,13 +57,13 @@ class VariableApi
      *
      * @param $installed
      * @param ExtensionVarRepositoryInterface $repository
-     * @param KernelInterface $kernel
+     * @param ZikulaHttpKernelInterface $kernel
      * @param array $multisitesParameters
      */
     public function __construct(
         $installed,
         ExtensionVarRepositoryInterface $repository,
-        KernelInterface $kernel,
+        ZikulaHttpKernelInterface $kernel,
         array $multisitesParameters
     ) {
         $this->installed = $installed;

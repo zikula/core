@@ -12,6 +12,7 @@
 namespace Zikula\Bundle\CoreInstallerBundle\Util;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 
 class VersionUtil
@@ -27,7 +28,7 @@ class VersionUtil
     public static function defineCurrentInstalledCoreVersion($container)
     {
         // already set?
-        if ($container->hasParameter(\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM)) {
+        if ($container->hasParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM)) {
             return;
         }
 
@@ -37,8 +38,8 @@ class VersionUtil
             $version = unserialize($conn->fetchColumn("SELECT value FROM module_vars WHERE modname = 'ZConfig' AND name = 'Version_Num'"));
 
             $yamlManager = new YamlDumper($container->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
-            $container->setParameter(\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM, $version);
-            $yamlManager->setParameter(\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM, $version); // writes to file
+            $container->setParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM, $version);
+            $yamlManager->setParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM, $version); // writes to file
         } catch (\Doctrine\DBAL\Exception\TableNotFoundException $e) {
             throw new \Exception("ERROR: Could not find module_vars table. Maybe you forgot to copy it to your server, or you left a custom_parameters.yml file in place with installed: true in it.");
         }

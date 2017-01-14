@@ -16,6 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
@@ -46,7 +47,7 @@ class AjaxUpgradeController extends AbstractController
         $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
         // load and set new default values from the original parameters.yml file into the custom_parameters.yml file.
         $this->yamlManager->setParameters(array_merge($originalParameters['parameters'], $this->yamlManager->getParameters()));
-        $this->currentVersion = $this->container->getParameter(\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
+        $this->currentVersion = $this->container->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
     }
 
     public function ajaxAction(Request $request)
@@ -84,7 +85,7 @@ class AjaxUpgradeController extends AbstractController
 
                 return $result;
             case "installroutes":
-                if (version_compare(\ZikulaKernel::VERSION, '1.4.0', '>') && version_compare($this->currentVersion, '1.4.0', '>=')) {
+                if (version_compare(ZikulaKernel::VERSION, '1.4.0', '>') && version_compare($this->currentVersion, '1.4.0', '>=')) {
                     // this stage is not necessary to upgrade from 1.4.0 -> 1.4.x
                     return true;
                 }
@@ -277,7 +278,7 @@ class AjaxUpgradeController extends AbstractController
         $params['router.request_context.base_url'] = isset($params['router.request_context.base_url']) ? $params['router.request_context.base_url'] : $basePathFromRequest;
 
         // set currently installed version into parameters
-        $params[\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM] = \ZikulaKernel::VERSION;
+        $params[ZikulaKernel::CORE_INSTALLED_VERSION_PARAM] = ZikulaKernel::VERSION;
 
         // disable asset combination on upgrades
         $params['zikula_asset_manager.combine'] = false;
@@ -285,9 +286,9 @@ class AjaxUpgradeController extends AbstractController
         $this->yamlManager->setParameters($params);
 
         // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
-        $variableApi->set(VariableApi::CONFIG, 'Version_Num', \ZikulaKernel::VERSION);
+        $variableApi->set(VariableApi::CONFIG, 'Version_Num', ZikulaKernel::VERSION);
         $variableApi->set(VariableApi::CONFIG, 'Version_ID', \Zikula_Core::VERSION_ID); // @deprecated
-        $variableApi->set(VariableApi::CONFIG, 'Version_Sub', \ZikulaKernel::VERSION_SUB);
+        $variableApi->set(VariableApi::CONFIG, 'Version_Sub', ZikulaKernel::VERSION_SUB);
 
         // set the 'start' page information to empty to avoid missing module errors.
         $variableApi->set(VariableApi::CONFIG, 'startpage', '');

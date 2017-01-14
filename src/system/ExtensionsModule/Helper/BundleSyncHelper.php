@@ -14,12 +14,13 @@ namespace Zikula\ExtensionsModule\Helper;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpKernel\KernelInterface;
 use vierbergenlars\SemVer\expression;
 use vierbergenlars\SemVer\version;
 use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Exception\FatalErrorException;
@@ -37,7 +38,7 @@ use Zikula\ExtensionsModule\Helper\Legacy\BundleSyncHelper as LegacyBundleSyncHe
 class BundleSyncHelper
 {
     /**
-     * @var KernelInterface
+     * @var ZikulaHttpKernelInterface
      */
     private $kernel;
 
@@ -89,7 +90,7 @@ class BundleSyncHelper
     /**
      * BundleSyncHelper constructor.
      *
-     * @param KernelInterface $kernel
+     * @param ZikulaHttpKernelInterface $kernel
      * @param ExtensionRepository $extensionRepository
      * @param ExtensionVarRepository $extensionVarRepository
      * @param ExtensionDependencyRepository $extensionDependencyRepository
@@ -100,7 +101,7 @@ class BundleSyncHelper
      * @param SessionInterface $session
      */
     public function __construct(
-        KernelInterface $kernel,
+        ZikulaHttpKernelInterface $kernel,
         ExtensionRepository $extensionRepository,
         ExtensionVarRepository $extensionVarRepository,
         ExtensionDependencyRepository $extensionDependencyRepository,
@@ -472,7 +473,7 @@ class BundleSyncHelper
      */
     private function isCoreCompatible($compatibilityString)
     {
-        $coreVersion = new version(\ZikulaKernel::VERSION);
+        $coreVersion = new version(ZikulaKernel::VERSION);
         $requiredVersionExpression = new expression($compatibilityString);
 
         return $requiredVersionExpression->satisfiedBy($coreVersion);

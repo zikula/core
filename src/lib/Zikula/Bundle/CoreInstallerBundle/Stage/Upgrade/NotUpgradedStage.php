@@ -12,11 +12,12 @@
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Component\Wizard\AbortStageException;
-use Zikula\Component\Wizard\StageInterface;
 use Zikula\Component\Wizard\InjectContainerInterface;
-use Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController;
+use Zikula\Component\Wizard\StageInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
 class NotUpgradedStage implements StageInterface, InjectContainerInterface
@@ -49,7 +50,7 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
 
     public function isNecessary()
     {
-        $currentVersion = $this->container->getParameter(\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
+        $currentVersion = $this->container->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
         if (version_compare($currentVersion, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<=')) {
             throw new AbortStageException($this->translator->__f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', ['%1$s' => $currentVersion, '%2$s' => UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
         }

@@ -12,6 +12,7 @@
 namespace Zikula\SecurityCenterModule;
 
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\AbstractExtensionInstaller;
 
 /**
@@ -42,7 +43,7 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('updatecheck', 1);
         $this->setSystemVar('updatefrequency', 7);
         $this->setSystemVar('updatelastchecked', 0);
-        $this->setSystemVar('updateversion', \ZikulaKernel::VERSION);
+        $this->setSystemVar('updateversion', ZikulaKernel::VERSION);
         $this->setSystemVar('keyexpiry', 0);
         $this->setSystemVar('sessionauthkeyua', 0);
         $this->setSystemVar('secure_domain', '');

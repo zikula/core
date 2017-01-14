@@ -13,7 +13,7 @@ namespace Zikula\ThemeModule\Helper;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
@@ -28,7 +28,7 @@ use Zikula\ThemeModule\Helper\Legacy\BundleSyncHelper as LegacyBundleSyncHelper;
 class BundleSyncHelper
 {
     /**
-     * @var KernelInterface
+     * @var ZikulaHttpKernelInterface
      */
     private $kernel;
 
@@ -60,7 +60,7 @@ class BundleSyncHelper
     /**
      * BundleSyncHelper constructor.
      *
-     * @param KernelInterface $kernel
+     * @param ZikulaHttpKernelInterface $kernel
      * @param ThemeEntityRepository $themeEntityRepository
      * @param BootstrapHelper $bootstrapHelper
      * @param TranslatorInterface $translator
@@ -68,7 +68,7 @@ class BundleSyncHelper
      * @param SessionInterface $session
      */
     public function __construct(
-        KernelInterface $kernel,
+        ZikulaHttpKernelInterface $kernel,
         ThemeEntityRepository $themeEntityRepository,
         BootstrapHelper $bootstrapHelper,
         TranslatorInterface $translator,
