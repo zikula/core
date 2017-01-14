@@ -9,6 +9,7 @@
  * file that was distributed with this source code.
  */
 
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreInstallerBundle\Util\ZikulaRequirements;
 
 /**
@@ -20,8 +21,8 @@ function requirementCheck($parameters)
 {
     // on install or upgrade, check if system requirements are met.
     if (($parameters['installed'] == false)
-        || (!empty($parameters[\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM])
-            && version_compare($parameters[\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM], \ZikulaKernel::VERSION, '<'))) {
+        || (!empty($parameters[ZikulaKernel::CORE_INSTALLED_VERSION_PARAM])
+            && version_compare($parameters[ZikulaKernel::CORE_INSTALLED_VERSION_PARAM], ZikulaKernel::VERSION, '<'))) {
         $versionChecker = new ZikulaRequirements();
         $versionChecker->runSymfonyChecks($parameters);
         if (!empty($versionChecker->requirementsErrors)) {

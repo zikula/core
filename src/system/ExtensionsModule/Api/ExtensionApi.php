@@ -11,7 +11,8 @@
 
 namespace Zikula\ExtensionsModule\Api;
 
-use Symfony\Component\HttpKernel\KernelInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 
 class ExtensionApi
 {
@@ -25,15 +26,15 @@ class ExtensionApi
     const INCOMPATIBLE_CORE_SHIFT = 20;
 
     /**
-     * @var KernelInterface
+     * @var ZikulaHttpKernelInterface
      */
     private $kernel;
 
     /**
      * ExtensionVar constructor.
-     * @param KernelInterface $kernel
+     * @param ZikulaHttpKernelInterface $kernel
      */
-    public function __construct(KernelInterface $kernel)
+    public function __construct(ZikulaHttpKernelInterface $kernel)
     {
         $this->kernel = $kernel;
     }
@@ -65,6 +66,6 @@ class ExtensionApi
      */
     public function isCoreModule($moduleName)
     {
-        return \ZikulaKernel::isCoreModule($moduleName);
+        return ZikulaKernel::isCoreModule($moduleName);
     }
 }

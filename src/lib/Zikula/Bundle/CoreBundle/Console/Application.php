@@ -12,27 +12,31 @@
 namespace Zikula\Bundle\CoreBundle\Console;
 
 use Symfony\Bundle\FrameworkBundle\Console\Application as BaseApplication;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreInstallerBundle\Util\VersionUtil;
 
 class Application extends BaseApplication
 {
+    /**
+     * @var ZikulaHttpKernelInterface
+     */
     private $kernel;
 
     /**
      * Constructor.
      *
-     * @param KernelInterface $kernel A KernelInterface instance
+     * @param ZikulaHttpKernelInterface $kernel
      */
-    public function __construct(KernelInterface $kernel)
+    public function __construct(ZikulaHttpKernelInterface $kernel)
     {
         parent::__construct($kernel);
 
         $this->kernel = $kernel;
 
         $this->setName('Zikula');
-        $this->setVersion(\ZikulaKernel::VERSION.' - '.$kernel->getName().'/'.$kernel->getEnvironment().($kernel->isDebug() ? '/debug' : ''));
+        $this->setVersion(ZikulaKernel::VERSION.' - '.$kernel->getName().'/'.$kernel->getEnvironment().($kernel->isDebug() ? '/debug' : ''));
     }
 
     protected function registerCommands()
@@ -46,9 +50,9 @@ class Application extends BaseApplication
         if ($this->kernel->getContainer()->getParameter('installed') === true) {
             // don't attempt to login if the Core needs an upgrade
             VersionUtil::defineCurrentInstalledCoreVersion($this->kernel->getContainer());
-            $currentVersion = $this->kernel->getContainer()->getParameter(\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
+            $currentVersion = $this->kernel->getContainer()->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
             // @todo login is pointless for CLI isn't it?
-            if (version_compare($currentVersion, \ZikulaKernel::VERSION, '==')) {
+            if (version_compare($currentVersion, ZikulaKernel::VERSION, '==')) {
                 try {
                     $this->loginAsAdministrator();
                 } catch (\Exception $e) {

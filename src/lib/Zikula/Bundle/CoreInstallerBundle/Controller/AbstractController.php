@@ -13,12 +13,13 @@ namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
-use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ConfigHelper;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
@@ -114,7 +115,7 @@ abstract class AbstractController
         /** @var ExtensionEntity[] $extensions */
         $extensions = $this->container->get('zikula_extensions_module.extension_repository')->findAll();
         foreach ($extensions as $extension) {
-            if (\ZikulaKernel::isCoreModule($extension->getName())) {
+            if (ZikulaKernel::isCoreModule($extension->getName())) {
                 $extension->setState(ExtensionApi::STATE_ACTIVE);
             }
         }

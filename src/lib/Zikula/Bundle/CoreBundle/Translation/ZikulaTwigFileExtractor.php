@@ -15,8 +15,8 @@ use JMS\TranslationBundle\Model\FileSource;
 use JMS\TranslationBundle\Model\Message;
 use JMS\TranslationBundle\Model\MessageCatalogue;
 use JMS\TranslationBundle\Translation\Extractor\FileVisitorInterface;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\AbstractBundle;
 
 class ZikulaTwigFileExtractor extends \Twig_BaseNodeVisitor implements FileVisitorInterface
@@ -37,7 +37,7 @@ class ZikulaTwigFileExtractor extends \Twig_BaseNodeVisitor implements FileVisit
     private $traverser;
 
     /**
-     * @var KernelInterface
+     * @var ZikulaHttpKernelInterface
      */
     private $kernel;
 
@@ -66,9 +66,9 @@ class ZikulaTwigFileExtractor extends \Twig_BaseNodeVisitor implements FileVisit
     /**
      * ZikulaTwigFileExtractor constructor.
      * @param \Twig_Environment $env
-     * @param KernelInterface $kernel
+     * @param ZikulaHttpKernelInterface $kernel
      */
-    public function __construct(\Twig_Environment $env, KernelInterface $kernel)
+    public function __construct(\Twig_Environment $env, ZikulaHttpKernelInterface $kernel)
     {
         $this->traverser = new \Twig_NodeTraverser($env, [$this]);
         $this->kernel = $kernel;

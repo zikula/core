@@ -11,6 +11,7 @@
 
 namespace Zikula\SettingsModule;
 
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use ZLanguage;
@@ -45,9 +46,9 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('funtext', '1');
         $this->setSystemVar('reportlevel', '0');
         $this->setSystemVar('startpage', '');
-        $this->setSystemVar('Version_Num', \ZikulaKernel::VERSION);
+        $this->setSystemVar('Version_Num', ZikulaKernel::VERSION);
         $this->setSystemVar('Version_ID', \Zikula_Core::VERSION_ID); // @deprecated
-        $this->setSystemVar('Version_Sub', \ZikulaKernel::VERSION_SUB);
+        $this->setSystemVar('Version_Sub', ZikulaKernel::VERSION_SUB);
         $this->setSystemVar('debug_sql', '0');
         $this->setSystemVar('multilingual', '1');
         $this->setSystemVar('useflags', '0');

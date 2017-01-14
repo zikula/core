@@ -20,20 +20,20 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\PageLockModule\Api\LockingApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
-use Zikula\UsersModule\Api\CurrentUserApi;
 use Zikula\RoutesModule\Entity\Factory\RoutesFactory;
 use Zikula\RoutesModule\Helper\ControllerHelper;
 use Zikula\RoutesModule\Helper\ModelHelper;
 use Zikula\RoutesModule\Helper\SelectionHelper;
 use Zikula\RoutesModule\Helper\WorkflowHelper;
+use Zikula\UsersModule\Api\CurrentUserApi;
 
 /**
  * This handler class handles the page events of editing forms.
@@ -128,7 +128,7 @@ abstract class AbstractEditHandler
     protected $hasPageLockSupport = false;
 
     /**
-     * @var KernelInterface
+     * @var ZikulaHttpKernelInterface
      */
     protected $kernel;
 
@@ -215,22 +215,22 @@ abstract class AbstractEditHandler
     /**
      * EditHandler constructor.
      *
-     * @param KernelInterface      $kernel           Kernel service instance
-     * @param TranslatorInterface  $translator       Translator service instance
-     * @param FormFactoryInterface $formFactory      FormFactory service instance
-     * @param RequestStack         $requestStack     RequestStack service instance
-     * @param RouterInterface      $router           Router service instance
-     * @param LoggerInterface      $logger           Logger service instance
-     * @param PermissionApi        $permissionApi    PermissionApi service instance
-     * @param CurrentUserApi       $currentUserApi   CurrentUserApi service instance
+     * @param ZikulaHttpKernelInterface $kernel Kernel service instance
+     * @param TranslatorInterface $translator Translator service instance
+     * @param FormFactoryInterface $formFactory FormFactory service instance
+     * @param RequestStack $requestStack RequestStack service instance
+     * @param RouterInterface $router Router service instance
+     * @param LoggerInterface $logger Logger service instance
+     * @param PermissionApi $permissionApi PermissionApi service instance
+     * @param CurrentUserApi $currentUserApi CurrentUserApi service instance
      * @param RoutesFactory $entityFactory RoutesFactory service instance
-     * @param ControllerHelper     $controllerHelper ControllerHelper service instance
-     * @param ModelHelper          $modelHelper      ModelHelper service instance
-     * @param SelectionHelper      $selectionHelper  SelectionHelper service instance
-     * @param WorkflowHelper       $workflowHelper   WorkflowHelper service instance
+     * @param ControllerHelper $controllerHelper ControllerHelper service instance
+     * @param ModelHelper $modelHelper ModelHelper service instance
+     * @param SelectionHelper $selectionHelper SelectionHelper service instance
+     * @param WorkflowHelper $workflowHelper WorkflowHelper service instance
      */
     public function __construct(
-        KernelInterface $kernel,
+        ZikulaHttpKernelInterface $kernel,
         TranslatorInterface $translator,
         FormFactoryInterface $formFactory,
         RequestStack $requestStack,
@@ -285,7 +285,7 @@ abstract class AbstractEditHandler
     {
         $this->templateParameters = $templateParameters;
         $this->templateParameters['inlineUsage'] = $this->request->query->getBoolean('raw', false);
-    
+
         // initialise redirect goal
         $this->returnTo = $this->request->query->get('returnTo', null);
         if (null === $this->returnTo) {
@@ -302,28 +302,28 @@ abstract class AbstractEditHandler
         }
         // store current uri for repeated creations
         $this->repeatReturnUrl = $this->request->getSchemeAndHttpHost() . $this->request->getBasePath() . $this->request->getPathInfo();
-    
+
         $this->permissionComponent = 'ZikulaRoutesModule:' . $this->objectTypeCapital . ':';
-    
+
         $this->idFields = $this->selectionHelper->getIdFields($this->objectType);
-    
+
         // retrieve identifier of the object we wish to view
         $this->idValues = $this->controllerHelper->retrieveIdentifier($this->request, [], $this->objectType, $this->idFields);
         $hasIdentifier = $this->controllerHelper->isValidIdentifier($this->idValues);
-    
+
         $entity = null;
         $this->templateParameters['mode'] = $hasIdentifier ? 'edit' : 'create';
-    
+
         if ($this->templateParameters['mode'] == 'edit') {
             if (!$this->permissionApi->hasPermission($this->permissionComponent, $this->createCompositeIdentifier() . '::', ACCESS_EDIT)) {
                 throw new AccessDeniedException();
             }
-    
+
             $entity = $this->initEntityForEditing();
             if (!is_object($entity)) {
                 return false;
             }
-    
+
             if (true === $this->hasPageLockSupport && $this->kernel->isBundle('ZikulaPageLockModule') && null !== $this->lockingApi) {
                 // try to guarantee that only one person at a time can be editing this entity
                 $lockName = 'ZikulaRoutesModule' . $this->objectTypeCapital . $this->createCompositeIdentifier();
@@ -333,14 +333,14 @@ abstract class AbstractEditHandler
             if (!$this->permissionApi->hasPermission($this->permissionComponent, '::', ACCESS_EDIT)) {
                 throw new AccessDeniedException();
             }
-    
+
             $entity = $this->initEntityForCreation();
         }
-    
+
         // save entity reference for later reuse
         $this->entityRef = $entity;
-    
-    
+
+
         $actions = $this->workflowHelper->getActionsForObject($entity);
         if (false === $actions || !is_array($actions)) {
             $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Could not determine workflow actions.'));
@@ -348,14 +348,14 @@ abstract class AbstractEditHandler
             $this->logger->error('{app}: User {user} tried to edit the {entity} with id {id}, but failed to determine available workflow actions.', $logArgs);
             throw new \RuntimeException($this->__('Error! Could not determine workflow actions.'));
         }
-    
+
         $this->templateParameters['actions'] = $actions;
-    
+
         $this->form = $this->createForm();
         if (!is_object($this->form)) {
             return false;
         }
-    
+
         // handle form request and check validity constraints of edited entity
         if ($this->form->handleRequest($this->request) && $this->form->isSubmitted()) {
             if ($this->form->isValid()) {
@@ -363,20 +363,20 @@ abstract class AbstractEditHandler
                 if (false === $result) {
                     $this->templateParameters['form'] = $this->form->createView();
                 }
-    
+
                 return $result;
             }
             if ($this->form->get('cancel')->isClicked()) {
                 return new RedirectResponse($this->getRedirectUrl(['commandName' => 'cancel']), 302);
             }
         }
-    
+
         $this->templateParameters['form'] = $this->form->createView();
-    
+
         // everything okay, no initialisation errors occured
         return true;
     }
-    
+
     /**
      * Creates the form type.
      */
@@ -385,7 +385,7 @@ abstract class AbstractEditHandler
         // to be customised in sub classes
         return null;
     }
-    
+
     /**
      * Returns the template parameters.
      *
@@ -395,7 +395,7 @@ abstract class AbstractEditHandler
     {
         return $this->templateParameters;
     }
-    
+
     /**
      * Create concatenated identifier string (for composite keys).
      *
@@ -410,10 +410,10 @@ abstract class AbstractEditHandler
             }
             $itemId .= $this->idValues[$idField];
         }
-    
+
         return $itemId;
     }
-    
+
     /**
      * Initialise existing entity for editing.
      *
@@ -427,12 +427,12 @@ abstract class AbstractEditHandler
         if (null === $entity) {
             throw new NotFoundHttpException($this->__('No such item.'));
         }
-    
+
         $entity->initWorkflow();
-    
+
         return $entity;
     }
-    
+
     /**
      * Initialise new entity for creation.
      *
@@ -445,11 +445,11 @@ abstract class AbstractEditHandler
         $this->hasTemplateId = false;
         $templateId = $this->request->query->get('astemplate', '');
         $entity = null;
-    
+
         if (!empty($templateId)) {
             $templateIdValueParts = explode('_', $templateId);
             $this->hasTemplateId = count($templateIdValueParts) == count($this->idFields);
-    
+
             if (true === $this->hasTemplateId) {
                 $templateIdValues = [];
                 $i = 0;
@@ -465,12 +465,12 @@ abstract class AbstractEditHandler
                 $entity = clone $entityT;
             }
         }
-    
+
         if (null === $entity) {
             $createMethod = 'create' . ucfirst($this->objectType);
             $entity = $this->entityFactory->$createMethod();
         }
-    
+
         return $entity;
     }
 
@@ -482,9 +482,9 @@ abstract class AbstractEditHandler
     protected function getRedirectCodes()
     {
         $codes = [];
-    
+
         // to be filled by subclasses
-    
+
         return $codes;
     }
 
@@ -506,17 +506,17 @@ abstract class AbstractEditHandler
         if ($this->form->get('cancel')->isClicked()) {
             $args['commandName'] = 'cancel';
         }
-    
+
         $action = $args['commandName'];
         $isRegularAction = !in_array($action, ['delete', 'cancel']);
-    
+
         if ($isRegularAction || $action == 'delete') {
             $this->fetchInputData($args);
         }
-    
+
         // get treated entity reference from persisted member var
         $entity = $this->entityRef;
-    
+
         if ($isRegularAction || $action == 'delete') {
             $success = $this->applyAction($args);
             if (!$success) {
@@ -524,15 +524,15 @@ abstract class AbstractEditHandler
                 return false;
             }
         }
-    
+
         if (true === $this->hasPageLockSupport && $this->templateParameters['mode'] == 'edit' && $this->kernel->isBundle('ZikulaPageLockModule') && null !== $this->lockingApi) {
             $lockName = 'ZikulaRoutesModule' . $this->objectTypeCapital . $this->createCompositeIdentifier();
             $this->lockingApi->releaseLock($lockName);
         }
-    
+
         return new RedirectResponse($this->getRedirectUrl($args), 302);
     }
-    
+
     /**
      * Get success or error message for default operations.
      *
@@ -567,10 +567,10 @@ abstract class AbstractEditHandler
                 }
                 break;
         }
-    
+
         return $message;
     }
-    
+
     /**
      * Add success or error message to session.
      *
@@ -585,7 +585,7 @@ abstract class AbstractEditHandler
         if (empty($message)) {
             return;
         }
-    
+
         $flashType = true === $success ? 'status' : 'error';
         $this->request->getSession()->getFlashBag()->add($flashType, $message);
         $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->currentUserApi->get('uname'), 'entity' => $this->objectType, 'id' => $this->entityRef->createCompositeIdentifier()];
@@ -605,15 +605,15 @@ abstract class AbstractEditHandler
     {
         // fetch posted data input values as an associative array
         $formData = $this->form->getData();
-    
+
         if ($this->templateParameters['mode'] == 'create' && isset($this->form['repeatCreation']) && $this->form['repeatCreation']->getData() == 1) {
             $this->repeatCreateAction = true;
         }
-    
+
         if (isset($this->form['additionalNotificationRemarks']) && $this->form['additionalNotificationRemarks']->getData() != '') {
             $this->request->getSession()->set('ZikulaRoutesModuleAdditionalNotificationRemarks', $this->form['additionalNotificationRemarks']->getData());
         }
-    
+
         // return remaining form data
         return $formData;
     }

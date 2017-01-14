@@ -14,8 +14,7 @@ namespace Zikula\ThemeModule\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\KernelInterface;
-use Zikula\Core\AbstractModule;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\Controller\AbstractController;
 
 /**
@@ -23,9 +22,16 @@ use Zikula\Core\Controller\AbstractController;
  */
 class ModuleStylesheetInsertListener implements EventSubscriberInterface
 {
+    /**
+     * @var ZikulaHttpKernelInterface
+     */
     private $kernel;
 
-    public function __construct(KernelInterface $kernel)
+    /**
+     * ModuleStylesheetInsertListener constructor.
+     * @param ZikulaHttpKernelInterface $kernel
+     */
+    public function __construct(ZikulaHttpKernelInterface $kernel)
     {
         $this->kernel = $kernel;
     }
@@ -43,7 +49,6 @@ class ModuleStylesheetInsertListener implements EventSubscriberInterface
         $controller = $event->getController()[0];
         if ($controller instanceof AbstractController) {
             try {
-                /** @var AbstractModule $module */
                 $module = $this->kernel->getModule($controller->getName());
                 $module->addStylesheet();
             } catch (\InvalidArgumentException $e) {

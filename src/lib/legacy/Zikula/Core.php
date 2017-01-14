@@ -39,7 +39,7 @@ class Zikula_Core
     /**
      * The core Zikula version number.
      */
-    const VERSION_NUM = \ZikulaKernel::VERSION;
+    const VERSION_NUM = \Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel::VERSION;
 
     /**
      * The version ID.
@@ -50,17 +50,17 @@ class Zikula_Core
     /**
      * The version sub-ID.
      */
-    const VERSION_SUB = \ZikulaKernel::VERSION_SUB;
+    const VERSION_SUB = \Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel::VERSION_SUB;
 
     /**
      * The minimum required PHP version for this release of core.
      */
-    const PHP_MINIMUM_VERSION = \ZikulaKernel::PHP_MINIMUM_VERSION;
+    const PHP_MINIMUM_VERSION = \Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel::PHP_MINIMUM_VERSION;
 
     /**
      * The parameter name identifying the currently installed version of the core.
      */
-    const CORE_INSTALLED_VERSION_PARAM = \ZikulaKernel::CORE_INSTALLED_VERSION_PARAM;
+    const CORE_INSTALLED_VERSION_PARAM = \Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM;
 
     const STAGE_NONE = 0;
     const STAGE_PRE = 1;

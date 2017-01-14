@@ -29,7 +29,7 @@ use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\AbstractBundle;
 
 /**
@@ -80,7 +80,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
     private $bundles;
 
     /**
-     * @var KernelInterface
+     * @var ZikulaHttpKernelInterface
      */
     private $kernel;
 
@@ -99,9 +99,9 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
     /**
      * ZikulaPhpFileExtractor constructor.
      * @param DocParser $docParser
-     * @param KernelInterface $kernel
+     * @param ZikulaHttpKernelInterface $kernel
      */
-    public function __construct(DocParser $docParser, KernelInterface $kernel)
+    public function __construct(DocParser $docParser, ZikulaHttpKernelInterface $kernel)
     {
         $this->docParser = $docParser;
         $this->kernel = $kernel;

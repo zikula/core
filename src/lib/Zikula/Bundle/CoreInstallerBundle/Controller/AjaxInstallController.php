@@ -18,10 +18,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\Bundle\CoreBundle\Bundle\Bootstrap as CoreBundleBootstrap;
-use Zikula\Core\Event\GenericEvent;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Core\CoreEvents;
+use Zikula\Core\Event\GenericEvent;
+use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\ZAuthConstant;
 
@@ -132,7 +133,7 @@ class AjaxInstallController extends AbstractController
 
     private function categorizeModules()
     {
-        reset(\ZikulaKernel::$coreModules);
+        reset(ZikulaKernel::$coreModules);
         $systemModulesCategories = [
             'ZikulaExtensionsModule' => $this->translator->__('System'),
             'ZikulaPermissionsModule' => $this->translator->__('Users'),
@@ -151,7 +152,7 @@ class AjaxInstallController extends AbstractController
             'ZikulaMenuModule' => $this->translator->__('Content'),
         ];
 
-        foreach (\ZikulaKernel::$coreModules as $systemModule => $bundleClass) {
+        foreach (ZikulaKernel::$coreModules as $systemModule => $bundleClass) {
             $this->setModuleCategory($systemModule, $systemModulesCategories[$systemModule]);
         }
 
@@ -285,7 +286,7 @@ class AjaxInstallController extends AbstractController
         $params = $this->yamlManager->getParameters();
         $params['installed'] = true;
         // set currently installed version into parameters
-        $params[\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM] = \ZikulaKernel::VERSION;
+        $params[ZikulaKernel::CORE_INSTALLED_VERSION_PARAM] = ZikulaKernel::VERSION;
 
         $this->yamlManager->setParameters($params);
         // clear the cache

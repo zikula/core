@@ -15,8 +15,9 @@ use JMS\TranslationBundle\Exception\RuntimeException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 
-class AppKernel extends Kernel
+class AppKernel extends ZikulaKernel
 {
     private $config;
 
@@ -66,5 +67,15 @@ class AppKernel extends Kernel
     public function unserialize($config)
     {
         $this->__construct($config);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \RuntimeException if a custom resource is hidden by a resource in a derived bundle
+     */
+    public function locateResource($name, $dir = null, $first = true)
+    {
+        return Kernel::locateResource($name, $dir, $first);
     }
 }

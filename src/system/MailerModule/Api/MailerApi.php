@@ -18,8 +18,8 @@ use Swift_DependencyContainer;
 use Swift_Mailer;
 use Swift_Message;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Event\GenericEvent;
@@ -37,7 +37,7 @@ class MailerApi
     use TranslatorTrait;
 
     /**
-     * @var KernelInterface
+     * @var ZikulaHttpKernelInterface
      */
     private $kernel;
 
@@ -69,17 +69,17 @@ class MailerApi
     /**
      * MailerApi constructor.
      *
-     * @param bool                     $isInstalled     Installed flag
-     * @param KernelInterface          $kernel          Kernel service instance
-     * @param TranslatorInterface      $translator      Translator service instance
+     * @param bool $isInstalled Installed flag
+     * @param ZikulaHttpKernelInterface $kernel Kernel service instance
+     * @param TranslatorInterface $translator Translator service instance
      * @param EventDispatcherInterface $eventDispatcher EventDispatcher service instance
-     * @param DynamicConfigDumper      $configDumper    Configuration dumper for retrieving SwiftMailer configuration parameters
-     * @param VariableApi              $variableApi     VariableApi service instance
-     * @param Swift_Mailer             $mailer
+     * @param DynamicConfigDumper $configDumper Configuration dumper for retrieving SwiftMailer configuration parameters
+     * @param VariableApi $variableApi VariableApi service instance
+     * @param Swift_Mailer $mailer
      */
     public function __construct(
         $isInstalled,
-        KernelInterface $kernel,
+        ZikulaHttpKernelInterface $kernel,
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         DynamicConfigDumper $configDumper,

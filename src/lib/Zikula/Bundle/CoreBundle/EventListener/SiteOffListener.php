@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
@@ -88,7 +89,7 @@ class SiteOffListener implements EventSubscriberInterface
         $siteOff = (bool)$this->variableApi->getSystemVar('siteoff');
         $hasAdminPerms = $this->permissionApi->hasPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN);
         $currentInstalledVersion = $this->variableApi->getSystemVar('Version_Num');
-        $versionsEqual = (\ZikulaKernel::VERSION == $currentInstalledVersion);
+        $versionsEqual = (ZikulaKernel::VERSION == $currentInstalledVersion);
 
         // Check for site closed
         if (($siteOff || !$versionsEqual) && !$hasAdminPerms) {
