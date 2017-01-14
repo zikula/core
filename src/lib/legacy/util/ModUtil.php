@@ -550,8 +550,7 @@ class ModUtil
         $profileModules = ServiceUtil::get('zikula_users_module.internal.profile_module_collector')->getKeys();
         $return = [];
         $extensionRepo = ServiceUtil::get('zikula_extensions_module.extension_repository');
-        foreach ($profileModules as $module)
-        {
+        foreach ($profileModules as $module) {
             $moduleEntity = $extensionRepo->get($module);
             $return[$moduleEntity->getDisplayname()] = $moduleEntity->getName();
         }
