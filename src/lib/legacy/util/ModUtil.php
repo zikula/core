@@ -539,7 +539,7 @@ class ModUtil
     /**
      * The getProfileMods method gets a list of profile modules.
      *
-     * @deprecated see {@link ModUtil::getModulesCapableOf()}
+     * @deprecated see {container service: zikula_users_module.internal.profile_module_collector}
      *
      * @return array An array of module information arrays
      */
@@ -547,7 +547,15 @@ class ModUtil
     {
         @trigger_error('ModUtil class is deprecated, please use CapabilityApi instead.', E_USER_DEPRECATED);
 
-        return self::getTypeMods('profile');
+        $profileModules = ServiceUtil::get('zikula_users_module.internal.profile_module_collector')->getKeys();
+        $return = [];
+        $extensionRepo = ServiceUtil::get('zikula_extensions_module.extension_repository');
+        foreach ($profileModules as $module) {
+            $moduleEntity = $extensionRepo->get($module);
+            $return[$moduleEntity->getDisplayname()] = $moduleEntity->getName();
+        }
+
+        return $return;
     }
 
     /**

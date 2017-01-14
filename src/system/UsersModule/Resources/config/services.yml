@@ -46,3 +46,6 @@ services:
           - "@zikula_settings_module.locale_api"
         tags:
             - { name: zikula.link_container }
+
+    zikula_users_module.internal.profile_module_collector:
+        class: Zikula\UsersModule\Collector\ProfileModuleCollector

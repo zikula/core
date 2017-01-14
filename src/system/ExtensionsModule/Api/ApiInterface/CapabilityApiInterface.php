@@ -45,12 +45,6 @@ interface CapabilityApiInterface
      */
     const HOOK_SUBSCRIBE_OWN = 'subscribe_own';
     /**
-     * Extension implements required profile methods.
-     * composer.json definition requires version e.g.
-     *     "profile": {"version": "1.0"}
-     */
-    const PROFILE = 'profile';
-    /**
      * Extension implements required messaging methods.
      * composer.json definition requires version e.g.
      *     "message": {"version": "1.0"}
