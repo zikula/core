@@ -344,11 +344,7 @@ class CoreExtension extends \Twig_Extension
             return $user->getUname();
         }
 
-        // @todo replace with ProfileInterface usage
-        $userDisplayName = \ModUtil::apiFunc($profileModule, 'user', 'getUserDisplayName', ['uid' => $user->getUid()]);
-        if (empty($userDisplayName)) {
-            $userDisplayName = $user->getUname();
-        }
+        $userDisplayName = $this->container->get('zikula_users_module.internal.profile_module_collector')->get($profileModule)->getDisplayName($user->getUid());
         $class = !empty($class) ? ' class="' . htmlspecialchars($class, ENT_QUOTES) . '"' : '';
 
         if (!empty($imagePath)) {
@@ -361,8 +357,7 @@ class CoreExtension extends \Twig_Extension
         } else {
             $show = htmlspecialchars($userDisplayName, ENT_QUOTES);
         }
-        // @todo replace with ProfileInterface usage
-        $href = htmlspecialchars(\ModUtil::url($profileModule, 'user', 'view', ['uid' => $userId], null, null, true));
+        $href = $this->container->get('zikula_users_module.internal.profile_module_collector')->get($profileModule)->getProfileUrl($user->getUid());
 
         return '<a' . $class . ' title="' . (__('Profile')) . ': ' . htmlspecialchars($userDisplayName, ENT_QUOTES) . '" href="' . $href . '">' . $show . '</a>';
     }
