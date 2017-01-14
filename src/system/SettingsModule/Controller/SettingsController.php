@@ -36,9 +36,9 @@ class SettingsController extends AbstractController
      * @Theme("admin")
      * @Template
      *
-     * Set locale settings for entire site.
+     * Settings for entire site.
      *
-     * @return Response|RedirectResponse
+     * @return array|RedirectResponse
      */
     public function mainAction(Request $request)
     {
@@ -50,7 +50,7 @@ class SettingsController extends AbstractController
 
         $capabilityApi = $this->get('zikula_extensions_module.api.capability');
         $userModules = $capabilityApi->getExtensionsCapableOf(CapabilityApiInterface::USER);
-        $profileModules = $capabilityApi->getExtensionsCapableOf(CapabilityApiInterface::PROFILE);
+        $profileModules = $this->get('zikula_users_module.internal.profile_module_collector')->getKeys();
         $messageModules = $capabilityApi->getExtensionsCapableOf(CapabilityApiInterface::MESSAGE);
 
         $form = $this->createForm('Zikula\SettingsModule\Form\Type\MainSettingsType',
@@ -90,7 +90,7 @@ class SettingsController extends AbstractController
      *
      * Set locale settings for entire site.
      *
-     * @return Response|RedirectResponse
+     * @return array|RedirectResponse
      */
     public function localeAction(Request $request)
     {
@@ -150,7 +150,7 @@ class SettingsController extends AbstractController
      *
      * Displays the content of {@see phpinfo()}.
      *
-     * @return Response symfony response object
+     * @return array
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
@@ -205,13 +205,17 @@ class SettingsController extends AbstractController
 
     /**
      * Prepare an array of module names and displaynames with choices_as_values
-     * @param ExtensionEntity[] $modules
+     * @param array $modules
      * @return array
      */
     private function formatModuleArrayForSelect(array $modules)
     {
         $return = [];
+        $extensionRepo = $this->get('zikula_extensions_module.extension_repository');
         foreach ($modules as $module) {
+            if (!($module instanceof ExtensionEntity)) {
+                $module = $extensionRepo->get($module);
+            }
             $return[$module->getDisplayname()] = $module->getName();
         }
         ksort($return);

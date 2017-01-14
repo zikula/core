@@ -6,6 +6,7 @@ CHANGELOG - ZIKULA 1.4.x
  - BC Breaks:
     - LocaleApi (introduced in 1.4.4) has been refactored and eliminates access to locale metadata.
     - Removed usage of *.class parameters in all core/system service definitions (#3371).
+    - Removed 'profile' module capability and related code. Use service tags - see docs.
 
  - Deprecated:
     - \StreamReader_*

@@ -596,9 +596,6 @@ class AdminApi extends \Zikula_AbstractApi
 
                     // Get the module version
                     if (!$modversion instanceof Zikula_AbstractVersion) {
-                        if (isset($modversion['profile']) && $modversion['profile']) {
-                            $modversion['capabilities']['profile'] = '1.0';
-                        }
                         if (isset($modversion['message']) && $modversion['message']) {
                             $modversion['capabilities']['message'] = '1.0';
                         }

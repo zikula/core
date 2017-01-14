@@ -51,7 +51,6 @@ Although no extension would implement every capability, here is a full example o
                 "authentication": {"version": "1.0"},
                 "hook_subscriber": {"class": "Acme\\FooModule\\Container\\HookContainer", "subscribe_own": true},
                 "hook_provider": {"class": "Acme\\FooModule\\Container\\HookContainer"},
-                "profile": {"version": "1.0"},
                 "message": {"version": "1.0"},
                 "searchable": {"class": "Acme\\FooModule\\Helper\\SearchHelper"},
                 "categorizable": {"entities": ["Acme\\FooModule\\Entity\\FooEntity", "Acme\\FooModule\\Entity\\BarEntity"]},
