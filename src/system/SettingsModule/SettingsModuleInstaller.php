@@ -81,8 +81,8 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         }
 
         $this->setSystemVar('shorturlsdefaultmodule', '');
-        $this->setSystemVar('profilemodule', ((\ModUtil::available('ZikulaProfileModule')) ? 'ZikulaProfileModule' : ''));
-        $this->setSystemVar('messagemodule', '');
+        $this->setSystemVar(SettingsConstant::SYSTEM_VAR_PROFILE_MODULE, '');
+        $this->setSystemVar(SettingsConstant::SYSTEM_VAR_MESSAGE_MODULE, '');
         $this->setSystemVar('languageurl', 0);
         $this->setSystemVar('ajaxtimeout', 5000);
         //! this is a comma-separated list of special characters to search for in permalinks

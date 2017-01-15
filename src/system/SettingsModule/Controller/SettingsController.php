@@ -50,7 +50,7 @@ class SettingsController extends AbstractController
         $capabilityApi = $this->get('zikula_extensions_module.api.capability');
         $userModules = $capabilityApi->getExtensionsCapableOf(CapabilityApiInterface::USER);
         $profileModules = $this->get('zikula_users_module.internal.profile_module_collector')->getKeys();
-        $messageModules = $capabilityApi->getExtensionsCapableOf(CapabilityApiInterface::MESSAGE);
+        $messageModules = $this->get('zikula_users_module.internal.message_module_collector')->getKeys();
 
         $form = $this->createForm('Zikula\SettingsModule\Form\Type\MainSettingsType',
             $this->getSystemVars(),

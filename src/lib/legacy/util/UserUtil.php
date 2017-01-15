@@ -420,47 +420,11 @@ class UserUtil
 
     /**
      * Retrieve the account recovery information for a user from the various authentication modules.
-     *
-     * @param integer $uid The user id of the user for which account recovery information should be retrieved; optional, defaults to the
-     *                          currently logged in user (an exception occurs if the current user is not logged in)
-     *
-     * @return array An array of account recovery information
-     *
-     * @throws InvalidArgumentException If the $uid parameter is not valid
-     * @throws NotFoundHttpException If the user is not logged in
+     * @deprecated no longer functional
      */
     public static function getUserAccountRecoveryInfo($uid = -1)
     {
         @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
-
-        if (!isset($uid) || !is_numeric($uid) || ((string)((int)$uid) != $uid) || (($uid < -1) || ($uid == 0) || ($uid == 1))) {
-            throw new \InvalidArgumentException('Attempt to get authentication information for an invalid user id.');
-        }
-
-        if ($uid == -1) {
-            if (self::isLoggedIn()) {
-                $uid = self::getVar('uid');
-            } else {
-                throw new NotFoundHttpException('Attempt to get authentication information for an unknown user id.');
-            }
-        }
-
-        $userAuthenticationInfo = [];
-
-        $authenticationModules = ModUtil::getModulesCapableOf(UsersConstant::CAPABILITY_AUTHENTICATION);
-        if ($authenticationModules) {
-            $accountRecoveryArgs = [
-                'uid' => $uid,
-            ];
-            foreach ($authenticationModules as $authenticationModule) {
-                $moduleUserAuthenticationInfo = ModUtil::apiFunc($authenticationModule['name'], 'authentication', 'getAccountRecoveryInfoForUid', $accountRecoveryArgs, 'Zikula_Api_AbstractAuthentication');
-                if (is_array($moduleUserAuthenticationInfo)) {
-                    $userAuthenticationInfo = array_merge($userAuthenticationInfo, $moduleUserAuthenticationInfo);
-                }
-            }
-        }
-
-        return $userAuthenticationInfo;
     }
 
     /**
