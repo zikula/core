@@ -55,8 +55,7 @@ class ExtensionRepository extends EntityRepository implements ExtensionRepositor
 
     public function getIndexedArrayCollection($indexBy)
     {
-        $qb = $this->_em->createQueryBuilder();
-        $qb->select('e')->from($this->_entityName, 'e', "e.$indexBy");
+        $qb = $this->createQueryBuilder('e')->indexBy('e', 'e.' . $indexBy);
 
         return $qb->getQuery()->getArrayResult();
     }

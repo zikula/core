@@ -213,8 +213,10 @@ class BundleSyncHelper
             }
         }
 
-        $legacyModules = LegacyBundleSyncHelper::scanForModules();
-        $bundles = $bundles + $legacyModules;
+        if ($directories != ['system']) {
+            $legacyModules = LegacyBundleSyncHelper::scanForModules();
+            $bundles = $bundles + $legacyModules;
+        }
         $this->validate($bundles);
 
         return $bundles;
@@ -253,7 +255,6 @@ class BundleSyncHelper
 
     /**
      * Sync extensions in the filesystem and the database.
-     *
      * @param array $extensionsFromFile
      * @param bool $forceDefaults
      * @return array $upgradedExtensions[<name>] = <version>

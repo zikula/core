@@ -235,6 +235,7 @@ class AjaxUpgradeController extends AbstractController
         if (version_compare($this->currentVersion, '1.4.5', '>=')) {
             return true;
         }
+        $this->reSyncAndActivateModules();
 
         return true;
     }
@@ -244,6 +245,7 @@ class AjaxUpgradeController extends AbstractController
         if (version_compare($this->currentVersion, '1.4.6', '>=')) {
             return true;
         }
+        $this->reSyncAndActivateModules(); // do this at each version upgrade
 
         return true;
     }
