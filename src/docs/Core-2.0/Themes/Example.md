@@ -48,6 +48,7 @@ class CompanyPaulaTheme extends AbstractCoreTheme
 * the ``theme/Company/Paula/Resources/config/overrides.yml`` needs to be updated for the paths. Otherwise the theme would use the overrides of the original ZikulaBootstrapTheme
 * in ``home.html.twig``, ``master.html.twig`` and ``admin.html.twig`` you have to exchange all ``@ZikulaBoostrapTheme`` with ``@CompanyPaulaTheme``. They are located in ``theme/Company/Paula/Resources/views``
 * same you have to do in ``header.html.twig`` which is located in ``theme/Company/Paula/Resources/views/include``
-* at the end you have to exchange the ``{{ knp_menu_render('ZikulaBootstrapTheme:AdminMenu:menu') }}`` with ``{{ knp_menu_render('CompanyPaulaTheme:AdminMenu:menu') }}``
+* next you have to exchange the ``{{ knp_menu_render('ZikulaBootstrapTheme:AdminMenu:menu') }}`` with ``{{ knp_menu_render('CompanyPaulaTheme:AdminMenu:menu') }}``
+* at the end you have to adjust the bootsrtap css file. It is located inside ``config/theme.yml``. Normally it locks like ``bootstrapPath: themes/BootstrapTheme/Resources/public/css/cerulean.min.css``. It shoul get the right path: ``bootstrapPath: themes/Company/PaulaTheme/Resources/public/css/cerulean.min.css``
 
 Now you should be able to activate your theme.
