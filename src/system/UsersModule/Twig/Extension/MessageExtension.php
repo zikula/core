@@ -101,7 +101,6 @@ class MessageExtension extends \Twig_Extension
         $text = !empty($text) ? htmlspecialchars($text, ENT_QUOTES) : $this->userRepository->find($uid)->getUname();
 
         return '<a' . $class . ' title="' . $this->translator->__('Send a message to this user') . '" href="' . $url . '">' . $text . '</a>';
-
     }
 
     /**
