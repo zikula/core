@@ -10,7 +10,6 @@
  */
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\ZAuthModule\ZAuthConstant;

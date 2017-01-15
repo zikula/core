@@ -11,7 +11,6 @@
 
 namespace Zikula\UsersModule\Twig\Extension;
 
-use Zikula\Bundle\CoreBundle\Twig;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\UsersModule\Collector\MessageModuleCollector;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
