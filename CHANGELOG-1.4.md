@@ -23,6 +23,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Fixed deleting categories for legacy extensions (#3373).
     - Fixed accidentally activated ZikulaPageLockModule on core upgrade (#3355)
     - Fixed wrong join criteria in Groups user api (#3361).
+    - Fixed wrong data transformation in CategoriesType for non-multiple assignments.
 
  - Core-2.0 Features:
     - \Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface created and implemented. Use this for typehinting

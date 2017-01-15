@@ -59,7 +59,12 @@ class CategoriesCollectionTransformer implements DataTransformerInterface
         }
 
         foreach ($value as $categoryEntity) {
-            $data['registry_' . $categoryEntity->getCategoryRegistryId()][] = $categoryEntity->getCategory();
+            $registryKey = 'registry_' . $categoryEntity->getCategoryRegistryId();
+            if ($this->multiple) {
+                $data[$registryKey][] = $categoryEntity->getCategory();
+            } else {
+                $data[$registryKey] = $categoryEntity->getCategory();
+            }
         }
 
         return $data;
