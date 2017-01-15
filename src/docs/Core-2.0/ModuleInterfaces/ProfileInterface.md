@@ -3,7 +3,7 @@ Profile Interface
 
 class:  `\Zikula\UsersModule\ProfileModule\ProfileModuleInterface`
 
-Modules that want the Core to identiy the module as Profile-capable must implement a class which
+Modules that want the Core to identify the module as Profile-capable must implement a class which
 implements this interface and then register that class in the container with the tag `zikula.profile_module`.
 
 Please note the legacy module capability setting in `composer.json` is entirely disabled and will not work.

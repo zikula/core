@@ -7,6 +7,7 @@ CHANGELOG - ZIKULA 1.4.x
     - LocaleApi (introduced in 1.4.4) has been refactored and eliminates access to locale metadata.
     - Removed usage of *.class parameters in all core/system service definitions (#3371).
     - Removed 'profile' module capability and related code. Use service tags - see docs.
+    - Removed 'message' module capability and related code. Use service tags - see docs.
 
  - Deprecated:
     - \StreamReader_*
@@ -23,12 +24,11 @@ CHANGELOG - ZIKULA 1.4.x
     - Fixed accidentally activated ZikulaPageLockModule on core upgrade (#3355)
     - Fixed wrong join criteria in Groups user api (#3361).
 
- - Features:
-    - ?
-
  - Core-2.0 Features:
     - \Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface created and implemented. Use this for typehinting
         the core kernel.
+    - Added \Zikula\UsersModule\MessageModule\MessageModuleInterface for Message module implementation (#3322).
+    - Added \Zikula\UsersModule\ProfileModule\ProfileModuleInterface for Profile module implementation (#3321).
 
  - Vendor updates:
     - doctrine dbal updated from 2.5.5 to 2.5.6

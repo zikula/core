@@ -11,6 +11,11 @@
 
 namespace Zikula\UsersModule\Collector;
 
+use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\SettingsModule\SettingsConstant;
+use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\ProfileModule\IdentityProfileModule;
 use Zikula\UsersModule\ProfileModule\ProfileModuleInterface;
 
 /**
@@ -24,10 +29,34 @@ class ProfileModuleCollector
     private $profileModules = [];
 
     /**
-     * ProfileModuleCollector constructor.
+     * @var UserRepositoryInterface
      */
-    public function __construct()
-    {
+    private $userRepository;
+
+    /**
+     * @var CurrentUserApi
+     */
+    private $currentUserApi;
+
+    /**
+     * @var string
+     */
+    private $currentProfileModuleName;
+
+    /**
+     * ProfileModuleCollector constructor.
+     * @param UserRepositoryInterface $userRepository
+     * @param CurrentUserApi $currentUserApi
+     * @param VariableApi $variableApi
+     */
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        CurrentUserApi $currentUserApi,
+        VariableApi $variableApi
+    ) {
+        $this->userRepository = $userRepository;
+        $this->currentUserApi = $currentUserApi;
+        $this->currentProfileModuleName = $variableApi->getSystemVar(SettingsConstant::SYSTEM_VAR_PROFILE_MODULE, '');
     }
 
     /**
@@ -38,13 +67,13 @@ class ProfileModuleCollector
     public function add($moduleName, ProfileModuleInterface $service)
     {
         if (isset($this->profileModules[$moduleName])) {
-            throw new \InvalidArgumentException('Attempting to register an authentication method with a duplicate alias. (' . $moduleName . ')');
+            throw new \InvalidArgumentException('Attempting to register a profile module with a duplicate module name. (' . $moduleName . ')');
         }
         $this->profileModules[$moduleName] = $service;
     }
 
     /**
-     * Get an ProfileModuleInterface from the collection by moduleName.
+     * Get a ProfileModuleInterface from the collection by moduleName.
      * @param $moduleName
      * @return ProfileModuleInterface|null
      */
@@ -68,5 +97,17 @@ class ProfileModuleCollector
     public function getKeys()
     {
         return array_keys($this->profileModules);
+    }
+
+    /**
+     * @return ProfileModuleInterface
+     */
+    public function getSelected()
+    {
+        if (!empty($this->currentProfileModuleName) && isset($this->profileModules[$this->currentProfileModuleName])) {
+            return $this->profileModules[$this->currentProfileModuleName];
+        } else {
+            return new IdentityProfileModule($this->userRepository, $this->currentUserApi);
+        }
     }
 }

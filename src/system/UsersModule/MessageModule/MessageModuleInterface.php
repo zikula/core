@@ -9,28 +9,38 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersModule\ProfileModule;
+namespace Zikula\UsersModule\MessageModule;
 
 /**
- * Interface ProfileModuleInterface
+ * Interface MessageModuleInterface
  */
-interface ProfileModuleInterface
+interface MessageModuleInterface
 {
     /**
-     * Display a module-defined user display name (e.g. set by the user) or display the uname as defined by the UserModule
+     * Get the url to a uid's inbox.
      * If uid is undefined, use CurrentUserApi to check loggedIn status and obtain and use the current user's uid
      * @param null $uid
      * @return string
      * @throws \InvalidArgumentException if provided $uid is not null and invalid
      */
-    public function getDisplayName($uid = null);
+    public function getInboxUrl($uid = null);
 
     /**
-     * Get the url to a user's profile.
+     * Get the count of all or only unread messages owned by the uid.
+     * If uid is undefined, use CurrentUserApi to check loggedIn status and obtain and use the current user's uid
+     * @param null $uid
+     * @param bool $unreadOnly
+     * @return int
+     * @throws \InvalidArgumentException if provided $uid is not null and invalid
+     */
+    public function getMessageCount($uid = null, $unreadOnly = false);
+
+    /**
+     * Get the url to send a message to the identified uid.
      * If uid is undefined, use CurrentUserApi to check loggedIn status and obtain and use the current user's uid
      * @param null $uid
      * @return string
      * @throws \InvalidArgumentException if provided $uid is not null and invalid
      */
-    public function getProfileUrl($uid = null);
+    public function getSendMessageUrl($uid = null);
 }

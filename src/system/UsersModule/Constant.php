@@ -36,10 +36,6 @@ namespace Zikula\UsersModule
          */
         const AUTHENTICATION_METHOD_ATTRIBUTE_KEY = 'authenticationMethod';
         /**
-         * The identifier for the 'authentication' capability.
-         */
-        const CAPABILITY_AUTHENTICATION = 'authentication';
-        /**
          * Pending registration (not able to log in).
          * Moderation and/or e-mail verification are in use in the registration process, and one or more of the required steps has not yet
          * been completed.

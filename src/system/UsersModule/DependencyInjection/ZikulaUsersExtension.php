@@ -32,5 +32,6 @@ class ZikulaUsersExtension extends Extension
         $loader->load('helpers.yml');
         $loader->load('validators.yml');
         $loader->load('authentication.yml');
+        $loader->load('twig.yml');
     }
 }

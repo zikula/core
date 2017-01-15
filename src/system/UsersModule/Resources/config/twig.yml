@@ -1,0 +1,20 @@
+services:
+    twig.extension.zikula_users_module.profile:
+        class: Zikula\UsersModule\Twig\Extension\ProfileExtension
+        public: false
+        arguments:
+          - "@zikula_users_module.user_repository"
+          - "@zikula_users_module.internal.profile_module_collector"
+          - "@translator.default"
+        tags:
+           - { name: twig.extension }
+
+    twig.extension.zikula_users_module.message:
+        class: Zikula\UsersModule\Twig\Extension\MessageExtension
+        public: false
+        arguments:
+          - "@zikula_users_module.user_repository"
+          - "@zikula_users_module.internal.message_module_collector"
+          - "@translator.default"
+        tags:
+          - { name: twig.extension }
