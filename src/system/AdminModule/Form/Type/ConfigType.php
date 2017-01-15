@@ -50,13 +50,17 @@ class ConfigType extends AbstractType
                 'label' => $translator->__('Modules per page in module categories list'),
                 'empty_data' => 5,
                 'scale' => 0,
-                'attr' => ['max_length' => 3],
+                'attr' => [
+                    'maxlength' => 3
+                ]
             ])
             ->add('modulesperrow', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $translator->__('Modules per row in admin panel'),
                 'empty_data' => 5,
                 'scale' => 0,
-                'attr' => ['max_length' => 3],
+                'attr' => [
+                    'maxlength' => 3
+                ]
             ])
             ->add('admintheme', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Theme to use'),

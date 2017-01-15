@@ -32,7 +32,7 @@ class ConfigType extends AbstractType
                 'label' => $translator->__('Items per page'),
                 'scale' => 0,
                 'attr' => [
-                    'max_length' => 3,
+                    'maxlength' => 3,
                     'min' => 1
                 ]
             ])

@@ -30,7 +30,9 @@ class CreateCategoryType extends AbstractType
         $builder
             ->add('name', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $translator->__('Name'),
-                'attr' => ['max_length' => 50],
+                'attr' => [
+                    'maxlength' => 50
+                ]
             ])
             ->add('description', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
                 'label' => $translator->__('Description'),

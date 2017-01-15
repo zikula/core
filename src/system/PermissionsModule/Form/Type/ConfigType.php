@@ -44,7 +44,9 @@ class ConfigType extends AbstractType
                 'label' => $translator->__('ID of main administration permission rule'),
                 'empty_data' => 1,
                 'scale' => 0,
-                'attr' => ['max_length' => 3],
+                'attr' => [
+                    'maxlength' => 3
+                ]
             ])
             ->add('filter', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $translator->__('Enable filtering of group permissions'),

@@ -37,7 +37,9 @@ class CreateGroupType extends AbstractType
         $builder
             ->add('name', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $translator->__('Name'),
-                'attr' => ['max_length' => 30],
+                'attr' => [
+                    'maxlength' => 30
+                ],
                 'constraints' => [
                     new NotBlank()
                 ]
@@ -58,7 +60,9 @@ class CreateGroupType extends AbstractType
             ])
             ->add('nbumax', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $translator->__('Maximum membership'),
-                'attr' => ['max_length' => 10],
+                'attr' => [
+                    'maxlength' => 10
+                ],
                 'required' => false,
                 'help' => $translator->__('Set as 0 for unlimited.')
             ])
