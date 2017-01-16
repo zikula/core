@@ -16,8 +16,9 @@ use JMS\TranslationBundle\Model\MessageCatalogue;
 use JMS\TranslationBundle\Translation\Extractor\FileVisitorInterface;
 use JMS\TranslationBundle\Translation\FileSourceFactory;
 use Zikula\Bundle\CoreBundle\Translation\ZikulaJsFileExtractor;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class JsFileExtractorTest extends \PHPUnit_Framework_TestCase
+class JsFileExtractorTest extends KernelTestCase
 {
     public function testExtractController()
     {
@@ -60,7 +61,26 @@ class JsFileExtractorTest extends \PHPUnit_Framework_TestCase
         $file = new \SplFileInfo($file);
 
         if (null === $extractor) {
-            $extractor = new ZikulaJsFileExtractor();
+            $kernel = $this
+            ->getMockBuilder('\Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel')
+            ->disableOriginalConstructor()
+            ->getMock();
+            $kernel
+            ->method('getBundle')
+            ->will($this->returnCallback(function ($bundleName) {
+                $bundle = $this
+                ->getMockBuilder('Zikula\Core\AbstractBundle')
+                ->disableOriginalConstructor()
+                ->getMock();
+                $bundle
+                ->method('getTranslationDomain')
+                ->willReturn(strtolower($bundleName));
+            
+                return $bundle;
+            }));
+            self::bootKernel();
+            
+            $extractor = new ZikulaJsFileExtractor($kernel);
         }
 
         $catalogue = new MessageCatalogue();
@@ -74,3 +94,4 @@ class JsFileExtractorTest extends \PHPUnit_Framework_TestCase
         return new FileSourceFactory('/');
     }
 }
+
