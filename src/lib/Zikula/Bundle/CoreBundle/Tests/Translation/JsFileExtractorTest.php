@@ -17,6 +17,7 @@ use JMS\TranslationBundle\Translation\Extractor\FileVisitorInterface;
 use JMS\TranslationBundle\Translation\FileSourceFactory;
 use Zikula\Bundle\CoreBundle\Translation\ZikulaJsFileExtractor;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Finder\SplFileInfo;
 
 class JsFileExtractorTest extends KernelTestCase
 {
