@@ -58,7 +58,7 @@ class JsFileExtractorTest extends KernelTestCase
         if (!is_file($file = __DIR__ . '/Fixture/' . $file)) {
             throw new \RuntimeException(sprintf('The file "%s" does not exist.', $file));
         }
-        $file = new \SplFileInfo($file);
+        $file = new SplFileInfo($file, 'Fixture/', 'Fixture/' . basename($file));
 
         if (null === $extractor) {
             $kernel = $this
