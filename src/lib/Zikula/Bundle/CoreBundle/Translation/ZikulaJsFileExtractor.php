@@ -25,6 +25,16 @@ class ZikulaJsFileExtractor implements FileVisitorInterface
     const PLURAL_CAPTURE_REGEX = '\s?[\'"]([^"\'),]+)[\'"]\s?,\s?[\'"]([^"\'),]+)[\'"]';
     const REGEX_DELIMITER = '/';
 
+    /**
+     * @var KernelInterface
+     */
+    private $kernel;
+    
+    /**
+     * @var array cache of domain names by composerPath
+     */
+    private static $domainCache;
+    
     private $singularFunctions = [
         'trans', // should be replaced by vendor eventually
         'transChoice', // should be replaced by vendor eventually
@@ -37,31 +47,13 @@ class ZikulaJsFileExtractor implements FileVisitorInterface
     ];
     
     /**
-     * @var array
-     */
-    private $bundles;
-    
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
-    
-    /**
-     * @var array cache of domain names by composerPath
-     */
-    private static $domainCache;
-    
-    /**
      * ZikulaJsFileExtractor constructor.
      * @param KernelInterface $kernel
      */
     public function __construct(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
-        $bundles = $kernel->getBundles();
-        foreach ($bundles as $bundle) {
-            $this->bundles[$bundle->getNamespace()] = $bundle->getName();
-        }
+        self::$domainCache = [];
     }
 
     public function visitFile(\SplFileInfo $file, MessageCatalogue $catalogue)
