@@ -17,7 +17,7 @@ use JMS\TranslationBundle\Model\MessageCatalogue;
 use JMS\TranslationBundle\Translation\Extractor\FileVisitorInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
-
+use Zikula\Core\AbstractBundle;
 
 class ZikulaJsFileExtractor implements FileVisitorInterface
 {
