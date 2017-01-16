@@ -282,7 +282,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
     private function getBundleFromNodeNamespace($nodeNamespace)
     {
         foreach ($this->bundles as $namespace => $bundleName) {
-            if (false !== strpos($namespace, $nodeNamespace)) {
+            if (false !== strpos($nodeNamespace, $namespace)) {
                 if ($this->kernel->isBundle($bundleName)) {
                     return $this->kernel->getBundle($bundleName);
                 }
