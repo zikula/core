@@ -25,6 +25,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Fixed wrong join criteria in Groups user api (#3361).
     - Fixed wrong data transformation in CategoriesType for non-multiple assignments.
     - Added core module metadata resync on all core version upgrades (#3358, 3387).
+    - Fixed rememberme function on user login (#3290, #3391).
 
  - Core-2.0 Features:
     - \Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface created and implemented. Use this for typehinting
