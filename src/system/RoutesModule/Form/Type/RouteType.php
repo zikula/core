@@ -59,7 +59,7 @@ class RouteType extends AbstractRouteType
             'label' => $this->__('Controller') . ':',
             'empty_data' => '',
             'attr' => [
-                'max_length' => 255,
+                'maxlength' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the controller of the route')
             ],
@@ -71,7 +71,7 @@ class RouteType extends AbstractRouteType
             'label' => $this->__('Action') . ':',
             'empty_data' => '',
             'attr' => [
-                'max_length' => 255,
+                'maxlength' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the action of the route')
             ],
@@ -83,7 +83,7 @@ class RouteType extends AbstractRouteType
             'label' => $this->__('Path') . ':',
             'empty_data' => '',
             'attr' => [
-                'max_length' => 255,
+                'maxlength' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the path of the route')
             ],
@@ -96,7 +96,7 @@ class RouteType extends AbstractRouteType
             'label' => $this->__('Host') . ':',
             'empty_data' => '',
             'attr' => [
-                'max_length' => 255,
+                'maxlength' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the host of the route')
             ],
@@ -108,7 +108,7 @@ class RouteType extends AbstractRouteType
             'label' => $this->__('Condition') . ':',
             'empty_data' => '',
             'attr' => [
-                'max_length' => 255,
+                'maxlength' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the condition of the route')
             ],
@@ -120,7 +120,7 @@ class RouteType extends AbstractRouteType
             'label' => $this->__('Description') . ':',
             'empty_data' => '',
             'attr' => [
-                'max_length' => 255,
+                'maxlength' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the description of the route')
             ],

@@ -30,7 +30,6 @@ class ExtensionStubRepository implements ExtensionRepositoryInterface
                 'name' => 'FooExtension',
                 'capabilities' => [
                     CapabilityApiInterface::ADMIN => ['route' => 'foo_admin_route'],
-                    CapabilityApiInterface::AUTHENTICATION => ['version' => '1.0']
                 ]
             ],
             [

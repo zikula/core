@@ -11,15 +11,16 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Command;
 
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\AjaxUpgraderStage;
-use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
-use Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController;
-use Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\InitStage;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
+use Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController;
+use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
+use Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\AjaxUpgraderStage;
+use Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\InitStage;
 
 class UpgradeCommand extends AbstractCoreInstallerCommand
 {
@@ -61,7 +62,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $currentVersion = $this->getContainer()->getParameter(\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
+        $currentVersion = $this->getContainer()->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
         if (version_compare($currentVersion, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<=')) {
             $output->writeln($this->translator->__f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', ['%1$s' => $currentVersion, '%2$s' => UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
 
@@ -70,7 +71,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
 
         $io = new SymfonyStyle($input, $output);
         $io->title($this->translator->__('Zikula Upgrader Script'));
-        $io->section($this->translator->__f('*** UPGRADING TO ZIKULA CORE %version% ***', ['%version%' => \ZikulaKernel::VERSION]));
+        $io->section($this->translator->__f('*** UPGRADING TO ZIKULA CORE %version% ***', ['%version%' => ZikulaKernel::VERSION]));
         $env = $this->getContainer()->get('kernel')->getEnvironment();
         $io->text($this->translator->__f('Upgrading Zikula in %env% environment.', ['%env%' => $env]));
 

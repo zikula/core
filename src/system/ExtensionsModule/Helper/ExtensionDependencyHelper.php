@@ -11,10 +11,10 @@
 
 namespace Zikula\ExtensionsModule\Helper;
 
-use Symfony\Component\HttpKernel\KernelInterface;
 use vierbergenlars\SemVer\expression;
 use vierbergenlars\SemVer\version;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
@@ -35,7 +35,7 @@ class ExtensionDependencyHelper
     private $extensionEntityRepo;
 
     /**
-     * @var KernelInterface
+     * @var ZikulaHttpKernelInterface
      */
     private $kernel;
 
@@ -49,12 +49,12 @@ class ExtensionDependencyHelper
      *
      * @param ExtensionDependencyRepository $extensionDependencyRepo
      * @param ExtensionRepositoryInterface $extensionEntityRepo
-     * @param KernelInterface $kernel
+     * @param ZikulaHttpKernelInterface $kernel
      */
     public function __construct(
         ExtensionDependencyRepository $extensionDependencyRepo,
         ExtensionRepositoryInterface $extensionEntityRepo,
-        KernelInterface $kernel
+        ZikulaHttpKernelInterface $kernel
     ) {
         $this->extensionDependencyRepo = $extensionDependencyRepo;
         $this->extensionEntityRepo = $extensionEntityRepo;

@@ -13,7 +13,7 @@ namespace Zikula\CategoriesModule\Helper;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\SettingsModule\Api\LocaleApi;
@@ -34,7 +34,7 @@ class CategoryProcessingHelper
     private $entityManager;
 
     /**
-     * @var KernelInterface
+     * @var ZikulaHttpKernelInterface
      */
     private $kernel;
 
@@ -48,13 +48,13 @@ class CategoryProcessingHelper
      *
      * @param TranslatorInterface $translator TranslatorInterface service instance
      * @param EntityManager $entityManager EntityManager service instance
-     * @param KernelInterface $kernel KernelInterface service instance
+     * @param ZikulaHttpKernelInterface $kernel KernelInterface service instance
      * @param LocaleApi $localeApi
      */
     public function __construct(
         TranslatorInterface $translator,
         EntityManager $entityManager,
-        KernelInterface $kernel,
+        ZikulaHttpKernelInterface $kernel,
         LocaleApi $localeApi
     ) {
         $this->translator = $translator;

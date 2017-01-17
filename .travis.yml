@@ -34,6 +34,15 @@ install:
     - php bin/console zikula:install:start -n --database_user=root --database_name=zk_test --password=12345678 --email=admin@example.com --router:request_context:host=localhost -vvv
     - php bin/console zikula:install:finish -vvv
 
+    # drop the install test db
+    - mysql -e 'drop database zk_test'
+    # create an upgrade db for 145
+    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.5''/" app/config/custom_parameters.yml'
+    - mysql -e 'create database zk_test;'
+    - mysql zk_test < ../test_dbs/core145.sql
+    # run the upgrade from the 145 db
+    - php app/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/' -vvv
+
 # We cannot install Apache2 for now, because this requires sudo mode in which composer takes too long to install the depencencies.
 #before_script:
 #    - sudo apt-get update

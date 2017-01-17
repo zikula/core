@@ -12,7 +12,7 @@
 namespace Zikula\ThemeModule\Engine;
 
 use Symfony\Component\Asset\Packages;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
 /**
  * Class Asset
@@ -32,11 +32,22 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class Asset
 {
+    /**
+     * @var ZikulaHttpKernelInterface
+     */
     private $kernel;
 
+    /**
+     * @var Packages
+     */
     private $assetPackages;
 
-    public function __construct(KernelInterface $kernel, Packages $assetPackages)
+    /**
+     * Asset constructor.
+     * @param ZikulaHttpKernelInterface $kernel
+     * @param Packages $assetPackages
+     */
+    public function __construct(ZikulaHttpKernelInterface $kernel, Packages $assetPackages)
     {
         $this->kernel = $kernel;
         $this->assetPackages = $assetPackages;

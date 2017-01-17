@@ -109,7 +109,7 @@ abstract class AbstractRouteType extends AbstractType
             'label' => $this->__('Replaced route name') . ':',
             'empty_data' => '',
             'attr' => [
-                'max_length' => 255,
+                'maxlength' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the replaced route name of the route')
             ],'required' => false,
@@ -118,7 +118,7 @@ abstract class AbstractRouteType extends AbstractType
             'label' => $this->__('Bundle') . ':',
             'empty_data' => '',
             'attr' => [
-                'max_length' => 255,
+                'maxlength' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the bundle of the route')
             ],'required' => true,
@@ -127,7 +127,7 @@ abstract class AbstractRouteType extends AbstractType
             'label' => $this->__('Controller') . ':',
             'empty_data' => '',
             'attr' => [
-                'max_length' => 255,
+                'maxlength' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the controller of the route')
             ],'required' => true,
@@ -136,7 +136,7 @@ abstract class AbstractRouteType extends AbstractType
             'label' => $this->__('Action') . ':',
             'empty_data' => '',
             'attr' => [
-                'max_length' => 255,
+                'maxlength' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the action of the route')
             ],'required' => true,
@@ -145,7 +145,7 @@ abstract class AbstractRouteType extends AbstractType
             'label' => $this->__('Path') . ':',
             'empty_data' => '',
             'attr' => [
-                'max_length' => 255,
+                'maxlength' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the path of the route')
             ],'required' => true,
@@ -154,7 +154,7 @@ abstract class AbstractRouteType extends AbstractType
             'label' => $this->__('Host') . ':',
             'empty_data' => '',
             'attr' => [
-                'max_length' => 255,
+                'maxlength' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the host of the route')
             ],'required' => false,
@@ -215,7 +215,7 @@ abstract class AbstractRouteType extends AbstractType
             'label' => $this->__('Translation prefix') . ':',
             'empty_data' => '',
             'attr' => [
-                'max_length' => 255,
+                'maxlength' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the translation prefix of the route')
             ],'required' => false,
@@ -224,7 +224,7 @@ abstract class AbstractRouteType extends AbstractType
             'label' => $this->__('Condition') . ':',
             'empty_data' => '',
             'attr' => [
-                'max_length' => 255,
+                'maxlength' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the condition of the route')
             ],'required' => false,
@@ -233,7 +233,7 @@ abstract class AbstractRouteType extends AbstractType
             'label' => $this->__('Description') . ':',
             'empty_data' => '',
             'attr' => [
-                'max_length' => 255,
+                'maxlength' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the description of the route')
             ],'required' => false,
@@ -242,18 +242,18 @@ abstract class AbstractRouteType extends AbstractType
             'label' => $this->__('Sort') . ':',
             'empty_data' => '',
             'attr' => [
-                'max_length' => 255,
+                'maxlength' => 255,
                 'class' => ' validate-digits',
                 'title' => $this->__('Enter the sort of the route. Only digits are allowed.')
             ],'required' => false,
-            'max_length' => 11,
+            'maxlength' => 11,
             'scale' => 0
         ]);
         $builder->add('group', TextType::class, [
             'label' => $this->__('Group') . ':',
             'empty_data' => '',
             'attr' => [
-                'max_length' => 255,
+                'maxlength' => 255,
                 'class' => '',
                 'title' => $this->__('Enter the group of the route')
             ],'required' => false,

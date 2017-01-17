@@ -104,7 +104,7 @@ abstract class AbstractAppSettingsType extends AbstractType
                 'data' => isset($this->modVars['routeEntriesPerPage']) ? $this->modVars['routeEntriesPerPage'] : '',
                 'empty_data' => intval('10'),
                 'attr' => [
-                    'max_length' => 255,
+                    'maxlength' => 255,
                     'title' => $this->__('Enter the route entries per page. Only digits are allowed.')
                 ],
                 'scale' => 0

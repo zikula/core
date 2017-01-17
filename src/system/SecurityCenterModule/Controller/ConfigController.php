@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\SecurityCenterModule\Form\Type\ConfigType;
@@ -73,7 +74,7 @@ class ConfigController extends AbstractController
 
                 // if update checks are disabled, reset values to force new update check if re-enabled
                 if ($updateCheck == 0) {
-                    $this->setSystemVar('updateversion', \ZikulaKernel::VERSION);
+                    $this->setSystemVar('updateversion', ZikulaKernel::VERSION);
                     $this->setSystemVar('updatelastchecked', 0);
                 }
 

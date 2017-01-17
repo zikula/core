@@ -12,25 +12,28 @@
 namespace Zikula\Bundle\CoreBundle\Console;
 
 use Symfony\Bundle\FrameworkBundle\Console\Application as BaseApplication;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
 class Application extends BaseApplication
 {
+    /**
+     * @var ZikulaHttpKernelInterface
+     */
     private $kernel;
 
     /**
      * Constructor.
      *
-     * @param KernelInterface $kernel A KernelInterface instance
+     * @param ZikulaHttpKernelInterface $kernel
      */
-    public function __construct(KernelInterface $kernel)
+    public function __construct(ZikulaHttpKernelInterface $kernel)
     {
         parent::__construct($kernel);
 
         $this->kernel = $kernel;
 
         $this->setName('Zikula');
-        $this->setVersion(\ZikulaKernel::VERSION.' - '.$kernel->getName().'/'.$kernel->getEnvironment().($kernel->isDebug() ? '/debug' : ''));
+        $this->setVersion(ZikulaKernel::VERSION.' - '.$kernel->getName().'/'.$kernel->getEnvironment().($kernel->isDebug() ? '/debug' : ''));
     }
 
     protected function registerCommands()
