@@ -39,7 +39,7 @@ class MainController
      * @param ZikulaHttpKernelInterface $kernelInterface
      * @param VariableApi $variableApi
      */
-    public function __construct(ZikulaHttpKernelInterface $kernelInterface, VariableApi $variableApi, LegacyController $legacyController)
+    public function __construct(ZikulaHttpKernelInterface $kernelInterface, VariableApi $variableApi)
     {
         $this->kernel = $kernelInterface;
         $this->variableApi = $variableApi;

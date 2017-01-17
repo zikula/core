@@ -4,6 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
+    "hash": "b000fd955bb596597fc8cd646bdc72c3",
     "content-hash": "94ddece4107bb4e3f111a2eb5bce3b17",
     "packages": [
         {
@@ -71,7 +72,7 @@
             ],
             "description": "Defacto way to enable use of HTML5 sectioning elements in legacy Internet Explorer.",
             "homepage": "http://paulirish.com/2011/the-history-of-the-html5-shiv/",
-            "time": "2015-07-20T20:04:00+00:00"
+            "time": "2015-07-20 20:04:00"
         },
         {
             "name": "afarkas/webshim",
@@ -133,7 +134,7 @@
                 "source": "https://github.com/aFarkas/webshim/tree/1.16.0",
                 "issues": "https://github.com/aFarkas/webshim/issues"
             },
-            "time": "2016-11-13T20:27:50+00:00"
+            "time": "2016-11-13 20:27:50"
         },
         {
             "name": "behat/transliterator",
@@ -173,7 +174,7 @@
                 "slug",
                 "transliterator"
             ],
-            "time": "2015-09-28T16:26:35+00:00"
+            "time": "2015-09-28 16:26:35"
         },
         {
             "name": "bootstrap-plus/bootstrap-jqueryui",
@@ -237,7 +238,7 @@
                 "MIT"
             ],
             "description": "A lightweight and borderless media lightbox extension for bootstrap3. It supports single images, image galleries, videos and iframes.",
-            "time": "2015-08-27T11:23:36+00:00"
+            "time": "2015-08-27 11:23:36"
         },
         {
             "name": "components/bootstrap",
@@ -305,7 +306,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2016-07-26T05:59:20+00:00"
+            "time": "2016-07-26 05:59:20"
         },
         {
             "name": "components/font-awesome",
@@ -340,7 +341,7 @@
                 "OFL-1.1"
             ],
             "description": "The iconic font designed for use with Twitter Bootstrap.",
-            "time": "2016-10-25T10:56:23+00:00"
+            "time": "2016-10-25 10:56:23"
         },
         {
             "name": "components/jquery",
@@ -382,7 +383,7 @@
             ],
             "description": "jQuery JavaScript Library",
             "homepage": "http://jquery.com",
-            "time": "2015-05-08T05:04:47+00:00"
+            "time": "2015-05-08 05:04:47"
         },
         {
             "name": "components/jqueryui",
@@ -467,7 +468,7 @@
                 }
             ],
             "description": "jQuery UI is a curated set of user interface interactions, effects, widgets, and themes built on top of the jQuery JavaScript Library. Whether you're building highly interactive web applications or you just need to add a date picker to a form control, jQuery UI is the perfect choice.",
-            "time": "2016-09-16T05:47:55+00:00"
+            "time": "2016-09-16 05:47:55"
         },
         {
             "name": "composer/installers",
@@ -574,7 +575,7 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2016-08-13T20:53:52+00:00"
+            "time": "2016-08-13 20:53:52"
         },
         {
             "name": "doctrine/annotations",
@@ -642,7 +643,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2015-08-31T12:32:49+00:00"
+            "time": "2015-08-31 12:32:49"
         },
         {
             "name": "doctrine/cache",
@@ -712,7 +713,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2016-10-29T11:16:17+00:00"
+            "time": "2016-10-29 11:16:17"
         },
         {
             "name": "doctrine/collections",
@@ -778,7 +779,7 @@
                 "collections",
                 "iterator"
             ],
-            "time": "2015-04-14T22:21:58+00:00"
+            "time": "2015-04-14 22:21:58"
         },
         {
             "name": "doctrine/common",
@@ -851,20 +852,20 @@
                 "persistence",
                 "spl"
             ],
-            "time": "2016-11-30T16:50:46+00:00"
+            "time": "2016-11-30 16:50:46"
         },
         {
             "name": "doctrine/dbal",
-            "version": "v2.5.6",
+            "version": "v2.5.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "a526d0df58daa8ab6802244bf3227f532e0deb45"
+                "reference": "3a351369582dade60c750e2cef540eb7b568e6b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/a526d0df58daa8ab6802244bf3227f532e0deb45",
-                "reference": "a526d0df58daa8ab6802244bf3227f532e0deb45",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/3a351369582dade60c750e2cef540eb7b568e6b3",
+                "reference": "3a351369582dade60c750e2cef540eb7b568e6b3",
                 "shasum": ""
             },
             "require": {
@@ -922,7 +923,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2016-12-04T05:53:43+00:00"
+            "time": "2017-01-14 21:05:28"
         },
         {
             "name": "doctrine/doctrine-bundle",
@@ -1000,7 +1001,7 @@
                 "orm",
                 "persistence"
             ],
-            "time": "2015-08-31T14:47:06+00:00"
+            "time": "2015-08-31 14:47:06"
         },
         {
             "name": "doctrine/doctrine-cache-bundle",
@@ -1088,7 +1089,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2016-01-26T17:28:51+00:00"
+            "time": "2016-01-26 17:28:51"
         },
         {
             "name": "doctrine/inflector",
@@ -1155,7 +1156,7 @@
                 "singularize",
                 "string"
             ],
-            "time": "2015-11-06T14:35:42+00:00"
+            "time": "2015-11-06 14:35:42"
         },
         {
             "name": "doctrine/instantiator",
@@ -1209,7 +1210,7 @@
                 "constructor",
                 "instantiate"
             ],
-            "time": "2015-06-14T21:17:01+00:00"
+            "time": "2015-06-14 21:17:01"
         },
         {
             "name": "doctrine/lexer",
@@ -1263,7 +1264,7 @@
                 "lexer",
                 "parser"
             ],
-            "time": "2014-09-09T13:34:57+00:00"
+            "time": "2014-09-09 13:34:57"
         },
         {
             "name": "doctrine/orm",
@@ -1339,7 +1340,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2016-12-18T15:42:34+00:00"
+            "time": "2016-12-18 15:42:34"
         },
         {
             "name": "elao/web-profiler-extra-bundle",
@@ -1393,7 +1394,7 @@
                 "extra",
                 "profiler"
             ],
-            "time": "2015-12-21T16:18:05+00:00"
+            "time": "2015-12-21 16:18:05"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -1498,7 +1499,7 @@
                 "javascript",
                 "routing"
             ],
-            "time": "2015-10-28T15:08:39+00:00"
+            "time": "2015-10-28 15:08:39"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -1577,7 +1578,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2016-12-21T13:46:54+00:00"
+            "time": "2016-12-21 13:46:54"
         },
         {
             "name": "imagine/imagine",
@@ -1634,7 +1635,7 @@
                 "image manipulation",
                 "image processing"
             ],
-            "time": "2015-09-19T16:54:05+00:00"
+            "time": "2015-09-19 16:54:05"
         },
         {
             "name": "ircmaxell/random-lib",
@@ -1689,7 +1690,7 @@
                 "random-numbers",
                 "random-strings"
             ],
-            "time": "2016-09-07T15:52:06+00:00"
+            "time": "2016-09-07 15:52:06"
         },
         {
             "name": "ircmaxell/security-lib",
@@ -1735,7 +1736,7 @@
             ],
             "description": "A Base Security Library",
             "homepage": "https://github.com/ircmaxell/SecurityLib",
-            "time": "2015-03-20T14:31:23+00:00"
+            "time": "2015-03-20 14:31:23"
         },
         {
             "name": "jQuery.mmenu",
@@ -1774,7 +1775,7 @@
                 "source": "https://github.com/FrDH/jQuery.mmenu/tree/v5.7.8",
                 "issues": "https://github.com/FrDH/jQuery.mmenu/issues"
             },
-            "time": "2016-11-13T09:41:03+00:00"
+            "time": "2016-11-13 09:41:03"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -1824,7 +1825,7 @@
                 "highlight",
                 "sql"
             ],
-            "time": "2014-01-12T16:20:24+00:00"
+            "time": "2014-01-12 16:20:24"
         },
         {
             "name": "jms/i18n-routing-bundle",
@@ -1880,7 +1881,7 @@
                 "routing",
                 "translation"
             ],
-            "time": "2015-12-01T23:14:47+00:00"
+            "time": "2015-12-01 23:14:47"
         },
         {
             "name": "jms/translation-bundle",
@@ -1950,7 +1951,7 @@
                 "ui",
                 "webinterface"
             ],
-            "time": "2016-08-13T23:17:44+00:00"
+            "time": "2016-08-13 23:17:44"
         },
         {
             "name": "justinrainbow/json-schema",
@@ -2016,7 +2017,7 @@
                 "json",
                 "schema"
             ],
-            "time": "2016-12-22T16:43:46+00:00"
+            "time": "2016-12-22 16:43:46"
         },
         {
             "name": "knplabs/knp-menu",
@@ -2068,7 +2069,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -2082,7 +2083,7 @@
                 "menu",
                 "tree"
             ],
-            "time": "2016-09-22T07:36:19+00:00"
+            "time": "2016-09-22 07:36:19"
         },
         {
             "name": "knplabs/knp-menu-bundle",
@@ -2139,7 +2140,7 @@
             "keywords": [
                 "menu"
             ],
-            "time": "2016-09-22T12:24:40+00:00"
+            "time": "2016-09-22 12:24:40"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -2216,7 +2217,7 @@
                 "compression",
                 "minification"
             ],
-            "time": "2016-11-11T18:43:20+00:00"
+            "time": "2016-11-11 18:43:20"
         },
         {
             "name": "liip/imagine-bundle",
@@ -2298,7 +2299,7 @@
                 "image",
                 "imagine"
             ],
-            "time": "2017-01-08T18:53:27+00:00"
+            "time": "2017-01-08 18:53:27"
         },
         {
             "name": "matthiasnoback/symfony-console-form",
@@ -2354,7 +2355,7 @@
                 "form",
                 "symfony"
             ],
-            "time": "2016-06-18T18:47:26+00:00"
+            "time": "2016-06-18 18:47:26"
         },
         {
             "name": "matthiasnoback/symfony-service-definition-validator",
@@ -2401,7 +2402,7 @@
                 "Symfony2",
                 "dependency injection"
             ],
-            "time": "2016-09-21T14:15:25+00:00"
+            "time": "2016-09-21 14:15:25"
         },
         {
             "name": "michelf/php-markdown",
@@ -2452,7 +2453,7 @@
             "keywords": [
                 "markdown"
             ],
-            "time": "2016-10-29T18:58:20+00:00"
+            "time": "2016-10-29 18:58:20"
         },
         {
             "name": "monolog/monolog",
@@ -2530,7 +2531,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2016-11-26T00:15:39+00:00"
+            "time": "2016-11-26 00:15:39"
         },
         {
             "name": "nikic/php-parser",
@@ -2575,7 +2576,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2015-09-19T14:15:08+00:00"
+            "time": "2015-09-19 14:15:08"
         },
         {
             "name": "oyejorge/less.php",
@@ -2685,7 +2686,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-11-07T23:38:38+00:00"
+            "time": "2016-11-07 23:38:38"
         },
         {
             "name": "phpids/phpids",
@@ -2769,7 +2770,7 @@
                 "psr",
                 "psr-6"
             ],
-            "time": "2016-08-06T20:24:11+00:00"
+            "time": "2016-08-06 20:24:11"
         },
         {
             "name": "psr/log",
@@ -2816,7 +2817,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-10-10T12:19:37+00:00"
+            "time": "2016-10-10 12:19:37"
         },
         {
             "name": "ramsey/array_column",
@@ -2861,7 +2862,7 @@
                 "array_column",
                 "column"
             ],
-            "time": "2015-03-20T22:07:39+00:00"
+            "time": "2015-03-20 22:07:39"
         },
         {
             "name": "robloach/component-installer",
@@ -2909,7 +2910,7 @@
                 }
             ],
             "description": "Allows installation of Components via Composer.",
-            "time": "2015-08-10T12:35:38+00:00"
+            "time": "2015-08-10 12:35:38"
         },
         {
             "name": "sensio/distribution-bundle",
@@ -2961,7 +2962,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2017-01-10T14:58:45+00:00"
+            "time": "2017-01-10 14:58:45"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -3080,7 +3081,7 @@
                 }
             ],
             "description": "This bundle generates code for you",
-            "time": "2016-12-05T16:01:19+00:00"
+            "time": "2016-12-05 16:01:19"
         },
         {
             "name": "sensiolabs/security-checker",
@@ -3124,7 +3125,7 @@
                 }
             ],
             "description": "A security checker for your composer.lock",
-            "time": "2016-09-23T18:09:57+00:00"
+            "time": "2016-09-23 18:09:57"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
@@ -3185,7 +3186,7 @@
                 "translatable",
                 "tree"
             ],
-            "time": "2016-01-26T23:58:32+00:00"
+            "time": "2016-01-26 23:58:32"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -3239,7 +3240,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2016-12-29T10:02:40+00:00"
+            "time": "2016-12-29 10:02:40"
         },
         {
             "name": "symfony/monolog-bundle",
@@ -3299,7 +3300,7 @@
                 "log",
                 "logging"
             ],
-            "time": "2017-01-02T19:04:26+00:00"
+            "time": "2017-01-02 19:04:26"
         },
         {
             "name": "symfony/polyfill-intl-icu",
@@ -3357,7 +3358,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14T01:06:16+00:00"
+            "time": "2016-11-14 01:06:16"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -3416,7 +3417,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14T01:06:16+00:00"
+            "time": "2016-11-14 01:06:16"
         },
         {
             "name": "symfony/polyfill-php56",
@@ -3472,7 +3473,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14T01:06:16+00:00"
+            "time": "2016-11-14 01:06:16"
         },
         {
             "name": "symfony/polyfill-php70",
@@ -3531,7 +3532,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14T01:06:16+00:00"
+            "time": "2016-11-14 01:06:16"
         },
         {
             "name": "symfony/polyfill-util",
@@ -3583,7 +3584,7 @@
                 "polyfill",
                 "shim"
             ],
-            "time": "2016-11-14T01:06:16+00:00"
+            "time": "2016-11-14 01:06:16"
         },
         {
             "name": "symfony/swiftmailer-bundle",
@@ -3642,7 +3643,7 @@
             ],
             "description": "Symfony SwiftmailerBundle",
             "homepage": "http://symfony.com",
-            "time": "2016-12-20T04:44:33+00:00"
+            "time": "2016-12-20 04:44:33"
         },
         {
             "name": "symfony/symfony",
@@ -3784,7 +3785,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-01-12T21:36:55+00:00"
+            "time": "2017-01-12 21:36:55"
         },
         {
             "name": "twig/extensions",
@@ -3836,7 +3837,7 @@
                 "i18n",
                 "text"
             ],
-            "time": "2016-10-25T17:34:14+00:00"
+            "time": "2016-10-25 17:34:14"
         },
         {
             "name": "twig/twig",
@@ -3897,20 +3898,20 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-01-11T19:36:15+00:00"
+            "time": "2017-01-11 19:36:15"
         },
         {
             "name": "twitter/typeahead.js",
-            "version": "v1.1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/corejavascript/typeahead.js.git",
-                "reference": "a47d4b5cea82178ecb3aee80fb63d95465762e44"
+                "reference": "47d46b40cb834d8285ac9328c4b436e5eccf7197"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/corejavascript/typeahead.js/zipball/a47d4b5cea82178ecb3aee80fb63d95465762e44",
-                "reference": "a47d4b5cea82178ecb3aee80fb63d95465762e44",
+                "url": "https://api.github.com/repos/corejavascript/typeahead.js/zipball/47d46b40cb834d8285ac9328c4b436e5eccf7197",
+                "reference": "47d46b40cb834d8285ac9328c4b436e5eccf7197",
                 "shasum": ""
             },
             "type": "library",
@@ -3931,9 +3932,9 @@
             ],
             "support": {
                 "issues": "https://github.com/twitter/typeahead.js/issues",
-                "source": "https://github.com/corejavascript/typeahead.js/tree/v1.1.0"
+                "source": "https://github.com/corejavascript/typeahead.js/tree/master"
             },
-            "time": "2016-12-19T15:11:01+00:00"
+            "time": "2017-01-12 20:05:56"
         },
         {
             "name": "vakata/jstree",
@@ -3990,7 +3991,7 @@
             ],
             "description": "jsTree is jquery plugin, that provides interactive trees.",
             "homepage": "http://jstree.com",
-            "time": "2016-10-31T09:49:21+00:00"
+            "time": "2016-10-31 09:49:21"
         },
         {
             "name": "vierbergenlars/php-semver",
@@ -4042,7 +4043,7 @@
                 "semver",
                 "versioning"
             ],
-            "time": "2015-05-02T19:28:54+00:00"
+            "time": "2015-05-02 19:28:54"
         },
         {
             "name": "willdurand/js-translation-bundle",
@@ -4105,7 +4106,7 @@
                 "symfony",
                 "translation"
             ],
-            "time": "2016-12-16T17:53:16+00:00"
+            "time": "2016-12-16 17:53:16"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
@@ -4145,7 +4146,7 @@
                 }
             ],
             "description": "JSONP callback validator.",
-            "time": "2014-01-20T22:35:06+00:00"
+            "time": "2014-01-20 22:35:06"
         },
         {
             "name": "zikula/bootstrap-bundle",
@@ -4417,12 +4418,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "dc54a72c493ddb424e4534ef29576b4ff0568780"
+                "reference": "95df4ad0a2035da2748dbcdddcf0e0ab53a081df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/dc54a72c493ddb424e4534ef29576b4ff0568780",
-                "reference": "dc54a72c493ddb424e4534ef29576b4ff0568780",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/95df4ad0a2035da2748dbcdddcf0e0ab53a081df",
+                "reference": "95df4ad0a2035da2748dbcdddcf0e0ab53a081df",
                 "shasum": ""
             },
             "require": {
@@ -4477,7 +4478,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2016-12-31 15:11:48"
+            "time": "2017-01-15 09:31:58"
         },
         {
             "name": "zikula/profile-module",
@@ -4485,12 +4486,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "a764e15ce5ce8338cbc9e601c7431699d53987e1"
+                "reference": "e493c86bccddf8de3f0cea267a5bbc26a028c16a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/a764e15ce5ce8338cbc9e601c7431699d53987e1",
-                "reference": "a764e15ce5ce8338cbc9e601c7431699d53987e1",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/e493c86bccddf8de3f0cea267a5bbc26a028c16a",
+                "reference": "e493c86bccddf8de3f0cea267a5bbc26a028c16a",
                 "shasum": ""
             },
             "require": {
@@ -4551,7 +4552,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2016-12-31 14:52:24"
+            "time": "2017-01-15 12:44:04"
         },
         {
             "name": "zikula/wizard",
@@ -4651,7 +4652,7 @@
                 }
             ],
             "description": "This module generates code for you",
-            "time": "2016-12-28T08:22:40+00:00"
+            "time": "2016-12-28 08:22:40"
         }
     ],
     "aliases": [],
