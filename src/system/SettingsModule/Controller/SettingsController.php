@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\SettingsModule\Form\Type\LocaleSettingsType;
