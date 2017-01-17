@@ -41,6 +41,7 @@ CHANGELOG - ZIKULA 1.4.x
     - symfony updated from 2.8.15 to 2.8.16
     - symfony/monolog-bundle updated from 2.7.1 to 2.12.1
     - twig updated from 1.30.0 to 1.31.0
+    - twitter/typeahead.js updated from 1.1.0 to 1.1.1
 
 * 1.4.5 (2017-01-01)
 
