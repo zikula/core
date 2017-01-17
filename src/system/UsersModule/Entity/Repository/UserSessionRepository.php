@@ -85,25 +85,26 @@ class UserSessionRepository extends EntityRepository implements UserSessionRepos
             ->delete();
         switch ($level) {
             case ZikulaSessionStorage::SECURITY_LEVEL_LOW:
-                $qb->where('s.remember = 0')
-                    ->andWhere('s.lastused < :inactive')
-                    ->setParameter('inactive', $inactive);
+                $qb->where($qb->expr()->andX(
+                    $qb->expr()->eq('s.remember', 0),
+                    $qb->expr()->lt('s.lastused', '?1'))
+                )->setParameter(1, $inactive);
                 break;
             case ZikulaSessionStorage::SECURITY_LEVEL_MEDIUM:
-                $qb->where('s.remember = 0')
-                    ->andWhere('s.lastused < :inactive')
-                    ->setParameter('inactive', $inactive)
-                    ->orWhere('s.lastused < :daysOld')
-                    ->setParameter('daysOld', $daysOld)
+                $qb->where(
+                    $qb->expr()->andX(
+                        $qb->expr()->eq('s.remember', 0),
+                        $qb->expr()->lt('s.lastused', '?1'))
+                    )->setParameter(1, $inactive)
+                    ->orWhere($qb->expr()->lt('s.lastused', '?2'))->setParameter(2, $daysOld)
                     ->orWhere($qb->expr()->andX(
                         $qb->expr()->eq('s.uid', 0), // @todo anonymous user id
-                        $qb->expr()->lt('s.lastused', $inactive)
-                    ));
+                        $qb->expr()->lt('s.lastused', '?3')
+                    ))->setParameter(3, $inactive);
                 break;
             case ZikulaSessionStorage::SECURITY_LEVEL_HIGH:
             default:
-                $qb->where('s.lastused < :inactive')
-                    ->setParameter('inactive', $inactive);
+                $qb->where($qb->expr()->lt('s.lastused', '?1'))->setParameter(1, $inactive);
                 break;
         }
         $qb->getQuery()->execute();
@@ -111,4 +112,3 @@ class UserSessionRepository extends EntityRepository implements UserSessionRepos
         return true;
     }
 }
-//Expression of type 'Doctrine\ORM\QueryBuilder' not allowed in this context
