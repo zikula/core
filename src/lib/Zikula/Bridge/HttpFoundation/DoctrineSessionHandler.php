@@ -42,17 +42,20 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
     private $installed;
 
     /**
-     * @param SessionStorageInterface $storage
      * @param UserSessionRepositoryInterface $userSessionRepository
      * @param VariableApi $variableApi
      * @param $installed
      */
-    public function __construct(SessionStorageInterface $storage, UserSessionRepositoryInterface $userSessionRepository, VariableApi $variableApi, $installed)
+    public function __construct(UserSessionRepositoryInterface $userSessionRepository, VariableApi $variableApi, $installed)
     {
-        $this->storage = $storage;
         $this->userSessionRepository = $userSessionRepository;
         $this->variableApi = $variableApi;
         $this->installed = $installed;
+    }
+
+    public function setStorage(SessionStorageInterface $storage)
+    {
+        $this->storage = $storage;
     }
 
     /**
