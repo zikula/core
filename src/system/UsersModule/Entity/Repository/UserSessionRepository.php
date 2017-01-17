@@ -95,12 +95,10 @@ class UserSessionRepository extends EntityRepository implements UserSessionRepos
                     ->setParameter('inactive', $inactive)
                     ->orWhere('s.lastused < :daysOld')
                     ->setParameter('daysOld', $daysOld)
-                    ->orWhere(
-                        $qb->where('s.uid = :anonymous')
-                            ->setParameter('anonymous', 0) // @todo anonymous user id
-                            ->andWhere('s.lastused < :inactive')
-                            ->setParameter('inactive', $inactive)
-                    );
+                    ->orWhere($qb->expr()->andX(
+                        $qb->expr()->eq('s.uid', 0), // @todo anonymous user id
+                        $qb->expr()->lt('s.lastused', $inactive)
+                    ));
                 break;
             case ZikulaSessionStorage::SECURITY_LEVEL_HIGH:
             default:
@@ -113,3 +111,4 @@ class UserSessionRepository extends EntityRepository implements UserSessionRepos
         return true;
     }
 }
+//Expression of type 'Doctrine\ORM\QueryBuilder' not allowed in this context
