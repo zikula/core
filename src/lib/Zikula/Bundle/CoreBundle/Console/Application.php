@@ -13,6 +13,7 @@ namespace Zikula\Bundle\CoreBundle\Console;
 
 use Symfony\Bundle\FrameworkBundle\Console\Application as BaseApplication;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 
 class Application extends BaseApplication
 {
