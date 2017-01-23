@@ -28,7 +28,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Fixed rememberme function on user login (#3290, #3391).
 
  - Core-2.0 Features:
-    - Added coustom template support for moduleLinks() Twig function
+    - Added custom template support for moduleLinks() Twig function
     - \Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface created and implemented. Use this for typehinting
         the core kernel.
     - Added \Zikula\UsersModule\MessageModule\MessageModuleInterface for Message module implementation (#3322).
