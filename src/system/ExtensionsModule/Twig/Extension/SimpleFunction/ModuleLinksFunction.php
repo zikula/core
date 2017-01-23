@@ -45,9 +45,10 @@ class ModuleLinksFunction
      * @param string $itemClass Class for li element of unordered list
      * @param string $first Class for the first element (optional)
      * @param string $last Class for the last element (optional)
+     * @param string $template Template name to use instead of default (optional)
      * @return string
      */
-    public function display($type = 'user', $links = '', $modName = '', $menuId = '', $menuClass = '', $itemClass = '', $first = '', $last = '')
+    public function display($type = 'user', $links = '', $modName = '', $menuId = '', $menuClass = '', $itemClass = '', $first = '', $last = '', $template = '')
     {
         $ref = new ControllerReference('ZikulaExtensionsModule:ExtensionsInterface:links', [
             'type' => $type,
@@ -57,7 +58,8 @@ class ModuleLinksFunction
             'menuclass' => $menuClass,
             'itemclass' => $itemClass,
             'first' => $first,
-            'last' => $last
+            'last' => $last,
+            'template' => $template
         ]);
 
         return $this->handler->render($ref, 'inline', []);
