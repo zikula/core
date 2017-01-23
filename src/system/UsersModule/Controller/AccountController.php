@@ -13,6 +13,7 @@ namespace Zikula\UsersModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -46,7 +47,7 @@ class AccountController extends AbstractController
      * @Route("/change-language")
      * @Template
      * @param Request $request
-     * @return array
+     * @return array|RedirectResponse
      */
     public function changeLanguageAction(Request $request)
     {
@@ -55,13 +56,13 @@ class AccountController extends AbstractController
         }
         $installedLanguages = $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames();
         $form = $this->createFormBuilder()
-            ->add('language', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('locale', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $this->__('Choose language'),
                 'choices' => $installedLanguages,
                 'choices_as_values' => true,
                 'placeholder' => $this->__('Site default'),
                 'required' => false,
-                'data' => $request->getLocale()
+                'data' => $this->get('zikula_users_module.current_user')->get('locale')
             ])
             ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'label' => $this->__('Save'),
@@ -78,13 +79,17 @@ class AccountController extends AbstractController
         if ($form->isSubmitted()) {
             if ($form->get('submit')->isClicked()) {
                 $data = $form->getData();
-                if ($data['language']) {
-                    $request->getSession()->set('language', $data['language']);
-                    $this->addFlash('success', $this->__f('Language changed to %lang', ['%lang' => array_search($data['language'], $installedLanguages[])]));
+                $userEntity = $this->get('zikula_users_module.user_repository')->find($this->get('zikula_users_module.current_user')->get('uid'));
+                if ($data['locale']) {
+                    $request->getSession()->set('_locale', $data['locale']);
+                    $langText = array_search($data['locale'], $installedLanguages);
+                    $this->addFlash('success', $this->__f('Language changed to %lang', ['%lang' => $langText]));
                 } else {
-                    $request->getSession()->remove('language');
+                    $request->getSession()->remove('locale');
                     $this->addFlash('success', $this->__('Language set to site default.'));
                 }
+                $userEntity->setLocale($data['locale']);
+                $this->get('zikula_users_module.user_repository')->persistAndFlush($userEntity);
             }
             if ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));

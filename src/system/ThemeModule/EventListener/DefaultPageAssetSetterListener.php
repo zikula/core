@@ -143,7 +143,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
     {
         return [
             KernelEvents::REQUEST => [
-                ['setDefaultPageAssets', 201]
+                ['setDefaultPageAssets', 1]
             ]
         ];
     }

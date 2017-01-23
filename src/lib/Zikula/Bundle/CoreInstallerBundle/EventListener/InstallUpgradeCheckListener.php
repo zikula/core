@@ -58,7 +58,7 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
         if (!$installed && !$containsDoc && !$containsInstall && !$doNotRedirect) {
             $this->container->get('router')->getContext()->setBaseUrl($request->getBasePath()); // compensate for sub-directory installs
             $url = $this->container->get('router')->generate('install');
-            $this->loadLocales();
+            $this->container->get('zikula_routes_module.multilingual_routing_helper')->reloadMultilingualRoutingSettings();
             $response = new RedirectResponse($url);
             $response->send();
             \System::shutDown();
@@ -67,7 +67,7 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
         if ($requiresUpgrade && !$containsLogin && !$containsDoc && !$containsUpgrade && !$doNotRedirect) {
             $this->container->get('router')->getContext()->setBaseUrl($request->getBasePath()); // compensate for sub-directory installs
             $url = $this->container->get('router')->generate('upgrade');
-            $this->loadLocales();
+            $this->container->get('zikula_routes_module.multilingual_routing_helper')->reloadMultilingualRoutingSettings();
             $response = new RedirectResponse($url);
             $response->send();
             \System::shutDown();
@@ -82,22 +82,5 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
                 ['onCoreInit']
             ],
         ];
-    }
-
-    /**
-     * Load locales from filesystem and setup jms_I18n_routing params
-     */
-    private function loadLocales()
-    {
-        // write locale choice to `config/dynamic/generated.yml`
-        $configDumper = $this->container->get('zikula.dynamic_config_dumper');
-        $config = $configDumper->getConfiguration('jms_i18n_routing');
-        $config['locales'] = $this->container->get('zikula_settings_module.locale_api')->getSupportedLocales();
-        if (!in_array($this->container->getParameter('locale'), $config['locales'])) {
-            $this->container->setParameter('locale', $config['locales'][0]);
-            $config['default_locale'] = $config['locales'][0];
-        }
-        $configDumper->setConfiguration('jms_i18n_routing', $config);
-        $this->container->get('zikula.cache_clearer')->clear('symfony');
     }
 }

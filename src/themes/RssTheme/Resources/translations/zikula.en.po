@@ -4,5 +4,5 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: en\n"
 
-msgid "Links"
-msgstr "Links"
+msgid "Administrator"
+msgstr "Administrator"

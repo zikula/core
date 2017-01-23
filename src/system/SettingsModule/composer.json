@@ -27,7 +27,9 @@
                 "admin": {"route": "zikulasettingsmodule_settings_main"}
             },
             "securityschema": {
-                "ZikulaSettingsModule::": "::"
+                "ZikulaSettingsModule::": "::",
+                "LocaleBlock::": "::",
+                "LocaleBlock::bid": "::bid"
             }
         }
     }

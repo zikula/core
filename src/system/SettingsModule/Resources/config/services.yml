@@ -17,9 +17,16 @@ services:
 
     zikula_settings_module.locale_api:
         class: Zikula\SettingsModule\Api\LocaleApi
+        arguments: ["@kernel"]
 
     zikula_settings_module.listener.localized_variable_listener:
         class: Zikula\SettingsModule\Listener\LocalizedVariableListener
         arguments: ["@zikula_extensions_module.api.variable"]
+        tags:
+            - { name: kernel.event_subscriber }
+
+    zikula_settings_module.locale_listener:
+        class: Zikula\SettingsModule\Listener\LocaleListener
+        arguments: ['%locale%', "@zikula_users_module.current_user"]
         tags:
             - { name: kernel.event_subscriber }
