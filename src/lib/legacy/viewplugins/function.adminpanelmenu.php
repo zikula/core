@@ -34,8 +34,8 @@ function smarty_function_adminpanelmenu($params, Zikula_View $view)
     }
 
     // add required scripts and stylesheets to page
-    PageUtil::addVar('javascript', '@ZikulaAdminModule/Resources/public/js/jQuery.mmenu-5.6.3/dist/js/jquery.mmenu.all.min.js');
-    PageUtil::addVar('stylesheet', '@ZikulaAdminModule/Resources/public/js/jQuery.mmenu-5.6.3/dist/css/jquery.mmenu.all.css');
+    PageUtil::addVar('javascript', 'web/jquery-mmenu/js/jquery.mmenu.all.min.js');
+    PageUtil::addVar('stylesheet', 'web/jquery-mmenu/css/jquery.mmenu.all.css');
     // add override for panel width created from .scss file
     PageUtil::addVar('stylesheet', '@ZikulaAdminModule/Resources/public/css/mmenu-hiddenpanel-customwidth.css');
     // fix for collision between mmenu and bootstrap modals

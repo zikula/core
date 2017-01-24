@@ -13,20 +13,30 @@ namespace Zikula\Composer;
 
 use Composer\Script\Event;
 use Symfony\Component\Filesystem\Filesystem;
+use Sensio\Bundle\DistributionBundle\Composer\ScriptHandler;
 
-/**
- * A class to rewrite RequireJS configuration
- */
-class CopyRequirementsFile
+class CopyRequirementsFile extends ScriptHandler
 {
-    /**
-     * This function generates from the customized bootstrap.less und font-awesome.less a combined css file
-     *
-     * @param string|null Where to dump the generated file
-     */
     public static function copy(Event $event)
     {
+        $options = static::getOptions($event);
+        $appDir = $options['symfony-app-dir'];
         $fs = new Filesystem();
-        $fs->copy(__DIR__.'/../../../vendor/sensio/distribution-bundle/Resources/skeleton/app/SymfonyRequirements.php', __DIR__.'/../../../app/SymfonyRequirements.php');
+        $newDirectoryStructure = static::useNewDirectoryStructure($options);
+
+        if (!$newDirectoryStructure) {
+            // for Core-1.x
+            if (!static::hasDirectory($event, 'symfony-app-dir', $appDir, 'install the requirements files')) {
+                return;
+            }
+            $fs->copy(__DIR__ . '/../../../vendor/sensio/distribution-bundle/Resources/skeleton/app/SymfonyRequirements.php', $appDir . '/SymfonyRequirements.php', true);
+        } else {
+            // for Core-2.x
+            $varDir = $options['symfony-var-dir'];
+            if (!static::hasDirectory($event, 'symfony-var-dir', $varDir, 'install the requirements files')) {
+                return;
+            }
+            $fs->copy(__DIR__ . '/../../../vendor/sensio/distribution-bundle/Resources/skeleton/app/SymfonyRequirements.php', $varDir . '/SymfonyRequirements.php', true);
+        }
     }
 }
