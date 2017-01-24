@@ -16,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Intl\Intl;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 
@@ -77,25 +78,23 @@ class AccountController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
+            $locale = $this->getParameter('locale');
             if ($form->get('submit')->isClicked()) {
                 $data = $form->getData();
+                $locale = !empty($data['locale']) ? $data['locale'] : $locale;
                 $userEntity = $this->get('zikula_users_module.user_repository')->find($this->get('zikula_users_module.current_user')->get('uid'));
-                if ($data['locale']) {
-                    $request->getSession()->set('_locale', $data['locale']);
-                    $langText = array_search($data['locale'], $installedLanguages);
-                    $this->addFlash('success', $this->__f('Language changed to %lang', ['%lang' => $langText]));
-                } else {
-                    $request->getSession()->remove('locale');
-                    $this->addFlash('success', $this->__('Language set to site default.'));
-                }
-                $userEntity->setLocale($data['locale']);
+                $userEntity->setLocale($locale);
                 $this->get('zikula_users_module.user_repository')->persistAndFlush($userEntity);
+                $request->getSession()->set('_locale', $locale);
+                \Locale::setDefault($locale);
+                $langText = Intl::getLanguageBundle()->getLanguageName($locale);
+                $this->addFlash('success', $this->__f('Language changed to %lang', ['%lang' => $langText], null, $locale));
             }
             if ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirectToRoute('zikulausersmodule_account_menu');
+            return $this->redirectToRoute('zikulausersmodule_account_menu', ['_locale' => $locale]);
         }
 
         return [
