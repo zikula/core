@@ -7,7 +7,6 @@
             <legend>{{ __('General settings') }}</legend>
             <input type="hidden" name="mode" value="{{ mode|default('new') }}" />
             <input type="hidden" id="category_parent_id" name="category[parent_id]" value="{{ category.parent_id }}" />
-            {% set catID = category.id %}
             {% if category.id|default %}
                 <input type="hidden" id="category_id" class="form-control" name="category[id]" value="{{ category.id }}" />
             {% endif %}
@@ -57,7 +56,7 @@
                 <label class="col-sm-3 control-label">{{ __('Name') }}<span class="required"></span></label>
                 <div class="col-sm-9">
                     {% for language in languages %}
-                        {% set displayName = category.display_name[language] %}
+                        {% set displayName = category.display_name[language]|default %}
                         <input id="category_display_name_{{ language }}" class="form-control" name="category[display_name][{{ language }}]" value="{{ displayName|e('html_attr') }}" type="text" size="50" maxlength="255" />
                         <em class="help-block" for="category_display_name_{{ language }}">({{ language }})</em>
                     {% endfor %}
@@ -67,7 +66,7 @@
                 <label class="col-sm-3 control-label">{{ __('Description') }}</label>
                 <div class="col-sm-9">
                     {% for language in languages %}
-                        {% set displayDesc = category.display_desc[language] %}
+                        {% set displayDesc = category.display_desc[language]|default %}
                         <textarea id="category_display_desc_{{ language }}" class="form-control" name="category[display_desc][{{ language }}]" rows="4" cols="56">{{ displayDesc }}</textarea>
                         <em class="help-block" for="category_display_desc_{{ language }}">({{ language }})</em>
                     {% endfor %}
