@@ -98,7 +98,10 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         }
 
         // get the settings from user input
-        $settings = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType', $input, $output, ['translator' => $this->translator]);
+        $settings = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType', $input, $output, [
+            'translator' => $this->translator,
+            'choices' => $this->getContainer()->get('zikula_settings_module.locale_api')->getSupportedLocaleNames()
+        ]);
         $data = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\LoginType', $input, $output, ['translator' => $this->translator]);
         foreach ($data as $k => $v) {
             $data[$k] = base64_encode($v); // encode so values are 'safe' for json
@@ -111,6 +114,8 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
             unset($data[$k]);
         }
         $settings = array_merge($settings, $data);
+        $this->printSettings($settings, $io);
+        $io->newLine();
 
         // write the parameters to custom_parameters.yml
         $yamlManager = new YamlDumper($this->getContainer()->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');

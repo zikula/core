@@ -13,6 +13,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Command;
 
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NullSessionHandler;
@@ -151,5 +152,17 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
     {
         parent::setContainer($container);
         $this->translator = $container->get('translator.default');
+    }
+
+    protected function printSettings($givenSettings, SymfonyStyle $io)
+    {
+        $rows = [];
+        foreach ($givenSettings as $name => $givenSetting) {
+            if (isset($this->settings[$name]['password']) && $this->settings[$name]['password']) {
+                $givenSetting = str_repeat("*", strlen($givenSetting));
+            }
+            $rows[] = [$name, $givenSetting];
+        }
+        $io->table([$this->translator->__('Param'), $this->translator->__('Value')], $rows);
     }
 }

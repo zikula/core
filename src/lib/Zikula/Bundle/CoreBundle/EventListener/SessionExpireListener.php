@@ -37,7 +37,6 @@ class SessionExpireListener implements EventSubscriberInterface
         if ($event->getRequest()->hasSession() && $event->getRequest()->getSession()->get('session_expired', false)) {
             // Session has expired, display warning
             $response = new Response("Session expired.", 403);
-            $response->legacy = true;
             $event->setResponse($response);
         }
     }

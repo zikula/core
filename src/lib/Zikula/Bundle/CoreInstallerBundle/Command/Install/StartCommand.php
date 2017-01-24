@@ -131,16 +131,4 @@ class StartCommand extends AbstractCoreInstallerCommand
 
         $io->success($this->translator->__('First stage of installation complete. Run `php app/console zikula:install:finish` to complete the installation.'));
     }
-
-    private function printSettings($givenSettings, SymfonyStyle $io)
-    {
-        $rows = [];
-        foreach ($givenSettings as $name => $givenSetting) {
-            if (isset($this->settings[$name]['password']) && $this->settings[$name]['password']) {
-                $givenSetting = str_repeat("*", strlen($givenSetting));
-            }
-            $rows[] = [$name, $givenSetting];
-        }
-        $io->table([$this->translator->__('Param'), $this->translator->__('Value')], $rows);
-    }
 }

@@ -11,7 +11,7 @@ CHANGELOG - ZIKULA 1.4.x
 
  - Deprecated:
     - \StreamReader_*
-    - all classes in zrc/lib/i18n (e.g. ZGettext, ZLanguage, etc)
+    - all classes in src/lib/i18n (e.g. ZGettext, ZLanguage, etc)
     - \Zikula_Core::VERSION_* constants are replaced by constants in \Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel
         (\Zikula_Core was already deprecated long ago)
     - \Zikula_Core::VERSION_ID will not be continued in Core-2.0
@@ -26,6 +26,8 @@ CHANGELOG - ZIKULA 1.4.x
     - Fixed wrong data transformation in CategoriesType for non-multiple assignments.
     - Added core module metadata resync on all core version upgrades (#3358, 3387).
     - Fixed rememberme function on user login (#3290, #3391).
+    - Changed configuration of jms_i18n_routing to remove use of 'hl' cookie (#3224).
+    - Removed LangBlock and replaced automatically by LocaleBlock (#2684).
 
  - Core-2.0 Features:
     - Added custom template support for moduleLinks() Twig function
@@ -33,10 +35,11 @@ CHANGELOG - ZIKULA 1.4.x
         the core kernel.
     - Added \Zikula\UsersModule\MessageModule\MessageModuleInterface for Message module implementation (#3322).
     - Added \Zikula\UsersModule\ProfileModule\ProfileModuleInterface for Profile module implementation (#3321).
+    - Added composer event handler to manually copy vendor assets to the web-dir.
 
  - Vendor updates:
-    - doctrine dbal updated from 2.5.5 to 2.5.7
-    - liip/imagine-bundle updated from 1.6.0 to 1.7.0
+    - doctrine dbal updated from 2.5.5 to 2.5.9
+    - liip/imagine-bundle updated from 1.6.0 to 1.7.1
     - sensio/distribution-bundle updated from 5.0.16 to 5.0.18
     - sensio/framework-extra-bundle updated from 3.0.18 to 3.0.19
     - symfony updated from 2.8.15 to 2.8.16

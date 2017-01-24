@@ -13,6 +13,7 @@ namespace Zikula\SettingsModule\Api;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Intl\Intl;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
 class LocaleApi
 {
@@ -21,6 +22,20 @@ class LocaleApi
      * @var array
      */
     private $supportedLocales = [];
+
+    /**
+     * @var ZikulaHttpKernelInterface
+     */
+    private $kernel;
+
+    /**
+     * LocaleApi constructor.
+     * @param ZikulaHttpKernelInterface $kernel
+     */
+    public function __construct(ZikulaHttpKernelInterface $kernel)
+    {
+        $this->kernel = $kernel;
+    }
 
     /**
      * Get array of supported locales
@@ -32,9 +47,10 @@ class LocaleApi
         if (empty($this->supportedLocales)) {
             $this->supportedLocales[] = 'en';
             $finder = new Finder();
-            if (is_dir('app/Resources/translations')) {
+            $translationPath = $this->kernel->getRootDir() . '/Resources/translations';
+            if (is_dir($translationPath)) {
                 $files = $finder->files()
-                    ->in(['app/Resources/translations'])
+                    ->in([$translationPath])
                     ->depth(0)
                     ->name('*.po')
                     ->notName('*.template.*');
@@ -79,7 +95,7 @@ class LocaleApi
      */
     public function getBrowserLocale($default = 'en')
     {
-        if (!isset($_SERVER["HTTP_ACCEPT_LANGUAGE"])) {
+        if (!isset($_SERVER["HTTP_ACCEPT_LANGUAGE"]) || php_sapi_name() == "cli") {
             return $default;
         }
         preg_match_all('~([\w-]+)(?:[^,\d]+([\d.]+))?~', strtolower($_SERVER["HTTP_ACCEPT_LANGUAGE"]), $matches, PREG_SET_ORDER);
