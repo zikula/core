@@ -24,7 +24,7 @@ class ZikulaRequirements
     public function runSymfonyChecks($parameters = [])
     {
         try {
-            $path = realpath(__DIR__.'/../../../../../app/SymfonyRequirements.php');
+            $path = realpath(__DIR__.'/../../../../../var/SymfonyRequirements.php');
             require $path;
             $symfonyRequirements = new \SymfonyRequirements();
             $this->addZikulaPathRequirements($symfonyRequirements, $parameters);
