@@ -102,7 +102,7 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
     {
         return [
             KernelEvents::REQUEST => [
-                ['setDefaultPageVars', 201]
+                ['setDefaultPageVars', 1]
             ]
         ];
     }

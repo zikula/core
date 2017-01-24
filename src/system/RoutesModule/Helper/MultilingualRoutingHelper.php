@@ -14,6 +14,8 @@ namespace Zikula\RoutesModule\Helper;
 
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\SettingsModule\Api\LocaleApi;
 
@@ -40,9 +42,19 @@ class MultilingualRoutingHelper
     private $localeApi;
 
     /**
+     * @var ZikulaHttpKernelInterface
+     */
+    private $kernel;
+
+    /**
      * @var string
      */
     private $locale;
+
+    /**
+     * @var bool
+     */
+    private $installed;
 
     /**
      * MultilingualRoutingHelper constructor.
@@ -50,20 +62,26 @@ class MultilingualRoutingHelper
      * @param DynamicConfigDumper $configDumper
      * @param CacheClearer $cacheClearer
      * @param LocaleApi $localeApi
+     * @param ZikulaHttpKernelInterface $kernel
      * @param string $locale
+     * @param bool $installed
      */
     public function __construct(
         VariableApi $variableApi,
         DynamicConfigDumper $configDumper,
         CacheClearer $cacheClearer,
         LocaleApi $localeApi,
-        $locale
+        ZikulaHttpKernelInterface $kernel,
+        $locale,
+        $installed
     ) {
         $this->variableApi = $variableApi;
         $this->configDumper = $configDumper;
         $this->cacheClearer = $cacheClearer;
         $this->localeApi = $localeApi;
+        $this->kernel = $kernel;
         $this->locale = $locale;
+        $this->installed = $installed;
     }
 
     /**
@@ -73,13 +91,27 @@ class MultilingualRoutingHelper
      */
     public function reloadMultilingualRoutingSettings()
     {
-        $defaultLocale = $this->variableApi->getSystemVar('language_i18n', $this->locale);
-        $installedLanguages = $this->localeApi->getSupportedLocales();
-        $isRequiredLangParameter = $this->variableApi->getSystemVar('languageurl', 0);
+        $supportedLocales = $this->localeApi->getSupportedLocales();
 
+        // update the custom_parameters.yml file
+        $defaultLocale = $this->installed ? $this->variableApi->getSystemVar('language_i18n', $this->locale) : $this->locale;
+        if (!in_array($defaultLocale, $supportedLocales)) {
+            // if the current default locale is not available, use the first available.
+            $defaultLocale = array_values($supportedLocales)[0];
+            if ($this->installed) {
+                $this->variableApi->set(VariableApi::CONFIG, 'language_i18n', $defaultLocale);
+                $this->variableApi->set(VariableApi::CONFIG, 'locale', $defaultLocale);
+            }
+        }
+        if ($this->installed) {
+            $yamlManager = new YamlDumper($this->kernel->getRootDir() . '/config');
+            $yamlManager->setParameter('locale', $defaultLocale);
+        }
+
+        $isRequiredLangParameter = $this->installed ? $this->variableApi->getSystemVar('languageurl', 0) : 0;
         $this->configDumper->setConfiguration('jms_i18n_routing', [
             'default_locale' => $defaultLocale,
-            'locales' => $installedLanguages,
+            'locales' => $supportedLocales,
             'strategy' => $isRequiredLangParameter ? 'prefix' : 'prefix_except_default'
         ]);
 

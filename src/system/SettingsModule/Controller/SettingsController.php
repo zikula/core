@@ -17,7 +17,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
@@ -120,11 +119,9 @@ class SettingsController extends AbstractController
                     $this->get('zikula_extensions_module.api.variable')->del(VariableApi::CONFIG, 'language');
                 }
                 $this->setSystemVars($data);
-                // update the custom_parameters.yml file
-                $yamlManager = new YamlDumper($this->get('kernel')->getRootDir() .'/config');
-                $yamlManager->setParameter('locale', $data['language_i18n']);
+                $this->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'locale', $data['language_i18n']); // @todo which variable are we using?
 
-                $this->get('zikularoutesmodule.multilingual_routing_helper')->reloadMultilingualRoutingSettings(); // resets config/dynamic/generated.yml
+                $this->get('zikula_routes_module.multilingual_routing_helper')->reloadMultilingualRoutingSettings(); // resets config/dynamic/generated.yml & custom_parameters.yml
                 $this->addFlash('status', $this->__('Done! Localization configuration updated.'));
             }
             if ($form->get('cancel')->isClicked()) {

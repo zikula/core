@@ -136,7 +136,9 @@ class ExtensionsInterfaceController extends AbstractController
             }
         }
 
-        return $this->render("@ZikulaExtensionsModule/ExtensionsInterface/links.html.twig", [
+        $template = ('' !== $currentRequest->attributes->get('template')) ? $currentRequest->attributes->get('template') : "@ZikulaExtensionsModule/ExtensionsInterface/links.html.twig";
+
+        return $this->render($template, [
             'caller' => $caller,
             'menu_css' => $menu_css,
             'links' => $links,

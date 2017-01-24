@@ -147,7 +147,7 @@ class UserEntity extends EntityAccess
 
     /**
      * The user's chosen locale for i18n purposes, as defined by gettext, POSIX, and the Common Locale Data Repository;
-     * Optional, if blank then the system default locale should be used. [FUTURE USE]
+     * Optional, if blank then the system default locale should be used.
      *
      * @Assert\Type(type="string")
      * @ORM\Column(type="string", length=5)

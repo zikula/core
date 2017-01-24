@@ -20,6 +20,9 @@ When creating a template, variables can be created, modified or retrieved using 
     {{ pageSetVar('title', __('My Custom Page Title')) }}
     {{ pageGetVar('title', 'my default value') }}
 
+Note: do NOT use `pagevars.homepath` for an asset path! The constructed url is **locale** sensitive and will include the
+locale in the path!
+
 themevars
 ---------
 

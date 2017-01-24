@@ -15,8 +15,4 @@ use Zikula\ThemeModule\AbstractTheme;
 
 abstract class AbstractCoreTheme extends AbstractTheme
 {
-    public function getTranslationDomain()
-    {
-        return 'zikula';
-    }
 }
