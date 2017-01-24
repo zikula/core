@@ -19,6 +19,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Entity\UserEntity;
 
 class UserEventListener implements EventSubscriberInterface
 {
@@ -41,6 +42,7 @@ class UserEventListener implements EventSubscriberInterface
     {
         return [
             AccessEvents::LOGOUT_SUCCESS => ['clearUsersNamespace'],
+            AccessEvents::LOGIN_SUCCESS => ['setLocale'],
             KernelEvents::EXCEPTION => ['clearUsersNamespace'],
         ];
     }
@@ -50,6 +52,31 @@ class UserEventListener implements EventSubscriberInterface
         $this->session = $session;
         $this->requestStack = $requestStack;
         $this->router = $router;
+    }
+
+    /**
+     * Set the locale in the session based on previous user selection after successful login
+     * @param GenericEvent $event
+     * @param $eventName
+     */
+    public function setLocale(GenericEvent $event, $eventName)
+    {
+        /** @var UserEntity $userEntity */
+        $userEntity = $event->getSubject();
+        $locale = $userEntity->getLocale();
+        if (!empty($locale)) {
+            $url = $event->getArgument('returnUrl');
+            $request = $this->requestStack->getCurrentRequest();
+            $httpRoot = $request->getSchemeAndHttpHost() . $request->getBaseUrl();
+            if (0 === strpos($url, $httpRoot)) {
+                $url = str_replace($httpRoot, '', $url);
+            }
+            $pathInfo = $this->router->match($url);
+            if ($pathInfo['_route']) {
+                $event->setArgument('returnUrl', $this->router->generate($pathInfo['_route'], ['_locale' => $locale]));
+            }
+            $this->session->set('_locale', $locale);
+        }
     }
 
     /**
