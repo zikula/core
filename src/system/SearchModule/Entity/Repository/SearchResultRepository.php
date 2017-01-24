@@ -100,7 +100,7 @@ class SearchResultRepository extends EntityRepository
     {
         $qb = $this->_em->createQueryBuilder('tbl')
             ->delete('Zikula\SearchModule\Entity\SearchResultEntity', 'tbl')
-            ->where('DATE_ADD(s.found, 1, \'DAY\') < CURRENT_TIMESTAMP()');
+            ->where('DATE_ADD(tbl.found, 1, \'DAY\') < CURRENT_TIMESTAMP()');
 
         if ($sessionId != '') {
             $qb->orWhere('tbl.sesid = :sid')
