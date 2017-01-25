@@ -32,8 +32,11 @@ class TemplateNameExposeListener implements EventSubscriberInterface
     {
         if ($this->env == 'dev') {
             $name = $event->getTemplateName();
-            $name = $name instanceof \Twig_Template ? $name->getTemplateName() : $name;
-            $content = '<!-- ' . $name . ' -->' . $event->getContent() . '<!-- /' . $name . ' -->';
+            if (false !== strpos($name, '.js.')) {
+                $content = '/* ' . $name . ' */' . $event->getContent() . '/* end ' . $name . ' */';
+            } else {
+                $content = '<!-- ' . $name . ' -->' . $event->getContent() . '<!-- /' . $name . ' -->';
+            }
             $event->setContent($content);
         }
     }
