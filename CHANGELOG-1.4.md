@@ -18,6 +18,7 @@ CHANGELOG - ZIKULA 1.4.x
     - \Zikula\Common\I18n\*
 
  - Fixes:
+    - Fixed broken active status in module menu template (#3402).
     - Changed the way ZAuth login/register templates are called to fix #3401
     - Fixed broken categories selector for legacy extensions (#3356).
     - Fixed problems in categories editing (#3372).
