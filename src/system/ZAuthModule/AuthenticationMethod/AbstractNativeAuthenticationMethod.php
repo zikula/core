@@ -101,7 +101,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
      */
     public function getRegistrationTemplateName()
     {
-        return '@ZikulaZAuthModule/Authentication/register.html.twig';
+        return 'ZikulaZAuthModule:Authentication:register.html.twig';
     }
 
     /**
