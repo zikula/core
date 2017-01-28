@@ -39,6 +39,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Added \Zikula\UsersModule\MessageModule\MessageModuleInterface for Message module implementation (#3322).
     - Added \Zikula\UsersModule\ProfileModule\ProfileModuleInterface for Profile module implementation (#3321).
     - Added composer event handler to manually copy vendor assets to the web-dir.
+    - Added `expanded` and `includeGrandChildren` options to `CategoriesType` (#3410).
 
  - Vendor updates:
     - doctrine dbal updated from 2.5.5 to 2.5.9
