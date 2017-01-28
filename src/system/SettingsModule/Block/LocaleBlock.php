@@ -43,7 +43,7 @@ class LocaleBlock extends AbstractBlockHandler
                 $url = $request->getPathInfo();
                 $selectedRoute = $url;
             } else {
-                $url = $this->get('router')->generate($routeInfo['_route'], ['_locale' => $code], UrlGeneratorInterface::ABSOLUTE_URL);
+                $url = $this->get('router')->generate($routeInfo['_route'], $this->filterRouteInfo($routeInfo, $code), UrlGeneratorInterface::ABSOLUTE_URL);
             }
             $localeLinks[$displayName] = $url;
         }
@@ -57,5 +57,19 @@ class LocaleBlock extends AbstractBlockHandler
         return $this->renderView('@ZikulaSettingsModule/Block/localeBlock.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    private function filterRouteInfo(array $routeInfo, $locale)
+    {
+        $params = [];
+        foreach ($routeInfo as $param => $value)
+        {
+            if (0 !== strpos($param, '_')) {
+                $params[$param] = $value;
+            }
+        }
+        $params['_locale'] = $locale;
+
+        return $params;
     }
 }
