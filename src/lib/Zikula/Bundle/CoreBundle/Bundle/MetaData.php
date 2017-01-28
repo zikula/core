@@ -168,7 +168,7 @@ class MetaData implements \ArrayAccess
     public function getDisplayName()
     {
         $this->confirmTranslator();
-        
+
         $display_name = $this->__(/** @Ignore */$this->displayName);
 
         return (empty($display_name)) ? $this->displayName : $display_name;
