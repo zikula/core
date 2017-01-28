@@ -62,8 +62,7 @@ class LocaleBlock extends AbstractBlockHandler
     private function filterRouteInfo(array $routeInfo, $locale)
     {
         $params = [];
-        foreach ($routeInfo as $param => $value)
-        {
+        foreach ($routeInfo as $param => $value) {
             if (0 !== strpos($param, '_')) {
                 $params[$param] = $value;
             }
