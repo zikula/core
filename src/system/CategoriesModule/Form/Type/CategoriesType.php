@@ -100,7 +100,7 @@ class CategoriesType extends AbstractType
                     'required' => $options['required'],
                     'multiple' => $options['multiple'],
                     'expanded' => $options['expanded'],
-                    'class' => 'ZikulaCategoriesModule:CategoryEntity',
+                    'class' => 'Zikula\CategoriesModule\Entity\CategoryEntity',
                     'choice_label' => $choiceLabelClosure,
                     'query_builder' => $queryBuilderClosure
                 ]);
