@@ -27,7 +27,7 @@ use Zikula\CategoriesModule\Tests\Fixtures\CategoryAssignmentEntity;
 
 /**
  * Class CategoriesTypeTest
- * @link http://symfony.com/doc/2.8/form/unit_testing.html
+ * @see http://symfony.com/doc/2.8/form/unit_testing.html
  */
 class CategoriesTypeTest extends TypeTestCase
 {

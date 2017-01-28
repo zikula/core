@@ -141,6 +141,7 @@ class CategoriesCollectionTransformerTest extends \PHPUnit_Framework_TestCase
             'entityCategoryClass' => CategoriesTypeTest::CATEGORY_ASSIGNMENT_ENTITY,
             'multiple' => $multiple
         ];
+
         return new CategoriesCollectionTransformer($options);
     }
 
