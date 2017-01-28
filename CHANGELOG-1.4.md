@@ -18,6 +18,9 @@ CHANGELOG - ZIKULA 1.4.x
     - \Zikula\Common\I18n\*
 
  - Fixes:
+    - Uniform text and icon for user account menu link (#3403).
+    - Fixed broken active status in module menu template (#3402).
+    - Changed the way ZAuth login/register templates are called to fix #3401
     - Fixed broken categories selector for legacy extensions (#3356).
     - Fixed problems in categories editing (#3372).
     - Fixed deleting categories for legacy extensions (#3373).

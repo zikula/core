@@ -14,6 +14,7 @@ namespace Zikula\CategoriesModule\Form\Type;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\CategoriesModule\Api\CategoryRegistryApi;
 use Zikula\CategoriesModule\Form\DataTransformer\CategoriesCollectionTransformer;
@@ -44,10 +45,11 @@ class CategoriesType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (empty($options['entityCategoryClass']) || empty($options['module']) || empty($options['entity'])) {
-            throw new \InvalidArgumentException('empty argument!');
+        foreach (['entityCategoryClass', 'module', 'entity'] as $requiredOptionName) {
+            if (empty($options[$requiredOptionName])) {
+                throw new MissingOptionsException(sprintf('Missing required option: %s', $requiredOptionName));
+            }
         }
-
         $registries = $this->categoryRegistryApi->getModuleCategoryIds($options['module'], $options['entity'], 'id');
 
         foreach ($registries as $registryId => $categoryId) {
@@ -92,6 +94,7 @@ class CategoriesType extends AbstractType
                 'registry_' . $registryId,
                 'Symfony\Bridge\Doctrine\Form\Type\EntityType',
                 [
+                    'em' => $options['em'],
                     'label_attr' => !$options['expanded'] ? ['class' => 'hidden'] : [],
                     'attr' => $options['attr'],
                     'required' => $options['required'],
@@ -128,7 +131,8 @@ class CategoriesType extends AbstractType
             'includeGrandChildren' => false,
             'module' => '',
             'entity' => '',
-            'entityCategoryClass' => ''
+            'entityCategoryClass' => '',
+            'em' => null
         ]);
     }
 }
