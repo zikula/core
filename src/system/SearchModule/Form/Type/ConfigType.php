@@ -53,7 +53,8 @@ class ConfigType extends AbstractType
                 'choices' => $this->getPluginChoices($options['plugins']),
                 'choices_as_values' => true,
                 'expanded' => true,
-                'multiple' => true
+                'multiple' => true,
+                'required' => false
             ])
             ->add('opensearch_enabled', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $translator->__('Enable OpenSearch'),

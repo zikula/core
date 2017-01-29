@@ -12,6 +12,7 @@
 namespace Zikula\SearchModule\Api;
 
 use DataUtil;
+use Doctrine\ORM\EntityManagerInterface;
 use ModUtil;
 use ServiceUtil;
 use SessionUtil;
@@ -75,6 +76,7 @@ class UserApi
 
         $sessionId = session_id();
 
+        /** @var EntityManagerInterface $entityManager */
         $entityManager = ServiceUtil::get('doctrine')->getManager();
         $searchResultRepository = $entityManager->getRepository('ZikulaSearchModule:SearchResultEntity');
 
@@ -85,7 +87,7 @@ class UserApi
             $searchResultRepository->clearOldResults($sessionId);
 
             // get all the search plugins
-            $search_modules = $this->getallplugins();
+            $search_modules = $this->getallplugins([]);
 
             // Ask active modules to find their items and put them into $searchTable for the current user
             // At the same time convert modules list from numeric index to modname index
@@ -118,18 +120,14 @@ class UserApi
                 }
             }
 
-            // Ask 1.4.0+ type modules for search results and persist them
+            // send an *array* of queried words for >1.4.0 modules
+            $words = ($vars['searchtype'] == 'EXACT') ? [trim($vars['q'])] : preg_split('/ /', $vars['q'], -1, PREG_SPLIT_NO_EMPTY);
+
+            // Ask 1.4.0+ type modules for search results and persist them @deprecated remove at Core-2.0
             $searchableModules = ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
             foreach ($searchableModules as $searchableModule) {
                 if (!empty($active) && !isset($active[$searchableModule['name']])) {
                     continue;
-                }
-
-                // send an *array* of queried words to 1.4.0+ type modules
-                if ($vars['searchtype'] == 'EXACT') {
-                    $words = [trim($vars['q'])];
-                } else {
-                    $words = preg_split('/ /', $vars['q'], -1, PREG_SPLIT_NO_EMPTY);
                 }
                 $moduleBundle = ModUtil::getModule($searchableModule['name']);
                 /** @var $searchableInstance AbstractSearchable */
@@ -143,6 +141,19 @@ class UserApi
                     $searchResult = new SearchResultEntity();
                     $searchResult->merge($result);
                     $entityManager->persist($searchResult);
+                }
+                $entityManager->flush();
+            }
+            // get Core-2.0 searchable modules
+            $searchableModules = ServiceUtil::get('zikula_search_module.internal.searchable_module_collector')->getAll();
+            foreach ($searchableModules as $moduleName => $searchableInstance) {
+                if (!empty($active) && !isset($active[$moduleName])) {
+                    continue;
+                }
+                $modvar[$moduleName] = isset($modvar[$moduleName]) ? $modvar[$moduleName] : null;
+                $results = $searchableInstance->getResults($words, $vars['searchtype'], $modvar[$moduleName]);
+                foreach ($results as $result) {
+                    $entityManager->persist($result);
                 }
                 $entityManager->flush();
             }

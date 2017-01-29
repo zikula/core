@@ -17,14 +17,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\AbstractModule;
 
-abstract class AbstractSearchable
+/**
+ * Class AbstractSearchable
+ * @deprecated remove at Core-2.0
+ */
+abstract class AbstractSearchable implements SearchableInterface
 {
     use TranslatorTrait;
 
     const SEARCHABLE = 'searchable';
 
     /**
-     * @var string The module name
+     * @var string the bundle name
      */
     protected $name;
 
@@ -59,8 +63,9 @@ abstract class AbstractSearchable
         $this->container = $container;
         $this->entityManager = $container->get('doctrine')->getManager();
         $this->name = $bundle->getName();
-        $this->view = \Zikula_View::getInstance($this->name);
+        $this->view = \Zikula_View::getInstance($bundle->getName());
         $this->setTranslator($this->container->get('translator.default'));
+        $this->translator->setDomain($bundle->getTranslationDomain());
     }
 
     public function setTranslator($translator)
@@ -69,21 +74,12 @@ abstract class AbstractSearchable
     }
 
     /**
-     * get the UI options for search form
-     *
-     * @param boolean $active if the module should be checked as active
-     * @param array|null $modVars module form vars as previously set
-     * @return string
+     * {@inheritdoc}
      */
     abstract public function getOptions($active, $modVars = null);
 
     /**
-     * Get the search results
-     *
-     * @param array $words array of words to search for
-     * @param string $searchType AND|OR|EXACT
-     * @param array|null $modVars module form vars passed though
-     * @return array
+     * {@inheritdoc}
      */
     abstract public function getResults(array $words, $searchType = 'AND', $modVars = null);
 
@@ -96,7 +92,7 @@ abstract class AbstractSearchable
      * @param string $searchtype AND|OR|EXACT
      * @return null|\Doctrine\ORM\Query\Expr\Composite
      */
-    public function formatWhere(QueryBuilder $qb, array $words, array $fields, $searchtype = 'AND')
+    protected function formatWhere(QueryBuilder $qb, array $words, array $fields, $searchtype = 'AND')
     {
         if (empty($words) || empty($fields)) {
             return null;
@@ -128,7 +124,7 @@ abstract class AbstractSearchable
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getErrors()
     {
@@ -138,7 +134,7 @@ abstract class AbstractSearchable
     /**
      * @return ContainerInterface
      */
-    public function getContainer()
+    protected function getContainer()
     {
         return $this->container;
     }

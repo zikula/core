@@ -76,15 +76,21 @@ class SearchBlock extends AbstractBlockHandler
     public function getFormOptions()
     {
         $searchModules = [];
-        // get all the old type search plugins
+        // get all the old type search plugins @deprecated remove at Core-2.0
         $search_modules = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins');
         foreach ($search_modules as $module) {
             $searchModules[$module['title']] = $module['name'];
         }
-        // get 1.4.0+ type searchable modules and add to array
+        // get 1.4.x type searchable modules and add to array @deprecated remove at Core-2.0
         $searchableModules = ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
         foreach ($searchableModules as $searchableModule) {
             $searchModules[$searchableModule['displayname']] = $searchableModule['name'];
+        }
+        // get Core-2.0 type searchable modules and add to array
+        $searchableModules = $this->get('zikula_search_module.internal.searchable_module_collector')->getAll();
+        foreach (array_keys($searchableModules) as $moduleName) {
+            $displayName = $this->get('kernel')->getModule($moduleName)->getMetaData()->getDisplayName();
+            $searchModules[$displayName] = $moduleName;
         }
         // remove disabled
         foreach ($searchModules as $displayName => $moduleName) {

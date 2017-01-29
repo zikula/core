@@ -55,6 +55,12 @@ class ConfigController extends AbstractController
             $plugins[] = ['title' => $searchableModule['name']];
         }
 
+        // get 1.4.0+ type searchable modules and add to array
+        $searchableModules = $this->get('zikula_search_module.internal.searchable_module_collector')->getAll();
+        foreach (array_keys($searchableModules) as $searchableModuleName) {
+            $plugins[] = ['title' => $searchableModuleName];
+        }
+
         $disabledPlugins = [];
 
         // get the disabled state
