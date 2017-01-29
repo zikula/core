@@ -12,7 +12,6 @@
 namespace Zikula\SearchModule\Block;
 
 use Zikula\BlocksModule\AbstractBlockHandler;
-use Zikula\SearchModule\AbstractSearchable;
 
 /**
  * Block to display a search form
