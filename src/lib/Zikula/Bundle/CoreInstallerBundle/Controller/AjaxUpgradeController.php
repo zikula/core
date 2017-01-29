@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
+use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 
@@ -245,7 +246,15 @@ class AjaxUpgradeController extends AbstractController
         if (version_compare($this->currentVersion, '1.4.6', '>=')) {
             return true;
         }
-        $this->reSyncAndActivateModules(); // do this at each version upgrade
+        // Menu module was introduced in 144 but not installed on upgrade
+        // this does NOT need to be repeated in upgrade from 146->147
+        if (!$this->moduleIsActive('ZikulaMenuModule')) {
+            $this->installModule('ZikulaMenuModule');
+            $this->reSyncAndActivateModules();
+            $this->setModuleCategory('ZikulaMenuModule', $this->translator->__('Content'));
+        } else {
+            $this->reSyncAndActivateModules(); // do this at each version upgrade
+        }
 
         return true;
     }
@@ -319,5 +328,12 @@ class AjaxUpgradeController extends AbstractController
         $this->yamlManager->delParameter('upgrading');
 
         return true;
+    }
+
+    private function moduleIsActive($moduleName)
+    {
+        $moduleEntity = $this->container->get('zikula_extensions_module.extension_repository')->findOneBy(['name' => $moduleName]);
+
+        return isset($moduleEntity) && ExtensionApi::STATE_ACTIVE == $moduleEntity->getState();
     }
 }

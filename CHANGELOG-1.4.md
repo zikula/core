@@ -32,6 +32,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Fixed rememberme function on user login (#3290, #3391).
     - Changed configuration of jms_i18n_routing to remove use of 'hl' cookie (#3224).
     - Removed LangBlock and replaced automatically by LocaleBlock (#2684).
+    - Ensure MenuModule is installed on upgrade (#3416).
 
  - Features:
     - Added custom template support for moduleLinks() Twig function
