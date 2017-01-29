@@ -120,18 +120,14 @@ class UserApi
                 }
             }
 
+            // send an *array* of queried words for >1.4.0 modules
+            $words = ($vars['searchtype'] == 'EXACT') ? [trim($vars['q'])] : preg_split('/ /', $vars['q'], -1, PREG_SPLIT_NO_EMPTY);
+
             // Ask 1.4.0+ type modules for search results and persist them @deprecated remove at Core-2.0
             $searchableModules = ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
             foreach ($searchableModules as $searchableModule) {
                 if (!empty($active) && !isset($active[$searchableModule['name']])) {
                     continue;
-                }
-
-                // send an *array* of queried words to 1.4.0+ type modules
-                if ($vars['searchtype'] == 'EXACT') {
-                    $words = [trim($vars['q'])];
-                } else {
-                    $words = preg_split('/ /', $vars['q'], -1, PREG_SPLIT_NO_EMPTY);
                 }
                 $moduleBundle = ModUtil::getModule($searchableModule['name']);
                 /** @var $searchableInstance AbstractSearchable */
@@ -154,8 +150,6 @@ class UserApi
                 if (!empty($active) && !isset($active[$moduleName])) {
                     continue;
                 }
-                // send an *array* of queried words
-                $words = ($vars['searchtype'] == 'EXACT') ? [trim($vars['q'])] : preg_split('/ /', $vars['q'], -1, PREG_SPLIT_NO_EMPTY);
                 $modvar[$moduleName] = isset($modvar[$moduleName]) ? $modvar[$moduleName] : null;
                 $results = $searchableInstance->getResults($words, $vars['searchtype'], $modvar[$moduleName]);
                 foreach ($results as $result) {
