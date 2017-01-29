@@ -133,10 +133,10 @@ class UserController extends AbstractController
                 $vars['active'][$searchableModule['name']] = 1;
             }
             $moduleBundle = ModUtil::getModule($searchableModule['name']);
-            /** @var $searchableInstance SearchableInterface */
+            /** @var $searchableInstance AbstractSearchable */
             $searchableInstance = new $searchableModule['capabilities']['searchable']['class']($this->get('service_container'), $moduleBundle);
 
-            if (!($searchableInstance instanceof SearchableInterface)) {
+            if (!($searchableInstance instanceof AbstractSearchable)) {
                 continue;
             }
             if ($this->getVar('disable_' . $searchableModule['name'])) {

@@ -44,7 +44,6 @@ abstract class AbstractSearchable implements SearchableInterface
 
     /**
      * @var \Zikula_View
-     * @deprecated remove at Core-2.0
      */
     protected $view;
 
@@ -62,8 +61,8 @@ abstract class AbstractSearchable implements SearchableInterface
     public function __construct(ContainerInterface $container, AbstractModule $bundle)
     {
         $this->container = $container;
-        $this->name = $bundle->getName();
         $this->entityManager = $container->get('doctrine')->getManager();
+        $this->name = $bundle->getName();
         $this->view = \Zikula_View::getInstance($bundle->getName());
         $this->setTranslator($this->container->get('translator.default'));
         $this->translator->setDomain($bundle->getTranslationDomain());

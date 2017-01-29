@@ -135,9 +135,9 @@ class UserApi
                     $words = preg_split('/ /', $vars['q'], -1, PREG_SPLIT_NO_EMPTY);
                 }
                 $moduleBundle = ModUtil::getModule($searchableModule['name']);
-                /** @var $searchableInstance SearchableInterface */
+                /** @var $searchableInstance AbstractSearchable */
                 $searchableInstance = new $searchableModule['capabilities']['searchable']['class'](ServiceUtil::get('service_container'), $moduleBundle);
-                if (!($searchableInstance instanceof SearchableInterface)) {
+                if (!($searchableInstance instanceof AbstractSearchable)) {
                     continue;
                 }
                 $modvar[$searchableModule['name']] = isset($modvar[$searchableModule['name']]) ? $modvar[$searchableModule['name']] : null;
