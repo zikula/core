@@ -13,7 +13,7 @@ namespace Zikula\SearchModule\Block;
 
 use ModUtil;
 use Zikula\BlocksModule\AbstractBlockHandler;
-use Zikula\SearchModule\AbstractSearchable;
+use Zikula\SearchModule\SearchableInterface;
 
 /**
  * Block to display a search form
@@ -82,7 +82,7 @@ class SearchBlock extends AbstractBlockHandler
             $searchModules[$module['title']] = $module['name'];
         }
         // get 1.4.0+ type searchable modules and add to array
-        $searchableModules = ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
+        $searchableModules = ModUtil::getModulesCapableOf(SearchableInterface::SEARCHABLE);
         foreach ($searchableModules as $searchableModule) {
             $searchModules[$searchableModule['displayname']] = $searchableModule['name'];
         }

@@ -1,0 +1,30 @@
+Searchable
+==========
+
+The Api/methodology for the search module has changed again for Core-2.0. All previous methods are deprecated (but still
+fully functional) in favor of a dedicated class that is identified as a DependencyInjection tagged service, like so:
+
+```
+    acme_foo_module.helper.search_helper:
+        class: Acme\FooModule\Helper\SearchHelper
+        arguments:
+          - '@zikula_permissions_module.api.permission'
+          - '@templating.engine.twig'
+          - '@session'
+          - '@acme_foo_module.fooentity_repository'
+        tags:
+            - { name: zikula.searchable_module, bundleName: AcmeFooModule }
+```
+
+The class must implement `Zikula\SearchModule\SearchableInterface` Please see `SearchableInterface` for documentation of
+the required methods.
+
+In Core-2.0 the `getResults()` method **MUST** return an array of `SearchResultEntity`
+
+The **UsersModule** has implemented the new Search method and can be used as a reference.
+
+
+Zikula\SearchModule\AbstractSearchable
+--------------------------------------
+
+Can this still be useful?

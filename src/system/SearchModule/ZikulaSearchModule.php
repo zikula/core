@@ -14,13 +14,22 @@
  */
 
 namespace Zikula\SearchModule {
+
+    use Symfony\Component\DependencyInjection\ContainerBuilder;
     use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
+    use Zikula\SearchModule\DependencyInjection\Compiler\SearchableModuleCollectorPass;
 
     /**
      * Base module definition for the search module.
      */
     class ZikulaSearchModule extends AbstractCoreModule
     {
+        public function build(ContainerBuilder $container)
+        {
+            parent::build($container);
+
+            $container->addCompilerPass(new SearchableModuleCollectorPass());
+        }
     }
 }
 

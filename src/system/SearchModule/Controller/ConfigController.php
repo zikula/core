@@ -17,7 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\SearchModule\AbstractSearchable;
+use Zikula\SearchModule\SearchableInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -50,7 +50,7 @@ class ConfigController extends AbstractController
         $plugins = false === $plugins ? [] : $plugins;
 
         // get 1.4.0+ type searchable modules and add to array
-        $searchableModules = ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
+        $searchableModules = ModUtil::getModulesCapableOf(SearchableInterface::SEARCHABLE);
         foreach ($searchableModules as $searchableModule) {
             $plugins[] = ['title' => $searchableModule['name']];
         }

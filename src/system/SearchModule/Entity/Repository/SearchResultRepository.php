@@ -33,7 +33,7 @@ class SearchResultRepository extends EntityRepository
             ->select('COUNT(tbl.sesid)');
 
         if ($sessionId != '') {
-            $qb->where('s.sesid = :sid')
+            $qb->where('tbl.sesid = :sid')
                ->setParameter('sid', $sessionId);
         }
 
