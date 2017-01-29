@@ -102,53 +102,12 @@ class UserController extends AbstractController
             return $this->forwardRequest($request, 'search', [], $vars);
         }
 
-        // get all the LEGACY (<1.4.0) search plugins @deprecated - remove at Core-2.0
-        $legacySearchModules = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins');
-        $legacySearchModules = false === $legacySearchModules ? [] : $legacySearchModules;
-        // get 1.4.0+ type searchable modules @deprecated - remove at Core-2.0
-        $core14searchableModules = ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
-        // get Core-2.0 searchable modules
         $searchableModules = $this->get('zikula_search_module.internal.searchable_module_collector')->getAll();
-
-        if (count($legacySearchModules) == 0 && count($core14searchableModules) == 0 && count($searchableModules) == 0) {
+        if (count($searchableModules) == 0) {
             return $this->render('@ZikulaSearchModule/User/noplugins.html.twig');
         }
 
         $pluginOptions = [];
-        // LEGACY handling (<1.4.0) @deprecated - remove at Core-2.0
-        foreach ($legacySearchModules as $module) {
-            // if active array is empty, we need to set defaults
-            if ($setActiveDefaults) {
-                $vars['active'][$module['name']] = 1;
-            }
-
-            if (isset($module['title'])) {
-                $pluginOptions[$module['title']] = ModUtil::apiFunc($module['title'], 'search', 'options', $vars);
-            }
-        }
-        // 1.4.x type handling @deprecated - remove at Core-2.0
-        foreach ($core14searchableModules as $searchableModule) {
-            if ($setActiveDefaults) {
-                $vars['active'][$searchableModule['name']] = 1;
-            }
-            $moduleBundle = ModUtil::getModule($searchableModule['name']);
-            /** @var $searchableInstance AbstractSearchable */
-            $searchableInstance = new $searchableModule['capabilities']['searchable']['class']($this->get('service_container'), $moduleBundle);
-
-            if (!($searchableInstance instanceof AbstractSearchable)) {
-                continue;
-            }
-            if ($this->getVar('disable_' . $searchableModule['name'])) {
-                continue;
-            }
-            if (!$this->hasPermission('ZikulaSearchModule::Item', $searchableModule['name'] . '::', ACCESS_READ)) {
-                continue;
-            }
-
-            $active = !isset($vars['active']) || (isset($vars['active'][$searchableModule['name']]) && ($vars['active'][$searchableModule['name']] == 1));
-            $pluginOptions[$searchableModule['name']] = $searchableInstance->getOptions($active, $vars['modvar']);
-        }
-        // Core 2.0 handling
         foreach ($searchableModules as $moduleName => $searchableInstance) {
             if ($setActiveDefaults) {
                 $vars['active'][$moduleName] = 1;
