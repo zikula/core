@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/claviska/jquery-minicolors.git",
-                "reference": "8a0b82ca10052fcaec4a3e6751c23c9af3e157cd"
+                "reference": "53a264de0d44222cbc0522c81936d13072465749"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/claviska/jquery-minicolors/zipball/8a0b82ca10052fcaec4a3e6751c23c9af3e157cd",
-                "reference": "8a0b82ca10052fcaec4a3e6751c23c9af3e157cd",
+                "url": "https://api.github.com/repos/claviska/jquery-minicolors/zipball/53a264de0d44222cbc0522c81936d13072465749",
+                "reference": "53a264de0d44222cbc0522c81936d13072465749",
                 "shasum": ""
             },
             "type": "component",
@@ -40,7 +40,7 @@
             ],
             "description": "jQuery MiniColors Plugin",
             "homepage": "http://www.abeautifulsite.net/",
-            "time": "2016-09-20 05:09:10"
+            "time": "2017-01-15 00:36:13"
         },
         {
             "name": "afarkas/html5shiv",
@@ -890,16 +890,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "v2.5.9",
+            "version": "v2.5.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "0d2f8187d4b4c7b72d8e2acba359e25c36feaf5e"
+                "reference": "fc376f7a61498e18520cd6fa083752a4ca08072b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/0d2f8187d4b4c7b72d8e2acba359e25c36feaf5e",
-                "reference": "0d2f8187d4b4c7b72d8e2acba359e25c36feaf5e",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/fc376f7a61498e18520cd6fa083752a4ca08072b",
+                "reference": "fc376f7a61498e18520cd6fa083752a4ca08072b",
                 "shasum": ""
             },
             "require": {
@@ -957,7 +957,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2017-01-19T13:27:33+00:00"
+            "time": "2017-01-23T23:17:10+00:00"
         },
         {
             "name": "doctrine/doctrine-bundle",
@@ -1516,12 +1516,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "a1c09b09e398687deeb8e309a6305def4b43439b"
+                "reference": "d4a96463efe5d31f52fec0dad6b7871060862dfa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/a1c09b09e398687deeb8e309a6305def4b43439b",
-                "reference": "a1c09b09e398687deeb8e309a6305def4b43439b",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d4a96463efe5d31f52fec0dad6b7871060862dfa",
+                "reference": "d4a96463efe5d31f52fec0dad6b7871060862dfa",
                 "shasum": ""
             },
             "require": {
@@ -1555,7 +1555,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2017-01-13T12:31:37+00:00"
+            "time": "2017-01-19 17:28:40"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",

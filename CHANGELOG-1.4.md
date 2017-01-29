@@ -44,7 +44,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Added \Zikula\SearchModule\SearchableInterface and DI service tag collector to determine a module's searchability (#2996).
 
  - Vendor updates:
-    - doctrine dbal updated from 2.5.5 to 2.5.9
+    - doctrine dbal updated from 2.5.5 to 2.5.10
     - liip/imagine-bundle updated from 1.6.0 to 1.7.1
     - sensio/distribution-bundle updated from 5.0.16 to 5.0.18
     - sensio/framework-extra-bundle updated from 3.0.18 to 3.0.19
