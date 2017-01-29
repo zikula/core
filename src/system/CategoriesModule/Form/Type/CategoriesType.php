@@ -93,7 +93,7 @@ class CategoriesType extends AbstractType
 
             $builder->add(
                 'registry_' . $registryId,
-                'Symfony\Bridge\Doctrine\Form\Type\EntityType',
+                EntityType::class,
                 [
                     'em' => $options['em'],
                     'label_attr' => !$options['expanded'] ? ['class' => 'hidden'] : [],
