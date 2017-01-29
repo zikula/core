@@ -102,19 +102,20 @@ class UserController extends AbstractController
             return $this->forwardRequest($request, 'search', [], $vars);
         }
 
-        // get all the LEGACY (<1.4.0) search plugins
+        // get all the LEGACY (<1.4.0) search plugins @deprecated - remove at Core-2.0
         $legacySearchModules = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins');
         $legacySearchModules = false === $legacySearchModules ? [] : $legacySearchModules;
+        // get 1.4.0+ type searchable modules @deprecated - remove at Core-2.0
+        $core14searchableModules = ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
+        // get Core-2.0 searchable modules
+        $searchableModules = $this->get('zikula_search_module.internal.searchable_module_collector')->getAll();
 
-        // get 1.4.0+ type searchable modules
-        $searchableModules = ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
-
-        if (count($legacySearchModules) == 0 && count($searchableModules) == 0) {
+        if (count($legacySearchModules) == 0 && count($core14searchableModules) == 0 && count($searchableModules) == 0) {
             return $this->render('@ZikulaSearchModule/User/noplugins.html.twig');
         }
 
         $pluginOptions = [];
-        // LEGACY handling (<1.4.0)
+        // LEGACY handling (<1.4.0) @deprecated - remove at Core-2.0
         foreach ($legacySearchModules as $module) {
             // if active array is empty, we need to set defaults
             if ($setActiveDefaults) {
@@ -125,8 +126,8 @@ class UserController extends AbstractController
                 $pluginOptions[$module['title']] = ModUtil::apiFunc($module['title'], 'search', 'options', $vars);
             }
         }
-        // 1.4.0+ type handling
-        foreach ($searchableModules as $searchableModule) {
+        // 1.4.x type handling @deprecated - remove at Core-2.0
+        foreach ($core14searchableModules as $searchableModule) {
             if ($setActiveDefaults) {
                 $vars['active'][$searchableModule['name']] = 1;
             }
@@ -146,6 +147,20 @@ class UserController extends AbstractController
 
             $active = !isset($vars['active']) || (isset($vars['active'][$searchableModule['name']]) && ($vars['active'][$searchableModule['name']] == 1));
             $pluginOptions[$searchableModule['name']] = $searchableInstance->getOptions($active, $vars['modvar']);
+        }
+        // Core 2.0 handling
+        foreach ($searchableModules as $moduleName => $searchableInstance) {
+            if ($setActiveDefaults) {
+                $vars['active'][$moduleName] = 1;
+            }
+            if ($this->getVar('disable_' . $moduleName)) {
+                continue;
+            }
+            if (!$this->hasPermission('ZikulaSearchModule::Item', $moduleName . '::', ACCESS_READ)) {
+                continue;
+            }
+            $active = !isset($vars['active']) || (isset($vars['active'][$moduleName]) && ($vars['active'][$moduleName] == 1));
+            $pluginOptions[$moduleName] = $searchableInstance->getOptions($active, $vars['modvar']);
         }
 
         $templateParameters = array_merge($vars, [

@@ -2,17 +2,33 @@ services:
     zikula_users_module.helper.registration_helper:
         class: Zikula\UsersModule\Helper\RegistrationHelper
         lazy: true
-        arguments: ["@zikula_extensions_module.api.variable", "@zikula_users_module.current_user", "@zikula_users_module.user_repository", "@zikula_groups_module.group_repository", "@event_dispatcher", "@translator.default"]
+        arguments:
+          - "@zikula_extensions_module.api.variable"
+          - "@zikula_users_module.current_user"
+          - "@zikula_users_module.user_repository"
+          - "@zikula_groups_module.group_repository"
+          - "@event_dispatcher"
+          - "@translator.default"
 
     zikula_users_module.helper.mail_helper:
         class: Zikula\UsersModule\Helper\MailHelper
         lazy: true
-        arguments: ["@translator.default", "@twig", "@zikula_extensions_module.api.variable", "@zikula_mailer_module.api.mailer", "@zikula_permissions_module.api.permission", "@zikula_zauth_module.authentication_mapping_repository"]
+        arguments:
+          - "@translator.default"
+          - "@twig"
+          - "@zikula_extensions_module.api.variable"
+          - "@zikula_mailer_module.api.mailer"
+          - "@zikula_permissions_module.api.permission"
+          - "@zikula_zauth_module.authentication_mapping_repository"
 
     zikula_users_module.helper.administration_actions:
         class: Zikula\UsersModule\Helper\AdministrationActionsHelper
         lazy: true
-        arguments: ["@zikula_permissions_module.api.permission", "@jms_i18n_routing.router", "@translator.default", "@zikula_users_module.current_user"]
+        arguments:
+          - "@zikula_permissions_module.api.permission"
+          - "@jms_i18n_routing.router"
+          - "@translator.default"
+          - "@zikula_users_module.current_user"
 
     zikula_users_module.helper.account_links_helper:
         class: Zikula\UsersModule\Helper\AccountLinksHelper
@@ -20,4 +36,19 @@ services:
 
     zikula_users_module.helper.access_helper:
         class: Zikula\UsersModule\Helper\AccessHelper
-        arguments: ["@session", "@zikula_users_module.user_repository", "@zikula_permissions_module.api.permission", "@zikula_extensions_module.api.variable", "@translator.default"]
+        arguments:
+          - "@session"
+          - "@zikula_users_module.user_repository"
+          - "@zikula_permissions_module.api.permission"
+          - "@zikula_extensions_module.api.variable"
+          - "@translator.default"
+
+    zikula_users_module.helper.search_helper:
+        class: Zikula\UsersModule\Helper\SearchHelper
+        arguments:
+          - '@zikula_permissions_module.api.permission'
+          - '@templating.engine.twig'
+          - '@session'
+          - '@zikula_users_module.user_repository'
+        tags:
+            - { name: zikula.searchable_module, bundleName: ZikulaUsersModule }

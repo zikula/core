@@ -56,7 +56,8 @@ class ConfigType extends AbstractType
                 'empty_data' => [],
                 'choices' => $this->getPluginChoices($options['plugins']),
                 'expanded' => true,
-                'multiple' => true
+                'multiple' => true,
+                'required' => false
             ])
             ->add('opensearch_enabled', CheckboxType::class, [
                 'label' => $translator->__('Enable OpenSearch'),

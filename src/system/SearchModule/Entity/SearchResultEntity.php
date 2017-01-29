@@ -278,10 +278,13 @@ class SearchResultEntity
 
     /**
      * @param UrlInterface $url
+     * @return SearchResultEntity
      */
     public function setUrl(UrlInterface $url)
     {
         $this->url = $url;
+
+        return $this;
     }
 
     /**
