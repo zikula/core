@@ -33,6 +33,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Changed configuration of jms_i18n_routing to remove use of 'hl' cookie (#3224).
     - Removed LangBlock and replaced automatically by LocaleBlock (#2684).
     - Ensure MenuModule is installed on upgrade (#3416).
+    - Fixed double-encoding of verification code in registration email (#3393).
 
  - Features:
     - Added custom template support for moduleLinks() Twig function
