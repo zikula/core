@@ -149,8 +149,7 @@ class UserController extends AbstractController
             $pluginOptions[$searchableModule['name']] = $searchableInstance->getOptions($active, $vars['modvar']);
         }
         // Core 2.0 handling
-        foreach ($searchableModules as $moduleName => $searchableInstance)
-        {
+        foreach ($searchableModules as $moduleName => $searchableInstance) {
             if ($setActiveDefaults) {
                 $vars['active'][$moduleName] = 1;
             }

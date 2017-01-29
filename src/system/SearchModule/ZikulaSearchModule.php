@@ -14,7 +14,6 @@
  */
 
 namespace Zikula\SearchModule {
-
     use Symfony\Component\DependencyInjection\ContainerBuilder;
     use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
     use Zikula\SearchModule\DependencyInjection\Compiler\SearchableModuleCollectorPass;

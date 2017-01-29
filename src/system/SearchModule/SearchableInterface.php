@@ -11,10 +11,6 @@
 
 namespace Zikula\SearchModule;
 
-
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Zikula\Core\AbstractModule;
-
 interface SearchableInterface
 {
     const SEARCHABLE = 'searchable';
