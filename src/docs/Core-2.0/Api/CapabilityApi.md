@@ -27,7 +27,6 @@ when defining the capabilities array in an extension's `composer.json` file.
     CapabilityApiInterface::HOOK_SUBSCRIBER = 'hook_subscriber';
     CapabilityApiInterface::HOOK_PROVIDER = 'hook_provider';
     CapabilityApiInterface::HOOK_SUBSCRIBE_OWN = 'subscribe_own';
-    CapabilityApiInterface::SEARCHABLE = 'searchable';
     CapabilityApiInterface::CATEGORIZABLE = 'categorizable';
     CapabilityApiInterface::USER = 'user';
     CapabilityApiInterface::ADMIN = 'admin';
@@ -47,7 +46,6 @@ Although no extension would implement every capability, here is a full example o
             "capabilities": {
                 "hook_subscriber": {"class": "Acme\\FooModule\\Container\\HookContainer", "subscribe_own": true},
                 "hook_provider": {"class": "Acme\\FooModule\\Container\\HookContainer"},
-                "searchable": {"class": "Acme\\FooModule\\Helper\\SearchHelper"},
                 "categorizable": {"entities": ["Acme\\FooModule\\Entity\\FooEntity", "Acme\\FooModule\\Entity\\BarEntity"]},
                 "user": {"route": "acmefoomodule_user_index"}
                 "admin": {"route": "acmefoomodule_admin_index"}
