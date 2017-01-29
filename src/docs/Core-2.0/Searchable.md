@@ -22,9 +22,3 @@ the required methods.
 In Core-2.0 the `getResults()` method **MUST** return an array of `SearchResultEntity`
 
 The **UsersModule** has implemented the new Search method and can be used as a reference.
-
-
-Zikula\SearchModule\AbstractSearchable
---------------------------------------
-
-Can this still be useful?

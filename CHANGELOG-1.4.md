@@ -16,6 +16,7 @@ CHANGELOG - ZIKULA 1.4.x
         (\Zikula_Core was already deprecated long ago)
     - \Zikula_Core::VERSION_ID will not be continued in Core-2.0
     - \Zikula\Common\I18n\*
+    - \Zikula\SearchModule\AbstractSearchable and usage of the CapabilityApi to determine a module's searchability.
 
  - Fixes:
     - Uniform text and icon for user account menu link (#3403).
@@ -32,7 +33,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Changed configuration of jms_i18n_routing to remove use of 'hl' cookie (#3224).
     - Removed LangBlock and replaced automatically by LocaleBlock (#2684).
 
- - Core-2.0 Features:
+ - Features:
     - Added custom template support for moduleLinks() Twig function
     - \Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface created and implemented. Use this for typehinting
         the core kernel.
@@ -40,6 +41,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Added \Zikula\UsersModule\ProfileModule\ProfileModuleInterface for Profile module implementation (#3321).
     - Added composer event handler to manually copy vendor assets to the web-dir.
     - Added `expanded` and `includeGrandChildren` options to `CategoriesType` (#3410).
+    - Added \Zikula\SearchModule\SearchableInterface and DI service tag collector to determine a module's searchability (#2996).
 
  - Vendor updates:
     - doctrine dbal updated from 2.5.5 to 2.5.9

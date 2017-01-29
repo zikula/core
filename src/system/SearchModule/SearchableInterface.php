@@ -13,8 +13,6 @@ namespace Zikula\SearchModule;
 
 interface SearchableInterface
 {
-    const SEARCHABLE = 'searchable';
-
     /**
      * Get the UI options for search form
      *

@@ -23,6 +23,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\PlainResponse;
+use Zikula\SearchModule\AbstractSearchable;
 use Zikula\SearchModule\SearchableInterface;
 
 /**
@@ -106,7 +107,7 @@ class UserController extends AbstractController
         $legacySearchModules = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins');
         $legacySearchModules = false === $legacySearchModules ? [] : $legacySearchModules;
         // get 1.4.0+ type searchable modules @deprecated - remove at Core-2.0
-        $core14searchableModules = ModUtil::getModulesCapableOf(SearchableInterface::SEARCHABLE);
+        $core14searchableModules = ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
         // get Core-2.0 searchable modules
         $searchableModules = $this->get('zikula_search_module.internal.searchable_module_collector')->getAll();
 

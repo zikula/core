@@ -18,6 +18,7 @@ use ServiceUtil;
 use SessionUtil;
 use System;
 use Zikula\Core\ModUrl;
+use Zikula\SearchModule\AbstractSearchable;
 use Zikula\SearchModule\Entity\SearchResultEntity;
 use Zikula\SearchModule\Entity\SearchStatEntity;
 use Zikula\SearchModule\ResultHelper;
@@ -121,7 +122,7 @@ class UserApi
             }
 
             // Ask 1.4.0+ type modules for search results and persist them @deprecated remove at Core-2.0
-            $searchableModules = ModUtil::getModulesCapableOf(SearchableInterface::SEARCHABLE);
+            $searchableModules = ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
             foreach ($searchableModules as $searchableModule) {
                 if (!empty($active) && !isset($active[$searchableModule['name']])) {
                     continue;

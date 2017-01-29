@@ -17,9 +17,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\AbstractModule;
 
+/**
+ * Class AbstractSearchable
+ * @deprecated remove at Core-2.0
+ */
 abstract class AbstractSearchable implements SearchableInterface
 {
     use TranslatorTrait;
+
+    const SEARCHABLE = 'searchable';
 
     /**
      * @var string the bundle name
