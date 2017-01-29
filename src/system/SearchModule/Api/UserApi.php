@@ -22,7 +22,6 @@ use Zikula\SearchModule\AbstractSearchable;
 use Zikula\SearchModule\Entity\SearchResultEntity;
 use Zikula\SearchModule\Entity\SearchStatEntity;
 use Zikula\SearchModule\ResultHelper;
-use Zikula\SearchModule\SearchableInterface;
 use ZLanguage;
 
 /**
