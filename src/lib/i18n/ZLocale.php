@@ -95,7 +95,7 @@ class ZLocale implements ArrayAccess
             }
             $this->validateLocale($file);
         } else {
-            $this->registerError(__f("Error! Could not load '%s'. Please check that it exists.", $file));
+            //$this->registerError(__f("Error! Could not load '%s'. Please check that it exists.", $file));
         }
     }
 
