@@ -248,7 +248,8 @@ class AjaxUpgradeController extends AbstractController
         }
         // Menu module was introduced in 144 but not installed on upgrade
         // this does NOT need to be repeated in upgrade from 146->147
-        if (!$this->moduleIsActive('ZikulaMenuModule')) {
+        $schemaManager = $this->container->get('doctrine')->getConnection()->getSchemaManager();
+        if (!$schemaManager->tablesExist(['menu_items'])) {
             $this->installModule('ZikulaMenuModule');
             $this->reSyncAndActivateModules();
             $this->setModuleCategory('ZikulaMenuModule', $this->translator->__('Content'));
@@ -328,12 +329,5 @@ class AjaxUpgradeController extends AbstractController
         $this->yamlManager->delParameter('upgrading');
 
         return true;
-    }
-
-    private function moduleIsActive($moduleName)
-    {
-        $moduleEntity = $this->container->get('zikula_extensions_module.extension_repository')->findOneBy(['name' => $moduleName]);
-
-        return isset($moduleEntity) && ExtensionApi::STATE_ACTIVE == $moduleEntity->getState();
     }
 }
