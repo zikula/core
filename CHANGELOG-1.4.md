@@ -34,6 +34,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Removed LangBlock and replaced automatically by LocaleBlock (#2684).
     - Ensure MenuModule is installed on upgrade (#3416).
     - Fixed double-encoding of verification code in registration email (#3393).
+    - Avoid storing absolute pathes in security center module variable (#3364).
 
  - Features:
     - Added custom template support for moduleLinks() Twig function
