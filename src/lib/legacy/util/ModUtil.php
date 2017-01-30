@@ -11,7 +11,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 
@@ -1113,7 +1113,7 @@ class ModUtil
                 $object = $r->newInstance();
             }
 
-            if ($object instanceof ContainerAware) {
+            if ($object instanceof ContainerAwareInterface) {
                 $object->setContainer(ServiceUtil::getManager());
             }
 
