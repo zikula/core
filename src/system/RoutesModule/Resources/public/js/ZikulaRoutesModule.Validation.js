@@ -69,7 +69,7 @@ function zikulaRoutesValidateNoSpace(val)
 /**
  * Runs special validation rules.
  */
-function zikulaRoutesExecuteCustomValidationRules(objectType, currentEntityId)
+function zikulaRoutesExecuteCustomValidationConstraints(objectType, currentEntityId)
 {
     jQuery('.validate-nospace').each( function() {
         if (!zikulaRoutesValidateNoSpace(jQuery(this).val())) {

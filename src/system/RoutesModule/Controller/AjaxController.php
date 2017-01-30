@@ -26,21 +26,18 @@ use Zikula\Core\Response\Ajax\AjaxResponse;
 class AjaxController extends AbstractAjaxController
 {
     /**
-     * This is the default function handling the main area called without defining arguments.
+     * Retrieves a general purpose list of users.
      *
-     * @Route("/ajax",
-     *        methods = {"GET"}
-     * )
+     * @Route("/getCommonUsersList", options={"expose"=true})
+     * @Method("GET")
      *
      * @param Request $request Current request instance
      *
-     * @return mixed Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     */
-    public function indexAction(Request $request)
+     * @return JsonResponse
+     */ 
+    public function getCommonUsersListAction(Request $request)
     {
-        return parent::indexAction($request);
+        return parent::getCommonUsersListAction($request);
     }
 
     /**

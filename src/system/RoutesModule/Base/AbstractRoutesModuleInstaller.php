@@ -32,6 +32,7 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
     public function install()
     {
         $logger = $this->container->get('logger');
+        $userName = $this->container->get('zikula_users_module.current_user')->get('uname');
     
         // create all tables from according entity definitions
         try {
@@ -106,7 +107,7 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
         // delete stored object workflows
         $result = Zikula_Workflow_Util::deleteWorkflowsForModule('ZikulaRoutesModule');
         if (false === $result) {
-            $this->addFlash('error', $this->__f('An error was encountered while removing stored object workflows for the %s extension.', ['%s' => 'ZikulaRoutesModule']));
+            $this->addFlash('error', $this->__f('An error was encountered while removing stored object workflows for the %extension% extension.', ['%extension%' => 'ZikulaRoutesModule']));
             $logger->error('{app}: Could not remove stored object workflows during uninstallation.', ['app' => 'ZikulaRoutesModule']);
     
             return false;
