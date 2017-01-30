@@ -238,7 +238,7 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
                 $variableApi->del(VariableApi::CONFIG, 'htmlpurifierlocation');
 
                 // only update this value if it has not been customised
-                if (false !== strpos($variableApi->get(VariableApi::CONFIG, 'idsrulepath'))) {
+                if (false !== strpos($variableApi->get(VariableApi::CONFIG, 'idsrulepath'), 'phpids_zikula_default')) {
                     $this->setSystemVar('idsrulepath', 'system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml');
                 }
             case '1.5.1':
