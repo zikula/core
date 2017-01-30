@@ -30,10 +30,11 @@ class ViewHelper extends AbstractViewHelper
         $enrichedTemplateParameters = $templateParameters;
 
         if ($type == 'route' && $func == 'view') {
+            $translator = ServiceUtil::get('translator.default');
             $groupMessages = [
-                RouteEntity::POSITION_FIXED_TOP => $this->translator->__('Routes fixed to the top of the list:'),
-                RouteEntity::POSITION_MIDDLE => $this->translator->__('Normal routes:'),
-                RouteEntity::POSITION_FIXED_BOTTOM => $this->translator->__('Routes fixed to the bottom of the list:'),
+                RouteEntity::POSITION_FIXED_TOP => $translator->__('Routes fixed to the top of the list:'),
+                RouteEntity::POSITION_MIDDLE => $translator->__('Normal routes:'),
+                RouteEntity::POSITION_FIXED_BOTTOM => $translator->__('Routes fixed to the bottom of the list:'),
             ];
             $enrichedTemplateParameters['groupMessages'] = $groupMessages;
             $enrichedTemplateParameters['sortableGroups'] = [RouteEntity::POSITION_MIDDLE];
