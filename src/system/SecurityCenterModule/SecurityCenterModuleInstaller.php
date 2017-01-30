@@ -67,9 +67,6 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('filterpostvars', 1);
         $this->setSystemVar('filtercookievars', 1);
 
-        // Location of HTML Purifier
-        $this->setSystemVar('htmlpurifierlocation', __DIR__.'/vendor/htmlpurifier/');
-
         // HTML Purifier cache dir
         $this->container->get('cache_clearer')->clear('purifier');
 
@@ -80,7 +77,7 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         // create vars for phpids usage
         $this->setSystemVar('useids', 0);
         $this->setSystemVar('idsmail', 0);
-        $this->setSystemVar('idsrulepath', __DIR__ . '/Resources/config/phpids_zikula_default.xml');
+        $this->setSystemVar('idsrulepath', 'system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml');
         $this->setSystemVar('idssoftblock', 1);                // do not block requests, but warn for debugging
         $this->setSystemVar('idsfilter', 'xml');               // filter type
         $this->setSystemVar('idsimpactthresholdone', 1);       // db logging
@@ -233,8 +230,19 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
     public function upgrade($oldVersion)
     {
         switch ($oldVersion) {
-            case '1.4.4':
-            // future upgrade routines
+            case '1.5.0':
+                // avoid storing absolute pathes in module vars
+                $variableApi = $this->container->get('zikula_extensions_module.api.variable');
+
+                // delete obsolete variable
+                $variableApi->del(VariableApi::CONFIG, 'htmlpurifierlocation');
+
+                // only update this value if it has not been customised
+                if (false !== strpos($variableApi->get(VariableApi::CONFIG, 'idsrulepath'))) {
+                    $this->setSystemVar('idsrulepath', 'system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml');
+                }
+            case '1.5.1':
+                // current version
         }
 
         // Update successful
