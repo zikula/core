@@ -41,14 +41,14 @@ class RoutesModuleInstaller extends AbstractRoutesModuleInstaller
                 // rename createdUserId field to createdBy_id
                 $sql = '
                     ALTER TABLE `zikula_routes_route`
-                    CHANGE `createdUserId` `createdBy_id` INT
+                    CHANGE `createdUserId` `createdBy_id` int(11) NOT NULL
                 ';
                 $this->entityManager->getConnection()->exec($sql);
 
                 // rename updatedUserId field to updatedBy_id
                 $sql = '
                     ALTER TABLE `zikula_routes_route`
-                    CHANGE `updatedUserId` `updatedBy_id` INT
+                    CHANGE `updatedUserId` `updatedBy_id` int(11) NOT NULL
                 ';
                 $this->entityManager->getConnection()->exec($sql);
             case '1.1.1':
