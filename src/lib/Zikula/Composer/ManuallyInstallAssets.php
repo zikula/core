@@ -29,6 +29,12 @@ class ManuallyInstallAssets extends ScriptHandler
     private static $assets = [
         '/jQuery.mmenu/dist/js/jquery.mmenu.all.min.js' => '/jquery-mmenu/js/jquery.mmenu.all.min.js',
         '/jQuery.mmenu/dist/css/jquery.mmenu.all.css' => '/jquery-mmenu/css/jquery.mmenu.all.css',
+        '/twitter/typeahead.js/dist/bloodhound.js' => '/typeahead.js/bloodhound.js',
+        '/twitter/typeahead.js/dist/bloodhound.min.js' => '/typeahead.js/bloodhound.min.js',
+        '/twitter/typeahead.js/dist/typeahead.bundle.js' => '/typeahead.js/typeahead.bundle.js',
+        '/twitter/typeahead.js/dist/typeahead.bundle.min.js' => '/typeahead.js/typeahead.bundle.min.js',
+        '/twitter/typeahead.js/dist/typeahead.jquery.js' => '/typeahead.js/typeahead.jquery.js',
+        '/twitter/typeahead.js/dist/typeahead.jquery.min.js' => '/typeahead.js/typeahead.jquery.min.js',
     ];
 
     public static function install(Event $event)
