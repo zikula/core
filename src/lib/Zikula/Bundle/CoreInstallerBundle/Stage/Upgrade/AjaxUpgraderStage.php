@@ -79,45 +79,45 @@ class AjaxUpgraderStage implements StageInterface, InjectContainerInterface
             ],
             5 => [
                 AjaxInstallerStage::NAME => 'from140to141',
-                AjaxInstallerStage::PRE => $this->__('Upgrade from Core 1.4.0 to Core 1.4.1'),
-                AjaxInstallerStage::DURING => $this->__('Upgrading to Core 1.4.1'),
-                AjaxInstallerStage::SUCCESS => $this->__('Upgraded to Core 1.4.1'),
-                AjaxInstallerStage::FAIL => $this->__('There was an error upgrading to Core 1.4.1')
+                AjaxInstallerStage::PRE => $this->__f('Upgrade from Core %oldVersion% to Core %newVersion%', ['%oldVersion%' => '1.4.0', '%newVersion%' => '1.4.1']),
+                AjaxInstallerStage::DURING => $this->__f('Upgrading to Core %version%', ['%version%' => '1.4.1']),
+                AjaxInstallerStage::SUCCESS => $this->__f('Upgraded to Core %version%', ['%version%' => '1.4.1']),
+                AjaxInstallerStage::FAIL => $this->__f('There was an error upgrading to Core %version%', ['%version%' => '1.4.1'])
             ],
             6 => [
                 AjaxInstallerStage::NAME => 'from141to142',
-                AjaxInstallerStage::PRE => $this->__('Upgrade from Core 1.4.1 to Core 1.4.2'),
-                AjaxInstallerStage::DURING => $this->__('Upgrading to Core 1.4.2'),
-                AjaxInstallerStage::SUCCESS => $this->__('Upgraded to Core 1.4.2'),
-                AjaxInstallerStage::FAIL => $this->__('There was an error upgrading to Core 1.4.2')
+                AjaxInstallerStage::PRE => $this->__f('Upgrade from Core %oldVersion% to Core %newVersion%', ['%oldVersion%' => '1.4.1', '%newVersion%' => '1.4.2']),
+                AjaxInstallerStage::DURING => $this->__f('Upgrading to Core %version%', ['%version%' => '1.4.2']),
+                AjaxInstallerStage::SUCCESS => $this->__f('Upgraded to Core %version%', ['%version%' => '1.4.2']),
+                AjaxInstallerStage::FAIL => $this->__f('There was an error upgrading to Core %version%', ['%version%' => '1.4.2'])
             ],
             7 => [
                 AjaxInstallerStage::NAME => 'from142to143',
-                AjaxInstallerStage::PRE => $this->__('Upgrade from Core 1.4.2 to Core 1.4.3'),
-                AjaxInstallerStage::DURING => $this->__('Upgrading to Core 1.4.3'),
-                AjaxInstallerStage::SUCCESS => $this->__('Upgraded to Core 1.4.3'),
-                AjaxInstallerStage::FAIL => $this->__('There was an error upgrading to Core 1.4.3')
+                AjaxInstallerStage::PRE => $this->__f('Upgrade from Core %oldVersion% to Core %newVersion%', ['%oldVersion%' => '1.4.2', '%newVersion%' => '1.4.3']),
+                AjaxInstallerStage::DURING => $this->__f('Upgrading to Core %version%', ['%version%' => '1.4.3']),
+                AjaxInstallerStage::SUCCESS => $this->__f('Upgraded to Core %version%', ['%version%' => '1.4.3']),
+                AjaxInstallerStage::FAIL => $this->__f('There was an error upgrading to Core %version%', ['%version%' => '1.4.3'])
             ],
             8 => [
                 AjaxInstallerStage::NAME => 'from143to144',
-                AjaxInstallerStage::PRE => $this->__('Upgrade from Core 1.4.3 to Core 1.4.4'),
-                AjaxInstallerStage::DURING => $this->__('Upgrading to Core 1.4.4'),
-                AjaxInstallerStage::SUCCESS => $this->__('Upgraded to Core 1.4.4'),
-                AjaxInstallerStage::FAIL => $this->__('There was an error upgrading to Core 1.4.4')
+                AjaxInstallerStage::PRE => $this->__f('Upgrade from Core %oldVersion% to Core %newVersion%', ['%oldVersion%' => '1.4.3', '%newVersion%' => '1.4.4']),
+                AjaxInstallerStage::DURING => $this->__f('Upgrading to Core %version%', ['%version%' => '1.4.4']),
+                AjaxInstallerStage::SUCCESS => $this->__f('Upgraded to Core %version%', ['%version%' => '1.4.4']),
+                AjaxInstallerStage::FAIL => $this->__f('There was an error upgrading to Core %version%', ['%version%' => '1.4.4'])
             ],
             9 => [
                 AjaxInstallerStage::NAME => 'from144to145',
-                AjaxInstallerStage::PRE => $this->__('Upgrade from Core 1.4.4 to Core 1.4.5'),
-                AjaxInstallerStage::DURING => $this->__('Upgrading to Core 1.4.5'),
-                AjaxInstallerStage::SUCCESS => $this->__('Upgraded to Core 1.4.5'),
-                AjaxInstallerStage::FAIL => $this->__('There was an error upgrading to Core 1.4.5')
+                AjaxInstallerStage::PRE => $this->__f('Upgrade from Core %oldVersion% to Core %newVersion%', ['%oldVersion%' => '1.4.4', '%newVersion%' => '1.4.5']),
+                AjaxInstallerStage::DURING => $this->__f('Upgrading to Core %version%', ['%version%' => '1.4.5']),
+                AjaxInstallerStage::SUCCESS => $this->__f('Upgraded to Core %version%', ['%version%' => '1.4.5']),
+                AjaxInstallerStage::FAIL => $this->__f('There was an error upgrading to Core %version%', ['%version%' => '1.4.5'])
             ],
             10 => [
                 AjaxInstallerStage::NAME => 'from145to146',
-                AjaxInstallerStage::PRE => $this->__('Upgrade from Core 1.4.5 to Core 1.4.6'),
-                AjaxInstallerStage::DURING => $this->__('Upgrading to Core 1.4.6'),
-                AjaxInstallerStage::SUCCESS => $this->__('Upgraded to Core 1.4.6'),
-                AjaxInstallerStage::FAIL => $this->__('There was an error upgrading to Core 1.4.6')
+                AjaxInstallerStage::PRE => $this->__f('Upgrade from Core %oldVersion% to Core %newVersion%', ['%oldVersion%' => '1.4.5', '%newVersion%' => '1.4.6']),
+                AjaxInstallerStage::DURING => $this->__f('Upgrading to Core %version%', ['%version%' => '1.4.6']),
+                AjaxInstallerStage::SUCCESS => $this->__f('Upgraded to Core %version%', ['%version%' => '1.4.6']),
+                AjaxInstallerStage::FAIL => $this->__f('There was an error upgrading to Core %version%', ['%version%' => '1.4.6'])
             ],
             11 => [
                 AjaxInstallerStage::NAME => 'finalizeparameters',
