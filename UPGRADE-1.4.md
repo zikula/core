@@ -6,7 +6,6 @@ Upgrading Zikula
   3. [Test Environment](#testenv)
   4. [Before upgrading](#beforeupgrading)
   5. [Upgrading](#upgrading)
-  6. [Notes](#notes)
 
 
 <a name="introduction"></a>
@@ -15,7 +14,7 @@ Introduction
 ------------
 
 Zikula 1.4 can only upgrade from Zikula 1.3.6 or higher. Please upgrade your core installation to this version
-before proceeding with this upgrade proces.
+before proceeding with this upgrade process.
 
 Zikula Core 1.4 introduces a lot of forward compatibility for new features that will come in Zikula 2.0.0.
 
@@ -72,7 +71,7 @@ Composer must be run prior to installing or upgrading a site using Zikula. Run `
 If you store Composer in the root of the Zikula Core checkout, please rename it from `composer.phar` to
 `composer` to avoid your IDE reading the package contents.
 
-####FOR NORMAL USERS: Download the current release from [http://www.zikula.org/](http://www.zikula.org/)
+#### FOR NORMAL USERS: Download the current release from [http://www.zikula.org/](http://www.zikula.org/)
 
 All the dependencies and requirements are included in this package.
 
@@ -103,11 +102,15 @@ The following process should be followed for all upgrades even small point relea
     values of this file with yours taken from your old 'config.php' file. * NOTE: you should now have both `config.php`
     AND `personal_config.php` in your `config/` folder. Make sure to set permissions on `config.php` to 400.
   - Make a copy of `app/config/parameters.yml` and rename it to `app/config/custom_parameters.yml` -- update the values
-    of this file with your **database settings**. Set `installed:true`. All database values of "~" should be replaced
+    of this file with your **database settings**. Set `installed: true`. All database values of "~" should be replaced
     with their proper values -- In most cases, 'database_port', 'database_path', and 'database_socket' should be left
     as '~'.
     * NOTE: you should now have both `parameters.yml` AND `custom_parameters.yml` in your `app/config/` folder.
     The upgrade will not work unless both of these files are present.
+  - Additional notes
+    - As of 1.4.0 `ztemp` is now located in the `app/cache/<kernel-mode>/ztemp` location automatically.
+    - the old `upgrade.php` has been replaced by simply `/upgrade` but you should be automatically redirected to this
+      url when visiting your main page.
 
 #### If upgrading from Core-1.4.x:
 
@@ -118,6 +121,8 @@ The following process should be followed for all upgrades even small point relea
 
   - Copy your backup `/userdata` and your **theme** to your new installation. The folders of your theme should be
     in the exact same place as your backup.
+  - Copy your additional modules to the appropriate directory. **DO NOT include the old Profile and Legal module**
+    when copying them into your new installation, as new versions of these are provided (and their location may differ).
   - **Upgrade: (do one or the other)**
     - Via Web: launch `http://yoursiteurl/` (you will be redirected to `/upgrade`) and follow any on-screen prompts.
     - Via CLI:
@@ -127,17 +132,5 @@ The following process should be followed for all upgrades even small point relea
          $ php app/console zikula:upgrade
          ```
 
-      - Follow the prompts and complete that step. When you are finished, Open your browser and login!
-  - After upgrade successfully completes, return any 1.3.x-compatible modules **one at a time** to the appropriate
-    directory and run each upgrade independently. **DO NOT include the old Profile and Legal module** when copying them
-    into your new installation, as new versions of these are provided (and their location may differ).
+  - Follow the prompts and complete that step. When you are finished, Open your browser and login!
 
-
-<a name="notes"></a>
-
-Notes
------
-
-  - As of 1.4.0 `ztemp` is now located in the `app/cache/<kernel-mode>/ztemp` location automatically.
-  - the old `upgrade.php` has been replaced by simply `/upgrade` but you should be automatically redirected to this
-    url when visiting your main page.
