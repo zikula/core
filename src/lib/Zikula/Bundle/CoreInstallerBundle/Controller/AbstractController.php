@@ -125,7 +125,7 @@ abstract class AbstractController
     }
 
     /**
-     * Set an admin category for a module
+     * Set an admin category for a module or set to default
      * @param $moduleName
      * @param $translatedCategoryName
      */
@@ -135,9 +135,20 @@ abstract class AbstractController
             ->getRepository('ZikulaAdminModule:AdminCategoryEntity')->getIndexedCollection('name');
         $moduleEntity = $this->container->get('doctrine')
             ->getRepository('ZikulaExtensionsModule:ExtensionEntity')->findOneBy(['name' => $moduleName]);
-        $this->container->get('doctrine')
-            ->getRepository('ZikulaAdminModule:AdminModuleEntity')
-            ->setModuleCategory($moduleEntity, $modulesCategories[$translatedCategoryName]);
+        if (isset($modulesCategories[$translatedCategoryName])) {
+            $this->container->get('doctrine')
+                ->getRepository('ZikulaAdminModule:AdminModuleEntity')
+                ->setModuleCategory($moduleEntity, $modulesCategories[$translatedCategoryName]);
+        } else {
+            $defaultCategory = $this->container->get('doctrine')
+                ->getRepository('ZikulaAdminModule:AdminCategoryEntity')
+                ->find($this->container->get('zikula_extensions_module.api.variable')
+                    ->get('ZikulaSettingsModule', 'defaultcategory', 5)
+                );
+            $this->container->get('doctrine')
+                ->getRepository('ZikulaAdminModule:AdminModuleEntity')
+                ->setModuleCategory($moduleEntity, $defaultCategory);
+        }
     }
 
     /**
