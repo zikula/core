@@ -89,7 +89,7 @@ The following process should be followed for all upgrades even small point relea
   - Before uploading the new files, delete **all files** in your web root (typically `public_html` or `httpdocs`).
   - Upload the new package and unpack the archive.
     - **Please read** the [INSTALL docs](INSTALL-1.4.md#upload) for detailed information on proper uploading.
-    - Note 1: One common issue when installing is that the app/cache and app/logs directories must be writable both by the 
+    - Note 1: One common issue when installing is that the `app/cache` and `app/logs` directories must be writable both by the 
       web server and the command line user. See Symfony's [Setting up or Fixing File Permissions](http://symfony.com/doc/2.8/setup/file_permissions.html) 
       to see potential solutions to this problem when installing from the CLI.
     - Note 2: If you have `mod_suexec` installed for Apache the CLI will run into permission problems. (If you are not sure 

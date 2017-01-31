@@ -56,9 +56,9 @@ of the new core release. Zikula Core 1.4 has the following requirements:
 Upload and Prepare
 ------------------
 
-###Upload
+### Upload
 
-If you obtained the Zikula Core by cloning the repo at Github, you should see the `README.md` for further
+If you obtained the Zikula Core by cloning the repository at Github, you should see the `README.md` for further
 instructions. This is **not recommended for non-developers**.
 
 If you obtained Zikula Core from zikula.org or the CI server, then you can upload the entire archive (`.zip`
@@ -74,7 +74,7 @@ Again, change the filename/url to match the correct filename from the ci server.
 Windows/FTP users: Take care about copying all files. If there are some files you are not able to transfer 
 to the server check if your longest path length is longer than Windows/FTP-Software allows (more than 256 characters).
 
-###Set file permissions (Critical)
+### Set file permissions (critical)
 
 If you installed from a `.zip` archive or uploaded the files via FTP, the permissions for some folders must be changed 
 prior to installing so that your webserver's user has write access:
@@ -85,8 +85,8 @@ prior to installing so that your webserver's user has write access:
 - `config`
 - `userdata`
 
-You normally do so using `chmod 777 app/cache` and so on. (`.tgz` archives maintain
-the permission settings as they were set correctly by the development team, if you unpacked it using the `-p` flag).
+You normally do so using `chmod 777 app/cache` and so on. (`.tgz` archives maintain the permission settings as they
+were set correctly by the development team, if you unpacked it using the `-p` flag like shown above).
 
 
 <a name="install"></a>
@@ -94,7 +94,7 @@ the permission settings as they were set correctly by the development team, if y
 New Installation
 ----------------
 
-*Note 1:* One common issue when installing is that the app/cache and app/logs directories must be writable both by the 
+*Note 1:* One common issue when installing is that the `app/cache` and `app/logs` directories must be writable both by the 
 web server and the command line user. See Symfony's [Setting up or Fixing File Permissions](http://symfony.com/doc/2.8/setup/file_permissions.html) 
 to see potential solutions to this problem when installing from the CLI.
 
@@ -102,22 +102,22 @@ to see potential solutions to this problem when installing from the CLI.
 check your phpinfo.) `mod_suexec` often is used in shared hosting environments. In this case, the CLI installer is not 
 recommended, please use the Web Installer. 
 
-###Create the Database
+### Create the Database
 
 Create a database on your server. Take note of the database **name** as well as the database **username** and
 **password** which are likely given by your provider. These will be needed during install. You can use an existing
 database, but this is not recommended unless Zikula will be the only application using that database. In this case,
 remove all existing tables from the existing database.
 
-###Install by the Web installer or Command Line (not both!):
+### Install by the Web installer or Command Line (not both!)
 
-####Web Installer
+#### Web Installer
 
 To begin the installer, simply visit the root directory with your browser, e.g. `http://www.example.com/`.
 If you installed Zikula into a subdirectory 'foo' the URL would be `http://www.example.com/foo/`. You will be
 automatically redirected to the installer.
 
-####Command Line Installer
+#### Command Line Installer
 
 Via CLI, access your main zikula directory (`/src` if a Github clone) and run this command:
 ```Shell
@@ -139,5 +139,5 @@ Modifications to the Zikula core system code or database are not supported. Doin
 problems when upgrading the system in the future and therefore these *hacks* are not recommended. Zikula
 has a flexible extensions system and configuration override system to allow customization and we recommend
 you consult the developer documentation about this. If you feel like your hack is useful / a bug fix / a nice
-feature, Please open an issue/pull-request at the GitHub Core Repository. We're glad to merge any improvements
+feature, please open an issue/pull-request at the GitHub Core Repository. We're glad to merge any improvements
 of the core
