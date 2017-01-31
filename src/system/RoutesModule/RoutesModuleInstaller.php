@@ -34,7 +34,7 @@ class RoutesModuleInstaller extends AbstractRoutesModuleInstaller
                 $this->entityManager->getConnection()->exec($sql);
 
                 // update table to meet entity structure
-                $this->schemaTool->update(['\Zikula\RoutesModule\Entity\RouteEntity']);
+                $this->schemaTool->update(['Zikula\RoutesModule\Entity\Historical\v110\RouteEntity']);
             case '1.0.1':
                 // nothing
             case '1.1.0':
