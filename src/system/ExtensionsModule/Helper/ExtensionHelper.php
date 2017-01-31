@@ -271,9 +271,10 @@ class ExtensionHelper
      */
     private function forceLoadExtension(ExtensionEntity $extension)
     {
-        $osDir = \DataUtil::formatForOS($extension->getDirectory());
+        $osDir = $extension->getDirectory();
         $scanner = new Scanner();
-        $directory = ZikulaKernel::isCoreModule($extension->getName()) ? 'system' : 'modules';
+        // @deprecated note: The ZikulaPageLockModule will be moved to /modules. When it is, this condition must be removed below. refs #3283
+        $directory = ZikulaKernel::isCoreModule($extension->getName()) || 'ZikulaPageLockModule' == $extension->getName() ? 'system' : 'modules';
         $scanner->scan(["$directory/$osDir"], 1);
         $modules = $scanner->getModulesMetaData(true);
         /** @var $moduleMetaData \Zikula\Bundle\CoreBundle\Bundle\MetaData */
