@@ -391,12 +391,13 @@ class Engine
         // @todo START legacy block - remove at Core-2.0 (leave legacy method calls)
         if ($this->kernel->getContainer()->getParameter('compat_layer')) {
             $baseUri = $this->requestStack->getMasterRequest()->getBasePath();
+            $baseUri = rtrim($baseUri, '/'); // just in case
             $javascripts = \JCSSUtil::prepareJavascripts(\PageUtil::getVar('javascript', []));
             $i = 60;
             $legacyAjaxScripts = 0;
             foreach ($javascripts as $javascript) {
                 if (substr($javascript, 0, 4) !== 'http') {
-                    $javascript = (!empty($baseUri) && (false === strpos($javascript, $baseUri))) ? "$baseUri/$javascript" : "$javascript";
+                    $javascript = (!empty($baseUri) && (0 !== strpos($javascript, "$baseUri/"))) ? "$baseUri/$javascript" : "$javascript";
                     $javascript = $javascript[0] == '/' ? $javascript : "/$javascript"; // add slash to start if not present.
                 }
                 // Add legacy ajax scripts (like prototype/scriptaculous) at the lightest weight (0) and in order from there.
