@@ -20,6 +20,7 @@ services:
     zikula_core.internal.translation_extractor.file.js_extractor:
         class: Zikula\Bundle\CoreBundle\Translation\ZikulaJsFileExtractor
         public: false
+        arguments: ["@kernel"]
         tags:
             - { name: jms_translation.file_visitor }
 
