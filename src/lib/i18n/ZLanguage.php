@@ -664,7 +664,7 @@ class ZLanguage
             $fileNameParts = explode('.', $translationFile->getFilename());
             if (count($fileNameParts) == 3) {
                 $localeCode = $fileNameParts[1];
-                if (!in_array($localeCode, $localeArray)) {
+                if ($localeCode != 'template' && !in_array($localeCode, $localeArray)) {
                     $localeArray[] = $localeCode;
                 }
             }
