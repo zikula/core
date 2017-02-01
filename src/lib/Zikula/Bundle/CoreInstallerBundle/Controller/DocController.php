@@ -112,11 +112,15 @@ class DocController
      */
     private function setBasePath(Request $request)
     {
-        if (file_exists(realpath($this->kernel->getRootDir() . '/../../composer.json'))) {
-            // installation is clone of github repo and files are not moved
-            $this->basePath = realpath($this->kernel->getRootDir() . '/../..');
-        } else {
-            $this->basePath = realpath($this->kernel->getRootDir() . '/../docs/' . $request->getLocale());
+        $paths = [
+            $this->kernel->getRootDir() . '/../docs/' . $request->getLocale(), // localized in ci build
+            $this->kernel->getRootDir() . '/../docs/en', // default in ci build
+            $this->kernel->getRootDir() . '/../..' // github clone
+        ];
+        foreach ($paths as $docPath) {
+            if ($path = realpath($docPath)) {
+                $this->basePath = $path;
+            }
         }
     }
 }
