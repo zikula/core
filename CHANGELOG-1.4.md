@@ -35,6 +35,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Ensure MenuModule is installed on upgrade (#3416).
     - Fixed double-encoding of verification code in registration email (#3393).
     - Avoid storing absolute pathes in security center module variable (#3364).
+    - Fixed module upgrade bug (#3378).
 
  - Features:
     - Added custom template support for moduleLinks() Twig function
