@@ -23,7 +23,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\PlainResponse;
-use Zikula\SearchModule\AbstractSearchable;
 
 /**
  * User controllers for the search module
@@ -102,50 +101,24 @@ class UserController extends AbstractController
             return $this->forwardRequest($request, 'search', [], $vars);
         }
 
-        // get all the LEGACY (<1.4.0) search plugins
-        $legacySearchModules = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins');
-        $legacySearchModules = false === $legacySearchModules ? [] : $legacySearchModules;
-
-        // get 1.4.0+ type searchable modules
-        $searchableModules = ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
-
-        if (count($legacySearchModules) == 0 && count($searchableModules) == 0) {
+        $searchableModules = $this->get('zikula_search_module.internal.searchable_module_collector')->getAll();
+        if (count($searchableModules) == 0) {
             return $this->render('@ZikulaSearchModule/User/noplugins.html.twig');
         }
 
         $pluginOptions = [];
-        // LEGACY handling (<1.4.0)
-        foreach ($legacySearchModules as $module) {
-            // if active array is empty, we need to set defaults
+        foreach ($searchableModules as $moduleName => $searchableInstance) {
             if ($setActiveDefaults) {
-                $vars['active'][$module['name']] = 1;
+                $vars['active'][$moduleName] = 1;
             }
-
-            if (isset($module['title'])) {
-                $pluginOptions[$module['title']] = ModUtil::apiFunc($module['title'], 'search', 'options', $vars);
-            }
-        }
-        // 1.4.0+ type handling
-        foreach ($searchableModules as $searchableModule) {
-            if ($setActiveDefaults) {
-                $vars['active'][$searchableModule['name']] = 1;
-            }
-            $moduleBundle = ModUtil::getModule($searchableModule['name']);
-            /** @var $searchableInstance AbstractSearchable */
-            $searchableInstance = new $searchableModule['capabilities']['searchable']['class']($this->get('service_container'), $moduleBundle);
-
-            if (!($searchableInstance instanceof AbstractSearchable)) {
+            if ($this->getVar('disable_' . $moduleName)) {
                 continue;
             }
-            if ($this->getVar('disable_' . $searchableModule['name'])) {
+            if (!$this->hasPermission('ZikulaSearchModule::Item', $moduleName . '::', ACCESS_READ)) {
                 continue;
             }
-            if (!$this->hasPermission('ZikulaSearchModule::Item', $searchableModule['name'] . '::', ACCESS_READ)) {
-                continue;
-            }
-
-            $active = !isset($vars['active']) || (isset($vars['active'][$searchableModule['name']]) && ($vars['active'][$searchableModule['name']] == 1));
-            $pluginOptions[$searchableModule['name']] = $searchableInstance->getOptions($active, $vars['modvar']);
+            $active = !isset($vars['active']) || (isset($vars['active'][$moduleName]) && ($vars['active'][$moduleName] == 1));
+            $pluginOptions[$moduleName] = $searchableInstance->getOptions($active, $vars['modvar']);
         }
 
         $templateParameters = array_merge($vars, [

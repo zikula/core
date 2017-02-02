@@ -11,6 +11,7 @@
 
 namespace Zikula\SettingsModule;
 
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
@@ -44,8 +45,8 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('funtext', '1');
         $this->setSystemVar('reportlevel', '0');
         $this->setSystemVar('startpage', '');
-        $this->setSystemVar('Version_Num', \ZikulaKernel::VERSION);
-        $this->setSystemVar('Version_Sub', \ZikulaKernel::VERSION_SUB);
+        $this->setSystemVar('Version_Num', ZikulaKernel::VERSION);
+        $this->setSystemVar('Version_Sub', ZikulaKernel::VERSION_SUB);
         $this->setSystemVar('debug_sql', '0');
         $this->setSystemVar('multilingual', '1');
         $this->setSystemVar('useflags', '0');
@@ -73,8 +74,8 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         }
 
         $this->setSystemVar('shorturlsdefaultmodule', '');
-        $this->setSystemVar('profilemodule', ''); //((\ModUtil::available('ZikulaProfileModule')) ? 'ZikulaProfileModule' : ''));
-        $this->setSystemVar('messagemodule', '');
+        $this->setSystemVar(SettingsConstant::SYSTEM_VAR_PROFILE_MODULE, '');
+        $this->setSystemVar(SettingsConstant::SYSTEM_VAR_MESSAGE_MODULE, '');
         $this->setSystemVar('languageurl', 0);
         $this->setSystemVar('ajaxtimeout', 5000);
         //! this is a comma-separated list of special characters to search for in permalinks

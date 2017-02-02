@@ -11,8 +11,10 @@
 
 namespace Zikula\Bridge\HttpFoundation;
 
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\MetadataBag;
+use Symfony\Component\HttpFoundation\Session\Storage\Proxy\AbstractProxy;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
 /**
@@ -40,19 +42,37 @@ class ZikulaSessionStorage extends NativeSessionStorage
     const SECURITY_LEVEL_HIGH = 'High';
 
     /**
-     * @var VariableApi
+     * @var string
      */
-    private $variableApi;
+    private $securityLevel = self::SECURITY_LEVEL_MEDIUM;
+
+    /**
+     * @var int
+     */
+    private $inactiveSeconds = 1200;
+
+    /**
+     * @var int
+     */
+    private $autoLogoutAfterSeconds = 604800;
+
+    /**
+     * @var int
+     */
+    private $cookieLifeTime = 604800;
 
     /**
      * @param VariableApi $variableApi
      * @param array $options
-     * @param null $handler
+     * @param AbstractProxy|NativeSessionHandler|\SessionHandlerInterface|null $handler
      * @param MetadataBag $metaBag
      */
     public function __construct(VariableApi $variableApi, array $options = [], $handler = null, MetadataBag $metaBag = null)
     {
-        $this->variableApi = $variableApi;
+        $this->securityLevel = $variableApi->getSystemVar('seclevel', self::SECURITY_LEVEL_MEDIUM);
+        $this->inactiveSeconds = $variableApi->getSystemVar('secinactivemins', 20) * 60;
+        $this->autoLogoutAfterSeconds = $variableApi->getSystemVar('secmeddays', 7) * 24 * 60 * 60;
+
         parent::__construct($options, $handler, $metaBag);
     }
 
@@ -64,24 +84,25 @@ class ZikulaSessionStorage extends NativeSessionStorage
         if (parent::start()) {
             // check if session has expired or not
             $now = time();
-            $inactive = ($now - (int)($this->variableApi->getSystemVar('secinactivemins', 20) * 60));
-            $daysold = ($now - (int)($this->variableApi->getSystemVar('secmeddays', 7) * 86400));
-            $lastused = $this->getMetadataBag()->getLastUsed();
-            $rememberme = $this->getBag('attributes')->get('rememberme');
-            $uid = $this->getBag('attributes')->get('uid');
-
-            switch ($this->variableApi->getSystemVar('seclevel')) {
+            $inactiveTime = $now - $this->inactiveSeconds;
+            $daysOldTime = $now - $this->autoLogoutAfterSeconds;
+            $cookieLastUsed = $this->getMetadataBag()->getLastUsed();
+            $cookieExpired = $cookieLastUsed < $inactiveTime;
+            $cookieAgedOut = $cookieLastUsed < $daysOldTime;
+            $rememberMe = $this->getBag('attributes')->get('rememberme');
+            $uid = $this->getBag('attributes')->get('uid', 0); // @todo default to anonymous uid?
+            switch ($this->securityLevel) {
                 case self::SECURITY_LEVEL_LOW:
                     break;
                 case self::SECURITY_LEVEL_MEDIUM:
-                    if ((!$rememberme && $lastused < $inactive) || ($lastused < $daysold) || ($uid == '0' && $lastused < $inactive)) {
-                        parent::regenerate(true);
+                    if ((!$rememberMe && $cookieExpired) || ($cookieAgedOut) || ($uid == 0 && $cookieExpired)) {
+                        parent::regenerate(true, 2 * 365 * 24 * 60 * 60); // two years
                     }
                     break;
                 case self::SECURITY_LEVEL_HIGH:
                 default:
-                    if ($lastused < $inactive) {
-                        parent::regenerate(true);
+                    if ($cookieExpired) {
+                        parent::regenerate(true, $this->cookieLifeTime);
                     }
                     break;
             }

@@ -77,7 +77,8 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
     public function isNecessary()
     {
         if (count($this->installedLocales) == 1) {
-            $this->writeParams(['locale' => $this->installedLocales[0]]);
+            $defaultLocale = array_values($this->installedLocales)[0];
+            $this->writeParams(['locale' => $defaultLocale]);
 
             return false;
         }

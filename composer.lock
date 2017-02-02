@@ -4191,7 +4191,9 @@
             "authors": [
                 {
                     "name": "Karma Dordrak",
-                    "email": "drak@zikula.org"
+                    "email": "drak@zikula.org",
+                    "homepage": "http://zikula.org",
+                    "role": "OO & PSR-4 migration"
                 },
                 {
                     "name": "Kyle Giovannetti",

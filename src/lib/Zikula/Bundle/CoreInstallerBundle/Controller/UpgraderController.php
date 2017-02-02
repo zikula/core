@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Zikula\Component\Wizard\FormHandlerInterface;
 use Zikula\Component\Wizard\Wizard;
 use Zikula\Component\Wizard\WizardCompleteInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\Response\PlainResponse;
 
 /**
@@ -33,8 +34,8 @@ class UpgraderController extends AbstractController
      */
     public function upgradeAction(Request $request, $stage)
     {
-        $currentVersion = $this->container->getParameter(\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
-        if (version_compare($currentVersion, \ZikulaKernel::VERSION, '=')) {
+        $currentVersion = $this->container->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
+        if (version_compare($currentVersion, ZikulaKernel::VERSION, '=')) {
             $stage = 'complete';
         }
         // notinstalled?

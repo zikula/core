@@ -13,10 +13,12 @@ namespace Zikula\Bundle\CoreInstallerBundle\Command;
 
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NullSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Common\Translator\TranslatorInterface;
 
 /**
@@ -128,7 +130,7 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
     private function errorCodeToMessage($key)
     {
         $messages = [
-            'phpsatisfied' => $this->translator->__f("You have got a problem! Your PHP version is %actual, which does not satisfy the Zikula system requirement of version %required or later.", ['%actual' => phpversion(), '%required' => \ZikulaKernel::PHP_MINIMUM_VERSION]),
+            'phpsatisfied' => $this->translator->__f("You have got a problem! Your PHP version is %actual, which does not satisfy the Zikula system requirement of version %required or later.", ['%actual' => phpversion(), '%required' => ZikulaKernel::PHP_MINIMUM_VERSION]),
             'datetimezone' => $this->translator->__("date.timezone is currently not set.  It needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin."),
             'pdo' => $this->translator->__("Your PHP installation doesn't have the PDO extension loaded."),
             'phptokens' => $this->translator->__("You have got a problem! Your PHP installation does not have the token functions available, but they are necessary for Zikula's output system."),
@@ -150,5 +152,17 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
     {
         parent::setContainer($container);
         $this->translator = $container->get('translator.default');
+    }
+
+    protected function printSettings($givenSettings, SymfonyStyle $io)
+    {
+        $rows = [];
+        foreach ($givenSettings as $name => $givenSetting) {
+            if (isset($this->settings[$name]['password']) && $this->settings[$name]['password']) {
+                $givenSetting = str_repeat("*", strlen($givenSetting));
+            }
+            $rows[] = [$name, $givenSetting];
+        }
+        $io->table([$this->translator->__('Param'), $this->translator->__('Value')], $rows);
     }
 }

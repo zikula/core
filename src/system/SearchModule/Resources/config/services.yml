@@ -1,7 +1,11 @@
 services:
     zikula_search_module.container.link_container:
         class: Zikula\SearchModule\Container\LinkContainer
-        arguments: ["@translator.default", "@jms_i18n_routing.router", "@zikula_permissions_module.api.permission", "@zikula_users_module.current_user"]
+        arguments:
+          - "@translator.default"
+          - "@jms_i18n_routing.router"
+          - "@zikula_permissions_module.api.permission"
+          - "@zikula_users_module.current_user"
         tags:
             - { name: zikula.link_container }
 
@@ -20,7 +24,13 @@ services:
 
     zikula_search_module.front_controller_listener:
         class: Zikula\SearchModule\Listener\FrontControllerListener
-        arguments: ["@router", "@zikula_permissions_module.api.permission", "@zikula_extensions_module.api.variable", "@zikula_core.common.theme.assets_header", "%installed%", "@=container.hasParameter('upgrading') ? parameter('upgrading') : false"]
+        arguments:
+          - "@router"
+          - "@zikula_permissions_module.api.permission"
+          - "@zikula_extensions_module.api.variable"
+          - "@zikula_core.common.theme.assets_header"
+          - "%installed%"
+          - "@=container.hasParameter('upgrading') ? parameter('upgrading') : false"
         tags:
             - { name: kernel.event_subscriber }
 
@@ -28,3 +38,6 @@ services:
         class: Zikula\SearchModule\Listener\ModuleEventListener
         tags:
             - { name: kernel.event_subscriber }
+
+    zikula_search_module.internal.searchable_module_collector:
+        class: Zikula\SearchModule\Collector\SearchableModuleCollector

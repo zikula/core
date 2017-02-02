@@ -11,15 +11,16 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Command;
 
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\AjaxUpgraderStage;
-use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
-use Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController;
-use Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\InitStage;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
+use Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController;
+use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
+use Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\AjaxUpgraderStage;
+use Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\InitStage;
 
 class UpgradeCommand extends AbstractCoreInstallerCommand
 {
@@ -61,7 +62,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $currentVersion = $this->getContainer()->getParameter(\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
+        $currentVersion = $this->getContainer()->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
         if (version_compare($currentVersion, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<=')) {
             $output->writeln($this->translator->__f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', ['%1$s' => $currentVersion, '%2$s' => UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
 
@@ -70,7 +71,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
 
         $io = new SymfonyStyle($input, $output);
         $io->title($this->translator->__('Zikula Upgrader Script'));
-        $io->section($this->translator->__f('*** UPGRADING TO ZIKULA CORE %version% ***', ['%version%' => \ZikulaKernel::VERSION]));
+        $io->section($this->translator->__f('*** UPGRADING TO ZIKULA CORE %version% ***', ['%version%' => ZikulaKernel::VERSION]));
         $env = $this->getContainer()->get('kernel')->getEnvironment();
         $io->text($this->translator->__f('Upgrading Zikula in %env% environment.', ['%env%' => $env]));
 
@@ -97,7 +98,10 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         }
 
         // get the settings from user input
-        $settings = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType', $input, $output, ['translator' => $this->translator]);
+        $settings = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType', $input, $output, [
+            'translator' => $this->translator,
+            'choices' => $this->getContainer()->get('zikula_settings_module.locale_api')->getSupportedLocaleNames()
+        ]);
         $data = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\LoginType', $input, $output, ['translator' => $this->translator]);
         foreach ($data as $k => $v) {
             $data[$k] = base64_encode($v); // encode so values are 'safe' for json
@@ -110,6 +114,8 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
             unset($data[$k]);
         }
         $settings = array_merge($settings, $data);
+        $this->printSettings($settings, $io);
+        $io->newLine();
 
         // write the parameters to custom_parameters.yml
         $yamlManager = new YamlDumper($this->getContainer()->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');

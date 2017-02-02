@@ -38,6 +38,13 @@ interface UserRepositoryInterface extends ObjectRepository, Selectable
     public function queryBySearchForm(array $formData);
 
     /**
+     * Find users for a search result
+     * @param array $words
+     * @return UserEntity[]
+     */
+    public function getSearchResults(array $words);
+
+    /**
      * @param array $filter
      * @param array $sort
      * @param int $limit

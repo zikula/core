@@ -162,6 +162,17 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 }
                 $this->entityManager->flush();
             case '3.9.6':
+                $blocks = $this->entityManager->getConnection()->executeQuery("SELECT * FROM blocks WHERE blocktype = 'Lang'");
+                if (count($blocks) > 0) {
+                    $this->entityManager->getConnection()->executeQuery("UPDATE blocks set bkey=?, blocktype=?, properties=? WHERE blocktype = 'Lang'", [
+                        'ZikulaSettingsModule:Zikula\SettingsModule\Block\LocaleBlock',
+                        'Locale',
+                        'a:0:{}'
+                    ]);
+                    $this->addFlash('success', $this->__('All instances of LangBlock have been converted to LocaleBlock.'));
+                }
+                $this->entityManager->getConnection()->executeQuery("UPDATE group_perms SET component = REPLACE(component, 'Languageblock', 'LocaleBlock') WHERE component LIKE 'Languageblock%'");
+            case '3.9.7':
                 // future upgrade routines
         }
 

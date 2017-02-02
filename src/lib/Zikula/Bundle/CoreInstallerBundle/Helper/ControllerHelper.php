@@ -12,12 +12,13 @@
 namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\Core\Exception\FatalErrorException;
-use Zikula\Component\Wizard\StageInterface;
-use Zikula\Bundle\CoreBundle\YamlDumper;
 use Symfony\Component\Filesystem\Exception\IOException;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\Bundle\CoreBundle\YamlDumper;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Component\Wizard\AbortStageException;
+use Zikula\Component\Wizard\StageInterface;
+use Zikula\Core\Exception\FatalErrorException;
 
 class ControllerHelper
 {
@@ -43,7 +44,7 @@ class ControllerHelper
     public function getTemplateGlobals(StageInterface $currentStage)
     {
         $globals = [
-            'version' => \ZikulaKernel::VERSION,
+            'version' => ZikulaKernel::VERSION,
             'currentstage' => $currentStage->getName()
         ];
 
@@ -120,7 +121,7 @@ class ControllerHelper
 
         $x = explode('.', str_replace('-', '.', phpversion()));
         $phpVersion = "$x[0].$x[1].$x[2]";
-        $results['phpsatisfied'] = version_compare($phpVersion, \ZikulaKernel::PHP_MINIMUM_VERSION, ">=");
+        $results['phpsatisfied'] = version_compare($phpVersion, ZikulaKernel::PHP_MINIMUM_VERSION, ">=");
 
         $results['pdo'] = extension_loaded('pdo');
         $isEnabled = @preg_match('/^\p{L}+$/u', 'TheseAreLetters');
@@ -150,7 +151,7 @@ class ControllerHelper
             return true;
         }
         $results['phpversion'] = phpversion();
-        $results['phpcoreminversion'] = \ZikulaKernel::PHP_MINIMUM_VERSION;
+        $results['phpcoreminversion'] = ZikulaKernel::PHP_MINIMUM_VERSION;
 
         return $results;
     }

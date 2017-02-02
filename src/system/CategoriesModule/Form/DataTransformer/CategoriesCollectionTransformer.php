@@ -13,6 +13,8 @@ namespace Zikula\CategoriesModule\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Form\Exception\InvalidConfigurationException;
+use Zikula\CategoriesModule\Entity\AbstractCategoryAssignment;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 
 /**
@@ -25,6 +27,10 @@ class CategoriesCollectionTransformer implements DataTransformerInterface
 
     public function __construct(array $options)
     {
+        $classParents = class_parents($options['entityCategoryClass']);
+        if (!in_array('Zikula\CategoriesModule\Entity\AbstractCategoryAssignment', $classParents)) {
+            throw new InvalidConfigurationException("Option 'entityCategoryClass' must extend Zikula\\CategoriesModule\\Entity\\AbstractCategoryAssignment");
+        }
         $this->entityCategoryClass = $options['entityCategoryClass'];
         $this->multiple = isset($options['multiple']) ? $options['multiple'] : false;
     }
@@ -58,8 +64,14 @@ class CategoriesCollectionTransformer implements DataTransformerInterface
             return $data;
         }
 
-        foreach ($value as $categoryEntity) {
-            $data['registry_' . $categoryEntity->getCategoryRegistryId()][] = $categoryEntity->getCategory();
+        /** @var AbstractCategoryAssignment $categoryAssignmentEntity */
+        foreach ($value as $categoryAssignmentEntity) {
+            $registryKey = 'registry_' . $categoryAssignmentEntity->getCategoryRegistryId();
+            if ($this->multiple) {
+                $data[$registryKey][] = $categoryAssignmentEntity->getCategory();
+            } else {
+                $data[$registryKey] = $categoryAssignmentEntity->getCategory();
+            }
         }
 
         return $data;

@@ -11,8 +11,8 @@
 
 namespace Zikula\BlocksModule\Helper;
 
-use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\BlocksModule\Entity\BlockEntity;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
 class InstallerHelper
 {
@@ -73,7 +73,7 @@ class InstallerHelper
         return $newFilter;
     }
 
-    public function upgradeBkeyToFqClassname(KernelInterface $kernel, BlockEntity $blockEntity)
+    public function upgradeBkeyToFqClassname(ZikulaHttpKernelInterface $kernel, BlockEntity $blockEntity)
     {
         $moduleName = $blockEntity->getModule()->getName();
         try {

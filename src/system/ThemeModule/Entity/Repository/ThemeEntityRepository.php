@@ -12,7 +12,7 @@
 namespace Zikula\ThemeModule\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ThemeModule\Entity\ThemeEntity;
 
 class ThemeEntityRepository extends EntityRepository
@@ -32,24 +32,24 @@ class ThemeEntityRepository extends EntityRepository
     private $filteredGetCache;
 
     /**
-     * @var KernelInterface
+     * @var ZikulaHttpKernelInterface
      */
     private $kernel;
 
     /**
-     * @param KernelInterface $kernel
+     * @param ZikulaHttpKernelInterface $kernel
      */
-    public function setKernel(KernelInterface $kernel)
+    public function setKernel(ZikulaHttpKernelInterface $kernel)
     {
         $this->kernel = $kernel;
     }
 
     /**
-     * @return KernelInterface
+     * @return ZikulaHttpKernelInterface
      */
     private function getKernel()
     {
-        if (!$this->kernel instanceof KernelInterface) {
+        if (!$this->kernel instanceof ZikulaHttpKernelInterface) {
             // no need to translate this message as it will only be seen by developers.
             $message = 'The "kernel" attribute is NULL. '
                 . 'Did you retrieved this repository using `$doctrine->getRepository()`? '

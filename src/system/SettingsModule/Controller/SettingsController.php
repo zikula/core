@@ -16,11 +16,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\SettingsModule\Form\Type\LocaleSettingsType;
@@ -38,9 +35,9 @@ class SettingsController extends AbstractController
      * @Theme("admin")
      * @Template
      *
-     * Set locale settings for entire site.
+     * Settings for entire site.
      *
-     * @return Response|RedirectResponse
+     * @return array|RedirectResponse
      */
     public function mainAction(Request $request)
     {
@@ -51,8 +48,8 @@ class SettingsController extends AbstractController
         $installedLanguageNames = $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames();
 
         $capabilityApi = $this->get('zikula_extensions_module.api.capability');
-        $profileModules = $capabilityApi->getExtensionsCapableOf(CapabilityApiInterface::PROFILE);
-        $messageModules = $capabilityApi->getExtensionsCapableOf(CapabilityApiInterface::MESSAGE);
+        $profileModules = $this->get('zikula_users_module.internal.profile_module_collector')->getKeys();
+        $messageModules = $this->get('zikula_users_module.internal.message_module_collector')->getKeys();
 
         $form = $this->createForm(MainSettingsType::class,
             $this->getSystemVars(),
@@ -90,7 +87,7 @@ class SettingsController extends AbstractController
      *
      * Set locale settings for entire site.
      *
-     * @return Response|RedirectResponse
+     * @return array|RedirectResponse
      */
     public function localeAction(Request $request)
     {
@@ -122,11 +119,9 @@ class SettingsController extends AbstractController
                     $this->get('zikula_extensions_module.api.variable')->del(VariableApi::CONFIG, 'language');
                 }
                 $this->setSystemVars($data);
-                // update the custom_parameters.yml file
-                $yamlManager = new YamlDumper($this->get('kernel')->getRootDir() .'/config');
-                $yamlManager->setParameter('locale', $data['language_i18n']);
+                $this->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'locale', $data['language_i18n']); // @todo which variable are we using?
 
-                $this->get('zikularoutesmodule.multilingual_routing_helper')->reloadMultilingualRoutingSettings(); // resets config/dynamic/generated.yml
+                $this->get('zikula_routes_module.multilingual_routing_helper')->reloadMultilingualRoutingSettings(); // resets config/dynamic/generated.yml & custom_parameters.yml
                 $this->addFlash('status', $this->__('Done! Localization configuration updated.'));
             }
             if ($form->get('cancel')->isClicked()) {
@@ -149,7 +144,7 @@ class SettingsController extends AbstractController
      *
      * Displays the content of {@see phpinfo()}.
      *
-     * @return Response symfony response object
+     * @return array
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
@@ -203,14 +198,18 @@ class SettingsController extends AbstractController
     }
 
     /**
-     * Prepare an array of module names and displaynames
-     * @param ExtensionEntity[] $modules
+     * Prepare an array of module names and displaynames with choices_as_values
+     * @param array $modules
      * @return array
      */
     private function formatModuleArrayForSelect(array $modules)
     {
         $return = [];
+        $extensionRepo = $this->get('zikula_extensions_module.extension_repository');
         foreach ($modules as $module) {
+            if (!($module instanceof ExtensionEntity)) {
+                $module = $extensionRepo->get($module);
+            }
             $return[$module->getDisplayname()] = $module->getName();
         }
         ksort($return);

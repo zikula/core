@@ -38,7 +38,7 @@ class ConfigType extends AbstractType
                 'empty_data' => 10,
                 'scale' => 0,
                 'attr' => [
-                    'max_length' => 3,
+                    'maxlength' => 3,
                     'min' => 1
                 ]
             ])
@@ -46,7 +46,9 @@ class ConfigType extends AbstractType
                 'label' => $translator->__('Number of characters to display in item summaries'),
                 'empty_data' => 255,
                 'scale' => 0,
-                'attr' => ['max_length' => 5]
+                'attr' => [
+                    'maxlength' => 5
+                ]
             ])
             ->add('plugins', ChoiceType::class, [
                 'label' => $translator->__('Disabled plugins'),
@@ -54,7 +56,8 @@ class ConfigType extends AbstractType
                 'empty_data' => [],
                 'choices' => $this->getPluginChoices($options['plugins']),
                 'expanded' => true,
-                'multiple' => true
+                'multiple' => true,
+                'required' => false
             ])
             ->add('opensearch_enabled', CheckboxType::class, [
                 'label' => $translator->__('Enable OpenSearch'),

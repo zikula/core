@@ -12,6 +12,7 @@
 namespace Zikula\UsersModule\Helper;
 
 use Symfony\Component\HttpFoundation\Session\Session;
+use Zikula\Bridge\HttpFoundation\ZikulaSessionStorage;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
@@ -105,7 +106,11 @@ class AccessHelper
         $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
         $user->setLastlogin($nowUTC);
         $this->userRepository->persistAndFlush($user);
-        $this->session->clear();
+        $lifetime = 0;
+        if ($rememberMe && $this->variableApi->getSystemVar('seclevel', ZikulaSessionStorage::SECURITY_LEVEL_MEDIUM) != ZikulaSessionStorage::SECURITY_LEVEL_HIGH) {
+            $lifetime = 2 * 365 * 24 * 60 * 60; // two years
+        }
+        $this->session->migrate(true, $lifetime);
         $this->session->set('uid', $user->getUid());
         if ($rememberMe) {
             $this->session->set('rememberme', 1);

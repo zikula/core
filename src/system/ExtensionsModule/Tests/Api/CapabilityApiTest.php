@@ -59,7 +59,6 @@ class CapabilityApiTest extends \PHPUnit_Framework_TestCase
         $this->assertNotFalse($this->api->isCapable('FazExtension', CapabilityApiInterface::HOOK_SUBSCRIBE_OWN));
         $this->assertFalse($this->api->isCapable('FooExtension', CapabilityApiInterface::USER));
         $this->assertFalse($this->api->isCapable('FooExtension', CapabilityApiInterface::CATEGORIZABLE));
-        $this->assertFalse($this->api->isCapable('BarExtension', CapabilityApiInterface::AUTHENTICATION));
     }
 
     /**
@@ -67,12 +66,13 @@ class CapabilityApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetCapabilitiesOf()
     {
-        $e = $this->api->getCapabilitiesOf('FooExtension');
+        $e = $this->api->getCapabilitiesOf('BarExtension');
         $this->assertTrue(is_array($e));
-        $this->assertCount(2, $e);
+        $this->assertCount(3, $e);
         $this->assertEquals([
-            CapabilityApiInterface::ADMIN => ['route' => 'foo_admin_route'],
-            CapabilityApiInterface::AUTHENTICATION => ['version' => '1.0']
+            CapabilityApiInterface::ADMIN => ['route' => 'bar_admin_route'],
+            CapabilityApiInterface::USER => ['route' => 'bar_user_route'],
+            CapabilityApiInterface::SEARCHABLE => ['class' => 'Acme\\BarExtension\\Search']
         ], $e);
         $e = $this->api->getCapabilitiesOf('NoneExtension');
         $this->assertTrue(is_array($e));
@@ -84,7 +84,6 @@ class CapabilityApiTest extends \PHPUnit_Framework_TestCase
         return [
             [CapabilityApiInterface::ADMIN, 3, ['FooExtension', 'BarExtension', 'BazExtension']],
             [CapabilityApiInterface::USER, 1, ['BarExtension']],
-            [CapabilityApiInterface::AUTHENTICATION, 1, ['FooExtension']],
             [CapabilityApiInterface::SEARCHABLE, 2, ['BarExtension', 'BazExtension']],
         ];
     }

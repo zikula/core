@@ -25,8 +25,6 @@ framework:
     trusted_proxies: ~
     session:
         name: "%zikula.session.name%"
-#        handler_id: zikula_core.legacy.session_handler
-#        storage_id: zikula_core.legacy.session_storage
         handler_id: zikula_core.bridge.http_foundation.doctrine_session_handler
         storage_id: zikula_core.bridge.http_foundation.zikula_session_storage
         cookie_httponly: true
@@ -156,6 +154,11 @@ stof_doctrine_extensions:
         softdeleteable:       Gedmo\SoftDeleteable\SoftDeleteableListener
         uploadable:           Gedmo\Uploadable\UploadableListener
         reference_integrity:  Gedmo\ReferenceIntegrity\ReferenceIntegrityListener
+
+jms_i18n_routing:
+    strategy: prefix_except_default
+    cookie:
+        enabled: false
 
 bazinga_js_translation:
     default_domain: zikula_javascript

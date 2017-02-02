@@ -28,7 +28,7 @@ class VariableApiTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $kernel = $this
-            ->getMockBuilder('Symfony\Component\HttpKernel\Kernel')
+            ->getMockBuilder('Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface')
             ->disableOriginalConstructor()
             ->getMock()
         ;

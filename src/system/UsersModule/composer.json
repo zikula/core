@@ -26,8 +26,7 @@
             "capabilities": {
                 "admin": {"route": "zikulausersmodule_useradministration_list"},
                 "user": {"route": "zikulausersmodule_account_menu"},
-                "hook_subscriber": {"class": "Zikula\\UsersModule\\Container\\HookContainer"},
-                "searchable": {"class": "Zikula\\UsersModule\\Helper\\SearchHelper"}
+                "hook_subscriber": {"class": "Zikula\\UsersModule\\Container\\HookContainer"}
             },
             "securityschema": {
                 "ZikulaUsersModule::": "Uname::User ID",

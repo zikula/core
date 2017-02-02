@@ -46,3 +46,14 @@ services:
           - "@zikula_settings_module.locale_api"
         tags:
             - { name: zikula.link_container }
+
+    zikula_users_module.internal.profile_module_collector:
+        class: Zikula\UsersModule\Collector\ProfileModuleCollector
+        arguments:
+          - "@zikula_users_module.user_repository"
+          - "@zikula_users_module.current_user"
+          - "@zikula_extensions_module.api.variable"
+
+    zikula_users_module.internal.message_module_collector:
+        class: Zikula\UsersModule\Collector\MessageModuleCollector
+        arguments: ["@zikula_extensions_module.api.variable"]

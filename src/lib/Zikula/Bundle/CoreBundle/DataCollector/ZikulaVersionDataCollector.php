@@ -14,6 +14,7 @@ namespace Zikula\Bundle\CoreBundle\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\ThemeModule\Engine\Engine;
 
 class ZikulaVersionDataCollector extends DataCollector
@@ -35,7 +36,7 @@ class ZikulaVersionDataCollector extends DataCollector
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
         $this->data = [
-            'version' => \ZikulaKernel::VERSION,
+            'version' => ZikulaKernel::VERSION,
             'ghZikulaCoreUrl' => 'https://www.github.com/zikula/core',
             'ghZikulaDocsUrl' => 'https://www.github.com/zikula/zikula-docs',
             'ghZikulaBootstrapDocsUrl' => 'http://zikula.github.io/bootstrap-docs'

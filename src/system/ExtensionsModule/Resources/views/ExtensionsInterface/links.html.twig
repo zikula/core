@@ -11,7 +11,7 @@
                 </ul>
             </li>
         {% else %}
-            <li {% if menu_css.menuItemClass is not empty and current_path != link.url %}class="{{ menu_css.menuItemClass }}{% if current_path == link.url %} active{% endif %}"{% endif %}>
+            <li class="{% if current_path == link.url %}active{% endif %} {% if menu_css.menuItemClass is not empty and current_path != link.url %}{{ menu_css.menuItemClass }}{% endif %}">
                 <a href="{{ link.url }}" title="{{ link.title|default('') }}"{% if link.id is defined %} id="{{ link.id }}"{% endif %}{% if link.class is defined %} class="{{ link.class }}"{% endif %}>{% if link.icon is defined %}<i
                         class="fa fa-{{ link.icon }}"></i> {% endif %}{{ link.text }}</a>
             </li>

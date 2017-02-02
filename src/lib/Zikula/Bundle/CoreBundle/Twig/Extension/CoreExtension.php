@@ -92,8 +92,6 @@ class CoreExtension extends \Twig_Extension
             new \Twig_SimpleFilter('yesNo', [$this, 'yesNo']),
             new \Twig_SimpleFilter('php', [$this, 'applyPhp']),
             new \Twig_SimpleFilter('protectMail', [$this, 'protectMailAddress'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFilter('profileLinkByUserId', [$this, 'profileLinkByUserId'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFilter('profileLinkByUserName', [$this, 'profileLinkByUserName'], ['is_safe' => ['html']])
         ];
     }
 
@@ -234,112 +232,6 @@ class CoreExtension extends \Twig_Extension
         );
 
         return $string;
-    }
-
-    /**
-     * Create a link to a users profile from the UID.
-     *
-     * Examples
-     *
-     *   Simple version, shows the username
-     *   {{ uid|profileLinkByUserId() }}
-     *   Simple version, shows username, using class="classname"
-     *   {{ uid|profileLinkByUserId(class='classname') }}
-     *   Using profile.gif instead of username, no class
-     *   {{ uid|profileLinkByUserId(image='images/profile.gif') }}
-     *
-     * @param integer $userId    The users uid
-     * @param string  $class     The class name for the link (optional)
-     * @param string  $image     Path to the image to show instead of the username (optional)
-     * @param integer $maxLength If set then user names are truncated to x chars
-     * @return string The output
-     */
-    public function profileLinkByUserId($userId, $class = '', $image = '', $maxLength = 0)
-    {
-        if (empty($userId) || (int)$userId < 1) {
-            return $userId;
-        }
-
-        return $this->determineProfileLink((int)$userId, null, $class, $image, $maxLength);
-    }
-
-    /**
-     * Create a link to a users profile from the username.
-     *
-     * Examples
-     *
-     *   Simple version, shows the username
-     *   {{ username|profileLinkByUserName() }}
-     *   Simple version, shows username, using class="classname"
-     *   {{ username|profileLinkByUserName(class='classname') }}
-     *   Using profile.gif instead of username, no class
-     *   {{ username|profileLinkByUserName('image'='images/profile.gif') }}
-     *
-     * @param string  $userName  The users name
-     * @param string  $class     The class name for the link (optional)
-     * @param string  $image     Path to the image to show instead of the username (optional)
-     * @param integer $maxLength If set then user names are truncated to x chars
-     * @return string The output
-     */
-    public function profileLinkByUserName($userName, $class = '', $image = '', $maxLength = 0)
-    {
-        if (empty($userName)) {
-            return $userName;
-        }
-
-        return $this->determineProfileLink(null, $userName, $class, $image, $maxLength);
-    }
-
-    /**
-     * Internal function used by profileLinkByUserId() and profileLinkByUserName().
-     *
-     * @param integer $userId    The users uid
-     * @param string  $userName  The users name
-     * @param string  $class     The class name for the link (optional)
-     * @param string  $imagePath Path to the image to show instead of the username (optional)
-     * @param integer $maxLength If set then user names are truncated to x chars
-     * @return string The output
-     */
-    private function determineProfileLink($userId = null, $userName = null, $class = '', $imagePath = '', $maxLength = 0)
-    {
-        if (!isset($userId) && !isset($userName)) {
-            throw new \InvalidArgumentException();
-        }
-        if ($userId) {
-            $user = $this->container->get('zikula_users_module.user_repository')->find($userId);
-        } else {
-            $user = $this->container->get('zikula_users_module.user_repository')->findOneBy(['uname' => $userName]);
-        }
-        if (!$user) {
-            return $userId . $userName; // one or the other is empty
-        }
-
-        $profileModule = $this->container->get('zikula_extensions_module.api.variable')->getSystemVar('profilemodule', '');
-        if (empty($profileModule) || !$this->container->get('kernel')->isBundle($profileModule)) {
-            return $user->getUname();
-        }
-
-        // @todo replace with ProfileInterface usage
-        $userDisplayName = \ModUtil::apiFunc($profileModule, 'user', 'getUserDisplayName', ['uid' => $user->getUid()]);
-        if (empty($userDisplayName)) {
-            $userDisplayName = $user->getUname();
-        }
-        $class = !empty($class) ? ' class="' . htmlspecialchars($class, ENT_QUOTES) . '"' : '';
-
-        if (!empty($imagePath)) {
-            $show = '<img src="' . htmlspecialchars($imagePath, ENT_QUOTES) . '" alt="' . htmlspecialchars($userDisplayName, ENT_QUOTES) . '" />';
-        } elseif ($maxLength > 0) {
-            // truncate the user name to $maxLength chars
-            $length = strlen($userDisplayName);
-            $truncEnd = ($maxLength > $length) ? $length : $maxLength;
-            $show  = htmlspecialchars(substr($userDisplayName, 0, $truncEnd), ENT_QUOTES);
-        } else {
-            $show = htmlspecialchars($userDisplayName, ENT_QUOTES);
-        }
-        // @todo replace with ProfileInterface usage
-        $href = htmlspecialchars(\ModUtil::url($profileModule, 'user', 'view', ['uid' => $userId], null, null, true));
-
-        return '<a' . $class . ' title="' . (__('Profile')) . ': ' . htmlspecialchars($userDisplayName, ENT_QUOTES) . '" href="' . $href . '">' . $show . '</a>';
     }
 
     /**

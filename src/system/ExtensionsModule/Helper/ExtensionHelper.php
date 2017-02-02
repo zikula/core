@@ -17,6 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\Bundle\CoreBundle\Console\Application;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\AbstractBundle;
 use Zikula\Core\CoreEvents;
@@ -161,7 +162,7 @@ class ExtensionHelper
     public function uninstall(ExtensionEntity $extension)
     {
         if ($extension->getState() == ExtensionApi::STATE_NOTALLOWED
-            || ($extension->getType() == self::TYPE_SYSTEM && $extension->getName() != 'ZikulaPageLockModule')) {
+            || (ZikulaKernel::isCoreModule($extension->getName()))) {
             throw new \RuntimeException($this->translator->__f('Error! No permission to uninstall %s.', ['%s' => $extension->getDisplayname()]));
         }
         if ($extension->getState() == ExtensionApi::STATE_UNINITIALISED) {
@@ -257,7 +258,7 @@ class ExtensionHelper
     {
         $osDir = $extension->getDirectory();
         $scanner = new Scanner();
-        $directory = \ZikulaKernel::isCoreModule($extension->getName()) ? 'system' : 'modules';
+        $directory = ZikulaKernel::isCoreModule($extension->getName()) ? 'system' : 'modules';
         $scanner->scan(["$directory/$osDir"], 1);
         $modules = $scanner->getModulesMetaData(true);
         /** @var $moduleMetaData \Zikula\Bundle\CoreBundle\Bundle\MetaData */

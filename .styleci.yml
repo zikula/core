@@ -4,11 +4,10 @@ enabled:
   - short_array_syntax
 
 disabled:
+  - cast_spaces
   - concat_without_spaces
-  - empty_return
-  - multiline_array_trailing_comma
+  - no_blank_lines_after_phpdoc
   - no_blank_lines_after_throw
-  - no_empty_lines_after_phpdocs
   - php_unit_fqcn_annotation
   - phpdoc_align
   - phpdoc_no_empty_return
@@ -19,7 +18,7 @@ disabled:
   - phpdoc_type_to_var
   - pre_increment
   - single_quote
-  - spaces_cast
+  - trailing_comma_in_multiline_array
   - unalign_double_arrow
   - unalign_equals
 

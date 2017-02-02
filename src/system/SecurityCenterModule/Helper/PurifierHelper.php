@@ -11,17 +11,17 @@
 
 namespace Zikula\SecurityCenterModule\Helper;
 
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
 class PurifierHelper
 {
     /**
-     * @var KernelInterface
+     * @var ZikulaHttpKernelInterface
      */
     private $kernel;
 
@@ -31,7 +31,7 @@ class PurifierHelper
     private $session;
 
     /**
-     * @var Translator
+     * @var TranslatorInterface
      */
     private $translator;
 
@@ -43,12 +43,12 @@ class PurifierHelper
     /**
      * PurifierHelper constructor.
      *
-     * @param KernelInterface     $kernel      Kernel service instance
-     * @param SessionInterface    $session     Session service instance
-     * @param TranslatorInterface $translator  Translator service instance
-     * @param VariableApi         $variableApi VariableApi service instance
+     * @param ZikulaHttpKernelInterface $kernel Kernel service instance
+     * @param SessionInterface $session Session service instance
+     * @param TranslatorInterface $translator Translator service instance
+     * @param VariableApi $variableApi VariableApi service instance
      */
-    public function __construct(KernelInterface $kernel, SessionInterface $session, TranslatorInterface $translator, VariableApi $variableApi)
+    public function __construct(ZikulaHttpKernelInterface $kernel, SessionInterface $session, TranslatorInterface $translator, VariableApi $variableApi)
     {
         $this->kernel = $kernel;
         $this->session = $session;

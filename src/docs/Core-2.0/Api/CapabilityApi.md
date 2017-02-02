@@ -24,13 +24,9 @@ classname: \Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface
 This interface defines several constants for use in the Core and Extensions. The **strings** should be used
 when defining the capabilities array in an extension's `composer.json` file.
 
-    CapabilityApiInterface::AUTHENTICATION = 'authentication';
     CapabilityApiInterface::HOOK_SUBSCRIBER = 'hook_subscriber';
     CapabilityApiInterface::HOOK_PROVIDER = 'hook_provider';
     CapabilityApiInterface::HOOK_SUBSCRIBE_OWN = 'subscribe_own';
-    CapabilityApiInterface::PROFILE = 'profile';
-    CapabilityApiInterface::MESSAGE = 'message';
-    CapabilityApiInterface::SEARCHABLE = 'searchable';
     CapabilityApiInterface::CATEGORIZABLE = 'categorizable';
     CapabilityApiInterface::USER = 'user';
     CapabilityApiInterface::ADMIN = 'admin';
@@ -48,12 +44,8 @@ Although no extension would implement every capability, here is a full example o
         "zikula": {
             "url": "
             "capabilities": {
-                "authentication": {"version": "1.0"},
                 "hook_subscriber": {"class": "Acme\\FooModule\\Container\\HookContainer", "subscribe_own": true},
                 "hook_provider": {"class": "Acme\\FooModule\\Container\\HookContainer"},
-                "profile": {"version": "1.0"},
-                "message": {"version": "1.0"},
-                "searchable": {"class": "Acme\\FooModule\\Helper\\SearchHelper"},
                 "categorizable": {"entities": ["Acme\\FooModule\\Entity\\FooEntity", "Acme\\FooModule\\Entity\\BarEntity"]},
                 "user": {"route": "acmefoomodule_user_index"}
                 "admin": {"route": "acmefoomodule_admin_index"}

@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\CategoriesModule\Api\CategoryRegistryApi;
 use Zikula\CategoriesModule\Form\DataTransformer\CategoriesCollectionTransformer;
@@ -45,27 +46,65 @@ class CategoriesType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (empty($options['entityCategoryClass']) || empty($options['module']) || empty($options['entity'])) {
-            throw new \InvalidArgumentException('empty argument!');
+        foreach (['entityCategoryClass', 'module', 'entity'] as $requiredOptionName) {
+            if (empty($options[$requiredOptionName])) {
+                throw new MissingOptionsException(sprintf('Missing required option: %s', $requiredOptionName));
+            }
         }
-
         $registries = $this->categoryRegistryApi->getModuleCategoryIds($options['module'], $options['entity'], 'id');
 
         foreach ($registries as $registryId => $categoryId) {
-            $builder->add('registry_' . $registryId, EntityType::class, [
-                'label_attr' => ['class' => 'hidden'],
-                'attr' => $options['attr'],
-                'required' => $options['required'],
-                'multiple' => $options['multiple'],
-                'class' => 'ZikulaCategoriesModule:CategoryEntity',
-                'property' => 'name',
-                'query_builder' => function (EntityRepository $repo) use ($categoryId) {
-                    //TODO: (move to)/use own entity repository after CategoryUtil migration
+            // default behaviour
+            $queryBuilderClosure = function (EntityRepository $repo) use ($categoryId) {
+                //TODO: (move to)/use own entity repository
+                return $repo->createQueryBuilder('e')
+                            ->where('e.parent = :parentId')
+                            ->setParameter('parentId', (int) $categoryId);
+            };
+            $choiceLabelClosure = function ($category) {
+                return $category->getName();
+            };
+            if (true === $options['includeGrandChildren']) {
+                // perform one recursive iteration
+                $rootCategoryId = $categoryId;
+                $queryBuilderClosure = function (EntityRepository $repo) use ($categoryId) {
+                    //TODO: (move to)/use own entity repository
+                    $categoryIds = $repo->createQueryBuilder('e')
+                        ->select('e.id')
+                        ->where('e.parent = :parentId')
+                        ->setParameter('parentId', (int) $categoryId)
+                        ->getQuery()
+                        ->getResult();
+                    $categoryIds[] = $categoryId;
+
                     return $repo->createQueryBuilder('e')
-                                ->where('e.parent = :parentId')
-                                ->setParameter('parentId', (int) $categoryId);
-                }
-            ]);
+                                ->where('e.parent IN (:parentIds)')
+                                ->setParameter('parentIds', $categoryIds)
+                                ->orderBy('e.sort_value');
+                };
+                $choiceLabelClosure = function ($category) use ($categoryId) {
+                    $isMainLevel = $category->getParent()->getId() == $categoryId;
+
+                    $indent = $isMainLevel ? '' : '|--';
+
+                    return $indent . ' ' . $category->getName();
+                };
+            }
+
+            $builder->add(
+                'registry_' . $registryId,
+                EntityType::class,
+                [
+                    'em' => $options['em'],
+                    'label_attr' => !$options['expanded'] ? ['class' => 'hidden'] : [],
+                    'attr' => $options['attr'],
+                    'required' => $options['required'],
+                    'multiple' => $options['multiple'],
+                    'expanded' => $options['expanded'],
+                    'class' => 'Zikula\CategoriesModule\Entity\CategoryEntity',
+                    'choice_label' => $choiceLabelClosure,
+                    'query_builder' => $queryBuilderClosure
+                ]);
         }
 
         $builder->addViewTransformer(new CategoriesCollectionTransformer($options), true);
@@ -89,9 +128,12 @@ class CategoriesType extends AbstractType
             'csrf_protection' => false,
             'attr' => [],
             'multiple' => false,
+            'expanded' => false,
+            'includeGrandChildren' => false,
             'module' => '',
             'entity' => '',
-            'entityCategoryClass' => ''
+            'entityCategoryClass' => '',
+            'em' => null
         ]);
     }
 }

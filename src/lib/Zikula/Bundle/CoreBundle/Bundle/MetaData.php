@@ -150,7 +150,9 @@ class MetaData implements \ArrayAccess
     {
         $this->confirmTranslator();
 
-        return $this->__(/** @Ignore */$this->description);
+        $description = $this->__(/** @Ignore */$this->description);
+
+        return (empty($description)) ? $this->description : $description;
     }
 
     public function setDescription($description)
@@ -167,7 +169,9 @@ class MetaData implements \ArrayAccess
     {
         $this->confirmTranslator();
 
-        return $this->__(/** @Ignore */$this->displayName);
+        $display_name = $this->__(/** @Ignore */$this->displayName);
+
+        return (empty($display_name)) ? $this->displayName : $display_name;
     }
 
     public function setDisplayName($name)
@@ -179,7 +183,9 @@ class MetaData implements \ArrayAccess
     {
         $this->confirmTranslator();
 
-        return $translated ? $this->__(/** @Ignore */$this->url) : $this->url;
+        $url = $this->__(/** @Ignore */$this->url);
+
+        return $translated ? ((empty($url)) ? $this->$url : $url) : $this->url;
     }
 
     public function setUrl($url)
