@@ -46,12 +46,13 @@ CHANGELOG - ZIKULA 1.4.x
     - Added composer event handler to manually copy vendor assets to the web-dir.
     - Added `expanded` and `includeGrandChildren` options to `CategoriesType` (#3410).
     - Added \Zikula\SearchModule\SearchableInterface and DI service tag collector to determine a module's searchability (#2996).
+    - Added dimsemenov/Magnific-Popup as a successor for bootstrap-media-lightbox (#3362).
 
  - Vendor updates:
     - doctrine dbal updated from 2.5.5 to 2.5.10
     - liip/imagine-bundle updated from 1.6.0 to 1.7.1
     - sensio/distribution-bundle updated from 5.0.16 to 5.0.18
-    - sensio/framework-extra-bundle updated from 3.0.18 to 3.0.19
+    - sensio/framework-extra-bundle updated from 3.0.18 to 3.0.20
     - symfony updated from 2.8.15 to 2.8.16
     - symfony/monolog-bundle updated from 2.7.1 to 2.12.1
     - twig updated from 1.30.0 to 1.31.0

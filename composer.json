@@ -79,6 +79,7 @@
         "zikula/jquery-minicolors-bundle": "dev-master",
         "bootstrap-plus/bootstrap-media-lightbox": "3.*",
         "bootstrap-plus/bootstrap-jqueryui": "dev-master",
+        "dimsemenov/magnific-popup": "1.*",
         "twitter/typeahead.js": "1.*",
         "vakata/jstree": "3.*",
         "afarkas/html5shiv": "3.7.*",
