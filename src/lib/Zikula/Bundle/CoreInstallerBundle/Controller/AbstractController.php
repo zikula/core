@@ -109,15 +109,13 @@ abstract class AbstractController
      */
     protected function reSyncAndActivateModules()
     {
-        $extensionsInFileSystem = $this->container->get('zikula_extensions_module.bundle_sync_helper')->scanForBundles(['system']);
+        $extensionsInFileSystem = $this->container->get('zikula_extensions_module.bundle_sync_helper')->scanForBundles();
         $this->container->get('zikula_extensions_module.bundle_sync_helper')->syncExtensions($extensionsInFileSystem);
 
         /** @var ExtensionEntity[] $extensions */
-        $extensions = $this->container->get('zikula_extensions_module.extension_repository')->findAll();
+        $extensions = $this->container->get('zikula_extensions_module.extension_repository')->findBy(['name' => array_keys(ZikulaKernel::$coreModules)]);
         foreach ($extensions as $extension) {
-            if (ZikulaKernel::isCoreModule($extension->getName())) {
-                $extension->setState(ExtensionApi::STATE_ACTIVE);
-            }
+            $extension->setState(ExtensionApi::STATE_ACTIVE);
         }
         $this->container->get('doctrine')->getManager()->flush();
 
