@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "94ddece4107bb4e3f111a2eb5bce3b17",
+    "content-hash": "2e1452b37ceffe250e605e63433fc733",
     "packages": [
         {
             "name": "abeautifulsite/jquery-minicolors",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/claviska/jquery-minicolors.git",
-                "reference": "8a0b82ca10052fcaec4a3e6751c23c9af3e157cd"
+                "reference": "53a264de0d44222cbc0522c81936d13072465749"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/claviska/jquery-minicolors/zipball/8a0b82ca10052fcaec4a3e6751c23c9af3e157cd",
-                "reference": "8a0b82ca10052fcaec4a3e6751c23c9af3e157cd",
+                "url": "https://api.github.com/repos/claviska/jquery-minicolors/zipball/53a264de0d44222cbc0522c81936d13072465749",
+                "reference": "53a264de0d44222cbc0522c81936d13072465749",
                 "shasum": ""
             },
             "type": "component",
@@ -40,7 +40,7 @@
             ],
             "description": "jQuery MiniColors Plugin",
             "homepage": "http://www.abeautifulsite.net/",
-            "time": "2016-09-20 05:09:10"
+            "time": "2017-01-15 00:36:13"
         },
         {
             "name": "afarkas/html5shiv",
@@ -207,37 +207,6 @@
             "description": "A jqueryui version for bootstrap3.",
             "homepage": "http://bootstrap-plus.github.io/bootstrap-jqueryui/",
             "time": "2014-06-27 20:29:52"
-        },
-        {
-            "name": "bootstrap-plus/bootstrap-media-lightbox",
-            "version": "v3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/bootstrap-plus/bootstrap-media-lightbox.git",
-                "reference": "465cc2b4109995862c2997ffacd6905c622a4661"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/bootstrap-plus/bootstrap-media-lightbox/zipball/465cc2b4109995862c2997ffacd6905c622a4661",
-                "reference": "465cc2b4109995862c2997ffacd6905c622a4661",
-                "shasum": ""
-            },
-            "type": "component",
-            "extra": {
-                "component": {
-                    "files": [
-                        "bootstrap-media-lightbox.js",
-                        "bootstrap-media-lightbox.min.js",
-                        "bootstrap-media-lightbox.css"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "A lightweight and borderless media lightbox extension for bootstrap3. It supports single images, image galleries, videos and iframes.",
-            "time": "2015-08-27T11:23:36+00:00"
         },
         {
             "name": "components/bootstrap",
@@ -855,16 +824,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "v2.5.6",
+            "version": "v2.5.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "a526d0df58daa8ab6802244bf3227f532e0deb45"
+                "reference": "fc376f7a61498e18520cd6fa083752a4ca08072b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/a526d0df58daa8ab6802244bf3227f532e0deb45",
-                "reference": "a526d0df58daa8ab6802244bf3227f532e0deb45",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/fc376f7a61498e18520cd6fa083752a4ca08072b",
+                "reference": "fc376f7a61498e18520cd6fa083752a4ca08072b",
                 "shasum": ""
             },
             "require": {
@@ -922,7 +891,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2016-12-04T05:53:43+00:00"
+            "time": "2017-01-23T23:17:10+00:00"
         },
         {
             "name": "doctrine/doctrine-bundle",
@@ -1401,12 +1370,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "f2ad0618db4f667f127da2c401ef9d0e7d339f88"
+                "reference": "d4a96463efe5d31f52fec0dad6b7871060862dfa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/f2ad0618db4f667f127da2c401ef9d0e7d339f88",
-                "reference": "f2ad0618db4f667f127da2c401ef9d0e7d339f88",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d4a96463efe5d31f52fec0dad6b7871060862dfa",
+                "reference": "d4a96463efe5d31f52fec0dad6b7871060862dfa",
                 "shasum": ""
             },
             "require": {
@@ -1440,7 +1409,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2017-01-06 17:02:37"
+            "time": "2017-01-19 17:28:40"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -2220,16 +2189,16 @@
         },
         {
             "name": "liip/imagine-bundle",
-            "version": "1.7.0",
+            "version": "1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "2b0e6c614be4a79026a3b64d32bc5e9735de35e0"
+                "reference": "d653f4d22b33c2c2870cb87df8a32508186a799a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/2b0e6c614be4a79026a3b64d32bc5e9735de35e0",
-                "reference": "2b0e6c614be4a79026a3b64d32bc5e9735de35e0",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/d653f4d22b33c2c2870cb87df8a32508186a799a",
+                "reference": "d653f4d22b33c2c2870cb87df8a32508186a799a",
                 "shasum": ""
             },
             "require": {
@@ -2274,7 +2243,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.6.x-dev"
+                    "dev-master": "1.7.x-dev"
                 }
             },
             "autoload": {
@@ -2298,20 +2267,20 @@
                 "image",
                 "imagine"
             ],
-            "time": "2017-01-08T18:53:27+00:00"
+            "time": "2017-01-20T01:55:04+00:00"
         },
         {
             "name": "matthiasnoback/symfony-console-form",
-            "version": "v2.0.2",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/matthiasnoback/symfony-console-form.git",
-                "reference": "7125849537045710d1d92a61837d677f9dac33b9"
+                "reference": "61c6865d6c24205222be4a13cf2bbab9bcad1843"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthiasnoback/symfony-console-form/zipball/7125849537045710d1d92a61837d677f9dac33b9",
-                "reference": "7125849537045710d1d92a61837d677f9dac33b9",
+                "url": "https://api.github.com/repos/matthiasnoback/symfony-console-form/zipball/61c6865d6c24205222be4a13cf2bbab9bcad1843",
+                "reference": "61c6865d6c24205222be4a13cf2bbab9bcad1843",
                 "shasum": ""
             },
             "require": {
@@ -2322,11 +2291,11 @@
             "require-dev": {
                 "beberlei/assert": "~2.1",
                 "behat/behat": "~3.0",
-                "fabpot/php-cs-fixer": "^1.10",
-                "symfony/console": "~2.8|~3.0",
+                "friendsofphp/php-cs-fixer": "^1.10",
+                "phpunit/phpunit": "^4.8",
                 "symfony/finder": "~2.8|~3.0",
-                "symfony/form": "~2.8|~3.0",
                 "symfony/framework-bundle": "~2.8|~3.0",
+                "symfony/security": "~2.8|~3.0",
                 "symfony/validator": "~2.8|~3.0",
                 "symfony/yaml": "~2.8|~3.0"
             },
@@ -2354,7 +2323,7 @@
                 "form",
                 "symfony"
             ],
-            "time": "2016-06-18T18:47:26+00:00"
+            "time": "2017-02-01T18:57:36+00:00"
         },
         {
             "name": "matthiasnoback/symfony-service-definition-validator",
@@ -2969,12 +2938,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "2ea870f3cf472658595e1679d88474bed732efb2"
+                "reference": "a105a8fa293a8245bf9a308954547b69b6383105"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/2ea870f3cf472658595e1679d88474bed732efb2",
-                "reference": "2ea870f3cf472658595e1679d88474bed732efb2",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/a105a8fa293a8245bf9a308954547b69b6383105",
+                "reference": "a105a8fa293a8245bf9a308954547b69b6383105",
                 "shasum": ""
             },
             "require": {
@@ -3028,7 +2997,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2017-01-02 20:43:55"
+            "time": "2017-02-01 16:00:09"
         },
         {
             "name": "sensio/generator-bundle",
@@ -3901,16 +3870,16 @@
         },
         {
             "name": "twitter/typeahead.js",
-            "version": "v1.1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/corejavascript/typeahead.js.git",
-                "reference": "a47d4b5cea82178ecb3aee80fb63d95465762e44"
+                "reference": "47d46b40cb834d8285ac9328c4b436e5eccf7197"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/corejavascript/typeahead.js/zipball/a47d4b5cea82178ecb3aee80fb63d95465762e44",
-                "reference": "a47d4b5cea82178ecb3aee80fb63d95465762e44",
+                "url": "https://api.github.com/repos/corejavascript/typeahead.js/zipball/47d46b40cb834d8285ac9328c4b436e5eccf7197",
+                "reference": "47d46b40cb834d8285ac9328c4b436e5eccf7197",
                 "shasum": ""
             },
             "type": "library",
@@ -3931,9 +3900,9 @@
             ],
             "support": {
                 "issues": "https://github.com/twitter/typeahead.js/issues",
-                "source": "https://github.com/corejavascript/typeahead.js/tree/v1.1.0"
+                "source": "https://github.com/corejavascript/typeahead.js/tree/master"
             },
-            "time": "2016-12-19T15:11:01+00:00"
+            "time": "2017-01-12T20:05:56+00:00"
         },
         {
             "name": "vakata/jstree",
@@ -4417,12 +4386,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "dc54a72c493ddb424e4534ef29576b4ff0568780"
+                "reference": "95df4ad0a2035da2748dbcdddcf0e0ab53a081df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/dc54a72c493ddb424e4534ef29576b4ff0568780",
-                "reference": "dc54a72c493ddb424e4534ef29576b4ff0568780",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/95df4ad0a2035da2748dbcdddcf0e0ab53a081df",
+                "reference": "95df4ad0a2035da2748dbcdddcf0e0ab53a081df",
                 "shasum": ""
             },
             "require": {
@@ -4477,7 +4446,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2016-12-31 15:11:48"
+            "time": "2017-01-15 09:31:58"
         },
         {
             "name": "zikula/profile-module",
@@ -4485,12 +4454,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "a764e15ce5ce8338cbc9e601c7431699d53987e1"
+                "reference": "e493c86bccddf8de3f0cea267a5bbc26a028c16a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/a764e15ce5ce8338cbc9e601c7431699d53987e1",
-                "reference": "a764e15ce5ce8338cbc9e601c7431699d53987e1",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/e493c86bccddf8de3f0cea267a5bbc26a028c16a",
+                "reference": "e493c86bccddf8de3f0cea267a5bbc26a028c16a",
                 "shasum": ""
             },
             "require": {
@@ -4551,7 +4520,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2016-12-31 14:52:24"
+            "time": "2017-01-15 12:44:04"
         },
         {
             "name": "zikula/wizard",

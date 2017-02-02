@@ -68,7 +68,6 @@
         "zikula/bootstrap-bundle": "dev-master",
         "zikula/fontawesome-bundle": "dev-master",
         "zikula/jquery-minicolors-bundle": "dev-master",
-        "bootstrap-plus/bootstrap-media-lightbox": "3.*",
         "bootstrap-plus/bootstrap-jqueryui": "dev-master",
         "twitter/typeahead.js": "1.*",
         "vakata/jstree": "3.*",
