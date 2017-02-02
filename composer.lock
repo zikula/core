@@ -4191,9 +4191,7 @@
             "authors": [
                 {
                     "name": "Karma Dordrak",
-                    "email": "drak@zikula.org",
-                    "homepage": "http://zikula.org",
-                    "role": "OO & PSR-4 migration"
+                    "email": "drak@zikula.org"
                 },
                 {
                     "name": "Kyle Giovannetti",
@@ -4622,7 +4620,7 @@
                 }
             ],
             "description": "This module generates code for you",
-            "time": "2016-12-28T08:22:40+00:00"
+            "time": "2016-12-28 08:22:40"
         }
     ],
     "aliases": [],
