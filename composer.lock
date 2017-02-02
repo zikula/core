@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e1452b37ceffe250e605e63433fc733",
+    "content-hash": "5f5d5826382a9439417283c21228fd43",
     "packages": [
         {
             "name": "abeautifulsite/jquery-minicolors",
@@ -544,6 +544,26 @@
                 "zikula"
             ],
             "time": "2016-08-13T20:53:52+00:00"
+        },
+        {
+            "name": "dimsemenov/magnific-popup",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dimsemenov/Magnific-Popup.git",
+                "reference": "6b7a8088783cbce01034414c1fd2d8e1889093ae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dimsemenov/Magnific-Popup/zipball/6b7a8088783cbce01034414c1fd2d8e1889093ae",
+                "reference": "6b7a8088783cbce01034414c1fd2d8e1889093ae",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Light and responsive lightbox script with focus on performance.",
+            "homepage": "http://dimsemenov.com/plugins/magnific-popup/",
+            "time": "2016-02-20T09:06:30+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -2938,12 +2958,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "a105a8fa293a8245bf9a308954547b69b6383105"
+                "reference": "855552b52091a662a85168788b3f05ca1ed82382"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/a105a8fa293a8245bf9a308954547b69b6383105",
-                "reference": "a105a8fa293a8245bf9a308954547b69b6383105",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/855552b52091a662a85168788b3f05ca1ed82382",
+                "reference": "855552b52091a662a85168788b3f05ca1ed82382",
                 "shasum": ""
             },
             "require": {
@@ -2997,7 +3017,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2017-02-01 16:00:09"
+            "time": "2017-02-02 15:31:58"
         },
         {
             "name": "sensio/generator-bundle",
