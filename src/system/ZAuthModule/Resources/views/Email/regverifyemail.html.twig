@@ -1,4 +1,4 @@
-{% set verificationurl = url('zikulazauthmodule_registration_verify', {"uname":user.uname,"verifycode":verifycode|url_encode}) %}
+{% set verificationurl = url('zikulazauthmodule_registration_verify', {"uname":user.uname,"verifycode":verifycode}) %}
 <h3>{{ __f('Welcome to %sub%!', {"%sub%": getModVar('ZConfig', 'sitename')}) }}</h3>
 
 <p>{{ __f('Hello! This e-mail address (\'%email\') has been used to register an account on \'%site\' (%url).', {"%email": user.email, "%site": getModVar('ZConfig', 'sitename'), "%url": url('home')}) }}</p>

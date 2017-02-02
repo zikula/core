@@ -24,7 +24,7 @@ services:
 
     zikula_core.internal.theme.merger:
         class: Zikula\ThemeModule\Engine\Asset\Merger
-        arguments: ["@router.default", "@doctrine_cache.providers.zikula_js_asset_cache", "@doctrine_cache.providers.zikula_css_asset_cache", "%kernel.root_dir%", "%zikula_asset_manager.lifetime%", "%zikula_asset_manager.minify%", "%zikula_asset_manager.compress%"]
+        arguments: ["@router", "@doctrine_cache.providers.zikula_js_asset_cache", "@doctrine_cache.providers.zikula_css_asset_cache", "%kernel.root_dir%", "%zikula_asset_manager.lifetime%", "%zikula_asset_manager.minify%", "%zikula_asset_manager.compress%"]
 
     zikula_core.internal.theme.js_resolver:
         class: Zikula\ThemeModule\Engine\Asset\JsResolver

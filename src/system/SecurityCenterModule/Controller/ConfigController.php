@@ -214,7 +214,7 @@ class ConfigController extends AbstractController
 
                 $validates = true;
 
-                $idsRulePath = isset($formData['idsrulepath']) ? $formData['idsrulepath'] : 'Resources/config/zikula_default.xml';
+                $idsRulePath = isset($formData['idsrulepath']) ? $formData['idsrulepath'] : 'system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml';
                 $idsRulePath = DataUtil::formatForOS($idsRulePath);
                 if (is_readable($idsRulePath)) {
                     $this->setSystemVar('idsrulepath', $idsRulePath);

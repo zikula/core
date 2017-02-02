@@ -1,10 +1,12 @@
 {# purpose of this template: build the form to edit an instance of route #}
-{% extends routeArea == 'admin' ? 'ZikulaRoutesModule::adminBase.html.twig' : 'ZikulaRoutesModule::base.html.twig' %}
+{% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : (routeArea == 'admin' ? 'adminBase' : 'base') %}
+{% extends 'ZikulaRoutesModule::' ~ baseTemplate ~ '.html.twig' %}
 
 {% block header %}
     {{ parent() }}
     {{ pageAddAsset('javascript', zasset('@ZikulaRoutesModule:js/ZikulaRoutesModule.Validation.js', 98)) }}
     {{ pageAddAsset('javascript', zasset('@ZikulaRoutesModule:js/ZikulaRoutesModule.EditFunctions.js', 99)) }}
+    {{ pageAddAsset('javascript', asset('typeahead/typeahead.bundle.min.js')) }}
 {% set customScript %}
     <script type="text/javascript">
         (function($) {
@@ -53,38 +55,22 @@
 {{ form_errors(form) }}
 <fieldset>
     <legend>{{ __('Content') }}</legend>
-
     {{ form_row(form.routeType) }}
-
     {{ form_row(form.replacedRouteName) }}
-
     {{ form_row(form.bundle) }}
-
     {{ form_row(form.controller) }}
-
     {{ form_row(form.action) }}
-
     {{ form_row(form.path) }}
-
     {{ form_row(form.host) }}
-
     {{ form_row(form.schemes) }}
-
     {{ form_row(form.methods) }}
-
     {{ form_row(form.prependBundlePrefix) }}
-
     {{ form_row(form.translatable) }}
-
     {{ form_row(form.translationPrefix) }}
-
     {{ form_row(form.condition) }}
-
     {{ form_row(form.description) }}
-
     <div class="hidden">
         {{ form_row(form.sort) }}
-
         {{ form_row(form.group) }}
     </div>
 </fieldset>
@@ -93,6 +79,15 @@
     {{ include('@ZikulaRoutesModule/Helper/includeStandardFieldsEdit.html.twig', { obj: route }) }}
 {% endif %}
 
+{% if form.moderationSpecificCreator is defined %}
+    <fieldset id="moderationFieldsSection">
+        <legend>{{ __('Moderation') }} <i class="fa fa-expand"></i></legend>
+        <div id="moderationFieldsContent">
+            {{ form_row(form.moderationSpecificCreator) }}
+            {{ form_row(form.moderationSpecificCreationDate) }}
+        </div>
+    </fieldset>
+{% endif %}
 
 {# include return control #}
 {% if mode == 'create' %}
@@ -126,6 +121,10 @@
 
         ( function($) {
             $(document).ready(function() {
+                // initialise auto completion for user fields
+                {% if form.moderationSpecificCreator is defined %}
+                    zikulaRoutesInitUserField('zikularoutesmodule_route_moderationSpecificCreator', 'getCommonUsersList');
+                {% endif %}
                 zikulaRoutesInitEditForm('{{ mode }}', '{% if mode != 'create' %}{{ route.id }}{% endif %}');
             });
         })(jQuery);
