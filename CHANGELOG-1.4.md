@@ -47,7 +47,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Added `expanded` and `includeGrandChildren` options to `CategoriesType` (#3410).
     - Added \Zikula\SearchModule\SearchableInterface and DI service tag collector to determine a module's searchability (#2996).
     - Added dimsemenov/Magnific-Popup as a successor for bootstrap-media-lightbox (#3362).
-    - Added support for handling extension dependencies using composer (#3388).
+    - Added support for handling module dependencies using composer (#3388).
 
  - Vendor updates:
     - doctrine dbal updated from 2.5.5 to 2.5.10
