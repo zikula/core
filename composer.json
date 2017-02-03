@@ -55,7 +55,10 @@
     "config": {
         "vendor-dir": "src/vendor",
         "bin-dir": "bin",
-        "component-dir": "src/web"
+        "component-dir": "src/web",
+        "platform": {
+            "php": "5.4.2"
+        }
     },
     "extra": {
         "symfony-app-dir": "src/app",
