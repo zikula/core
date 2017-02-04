@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\RegistrationEvents;
 use Zikula\ZAuthModule\Validator\Constraints\ValidRegistrationVerification;
 use Zikula\ZAuthModule\ZAuthConstant;
