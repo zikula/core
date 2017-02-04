@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "65e8c074ef693a9b707ab1faae0d8649",
+    "content-hash": "b32f1e2a5584a325713a2d4aaad563e2",
     "packages": [
         {
             "name": "abeautifulsite/jquery-minicolors",
@@ -1794,12 +1794,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "d4a96463efe5d31f52fec0dad6b7871060862dfa"
+                "reference": "8e4cacf0a76458d6203f53113c47b49c6edc2dc5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d4a96463efe5d31f52fec0dad6b7871060862dfa",
-                "reference": "d4a96463efe5d31f52fec0dad6b7871060862dfa",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/8e4cacf0a76458d6203f53113c47b49c6edc2dc5",
+                "reference": "8e4cacf0a76458d6203f53113c47b49c6edc2dc5",
                 "shasum": ""
             },
             "require": {
@@ -1833,7 +1833,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2017-01-19 17:28:40"
+            "time": "2017-02-04 00:54:51"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -5461,7 +5461,6 @@
         "composer/composer": 20,
         "zikula/legal-module": 20,
         "zikula/profile-module": 20,
-        "phpids/phpids": 20,
         "zikula/filesystem": 20,
         "zikula/jquery-bundle": 20,
         "zikula/jquery-ui-bundle": 20,
@@ -5471,7 +5470,8 @@
         "bootstrap-plus/bootstrap-jqueryui": 20,
         "drak/doctrine1": 20,
         "drak/smarty": 20,
-        "oyejorge/less.php": 20
+        "oyejorge/less.php": 20,
+        "phpids/phpids": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

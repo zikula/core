@@ -50,14 +50,6 @@
             "Zikula\\Composer\\ManuallyInstallAssets::install",
             "Zikula\\Composer\\LessGenerator::generateCombinedBootstrapFontAwesomeCSS",
             "Zikula\\Composer\\RequireJsConfigGenerator::regenerateRequireJs"
-        ],
-        "post-package-install": [
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets"
-        ],
-        "post-package-update": [
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets"
         ]
     },
     "config": {
@@ -78,7 +70,7 @@
         },
         "merge-plugin": {
             "include": [
-                "composer.core.json",
+                "src/lib/Zikula/Bundle/*/composer.json",
                 "src/system/*/composer.json",
                 "src/modules/*/composer.json",
                 "src/modules/*/*/composer.json",
