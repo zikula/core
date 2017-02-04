@@ -50,6 +50,14 @@
             "Zikula\\Composer\\ManuallyInstallAssets::install",
             "Zikula\\Composer\\LessGenerator::generateCombinedBootstrapFontAwesomeCSS",
             "Zikula\\Composer\\RequireJsConfigGenerator::regenerateRequireJs"
+        ],
+        "post-package-install": [
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets"
+        ],
+        "post-package-update": [
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets"
         ]
     },
     "config": {
