@@ -46,6 +46,7 @@ application "Routes" {
         "
         markFiles "
             Base/AbstractRoutesModuleInstaller.php,
+            composer.json,
             Controller/AjaxController.php,
             Controller/RouteController.php,
             Entity/RouteEntity.php,

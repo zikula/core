@@ -13,7 +13,9 @@
     ],
     "require": {
         "php": ">=5.4.1",
-        "symfony/framework-bundle": "~2.0"
+        "symfony/framework-bundle": "~2.0",
+        "afarkas/html5shiv": "3.7.*",
+        "afarkas/webshim": "1.*"
     },
     "autoload": {
         "psr-4": { "Zikula\\Bundle\\FormExtensionBundle\\": "" }

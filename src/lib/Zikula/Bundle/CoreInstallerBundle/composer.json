@@ -13,7 +13,9 @@
     ],
     "require": {
         "php": ">=5.4.1",
-        "symfony/framework-bundle": "~2.0"
+        "symfony/framework-bundle": "~2.0",
+        "matthiasnoback/symfony-console-form": "1.*",
+        "zikula/wizard": "1.4.*"
     },
     "autoload": {
         "psr-4": { "Zikula\\Bundle\\CoreInstallerBundle\\": "" }
