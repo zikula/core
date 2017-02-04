@@ -59,7 +59,7 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
         $qb->select('v')
             ->where($and)
             ->setParameter('changeType', $changeType)
-            ->setParameter('createdDtNot', '0000-00-00 00:00:00');
+            ->setParameter('createdDtNot', '0000-00-00 00:00:00')
             ->setParameter('createdDtMax', $staleRecordUTC);
         $staleVerificationRecords = $qb->getQuery()->getResult();
 
