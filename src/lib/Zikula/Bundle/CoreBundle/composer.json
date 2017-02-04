@@ -82,14 +82,6 @@
         },
         {
             "type": "vcs",
-            "url": "https://github.com/FrDH/jQuery.mmenu"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/aFarkas/webshim"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/corejavascript/typeahead.js"
         }
     ],

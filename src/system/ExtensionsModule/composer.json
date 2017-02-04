@@ -17,6 +17,12 @@
         "php": ">5.4.0",
         "jquery.mmenu": "5.*"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/FrDH/jQuery.mmenu"
+        }
+    ],
     "extra": {
         "zikula": {
             "url": "extensions",
