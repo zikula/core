@@ -14,12 +14,9 @@
     "require": {
         "php": ">=5.4.1",
         "composer/installers": "1.*",
-        "robloach/component-installer": "*",
-
 
         "zikula/legal-module": "dev-master",
         "zikula/profile-module": "dev-master",
-
 
         "symfony/symfony": "2.8.*",
         "symfony/monolog-bundle": "~2.4",
@@ -29,37 +26,20 @@
         "elao/web-profiler-extra-bundle" : "~2.3.3",
         "matthiasnoback/symfony-service-definition-validator": "1.2.*",
 
-
         "jms/translation-bundle": "1.3.*",
         "nikic/php-parser": "~1.4.0",
         "willdurand/js-translation-bundle": "^2.6",
-
 
         "doctrine/orm": "2.5.*",
         "doctrine/doctrine-bundle": "1.5.*",
         "stof/doctrine-extensions-bundle": "~1.2.1",
         "gedmo/doctrine-extensions": "2.4.*",
 
-
         "michelf/php-markdown": "1.7.*",
         "twig/extensions": "1.4.*",
         "vierbergenlars/php-semver": "~3.0",
         "zikula/filesystem": "dev-master",
 
-
-        "zikula/jquery-bundle": "dev-master",
-        "zikula/jquery-ui-bundle": "dev-master",
-        "zikula/bootstrap-bundle": "dev-master",
-        "zikula/fontawesome-bundle": "dev-master",
-        "zikula/jquery-minicolors-bundle": "dev-master",
-        "bootstrap-plus/bootstrap-media-lightbox": "3.*",
-        "bootstrap-plus/bootstrap-jqueryui": "dev-master",
-        "dimsemenov/magnific-popup": "1.*",
-        "twitter/typeahead.js": "1.*",
-        "vakata/jstree": "3.*",
-
-
-        "justinrainbow/json-schema": "4.*",
         "ramsey/array_column": "1.1.*",
         "beberlei/DoctrineExtensions": "v0.3",
         "drak/doctrine1": "dev-master",
@@ -79,10 +59,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/zikula-modules/Profile"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/corejavascript/typeahead.js"
         }
     ],
     "autoload": {
