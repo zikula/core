@@ -33,6 +33,10 @@ class JsFileExtractorTest extends \PHPUnit_Framework_TestCase
         $message->addSource($fileSourceFactory->create($fixtureSplInfo));
         $expected->add($message);
 
+        $message = new Message('%count% more apple|%count% more apples', 'zikula_javascript');
+        $message->addSource($fileSourceFactory->create($fixtureSplInfo));
+        $expected->add($message);
+
         $message = new Message('%count% %desc% apple|%count% %desc% apples', 'zikula_javascript');
         $message->addSource($fileSourceFactory->create($fixtureSplInfo));
         $expected->add($message);
@@ -42,6 +46,14 @@ class JsFileExtractorTest extends \PHPUnit_Framework_TestCase
         $expected->add($message);
 
         $message = new Message('Hi there!', 'zikula_javascript');
+        $message->addSource($fileSourceFactory->create($fixtureSplInfo));
+        $expected->add($message);
+
+        $message = new Message('Hi there! (again)', 'zikula_javascript');
+        $message->addSource($fileSourceFactory->create($fixtureSplInfo));
+        $expected->add($message);
+
+        $message = new Message('Hi there! "Foo"', 'zikula_javascript');
         $message->addSource($fileSourceFactory->create($fixtureSplInfo));
         $expected->add($message);
 

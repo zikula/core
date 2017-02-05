@@ -844,16 +844,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "v2.5.10",
+            "version": "v2.5.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "fc376f7a61498e18520cd6fa083752a4ca08072b"
+                "reference": "1b1effbddbdc0f40d1c8f849f44bcddac4f52a48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/fc376f7a61498e18520cd6fa083752a4ca08072b",
-                "reference": "fc376f7a61498e18520cd6fa083752a4ca08072b",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/1b1effbddbdc0f40d1c8f849f44bcddac4f52a48",
+                "reference": "1b1effbddbdc0f40d1c8f849f44bcddac4f52a48",
                 "shasum": ""
             },
             "require": {
@@ -911,7 +911,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2017-01-23T23:17:10+00:00"
+            "time": "2017-02-04T21:20:13+00:00"
         },
         {
             "name": "doctrine/doctrine-bundle",
@@ -1390,12 +1390,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "d4a96463efe5d31f52fec0dad6b7871060862dfa"
+                "reference": "8e4cacf0a76458d6203f53113c47b49c6edc2dc5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d4a96463efe5d31f52fec0dad6b7871060862dfa",
-                "reference": "d4a96463efe5d31f52fec0dad6b7871060862dfa",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/8e4cacf0a76458d6203f53113c47b49c6edc2dc5",
+                "reference": "8e4cacf0a76458d6203f53113c47b49c6edc2dc5",
                 "shasum": ""
             },
             "require": {
@@ -1429,7 +1429,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2017-01-19 17:28:40"
+            "time": "2017-02-04 00:54:51"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -4408,12 +4408,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "95df4ad0a2035da2748dbcdddcf0e0ab53a081df"
+                "reference": "384e30e35733901f2e3b28e7a39a1a5e92b1df9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/95df4ad0a2035da2748dbcdddcf0e0ab53a081df",
-                "reference": "95df4ad0a2035da2748dbcdddcf0e0ab53a081df",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/384e30e35733901f2e3b28e7a39a1a5e92b1df9d",
+                "reference": "384e30e35733901f2e3b28e7a39a1a5e92b1df9d",
                 "shasum": ""
             },
             "require": {
@@ -4468,7 +4468,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2017-01-15 09:31:58"
+            "time": "2017-02-04 18:36:43"
         },
         {
             "name": "zikula/profile-module",
@@ -4476,12 +4476,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "e493c86bccddf8de3f0cea267a5bbc26a028c16a"
+                "reference": "d45909a4599f7344c701dd464a2ab3a252211e1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/e493c86bccddf8de3f0cea267a5bbc26a028c16a",
-                "reference": "e493c86bccddf8de3f0cea267a5bbc26a028c16a",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/d45909a4599f7344c701dd464a2ab3a252211e1f",
+                "reference": "d45909a4599f7344c701dd464a2ab3a252211e1f",
                 "shasum": ""
             },
             "require": {
@@ -4542,7 +4542,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2017-01-15 12:44:04"
+            "time": "2017-02-04 18:38:00"
         },
         {
             "name": "zikula/wizard",
