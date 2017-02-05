@@ -36,7 +36,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Fixed double-encoding of verification code in registration email (#3393).
     - Avoid storing absolute pathes in security center module variable (#3364).
     - Fixed module upgrade bug (#3378).
-    - Fixed JS translation extraction for strings containing `)` or `,` (#3444).
+    - Fixed JS translation extraction for strings containing `)`, `,`, or containing quotes  (#3444).
 
  - Features:
     - Added custom template support for moduleLinks() Twig function
