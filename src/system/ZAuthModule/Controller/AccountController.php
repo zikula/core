@@ -179,7 +179,7 @@ class AccountController extends AbstractController
      * @Route("/lost-password/reset")
      * @Template
      * @param Request $request
-     * @return array
+     * @return array|RedirectResponse
      */
     public function lostPasswordResetAction(Request $request)
     {
@@ -196,11 +196,10 @@ class AccountController extends AbstractController
         }
 
         $lostPasswordVerificationHelper = $this->get('zikula_zauth_module.helper.lost_password_verification_helper');
-        $requestDetails = [];
 
         try {
             $requestDetails = $lostPasswordVerificationHelper->decodeLostPasswordId($request->query->get('id'));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->addFlash('error', $this->__('Your request could not be processed.') . ' ' . $e->getMessage());
 
             return $this->redirectToRoute($redirectToRoute);
@@ -234,9 +233,16 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-
+            // use authentication method to create zauth mapping if not already created
+            $authenticationMethods = $this->get('zikula_users_module.internal.authentication_method_collector')->getActive();
+            $uid = $authenticationMethods[0]->authenticate([
+                'uname' => $user->getUname(),
+                'email' => $user->getEmail(),
+                'pass' => $user->getPass()
+            ]);
+            // update password
             $mappingRepository = $this->get('zikula_zauth_module.authentication_mapping_repository');
-            $mapping = $mappingRepository->getByZikulaId($user->getUid());
+            $mapping = $mappingRepository->getByZikulaId($uid);
             $mapping->setPass($this->get('zikula_zauth_module.api.password')->getHashedPassword($data['pass']));
             $mappingRepository->persistAndFlush($mapping);
             $this->get('zikula_users_module.helper.access_helper')->login($user);
