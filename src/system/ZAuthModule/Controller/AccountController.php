@@ -235,14 +235,16 @@ class AccountController extends AbstractController
             $data = $form->getData();
             // use authentication method to create zauth mapping if not already created
             $authenticationMethods = $this->get('zikula_users_module.internal.authentication_method_collector')->getActive();
-            $uid = $authenticationMethods[0]->authenticate([
+            $authenticationMethods[0]->authenticate([
                 'uname' => $user->getUname(),
                 'email' => $user->getEmail(),
-                'pass' => $user->getPass()
+                'pass' => ''
             ]);
+            // will not authenticate with pass. clear the flashbag of errors.
+            $this->container->get('session')->getFlashBag()->clear();
             // update password
             $mappingRepository = $this->get('zikula_zauth_module.authentication_mapping_repository');
-            $mapping = $mappingRepository->getByZikulaId($uid);
+            $mapping = $mappingRepository->getByZikulaId($user->getUid());
             $mapping->setPass($this->get('zikula_zauth_module.api.password')->getHashedPassword($data['pass']));
             $mappingRepository->persistAndFlush($mapping);
             $this->get('zikula_users_module.helper.access_helper')->login($user);
