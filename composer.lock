@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7b101c3d96146d60c319a52d5e00df23",
+    "content-hash": "41664543461064311d7db7ae7a17d285",
     "packages": [
         {
             "name": "abeautifulsite/jquery-minicolors",
@@ -910,16 +910,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "v2.5.10",
+            "version": "v2.5.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "fc376f7a61498e18520cd6fa083752a4ca08072b"
+                "reference": "7b9e911f9d8b30d43b96853dab26898c710d8f44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/fc376f7a61498e18520cd6fa083752a4ca08072b",
-                "reference": "fc376f7a61498e18520cd6fa083752a4ca08072b",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/7b9e911f9d8b30d43b96853dab26898c710d8f44",
+                "reference": "7b9e911f9d8b30d43b96853dab26898c710d8f44",
                 "shasum": ""
             },
             "require": {
@@ -977,7 +977,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2017-01-23T23:17:10+00:00"
+            "time": "2017-02-08T12:53:47+00:00"
         },
         {
             "name": "doctrine/doctrine-bundle",
@@ -2397,16 +2397,16 @@
         },
         {
             "name": "liip/imagine-bundle",
-            "version": "1.7.1",
+            "version": "1.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "d653f4d22b33c2c2870cb87df8a32508186a799a"
+                "reference": "30aea40e441e30c2412da7f4b865b8b957d810d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/d653f4d22b33c2c2870cb87df8a32508186a799a",
-                "reference": "d653f4d22b33c2c2870cb87df8a32508186a799a",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/30aea40e441e30c2412da7f4b865b8b957d810d7",
+                "reference": "30aea40e441e30c2412da7f4b865b8b957d810d7",
                 "shasum": ""
             },
             "require": {
@@ -2437,6 +2437,7 @@
                 "symfony/dependency-injection": "~2.3|~3.0",
                 "symfony/form": "~2.3|~3.0",
                 "symfony/phpunit-bridge": "~2.3|~3.0",
+                "symfony/validator": "~2.3|~3.0",
                 "symfony/yaml": "~2.3|~3.0",
                 "twig/twig": "~1.12"
             },
@@ -2451,13 +2452,16 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.7.x-dev"
+                    "dev-1.0": "1.7-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
                     "Liip\\ImagineBundle\\": ""
-                }
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -2475,7 +2479,7 @@
                 "image",
                 "imagine"
             ],
-            "time": "2017-01-20T01:55:04+00:00"
+            "time": "2017-02-07T20:58:25+00:00"
         },
         {
             "name": "matthiasnoback/symfony-console-form",
@@ -4006,16 +4010,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.16",
+            "version": "v2.8.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "9fef72a3ab561c4bfa703a70369db028dec387d2"
+                "reference": "c423a13a031c9388b7f9103f176b1872c00c7ffa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/9fef72a3ab561c4bfa703a70369db028dec387d2",
-                "reference": "9fef72a3ab561c4bfa703a70369db028dec387d2",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/c423a13a031c9388b7f9103f176b1872c00c7ffa",
+                "reference": "c423a13a031c9388b7f9103f176b1872c00c7ffa",
                 "shasum": ""
             },
             "require": {
@@ -4093,6 +4097,7 @@
                 "monolog/monolog": "~1.11",
                 "ocramius/proxy-manager": "~0.4|~1.0|~2.0",
                 "phpdocumentor/reflection": "^1.0.7",
+                "sensio/framework-extra-bundle": "^3.0.2",
                 "symfony/phpunit-bridge": "~3.2"
             },
             "type": "library",
@@ -4137,7 +4142,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-01-12T20:27:46+00:00"
+            "time": "2017-02-06T12:47:48+00:00"
         },
         {
             "name": "twig/extensions",
@@ -4399,17 +4404,17 @@
         },
         {
             "name": "willdurand/js-translation-bundle",
-            "version": "2.6.2",
+            "version": "2.6.3",
             "target-dir": "Bazinga/Bundle/JsTranslationBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/willdurand/BazingaJsTranslationBundle.git",
-                "reference": "802c89fa91f70ba3d1db84996c2b4773cd19b679"
+                "reference": "449089a19d22b156b5436771b57847918ea99dfb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/802c89fa91f70ba3d1db84996c2b4773cd19b679",
-                "reference": "802c89fa91f70ba3d1db84996c2b4773cd19b679",
+                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/449089a19d22b156b5436771b57847918ea99dfb",
+                "reference": "449089a19d22b156b5436771b57847918ea99dfb",
                 "shasum": ""
             },
             "require": {
@@ -4458,7 +4463,7 @@
                 "symfony",
                 "translation"
             ],
-            "time": "2016-12-16T17:53:16+00:00"
+            "time": "2017-02-07T11:47:46+00:00"
         },
         {
             "name": "willdurand/jsonp-callback-validator",

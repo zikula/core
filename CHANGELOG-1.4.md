@@ -50,14 +50,16 @@ CHANGELOG - ZIKULA 1.4.x
     - Added dimsemenov/Magnific-Popup as a successor for bootstrap-media-lightbox (#3362).
 
  - Vendor updates:
-    - doctrine dbal updated from 2.5.5 to 2.5.10
-    - liip/imagine-bundle updated from 1.6.0 to 1.7.1
+    - doctrine dbal updated from 2.5.5 to 2.5.12
+    - liip/imagine-bundle updated from 1.6.0 to 1.7.2
+    - matthiasnoback/symfony-service-definition-validator restricted to version 1.2.6 due to BC break
     - sensio/distribution-bundle updated from 5.0.16 to 5.0.18
     - sensio/framework-extra-bundle updated from 3.0.18 to 3.0.21
-    - symfony updated from 2.8.15 to 2.8.16
+    - symfony updated from 2.8.15 to 2.8.17
     - symfony/monolog-bundle updated from 2.7.1 to 2.12.1
     - twig updated from 1.30.0 to 1.31.0
     - twitter/typeahead.js updated from 1.1.0 to 1.1.1
+    - willdurand/js-translation-bundle updated from 2.6.2 to 2.6.3
 
 * 1.4.5 (2017-01-01)
 
