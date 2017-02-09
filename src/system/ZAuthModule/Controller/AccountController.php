@@ -243,7 +243,7 @@ class AccountController extends AbstractController
             $authenticationMethod->authenticate([
                 'uname' => $user->getUname(),
                 'email' => $user->getEmail(),
-                'pass' => ''
+                'pass' => '1234567890'
             ]);
             // will not authenticate with pass. clear the flashbag of errors.
             $this->container->get('session')->getFlashBag()->clear();
