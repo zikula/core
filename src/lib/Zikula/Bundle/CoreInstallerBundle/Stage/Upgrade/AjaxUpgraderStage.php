@@ -120,20 +120,27 @@ class AjaxUpgraderStage implements StageInterface, InjectContainerInterface
                 AjaxInstallerStage::FAIL => $this->__f('There was an error upgrading to Core %version%', ['%version%' => '1.4.6'])
             ],
             11 => [
+                AjaxInstallerStage::NAME => 'from146to147',
+                AjaxInstallerStage::PRE => $this->__f('Upgrade from Core %oldVersion% to Core %newVersion%', ['%oldVersion%' => '1.4.6', '%newVersion%' => '1.4.7']),
+                AjaxInstallerStage::DURING => $this->__f('Upgrading to Core %version%', ['%version%' => '1.4.7']),
+                AjaxInstallerStage::SUCCESS => $this->__f('Upgraded to Core %version%', ['%version%' => '1.4.7']),
+                AjaxInstallerStage::FAIL => $this->__f('There was an error upgrading to Core %version%', ['%version%' => '1.4.7'])
+            ],
+            12 => [
                 AjaxInstallerStage::NAME => 'finalizeparameters',
                 AjaxInstallerStage::PRE => $this->__('Finalize parameters'),
                 AjaxInstallerStage::DURING => $this->__('Finalizing parameters'),
                 AjaxInstallerStage::SUCCESS => $this->__('Parameters finalized'),
                 AjaxInstallerStage::FAIL => $this->__('There was an error finalizing the parameters')
             ],
-            12 => [
+            13 => [
                 AjaxInstallerStage::NAME => 'clearcaches',
                 AjaxInstallerStage::PRE => $this->__('Clear caches'),
                 AjaxInstallerStage::DURING => $this->__('Clearing caches'),
                 AjaxInstallerStage::SUCCESS => $this->__('Caches cleared'),
                 AjaxInstallerStage::FAIL => $this->__('There was an error clearing caches')
             ],
-            13 => [
+            14 => [
                 AjaxInstallerStage::NAME => 'finish',
                 AjaxInstallerStage::PRE => $this->__('Finish'),
                 AjaxInstallerStage::DURING => $this->__('Finish'),
