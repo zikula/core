@@ -13,7 +13,7 @@ CHANGELOG - ZIKULA 1.4.x
     - ?
 
  - Features:
-    - ?
+    - Added Permission-based controls for MenuModule menu items (#3314).
 
  - Vendor updates:
     - ?
