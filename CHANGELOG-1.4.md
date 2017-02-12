@@ -18,7 +18,7 @@ CHANGELOG - ZIKULA 1.4.x
  - Vendor updates:
     - ?
 
-* 1.4.6 (02-12-2017)
+* 1.4.6 (2017-02-12)
 
  - BC Breaks:
     - LocaleApi (introduced in 1.4.4) has been refactored and eliminates access to locale metadata.
