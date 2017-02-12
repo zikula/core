@@ -12,7 +12,10 @@ services:
 
     zikula_menu_module.provider.custom_menu_provider:
         class: Zikula\MenuModule\Provider\DoctrineTreeProvider
-        arguments: ["@knp_menu.factory", "@zikula_menu_module.menu_item_repository"]
+        arguments:
+          - "@knp_menu.factory"
+          - "@zikula_permissions_module.api.permission"
+          - "@zikula_menu_module.menu_item_repository"
         tags:
             - { name: knp_menu.provider }
 
