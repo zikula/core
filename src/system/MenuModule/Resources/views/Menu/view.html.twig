@@ -18,7 +18,8 @@
             <span class="fa fa-list"></span>
             {{ __('Menu') }}
         </h3>
-        <h4><i class="fa fa-bars"></i> {{ menu.title }}</h4>
+        <h4><i class="fa fa-bars"></i> {{ menu.title }} ({{ menu.id }})</h4>
+        <div class="alert alert-info"><i class="fa fa-check-circle"></i> {{ __('MenuItemName (menuItemId). The id is needed for permissions.') }}</div>
         <div id="tree_container">
             {{ tree|raw }}
         </div>

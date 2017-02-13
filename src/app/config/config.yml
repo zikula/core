@@ -27,7 +27,7 @@ framework:
         name: "%zikula.session.name%"
         handler_id: zikula_core.bridge.http_foundation.doctrine_session_handler
         storage_id: zikula_core.bridge.http_foundation.zikula_session_storage
-        cookie_httponly: true
+        cookie_httponly: false # must be false for ajax tokens to work but increases chance of XSS attack
     fragments:       ~
 
 # Twig Configuration
