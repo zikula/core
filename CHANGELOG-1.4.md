@@ -10,7 +10,7 @@ CHANGELOG - ZIKULA 1.4.x
     - ?
 
  - Fixes:
-    - ?
+    - Corrected path to legacy module's admin icons.
 
  - Features:
     - Added Permission-based controls for MenuModule menu items (#3314).
