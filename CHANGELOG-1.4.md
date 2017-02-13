@@ -16,7 +16,8 @@ CHANGELOG - ZIKULA 1.4.x
     - Added Permission-based controls for MenuModule menu items (#3314).
 
  - Vendor updates:
-    - ?
+    - swiftmailer/swiftmailer updated from v5.4.5 to v5.4.6 
+    - willdurand/js-translation-bundle updated from 2.6.3 to 2.6.4
 
 * 1.4.6 (2017-02-12)
 
