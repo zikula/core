@@ -120,7 +120,8 @@ class SearchController extends AbstractController
             'translator' => $this->get('translator.default'),
         ]);
         $form->add($moduleFormBuilder->getForm());
-        if ($request->isMethod('GET') && !empty($q = $request->query->get('q', ''))) {
+        $q = $request->query->get('q', '');
+        if ($request->isMethod('GET') && !empty($q)) {
             $token = $request->query->get('_token');
             $form->submit(['q' => $q, '_token' => $token]);
         } else {
