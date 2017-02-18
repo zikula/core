@@ -11,7 +11,10 @@
 
 namespace Zikula\BlocksModule\Entity\RepositoryInterface;
 
-interface BlockPositionRepositoryInterface
+use Doctrine\Common\Collections\Selectable;
+use Doctrine\Common\Persistence\ObjectRepository;
+
+interface BlockPositionRepositoryInterface extends ObjectRepository, Selectable
 {
     public function findByName($name);
 
