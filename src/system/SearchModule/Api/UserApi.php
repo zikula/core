@@ -17,7 +17,6 @@ use ModUtil;
 use ServiceUtil;
 use SessionUtil;
 use System;
-use Zikula\Core\ModUrl;
 use Zikula\Core\UrlInterface;
 use Zikula\SearchModule\AbstractSearchable;
 use Zikula\SearchModule\Entity\SearchResultEntity;
