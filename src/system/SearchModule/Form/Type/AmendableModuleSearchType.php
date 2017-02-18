@@ -37,7 +37,7 @@ class AmendableModuleSearchType extends AbstractType
                     'label_attr' => ['class' => 'checkbox-inline'],
                     'required' => false,
                     'data' => $options['active']
-                ]);;
+                ]);
         }
     }
 

@@ -60,8 +60,7 @@ class LinkContainer implements LinkContainerInterface
         PermissionApi $permissionApi,
         CurrentUserApi $currentUserApi,
         SearchStatRepositoryInterface $searchStatRepository
-    )
-    {
+    ) {
         $this->translator = $translator;
         $this->router = $router;
         $this->permissionApi = $permissionApi;
