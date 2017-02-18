@@ -6,11 +6,11 @@
         <i class="fa fa-search" title="{{ __('Search user') }}"></i>
         <noscript><p>{{ __('This function requires JavaScript activated!') }}</p></noscript>
         <input type="hidden" {{ block('widget_attributes') }} value="{{ value }}" />
-        <input type="text" id="{{ id }}Selector" name="{{ id }}Selector" autocomplete="off" value="{{ userName|e('html_attr') }}" title="{{ __('Enter a part of the user name to search') }}" class="user-selector typeahead" />
+        <input type="text" id="{{ id }}Selector" name="{{ id }}Selector" autocomplete="off" value="{{ user_name|e('html_attr') }}" title="{{ __('Enter a part of the user name to search') }}" class="user-selector typeahead" />
         <i class="fa fa-refresh fa-spin hidden" id="{{ id }}Indicator"></i>
         <span id="{{ id }}NoResultsHint" class="hidden">{{ __('No results found!') }}</span>
     </div>
-    {% if value and not inlineUsage %}
+    {% if value and not inline_usage %}
         <span class="help-block avatar">
             {{ zikularoutesmodule_userAvatar(uid=value, rating='g') }}
         </span>
