@@ -32,25 +32,66 @@ class SearchBlock extends AbstractBlockHandler
         if (!$this->hasPermission('Searchblock::', "$title::", ACCESS_READ)) {
             return '';
         }
-
-        // set some defaults
-        if (empty($title)) {
-            $title = $this->__('Search');
-        }
-        if (!isset($properties['displaySearchBtn'])) {
-            $properties['displaySearchBtn'] = false;
-        }
-        if (!isset($properties['active'])) {
-            $properties['active'] = [];
-        }
-
+        // set defaults
+        $properties['displaySearchBtn'] = isset($properties['displaySearchBtn']) ? $properties['displaySearchBtn'] : false;
+        $properties['active'] = isset($properties['active']) ? $properties['active'] : [];
         $pluginOptions = [];
-        $activeModules = array_keys($properties['active']);
-        foreach ($activeModules as $moduleName) {
+
+        // LEGACY handling (<1.4.0) @deprecated - remove at Core-2.0
+        foreach ($properties['active'] as $moduleName) {
             $pluginOptions[$moduleName] = ModUtil::apiFunc($moduleName, 'search', 'options', $properties);
         }
+        // 1.4.x type handling @deprecated - remove at Core-2.0
+        $core14searchableModules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf(AbstractSearchable::SEARCHABLE);
+        foreach ($core14searchableModules as $searchableModule) {
+            if (!in_array($searchableModule['name'], $properties['active'])) {
+                continue;
+            }
+            if ($this->getVar('disable_' . $searchableModule['name'])) {
+                continue;
+            }
+            if (!$this->hasPermission('ZikulaSearchModule::Item', $searchableModule['name'] . '::', ACCESS_READ)) {
+                continue;
+            }
+            $moduleBundle = \ModUtil::getModule($searchableModule['name']);
+            /** @var $searchableInstance AbstractSearchable */
+            $searchableInstance = new $searchableModule['capabilities']['searchable']['class']($this->get('service_container'), $moduleBundle);
+            if (!($searchableInstance instanceof AbstractSearchable)) {
+                continue;
+            }
+            $pluginOptions[$searchableModule['name']] = $searchableInstance->getOptions(true, []);
+        }
+
+        // get Core-2.0 searchable modules
+        $searchableModules = $this->get('zikula_search_module.internal.searchable_module_collector')->getAll();
+        $moduleFormBuilder = $this->get('form.factory')
+            ->createNamedBuilder('modules', 'Symfony\Component\Form\Extension\Core\Type\FormType', [], [
+                'auto_initialize' => false,
+                'required' => false
+            ]);
+        foreach ($searchableModules as $moduleName => $searchableInstance) {
+            if (!in_array($moduleName, $properties['active'])) {
+                continue;
+            }
+            if (!$this->hasPermission('ZikulaSearchModule::Item', $moduleName . '::', ACCESS_READ)) {
+                continue;
+            }
+            $moduleFormBuilder->add($moduleName, 'Zikula\SearchModule\Form\Type\AmendableModuleSearchType', [
+                'label' => $this->get('kernel')->getModule($moduleName)->getMetaData()->getDisplayName(),
+                'translator' => $this->getTranslator(),
+                'active' => true,
+                'permissionApi' => $this->get('zikula_permissions_module.api.permission')
+            ]);
+            $searchableInstance->amendForm($moduleFormBuilder->get($moduleName));
+        }
+        $form = $this->get('form.factory')->create('Zikula\SearchModule\Form\Type\SearchType', [], [
+            'translator' => $this->get('translator.default'),
+            'action' => $this->get('router')->generate('zikulasearchmodule_search_execute')
+        ]);
+        $form->add($moduleFormBuilder->getForm());
 
         $templateParameters = [
+            'form' => $form->createView(),
             'properties' => $properties,
             'pluginOptions' => $pluginOptions
         ];
@@ -94,7 +135,7 @@ class SearchBlock extends AbstractBlockHandler
         }
         // remove disabled
         foreach ($searchModules as $displayName => $moduleName) {
-            if ((bool) $this->getVar('disable_' . $moduleName, true)) {
+            if ((bool) $this->getVar('disable_' . $moduleName, false)) {
                 unset($searchModules[$displayName]);
             }
         }

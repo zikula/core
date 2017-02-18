@@ -11,11 +11,11 @@
 
 namespace Zikula\SearchModule\Container;
 
-use ModUtil;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\SearchModule\Entity\RepositoryInterface\SearchStatRepositoryInterface;
 use Zikula\UsersModule\Api\CurrentUserApi;
 
 class LinkContainer implements LinkContainerInterface
@@ -41,19 +41,32 @@ class LinkContainer implements LinkContainerInterface
     private $currentUserApi;
 
     /**
+     * @var SearchStatRepositoryInterface
+     */
+    private $statRepo;
+
+    /**
      * LinkContainer constructor.
      *
-     * @param TranslatorInterface $translator     TranslatorInterface service instance
-     * @param RouterInterface     $router         RouterInterface service instance
-     * @param PermissionApi       $permissionApi  PermissionApi service instance
-     * @param CurrentUserApi      $currentUserApi CurrentUserApi service instance
+     * @param TranslatorInterface $translator TranslatorInterface service instance
+     * @param RouterInterface $router RouterInterface service instance
+     * @param PermissionApi $permissionApi PermissionApi service instance
+     * @param CurrentUserApi $currentUserApi CurrentUserApi service instance
+     * @param SearchStatRepositoryInterface $searchStatRepository
      */
-    public function __construct(TranslatorInterface $translator, RouterInterface $router, PermissionApi $permissionApi, CurrentUserApi $currentUserApi)
+    public function __construct(
+        TranslatorInterface $translator,
+        RouterInterface $router,
+        PermissionApi $permissionApi,
+        CurrentUserApi $currentUserApi,
+        SearchStatRepositoryInterface $searchStatRepository
+    )
     {
         $this->translator = $translator;
         $this->router = $router;
         $this->permissionApi = $permissionApi;
         $this->currentUserApi = $currentUserApi;
+        $this->statRepo = $searchStatRepository;
     }
 
     /**
@@ -83,7 +96,7 @@ class LinkContainer implements LinkContainerInterface
         $links = [];
 
         $links[] = [
-            'url' => $this->router->generate('zikulasearchmodule_user_form'),
+            'url' => $this->router->generate('zikulasearchmodule_search_execute'),
             'text' => $this->translator->__('Frontend'),
             'icon' => 'search'
         ];
@@ -118,15 +131,14 @@ class LinkContainer implements LinkContainerInterface
 
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
             $links[] = [
-                'url' => $this->router->generate('zikulasearchmodule_user_form'),
+                'url' => $this->router->generate('zikulasearchmodule_search_execute'),
                 'text' => $this->translator->__('New search'),
                 'icon' => 'search'
             ];
             if ($this->currentUserApi->isLoggedIn()) {
-                $searchModules = ModUtil::apiFunc($this->getBundleName(), 'user', 'getallplugins');
-                if (count($searchModules) > 0) {
+                if ($this->statRepo->countStats() > 0) {
                     $links[] = [
-                        'url' => $this->router->generate('zikulasearchmodule_user_recent'),
+                        'url' => $this->router->generate('zikulasearchmodule_search_recent'),
                         'text' => $this->translator->__('Recent searches list'),
                         'icon' => 'list'
                     ];

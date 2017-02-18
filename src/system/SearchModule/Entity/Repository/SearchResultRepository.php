@@ -12,20 +12,18 @@
 namespace Zikula\SearchModule\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Zikula\SearchModule\Entity\RepositoryInterface\SearchResultRepositoryInterface;
+use Zikula\SearchModule\Entity\SearchResultEntity;
 
 /**
  * Repository class used to implement own convenience methods for performing certain DQL queries.
  *
  * This is the repository class for search results.
  */
-class SearchResultRepository extends EntityRepository
+class SearchResultRepository extends EntityRepository implements SearchResultRepositoryInterface
 {
     /**
-     * Returns amount of results.
-     *
-     * @param string $sessionId Session id to filter results
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function countResults($sessionId = '')
     {
@@ -45,14 +43,7 @@ class SearchResultRepository extends EntityRepository
     }
 
     /**
-     * Returns results for given arguments.
-     *
-     * @param array   $filters Optional array with filters
-     * @param array   $sorting Optional array with sorting criteria
-     * @param integer $limit   Optional limitation for amount of retrieved objects
-     * @param integer $offset  Optional start offset of retrieved objects
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getResults($filters = [], $sorting = [], $limit = 0, $offset = 0)
     {
@@ -90,15 +81,11 @@ class SearchResultRepository extends EntityRepository
     }
 
     /**
-     * Deletes all results for the current session.
-     *
-     * @param string $sessionId Session id of current user
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function clearOldResults($sessionId = '')
     {
-        $qb = $this->_em->createQueryBuilder('tbl')
+        $qb = $this->_em->createQueryBuilder()
             ->delete('Zikula\SearchModule\Entity\SearchResultEntity', 'tbl')
             ->where('DATE_ADD(tbl.found, 1, \'DAY\') < CURRENT_TIMESTAMP()');
 
@@ -110,5 +97,21 @@ class SearchResultRepository extends EntityRepository
         $query = $qb->getQuery();
 
         $query->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function persist(SearchResultEntity $entity)
+    {
+        $this->_em->persist($entity);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function flush(SearchResultEntity $entity = null)
+    {
+        $this->_em->flush($entity);
     }
 }

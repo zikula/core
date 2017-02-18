@@ -11,8 +11,6 @@
 
 namespace Zikula\SearchModule\Twig;
 
-use ModUtil;
-use StringUtil;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
 /**
@@ -104,7 +102,7 @@ class TwigExtension extends \Twig_Extension
      */
     public function modUrlLegacy($moduleName)
     {
-        return ModUtil::url($moduleName, 'user', 'index');
+        return \ModUtil::url($moduleName, 'user', 'index');
     }
 
     /**
@@ -118,6 +116,6 @@ class TwigExtension extends \Twig_Extension
      */
     public function highlightGoogleKeywords($text, $searchPhrase, $contextSize)
     {
-        return StringUtil::highlightWords($text, $searchPhrase, $contextSize);
+        return \StringUtil::highlightWords($text, $searchPhrase, $contextSize);
     }
 }

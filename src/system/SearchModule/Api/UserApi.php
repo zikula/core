@@ -18,6 +18,7 @@ use ServiceUtil;
 use SessionUtil;
 use System;
 use Zikula\Core\ModUrl;
+use Zikula\Core\UrlInterface;
 use Zikula\SearchModule\AbstractSearchable;
 use Zikula\SearchModule\Entity\SearchResultEntity;
 use Zikula\SearchModule\Entity\SearchStatEntity;
@@ -28,7 +29,6 @@ use ZLanguage;
  * API's used by user controllers
  *
  * @deprecated
- * @todo Needs a service replacement for removal in Core-2.0
  */
 class UserApi
 {
@@ -84,7 +84,10 @@ class UserApi
         if ($firstPage) {
             // Clear current search result for current user - before showing the first page
             // Clear also older searches from other users.
-            $searchResultRepository->clearOldResults($sessionId);
+            $args['clear'] = isset($args['clear']) ? $args['clear'] : true; // defaults to true maintains BC
+            if ($args['clear']) {
+                $searchResultRepository->clearOldResults($sessionId);
+            }
 
             // get all the search plugins
             $search_modules = $this->getallplugins([]);
@@ -144,20 +147,6 @@ class UserApi
                 }
                 $entityManager->flush();
             }
-            // get Core-2.0 searchable modules
-            $searchableModules = ServiceUtil::get('zikula_search_module.internal.searchable_module_collector')->getAll();
-            foreach ($searchableModules as $moduleName => $searchableInstance) {
-                if (!empty($active) && !isset($active[$moduleName])) {
-                    continue;
-                }
-                $modvar[$moduleName] = isset($modvar[$moduleName]) ? $modvar[$moduleName] : null;
-                $results = $searchableInstance->getResults($words, $vars['searchtype'], $modvar[$moduleName]);
-                foreach ($results as $result) {
-                    $entityManager->persist($result);
-                }
-                $entityManager->flush();
-            }
-
             // Count number of found results
             $resultCount = $searchResultRepository->countResults($sessionId);
             SessionUtil::setVar('searchResultCount', $resultCount);
@@ -196,7 +185,7 @@ class UserApi
         $sqlResult = [];
         foreach ($results as $result) {
             // reformat url for 1.4.0+ type searches @todo - refactor to do this in the template
-            $result['url'] = (isset($result['url']) && ($result['url'] instanceof ModUrl)) ? $result['url']->getUrl() : null;
+            $result['url'] = (isset($result['url']) && ($result['url'] instanceof UrlInterface)) ? $result['url']->getUrl() : null;
             // process result for LEGACY (<1.4.0) searches
             if ($checker->checkResult($result)) {
                 $sqlResult[] = $result;
@@ -213,9 +202,6 @@ class UserApi
             'resultCount' => $resultCount,
             'sqlResult' => $sqlResult,
         ];
-        if (isset($searchableInstance)) {
-            $result['errors'] = $searchableInstance->getErrors();
-        }
 
         return $result;
     }
@@ -300,10 +286,12 @@ class UserApi
         $permissionApi = ServiceUtil::get('zikula_permissions_module.api.permission');
         foreach ($usermods as $usermod) {
             if ($loadAll || (!$variableApi->get('ZikulaSearchModule', 'disable_' . $usermod['name']) && $permissionApi->hasPermission('ZikulaSearchModule::Item', "$usermod[name]::", ACCESS_READ))) {
-                $info = ModUtil::apiFunc($usermod['name'], 'search', 'info');
-                if ($info) {
-                    $info['name'] = $usermod['name'];
-                    $search_modules[] = $info;
+                if ('ZikulaSearchModule' != $usermod['name']) {
+                    $info = ModUtil::apiFunc($usermod['name'], 'search', 'info');
+                    if ($info) {
+                        $info['name'] = $usermod['name'];
+                        $search_modules[] = $info;
+                    }
                 }
             }
         }

@@ -18,6 +18,7 @@ use Zikula\Core\Controller\AbstractController;
 /**
  * Class AdminController
  * @Route("/admin")
+ * @deprecated remove at Core-2.0
  */
 class AdminController extends AbstractController
 {
@@ -32,6 +33,6 @@ class AdminController extends AbstractController
     {
         @trigger_error('The zikulasearchmodule_admin_index route is deprecated. please use zikulasearchmodule_config_config instead.', E_USER_DEPRECATED);
 
-        return $this->redirectToRoute('zikulasearchmodule_admin_modifyconfig');
+        return $this->redirectToRoute('zikulasearchmodule_config_config');
     }
 }

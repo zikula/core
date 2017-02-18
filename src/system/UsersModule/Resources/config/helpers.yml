@@ -26,7 +26,7 @@ services:
         lazy: true
         arguments:
           - "@zikula_permissions_module.api.permission"
-          - "@jms_i18n_routing.router"
+          - "@router"
           - "@translator.default"
           - "@zikula_users_module.current_user"
 
@@ -47,7 +47,6 @@ services:
         class: Zikula\UsersModule\Helper\SearchHelper
         arguments:
           - '@zikula_permissions_module.api.permission'
-          - '@templating.engine.twig'
           - '@session'
           - '@zikula_users_module.user_repository'
         tags:

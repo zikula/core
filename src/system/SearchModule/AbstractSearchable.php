@@ -14,12 +14,13 @@ namespace Zikula\SearchModule;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\AbstractModule;
 
 /**
  * Class AbstractSearchable
- * @deprecated remove at Core-2.0
+ * @deprecated remove at Core-2.0 use Zikula\SearchModule\SearchableInterface instead
  */
 abstract class AbstractSearchable implements SearchableInterface
 {
@@ -82,6 +83,14 @@ abstract class AbstractSearchable implements SearchableInterface
      * {@inheritdoc}
      */
     abstract public function getResults(array $words, $searchType = 'AND', $modVars = null);
+
+    /**
+     * {@inheritdoc}
+     */
+    public function amendForm(FormBuilderInterface $form)
+    {
+        // not needed for Abstract usage in Core-1.4-type modules.
+    }
 
     /**
      * Construct a QueryBuilder Where orX|andX Expr instance

@@ -11,7 +11,6 @@
 
 namespace Zikula\SearchModule\Form\Type;
 
-use ModUtil;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,7 +30,6 @@ class ConfigType extends AbstractType
         $builder
             ->add('itemsperpage', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $translator->__('Items per page'),
-                'empty_data' => 10,
                 'scale' => 0,
                 'attr' => [
                     'maxlength' => 3,
@@ -40,7 +38,6 @@ class ConfigType extends AbstractType
             ])
             ->add('limitsummary', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $translator->__('Number of characters to display in item summaries'),
-                'empty_data' => 255,
                 'scale' => 0,
                 'attr' => [
                     'maxlength' => 5
@@ -49,8 +46,7 @@ class ConfigType extends AbstractType
             ->add('plugins', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Disabled plugins'),
                 'label_attr' => ['class' => 'checkbox-inline'],
-                'empty_data' => [],
-                'choices' => $this->getPluginChoices($options['plugins']),
+                'choices' => $options['plugins'],
                 'choices_as_values' => true,
                 'expanded' => true,
                 'multiple' => true,
@@ -79,29 +75,6 @@ class ConfigType extends AbstractType
                 ]
             ])
         ;
-    }
-
-    /**
-     * Builds the choices for search plugin selection.
-     *
-     * @param array $plugins List of available plugins
-     *
-     * @return array Plugin choices array
-     */
-    private function getPluginChoices(array $plugins = [])
-    {
-        $pluginChoices = [];
-        foreach ($plugins as $key => $plugin) {
-            if (!isset($plugin['title'])) {
-                continue;
-            }
-            $modid = ModUtil::getIdFromName($plugin['title']);
-            $modinfo = ModUtil::getInfo($modid);
-
-            $pluginChoices[$modinfo['displayname']] = $plugin['title'];
-        }
-
-        return $pluginChoices;
     }
 
     /**
