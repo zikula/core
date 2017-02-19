@@ -203,7 +203,7 @@ class AdminController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm('Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType');
+        $form = $this->createForm('Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType', $category);
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('delete')->isClicked()) {

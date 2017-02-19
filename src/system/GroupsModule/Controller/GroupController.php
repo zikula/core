@@ -218,7 +218,7 @@ class GroupController extends AbstractController
             return $this->redirectToRoute('zikulagroupsmodule_group_adminlist');
         }
 
-        $form = $this->createForm('Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType');
+        $form = $this->createForm('Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType', $groupEntity);
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('delete')->isClicked()) {
