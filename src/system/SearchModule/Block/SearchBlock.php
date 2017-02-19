@@ -11,7 +11,6 @@
 
 namespace Zikula\SearchModule\Block;
 
-use ModUtil;
 use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\SearchModule\AbstractSearchable;
 
@@ -39,7 +38,7 @@ class SearchBlock extends AbstractBlockHandler
 
         // LEGACY handling (<1.4.0) @deprecated - remove at Core-2.0
         foreach ($properties['active'] as $moduleName) {
-            $pluginOptions[$moduleName] = ModUtil::apiFunc($moduleName, 'search', 'options', $properties);
+            $pluginOptions[$moduleName] = \ModUtil::apiFunc($moduleName, 'search', 'options', $properties);
         }
         // 1.4.x type handling @deprecated - remove at Core-2.0
         $core14searchableModules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf(AbstractSearchable::SEARCHABLE);
@@ -118,12 +117,12 @@ class SearchBlock extends AbstractBlockHandler
     {
         $searchModules = [];
         // get all the old type search plugins @deprecated remove at Core-2.0
-        $search_modules = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins');
+        $search_modules = \ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins');
         foreach ($search_modules as $module) {
             $searchModules[$module['title']] = $module['name'];
         }
         // get 1.4.x type searchable modules and add to array @deprecated remove at Core-2.0
-        $searchableModules = ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
+        $searchableModules = \ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
         foreach ($searchableModules as $searchableModule) {
             $searchModules[$searchableModule['displayname']] = $searchableModule['name'];
         }
