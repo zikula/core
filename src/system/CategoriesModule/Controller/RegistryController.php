@@ -19,6 +19,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\ExtensionsModule\Api\CapabilityApi;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -37,7 +38,7 @@ class RegistryController extends AbstractController
      *
      * @param Request $request
      *
-     * @return Response symfony response object
+     * @return array|Response
      *
      * @throws AccessDeniedException Thrown if the user doesn't have permission to administrate the module
      */
@@ -120,16 +121,9 @@ class RegistryController extends AbstractController
 
             $moduleOptions = [];
             foreach ($modules as $module) {
-                $bundle = \ModUtil::getModule($module['name']);
-                if (null !== $bundle && !class_exists($bundle->getVersionClass())) {
-                    // this check just confirming a Core-2.0 spec bundle - remove in 2.0.0
-                    // then instead of getting MetaData, could just do $capabilityApi->getCapabilitiesOf($module['name'])
-                    $capabilities = $bundle->getMetaData()->getCapabilities();
-                    if (!isset($capabilities['categorizable'])) {
-                        continue; // skip this module if not categorizable
-                    }
+                if ($this->get('zikula_extensions_module.api.capability')->isCapable($module['name'], CapabilityApi::CATEGORIZABLE)) {
+                    $moduleOptions[$module['name']] = $module['displayname'];
                 }
-                $moduleOptions[$module['name']] = $module['displayname'];
             }
 
             return [
@@ -152,7 +146,7 @@ class RegistryController extends AbstractController
      *
      * @param Request $request
      *
-     * @return Response symfony response object
+     * @return array|Response
      *
      * @throws AccessDeniedException Thrown if the user doesn't have permission to administrate the module
      */
