@@ -57,6 +57,7 @@ class SearchBlockType extends AbstractType
                 'required' => false
             ])
             ->add('active', ChoiceType::class, [
+                'label_attr' => ['class' => 'checkbox-inline'],
                 'required' => false,
                 'expanded' => true,
                 'multiple' => true,

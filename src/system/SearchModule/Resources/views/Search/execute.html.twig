@@ -1,0 +1,33 @@
+{% form_theme form with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ pageAddAsset('javascript', zasset('@ZikulaSearchModule:js/ZikulaSearchModule.User.Form.js')) }}
+{{ moduleHeader('user', __('Site search'), true, true) }}
+
+{% if noResultsFound %}
+<div class="alert alert-danger">
+    <h4>{{ __('No search results found.') }}</h4>
+    {{ __('You can try the following:') }}
+    <ul>
+        <li>{{ __('Check that you spelled all words correctly.') }}</li>
+        <li>{{ __('Use different keywords.') }}</li>
+        <li>{{ __('Use keywords that are more general.') }}</li>
+        <li>{{ __('Use fewer words.') }}</li>
+    </ul>
+    </div>
+{% endif %}
+
+{{ form_start(form) }}
+{{ form_errors(form) }}
+<fieldset>
+    {{ form_row(form.q) }}
+    {{ form_row(form.searchType) }}
+    {{ form_row(form.searchOrder) }}
+    <div class="search">
+        {{ form_row(form.modules) }}
+    </div>
+    {{ form_row(form.search) }}
+</fieldset>
+
+{{ form_end(form) }}

@@ -21,7 +21,7 @@ services:
 
     zikula_menu_module.container.link_container:
         class: Zikula\MenuModule\Container\LinkContainer
-        arguments: ["@translator.default", "@jms_i18n_routing.router", "@zikula_permissions_module.api.permission"]
+        arguments: ["@translator.default", "@router", "@zikula_permissions_module.api.permission"]
         tags:
             - { name: zikula.link_container }
 

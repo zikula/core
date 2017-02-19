@@ -64,7 +64,7 @@ class GettextExtension extends \Twig_Extension
      */
     public function __(array $context, $message, $domain = null, $locale = null)
     {
-        $domain = $this->determineTranslationDomainFromContext($context);
+        $domain = isset($domain) ? $domain : $this->determineTranslationDomainFromContext($context);
 
         return $this->translator->__(/** @Ignore */$message, $domain, $locale);
     }

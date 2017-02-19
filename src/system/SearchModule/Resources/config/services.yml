@@ -3,9 +3,10 @@ services:
         class: Zikula\SearchModule\Container\LinkContainer
         arguments:
           - "@translator.default"
-          - "@jms_i18n_routing.router"
+          - "@router"
           - "@zikula_permissions_module.api.permission"
           - "@zikula_users_module.current_user"
+          - "@zikula_search_module.search_stat_repository"
         tags:
             - { name: zikula.link_container }
 
@@ -22,22 +23,14 @@ services:
         tags:
             - { name: twig.extension }
 
-    zikula_search_module.front_controller_listener:
-        class: Zikula\SearchModule\Listener\FrontControllerListener
-        arguments:
-          - "@router"
-          - "@zikula_permissions_module.api.permission"
-          - "@zikula_extensions_module.api.variable"
-          - "@zikula_core.common.theme.assets_header"
-          - "%installed%"
-          - "@=container.hasParameter('upgrading') ? parameter('upgrading') : false"
-        tags:
-            - { name: kernel.event_subscriber }
-
-    zikula_search_module.module_event_listener:
-        class: Zikula\SearchModule\Listener\ModuleEventListener
-        tags:
-            - { name: kernel.event_subscriber }
-
     zikula_search_module.internal.searchable_module_collector:
         class: Zikula\SearchModule\Collector\SearchableModuleCollector
+
+    zikula_search_module.api.search_api:
+        class: Zikula\SearchModule\Api\SearchApi
+        arguments:
+          - '@zikula_extensions_module.api.variable'
+          - '@zikula_search_module.search_result_repository'
+          - '@zikula_search_module.search_stat_repository'
+          - '@session'
+          - '@zikula_search_module.internal.searchable_module_collector'

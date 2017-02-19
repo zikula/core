@@ -11,13 +11,12 @@
 
 namespace Zikula\SearchModule\Controller;
 
-use ModUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\SearchModule\AbstractSearchable;
 use Zikula\SearchModule\Form\Type\ConfigType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -34,7 +33,7 @@ class ConfigController extends AbstractController
      *
      * @param Request $request
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response|array
      */
     public function configAction(Request $request)
     {
@@ -43,35 +42,25 @@ class ConfigController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $variableApi = $this->get('zikula_extensions_module.api.variable');
-        $modVars = $variableApi->getAll('ZikulaSearchModule');
-
+        $modVars = $this->getVars();
         $plugins = [];
-        // get 1.4.0+ type searchable modules and add to array
-        $searchableModules = ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
-        foreach ($searchableModules as $searchableModule) {
-            $plugins[] = ['title' => $searchableModule['name']];
-        }
 
-        // get 1.4.0+ type searchable modules and add to array
+        // get Core-2.0 type searchable modules and add to array
         $searchableModules = $this->get('zikula_search_module.internal.searchable_module_collector')->getAll();
         foreach (array_keys($searchableModules) as $searchableModuleName) {
-            $plugins[] = ['title' => $searchableModuleName];
+            $displayName = $this->get('kernel')->getModule($searchableModuleName)->getMetaData()->getDisplayName();
+            $plugins[$displayName] = $searchableModuleName;
         }
 
         $disabledPlugins = [];
-
         // get the disabled state
-        foreach ($plugins as $key => $plugin) {
-            if (!isset($plugin['title'])) {
-                continue;
-            }
-            $modVarKey = 'disable_' . $plugin['title'];
+        foreach ($plugins as $moduleName) {
+            $modVarKey = 'disable_' . $moduleName;
             if (!isset($modVars[$modVarKey])) {
                 continue;
             }
             if ($modVars[$modVarKey]) {
-                $disabledPlugins[] = $plugin['title'];
+                $disabledPlugins[] = $moduleName;
             }
             unset($modVars[$modVarKey]);
         }
@@ -85,23 +74,13 @@ class ConfigController extends AbstractController
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $formData = $form->getData();
-
-                // Update module variables.
-                $this->setVar('itemsperpage', $formData['itemsperpage']);
-                $this->setVar('limitsummary', $formData['limitsummary']);
-                $this->setVar('opensearch_adult_content', $formData['opensearch_adult_content']);
-                $this->setVar('opensearch_enabled', $formData['opensearch_enabled']);
-
-                // loop round the plugins
                 foreach ($plugins as $searchPlugin) {
-                    if (!isset($searchPlugin['title'])) {
-                        continue;
-                    }
                     // set the disabled flag
-                    $disabledFlag = in_array($searchPlugin['title'], $formData['plugins']);
-                    $this->setVar('disable_' . $searchPlugin['title'], $disabledFlag);
+                    $disabledFlag = in_array($searchPlugin, $formData['plugins']);
+                    $this->setVar('disable_' . $searchPlugin, $disabledFlag);
                 }
-
+                unset($formData['plugins']);
+                $this->setVars($formData);
                 $this->addFlash('status', $this->__('Done! Module configuration updated.'));
             }
             if ($form->get('cancel')->isClicked()) {
@@ -109,11 +88,9 @@ class ConfigController extends AbstractController
             }
         }
 
-        $templateParameters = array_merge($modVars, [
+        return [
             'form' => $form->createView(),
             'plugins' => $plugins
-        ]);
-
-        return $templateParameters;
+        ];
     }
 }

@@ -1,7 +1,7 @@
 services:
     zikula_blocks_module.container.link_container:
         class: Zikula\BlocksModule\Container\LinkContainer
-        arguments: ["@translator.default", "@jms_i18n_routing.router", "@zikula_permissions_module.api.permission"]
+        arguments: ["@translator.default", "@router", "@zikula_permissions_module.api.permission"]
         tags:
             - { name: zikula.link_container }
 
@@ -9,6 +9,11 @@ services:
         class: Zikula\BlocksModule\Entity\Repository\BlockPositionRepository
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
         arguments: ["ZikulaBlocksModule:BlockPositionEntity"]
+
+    zikula_blocks_module.block_repository:
+        class: Zikula\BlocksModule\Entity\Repository\BlockRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["ZikulaBlocksModule:BlockEntity"]
 
     zikula_blocks_module.api.block_factory:
         class: Zikula\BlocksModule\Api\BlockFactoryApi

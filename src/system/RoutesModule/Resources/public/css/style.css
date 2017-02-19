@@ -2,6 +2,13 @@
 div#z-maincontent.z-module-routes table tbody tr td {
     vertical-align: top;
 }
+.table-responsive > .fixed-columns {
+    position: absolute;
+    display: inline-block;
+    width: auto;
+    border-right: 1px solid #ddd;
+    background-color: #fff;
+}
 
 /* display pages */
 .zikularoutesmodule-display div.col-sm-3 h3 {
@@ -14,6 +21,8 @@ div#z-maincontent.z-module-routes table tbody tr td {
 .zikularoutesmodule-display div.col-sm-3 p.managelink {
     margin-left: 18px;
 }
+
+
 /* validation */
 div.form-group input:required, div.form-group textarea:required, div.form-group select:required {
     /*border: 1px solid #00a8e6;*/
@@ -25,6 +34,7 @@ div.form-group input:required:valid, div.form-group textarea:required:valid, div
 div.form-group input:required:invalid, div.form-group textarea:required:invalid, div.form-group select:required:invalid {
     border: 1px solid red;
 }
+
 /** fix dropdown visibility inside responsive tables */
 div.zikularoutesmodule-view .table-responsive {
     min-height: 300px;

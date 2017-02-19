@@ -41,17 +41,17 @@ class LinkContainer extends AbstractLinkContainer
             'title' => $this->__('Route list')
         ];
         $links[] = [
-            'url' => $this->router->generate('zikularoutesmodule_route_adminreload'),
+            'url' => $this->router->generate('zikularoutesmodule_update_reload'),
             'text' => $this->__('Reload routes'),
             'title' => $this->__('Reload routes')
         ];
         $links[] = [
-            'url' => $this->router->generate('zikularoutesmodule_route_adminrenew'),
+            'url' => $this->router->generate('zikularoutesmodule_update_renew'),
             'text' => $this->__('Reload multilingual routing settings'),
             'title' => $this->__('Reload multilingual routing settings')
         ];
         $links[] = [
-            'url' => $this->router->generate('zikularoutesmodule_route_dumpjsroutes'),
+            'url' => $this->router->generate('zikularoutesmodule_update_dumpjsroutes'),
             'text' => $this->__('Dump exposed js routes to file'),
             'title' => $this->__('Dump exposed js routes to file')
         ];

@@ -1,7 +1,7 @@
 services:
     zikula_categories_module.container.link_container:
         class: Zikula\CategoriesModule\Container\LinkContainer
-        arguments: ["@translator.default", "@jms_i18n_routing.router", "@zikula_permissions_module.api.permission", "@zikula_extensions_module.api.variable", "@request_stack"]
+        arguments: ["@translator.default", "@router", "@zikula_permissions_module.api.permission", "@zikula_extensions_module.api.variable", "@request_stack"]
         tags:
             - { name: zikula.link_container }
 
@@ -47,11 +47,11 @@ services:
 
     zikula_categories_module.html_tree_helper:
         class: Zikula\CategoriesModule\Helper\HtmlTreeHelper
-        arguments: ["@translator.default", "@jms_i18n_routing.router", "@request_stack"]
+        arguments: ["@translator.default", "@router", "@request_stack"]
 
     zikula_categories_module.js_tree_helper:
         class: Zikula\CategoriesModule\Helper\JsTreeHelper
-        arguments: ["@translator.default", "@jms_i18n_routing.router", "@request_stack"]
+        arguments: ["@translator.default", "@router", "@request_stack"]
 
     zikula_categories_module.path_builder_helper:
         class: Zikula\CategoriesModule\Helper\PathBuilderHelper

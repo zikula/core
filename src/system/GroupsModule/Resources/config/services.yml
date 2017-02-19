@@ -3,7 +3,7 @@ services:
         class: Zikula\GroupsModule\Container\LinkContainer
         arguments:
           - "@translator.default"
-          - "@jms_i18n_routing.router"
+          - "@router"
           - "@zikula_permissions_module.api.permission"
           - "@zikula_groups_module.group_repository"
           - "@zikula_groups_module.group_application_repository"

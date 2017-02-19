@@ -11,56 +11,121 @@
 
 namespace Zikula\SearchModule\Listener;
 
-use BlockUtil;
-use ModUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\Core\Event\GenericEvent;
+use Zikula\BlocksModule\Entity\BlockEntity;
+use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
+use Zikula\Core\CoreEvents;
+use Zikula\Core\Event\ModuleStateEvent;
+use Zikula\ExtensionsModule\Api\CapabilityApi;
+use Zikula\SearchModule\Collector\SearchableModuleCollector;
 
+/**
+ * Class ModuleEventListener
+ *
+ * Modify Search block properties based on the availability and searchability of a module as its state changes
+ */
 class ModuleEventListener implements EventSubscriberInterface
 {
+    /**
+     * @var SearchableModuleCollector
+     */
+    private $searchableModuleCollector;
+
+    /**
+     * @var BlockRepositoryInterface
+     */
+    private $blockRepository;
+
+    /**
+     * ModuleEventListener constructor.
+     * @param SearchableModuleCollector $searchableModuleCollector
+     */
+    public function __construct(SearchableModuleCollector $searchableModuleCollector, BlockRepositoryInterface $blockRepository)
+    {
+        $this->searchableModuleCollector = $searchableModuleCollector;
+        $this->blockRepository = $blockRepository;
+    }
+
     public static function getSubscribedEvents()
     {
         return [
-            'installer.module.installed' => ['moduleInstall'],
+            CoreEvents::MODULE_INSTALL => ['moduleEnable'],
+            CoreEvents::MODULE_ENABLE => ['moduleEnable'],
+            CoreEvents::MODULE_DISABLE => ['moduleDisable'],
+            CoreEvents::MODULE_REMOVE => ['moduleRemove'],
         ];
     }
 
-    /**
-     * Handle module install event "installer.module.installed".
-     * Receives $modinfo as $args
-     *
-     * @param GenericEvent $event
-     *
-     * @return void
-     */
-    public function moduleInstall(GenericEvent $event)
+    public function moduleEnable(ModuleStateEvent $event)
     {
-        $mod = $event->getName();
-
-        // determine search capability
-        if (!ModUtil::apiFunc($mod, 'search', 'info')) {
+        $moduleName = $this->getModuleName($event);
+        if (null == $moduleName) {
             return;
         }
 
         // get all search blocks
-        $blocks = BlockUtil::getBlocksInfo();
-
+        $blocks = $this->blockRepository->findBy(['blocktype' => 'Search']);
+        /** @var BlockEntity[] $blocks */
         foreach ($blocks as $block) {
-            $block = $block->toArray();
-
-            if ($block['bkey'] != 'ZikulaSearchModule') {
-                continue;
+            $properties = $block->getProperties();
+            if (!isset($properties['active'])) {
+                $properties['active'] = [];
             }
-
-            $content = BlockUtil::varsFromContent($block['content']);
-
-            if (!isset($content['active'])) {
-                $content['active'] = [];
-            }
-            $content['active'][$mod] = 1;
-
-            $block['content'] = BlockUtil::varsToContent($content);
-            ModUtil::apiFunc('ZikulaBlocksModule', 'admin', 'update', $block);
+            $properties['active'][$moduleName] = 1;
+            $block->setProperties($properties);
+            $this->blockRepository->persistAndFlush($block);
         }
+    }
+
+    public function moduleDisable(ModuleStateEvent $event)
+    {
+        $moduleName = $this->getModuleName($event);
+        if (null == $moduleName) {
+            return;
+        }
+
+        // get all search blocks
+        $blocks = $this->blockRepository->findBy(['blocktype' => 'Search']);
+        /** @var BlockEntity[] $blocks */
+        foreach ($blocks as $block) {
+            $properties = $block->getProperties();
+            if (!isset($properties['active'])) {
+                $properties['active'] = [];
+            }
+            $properties['active'][$moduleName] = 0;
+            $block->setProperties($properties);
+            $this->blockRepository->persistAndFlush($block);
+        }
+    }
+
+    public function moduleRemove(ModuleStateEvent $event)
+    {
+        $moduleName = $this->getModuleName($event);
+        if (null == $moduleName) {
+            return;
+        }
+
+        // get all search blocks
+        $blocks = $this->blockRepository->findBy(['blocktype' => 'Search']);
+        /** @var BlockEntity[] $blocks */
+        foreach ($blocks as $block) {
+            $properties = $block->getProperties();
+            if (isset($properties['active'][$moduleName])) {
+                unset($properties['active'][$moduleName]);
+            }
+            $block->setProperties($properties);
+            $this->blockRepository->persistAndFlush($block);
+        }
+    }
+
+    private function getModuleName(ModuleStateEvent $event)
+    {
+        // at Core-2.0, remove the capability check and only use the searchableModuleCollector
+        $moduleName = $event->getModule()->getName();
+        if ((null == $this->searchableModuleCollector->get($moduleName))) {
+            return null;
+        }
+
+        return $moduleName;
     }
 }
