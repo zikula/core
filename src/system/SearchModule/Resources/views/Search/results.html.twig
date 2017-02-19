@@ -17,7 +17,6 @@
     {% for result in results %}
     <dt class="search_hit">
         {% if result.url|default %}<a href="{{ result.url|e('html_attr') }}">{% endif %}{{ result.title|zikulasearchmodule_highlightGoogleKeywords(q, limitSummary)|raw }}{% if result.url|default %}</a>{% endif %}
-        &nbsp;&nbsp;<span class="sub">(<a href="{{ zikulasearchmodule_modUrlLegacy(result.module) }}">{{ result.displayname }}</a>)</span>
     </dt>
     <dd>
         {{ result.text|truncate(limitSummary)|zikulasearchmodule_highlightGoogleKeywords(q, limitSummary)|raw }}
