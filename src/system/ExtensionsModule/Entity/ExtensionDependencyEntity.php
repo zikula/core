@@ -12,7 +12,6 @@
 namespace Zikula\ExtensionsModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use ModUtil;
 use Zikula\Core\Doctrine\EntityAccess;
 
 /**
@@ -62,6 +61,7 @@ class ExtensionDependencyEntity extends EntityAccess
     private $status;
 
     /**
+     * Non-persisted data
      * The reason of a dependency is not saved into the database to avoid multilingual problems but loaded from Version.php.
      * @var string
      */
@@ -128,14 +128,13 @@ class ExtensionDependencyEntity extends EntityAccess
     }
 
     /**
-     * This is a dummy method to set the reason for a dependency. However, the reason is not saved into the database.
-     * This method is required for merges to work.
+     * Non-persisted data.
      *
      * Note: The reason of a dependency is not saved into the database to avoid multilingual problems but loaded from Version.php.
      */
     public function setReason($reason)
     {
-        // Don't do anything. The reason is hardcoded in Version.php.
+        $this->reason = $reason;
     }
 
     /**
@@ -145,35 +144,6 @@ class ExtensionDependencyEntity extends EntityAccess
      */
     public function getReason()
     {
-        if ($this->reason === false) {
-            $modinfo = ModUtil::getInfo($this->getModid());
-            $bundle = ModUtil::getModule($modinfo['name'], true);
-
-            if (null !== $bundle) {
-                $versionClass =  $bundle->getVersionClass();
-
-                if (class_exists($versionClass)) {
-                    // 1.4-module spec - @deprecated - remove in Core-2.0
-                    $version = new $versionClass($bundle);
-                    $moduleVersionArray = $version->toArray();
-                    $dependencies = $moduleVersionArray['dependencies'];
-                } else {
-                    // Core-2.0 module spec
-                    $moduleMetaData = $bundle->getMetaData();
-                    $dependencies = $moduleMetaData->getDependencies();
-                }
-
-                foreach ($dependencies as $dependency) {
-                    if ($dependency['modname'] == $this->modname) {
-                        $this->reason = isset($dependency['reason']) ? $dependency['reason'] : '';
-
-                        return $this->reason;
-                    }
-                }
-            }
-            $this->reason = '';
-        }
-
         return $this->reason;
     }
 }
