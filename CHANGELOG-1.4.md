@@ -16,7 +16,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Made display names of Menu and Theme modules more readable (#3448).
 
  - Features:
-    - Added Permission-based controls for MenuModule menu items (#3314).'
+    - Added Permission-based controls for MenuModule menu items (#3314).
     - SearchModule refactored to Core-2.0 standards.
     - SearchableInterface adds a method `amendForm()` to amend the search form instead of the old method `getOptions()`
 

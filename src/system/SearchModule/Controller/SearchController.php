@@ -73,7 +73,7 @@ class SearchController extends AbstractController
         }
         // 1.4.x type handling @deprecated - remove at Core-2.0
         foreach ($core14searchableModules as $searchableModule) {
-            if ($this->getVar('disable_' . $searchableModule['name'])) {
+            if ($this->getVar('disable_' . $searchableModule['name'], false)) {
                 continue;
             }
             if (!$this->hasPermission('ZikulaSearchModule::Item', $searchableModule['name'] . '::', ACCESS_READ)) {
@@ -102,7 +102,7 @@ class SearchController extends AbstractController
             if ($setActiveDefaults) {
                 $activeModules[$moduleName] = 1;
             }
-            if ($this->getVar('disable_' . $moduleName)) {
+            if ($this->getVar('disable_' . $moduleName, false)) {
                 continue;
             }
             if (!$this->hasPermission('ZikulaSearchModule::Item', $moduleName . '::', ACCESS_READ)) {
@@ -183,8 +183,8 @@ class SearchController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $startnum = $request->query->filter('startnum', 0, false, FILTER_VALIDATE_INT);
-        $itemsPerPage = $this->getVar('itemsperpage');
+        $startnum = $request->query->getInt('startnum', 0);
+        $itemsPerPage = $this->getVar('itemsperpage', 25);
         $statRepo = $this->get('zikula_search_module.search_stat_repository');
         $items = $statRepo->getStats([], ['date' => 'DESC'], $itemsPerPage, $startnum);
 
