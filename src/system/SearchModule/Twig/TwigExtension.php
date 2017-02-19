@@ -42,7 +42,6 @@ class TwigExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('zikulasearchmodule_searchVarToFieldNames', [$this, 'searchVarToFieldNames']),
-            new \Twig_SimpleFunction('zikulasearchmodule_modUrlLegacy', [$this, 'modUrlLegacy'])
         ];
     }
 
@@ -91,18 +90,6 @@ class TwigExtension extends \Twig_Extension
         }
 
         return $fields;
-    }
-
-    /**
-     * Legacy bridging method for arbitrary module urls.
-     *
-     * @param string $moduleName Name of target module
-     *
-     * @return string
-     */
-    public function modUrlLegacy($moduleName)
-    {
-        return \ModUtil::url($moduleName, 'user', 'index');
     }
 
     /**
