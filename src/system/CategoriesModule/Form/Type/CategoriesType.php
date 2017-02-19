@@ -115,7 +115,7 @@ class CategoriesType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'categories';
+        return 'zikulacategoriesmodule_categories';
     }
 
     /**

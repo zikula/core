@@ -25,6 +25,7 @@ class EmailLoginType extends AbstractType
 
     /**
      * EmailLoginType constructor.
+     *
      * @param $translator
      */
     public function __construct(TranslatorInterface $translator)
@@ -32,6 +33,9 @@ class EmailLoginType extends AbstractType
         $this->translator = $translator;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -55,18 +59,22 @@ class EmailLoginType extends AbstractType
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
         return 'zikulazauthmodule_authentication_email';
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        // @todo can be removed?
         $resolver->setDefaults([
-            'translator' => null,
+            'translator' => null
         ]);
     }
 }

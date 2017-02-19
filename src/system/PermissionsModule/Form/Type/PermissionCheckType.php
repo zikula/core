@@ -76,7 +76,7 @@ class PermissionCheckType extends AbstractType
         $resolver->setDefaults([
             'attr' => ['id' => 'testpermform'],
             'translator' => null,
-            'permissionLevels' => [],
+            'permissionLevels' => []
         ]);
     }
 }

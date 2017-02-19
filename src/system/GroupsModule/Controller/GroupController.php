@@ -218,9 +218,7 @@ class GroupController extends AbstractController
             return $this->redirectToRoute('zikulagroupsmodule_group_adminlist');
         }
 
-        $form = $this->createForm('Zikula\GroupsModule\Form\Type\DeleteGroupType', $groupEntity, [
-            'translator' => $this->get('translator.default')
-        ]);
+        $form = $this->createForm('Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType');
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('delete')->isClicked()) {
@@ -229,8 +227,7 @@ class GroupController extends AbstractController
                 $this->get('doctrine')->getManager()->flush();
                 $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_DELETE, new GenericEvent($groupEntity));
                 $this->addFlash('status', $this->__('Done! Group deleted.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
+            } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
