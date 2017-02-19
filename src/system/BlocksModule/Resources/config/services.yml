@@ -10,6 +10,11 @@ services:
         factory: ["@doctrine.orm.default_entity_manager", getRepository]
         arguments: ["ZikulaBlocksModule:BlockPositionEntity"]
 
+    zikula_blocks_module.block_repository:
+        class: Zikula\BlocksModule\Entity\Repository\BlockRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["ZikulaBlocksModule:BlockEntity"]
+
     zikula_blocks_module.api.block_factory:
         class: Zikula\BlocksModule\Api\BlockFactoryApi
         arguments: ["@service_container"]

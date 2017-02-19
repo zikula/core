@@ -11,23 +11,24 @@
 
 namespace Zikula\SearchModule;
 
+use Symfony\Component\Form\FormBuilderInterface;
+
 interface SearchableInterface
 {
     /**
-     * Get the UI options for search form
+     * Modify the search form
+     * Note that the `active` status (checkbox) is already included
      *
-     * @param boolean $active if the module checkbox should be checked as active
-     * @param array|null $modVars module form vars as previously set
-     * @return string
+     * @param FormBuilderInterface $form
      */
-    public function getOptions($active, $modVars = null);
+    public function amendForm(FormBuilderInterface $form);
 
     /**
      * Get the search results
      *
      * @param array $words array of words to search for
      * @param string $searchType AND|OR|EXACT
-     * @param array|null $modVars module form vars passed though
+     * @param array|null $modVars module form vars passed though (form data from `amendForm` method)
      * @return array (Core-2.0 modules MUST return an array of SearchResultEntity[])
      */
     public function getResults(array $words, $searchType = 'AND', $modVars = null);

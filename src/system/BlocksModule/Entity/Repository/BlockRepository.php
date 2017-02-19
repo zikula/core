@@ -12,6 +12,7 @@
 namespace Zikula\BlocksModule\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
 
 class BlockRepository extends EntityRepository implements BlockRepositoryInterface
@@ -49,5 +50,11 @@ class BlockRepository extends EntityRepository implements BlockRepositoryInterfa
         $query->orderBy('b.' . $sortField, $sortDirection);
 
         return $query->getQuery()->getResult();
+    }
+
+    public function persistAndFlush(BlockEntity $entity)
+    {
+        $this->_em->persist($entity);
+        $this->_em->flush($entity);
     }
 }

@@ -1,5 +1,5 @@
 {% set templateTitle = __('Search results') %}
-{{ include('@ZikulaSearchModule/User/menu.html.twig') }}
+{{ moduleHeader('user', templateTitle, true, true) }}
 
 <h3>{{ templateTitle }}</h3>
 
@@ -27,4 +27,4 @@
     </dd>
     {% endfor %}
 </dl>
-{{ pager({ rowcount: resultCount, limit: numlimit, posvar: 'page', display: 'page', includePostVars: false, route: 'zikulasearchmodule_user_search'}) }}
+{{ pager({ rowcount: resultCount, limit: numlimit, posvar: 'page', display: 'page', includePostVars: false, route: 'zikulasearchmodule_search_execute'}) }}
