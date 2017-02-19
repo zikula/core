@@ -17,7 +17,7 @@
 
     <property name="builddir" value="${workspace}/build"/>
     <property name="sourcedir" value="${workspace}/source"/>
-    <property name="package" value="${job_name}.build${build_number}"/>
+    <property name="package" value="${job_name}"/>
     <property name="exportdir" value="${builddir}/export"/>
     <property name="archivedir" value="${builddir}/archive"/>
     <property name="packagepath" value="${exportdir}/${job_name}"/>
