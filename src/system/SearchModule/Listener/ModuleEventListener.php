@@ -16,7 +16,6 @@ use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\ModuleStateEvent;
-use Zikula\ExtensionsModule\Api\CapabilityApi;
 use Zikula\SearchModule\Collector\SearchableModuleCollector;
 
 /**
