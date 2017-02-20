@@ -16,9 +16,14 @@ fully functional) in favor of a dedicated class that is identified as a Dependen
             - { name: zikula.searchable_module, bundleName: AcmeFooModule }
 ```
 
-The class must implement `Zikula\SearchModule\SearchableInterface` Please see `SearchableInterface` for documentation of
-the required methods.
+The class must implement `Zikula\SearchModule\SearchableInterface` Please see the interface itself for documentation 
+of the required methods.
 
-In Core-2.0 the `getResults()` method **MUST** return an array of `SearchResultEntity`
+The `getResults()` method **MUST** return an array of `Zikula\SearchModule\Entity\SearchResultEntity`.
 
-The **UsersModule** has implemented the new Search method and can be used as a reference.
+The `amendForm()` method accepts an argument that is an instance of `Zikula\SearchModule\Form\Type\AmendableModuleSearchType`
+which already includes an `active` child object. Utilize this object to add additional child objects to the general 
+search form object. 
+
+The **UsersModule** has implemented the new Search method (`Zikula\UsersModule\Helper\SearchHelper`) and can be used as
+a simple reference.

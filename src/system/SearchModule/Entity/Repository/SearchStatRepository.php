@@ -12,18 +12,18 @@
 namespace Zikula\SearchModule\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Zikula\SearchModule\Entity\RepositoryInterface\SearchStatRepositoryInterface;
+use Zikula\SearchModule\Entity\SearchStatEntity;
 
 /**
  * Repository class used to implement own convenience methods for performing certain DQL queries.
  *
  * This is the repository class for search statistics.
  */
-class SearchStatRepository extends EntityRepository
+class SearchStatRepository extends EntityRepository implements SearchStatRepositoryInterface
 {
     /**
-     * Returns amount of previous search queries.
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function countStats()
     {
@@ -38,14 +38,7 @@ class SearchStatRepository extends EntityRepository
     }
 
     /**
-     * Returns stats for given arguments.
-     *
-     * @param array   $filters Optional array with filters
-     * @param array   $sorting Optional array with sorting criteria
-     * @param integer $limit   Optional limitation for amount of retrieved objects
-     * @param integer $offset  Optional start offset of retrieved objects
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getStats($filters = [], $sorting = [], $limit = 0, $offset = 0)
     {
@@ -80,5 +73,14 @@ class SearchStatRepository extends EntityRepository
         $query = $qb->getQuery();
 
         return $query->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function persistAndFlush(SearchStatEntity $entity)
+    {
+        $this->_em->persist($entity);
+        $this->_em->flush($entity);
     }
 }

@@ -36,29 +36,24 @@ application "Routes" {
             CHANGELOG.md,
             Container/LinkContainer.php,
             Entity/Repository/RouteRepository.php,
+            Entity/RouteEntity.php,
             Form/Handler/Route/EditHandler.php,
             Form/Type/RouteType.php,
             Helper/ViewHelper.php,
             Listener/EntityLifecycleListener.php,
+            Listener/InstallerListener.php,
             README.md,
-            Resources/public/images/admin.png,
-            RoutesModuleInstaller.php
+            Resources/config/routing.yml,
+            RoutesModuleInstaller.php,
+            Twig/TwigExtension.php
         "
         markFiles "
-            Base/AbstractRoutesModuleInstaller.php,
             composer.json,
-            Controller/AjaxController.php,
-            Controller/RouteController.php,
-            Entity/RouteEntity.php,
-            Listener/InstallerListener.php,
             Resources/config/eventSubscriber.yml,
-            Resources/config/routing.yml,
             Resources/config/services.yml,
-            Resources/views/Helper/includeStandardFieldsDisplay.html.twig,
             Resources/views/Route/display.html.twig,
             Resources/views/Route/edit.html.twig,
-            Resources/views/Route/view.html.twig,
-            Twig/TwigExtension.php
+            Resources/views/Route/view.html.twig
         "
     }
     entities {
@@ -150,9 +145,7 @@ application "Routes" {
                 viewAction "View",
                 displayAction "Display",
                 editAction "Edit",
-                deleteAction "Delete",
-                customAction "Reload",
-                customAction "Renew"
+                deleteAction "Delete"
             }
         }
     }

@@ -4,6 +4,12 @@ services:
         tags:
             - { name: form.type, alias: zikula_locale }
 
+    zikula.form.type.deletion:
+        class: Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType
+        arguments: ["@translator.default"]
+        tags:
+            - { name: form.type, alias: zikula_deletion }
+
     zikula.form_extension.icon:
         class: Zikula\Bundle\FormExtensionBundle\Form\Extension\ButtonTypeIconExtension
         tags:

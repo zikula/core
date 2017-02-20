@@ -22,6 +22,9 @@ use Zikula\UsersModule\Constant as UsersConstant;
 
 class ConfigType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -199,18 +202,21 @@ class ConfigType extends AbstractType
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
         return 'zikulausersmodule_config';
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => null,
+            'translator' => null
         ]);
     }
 }

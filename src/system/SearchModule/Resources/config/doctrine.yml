@@ -1,0 +1,10 @@
+services:
+    zikula_search_module.search_result_repository:
+        class: Zikula\SearchModule\Entity\Repository\SearchResultRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["ZikulaSearchModule:SearchResultEntity"]
+
+    zikula_search_module.search_stat_repository:
+        class: Zikula\SearchModule\Entity\Repository\SearchStatRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["ZikulaSearchModule:SearchStatEntity"]

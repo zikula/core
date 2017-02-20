@@ -81,12 +81,13 @@ class ValidRegistrationVerificationValidator extends ConstraintValidator
             $this->context->buildViolation($this->translator->__('Invalid username.'))
                 ->atPath('uname')
                 ->addViolation();
-        }
-        $codesMatch = $this->passwordApi->passwordsMatch($data['verifycode'], $verifyChg['verifycode']);
-        if (!$codesMatch) {
-            $this->context->buildViolation($this->translator->__('The code is invalid for this username.'))
-                ->atPath('verifycode')
-                ->addViolation();
+        } else {
+            $codesMatch = $this->passwordApi->passwordsMatch($data['verifycode'], $verifyChg['verifycode']);
+            if (!$codesMatch) {
+                $this->context->buildViolation($this->translator->__('The code is invalid for this username.'))
+                    ->atPath('verifycode')
+                    ->addViolation();
+            }
         }
     }
 }

@@ -12,8 +12,15 @@
 
 namespace Zikula\RoutesModule\Helper;
 
-use ModUtil;
-use ServiceUtil;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Templating\EngineInterface;
+use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\ExtensionsModule\Api\ExtensionApi;
+use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
+use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\Helper\Base\AbstractViewHelper;
 
@@ -23,6 +30,48 @@ use Zikula\RoutesModule\Helper\Base\AbstractViewHelper;
 class ViewHelper extends AbstractViewHelper
 {
     /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * @var DynamicConfigDumper
+     */
+    private $configDumper;
+
+    /**
+     * @var ExtensionRepositoryInterface
+     */
+    private $extensionRepository;
+
+    /**
+     * ViewHelper constructor.
+     * @param EngineInterface  $templating       EngineInterface service instance
+     * @param RequestStack     $requestStack     RequestStack service instance
+     * @param PermissionApiInterface    $permissionApi    PermissionApi service instance
+     * @param VariableApi      $variableApi      VariableApi service instance
+     * @param ControllerHelper $controllerHelper ControllerHelper service instance
+     * @param TranslatorInterface $translator
+     * @param DynamicConfigDumper $configDumper
+     * @param ExtensionRepositoryInterface $extensionRepository
+     */
+    public function __construct(
+        EngineInterface $templating,
+        RequestStack $requestStack,
+        PermissionApiInterface $permissionApi,
+        VariableApi $variableApi,
+        ControllerHelper $controllerHelper,
+        TranslatorInterface $translator,
+        DynamicConfigDumper $configDumper,
+        ExtensionRepositoryInterface $extensionRepository
+    ) {
+        parent::__construct($templating, $requestStack, $permissionApi, $variableApi, $controllerHelper);
+        $this->translator = $translator;
+        $this->configDumper = $configDumper;
+        $this->extensionRepository = $extensionRepository;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function processTemplate($type, $func, array $templateParameters = [], $template = '')
@@ -30,22 +79,21 @@ class ViewHelper extends AbstractViewHelper
         $enrichedTemplateParameters = $templateParameters;
 
         if ($type == 'route' && $func == 'view') {
-            $translator = ServiceUtil::get('translator.default');
             $groupMessages = [
-                RouteEntity::POSITION_FIXED_TOP => $translator->__('Routes fixed to the top of the list:'),
-                RouteEntity::POSITION_MIDDLE => $translator->__('Normal routes:'),
-                RouteEntity::POSITION_FIXED_BOTTOM => $translator->__('Routes fixed to the bottom of the list:'),
+                RouteEntity::POSITION_FIXED_TOP => $this->translator->__('Routes fixed to the top of the list:'),
+                RouteEntity::POSITION_MIDDLE => $this->translator->__('Normal routes:'),
+                RouteEntity::POSITION_FIXED_BOTTOM => $this->translator->__('Routes fixed to the bottom of the list:'),
             ];
             $enrichedTemplateParameters['groupMessages'] = $groupMessages;
             $enrichedTemplateParameters['sortableGroups'] = [RouteEntity::POSITION_MIDDLE];
 
-            $configDumper = ServiceUtil::get('zikula.dynamic_config_dumper');
-            $enrichedTemplateParameters['jms_i18n_routing'] = $configDumper->getConfigurationForHtml('jms_i18n_routing');
+            $enrichedTemplateParameters['jms_i18n_routing'] = $this->configDumper->getConfigurationForHtml('jms_i18n_routing');
         } elseif ($type == 'route' && $func == 'edit') {
             $urlNames = [];
-            $modules = ModUtil::getModulesByState(3, 'displayname');
+            /** @var ExtensionEntity[] $modules */
+            $modules = $this->extensionRepository->findBy(['state' => ExtensionApi::STATE_ACTIVE]);
             foreach ($modules as $module) {
-                $urlNames[$module['name']] = $module['url'];
+                $urlNames[$module->getName()] = $module->getUrl();
             }
             $enrichedTemplateParameters['moduleUrlNames'] = $urlNames;
         }

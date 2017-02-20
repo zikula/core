@@ -11,7 +11,7 @@
 
 namespace Zikula\UsersModule\Helper;
 
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\SearchModule\Entity\SearchResultEntity;
@@ -26,11 +26,6 @@ class SearchHelper implements SearchableInterface
     private $permissionApi;
 
     /**
-     * @var EngineInterface
-     */
-    private $templateEngine;
-
-    /**
      * @var SessionInterface
      */
     private $session;
@@ -43,18 +38,15 @@ class SearchHelper implements SearchableInterface
     /**
      * SearchHelper constructor.
      * @param PermissionApi $permissionApi
-     * @param EngineInterface $templateEngine
      * @param SessionInterface $session
      * @param UserRepositoryInterface $userRepository
      */
     public function __construct(
         PermissionApi $permissionApi,
-        EngineInterface $templateEngine,
         SessionInterface $session,
         UserRepositoryInterface $userRepository
     ) {
         $this->permissionApi = $permissionApi;
-        $this->templateEngine = $templateEngine;
         $this->session = $session;
         $this->userRepository = $userRepository;
     }
@@ -62,14 +54,9 @@ class SearchHelper implements SearchableInterface
     /**
      * {@inheritdoc}
      */
-    public function getOptions($active, $modVars = null)
+    public function amendForm(FormBuilderInterface $form)
     {
-        $options = '';
-        if ($this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
-            $options = $this->templateEngine->renderResponse('@ZikulaUsersModule/Search/options.html.twig', ['active' => $active])->getContent();
-        }
-
-        return $options;
+        // not needed because `active` child object is already added and that is all that is needed.
     }
 
     /**

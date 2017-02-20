@@ -61,6 +61,8 @@ to `@CompanyPaulaTheme`. They are located in `theme/Company/Paula/Resources/view
 * Do the same in `header.html.twig` which is located in `theme/Company/Paula/Resources/views/include`
 * next change `{{ knp_menu_render('ZikulaBootstrapTheme:AdminMenu:menu') }}` with 
 `{{ knp_menu_render('CompanyPaulaTheme:AdminMenu:menu') }}`
+* There is a file named `AdminMenu` in the `/Menu` directory. Inside this file you will find the namespace. You have to adjust
+  this accordingly: `namespace Company\PaulaTheme\Menu;`
 * at the end you have to adjust the bootstrap css file. It is located inside `config/theme.yml`. Normally it looks 
 like `bootstrapPath: themes/BootstrapTheme/Resources/public/css/cerulean.min.css`. It should get the right path:
 `bootstrapPath: themes/Company/PaulaTheme/Resources/public/css/cerulean.min.css`

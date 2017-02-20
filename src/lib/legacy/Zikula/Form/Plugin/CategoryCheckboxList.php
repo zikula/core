@@ -133,7 +133,88 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
      */
     public function saveValue(Zikula_Form_View $view, &$data)
     {
-        Zikula_Form_Plugin_CategorySelector::saveValue($view, $data);
+        if ($this->enableDBUtil && $this->dataBased) {
+            if ($this->group == null) {
+                $data['__CATEGORIES__'][$this->dataField] = $this->getSelectedValue();
+            } else {
+                if (!array_key_exists($this->group, $data)) {
+                    $data[$this->group] = [];
+                }
+                $data[$this->group]['__CATEGORIES__'][$this->dataField] = $this->getSelectedValue();
+            }
+        } elseif ($this->enableDoctrine && $this->dataBased) {
+            if ($this->group == null) {
+                $data['Categories'][$this->dataField] = [
+                    'category_id' => $this->getSelectedValue(),
+                    'reg_property' => $this->dataField
+                ];
+            } else {
+                if (!array_key_exists($this->group, $data)) {
+                    $data[$this->group] = [];
+                }
+                $data[$this->group]['Categories'][$this->dataField] = [
+                    'category_id' => $this->getSelectedValue(),
+                    'reg_property' => $this->dataField
+                ];
+            }
+        } elseif ($this->doctrine2) {
+            $entity = $view->get_template_vars($this->group);
+            $entityClass = get_class($entity);
+
+            // load category from db
+            $entityManager = ServiceUtil::getService('doctrine.orm.default_entity_manager');
+
+            $collection = $entityManager->getClassMetadata($entityClass)
+                ->getFieldValue($entity, $this->dataField);
+
+            if (!$collection) {
+                $collection = new \Doctrine\Common\Collections\ArrayCollection();
+                $entityManager->getClassMetadata($entityClass)
+                   ->setFieldValue($entity, $this->dataField, $collection);
+            }
+
+            if (is_array($this->getSelectedValue())) {
+                $selectedValues = $this->getSelectedValue();
+            } else {
+                $selectedValues[] = $this->getSelectedValue();
+            }
+            $selectedValues = array_combine($selectedValues, $selectedValues);
+
+            foreach ($collection->getKeys() as $key) {
+                $entityCategory = $collection->get($key);
+
+                if ($entityCategory->getCategoryRegistryId() == $this->registryId) {
+                    $categoryId = $entityCategory->getCategory()->getId();
+
+                    if (isset($selectedValues[$categoryId])) {
+                        unset($selectedValues[$categoryId]);
+                    } else {
+                        $collection->remove($key);
+                    }
+                }
+            }
+
+            // we do NOT flush here, as the calling module is responsible for that (Guite)
+            //$em->flush();
+
+            $categoryEntityClass = 'Zikula_Doctrine2_Entity_Category';
+            if (strpos($entityClass, '\\') !== false) {
+                // if using namespaces, use new base class
+                $categoryEntityClass = 'Zikula\CategoriesModule\Entity\CategoryEntity';
+            }
+
+            foreach ($selectedValues as $selectedValue) {
+                if ($selectedValue === null) {
+                    // If no category has been selected.
+                    continue;
+                }
+                $category = $em->find($categoryEntityClass, $selectedValue);
+                $class = $em->getClassMetadata($entityClass)->getAssociationTargetClass($this->dataField);
+                $collection->add(new $class($this->registryId, $category, $entity));
+            }
+        } else {
+            parent::saveValue($view, $data);
+        }
     }
 
     /**

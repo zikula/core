@@ -13,6 +13,7 @@ namespace Zikula\PermissionsModule\Api;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
@@ -24,7 +25,7 @@ use Zikula\UsersModule\Entity\UserEntity;
  * or denied from the Permissions module User Interface. Components/Extensions must declare their Permission structure in
  * their `composer.json` file.
  */
-class PermissionApi
+class PermissionApi implements PermissionApiInterface
 {
     /**
      * 'all users', includes unregistered users

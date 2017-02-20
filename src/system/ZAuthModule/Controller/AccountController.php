@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\HookBundle\Dispatcher\Exception\RuntimeException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Exception\FatalErrorException;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -179,7 +180,7 @@ class AccountController extends AbstractController
      * @Route("/lost-password/reset")
      * @Template
      * @param Request $request
-     * @return array
+     * @return array|RedirectResponse
      */
     public function lostPasswordResetAction(Request $request)
     {
@@ -196,11 +197,10 @@ class AccountController extends AbstractController
         }
 
         $lostPasswordVerificationHelper = $this->get('zikula_zauth_module.helper.lost_password_verification_helper');
-        $requestDetails = [];
 
         try {
             $requestDetails = $lostPasswordVerificationHelper->decodeLostPasswordId($request->query->get('id'));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->addFlash('error', $this->__('Your request could not be processed.') . ' ' . $e->getMessage());
 
             return $this->redirectToRoute($redirectToRoute);
@@ -234,7 +234,20 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-
+            // use authentication method to create zauth mapping if not already created
+            $authenticationMethods = $this->get('zikula_users_module.internal.authentication_method_collector')->getActive();
+            $authenticationMethod = array_shift($authenticationMethods);
+            if (null == $authenticationMethod) {
+                throw new RuntimeException($this->__('There is no authentication method activated.'));
+            }
+            $authenticationMethod->authenticate([
+                'uname' => $user->getUname(),
+                'email' => $user->getEmail(),
+                'pass' => '1234567890'
+            ]);
+            // will not authenticate with pass. clear the flashbag of errors.
+            $this->container->get('session')->getFlashBag()->clear();
+            // update password
             $mappingRepository = $this->get('zikula_zauth_module.authentication_mapping_repository');
             $mapping = $mappingRepository->getByZikulaId($user->getUid());
             $mapping->setPass($this->get('zikula_zauth_module.api.password')->getHashedPassword($data['pass']));

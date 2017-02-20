@@ -61,6 +61,16 @@ class SearchStatEntity extends EntityAccess
     private $date;
 
     /**
+     * SearchStatEntity constructor.
+     */
+    public function __construct()
+    {
+        $this->search = '';
+        $this->scount = 0;
+        $this->date = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+    /**
      * Get id
      *
      * @return integer
@@ -107,6 +117,14 @@ class SearchStatEntity extends EntityAccess
     }
 
     /**
+     * Increment the count
+     */
+    public function incrementCount()
+    {
+        $this->scount++;
+    }
+
+    /**
      * Get scount
      *
      * @return integer
@@ -122,7 +140,7 @@ class SearchStatEntity extends EntityAccess
      * @param \Datetime $date
      * @return SearchStatEntity
      */
-    public function setDate($date)
+    public function setDate(\DateTime $date)
     {
         $this->date = $date;
 

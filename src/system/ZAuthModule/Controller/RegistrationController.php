@@ -13,11 +13,13 @@ namespace Zikula\ZAuthModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\RegistrationEvents;
+use Zikula\ZAuthModule\Validator\Constraints\ValidRegistrationVerification;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
@@ -43,7 +45,7 @@ class RegistrationController extends AbstractController
      * (if provided) and if the registration record is also approved (or does not require it)
      * then a new user account is created
      *
-     * @return array
+     * @return array|RedirectResponse
      */
     public function verifyAction(Request $request, $uname = null, $verifycode = null)
     {
@@ -59,6 +61,12 @@ class RegistrationController extends AbstractController
             foreach ($deletedUsers as $deletedUser) {
                 $this->get('event_dispatcher')->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($deletedUser->getUid()));
             }
+        }
+        $codeValidationErrors = $this->get('validator')->validate(['uname' => $uname, 'verifycode' => $verifycode], new ValidRegistrationVerification());
+        if (count($codeValidationErrors) > 0) {
+            $this->addFlash('warning', $this->__('The code provided is invalid or this user has never registered or has fully completed registration.'));
+
+            return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
 
         $userEntity = $this->get('zikula_users_module.user_repository')->findOneBy(['uname' => $uname]);
@@ -108,15 +116,16 @@ class RegistrationController extends AbstractController
                     if (!empty($notificationErrors)) {
                         $this->addFlash('error', implode('<br>', $notificationErrors));
                     }
-                    $this->addFlash('status', $this->__('Done! Your account has been verified. You may now log in.'));
-
-                    return $this->redirectToRoute('zikulausersmodule_access_login');
+                    $this->get('zikula_users_module.helper.access_helper')->login($userEntity);
+                    $this->addFlash('status', $this->__('Done! Your account has been verified. You have been logged in.'));
                     break;
                 default:
                     $this->addFlash('status', $this->__('Done! Your account has been verified.'));
                     $this->addFlash('status', $this->__('Your new account is not active yet. Please contact the site administrator for more information.'));
                     break;
             }
+
+            return $this->redirectToRoute('home');
         }
 
         return [

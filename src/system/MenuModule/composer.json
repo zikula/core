@@ -21,13 +21,14 @@
         "zikula": {
             "class": "Zikula\\MenuModule\\ZikulaMenuModule",
             "core-compatibility": ">=1.4.4",
-            "displayname": "MenuModule",
+            "displayname": "Menu Module",
             "capabilities": {
                 "admin": {"route": "zikulamenumodule_menu_list"}
             },
             "url": "menu",
             "securityschema": {
-                "ZikulaMenuModule::": "::"
+                "ZikulaMenuModule::": "::",
+                "ZikulaMenuModule::id": "::id"
             }
         }
     }

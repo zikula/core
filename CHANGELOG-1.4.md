@@ -1,7 +1,33 @@
 CHANGELOG - ZIKULA 1.4.x
 ------------------------
 
-* 1.4.6 (?)
+* 1.4.7 (?)
+
+ - BC Breaks:
+    - ?
+
+ - Deprecated:
+    - Search block templates have been modified. This will break existing overrides for
+      `src/themes/BootstrapTheme/Resources/ZikulaSearchModule/views/Block/search.html.twig`
+    - AbstractSearchable is deprecated. Use SearchableInterface instead.
+
+ - Fixes:
+    - Corrected path to legacy module's admin icons.
+    - Made display names of Menu and Theme modules more readable (#3448).
+    - Added a general purpose deletion form type (#3333).
+
+ - Features:
+    - Added Permission-based controls for MenuModule menu items (#3314).
+    - SearchModule refactored to Core-2.0 standards.
+    - SearchableInterface adds a method `amendForm()` to amend the search form instead of the old method `getOptions()`
+    - Added support for including module dependencies in composer execution using composer merge plugin (#3388, #3437).
+
+ - Vendor updates:
+    - sensiolabs security checker updated from 4.0.0 to 4.0.1
+    - swiftmailer/swiftmailer updated from v5.4.5 to v5.4.6 
+    - willdurand/js-translation-bundle updated from 2.6.3 to 2.6.4
+
+* 1.4.6 (2017-02-12)
 
  - BC Breaks:
     - LocaleApi (introduced in 1.4.4) has been refactored and eliminates access to locale metadata.
@@ -36,6 +62,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Fixed double-encoding of verification code in registration email (#3393).
     - Avoid storing absolute pathes in security center module variable (#3364).
     - Fixed module upgrade bug (#3378).
+    - Fixed JS translation extraction for strings containing `)`, `,`, or containing quotes  (#3444).
 
  - Features:
     - Added custom template support for moduleLinks() Twig function
@@ -47,17 +74,18 @@ CHANGELOG - ZIKULA 1.4.x
     - Added `expanded` and `includeGrandChildren` options to `CategoriesType` (#3410).
     - Added \Zikula\SearchModule\SearchableInterface and DI service tag collector to determine a module's searchability (#2996).
     - Added dimsemenov/Magnific-Popup as a successor for bootstrap-media-lightbox (#3362).
-    - Added support for including module dependencies in composer execution using composer merge plugin (#3388, #3437).
 
  - Vendor updates:
-    - doctrine dbal updated from 2.5.5 to 2.5.10
-    - liip/imagine-bundle updated from 1.6.0 to 1.7.1
+    - doctrine dbal updated from 2.5.5 to 2.5.12
+    - liip/imagine-bundle updated from 1.6.0 to 1.7.2
+    - matthiasnoback/symfony-service-definition-validator restricted to version 1.2.6 due to BC break
     - sensio/distribution-bundle updated from 5.0.16 to 5.0.18
     - sensio/framework-extra-bundle updated from 3.0.18 to 3.0.21
-    - symfony updated from 2.8.15 to 2.8.16
+    - symfony updated from 2.8.15 to 2.8.17
     - symfony/monolog-bundle updated from 2.7.1 to 2.12.1
     - twig updated from 1.30.0 to 1.31.0
     - twitter/typeahead.js updated from 1.1.0 to 1.1.1
+    - willdurand/js-translation-bundle updated from 2.6.2 to 2.6.3
 
 * 1.4.5 (2017-01-01)
 
