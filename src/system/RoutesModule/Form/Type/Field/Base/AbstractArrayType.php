@@ -14,35 +14,19 @@ namespace Zikula\RoutesModule\Form\Type\Field\Base;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Zikula\RoutesModule\Form\DataTransformer\ListFieldTransformer;
-use Zikula\RoutesModule\Helper\ListEntriesHelper;
+use Zikula\RoutesModule\Form\DataTransformer\ArrayFieldTransformer;
 
 /**
- * Multi list field type base class.
+ * Array field type base class.
  */
-abstract class AbstractMultiListType extends AbstractType
+abstract class AbstractArrayType extends AbstractType
 {
-    /**
-     * @var ListEntriesHelper
-     */
-    protected $listHelper;
-
-    /**
-     * MultiListType constructor.
-     *
-     * @param ListEntriesHelper $listHelper ListEntriesHelper service instance
-     */
-    public function __construct(ListEntriesHelper $listHelper)
-    {
-        $this->listHelper = $listHelper;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $transformer = new ListFieldTransformer($this->listHelper);
+        $transformer = new ArrayFieldTransformer();
         $builder->addModelTransformer($transformer);
     }
 
@@ -51,7 +35,7 @@ abstract class AbstractMultiListType extends AbstractType
      */
     public function getParent()
     {
-        return 'Symfony\Component\Form\Extension\Core\Type\ChoiceType';
+        return 'Symfony\Component\Form\Extension\Core\Type\TextareaType';
     }
 
     /**
@@ -59,6 +43,6 @@ abstract class AbstractMultiListType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'zikularoutesmodule_field_multilist';
+        return 'zikularoutesmodule_field_array';
     }
 }
