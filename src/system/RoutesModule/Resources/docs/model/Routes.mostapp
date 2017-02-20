@@ -49,6 +49,7 @@ application "Routes" {
         "
         markFiles "
             Resources/config/eventSubscriber.yml,
+            Resources/config/helpers.yml,
             Resources/config/services.yml,
             Resources/views/Route/display.html.twig,
             Resources/views/Route/edit.html.twig,

@@ -326,7 +326,7 @@ class RouteLoader extends Loader
                 }
             }
 
-            $path = "/" . $prefix . $route->getPath();
+            $path = '/' . $prefix . $route->getPath();
             $route->setPath($path);
         }
     }
