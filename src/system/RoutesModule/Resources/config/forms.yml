@@ -36,7 +36,8 @@ services:
             - "@translator.default"
             - "@zikula_routes_module.entity_factory"
             - "@zikula_routes_module.listentries_helper"
-            - "@zikula_extensions_module.extension_repository"
+        calls:
+            - [setExtensionRepository, ["@zikula_extensions_module.extension_repository"]]
         tags:
             - { name: form.type }
 

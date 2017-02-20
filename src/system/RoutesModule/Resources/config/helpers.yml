@@ -34,9 +34,12 @@ services:
             - "@zikula_permissions_module.api.permission"
             - "@zikula_extensions_module.api.variable"
             - "@zikula_routes_module.controller_helper"
-            - "@translator.default"
-            - "@zikula.dynamic_config_dumper"
-            - "@zikula_extensions_module.extension_repository"
+        calls:
+            - method: setAdditionalDependencies
+              arguments:
+                - "@translator.default"
+                - "@zikula.dynamic_config_dumper"
+                - "@zikula_extensions_module.extension_repository"
 
     zikula_routes_module.workflow_helper:
         class: Zikula\RoutesModule\Helper\WorkflowHelper
