@@ -59,6 +59,8 @@ class UserApi extends \Zikula_AbstractApi
     {
         @trigger_error('Categories UserApi is deprecated. please use the new user categories api instead.', E_USER_DEPRECATED);
 
+        $relative = isset($args['relative']) ? (bool)$args['relative'] : false;
+
         return ServiceUtil::get('zikula_categories_module.api.user_categories')->getUserCategories($relative);
     }
 
