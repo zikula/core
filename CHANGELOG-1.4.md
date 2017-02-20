@@ -14,6 +14,7 @@ CHANGELOG - ZIKULA 1.4.x
  - Fixes:
     - Corrected path to legacy module's admin icons.
     - Made display names of Menu and Theme modules more readable (#3448).
+    - Added a general purpose deletion form type (#3333).
 
  - Features:
     - Added Permission-based controls for MenuModule menu items (#3314).

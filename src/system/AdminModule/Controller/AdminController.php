@@ -33,9 +33,7 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 class AdminController extends AbstractController
 {
     /**
-     * @Route("")
-     *
-     * the main administration function
+     * The main administration function.
      *
      * This function is the default function, and is called whenever the
      * module is initiated without defining arguments.  As such it can
@@ -43,6 +41,8 @@ class AdminController extends AbstractController
      * shows the module menu and returns or calls whatever the module
      * designer feels should be the default function (often this is the
      * view() function)
+     *
+     * @Route("")
      *
      * @return RedirectResponse symfony response object
      */
@@ -53,12 +53,12 @@ class AdminController extends AbstractController
     }
 
     /**
+     * Views all admin categories.
+     *
      * @Route("/categories/{startnum}", requirements={"startnum" = "\d+"})
      * @Method("GET")
      * @Theme("admin")
      * @Template
-     *
-     * View all admin categories
      *
      * @param integer $startnum
      *
@@ -94,13 +94,13 @@ class AdminController extends AbstractController
     }
 
     /**
+     * Displays a new admin category form.
+     *
+     * Displays a form for the user to input the details of the new category. Data is supplied to @see this::createAction()
+     *
      * @Route("/newcategory")
      * @Theme("admin")
      * @Template
-     *
-     * Display a new admin category form
-     *
-     * Displays a form for the user to input the details of the new category. Data is supplied to @see this::createAction()
      *
      * @param Request $request
      *
@@ -141,11 +141,11 @@ class AdminController extends AbstractController
     }
 
     /**
+     * Displays a modify category form.
+     *
      * @Route("/modifycategory/{cid}", requirements={"cid" = "^[1-9]\d*$"})
      * @Theme("admin")
      * @Template
-     *
-     * Displays a modify category form
      *
      * @param Request $request
      *
@@ -187,11 +187,11 @@ class AdminController extends AbstractController
     }
 
     /**
+     * Deletes an admin category.
+     *
      * @Route("/deletecategory/{cid}", requirements={"cid" = "^[1-9]\d*$"})
      * @Theme("admin")
      * @Template
-     *
-     * delete an admin category
      *
      * @param Request $request
      * @param AdminCategoryEntity $category
@@ -203,9 +203,7 @@ class AdminController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm('Zikula\AdminModule\Form\Type\DeleteCategoryType', $category, [
-            'translator' => $this->get('translator.default')
-        ]);
+        $form = $this->createForm('Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType', $category);
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('delete')->isClicked()) {
@@ -213,8 +211,7 @@ class AdminController extends AbstractController
                 $this->get('doctrine')->getManager()->remove($category);
                 $this->get('doctrine')->getManager()->flush();
                 $this->addFlash('status', $this->__('Done! Category deleted.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
+            } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
@@ -228,12 +225,12 @@ class AdminController extends AbstractController
     }
 
     /**
+     * Displays main admin panel for a category.
+     *
      * @Route("/panel/{acid}", requirements={"acid" = "^[1-9]\d*$"})
      * @Method("GET")
      * @Theme("admin")
      * @Template
-     *
-     * Display main admin panel for a category
      *
      * @param Request $request
      * @param integer $acid
@@ -375,11 +372,11 @@ class AdminController extends AbstractController
     }
 
     /**
+     * Displays main category menu.
+     *
      * @Route("/categorymenu/{acid}", requirements={"acid" = "^[1-9]\d*$"})
      * @Method("GET")
      * @Theme("admin")
-     *
-     * Main category menu.
      *
      * @param Request $request
      * @param integer $acid
@@ -501,9 +498,9 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/header")
+     * Opens the admin container.
      *
-     * Open the admin container
+     * @Route("/header")
      *
      * @return Response symfony response object
      */
@@ -513,9 +510,9 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/footer")
+     * Closes the admin container.
      *
-     * Close the admin container
+     * @Route("/footer")
      *
      * @return Response symfony response object
      */
@@ -527,11 +524,11 @@ class AdminController extends AbstractController
     }
 
     /**
+     * Displays the module's help page.
+     *
      * @Route("/help")
      * @Theme("admin")
      * @Template
-     *
-     * display the module help page
      *
      * @return Response symfony response object
      *
@@ -547,7 +544,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * helper function to sort modules
+     * Helper function to sort modules.
      *
      * @param $a array first item to compare
      * @param $b array second item to compare

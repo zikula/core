@@ -103,7 +103,9 @@ class EditGroupType extends AbstractType
         $resolver->setDefaults([
             'data_class' => 'Zikula\GroupsModule\Entity\GroupEntity',
             'translator' => null,
-            'constraints' => [new ValidGroupName()]
+            'constraints' => [
+                new ValidGroupName()
+            ]
         ]);
     }
 }

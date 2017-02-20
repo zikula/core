@@ -89,33 +89,15 @@ class PositionController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createFormBuilder()
-            ->add('delete', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $this->__('Delete'),
-                'icon' => 'fa-trash-o',
-                'attr' => [
-                    'class' => 'btn btn-danger'
-                ]
-            ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $this->__('Cancel'),
-                'icon' => 'fa-times',
-                'attr' => [
-                    'class' => 'btn btn-default'
-                ]
-            ])
-            ->getForm();
+        $form = $this->createForm('Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType');
 
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
+        if ($form->handleRequest($request)->isValid()) {
             if ($form->get('delete')->isClicked()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($positionEntity);
                 $em->flush();
                 $this->addFlash('status', $this->__('Done! Position deleted.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
+            } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 

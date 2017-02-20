@@ -60,7 +60,7 @@ class BlockPositionType extends AbstractType
     {
         $resolver->setDefaults([
             'translator' => null,
-            'data_class' => 'Zikula\BlocksModule\Entity\BlockPositionEntity',
+            'data_class' => 'Zikula\BlocksModule\Entity\BlockPositionEntity'
         ]);
     }
 }
