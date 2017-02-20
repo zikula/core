@@ -252,6 +252,30 @@ abstract class AbstractRouteType extends AbstractType
             ,
         ]);
         
+        $builder->add('defaults', 'Zikula\RoutesModule\Form\Type\Field\ArrayType', [
+            'label' => $this->__('Defaults') . ':',
+            'help' => $this->__('Enter one entry per line.'),
+            'empty_data' => '',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('Enter the defaults of the route')
+            ],
+            'required' => true
+            ,
+        ]);
+        
+        $builder->add('requirements', 'Zikula\RoutesModule\Form\Type\Field\ArrayType', [
+            'label' => $this->__('Requirements') . ':',
+            'help' => $this->__('Enter one entry per line.'),
+            'empty_data' => '',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('Enter the requirements of the route')
+            ],
+            'required' => false
+            ,
+        ]);
+        
         $builder->add('condition', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
             'label' => $this->__('Condition') . ':',
             'empty_data' => '',

@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Templating\EngineInterface;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\RoutesModule\Helper\ControllerHelper;
 
 /**
@@ -37,7 +37,7 @@ abstract class AbstractViewHelper
     protected $request;
 
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     protected $permissionApi;
 
@@ -56,13 +56,18 @@ abstract class AbstractViewHelper
      *
      * @param EngineInterface  $templating       EngineInterface service instance
      * @param RequestStack     $requestStack     RequestStack service instance
-     * @param PermissionApi    $permissionApi    PermissionApi service instance
+     * @param PermissionApiInterface    $permissionApi    PermissionApi service instance
      * @param VariableApi      $variableApi      VariableApi service instance
      * @param ControllerHelper $controllerHelper ControllerHelper service instance
      *
      * @return void
      */
-    public function __construct(EngineInterface $templating, RequestStack $requestStack, PermissionApi $permissionApi, VariableApi $variableApi, ControllerHelper $controllerHelper)
+    public function __construct(
+        EngineInterface $templating,
+        RequestStack $requestStack,
+        PermissionApiInterface $permissionApi,
+        VariableApi $variableApi,
+        ControllerHelper $controllerHelper)
     {
         $this->templating = $templating;
         $this->request = $requestStack->getCurrentRequest();
@@ -160,7 +165,7 @@ abstract class AbstractViewHelper
      * @param string $type Current controller (name of currently treated entity)
      * @param string $func Current function (index, view, ...)
      *
-     * @return array List of allowed template extensions
+     * @return string Template extension
      */
     protected function determineExtension($type, $func)
     {
@@ -254,6 +259,6 @@ abstract class AbstractViewHelper
         // stream output to browser
         $pdf->stream($fileTitle);
     
-        return new Response(); 
+        return new Response();
     }
 }
