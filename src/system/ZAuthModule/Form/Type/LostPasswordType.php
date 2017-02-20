@@ -21,6 +21,9 @@ use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 
 class LostPasswordType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if (!$options['includeReset']) {
@@ -65,13 +68,16 @@ class LostPasswordType extends AbstractType
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
         return 'zikulazauthmodule_account_lostpassword';
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

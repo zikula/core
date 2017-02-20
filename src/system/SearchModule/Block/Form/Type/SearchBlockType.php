@@ -55,6 +55,7 @@ class SearchBlockType extends AbstractType
                 'required' => false
             ])
             ->add('active', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+                'label_attr' => ['class' => 'checkbox-inline'],
                 'required' => false,
                 'expanded' => true,
                 'multiple' => true,

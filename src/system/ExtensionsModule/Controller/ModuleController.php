@@ -189,7 +189,7 @@ class ModuleController extends AbstractController
      * @param Request $request
      * @param ExtensionEntity $extension
      * @param bool $forceDefaults
-     * @return RedirectResponse|Response
+     * @return array|RedirectResponse|Response
      */
     public function modifyAction(Request $request, ExtensionEntity $extension, $forceDefaults = false)
     {
@@ -272,7 +272,7 @@ class ModuleController extends AbstractController
      * Display information of a module compatibility with the version of the core
      *
      * @param ExtensionEntity $extension
-     * @return Response symfony response object
+     * @return array|Response
      * @throws NotFoundHttpException Thrown if the requested module id doesn't exist
      * @throws AccessDeniedException Thrown if the user doesn't have admin permission to the requested module
      */
@@ -295,7 +295,7 @@ class ModuleController extends AbstractController
      * Initialise an extension.
      *
      * @param ExtensionEntity $extension
-     * @return RedirectResponse
+     * @return array|RedirectResponse
      */
     public function installAction(Request $request, ExtensionEntity $extension)
     {
@@ -432,7 +432,7 @@ class ModuleController extends AbstractController
      * @param Request $request
      * @param ExtensionEntity $extension
      *
-     * @return Response|RedirectResponse
+     * @return array|Response|RedirectResponse
      */
     public function uninstallAction(Request $request, ExtensionEntity $extension)
     {

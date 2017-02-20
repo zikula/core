@@ -20,6 +20,8 @@ use ModUtil;
  *   used since it makes it impossible to count the number of search result).
  * - The URL for each found item is created here. By doing this we only create
  *   URLs for results the user actually view and save some time this way.
+ *
+ * @deprecated remove at Core-2.0
  */
 class ResultHelper
 {

@@ -96,8 +96,8 @@ class LocaleSettingsType extends AbstractType
     {
         $resolver->setDefaults([
             'translator' => null,
-            'languages' => ["English" => 'en'],
-            'timezones' => [0 => "GMT"]
+            'languages' => ['English' => 'en'],
+            'timezones' => [0 => 'GMT']
         ]);
     }
 }

@@ -99,7 +99,7 @@ class FrontControllerListener implements EventSubscriberInterface
         // The current user has the rights to search the page.
         $linkType = 'application/opensearchdescription+xml';
         $siteName = htmlspecialchars($this->variableApi->getSystemVar('sitename'), ENT_QUOTES);
-        $searchUrl = htmlentities($this->router->generate('zikulasearchmodule_user_opensearch'));
+        $searchUrl = htmlentities($this->router->generate('zikulasearchmodule_search_opensearch'));
 
         $headerCode = '<link rel="search" type="' . $linkType . '" title="' . $siteName . '" href="' . $searchUrl . '" />';
         $this->headerAssetBag->add($headerCode);

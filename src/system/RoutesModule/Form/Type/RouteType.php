@@ -12,9 +12,14 @@
 
 namespace Zikula\RoutesModule\Form\Type;
 
-use ModUtil;
 use Symfony\Component\Form\FormBuilderInterface;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\ExtensionsModule\Api\ExtensionApi;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
+use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
+use Zikula\RoutesModule\Entity\Factory\RoutesFactory;
 use Zikula\RoutesModule\Form\Type\Base\AbstractRouteType;
+use Zikula\RoutesModule\Helper\ListEntriesHelper;
 
 /**
  * Route editing form type implementation class.
@@ -22,21 +27,35 @@ use Zikula\RoutesModule\Form\Type\Base\AbstractRouteType;
 class RouteType extends AbstractRouteType
 {
     /**
+     * @var ExtensionRepositoryInterface
+     */
+    private $extensionRepository;
+
+    /**
+     * @param ExtensionRepositoryInterface $extensionRepository
+     */
+    public function setExtensionRepository(ExtensionRepositoryInterface $extensionRepository)
+    {
+        $this->extensionRepository = $extensionRepository;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function addEntityFields(FormBuilderInterface $builder, array $options)
     {
         parent::addEntityFields($builder, $options);
 
-        // note we just readd fields which already had been added in the parent class
+        // note we just read fields which already had been added in the parent class
         // FormBuilder just overrides the field allowing us easier customisation
 
         $moduleChoices = [];
         $moduleChoiceAttributes = [];
-        $modules = ModUtil::getModulesByState(3, 'displayname');
+        /** @var ExtensionEntity[] $modules */
+        $modules = $this->extensionRepository->findBy(['state' => ExtensionApi::STATE_ACTIVE]);
         foreach ($modules as $module) {
-            $moduleChoices[$module['displayname']] = $module['name'];
-            $moduleChoiceAttributes[$module['displayname']] = ['title' => $module['displayname']];
+            $moduleChoices[$module->getDisplayName()] = $module->getName();
+            $moduleChoiceAttributes[$module->getDisplayName()] = ['title' => $module->getDisplayName()];
         }
 
         $builder->add('bundle', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [

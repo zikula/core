@@ -11,7 +11,21 @@
 
 namespace Zikula\BlocksModule\Entity\RepositoryInterface;
 
-interface BlockRepositoryInterface
+use Doctrine\Common\Collections\Selectable;
+use Doctrine\Common\Persistence\ObjectRepository;
+use Zikula\BlocksModule\Entity\BlockEntity;
+
+interface BlockRepositoryInterface extends ObjectRepository, Selectable
 {
+    /**
+     * @param array $filter
+     * @return mixed
+     */
     public function getFilteredBlocks(array $filter);
+
+    /**
+     * @param BlockEntity $entity
+     * @return mixed
+     */
+    public function persistAndFlush(BlockEntity $entity);
 }

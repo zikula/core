@@ -19,6 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\RoutesModule\Entity\Factory\RoutesFactory;
+use Zikula\RoutesModule\Form\Type\Field\MultiListType;
 use Zikula\RoutesModule\Helper\ListEntriesHelper;
 
 /**
@@ -81,7 +82,7 @@ abstract class AbstractRouteType extends AbstractType
      */
     public function addEntityFields(FormBuilderInterface $builder, array $options)
     {
-        
+
         $listEntries = $this->listHelper->getEntries('route', 'routeType');
         $choices = [];
         $choiceAttributes = [];
@@ -175,7 +176,7 @@ abstract class AbstractRouteType extends AbstractType
             'required' => false
             ,
         ]);
-        
+
         $listEntries = $this->listHelper->getEntries('route', 'schemes');
         $choices = [];
         $choiceAttributes = [];
@@ -197,7 +198,7 @@ abstract class AbstractRouteType extends AbstractType
             'multiple' => true,
             'expanded' => false
         ]);
-        
+
         $listEntries = $this->listHelper->getEntries('route', 'methods');
         $choices = [];
         $choiceAttributes = [];
@@ -336,7 +337,7 @@ abstract class AbstractRouteType extends AbstractType
         if (!$options['has_moderate_permission']) {
             return;
         }
-    
+
         $builder->add('moderationSpecificCreator', 'Zikula\RoutesModule\Form\Type\Field\UserType', [
             'mapped' => false,
             'label' => $this->__('Creator') . ':',

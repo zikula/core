@@ -7,13 +7,19 @@ CHANGELOG - ZIKULA 1.4.x
     - ?
 
  - Deprecated:
-    - ?
+    - Search block templates have been modified. This will break existing overrides for
+      `src/themes/BootstrapTheme/Resources/ZikulaSearchModule/views/Block/search.html.twig`
+    - AbstractSearchable is deprecated. Use SearchableInterface instead.
 
  - Fixes:
     - Corrected path to legacy module's admin icons.
+    - Made display names of Menu and Theme modules more readable (#3448).
+    - Added a general purpose deletion form type (#3333).
 
  - Features:
     - Added Permission-based controls for MenuModule menu items (#3314).
+    - SearchModule refactored to Core-2.0 standards.
+    - SearchableInterface adds a method `amendForm()` to amend the search form instead of the old method `getOptions()`
 
  - Vendor updates:
     - swiftmailer/swiftmailer updated from v5.4.5 to v5.4.6 

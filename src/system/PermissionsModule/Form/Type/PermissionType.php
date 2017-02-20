@@ -63,7 +63,7 @@ class PermissionType extends AbstractType
             'data_class' => 'Zikula\PermissionsModule\Entity\PermissionEntity',
             'translator' => null,
             'groups' => [],
-            'permissionLevels' => [],
+            'permissionLevels' => []
         ]);
     }
 }

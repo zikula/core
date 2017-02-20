@@ -20,7 +20,7 @@
         "zikula": {
             "class": "Zikula\\MenuModule\\ZikulaMenuModule",
             "core-compatibility": ">=1.4.4",
-            "displayname": "MenuModule",
+            "displayname": "Menu Module",
             "capabilities": {
                 "admin": {"route": "zikulamenumodule_menu_list"}
             },
