@@ -1,6 +1,6 @@
 services:
     # Form types
-
+    
     zikula_routes_module.form.type.routequicknav:
         class: Zikula\RoutesModule\Form\Type\QuickNavigation\RouteQuickNavType
         arguments:
@@ -8,7 +8,7 @@ services:
             - "@zikula_routes_module.listentries_helper"
         tags:
             - { name: form.type }
-
+    
     zikula_routes_module.form.handler.route:
         class: Zikula\RoutesModule\Form\Handler\Route\EditHandler
         arguments:
@@ -29,25 +29,23 @@ services:
             - [setLockingApi, ["@?zikula_pagelock_module.api.locking"]]
         tags:
             - { name: form.type }
-
+    
     zikula_routes_module.form.type.route:
         class: Zikula\RoutesModule\Form\Type\RouteType
         arguments:
             - "@translator.default"
             - "@zikula_routes_module.entity_factory"
             - "@zikula_routes_module.listentries_helper"
-        calls:
-            - [setExtensionRepository, ["@zikula_extensions_module.extension_repository"]]
         tags:
             - { name: form.type }
-
+    
     zikula_routes_module.form.type.deleteentity:
         class: Zikula\RoutesModule\Form\DeleteEntityType
         arguments:
             - "@translator.default"
         tags:
             - { name: form.type }
-
+    
     zikula_routes_module.form.type.appsettings:
         class: Zikula\RoutesModule\Form\AppSettingsType
         arguments:

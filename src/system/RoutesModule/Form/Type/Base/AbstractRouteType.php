@@ -19,7 +19,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\RoutesModule\Entity\Factory\RoutesFactory;
-use Zikula\RoutesModule\Form\Type\Field\MultiListType;
 use Zikula\RoutesModule\Helper\ListEntriesHelper;
 
 /**
@@ -82,7 +81,7 @@ abstract class AbstractRouteType extends AbstractType
      */
     public function addEntityFields(FormBuilderInterface $builder, array $options)
     {
-
+        
         $listEntries = $this->listHelper->getEntries('route', 'routeType');
         $choices = [];
         $choiceAttributes = [];
@@ -97,8 +96,8 @@ abstract class AbstractRouteType extends AbstractType
                 'class' => '',
                 'title' => $this->__('Choose the route type')
             ],
-            'required' => true
-            ,'choices' => $choices,
+            'required' => true,
+            'choices' => $choices,
             'choices_as_values' => true,
             'choice_attr' => $choiceAttributes,
             'multiple' => false,
@@ -113,8 +112,7 @@ abstract class AbstractRouteType extends AbstractType
                 'class' => '',
                 'title' => $this->__('Enter the replaced route name of the route')
             ],
-            'required' => false
-            ,
+            'required' => false,
         ]);
         
         $builder->add('bundle', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
@@ -125,8 +123,7 @@ abstract class AbstractRouteType extends AbstractType
                 'class' => '',
                 'title' => $this->__('Enter the bundle of the route')
             ],
-            'required' => true
-            ,
+            'required' => true,
         ]);
         
         $builder->add('controller', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
@@ -137,8 +134,7 @@ abstract class AbstractRouteType extends AbstractType
                 'class' => '',
                 'title' => $this->__('Enter the controller of the route')
             ],
-            'required' => true
-            ,
+            'required' => true,
         ]);
         
         $builder->add('action', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
@@ -149,8 +145,7 @@ abstract class AbstractRouteType extends AbstractType
                 'class' => '',
                 'title' => $this->__('Enter the action of the route')
             ],
-            'required' => true
-            ,
+            'required' => true,
         ]);
         
         $builder->add('path', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
@@ -161,8 +156,7 @@ abstract class AbstractRouteType extends AbstractType
                 'class' => '',
                 'title' => $this->__('Enter the path of the route')
             ],
-            'required' => true
-            ,
+            'required' => true,
         ]);
         
         $builder->add('host', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
@@ -173,10 +167,9 @@ abstract class AbstractRouteType extends AbstractType
                 'class' => '',
                 'title' => $this->__('Enter the host of the route')
             ],
-            'required' => false
-            ,
+            'required' => false,
         ]);
-
+        
         $listEntries = $this->listHelper->getEntries('route', 'schemes');
         $choices = [];
         $choiceAttributes = [];
@@ -191,14 +184,14 @@ abstract class AbstractRouteType extends AbstractType
                 'class' => '',
                 'title' => $this->__('Choose the schemes')
             ],
-            'required' => true
-            ,'choices' => $choices,
+            'required' => true,
+            'choices' => $choices,
             'choices_as_values' => true,
             'choice_attr' => $choiceAttributes,
             'multiple' => true,
             'expanded' => false
         ]);
-
+        
         $listEntries = $this->listHelper->getEntries('route', 'methods');
         $choices = [];
         $choiceAttributes = [];
@@ -213,8 +206,8 @@ abstract class AbstractRouteType extends AbstractType
                 'class' => '',
                 'title' => $this->__('Choose the methods')
             ],
-            'required' => true
-            ,'choices' => $choices,
+            'required' => true,
+            'choices' => $choices,
             'choices_as_values' => true,
             'choice_attr' => $choiceAttributes,
             'multiple' => true,
@@ -227,8 +220,7 @@ abstract class AbstractRouteType extends AbstractType
                 'class' => '',
                 'title' => $this->__('prepend bundle prefix ?')
             ],
-            'required' => true
-            ,
+            'required' => true,
         ]);
         
         $builder->add('translatable', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
@@ -237,8 +229,7 @@ abstract class AbstractRouteType extends AbstractType
                 'class' => '',
                 'title' => $this->__('translatable ?')
             ],
-            'required' => true
-            ,
+            'required' => true,
         ]);
         
         $builder->add('translationPrefix', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
@@ -249,8 +240,7 @@ abstract class AbstractRouteType extends AbstractType
                 'class' => '',
                 'title' => $this->__('Enter the translation prefix of the route')
             ],
-            'required' => false
-            ,
+            'required' => false,
         ]);
         
         $builder->add('defaults', 'Zikula\RoutesModule\Form\Type\Field\ArrayType', [
@@ -261,8 +251,7 @@ abstract class AbstractRouteType extends AbstractType
                 'class' => '',
                 'title' => $this->__('Enter the defaults of the route')
             ],
-            'required' => true
-            ,
+            'required' => true,
         ]);
         
         $builder->add('requirements', 'Zikula\RoutesModule\Form\Type\Field\ArrayType', [
@@ -273,8 +262,7 @@ abstract class AbstractRouteType extends AbstractType
                 'class' => '',
                 'title' => $this->__('Enter the requirements of the route')
             ],
-            'required' => false
-            ,
+            'required' => false,
         ]);
         
         $builder->add('condition', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
@@ -285,8 +273,7 @@ abstract class AbstractRouteType extends AbstractType
                 'class' => '',
                 'title' => $this->__('Enter the condition of the route')
             ],
-            'required' => false
-            ,
+            'required' => false,
         ]);
         
         $builder->add('description', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
@@ -297,8 +284,7 @@ abstract class AbstractRouteType extends AbstractType
                 'class' => '',
                 'title' => $this->__('Enter the description of the route')
             ],
-            'required' => false
-            ,
+            'required' => false,
         ]);
         
         $builder->add('sort', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
@@ -309,8 +295,8 @@ abstract class AbstractRouteType extends AbstractType
                 'class' => ' validate-digits',
                 'title' => $this->__('Enter the sort of the route.') . ' ' . $this->__('Only digits are allowed.')
             ],
-            'required' => false
-            ,'scale' => 0
+            'required' => false,
+            'scale' => 0
         ]);
         
         $builder->add('group', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
@@ -321,8 +307,7 @@ abstract class AbstractRouteType extends AbstractType
                 'class' => '',
                 'title' => $this->__('Enter the group of the route')
             ],
-            'required' => false
-            ,
+            'required' => false,
         ]);
     }
 
@@ -337,7 +322,7 @@ abstract class AbstractRouteType extends AbstractType
         if (!$options['has_moderate_permission']) {
             return;
         }
-
+    
         $builder->add('moderationSpecificCreator', 'Zikula\RoutesModule\Form\Type\Field\UserType', [
             'mapped' => false,
             'label' => $this->__('Creator') . ':',
