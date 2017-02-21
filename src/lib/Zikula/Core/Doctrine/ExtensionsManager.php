@@ -48,11 +48,6 @@ class ExtensionsManager
             return $this->listeners[$type];
         }
 
-        $service = '';
-        if ($type == 'standardfields') {
-            $service = 'doctrine_extensions.listener.' . $type;
-        }
-
         // just for legacy, to be removed as soon as no modules perform these getListener() calls anymore
         $service = 'doctrine_extensions.listener.' . $type;
 

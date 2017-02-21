@@ -37,10 +37,6 @@ class DoctrinePass implements CompilerPassInterface
         $container->setAlias('doctrine.event_manager', (string)$container->getDefinition("doctrine.dbal.default_connection")->getArgument(2));
         $container->setAlias('doctrine.eventmanager', 'doctrine.event_manager');
 
-        // todo - migrate to XML
-        $definition = new Definition("Zikula\\Core\\Doctrine\\StandardFields\\StandardFieldsListener");
-        $container->setDefinition("doctrine_extensions.listener.standardfields", $definition);
-
         $types = ['Blameable', 'Loggable', 'SoftDeleteable', 'Uploadable', 'Sluggable', 'Timestampable', 'Translatable', 'Tree', 'Sortable'];
         foreach ($types as $type) {
             $container->setAlias(strtolower("doctrine_extensions.listener.$type"), 'stof_doctrine_extensions.listener.' . strtolower($type));
