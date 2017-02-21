@@ -1,5 +1,5 @@
 {# purpose of this template: reusable editing of standard fields #}
-{% if obj.createdBy|default or obj.updatedBy|default %}
+{% if (obj.createdBy|default and obj.createdBy.getUid() > 0) or (obj.updatedBy|default and obj.updatedBy.getUid() > 0) %}
     {% if panel|default(false) == true %}
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -12,11 +12,11 @@
     {% endif %}
         <legend>{{ __('Creation and update') }}</legend>
         <ul>
-        {% if obj.createdBy|default %}
+        {% if obj.createdBy|default and obj.createdBy.getUid() > 0 %}
             <li>{{ __f('Created by %user', {'%user': obj.createdBy.getUname()}) }}</li>
             <li>{{ __f('Created on %date', {'%date': obj.createdDate|localizeddate('medium', 'short')}) }}</li>
         {% endif %}
-        {% if obj.updatedBy|default %}
+        {% if obj.updatedBy|default and obj.updatedBy.getUid() > 0 %}
             <li>{{ __f('Updated by %user', {'%user': obj.updatedBy.getUname()}) }}</li>
             <li>{{ __f('Updated on %date', {'%date': obj.updatedDate|localizeddate('medium', 'short')}) }}</li>
         {% endif %}

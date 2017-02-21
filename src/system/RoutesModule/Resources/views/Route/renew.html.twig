@@ -1,11 +1,9 @@
 {# purpose of this template: show output of renew action in route area #}
 {% extends routeArea == 'admin' ? 'ZikulaRoutesModule::adminBase.html.twig' : 'ZikulaRoutesModule::base.html.twig' %}
-{% block title %}
-    {{ __('Renew') }}
-{% endblock %}
-{% block adminPageIcon %}square{% endblock %}
+{% block title __('Renew') %}
+{% block admin_page_icon 'square' %}
 {% block content %}
-    <div class="zikularoutesmodule-renew zikularoutesmodule-renew">
+    <div class="zikularoutesmodule-route zikularoutesmodule-renew">
         <p>Please override this template by moving it from <em>/system/RoutesModule/Resources/views/Route/renew.html.twig</em> to either <em>/themes/YourTheme/Resources/ZikulaRoutesModule/views/Route/renew.html.twig</em> or <em>/app/Resources/ZikulaRoutesModule/views/Route/renew.html.twig</em>.</p>
     </div>
 {% endblock %}

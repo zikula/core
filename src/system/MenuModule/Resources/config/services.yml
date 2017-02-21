@@ -12,13 +12,16 @@ services:
 
     zikula_menu_module.provider.custom_menu_provider:
         class: Zikula\MenuModule\Provider\DoctrineTreeProvider
-        arguments: ["@knp_menu.factory", "@zikula_menu_module.menu_item_repository"]
+        arguments:
+          - "@knp_menu.factory"
+          - "@zikula_permissions_module.api.permission"
+          - "@zikula_menu_module.menu_item_repository"
         tags:
             - { name: knp_menu.provider }
 
     zikula_menu_module.container.link_container:
         class: Zikula\MenuModule\Container\LinkContainer
-        arguments: ["@translator.default", "@jms_i18n_routing.router", "@zikula_permissions_module.api.permission"]
+        arguments: ["@translator.default", "@router", "@zikula_permissions_module.api.permission"]
         tags:
             - { name: zikula.link_container }
 

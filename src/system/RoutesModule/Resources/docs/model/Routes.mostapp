@@ -4,7 +4,7 @@ application "Routes" {
     author "Zikula contributors"
     email "support@zikula.org"
     url "http://www.zikula.org"
-    version "1.1.0"
+    version "1.1.1"
     prefix "routes"
     generatorSettings {
         settingsContainer "Settings"
@@ -33,35 +33,26 @@ application "Routes" {
         writeModelToDocs true
         skipFiles "
             .travis.yml,
-            CHANGELOG.md
-        "
-        markFiles "
-            Base/AbstractRoutesModuleInstaller.php,
+            CHANGELOG.md,
             Container/LinkContainer.php,
             Entity/Repository/RouteRepository.php,
+            Entity/RouteEntity.php,
             Form/Handler/Route/EditHandler.php,
             Form/Type/RouteType.php,
             Helper/ViewHelper.php,
             Listener/EntityLifecycleListener.php,
-            README.md,
-            Resources/public/images/admin.png,
-        "
-        markFiles "
-            Base/AbstractRoutesModuleInstaller.php,
-            Controller/AjaxController.php,
-            Controller/RouteController.php,
-            Entity/RouteEntity.php,
             Listener/InstallerListener.php,
-            Resources/config/eventSubscriber.yml,
-            Resources/config/helpers.yml,
+            README.md,
             Resources/config/routing.yml,
-            Resources/config/services.yml,
-            Resources/views/Helper/includeStandardFieldsDisplay.html.twig,
-            Resources/views/Route/display.html.twig,
-            Resources/views/Route/edit.html.twig,
-            Resources/views/Route/view.html.twig,
             RoutesModuleInstaller.php,
             Twig/TwigExtension.php
+        "
+        markFiles "
+            Resources/config/eventSubscriber.yml,
+            Resources/config/services.yml,
+            Resources/views/Route/display.html.twig,
+            Resources/views/Route/edit.html.twig,
+            Resources/views/Route/view.html.twig
         "
     }
     entities {
@@ -81,11 +72,15 @@ application "Routes" {
                 },
                 string "replacedRouteName" nullable {
                     mandatory false
+                    displayType DISPLAY_SORTING
                 },
                 string "bundle",
-                string "controller",
+                string "controller" {
+                    displayType DISPLAY_SORTING
+                },
                 string "action" {
                     dbName "route_action"
+                    displayType DISPLAY_SORTING
                 },
                 string "path" {
                     dbName "route_path"
@@ -129,16 +124,19 @@ application "Routes" {
                 string "condition" nullable {
                     dbName "route_condition"
                     mandatory false
+                    displayType DISPLAY_SORTING
                 },
                 string "description" nullable {
                     mandatory false
                 },
                 integer "sort" sortablePosition {
                     mandatory false
+                    displayType DISPLAY_SORTING
                 },
                 string "group" sortableGroup {
                     dbName "sort_group"
                     mandatory false
+                    displayType DISPLAY_SORTING
                 }
             }
             actions {
@@ -146,9 +144,7 @@ application "Routes" {
                 viewAction "View",
                 displayAction "Display",
                 editAction "Edit",
-                deleteAction "Delete",
-                customAction "Reload",
-                customAction "Renew"
+                deleteAction "Delete"
             }
         }
     }

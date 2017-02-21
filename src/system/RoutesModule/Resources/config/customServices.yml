@@ -27,3 +27,14 @@ services:
         arguments: ["@doctrine.orm.entity_manager", "@zikula_routes_module.routing_finder", "@zikula.cache_clearer", "@zikula_routes_module.route_dumper_helper", "@zikula_routes_module.multilingual_routing_helper"]
         tags:
             - { name: kernel.event_subscriber }
+
+    zikula_routes_module.multilingual_routing_helper:
+        class: Zikula\RoutesModule\Helper\MultilingualRoutingHelper
+        arguments:
+            - "@zikula_extensions_module.api.variable"
+            - "@zikula.dynamic_config_dumper"
+            - "@zikula.cache_clearer"
+            - "@zikula_settings_module.locale_api"
+            - "@kernel"
+            - "%locale%"
+            - "%installed%"

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e1452b37ceffe250e605e63433fc733",
+    "content-hash": "8f517e5363d447ebc1597fd9eafd3193",
     "packages": [
         {
             "name": "abeautifulsite/jquery-minicolors",
@@ -546,6 +546,26 @@
             "time": "2016-08-13T20:53:52+00:00"
         },
         {
+            "name": "dimsemenov/magnific-popup",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dimsemenov/Magnific-Popup.git",
+                "reference": "6b7a8088783cbce01034414c1fd2d8e1889093ae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dimsemenov/Magnific-Popup/zipball/6b7a8088783cbce01034414c1fd2d8e1889093ae",
+                "reference": "6b7a8088783cbce01034414c1fd2d8e1889093ae",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Light and responsive lightbox script with focus on performance.",
+            "homepage": "http://dimsemenov.com/plugins/magnific-popup/",
+            "time": "2016-02-20T09:06:30+00:00"
+        },
+        {
             "name": "doctrine/annotations",
             "version": "v1.2.7",
             "source": {
@@ -824,16 +844,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "v2.5.10",
+            "version": "v2.5.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "fc376f7a61498e18520cd6fa083752a4ca08072b"
+                "reference": "7b9e911f9d8b30d43b96853dab26898c710d8f44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/fc376f7a61498e18520cd6fa083752a4ca08072b",
-                "reference": "fc376f7a61498e18520cd6fa083752a4ca08072b",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/7b9e911f9d8b30d43b96853dab26898c710d8f44",
+                "reference": "7b9e911f9d8b30d43b96853dab26898c710d8f44",
                 "shasum": ""
             },
             "require": {
@@ -891,7 +911,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2017-01-23T23:17:10+00:00"
+            "time": "2017-02-08T12:53:47+00:00"
         },
         {
             "name": "doctrine/doctrine-bundle",
@@ -1370,12 +1390,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "d4a96463efe5d31f52fec0dad6b7871060862dfa"
+                "reference": "8e4cacf0a76458d6203f53113c47b49c6edc2dc5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d4a96463efe5d31f52fec0dad6b7871060862dfa",
-                "reference": "d4a96463efe5d31f52fec0dad6b7871060862dfa",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/8e4cacf0a76458d6203f53113c47b49c6edc2dc5",
+                "reference": "8e4cacf0a76458d6203f53113c47b49c6edc2dc5",
                 "shasum": ""
             },
             "require": {
@@ -1409,7 +1429,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2017-01-19 17:28:40"
+            "time": "2017-02-04 00:54:51"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -2189,16 +2209,16 @@
         },
         {
             "name": "liip/imagine-bundle",
-            "version": "1.7.1",
+            "version": "1.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "d653f4d22b33c2c2870cb87df8a32508186a799a"
+                "reference": "30aea40e441e30c2412da7f4b865b8b957d810d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/d653f4d22b33c2c2870cb87df8a32508186a799a",
-                "reference": "d653f4d22b33c2c2870cb87df8a32508186a799a",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/30aea40e441e30c2412da7f4b865b8b957d810d7",
+                "reference": "30aea40e441e30c2412da7f4b865b8b957d810d7",
                 "shasum": ""
             },
             "require": {
@@ -2229,6 +2249,7 @@
                 "symfony/dependency-injection": "~2.3|~3.0",
                 "symfony/form": "~2.3|~3.0",
                 "symfony/phpunit-bridge": "~2.3|~3.0",
+                "symfony/validator": "~2.3|~3.0",
                 "symfony/yaml": "~2.3|~3.0",
                 "twig/twig": "~1.12"
             },
@@ -2243,13 +2264,16 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.7.x-dev"
+                    "dev-1.0": "1.7-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
                     "Liip\\ImagineBundle\\": ""
-                }
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -2267,20 +2291,20 @@
                 "image",
                 "imagine"
             ],
-            "time": "2017-01-20T01:55:04+00:00"
+            "time": "2017-02-07T20:58:25+00:00"
         },
         {
             "name": "matthiasnoback/symfony-console-form",
-            "version": "v2.2.0",
+            "version": "v2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/matthiasnoback/symfony-console-form.git",
-                "reference": "61c6865d6c24205222be4a13cf2bbab9bcad1843"
+                "reference": "56433b5bf9e58e7f37228955e56a290cdc53eb69"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthiasnoback/symfony-console-form/zipball/61c6865d6c24205222be4a13cf2bbab9bcad1843",
-                "reference": "61c6865d6c24205222be4a13cf2bbab9bcad1843",
+                "url": "https://api.github.com/repos/matthiasnoback/symfony-console-form/zipball/56433b5bf9e58e7f37228955e56a290cdc53eb69",
+                "reference": "56433b5bf9e58e7f37228955e56a290cdc53eb69",
                 "shasum": ""
             },
             "require": {
@@ -2323,7 +2347,7 @@
                 "form",
                 "symfony"
             ],
-            "time": "2017-02-01T18:57:36+00:00"
+            "time": "2017-02-09T16:06:51+00:00"
         },
         {
             "name": "matthiasnoback/symfony-service-definition-validator",
@@ -2938,12 +2962,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "a105a8fa293a8245bf9a308954547b69b6383105"
+                "reference": "855552b52091a662a85168788b3f05ca1ed82382"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/a105a8fa293a8245bf9a308954547b69b6383105",
-                "reference": "a105a8fa293a8245bf9a308954547b69b6383105",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/855552b52091a662a85168788b3f05ca1ed82382",
+                "reference": "855552b52091a662a85168788b3f05ca1ed82382",
                 "shasum": ""
             },
             "require": {
@@ -2997,7 +3021,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2017-02-01 16:00:09"
+            "time": "2017-02-02 15:31:58"
         },
         {
             "name": "sensio/generator-bundle",
@@ -3158,16 +3182,16 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.4.5",
+            "version": "v5.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "cd142238a339459b10da3d8234220963f392540c"
+                "reference": "81fdccfaf8bdc5d5d7a1ef6bb3a61bbb1a6c4a3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/cd142238a339459b10da3d8234220963f392540c",
-                "reference": "cd142238a339459b10da3d8234220963f392540c",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/81fdccfaf8bdc5d5d7a1ef6bb3a61bbb1a6c4a3e",
+                "reference": "81fdccfaf8bdc5d5d7a1ef6bb3a61bbb1a6c4a3e",
                 "shasum": ""
             },
             "require": {
@@ -3208,7 +3232,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2016-12-29T10:02:40+00:00"
+            "time": "2017-02-13T07:52:53+00:00"
         },
         {
             "name": "symfony/monolog-bundle",
@@ -3615,16 +3639,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v3.2.2",
+            "version": "v3.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "358c59fd21f9db7fdb465d1e07fba822d9e18e9e"
+                "reference": "6306409b3836ed2936c7b0454f00711d0128748c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/358c59fd21f9db7fdb465d1e07fba822d9e18e9e",
-                "reference": "358c59fd21f9db7fdb465d1e07fba822d9e18e9e",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/6306409b3836ed2936c7b0454f00711d0128748c",
+                "reference": "6306409b3836ed2936c7b0454f00711d0128748c",
                 "shasum": ""
             },
             "require": {
@@ -3707,6 +3731,7 @@
                 "ocramius/proxy-manager": "~0.4|~1.0|~2.0",
                 "phpdocumentor/reflection-docblock": "^3.0",
                 "predis/predis": "~1.0",
+                "sensio/framework-extra-bundle": "^3.0.2",
                 "symfony/phpunit-bridge": "~3.2",
                 "symfony/polyfill-apcu": "~1.1",
                 "symfony/security-acl": "~2.8|~3.0"
@@ -3753,7 +3778,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-01-12T21:36:55+00:00"
+            "time": "2017-02-06T13:15:43+00:00"
         },
         {
             "name": "twig/extensions",
@@ -4015,17 +4040,17 @@
         },
         {
             "name": "willdurand/js-translation-bundle",
-            "version": "2.6.2",
+            "version": "2.6.4",
             "target-dir": "Bazinga/Bundle/JsTranslationBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/willdurand/BazingaJsTranslationBundle.git",
-                "reference": "802c89fa91f70ba3d1db84996c2b4773cd19b679"
+                "reference": "e1f180539da3b6b29dfde51aa2fbc091052dfb9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/802c89fa91f70ba3d1db84996c2b4773cd19b679",
-                "reference": "802c89fa91f70ba3d1db84996c2b4773cd19b679",
+                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/e1f180539da3b6b29dfde51aa2fbc091052dfb9b",
+                "reference": "e1f180539da3b6b29dfde51aa2fbc091052dfb9b",
                 "shasum": ""
             },
             "require": {
@@ -4074,7 +4099,7 @@
                 "symfony",
                 "translation"
             ],
-            "time": "2016-12-16T17:53:16+00:00"
+            "time": "2017-02-13T14:50:50+00:00"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
@@ -4386,12 +4411,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "95df4ad0a2035da2748dbcdddcf0e0ab53a081df"
+                "reference": "384e30e35733901f2e3b28e7a39a1a5e92b1df9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/95df4ad0a2035da2748dbcdddcf0e0ab53a081df",
-                "reference": "95df4ad0a2035da2748dbcdddcf0e0ab53a081df",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/384e30e35733901f2e3b28e7a39a1a5e92b1df9d",
+                "reference": "384e30e35733901f2e3b28e7a39a1a5e92b1df9d",
                 "shasum": ""
             },
             "require": {
@@ -4446,7 +4471,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2017-01-15 09:31:58"
+            "time": "2017-02-04 18:36:43"
         },
         {
             "name": "zikula/profile-module",
@@ -4454,12 +4479,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "e493c86bccddf8de3f0cea267a5bbc26a028c16a"
+                "reference": "d45909a4599f7344c701dd464a2ab3a252211e1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/e493c86bccddf8de3f0cea267a5bbc26a028c16a",
-                "reference": "e493c86bccddf8de3f0cea267a5bbc26a028c16a",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/d45909a4599f7344c701dd464a2ab3a252211e1f",
+                "reference": "d45909a4599f7344c701dd464a2ab3a252211e1f",
                 "shasum": ""
             },
             "require": {
@@ -4520,7 +4545,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2017-01-15 12:44:04"
+            "time": "2017-02-04 18:38:00"
         },
         {
             "name": "zikula/wizard",

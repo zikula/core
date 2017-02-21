@@ -135,10 +135,14 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
      */
     public function gc($lifetime)
     {
+        if (!$this->installed) {
+            return true;
+        }
+
         return $this->userSessionRepository->gc(
-            $this->variableApi->getSystemVar('seclevel'),
-            $this->variableApi->getSystemVar('secinactivemins'),
-            $this->variableApi->getSystemVar('secmeddays')
+            $this->variableApi->getSystemVar('seclevel', 'Medium'),
+            $this->variableApi->getSystemVar('secinactivemins', 20),
+            $this->variableApi->getSystemVar('secmeddays', 7)
         );
     }
 }

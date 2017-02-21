@@ -1,5 +1,5 @@
 {% set templateTitle = __('Search results') %}
-{{ include('@ZikulaSearchModule/User/menu.html.twig') }}
+{{ moduleHeader('user', templateTitle, true, true) }}
 
 <h3>{{ templateTitle }}</h3>
 
@@ -17,7 +17,6 @@
     {% for result in results %}
     <dt class="search_hit">
         {% if result.url|default %}<a href="{{ result.url|e('html_attr') }}">{% endif %}{{ result.title|zikulasearchmodule_highlightGoogleKeywords(q, limitSummary)|raw }}{% if result.url|default %}</a>{% endif %}
-        &nbsp;&nbsp;<span class="sub">(<a href="{{ zikulasearchmodule_modUrlLegacy(result.module) }}">{{ result.displayname }}</a>)</span>
     </dt>
     <dd>
         {{ result.text|truncate(limitSummary)|zikulasearchmodule_highlightGoogleKeywords(q, limitSummary)|raw }}
@@ -27,4 +26,4 @@
     </dd>
     {% endfor %}
 </dl>
-{{ pager({ rowcount: resultCount, limit: numlimit, posvar: 'page', display: 'page', includePostVars: false, route: 'zikulasearchmodule_user_search'}) }}
+{{ pager({ rowcount: resultCount, limit: numlimit, posvar: 'page', display: 'page', includePostVars: false, route: 'zikulasearchmodule_search_execute'}) }}

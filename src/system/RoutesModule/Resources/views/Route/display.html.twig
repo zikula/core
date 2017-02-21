@@ -1,5 +1,6 @@
 {# purpose of this template: routes display view #}
-{% extends routeArea == 'admin' ? 'ZikulaRoutesModule::adminBase.html.twig' : 'ZikulaRoutesModule::base.html.twig' %}
+{% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : (routeArea == 'admin' ? 'adminBase' : 'base') %}
+{% extends 'ZikulaRoutesModule::' ~ baseTemplate ~ '.html.twig' %}
 {% block pageTitle %}{{ route.getTitleFromDisplayPattern()|default(__('Route')) }}{% endblock %}
 {% block title %}
     {% set templateTitle = route.getTitleFromDisplayPattern()|default(__('Route')) %}

@@ -30,21 +30,41 @@ class SearchBlock extends AbstractBlockHandler
         if (!$this->hasPermission('Searchblock::', "$title::", ACCESS_READ)) {
             return '';
         }
+        // set defaults
+        $properties['displaySearchBtn'] = isset($properties['displaySearchBtn']) ? $properties['displaySearchBtn'] : false;
+        $properties['active'] = isset($properties['active']) ? $properties['active'] : [];
 
-        // set some defaults
-        if (empty($title)) {
-            $title = $this->__('Search');
+        // get Core-2.0 searchable modules
+        $searchableModules = $this->get('zikula_search_module.internal.searchable_module_collector')->getAll();
+        $moduleFormBuilder = $this->get('form.factory')
+            ->createNamedBuilder('modules', 'Symfony\Component\Form\Extension\Core\Type\FormType', [], [
+                'auto_initialize' => false,
+                'required' => false
+            ]);
+        foreach ($searchableModules as $moduleName => $searchableInstance) {
+            if (!in_array($moduleName, $properties['active'])) {
+                continue;
+            }
+            if (!$this->hasPermission('ZikulaSearchModule::Item', $moduleName . '::', ACCESS_READ)) {
+                continue;
+            }
+            $moduleFormBuilder->add($moduleName, 'Zikula\SearchModule\Form\Type\AmendableModuleSearchType', [
+                'label' => $this->get('kernel')->getModule($moduleName)->getMetaData()->getDisplayName(),
+                'translator' => $this->getTranslator(),
+                'active' => true,
+                'permissionApi' => $this->get('zikula_permissions_module.api.permission')
+            ]);
+            $searchableInstance->amendForm($moduleFormBuilder->get($moduleName));
         }
-        if (!isset($properties['displaySearchBtn'])) {
-            $properties['displaySearchBtn'] = false;
-        }
-        if (!isset($properties['active'])) {
-            $properties['active'] = [];
-        }
+        $form = $this->get('form.factory')->create('Zikula\SearchModule\Form\Type\SearchType', [], [
+            'translator' => $this->get('translator.default'),
+            'action' => $this->get('router')->generate('zikulasearchmodule_search_execute')
+        ]);
+        $form->add($moduleFormBuilder->getForm());
 
         $templateParameters = [
+            'form' => $form->createView(),
             'properties' => $properties,
-            'pluginOptions' => []
         ];
 
         return $this->renderView('@ZikulaSearchModule/Block/search.html.twig', $templateParameters);
@@ -75,7 +95,7 @@ class SearchBlock extends AbstractBlockHandler
         }
         // remove disabled
         foreach ($searchModules as $displayName => $moduleName) {
-            if ((bool) $this->getVar('disable_' . $moduleName, true)) {
+            if ((bool) $this->getVar('disable_' . $moduleName, false)) {
                 unset($searchModules[$displayName]);
             }
         }

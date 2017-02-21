@@ -110,6 +110,20 @@ class ExtensionDependencyHelper
                 continue;
             }
             $this->checkForFatalDependency($dependency);
+            // get and set reason from bundle metaData temporarily
+            if ($dependency->getReason() === false) {
+                $bundle = $this->kernel->getModule($dependency->getModname());
+                if (null !== $bundle) {
+                    $bundleDependencies = $bundle->getMetaData()->getDependencies();
+                    foreach ($bundleDependencies as $bundleDependency) {
+                        if ($bundleDependency['modname'] == $dependency->getModname()) {
+                            $reason = isset($dependency['reason']) ? $dependency['reason'] : '';
+                            $dependency->setReason($reason);
+                        }
+                    }
+                }
+                $dependency->setReason('');
+            }
             $unsatisfiedDependencies[$dependency->getId()] = $dependency;
         }
 

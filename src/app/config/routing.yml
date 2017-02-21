@@ -16,6 +16,9 @@ installer:
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.xml"
 
+# Note: if you want to add routes for a native Symfony bundle
+# insert them here and not below the "Routing" and "legacy" entries
+
 Routing:
     resource: .
     type: zikularoutesmodule

@@ -210,7 +210,7 @@ class FilterListener implements EventSubscriberInterface
         $config['General']['use_base_path'] = false;
 
         // path to the filters used
-        $config['General']['filter_path'] = $this->getSystemVar('idsrulepath', 'config/phpids_zikula_default.xml');
+        $config['General']['filter_path'] = $this->getSystemVar('idsrulepath', 'system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml');
         // path to (writable) tmp directory
         $config['General']['tmp_path'] = CacheUtil::getLocalDir() . '/idsTmp';
         $config['General']['scan_keys'] = false;

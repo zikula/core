@@ -52,13 +52,15 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
 
         $qb = $this->createQueryBuilder('v');
         $and = $qb->expr()->andX()
-            ->add($qb->expr()->eq('v.changetype', ':changetype'))
+            ->add($qb->expr()->eq('v.changetype', ':changeType'))
             ->add($qb->expr()->isNotNull('v.created_dt'))
-            ->add($qb->expr()->neq('v.created_dt', '0000-00-00 00:00:00'))
-            ->add($qb->expr()->lt('v.created_dt', $staleRecordUTC));
+            ->add($qb->expr()->neq('v.created_dt', ':createdDtNot'))
+            ->add($qb->expr()->lt('v.created_dt', ':createdDtMax'));
         $qb->select('v')
             ->where($and)
-            ->setParameter('changetype', $changeType);
+            ->setParameter('changeType', $changeType)
+            ->setParameter('createdDtNot', '0000-00-00 00:00:00')
+            ->setParameter('createdDtMax', $staleRecordUTC);
         $staleVerificationRecords = $qb->getQuery()->getResult();
 
         $deletedUsers = [];
@@ -134,9 +136,9 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
         $query = $this->createQueryBuilder('v')
             ->delete()
             ->where('v.uid = :uid')
-            ->andWhere('v.changetype = :changetype')
+            ->andWhere('v.changetype = :changeType')
             ->setParameter('uid', $uid)
-            ->setParameter('changetype', $changeType)
+            ->setParameter('changeType', $changeType)
             ->getQuery();
         $query->execute();
 

@@ -108,6 +108,8 @@ class AjaxUpgradeController extends AbstractController
                 return $this->from144to145();
             case "from145to146":
                 return $this->from145to146();
+            case "from146to147":
+                return $this->from146to147();
             case "finalizeparameters":
                 return $this->finalizeParameters();
             case "clearcaches":
@@ -245,7 +247,26 @@ class AjaxUpgradeController extends AbstractController
         if (version_compare($this->currentVersion, '1.4.6', '>=')) {
             return true;
         }
-        $this->reSyncAndActivateModules(); // do this at each version upgrade
+        // Menu module was introduced in 144 but not installed on upgrade
+        // this does NOT need to be repeated in upgrade from 146->147
+        $schemaManager = $this->container->get('doctrine')->getConnection()->getSchemaManager();
+        if (!$schemaManager->tablesExist(['menu_items'])) {
+            $this->installModule('ZikulaMenuModule');
+            $this->reSyncAndActivateModules();
+            $this->setModuleCategory('ZikulaMenuModule', $this->translator->__('Content'));
+        } else {
+            $this->reSyncAndActivateModules(); // do this at each version upgrade
+        }
+
+        return true;
+    }
+
+    private function from146to147()
+    {
+        if (version_compare($this->currentVersion, '1.4.7', '>=')) {
+            return true;
+        }
+        $this->reSyncAndActivateModules();
 
         return true;
     }

@@ -122,6 +122,7 @@ class SettingsController extends AbstractController
                 $this->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'locale', $data['language_i18n']); // @todo which variable are we using?
 
                 $this->get('zikula_routes_module.multilingual_routing_helper')->reloadMultilingualRoutingSettings(); // resets config/dynamic/generated.yml & custom_parameters.yml
+                $request->getSession()->set('_locale', $data['language_i18n']);
                 $this->addFlash('status', $this->__('Done! Localization configuration updated.'));
             }
             if ($form->get('cancel')->isClicked()) {

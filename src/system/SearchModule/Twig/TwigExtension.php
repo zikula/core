@@ -11,8 +11,6 @@
 
 namespace Zikula\SearchModule\Twig;
 
-use ModUtil;
-use StringUtil;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
 /**
@@ -44,7 +42,6 @@ class TwigExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('zikulasearchmodule_searchVarToFieldNames', [$this, 'searchVarToFieldNames']),
-            new \Twig_SimpleFunction('zikulasearchmodule_modUrlLegacy', [$this, 'modUrlLegacy'])
         ];
     }
 
@@ -96,18 +93,6 @@ class TwigExtension extends \Twig_Extension
     }
 
     /**
-     * Legacy bridging method for arbitrary module urls.
-     *
-     * @param string $moduleName Name of target module
-     *
-     * @return string
-     */
-    public function modUrlLegacy($moduleName)
-    {
-        return ModUtil::url($moduleName, 'user', 'index');
-    }
-
-    /**
      * Highlights case insensitive google search phrase.
      *
      * @param string  $text         The string to operate on
@@ -118,6 +103,6 @@ class TwigExtension extends \Twig_Extension
      */
     public function highlightGoogleKeywords($text, $searchPhrase, $contextSize)
     {
-        return StringUtil::highlightWords($text, $searchPhrase, $contextSize);
+        return \StringUtil::highlightWords($text, $searchPhrase, $contextSize);
     }
 }

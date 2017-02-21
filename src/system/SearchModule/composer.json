@@ -24,7 +24,7 @@
             "url": "search",
             "capabilities": {
                 "admin": {"route": "zikulasearchmodule_config_config"},
-                "user": {"route": "zikulasearchmodule_user_form"}
+                "user": {"route": "zikulasearchmodule_search_execute"}
             },
             "securityschema": {
                 "ZikulaSearchModule::": "Module name::",

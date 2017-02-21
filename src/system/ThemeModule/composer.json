@@ -21,7 +21,7 @@
             "url": "theme",
             "class": "Zikula\\ThemeModule\\ZikulaThemeModule",
             "core-compatibility": ">=1.4.2",
-            "displayname": "ThemeModule",
+            "displayname": "Theme Module",
             "oldnames": [],
             "capabilities": {
                 "admin": {"route": "zikulathememodule_theme_view"},

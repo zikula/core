@@ -1,21 +1,14 @@
 {# purpose of this template: general base layout #}
 {% block header %}
-    
-    {{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
-    {{ pageAddAsset('javascript', asset('bootstrap/js/bootstrap.min.js')) }}
-    {{ pageAddAsset('stylesheet', asset('bootstrap-jqueryui/bootstrap-jqueryui.min.css')) }}
-    {{ pageAddAsset('javascript', asset('bootstrap-jqueryui/bootstrap-jqueryui.min.js')) }}
-    {% if not app.request.query.getBoolean('raw', false) %}
-        {{ pageAddAsset('javascript', zasset('@ZikulaRoutesModule:js/ZikulaRoutesModule.js')) }}
+    {{ pageAddAsset('javascript', zasset('@ZikulaRoutesModule:js/ZikulaRoutesModule.js')) }}
+    {% if 'edit' in app.request.get('_route') or 'config' in app.request.get('_route') %}
         {{ polyfill(['forms', 'forms-ext']) }}
     {% endif %}
 {% endblock %}
 
-{% if not app.request.query.getBoolean('raw', false) %}
-    {% block appTitle %}
-        {{ moduleHeader('user', '', '', false, true, false, true) }}
-    {% endblock %}
-{% endif %}
+{% block appTitle %}
+    {{ moduleHeader('user', '', '', false, true, false, true) }}
+{% endblock %}
 
 {% block titleArea %}
     <h2>{% block title %}{% endblock %}</h2>
@@ -27,19 +20,4 @@
 {% block content %}{% endblock %}
 
 {% block footer %}
-    {% if not app.request.query.getBoolean('raw', false) %}
-    {% elseif 'edit' in app.request.get('_route') %}
-        {{ pageAddAsset('stylesheet', 'style/core.css') }}
-        {{ pageAddAsset('stylesheet', zasset('@ZikulaRoutesModule:css/style.css')) }}
-        {{ pageAddAsset('stylesheet', zasset('@ZikulaThemeModule:css/form/style.css')) }}
-        {{ pageAddAsset('stylesheet', zasset('@ZikulaAndreas08Theme:css/fluid960gs/reset.css')) }}
-        {% set pageStyles %}
-        <style type="text/css">
-            body {
-                font-size: 70%;
-            }
-        </style>
-        {% endset %}
-        {{ pageAddAsset('header', pageStyles) }}
-    {% endif %}
 {% endblock %}

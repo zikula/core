@@ -19,8 +19,8 @@ use JMS\TranslationBundle\Translation\Extractor\FileVisitorInterface;
 class ZikulaJsFileExtractor implements FileVisitorInterface
 {
     const JAVASCRIPT_DOMAIN = 'zikula_javascript'; // @todo figure out way to compute the bundle's translation domain?
-    const SINGULAR_CAPTURE_REGEX = '\s?[\'"]([^"\'),]+)[\'"]\s?';
-    const PLURAL_CAPTURE_REGEX = '\s?[\'"]([^"\'),]+)[\'"]\s?,\s?[\'"]([^"\'),]+)[\'"]';
+    const SINGULAR_CAPTURE_REGEX = '\s?([\'"])((?:(?!\1).)*)\1\s?';
+    const PLURAL_CAPTURE_REGEX = '\s?([\'"])((?:(?!\1).)*)\1\s?,\s?([\'"])((?:(?!\3).)*)\3\s?';
     const REGEX_DELIMITER = '/';
 
     private $singularFunctions = [
@@ -41,28 +41,27 @@ class ZikulaJsFileExtractor implements FileVisitorInterface
         }
 
         // singular type
-        $argumentsRegex = self::REGEX_DELIMITER
-            .'\.(?:' . implode('|', $this->singularFunctions) . ')\('
-            .self::SINGULAR_CAPTURE_REGEX
-            .self::REGEX_DELIMITER;
-        preg_match_all($argumentsRegex, file_get_contents($file), $matches);
-        foreach ($matches[1] as $string) {
+        $argumentsRegex = $this->generateRegexPattern($this->singularFunctions, self::SINGULAR_CAPTURE_REGEX);
+        preg_match_all($argumentsRegex, file_get_contents($file), $singularMatches);
+        foreach ($singularMatches[2] as $string) {
             $message = new Message($string, self::JAVASCRIPT_DOMAIN);
             $message->addSource(new FileSource((string) $file));
             $catalogue->add($message);
         }
         // plural type
-        $argumentsRegex = self::REGEX_DELIMITER
-            .'\.(?:' . implode('|', $this->pluralFunctions) . ')\('
-            .self::PLURAL_CAPTURE_REGEX
-            .self::REGEX_DELIMITER;
-        preg_match_all($argumentsRegex, file_get_contents($file), $matches);
-        foreach ($matches[1] as $key => $singluar) {
-            $fullString = $singluar . '|' . $matches[2][$key];
+        $argumentsRegex = $this->generateRegexPattern($this->pluralFunctions, self::PLURAL_CAPTURE_REGEX);
+        preg_match_all($argumentsRegex, file_get_contents($file), $pluralMatches);
+        foreach ($pluralMatches[2] as $key => $singularString) {
+            $fullString = $singularString . '|' . $pluralMatches[4][$key];
             $message = new Message($fullString, self::JAVASCRIPT_DOMAIN);
             $message->addSource(new FileSource((string) $file));
             $catalogue->add($message);
         }
+    }
+
+    private function generateRegexPattern($functions, $base)
+    {
+        return self::REGEX_DELIMITER . '\.(?:' . implode('|', $functions) . ')\(' . $base . self::REGEX_DELIMITER;
     }
 
     public function visitPhpFile(\SplFileInfo $file, MessageCatalogue $catalogue, array $ast)

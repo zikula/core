@@ -1,6 +1,6 @@
 {# purpose of this template: routes list view #}
 {% extends routeArea == 'admin' ? 'ZikulaRoutesModule::adminBase.html.twig' : 'ZikulaRoutesModule::base.html.twig' %}
-{% block title __('Route list') %}
+{% block title own ? __('My routes') : __('Route list') %}
 {% block admin_page_icon 'list-alt' %}
 {% block content %}
 {% if items|length > 1 %}
@@ -31,10 +31,9 @@
                             }
                             showIndicator();
                             $.ajax({
-                                url: '{{ url('zikularoutesmodule_ajax_sort') }}',
+                                url: '{{ url('zikularoutesmodule_sort_resort') }}',
                                 type: 'POST',
                                 data: {
-                                    ot: 'route',
                                     sort: $('#routesViewForm table tbody').sortable('toArray')
                                 }
                             }).always(hideIndicator);
@@ -84,11 +83,9 @@
                 {% if routeArea == 'admin' %}
                     <col id="cSelect" />
                 {% endif %}
+                <col id="cItemActions" />
                 <col id="cRouteType" />
-                {#<col id="cReplacedRouteName" />#}
                 <col id="cBundle" />
-                {#<col id="cController" />
-                <col id="cAction" />#}
                 <col id="cPath" />
                 <col id="cHost" />
                 <col id="cSchemes" />
@@ -96,34 +93,22 @@
                 <col id="cPrependBundlePrefix" />
                 <col id="cTranslatable" />
                 <col id="cTranslationPrefix" />
-                {#<col id="cCondition" />#}
                 <col id="cDescription" />
-                {#<col id="cSort" />
-                <col id="cGroup" />#}
-                <col id="cItemActions" />
             </colgroup>
             <thead>
             <tr>
                 {% if routeArea == 'admin' %}
-                    <th id="hSelect" scope="col" class="text-center">
+                    <th id="hSelect" scope="col" class="{% if items|length > 0 %}fixed-column {% endif %}text-center z-w02">
                         <input type="checkbox" class="zikularoutes-mass-toggle" />
                     </th>
                 {% endif %}
+                <th id="hItemActions" scope="col" class="{% if items|length > 0 %}fixed-column {% endif %}z-order-unsorted">{{ __('Actions') }}</th>
                 <th id="hRouteType" scope="col" class="text-left">
                     <a href="{{ sort.routeType.url }}" title="{{ __f('Sort by %s', {'%s': 'route type'}) }}" class="{{ sort.routeType.class }}">{{ __('Route type') }}</a>
                 </th>
-                {#<th id="hReplacedRouteName" scope="col" class="text-left">
-                    <a href="{{ sort.replacedRouteName.url }}" title="{{ __f('Sort by %s', {'%s': 'replaced route name'}) }}" class="{{ sort.replacedRouteName.class }}">{{ __('Replaced route name') }}</a>
-                </th>#}
                 <th id="hBundle" scope="col" class="text-left">
                     <a href="{{ sort.bundle.url }}" title="{{ __f('Sort by %s', {'%s': 'bundle'}) }}" class="{{ sort.bundle.class }}">{{ __('Bundle') }}</a>
                 </th>
-                {#<th id="hController" scope="col" class="text-left">
-                    <a href="{{ sort.controller.url }}" title="{{ __f('Sort by %s', {'%s': 'controller'}) }}" class="{{ sort.controller.class }}">{{ __('Controller') }}</a>
-                </th>
-                <th id="hAction" scope="col" class="text-left">
-                    <a href="{{ sort.action.url }}" title="{{ __f('Sort by %s', {'%s': 'action'}) }}" class="{{ sort.action.class }}">{{ __('Action') }}</a>
-                </th>#}
                 <th id="hPath" scope="col" class="text-left">
                     <a href="{{ sort.path.url }}" title="{{ __f('Sort by %s', {'%s': 'path'}) }}" class="{{ sort.path.class }}">{{ __('Path') }}</a>
                 </th>
@@ -145,19 +130,9 @@
                 <th id="hTranslationPrefix" scope="col" class="text-left">
                     <a href="{{ sort.translationPrefix.url }}" title="{{ __f('Sort by %s', {'%s': 'translation prefix'}) }}" class="{{ sort.translationPrefix.class }}">{{ __('Translation prefix') }}</a>
                 </th>
-                {#<th id="hCondition" scope="col" class="text-left">
-                    <a href="{{ sort.condition.url }}" title="{{ __f('Sort by %s', {'%s': 'condition'}) }}" class="{{ sort.condition.class }}">{{ __('Condition') }}</a>
-                </th>#}
                 <th id="hDescription" scope="col" class="text-left">
                     <a href="{{ sort.description.url }}" title="{{ __f('Sort by %s', {'%s': 'description'}) }}" class="{{ sort.description.class }}">{{ __('Description') }}</a>
                 </th>
-                {#<th id="hSort" scope="col" class="text-right">
-                    <a href="{{ sort.sort.url }}" title="{{ __f('Sort by %s', {'%s': 'sort'}) }}" class="{{ sort.sort.class }}">{{ __('Sort') }}</a>
-                </th>
-                <th id="hGroup" scope="col" class="text-left">
-                    <a href="{{ sort.group.url }}" title="{{ __f('Sort by %s', {'%s': 'group'}) }}" class="{{ sort.group.class }}">{{ __('Group') }}</a>
-                </th>#}
-                <th id="hItemActions" scope="col" class="text-right z-order-unsorted">{{ __('Actions') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -173,25 +148,23 @@
             {% endif %}
             <tr id="row_{{ route.id }}"{% if route.group in sortableGroups %} class="sortable"{% endif %}>
                 {% if routeArea == 'admin' %}
-                    <td headers="hSelect" class="text-center">
+                    <td headers="hSelect" class="fixed-column text-center">
                         <input type="checkbox" name="items[]" value="{{ route.id }}" class="zikularoutes-toggle-checkbox" />
                     </td>
                 {% endif %}
+                <td id="itemActions{{ route.id }}" headers="hItemActions" class="fixed-column actions nowrap z-w02">
+                    {% set itemActions = knp_menu_get('ZikulaRoutesModule:ItemActionsMenu:menu', [], { entity: route, area: routeArea, context: 'view' }) %}
+                    <div class="dropdown">
+                        <a id="itemActions{{ route.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
+                        {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
+                    </div>
+                </td>
                 <td headers="hRouteType" class="text-left">
                     {{ route.routeType|zikularoutesmodule_listEntry('route', 'routeType') }}
                 </td>
-                {#<td headers="hReplacedRouteName" class="text-left">
-                    {{ route.replacedRouteName }}
-                </td>#}
                 <td headers="hBundle" class="text-left">
                     {{ route.bundle }}
                 </td>
-                {#<td headers="hController" class="text-left">
-                    {{ route.controller }}
-                </td>
-                <td headers="hAction" class="text-left">
-                    {{ route.action }}
-                </td>#}
                 <td headers="hPath" class="text-left">
                     {{ route.path|zikularoutesmodule_pathToString(route) }}{% if route.methods|length > 0 %} <span class="small">[{{ route.methods|join(', ') }}</span>]{% endif %}
                 </td>
@@ -221,30 +194,14 @@
                 <td headers="hTranslationPrefix" class="text-left">
                     {{ route.translationPrefix }}
                 </td>
-                {#<td headers="hCondition" class="text-left">
-                    {{ route.condition }}
-                </td>#}
                 <td headers="hDescription" class="text-left">
                     {{ route.description|truncate(50, true) }}
-                </td>
-                {#<td headers="hSort" class="text-right">
-                    {{ route.sort }}
-                </td>
-                <td headers="hGroup" class="text-left">
-                    {{ route.group }}
-                </td>#}
-                <td id="itemActions{{ route.id }}" headers="hItemActions" class="actions text-right nowrap z-w02">
-                    {% set itemActions = knp_menu_get('ZikulaRoutesModule:ItemActionsMenu:menu', [], { entity: route, area: routeArea, context: 'view' }) %}
-                    <div class="dropdown">
-                        <a id="itemActions{{ route.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
-                        {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
-                    </div>
                 </td>
             </tr>
             {% set groupOld = route.group %}
         {% else %}
             <tr class="z-{{ routeArea == 'admin' ? 'admin' : 'data' }}tableempty">
-                <td class="text-left" colspan="{% if routeArea == 'admin' %}18{% else %}17{% endif %}">
+                <td class="text-left" colspan="{% if routeArea == 'admin' %}12{% else %}11{% endif %}">
             {{ __('No routes found.') }}
               </td>
             </tr>
@@ -276,17 +233,19 @@
 </div>
 {% endblock %}
 {% block page_nav_links %}
-    {% if canBeCreated %}
-        {% if hasPermission('ZikulaRoutesModule:Route:', '::', 'ACCESS_EDIT') %}
-            {% set createTitle = __('Create route') %}
-            {# disabled for now <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'edit') }}" title="{{ createTitle|e('html_attr') }}" class="fa fa-plus">{{ createTitle }}</a>#}
+    <p>
+        {% if canBeCreated %}
+            {% if hasPermission('ZikulaRoutesModule:Route:', '::', 'ACCESS_EDIT') %}
+                {% set createTitle = __('Create route') %}
+                {# disabled for now <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'edit') }}" title="{{ createTitle|e('html_attr') }}" class="fa fa-plus">{{ createTitle }}</a>#}
+            {% endif %}
         {% endif %}
-    {% endif %}
-    {#{% if showAllEntries == 1 %}
-        {% set linkTitle = __('Back to paginated view') %}
-        <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'view') }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
-    {% else %}
-        {% set linkTitle = __('Show all entries') %}
-        <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'view', { all: 1 }) }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
-    {% endif %}#}
+        {#% if showAllEntries == 1 %}
+            {% set linkTitle = __('Back to paginated view') %}
+            <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'view') }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
+        {% else %}
+            {% set linkTitle = __('Show all entries') %}
+            <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'view', { all: 1 }) }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
+        {% endif %#}
+    </p>
 {% endblock %}

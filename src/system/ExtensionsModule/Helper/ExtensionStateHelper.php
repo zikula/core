@@ -112,10 +112,6 @@ class ExtensionStateHelper
         // clear the cache before calling events
         $this->cacheClearer->clear('symfony');
 
-        // state changed, so update the ModUtil::available-info for this module.
-        // @todo refactor and remove ModUtil!
-//        \ModUtil::available($extension->getName(), true);
-
         if (isset($eventName)) {
             $moduleBundle = $this->kernel->getModule($extension->getName());
             $event = new ModuleStateEvent($moduleBundle, ($moduleBundle === null) ? $extension->toArray() : null);

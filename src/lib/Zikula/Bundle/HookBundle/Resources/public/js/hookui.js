@@ -11,7 +11,7 @@ var cloneDraggedItem = true;
      *
      * @param   {String} listclass   Class applied to the list of items.
      * @param   {String} headerclass Class applied to the header of the list.
-     * 
+     *
      * @return  void
      */
     recolorListElements = function(listclass, headerclass) {
@@ -138,7 +138,7 @@ var cloneDraggedItem = true;
         if (removeItemBeforeResponse) {
             removeProviderAreaFromSubscriberArea(sarea_id, parea_id);
         }
-        
+
         subscriberAreaToggle(sarea, parea);
     };
 
@@ -150,7 +150,7 @@ var cloneDraggedItem = true;
      * @return none;
      */
     subscriberAreaToggle = function(sarea, parea)
-    {   
+    {
         var pars = {
             subscriberarea: sarea,
             providerarea: parea
@@ -189,9 +189,9 @@ var cloneDraggedItem = true;
         var areaToAttachTo = $('#sarea_' + sarea_id);
         var areaListToAttachTo = $('#sarea_' + sarea_id + '_list');
         var emptyArea = $('#sarea_empty_' + sarea_id);
-        
+
         var newItem = null;
-        // if cloneDraggedItem is set to true, clone the dragged item before use. 
+        // if cloneDraggedItem is set to true, clone the dragged item before use.
         // otherwise just use the dragged item
         if (cloneDraggedItem) {
             newItem = areaToAttach.get(0).cloneNode(true);
@@ -323,7 +323,7 @@ var cloneDraggedItem = true;
      * @return none;
      */
     initAreasDroppables = function()
-    {   
+    {
         // loop through module's subscriber areas and create droppables
         for (var i = 0; i < subscriberAreas.length; i++) {
             createDroppable(subscriberAreas[i]);

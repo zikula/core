@@ -73,7 +73,10 @@ class LostPasswordVerificationHelper
             throw new \Exception('Record must be an instance of UserEntity or AuthenticationMappingEntity.');
         }
 
-        $confirmationCode = $this->passwordApi->generatePassword();
+        $confirmationCode = $this->delimiter;
+        while (false !== strpos($confirmationCode, $this->delimiter)) {
+            $confirmationCode = $this->passwordApi->generatePassword();
+        }
         $this->userVerificationRepository->setVerificationCode($record->getUid(), ZAuthConstant::VERIFYCHGTYPE_PWD, $this->passwordApi->getHashedPassword($confirmationCode));
 
         $params = [

@@ -66,6 +66,31 @@ function zikulaRoutesInitMassToggle()
 }
 
 /**
+ * Initialises fixed table columns.
+ */
+function zikulaRoutesInitFixedColumns()
+{
+    var originalTable, fixedColumnsTable;
+
+    jQuery('.table.fixed-columns').remove();
+    jQuery('.table').each(function() {
+        originalTable = jQuery(this);
+        if (originalTable.find('.fixed-column').length > 0) {
+            fixedColumnsTable = originalTable.clone().insertBefore(originalTable).addClass('fixed-columns');
+            originalTable.find('.dropdown').addClass('hidden');
+            fixedColumnsTable.find('.dropdown').removeClass('hidden');
+            fixedColumnsTable.css('left', originalTable.parent().offset().left);
+
+            fixedColumnsTable.find('th, td').not('.fixed-column').remove();
+
+            fixedColumnsTable.find('tr').each(function (i, elem) {
+                jQuery(this).height(originalTable.find('tr:eq(' + i + ')').height());
+            });
+        }
+    });
+}
+
+/**
  * Creates a dropdown menu for the item actions.
  */
 function zikulaRoutesInitItemActions(context)
@@ -77,7 +102,7 @@ function zikulaRoutesInitItemActions(context)
     containerSelector = '';
     if (context == 'view') {
         containerSelector = '.zikularoutesmodule-view';
-        listClasses = 'list-unstyled dropdown-menu dropdown-menu-right';
+        listClasses = 'list-unstyled dropdown-menu';
     } else if (context == 'display') {
         containerSelector = 'h2, h3';
         listClasses = 'list-unstyled dropdown-menu';
@@ -110,6 +135,9 @@ jQuery(document).ready(function() {
     if (isViewPage) {
         zikulaRoutesInitQuickNavigation();
         zikulaRoutesInitMassToggle();
+        jQuery(window).resize(zikulaRoutesInitFixedColumns);
+        zikulaRoutesInitFixedColumns();
+        window.setTimeout(zikulaRoutesInitFixedColumns, 1000);
         zikulaRoutesInitItemActions('view');
     } else if (isDisplayPage) {
         zikulaRoutesInitItemActions('display');
