@@ -11,12 +11,11 @@
 
 namespace Zikula\CategoriesModule\Entity\Repository;
 
-use Doctrine\Common\Collections\Selectable;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityRepository;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
+use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 
-class CategoryRepository extends EntityRepository implements ObjectRepository, Selectable
+class CategoryRepository extends EntityRepository implements CategoryRepositoryInterface
 {
     /**
      * Returns amount of categories for specified filters.

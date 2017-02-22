@@ -1,0 +1,13 @@
+{{ adminHeader() }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-plus"></span>
+            {{ __('Add Category') }}
+            {{ pageSetVar('title', __('Add Category')) }}
+        </h3>
+
+        {{ include('@ZikulaCategoriesModule/Category/edit_form.html.twig') }}
+    </div>
+</div>
+{{ adminFooter() }}

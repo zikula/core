@@ -197,8 +197,8 @@ class CategoryEntity extends EntityAccess
     {
         $this->parent = null;
         $this->children = null;
-        $this->is_locked = 0;
-        $this->is_leaf = 0;
+        $this->is_locked = false; //  was 0
+        $this->is_leaf = false; // was 0
         $this->name = '';
         $this->value = '';
         $this->sort_value = 2147483647;
@@ -283,6 +283,15 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
+     * Alias layer for Symfony Forms
+     * @return bool
+     */
+    public function getIsLocked()
+    {
+        return $this->getIs_locked();
+    }
+
+    /**
      * get the category locked status
      *
      * @param bool $is_locked locked status flag
@@ -290,6 +299,15 @@ class CategoryEntity extends EntityAccess
     public function setIs_locked($is_locked)
     {
         $this->is_locked = $is_locked;
+    }
+
+    /**
+     * Alias layer for Symfony Forms
+     * @param $isLocked
+     */
+    public function setIsLocked($isLocked)
+    {
+        $this->setIs_locked($isLocked);
     }
 
     /**
@@ -303,6 +321,15 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
+     * Alias layer for Symfony Forms
+     * @return bool
+     */
+    public function getIsLeaf()
+    {
+        return $this->getIs_leaf();
+    }
+
+    /**
      * set the category leaf status
      *
      * @param bool $is_leaf leaft status flag
@@ -310,6 +337,15 @@ class CategoryEntity extends EntityAccess
     public function setIs_leaf($is_leaf)
     {
         $this->is_leaf = $is_leaf;
+    }
+
+    /**
+     * Alias layer for Symfony Forms
+     * @param $isLeaf
+     */
+    public function setIsLeaf($isLeaf)
+    {
+        $this->setIs_leaf($isLeaf);
     }
 
     /**
@@ -401,7 +437,7 @@ class CategoryEntity extends EntityAccess
      * get the category display description
      * @param $lang
      *
-     * @return string the category display description
+     * @return array|string the category display description
      */
     public function getDisplay_desc($lang = null)
     {
@@ -469,7 +505,7 @@ class CategoryEntity extends EntityAccess
      */
     public function getStatus()
     {
-        return $this->status;
+        return $this->status == 'A';
     }
 
     /**
@@ -479,6 +515,9 @@ class CategoryEntity extends EntityAccess
      */
     public function setStatus($status)
     {
+        if (is_bool($status)) {
+            $status = $status ? 'A' : 'I';
+        }
         $this->status = $status;
     }
 
@@ -585,7 +624,7 @@ class CategoryEntity extends EntityAccess
     /**
      * get the attributes of the category
      *
-     * @return CategoryAttributeEntity the category's attributes
+     * @return ArrayCollection the category's attributes
      */
     public function getAttributes()
     {
@@ -595,9 +634,9 @@ class CategoryEntity extends EntityAccess
     /**
      * set the attributes for the category
      *
-     * @param CategoryAttributeEntity $attributes the attributes for the category
+     * @param ArrayCollection $attributes the attributes for the category
      */
-    public function setAttributes($attributes)
+    public function setAttributes(ArrayCollection $attributes)
     {
         $this->attributes = $attributes;
     }

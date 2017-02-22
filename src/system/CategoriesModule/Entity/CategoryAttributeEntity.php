@@ -52,11 +52,11 @@ class CategoryAttributeEntity extends EntityAccess
     /**
      * constructor
      *
-     * @param int    $category the category id
+     * @param CategoryEntity    $category the category id
      * @param string $name     the name of the attribute
      * @param string $value    the value of the attribute
      */
-    public function __construct($category, $name, $value)
+    public function __construct(CategoryEntity $category, $name, $value)
     {
         $this->setCategory($category);
         $this->setAttribute($name, $value);
@@ -77,7 +77,7 @@ class CategoryAttributeEntity extends EntityAccess
      *
      * @param CategoryEntity $category the category item
      */
-    public function setCategory($category)
+    public function setCategory(CategoryEntity $category)
     {
         $this->category = $category;
     }

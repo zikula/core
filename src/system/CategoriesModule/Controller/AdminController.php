@@ -201,14 +201,14 @@ class AdminController extends AbstractController
 
             // since we inherit the domain settings from the parent, we get
             // the inherited (and merged) object from session
-            if (isset($_SESSION['newCategory']) && $_SESSION['newCategory']) {
-                $editCat = $_SESSION['newCategory'];
-                unset($_SESSION['newCategory']);
+            if ($request->getSession()->has('newCategory') && $request->getSession()->get('newCategory')) {
+                $editCat = $request->getSession()->get('newCategory');
+                $request->getSession()->remove('newCategory');
                 $category = new CategoryEntity(); // need this for validation info
             } elseif (count($validationErrors) > 0) {
                 // if we're back from validation get the posted data from session
                 $newCatActionData = $request->getSession()->get('newCatActionData');
-                $request->getSession()->del('newCatActionData');
+                $request->getSession()->remove('newCatActionData');
                 $editCat = new CategoryEntity();
                 $editCat = $editCat->toArray();
                 $editCat = array_merge($editCat, $newCatActionData);

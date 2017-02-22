@@ -1,0 +1,5 @@
+services:
+    zikula_categories_module.category_repository:
+        class: Zikula\CategoriesModule\Entity\Repository\CategoryRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["ZikulaCategoriesModule:CategoryEntity"]

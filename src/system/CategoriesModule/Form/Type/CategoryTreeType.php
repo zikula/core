@@ -12,9 +12,12 @@
 namespace Zikula\CategoriesModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\CategoriesModule\Api\CategoryApi;
+use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
+use Zikula\CategoriesModule\Form\DataTransformer\CategoryTreeTransformer;
 
 /**
  * Category tree form type class.
@@ -27,13 +30,29 @@ class CategoryTreeType extends AbstractType
     private $categoryApi;
 
     /**
+     * @var CategoryRepositoryInterface
+     */
+    private $categoryRepository;
+
+    /**
      * CategoryTreeType constructor.
      *
      * @param CategoryApi $categoryApi CategoryApi service instance
+     * @param CategoryRepositoryInterface $categoryRepository
      */
-    public function __construct(CategoryApi $categoryApi)
+    public function __construct(CategoryApi $categoryApi, CategoryRepositoryInterface $categoryRepository)
     {
         $this->categoryApi = $categoryApi;
+        $this->categoryRepository = $categoryRepository;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $transformer = new CategoryTreeTransformer($this->categoryRepository);
+        $builder->addModelTransformer($transformer);
     }
 
     /**
@@ -112,14 +131,11 @@ class CategoryTreeType extends AbstractType
     /**
      * Returns choices for category selection.
      *
-     * @param string $locale
      * @return array
      */
     private function getCategoryChoices($options)
     {
-        $choices = [];
         $locale = $options['locale'];
-
         $recurse = isset($options['recurse']) ? $options['recurse'] : true;
         $relative = isset($options['relative']) ? $options['relative'] : true;
         $includeRoot = isset($options['includeRoot']) ? $options['includeRoot'] : false;
@@ -128,23 +144,18 @@ class CategoryTreeType extends AbstractType
         $valueField = isset($options['valueField']) ? $options['valueField'] : 'id';
 
         $category = $this->categoryApi->getCategoryById(1);
-        $categoryList = $this->categoryApi->getSubCategoriesForCategory($category, $recurse, $relative, $includeRoot, $includeLeaf);
+        $categoryList = $this->categoryApi->getSubCategoriesForCategory($category, $recurse, $relative, $includeRoot, $includeLeaf, $all);
 
-        $line = '---------------------------------------------------------------------';
-
+        $choices = [];
         foreach ($categoryList as $cat) {
             $amountOfSlashes = mb_substr_count(isset($cat['ipath_relative']) ? $cat['ipath_relative'] : $cat['ipath'], '/');
-
-            $indent = $amountOfSlashes > 0 ? substr($line, 0, $amountOfSlashes * 2) : '';
-            $indent = '|' . $indent;
-
+            $indent = $amountOfSlashes > 0 ? str_repeat('--', $amountOfSlashes) : '';
             if (isset($cat['display_name'][$locale]) && !empty($cat['display_name'][$locale])) {
                 $catName = $cat['display_name'][$locale];
             } else {
                 $catName = $cat['name'];
             }
-
-            $choices[$indent . ' ' . $catName] = $cat[$valueField];
+            $choices['|' . $indent . ' ' . $catName] = $cat[$valueField];
         }
 
         return $choices;
