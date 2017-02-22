@@ -20,8 +20,10 @@ CHANGELOG - ZIKULA 1.4.x
     - Added Permission-based controls for MenuModule menu items (#3314).
     - SearchModule refactored to Core-2.0 standards.
     - SearchableInterface adds a method `amendForm()` to amend the search form instead of the old method `getOptions()`
+    - Added support for including module dependencies in composer execution using composer merge plugin (#3388, #3437).
 
  - Vendor updates:
+    - sensiolabs security checker updated from 4.0.0 to 4.0.1
     - swiftmailer/swiftmailer updated from v5.4.5 to v5.4.6 
     - willdurand/js-translation-bundle updated from 2.6.3 to 2.6.4
 

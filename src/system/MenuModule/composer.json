@@ -14,7 +14,8 @@
         "psr-4": { "Zikula\\MenuModule\\": "" }
     },
     "require": {
-        "php": ">5.4.1"
+        "php": ">5.4.1",
+        "knplabs/knp-menu-bundle": "^2.0"
     },
     "extra": {
         "zikula": {

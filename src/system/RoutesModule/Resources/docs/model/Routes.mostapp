@@ -48,6 +48,7 @@ application "Routes" {
             Twig/TwigExtension.php
         "
         markFiles "
+            composer.json,
             Resources/config/eventSubscriber.yml,
             Resources/config/forms.yml,
             Resources/config/helpers.yml,
