@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class SearchType extends AbstractType
 {
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -66,7 +66,7 @@ class SearchType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getBlockPrefix()
     {
@@ -74,7 +74,7 @@ class SearchType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function configureOptions(OptionsResolver $resolver)
     {

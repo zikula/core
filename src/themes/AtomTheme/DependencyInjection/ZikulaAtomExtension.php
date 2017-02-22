@@ -22,11 +22,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 class ZikulaAtomExtension extends Extension
 {
     /**
-     * Loads service definition file containing persistent event handlers.
-     * Responds to the app.config configuration parameter.
-     *
-     * @param array            $configs
-     * @param ContainerBuilder $container
+     * @inheritDoc
      */
     public function load(array $configs, ContainerBuilder $container)
     {

@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class FilterListType extends AbstractType
 {
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -50,7 +50,7 @@ class FilterListType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getBlockPrefix()
     {
@@ -58,7 +58,7 @@ class FilterListType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function configureOptions(OptionsResolver $resolver)
     {

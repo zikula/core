@@ -38,7 +38,7 @@ abstract class AbstractMultiListType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -47,7 +47,7 @@ abstract class AbstractMultiListType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getParent()
     {
@@ -55,7 +55,7 @@ abstract class AbstractMultiListType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getBlockPrefix()
     {

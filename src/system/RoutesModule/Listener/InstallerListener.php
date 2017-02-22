@@ -50,7 +50,7 @@ class InstallerListener extends AbstractInstallerListener
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -67,7 +67,7 @@ class InstallerListener extends AbstractInstallerListener
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
 //    public function moduleInstalled(ModuleStateEvent $event)
 //    {
@@ -75,7 +75,7 @@ class InstallerListener extends AbstractInstallerListener
 //    }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function modulePostInstalled(ModuleStateEvent $event)
     {
@@ -97,7 +97,7 @@ class InstallerListener extends AbstractInstallerListener
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function moduleUpgraded(ModuleStateEvent $event)
     {
@@ -115,7 +115,7 @@ class InstallerListener extends AbstractInstallerListener
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
 //    public function moduleEnabled(ModuleStateEvent $event)
 //    {
@@ -123,7 +123,7 @@ class InstallerListener extends AbstractInstallerListener
 //    }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
 //    public function moduleDisabled(ModuleStateEvent $event)
 //    {
@@ -131,7 +131,7 @@ class InstallerListener extends AbstractInstallerListener
 //    }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function moduleRemoved(ModuleStateEvent $event)
     {
@@ -149,7 +149,7 @@ class InstallerListener extends AbstractInstallerListener
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
 //    public function subscriberAreaUninstalled(GenericEvent $event)
 //    {
@@ -157,7 +157,7 @@ class InstallerListener extends AbstractInstallerListener
 //    }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function newRoutesAvail(GenericEvent $event)
     {

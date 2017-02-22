@@ -48,7 +48,7 @@ class RegistrationType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -105,7 +105,7 @@ class RegistrationType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getBlockPrefix()
     {
@@ -113,7 +113,7 @@ class RegistrationType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function configureOptions(OptionsResolver $resolver)
     {

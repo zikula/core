@@ -43,7 +43,7 @@ class HiddenMenuItemType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -52,7 +52,7 @@ class HiddenMenuItemType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function configureOptions(OptionsResolver $resolver)
     {
@@ -62,7 +62,7 @@ class HiddenMenuItemType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getParent()
     {

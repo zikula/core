@@ -27,7 +27,7 @@ class ValidUname extends Constraint
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getDefaultOption()
     {

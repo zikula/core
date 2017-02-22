@@ -50,7 +50,7 @@ class Annotation implements AnnotationDriverInterface
     protected $_originalDriver = null;
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function setAnnotationReader($reader)
     {
@@ -58,14 +58,14 @@ class Annotation implements AnnotationDriverInterface
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function validateFullMetadata(ClassMetadata $meta, array $config)
     {
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function readExtendedMetadata($meta, array &$config)
     {

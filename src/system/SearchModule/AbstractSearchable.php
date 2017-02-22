@@ -75,17 +75,17 @@ abstract class AbstractSearchable implements SearchableInterface
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     abstract public function getOptions($active, $modVars = null);
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     abstract public function getResults(array $words, $searchType = 'AND', $modVars = null);
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function amendForm(FormBuilderInterface $form)
     {
@@ -133,7 +133,7 @@ abstract class AbstractSearchable implements SearchableInterface
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getErrors()
     {

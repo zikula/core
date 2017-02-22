@@ -76,7 +76,7 @@ class ZikulaTwigFileExtractor extends \Twig_BaseNodeVisitor implements FileVisit
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     protected function doEnterNode(\Twig_Node $node, \Twig_Environment $env)
     {
@@ -165,7 +165,7 @@ class ZikulaTwigFileExtractor extends \Twig_BaseNodeVisitor implements FileVisit
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     protected function doLeaveNode(\Twig_Node $node, \Twig_Environment $env)
     {

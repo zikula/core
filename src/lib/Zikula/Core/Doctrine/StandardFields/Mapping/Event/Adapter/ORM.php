@@ -22,7 +22,7 @@ use Zikula\Core\Doctrine\StandardFields\Mapping\Event\StandardFieldsAdapter;
 final class ORM extends BaseAdapterORM implements StandardFieldsAdapter
 {
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getUserIdValue(ClassMetadata $meta, $field)
     {

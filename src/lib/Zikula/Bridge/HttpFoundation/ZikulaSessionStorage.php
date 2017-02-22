@@ -77,7 +77,7 @@ class ZikulaSessionStorage extends NativeSessionStorage
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function start()
     {

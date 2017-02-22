@@ -26,7 +26,7 @@ class ValidGroupName extends Constraint
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getDefaultOption()
     {

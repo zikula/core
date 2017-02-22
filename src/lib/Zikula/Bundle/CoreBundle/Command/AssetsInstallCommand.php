@@ -26,7 +26,7 @@ use Symfony\Component\Finder\Finder;
 class AssetsInstallCommand extends ContainerAwareCommand
 {
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     protected function configure()
     {
@@ -61,7 +61,7 @@ EOT
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      *
      * @throws \InvalidArgumentException When the target directory does not exist or symlink cannot be used
      */

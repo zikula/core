@@ -56,7 +56,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      *
      * @throws \InvalidArgumentException When the target directory does not exist or symlink cannot be used
      */

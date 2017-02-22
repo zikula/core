@@ -20,7 +20,7 @@ use Zikula\Common\Translator\IdentityTranslator;
 class AdminViewFilterType extends AbstractType
 {
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -75,7 +75,7 @@ class AdminViewFilterType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getBlockPrefix()
     {
@@ -83,7 +83,7 @@ class AdminViewFilterType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function configureOptions(OptionsResolver $resolver)
     {

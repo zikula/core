@@ -167,7 +167,7 @@ class StandardFieldsListener extends MappedEventSubscriber
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     protected function getNamespace()
     {

@@ -21,7 +21,7 @@ use Zikula\RoutesModule\Container\Base\AbstractLinkContainer;
 class LinkContainer extends AbstractLinkContainer
 {
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
     {

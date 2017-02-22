@@ -22,7 +22,7 @@ use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 class LostPasswordType extends AbstractType
 {
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -69,7 +69,7 @@ class LostPasswordType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getBlockPrefix()
     {
@@ -77,7 +77,7 @@ class LostPasswordType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function configureOptions(OptionsResolver $resolver)
     {

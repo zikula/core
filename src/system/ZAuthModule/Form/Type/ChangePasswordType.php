@@ -21,7 +21,7 @@ use Zikula\ZAuthModule\Validator\Constraints\ValidPasswordChange;
 class ChangePasswordType extends AbstractType
 {
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -57,7 +57,7 @@ class ChangePasswordType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getBlockPrefix()
     {
@@ -65,7 +65,7 @@ class ChangePasswordType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function configureOptions(OptionsResolver $resolver)
     {

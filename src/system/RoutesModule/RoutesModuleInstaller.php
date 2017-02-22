@@ -20,7 +20,7 @@ use Zikula\RoutesModule\Base\AbstractRoutesModuleInstaller;
 class RoutesModuleInstaller extends AbstractRoutesModuleInstaller
 {
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function upgrade($oldVersion)
     {

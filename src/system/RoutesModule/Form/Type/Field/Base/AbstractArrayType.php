@@ -22,7 +22,7 @@ use Zikula\RoutesModule\Form\DataTransformer\ArrayFieldTransformer;
 abstract class AbstractArrayType extends AbstractType
 {
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -31,7 +31,7 @@ abstract class AbstractArrayType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getParent()
     {
@@ -39,7 +39,7 @@ abstract class AbstractArrayType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getBlockPrefix()
     {

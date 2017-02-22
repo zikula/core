@@ -47,7 +47,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     protected function initialize()
     {

@@ -19,10 +19,7 @@ use Zikula\Bundle\CoreBundle\DependencyInjection\CoreExtension;
 class TestExtension extends CoreExtension
 {
     /**
-     * Responds to the app.config configuration parameter.
-     *
-     * @param array $configs
-     * @param ContainerBuilder $container
+     * @inheritDoc
      */
     public function load(array $configs, ContainerBuilder $container)
     {

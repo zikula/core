@@ -69,7 +69,7 @@ class SearchApi implements SearchApiInterface
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function search($q, $firstPage = false, $searchType = 'AND', $searchOrder = 'newest', $limit = -1, $page = 1, array $moduleData = [])
     {
@@ -116,7 +116,7 @@ class SearchApi implements SearchApiInterface
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function log($q = null)
     {

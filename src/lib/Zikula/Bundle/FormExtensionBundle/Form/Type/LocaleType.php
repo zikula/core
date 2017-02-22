@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class LocaleType extends AbstractType
 {
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function configureDefaultOptions(OptionsResolver $resolver)
     {
@@ -34,7 +34,7 @@ class LocaleType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getBlockPrefix()
     {
@@ -42,7 +42,7 @@ class LocaleType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getParent()
     {

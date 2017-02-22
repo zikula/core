@@ -70,7 +70,7 @@ class AppKernel extends ZikulaKernel
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      *
      * @throws \RuntimeException if a custom resource is hidden by a resource in a derived bundle
      */

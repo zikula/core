@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Route;
 class DefaultRouteExclusionStrategy extends BaseDefaultRouteExclusionStrategy
 {
     /**
-     * {@inheritDoc}
+* @inheritDoc
      */
     public function shouldExcludeRoute($routeName, Route $route)
     {

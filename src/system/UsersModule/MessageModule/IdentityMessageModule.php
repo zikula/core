@@ -14,7 +14,7 @@ namespace Zikula\UsersModule\MessageModule;
 class IdentityMessageModule implements MessageModuleInterface
 {
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getInboxUrl($uid = null)
     {
@@ -22,7 +22,7 @@ class IdentityMessageModule implements MessageModuleInterface
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getMessageCount($uid = null, $unreadOnly = false)
     {
@@ -30,7 +30,7 @@ class IdentityMessageModule implements MessageModuleInterface
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getSendMessageUrl($uid = null)
     {

@@ -46,7 +46,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function setApproved(UserEntity $user, $approvedOn, $approvedBy = null)
     {
@@ -88,7 +88,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getSearchResults(array $words)
     {

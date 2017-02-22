@@ -21,7 +21,7 @@ use Zikula\Core\Event\GenericEvent;
 class GroupListener extends AbstractGroupListener
 {
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public static function getSubscribedEvents()
     {
@@ -29,7 +29,7 @@ class GroupListener extends AbstractGroupListener
     }
     
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function create(GenericEvent $event)
     {
@@ -56,7 +56,7 @@ class GroupListener extends AbstractGroupListener
     }
     
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function update(GenericEvent $event)
     {
@@ -83,7 +83,7 @@ class GroupListener extends AbstractGroupListener
     }
     
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function delete(GenericEvent $event)
     {
@@ -110,7 +110,7 @@ class GroupListener extends AbstractGroupListener
     }
     
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function addUser(GenericEvent $event)
     {
@@ -137,7 +137,7 @@ class GroupListener extends AbstractGroupListener
     }
     
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function removeUser(GenericEvent $event)
     {
@@ -164,7 +164,7 @@ class GroupListener extends AbstractGroupListener
     }
     
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function applicationProcessed(GenericEvent $event)
     {
@@ -191,7 +191,7 @@ class GroupListener extends AbstractGroupListener
     }
     
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function newApplication(GenericEvent $event)
     {

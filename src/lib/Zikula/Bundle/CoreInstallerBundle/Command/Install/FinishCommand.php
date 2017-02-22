@@ -20,7 +20,7 @@ use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
 class FinishCommand extends AbstractCoreInstallerCommand
 {
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     protected function configure()
     {
@@ -31,7 +31,7 @@ class FinishCommand extends AbstractCoreInstallerCommand
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      *
      * @throws \InvalidArgumentException When the target directory does not exist or symlink cannot be used
      */

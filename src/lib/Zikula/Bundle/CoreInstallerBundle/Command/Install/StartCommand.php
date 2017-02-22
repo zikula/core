@@ -22,7 +22,7 @@ use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
 class StartCommand extends AbstractCoreInstallerCommand
 {
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     protected function configure()
     {
@@ -43,7 +43,7 @@ class StartCommand extends AbstractCoreInstallerCommand
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      *
      * @throws \InvalidArgumentException When the target directory does not exist or symlink cannot be used
      */

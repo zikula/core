@@ -27,7 +27,7 @@ class ValidEmail extends Constraint
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getDefaultOption()
     {

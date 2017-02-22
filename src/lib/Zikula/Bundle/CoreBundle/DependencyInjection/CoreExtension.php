@@ -24,10 +24,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 class CoreExtension extends Extension
 {
     /**
-     * Responds to the app.config configuration parameter.
-     *
-     * @param array $configs
-     * @param ContainerBuilder $container
+     * @inheritDoc
      */
     public function load(array $configs, ContainerBuilder $container)
     {

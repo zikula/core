@@ -22,7 +22,7 @@ use Zikula\ZAuthModule\Validator\Constraints\ValidUserFields;
 class AdminModifyUserType extends AbstractType
 {
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -77,7 +77,7 @@ class AdminModifyUserType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getBlockPrefix()
     {
@@ -85,7 +85,7 @@ class AdminModifyUserType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function configureOptions(OptionsResolver $resolver)
     {

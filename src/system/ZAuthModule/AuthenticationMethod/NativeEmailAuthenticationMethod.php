@@ -16,7 +16,7 @@ use Zikula\ZAuthModule\ZAuthConstant;
 class NativeEmailAuthenticationMethod extends AbstractNativeAuthenticationMethod
 {
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getAlias()
     {
@@ -24,7 +24,7 @@ class NativeEmailAuthenticationMethod extends AbstractNativeAuthenticationMethod
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getDisplayName()
     {
@@ -32,7 +32,7 @@ class NativeEmailAuthenticationMethod extends AbstractNativeAuthenticationMethod
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getDescription()
     {
@@ -40,7 +40,7 @@ class NativeEmailAuthenticationMethod extends AbstractNativeAuthenticationMethod
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getLoginFormClassName()
     {
@@ -48,7 +48,7 @@ class NativeEmailAuthenticationMethod extends AbstractNativeAuthenticationMethod
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getLoginTemplateName($type = 'page', $position = 'left')
     {
@@ -64,7 +64,7 @@ class NativeEmailAuthenticationMethod extends AbstractNativeAuthenticationMethod
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function authenticate(array $data = [])
     {

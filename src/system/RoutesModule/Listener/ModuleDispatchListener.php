@@ -29,7 +29,7 @@ class ModuleDispatchListener extends AbstractModuleDispatchListener
     }
     
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function serviceLinks(GenericEvent $event)
     {

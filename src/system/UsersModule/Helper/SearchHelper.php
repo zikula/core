@@ -52,7 +52,7 @@ class SearchHelper implements SearchableInterface
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function amendForm(FormBuilderInterface $form)
     {
@@ -60,7 +60,7 @@ class SearchHelper implements SearchableInterface
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function getResults(array $words, $searchType = 'AND', $modVars = null)
     {

@@ -40,7 +40,7 @@ class RouteEntity extends BaseEntity
     const POSITION_FIXED_BOTTOM = 7;
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function __construct()
     {

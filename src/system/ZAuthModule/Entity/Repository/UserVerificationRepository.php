@@ -39,7 +39,7 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function purgeExpiredRecords($daysOld, $changeType = ZAuthConstant::VERIFYCHGTYPE_REGEMAIL, $deleteUserEntities = true)
     {

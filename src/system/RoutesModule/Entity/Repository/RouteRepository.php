@@ -23,7 +23,7 @@ use Zikula\RoutesModule\Entity\Repository\Base\AbstractRouteRepository;
 class RouteRepository extends AbstractRouteRepository
 {
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     protected function genericBaseQueryAddOrderBy(QueryBuilder $qb, $orderBy = '')
     {

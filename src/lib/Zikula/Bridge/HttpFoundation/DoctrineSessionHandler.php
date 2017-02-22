@@ -59,7 +59,7 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function open($savePath, $sessionName)
     {
@@ -67,7 +67,7 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function close()
     {
@@ -75,7 +75,7 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function read($sessionId)
     {
@@ -92,7 +92,7 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function write($sessionId, $vars)
     {
@@ -119,7 +119,7 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function destroy($sessionId)
     {
@@ -131,7 +131,7 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
     }
 
     /**
-     * {@inheritdoc}
+* @inheritDoc
      */
     public function gc($lifetime)
     {
