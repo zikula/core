@@ -33,6 +33,7 @@ services:
             - "@request_stack"
             - "@zikula_permissions_module.api.permission"
             - "@zikula_extensions_module.api.variable"
+            - "@zikula_core.common.theme.pagevars"
             - "@zikula_routes_module.controller_helper"
         calls:
             - method: setAdditionalDependencies

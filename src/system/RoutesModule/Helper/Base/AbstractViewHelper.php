@@ -19,6 +19,7 @@ use Symfony\Component\Templating\EngineInterface;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
+use Zikula\ThemeModule\Engine\ParameterBag;
 use Zikula\RoutesModule\Helper\ControllerHelper;
 
 /**
@@ -47,6 +48,11 @@ abstract class AbstractViewHelper
     protected $variableApi;
 
     /**
+     * @var ParameterBag
+     */
+    protected $pageVars;
+
+    /**
      * @var ControllerHelper
      */
     protected $controllerHelper;
@@ -58,6 +64,7 @@ abstract class AbstractViewHelper
      * @param RequestStack     $requestStack     RequestStack service instance
      * @param PermissionApiInterface    $permissionApi    PermissionApi service instance
      * @param VariableApi      $variableApi      VariableApi service instance
+     * @param ParameterBag     $pageVars         ParameterBag for theme page variables
      * @param ControllerHelper $controllerHelper ControllerHelper service instance
      *
      * @return void
@@ -67,12 +74,14 @@ abstract class AbstractViewHelper
         RequestStack $requestStack,
         PermissionApiInterface $permissionApi,
         VariableApi $variableApi,
+        ParameterBag $pageVars,
         ControllerHelper $controllerHelper)
     {
         $this->templating = $templating;
         $this->request = $requestStack->getCurrentRequest();
         $this->permissionApi = $permissionApi;
         $this->variableApi = $variableApi;
+        $this->pageVars = $pageVars;
         $this->controllerHelper = $controllerHelper;
     }
 
@@ -237,10 +246,11 @@ abstract class AbstractViewHelper
         $siteName = $this->variableApi->getSystemVar('sitename');
     
         // create name of the pdf output file
+        $pageTitle = $this->controllerHelper->formatPermalink($this->themePageVars->get('title', ''));
         $fileTitle = $this->controllerHelper->formatPermalink($siteName)
                    . '-'
-                   . $this->controllerHelper->formatPermalink(\PageUtil::getVar('title'))
-                   . '-' . date('Ymd') . '.pdf';
+                   . ($pageTitle != '' ? $pageTitle . '-' : '')
+                   . date('Ymd') . '.pdf';
     
         /*
         if (true === $this->request->query->getBoolean('dbg', false)) {
