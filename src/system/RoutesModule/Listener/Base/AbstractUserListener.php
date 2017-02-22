@@ -70,25 +70,10 @@ abstract class AbstractUserListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'user.gettheme'            => ['getTheme', 5],
             UserEvents::CREATE_ACCOUNT => ['create', 5],
             UserEvents::UPDATE_ACCOUNT => ['update', 5],
             UserEvents::DELETE_ACCOUNT => ['delete', 5]
         ];
-    }
-    
-    /**
-     * Listener for the `user.gettheme` event.
-     *
-     * Called during \UserUtil::getTheme() and is used to filter the results.
-     * Receives arg['type'] with the type of result to be filtered
-     * and the $themeName in the $event->data which can be modified.
-     * Must $event->stopPropagation() if handler performs filter.
-     *
-     * @param GenericEvent $event The event instance
-     */
-    public function getTheme(GenericEvent $event)
-    {
     }
     
     /**
