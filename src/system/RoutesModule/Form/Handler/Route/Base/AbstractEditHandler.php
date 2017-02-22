@@ -42,6 +42,9 @@ abstract class AbstractEditHandler extends EditHandler
         $this->hasPageLockSupport = true;
     
         $result = parent::processForm($templateParameters);
+        if ($result instanceof RedirectResponse) {
+            return $result;
+        }
     
         if ($this->templateParameters['mode'] == 'create') {
             if (!$this->modelHelper->canBeCreated($this->objectType)) {
