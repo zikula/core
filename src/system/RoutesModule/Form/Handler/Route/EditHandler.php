@@ -109,7 +109,7 @@ class EditHandler extends AbstractEditHandler
             } else {
                 $message = $this->__f('The path of the route you created or updated looks similar to the following already existing path: %s Are you sure you haven\'t just introduced a conflict?', ['%s' => $error['path']]);
             }
-            \LogUtil::registerError($message);
+            $this->request->getSession()->getFlashBag()->add('error', $message);
         }
 
         return $hasCriticalErrors;
