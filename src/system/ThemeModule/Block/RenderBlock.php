@@ -30,7 +30,7 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
     protected $rmodule;
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     protected function initialize()
     {

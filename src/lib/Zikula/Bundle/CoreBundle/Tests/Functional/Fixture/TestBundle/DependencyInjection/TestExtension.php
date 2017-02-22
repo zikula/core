@@ -19,7 +19,7 @@ use Zikula\Bundle\CoreBundle\DependencyInjection\CoreExtension;
 class TestExtension extends CoreExtension
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {

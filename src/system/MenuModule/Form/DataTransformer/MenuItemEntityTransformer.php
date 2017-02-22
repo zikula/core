@@ -40,7 +40,7 @@ class MenuItemEntityTransformer implements DataTransformerInterface
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function reverseTransform($value)
     {
@@ -57,7 +57,7 @@ class MenuItemEntityTransformer implements DataTransformerInterface
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function transform($value)
     {

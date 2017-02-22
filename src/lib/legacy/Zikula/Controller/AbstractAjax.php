@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 abstract class Zikula_Controller_AbstractAjax extends Zikula_AbstractController
 {
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     protected function configureView()
     {

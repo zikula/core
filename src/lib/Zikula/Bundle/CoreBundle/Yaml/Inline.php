@@ -21,7 +21,7 @@ namespace Zikula\Bundle\CoreBundle\Yaml;
 class Inline extends \Symfony\Component\Yaml\Inline
 {
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public static function dump($value, $exceptionOnInvalidType = false, $objectSupport = false)
     {
@@ -34,7 +34,7 @@ class Inline extends \Symfony\Component\Yaml\Inline
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     private static function dumpArray($value, $exceptionOnInvalidType, $objectSupport)
     {

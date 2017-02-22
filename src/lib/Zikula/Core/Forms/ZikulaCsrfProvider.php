@@ -38,7 +38,7 @@ class ZikulaCsrfProvider implements CsrfTokenManagerInterface
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function getToken($tokenId)
     {
@@ -46,7 +46,7 @@ class ZikulaCsrfProvider implements CsrfTokenManagerInterface
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function refreshToken($tokenId)
     {
@@ -54,7 +54,7 @@ class ZikulaCsrfProvider implements CsrfTokenManagerInterface
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function removeToken($tokenId)
     {
@@ -62,7 +62,7 @@ class ZikulaCsrfProvider implements CsrfTokenManagerInterface
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function isTokenValid($token)
     {

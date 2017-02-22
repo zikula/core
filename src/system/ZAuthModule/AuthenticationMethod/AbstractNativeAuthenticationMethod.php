@@ -89,7 +89,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function getRegistrationFormClassName()
     {
@@ -97,7 +97,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function getRegistrationTemplateName()
     {
@@ -105,7 +105,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     protected function authenticateByField(array $data, $field = 'uname')
     {
@@ -180,7 +180,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function register(array $data)
     {

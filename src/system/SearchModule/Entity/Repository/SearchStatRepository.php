@@ -23,7 +23,7 @@ use Zikula\SearchModule\Entity\SearchStatEntity;
 class SearchStatRepository extends EntityRepository implements SearchStatRepositoryInterface
 {
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function countStats()
     {
@@ -38,7 +38,7 @@ class SearchStatRepository extends EntityRepository implements SearchStatReposit
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function getStats($filters = [], $sorting = [], $limit = 0, $offset = 0)
     {
@@ -76,7 +76,7 @@ class SearchStatRepository extends EntityRepository implements SearchStatReposit
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function persistAndFlush(SearchStatEntity $entity)
     {

@@ -45,7 +45,7 @@ class SessionStorage implements StorageInterface
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function get($id)
     {
@@ -63,7 +63,7 @@ class SessionStorage implements StorageInterface
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function save($id, $token, $timestamp)
     {
@@ -76,7 +76,7 @@ class SessionStorage implements StorageInterface
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function delete($id)
     {
@@ -89,7 +89,7 @@ class SessionStorage implements StorageInterface
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function gc($lifetime)
     {

@@ -23,7 +23,7 @@ use Zikula\SearchModule\Entity\SearchResultEntity;
 class SearchResultRepository extends EntityRepository implements SearchResultRepositoryInterface
 {
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function countResults($sessionId = '')
     {
@@ -43,7 +43,7 @@ class SearchResultRepository extends EntityRepository implements SearchResultRep
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function getResults($filters = [], $sorting = [], $limit = 0, $offset = 0)
     {
@@ -81,7 +81,7 @@ class SearchResultRepository extends EntityRepository implements SearchResultRep
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function clearOldResults($sessionId = '')
     {
@@ -100,7 +100,7 @@ class SearchResultRepository extends EntityRepository implements SearchResultRep
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function persist(SearchResultEntity $entity)
     {
@@ -108,7 +108,7 @@ class SearchResultRepository extends EntityRepository implements SearchResultRep
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function flush(SearchResultEntity $entity = null)
     {
