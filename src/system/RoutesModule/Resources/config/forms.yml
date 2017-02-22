@@ -41,13 +41,6 @@ services:
         tags:
             - { name: form.type }
     
-    zikula_routes_module.form.type.deleteentity:
-        class: Zikula\RoutesModule\Form\DeleteEntityType
-        arguments:
-            - "@translator.default"
-        tags:
-            - { name: form.type }
-    
     zikula_routes_module.form.type.appsettings:
         class: Zikula\RoutesModule\Form\AppSettingsType
         arguments:
