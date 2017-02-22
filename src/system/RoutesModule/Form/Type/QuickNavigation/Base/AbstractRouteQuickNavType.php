@@ -53,7 +53,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -309,7 +309,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function getBlockPrefix()
     {

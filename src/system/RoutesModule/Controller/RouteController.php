@@ -28,7 +28,7 @@ use Zikula\RoutesModule\Entity\RouteEntity;
 class RouteController extends AbstractRouteController
 {
     /**
-* @inheritDoc
+     * @inheritDoc
      *
      * @Route("/admin/routes",
      *        methods = {"GET"}
@@ -47,7 +47,7 @@ class RouteController extends AbstractRouteController
     }
     
     /**
-* @inheritDoc
+     * @inheritDoc
      *
      * @Route("/routes",
      *        methods = {"GET"}
@@ -64,7 +64,7 @@ class RouteController extends AbstractRouteController
         return parent::indexAction($request);
     }
     /**
-* @inheritDoc
+     * @inheritDoc
      *
      * @Route("/admin/routes/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
      *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|kml"},
@@ -89,7 +89,7 @@ class RouteController extends AbstractRouteController
     }
     
     /**
-* @inheritDoc
+     * @inheritDoc
      *
      * @Route("/routes/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
      *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|kml"},
@@ -112,7 +112,7 @@ class RouteController extends AbstractRouteController
         return parent::viewAction($request, $sort, $sortdir, $pos, $num);
     }
     /**
-* @inheritDoc
+     * @inheritDoc
      *
      * @Route("/admin/route/{id}.{_format}",
      *        requirements = {"id" = "\d+", "_format" = "html|kml|ics"},
@@ -135,7 +135,7 @@ class RouteController extends AbstractRouteController
     }
     
     /**
-* @inheritDoc
+     * @inheritDoc
      *
      * @Route("/route/{id}.{_format}",
      *        requirements = {"id" = "\d+", "_format" = "html|kml|ics"},
@@ -156,7 +156,7 @@ class RouteController extends AbstractRouteController
         return parent::displayAction($request, $route);
     }
     /**
-* @inheritDoc
+     * @inheritDoc
      *
      * @Route("/admin/route/edit/{id}.{_format}",
      *        requirements = {"id" = "\d+", "_format" = "html"},
@@ -179,7 +179,7 @@ class RouteController extends AbstractRouteController
     }
     
     /**
-* @inheritDoc
+     * @inheritDoc
      *
      * @Route("/route/edit/{id}.{_format}",
      *        requirements = {"id" = "\d+", "_format" = "html"},
@@ -200,7 +200,7 @@ class RouteController extends AbstractRouteController
         return parent::editAction($request);
     }
     /**
-* @inheritDoc
+     * @inheritDoc
      *
      * @Route("/admin/route/delete/{id}.{_format}",
      *        requirements = {"id" = "\d+", "_format" = "html"},
@@ -224,7 +224,7 @@ class RouteController extends AbstractRouteController
     }
     
     /**
-* @inheritDoc
+     * @inheritDoc
      *
      * @Route("/route/delete/{id}.{_format}",
      *        requirements = {"id" = "\d+", "_format" = "html"},

@@ -40,7 +40,7 @@ class RouteType extends AbstractRouteType
     }
 
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function addEntityFields(FormBuilderInterface $builder, array $options)
     {

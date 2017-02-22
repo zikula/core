@@ -59,7 +59,7 @@ abstract class AbstractAppSettingsType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -112,7 +112,7 @@ abstract class AbstractAppSettingsType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function getBlockPrefix()
     {

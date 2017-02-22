@@ -21,7 +21,7 @@ use Zikula\Core\Event\GenericEvent;
 class UserRegistrationListener extends AbstractUserRegistrationListener
 {
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public static function getSubscribedEvents()
     {
@@ -29,7 +29,7 @@ class UserRegistrationListener extends AbstractUserRegistrationListener
     }
     
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function started(GenericEvent $event)
     {
@@ -56,7 +56,7 @@ class UserRegistrationListener extends AbstractUserRegistrationListener
     }
     
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function createVeto(GenericEvent $event)
     {
@@ -83,7 +83,7 @@ class UserRegistrationListener extends AbstractUserRegistrationListener
     }
     
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function succeeded(GenericEvent $event)
     {
@@ -110,7 +110,7 @@ class UserRegistrationListener extends AbstractUserRegistrationListener
     }
     
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function failed(GenericEvent $event)
     {
@@ -137,7 +137,7 @@ class UserRegistrationListener extends AbstractUserRegistrationListener
     }
     
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function create(GenericEvent $event)
     {
@@ -164,7 +164,7 @@ class UserRegistrationListener extends AbstractUserRegistrationListener
     }
     
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function update(GenericEvent $event)
     {
@@ -191,7 +191,7 @@ class UserRegistrationListener extends AbstractUserRegistrationListener
     }
     
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function delete(GenericEvent $event)
     {
@@ -218,7 +218,7 @@ class UserRegistrationListener extends AbstractUserRegistrationListener
     }
     
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function forceApproval(GenericEvent $event)
     {

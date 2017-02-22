@@ -23,7 +23,7 @@ use Zikula\Core\Event\GenericEvent;
 class ThemeListener extends AbstractThemeListener
 {
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public static function getSubscribedEvents()
     {
@@ -31,7 +31,7 @@ class ThemeListener extends AbstractThemeListener
     }
     
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function preRender(TwigPreRenderEvent $event)
     {
@@ -58,7 +58,7 @@ class ThemeListener extends AbstractThemeListener
     }
     
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function postRender(TwigPostRenderEvent $event)
     {

@@ -60,7 +60,7 @@ class ViewHelper extends AbstractViewHelper
     }
 
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function processTemplate($type, $func, array $templateParameters = [], $template = '')
     {

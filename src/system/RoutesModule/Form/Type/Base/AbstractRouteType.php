@@ -63,7 +63,7 @@ abstract class AbstractRouteType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -404,7 +404,7 @@ abstract class AbstractRouteType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function getBlockPrefix()
     {
@@ -412,7 +412,7 @@ abstract class AbstractRouteType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function configureOptions(OptionsResolver $resolver)
     {

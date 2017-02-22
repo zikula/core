@@ -23,7 +23,7 @@ use Zikula\RoutesModule\Form\Handler\Route\Base\AbstractEditHandler;
 class EditHandler extends AbstractEditHandler
 {
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function applyAction(array $args = [])
     {

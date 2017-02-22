@@ -21,7 +21,7 @@ use Zikula\Core\Event\GenericEvent;
 class UserLoginListener extends AbstractUserLoginListener
 {
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public static function getSubscribedEvents()
     {
@@ -29,7 +29,7 @@ class UserLoginListener extends AbstractUserLoginListener
     }
     
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function started(GenericEvent $event)
     {
@@ -56,7 +56,7 @@ class UserLoginListener extends AbstractUserLoginListener
     }
     
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function veto(GenericEvent $event)
     {
@@ -83,7 +83,7 @@ class UserLoginListener extends AbstractUserLoginListener
     }
     
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function succeeded(GenericEvent $event)
     {
@@ -110,7 +110,7 @@ class UserLoginListener extends AbstractUserLoginListener
     }
     
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function failed(GenericEvent $event)
     {

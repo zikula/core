@@ -21,7 +21,7 @@ use Zikula\Core\Event\GenericEvent;
 class ModuleDispatchListener extends AbstractModuleDispatchListener
 {
     /**
-     * Makes our handlers known to the event system.
+     * @inheritDoc
      */
     public static function getSubscribedEvents()
     {
@@ -29,7 +29,7 @@ class ModuleDispatchListener extends AbstractModuleDispatchListener
     }
     
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function serviceLinks(GenericEvent $event)
     {

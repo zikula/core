@@ -21,7 +21,7 @@ use Zikula\Core\Event\GenericEvent;
 class MailerListener extends AbstractMailerListener
 {
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public static function getSubscribedEvents()
     {
@@ -29,7 +29,7 @@ class MailerListener extends AbstractMailerListener
     }
     
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function sendMessageStart(GenericEvent $event)
     {
@@ -56,7 +56,7 @@ class MailerListener extends AbstractMailerListener
     }
     
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function sendMessagePerform(GenericEvent $event)
     {
@@ -83,7 +83,7 @@ class MailerListener extends AbstractMailerListener
     }
     
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function sendMessageSuccess(GenericEvent $event)
     {
@@ -110,7 +110,7 @@ class MailerListener extends AbstractMailerListener
     }
     
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function sendMessageFailure(GenericEvent $event)
     {

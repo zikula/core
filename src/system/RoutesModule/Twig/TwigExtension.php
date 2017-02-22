@@ -23,7 +23,7 @@ use ZLanguage;
 class TwigExtension extends AbstractTwigExtension
 {
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function getFunctions()
     {
@@ -33,7 +33,7 @@ class TwigExtension extends AbstractTwigExtension
     }
 
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function getFilters()
     {

@@ -23,7 +23,7 @@ use Symfony\Component\Form\FormView;
 abstract class AbstractDateTimeType extends AbstractType
 {
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
@@ -39,7 +39,7 @@ abstract class AbstractDateTimeType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function getParent()
     {
@@ -47,7 +47,7 @@ abstract class AbstractDateTimeType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * @inheritDoc
      */
     public function getBlockPrefix()
     {
