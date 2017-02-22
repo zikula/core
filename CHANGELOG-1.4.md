@@ -23,9 +23,11 @@ CHANGELOG - ZIKULA 1.4.x
     - Added support for including module dependencies in composer execution using composer merge plugin (#3388, #3437).
 
  - Vendor updates:
+    - sensio/framework-extra-bundle updated from 3.0.21 to 3.0.22
     - sensiolabs security checker updated from 4.0.0 to 4.0.1
     - swiftmailer/swiftmailer updated from v5.4.5 to v5.4.6 
     - willdurand/js-translation-bundle updated from 2.6.3 to 2.6.4
+    - wikimedia/composer-merge-plugin installed as dev-master 
 
 * 1.4.6 (2017-02-12)
 
