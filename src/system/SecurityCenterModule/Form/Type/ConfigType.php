@@ -21,7 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ConfigType extends AbstractType
 {
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -346,7 +346,7 @@ class ConfigType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function getBlockPrefix()
     {
@@ -354,7 +354,7 @@ class ConfigType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

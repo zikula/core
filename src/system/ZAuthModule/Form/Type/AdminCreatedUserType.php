@@ -23,7 +23,7 @@ use Zikula\ZAuthModule\ZAuthConstant;
 class AdminCreatedUserType extends AbstractType
 {
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -113,7 +113,7 @@ class AdminCreatedUserType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function getBlockPrefix()
     {
@@ -121,7 +121,7 @@ class AdminCreatedUserType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

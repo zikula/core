@@ -24,7 +24,7 @@ use Zikula\GroupsModule\Validator\Constraints\ValidGroupName;
 class EditGroupType extends AbstractType
 {
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -88,7 +88,7 @@ class EditGroupType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function getBlockPrefix()
     {
@@ -96,7 +96,7 @@ class EditGroupType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

@@ -33,7 +33,7 @@ class EventEnabledTwigEngine extends TwigEngine
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      *
      * This overrides the TwigEngine::render method in order to dispatch events both before and after rendering the content.
      *

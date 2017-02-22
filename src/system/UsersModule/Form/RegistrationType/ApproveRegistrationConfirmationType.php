@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ApproveRegistrationConfirmationType extends AbstractType
 {
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -39,7 +39,7 @@ class ApproveRegistrationConfirmationType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function getBlockPrefix()
     {
@@ -47,7 +47,7 @@ class ApproveRegistrationConfirmationType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

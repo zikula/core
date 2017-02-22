@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 class ZikulaPermissionsExtension extends Extension
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {

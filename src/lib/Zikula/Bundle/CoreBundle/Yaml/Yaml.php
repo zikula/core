@@ -21,7 +21,7 @@ namespace Zikula\Bundle\CoreBundle\Yaml;
 class Yaml extends \Symfony\Component\Yaml\Yaml
 {
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public static function dump($array, $inline = 2, $indent = 4, $exceptionOnInvalidType = false, $objectSupport = false)
     {

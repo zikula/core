@@ -23,7 +23,7 @@ class DynamicConfigDumper extends YamlDumper
     const CONFIG_DEFAULT = 'dynamic/default.yml';
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function __construct($configDir)
     {

@@ -37,7 +37,7 @@ class CategoryTreeType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function getBlockPrefix()
     {
@@ -45,7 +45,7 @@ class CategoryTreeType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
@@ -102,7 +102,7 @@ class CategoryTreeType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function getParent()
     {

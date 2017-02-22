@@ -485,7 +485,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      *
      * @throws \RuntimeException if a custom resource is hidden by a resource in a derived bundle
      */

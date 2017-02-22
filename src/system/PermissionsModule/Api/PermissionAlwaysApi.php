@@ -24,7 +24,7 @@ use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 class PermissionAlwaysApi implements PermissionApiInterface
 {
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function hasPermission($component = null, $instance = null, $level = ACCESS_NONE, $user = null)
     {
@@ -32,7 +32,7 @@ class PermissionAlwaysApi implements PermissionApiInterface
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function accessLevelNames($level = null)
     {
@@ -59,7 +59,7 @@ class PermissionAlwaysApi implements PermissionApiInterface
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function resetPermissionsForUser($uid)
     {

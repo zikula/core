@@ -21,7 +21,7 @@ namespace Zikula\Bundle\CoreBundle\Yaml;
 class Dumper extends \Symfony\Component\Yaml\Dumper
 {
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function dump($input, $inline = 0, $indent = 0, $exceptionOnInvalidType = false, $objectSupport = false)
     {

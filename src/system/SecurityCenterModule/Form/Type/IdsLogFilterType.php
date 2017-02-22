@@ -21,7 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class IdsLogFilterType extends AbstractType
 {
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -73,7 +73,7 @@ class IdsLogFilterType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function getBlockPrefix()
     {
@@ -81,7 +81,7 @@ class IdsLogFilterType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

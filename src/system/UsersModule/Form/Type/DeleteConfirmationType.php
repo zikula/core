@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class DeleteConfirmationType extends AbstractType
 {
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -42,7 +42,7 @@ class DeleteConfirmationType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function getBlockPrefix()
     {
@@ -50,7 +50,7 @@ class DeleteConfirmationType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

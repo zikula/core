@@ -19,7 +19,7 @@ use Zikula\UsersModule\Validator\Constraints\ValidEmail;
 class ChangeEmailType extends AbstractType
 {
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -42,7 +42,7 @@ class ChangeEmailType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function getBlockPrefix()
     {
@@ -50,7 +50,7 @@ class ChangeEmailType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

@@ -38,7 +38,7 @@ class IdentityProfileModule implements ProfileModuleInterface
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function getDisplayName($uid = null)
     {
@@ -50,7 +50,7 @@ class IdentityProfileModule implements ProfileModuleInterface
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function getProfileUrl($uid = null)
     {

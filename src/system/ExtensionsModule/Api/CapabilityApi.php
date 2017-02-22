@@ -61,7 +61,7 @@ class CapabilityApi implements CapabilityApiInterface
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function getExtensionsCapableOf($capability)
     {
@@ -73,7 +73,7 @@ class CapabilityApi implements CapabilityApiInterface
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function isCapable($extensionName, $requestedCapability)
     {
@@ -92,7 +92,7 @@ class CapabilityApi implements CapabilityApiInterface
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function getCapabilitiesOf($extensionName)
     {

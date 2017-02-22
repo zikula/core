@@ -24,7 +24,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class KeyValuePairType extends AbstractType
 {
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -35,7 +35,7 @@ class KeyValuePairType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function getBlockPrefix()
     {
@@ -43,7 +43,7 @@ class KeyValuePairType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

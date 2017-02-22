@@ -22,7 +22,7 @@ use Zikula\MenuModule\Form\EventListener\OptionValidatorListener;
 class MenuItemType extends AbstractType
 {
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -78,7 +78,7 @@ class MenuItemType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function getBlockPrefix()
     {
@@ -86,7 +86,7 @@ class MenuItemType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

@@ -29,7 +29,7 @@ class RequireJsProcess extends Process
     protected $baseUrl = 'components';
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function init()
     {
@@ -42,7 +42,7 @@ class RequireJsProcess extends Process
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function process()
     {

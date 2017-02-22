@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 class MainSettingsType extends AbstractType
 {
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -215,7 +215,7 @@ class MainSettingsType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function getBlockPrefix()
     {
@@ -223,7 +223,7 @@ class MainSettingsType extends AbstractType
     }
 
     /**
-* @inheritDoc
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

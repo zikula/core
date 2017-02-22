@@ -22,7 +22,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 class ZikulaSeaBreezeExtension extends Extension
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
