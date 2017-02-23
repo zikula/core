@@ -30,5 +30,6 @@ class ZikulaCategoriesExtension extends Extension
         $loader->load('form_types.yml');
         $loader->load('apis.yml');
         $loader->load('doctrine.yml');
+        $loader->load('validators.yml');
     }
 }

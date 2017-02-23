@@ -235,7 +235,7 @@ class CategoryEntity extends EntityAccess
     /**
      * get the categories parent id
      *
-     * @return int the category id
+     * @return CategoryEntity
      */
     public function getParent()
     {
@@ -245,7 +245,7 @@ class CategoryEntity extends EntityAccess
     /**
      * set the categories parent id
      *
-     * @param CategoryEntity the parent category
+     * @param CategoryEntity $parent
      */
     public function setParent(CategoryEntity $parent = null)
     {
@@ -639,6 +639,17 @@ class CategoryEntity extends EntityAccess
     public function setAttributes(ArrayCollection $attributes)
     {
         $this->attributes = $attributes;
+    }
+
+    public function addAttribute(CategoryAttributeEntity $attribute)
+    {
+        $attribute->setCategory($this);
+        $this->attributes->add($attribute);
+    }
+
+    public function removeAttribute(CategoryAttributeEntity $attribute)
+    {
+        $this->attributes->removeElement($attribute);
     }
 
     /**

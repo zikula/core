@@ -46,18 +46,29 @@ class CategoryController extends AbstractController
             $category = new CategoryEntity();
             $category->setDisplay_name($this->localize($category->getDisplay_name()));
             $category->setDisplay_desc($this->localize($category->getDisplay_desc()));
+        } else {
+            $oldName = $category->getName();
         }
 
         $form = $this->createForm('Zikula\CategoriesModule\Form\Type\CategoryType',
             $category, [
-                'translator' => $this->get('translator.default')
+                'translator' => $this->get('translator.default'),
+                'locales' => $this->get('zikula_settings_module.locale_api')->getSupportedLocales(),
             ]
         );
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {
-                $formData = $form->getData();
-
+                $category = $form->getData();
+                $this->get('zikula_categories_module.category_repository')->persistAndFlush($category);
+                // set computed properties
+                $category->setPath($category->getParent()->getPath() . '/' . $category->getName());
+                $category->setIPath($category->getParent()->getIPath() . '/' . $category->getId());
+                $this->get('doctrine')->getManager()->flush();
+                // rebuild paths if needed
+                if ($oldName != $category->getName()) {
+                    $this->get('zikula_categories_module.path_builder_helper')->rebuildPaths('path', 'name', $category->getId());
+                }
                 $this->addFlash('status', $this->__('Done!'));
             }
             if ($form->get('cancel')->isClicked()) {
@@ -66,15 +77,11 @@ class CategoryController extends AbstractController
 
             return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
         }
-        $templateParameters = [
+
+        return [
             'locales' => $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(),
             'form' => $form->createView()
         ];
-        if ($request->isXmlHttpRequest()) {
-            return $this->render('@ZikulaCategoriesModule/Category/edit_form.html.twig', $templateParameters, new PlainResponse());
-        }
-
-        return $templateParameters;
     }
 
     /**

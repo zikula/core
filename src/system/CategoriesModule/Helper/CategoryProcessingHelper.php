@@ -239,7 +239,6 @@ class CategoryProcessingHelper
             }
 
             $module = $this->kernel->getModule($registry['modname']);
-            $moduleClass = get_class($module);
             $moduleClassLevels = explode('\\', get_class($module));
             unset($moduleClassLevels[count($moduleClassLevels) - 1]);
             $moduleNamespace = implode('\\', $moduleClassLevels);

@@ -12,8 +12,14 @@
 namespace Zikula\CategoriesModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Zikula\CategoriesModule\Entity\CategoryEntity;
+use Zikula\CategoriesModule\Validator\Constraints\UniqueNameForPosition;
 
 /**
  * CategoryType form type class.
@@ -30,11 +36,13 @@ class CategoryType extends AbstractType
         $builder
             ->add('name', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $translator->__('Name'),
+                'constraints' => [new NotBlank()]
             ])
             ->add('parent', 'Zikula\CategoriesModule\Form\Type\CategoryTreeType', [
                 'label' => $translator->__('Parent'),
                 'translator' => $translator,
-                'valueField' => 'id'
+                'valueField' => 'id',
+                'constraints' => [new NotBlank()]
             ])
             ->add('is_locked', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $translator->__('Category is locked'),
@@ -55,14 +63,17 @@ class CategoryType extends AbstractType
             ->add('display_name', 'Symfony\Component\Form\Extension\Core\Type\CollectionType', [
                 'entry_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType',
                 'label' => $translator->__('Display name'),
+                'required' => false
             ])
             ->add('display_desc', 'Symfony\Component\Form\Extension\Core\Type\CollectionType', [
                 'entry_type' => 'Symfony\Component\Form\Extension\Core\Type\TextareaType',
                 'label' => $translator->__('Display description'),
+                'required' => false
             ])
             ->add('attributes', 'Symfony\Component\Form\Extension\Core\Type\CollectionType', [
                 'entry_type' => 'Zikula\CategoriesModule\Form\Type\CategoryAttributeType',
                 'entry_options' => ['translator' => $translator],
+                'by_reference' => false,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
@@ -83,7 +94,33 @@ class CategoryType extends AbstractType
                     'class' => 'btn btn-default'
                 ]
             ])
+            ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) use ($options) {
+                // ensure all locales have a display name
+                /** @var CategoryEntity $category */
+                $category = $event->getData();
+                $name = $category->getName();
+                $displayName = $category->getDisplay_name();
+                foreach ($options['locales'] as $code) {
+                    if (!isset($displayName[$code]) || !$displayName[$code]) {
+                        $displayName[$code] = $name;
+                    }
+                }
+                $category->setDisplay_name($displayName);
+                $event->setData($category);
+            })
         ;
+        $builder->get('name')
+            ->addModelTransformer(new CallbackTransformer(
+                // remove slash from name before persistence to prevent issues with path
+                function ($string) {
+                    return $string;
+                },
+                function ($string) {
+                    return str_replace('/', '&#47;', $string);
+                }
+            ))
+        ;
+
     }
 
     /**
@@ -101,6 +138,8 @@ class CategoryType extends AbstractType
     {
         $resolver->setDefaults([
             'translator' => null,
+            'locales' => [],
+            'constraints' => [new UniqueNameForPosition()]
         ]);
     }
 }

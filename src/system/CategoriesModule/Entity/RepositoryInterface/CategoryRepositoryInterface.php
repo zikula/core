@@ -74,4 +74,12 @@ interface CategoryRepositoryInterface extends ObjectRepository, Selectable
      * @param string  $path       Given path value
      */
     public function updatePath($categoryId = 0, $pathField = 'path', $path = '');
+
+    /**
+     * Persist and flush the entity
+     *
+     * @param CategoryEntity $category
+     * @return mixed
+     */
+    public function persistAndFlush(CategoryEntity $category);
 }
