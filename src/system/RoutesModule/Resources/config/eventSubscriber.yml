@@ -7,11 +7,6 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
     
-#    zikula_routes_module.core_listener:
-#        class: Zikula\RoutesModule\Listener\CoreListener
-#        tags:
-#            - { name: kernel.event_subscriber }
-    
 #    zikula_routes_module.kernel_listener:
 #        class: Zikula\RoutesModule\Listener\KernelListener
 #        tags:
@@ -32,18 +27,8 @@ services:
 #        tags:
 #            - { name: kernel.event_subscriber }
     
-#    zikula_routes_module.page_listener:
-#        class: Zikula\RoutesModule\Listener\PageListener
-#        tags:
-#            - { name: kernel.event_subscriber }
-    
 #    zikula_routes_module.theme_listener:
 #        class: Zikula\RoutesModule\Listener\ThemeListener
-#        tags:
-#            - { name: kernel.event_subscriber }
-    
-#    zikula_routes_module.view_listener:
-#        class: Zikula\RoutesModule\Listener\ViewListener
 #        tags:
 #            - { name: kernel.event_subscriber }
     
