@@ -33,7 +33,7 @@ class ModuleDispatchListener extends AbstractModuleDispatchListener
      */
     public function serviceLinks(GenericEvent $event)
     {
-        parent::customClassName($event);
+        parent::serviceLinks($event);
     
         // Inject router and translator services and format data like this:
         // $event->data[] = [
