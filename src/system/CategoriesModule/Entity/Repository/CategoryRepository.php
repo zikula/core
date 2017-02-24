@@ -12,7 +12,6 @@
 namespace Zikula\CategoriesModule\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 
 class CategoryRepository extends EntityRepository implements CategoryRepositoryInterface

@@ -120,7 +120,6 @@ class CategoryType extends AbstractType
                 }
             ))
         ;
-
     }
 
     /**
