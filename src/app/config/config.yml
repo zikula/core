@@ -120,14 +120,6 @@ doctrine_cache:
                 extension: ".combined.css"
                 directory: "%kernel.cache_dir%/assets/css"
 
-services:
-    standardfields.listener:
-        class: Zikula\Core\Doctrine\StandardFields\StandardFieldsListener
-        calls:
-            - [setAnnotationReader, ["@annotation_reader"]]
-        tags:
-            - { name: doctrine.event_subscriber, connection: default }
-
 stof_doctrine_extensions:
     default_locale: en_US
     orm:
