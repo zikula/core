@@ -40,6 +40,7 @@ class ZikulaKernel extends Kernel
             new Liip\ImagineBundle\LiipImagineBundle(),
             new Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
             new Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle(),
+            new Symfony\Bundle\WorkflowBundle\WorkflowBundle(),
         ];
 
         foreach (self::$coreModules as $bundleClass) {

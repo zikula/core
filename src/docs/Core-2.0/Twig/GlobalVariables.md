@@ -47,4 +47,4 @@ Symfony Global Variables
 ------------------------
 
 For more information about the global variables provided by symfony, please see
-http://symfony.com/doc/current/book/templating.html#global-template-variables
+http://symfony.com/doc/current/templating/app_variable.html
