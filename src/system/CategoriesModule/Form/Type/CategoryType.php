@@ -137,6 +137,7 @@ class CategoryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'data_class' => 'Zikula\CategoriesModule\Entity\CategoryEntity',
             'translator' => null,
             'locales' => [],
             'constraints' => [new UniqueNameForPosition()]

@@ -180,13 +180,4 @@ class CategoryRepository extends EntityRepository implements CategoryRepositoryI
 
         $qb->getQuery()->execute();
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function persistAndFlush(CategoryEntity $category)
-    {
-        $this->_em->persist($category);
-        $this->_em->flush($category);
-    }
 }

@@ -50,19 +50,6 @@ class CategoryAttributeEntity extends EntityAccess
     private $value;
 
     /**
-     * constructor
-     *
-     * @param CategoryEntity    $category the category id
-     * @param string $name     the name of the attribute
-     * @param string $value    the value of the attribute
-     */
-    public function __construct(CategoryEntity $category, $name, $value)
-    {
-        $this->setCategory($category);
-        $this->setAttribute($name, $value);
-    }
-
-    /**
      * get the category item
      *
      * @return CategoryEntity the category item

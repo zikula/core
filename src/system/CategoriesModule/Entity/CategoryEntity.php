@@ -192,8 +192,9 @@ class CategoryEntity extends EntityAccess
 
     /**
      * constructor
+     * @param array $locales
      */
-    public function __construct()
+    public function __construct(array $locales)
     {
         $this->parent = null;
         $this->children = null;
@@ -202,8 +203,12 @@ class CategoryEntity extends EntityAccess
         $this->name = '';
         $this->value = '';
         $this->sort_value = 2147483647;
-        $this->display_name = [];
-        $this->display_desc = [];
+        $values = [];
+        foreach ($locales as $code) {
+            $values[$code] = '';
+        }
+        $this->display_name = $values;
+        $this->display_desc = $values;
         $this->path = '';
         $this->ipath = '';
         $this->status = 'A';
@@ -663,7 +668,11 @@ class CategoryEntity extends EntityAccess
         if (isset($this->attributes[$name])) {
             $this->attributes[$name]->setValue($value);
         } else {
-            $this->attributes[$name] = new CategoryAttributeEntity($this, $name, $value);
+            $attribute = new CategoryAttributeEntity();
+            $attribute->setCategory($this);
+            $attribute->setName($name);
+            $attribute->setValue($value);
+            $this->attributes[$name] = $attribute;
         }
     }
 

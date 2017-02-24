@@ -43,11 +43,7 @@ class CategoryController extends AbstractController
     public function editAction(Request $request, CategoryEntity $category = null)
     {
         if (null === $category) {
-            $category = new CategoryEntity();
-            $category->setDisplay_name($this->localize($category->getDisplay_name()));
-            $category->setDisplay_desc($this->localize($category->getDisplay_desc()));
-        } else {
-            $oldName = $category->getName();
+            $category = new CategoryEntity($this->get('zikula_settings_module.locale_api')->getSupportedLocales());
         }
 
         $form = $this->createForm('Zikula\CategoriesModule\Form\Type\CategoryType',
@@ -60,15 +56,10 @@ class CategoryController extends AbstractController
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $category = $form->getData();
-                $this->get('zikula_categories_module.category_repository')->persistAndFlush($category);
-                // set computed properties
                 $category->setPath($category->getParent()->getPath() . '/' . $category->getName());
                 $category->setIPath($category->getParent()->getIPath() . '/' . $category->getId());
+                $this->updateChildPaths($category);
                 $this->get('doctrine')->getManager()->flush();
-                // rebuild paths if needed
-                if ($oldName != $category->getName()) {
-                    $this->get('zikula_categories_module.path_builder_helper')->rebuildPaths('path', 'name', $category->getId());
-                }
                 $this->addFlash('status', $this->__('Done!'));
             }
             if ($form->get('cancel')->isClicked()) {
@@ -102,13 +93,23 @@ class CategoryController extends AbstractController
         // nada
     }
 
-    private function localize(array $values)
+    /**
+     * Recursive method to update all child paths to reflect updated parent path
+     * @param CategoryEntity $category
+     */
+    private function updateChildPaths(CategoryEntity $category)
     {
-        $locales = $this->get('zikula_settings_module.locale_api')->getSupportedLocales();
-        foreach ($locales as $code) {
-            $values[$code] = isset($values[$code]) ? $values[$code] : '';
+        /** @var CategoryEntity[] $children */
+        $children = $category->getChildren();
+        foreach ($children as $child) {
+            // if path of child does not include full path of recently updated parent,
+            // then parent has changed and child path must be updated
+            if (0 !== strpos($child->getPath(), $category->getPath() . '/')) {
+                $child->setPath($category->getPath() . '/' . $child->getName());
+                if ($child->getChildren()->count() > 0) {
+                    $this->updateChildPaths($child);
+                }
+            }
         }
-
-        return $values;
     }
 }

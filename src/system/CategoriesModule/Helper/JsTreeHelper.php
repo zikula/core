@@ -183,14 +183,9 @@ class JsTreeHelper
         $request = $this->requestStack->getCurrentRequest();
         $lang = $request->getLocale();
 
-        $url = $this->router->generate('zikulacategoriesmodule_admin_edit', [
-            'mode' => 'edit',
-            'cid' => $category['id']
+        $url = $this->router->generate('zikulacategoriesmodule_category_edit', [
+            'category' => $category['id']
         ]);
-
-        if ($request->attributes->get('_zkType') == 'admin') {
-            $url .= '#top';
-        }
 
         if (isset($category['display_name'][$lang]) && !empty($category['display_name'][$lang])) {
             $name = DataUtil::formatForDisplay($category['display_name'][$lang]);
