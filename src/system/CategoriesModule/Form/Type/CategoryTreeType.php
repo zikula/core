@@ -80,14 +80,12 @@ class CategoryTreeType extends AbstractType
             'includeRoot' => false,
             'includeLeaf' => false,
             'all' => false,
-            'valueField' => 'id'
         ]);
         $resolver->setAllowedTypes('recurse', 'bool');
         $resolver->setAllowedTypes('relative', 'bool');
         $resolver->setAllowedTypes('includeRoot', 'bool');
         $resolver->setAllowedTypes('includeLeaf', 'bool');
         $resolver->setAllowedTypes('all', 'bool');
-        $resolver->setAllowedTypes('valueField', 'string');
 
         $resolver->setNormalizer('label', function (Options $options, $label) {
             if (null === $label || empty($label)) {
@@ -141,7 +139,6 @@ class CategoryTreeType extends AbstractType
         $includeRoot = isset($options['includeRoot']) ? $options['includeRoot'] : false;
         $includeLeaf = isset($options['includeLeaf']) ? $options['includeLeaf'] : false;
         $all = isset($options['all']) ? $options['all'] : false;
-        $valueField = isset($options['valueField']) ? $options['valueField'] : 'id';
 
         $category = $this->categoryApi->getCategoryById(1);
         $categoryList = $this->categoryApi->getSubCategoriesForCategory($category, $recurse, $relative, $includeRoot, $includeLeaf, $all);
@@ -155,7 +152,7 @@ class CategoryTreeType extends AbstractType
             } else {
                 $catName = $cat['name'];
             }
-            $choices['|' . $indent . ' ' . $catName] = $cat[$valueField];
+            $choices['|' . $indent . ' ' . $catName] = $cat['id'];
         }
 
         return $choices;

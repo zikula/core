@@ -70,7 +70,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $this->entityManager->flush();
 
         // set module vars
-        $this->setVar('userrootcat', '/__SYSTEM__/Users');
+        $this->setVar('userrootcat', 31);
         $this->setVar('allowusercatedit', 0);
         $this->setVar('autocreateusercat', 0);
         $this->setVar('autocreateuserdefaultcat', 0);
@@ -112,6 +112,15 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             case '1.2.2':
             case '1.2.3':
             case '1.3.0':
+                $modVars = $this->getVars();
+                $usersModuleRootCategory = $this->container->get('zikula_categories_module.category_repository')->find(31);
+                $modVars['userrootcat'] = $usersModuleRootCategory->getId();
+                foreach (['allowusercatedit', 'autocreateusercat', 'autocreateuserdefaultcat', 'permissionsall'] as $boolVar) {
+                    $modVars[$boolVar] = isset($modVars[$boolVar]) ? (bool)$modVars[$boolVar] : false;
+                }
+                $this->setVars($modVars);
+
+            case '1.3.1':
                 // future
         }
 

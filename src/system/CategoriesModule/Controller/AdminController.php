@@ -25,6 +25,7 @@ use Zikula\Core\Controller\AbstractController;
 
 /**
  * @Route("/admin")
+ * @deprecated
  *
  * Administrative controllers for the categories module.
  */
@@ -32,12 +33,7 @@ class AdminController extends AbstractController
 {
     /**
      * Route not needed here because method is legacy-only.
-     *
-     * Main admin function.
-     *
      * @deprecated since 1.4.0 see indexAction()
-     *
-     * @return RedirectResponse
      */
     public function mainAction()
     {
@@ -48,10 +44,6 @@ class AdminController extends AbstractController
 
     /**
      * @Route("")
-     *
-     * Main admin function.
-     *
-     * @return RedirectResponse
      */
     public function indexAction()
     {
@@ -149,125 +141,12 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/edit/{cid}/{dr}/{mode}", requirements={"cid" = "^[1-9]\d*$", "dr" = "^[1-9]\d*$", "mode" = "edit|new"})
-     * @Method("GET")
-     * @Template
-     *
-     * Edits a category.
-     *
-     * @param Request $request
-     * @param integer $cid
-     * @param integer $dr
-     * @param string  $mode new|edit
-     *
-     * @return Response symfony response object
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have permission to edit or add the category
      */
     public function editAction(Request $request, $cid = 0, $dr = 1, $mode = 'new')
     {
-        $editCat = '';
+        @trigger_error('The zikulacategoriesmodule_admin_edit action is deprecated. please use zikulacategoriesmodule_category_edit instead.', E_USER_DEPRECATED);
 
-        $languages = $this->get('zikula_settings_module.locale_api')->getSupportedLocales();
-        $categoryApi = $this->get('zikula_categories_module.api.category');
-
-        // indicates that we're editing
-        if ($mode == 'edit') {
-            if (!$this->hasPermission('ZikulaCategoriesModule::category', '::', ACCESS_EDIT)) {
-                throw new AccessDeniedException();
-            }
-
-            if (!$cid) {
-                $this->addFlash('error', $this->__('Error! Cannot determine valid \'cid\' for edit mode in \'ZikulaCategoriesModule_admin_edit\'.'));
-
-                return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
-            }
-
-            $editCat = $categoryApi->getCategoryById($cid);
-            if (null === $editCat) {
-                throw new NotFoundHttpException($this->__('Category not found.'));
-            }
-        } else {
-            // new category creation
-            if (!$this->hasPermission('ZikulaCategoriesModule::category', '::', ACCESS_ADD)) {
-                throw new AccessDeniedException();
-            }
-
-            $validationErrors = [];
-            $validationErrorsInSession = $request->getSession()->get('validationErrors', '');
-            if (is_array($validationErrorsInSession)) {
-                $validationErrors = $validationErrorsInSession;
-                $request->getSession()->remove('validationErrors');
-            }
-
-            // since we inherit the domain settings from the parent, we get
-            // the inherited (and merged) object from session
-            if ($request->getSession()->has('newCategory') && $request->getSession()->get('newCategory')) {
-                $editCat = $request->getSession()->get('newCategory');
-                $request->getSession()->remove('newCategory');
-                $category = new CategoryEntity(); // need this for validation info
-            } elseif (count($validationErrors) > 0) {
-                // if we're back from validation get the posted data from session
-                $newCatActionData = $request->getSession()->get('newCatActionData');
-                $request->getSession()->remove('newCatActionData');
-                $editCat = new CategoryEntity();
-                $editCat = $editCat->toArray();
-                $editCat = array_merge($editCat, $newCatActionData);
-                unset($editCat['path']);
-                unset($editCat['ipath']);
-                $category = new CategoryEntity(); // need this for validation info
-            } else {
-                // someone just pressed 'new' -> populate defaults
-                $category = new CategoryEntity();
-                $editCat['sort_value'] = '0';
-            }
-        }
-
-        $allCats = $categoryApi->getSubCategories($dr, true, true, true, false, true);
-
-        // now remove the categories which are below $editCat ...
-        // you should not be able to set these as a parent category as it creates a circular hierarchy (see bug #4992)
-        if (isset($editCat['ipath'])) {
-            $cSlashEdit = mb_substr_count($editCat['ipath'], '/');
-            foreach ($allCats as $k => $v) {
-                $cSlashCat = mb_substr_count($v['ipath'], '/');
-                if ($cSlashCat >= $cSlashEdit && false !== strpos($v['ipath'], $editCat['ipath'])) {
-                    unset($allCats[$k]);
-                }
-            }
-        }
-
-        $selector = $this->get('zikula_categories_module.html_tree_helper')->getSelector_Categories($allCats, 'id',
-            (isset($editCat['parent_id']) ? $editCat['parent_id'] : 0),
-            'category[parent_id]',
-            isset($defaultValue) ? $defaultValue : null,
-            null,
-            0,
-            null,
-            false, // do not submit on selector change
-            false,
-            true,
-            1,
-            false,
-            'form-control');
-
-        $attributes = isset($editCat['__ATTRIBUTES__']) ? $editCat['__ATTRIBUTES__'] : [];
-
-        $templateParameters = [
-            'mode' => $mode,
-            'category' => $editCat,
-            'attributes' => $attributes,
-            'languages' => $languages,
-            'categorySelector' => $selector,
-            'csrfToken' => $this->get('zikula_core.common.csrf_token_handler')->generate()
-        ];
-
-        if ($mode == 'edit') {
-            $hierarchyHelper = $this->get('zikula_categories_module.hierarchy_helper');
-            $templateParameters['haveSubcategories'] = $hierarchyHelper->hasDirectSubcategories($cid);
-            $templateParameters['haveLeafSubcategories'] = $hierarchyHelper->hasDirectSubcategories($cid, false, true);
-        }
-
-        return $templateParameters;
+        return $this->redirectToRoute('zikulacategoriesmodule_category_edit', ['category' => $cid]);
     }
 
     /**
@@ -291,14 +170,6 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/deleteregistry")
-     *
-     * Deletes a category registry.
-     *
-     * @param Request $request
-     *
-     * @return Response symfony response object
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have permission to administrate the module
      */
     public function deleteregistryAction(Request $request)
     {
@@ -330,123 +201,12 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/update")
-     * @Method("POST")
-     *
-     * Updates a category.
-     *
-     * @param Request $request
-     *
-     * @return RedirectResponse
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
     public function updateAction(Request $request)
     {
-        $this->get('zikula_core.common.csrf_token_handler')->validate($request->request->get('csrfToken'));
+        @trigger_error('The zikulacategoriesmodule_admin_update action is deprecated. please use zikulacategoriesmodule_category_edit instead.', E_USER_DEPRECATED);
 
-        $mode = $request->request->get('mode', 'new');
-        $accessLevel = $mode == 'new' ? ACCESS_ADD : ACCESS_EDIT;
-        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', $accessLevel)) {
-            throw new AccessDeniedException();
-        }
-
-        // get data from post
-        $data = $request->request->get('category', null);
-        if (!isset($data['is_locked'])) {
-            $data['is_locked'] = 0;
-        }
-        if (!isset($data['is_leaf'])) {
-            $data['is_leaf'] = 0;
-        }
-        if (!isset($data['status'])) {
-            $data['status'] = 'I';
-        }
-
-        $args = [];
-        if ($mode != 'new') {
-            foreach (['copy', 'move', 'delete'] as $op) {
-                if ($request->request->get('category_' . $op, null)) {
-                    $args['op'] = $op;
-                    $args['cid'] = (int)$data['id'];
-
-                    return $this->redirectToRoute('zikulacategoriesmodule_admin_op', $args);
-                }
-            }
-
-            if ($request->request->get('category_user_edit', null)) {
-                $_SESSION['category_referer'] = $request->server->get('HTTP_REFERER');
-                $args['dr'] = (int)$data['id'];
-
-                return $this->redirectToRoute('zikulacategoriesmodule_admin_edit', $args);
-            }
-        }
-
-        $processingHelper = $this->get('zikula_categories_module.category_processing_helper');
-        $valid = $processingHelper->validateCategoryData($data);
-        if (!$valid) {
-            if ($mode == 'new') {
-                return $this->redirectToRoute('zikulacategoriesmodule_admin_newcat');
-            } else {
-                $args = [
-                    'mode' => 'edit',
-                    'cid' => (int)$data['id']
-                ];
-
-                return $this->redirectToRoute('zikulacategoriesmodule_admin_edit', $args);
-            }
-        }
-
-        // process name
-        $data['name'] = $processingHelper->processCategoryName($data['name']);
-
-        // process parent
-        $data['parent'] = $processingHelper->processCategoryParent($data['parent_id']);
-        unset($data['parent_id']);
-
-        // process display names
-        $data['display_name'] = $processingHelper->processCategoryDisplayName($data['display_name'], $data['name']);
-
-        $entityManager = $this->get('doctrine')->getManager();
-        if ($mode == 'new') {
-            $category = new CategoryEntity();
-        } else {
-            // get existing category
-            $category = $entityManager->find('ZikulaCategoriesModule:CategoryEntity', $data['id']);
-            if (null === $category) {
-                throw new NotFoundHttpException($this->__('Category not found.'));
-            }
-
-            $prevCategoryName = $category['name'];
-        }
-
-        // save category
-        $category->merge($data);
-        $entityManager->persist($category);
-        $entityManager->flush();
-
-        // process path and ipath
-        $category['path'] = $processingHelper->processCategoryPath($data['parent']['path'], $category['name']);
-        $category['ipath'] = $processingHelper->processCategoryIPath($data['parent']['ipath'], $category['id']);
-
-        // process category attributes
-        $attrib_names = $request->request->get('attribute_name', []);
-        $attrib_values = $request->request->get('attribute_value', []);
-        $processingHelper->processCategoryAttributes($category, $attrib_names, $attrib_values);
-
-        $entityManager->flush();
-
-        if ($mode == 'new') {
-            $this->addFlash('status', $this->__f('Done! Inserted the %s category.', ['%s' => $category['name']]));
-        } else {
-            // since a name change will change the object path, we must rebuild it here
-            if ($prevCategoryName != $category['name']) {
-                $this->get('zikula_categories_module.path_builder_helper')->rebuildPaths('path', 'name', $category['id']);
-            }
-
-            $this->addFlash('status', $this->__f('Done! Saved the %s category.', ['%s' => $prevCategoryName]));
-        }
-
-        return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
+        return $this->redirectToRoute('zikulacategoriesmodule_category_edit');
     }
 
     /**
@@ -545,7 +305,6 @@ class AdminController extends AbstractController
         if (!$isDelete || $amountOfSubCategories > 0) {
             $builder->add('parent', 'Zikula\CategoriesModule\Form\Type\CategoryTreeType', [
                 'label' => $parentLabel,
-                'empty_data' => '/__SYSTEM__',
                 'translator' => $this->get('translator.default'),
                 'includeRoot' => true
             ]);

@@ -46,9 +46,7 @@ class ConfigType extends AbstractType
         $builder
             ->add('userrootcat', 'Zikula\CategoriesModule\Form\Type\CategoryTreeType', [
                 'label' => $translator->__('Root category for user categories'),
-                'empty_data' => '/__SYSTEM__/Users',
                 'translator' => $translator,
-                'valueField' => 'path'
             ])
             ->add('allowusercatedit', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $translator->__('Allow users to edit their own categories'),
@@ -68,7 +66,6 @@ class ConfigType extends AbstractType
             ])
             ->add('userdefaultcatname', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $translator->__('Default user category'),
-                'empty_data' => $translator->__('Default'),
                 'attr' => [
                     'maxlength' => 255
                 ]

@@ -53,20 +53,22 @@ class CategoryController extends AbstractController
             ]
         );
 
-        if ($form->handleRequest($request)->isValid()) {
-            if ($form->get('save')->isClicked()) {
+        if ($form->handleRequest($request)->isSubmitted()) {
+            if ($form->get('save')->isClicked() && $form->isValid()) {
                 $category = $form->getData();
                 $category->setPath($category->getParent()->getPath() . '/' . $category->getName());
                 $category->setIPath($category->getParent()->getIPath() . '/' . $category->getId());
                 $this->updateChildPaths($category);
                 $this->get('doctrine')->getManager()->flush();
                 $this->addFlash('status', $this->__('Done!'));
+
+                return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
             }
             if ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
-            }
 
-            return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
+                return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
+            }
         }
 
         return [

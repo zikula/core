@@ -86,7 +86,7 @@ class HtmlTreeHelper
             $ds = str_repeat('.', $depth);
 
             $params['cid'] = $c['id'];
-            $url = DataUtil::formatForDisplay($this->router->generate('zikulacategoriesmodule_admin_edit', $params));
+            $url = DataUtil::formatForDisplay($this->router->generate('zikulacategoriesmodule_category_edit', $params));
 
             if ($request->attributes->get('_zkType') == 'admin') {
                 $url .= '#top';

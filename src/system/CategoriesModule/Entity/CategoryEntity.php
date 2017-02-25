@@ -194,7 +194,7 @@ class CategoryEntity extends EntityAccess
      * constructor
      * @param array $locales
      */
-    public function __construct(array $locales)
+    public function __construct(array $locales = [])
     {
         $this->parent = null;
         $this->children = null;

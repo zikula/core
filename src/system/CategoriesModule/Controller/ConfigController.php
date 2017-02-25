@@ -34,7 +34,7 @@ class ConfigController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      *
-     * @return Response
+     * @return array|Response
      */
     public function configAction(Request $request)
     {
@@ -44,10 +44,7 @@ class ConfigController extends AbstractController
 
         $variableApi = $this->get('zikula_extensions_module.api.variable');
         $modVars = $variableApi->getAll('ZikulaCategoriesModule');
-        foreach (['allowusercatedit', 'autocreateusercat', 'autocreateuserdefaultcat', 'permissionsall'] as $boolVar) {
-            $modVars[$boolVar] = isset($modVars[$boolVar]) ? (bool)$modVars[$boolVar] : false;
-        }
-
+        $modVars['userrootcat'] = $this->get('zikula_categories_module.category_repository')->find($modVars['userrootcat']);
         $form = $this->createForm('Zikula\CategoriesModule\Form\Type\ConfigType',
             $modVars, [
                 'translator' => $this->get('translator.default'),
@@ -57,11 +54,9 @@ class ConfigController extends AbstractController
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {
-                $formData = $form->getData();
-
-                // save module vars
-                $variableApi->setAll('ZikulaCategoriesModule', $form->getData());
-
+                $modVars = $form->getData();
+                $modVars['userrootcat'] = $modVars['userrootcat']->getId();
+                $variableApi->setAll('ZikulaCategoriesModule', $modVars);
                 $this->addFlash('status', $this->__('Done! Module configuration updated.'));
             }
             if ($form->get('cancel')->isClicked()) {
