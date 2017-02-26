@@ -1,5 +1,5 @@
 {
-    "name": "zikula/workflowui-bundle",
+    "name": "zikula/workflow-bundle",
     "type": "symfony-bundle",
     "description": "An bundle providing workflow management functionality.",
     "keywords": [ "zikula" ],
@@ -16,6 +16,6 @@
         "fduch/workflow-bundle": "2.*"
     },
     "autoload": {
-        "psr-4": { "Zikula\\Bundle\\WorkflowUiBundle\\": "" }
+        "psr-4": { "Zikula\\Bundle\\WorkflowBundle\\": "" }
     }
 }

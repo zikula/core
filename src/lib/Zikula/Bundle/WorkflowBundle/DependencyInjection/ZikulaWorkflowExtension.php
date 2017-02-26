@@ -18,9 +18,9 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * Class ZikulaWorkflowUiExtension
+ * Class ZikulaWorkflowExtension
  */
-class ZikulaWorkflowUiExtension extends Extension
+class ZikulaWorkflowExtension extends Extension
 {
     /**
      * {@inheritdoc}

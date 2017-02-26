@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\WorkflowUiBundle;
+namespace Zikula\Bundle\WorkflowBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class ZikulaWorkflowUiBundle extends Bundle
+class ZikulaWorkflowBundle extends Bundle
 {
 }
