@@ -22,7 +22,7 @@ CHANGELOG - ZIKULA 1.4.x
     - SearchableInterface adds a method `amendForm()` to amend the search form instead of the old method `getOptions()`
     - Added support for including module dependencies in composer execution using composer merge plugin (#3388, #3437).
     - Added support for Symfony workflow component (#2423).
-    - Added WorkflowUiBundle providing an UI for workflow management (#2423).
+    - Added WorkflowBundle providing an UI for workflow management (#2423).
 
  - Vendor updates:
     - sensio/framework-extra-bundle updated from 3.0.21 to 3.0.22
