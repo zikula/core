@@ -11,10 +11,10 @@
 
 namespace Zikula\CategoriesModule\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 
-class CategoryRepository extends EntityRepository implements CategoryRepositoryInterface
+class CategoryRepository extends NestedTreeRepository implements CategoryRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -22,9 +22,11 @@ class CategoryRepository extends EntityRepository implements CategoryRepositoryI
     public function countForContext($name = '', $parentId = 0, $excludedId = 0)
     {
         $qb = $this->createQueryBuilder('c')
-            ->select('COUNT(c.id)')
-            ->where('c.name = :name')
-            ->setParameter('name', $name);
+            ->select('COUNT(c.id)');
+        if ('' != $name) {
+            $qb->where('c.name = :name')
+                ->setParameter('name', $name);
+        }
 
         if ($parentId > 0) {
             $qb->andWhere('c.parent = :parentid')

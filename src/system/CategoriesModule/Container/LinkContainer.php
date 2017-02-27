@@ -91,9 +91,9 @@ class LinkContainer implements LinkContainerInterface
 
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
             $links[] = [
-                'url' => $this->router->generate('zikulacategoriesmodule_admin_view'),
-                'text' => $this->translator->__('Categories list'),
-                'icon' => 'list'
+                'url' => $this->router->generate('zikulacategoriesmodule_category_list'),
+                'text' => $this->translator->__('Category tree'),
+                'icon' => 'tree'
             ];
         }
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADD)) {

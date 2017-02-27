@@ -90,9 +90,11 @@
             $('#temp-spinner').remove();
             return false;
         }
+        var url = Routing.generate('zikulacategoriesmodule_ajax_' + action);
         switch (action) {
             case 'edit':
                 pars.mode = 'edit';
+                url = Routing.generate('zikulacategoriesmodule_category_edit', {category: nodeId.replace('node_', '')});
                 break;
             case 'deleteandmovesubs':
                 pars.parent = extrainfo;
@@ -116,7 +118,7 @@
 
         $.ajax({
             type: 'POST',
-            url: Routing.generate('zikulacategoriesmodule_ajax_' + action),
+            url: url,
             data: pars
         }).success(function(result) {
             performCategoryContextMenuActionCallback(result.data);
@@ -387,7 +389,7 @@
     }
 
     $(document).ready(function() {
-        treeElem = $('#categoryTreeContainer .treewraper');
+        treeElem = $('#categoryTreeContainer');
 
         // Tree instantiation
         treeElem.jstree({

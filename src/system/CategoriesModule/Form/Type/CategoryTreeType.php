@@ -140,19 +140,21 @@ class CategoryTreeType extends AbstractType
         $includeLeaf = isset($options['includeLeaf']) ? $options['includeLeaf'] : false;
         $all = isset($options['all']) ? $options['all'] : false;
 
-        $category = $this->categoryApi->getCategoryById(1);
-        $categoryList = $this->categoryApi->getSubCategoriesForCategory($category, $recurse, $relative, $includeRoot, $includeLeaf, $all);
+        $rootCategory = $this->categoryRepository->find(1);
+        $children = $this->categoryRepository->getChildren($rootCategory, !$recurse, null, 'ASC', $includeRoot);
 
         $choices = [];
-        foreach ($categoryList as $cat) {
-            $amountOfSlashes = mb_substr_count(isset($cat['ipath_relative']) ? $cat['ipath_relative'] : $cat['ipath'], '/');
-            $indent = $amountOfSlashes > 0 ? str_repeat('--', $amountOfSlashes) : '';
-            if (isset($cat['display_name'][$locale]) && !empty($cat['display_name'][$locale])) {
-                $catName = $cat['display_name'][$locale];
-            } else {
-                $catName = $cat['name'];
+        foreach ($children as $child) {
+            if (($child['is_leaf'] && !$includeLeaf) || ($child['status'] == 'I' && $all)) {
+                continue;
             }
-            $choices['|' . $indent . ' ' . $catName] = $cat['id'];
+            $indent = $child['lvl'] > 0 ? str_repeat('--', $child['lvl']) : '';
+            if (isset($child['display_name'][$locale]) && !empty($child['display_name'][$locale])) {
+                $catName = $child['display_name'][$locale];
+            } else {
+                $catName = $child['name'];
+            }
+            $choices['|' . $indent . ' ' . $catName] = $child['id'];
         }
 
         return $choices;

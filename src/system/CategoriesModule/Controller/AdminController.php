@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Zikula\CategoriesModule\Helper\TreeMapHelper;
 use Zikula\Core\Controller\AbstractController;
 
 /**
@@ -35,9 +36,9 @@ class AdminController extends AbstractController
      */
     public function mainAction()
     {
-        @trigger_error('The zikulacategoriesmodule_admin_main action is deprecated. please use zikulacategoriesmodule_admin_view instead.', E_USER_DEPRECATED);
+        @trigger_error('The zikulacategoriesmodule_admin_main action is deprecated. please use zikulacategoriesmodule_category_list instead.', E_USER_DEPRECATED);
 
-        return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
+        return $this->redirectToRoute('zikulacategoriesmodule_category_list');
     }
 
     /**
@@ -45,41 +46,19 @@ class AdminController extends AbstractController
      */
     public function indexAction()
     {
-        @trigger_error('The zikulacategoriesmodule_admin_index route is deprecated. please use zikulacategoriesmodule_admin_view instead.', E_USER_DEPRECATED);
+        @trigger_error('The zikulacategoriesmodule_admin_index route is deprecated. please use zikulacategoriesmodule_category_list instead.', E_USER_DEPRECATED);
 
-        return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
+        return $this->redirectToRoute('zikulacategoriesmodule_category_list');
     }
 
     /**
      * @Route("/view")
-     * @Template
-     *
-     * View categories.
-     *
-     * @param Request $request
-     *
-     * @return Response symfony response object
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have permission to edit the category
      */
     public function viewAction(Request $request)
     {
-        $root_id = $request->query->get('dr', 1);
+        @trigger_error('The zikulacategoriesmodule_admin_view route is deprecated. please use zikulacategoriesmodule_category_list instead.', E_USER_DEPRECATED);
 
-        if (!$this->hasPermission('ZikulaCategoriesModule::category', "ID::$root_id", ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
-
-        if (!$this->hasPermission('ZikulaCategoriesModule::category', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
-
-        $cats = $this->get('zikula_categories_module.api.category')->getSubCategories($root_id, true, true, true, true, true);
-        $menuTxt = $this->get('zikula_categories_module.js_tree_helper')->getCategoryTreeJqueryJs($cats, true, true);
-
-        return [
-            'menuTxt' => $menuTxt
-        ];
+        return $this->redirectToRoute('zikulacategoriesmodule_category_list');
     }
 
     /**

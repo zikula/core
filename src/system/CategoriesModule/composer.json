@@ -23,7 +23,7 @@
             "displayname": "Categories",
             "url": "categories",
             "capabilities": {
-                "admin": {"route": "zikulacategoriesmodule_admin_view"}
+                "admin": {"route": "zikulacategoriesmodule_category_list"}
             },
             "securityschema": {
                 "ZikulaCategoriesModule::": "::",

@@ -13,6 +13,7 @@ namespace Zikula\CategoriesModule;
 
 use DoctrineUtil;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
+use Zikula\CategoriesModule\Helper\TreeMapHelper;
 use Zikula\Core\AbstractExtensionInstaller;
 
 /**
@@ -93,6 +94,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
      */
     public function upgrade($oldversion)
     {
+        $connection = $this->entityManager->getConnection();
         switch ($oldversion) {
             case '1.1':
             case '1.2':
@@ -104,7 +106,6 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
                 } catch (\Exception $e) {
                 }
                 // rename old tablename column for Core 1.4.0
-                $connection = $this->entityManager->getConnection();
                 $sql = 'ALTER TABLE categories_registry CHANGE `tablename` `entityname` varchar (60) NOT NULL DEFAULT \'\'';
                 $connection->executeQuery($sql);
 
@@ -119,6 +120,13 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
                     $modVars[$boolVar] = isset($modVars[$boolVar]) ? (bool)$modVars[$boolVar] : false;
                 }
                 $this->setVars($modVars);
+                try {
+                    $this->schemaTool->update(['Zikula\CategoriesModule\Entity\CategoryEntity']);
+                } catch (\Exception $e) {
+                }
+                $helper = new TreeMapHelper($this->container->get('doctrine'));
+                $helper->map(); // updates NestedTree values in entities
+                $connection->executeQuery('UPDATE categories_category SET `tree_root` = 1 WHERE 1');
 
             case '1.3.1':
                 // future
