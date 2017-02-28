@@ -102,7 +102,7 @@ class CategoryType extends AbstractType
                 $displayName = $category->getDisplay_name();
                 foreach ($options['locales'] as $code) {
                     if (!isset($displayName[$code]) || !$displayName[$code]) {
-                        $displayName[$code] = $name;
+                        $displayName[$code] = $options['translator']->__(/** @Ignore */$name, 'zikula', $code);
                     }
                 }
                 $category->setDisplay_name($displayName);
