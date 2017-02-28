@@ -159,8 +159,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 1,
             'parent_id' => 0,
-            'is_locked' => 1,
-            'is_leaf' => 0,
+            'is_locked' => true,
+            'is_leaf' => false,
             'value' => '',
             'name' => '__SYSTEM__',
             'display_name' => $this->localize($this->__('Category root')),
@@ -170,8 +170,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 2,
             'parent_id' => 1,
-            'is_locked' => 0,
-            'is_leaf' => 0,
+            'is_locked' => false,
+            'is_leaf' => false,
             'value' => '',
             'name' => 'Modules',
             'display_name' => $this->localize($this->__('Modules')),
@@ -181,8 +181,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 3,
             'parent_id' => 1,
-            'is_locked' => 0,
-            'is_leaf' => 0,
+            'is_locked' => false,
+            'is_leaf' => false,
             'value' => '',
             'name' => 'General',
             'display_name' => $this->localize($this->__('General')),
@@ -192,8 +192,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 10,
             'parent_id' => 3,
-            'is_locked' => 0,
-            'is_leaf' => 0,
+            'is_locked' => false,
+            'is_leaf' => false,
             'value' => '',
             'name' => 'Publication Status (extended)',
             'display_name' => $this->localize($this->__('Publication status (extended)')),
@@ -203,8 +203,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 11,
             'parent_id' => 10,
-            'is_locked' => 0,
-            'is_leaf' => 1,
+            'is_locked' => false,
+            'is_leaf' => true,
             'value' => 'P',
             'name' => 'Pending',
             'display_name' => $this->localize($this->__('Pending')),
@@ -215,8 +215,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 12,
             'parent_id' => 10,
-            'is_locked' => 0,
-            'is_leaf' => 1,
+            'is_locked' => false,
+            'is_leaf' => true,
             'value' => 'C',
             'name' => 'Checked',
             'display_name' => $this->localize($this->__('Checked')),
@@ -227,8 +227,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 13,
             'parent_id' => 10,
-            'is_locked' => 0,
-            'is_leaf' => 1,
+            'is_locked' => false,
+            'is_leaf' => true,
             'value' => 'A',
             'name' => 'Approved',
             'display_name' => $this->localize($this->__('Approved')),
@@ -239,8 +239,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 14,
             'parent_id' => 10,
-            'is_locked' => 0,
-            'is_leaf' => 1,
+            'is_locked' => false,
+            'is_leaf' => true,
             'value' => 'O',
             'name' => 'On-line',
             'display_name' => $this->localize($this->__('On-line')),
@@ -251,8 +251,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 15,
             'parent_id' => 10,
-            'is_locked' => 0,
-            'is_leaf' => 1,
+            'is_locked' => false,
+            'is_leaf' => true,
             'value' => 'R',
             'name' => 'Rejected',
             'display_name' => $this->localize($this->__('Rejected')),
@@ -263,8 +263,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 25,
             'parent_id' => 3,
-            'is_locked' => 0,
-            'is_leaf' => 0,
+            'is_locked' => false,
+            'is_leaf' => false,
             'value' => '',
             'name' => 'ActiveStatus',
             'display_name' => $this->localize($this->__('Activity status')),
@@ -274,8 +274,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 26,
             'parent_id' => 25,
-            'is_locked' => 0,
-            'is_leaf' => 1,
+            'is_locked' => false,
+            'is_leaf' => true,
             'value' => 'A',
             'name' => 'Active',
             'display_name' => $this->localize($this->__('Active')),
@@ -286,8 +286,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 27,
             'parent_id' => 25,
-            'is_locked' => 0,
-            'is_leaf' => 1,
+            'is_locked' => false,
+            'is_leaf' => true,
             'value' => 'I',
             'name' => 'Inactive',
             'display_name' => $this->localize($this->__('Inactive')),
@@ -298,8 +298,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 28,
             'parent_id' => 3,
-            'is_locked' => 0,
-            'is_leaf' => 0,
+            'is_locked' => false,
+            'is_leaf' => false,
             'value' => '',
             'name' => 'Publication status (basic)',
             'display_name' => $this->localize($this->__('Publication status (basic)')),
@@ -309,8 +309,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 29,
             'parent_id' => 28,
-            'is_locked' => 0,
-            'is_leaf' => 1,
+            'is_locked' => false,
+            'is_leaf' => true,
             'value' => 'P',
             'name' => 'Pending',
             'display_name' => $this->localize($this->__('Pending')),
@@ -321,8 +321,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 30,
             'parent_id' => 28,
-            'is_locked' => 0,
-            'is_leaf' => 1,
+            'is_locked' => false,
+            'is_leaf' => true,
             'value' => 'A',
             'name' => 'Approved',
             'display_name' => $this->localize($this->__('Approved')),
@@ -333,8 +333,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 31,
             'parent_id' => 1,
-            'is_locked' => 0,
-            'is_leaf' => 0,
+            'is_locked' => false,
+            'is_leaf' => false,
             'value' => '',
             'name' => 'ZikulaUsersModule',
             'display_name' => $this->localize($this->__('Users')),
@@ -344,8 +344,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 32,
             'parent_id' => 2,
-            'is_locked' => 0,
-            'is_leaf' => 0,
+            'is_locked' => false,
+            'is_leaf' => false,
             'value' => '',
             'name' => 'Global',
             'display_name' => $this->localize($this->__('Global')),
@@ -355,8 +355,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 33,
             'parent_id' => 32,
-            'is_locked' => 0,
-            'is_leaf' => 1,
+            'is_locked' => false,
+            'is_leaf' => true,
             'value' => '',
             'name' => 'Blogging',
             'display_name' => $this->localize($this->__('Blogging')),
@@ -366,8 +366,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 34,
             'parent_id' => 32,
-            'is_locked' => 0,
-            'is_leaf' => 1,
+            'is_locked' => false,
+            'is_leaf' => true,
             'value' => '',
             'name' => 'Music and audio',
             'display_name' => $this->localize($this->__('Music and audio')),
@@ -377,8 +377,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 35,
             'parent_id' => 32,
-            'is_locked' => 0,
-            'is_leaf' => 1,
+            'is_locked' => false,
+            'is_leaf' => true,
             'value' => '',
             'name' => 'Art and photography',
             'display_name' => $this->localize($this->__('Art and photography')),
@@ -388,8 +388,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 36,
             'parent_id' => 32,
-            'is_locked' => 0,
-            'is_leaf' => 1,
+            'is_locked' => false,
+            'is_leaf' => true,
             'value' => '',
             'name' => 'Writing and thinking',
             'display_name' => $this->localize($this->__('Writing and thinking')),
@@ -399,8 +399,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 37,
             'parent_id' => 32,
-            'is_locked' => 0,
-            'is_leaf' => 1,
+            'is_locked' => false,
+            'is_leaf' => true,
             'value' => '',
             'name' => 'Communications and media',
             'display_name' => $this->localize($this->__('Communications and media')),
@@ -410,8 +410,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 38,
             'parent_id' => 32,
-            'is_locked' => 0,
-            'is_leaf' => 1,
+            'is_locked' => false,
+            'is_leaf' => true,
             'value' => '',
             'name' => 'Travel and culture',
             'display_name' => $this->localize($this->__('Travel and culture')),
@@ -421,8 +421,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 39,
             'parent_id' => 32,
-            'is_locked' => 0,
-            'is_leaf' => 1,
+            'is_locked' => false,
+            'is_leaf' => true,
             'value' => '',
             'name' => 'Science and technology',
             'display_name' => $this->localize($this->__('Science and technology')),
@@ -432,8 +432,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 40,
             'parent_id' => 32,
-            'is_locked' => 0,
-            'is_leaf' => 1,
+            'is_locked' => false,
+            'is_leaf' => true,
             'value' => '',
             'name' => 'Sport and activities',
             'display_name' => $this->localize($this->__('Sport and activities')),
@@ -443,8 +443,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $objArray[] = [
             'id' => 41,
             'parent_id' => 32,
-            'is_locked' => 0,
-            'is_leaf' => 1,
+            'is_locked' => false,
+            'is_leaf' => true,
             'value' => '',
             'name' => 'Business and work',
             'display_name' => $this->localize($this->__('Business and work')),
@@ -495,7 +495,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
     public function localize($value = '')
     {
         $values = [];
-        foreach($this->container->get('zikula_settings_module.locale_api')->getSupportedLocales() as $code) {
+        foreach ($this->container->get('zikula_settings_module.locale_api')->getSupportedLocales() as $code) {
             $values[$code] = $this->__(/** @Ignore */$value, 'zikula', $code);
         }
 
@@ -514,7 +514,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
     {
         $attributes = $this->entityManager->getConnection()->fetchAll("SELECT * FROM objectdata_attributes WHERE object_type = 'categories_category'");
         foreach ($attributes as $attribute) {
-            $category = $this->entityManager->getRepository('ZikulaCategoriesModule:CategoryEntity')
+            $category = $this->entityManager->getRepository('Zikula\CategoriesModule\Entity\Historical\v121\CategoryEntity')
                 ->findOneBy(['id' => $attribute['object_id']]);
             if (isset($category) && is_object($category)) {
                 $category->setAttribute($attribute['attribute_name'], $attribute['value']);

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\CategoriesModule\Entity;
+namespace Zikula\CategoriesModule\Entity\Historical\v121;
 
 use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,11 +19,12 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Category entity.
  *
- * @Gedmo\Tree(type="nested")
  * @ORM\Entity(repositoryClass="Zikula\CategoriesModule\Entity\Repository\CategoryRepository")
  * @ORM\Table(name="categories_category",indexes={@ORM\Index(name="idx_categories_is_leaf",columns={"is_leaf"}),
  *                                                @ORM\Index(name="idx_categories_name",columns={"name"}),
- *                                                @ORM\Index(name="idx_categories_status",columns={"status"})})
+ *                                                @ORM\Index(name="idx_categories_ipath",columns={"ipath","is_leaf","status"}),
+ *                                                @ORM\Index(name="idx_categories_status",columns={"status"}),
+ *                                                @ORM\Index(name="idx_categories_ipath_status",columns={"ipath","status"})})
  */
 class CategoryEntity extends EntityAccess
 {
@@ -38,34 +39,8 @@ class CategoryEntity extends EntityAccess
     private $id;
 
     /**
-     * @Gedmo\TreeLeft
-     * @ORM\Column(name="lft", type="integer")
-     */
-    private $lft;
-
-    /**
-     * @Gedmo\TreeLevel
-     * @ORM\Column(name="lvl", type="integer")
-     */
-    private $lvl;
-
-    /**
-     * @Gedmo\TreeRight
-     * @ORM\Column(name="rgt", type="integer")
-     */
-    private $rgt;
-
-    /**
-     * @Gedmo\TreeRoot
-     * @ORM\ManyToOne(targetEntity="CategoryEntity")
-     * @ORM\JoinColumn(name="tree_root", referencedColumnName="id", onDelete="CASCADE")
-     */
-    private $root;
-
-    /**
      * The parent id of the category
      *
-     * @Gedmo\TreeParent
      * @ORM\ManyToOne(targetEntity="CategoryEntity", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @var CategoryEntity
@@ -76,8 +51,7 @@ class CategoryEntity extends EntityAccess
      * Any children of this category
      *
      * @ORM\OneToMany(targetEntity="CategoryEntity", mappedBy="parent")
-     * @ORM\OrderBy({"lft" = "ASC"})
-     * @var ArrayCollection
+     * @var CategoryEntity
      */
     private $children;
 
@@ -114,6 +88,14 @@ class CategoryEntity extends EntityAccess
     private $value;
 
     /**
+     * The sort value for the category
+     *
+     * @ORM\Column(type="integer", name="sort_value")
+     * @var integer
+     */
+    private $sort_value;
+
+    /**
      * The display name for the category
      *
      * @ORM\Column(type="array", name="display_name")
@@ -128,6 +110,22 @@ class CategoryEntity extends EntityAccess
      * @var array
      */
     private $display_desc;
+
+    /**
+     * The fully qualified path to the category in the tree
+     *
+     * @ORM\Column(type="text")
+     * @var string
+     */
+    private $path;
+
+    /**
+     * The numeric version of the fully qualified path
+     *
+     * @ORM\Column(type="string", length=255)
+     * @var string
+     */
+    private $ipath;
 
     /**
      * The status of the category
@@ -183,24 +181,33 @@ class CategoryEntity extends EntityAccess
     private $lu_date;
 
     /**
-     * constructor
-     * @param array $locales
+     * Same as the status property - maintain BC
+     *
+     * @deprecated since 1.4.0 use status property instead
+     *
+     * @ORM\Column(type="string", length=1)
+     * @var string
      */
-    public function __construct(array $locales = [])
+    private $obj_status = 'A';
+
+    /**
+     * constructor
+     */
+    public function __construct()
     {
         $this->parent = null;
         $this->children = null;
-        $this->is_locked = false; //  was 0
-        $this->is_leaf = false; // was 0
+        $this->is_locked = 0;
+        $this->is_leaf = 0;
         $this->name = '';
         $this->value = '';
-        $values = [];
-        foreach ($locales as $code) {
-            $values[$code] = '';
-        }
-        $this->display_name = $values;
-        $this->display_desc = $values;
+        $this->sort_value = 2147483647;
+        $this->display_name = [];
+        $this->display_desc = [];
+        $this->path = '';
+        $this->ipath = '';
         $this->status = 'A';
+        $this->obj_status = 'A';
 
         $this->attributes = new ArrayCollection();
     }
@@ -228,7 +235,7 @@ class CategoryEntity extends EntityAccess
     /**
      * get the categories parent id
      *
-     * @return CategoryEntity
+     * @return int the category id
      */
     public function getParent()
     {
@@ -238,7 +245,7 @@ class CategoryEntity extends EntityAccess
     /**
      * set the categories parent id
      *
-     * @param CategoryEntity $parent
+     * @param CategoryEntity the parent category
      */
     public function setParent(CategoryEntity $parent = null)
     {
@@ -248,11 +255,11 @@ class CategoryEntity extends EntityAccess
     /**
      * get the categories childen
      *
-     * @return ArrayCollection the child categories
+     * @return array the child categories
      */
     public function getChildren()
     {
-        return !empty($this->children) ? $this->children : new ArrayCollection();
+        return !empty($this->children) ? $this->children : [];
     }
 
     /**
@@ -276,15 +283,6 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
-     * Alias layer for Symfony Forms
-     * @return bool
-     */
-    public function getIsLocked()
-    {
-        return $this->getIs_locked();
-    }
-
-    /**
      * get the category locked status
      *
      * @param bool $is_locked locked status flag
@@ -292,15 +290,6 @@ class CategoryEntity extends EntityAccess
     public function setIs_locked($is_locked)
     {
         $this->is_locked = $is_locked;
-    }
-
-    /**
-     * Alias layer for Symfony Forms
-     * @param $isLocked
-     */
-    public function setIsLocked($isLocked)
-    {
-        $this->setIs_locked($isLocked);
     }
 
     /**
@@ -314,15 +303,6 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
-     * Alias layer for Symfony Forms
-     * @return bool
-     */
-    public function getIsLeaf()
-    {
-        return $this->getIs_leaf();
-    }
-
-    /**
      * set the category leaf status
      *
      * @param bool $is_leaf leaft status flag
@@ -330,15 +310,6 @@ class CategoryEntity extends EntityAccess
     public function setIs_leaf($is_leaf)
     {
         $this->is_leaf = $is_leaf;
-    }
-
-    /**
-     * Alias layer for Symfony Forms
-     * @param $isLeaf
-     */
-    public function setIsLeaf($isLeaf)
-    {
-        $this->setIs_leaf($isLeaf);
     }
 
     /**
@@ -384,26 +355,21 @@ class CategoryEntity extends EntityAccess
     /**
      * get the category sort value
      *
-     * @return null
-     * @deprecated
+     * @return int the category name
      */
     public function getSort_value()
     {
-        @trigger_error('The sort_value property is no longer available for getting.', E_USER_DEPRECATED);
-
-        return null;
+        return $this->sort_value;
     }
 
     /**
      * set the category sort value
      *
      * @param int $sort_value the category name
-     * @deprecated
      */
     public function setSort_value($sort_value)
     {
-        @trigger_error('The sort_value property is no longer available for setting.', E_USER_DEPRECATED);
-        // do nothing
+        $this->sort_value = $sort_value;
     }
 
     /**
@@ -435,7 +401,7 @@ class CategoryEntity extends EntityAccess
      * get the category display description
      * @param $lang
      *
-     * @return array|string the category display description
+     * @return string the category display description
      */
     public function getDisplay_desc($lang = null)
     {
@@ -463,9 +429,7 @@ class CategoryEntity extends EntityAccess
      */
     public function getPath()
     {
-        @trigger_error('The path property is deprecated. Use NestedTree functionality instead.', E_USER_DEPRECATED);
-
-        return $this->getPathByField('name');
+        return $this->path;
     }
 
     /**
@@ -475,8 +439,7 @@ class CategoryEntity extends EntityAccess
      */
     public function setPath($path)
     {
-        @trigger_error('The path property is no longer available for setting.', E_USER_DEPRECATED);
-        // do nothing
+        $this->path = $path;
     }
 
     /**
@@ -486,26 +449,7 @@ class CategoryEntity extends EntityAccess
      */
     public function getIPath()
     {
-        @trigger_error('The path property is deprecated. Use NestedTree functionality instead.', E_USER_DEPRECATED);
-
-        return $this->getPathByField('id');
-    }
-
-    /**
-     * @param string $field
-     * @return string
-     */
-    private function getPathByField($field = 'name')
-    {
-        $path = [];
-        $method = 'get' . lcfirst($field);
-        $entity = $this;
-        do {
-            array_unshift($path, $entity->$method());
-            $entity = $entity->getParent();
-        } while (null !== $entity);
-
-        return implode('/', $path);
+        return $this->ipath;
     }
 
     /**
@@ -515,8 +459,7 @@ class CategoryEntity extends EntityAccess
      */
     public function setIPath($ipath)
     {
-        @trigger_error('The ipath property is no longer available for setting.', E_USER_DEPRECATED);
-        // do nothing
+        $this->ipath = $ipath;
     }
 
     /**
@@ -526,7 +469,7 @@ class CategoryEntity extends EntityAccess
      */
     public function getStatus()
     {
-        return $this->status == 'A';
+        return $this->status;
     }
 
     /**
@@ -536,9 +479,6 @@ class CategoryEntity extends EntityAccess
      */
     public function setStatus($status)
     {
-        if (is_bool($status)) {
-            $status = $status ? 'A' : 'I';
-        }
         $this->status = $status;
     }
 
@@ -629,9 +569,7 @@ class CategoryEntity extends EntityAccess
      */
     public function setObj_status($obj_status)
     {
-        @trigger_error('The obj_status property is deprecated. Use the status property instead.', E_USER_DEPRECATED);
-
-        $this->status = $obj_status;
+        $this->obj_status = $obj_status;
     }
 
     /**
@@ -641,15 +579,13 @@ class CategoryEntity extends EntityAccess
      */
     public function getObj_status()
     {
-        @trigger_error('The obj_status property is deprecated. Use the status property instead.', E_USER_DEPRECATED);
-
-        return $this->status;
+        return $this->obj_status;
     }
 
     /**
      * get the attributes of the category
      *
-     * @return ArrayCollection the category's attributes
+     * @return CategoryAttributeEntity the category's attributes
      */
     public function getAttributes()
     {
@@ -659,22 +595,11 @@ class CategoryEntity extends EntityAccess
     /**
      * set the attributes for the category
      *
-     * @param ArrayCollection $attributes the attributes for the category
+     * @param CategoryAttributeEntity $attributes the attributes for the category
      */
-    public function setAttributes(ArrayCollection $attributes)
+    public function setAttributes($attributes)
     {
         $this->attributes = $attributes;
-    }
-
-    public function addAttribute(CategoryAttributeEntity $attribute)
-    {
-        $attribute->setCategory($this);
-        $this->attributes->add($attribute);
-    }
-
-    public function removeAttribute(CategoryAttributeEntity $attribute)
-    {
-        $this->attributes->removeElement($attribute);
     }
 
     /**
@@ -688,11 +613,7 @@ class CategoryEntity extends EntityAccess
         if (isset($this->attributes[$name])) {
             $this->attributes[$name]->setValue($value);
         } else {
-            $attribute = new CategoryAttributeEntity();
-            $attribute->setCategory($this);
-            $attribute->setName($name);
-            $attribute->setValue($value);
-            $this->attributes[$name] = $attribute;
+            $this->attributes[$name] = new CategoryAttributeEntity($this, $name, $value);
         }
     }
 
@@ -826,69 +747,5 @@ class CategoryEntity extends EntityAccess
     public function setDisplayDesc($displayDesc)
     {
         $this->setDisplay_desc($displayDesc);
-    }
-
-    /**
-     * @return int
-     */
-    public function getLft()
-    {
-        return $this->lft;
-    }
-
-    /**
-     * @param int $lft
-     */
-    public function setLft($lft)
-    {
-        $this->lft = $lft;
-    }
-
-    /**
-     * @return int
-     */
-    public function getLvl()
-    {
-        return $this->lvl;
-    }
-
-    /**
-     * @param int $lvl
-     */
-    public function setLvl($lvl)
-    {
-        $this->lvl = $lvl;
-    }
-
-    /**
-     * @return int
-     */
-    public function getRgt()
-    {
-        return $this->rgt;
-    }
-
-    /**
-     * @param int $rgt
-     */
-    public function setRgt($rgt)
-    {
-        $this->rgt = $rgt;
-    }
-
-    /**
-     * @return CategoryEntity
-     */
-    public function getRoot()
-    {
-        return $this->root;
-    }
-
-    /**
-     * @param CategoryEntity $root
-     */
-    public function setRoot(CategoryEntity $root)
-    {
-        $this->root = $root;
     }
 }
