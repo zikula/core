@@ -138,7 +138,7 @@ class CategoryEntity extends EntityAccess
     /**
      * Any attributes of this category
      *
-     * @ORM\OneToMany(targetEntity="CategoryAttributeEntity",
+     * @ORM\OneToMany(targetEntity="Zikula\CategoriesModule\Entity\CategoryAttributeEntity",
      *                mappedBy="category",
      *                cascade={"all"},
      *                orphanRemoval=true,
