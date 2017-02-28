@@ -74,12 +74,8 @@
             </div>
         </fieldset>
 
-        {% if form.vars.value.id|default %}
-            {{ include('@ZikulaCategoriesModule/metaData.html.twig', {category: form.vars.value}) }}
-        {% endif %}
-
         {{ form_row(form.attributes) }}
-        <div class="form-group">
+        <div class="form-group{% if app.request.xmlHttpRequest %} hidden{% endif %}">
             <div class="col-sm-offset-3 col-sm-9">
                 {{ form_widget(form.save) }}
                 {{ form_widget(form.cancel) }}

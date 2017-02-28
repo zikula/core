@@ -41,6 +41,7 @@ class CategoryType extends AbstractType
             ->add('parent', 'Zikula\CategoriesModule\Form\Type\CategoryTreeType', [
                 'label' => $translator->__('Parent'),
                 'translator' => $translator,
+                'includeLeaf' => false,
                 'constraints' => [new NotBlank()]
             ])
             ->add('is_locked', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [

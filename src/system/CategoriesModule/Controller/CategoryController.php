@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -90,10 +91,9 @@ class CategoryController extends AbstractController
         if ($form->handleRequest($request)->isSubmitted()) {
             if ($form->get('save')->isClicked() && $form->isValid()) {
                 $category = $form->getData();
-                $category->setPath($category->getParent()->getPath() . '/' . $category->getName());
-                $category->setIPath($category->getParent()->getIPath() . '/' . $category->getId());
-                $this->updateChildPaths($category);
-                $this->get('doctrine')->getManager()->flush();
+                $em = $this->get('doctrine')->getManager();
+                $em->persist($category);
+                $em->flush();
                 $this->addFlash('status', $this->__('Done!'));
 
                 return $this->redirectToRoute('zikulacategoriesmodule_category_list');
@@ -104,11 +104,18 @@ class CategoryController extends AbstractController
                 return $this->redirectToRoute('zikulacategoriesmodule_category_list');
             }
         }
-
-        return [
+        $templateParameters = [
             'locales' => $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(),
             'form' => $form->createView()
         ];
+        if ($request->isXmlHttpRequest()) {
+            return new AjaxResponse([
+                'action' => 'edit',
+                'result' => $this->renderView('@ZikulaCategoriesModule/Category/edit.html.twig', $templateParameters)
+            ]);
+        }
+
+        return $templateParameters;
     }
 
     /**
@@ -129,30 +136,11 @@ class CategoryController extends AbstractController
         // nada
     }
 
-    /**
-     * Recursive method to update all child paths to reflect updated parent path
-     * @param CategoryEntity $category
-     */
-    private function updateChildPaths(CategoryEntity $category)
-    {
-        /** @var CategoryEntity[] $children */
-        $children = $category->getChildren();
-        foreach ($children as $child) {
-            // if path of child does not include full path of recently updated parent,
-            // then parent has changed and child path must be updated
-            if (0 !== strpos($child->getPath(), $category->getPath() . '/')) {
-                $child->setPath($category->getPath() . '/' . $child->getName());
-                if ($child->getChildren()->count() > 0) {
-                    $this->updateChildPaths($child);
-                }
-            }
-        }
-    }
-
     private function getNodeOptions(Request $request)
     {
         $locale = $request->getLocale();
         $router = $this->get('router');
+
         return [
             'decorate' => true,
             'html' => true,

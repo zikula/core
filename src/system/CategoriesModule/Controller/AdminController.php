@@ -11,22 +11,17 @@
 
 namespace Zikula\CategoriesModule\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Zikula\CategoriesModule\Helper\TreeMapHelper;
 use Zikula\Core\Controller\AbstractController;
 
 /**
  * @Route("/admin")
  * @deprecated
- *
- * Administrative controllers for the categories module
  */
 class AdminController extends AbstractController
 {
@@ -63,57 +58,13 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/rebuild")
-     * @Template
-     *
-     * Displays page for rebuilding pathes.
-     *
-     * @param Request $request
-     *
-     * @return Response symfony response object
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have administrative permission for this module
      */
     public function rebuildAction(Request $request)
     {
-        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
+        @trigger_error('The zikulacategoriesmodule_admin_rebubild route is no longer used.', E_USER_DEPRECATED);
+        $this->addFlash('info', $this->__('Category paths no longer need to be rebuilt.'));
 
-        $form = $this->createFormBuilder()
-            ->add('rebuild', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $this->__('Rebuild paths'),
-                'icon' => 'fa-refresh',
-                'attr' => [
-                    'class' => 'btn btn-success'
-                ]
-            ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $this->__('Cancel'),
-                'icon' => 'fa-times',
-                'attr' => [
-                    'class' => 'btn btn-default'
-                ]
-            ])
-            ->getForm();
-
-        if ($form->handleRequest($request)->isValid()) {
-            if ($form->get('rebuild')->isClicked()) {
-                $pathBuilder = $this->get('zikula_categories_module.path_builder_helper');
-                $pathBuilder->rebuildPaths('path', 'name');
-                $pathBuilder->rebuildPaths('ipath', 'id');
-
-                $this->addFlash('status', $this->__('Done! Rebuilt the category paths.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
-            }
-
-            return $this->redirectToRoute('zikulacategoriesmodule_admin_view');
-        }
-
-        return [
-            'form' => $form->createView()
-        ];
+        return $this->redirectToRoute('zikulacategoriesmodule_category_list');
     }
 
     /**
@@ -128,15 +79,6 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/editregistry")
-     * @Method("GET")
-     *
-     * Edits a category registry.
-     *
-     * @param Request $request
-     *
-     * @return Response symfony response object
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have permission to administrate the module
      */
     public function editregistryAction(Request $request)
     {
@@ -157,23 +99,17 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/new")
-     * @Method("GET")
-     *
-     * Displays new category form.
-     *
-     * @param Request $request
-     *
-     * @return Response symfony response object
      */
     public function newcatAction(Request $request)
     {
+        @trigger_error('The zikulacategoriesmodule_admin_new action is deprecated. please use zikulacategoriesmodule_category_edit instead.', E_USER_DEPRECATED);
         $path = [
-            '_controller' => 'ZikulaCategoriesModule:Admin:edit',
+            '_controller' => 'ZikulaCategoriesModule:Category:edit',
             'mode' => 'new'
         ];
         $subRequest = $request->duplicate($request->query->all(), $request->request->all(), $path);
 
-        return $this->get('http_kernel')->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
+        return $this->get('kernel')->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
     }
 
     /**
@@ -328,20 +264,9 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/preferences")
-     * @Method("GET")
-     *
-     * Global module preferences.
-     *
-     * @return Response symfony response object
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have permission to administrate the module
      */
     public function preferencesAction()
     {
-        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         @trigger_error('The zikulacategoriesmodule_admin_preferences route is deprecated. please use zikulacategoriesmodule_config_config instead.', E_USER_DEPRECATED);
 
         return $this->redirectToRoute('zikulacategoriesmodule_config_config');

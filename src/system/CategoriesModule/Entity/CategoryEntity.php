@@ -463,6 +463,7 @@ class CategoryEntity extends EntityAccess
     public function getPath()
     {
         @trigger_error('The path property is deprecated. Use NestedTree functionality instead.', E_USER_DEPRECATED);
+
         return $this->getPathByField('name');
     }
 
@@ -485,6 +486,7 @@ class CategoryEntity extends EntityAccess
     public function getIPath()
     {
         @trigger_error('The path property is deprecated. Use NestedTree functionality instead.', E_USER_DEPRECATED);
+
         return $this->getPathByField('id');
     }
 
@@ -627,6 +629,7 @@ class CategoryEntity extends EntityAccess
     public function setObj_status($obj_status)
     {
         @trigger_error('The obj_status property is deprecated. Use the status property instead.', E_USER_DEPRECATED);
+
         $this->status = $obj_status;
     }
 
@@ -638,6 +641,7 @@ class CategoryEntity extends EntityAccess
     public function getObj_status()
     {
         @trigger_error('The obj_status property is deprecated. Use the status property instead.', E_USER_DEPRECATED);
+
         return $this->status;
     }
 
