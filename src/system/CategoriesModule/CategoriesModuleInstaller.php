@@ -103,6 +103,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             case '1.2.1':
                 try {
                     $this->schemaTool->create(['Zikula\CategoriesModule\Entity\CategoryAttributeEntity']);
+                    $this->schemaTool->update(['Zikula\CategoriesModule\Entity\CategoryEntity']);
                 } catch (\Exception $e) {
                 }
                 // rename old tablename column for Core 1.4.0
@@ -120,10 +121,6 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
                     $modVars[$boolVar] = isset($modVars[$boolVar]) ? (bool)$modVars[$boolVar] : false;
                 }
                 $this->setVars($modVars);
-                try {
-                    $this->schemaTool->update(['Zikula\CategoriesModule\Entity\CategoryEntity']);
-                } catch (\Exception $e) {
-                }
                 $helper = new TreeMapHelper($this->container->get('doctrine'));
                 $helper->map(); // updates NestedTree values in entities
                 $connection->executeQuery('UPDATE categories_category SET `tree_root` = 1 WHERE 1');
@@ -514,7 +511,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
     {
         $attributes = $this->entityManager->getConnection()->fetchAll("SELECT * FROM objectdata_attributes WHERE object_type = 'categories_category'");
         foreach ($attributes as $attribute) {
-            $category = $this->entityManager->getRepository('Zikula\CategoriesModule\Entity\Historical\v121\CategoryEntity')
+            $category = $this->entityManager->getRepository('Zikula\CategoriesModule\Entity\CategoryEntity')
                 ->findOneBy(['id' => $attribute['object_id']]);
             if (isset($category) && is_object($category)) {
                 $category->setAttribute($attribute['attribute_name'], $attribute['value']);
