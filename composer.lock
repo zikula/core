@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/claviska/jquery-minicolors.git",
-                "reference": "53a264de0d44222cbc0522c81936d13072465749"
+                "reference": "02e68e56963efdc14b31bd6a8362c61d8de5ad5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/claviska/jquery-minicolors/zipball/53a264de0d44222cbc0522c81936d13072465749",
-                "reference": "53a264de0d44222cbc0522c81936d13072465749",
+                "url": "https://api.github.com/repos/claviska/jquery-minicolors/zipball/02e68e56963efdc14b31bd6a8362c61d8de5ad5a",
+                "reference": "02e68e56963efdc14b31bd6a8362c61d8de5ad5a",
                 "shasum": ""
             },
             "type": "component",
@@ -40,7 +40,7 @@
             ],
             "description": "jQuery MiniColors Plugin",
             "homepage": "http://www.abeautifulsite.net/",
-            "time": "2017-01-15 00:36:13"
+            "time": "2017-02-22 19:07:34"
         },
         {
             "name": "afarkas/html5shiv",
@@ -2764,19 +2764,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/oyejorge/less.php.git",
-                "reference": "ca54efbb40403c5665e2dd7335662c44bb9fc644"
+                "reference": "03ade807714f3764893c151d95a65e5523fe9015"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oyejorge/less.php/zipball/ca54efbb40403c5665e2dd7335662c44bb9fc644",
-                "reference": "ca54efbb40403c5665e2dd7335662c44bb9fc644",
+                "url": "https://api.github.com/repos/oyejorge/less.php/zipball/03ade807714f3764893c151d95a65e5523fe9015",
+                "reference": "03ade807714f3764893c151d95a65e5523fe9015",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.8.21"
+                "phpunit/phpunit": "~4.8.24"
             },
             "bin": [
                 "bin/lessc"
@@ -2806,9 +2806,13 @@
                 {
                     "name": "Josh Schmidt",
                     "homepage": "https://github.com/oyejorge"
+                },
+                {
+                    "name": "Michaël Marinetti",
+                    "homepage": "https://github.com/Asenar"
                 }
             ],
-            "description": "PHP port of the Javascript version of LESS http://lesscss.org",
+            "description": "PHP port of the Javascript version of LESS http://lesscss.org (Originally maintained by Josh Schmidt)",
             "homepage": "http://lessphp.gpeasy.com",
             "keywords": [
                 "css",
@@ -2818,20 +2822,20 @@
                 "php",
                 "stylesheet"
             ],
-            "time": "2016-03-23 04:37:27"
+            "time": "2017-02-23 18:01:04"
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.4",
+            "version": "v2.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e"
+                "reference": "b5ea1ef3d8ff10c307ba8c5945c2f134e503278f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e",
-                "reference": "a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/b5ea1ef3d8ff10c307ba8c5945c2f134e503278f",
+                "reference": "b5ea1ef3d8ff10c307ba8c5945c2f134e503278f",
                 "shasum": ""
             },
             "require": {
@@ -2866,7 +2870,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-11-07T23:38:38+00:00"
+            "time": "2017-02-27T17:11:23+00:00"
         },
         {
             "name": "phpids/phpids",
@@ -4200,29 +4204,30 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.31.0",
+            "version": "v1.32.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "ddc9e3e20ee9c0b6908f401ac8353635b750eca7"
+                "reference": "9935b662e24d6e634da88901ab534cc12e8c728f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/ddc9e3e20ee9c0b6908f401ac8353635b750eca7",
-                "reference": "ddc9e3e20ee9c0b6908f401ac8353635b750eca7",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/9935b662e24d6e634da88901ab534cc12e8c728f",
+                "reference": "9935b662e24d6e634da88901ab534cc12e8c728f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.7"
             },
             "require-dev": {
+                "psr/container": "^1.0",
                 "symfony/debug": "~2.7",
                 "symfony/phpunit-bridge": "~3.2"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.31-dev"
+                    "dev-master": "1.32-dev"
                 }
             },
             "autoload": {
@@ -4257,7 +4262,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-01-11T19:36:15+00:00"
+            "time": "2017-02-27T00:07:03+00:00"
         },
         {
             "name": "twitter/typeahead.js",
@@ -4828,12 +4833,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "384e30e35733901f2e3b28e7a39a1a5e92b1df9d"
+                "reference": "9b079fa7de9c092c0e19a0dbd913c8a61d80f210"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/384e30e35733901f2e3b28e7a39a1a5e92b1df9d",
-                "reference": "384e30e35733901f2e3b28e7a39a1a5e92b1df9d",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/9b079fa7de9c092c0e19a0dbd913c8a61d80f210",
+                "reference": "9b079fa7de9c092c0e19a0dbd913c8a61d80f210",
                 "shasum": ""
             },
             "require": {
@@ -4888,7 +4893,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2017-02-04 18:36:43"
+            "time": "2017-02-26 11:52:28"
         },
         {
             "name": "zikula/profile-module",
@@ -4896,12 +4901,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "d45909a4599f7344c701dd464a2ab3a252211e1f"
+                "reference": "5862829c84fdda61b5ac1a41368693e2c2082153"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/d45909a4599f7344c701dd464a2ab3a252211e1f",
-                "reference": "d45909a4599f7344c701dd464a2ab3a252211e1f",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/5862829c84fdda61b5ac1a41368693e2c2082153",
+                "reference": "5862829c84fdda61b5ac1a41368693e2c2082153",
                 "shasum": ""
             },
             "require": {
@@ -4962,7 +4967,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2017-02-04 18:38:00"
+            "time": "2017-02-26 11:54:20"
         },
         {
             "name": "zikula/wizard",
