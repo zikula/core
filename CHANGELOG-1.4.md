@@ -28,6 +28,7 @@ CHANGELOG - ZIKULA 1.4.x
     - sensio/framework-extra-bundle updated from 3.0.21 to 3.0.22
     - sensiolabs security checker updated from 4.0.0 to 4.0.1
     - swiftmailer/swiftmailer updated from v5.4.5 to v5.4.6 
+    - twig updated from 1.31.0 to 1.32.0
     - willdurand/js-translation-bundle updated from 2.6.3 to 2.6.4
     - wikimedia/composer-merge-plugin installed as dev-master 
 
