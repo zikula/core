@@ -1,7 +1,7 @@
 {{ pageAddAsset('javascript', asset('jstree/dist/jstree.min.js')) }}
 {{ pageAddAsset('stylesheet', asset('jstree/dist/themes/default/style.min.css')) }}
 {{ pageAddAsset('javascript', zasset('@ZikulaCategoriesModule:js/categories_admin_view.js')) }}
-{{ pageAddAsset('javascript', zasset('@ZikulaCategoriesModule:js/categories_admin_edit.js')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaCategoriesModule:js/ZikulaCategoriesModule.Category.Edit.js')) }}
 {{ adminHeader() }}
 {% set customStyle %}
     <style type="text/css">
@@ -40,8 +40,8 @@
             <div class="modal-body">
             </div>
             <div class="modal-footer">
-                <button type="button" value="Submit" class="btn btn-primary">{{ __('Submit') }}</button>
-                <button type="button" value="Cancel" class="btn btn-default" data-dismiss="modal">{{ __('Cancel') }}</button>
+                <button type="button" value="Submit" class="btn btn-success"><i class="fa fa-check"></i> {{ __('Submit') }}</button>
+                <button type="button" value="Cancel" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> {{ __('Cancel') }}</button>
             </div>
         </div>
     </div>
@@ -58,11 +58,11 @@
                 <p id="deleteWithSubCatInfo"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" id='cat_delete' value="Delete" class="btn btn-primary">{{ __('Delete') }}</button>
+                <button type="button" id='cat_delete' value="Delete" class="btn btn-danger"><i class="fa fa-trash-o"></i> {{ __('Delete') }}</button>
                 <button type="button" id='cat_delete_all' value="Delete" class="btn btn-primary hidden">{{ __('Delete all sub-categories') }}</button>
                 <button type="button" id='cat_delete_move' value="DeleteAndMoveSubs" class="btn btn-default hidden">{{ __('Move all sub-categories') }}</button>
                 <button type="button" id='cat_delete_move_action' value="DeleteAndMoveSubs" class="btn btn-success hidden">{{ __('Move and delete') }}</button>
-                <button type="button" id='cat_cancel' value="Cancel" class="btn btn-default" data-dismiss="modal">{{ __('Cancel') }}</button>
+                <button type="button" id='cat_cancel' value="Cancel" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> {{ __('Cancel') }}</button>
             </div>
         </div>
     </div>

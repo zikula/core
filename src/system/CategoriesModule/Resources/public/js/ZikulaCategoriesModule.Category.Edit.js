@@ -15,9 +15,9 @@
                 icon.removeClass('fa-compress').addClass('fa-expand');
             }
         }
-        $('a.category_attributes_remove').on('click', removeTr);
-        $('a[data-toggle]').on('click', toggleHandler);
-        $('#add-another-attribute').click(function(e) {
+        $(document).on("click", "a.category_attributes_remove", removeTr);
+        $(document).on("click", "a[data-toggle]", toggleHandler);
+        $(document).on("click", "#add-another-attribute", function(e) {
             e.preventDefault();
             var attributeTable = $('#attribute-table');
             var newWidget = attributeTable.attr('data-prototype');

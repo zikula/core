@@ -95,15 +95,20 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
     public function upgrade($oldversion)
     {
         $connection = $this->entityManager->getConnection();
+        try {
+            $this->schemaTool->update([
+                'Zikula\CategoriesModule\Entity\CategoryEntity',
+                'Zikula\CategoriesModule\Entity\CategoriesMapobj',
+            ]);
+        } catch (\Exception $e) {
+        }
+
         switch ($oldversion) {
             case '1.1':
             case '1.2':
-                // new column used in doctrine categorisable template
-                DoctrineUtil::createColumn('categories_mapobj', 'reg_property', ['type' => 'string', 'length' => 60], false);
             case '1.2.1':
                 try {
                     $this->schemaTool->create(['Zikula\CategoriesModule\Entity\CategoryAttributeEntity']);
-                    $this->schemaTool->update(['Zikula\CategoriesModule\Entity\CategoryEntity']);
                 } catch (\Exception $e) {
                 }
                 // rename old tablename column for Core 1.4.0

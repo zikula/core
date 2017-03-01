@@ -178,25 +178,10 @@
                         pars[field.name] = field.value;
                     });
                     pars.mode = (mode == 'edit') ? 'edit' : 'new';
-                    pars.attribute_name = [];
-                    pars.attribute_value = [];
-                    // special handling of potential array values
-                    $('input[name="attribute_name[]"]').each(function() {
-                        if ($(this).val() == '') {
-                            return true;
-                        }
-                        pars.attribute_name.push($(this).val());
-                    });
-                    $('input[name="attribute_value[]"]').each(function() {
-                        if ($(this).val() == "") {
-                            return true;
-                        }
-                        pars.attribute_value.push($(this).val());
-                    });
 
                     $.ajax({
                         type: 'POST',
-                        url: Routing.generate('zikulacategoriesmodule_ajax_save'),
+                        url: Routing.generate('zikulacategoriesmodule_category_edit', {category: data.cid}),
                         data: pars
                     }).success(function(result) {
                         var data = result.data;
@@ -313,9 +298,8 @@
 
     function openCategoryEditForm(data, callback) {
         $('#categories_ajax_form_container').show();
-        ZikulaCategories.init();
         var editModal = $('#categoryEditModal');
-        editModal.find('.modal-footer button').unbind('click').click(callback);
+        editModal.find('.modal-footer button').on('click', callback);
 
         editModal.modal();
         editModal.find('.modal-footer button[value=Cancel]').focus();
