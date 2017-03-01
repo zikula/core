@@ -11,7 +11,6 @@
 
 namespace Zikula\CategoriesModule;
 
-use DoctrineUtil;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Helper\TreeMapHelper;
 use Zikula\Core\AbstractExtensionInstaller;
