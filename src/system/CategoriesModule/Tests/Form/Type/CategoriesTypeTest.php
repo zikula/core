@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
+use Gedmo\Tree\TreeListener;
 use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;
 use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
 use Symfony\Component\Form\PreloadedExtension;
@@ -55,6 +56,7 @@ class CategoriesTypeTest extends TypeTestCase
         $this->em = DoctrineTestHelper::createTestEntityManager();
         $this->emRegistry = $this->createRegistryMock('default', $this->em);
         $this->categoryRegistryApi = $this->createCategoryRegistryApiMock();
+        $this->em->getEventManager()->addEventSubscriber(new TreeListener());
 
         parent::setUp();
 
@@ -356,33 +358,27 @@ class CategoriesTypeTest extends TypeTestCase
         $root->setId(1);
         $root->setName('root');
         $root->setDisplay_name(['en' => 'root']);
-        $root->setPath('/root');
-        $root->setIPath('/1');
         $root->setCr_date($now);
         $root->setLu_date($now);
-        $this->em->persist($root);
+        $this->em->getRepository('Zikula\CategoriesModule\Entity\CategoryEntity')->persistAsFirstChild($root);
 
         $a = new CategoryEntity();
         $a->setId(2);
         $a->setParent($root);
         $a->setName('a');
         $a->setDisplay_name(['en' => 'a']);
-        $a->setPath('/root/a');
-        $a->setIPath('/1/2');
         $a->setCr_date($now);
         $a->setLu_date($now);
-        $this->em->persist($a);
+        $this->em->getRepository('Zikula\CategoriesModule\Entity\CategoryEntity')->persistAsFirstChildOf($a, $root);
 
         $b = new CategoryEntity();
         $b->setId(3);
         $b->setParent($root);
         $b->setName('b');
         $b->setDisplay_name(['en' => 'b']);
-        $b->setPath('/root/b');
-        $b->setIPath('/1/3');
         $b->setCr_date($now);
         $b->setLu_date($now);
-        $this->em->persist($b);
+        $this->em->getRepository('Zikula\CategoriesModule\Entity\CategoryEntity')->persistAsLastChildOf($b, $root);
 
         $this->em->flush();
     }
