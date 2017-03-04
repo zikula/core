@@ -36,7 +36,7 @@ of the new core release. Zikula Core 1.4 has the following requirements:
 
 |               | Minimum       | Recommended  |
 | ------------- |:-------------:| :-----------:|
-| PHP           | 5.4.1         | >=5.5 <7     |
+| PHP           | 5.5.9         | >=5.5.9 <7   |
 
  - Zikula requires more memory than typical to install. You should set your memory limit in `php.ini`
    to 128 MB for the installation process.
