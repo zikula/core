@@ -1,0 +1,26 @@
+workflow:
+#framework:   for master branch
+   workflows:
+      blog_publishing:
+         type: 'state_machine'
+         supports:
+            - AppBundle\Entity\BlogPost
+            - AnotherBundle\Entity\FooEntity
+         places:
+            - initial
+            - waiting
+            - approved
+            - deleted
+         transitions:
+            submit:
+               from: initial
+               to: waiting
+            submit_and_approve:
+               from: initial
+               to: approved
+            approve:
+               from: waiting
+               to: approved
+            delete:
+               from: [waiting, approved]
+               to: deleted
