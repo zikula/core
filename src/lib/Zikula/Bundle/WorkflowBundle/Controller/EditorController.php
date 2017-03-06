@@ -48,7 +48,12 @@ class EditorController extends Controller
             throw new AccessDeniedException();
         }
 
-        $workflowName = 'workflow.' . $request->query->get('workflow', '');
+        $workflowType = 'workflow';
+        $workflowName = $workflowType . '.' . $request->query->get('workflow', '');
+        if (!$this->get('service_container')->has($workflowName)) {
+            $workflowType = 'state_machine';
+            $workflowName = $workflowType . '.' . $request->query->get('workflow', '');
+        }
         if (!$this->get('service_container')->has($workflowName)) {
             throw new NotFoundHttpException($this->get('translator.default')->__f('Workflow "%workflow%" not found.', ['%workflow%' => $workflowName]));
         }
@@ -58,6 +63,7 @@ class EditorController extends Controller
 
         return [
             'name' => $workflow->getName(),
+            'type' => $workflowType,
             'workflow' => $workflowDefinition
         ];
     }

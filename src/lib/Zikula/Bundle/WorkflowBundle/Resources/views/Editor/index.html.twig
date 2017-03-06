@@ -52,15 +52,15 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="workflowName">{{ __('Name') }}</label>
-                            <input type="text" id="workflowName" value="blog_publishing" class="form-control input-sm" />
+                            <input type="text" id="workflowName" value="{{ name }}" class="form-control input-sm" />
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="workflowType">{{ __('Type') }}</label>
                             <select id="workflowType" class="form-control input-sm">
-                                <option value="workflow">{{ __('Workflow') }}</option>
-                                <option value="state_machine" selected="selected">{{ __('State Machine') }}</option>
+                                <option value="workflow"{{ type == 'workflow' ? ' selected="selected"' : '' }}>{{ __('Workflow') }}</option>
+                                <option value="state_machine"{{ type == 'state_machine' ? ' selected="selected"' : '' }}>{{ __('State Machine') }}</option>
                             </select>
                         </div>
                     </div>
