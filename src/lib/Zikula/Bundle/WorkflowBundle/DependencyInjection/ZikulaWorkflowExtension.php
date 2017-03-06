@@ -66,18 +66,22 @@ class ZikulaWorkflowExtension extends Extension implements PrependExtensionInter
      */
     private function loadWorkflowDefinitions(ContainerBuilder $container)
     {
-        $finder = new Finder();
-        $finder->files()->name('*.yml')->in($this->workflowDirectories);
-        foreach ($finder as $file) {
-            $loader = new YamlFileLoader($container, new FileLocator($file->getPath()));
-            $loader->load($file->getFilename());
-        }
+        try {
+            $finder = new Finder();
+            $finder->files()->name('*.yml')->in($this->workflowDirectories);
+            foreach ($finder as $file) {
+                $loader = new YamlFileLoader($container, new FileLocator($file->getPath()));
+                $loader->load($file->getFilename());
+            }
 
-        $finder = new Finder();
-        $finder->files()->name('*.xml')->in($this->workflowDirectories);
-        foreach ($finder as $file) {
-            $loader = new XmlFileLoader($container, new FileLocator($file->getPath()));
-            $loader->load($file->getFilename());
+            $finder = new Finder();
+            $finder->files()->name('*.xml')->in($this->workflowDirectories);
+            foreach ($finder as $file) {
+                $loader = new XmlFileLoader($container, new FileLocator($file->getPath()));
+                $loader->load($file->getFilename());
+            }
+        } catch (\InvalidArgumentException $e) {
+            // no module with a workflow directory exists, ignore
         }
     }
 }
