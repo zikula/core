@@ -13,12 +13,9 @@ namespace Zikula\Bundle\WorkflowBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Workflow;
@@ -31,7 +28,7 @@ class ZikulaWorkflowExtension extends Extension implements PrependExtensionInter
     private $workflowDirectories = [];
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -41,7 +38,7 @@ class ZikulaWorkflowExtension extends Extension implements PrependExtensionInter
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function prepend(ContainerBuilder $container)
     {
