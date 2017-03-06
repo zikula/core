@@ -4,8 +4,8 @@ workflow:
       blog_publishing:
          type: 'state_machine'
          supports:
-            - AppBundle\Entity\BlogPost
-            - AnotherBundle\Entity\FooEntity
+            #- AppBundle\Entity\BlogPost
+            #- AnotherBundle\Entity\FooEntity
          places:
             - initial
             - waiting

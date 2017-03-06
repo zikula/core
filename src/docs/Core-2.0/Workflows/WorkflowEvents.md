@@ -1,11 +1,9 @@
-Workflow Events
-===============
+# Workflow Events
 
 The Symfony Workflow component dispatches multiple events which you can use to inject custom behaviour.
 *Note:* this document can be removed after it has been merged into the Symfony documentation (see [https://github.com/symfony/symfony-docs/pull/7528](PR)).
 
-General events
---------------
+## General events
 
 The following events are dispatched for all workflows:
 
@@ -14,8 +12,7 @@ The following events are dispatched for all workflows:
 3. _workflow.transition_: occurs just before starting to transition to the new state.
 4. _workflow.enter_: occurs just after the object has entered into the new state.
 
-Workflow-specific events
-------------------------
+## Workflow-specific events
 
 All the previous events are also triggered for each workflow individually, so you can react only to the events of a specific workflow:
 
@@ -24,8 +21,7 @@ All the previous events are also triggered for each workflow individually, so yo
 3. _workflow.<workflow_name>.transition_
 4. _workflow.<workflow_name>.enter_
 
-Transition or state-specific events
------------------------------------
+## Transition or state-specific events
 
 You can even listen to some specific transitions or states for a specific workflow:
 

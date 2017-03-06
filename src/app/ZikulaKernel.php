@@ -41,6 +41,7 @@ class ZikulaKernel extends Kernel
             new Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
             new Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle(),
             new Symfony\Bundle\WorkflowBundle\WorkflowBundle(),
+            new Zikula\Bundle\WorkflowBundle\ZikulaWorkflowBundle(),
         ];
 
         foreach (self::$coreModules as $bundleClass) {
