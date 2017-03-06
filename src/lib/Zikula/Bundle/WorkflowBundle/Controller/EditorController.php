@@ -53,9 +53,11 @@ class EditorController extends Controller
             throw new NotFoundHttpException($this->get('translator.default')->__f('Workflow "%workflow%" not found.', ['%workflow%' => $workflowName]));
         }
 
-        $workflowDefinition = $this->get($workflowName)->getDefinition();
+        $workflow = $this->get($workflowName);
+        $workflowDefinition = $workflow->getDefinition();
 
         return [
+            'name' => $workflow->getName(),
             'workflow' => $workflowDefinition
         ];
     }
