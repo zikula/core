@@ -1,7 +1,7 @@
 # Workflow Events
 
 The Symfony Workflow component dispatches multiple events which you can use to inject custom behaviour.
-*Note:* this document can be removed after it has been merged into the Symfony documentation (see [https://github.com/symfony/symfony-docs/pull/7528](PR)).
+*Note:* this document can be removed after it has been merged into the Symfony documentation (see [PR 7528](https://github.com/symfony/symfony-docs/pull/7528)).
 
 ## General events
 
