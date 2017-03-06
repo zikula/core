@@ -1,0 +1,5 @@
+zikulaworkflowbundle:
+    # define routing support for these controllers
+    resource: "@ZikulaWorkflowBundle/Controller"
+    # enable support for defining routes by annotations
+    type: annotation

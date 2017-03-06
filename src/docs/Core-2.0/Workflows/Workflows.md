@@ -30,4 +30,8 @@ At the moment it supports YAML and XML output.
 
 ![Workflow editor](images/workflow_ui.png)
 
+The editor expects the name of a workflow which should be loaded. You can for example include a link to it like this:
+
+    <p><a href="{{ path('zikula_workflow_editor_index', { 'workflow': 'acmetestmodule_enterprise' }) }}" title="{{ __('Edit workflow for articles') }}" target="_blank">{{ __('Articles workflow') }}</a>
+
 **TODO** add missing information
