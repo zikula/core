@@ -7,10 +7,10 @@ The Symfony Workflow component dispatches multiple events which you can use to i
 
 The following events are dispatched for all workflows:
 
-1. _workflow.guard_: occurs just before a transition is started. It allows you to prevent the transition by calling `$event->setBlocked(true);`.
-2. _workflow.leave_: occurs just after an object has left it's current state.
-3. _workflow.transition_: occurs just before starting to transition to the new state.
-4. _workflow.enter_: occurs just after the object has entered into the new state.
+1. _workflow.guard_: occurs just before a transition is started and when testing which transitions are available. It allows you to define that the transition is not allowed by calling `$event->setBlocked(true);`.
+2. _workflow.leave_: carries the marking with the initial places, occurs just after an object has left it's current state.
+3. _workflow.transition_: carries the marking with the current places, occurs just before starting to transition to the new state.
+4. _workflow.enter_: carries the marking with the new places, occurs just after the object has entered into the new state.
 
 ## Workflow-specific events
 
