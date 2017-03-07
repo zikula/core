@@ -11,9 +11,9 @@
 
 namespace Zikula\CategoriesModule\Api;
 
-use UserUtil;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 
 /**
  * UserCategoriesApi
@@ -36,17 +36,28 @@ class UserCategoriesApi
     private $currentUserApi;
 
     /**
+     * @var UserRepositoryInterface
+     */
+    private $userRepository;
+
+    /**
      * UserCategoriesApi constructor.
      *
-     * @param TranslatorInterface $translator     TranslatorInterface service instance
-     * @param CategoryApi         $categoryApi    CategoryApi service instance
-     * @param CurrentUserApi      $currentUserApi CurrentUserApi service instance
+     * @param TranslatorInterface $translator TranslatorInterface service instance
+     * @param CategoryApi $categoryApi CategoryApi service instance
+     * @param CurrentUserApi $currentUserApi CurrentUserApi service instance
+     * @param UserRepositoryInterface $userRepository
      */
-    public function __construct(TranslatorInterface $translator, CategoryApi $categoryApi, CurrentUserApi $currentUserApi)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        CategoryApi $categoryApi,
+        CurrentUserApi $currentUserApi,
+        UserRepositoryInterface $userRepository
+    ) {
         $this->translator = $translator;
         $this->categoryApi = $categoryApi;
         $this->currentUserApi = $currentUserApi;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -119,9 +130,8 @@ class UserCategoriesApi
         if (!is_numeric($userId) || $userId < 1) {
             $userId = $this->currentUserApi->get('uid');
         }
-
-        $userName = UserUtil::getVar('uname', $userId);
-        $userCatName = $userName . ' [' . $userId . ']';
+        $user = $this->userRepository->find($userId);
+        $userCatName = $user->getUname() . ' [' . $userId . ']';
 
         return $userCatName;
     }

@@ -30,3 +30,4 @@ services:
           - "@translator.default"
           - "@zikula_categories_module.api.category"
           - "@zikula_users_module.current_user"
+          - "@zikula_users_module.user_repository"
