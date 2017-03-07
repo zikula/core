@@ -67,9 +67,9 @@ var regenerateOutput = function () {
     output.yaml.push(indent + 'marking_store:');
     output.yaml.push(indent + oneIndent + 'type: ' + jQuery('#markingStoreType').val());
     output.yaml.push(indent + oneIndent + 'arguments:');
-    output.yaml.push(indent + oneIndent + oneIndent + '- ' + jQuery('#markingStoreArg').val());
+    output.yaml.push(indent + oneIndent + oneIndent + '- ' + jQuery('#markingStoreField').val());
     output.xml.push(indent + '<framework:marking-store type="' + jQuery('#markingStoreType').val() + '">');
-    output.xml.push(indent + oneIndent + '<framework:arguments>' + jQuery('#markingStoreArg').val() + '</framework:arguments>');
+    output.xml.push(indent + oneIndent + '<framework:arguments>' + jQuery('#markingStoreField').val() + '</framework:arguments>');
     output.xml.push(indent + '</framework:marking-store>');
     output.xml.push('');
 
@@ -395,8 +395,16 @@ jsPlumb.ready(function () {
         }
         regenerateOutput();
     });
-    jQuery('#markingStoreType').change(regenerateOutput);
-    jQuery('#markingStoreArg').on('change keypress', function (event) {
+    jQuery('#markingStoreType').change(function (event) {
+        if (jQuery(this).val() == 'multiple_state') {
+            jQuery('#markingStoreFieldType').text(Translator.trans('array'));
+        } else if (jQuery(this).val() == 'single_state') {
+            jQuery('#markingStoreFieldType').text(Translator.trans('string'));
+        }
+        regenerateOutput();
+    });
+    jQuery('#markingStoreType').trigger('change');
+    jQuery('#markingStoreField').on('change keypress', function (event) {
         if (jQuery(this).val() == '') {
             jQuery(this).val('state');
         }
