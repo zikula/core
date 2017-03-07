@@ -20,17 +20,19 @@
                     {% for place in workflow.getPlaces() %}
                         <div class="node state" id="state{{ place }}">{{ place }}</div>
                     {% endfor %}
-                    {% for transition in workflow.getTransitions() %}
+                    {% set uniqueTransitionNames = [] %}
+                    {% for transition in workflow.getTransitions() if transition.getName() not in uniqueTransitionNames %}
                         <div class="node transition" id="transition{{ transition.getName() }}">{{ transition.getName() }}</div>
+                        {% set uniqueTransitionNames = uniqueTransitionNames|merge([transition.getName()]) %}
                     {% endfor %}
                 </div>
                 <ul id="connectionList" class="hidden">
                     {% for transition in workflow.getTransitions() %}
                         {% for from in transition.getFroms() %}
-                            <li data-from="state{{ from }}" data-to="transition{{ transition.getName() }}" />
+                            <li data-from="state{{ from }}" data-to="transition{{ transition.getName() }}"></li>
                         {% endfor %}
                         {% for to in transition.getTos() %}
-                            <li data-from="transition{{ transition.getName() }}" data-to="state{{ to }}" />
+                            <li data-from="transition{{ transition.getName() }}" data-to="state{{ to }}"></li>
                         {% endfor %}
                     {% endfor %}
                 </ul>
