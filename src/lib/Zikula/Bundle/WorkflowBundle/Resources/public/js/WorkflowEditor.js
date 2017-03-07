@@ -63,12 +63,12 @@ var regenerateOutput = function () {
     output.xml.push(indent + '<framework:workflow name="' + jQuery('#workflowName').val() + '" type="' + jQuery('#workflowType').val() + '">');
 
     indent += oneIndent;
-    output.yaml.push(indent + 'type: \'' + jQuery('#workflowType').val() + '\'');
+    output.yaml.push(indent + 'type: ' + jQuery('#workflowType').val());
     if (jQuery('#workflowType').val() == 'workflow') {
         output.yaml.push(indent + 'marking_store:');
-        output.yaml.push(indent + oneIndent + 'type: \'' + jQuery('#markingStoreType').val() + '\'');
+        output.yaml.push(indent + oneIndent + 'type: ' + jQuery('#markingStoreType').val());
         output.yaml.push(indent + oneIndent + 'arguments:');
-        output.yaml.push(indent + oneIndent + oneIndent + '- \'' + jQuery('#markingStoreArg').val() + '\'');
+        output.yaml.push(indent + oneIndent + oneIndent + '- ' + jQuery('#markingStoreArg').val());
         output.xml.push(indent + '<framework:marking-store type="' + jQuery('#markingStoreType').val() + '">');
         output.xml.push(indent + oneIndent + '<framework:arguments>' + jQuery('#markingStoreArg').val() + '</framework:arguments>');
         output.xml.push(indent + '</framework:marking-store>');
