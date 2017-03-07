@@ -72,15 +72,15 @@
                         <div class="form-group">
                             <label for="markingStoreType">{{ __('Marking store') }}</label>
                             <select id="markingStoreType" class="form-control input-sm">
-                                <option value="multiple_state">{{ __('Multiple state') }}</option>
-                                <option value="single_state" selected="selected">{{ __('Single state') }}</option>
+                                <option value="multiple_state"{{ markingStoreType == 'multiple_state' ? ' selected="selected"' : '' }}>{{ __('Multiple state') }}</option>
+                                <option value="single_state"{{ markingStoreType == 'single_state' ? ' selected="selected"' : '' }}>{{ __('Single state') }}</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="markingStoreField">{{ __('State field') }} (<span id="markingStoreFieldType"></span>)</label>
-                            <input type="text" id="markingStoreField" value="state" class="form-control input-sm" />
+                            <input type="text" id="markingStoreField" value="{{ markingStoreField|default('state') }}" class="form-control input-sm" />
                         </div>
                     </div>
                 </div>
