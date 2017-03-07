@@ -26,12 +26,18 @@ Each of these directories may contain several YML (`*.yml`) or XML (`*.xml`) fil
 
 Zikula provides a JavaScript-based workflow editor.
 
-At the moment it supports YAML and XML output.
-
 ![Workflow editor](images/workflow_ui.png)
 
 The editor expects the name of a workflow which should be loaded. You can for example include a link to it like this:
 
     <p><a href="{{ path('zikula_workflow_editor_index', { 'workflow': 'acmetestmodule_enterprise' }) }}" title="{{ __('Edit workflow for articles') }}" target="_blank">{{ __('Articles workflow') }}</a>
 
-**TODO** add missing information
+The editor can switch between `workflow` (petri net) and `state_machine` modes. There are several differences between these. For example if you have a transition with more than one input like this:
+
+    accept:
+        from: [initial, waiting]
+        to: accepted
+
+When using in a petri net this transition is only enabled if the marking has both places. So your object needs both `froms` to transition into `to`. If you want two different `froms` you'll need two different transitions.
+
+At the moment the editor supports YAML and XML output. It does not provide means for saving the changed workflows, because when upgrading an existing workflows it must be considered that objects could be in a state which does not exist anymore. You need to update your database to update these objects in order to avoid problems.
