@@ -22,7 +22,7 @@ class LegacyEntitySelectionBuilder
      * @return array
      * @deprecated
      */
-    static public function buildFor($modname)
+    public static function buildFor($modname)
     {
         // old style 'tables.php' modules (Core 1.2.x--)
         $tables = \ModUtil::dbInfoLoad($modname, '', true);
