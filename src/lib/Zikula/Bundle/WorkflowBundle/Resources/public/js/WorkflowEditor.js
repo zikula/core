@@ -64,16 +64,14 @@ var regenerateOutput = function () {
 
     indent += oneIndent;
     output.yaml.push(indent + 'type: ' + jQuery('#workflowType').val());
-    if (jQuery('#workflowType').val() == 'workflow') {
-        output.yaml.push(indent + 'marking_store:');
-        output.yaml.push(indent + oneIndent + 'type: ' + jQuery('#markingStoreType').val());
-        output.yaml.push(indent + oneIndent + 'arguments:');
-        output.yaml.push(indent + oneIndent + oneIndent + '- ' + jQuery('#markingStoreArg').val());
-        output.xml.push(indent + '<framework:marking-store type="' + jQuery('#markingStoreType').val() + '">');
-        output.xml.push(indent + oneIndent + '<framework:arguments>' + jQuery('#markingStoreArg').val() + '</framework:arguments>');
-        output.xml.push(indent + '</framework:marking-store>');
-        output.xml.push('');
-    }
+    output.yaml.push(indent + 'marking_store:');
+    output.yaml.push(indent + oneIndent + 'type: ' + jQuery('#markingStoreType').val());
+    output.yaml.push(indent + oneIndent + 'arguments:');
+    output.yaml.push(indent + oneIndent + oneIndent + '- ' + jQuery('#markingStoreArg').val());
+    output.xml.push(indent + '<framework:marking-store type="' + jQuery('#markingStoreType').val() + '">');
+    output.xml.push(indent + oneIndent + '<framework:arguments>' + jQuery('#markingStoreArg').val() + '</framework:arguments>');
+    output.xml.push(indent + '</framework:marking-store>');
+    output.xml.push('');
 
     output.yaml.push(indent + 'supports:');
     jQuery.each(jQuery('#supportedEntities').val().split("\n"), function (lineIndex, entityName) {
@@ -390,7 +388,11 @@ jsPlumb.ready(function () {
         regenerateOutput();
     });
     jQuery('#workflowType').change(function (event) {
-        jQuery('#workflowSpecificFields').toggleClass('hidden', jQuery(this).val() != 'workflow');
+        if (jQuery(this).val() == 'workflow') {
+            jQuery('#markingStoreType').prop('disabled', false);
+        } else if (jQuery(this).val() == 'state_machine') {
+            jQuery('#markingStoreType').val('single_state').prop('disabled', true);
+        }
         regenerateOutput();
     });
     jQuery('#markingStoreType').change(regenerateOutput);
