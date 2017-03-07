@@ -9,13 +9,3 @@ services:
           - "@request_stack"
         tags:
             - { name: zikula.link_container }
-
-    twig.extension.zikula_categories_module:
-        class: Zikula\CategoriesModule\Twig\Extension\CategoriesExtension
-        public: true
-        arguments:
-          - "@request_stack"
-          - "@zikula_categories_module.api.category"
-          - "@zikula_categories_module.html_tree_helper"
-        tags:
-            - { name: twig.extension }
