@@ -173,8 +173,10 @@ class CategoryRegistryApi
         } else {
             $entity = new CategoryRegistryEntity();
         }
-
+        $categoryId = $registryData['category_id'];
+        unset($registryData['category_id']);
         $entity->merge($registryData);
+        $entity->setCategory($this->entityManager->getRepository('ZikulaCategoriesModule:CategoryEntity')->find($categoryId));
         $this->entityManager->persist($entity);
         $this->entityManager->flush();
 
@@ -297,7 +299,7 @@ class CategoryRegistryApi
         /** @var $registry CategoryRegistryEntity */
         foreach ($registries as $registry) {
             $registry = $registry->toArray();
-            $result[$registry[$arrayKey]] = $registry['category_id'];
+            $result[$registry[$arrayKey]] = $registry['category']->getId();
         }
 
         $cache[$modName][$entityName] = $result;

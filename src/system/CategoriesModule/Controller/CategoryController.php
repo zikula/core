@@ -145,7 +145,9 @@ class CategoryController extends AbstractController
             'decorate' => true,
             'html' => true,
             'childOpen' => function ($node) {
-                return '<li class="jstree-open" id="' . $this->domTreeNodePrefix . $node['id'] . '">';
+                $jsTreeData = $node['status'] != 'A' ? 'data-jstree=\'{"disabled":true}\' ' : '';
+
+                return '<li ' . $jsTreeData . 'class="jstree-open" id="' . $this->domTreeNodePrefix . $node['id'] . '">';
             },
             'nodeDecorator' => function ($node) use ($locale, $router) {
                 $display = isset($node['display_name'][$locale]) ? $node['display_name'][$locale] : $node['name'];
@@ -157,9 +159,6 @@ class CategoryController extends AbstractController
                 }
                 if ($node['is_leaf']) {
                     $classes[] = 'leaf';
-                }
-                if (!$node['status'] == 'A') {
-                    $classes[] = 'z-tree-unactive';
                 }
                 $class = !empty($classes) ? ' class="' . implode(' ', $classes) . '"' : '';
 
