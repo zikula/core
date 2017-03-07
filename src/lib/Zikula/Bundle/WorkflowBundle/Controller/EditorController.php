@@ -69,9 +69,9 @@ class EditorController extends Controller
             $markingStoreProperty = $reflection->getProperty('markingStore');
             $markingStoreProperty->setAccessible(true);
             $markingStore = $markingStoreProperty->getValue($workflow);
-            if ($markingStore instanceof Symfony\Component\Workflow\MarkingStore\MultipleStateMarkingStore) {
+            if ($markingStore instanceof \Symfony\Component\Workflow\MarkingStore\MultipleStateMarkingStore) {
                 $markingStoreType = 'multiple_state';
-            } elseif ($markingStore instanceof Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore) {
+            } elseif ($markingStore instanceof \Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore) {
                 $markingStoreType = 'single_state';
             }
 
