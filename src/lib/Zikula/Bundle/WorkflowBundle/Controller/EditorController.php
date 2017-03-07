@@ -63,6 +63,7 @@ class EditorController extends Controller
 
         $markingStoreType = '';
         $markingStoreField = '';
+        $supportedEntityClassNames = [];
         try {
             $reflection = new \ReflectionClass('Symfony\Component\Workflow\Workflow');
             $markingStoreProperty = $reflection->getProperty('markingStore');
@@ -78,6 +79,17 @@ class EditorController extends Controller
             $markingStoreFieldProperty = $reflection->getProperty('property');
             $markingStoreFieldProperty->setAccessible(true);
             $markingStoreField = $markingStoreFieldProperty->getValue($markingStore);
+
+            $registry = $this->get('workflow.registry');
+            $reflection = new \ReflectionClass(get_class($registry));
+            $workflowsProperty = $reflection->getProperty('workflows');
+            $workflowsProperty->setAccessible(true);
+            $workflows = $workflowsProperty->getValue($registry);
+            foreach ($workflows as list($aWorkflow, $className)) {
+                if ($aWorkflow->getName() == $workflow->getName()) {
+                    $supportedEntityClassNames[] = $className;
+                }
+            }
         } catch (\ReflectionException $e) {
             $markingStoreType = 'single_state';
             $markingStoreField = 'state';
@@ -88,6 +100,7 @@ class EditorController extends Controller
             'type' => $workflowType,
             'markingStoreType' => $markingStoreType,
             'markingStoreField' => $markingStoreField,
+            'supportedEntities' => $supportedEntityClassNames,
             'workflow' => $workflowDefinition
         ];
     }
