@@ -63,21 +63,25 @@ class EditorController extends Controller
 
         $markingStoreType = '';
         $markingStoreField = '';
+        try {
+            $reflection = new \ReflectionClass('Symfony\Component\Workflow\Workflow');
+            $markingStoreProperty = $reflection->getProperty('markingStore');
+            $markingStoreProperty->setAccessible(true);
+            $markingStore = $markingStoreProperty->getValue($workflow);
+            if ($markingStore instanceof Symfony\Component\Workflow\MarkingStore\MultipleStateMarkingStore) {
+                $markingStoreType = 'multiple_state';
+            } elseif ($markingStore instanceof Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore) {
+                $markingStoreType = 'single_state';
+            }
 
-        $reflection = new \ReflectionClass('Symfony\Component\Workflow\Workflow');
-        $markingStoreProperty = $reflection->getProperty('markingStore');
-        $markingStoreProperty->setAccessible(true);
-        $markingStore = $markingStoreProperty->getValue($workflow);
-        if ($markingStore instanceof Symfony\Component\Workflow\MarkingStore\MultipleStateMarkingStore) {
-            $markingStoreType = 'multiple_state';
-        } elseif ($markingStore instanceof Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore) {
+            $reflection = new \ReflectionClass(get_class($markingStore));
+            $markingStoreFieldProperty = $reflection->getProperty('property');
+            $markingStoreFieldProperty->setAccessible(true);
+            $markingStoreField = $markingStoreFieldProperty->getValue($markingStore);
+        } catch (\ReflectionException $e) {
             $markingStoreType = 'single_state';
+            $markingStoreField = 'state';
         }
-
-        $reflection = new \ReflectionClass(get_class($markingStore));
-        $markingStoreFieldProperty = $reflection->getProperty('property');
-        $markingStoreFieldProperty->setAccessible(true);
-        $markingStoreField = $markingStoreFieldProperty->getValue($markingStore);
 
         return [
             'name' => $workflow->getName(),
