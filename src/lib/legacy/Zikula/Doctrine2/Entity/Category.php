@@ -16,8 +16,11 @@ use Zikula\CategoriesModule\Entity\CategoryAttributeEntity;
 /**
  * Category doctrine2 entity.
  *
- * @ORM\Entity
- * @ORM\Table(name="categories_category")
+ * @Gedmo\Tree(type="nested")
+ * @ORM\Entity(repositoryClass="Zikula\CategoriesModule\Entity\Repository\CategoryRepository")
+ * @ORM\Table(name="categories_category",indexes={@ORM\Index(name="idx_categories_is_leaf",columns={"is_leaf"}),
+ *                                                @ORM\Index(name="idx_categories_name",columns={"name"}),
+ *                                                @ORM\Index(name="idx_categories_status",columns={"status"})})
  *
  * @deprecated since 1.4.0
  */
@@ -32,18 +35,48 @@ class Zikula_Doctrine2_Entity_Category extends Zikula_EntityAccess
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Zikula_Doctrine2_Entity_Category", inversedBy="children")
+     * @Gedmo\TreeLeft
+     * @ORM\Column(name="lft", type="integer")
+     */
+    private $lft;
+
+    /**
+     * @Gedmo\TreeLevel
+     * @ORM\Column(name="lvl", type="integer")
+     */
+    private $lvl;
+
+    /**
+     * @Gedmo\TreeRight
+     * @ORM\Column(name="rgt", type="integer")
+     */
+    private $rgt;
+
+    /**
+     * @Gedmo\TreeRoot
+     * @ORM\ManyToOne(targetEntity="CategoryEntity")
+     * @ORM\JoinColumn(name="tree_root", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $root;
+
+    /**
+     * The parent id of the category
+     *
+     * @Gedmo\TreeParent
+     * @ORM\ManyToOne(targetEntity="CategoryEntity", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @var Zikula_Doctrine2_Entity_Category
      */
     private $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity="Zikula_Doctrine2_Entity_Category", mappedBy="parent")
-     * @var Zikula_Doctrine2_Entity_Category[]
+     * Any children of this category
+     *
+     * @ORM\OneToMany(targetEntity="CategoryEntity", mappedBy="parent")
+     * @ORM\OrderBy({"lft" = "ASC"})
+     * @var ArrayCollection
      */
     private $children;
-
     /**
      * @ORM\Column(type="boolean", name="is_locked")
      * @var boolean
@@ -69,12 +102,6 @@ class Zikula_Doctrine2_Entity_Category extends Zikula_EntityAccess
     private $value;
 
     /**
-     * @ORM\Column(type="integer", name="sort_value")
-     * @var integer
-     */
-    private $sortValue;
-
-    /**
      * @ORM\Column(type="array", name="display_name")
      * @var array
      */
@@ -85,18 +112,6 @@ class Zikula_Doctrine2_Entity_Category extends Zikula_EntityAccess
      * @var array
      */
     private $displayDesc;
-
-    /**
-     * @ORM\Column(type="text")
-     * @var string
-     */
-    private $path;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @var string
-     */
-    private $ipath;
 
     /**
      * @ORM\Column(type="smallint")
@@ -192,12 +207,12 @@ class Zikula_Doctrine2_Entity_Category extends Zikula_EntityAccess
 
     public function getSortValue()
     {
-        return $this->sortValue;
+        return null;
     }
 
     public function setSortValue($sortValue)
     {
-        $this->sortValue = $sortValue;
+        // do nothing
     }
 
     public function getDisplayName()
@@ -220,24 +235,67 @@ class Zikula_Doctrine2_Entity_Category extends Zikula_EntityAccess
         $this->displayDesc = $displayDesc;
     }
 
+    /**
+     * get the fully qualified category path
+     *
+     * @return string the category path
+     */
     public function getPath()
     {
-        return $this->path;
+        @trigger_error('The path property is deprecated. Use NestedTree functionality instead.', E_USER_DEPRECATED);
+
+        return $this->getPathByField('name');
     }
 
+    /**
+     * set the fully qualified category path
+     *
+     * @param string $path the category path
+     */
     public function setPath($path)
     {
-        $this->path = $path;
+        @trigger_error('The path property is no longer available for setting.', E_USER_DEPRECATED);
+        // do nothing
     }
 
+    /**
+     * get the numeric fully qualified category path
+     *
+     * @return string the category path
+     */
     public function getIPath()
     {
-        return $this->ipath;
+        @trigger_error('The path property is deprecated. Use NestedTree functionality instead.', E_USER_DEPRECATED);
+
+        return $this->getPathByField('id');
     }
 
+    /**
+     * @param string $field
+     * @return string
+     */
+    private function getPathByField($field = 'name')
+    {
+        $path = [];
+        $method = 'get' . lcfirst($field);
+        $entity = $this;
+        do {
+            array_unshift($path, $entity->$method());
+            $entity = $entity->getParent();
+        } while (null !== $entity);
+
+        return implode('/', $path);
+    }
+
+    /**
+     * set the numeric fully qualified category path
+     *
+     * @param string $ipath the category path
+     */
     public function setIPath($ipath)
     {
-        $this->ipath = $ipath;
+        @trigger_error('The ipath property is no longer available for setting.', E_USER_DEPRECATED);
+        // do nothing
     }
 
     public function getStatus()
@@ -272,5 +330,69 @@ class Zikula_Doctrine2_Entity_Category extends Zikula_EntityAccess
             $attribute->setValue($value);
             $this->attributes[$name] = $attribute;
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function getLft()
+    {
+        return $this->lft;
+    }
+
+    /**
+     * @param int $lft
+     */
+    public function setLft($lft)
+    {
+        $this->lft = $lft;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLvl()
+    {
+        return $this->lvl;
+    }
+
+    /**
+     * @param int $lvl
+     */
+    public function setLvl($lvl)
+    {
+        $this->lvl = $lvl;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRgt()
+    {
+        return $this->rgt;
+    }
+
+    /**
+     * @param int $rgt
+     */
+    public function setRgt($rgt)
+    {
+        $this->rgt = $rgt;
+    }
+
+    /**
+     * @return Zikula_Doctrine2_Entity_Category
+     */
+    public function getRoot()
+    {
+        return $this->root;
+    }
+
+    /**
+     * @param Zikula_Doctrine2_Entity_Category $root
+     */
+    public function setRoot(Zikula_Doctrine2_Entity_Category $root)
+    {
+        $this->root = $root;
     }
 }
