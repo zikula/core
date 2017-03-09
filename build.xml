@@ -70,11 +70,12 @@
         <!-- move doc files from repo root -->
         <echo msg="Moving doc files to /docs/en ..."/>
         <move file="${workspace}/source/README.md" tofile="${packagepath}/docs/en/README.md" overwrite="true"/>
-        <copy file="${workspace}/source/INSTALL-1.4.md" tofile="${packagepath}/INSTALL-1.4.md" overwrite="true"/>
-        <move file="${workspace}/source/INSTALL-1.4.md" tofile="${packagepath}/docs/en/INSTALL-1.4.md" overwrite="true"/>
-        <copy file="${workspace}/source/UPGRADE-1.4.md" tofile="${packagepath}/UPGRADE-1.4.md" overwrite="true"/>
-        <move file="${workspace}/source/UPGRADE-1.4.md" tofile="${packagepath}/docs/en/UPGRADE-1.4.md" overwrite="true"/>
+        <copy file="${workspace}/source/INSTALL-Core1.x.md" tofile="${packagepath}/INSTALL-Core1.x.md" overwrite="true"/>
+        <move file="${workspace}/source/INSTALL-Core1.x.md" tofile="${packagepath}/docs/en/INSTALL-Core1.x.md" overwrite="true"/>
+        <copy file="${workspace}/source/UPGRADE-Core1.x.md" tofile="${packagepath}/UPGRADE-Core1.x.md" overwrite="true"/>
+        <move file="${workspace}/source/UPGRADE-Core1.x.md" tofile="${packagepath}/docs/en/UPGRADE-Core1.x.md" overwrite="true"/>
         <move file="${workspace}/source/CHANGELOG-1.4.md" tofile="${packagepath}/docs/en/CHANGELOG-1.4.md" overwrite="true"/>
+        <move file="${workspace}/source/CHANGELOG-1.5.md" tofile="${packagepath}/docs/en/CHANGELOG-1.5.md" overwrite="true"/>
         <move file="${workspace}/source/composer.json" tofile="${packagepath}/docs/en/dev/composer.json" overwrite="true"/>
         <move file="${workspace}/source/composer.lock" tofile="${packagepath}/docs/en/dev/composer.lock" overwrite="true"/>
 
