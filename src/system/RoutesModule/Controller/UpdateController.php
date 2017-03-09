@@ -50,7 +50,7 @@ class UpdateController extends AbstractController
         $this->addFlash('status', $this->__('Done! Routes reloaded.'));
 
         // reload **all** JS routes
-        $this->dumpJsRoutes($lang);
+        $this->dumpJsRoutes();
 
         return $this->redirectToRoute('zikularoutesmodule_route_adminview');
     }

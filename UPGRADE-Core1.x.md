@@ -13,13 +13,13 @@ Upgrading Zikula
 Introduction
 ------------
 
-Zikula 1.4 can only upgrade from Zikula 1.3.6 or higher. Please upgrade your core installation to this version
+Zikula 1.4 and higher can only upgrade from Zikula 1.3.6 or higher. Please upgrade your core installation to this version
 before proceeding with this upgrade process.
 
-Zikula Core 1.4 introduces a lot of forward compatibility for new features that will come in Zikula 2.0.0.
+Zikula Core 1.4 and 1.5 introduces a lot of forward compatibility for new features that will come in Zikula 2.0.0.
 
 For more information visit http://zikula.org/ and read our
-[documentation](https://github.com/zikula/core/tree/1.4/src/docs).
+[documentation](https://github.com/zikula/core/tree/1.5/src/docs).
 
 
 <a name="requirements"></a>
@@ -28,11 +28,11 @@ Server/Environment Requirements
 -------------------------------
 
 Before upgrading Zikula it's important to ensure that the hosting server environment meets the requirements
-of the new core release. Zikula Core 1.4.x has the following requirements
+of the new core release. Zikula Core 1.x has the following requirements
 
 |               | Minimum       | Recommended  |
 | ------------- |:-------------:| :-----------:|
-| PHP           | 5.4.1         | >=5.5 <7     |
+| PHP           | 5.5.9         | >=5.5.9 <7   |
 
  - Zikula requires more memory than typical to install. You should set your memory limit in `php.ini`
    to 128 MB for the installation process.
@@ -63,7 +63,7 @@ Before upgrading
 
 ***Prior to any upgrade ensure that you have created a reliable backup of all files and the database.***
 
-#### FOR DEVELOPERS ONLY: Clone Zikula/Core from the repo at Github. Use the 1.4 branch.
+#### FOR DEVELOPERS ONLY: Clone Zikula/Core from the repo at Github. Use the 1.5 branch.
 
 Zikula makes use of [composer](http://getcomposer.org/) to manage and download all dependencies.
 Composer must be run prior to installing or upgrading a site using Zikula. Run `composer self-update` and `composer update`.
@@ -81,14 +81,14 @@ All the dependencies and requirements are included in this package.
 Upgrading
 ---------
 
-The following process should be followed for all upgrades even small point releases (e.g. `1.4.x`).
+The following process should be followed for all upgrades even small point releases (e.g. `1.x.x`).
 
   - Backup all your files and database. Keep a note of your database settings from `config.php` or
     `personal_config.php`.
   - Make a note of your 'startpage' settings as they must be cleared in the upgrade process.
   - Before uploading the new files, delete **all files** in your web root (typically `public_html` or `httpdocs`).
   - Upload the new package and unpack the archive.
-    - **Please read** the [INSTALL docs](INSTALL-1.4.md#upload) for detailed information on proper uploading.
+    - **Please read** the [INSTALL docs](INSTALL-Core1.x.md#upload) for detailed information on proper uploading.
     - Note 1: One common issue when installing is that the `app/cache` and `app/logs` directories must be writable both by the 
       web server and the command line user. See Symfony's [Setting up or Fixing File Permissions](http://symfony.com/doc/2.8/setup/file_permissions.html) 
       to see potential solutions to this problem when installing from the CLI.
@@ -112,7 +112,7 @@ The following process should be followed for all upgrades even small point relea
     - the old `upgrade.php` has been replaced by simply `/upgrade` but you should be automatically redirected to this
       url when visiting your main page.
 
-#### If upgrading from Core-1.4.x:
+#### If upgrading from Core-1.4.x or 1.5.x:
 
   - Copy your previous installation's `config/personal_config.php` and `app/config/custom_parameters.yml` to their same
     respective locations in your new installation. **There is no need to update any values within these files.**

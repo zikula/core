@@ -21,8 +21,8 @@ everyone involved.
 Zikula can be extended with modules, plugins and themes which can add functionality to your website.
 These are available at http://www.zikula.org/library
 
-Zikula Core 1.4 maintains backward-compatibility with Zikula Core 1.3 and runs all 1.3.x-compatible
-modules, plugins and themes without changes. If a module doesn't work with 1.4 but worked with 1.3, feel free
+Zikula Core 1.x maintains backward-compatibility with Zikula Core 1.3 and runs all 1.3.x-compatible
+modules, plugins and themes without changes. If a module doesn't work with 1.x but worked with 1.3, feel free
 to open an issue at the GitHub Core Repository and we will try to fix any problems.
 
 
@@ -32,11 +32,11 @@ Server/Environment Requirements
 -------------------------------
 
 Before upgrading Zikula it's important to ensure that the hosting server environment meets the requirements
-of the new core release. Zikula Core 1.4 has the following requirements:
+of the new core release. Zikula Core 1.x has the following requirements:
 
 |               | Minimum       | Recommended  |
 | ------------- |:-------------:| :-----------:|
-| PHP           | 5.4.1         | >=5.5 <7     |
+| PHP           | 5.5.9         | >=5.5.9 <7   |
 
  - Zikula requires more memory than typical to install. You should set your memory limit in `php.ini`
    to 128 MB for the installation process.

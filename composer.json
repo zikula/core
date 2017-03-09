@@ -60,7 +60,7 @@
         "bin-dir": "bin",
         "component-dir": "src/web",
         "platform": {
-            "php": "5.4.2"
+            "php": "5.5.9"
         }
     },
     "extra": {
