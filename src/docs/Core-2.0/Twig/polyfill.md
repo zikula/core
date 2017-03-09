@@ -2,7 +2,7 @@ Twig Tag: polyfill
 ==================
 
 `{{ polyfill() }}`
-(defaults to 'forms' feature)
+(defaults to 'forms' and 'forms-ext' features)
 
 or
 
@@ -19,7 +19,7 @@ add whatever additional features are requested.
 example:
 
 ```
-    {{ polyfill() }}
+    {{ polyfill(['forms']) }}
     <h2>Page Title</h2>
     <p>Hello world!</p>
 
@@ -27,3 +27,5 @@ example:
         <input type="password" required="required" />
     </form>
 ```
+
+Note that 'forms' and 'forms-ext' features will be *automatically* added as soon as a form is rendered on the current page.

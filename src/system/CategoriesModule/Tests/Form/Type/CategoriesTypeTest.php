@@ -106,7 +106,7 @@ class CategoriesTypeTest extends TypeTestCase
     public function testSubmitValidData()
     {
         $formData = [
-            'categoryAssignments' => ['registry_1' => 2],
+            'categoryAssignments' => ['registry_1' => '2'],
         ];
 
         $form = $this->factory->create('Zikula\CategoriesModule\Tests\Fixtures\CategorizableType', new CategorizableEntity(), ['em' => $this->em]);
@@ -134,7 +134,7 @@ class CategoriesTypeTest extends TypeTestCase
     public function testSubmitMultipleValidData()
     {
         $formData = [
-            'categoryAssignments' => ['registry_1' => [2, 3]],
+            'categoryAssignments' => ['registry_1' => ['2', '3']],
         ];
 
         $form = $this->factory->create('Zikula\CategoriesModule\Tests\Fixtures\CategorizableType', new CategorizableEntity(), [
@@ -158,7 +158,7 @@ class CategoriesTypeTest extends TypeTestCase
     public function testSubmitWithExistingData()
     {
         $formData = [
-            'categoryAssignments' => ['registry_1' => 2],
+            'categoryAssignments' => ['registry_1' => '2'],
         ];
         $existingObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();
@@ -191,7 +191,7 @@ class CategoriesTypeTest extends TypeTestCase
     public function testSubmitMultipleWithExistingData()
     {
         $formData = [
-            'categoryAssignments' => ['registry_1' => [2, 3]],
+            'categoryAssignments' => ['registry_1' => ['2', '3']],
         ];
         $existingObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();
@@ -229,7 +229,7 @@ class CategoriesTypeTest extends TypeTestCase
     public function testSubmitSingleWithMultipleExistingData()
     {
         $formData = [
-            'categoryAssignments' => ['registry_1' => 2],
+            'categoryAssignments' => ['registry_1' => '2'],
         ];
         $existingObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();

@@ -5,5 +5,5 @@
         method: 'GET'
     });
     $.webshims.activeLang(Zikula.Config.lang);
-    $.webshims.polyfill(Zikula.Config.polyfillFeatures);
+    $.webshims.polyfill(Zikula.Config.polyfillFeatures || []);
 })(jQuery);

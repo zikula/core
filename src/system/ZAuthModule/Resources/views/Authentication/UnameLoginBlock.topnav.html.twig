@@ -8,7 +8,6 @@
 {% if eventDatas is not empty or hooks is not empty %}
     <a href="{{ path('zikulausersmodule_access_login') }}" class="btn btn-default navbar-btn">{{ __('Login') }}</a>
 {% else %}
-    {{ polyfill() }}
     {{ form_start(form, { 'attr': {'class': 'navbar-form navbar-right'} }) }}
     {{ form_errors(form) }}
     {{ form_widget(form.uname) }}

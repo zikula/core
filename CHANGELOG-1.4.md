@@ -15,6 +15,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Corrected path to legacy module's admin icons.
     - Made display names of Menu and Theme modules more readable (#3448).
     - Added a general purpose deletion form type (#3333).
+    - Fixed initialisation of JavaScript polyfills (#3348, #3486).
 
  - Features:
     - Added Permission-based controls for MenuModule menu items (#3314).
@@ -23,6 +24,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Added support for including module dependencies in composer execution using composer merge plugin (#3388, #3437).
     - Added support for Symfony workflow component (#2423).
     - Added WorkflowBundle providing an UI for workflow management (#2423).
+    - Automatically initialise basic JavaScript polyfills for forms (#3348, #3486).
 
  - Vendor updates:
     - fduch/workflow-bundle installed as 2.0.2
