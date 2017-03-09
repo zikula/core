@@ -211,7 +211,7 @@ class MainSettingsType extends AbstractType
             'languages' => [],
             'constraints' => [
                 new Callback(['callback' => [$this, 'validatePermalinkSettings']]),
-                new Callback(['callback' => [$this, 'validateStartpageSettings']]),
+                new Callback(['callback' => [$this, 'validateStartpageSettings']])
             ]
         ]);
     }

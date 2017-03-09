@@ -44,6 +44,7 @@ class RegistrationType extends AbstractType
 
     /**
      * RegistrationType constructor.
+     *
      * @param TranslatorInterface $translator
      * @param VariableApi $variableApi
      */
@@ -53,6 +54,9 @@ class RegistrationType extends AbstractType
         $this->zAuthModVars = $variableApi->getAll('ZikulaZAuthModule');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -107,13 +111,16 @@ class RegistrationType extends AbstractType
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
         return 'zikulazauthmodule_registration';
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

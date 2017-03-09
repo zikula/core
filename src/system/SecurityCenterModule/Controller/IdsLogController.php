@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
@@ -280,22 +281,17 @@ class IdsLogController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm(IdsLogPurgeType::class, [], [
-            'translator' => $this->get('translator.default')
-        ]);
+        $form = $this->createForm(DeletionType::class);
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('delete')->isClicked()) {
                 $formData = $form->getData();
 
-                if ($formData['confirmation'] == 1) {
-                    // delete all entries
-                    $this->get('zikula_securitycenter_module.intrusion_repository')->truncateTable();
+                // delete all entries
+                $this->get('zikula_securitycenter_module.intrusion_repository')->truncateTable();
 
-                    $this->addFlash('status', $this->__('Done! Purged IDS Log.'));
-                }
-            }
-            if ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', $this->__('Done! Purged IDS Log.'));
+            } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 

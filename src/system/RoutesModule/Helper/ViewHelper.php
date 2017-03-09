@@ -45,34 +45,22 @@ class ViewHelper extends AbstractViewHelper
     private $extensionRepository;
 
     /**
-     * ViewHelper constructor.
-     * @param EngineInterface  $templating       EngineInterface service instance
-     * @param RequestStack     $requestStack     RequestStack service instance
-     * @param PermissionApiInterface    $permissionApi    PermissionApi service instance
-     * @param VariableApi      $variableApi      VariableApi service instance
-     * @param ControllerHelper $controllerHelper ControllerHelper service instance
      * @param TranslatorInterface $translator
      * @param DynamicConfigDumper $configDumper
      * @param ExtensionRepositoryInterface $extensionRepository
      */
-    public function __construct(
-        EngineInterface $templating,
-        RequestStack $requestStack,
-        PermissionApiInterface $permissionApi,
-        VariableApi $variableApi,
-        ControllerHelper $controllerHelper,
+    public function setAdditionalDependencies(
         TranslatorInterface $translator,
         DynamicConfigDumper $configDumper,
         ExtensionRepositoryInterface $extensionRepository
     ) {
-        parent::__construct($templating, $requestStack, $permissionApi, $variableApi, $controllerHelper);
         $this->translator = $translator;
         $this->configDumper = $configDumper;
         $this->extensionRepository = $extensionRepository;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function processTemplate($type, $func, array $templateParameters = [], $template = '')
     {

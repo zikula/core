@@ -1,6 +1,11 @@
 services:
     # Form field types
     
+    zikula_routes_module.form.type.field.array:
+        class: Zikula\RoutesModule\Form\Type\Field\ArrayType
+        tags:
+            - { name: form.type }
+    
     zikula_routes_module.form.type.field.datetime:
         class: Zikula\RoutesModule\Form\Type\Field\DateTimeType
         tags:

@@ -7,8 +7,7 @@
     "prefer-stable": true,
     "autoload": {
         "psr-0": {
-            "Zikula\\": "src/lib",
-            "Zikula_": "src/lib/legacy"
+            "Zikula\\": "src/lib"
         },
         "psr-4": {
             "Zikula\\": ["src/system", "src/themes"]
@@ -21,72 +20,10 @@
         }
     ],
     "require": {
-        "php": ">=5.5.9",
-        "composer/installers": "1.*",
-        "robloach/component-installer": "*",
-
-
-        "zikula/legal-module": "dev-master",
-        "zikula/profile-module": "dev-master",
-
-
-        "symfony/symfony": "3.2.*",
-        "symfony/swiftmailer-bundle": "2.4.*",
-        "symfony/monolog-bundle": "~2.4",
-        "sensio/distribution-bundle": "5.0.*",
-        "sensio/framework-extra-bundle": "dev-master",
-        "sensio/generator-bundle": "3.1.*",
-        "elao/web-profiler-extra-bundle" : "~2.3.3",
-        "matthiasnoback/symfony-service-definition-validator": "1.2.6",
-        "matthiasnoback/symfony-console-form": "2.*",
-
-
-        "jms/i18n-routing-bundle": "2.0.0",
-        "jms/translation-bundle": "1.3.*",
-        "nikic/php-parser": "~1.4.0",
-        "friendsofsymfony/jsrouting-bundle": "1.6.*",
-        "willdurand/js-translation-bundle": "^2.6",
-
-
-        "doctrine/orm": "2.5.*",
-        "doctrine/doctrine-bundle": "1.5.*",
-        "stof/doctrine-extensions-bundle": "~1.2.1",
-        "gedmo/doctrine-extensions": "2.4.*",
-
-
-        "michelf/php-markdown": "1.7.*",
-        "phpids/phpids": "dev-master",
-        "twig/extensions": "1.4.*",
-        "vierbergenlars/php-semver": "~3.0",
-        "zikula/wizard": "dev-master",
-        "zikula/filesystem": "dev-master",
-        "ircmaxell/random-lib": "1.*",
-
-
-        "zikula/jquery-bundle": "dev-master",
-        "zikula/jquery-ui-bundle": "dev-master",
-        "zikula/bootstrap-bundle": "dev-master",
-        "zikula/fontawesome-bundle": "dev-master",
-        "zikula/jquery-minicolors-bundle": "dev-master",
-        "bootstrap-plus/bootstrap-jqueryui": "dev-master",
-        "dimsemenov/magnific-popup": "1.*",
-        "twitter/typeahead.js": "1.*",
-        "vakata/jstree": "3.*",
-        "afarkas/html5shiv": "3.7.*",
-        "afarkas/webshim": "1.*",
-        "jquery.mmenu": "5.*",
-
-
-        "justinrainbow/json-schema": "4.*",
-        "ramsey/array_column": "1.1.*",
-
-
-        "oyejorge/less.php": "dev-master",
-        "knplabs/knp-menu-bundle": "^2.0",
-        "liip/imagine-bundle": "1.*"
+        "wikimedia/composer-merge-plugin": "dev-master"
     },
     "require-dev": {
-        "zikula/generator-bundle": "dev-master"
+        "phpunit/phpunit": "4.*"
     },
     "scripts": {
         "post-install-cmd": [
@@ -128,28 +65,21 @@
         "installer-paths": {
             "src/modules/{$vendor}/{$name}": ["type:zikula-module"],
             "src/themes/{$vendor}/{$name}": ["type:zikula-theme"]
+        },
+        "merge-plugin": {
+            "include": [
+                "src/lib/Zikula/Bundle/*/composer.json",
+                "src/system/*/composer.json",
+                "src/modules/*/composer.json",
+                "src/modules/*/*/composer.json",
+                "src/themes/*/composer.json",
+                "src/themes/*/*/composer.json"
+            ],
+            "recurse": false,
+            "replace": false,
+            "merge-dev": true,
+            "merge-extra": false,
+            "merge-extra-deep": false
         }
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/zikula-modules/Legal"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/zikula-modules/Profile"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/FrDH/jQuery.mmenu"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/aFarkas/webshim"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/corejavascript/typeahead.js"
-        }
-    ]
+    }
 }

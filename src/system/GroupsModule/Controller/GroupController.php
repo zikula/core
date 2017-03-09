@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\GroupsModule\Entity\GroupEntity;
@@ -221,9 +222,7 @@ class GroupController extends AbstractController
             return $this->redirectToRoute('zikulagroupsmodule_group_adminlist');
         }
 
-        $form = $this->createForm(DeleteGroupType::class, $groupEntity, [
-            'translator' => $this->get('translator.default')
-        ]);
+        $form = $this->createForm(DeletionType::class, $groupEntity);
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('delete')->isClicked()) {
@@ -232,8 +231,7 @@ class GroupController extends AbstractController
                 $this->get('doctrine')->getManager()->flush();
                 $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_DELETE, new GenericEvent($groupEntity));
                 $this->addFlash('status', $this->__('Done! Group deleted.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
+            } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 

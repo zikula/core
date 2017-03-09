@@ -77,8 +77,8 @@ EOT
         $filesystem = $this->getContainer()->get('filesystem');
         $kernel = $this->getContainer()->get('kernel');
         $array = [
-            'bundle'  => $kernel->getJustBundles(),
-            'module'  => $kernel->getModules(),
+            'bundle' => $kernel->getJustBundles(),
+            'module' => $kernel->getModules(),
             'theme' => $kernel->getThemes(),
         ];
         foreach ($array as $type => $bundles) {

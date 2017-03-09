@@ -59,7 +59,7 @@ services:
           - "@zikula_extensions_module.api.variable"
           - "@zikula_users_module.current_user"
           - "@templating.engine.twig"
-          - "@zikula_core.common.theme.themevars"
+          - "@zikula_core.common.theme.pagevars"
           - "@zikula_core.common.theme.assets_header"
           - "%zikula.session.name%"
         tags:

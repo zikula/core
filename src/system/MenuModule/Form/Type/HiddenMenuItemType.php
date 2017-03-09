@@ -33,6 +33,7 @@ class HiddenMenuItemType extends AbstractType
 
     /**
      * HiddenMenuItemType constructor.
+     *
      * @param MenuItemRepositoryInterface $repo
      * @param TranslatorInterface $translator
      */
@@ -57,7 +58,7 @@ class HiddenMenuItemType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'invalid_message' => $this->translator->__('The selected item does not exist'),
+            'invalid_message' => $this->translator->__('The selected item does not exist')
         ]);
     }
 

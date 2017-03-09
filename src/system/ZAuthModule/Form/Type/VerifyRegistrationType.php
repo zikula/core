@@ -26,6 +26,9 @@ use Zikula\ZAuthModule\Validator\Constraints\ValidRegistrationVerification;
 
 class VerifyRegistrationType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -63,13 +66,16 @@ class VerifyRegistrationType extends AbstractType
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
         return 'zikulausersmodule_verifyregistration';
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

@@ -20,6 +20,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AdminModifyUserType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -49,18 +52,21 @@ class AdminModifyUserType extends AbstractType
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
         return 'zikulausersmodule_adminmodifyuser';
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => null,
+            'translator' => null
         ]);
     }
 }

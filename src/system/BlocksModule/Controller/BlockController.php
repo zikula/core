@@ -23,6 +23,7 @@ use Zikula\BlocksModule\Api\BlockApi;
 use Zikula\BlocksModule\BlockHandlerInterface;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Form\Type\BlockType;
+use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\Ajax\FatalResponse;
 use Zikula\Core\Response\Ajax\ForbiddenResponse;
@@ -151,22 +152,7 @@ class BlockController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createFormBuilder()
-            ->add('delete', SubmitType::class, [
-                'label' => $this->__('Delete'),
-                'icon' => 'fa-trash-o',
-                'attr' => [
-                    'class' => 'btn btn-danger'
-                ]
-            ])
-            ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
-                'icon' => 'fa-times',
-                'attr' => [
-                    'class' => 'btn btn-default'
-                ]
-            ])
-            ->getForm();
+        $form = $this->createForm(DeletionType::class);
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('delete')->isClicked()) {
@@ -174,8 +160,7 @@ class BlockController extends AbstractController
                 $em->remove($blockEntity);
                 $em->flush();
                 $this->addFlash('status', $this->__('Done! Block deleted.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
+            } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 

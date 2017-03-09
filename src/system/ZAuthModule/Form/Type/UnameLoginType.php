@@ -29,6 +29,7 @@ class UnameLoginType extends AbstractType
 
     /**
      * UnameLoginType constructor.
+     *
      * @param $translator
      */
     public function __construct(TranslatorInterface $translator)
@@ -36,6 +37,9 @@ class UnameLoginType extends AbstractType
         $this->translator = $translator;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -59,18 +63,22 @@ class UnameLoginType extends AbstractType
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
         return 'zikulazauthmodule_authentication_uname';
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        // @todo can be removed?
         $resolver->setDefaults([
-            'translator' => null,
+            'translator' => null
         ]);
     }
 }

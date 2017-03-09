@@ -34,25 +34,15 @@ class RouteType extends AbstractRouteType
     private $extensionRepository;
 
     /**
-     * RouteType constructor.
-     *
-     * @param TranslatorInterface $translator    Translator service instance
-     * @param RoutesFactory        $entityFactory Entity factory service instance
-     * @param ListEntriesHelper   $listHelper    ListEntriesHelper service instance
      * @param ExtensionRepositoryInterface $extensionRepository
      */
-    public function __construct(
-        TranslatorInterface $translator,
-        RoutesFactory $entityFactory,
-        ListEntriesHelper $listHelper,
-        ExtensionRepositoryInterface $extensionRepository
-    ) {
-        parent::__construct($translator, $entityFactory, $listHelper);
+    public function setExtensionRepository(ExtensionRepositoryInterface $extensionRepository)
+    {
         $this->extensionRepository = $extensionRepository;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function addEntityFields(FormBuilderInterface $builder, array $options)
     {

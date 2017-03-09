@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\CapabilityApi;
@@ -164,30 +165,14 @@ class RegistryController extends AbstractController
             throw new NotFoundHttpException($this->__('Registry entry not found.'));
         }
 
-        $form = $this->createFormBuilder()
-            ->add('delete', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $this->__('Delete'),
-                'icon' => 'fa-trash-o',
-                'attr' => [
-                    'class' => 'btn btn-danger'
-                ]
-            ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $this->__('Cancel'),
-                'icon' => 'fa-times',
-                'attr' => [
-                    'class' => 'btn btn-default'
-                ]
-            ])
-            ->getForm();
+        $form = $this->createForm(DeletionType::class);
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('delete')->isClicked()) {
                 $entityManager->remove($registry);
                 $entityManager->flush();
                 $this->addFlash('status', $this->__('Done! Registry entry deleted.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
+            } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 

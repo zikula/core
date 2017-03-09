@@ -27,6 +27,7 @@ class DefaultLoginType extends AbstractType
 
     /**
      * DefaultLoginType constructor.
+     *
      * @param TranslatorInterface $translator
      */
     public function __construct(TranslatorInterface $translator)
@@ -34,6 +35,17 @@ class DefaultLoginType extends AbstractType
         $this->translator = $translator;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'zikulausersmodule_defaultlogin';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -53,10 +65,5 @@ class DefaultLoginType extends AbstractType
                 'attr' => ['class' => 'btn btn-default']
             ])
         ;
-    }
-
-    public function getBlockPrefix()
-    {
-        return 'zikulausersmodule_defaultlogin';
     }
 }

@@ -19,10 +19,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 class ZikulaMailerExtension extends Extension
 {
     /**
-     * Responds to the app.config configuration parameter.
-     *
-     * @param array            $configs
-     * @param ContainerBuilder $container
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {

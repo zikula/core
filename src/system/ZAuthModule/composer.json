@@ -14,7 +14,8 @@
         "psr-4": { "Zikula\\ZAuthModule\\": "" }
     },
     "require": {
-        "php": ">5.4.1"
+        "php": ">=5.5.9",
+        "ircmaxell/random-lib": "1.*"
     },
     "extra": {
         "zikula": {

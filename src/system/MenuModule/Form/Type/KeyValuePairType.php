@@ -25,6 +25,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class KeyValuePairType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -33,16 +36,22 @@ class KeyValuePairType extends AbstractType
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
         return 'zikulamenumodule_keyvaluepair';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'key_options' => [],
-            'value_options' => [],
+            'value_options' => []
         ]);
     }
 }

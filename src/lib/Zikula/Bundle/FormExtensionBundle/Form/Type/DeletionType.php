@@ -9,40 +9,52 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\AdminModule\Form\Type;
+namespace Zikula\Bundle\FormExtensionBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\TranslatorInterface;
 
 /**
- * Category deletion form type class.
+ * General deletion form type.
  */
-class DeleteCategoryType extends AbstractType
+class DeletionType extends AbstractType
 {
+    /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    /**
+     * DeletionType constructor.
+     *
+     * @param TranslatorInterface $translator Translator service instance
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $translator = $options['translator'];
-
         $builder
-            ->add('cid', HiddenType::class)
             ->add('delete', SubmitType::class, [
-                'label' => $translator->__('Delete'),
+                'label' => $this->translator->__('Delete'),
                 'icon' => 'fa-trash-o',
                 'attr' => [
                     'class' => 'btn btn-danger'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $translator->__('Cancel'),
+                'label' => $this->translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
-                    'class' => 'btn btn-default'
+                    'class' => 'btn btn-default',
+                    'formnovalidate' => 'formnovalidate'
                 ]
             ])
         ;
@@ -53,16 +65,6 @@ class DeleteCategoryType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'zikulaadminmodule_deletecategory';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'translator' => null
-        ]);
+        return 'zikulaformextensionsbundle_deletion';
     }
 }

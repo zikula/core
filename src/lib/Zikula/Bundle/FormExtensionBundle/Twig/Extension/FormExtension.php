@@ -11,19 +11,39 @@
 
 namespace Zikula\Bundle\FormExtensionBundle\Twig\Extension;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\ThemeModule\Engine\AssetBag;
+use Zikula\ThemeModule\Engine\ParameterBag;
 
 class FormExtension extends \Twig_Extension
 {
     /**
-     * @var ContainerInterface
+     * @var RequestStack
      */
-    private $container;
+    private $requestStack;
 
-    public function __construct($container = null)
+    /**
+     * @var AssetBag
+     */
+    private $jsAssetBag;
+
+    /**
+     * @var ParameterBag
+     */
+    private $pageVars;
+
+    /**
+     * FormExtension constructor.
+     *
+     * @param RequestStack $requestStack
+     * @param AssetBag     $jsAssetBag
+     * @param ParameterBag $pageVars
+     */
+    public function __construct(RequestStack $requestStack, AssetBag $jsAssetBag, ParameterBag $pageVars)
     {
-        $this->container = $container;
+        $this->requestStack = $requestStack;
+        $this->jsAssetBag = $jsAssetBag;
+        $this->pageVars = $pageVars;
     }
 
     /**
@@ -34,20 +54,23 @@ class FormExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('polyfill', [$this, 'polyfill']),
+            new \Twig_SimpleFunction('polyfill', [$this, 'polyfill'])
         ];
     }
 
-    public function polyfill(array $features = ['forms'])
+    /**
+     * Adds polyfill features to be included into the page.
+     *
+     * @param array $features List of desired polyfills
+     */
+    public function polyfill(array $features = ['forms', 'forms-ext'])
     {
-        $basePath = $this->container->get('request_stack')->getCurrentRequest()->getBasePath();
-        $jsAssetBag = $this->container->get('zikula_core.common.theme.assets_js');
-        $jsAssetBag->add([$basePath . '/web/webshim/js-webshim/minified/polyfiller.js' => AssetBag::WEIGHT_JQUERY + 1]);
-        $jsAssetBag->add([$basePath . '/javascript/polyfiller.init.js' => AssetBag::WEIGHT_JQUERY + 2]);
+        $basePath = $this->requestStack->getCurrentRequest()->getBasePath();
+        $this->jsAssetBag->add([$basePath . '/web/webshim/js-webshim/minified/polyfiller.js' => AssetBag::WEIGHT_JQUERY + 1]);
+        $this->jsAssetBag->add([$basePath . '/javascript/polyfiller.init.js' => AssetBag::WEIGHT_JQUERY + 2]);
 
-        $themePageVars = $this->container->get('zikula_core.common.theme.pagevars');
-        $existingFeatures = $themePageVars->get('polyfill_features', []);
+        $existingFeatures = $this->pageVars->get('polyfill_features', []);
         $features = array_unique(array_merge($existingFeatures, $features));
-        $themePageVars->set('polyfill_features', $features);
+        $this->pageVars->set('polyfill_features', $features);
     }
 }

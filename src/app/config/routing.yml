@@ -13,6 +13,9 @@ _bazinga_jstranslation:
 installer:
     resource: "@ZikulaCoreInstallerBundle/Resources/config/routing/routing.xml"
 
+workflow_editor:
+    resource: "@ZikulaWorkflowBundle/Resources/config/routing.yml"
+
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.xml"
 

@@ -28,6 +28,7 @@ class DefaultRegistrationType extends AbstractType
 
     /**
      * DefaultRegistrationType constructor.
+     *
      * @param TranslatorInterface $translator
      */
     public function __construct(TranslatorInterface $translator)
@@ -35,6 +36,9 @@ class DefaultRegistrationType extends AbstractType
         $this->translator = $translator;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -58,13 +62,16 @@ class DefaultRegistrationType extends AbstractType
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
         return 'zikulausersmodule_defaultregistration';
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

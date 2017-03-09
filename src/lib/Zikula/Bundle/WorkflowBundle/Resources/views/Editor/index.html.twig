@@ -1,0 +1,141 @@
+{{ pageAddAsset('stylesheet', zasset('@ZikulaWorkflowBundle:js/jsPlumb/css/jsplumbtoolkit-defaults.css'), 98) }}
+{{ pageAddAsset('stylesheet', zasset('@ZikulaWorkflowBundle:css/style.css'), 99) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaWorkflowBundle:js/jsPlumb/js/jsplumb.min.js'), 98) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaWorkflowBundle:js/WorkflowEditor.js'), 99) }}
+{{ pageSetVar('title', __('Workflow editor')) }}
+{{ showflashes() }}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="jtk-main">
+                <h2>{{ __('Workflow editor') }}</h2>
+                <div id="tools" class="btn-group-sm">
+                    <button type="button" class="btn btn-default" id="decreaseZoomLevel" title="{{ __('Decrease zoom level') }}"><i class="fa fa-search-minus"></i></button>
+                    <button type="button" class="btn btn-default" id="resetZoomLevel" title="{{ __('Reset zoom level') }}"><i class="fa fa-search"></i></button>
+                    <button type="button" class="btn btn-default" id="increaseZoomLevel" title="{{ __('Increase zoom level') }}"><i class="fa fa-search-plus"></i></button>
+                    <button type="button" class="btn btn-default" id="addNode" title="{{ __('Add node') }}"><i class="fa fa-plus"></i> {{ __('Add node') }}</button>
+                </div>
+                <div class="jtk-canvas canvas-wide jtk-surface jtk-surface-nopan" id="canvas">
+                    {% for place in workflow.getPlaces() %}
+                        <div class="node state" id="state{{ place }}">{{ place }}</div>
+                    {% endfor %}
+                    {% set uniqueTransitionNames = [] %}
+                    {% for transition in workflow.getTransitions() if transition.getName() not in uniqueTransitionNames %}
+                        <div class="node transition" id="transition{{ transition.getName() }}">{{ transition.getName() }}</div>
+                        {% set uniqueTransitionNames = uniqueTransitionNames|merge([transition.getName()]) %}
+                    {% endfor %}
+                </div>
+                <ul id="connectionList" class="hidden">
+                    {% for transition in workflow.getTransitions() %}
+                        {% for from in transition.getFroms() %}
+                            <li data-from="state{{ from }}" data-to="transition{{ transition.getName() }}"></li>
+                        {% endfor %}
+                        {% for to in transition.getTos() %}
+                            <li data-from="transition{{ transition.getName() }}" data-to="state{{ to }}"></li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+                <br />
+                <p>{{ __('How to use the editor') }}:</p>
+                <ul>
+                    <li>{{ __('Click on the <em>Add node</em> button to add new states and transitions.')|raw }}</li>
+                    <li>{{ __('Drag from node exchange icons to other nodes to add new connections.') }}</li>
+                    <li>{{ __('Double-click on a node to edit it.') }}</li>
+                    <li>{{ __('Click on the trash-can icons to delete nodes and their connections.') }}</li>
+                    <li>{{ __('Click on a connection to delete it.') }}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <h2>{{ __('Workflow settings') }}</h2>
+            <div id="basicProperties" class="form">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="workflowName">{{ __('Name') }}</label>
+                            <input type="text" id="workflowName" value="{{ name }}" class="form-control input-sm" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="workflowType">{{ __('Type') }}</label>
+                            <select id="workflowType" class="form-control input-sm">
+                                <option value="workflow"{{ type == 'workflow' ? ' selected="selected"' : '' }}>{{ __('Workflow') }}</option>
+                                <option value="state_machine"{{ type == 'state_machine' ? ' selected="selected"' : '' }}>{{ __('State Machine') }}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="markingStoreType">{{ __('Marking store') }}</label>
+                            <select id="markingStoreType" class="form-control input-sm">
+                                <option value="multiple_state"{{ markingStoreType == 'multiple_state' ? ' selected="selected"' : '' }}>{{ __('Multiple state') }}</option>
+                                <option value="single_state"{{ markingStoreType == 'single_state' ? ' selected="selected"' : '' }}>{{ __('Single state') }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="markingStoreField">{{ __('State field') }} (<span id="markingStoreFieldType"></span>)</label>
+                            <input type="text" id="markingStoreField" value="{{ markingStoreField|default('state') }}" class="form-control input-sm" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="supportedEntities">{{ __('Supported entities (one per line)') }}</label><br />
+                    <textarea id="supportedEntities" class="form-control input-sm">{{ supportedEntities|join("\n") }}</textarea>
+                </div>
+            </div>
+            <h2>Output</h2>
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#outputYaml" role="tab" data-toggle="tab">{{ __('YAML') }}</a></li>
+                <li role="presentation"><a href="#outputXml" role="tab" data-toggle="tab">{{ __('XML') }}</a></li>
+            </ul>
+            <div id="outputTabPanels" class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="outputYaml">
+                    <pre><code></code></pre>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="outputXml">
+                    <pre><code></code></pre>
+                </div>
+            </div>
+            <p class="alert alert-warning"><strong>{{ __('Caution') }}:</strong> {{ __('when upgrading an existing workflow consider that objects could be in a state which does not exist anymore. You need to update your database to update these objects in order to avoid problems.') }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="nodeModal" tabindex="-1" role="dialog" aria-labelledby="nodeModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="nodeModalLabel">{{ __('Edit node') }}</h4>
+            </div>
+            <div class="modal-body">
+                <div id="nodeTypeSelection" class="form-group">
+                    <div class="radio-inline">
+                        <label>
+                            <input type="radio" name="nodeType" id="nodeTypeState" value="state" required="required" checked="checked"> {{ __('State') }}
+                        </label>
+                    </div>
+                    <div class="radio-inline">
+                        <label>
+                            <input type="radio" name="nodeType" id="nodeTypeTransition" value="transition" required="required"> {{ __('Transition') }}
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="nodeName" class="control-label required">{{ __('Name') }}</label>
+                    <input type="text" id="nodeName" class="input-control" required="required" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">{{ __('Update') }}</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('Close') }}</button>
+            </div>
+        </div>
+    </div>
+</div>

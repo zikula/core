@@ -16,6 +16,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\IdentityTranslator;
 
+/**
+ * Locale form type.
+ */
 class LocaleType extends AbstractType
 {
     /**
@@ -32,11 +35,17 @@ class LocaleType extends AbstractType
         ]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
         return 'zikula_locale';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getParent()
     {
         return ChoiceType::class;

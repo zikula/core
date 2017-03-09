@@ -22,7 +22,7 @@ use Zikula\RoutesModule\Listener\Base\AbstractEntityLifecycleListener;
 class EntityLifecycleListener extends AbstractEntityLifecycleListener
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function postLoad(LifecycleEventArgs $args)
     {

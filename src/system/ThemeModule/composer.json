@@ -14,8 +14,24 @@
         "psr-4": { "Zikula\\ThemeModule\\": "" }
     },
     "require": {
-        "php": ">5.4.1"
+        "php": ">=5.5.9",
+        "robloach/component-installer": "*",
+        "zikula/jquery-bundle": "dev-master",
+        "zikula/jquery-ui-bundle": "dev-master",
+        "zikula/bootstrap-bundle": "dev-master",
+        "zikula/fontawesome-bundle": "dev-master",
+        "zikula/jquery-minicolors-bundle": "dev-master",
+        "bootstrap-plus/bootstrap-jqueryui": "dev-master",
+        "dimsemenov/magnific-popup": "1.*",
+        "twitter/typeahead.js": "1.*",
+        "vakata/jstree": "3.*"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/corejavascript/typeahead.js"
+        }
+    ],
     "extra": {
         "zikula": {
             "url": "theme",
