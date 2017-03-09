@@ -15,6 +15,8 @@ CHANGELOG - ZIKULA 1.4.x
     - Corrected path to legacy module's admin icons.
     - Made display names of Menu and Theme modules more readable (#3448).
     - Added a general purpose deletion form type (#3333).
+    - Fixed initialisation of JavaScript polyfills (#3348, #3486).
+    - Automatically initialise basic JavaScript polyfills for forms (#3348, #3486).
 
  - Features:
     - Added Permission-based controls for MenuModule menu items (#3314).

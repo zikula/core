@@ -6,7 +6,8 @@ services:
 
     zikula.form.type.deletion:
         class: Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType
-        arguments: ["@translator.default"]
+        arguments:
+            - "@translator.default"
         tags:
             - { name: form.type, alias: zikula_deletion }
 
@@ -20,8 +21,20 @@ services:
         tags:
             - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
 
+    zikula.form_extension.form_detection_listener:
+        class: Zikula\Bundle\FormExtensionBundle\Listener\FormDetectionListener
+        arguments:
+            - "@request_stack"
+            - "@zikula_core.common.theme.assets_js"
+            - "@zikula_core.common.theme.pagevars"
+        tags:
+            - { name: kernel.event_subscriber }
+
     zikula_form_extension_bundle.form_extension:
         class: Zikula\Bundle\FormExtensionBundle\Twig\Extension\FormExtension
-        arguments: ["@service_container"]
+        arguments:
+            - "@request_stack"
+            - "@zikula_core.common.theme.assets_js"
+            - "@zikula_core.common.theme.pagevars"
         tags:
             - { name: twig.extension }
