@@ -15,12 +15,14 @@ CHANGELOG - ZIKULA 1.4.x
     - Corrected path to legacy module's admin icons.
     - Made display names of Menu and Theme modules more readable (#3448).
     - Added a general purpose deletion form type (#3333).
+    - Fixed initialisation of JavaScript polyfills (#3348, #3486).
 
  - Features:
     - Added Permission-based controls for MenuModule menu items (#3314).
     - SearchModule refactored to Core-2.0 standards.
     - SearchableInterface adds a method `amendForm()` to amend the search form instead of the old method `getOptions()`
     - Added support for including module dependencies in composer execution using composer merge plugin (#3388, #3437).
+    - Automatically initialise basic JavaScript polyfills for forms (#3348, #3486).
 
  - Vendor updates:
     - liip/imagine-bundle updated from 1.7.2 to 1.7.4

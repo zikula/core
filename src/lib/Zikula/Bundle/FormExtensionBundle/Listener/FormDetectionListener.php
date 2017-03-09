@@ -9,13 +9,22 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\FormExtensionBundle\Twig\Extension;
+namespace Zikula\Bundle\FormExtensionBundle\Listener;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\ThemeModule\Engine\AssetBag;
 use Zikula\ThemeModule\Engine\ParameterBag;
 
-class FormExtension extends \Twig_Extension
+/**
+ * Event handler class which checks the response for any forms.
+ */
+class FormDetectionListener implements EventSubscriberInterface
 {
     /**
      * @var RequestStack
@@ -33,7 +42,7 @@ class FormExtension extends \Twig_Extension
     private $pageVars;
 
     /**
-     * FormExtension constructor.
+     * FormDetectionListener constructor.
      *
      * @param RequestStack $requestStack
      * @param AssetBag     $jsAssetBag
@@ -47,24 +56,34 @@ class FormExtension extends \Twig_Extension
     }
 
     /**
-     * Returns a list of functions to add to the existing list.
-     *
-     * @return array An array of functions
+     * Makes our handlers known to the event system.
      */
-    public function getFunctions()
+    public static function getSubscribedEvents()
     {
         return [
-            new \Twig_SimpleFunction('polyfill', [$this, 'polyfill'])
+            KernelEvents::RESPONSE => ['onResponse', 5]
         ];
     }
 
     /**
-     * Adds polyfill features to be included into the page.
+     * Listener for the `kernel.response` event.
      *
-     * @param array $features List of desired polyfills
+     * @param FilterResponseEvent $event The event instance
      */
-    public function polyfill(array $features = ['forms', 'forms-ext'])
+    public function onResponse(FilterResponseEvent $event)
     {
+        $response = $event->getResponse();
+        if ($response instanceof BinaryFileResponse || $response instanceof JsonResponse || $response instanceof StreamedResponse) {
+            return;
+        }
+        $content = $response->getContent();
+        if (false === strpos($content, '<form')) {
+            return;
+        }
+
+        // a form has been detected, add default polyfills
+        $features = ['forms', 'forms-ext'];
+
         $basePath = $this->requestStack->getCurrentRequest()->getBasePath();
         $this->jsAssetBag->add([$basePath . '/web/webshim/js-webshim/minified/polyfiller.js' => AssetBag::WEIGHT_JQUERY + 1]);
         $this->jsAssetBag->add([$basePath . '/javascript/polyfiller.init.js' => AssetBag::WEIGHT_JQUERY + 2]);

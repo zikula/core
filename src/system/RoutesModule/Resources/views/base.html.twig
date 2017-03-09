@@ -1,9 +1,6 @@
 {# purpose of this template: general base layout #}
 {% block header %}
     {{ pageAddAsset('javascript', zasset('@ZikulaRoutesModule:js/ZikulaRoutesModule.js')) }}
-    {% if 'edit' in app.request.get('_route') or 'config' in app.request.get('_route') %}
-        {{ polyfill(['forms', 'forms-ext']) }}
-    {% endif %}
 {% endblock %}
 
 {% block appTitle %}
