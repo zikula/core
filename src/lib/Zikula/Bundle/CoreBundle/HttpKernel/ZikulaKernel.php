@@ -39,11 +39,11 @@ define('ACCESS_ADMIN', 800);
 
 abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
 {
-    const VERSION = '1.4.7';
+    const VERSION = '1.5.0';
 
-    const VERSION_SUB = 'Overture';
+    const VERSION_SUB = 'Interlude';
 
-    const PHP_MINIMUM_VERSION = '5.4.1';
+    const PHP_MINIMUM_VERSION = '5.5.9';
 
     /**
      * The parameter name identifying the currently installed version of the core.
