@@ -23,7 +23,6 @@ use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\GroupsModule\Form\Type\CreateGroupType;
-use Zikula\GroupsModule\Form\Type\DeleteGroupType;
 use Zikula\GroupsModule\Form\Type\EditGroupType;
 use Zikula\GroupsModule\GroupEvents;
 use Zikula\GroupsModule\Helper\CommonHelper;

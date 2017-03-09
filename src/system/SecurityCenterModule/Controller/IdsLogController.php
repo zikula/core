@@ -24,7 +24,6 @@ use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\SecurityCenterModule\Form\Type\IdsLogExportType;
 use Zikula\SecurityCenterModule\Form\Type\IdsLogFilterType;
-use Zikula\SecurityCenterModule\Form\Type\IdsLogPurgeType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
