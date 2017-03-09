@@ -71,23 +71,15 @@ class MenuController extends AbstractController
             false, /* false: load all children, true: only direct */
             [
                 'decorate' => true,
-                'representationField' => 'title',
                 'html' => true,
                 'childOpen' => function ($node) {
                     return '<li class="jstree-open" id="' . $this->domTreeNodePrefix . $node['id'] . '">';
+                },
+                'nodeDecorator' => function ($node) {
+                    return '<a href="#">' . $node['title'] . ' (' . $node['id'] . ')</a>';
                 }
             ]
         );
-//        $options = [
-//            'decorate' => true,
-//            'rootOpen' => '<ul>',
-//            'rootClose' => '</ul>',
-//            'childOpen' => '<li>',
-//            'childClose' => '</li>',
-//            'nodeDecorator' => function($node) {
-//                return '<a href="/page/'.$node['slug'].'">'.$node[$field].'</a>';
-//            }
-//        ];
 
         return [
             'menu' => $menuItemEntity,

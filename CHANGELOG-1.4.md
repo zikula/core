@@ -1,7 +1,25 @@
 CHANGELOG - ZIKULA 1.4.x
 ------------------------
 
-* 1.4.6 (?)
+* 1.4.7 (?)
+
+ - BC Breaks:
+    - ?
+
+ - Deprecated:
+    - ?
+
+ - Fixes:
+    - ?
+
+ - Features:
+    - Added Permission-based controls for MenuModule menu items (#3314).
+
+ - Vendor updates:
+    - swiftmailer/swiftmailer updated from v5.4.5 to v5.4.6 
+    - willdurand/js-translation-bundle updated from 2.6.3 to 2.6.4
+
+* 1.4.6 (2017-02-12)
 
  - BC Breaks:
     - LocaleApi (introduced in 1.4.4) has been refactored and eliminates access to locale metadata.

@@ -12,9 +12,10 @@
 namespace Zikula\MenuModule\Provider;
 
 use Knp\Menu\FactoryInterface;
-use Knp\Menu\Loader\NodeLoader;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Zikula\MenuModule\Entity\RepositoryInterface\MenuItemRepositoryInterface;
+use Zikula\MenuModule\Loader\PermissionAwareNodeLoader;
+use Zikula\PermissionsModule\Api\PermissionApi;
 
 class DoctrineTreeProvider implements MenuProviderInterface
 {
@@ -24,7 +25,7 @@ class DoctrineTreeProvider implements MenuProviderInterface
     protected $factory = null;
 
     /**
-     * @var NodeLoader
+     * @var PermissionAwareNodeLoader
      */
     protected $nodeLoader;
 
@@ -35,12 +36,13 @@ class DoctrineTreeProvider implements MenuProviderInterface
 
     /**
      * @param FactoryInterface $factory the menu factory used to create the menu item
+     * @param PermissionApi $permissionApi
      * @param MenuItemRepositoryInterface $menuItemRepository
      */
-    public function __construct(FactoryInterface $factory, MenuItemRepositoryInterface $menuItemRepository)
+    public function __construct(FactoryInterface $factory, PermissionApi $permissionApi, MenuItemRepositoryInterface $menuItemRepository)
     {
         $this->factory = $factory;
-        $this->nodeLoader = new NodeLoader($factory);
+        $this->nodeLoader = new PermissionAwareNodeLoader($factory, $permissionApi);
         $this->menuItemRepository = $menuItemRepository;
     }
 
