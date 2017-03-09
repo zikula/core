@@ -54,7 +54,7 @@ class FormDetectionListener implements EventSubscriberInterface
         $this->jsAssetBag = $jsAssetBag;
         $this->pageVars = $pageVars;
     }
-JsonResponse
+
     /**
      * Makes our handlers known to the event system.
      */
