@@ -12,7 +12,10 @@
 namespace Zikula\Bundle\FormExtensionBundle\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\ThemeModule\Engine\AssetBag;
@@ -51,7 +54,7 @@ class FormDetectionListener implements EventSubscriberInterface
         $this->jsAssetBag = $jsAssetBag;
         $this->pageVars = $pageVars;
     }
-
+JsonResponse
     /**
      * Makes our handlers known to the event system.
      */
@@ -70,6 +73,9 @@ class FormDetectionListener implements EventSubscriberInterface
     public function onResponse(FilterResponseEvent $event)
     {
         $response = $event->getResponse();
+        if ($response instanceof BinaryFileResponse || $response instanceof JsonResponse || $response instanceof StreamedResponse) {
+            return;
+        }
         $content = $response->getContent();
         if (false === strpos($content, '<form')) {
             return;
