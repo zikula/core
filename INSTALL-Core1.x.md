@@ -34,9 +34,12 @@ Server/Environment Requirements
 Before upgrading Zikula it's important to ensure that the hosting server environment meets the requirements
 of the new core release. Zikula Core 1.x has the following requirements:
 
-|               | Minimum       | Recommended  |
-| ------------- |:-------------:| :-----------:|
-| PHP           | 5.5.9         | >=5.5.9 <7   |
+|               | Minimum       |
+| ------------- |:-------------:|
+| PHP           | 5.5.9         |
+
+
+Please note:
 
  - Zikula requires more memory than typical to install. You should set your memory limit in `php.ini`
    to 128 MB for the installation process.
