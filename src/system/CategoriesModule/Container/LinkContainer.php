@@ -110,11 +110,6 @@ class LinkContainer implements LinkContainerInterface
                 'icon' => 'archive'
             ];
             $links[] = [
-                'url' => $this->router->generate('zikulacategoriesmodule_admin_rebuild'),
-                'text' => $this->translator->__('Rebuild paths'),
-                'icon' => 'refresh'
-            ];
-            $links[] = [
                 'url' => $this->router->generate('zikulacategoriesmodule_config_config'),
                 'text' => $this->translator->__('Settings'),
                 'icon' => 'wrench'

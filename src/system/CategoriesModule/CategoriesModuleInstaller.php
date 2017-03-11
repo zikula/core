@@ -71,10 +71,10 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
 
         // set module vars
         $this->setVar('userrootcat', 31);
-        $this->setVar('allowusercatedit', 0);
-        $this->setVar('autocreateusercat', 0);
-        $this->setVar('autocreateuserdefaultcat', 0);
-        $this->setVar('permissionsall', 0);
+        $this->setVar('allowusercatedit', false);
+        $this->setVar('autocreateusercat', false);
+        $this->setVar('autocreateuserdefaultcat', false);
+        $this->setVar('permissionsall', false);
         $this->setVar('userdefaultcatname', $this->__('Default'));
 
         // Initialisation successful

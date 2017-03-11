@@ -118,24 +118,6 @@ class CategoryController extends AbstractController
         return $templateParameters;
     }
 
-    /**
-     * @Route("/delete")
-     * @Template
-     * @Theme("admin")
-     *
-     * Deletes a category registry.
-     *
-     * @param Request $request
-     *
-     * @return array|Response
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have permission to administrate the module
-     */
-    public function deleteAction(Request $request)
-    {
-        // nada
-    }
-
     private function getNodeOptions(Request $request)
     {
         $locale = $request->getLocale();
