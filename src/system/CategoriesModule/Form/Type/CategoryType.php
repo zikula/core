@@ -18,6 +18,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Validator\Constraints\UniqueNameForPosition;
 
@@ -52,10 +53,10 @@ class CategoryType extends AbstractType
                 'label' => $translator->__('Category is a leaf node'),
                 'required' => false
             ])
-            ->add('value', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add($builder->create('value', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $translator->__('Value'),
                 'required' => false
-            ])
+            ])->addModelTransformer(new NullToEmptyTransformer()))
             ->add('status', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $translator->__('Active'),
                 'required' => false
@@ -80,19 +81,9 @@ class CategoryType extends AbstractType
                 'label' => $translator->__('Category attributes'),
                 'required' => false
             ])
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $translator->__('Save'),
-                'icon' => 'fa-check',
-                'attr' => [
-                    'class' => 'btn btn-success'
-                ]
-            ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $translator->__('Cancel'),
-                'icon' => 'fa-times',
-                'attr' => [
-                    'class' => 'btn btn-default'
-                ]
+            ->add('after', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [
+                'mapped' => false,
+                'required' => false
             ])
             ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) use ($options) {
                 // ensure all locales have a display name

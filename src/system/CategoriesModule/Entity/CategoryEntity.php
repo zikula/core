@@ -891,4 +891,22 @@ class CategoryEntity extends EntityAccess
     {
         $this->root = $root;
     }
+
+    public function toJson($prefix = '', $locale = 'en')
+    {
+        return json_encode([
+            'id' => $prefix . $this->id,
+            'text' => $this->getDisplay_name($locale),
+            'name' => $this->name,
+            'display_name' => $this->display_name,
+            'display_desc' => $this->display_desc,
+            'value' => $this->value,
+            'status' => $this->status,
+            'is_leaf' => $this->is_leaf,
+            'is_locked' => $this->is_locked,
+            'parent' => $this->parent->getId(),
+//            'children' => $this->children,
+            'root' => null !== $this->root ? $this->root->getId() : null
+        ]);
+    }
 }

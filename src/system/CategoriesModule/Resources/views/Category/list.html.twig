@@ -1,8 +1,7 @@
 {{ pageAddAsset('javascript', asset('jstree/dist/jstree.min.js')) }}
 {{ pageAddAsset('stylesheet', asset('jstree/dist/themes/default/style.min.css')) }}
-{{ pageAddAsset('javascript', zasset('@ZikulaCategoriesModule:js/categories_admin_view.js')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaCategoriesModule:js/ZikulaCategoriesModule.Category.List.js')) }}
 {{ pageAddAsset('javascript', zasset('@ZikulaCategoriesModule:js/ZikulaCategoriesModule.Category.Edit.js')) }}
-{{ adminHeader() }}
 {% set customStyle %}
     <style type="text/css">
         .jstree-contextmenu {
@@ -11,13 +10,17 @@
     </style>
 {% endset %}
 {{ pageAddAsset('header', customStyle) }}
+{{ adminHeader() }}
 <h3>
     <span class="fa fa-list"></span>
     {{ __('Categories list') }}
     {{ pageSetVar('title', __('Categories list')) }}
 </h3>
 
-<p class="alert alert-info">{{ __('You can arrange categories list using drag and drop. New order will be saved automatically.') }}<br />{{ __('Right click on selected category to open context menu.') }}</p>
+<p class="alert alert-info">
+    {{ __('You can arrange categories list using drag and drop. New order will be saved automatically.') }}<br />
+    {{ __('Right click on selected category to open context menu.') }}
+</p>
 
 <p>
     <label for="categoryTreeSearchTerm">{{ __('Quick search') }}:</label>
@@ -26,16 +29,16 @@
 
 <p><a href="#" id="catExpand">{{ __('Expand all') }}</a> | <a href="#" id="catCollapse">{{ __('Collapse all') }}</a></p>
 
-<div id="categoryTreeContainer">
+<div id="tree_container">
     {{ tree|raw }}
 </div>
 
-<div class="modal fade" id="categoryEditModal" tabindex="-1" role="dialog" aria-labelledby="categoryEditModalLabel" aria-hidden="true">
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('Close') }}"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="categoryEditModalLabel">{{ __('Edit category') }}</h4>
+                <h4 class="modal-title" id="editModalLabel">{{ __('Edit category') }}</h4>
             </div>
             <div class="modal-body">
             </div>
@@ -46,12 +49,12 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="categoryDeleteModal" tabindex="-1" role="dialog" aria-labelledby="categoryDeleteModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('Close') }}"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="categoryDeleteModalLabel">{{ __('Confirmation prompt') }}</h4>
+                <h4 class="modal-title" id="deleteModalLabel">{{ __('Confirmation prompt') }}</h4>
             </div>
             <div class="modal-body">
                 <p>{{ __('Do you really want to delete this category?') }}

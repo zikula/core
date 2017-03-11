@@ -14,12 +14,9 @@ namespace Zikula\CategoriesModule\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\Response\Ajax\AjaxResponse;
-use Zikula\Core\Response\PlainResponse;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -62,79 +59,27 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{category}", requirements={"category" = "^[1-9]\d*$"}, options={"expose"=true})
-     * @Template
-     * @Theme("admin")
-     *
-     * Creates or edits a category.
-     *
      * @param Request $request
-     *
-     * @param CategoryEntity $category
-     * @return array|Response|PlainResponse
+     * @return array
      */
-    public function editAction(Request $request, CategoryEntity $category = null)
-    {
-        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
-        if (null === $category) {
-            $category = new CategoryEntity($this->get('zikula_settings_module.locale_api')->getSupportedLocales());
-        }
-        $form = $this->createForm('Zikula\CategoriesModule\Form\Type\CategoryType',
-            $category, [
-                'translator' => $this->get('translator.default'),
-                'locales' => $this->get('zikula_settings_module.locale_api')->getSupportedLocales(),
-            ]
-        );
-        if ($form->handleRequest($request)->isSubmitted()) {
-            if ($form->get('save')->isClicked() && $form->isValid()) {
-                $category = $form->getData();
-                $em = $this->get('doctrine')->getManager();
-                $em->persist($category);
-                $em->flush();
-                $this->addFlash('status', $this->__('Done!'));
-
-                return $this->redirectToRoute('zikulacategoriesmodule_category_list');
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
-
-                return $this->redirectToRoute('zikulacategoriesmodule_category_list');
-            }
-        }
-        $templateParameters = [
-            'locales' => $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(),
-            'form' => $form->createView()
-        ];
-        if ($request->isXmlHttpRequest()) {
-            return new AjaxResponse([
-                'action' => 'edit',
-                'result' => $this->renderView('@ZikulaCategoriesModule/Category/edit.html.twig', $templateParameters)
-            ]);
-        }
-
-        return $templateParameters;
-    }
-
     private function getNodeOptions(Request $request)
     {
         $locale = $request->getLocale();
-        $router = $this->get('router');
 
         return [
             'decorate' => true,
             'html' => true,
             'childOpen' => function ($node) {
-                $jsTreeData = $node['status'] != 'A' ? 'data-jstree=\'{"disabled":true}\' ' : '';
+                $jsTreeData = [];
+                $jsTreeData['disabled'] = $node['status'] != 'A';
+                $jsTreeData['type'] = $node['is_leaf'] ? 'leaf' : 'default';
+                $jsTreeData = 'data-jstree="' . htmlentities(json_encode($jsTreeData)) . '" ';
 
                 return '<li ' . $jsTreeData . 'class="jstree-open" id="' . $this->domTreeNodePrefix . $node['id'] . '">';
             },
-            'nodeDecorator' => function ($node) use ($locale, $router) {
-                $display = isset($node['display_name'][$locale]) ? $node['display_name'][$locale] : $node['name'];
-                $title = ' title="' . $this->createTitleAttribute($node, $display, $locale) . '"';
-                $href = ' href="' . $router->generate('zikulacategoriesmodule_category_edit', ['category' => $node['id']]) . '"';
+            'nodeDecorator' => function ($node) use ($locale) {
+                $displayName = isset($node['display_name'][$locale]) ? $node['display_name'][$locale] : $node['name'];
+                $title = ' title="' . $this->createTitleAttribute($node, $displayName, $locale) . '"';
                 $classes = [];
                 if ($node['is_locked']) {
                     $classes[] = 'locked';
@@ -144,18 +89,24 @@ class CategoryController extends AbstractController
                 }
                 $class = !empty($classes) ? ' class="' . implode(' ', $classes) . '"' : '';
 
-                return '<a' . $class . $title . $href . '>' . $display . '</a>';
+                return '<a' . $class . $title . ' href="#">' . $displayName . '</a>';
             }
         ];
     }
 
-    private function createTitleAttribute($node, $displayName, $lang)
+    /**
+     * @param $node
+     * @param $displayName
+     * @param $locale
+     * @return string
+     */
+    private function createTitleAttribute($node, $displayName, $locale)
     {
         $title = [];
         $title[] = $this->__('ID') . ': ' . $node['id'];
         $title[] = $this->__('Name') . ': ' . $node['name'];
         $title[] = $this->__('Display name') . ': ' . $displayName;
-        $title[] = $this->__('Description') . ': ' . (isset($node['display_desc'][$lang]) ? $node['display_desc'][$lang] : '');
+        $title[] = $this->__('Description') . ': ' . (isset($node['display_desc'][$locale]) ? $node['display_desc'][$locale] : '');
         $title[] = $this->__('Value') . ': ' . $node['value'];
         $title[] = $this->__('Active') . ': ' . ($node['status'] == 'A' ? 'Yes' : 'No');
         $title[] = $this->__('Leaf') . ': ' . ($node['is_leaf'] ? 'Yes' : 'No');

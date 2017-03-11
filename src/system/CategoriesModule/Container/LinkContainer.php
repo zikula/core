@@ -54,8 +54,13 @@ class LinkContainer implements LinkContainerInterface
      * @param VariableApi         $variableApi   VariableApi service instance
      * @param RequestStack        $requestStack  RequestStack service instance
      */
-    public function __construct(TranslatorInterface $translator, RouterInterface $router, PermissionApi $permissionApi, VariableApi $variableApi, RequestStack $requestStack)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        RouterInterface $router,
+        PermissionApi $permissionApi,
+        VariableApi $variableApi,
+        RequestStack $requestStack
+    ) {
         $this->translator = $translator;
         $this->router = $router;
         $this->permissionApi = $permissionApi;
@@ -98,7 +103,7 @@ class LinkContainer implements LinkContainerInterface
         }
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADD)) {
             $links[] = [
-                'url' => $this->router->generate('zikulacategoriesmodule_category_edit'),
+                'url' => '#',
                 'text' => $this->translator->__('Create new category'),
                 'icon' => 'plus'
             ];
