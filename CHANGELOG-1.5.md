@@ -27,12 +27,9 @@ CHANGELOG - ZIKULA 1.5.x
     - Automatically initialise basic JavaScript polyfills for forms (#3348, #3486).
 
  - Vendor updates:
-    - carlosio/jenkins installed as dev-master
     - doctrine/cache updated from 1.5.4 to 1.6.1
     - doctrine/common updated from 2.5.3 to 2.6.2
     - fduch/workflow-bundle installed as 2.0.2
-    - guzzle/guzzle installed at 3.9.3
-    - knplabs/github-api installed at 1.7.1
     - liip/imagine-bundle updated from 1.7.2 to 1.7.4
     - phpdocumentor/reflection-common installed at 1.0
     - phpdocumentor/type-resolver installed at 0.2.1
@@ -43,7 +40,7 @@ CHANGELOG - ZIKULA 1.5.x
     - swiftmailer/swiftmailer updated from v5.4.5 to v5.4.6
     - symfony updated from 2.8.17 to 2.8.18
     - symfony/security-acl update from 2.8.0 to 3.0.0
-    - symfony/workflow installed as 3.2.4
+    - symfony/workflow installed as 3.2.4 and updated to 3.2.5
     - twig updated from 1.31.0 to 1.32.0
     - webmozart/assert installed at 1.2.0
     - willdurand/js-translation-bundle updated from 2.6.3 to 2.6.4
