@@ -121,16 +121,16 @@
                 return false;
             }
             var nodeId = $(node).attr('id');
-            var entityId;
+            var entityId = nodeId.replace(id_prefix, '');
             // append spinner
             $('#' + nodeId).find('a').first().after('<i id="temp-spinner" class="fa fa-spinner fa-spin fa-lg text-primary"></i>');
 
             var pars = {};
             switch (action) {
-                case 'edit':
-                case 'delete':
-                    entityId = nodeId.replace(id_prefix, '');
-                    break;
+                // case 'edit':
+                // case 'delete':
+                //     entityId = nodeId.replace(id_prefix, '');
+                //     break;
                 case 'deleteandmovechildren':
                     pars.parent = extrainfo;
                     break;
@@ -162,7 +162,8 @@
                 alert(result.status + ': ' + result.statusText);
             }).always(function() {
                 $('#temp-spinner').remove();
-                redrawTree(treeElem);
+                // redrawTree(treeElem);
+                treeElem.jstree(true).refresh();
             });
 
             return true;

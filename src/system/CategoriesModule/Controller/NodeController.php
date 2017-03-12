@@ -45,6 +45,7 @@ class NodeController extends AbstractController
         }
         $repo = $this->get('zikula_categories_module.category_repository');
         $mode = $request->request->get('mode', 'edit');
+        $entityManager = $this->getDoctrine()->getManager();
 
         switch ($action) {
             case 'edit':
@@ -76,7 +77,7 @@ class NodeController extends AbstractController
                     } elseif ($mode == 'new') {
                         $repo->persistAsLastChild($category);
                     } // no need to persist edited entity
-                    $this->get('doctrine')->getManager()->flush();
+                    $entityManager->flush();
 
                     return new AjaxResponse([
                         'node' => $category->toJson($this->domTreeNodePrefix, $request->getLocale()),
@@ -95,12 +96,18 @@ class NodeController extends AbstractController
                 break;
             case 'delete':
                 $id = $category->getId();
-                $this->get('doctrine')->getManager()->remove($category);
-                $this->get('doctrine')->getManager()->flush();
+                $entityManager->remove($category);
+                $entityManager->flush();
                 $response = [
                     'id' => $id,
                     'action' => $action,
                 ];
+                break;
+            case 'activate':
+            case 'deactivate':
+                $category->setStatus($category->getStatus() == 'A' ? 'I' : 'A');
+                $entityManager->flush();
+                $response = ['result' => true];
                 break;
             default:
                 $response = ['result' => true];
@@ -137,7 +144,7 @@ class NodeController extends AbstractController
             $children = $repo->children($parentEntity);
             $repo->persistAsNextSiblingOf($category, $children[$position - 1]);
         }
-        $this->get('doctrine')->getManager()->flush();
+        $this->getDoctrine()->getManager()->flush();
 
         return new AjaxResponse(['result' => true]);
     }

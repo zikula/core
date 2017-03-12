@@ -13,10 +13,6 @@ namespace Zikula\CategoriesModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Core\Controller\AbstractController;
 
 /**
@@ -72,9 +68,9 @@ class AdminController extends AbstractController
      */
     public function editAction(Request $request, $cid = 0, $dr = 1, $mode = 'new')
     {
-        @trigger_error('The zikulacategoriesmodule_admin_edit action is deprecated. please use zikulacategoriesmodule_category_edit instead.', E_USER_DEPRECATED);
+        @trigger_error('The zikulacategoriesmodule_admin_edit action is deprecated. please use Javascript UI instead.', E_USER_DEPRECATED);
 
-        return $this->redirectToRoute('zikulacategoriesmodule_category_edit', ['category' => $cid]);
+        return $this->redirectToRoute('zikulacategoriesmodule_category_list');
     }
 
     /**
@@ -102,14 +98,9 @@ class AdminController extends AbstractController
      */
     public function newcatAction(Request $request)
     {
-        @trigger_error('The zikulacategoriesmodule_admin_new action is deprecated. please use zikulacategoriesmodule_category_edit instead.', E_USER_DEPRECATED);
-        $path = [
-            '_controller' => 'ZikulaCategoriesModule:Category:edit',
-            'mode' => 'new'
-        ];
-        $subRequest = $request->duplicate($request->query->all(), $request->request->all(), $path);
+        @trigger_error('The zikulacategoriesmodule_admin_new action is deprecated. please use Javascript UI instead.', E_USER_DEPRECATED);
 
-        return $this->get('kernel')->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
+        return $this->redirectToRoute('zikulacategoriesmodule_category_list');
     }
 
     /**
@@ -117,9 +108,9 @@ class AdminController extends AbstractController
      */
     public function updateAction(Request $request)
     {
-        @trigger_error('The zikulacategoriesmodule_admin_update action is deprecated. please use zikulacategoriesmodule_category_edit instead.', E_USER_DEPRECATED);
+        @trigger_error('The zikulacategoriesmodule_admin_update action is deprecated. please use Javascript UI instead.', E_USER_DEPRECATED);
 
-        return $this->redirectToRoute('zikulacategoriesmodule_category_edit');
+        return $this->redirectToRoute('zikulacategoriesmodule_category_list');
     }
 
     /**
