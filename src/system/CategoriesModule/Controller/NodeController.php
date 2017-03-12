@@ -107,7 +107,12 @@ class NodeController extends AbstractController
             case 'deactivate':
                 $category->setStatus($category->getStatus() == 'A' ? 'I' : 'A');
                 $entityManager->flush();
-                $response = ['result' => true];
+                $response = [
+                    'id' => $category->getId(),
+                    'parent' => $category->getParent()->getId(),
+                    'action' => $action,
+                    'result' => true
+                ];
                 break;
             default:
                 $response = ['result' => true];

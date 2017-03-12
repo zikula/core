@@ -61,7 +61,7 @@
         });
 
         function getContextMenuActions(node) {
-            return {
+            var actions = {
                 editItem: {
                     label: 'Edit',
                     action: function (obj) {
@@ -112,6 +112,15 @@
                     icon: 'fa fa-long-arrow-right'
                 }
             };
+            if (treeElem.jstree('is_disabled', node, true)) {
+                actions.deactivateItem._disabled = true;
+            } else {
+                actions.activateItem._disabled = true;
+            }
+            if (treeElem.jstree('is_leaf', node, true)) {
+                actions.addItemInto._disabled = true;
+            }
+            return actions;
         }
 
         function performContextMenuAction(node, action, extrainfo) {
@@ -127,10 +136,6 @@
 
             var pars = {};
             switch (action) {
-                // case 'edit':
-                // case 'delete':
-                //     entityId = nodeId.replace(id_prefix, '');
-                //     break;
                 case 'deleteandmovechildren':
                     pars.parent = extrainfo;
                     break;
@@ -162,8 +167,6 @@
                 alert(result.status + ': ' + result.statusText);
             }).always(function() {
                 $('#temp-spinner').remove();
-                // redrawTree(treeElem);
-                treeElem.jstree(true).refresh();
             });
 
             return true;
@@ -187,10 +190,10 @@
                     reinitTreeNode(parentNode, data);
                     break;
                 case 'activate':
-                    originalNode.removeClass('z-tree-unactive');
+                    treeElem.jstree('enable_node', originalNode);
                     break;
                 case 'deactivate':
-                    originalNode.addClass('z-tree-unactive');
+                    treeElem.jstree('disable_node', originalNode);
                     break;
                 case 'copy':
                     var indexOfOriginalNode = originalNode.parent().children().index(originalNode[0]);
