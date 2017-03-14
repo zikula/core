@@ -16,6 +16,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Made display names of Menu and Theme modules more readable (#3448).
     - Added a general purpose deletion form type (#3333).
     - Fixed initialisation of JavaScript polyfills (#3348, #3486).
+    - Fixed wrong link to HTML information pages in security center configuration (#3489).
 
  - Features:
     - Added Permission-based controls for MenuModule menu items (#3314).
