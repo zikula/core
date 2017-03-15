@@ -27,7 +27,15 @@
     <input type="search" id="categoryTreeSearchTerm" value="" />
 </p>
 
-<p><a href="#" id="catExpand">{{ __('Expand all') }}</a> | <a href="#" id="catCollapse">{{ __('Collapse all') }}</a></p>
+<div class="btn-toolbar" role="toolbar" aria-label="category button toolbar">
+    <div class="btn-group btn-group-sm" role="group" aria-label="category buttons">
+        <button type="button" id="catExpand" class="btn btn-info"><i class="fa fa-expand"></i> {{ __('Expand all') }}</button>
+        <button type="button" id="catCollapse"class="btn btn-info"><i class="fa fa-compress"></i> {{ __('Collapse all') }}</button>
+    </div>
+    <div class="btn-group btn-group-sm" role="group" aria-label="category buttons">
+        <button type="button" id="newCategory" class="btn btn-success"><i class="fa fa-plus"></i> {{ __('New Category') }}</button>
+    </div>
+</div>
 
 <div id="tree_container">
     {{ tree|raw }}

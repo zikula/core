@@ -119,7 +119,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             case '1.2.3':
             case '1.3.0':
                 $modVars = $this->getVars();
-                $usersModuleRootCategory = $this->container->get('zikula_categories_module.category_repository')->find(31);
+                $usersModuleRootCategory = $this->container->get('zikula_categories_module.category_repository')->findOneBy(['name' => 'ZikulaUsersModule']);
                 $modVars['userrootcat'] = $usersModuleRootCategory->getId();
                 foreach (['allowusercatedit', 'autocreateusercat', 'autocreateuserdefaultcat', 'permissionsall'] as $boolVar) {
                     $modVars[$boolVar] = isset($modVars[$boolVar]) ? (bool)$modVars[$boolVar] : false;

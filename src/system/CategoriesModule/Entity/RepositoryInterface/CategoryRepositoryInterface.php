@@ -30,26 +30,6 @@ interface CategoryRepositoryInterface extends ObjectRepository, Selectable, Repo
     public function countForContext($name = '', $parentId = 0, $excludedId = 0);
 
     /**
-     * Returns list of category ids which are placed within a given path.
-     *
-     * @param string $pathField Path field name (defaults to ipath)
-     * @param string $path      Given path value
-     *
-     * @return array
-     */
-    public function getIdsInPath($pathField = 'ipath', $path = '');
-
-    /**
-     * Returns list of categories which are placed within a given path including the path itself.
-     *
-     * @param string $pathField Path field name (defaults to ipath)
-     * @param string $path      Given path value
-     *
-     * @return array
-     */
-    public function getCategoriesInPath($pathField = 'ipath', $path = '');
-
-    /**
      * Returns the last added category within a given parent category.
      *
      * @param int $parentId Parent category id
@@ -66,13 +46,4 @@ interface CategoryRepositoryInterface extends ObjectRepository, Selectable, Repo
      * @param boolean $includeRoot Whether or not to also move the root folder (optional) (default=true)
      */
     public function updateParent($oldParentId = 0, $newParentId = 0, $includeRoot = true);
-
-    /**
-     * Updates the path for a given category id.
-     *
-     * @param integer $categoryId The categoryID of the category to be updated
-     * @param string  $pathField  Path field name (defaults to path)
-     * @param string  $path       Given path value
-     */
-    public function updatePath($categoryId = 0, $pathField = 'path', $path = '');
 }

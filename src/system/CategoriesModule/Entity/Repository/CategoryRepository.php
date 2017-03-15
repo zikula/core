@@ -44,39 +44,54 @@ class CategoryRepository extends NestedTreeRepository implements CategoryReposit
     }
 
     /**
-     * {@inheritdoc}
+     * Returns list of category ids which are placed within a given path.
+     * @deprecated
+     *
+     * @param string $pathField Path field name (defaults to ipath)
+     * @param string $path      Given path value
+     *
+     * @return array
      */
     public function getIdsInPath($pathField = 'ipath', $path = '')
     {
-        if (!in_array($pathField, ['path', 'ipath']) || $path == '') {
-            return null;
+        $categories = $this->getCategoriesInPath($pathField, $path);
+        $ids = [];
+        foreach ($categories as $category) {
+            $ids[] = $category->getId();
         }
 
-        $qb = $this->createQueryBuilder('c')
-            ->select('c.id')
-            ->where('c.' . $pathField . ' = :path')
-            ->setParameter('path', $path . '%');
-
-        return $qb->getQuery()->getResult();
+        return $ids;
     }
 
     /**
-     * {@inheritdoc}
+     * Returns list of categories which are placed within a given path including the path itself.
+     * @deprecated
+     *
+     * @param string $pathField Path field name (defaults to ipath)
+     * @param string $path      Given path value
+     *
+     * @return array
      */
     public function getCategoriesInPath($pathField = 'ipath', $path = '')
     {
         if (!in_array($pathField, ['path', 'ipath']) || $path == '') {
             return null;
         }
+        $fieldMap = ['path' => 'name', 'ipath' => 'id'];
+        $value = array_pop(explode('/', $path));
 
         $qb = $this->createQueryBuilder('c')
-            ->select('c')
-            ->where('c.' . $pathField . ' = :path')
-            ->orWhere('c.' . $pathField . ' LIKE :pathwc')
-            ->setParameter('path', $path)
-            ->setParameter('pathwc', $path . '/%');
+            ->where('c.' . $fieldMap[$pathField] . ' = :value')
+            ->setParameter('value', $value);
+        $categories = $qb->getQuery()->getResult();
+        foreach ($categories as $category) {
+            if ('path' == $pathField && $path == $category->getPath()) {
+                break; // will leave $category as last tested
+            }
+            // if 'ipath' == $pathField, the there will only be one category in the array and it will be set to $category
+        }
 
-        return $qb->getQuery()->getResult();
+        return $this->children($category, false, null, 'asc', true);
     }
 
     /**
@@ -164,21 +179,15 @@ class CategoryRepository extends NestedTreeRepository implements CategoryReposit
     }
 
     /**
-     * {@inheritdoc}
+     * Updates the path for a given category id.
+     * @deprecated
+     *
+     * @param integer $categoryId The categoryID of the category to be updated
+     * @param string  $pathField  Path field name (defaults to path)
+     * @param string  $path       Given path value
      */
     public function updatePath($categoryId = 0, $pathField = 'path', $path = '')
     {
-        if (!is_numeric($categoryId) || $categoryId < 1 || !in_array($pathField, ['path', 'ipath']) || $path == '') {
-            return;
-        }
-
-        $qb = $this->_em->createQueryBuilder()
-            ->update('Zikula\CategoriesModule\Entity\CategoryEntity', 'c')
-            ->set('c.' . $pathField, ':path')
-            ->setParameter('path', $path)
-            ->where('c.id = :id')
-            ->setParameter('id', $categoryId);
-
-        $qb->getQuery()->execute();
+        // do nothing. path is no longer an entity property
     }
 }

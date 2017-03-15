@@ -101,13 +101,6 @@ class LinkContainer implements LinkContainerInterface
                 'icon' => 'tree'
             ];
         }
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADD)) {
-            $links[] = [
-                'url' => '#',
-                'text' => $this->translator->__('Create new category'),
-                'icon' => 'plus'
-            ];
-        }
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikulacategoriesmodule_registry_edit'),

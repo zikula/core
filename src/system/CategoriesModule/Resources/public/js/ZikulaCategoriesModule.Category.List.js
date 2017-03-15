@@ -41,13 +41,17 @@
 
         // Tree interaction
         treeElem.on("move_node.jstree", moveTreeNode);
-        $('#catExpand').click(function(event) {
+        $('#catExpand').on("click", function(event) {
             event.preventDefault();
             treeElem.jstree(true).open_all(null, 500);
         });
-        $('#catCollapse').click(function(event) {
+        $('#catCollapse').on("click", function(event) {
             event.preventDefault();
             treeElem.jstree(true).close_all(null, 500);
+        });
+        $("#newCategory").on("click", function (event) {
+            event.preventDefault();
+            performContextMenuAction(null, 'edit');
         });
 
         // Tooltips
@@ -125,14 +129,16 @@
 
         function performContextMenuAction(node, action, extrainfo) {
             var allowedActions = ['edit', 'delete', 'deleteandmovechildren', 'copy', 'activate', 'deactivate', 'addafter', 'addchild'];
-            var parentId;
+            var parentId, entityId;
             if (!$.inArray(action, allowedActions) == -1) {
                 return false;
             }
-            var nodeId = $(node).attr('id');
-            var entityId = nodeId.replace(id_prefix, '');
-            // append spinner
-            $('#' + nodeId).find('a').first().after('<i id="temp-spinner" class="fa fa-spinner fa-spin fa-lg text-primary"></i>');
+            if (node) {
+                var nodeId = $(node).attr('id');
+                entityId = nodeId.replace(id_prefix, '');
+                // append spinner
+                $('#' + nodeId).find('a').first().after('<i id="temp-spinner" class="fa fa-spinner fa-spin fa-lg text-primary"></i>');
+            }
 
             var pars = {};
             switch (action) {
@@ -146,12 +152,14 @@
                 case 'addafter':
                     parentId = treeElem.jstree('get_parent', node);
                     pars.parent = parentId !== '#' ? $('#' + parentId).attr('id').replace(id_prefix, '') : null;
-                    pars.after = nodeId.replace(id_prefix, '');
+                    pars.after = entityId;
+                    entityId = null;
                     pars.mode = 'add';
                     action = 'edit';
                     break;
                 case 'addchild':
-                    pars.parent = nodeId.replace(id_prefix, '');
+                    pars.parent = entityId;
+                    entityId = null;
                     pars.mode = 'add';
                     action = 'edit';
                     break;
@@ -232,16 +240,20 @@
                                 updateEditForm(data.result);
                             } else {
                                 var nodeData = $.parseJSON(data.node);
+                                var editedNode;
                                 if (data.mode == 'edit') {
                                     // rename the existing node
-                                    var editedNode = treeElem.jstree('get_node', nodeData.id);
+                                    editedNode = treeElem.jstree('get_node', nodeData.id);
                                     treeElem.jstree(true).rename_node(editedNode, nodeData.display_name[Translator.locale]);
                                 } else {
                                     var selectedNode = treeElem.jstree('get_selected', true)[0], selectedNodeIndex = $('#' + selectedNode.id).index();
                                     var parentNode = treeElem.jstree('get_node', id_prefix + nodeData.parent);
                                     parentNode = (!parentNode) ? "#" : parentNode;
-                                    treeElem.jstree(true).create_node(parentNode, nodeData, selectedNodeIndex + 1);
+                                    var nodeId = treeElem.jstree(true).create_node(parentNode, nodeData, selectedNodeIndex + 1);
+                                    editedNode = treeElem.jstree('get_node', nodeId);
                                 }
+                                var nodeType = nodeData.is_leaf ? 'leaf' : 'default';
+                                treeElem.jstree(true).set_type(editedNode, nodeType);
                                 closeEditForm();
                             }
                         }).error(function(result) {
