@@ -27,13 +27,6 @@ use Zikula\RoutesModule\Helper\ListEntriesHelper;
 abstract class AbstractWorkflowHelper
 {
     /**
-     * Name of the application.
-     *
-     * @var string
-     */
-    protected $name;
-
-    /**
      * @var TranslatorInterface
      */
     protected $translator;
@@ -90,7 +83,6 @@ abstract class AbstractWorkflowHelper
         RoutesFactory $entityFactory,
         ListEntriesHelper $listEntriesHelper)
     {
-        $this->name = 'ZikulaRoutesModule';
         $this->translator = $translator;
         $this->workflowRegistry = $registry;
         $this->logger = $logger;
