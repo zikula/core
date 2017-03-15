@@ -13,6 +13,7 @@
 namespace Zikula\RoutesModule\Form\Handler\Route\Base;
 
 use Zikula\RoutesModule\Form\Handler\Common\EditHandler;
+use Zikula\RoutesModule\Form\Type\RouteType;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -75,7 +76,7 @@ abstract class AbstractEditHandler extends EditHandler
             'has_moderate_permission' => $this->permissionApi->hasPermission($this->permissionComponent, $this->createCompositeIdentifier() . '::', ACCESS_MODERATE),
         ];
     
-        return $this->formFactory->create('Zikula\RoutesModule\Form\Type\RouteType', $this->entityRef, $options);
+        return $this->formFactory->create(RouteType::class, $this->entityRef, $options);
     }
 
 

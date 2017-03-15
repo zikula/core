@@ -16,7 +16,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Zikula\RoutesModule\Traits\EntityWorkflowTrait;
 use Zikula\RoutesModule\Traits\StandardFieldsTrait;
 
 use RuntimeException;
@@ -36,11 +35,6 @@ use Zikula\Core\Doctrine\EntityAccess;
  */
 abstract class AbstractRouteEntity extends EntityAccess
 {
-    /**
-     * Hook entity workflow field and behaviour.
-     */
-    use EntityWorkflowTrait;
-
     /**
      * Hook standard fields behaviour embedding createdBy, updatedBy, createdDate, updatedDate fields.
      */
@@ -230,7 +224,6 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function __construct()
     {
-        $this->initWorkflow();
     }
     
     /**

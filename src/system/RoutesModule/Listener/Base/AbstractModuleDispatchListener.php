@@ -26,7 +26,7 @@ abstract class AbstractModuleDispatchListener implements EventSubscriberInterfac
     public static function getSubscribedEvents()
     {
         return [
-            'module_dispatch.service_links'    => ['serviceLinks', 5]
+            'module_dispatch.service_links' => ['serviceLinks', 5]
         ];
     }
     

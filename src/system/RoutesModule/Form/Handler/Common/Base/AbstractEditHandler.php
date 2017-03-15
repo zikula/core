@@ -435,14 +435,7 @@ abstract class AbstractEditHandler
      */
     protected function initEntityForEditing()
     {
-        $entity = $this->selectionHelper->getEntity($this->objectType, $this->idValues);
-        if (null === $entity) {
-            return null;
-        }
-    
-        $entity->initWorkflow();
-    
-        return $entity;
+        return $this->selectionHelper->getEntity($this->objectType, $this->idValues);
     }
     
     /**

@@ -57,7 +57,12 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
      * @param CurrentUserApi      $currentUserApi   CurrentUserApi service instance
      * @param ControllerHelper    $controllerHelper ControllerHelper service instance
      */
-    public function __construct(TranslatorInterface $translator, RouterInterface $router, PermissionApiInterface $permissionApi, CurrentUserApi $currentUserApi, ControllerHelper $controllerHelper)
+    public function __construct(
+        TranslatorInterface $translator,
+        RouterInterface $router,
+        PermissionApiInterface $permissionApi,
+        CurrentUserApi $currentUserApi,
+        ControllerHelper $controllerHelper)
     {
         $this->setTranslator($translator);
         $this->router = $router;

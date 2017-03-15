@@ -15,6 +15,7 @@ namespace Zikula\RoutesModule\Controller\Base;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\RoutesModule\Form\AppSettingsType;
 
 /**
  * Config controller base class.
@@ -36,7 +37,7 @@ abstract class AbstractConfigController extends AbstractController
             throw new AccessDeniedException();
         }
         
-        $form = $this->createForm('Zikula\RoutesModule\Form\AppSettingsType');
+        $form = $this->createForm(AppSettingsType::class);
         
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {
