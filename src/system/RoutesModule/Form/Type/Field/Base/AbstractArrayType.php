@@ -13,6 +13,7 @@
 namespace Zikula\RoutesModule\Form\Type\Field\Base;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\RoutesModule\Form\DataTransformer\ArrayFieldTransformer;
 
@@ -35,7 +36,7 @@ abstract class AbstractArrayType extends AbstractType
      */
     public function getParent()
     {
-        return 'Symfony\Component\Form\Extension\Core\Type\TextareaType';
+        return TextareaType::class;
     }
 
     /**

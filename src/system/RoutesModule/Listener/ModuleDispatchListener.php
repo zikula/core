@@ -21,7 +21,7 @@ use Zikula\Core\Event\GenericEvent;
 class ModuleDispatchListener extends AbstractModuleDispatchListener
 {
     /**
-     * @inheritDoc
+     * Makes our handlers known to the event system.
      */
     public static function getSubscribedEvents()
     {

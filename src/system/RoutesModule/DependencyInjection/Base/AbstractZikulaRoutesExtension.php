@@ -23,7 +23,11 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 abstract class AbstractZikulaRoutesExtension extends Extension
 {
     /**
-     * @inheritDoc
+     * Loads service definition file containing persistent event handlers.
+     * Responds to the app.config configuration parameter.
+     *
+     * @param array            $configs
+     * @param ContainerBuilder $container
      */
     public function load(array $configs, ContainerBuilder $container)
     {

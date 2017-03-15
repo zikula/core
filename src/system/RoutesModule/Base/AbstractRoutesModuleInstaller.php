@@ -15,7 +15,6 @@ namespace Zikula\RoutesModule\Base;
 use Doctrine\DBAL\Connection;
 use RuntimeException;
 use Zikula\Core\AbstractExtensionInstaller;
-use Zikula_Workflow_Util;
 
 /**
  * Installer base class.
@@ -103,15 +102,6 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
     public function uninstall()
     {
         $logger = $this->container->get('logger');
-    
-        // delete stored object workflows
-        $result = Zikula_Workflow_Util::deleteWorkflowsForModule('ZikulaRoutesModule');
-        if (false === $result) {
-            $this->addFlash('error', $this->__f('An error was encountered while removing stored object workflows for the %extension% extension.', ['%extension%' => 'ZikulaRoutesModule']));
-            $logger->error('{app}: Could not remove stored object workflows during uninstallation.', ['app' => 'ZikulaRoutesModule']);
-    
-            return false;
-        }
     
         try {
             $this->schemaTool->drop($this->listEntityClasses());

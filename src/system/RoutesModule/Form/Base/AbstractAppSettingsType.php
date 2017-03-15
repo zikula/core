@@ -13,6 +13,7 @@
 namespace Zikula\RoutesModule\Form\Base;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
@@ -66,14 +67,14 @@ abstract class AbstractAppSettingsType extends AbstractType
         $this->addListViewsFields($builder, $options);
 
         $builder
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('save', SubmitType::class, [
                 'label' => $this->__('Update configuration'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
@@ -93,7 +94,7 @@ abstract class AbstractAppSettingsType extends AbstractType
     public function addListViewsFields(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('routeEntriesPerPage', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add('routeEntriesPerPage', IntegerType::class, [
                 'label' => $this->__('Route entries per page') . ':',
                 'label_attr' => [
                     'class' => 'tooltips',
