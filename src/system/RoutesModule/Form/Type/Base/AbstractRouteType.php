@@ -99,7 +99,7 @@ abstract class AbstractRouteType extends AbstractType
             $choices[$entry['text']] = $entry['value'];
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
-        $builder->add('routeType', Choice::class, [
+        $builder->add('routeType', ChoiceType::class, [
             'label' => $this->__('Route type') . ':',
             'empty_data' => 'additional',
             'attr' => [
@@ -114,7 +114,7 @@ abstract class AbstractRouteType extends AbstractType
             'expanded' => false
         ]);
         
-        $builder->add('replacedRouteName', Text::class, [
+        $builder->add('replacedRouteName', TextType::class, [
             'label' => $this->__('Replaced route name') . ':',
             'empty_data' => '',
             'attr' => [
@@ -125,7 +125,7 @@ abstract class AbstractRouteType extends AbstractType
             'required' => false,
         ]);
         
-        $builder->add('bundle', Text::class, [
+        $builder->add('bundle', TextType::class, [
             'label' => $this->__('Bundle') . ':',
             'empty_data' => '',
             'attr' => [
@@ -136,7 +136,7 @@ abstract class AbstractRouteType extends AbstractType
             'required' => true,
         ]);
         
-        $builder->add('controller', Text::class, [
+        $builder->add('controller', TextType::class, [
             'label' => $this->__('Controller') . ':',
             'empty_data' => '',
             'attr' => [
@@ -147,7 +147,7 @@ abstract class AbstractRouteType extends AbstractType
             'required' => true,
         ]);
         
-        $builder->add('action', Text::class, [
+        $builder->add('action', TextType::class, [
             'label' => $this->__('Action') . ':',
             'empty_data' => '',
             'attr' => [
@@ -158,7 +158,7 @@ abstract class AbstractRouteType extends AbstractType
             'required' => true,
         ]);
         
-        $builder->add('path', Text::class, [
+        $builder->add('path', TextType::class, [
             'label' => $this->__('Path') . ':',
             'empty_data' => '',
             'attr' => [
@@ -169,7 +169,7 @@ abstract class AbstractRouteType extends AbstractType
             'required' => true,
         ]);
         
-        $builder->add('host', Text::class, [
+        $builder->add('host', TextType::class, [
             'label' => $this->__('Host') . ':',
             'empty_data' => '',
             'attr' => [
@@ -187,7 +187,7 @@ abstract class AbstractRouteType extends AbstractType
             $choices[$entry['text']] = $entry['value'];
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
-        $builder->add('schemes', MultiList::class, [
+        $builder->add('schemes', MultiListType::class, [
             'label' => $this->__('Schemes') . ':',
             'empty_data' => 'http',
             'attr' => [
@@ -209,7 +209,7 @@ abstract class AbstractRouteType extends AbstractType
             $choices[$entry['text']] = $entry['value'];
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
-        $builder->add('methods', MultiList::class, [
+        $builder->add('methods', MultiListType::class, [
             'label' => $this->__('Methods') . ':',
             'empty_data' => 'GET',
             'attr' => [
@@ -224,7 +224,7 @@ abstract class AbstractRouteType extends AbstractType
             'expanded' => false
         ]);
         
-        $builder->add('prependBundlePrefix', Checkbox::class, [
+        $builder->add('prependBundlePrefix', CheckboxType::class, [
             'label' => $this->__('Prepend bundle prefix') . ':',
             'attr' => [
                 'class' => '',
@@ -233,7 +233,7 @@ abstract class AbstractRouteType extends AbstractType
             'required' => true,
         ]);
         
-        $builder->add('translatable', Checkbox::class, [
+        $builder->add('translatable', CheckboxType::class, [
             'label' => $this->__('Translatable') . ':',
             'attr' => [
                 'class' => '',
@@ -242,7 +242,7 @@ abstract class AbstractRouteType extends AbstractType
             'required' => true,
         ]);
         
-        $builder->add('translationPrefix', Text::class, [
+        $builder->add('translationPrefix', TextType::class, [
             'label' => $this->__('Translation prefix') . ':',
             'empty_data' => '',
             'attr' => [
@@ -253,7 +253,7 @@ abstract class AbstractRouteType extends AbstractType
             'required' => false,
         ]);
         
-        $builder->add('defaults', Array::class, [
+        $builder->add('defaults', ArrayType::class, [
             'label' => $this->__('Defaults') . ':',
             'help' => $this->__('Enter one entry per line.'),
             'empty_data' => '',
@@ -264,7 +264,7 @@ abstract class AbstractRouteType extends AbstractType
             'required' => true,
         ]);
         
-        $builder->add('requirements', Array::class, [
+        $builder->add('requirements', ArrayType::class, [
             'label' => $this->__('Requirements') . ':',
             'help' => $this->__('Enter one entry per line.'),
             'empty_data' => '',
@@ -275,7 +275,7 @@ abstract class AbstractRouteType extends AbstractType
             'required' => false,
         ]);
         
-        $builder->add('condition', Text::class, [
+        $builder->add('condition', TextType::class, [
             'label' => $this->__('Condition') . ':',
             'empty_data' => '',
             'attr' => [
@@ -286,7 +286,7 @@ abstract class AbstractRouteType extends AbstractType
             'required' => false,
         ]);
         
-        $builder->add('description', Text::class, [
+        $builder->add('description', TextType::class, [
             'label' => $this->__('Description') . ':',
             'empty_data' => '',
             'attr' => [
@@ -297,7 +297,7 @@ abstract class AbstractRouteType extends AbstractType
             'required' => false,
         ]);
         
-        $builder->add('sort', Integer::class, [
+        $builder->add('sort', IntegerType::class, [
             'label' => $this->__('Sort') . ':',
             'empty_data' => '',
             'attr' => [
@@ -309,7 +309,7 @@ abstract class AbstractRouteType extends AbstractType
             'scale' => 0
         ]);
         
-        $builder->add('group', Text::class, [
+        $builder->add('group', TextType::class, [
             'label' => $this->__('Group') . ':',
             'empty_data' => '',
             'attr' => [
