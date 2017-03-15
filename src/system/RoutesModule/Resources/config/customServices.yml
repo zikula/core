@@ -9,7 +9,8 @@ services:
 
     zikula_routes_module.route_dumper_helper:
         class: Zikula\RoutesModule\Helper\RouteDumperHelper
-        arguments: ["@service_container"]
+        arguments:
+            - "@service_container"
 
     zikula_routes_module.console_command_listener:
         class: Zikula\RoutesModule\Translation\ConsoleCommandListener
@@ -18,13 +19,21 @@ services:
 
     zikula_routes_module.routing_loader:
         class: Zikula\RoutesModule\Routing\RouteLoader
-        arguments: ["@doctrine.orm.entity_manager", "@service_container", "@kernel"]
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@service_container"
+            - "@kernel"
         tags:
             - { name: routing.loader }
 
     zikula_routes_module.installer_listener:
         class: Zikula\RoutesModule\Listener\InstallerListener
-        arguments: ["@doctrine.orm.entity_manager", "@zikula_routes_module.routing_finder", "@zikula.cache_clearer", "@zikula_routes_module.route_dumper_helper", "@zikula_routes_module.multilingual_routing_helper"]
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@zikula_routes_module.routing_finder"
+            - "@zikula.cache_clearer"
+            - "@zikula_routes_module.route_dumper_helper"
+            - "@zikula_routes_module.multilingual_routing_helper"
         tags:
             - { name: kernel.event_subscriber }
 

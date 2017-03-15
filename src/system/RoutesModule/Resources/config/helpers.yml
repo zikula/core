@@ -29,7 +29,8 @@ services:
     zikula_routes_module.view_helper:
         class: Zikula\RoutesModule\Helper\ViewHelper
         arguments:
-            - "@templating"
+            - "@twig"
+            - "@twig.loader"
             - "@request_stack"
             - "@zikula_permissions_module.api.permission"
             - "@zikula_extensions_module.api.variable"
@@ -46,4 +47,9 @@ services:
         class: Zikula\RoutesModule\Helper\WorkflowHelper
         arguments:
             - "@translator.default"
+            - "@workflow.registry"
+            - "@logger"
+            - "@zikula_permissions_module.api.permission"
+            - "@zikula_users_module.current_user"
+            - "@zikula_routes_module.entity_factory"
             - "@zikula_routes_module.listentries_helper"
