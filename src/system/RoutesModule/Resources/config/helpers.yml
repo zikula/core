@@ -47,7 +47,7 @@ services:
         class: Zikula\RoutesModule\Helper\WorkflowHelper
         arguments:
             - "@translator.default"
-            - "@workflow.registry"
+            - "@?workflow.registry"
             - "@logger"
             - "@zikula_permissions_module.api.permission"
             - "@zikula_users_module.current_user"
