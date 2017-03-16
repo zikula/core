@@ -909,4 +909,12 @@ class CategoryEntity extends EntityAccess
             'root' => null !== $this->root ? $this->root->getId() : null
         ]);
     }
+
+    /**
+     * required for repository->recover() method
+     * @return string
+     */
+    public function __toString() {
+        return $this->name;
+    }
 }

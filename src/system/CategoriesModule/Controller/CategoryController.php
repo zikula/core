@@ -47,6 +47,8 @@ class CategoryController extends AbstractController
         }
 
         $repo = $this->get('zikula_categories_module.category_repository');
+        $repo->recover();
+        $this->getDoctrine()->getManager()->flush();
         $tree = $repo->childrenHierarchy(
             $category, /* node to start from */
             false, /* false: load all children, true: only direct */
