@@ -32,11 +32,13 @@ CHANGELOG - ZIKULA 1.5.x
     - doctrine/common updated from 2.5.3 to 2.6.2
     - fduch/workflow-bundle installed as 2.0.2
     - liip/imagine-bundle updated from 1.7.2 to 1.7.4
+    - monolog/monolog updated from 1.22.0 to 1.22.1
+    - paragonie/random_compat updated from 2.0.9 to 2.0.10
     - phpdocumentor/reflection-common installed at 1.0
     - phpdocumentor/type-resolver installed at 0.2.1
     - phpdocumentor/reflection-docblock updated from 2.0.4 to 3.1.1
     - sensio/framework-extra-bundle updated from 3.0.21 to 3.0.23
-    - sensio/generator-bundle updated from 3.1.2 to 3.1.3
+    - sensio/generator-bundle updated from 3.1.2 to 3.1.4
     - sensiolabs/security-checker updated from 4.0.0 to 4.0.2
     - swiftmailer/swiftmailer updated from v5.4.5 to v5.4.6
     - symfony updated from 2.8.17 to 2.8.18
