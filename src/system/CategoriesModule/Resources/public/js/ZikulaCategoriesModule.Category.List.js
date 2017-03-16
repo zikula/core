@@ -271,21 +271,24 @@
         function getDeleteMenuAction(node) {
             var childrenCount = node.children.length;
             if (childrenCount > 0) {
-                var info = 'It contains ' + childrenCount + ' direct children.'
+                var info = Translator._fn('It contains %count% direct child.', 'It contains %count% direct children.', childrenCount, {count: childrenCount})
                     + ' '
-                    + "Please choose what to do with this item's children.";
+                    + Translator._n("Please choose what to do with this item's child.", "Please choose what to do with this item's children.", childrenCount);
                 $('#deleteWithChildrenInfo').addClass('alert alert-warning').text(info);
             } else {
                 $('#deleteWithChildrenInfo').removeClass('alert alert-warning').text('');
             }
             var deleteModal = $('#deleteModal');
+            // hide all buttons
+            deleteModal.find('.modal-footer button').hide();
+            $("#node_cancel").show();
 
             if (childrenCount > 0) {
-                deleteModal.find('#node_delete').hide();
-                deleteModal.find('#node_delete_all').show();
-                deleteModal.find('#node_delete_move').show();
+                $('#node_delete_all').show();
+                $('#node_delete_move').show();
+            } else {
+                $('#node_delete').show();
             }
-            $('#children_move').remove();
 
             deleteModal.find('.modal-footer button').one('click', function(event) {
                 event.preventDefault();
@@ -296,33 +299,18 @@
                         performContextMenuAction(node, 'delete');
                         deleteModal.modal('hide');
                         break;
-                    case 'DeleteAndMoveChildren':
-                        if (!$('#children_move').length) {
-                            // present dialog to determine new parent
-                            $(this).prepend('<i id="button-spinner" class="fa fa-gear fa-spin fa-lg text-danger"></i> ');
-                            $.ajax({
-                                type: 'POST',
-                                url: Routing.generate('zikulacategoriesmodule_ajax_deletedialog'),
-                                data: {
-                                    id: $(node).attr('id').replace(id_prefix, '')
-                                }
-                            }).success(function(result) {
-                                var children_move = result.data.result;
-                                deleteModal.find('.modal-body').append(children_move);
-                                deleteModal.find('#node_delete_move').hide();
-                                deleteModal.find('#node_delete_move_action').show();
-                            }).error(function(result) {
-                                alert(result.status + ': ' + result.statusText);
-                            }).always(function() {
-                                $('#button-spinner').remove();
-                            });
-                        } else {
-                            // utilize new parent to perform delete and move operation
-                            var parent = $('#category_parent_id_').val();
-                            if (parent) {
-                                performContextMenuAction(node, 'deleteandmovechildren', parent);
-                                deleteModal.modal('hide');
-                            }
+                    case 'DeleteAndMove':
+                        $('#node_delete_all').hide();
+                        $('#categorySelector').show();
+                        $('#node_delete_move_action').show();
+                        $(this).hide();
+                        break;
+                    case 'DeleteAndMoveAction':
+                        // utilize new parent to perform delete and move operation
+                        var parent = $('#form_category').val();
+                        if (parent) {
+                            performContextMenuAction(node, 'deleteandmovechildren', parent);
+                            deleteModal.modal('hide');
                         }
                         break;
                     default:
@@ -332,13 +320,8 @@
 
             deleteModal.modal();
             deleteModal.on('hidden.bs.modal', function (e) {
-                // reset modal to initial state
-                deleteModal.find('#node_delete').show();
-                deleteModal.find('#node_delete_all').hide();
-                deleteModal.find('#node_delete_move').hide();
-                deleteModal.find('#node_delete_move_action').hide();
+                $('#categorySelector').hide();
                 $('#button-spinner').remove();
-                $('#children_move').remove();
             });
             deleteModal.find('.modal-footer button[value=Cancel]').focus();
         }

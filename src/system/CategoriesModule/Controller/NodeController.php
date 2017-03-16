@@ -54,7 +54,7 @@ class NodeController extends AbstractController
                     $parentId = $request->request->get('parent');
                     $mode = 'new';
                     if (!empty($parentId)) {
-                        $parent = $repo->find($request->request->get('parent'));
+                        $parent = $repo->find($parentId);
                         $category->setParent($parent);
                         $category->setRoot($parent->getRoot());
                     } elseif (empty($parent) && $request->request->has('after')) { // sibling of top-level child
@@ -94,13 +94,24 @@ class NodeController extends AbstractController
                     'mode' => $mode
                 ];
                 break;
+            case 'deleteandmovechildren':
+                // re-parent the children
+                $newParent = $repo->find($request->request->get('parent', 1));
+                if ($newParent == $category->getParent()) {
+                    $response = ['result' => true];
+                    break;
+                }
+                foreach ($category->getChildren() as $child) {
+                    $child->setParent($newParent);
+                }
+                // intentionally no break here
             case 'delete':
-                $id = $category->getId();
                 $entityManager->remove($category);
-                $entityManager->flush();
+//                $entityManager->flush();
                 $response = [
-                    'id' => $id,
+                    'id' => $category->getId(),
                     'action' => $action,
+                    'parent' => isset($newParent) ? $newParent->getId() : null
                 ];
                 break;
             case 'activate':

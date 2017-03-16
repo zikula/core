@@ -16,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
+use Zikula\CategoriesModule\Form\Type\CategoryTreeType;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -51,10 +52,17 @@ class CategoryController extends AbstractController
             false, /* false: load all children, true: only direct */
             $this->getNodeOptions($request)
         );
+        $form = $this->createFormBuilder()
+            ->add('category', CategoryTreeType::class, [
+                'label' => $this->__('New Parent'),
+                'translator' => $this->getTranslator(),
+                'includeLeaf' => false,
+            ])->getForm();
 
         return [
             'category' => $category,
-            'tree' => $tree
+            'tree' => $tree,
+            'categorySelector' => $form->createView()
         ];
     }
 
