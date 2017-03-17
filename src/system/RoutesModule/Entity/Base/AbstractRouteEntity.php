@@ -953,9 +953,6 @@ abstract class AbstractRouteEntity extends EntityAccess
         // unset identifiers
         $this->setId(0);
     
-        // reset workflow
-        $this->resetWorkflow();
-    
         $this->setCreatedBy(null);
         $this->setCreatedDate(null);
         $this->setUpdatedBy(null);
