@@ -200,7 +200,7 @@ abstract class AbstractTwigExtension extends Twig_Extension
     /**
      * Display the avatar of a user.
      *
-     * @param int|string $userId The user's id or name
+     * @param int|string $uid    The user's id or name
      * @param int        $width  Image width (optional)
      * @param int        $height Image height (optional)
      * @param int        $size   Gravatar size (optional)
@@ -208,21 +208,21 @@ abstract class AbstractTwigExtension extends Twig_Extension
      *
      * @return string
      */
-    public function getUserAvatar($userId = 0, $width = 0, $height = 0, $size = 0, $rating = '')
+    public function getUserAvatar($uid = 0, $width = 0, $height = 0, $size = 0, $rating = '')
     {
-        if (!is_numeric($userId)) {
+        if (!is_numeric($uid)) {
             $limit = 1;
             $filter = [
-                'uname' => ['operator' => 'eq', 'operand' => $userId]
+                'uname' => ['operator' => 'eq', 'operand' => $uid]
             ];
             $results = $this->userRepository->query($filter, [], $limit);
             if (!count($results)) {
                 return '';
             }
 
-            $userId = $results[0]->getUname();
+            $uid = $results[0]->getUname();
         }
-        $params = ['uid' => $userId];
+        $params = ['uid' => $uid];
         if ($width > 0) {
             $params['width'] = $width;
         }
