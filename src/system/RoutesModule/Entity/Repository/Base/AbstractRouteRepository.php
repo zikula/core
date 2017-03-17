@@ -24,7 +24,6 @@ use Zikula\Component\FilterUtil\FilterUtil;
 use Zikula\Component\FilterUtil\Config as FilterConfig;
 use Zikula\Component\FilterUtil\PluginManager as FilterPluginManager;
 use Psr\Log\LoggerInterface;
-use ServiceUtil;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\UsersModule\Api\CurrentUserApi;
 use Zikula\RoutesModule\Entity\RouteEntity;
