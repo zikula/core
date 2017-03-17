@@ -16,7 +16,7 @@ use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Common\Translator\Translator;
+use Symfony\Component\Translation\TranslatorInterface;
 use Zikula\Core\AbstractBundle;
 use Zikula\Core\AbstractModule;
 use Zikula\RoutesModule\Helper\SanitizeHelper;
@@ -38,7 +38,7 @@ class RouteLoader extends Loader
     private $objectManager;
 
     /**
-     * @var Translator
+     * @var TranslatorInterface
      */
     private $translator;
 
@@ -61,14 +61,14 @@ class RouteLoader extends Loader
      * RouteLoader constructor.
      *
      * @param ObjectManager             $objectManager  Doctrine object manager
-     * @param Translator                $translator     Translator
+     * @param TranslatorInterface       $translator     Translator
      * @param ZikulaHttpKernelInterface $kernel         Zikula kernel
      * @param SanitizeHelper            $sanitizeHelper Sanitize helper
      * @param string                    $locale
      */
     public function __construct(
         ObjectManager $objectManager,
-        Translator $translator,
+        TranslatorInterface $translator,
         ZikulaHttpKernelInterface $kernel,
         SanitizeHelper $sanitizeHelper)
     {
