@@ -280,7 +280,7 @@ abstract class AbstractRouteRepository extends SortableRepository
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->update('Zikula\RoutesModule\Entity\RouteEntity', 'tbl')
            ->set('tbl.createdBy', $newUserId)
-           ->where('tbl.createdBy= :creator')
+           ->where('tbl.createdBy = :creator')
            ->setParameter('creator', $userId);
         $query = $qb->getQuery();
         $query->execute();
@@ -670,70 +670,40 @@ abstract class AbstractRouteRepository extends SortableRepository
             return $qb;
         }
     
-        $fragment = str_replace('\'', '', \DataUtil::formatForStore($fragment));
-        $fragmentIsNumeric = is_numeric($fragment);
+        $filters = [];
+        $parameters = [];
     
-        $where = '';
-        if (!$fragmentIsNumeric) {
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.routeType = \'' . $fragment . '\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.replacedRouteName LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.bundle LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.controller LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.action LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.path LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.host LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.schemes = \'' . $fragment . '\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.methods = \'' . $fragment . '\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.translationPrefix LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.condition LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.description LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.group LIKE \'%' . $fragment . '%\'';
-        } else {
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.routeType = \'' . $fragment . '\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.replacedRouteName LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.bundle LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.controller LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.action LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.path LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.host LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.schemes = \'' . $fragment . '\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.methods = \'' . $fragment . '\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.translationPrefix LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.condition LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.description LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.sort = \'' . $fragment . '\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.group LIKE \'%' . $fragment . '%\'';
-        }
-        $where = '(' . $where . ')';
+        $filters[] = 'tbl.routeType = :searchRouteType';
+        $parameters['searchRouteType'] = $fragment;
+        $filters[] = 'tbl.replacedRouteName = :searchReplacedRouteName';
+        $parameters['searchReplacedRouteName'] = '%' . $fragment . '%';
+        $filters[] = 'tbl.bundle = :searchBundle';
+        $parameters['searchBundle'] = '%' . $fragment . '%';
+        $filters[] = 'tbl.controller = :searchController';
+        $parameters['searchController'] = '%' . $fragment . '%';
+        $filters[] = 'tbl.action = :searchAction';
+        $parameters['searchAction'] = '%' . $fragment . '%';
+        $filters[] = 'tbl.path = :searchPath';
+        $parameters['searchPath'] = '%' . $fragment . '%';
+        $filters[] = 'tbl.host = :searchHost';
+        $parameters['searchHost'] = '%' . $fragment . '%';
+        $filters[] = 'tbl.schemes = :searchSchemes';
+        $parameters['searchSchemes'] = $fragment;
+        $filters[] = 'tbl.methods = :searchMethods';
+        $parameters['searchMethods'] = $fragment;
+        $filters[] = 'tbl.translationPrefix = :searchTranslationPrefix';
+        $parameters['searchTranslationPrefix'] = '%' . $fragment . '%';
+        $filters[] = 'tbl.condition = :searchCondition';
+        $parameters['searchCondition'] = '%' . $fragment . '%';
+        $filters[] = 'tbl.description = :searchDescription';
+        $parameters['searchDescription'] = '%' . $fragment . '%';
+        $filters[] = 'tbl.sort = :searchSort';
+        $parameters['searchSort'] = $fragment;
+        $filters[] = 'tbl.group = :searchGroup';
+        $parameters['searchGroup'] = '%' . $fragment . '%';
     
-        $qb->andWhere($where);
+        $qb->andWhere('(' . implode(' OR ', $filters) . ')')
+           ->setParameters($parameters);
     
         return $qb;
     }
