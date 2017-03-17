@@ -70,7 +70,8 @@ class RouteLoader extends Loader
         ObjectManager $objectManager,
         TranslatorInterface $translator,
         ZikulaHttpKernelInterface $kernel,
-        SanitizeHelper $sanitizeHelper)
+        SanitizeHelper $sanitizeHelper,
+        $locale)
     {
         $this->objectManager = $objectManager;
         $this->kernel = $kernel;
