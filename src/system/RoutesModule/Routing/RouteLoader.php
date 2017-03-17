@@ -11,17 +11,19 @@
 
 namespace Zikula\RoutesModule\Routing;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Config\Loader\Loader;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\Common\Translator\Translator;
 use Zikula\Core\AbstractBundle;
 use Zikula\Core\AbstractModule;
+use Zikula\RoutesModule\Helper\SanitizeHelper;
 use Zikula\ThemeModule\AbstractTheme;
 
 /**
- * Custom loader following http://symfony.com/doc/current/cookbook/routing/custom_route_loader.html
+ * Custom loader following http://symfony.com/doc/current/routing/custom_route_loader.html
  */
 class RouteLoader extends Loader
 {
@@ -31,38 +33,50 @@ class RouteLoader extends Loader
     private $loaded = false;
 
     /**
-     * @var EntityManagerInterface
+     * @var ObjectManager
      */
-    private $em;
+    private $objectManager;
 
     /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
-     * @var \Zikula\Common\Translator\Translator
+     * @var Translator
      */
     private $translator;
 
     /**
-     * @var \ZikulaKernel
+     * @var ZikulaHttpKernelInterface
      */
-    private $zikulaKernel;
+    private $kernel;
+
+    /**
+     * @var SanitizeHelper
+     */
+    private $sanitizeHelper;
+
+    /**
+     * @var string
+     */
+    private $locale;
 
     /**
      * RouteLoader constructor.
      *
-     * @param EntityManagerInterface $em           Doctrine entity manager.
-     * @param ContainerInterface     $container    Service container.
-     * @param \ZikulaKernel          $zikulaKernel Zikula kernel.
+     * @param ObjectManager             $objectManager  Doctrine object manager
+     * @param Translator                $translator     Translator
+     * @param ZikulaHttpKernelInterface $kernel         Zikula kernel
+     * @param SanitizeHelper            $sanitizeHelper Sanitize helper
+     * @param string                    $locale
      */
-    public function __construct(EntityManagerInterface $em, ContainerInterface $container, \ZikulaKernel $zikulaKernel)
+    public function __construct(
+        ObjectManager $objectManager,
+        Translator $translator,
+        ZikulaHttpKernelInterface $kernel,
+        SanitizeHelper $sanitizeHelper)
     {
-        $this->em = $em;
-        $this->container = $container;
-        $this->zikulaKernel = $zikulaKernel;
-        $this->translator = $container->get('translator');
+        $this->objectManager = $objectManager;
+        $this->kernel = $kernel;
+        $this->translator = $translator;
+        $this->sanitizeHelper = $sanitizeHelper;
+        $this->locale = $locale;
     }
 
     /**
@@ -72,8 +86,8 @@ class RouteLoader extends Loader
      */
     private function findAll()
     {
-        $modules = $this->zikulaKernel->getModules();
-        $themes = $this->zikulaKernel->getThemes();
+        $modules = $this->kernel->getModules();
+        $themes = $this->kernel->getThemes();
         $bundles = array_merge($modules, $themes);
 
         $topRouteCollection = new RouteCollection();
@@ -99,7 +113,7 @@ class RouteLoader extends Loader
     private function find(AbstractBundle $bundle)
     {
         try {
-            $path = $this->zikulaKernel->locateResource($bundle->getRoutingConfig());
+            $path = $this->kernel->locateResource($bundle->getRoutingConfig());
         } catch (\InvalidArgumentException $e) {
             // Routing file does not exist (e.g. because the bundle could not be located).
             return [new RouteCollection(), new RouteCollection(), new RouteCollection()];
@@ -123,7 +137,7 @@ class RouteLoader extends Loader
             $middleRouteCollection->addResource($resource);
         }
         // It would be great to auto-reload routes here if the module version changes or a module is uninstalled.
-        // This is not yet possible, see
+        // @todo this seems to be possible in Symfony 2.8+ - check these out:
         // - https://github.com/symfony/symfony/issues/7176
         // - https://github.com/symfony/symfony/pull/15738
         // - https://github.com/symfony/symfony/pull/15692
@@ -170,14 +184,13 @@ class RouteLoader extends Loader
         $routeCollection->addCollection($topRouteCollection);
 
 //        try {
-//            $routes = $this->em->getRepository('ZikulaRoutesModule:RouteEntity')->findBy([], ['group' => 'ASC', 'sort' => 'ASC']);
+//            $routes = $this->objectManager->getRepository('ZikulaRoutesModule:RouteEntity')->findBy([], ['group' => 'ASC', 'sort' => 'ASC']);
 //        } catch (DBALException $e) {
 //            // It seems like the module is not yet installed. Fail silently.
 //            return $routeCollection;
 //        }
 //
 //        if (!empty($routes)) {
-//            $helper = new RoutingUtil();
 //            /**
 //             * @var \Zikula\RoutesModule\Entity\RouteEntity $dbRoute
 //             */
@@ -185,41 +198,28 @@ class RouteLoader extends Loader
 //                // Add modname, type and func to the route's default values.
 //                $defaults = $dbRoute->getDefaults();
 //                $defaults['_zkModule'] = $dbRoute->getBundle();
-//                list (, $type) = $helper->sanitizeController($dbRoute->getController());
-//                list (, $func) = $helper->sanitizeAction($dbRoute->getAction());
+//                list (, $type) = $this->sanitizeHelper->sanitizeController($dbRoute->getController());
+//                list (, $func) = $this->sanitizeHelper->sanitizeAction($dbRoute->getAction());
 //                $defaults['_zkType'] = $type;
 //                $defaults['_zkFunc'] = $func;
 //                // @todo @cmfcmf when reimplementing loading routews from DB, see #2593 (i.e. ucfirst problems)
 //                $defaults['_controller'] = $dbRoute->getBundle() . ":" . ucfirst($type) . ":" . ucfirst($func);
 //
-//                // We have to prepend the bundle prefix if
-//                // - routes are _not_ currently extracted via the command line and
-//                // - the route has i18n set to false.
-//                // This is because when extracting the routes, a bundle author only wants to translate the bare route
-//                // patterns, without a redundant and potentially customized bundle prefix in front of them.
-//                // If i18n is set to true, Zikula's customized pattern generation strategy will take care of it.
-//                // See Zikula\RoutesModule\Translation\ZikulaPatternGenerationStrategy
+//                // We have to prepend the bundle prefix (see detailed description in docblock of prependBundlePrefix() method).
 //                $options = $dbRoute->getOptions();
 //                $prependBundle = !isset($GLOBALS['translation_extract_routes']) && isset($options['i18n']) && !$options['i18n'];
 //                if ($prependBundle) {
-//                    $path = $dbRoute->getPathWithBundlePrefix($this->container);
+//                    $path = $dbRoute->getPathWithBundlePrefix();
 //                } else {
 //                    $path = $dbRoute->getPath();
 //                }
 //
-//                $requirements = $dbRoute->getRequirements();
-//                // @todo Remove when Symfony 3.0 is used.
-//                if (isset($requirements['_method'])) {
-//                    unset($requirements['_method']);
-//                }
-//                if (isset($requirements['_scheme'])) {
-//                    unset($requirements['_scheme']);
-//                }
+//                $this->fixRequirements($dbRoute);
 //
 //                $route = new Route(
 //                    $path,
 //                    $defaults,
-//                    $requirements,
+//                    $dbRoute->getRequirements(),
 //                    $options,
 //                    $dbRoute->getHost(),
 //                    $dbRoute->getSchemes(),
@@ -241,10 +241,11 @@ class RouteLoader extends Loader
     /**
      * Sets some Zikula-specific defaults for the routes.
      *
-     * @param Route $route The route instance.
-     * @param AbstractBundle $bundle The bundle.
-     * @param string $bundleName The bundle's name.
-     * @return array The legacy $type and $func parameters.
+     * @param Route          $route The route instance
+     * @param AbstractBundle $bundle The bundle
+     * @param string         $bundleName The bundle's name
+     *
+     * @return array The legacy $type and $func parameters
      */
     private function setZikulaDefaults(Route $route, AbstractBundle $bundle, $bundleName)
     {
@@ -261,7 +262,7 @@ class RouteLoader extends Loader
         $controller = explode(':', $controller);
         $defaults['_zkType'] = $type = lcfirst($controller[1]);
         $defaults['_zkFunc'] = $func = lcfirst($controller[2]);
-        $defaults['_controller'] = $bundleName . ":" . $controller[1] . ":" . $func;
+        $defaults['_controller'] = $bundleName . ':' . $controller[1] . ':' . $func;
 
         $route->setDefaults($defaults);
 
@@ -290,7 +291,7 @@ class RouteLoader extends Loader
     /**
      * Prepends the bundle prefix to the route.
      *
-     * @param Route $route
+     * @param Route          $route
      * @param AbstractBundle $bundle
      *
      * We have to prepend the bundle prefix if
@@ -306,37 +307,40 @@ class RouteLoader extends Loader
         $prefix = '';
         $options = $route->getOptions();
         $prependBundle = !isset($GLOBALS['translation_extract_routes']) && isset($options['i18n']) && !$options['i18n'];
-        if ($prependBundle && (!isset($options['zkNoBundlePrefix']) || !$options['zkNoBundlePrefix'])) {
-            // get url from MetaData first. May be empty.
-            $untranslatedPrefix = $bundle->getMetaData()->getUrl(false);
-            if (empty($untranslatedPrefix)) {
-                try {
-                    // MetaData will be empty for extensions not Spec-2.0. Try to get from modinfo.
-                    // this calls the DB which is not available during install.
-                    $modinfo = \ModUtil::getInfoFromName($bundle->getName());
-                    $prefix = $modinfo['url'];
-                } catch (\Exception $e) {
-                }
-            } else {
-                $locale = $this->container->getParameter('locale');
-                if ($this->translator->getCatalogue($locale)->has($untranslatedPrefix, strtolower($bundle->getName()))) {
-                    $prefix = $this->translator->trans(/** @Ignore */$untranslatedPrefix, [], strtolower($bundle->getName()), $locale);
-                } else {
-                    $prefix = $untranslatedPrefix;
-                }
-            }
-
-            $path = '/' . $prefix . $route->getPath();
-            $route->setPath($path);
+        if (!$prependBundle || (isset($options['zkNoBundlePrefix']) && $options['zkNoBundlePrefix'])) {
+            return;
         }
+
+        // get url from MetaData first. May be empty.
+        $untranslatedPrefix = $bundle->getMetaData()->getUrl(false);
+        if (empty($untranslatedPrefix)) {
+            // @todo remove in 2.0
+            try {
+                // MetaData will be empty for extensions not Spec-2.0. Try to get from modinfo.
+                // this calls the DB which is not available during install.
+                $modinfo = \ModUtil::getInfoFromName($bundle->getName());
+                $prefix = $modinfo['url'];
+            } catch (\Exception $e) {
+            }
+        } else {
+            if ($this->translator->getCatalogue($this->locale)->has($untranslatedPrefix, strtolower($bundle->getName()))) {
+                $prefix = $this->translator->trans(/** @Ignore */$untranslatedPrefix, [], strtolower($bundle->getName()), $this->locale);
+            } else {
+                $prefix = $untranslatedPrefix;
+            }
+        }
+
+        $path = '/' . $prefix . $route->getPath();
+        $route->setPath($path);
     }
 
     /**
      * Converts the controller identifier into a unified form.
      *
      * @param string $bundleName The name of the bundle
-     * @param string $controllerString The given controller identifier.
-     * @return string The controller identifier in a Bundle:Type:func form.
+     * @param string $controllerString The given controller identifier
+     *
+     * @return string The controller identifier in a Bundle:Type:func form
      */
     private function sanitizeController($bundleName, $controllerString)
     {
@@ -351,11 +355,12 @@ class RouteLoader extends Loader
     /**
      * Generates the route's new name.
      *
-     * @param string $oldRouteName The old route name.
-     * @param string $bundleName   The bundle name.
-     * @param string $type         The legacy type.
-     * @param string $func         The legacy func.
-     * @return string The route's new name.
+     * @param string $oldRouteName The old route name
+     * @param string $bundleName   The bundle name
+     * @param string $type         The legacy type
+     * @param string $func         The legacy func
+     *
+     * @return string The route's new name
      */
     private function getRouteName($oldRouteName, $bundleName, $type, $func)
     {
@@ -369,6 +374,11 @@ class RouteLoader extends Loader
         return strtolower($bundleName . '_' . $type . '_' . $func) . $suffix;
     }
 
+    /**
+     * Checks whether this route loader supports a given route type or not.
+     *
+     * @return boolean
+     */
     public function supports($resource, $type = null)
     {
         return 'zikularoutesmodule' === $type;

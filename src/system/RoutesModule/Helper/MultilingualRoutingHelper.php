@@ -58,13 +58,14 @@ class MultilingualRoutingHelper
 
     /**
      * MultilingualRoutingHelper constructor.
-     * @param VariableApi $variableApi
-     * @param DynamicConfigDumper $configDumper
-     * @param CacheClearer $cacheClearer
-     * @param LocaleApi $localeApi
+     *
+     * @param VariableApi               $variableApi
+     * @param DynamicConfigDumper       $configDumper
+     * @param CacheClearer              $cacheClearer
+     * @param LocaleApi                 $localeApi
      * @param ZikulaHttpKernelInterface $kernel
-     * @param string $locale
-     * @param bool $installed
+     * @param string                    $locale
+     * @param bool                      $installed
      */
     public function __construct(
         VariableApi $variableApi,
@@ -73,8 +74,8 @@ class MultilingualRoutingHelper
         LocaleApi $localeApi,
         ZikulaHttpKernelInterface $kernel,
         $locale,
-        $installed
-    ) {
+        $installed)
+    {
         $this->variableApi = $variableApi;
         $this->configDumper = $configDumper;
         $this->cacheClearer = $cacheClearer;

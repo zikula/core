@@ -15,9 +15,9 @@ namespace Zikula\RoutesModule\Entity;
 use Zikula\RoutesModule\Entity\Base\AbstractRouteEntity as BaseEntity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
-use ServiceUtil;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -53,11 +53,9 @@ class RouteEntity extends BaseEntity
     /**
      * Returns the route's path prepended with the bundle prefix.
      *
-     * @param null $container Used to set the container for ServiceUtil in case it is not already set
-     *
      * @return string
      */
-    public function getPathWithBundlePrefix($container = null)
+    public function getPathWithBundlePrefix()
     {
         if (isset($this->options['zkNoBundlePrefix']) && $this->options['zkNoBundlePrefix']) {
             // return path only
@@ -65,10 +63,6 @@ class RouteEntity extends BaseEntity
         }
 
         $bundle = $this->getBundle();
-
-        if (!ServiceUtil::hasContainer()) {
-            ServiceUtil::setContainer($container);
-        }
 
         // return path prepended with bundle prefix
         return '/' . $bundle->getMetaData()->getUrl() . $this->path;

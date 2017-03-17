@@ -14,7 +14,6 @@ namespace Zikula\RoutesModule\Translation;
 use JMS\I18nRoutingBundle\Router\PatternGenerationStrategyInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Translation\LoggingTranslator;
 use Symfony\Component\Translation\TranslatorBagInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -59,10 +58,8 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
     {
         $patterns = [];
         foreach ($route->getOption('i18n_locales') ?: $this->locales as $locale) {
-            // Check if translation exists in the translation catalogue to avoid errors being logged by
-            // the new LoggingTranslator of Symfony 2.6. However, the LoggingTranslator did not implement
-            // the interface until Symfony 2.6.5, so an extra check is needed.
-            if ($this->translator instanceof TranslatorBagInterface || $this->translator instanceof LoggingTranslator) {
+            // Check if translation exists in the translation catalogue
+            if ($this->translator instanceof TranslatorBagInterface) {
                 // Check if route is translated.
                 if (!$this->translator->getCatalogue($locale)->has($routeName, $this->translationDomain)) {
                     // No translation found.
@@ -139,12 +136,14 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
         if (!isset($this->modUrlMap[$moduleName])) {
             /** @var \ZikulaKernel $kernel */
             $kernel = $GLOBALS['kernel'];
-            $module = $kernel->getModule($moduleName); // @todo can this throw exception if module doesn't exist in kernel?
+            $module = $kernel->getModule($moduleName);
             // First get untranslated url from metaData.
             $url = $module->getMetaData()->getUrl(false);
             if (empty($url)) {
+                // @todo remove in 2.0
                 try {
-                    // try to get the url from modinfo. This accesses the DB, which is not available during install.
+                    // MetaData will be empty for extensions not Spec-2.0. Try to get from modinfo.
+                    // this calls the DB which is not available during install.
                     $modInfo = \ModUtil::getInfoFromName($moduleName);
                     $url = $modInfo['url'];
                 } catch (\Exception $e) {
