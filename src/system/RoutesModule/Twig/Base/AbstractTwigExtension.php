@@ -16,6 +16,7 @@ use Twig_Extension;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\RoutesModule\Helper\ListEntriesHelper;
 use Zikula\RoutesModule\Helper\WorkflowHelper;
 
@@ -32,6 +33,11 @@ abstract class AbstractTwigExtension extends Twig_Extension
     protected $variableApi;
     
     /**
+     * @var UserRepositoryInterface
+     */
+    protected $userRepository;
+    
+    /**
      * @var WorkflowHelper
      */
     protected $workflowHelper;
@@ -46,13 +52,20 @@ abstract class AbstractTwigExtension extends Twig_Extension
      *
      * @param TranslatorInterface $translator     Translator service instance
      * @param VariableApi         $variableApi    VariableApi service instance
+     * @param UserRepositoryInterface $userRepository UserRepository service instance
      * @param WorkflowHelper      $workflowHelper WorkflowHelper service instance
      * @param ListEntriesHelper   $listHelper     ListEntriesHelper service instance
      */
-    public function __construct(TranslatorInterface $translator, VariableApi $variableApi, WorkflowHelper $workflowHelper, ListEntriesHelper $listHelper)
+    public function __construct(
+        TranslatorInterface $translator,
+        VariableApi $variableApi,
+        UserRepositoryInterface $userRepository,
+        WorkflowHelper $workflowHelper,
+        ListEntriesHelper $listHelper)
     {
         $this->setTranslator($translator);
         $this->variableApi = $variableApi;
+        $this->userRepository = $userRepository;
         $this->workflowHelper = $workflowHelper;
         $this->listHelper = $listHelper;
     }
@@ -150,7 +163,10 @@ abstract class AbstractTwigExtension extends Twig_Extension
     {
         $result = [];
     
-        $result[] = ['text' => $this->__('Routes'), 'value' => 'route'];
+        $result[] = [
+            'text' => $this->__('Routes'),
+            'value' => 'route'
+        ];
     
         return $result;
     }
@@ -165,9 +181,18 @@ abstract class AbstractTwigExtension extends Twig_Extension
     {
         $result = [];
     
-        $result[] = ['text' => $this->__('Only item titles'), 'value' => 'itemlist_display.html.twig'];
-        $result[] = ['text' => $this->__('With description'), 'value' => 'itemlist_display_description.html.twig'];
-        $result[] = ['text' => $this->__('Custom template'), 'value' => 'custom'];
+        $result[] = [
+            'text' => $this->__('Only item titles'),
+            'value' => 'itemlist_display.html.twig'
+        ];
+        $result[] = [
+            'text' => $this->__('With description'),
+            'value' => 'itemlist_display_description.html.twig'
+        ];
+        $result[] = [
+            'text' => $this->__('Custom template'),
+            'value' => 'custom'
+        ];
     
         return $result;
     }
@@ -175,7 +200,7 @@ abstract class AbstractTwigExtension extends Twig_Extension
     /**
      * Display the avatar of a user.
      *
-     * @param int|string $uid    The user's id or name
+     * @param int|string $userId The user's id or name
      * @param int        $width  Image width (optional)
      * @param int        $height Image height (optional)
      * @param int        $size   Gravatar size (optional)
@@ -183,12 +208,21 @@ abstract class AbstractTwigExtension extends Twig_Extension
      *
      * @return string
      */
-    public function getUserAvatar($uid = 0, $width = 0, $height = 0, $size = 0, $rating = '')
+    public function getUserAvatar($userId = 0, $width = 0, $height = 0, $size = 0, $rating = '')
     {
-        if (!is_numeric($uid)) {
-            $uid = \UserUtil::getIdFromName($uid);
+        if (!is_numeric($userId)) {
+            $limit = 1;
+            $filter = [
+                'uname' => ['operator' => 'eq', 'operand' => $userId]
+            ];
+            $results = $this->userRepository->query($filter, [], $limit);
+            if (!count($results)) {
+                return '';
+            }
+
+            $userId = $results[0]->getUname();
         }
-        $params = ['uid' => $uid];
+        $params = ['uid' => $userId];
         if ($width > 0) {
             $params['width'] = $width;
         }
