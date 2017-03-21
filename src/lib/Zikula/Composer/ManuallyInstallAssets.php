@@ -27,8 +27,8 @@ class ManuallyInstallAssets extends ScriptHandler
      * The list of assets. [[vendorPath => destinationPath]]
      */
     private static $assets = [
-        '/jQuery.mmenu/dist/js/jquery.mmenu.all.min.js' => '/jquery-mmenu/js/jquery.mmenu.all.min.js',
-        '/jQuery.mmenu/dist/css/jquery.mmenu.all.css' => '/jquery-mmenu/css/jquery.mmenu.all.css',
+        '/jQuery.mmenu/dist/jquery.mmenu.all.min.js' => '/jquery-mmenu/js/jquery.mmenu.all.min.js',
+        '/jQuery.mmenu/dist/jquery.mmenu.all.css' => '/jquery-mmenu/css/jquery.mmenu.all.css',
         '/dimsemenov/magnific-popup/dist/jquery.magnific-popup.js' => '/magnific-popup/jquery.magnific-popup.js',
         '/dimsemenov/magnific-popup/dist/jquery.magnific-popup.min.js' => '/magnific-popup/jquery.magnific-popup.min.js',
         '/dimsemenov/magnific-popup/dist/magnific-popup.css' => '/magnific-popup/magnific-popup.css',

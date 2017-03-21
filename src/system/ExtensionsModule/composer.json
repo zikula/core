@@ -15,15 +15,8 @@
     },
     "require": {
         "php": ">5.4.0",
-        "justinrainbow/json-schema": "4.*",
-        "jquery.mmenu": "5.*"
+        "justinrainbow/json-schema": "4.*"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/FrDH/jQuery.mmenu"
-        }
-    ],
     "extra": {
         "zikula": {
             "url": "extensions",
