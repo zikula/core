@@ -51,7 +51,7 @@ class LegacyController
     /**
      * @var ExtensionRepositoryInterface
      */
-    private $extensionRespository;
+    private $extensionRepository;
 
     /**
      * MainController constructor.
@@ -63,7 +63,7 @@ class LegacyController
     {
         $this->variableApi = $variableApi;
         $this->permissionApi = $permissionApi;
-        $this->extensionRespository = $extensionRepository;
+        $this->extensionRepository = $extensionRepository;
     }
 
     /**
@@ -75,7 +75,10 @@ class LegacyController
     public function legacyAction(Request $request)
     {
         $moduleUrl = $request->query->get('module');
-        $moduleEntity = $this->extensionRespository->findOneBy(['url' => $moduleUrl]);
+        $moduleEntity = $this->extensionRepository->findOneBy(['url' => $moduleUrl]);
+        if (null === $moduleEntity) {
+            $moduleEntity = $this->extensionRepository->findOneBy(['name' => $moduleUrl]);
+        }
         $module = $moduleEntity->getName();
         $type = $request->query->get('type');
         $func = $request->query->get('func');
