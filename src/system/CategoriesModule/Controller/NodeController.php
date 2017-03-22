@@ -95,24 +95,26 @@ class NodeController extends AbstractController
                 ];
                 break;
             case 'deleteandmovechildren':
-                // re-parent the children
+                // move the children
                 $newParent = $repo->find($request->request->get('parent', 1));
                 if ($newParent == $category->getParent()) {
                     $response = ['result' => true];
                     break;
                 }
                 foreach ($category->getChildren() as $child) {
-                    $child->setParent($newParent);
+                    $repo->persistAsLastChildOf($child, $newParent);
                 }
                 // intentionally no break here
             case 'delete':
                 $entityManager->remove($category);
-//                $entityManager->flush();
+                $entityManager->flush();
                 $response = [
                     'id' => $category->getId(),
                     'action' => $action,
                     'parent' => isset($newParent) ? $newParent->getId() : null
                 ];
+                $repo->recover();
+                $this->getDoctrine()->getManager()->flush();
                 break;
             case 'activate':
             case 'deactivate':

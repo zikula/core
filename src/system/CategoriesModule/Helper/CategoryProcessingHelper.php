@@ -224,9 +224,9 @@ class CategoryProcessingHelper
 
         // iterate over all registries
         foreach ($registries as $registry) {
-            // check if the registry subtree contains our category
-            $rPath = $registry['category_id']['ipath'] . '/';
-            $cPath = $category['ipath'];
+            // check if the registry subtree contains our category - iPath is constructed on demand
+            $rPath = $registry->getCategory()->getIPath() . '/';
+            $cPath = $category->getIPath();
 
             $isContained = strpos($cPath, $rPath) === 0;
             if (!$isContained) {
@@ -234,11 +234,11 @@ class CategoryProcessingHelper
             }
 
             // get information about responsible module
-            if (!$this->kernel->isBundle($registry['modname'])) {
+            if (!$this->kernel->isBundle($registry->getModname())) {
                 continue;
             }
 
-            $module = $this->kernel->getModule($registry['modname']);
+            $module = $this->kernel->getModule($registry->getModname());
             $moduleClassLevels = explode('\\', get_class($module));
             unset($moduleClassLevels[count($moduleClassLevels) - 1]);
             $moduleNamespace = implode('\\', $moduleClassLevels);
@@ -257,7 +257,7 @@ class CategoryProcessingHelper
                 }
 
                 // check if this mapping table contains a reference to the given category
-                $mappings = $this->entityManager->getRepository($registry['modname'] . ':' . $entityName)
+                $mappings = $this->entityManager->getRepository($registry->getModname() . ':' . $entityName)
                     ->findBy(['category' => $category['id']]);
                 if (count($mappings) > 0) {
                     // existing reference found

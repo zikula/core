@@ -107,11 +107,6 @@ class LinkContainer implements LinkContainerInterface
                 'text' => $this->translator->__('Category registry'),
                 'icon' => 'archive'
             ];
-            $links[] = [
-                'url' => $this->router->generate('zikulacategoriesmodule_config_config'),
-                'text' => $this->translator->__('Settings'),
-                'icon' => 'wrench'
-            ];
         }
 
         return $links;

@@ -69,14 +69,6 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $this->entityManager->remove($cat);
         $this->entityManager->flush();
 
-        // set module vars
-        $this->setVar('userrootcat', 31);
-        $this->setVar('allowusercatedit', false);
-        $this->setVar('autocreateusercat', false);
-        $this->setVar('autocreateuserdefaultcat', false);
-        $this->setVar('permissionsall', false);
-        $this->setVar('userdefaultcatname', $this->__('Default'));
-
         // Initialisation successful
         return true;
     }
@@ -118,15 +110,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             case '1.2.2':
             case '1.2.3':
             case '1.3.0':
-                $modVars = $this->getVars();
-                $usersModuleRootCategory = $this->container->get('zikula_categories_module.category_repository')->findOneBy(['name' => 'ZikulaUsersModule']);
-                if (isset($usersModuleRootCategory)) {
-                    $modVars['userrootcat'] = $usersModuleRootCategory->getId();
-                }
-                foreach (['allowusercatedit', 'autocreateusercat', 'autocreateuserdefaultcat', 'permissionsall'] as $boolVar) {
-                    $modVars[$boolVar] = isset($modVars[$boolVar]) ? (bool)$modVars[$boolVar] : false;
-                }
-                $this->setVars($modVars);
+                $this->delVars();
                 $helper = new TreeMapHelper($this->container->get('doctrine'));
                 $helper->map(); // updates NestedTree values in entities
                 $connection->executeQuery('UPDATE categories_category SET `tree_root` = 1 WHERE 1');

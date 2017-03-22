@@ -4,7 +4,9 @@ CHANGELOG - ZIKULA 1.5.x
 * 1.5.0 (?)
 
  - BC Breaks:
-    - ?
+    - PHP minimum version raised to >=5.5.9.
+    - User Categories feature removed.
+    - All categories configuration removed.
 
  - Deprecated:
     - Search block templates have been modified. This will break existing overrides for

@@ -121,7 +121,8 @@
             } else {
                 actions.activateItem._disabled = true;
             }
-            if (treeElem.jstree('is_leaf', node, true)) {
+            if(typeof node.a_attr.class != "undefined" && ~node.a_attr.class.indexOf("leaf")) {
+                // jstree.is_leaf() returns true if the node has no children, not if the node is defined as a leaf
                 actions.addItemInto._disabled = true;
             }
             return actions;
@@ -274,9 +275,9 @@
                 var info = Translator._fn('It contains %count% direct child.', 'It contains %count% direct children.', childrenCount, {count: childrenCount})
                     + ' '
                     + Translator._n("Please choose what to do with this item's child.", "Please choose what to do with this item's children.", childrenCount);
-                $('#deleteWithChildrenInfo').addClass('alert alert-warning').text(info);
+                $('#deleteWithChildrenInfo').addClass('alert alert-danger').text(info);
             } else {
-                $('#deleteWithChildrenInfo').removeClass('alert alert-warning').text('');
+                $('#deleteWithChildrenInfo').removeClass('alert alert-danger').text('');
             }
             var deleteModal = $('#deleteModal');
             // hide all buttons
@@ -288,6 +289,7 @@
                 $('#node_delete_move').show();
             } else {
                 $('#node_delete').show();
+                deleteModal.find('.modal-dialog').removeClass('modal-lg');
             }
 
             deleteModal.find('.modal-footer button').one('click', function(event) {
@@ -321,6 +323,7 @@
             deleteModal.modal();
             deleteModal.on('hidden.bs.modal', function (e) {
                 $('#categorySelector').hide();
+                $(this).find('.modal-dialog').addClass('modal-lg');
                 $('#button-spinner').remove();
             });
             deleteModal.find('.modal-footer button[value=Cancel]').focus();

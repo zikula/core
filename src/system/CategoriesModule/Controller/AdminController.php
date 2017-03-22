@@ -126,8 +126,8 @@ class AdminController extends AbstractController
      */
     public function preferencesAction()
     {
-        @trigger_error('The zikulacategoriesmodule_admin_preferences route is deprecated. please use zikulacategoriesmodule_config_config instead.', E_USER_DEPRECATED);
+        @trigger_error('The zikulacategoriesmodule_admin_preferences route is removed.', E_USER_DEPRECATED);
 
-        return $this->redirectToRoute('zikulacategoriesmodule_config_config');
+        return $this->redirectToRoute('home');
     }
 }

@@ -12,9 +12,3 @@ services:
           - "@zikula_categories_module.category_repository"
         tags:
             - { name: form.type }
-
-    zikula_categories_module.form_type.config_type:
-        class: Zikula\CategoriesModule\Form\Type\ConfigType
-        arguments: ["@zikula_categories_module.api.category"]
-        tags:
-            - { name: form.type }
