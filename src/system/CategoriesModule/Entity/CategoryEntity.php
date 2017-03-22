@@ -914,7 +914,8 @@ class CategoryEntity extends EntityAccess
      * required for repository->recover() method
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->name;
     }
 }

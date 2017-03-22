@@ -16,7 +16,7 @@ use Zikula\Core\Controller\AbstractController;
 
 /**
  * @deprecated
- * User controllers for the categories module.
+ * User controllers for the categories module
  */
 class UserController extends AbstractController
 {
