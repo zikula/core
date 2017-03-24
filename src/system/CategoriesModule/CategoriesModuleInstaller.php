@@ -318,17 +318,6 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'attributes' => ['code' => 'A']
         ];
         $objArray[] = [
-            'id' => 31,
-            'parent_id' => 1,
-            'is_locked' => false,
-            'is_leaf' => false,
-            'value' => '',
-            'name' => 'ZikulaUsersModule',
-            'display_name' => $this->localize($this->__('Users')),
-            'display_desc' => $this->localize(),
-            'status' => 'A'
-        ];
-        $objArray[] = [
             'id' => 32,
             'parent_id' => 2,
             'is_locked' => false,

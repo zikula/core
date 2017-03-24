@@ -48,6 +48,18 @@ class NodeController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
         switch ($action) {
+            case 'copy':
+                $newCategory = clone $category;
+                $newCategory->setName($category->getName() . 'copy');
+                $displayNames = [];
+                foreach ($newCategory->getDisplay_name() as $locale => $displayName) {
+                    $displayNames[$locale] = $displayName . ' ' .$this->__('copy');
+                }
+                $newCategory->setDisplay_name($displayNames);
+                $action = 'edit';
+                $mode = 'new';
+                $category = $newCategory;
+                // intentionally no break here
             case 'edit':
                 if (!isset($category)) {
                     $category = new CategoryEntity($this->get('zikula_settings_module.locale_api')->getSupportedLocales());
@@ -102,14 +114,21 @@ class NodeController extends AbstractController
                     break;
                 }
                 foreach ($category->getChildren() as $child) {
-                    $repo->persistAsLastChildOf($child, $newParent);
+                    $category->getChildren()->removeElement($child);
+                    $newParent->getChildren()->add($child);
+                    $child->setParent($newParent);
                 }
+                $entityManager->flush();
                 // intentionally no break here
             case 'delete':
+                $categoryId = $category->getId();
+                foreach ($category->getChildren() as $child) {
+                    $entityManager->remove($child);
+                }
                 $entityManager->remove($category);
                 $entityManager->flush();
                 $response = [
-                    'id' => $category->getId(),
+                    'id' => $categoryId,
                     'action' => $action,
                     'parent' => isset($newParent) ? $newParent->getId() : null
                 ];
