@@ -32,6 +32,7 @@ CHANGELOG - ZIKULA 1.5.x
     - doctrine/common updated from 2.5.3 to 2.6.2
     - fduch/workflow-bundle installed as 2.0.2
     - gedmo/doctrine-extensions updated from 2.4.26 to 2.4.27
+    - jquery.mmenu updated from 5.7.8 to 6.0.0
     - liip/imagine-bundle updated from 1.7.2 to 1.7.4
     - monolog/monolog updated from 1.22.0 to 1.22.1
     - paragonie/random_compat updated from 2.0.9 to 2.0.10

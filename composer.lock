@@ -1975,16 +1975,16 @@
         },
         {
             "name": "jQuery.mmenu",
-            "version": "5.7.8",
+            "version": "6.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FrDH/jQuery.mmenu.git",
-                "reference": "b4795fe4eeb77a32a742f3313493a29d8de12b7f"
+                "reference": "28cdf6d0724f6ce983423185de22acde654b70df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FrDH/jQuery.mmenu/zipball/b4795fe4eeb77a32a742f3313493a29d8de12b7f",
-                "reference": "b4795fe4eeb77a32a742f3313493a29d8de12b7f",
+                "url": "https://api.github.com/repos/FrDH/jQuery.mmenu/zipball/28cdf6d0724f6ce983423185de22acde654b70df",
+                "reference": "28cdf6d0724f6ce983423185de22acde654b70df",
                 "shasum": ""
             },
             "type": "library",
@@ -2007,10 +2007,10 @@
                 "submenu"
             ],
             "support": {
-                "source": "https://github.com/FrDH/jQuery.mmenu/tree/v5.7.8",
+                "source": "https://github.com/FrDH/jQuery.mmenu/tree/v6.0.0",
                 "issues": "https://github.com/FrDH/jQuery.mmenu/issues"
             },
-            "time": "2016-11-13T09:41:03+00:00"
+            "time": "2017-03-20T21:43:15+00:00"
         },
         {
             "name": "jdorn/sql-formatter",
