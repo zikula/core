@@ -2,10 +2,9 @@ services:
     zikula_categories_module.category_processing_helper:
         class: Zikula\CategoriesModule\Helper\CategoryProcessingHelper
         arguments:
-          - "@translator.default"
           - "@doctrine.orm.entity_manager"
           - "@kernel"
-          - "@zikula_settings_module.locale_api"
+          - "@zikula_extensions_module.api.capability"
 
     zikula_categories_module.category_sorting_helper:
         class: Zikula\CategoriesModule\Helper\CategorySortingHelper

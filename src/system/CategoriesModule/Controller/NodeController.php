@@ -107,27 +107,37 @@ class NodeController extends AbstractController
                 ];
                 break;
             case 'deleteandmovechildren':
-                // move the children
                 $newParent = $repo->find($request->request->get('parent', 1));
                 if ($newParent == $category->getParent()) {
                     $response = ['result' => true];
                     break;
                 }
+                // move the children
                 foreach ($category->getChildren() as $child) {
-                    $category->getChildren()->removeElement($child);
-                    $newParent->getChildren()->add($child);
-                    $child->setParent($newParent);
+                    if ($this->get('zikula_categories_module.category_processing_helper')->mayCategoryBeDeletedOrMoved($child)) {
+                        $category->getChildren()->removeElement($child);
+                        $newParent->getChildren()->add($child);
+                        $child->setParent($newParent);
+                    }
                 }
                 $entityManager->flush();
                 // intentionally no break here
             case 'delete':
                 $categoryId = $category->getId();
                 foreach ($category->getChildren() as $child) {
-                    $entityManager->remove($child);
+                    if ($this->get('zikula_categories_module.category_processing_helper')->mayCategoryBeDeletedOrMoved($child)) {
+                        $entityManager->remove($child);
+                    }
                 }
-                $entityManager->remove($category);
-                $entityManager->flush();
+                $categoryRemoved = false;
+                if ($category->getChildren()->count() == 0
+                    && $this->get('zikula_categories_module.category_processing_helper')->mayCategoryBeDeletedOrMoved($category)) {
+                    $entityManager->remove($category);
+                    $entityManager->flush();
+                    $categoryRemoved = true;
+                }
                 $response = [
+                    'result' => $categoryRemoved,
                     'id' => $categoryId,
                     'action' => $action,
                     'parent' => isset($newParent) ? $newParent->getId() : null
@@ -168,21 +178,25 @@ class NodeController extends AbstractController
         $node = $request->request->get('node');
         $entityId = str_replace($this->domTreeNodePrefix, '', $node['id']);
         $category = $repo->find($entityId);
-        $oldParent = $request->request->get('old_parent');
-        $oldPosition = (int) $request->request->get('old_position');
-        $parent = $request->request->get('parent');
-        $position = (int) $request->request->get('position');
-        if ($oldParent == $parent) {
-            $diff = $oldPosition - $position; // if $diff is positive, then node moved up
-            $methodName = $diff > 0 ? 'moveUp' : 'moveDown';
-            $repo->$methodName($category, abs($diff));
-        } else {
-            $parentEntity = $repo->find(str_replace($this->domTreeNodePrefix, '', $parent));
-            $children = $repo->children($parentEntity);
-            $repo->persistAsNextSiblingOf($category, $children[$position - 1]);
-        }
-        $this->getDoctrine()->getManager()->flush();
+        if ($this->get('zikula_categories_module.category_processing_helper')->mayCategoryBeDeletedOrMoved($category)) {
+            $oldParent = $request->request->get('old_parent');
+            $oldPosition = (int)$request->request->get('old_position');
+            $parent = $request->request->get('parent');
+            $position = (int)$request->request->get('position');
+            if ($oldParent == $parent) {
+                $diff = $oldPosition - $position; // if $diff is positive, then node moved up
+                $methodName = $diff > 0 ? 'moveUp' : 'moveDown';
+                $repo->$methodName($category, abs($diff));
+            } else {
+                $parentEntity = $repo->find(str_replace($this->domTreeNodePrefix, '', $parent));
+                $children = $repo->children($parentEntity);
+                $repo->persistAsNextSiblingOf($category, $children[$position - 1]);
+            }
+            $this->getDoctrine()->getManager()->flush();
 
-        return new AjaxResponse(['result' => true]);
+            return new AjaxResponse(['result' => true]);
+        } else {
+            return new AjaxResponse(['result' => false]);
+        }
     }
 }
