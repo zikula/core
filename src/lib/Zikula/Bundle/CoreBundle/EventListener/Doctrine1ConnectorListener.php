@@ -120,7 +120,7 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
                 $dbh = null;
                 if ($connectionInfo['dbdriver'] == 'derby' || $connectionInfo['dbdriver'] == 'splice') {
                     $class = 'Doctrine_Connection_' . ucwords($connectionInfo['dbdriver']) . '_Pdo';
-                    $dbh   = new $class ("odbc:$connectionInfo[dbname]", $connectionInfo['user'], $connectionInfo['password']);
+                    $dbh   = new $class("odbc:$connectionInfo[dbname]", $connectionInfo['user'], $connectionInfo['password']);
                 } elseif ($connectionInfo['dbdriver'] == 'jdbcbridge') {
                     $dbh = new Doctrine_Adapter_Jdbcbridge($connectionInfo, $connectionInfo['user'], $connectionInfo['password']);
                 } else {
