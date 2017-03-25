@@ -12,12 +12,9 @@
 namespace Zikula\CategoriesModule\Helper;
 
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Finder\Finder;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
-use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\CapabilityApi;
-use Zikula\SettingsModule\Api\LocaleApi;
 
 /**
  * Category processing helper functions for the categories module.
