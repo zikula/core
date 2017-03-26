@@ -42,6 +42,7 @@ class CategoryType extends AbstractType
             ->add('parent', 'Zikula\CategoriesModule\Form\Type\CategoryTreeType', [
                 'label' => $translator->__('Parent'),
                 'translator' => $translator,
+                'includeRoot' => true,
                 'includeLeaf' => false,
                 'constraints' => [new NotBlank()]
             ])

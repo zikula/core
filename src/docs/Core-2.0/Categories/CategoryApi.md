@@ -1,6 +1,10 @@
 CategoryApi
 ===========
 
+NOTE: The CategoryApi is *deprecated* and will be removed at Core 2.0. Simply use Doctrine Repository methods for
+retrieval, creation and removal. Categories now implements NestedTree Doctrine behavior so the docs at
+https://github.com/Atlantic18/DoctrineExtensions/blob/v2.4.x/doc/tree.md will also be useful.
+
 classname: \Zikula\CategoriesModule\Api\CategoryApi
 
 service id = "zikula_categories_module.api.category"
@@ -37,4 +41,5 @@ The class makes the following methods available:
     - deleteCategoryById($categoryId)
     - deleteCategoriesByPath($path, $pathField = 'ipath')
 
-Note that there are also other apis and some helper services providing even more functionality. See the other markdown documents in this folder for more information about them.
+Note that there are also other apis and some helper services providing even more functionality. See the other markdown 
+documents in this folder for more information about them.

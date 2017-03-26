@@ -7,8 +7,6 @@ services:
           - "@request_stack"
           - "@zikula_permissions_module.api.permission"
           - "@zikula_categories_module.category_processing_helper"
-          - "@zikula_categories_module.category_sorting_helper"
-          - "@zikula_categories_module.relative_category_path_builder_helper"
           - "@zikula_settings_module.locale_api"
 
     zikula_categories_module.api.category_permission:
@@ -23,11 +21,3 @@ services:
           - "@translator.default"
           - "@doctrine.orm.entity_manager"
           - "@zikula_categories_module.api.category"
-
-    zikula_categories_module.api.user_categories:
-        class: Zikula\CategoriesModule\Api\UserCategoriesApi
-        arguments:
-          - "@translator.default"
-          - "@zikula_categories_module.api.category"
-          - "@zikula_users_module.current_user"
-          - "@zikula_users_module.user_repository"

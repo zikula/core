@@ -264,9 +264,7 @@ class CategoryUtil
      */
     public static function moveCategoriesByID($cid, $newParentId)
     {
-        @trigger_error('CategoryUtil is deprecated. please use the new copy and move helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.copy_and_move_helper')->moveCategoriesById($cid, $newParentId);
+        @trigger_error('CategoryUtil::moveCategoriesByID is removed.', E_USER_WARNING);
     }
 
     /**
@@ -280,9 +278,7 @@ class CategoryUtil
      */
     public static function moveSubCategoriesByPath($apath, $newParentId, $pathField = 'ipath')
     {
-        @trigger_error('CategoryUtil is deprecated. please use the new copy and move helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.copy_and_move_helper')->moveSubCategoriesByPath($apath, $newParentId, $pathField);
+        @trigger_error('CategoryUtil::moveSubCategoriesByPath is removed.', E_USER_WARNING);
     }
 
     /**
@@ -297,9 +293,7 @@ class CategoryUtil
      */
     public static function moveCategoriesByPath($apath, $newParentId, $pathField = 'ipath', $includeRoot = true)
     {
-        @trigger_error('CategoryUtil is deprecated. please use the new copy and move helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.copy_and_move_helper')->moveCategoriesByPath($apath, $newParentId, $pathField, $includeRoot);
+        @trigger_error('CategoryUtil::moveCategoriesByPath is removed.', E_USER_WARNING);
     }
 
     /**
@@ -312,9 +306,7 @@ class CategoryUtil
      */
     public static function copyCategoriesByID($cid, $newParentId)
     {
-        @trigger_error('CategoryUtil is deprecated. please use the new copy and move helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.copy_and_move_helper')->copyCategoriesById($cid, $newParentId);
+        @trigger_error('CategoryUtil::copyCategoriesByID is removed.', E_USER_WARNING);
     }
 
     /**
@@ -328,9 +320,7 @@ class CategoryUtil
      */
     public static function copySubCategoriesByPath($apath, $newParentId, $pathField = 'ipath')
     {
-        @trigger_error('CategoryUtil is deprecated. please use the new copy and move helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.copy_and_move_helper')->copySubCategoriesByPath($apath, $newParentId, $pathField);
+        @trigger_error('CategoryUtil::copySubCategoriesByPath is removed.', E_USER_WARNING);
     }
 
     /**
@@ -345,9 +335,7 @@ class CategoryUtil
      */
     public static function copyCategoriesByPath($apath, $newParentId, $pathField = 'ipath', $includeRoot = true)
     {
-        @trigger_error('CategoryUtil is deprecated. please use the new copy and move helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.copy_and_move_helper')->copyCategoriesByPath($apath, $newParentId, $pathField, $includeRoot);
+        @trigger_error('CategoryUtil::copyCategoriesByPath is removed.', E_USER_WARNING);
     }
 
     /**
@@ -360,9 +348,7 @@ class CategoryUtil
      */
     public static function isDirectSubCategoryByID($rootId, $cid)
     {
-        @trigger_error('CategoryUtil is deprecated. please use the new hierarchy helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.hierarchy_helper')->isDirectSubCategoryById($rootId, $cid);
+        @trigger_error('CategoryUtil::isDirectSubCategoryByID is removed.', E_USER_WARNING);
     }
 
     /**
@@ -375,9 +361,7 @@ class CategoryUtil
      */
     public static function isDirectSubCategory($rootCat, $cat)
     {
-        @trigger_error('CategoryUtil is deprecated. please use the new hierarchy helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.hierarchy_helper')->isDirectSubCategory($rootCat, $cat);
+        @trigger_error('CategoryUtil::isDirectSubCategory is removed.', E_USER_WARNING);
     }
 
     /**
@@ -390,9 +374,7 @@ class CategoryUtil
      */
     public static function isSubCategoryByID($rootId, $cid)
     {
-        @trigger_error('CategoryUtil is deprecated. please use the new hierarchy helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.hierarchy_helper')->isSubCategoryById($rootId, $cid);
+        @trigger_error('CategoryUtil::isSubCategoryByID is removed.', E_USER_WARNING);
     }
 
     /**
@@ -405,9 +387,7 @@ class CategoryUtil
      */
     public static function isSubCategory($rootCat, $cat)
     {
-        @trigger_error('CategoryUtil is deprecated. please use the new hierarchy helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.hierarchy_helper')->isSubCategory($rootCat, $cat);
+        @trigger_error('CategoryUtil::isSubCategory is removed.', E_USER_WARNING);
     }
 
     /**
@@ -421,9 +401,7 @@ class CategoryUtil
      */
     public static function haveDirectSubcategories($cid, $countOnly = false, $all = true)
     {
-        @trigger_error('CategoryUtil is deprecated. please use the new hierarchy helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.hierarchy_helper')->hasDirectSubcategories($cid, $countOnly, $all);
+        @trigger_error('CategoryUtil::haveDirectSubcategories is removed.', E_USER_WARNING);
     }
 
     /**
@@ -438,9 +416,7 @@ class CategoryUtil
      */
     public static function getCategoryTreeJS($cats, $doReplaceRootCat = true, $sortable = false, array $options = [])
     {
-        @trigger_error('CategoryUtil is deprecated. please use the js tree helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.js_tree_helper')->getCategoryTreeJs($cats, $doReplaceRootCat, $sortable, $options);
+        @trigger_error('CategoryUtil::getCategoryTreeJS is removed.', E_USER_WARNING);
     }
 
     /**
@@ -455,9 +431,7 @@ class CategoryUtil
      */
     public static function getCategoryTreeJqueryJS($cats, $doReplaceRootCat = true, $sortable = false, array $options = [])
     {
-        @trigger_error('CategoryUtil is deprecated. please use the js tree helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.js_tree_helper')->getCategoryTreeJqueryJs($cats, $doReplaceRootCat, $sortable, $options);
+        @trigger_error('CategoryUtil::getCategoryTreeJqueryJS is removed.', E_USER_WARNING);
     }
 
     /**
@@ -468,9 +442,7 @@ class CategoryUtil
      */
     public static function getJsTreeNodeFromCategory(CategoryEntity $category)
     {
-        @trigger_error('CategoryUtil is deprecated. please use the js tree helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.js_tree_helper')->getJsTreeNodeFromCategory($category);
+        @trigger_error('CategoryUtil::getJsTreeNodeFromCategory is removed.', E_USER_WARNING);
     }
 
     /**
@@ -481,9 +453,7 @@ class CategoryUtil
      */
     public static function getJsTreeNodeFromCategoryArray($categories)
     {
-        @trigger_error('CategoryUtil is deprecated. please use the js tree helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.js_tree_helper')->getJsTreeNodeFromCategoryArray($categories);
+        @trigger_error('CategoryUtil::getJsTreeNodeFromCategoryArray is removed.', E_USER_WARNING);
     }
 
     /**
@@ -495,9 +465,7 @@ class CategoryUtil
      */
     public static function getCategoryTreeJSNode($category)
     {
-        @trigger_error('CategoryUtil is deprecated. please use the js tree helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.js_tree_helper')->getCategoryTreeJsNode($category);
+        @trigger_error('CategoryUtil::getCategoryTreeJSNode is removed.', E_USER_WARNING);
     }
 
     /**
@@ -515,9 +483,7 @@ class CategoryUtil
      */
     public static function _tree_insert(&$tree, $entry, $currentpath = null)
     {
-        @trigger_error('CategoryUtil is deprecated. please use the category sorting helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.category_sorting_helper')->insertTreeLeaf($tree, $entry, $currentpath);
+        @trigger_error('CategoryUtil::_tree_insert is removed.', E_USER_WARNING);
     }
 
     /**
@@ -530,9 +496,7 @@ class CategoryUtil
      */
     public static function _tree_sort($tree, &$cats)
     {
-        @trigger_error('CategoryUtil is deprecated. please use the category sorting helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.category_sorting_helper')->sortTree($tree, $cats);
+        @trigger_error('CategoryUtil::_tree_sort is removed.', E_USER_WARNING);
     }
 
     /**
@@ -546,9 +510,7 @@ class CategoryUtil
      */
     public static function sortCategories($cats, $sortField = '', $assocKey = '')
     {
-        @trigger_error('CategoryUtil is deprecated. please use the category sorting helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.category_sorting_helper')->sortCategories($cats, $sortField, $assocKey);
+        @trigger_error('CategoryUtil::sortCategories is removed.', E_USER_WARNING);
     }
 
     /**
@@ -561,9 +523,7 @@ class CategoryUtil
      */
     public static function getCategoryTreeStructure($cats)
     {
-        @trigger_error('CategoryUtil is deprecated. please use the html tree helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.html_tree_helper')->getCategoryTreeStructure($cats);
+        @trigger_error('CategoryUtil::getCategoryTreeStructure is removed.', E_USER_WARNING);
     }
 
     /**
@@ -587,9 +547,7 @@ class CategoryUtil
      */
     public static function getSelector_Categories($cats, $field = 'id', $selectedValue = '0', $name = 'category[parent_id]', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $submit = false, $displayPath = false, $doReplaceRootCat = true, $multipleSize = 1, $fieldIsAttribute = false, $cssClass = '', $lang = null)
     {
-        @trigger_error('CategoryUtil is deprecated. please use the html tree helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.html_tree_helper')->getSelector_Categories($cats, $field, $selectedValue, $name, $defaultValue, $defaultText, $allValue = 0, $allText, $submit, $displayPath, $doReplaceRootCat, $multipleSize, $fieldIsAttribute, $cssClass, $lang);
+        @trigger_error('CategoryUtil::getSelector_Categories is removed.', E_USER_WARNING);
     }
 
     /**
@@ -602,9 +560,7 @@ class CategoryUtil
      */
     public static function cmpName($catA, $catB)
     {
-        @trigger_error('CategoryUtil is deprecated. please use the category sorting helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.category_sorting_helper')->compareName($catA, $catB);
+        @trigger_error('CategoryUtil::cmpName is removed.', E_USER_WARNING);
     }
 
     /**
@@ -617,9 +573,7 @@ class CategoryUtil
      */
     public static function cmpDesc($catA, $catB)
     {
-        @trigger_error('CategoryUtil is deprecated. please use the category sorting helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.category_sorting_helper')->compareDesc($catA, $catB);
+        @trigger_error('CategoryUtil::cmpDesc is removed.', E_USER_WARNING);
     }
 
     /**
@@ -634,9 +588,7 @@ class CategoryUtil
      */
     public static function sortByLocale(&$cats, $func = 'compareName')
     {
-        @trigger_error('CategoryUtil is deprecated. please use the category sorting helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.category_sorting_helper')->sortByLocale($cats, $func);
+        @trigger_error('CategoryUtil::sortByLocale is removed.', E_USER_WARNING);
     }
 
     /**
@@ -649,9 +601,7 @@ class CategoryUtil
      */
     public static function resequence($cats, $step = 1)
     {
-        @trigger_error('CategoryUtil is deprecated. please use the category sorting helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.category_sorting_helper')->resequence($cats, $step);
+        @trigger_error('CategoryUtil::resequence is removed.', E_USER_WARNING);
     }
 
     /**
@@ -670,9 +620,7 @@ class CategoryUtil
      */
     public static function buildRelativePaths($rootCatIDs, &$cats, $includeRoot = false)
     {
-        @trigger_error('CategoryUtil is deprecated. please use the new path builder helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.path_builder_helper')->buildRelativePaths($rootCatIDs, $cats, $includeRoot);
+        @trigger_error('CategoryUtil::buildRelativePaths is removed.', E_USER_WARNING);
     }
 
     /**
@@ -688,13 +636,7 @@ class CategoryUtil
      */
     public static function buildRelativePathsForCategory($rootCategory, &$cat, $includeRoot = false)
     {
-        @trigger_error('CategoryUtil is deprecated. please use the new relative category path builder helper instead.', E_USER_DEPRECATED);
-
-        if (is_numeric($rootCategory)) {
-            $rootCategory = ServiceUtil::get('zikula_categories_module.api.category')->getCategoryById($rootCategory);
-        }
-
-        return ServiceUtil::get('zikula_categories_module.relative_category_path_builder_helper')->buildRelativePathsForCategory($rootCategory, $cat, $includeRoot);
+        @trigger_error('CategoryUtil::buildRelativePathsForCategory is removed.', E_USER_WARNING);
     }
 
     /**
@@ -711,9 +653,7 @@ class CategoryUtil
      */
     public static function buildPaths($cats, $field = 'name')
     {
-        @trigger_error('CategoryUtil is deprecated. please use the new path builder helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.path_builder_helper')->buildPaths($cats, $field);
+        @trigger_error('CategoryUtil::buildPaths is removed.', E_USER_WARNING);
     }
 
     /**
@@ -729,9 +669,7 @@ class CategoryUtil
      */
     public static function rebuildPaths($pathField = 'path', $sourceField = 'name', $leafId = 0)
     {
-        @trigger_error('CategoryUtil is deprecated. please use the new path builder helper instead.', E_USER_DEPRECATED);
-
-        return ServiceUtil::get('zikula_categories_module.path_builder_helper')->rebuildPaths($pathField, $sourceField, $leafId);
+        @trigger_error('CategoryUtil::rebuildPaths is removed.', E_USER_WARNING);
     }
 
     /**

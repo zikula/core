@@ -12,8 +12,13 @@
 namespace Zikula\CategoriesModule\Entity\Repository;
 
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
+use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 
+/**
+ * Class CategoryRepository
+ * @see https://github.com/Atlantic18/DoctrineExtensions/blob/v2.4.x/doc/tree.md
+ */
 class CategoryRepository extends NestedTreeRepository implements CategoryRepositoryInterface
 {
     /**
@@ -91,7 +96,7 @@ class CategoryRepository extends NestedTreeRepository implements CategoryReposit
             // if 'ipath' == $pathField, the there will only be one category in the array and it will be set to $category
         }
 
-        return $this->children($category, false, null, 'asc', true);
+        return isset($category) ? $this->children($category, false, null, 'asc', true) : [];
     }
 
     /**
@@ -165,17 +170,14 @@ class CategoryRepository extends NestedTreeRepository implements CategoryReposit
         if (!is_numeric($oldParentId) || $oldParentId < 1 || !is_numeric($newParentId) || $newParentId < 1 || !is_bool($includeRoot)) {
             return;
         }
-
-        $whereField = $includeRoot ? 'id' : 'parent';
-
-        $qb = $this->_em->createQueryBuilder()
-            ->update('Zikula\CategoriesModule\Entity\CategoryEntity', 'c')
-            ->set('c.parent', ':newParent')
-            ->setParameter('newParent', $newParentId)
-            ->where('c.' . $whereField . ' = :pid')
-            ->setParameter('pid', $oldParentId);
-
-        $qb->getQuery()->execute();
+        $searchBy = $includeRoot ? 'id' : 'parent';
+        $entities = $this->findBy([$searchBy => $oldParentId]);
+        $newParent = $this->find($newParentId);
+        /** @var CategoryEntity[] $entities */
+        foreach ($entities as $entity) {
+            $entity->setParent($newParent);
+        }
+        $this->_em->flush();
     }
 
     /**

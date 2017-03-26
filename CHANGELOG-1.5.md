@@ -7,11 +7,14 @@ CHANGELOG - ZIKULA 1.5.x
     - PHP minimum version raised to >=5.5.9.
     - User Categories feature removed.
     - All categories configuration removed.
+    - Many methods from CategoryUtil are no longer functional.
 
  - Deprecated:
     - Search block templates have been modified. This will break existing overrides for
       `src/themes/BootstrapTheme/Resources/ZikulaSearchModule/views/Block/search.html.twig`
     - AbstractSearchable is deprecated. Use SearchableInterface instead.
+    - CategoryApi deprecated. Use CategoryRepository instead.
+    - CategoryRegistryApi deprecated. User CategoryRegistryRepository instead.
 
  - Fixes:
     - Corrected path to legacy module's admin icons.

@@ -54,16 +54,6 @@ class CategoryApi
     private $processingHelper;
 
     /**
-     * @var CategorySortingHelper
-     */
-    private $sortingHelper;
-
-    /**
-     * @var RelativeCategoryPathBuilderHelper
-     */
-    private $pathBuilder;
-
-    /**
      * @var LocaleApi
      */
     private $localeApi;
@@ -76,8 +66,6 @@ class CategoryApi
      * @param RequestStack $requestStack RequestStack service instance
      * @param PermissionApi $permissionApi PermissionApi service instance
      * @param CategoryProcessingHelper $processingHelper CategoryProcessingHelper service instance
-     * @param CategorySortingHelper $sortingHelper CategorySortingHelper service instance
-     * @param RelativeCategoryPathBuilderHelper $pathBuilder RelativeCategoryPathBuilderHelper service instance
      * @param LocaleApi $localeApi
      */
     public function __construct(
@@ -86,8 +74,6 @@ class CategoryApi
         RequestStack $requestStack,
         PermissionApi $permissionApi,
         CategoryProcessingHelper $processingHelper,
-        CategorySortingHelper $sortingHelper,
-        RelativeCategoryPathBuilderHelper $pathBuilder,
         LocaleApi $localeApi
     ) {
         $this->translator = $translator;
@@ -95,8 +81,6 @@ class CategoryApi
         $this->requestStack = $requestStack;
         $this->permissionApi = $permissionApi;
         $this->processingHelper = $processingHelper;
-        $this->sortingHelper = $sortingHelper;
-        $this->pathBuilder = $pathBuilder;
         $this->localeApi = $localeApi;
     }
 
@@ -154,17 +138,12 @@ class CategoryApi
         $locale = $this->requestStack->getMasterRequest()->getLocale();
         $data['display_name'] = [$locale => $displayname];
         $data['display_desc'] = [$locale => $description];
-        if ($value) {
-            $data['value'] = $value;
-        }
-
-        $data['path'] = "$rootPath/$name";
+        $data['value'] = $value ? $value : null;
 
         $cat->merge($data);
         $this->entityManager->persist($cat);
         $this->entityManager->flush();
 
-        $cat['ipath'] = "$rootCat[ipath]/$cat[id]";
         if ($attributes && is_array($attributes)) {
             foreach ($attributes as $key => $value) {
                 $cat->setAttribute($key, $value);
@@ -301,6 +280,7 @@ class CategoryApi
 
         $cats = [];
         $languages = $this->localeApi->getSupportedLocales();
+        /** @var CategoryEntity[] $categories */
         foreach ($categories as $category) {
             $cat = $category->toArray();
 
@@ -317,7 +297,7 @@ class CategoryApi
             // this makes the rotocat's parent 0 as it's stored as null in the database
             $cat['parent_id'] = (null === $cat['parent']) ? null : $category['parent']->getId();
 
-            $instance = $category['id'] . ':' . $category['path'] . ':' . $category['ipath'];
+            $instance = $category->getId() . ':' . $category->getPath() . ':' . $category->getIPath();
             $cat['accessible'] = $this->permissionApi->hasPermission('ZikulaCategoriesModule::Category', $instance, ACCESS_OVERVIEW);
 
             if (!empty($assocKey)) {
@@ -396,11 +376,7 @@ class CategoryApi
         $cats = $this->getCategories($where, $sort, $assocKey);
 
         if ($cats && $relative) {
-            $category = $this->getCategoryById($id);
-            $arraykeys = array_keys($cats);
-            foreach ($arraykeys as $key) {
-                $this->pathBuilder->buildRelativePathsForCategory($category, $cats[$key], isset($includeRoot) ? $includeRoot : false);
-            }
+            @trigger_error('CategoriesApi::getCategoriesByParentId cannot return relative paths any longer.', E_USER_DEPRECATED);
         }
 
         return $cats;
@@ -591,14 +567,11 @@ class CategoryApi
         }
 
         if ($cats && $relative) {
-            $arraykeys = array_keys($cats);
-            foreach ($arraykeys as $key) {
-                $this->pathBuilder->buildRelativePathsForCategory($category, $cats[$key], $includeRoot);
-            }
+            @trigger_error('CategoriesApi::getSubCategoriesForCategory cannot return relative paths any longer.', E_USER_DEPRECATED);
         }
 
         if ($sortField) {
-            $cats = $this->sortingHelper->sortCategories($cats, $sortField, $assocKey);
+            @trigger_error('CategoriesApi::getSubCategoriesForCategory cannot sort fields any longer.', E_USER_DEPRECATED);
         }
 
         return $cats;

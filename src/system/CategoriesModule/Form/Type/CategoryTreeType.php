@@ -135,7 +135,6 @@ class CategoryTreeType extends AbstractType
     {
         $locale = $options['locale'];
         $recurse = isset($options['recurse']) ? $options['recurse'] : true;
-        $relative = isset($options['relative']) ? $options['relative'] : true;
         $includeRoot = isset($options['includeRoot']) ? $options['includeRoot'] : false;
         $includeLeaf = isset($options['includeLeaf']) ? $options['includeLeaf'] : false;
         $all = isset($options['all']) ? $options['all'] : false;

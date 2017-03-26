@@ -45,11 +45,6 @@ class CategoriesType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        foreach (['entityCategoryClass', 'module', 'entity'] as $requiredOptionName) {
-            if (empty($options[$requiredOptionName])) {
-                throw new MissingOptionsException(sprintf('Missing required option: %s', $requiredOptionName));
-            }
-        }
         $registries = $this->categoryRegistryApi->getModuleCategoryIds($options['module'], $options['entity'], 'id');
 
         foreach ($registries as $registryId => $categoryId) {
@@ -65,7 +60,6 @@ class CategoriesType extends AbstractType
             };
             if (true === $options['includeGrandChildren']) {
                 // perform one recursive iteration
-                $rootCategoryId = $categoryId;
                 $queryBuilderClosure = function (EntityRepository $repo) use ($categoryId) {
                     //TODO: (move to)/use own entity repository
                     $categoryIds = $repo->createQueryBuilder('e')
@@ -123,6 +117,7 @@ class CategoriesType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        $resolver->setRequired(['entityCategoryClass', 'module', 'entity', 'em']);
         $resolver->setDefaults([
             'csrf_protection' => false,
             'attr' => [],
@@ -134,5 +129,18 @@ class CategoriesType extends AbstractType
             'entityCategoryClass' => '',
             'em' => null
         ]);
+        $resolver->setAllowedTypes('csrf_protection', 'bool');
+        $resolver->setAllowedTypes('attr', 'array');
+        $resolver->setAllowedTypes('multiple', 'bool');
+        $resolver->setAllowedTypes('expanded', 'bool');
+        $resolver->setAllowedTypes('includeGrandChildren', 'bool');
+        $resolver->setAllowedTypes('module', 'string');
+        $resolver->setAllowedTypes('entity', 'string');
+        $resolver->setAllowedTypes('entityCategoryClass', 'string');
+        $resolver->setAllowedTypes('em', 'Doctrine\Common\Persistence\ObjectManager');
+
+        $resolver->addAllowedValues('entityCategoryClass', function ($value) {
+            return is_subclass_of($value, 'Zikula\CategoriesModule\Entity\AbstractCategoryAssignment');
+        });
     }
 }

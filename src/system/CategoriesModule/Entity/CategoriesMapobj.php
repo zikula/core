@@ -14,6 +14,7 @@ namespace Zikula\CategoriesModule\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @deprecated remove at Core-2.0
  * CategoriesMapobj
  *
  * @ORM\Table(name="categories_mapobj")

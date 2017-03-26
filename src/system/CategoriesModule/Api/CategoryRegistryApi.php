@@ -16,6 +16,7 @@ use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 use Zikula\Common\Translator\TranslatorInterface;
 
 /**
+ * @deprecated remove at Core-2.0
  * CategoryRegistryApi
  */
 class CategoryRegistryApi
