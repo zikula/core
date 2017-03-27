@@ -144,12 +144,16 @@ PageType
 
 ###Required Options
 
- - `module` - the Common name for the providing module
- - `entity` - the name of the entity used in the Category Registry
- - `entityCategoryClass` - The assignment entity for the category relation.
+ - `module` - The Common (short) name for the providing module.
+ - `entity` - The Common (short) name of the entity used in the Category Registry.
+ - `entityCategoryClass` - The FqCN of the assignment entity for the category relation.
+ - `em` - An instance of a Doctrine Object Manager.
 
 ###Optional Options
 
  - `required` - (boolean) is the field required (default `true`).
  - `multiple` - (boolean) allow multiple selections (default `false`).
- 
+ - `includeGrandChildren` - @deprecated - use 'direct'.
+ - `direct` - (boolean) use only direct children or include all descendant generations (default `true`).
+ - `attr` - (array) attributes array for each select box (default `[]`).
+ - `csrf_protection` - (boolean) this overrides the default symfony behavior to default to `false`.

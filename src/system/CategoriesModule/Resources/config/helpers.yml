@@ -1,0 +1,7 @@
+services:
+    zikula_categories_module.category_processing_helper:
+        class: Zikula\CategoriesModule\Helper\CategoryProcessingHelper
+        arguments:
+          - "@doctrine.orm.entity_manager"
+          - "@kernel"
+          - "@zikula_extensions_module.api.capability"

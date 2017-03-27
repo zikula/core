@@ -11,28 +11,27 @@
 
 namespace Zikula\CategoriesModule\Entity\Repository;
 
-use Doctrine\Common\Collections\Selectable;
-use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\ORM\EntityRepository;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
+use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 
-class CategoryRepository extends EntityRepository implements ObjectRepository, Selectable
+/**
+ * Class CategoryRepository
+ * @see https://github.com/Atlantic18/DoctrineExtensions/blob/v2.4.x/doc/tree.md
+ */
+class CategoryRepository extends NestedTreeRepository implements CategoryRepositoryInterface
 {
     /**
-     * Returns amount of categories for specified filters.
-     *
-     * @param string $name       Name filter
-     * @param int    $parentId   Optional parent category id filter
-     * @param int    $excludedId Optional category id filter for exclusion
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function countForContext($name = '', $parentId = 0, $excludedId = 0)
     {
         $qb = $this->createQueryBuilder('c')
-            ->select('COUNT(c.id)')
-            ->where('c.name = :name')
-            ->setParameter('name', $name);
+            ->select('COUNT(c.id)');
+        if ('' != $name) {
+            $qb->where('c.name = :name')
+                ->setParameter('name', $name);
+        }
 
         if ($parentId > 0) {
             $qb->andWhere('c.parent = :parentid')
@@ -51,6 +50,7 @@ class CategoryRepository extends EntityRepository implements ObjectRepository, S
 
     /**
      * Returns list of category ids which are placed within a given path.
+     * @deprecated
      *
      * @param string $pathField Path field name (defaults to ipath)
      * @param string $path      Given path value
@@ -59,20 +59,18 @@ class CategoryRepository extends EntityRepository implements ObjectRepository, S
      */
     public function getIdsInPath($pathField = 'ipath', $path = '')
     {
-        if (!in_array($pathField, ['path', 'ipath']) || $path == '') {
-            return null;
+        $categories = $this->getCategoriesInPath($pathField, $path);
+        $ids = [];
+        foreach ($categories as $category) {
+            $ids[] = $category->getId();
         }
 
-        $qb = $this->createQueryBuilder('c')
-            ->select('c.id')
-            ->where('c.' . $pathField . ' = :path')
-            ->setParameter('path', $path . '%');
-
-        return $qb->getQuery()->getResult();
+        return $ids;
     }
 
     /**
      * Returns list of categories which are placed within a given path including the path itself.
+     * @deprecated
      *
      * @param string $pathField Path field name (defaults to ipath)
      * @param string $path      Given path value
@@ -84,23 +82,25 @@ class CategoryRepository extends EntityRepository implements ObjectRepository, S
         if (!in_array($pathField, ['path', 'ipath']) || $path == '') {
             return null;
         }
+        $fieldMap = ['path' => 'name', 'ipath' => 'id'];
+        $value = array_pop(explode('/', $path));
 
         $qb = $this->createQueryBuilder('c')
-            ->select('c')
-            ->where('c.' . $pathField . ' = :path')
-            ->orWhere('c.' . $pathField . ' LIKE :pathwc')
-            ->setParameter('path', $path)
-            ->setParameter('pathwc', $path . '/%');
+            ->where('c.' . $fieldMap[$pathField] . ' = :value')
+            ->setParameter('value', $value);
+        $categories = $qb->getQuery()->getResult();
+        foreach ($categories as $category) {
+            if ('path' == $pathField && $path == $category->getPath()) {
+                break; // will leave $category as last tested
+            }
+            // if 'ipath' == $pathField, the there will only be one category in the array and it will be set to $category
+        }
 
-        return $qb->getQuery()->getResult();
+        return isset($category) ? $this->children($category, false, null, 'asc', true) : [];
     }
 
     /**
-     * Returns the last added category within a given parent category.
-     *
-     * @param int $parentId Parent category id
-     *
-     * @return CategoryEntity|null
+     * {@inheritdoc}
      */
     public function getLastByParent($parentId = 0)
     {
@@ -163,32 +163,26 @@ class CategoryRepository extends EntityRepository implements ObjectRepository, S
     }
 
     /**
-     * Updates the parent id of one or multiple categories.
-     *
-     * @param integer $oldParentId The categoryID of the category to be updated
-     * @param integer $newParentId The categoryID of the new parent category
-     * @param boolean $includeRoot Whether or not to also move the root folder (optional) (default=true)
+     * {@inheritdoc}
      */
     public function updateParent($oldParentId = 0, $newParentId = 0, $includeRoot = true)
     {
         if (!is_numeric($oldParentId) || $oldParentId < 1 || !is_numeric($newParentId) || $newParentId < 1 || !is_bool($includeRoot)) {
             return;
         }
-
-        $whereField = $includeRoot ? 'id' : 'parent';
-
-        $qb = $this->_em->createQueryBuilder()
-            ->update('Zikula\CategoriesModule\Entity\CategoryEntity', 'c')
-            ->set('c.parent', ':newParent')
-            ->setParameter('newParent', $newParentId)
-            ->where('c.' . $whereField . ' = :pid')
-            ->setParameter('pid', $oldParentId);
-
-        $qb->getQuery()->execute();
+        $searchBy = $includeRoot ? 'id' : 'parent';
+        $entities = $this->findBy([$searchBy => $oldParentId]);
+        $newParent = $this->find($newParentId);
+        /** @var CategoryEntity[] $entities */
+        foreach ($entities as $entity) {
+            $entity->setParent($newParent);
+        }
+        $this->_em->flush();
     }
 
     /**
      * Updates the path for a given category id.
+     * @deprecated
      *
      * @param integer $categoryId The categoryID of the category to be updated
      * @param string  $pathField  Path field name (defaults to path)
@@ -196,17 +190,6 @@ class CategoryRepository extends EntityRepository implements ObjectRepository, S
      */
     public function updatePath($categoryId = 0, $pathField = 'path', $path = '')
     {
-        if (!is_numeric($categoryId) || $categoryId < 1 || !in_array($pathField, ['path', 'ipath']) || $path == '') {
-            return;
-        }
-
-        $qb = $this->_em->createQueryBuilder()
-            ->update('Zikula\CategoriesModule\Entity\CategoryEntity', 'c')
-            ->set('c.' . $pathField, ':path')
-            ->setParameter('path', $path)
-            ->where('c.id = :id')
-            ->setParameter('id', $categoryId);
-
-        $qb->getQuery()->execute();
+        // do nothing. path is no longer an entity property
     }
 }

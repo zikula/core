@@ -12,9 +12,13 @@
 namespace Zikula\CategoriesModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\CategoriesModule\Api\CategoryApi;
+use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
+use Zikula\CategoriesModule\Form\DataTransformer\CategoryTreeTransformer;
 
 /**
  * Category tree form type class.
@@ -27,13 +31,29 @@ class CategoryTreeType extends AbstractType
     private $categoryApi;
 
     /**
+     * @var CategoryRepositoryInterface
+     */
+    private $categoryRepository;
+
+    /**
      * CategoryTreeType constructor.
      *
      * @param CategoryApi $categoryApi CategoryApi service instance
+     * @param CategoryRepositoryInterface $categoryRepository
      */
-    public function __construct(CategoryApi $categoryApi)
+    public function __construct(CategoryApi $categoryApi, CategoryRepositoryInterface $categoryRepository)
     {
         $this->categoryApi = $categoryApi;
+        $this->categoryRepository = $categoryRepository;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $transformer = new CategoryTreeTransformer($this->categoryRepository);
+        $builder->addModelTransformer($transformer);
     }
 
     /**
@@ -61,14 +81,12 @@ class CategoryTreeType extends AbstractType
             'includeRoot' => false,
             'includeLeaf' => false,
             'all' => false,
-            'valueField' => 'id'
         ]);
         $resolver->setAllowedTypes('recurse', 'bool');
         $resolver->setAllowedTypes('relative', 'bool');
         $resolver->setAllowedTypes('includeRoot', 'bool');
         $resolver->setAllowedTypes('includeLeaf', 'bool');
         $resolver->setAllowedTypes('all', 'bool');
-        $resolver->setAllowedTypes('valueField', 'string');
 
         $resolver->setNormalizer('label', function (Options $options, $label) {
             if (null === $label || empty($label)) {
@@ -106,45 +124,37 @@ class CategoryTreeType extends AbstractType
      */
     public function getParent()
     {
-        return 'Symfony\Component\Form\Extension\Core\Type\ChoiceType';
+        return ChoiceType::class;
     }
 
     /**
      * Returns choices for category selection.
      *
-     * @param string $locale
      * @return array
      */
     private function getCategoryChoices($options)
     {
-        $choices = [];
         $locale = $options['locale'];
-
         $recurse = isset($options['recurse']) ? $options['recurse'] : true;
-        $relative = isset($options['relative']) ? $options['relative'] : true;
         $includeRoot = isset($options['includeRoot']) ? $options['includeRoot'] : false;
         $includeLeaf = isset($options['includeLeaf']) ? $options['includeLeaf'] : false;
         $all = isset($options['all']) ? $options['all'] : false;
-        $valueField = isset($options['valueField']) ? $options['valueField'] : 'id';
 
-        $category = $this->categoryApi->getCategoryById(1);
-        $categoryList = $this->categoryApi->getSubCategoriesForCategory($category, $recurse, $relative, $includeRoot, $includeLeaf);
+        $rootCategory = $this->categoryRepository->find(1);
+        $children = $this->categoryRepository->getChildren($rootCategory, !$recurse, null, 'ASC', $includeRoot);
 
-        $line = '---------------------------------------------------------------------';
-
-        foreach ($categoryList as $cat) {
-            $amountOfSlashes = mb_substr_count(isset($cat['ipath_relative']) ? $cat['ipath_relative'] : $cat['ipath'], '/');
-
-            $indent = $amountOfSlashes > 0 ? substr($line, 0, $amountOfSlashes * 2) : '';
-            $indent = '|' . $indent;
-
-            if (isset($cat['display_name'][$locale]) && !empty($cat['display_name'][$locale])) {
-                $catName = $cat['display_name'][$locale];
-            } else {
-                $catName = $cat['name'];
+        $choices = [];
+        foreach ($children as $child) {
+            if (($child['is_leaf'] && !$includeLeaf) || ($child['status'] == 'I' && $all)) {
+                continue;
             }
-
-            $choices[$indent . ' ' . $catName] = $cat[$valueField];
+            $indent = $child['lvl'] > 0 ? str_repeat('--', $child['lvl']) : '';
+            if (isset($child['display_name'][$locale]) && !empty($child['display_name'][$locale])) {
+                $catName = $child['display_name'][$locale];
+            } else {
+                $catName = $child['name'];
+            }
+            $choices['|' . $indent . ' ' . $catName] = $child['id'];
         }
 
         return $choices;

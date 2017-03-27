@@ -1,0 +1,6 @@
+services:
+    zikula_categories_module.validator.constraints.unique_name_for_position_validator:
+        class: Zikula\CategoriesModule\Validator\Constraints\UniqueNameForPositionValidator
+        arguments: ['@translator.default', '@zikula_categories_module.category_repository']
+        tags:
+            - { name: validator.constraint_validator }

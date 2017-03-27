@@ -16,6 +16,7 @@ use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 use Zikula\Common\Translator\TranslatorInterface;
 
 /**
+ * @deprecated remove at Core-2.0
  * CategoryRegistryApi
  */
 class CategoryRegistryApi
@@ -173,8 +174,10 @@ class CategoryRegistryApi
         } else {
             $entity = new CategoryRegistryEntity();
         }
-
+        $categoryId = $registryData['category_id'];
+        unset($registryData['category_id']);
         $entity->merge($registryData);
+        $entity->setCategory($this->entityManager->getRepository('ZikulaCategoriesModule:CategoryEntity')->find($categoryId));
         $this->entityManager->persist($entity);
         $this->entityManager->flush();
 
@@ -204,11 +207,12 @@ class CategoryRegistryApi
             } else {
                 $entity = new CategoryRegistryEntity();
             }
-
+            $categoryId = $registryData['category_id'];
+            unset($registryData['category_id']);
             $entity->merge($registryData);
+            $entity->setCategory($this->entityManager->getRepository('ZikulaCategoriesModule:CategoryEntity')->find($categoryId));
             $this->entityManager->persist($entity);
         }
-
         $this->entityManager->flush();
 
         return true;
@@ -297,7 +301,7 @@ class CategoryRegistryApi
         /** @var $registry CategoryRegistryEntity */
         foreach ($registries as $registry) {
             $registry = $registry->toArray();
-            $result[$registry[$arrayKey]] = $registry['category_id'];
+            $result[$registry[$arrayKey]] = $registry['category']->getId();
         }
 
         $cache[$modName][$entityName] = $result;
@@ -307,13 +311,14 @@ class CategoryRegistryApi
 
     /**
      * Get registered category for module property.
+     * @deprecated
      *
      * @param string $modName    The module we wish to get the property for
      * @param string $entityName The entity name for which we wish to get the property for
      * @param string $property   The property name
      * @param string $default    The default value to return if the requested value is not set (optional) (default=null)
      *
-     * @return array The associative field array of registered categories for the specified module
+     * @return string The associative field array of registered categories for the specified module
      */
     public function getModuleCategoryId($modName, $entityName, $property, $default = null)
     {

@@ -13,12 +13,15 @@ namespace Zikula\CategoriesModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
+use Zikula\CategoriesModule\Builder\EntitySelectionBuilder;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
+use Zikula\CategoriesModule\Form\Type\CategoryRegistryType;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\ExtensionsModule\Api\CapabilityApi;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -29,154 +32,86 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 class RegistryController extends AbstractController
 {
     /**
-     * @Route("/edit")
+     * @Route("/edit/{id}", requirements={"id" = "^[1-9]\d*$"}, defaults={"id" = null})
      * @Template
      * @Theme("admin")
      *
      * Creates or edits a category registry.
      *
      * @param Request $request
-     *
-     * @return Response symfony response object
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have permission to administrate the module
+     * @param CategoryRegistryEntity $registryEntity
+     * @return array|RedirectResponse
      */
-    public function editAction(Request $request)
+    public function editAction(Request $request, CategoryRegistryEntity $registryEntity = null)
     {
         if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
+        if (null == $registryEntity) {
+            $registryEntity = new CategoryRegistryEntity();
+        }
 
-        if ($request->isMethod('POST')) {
-            $this->get('zikula_core.common.csrf_token_handler')->validate($request->request->get('csrfToken'));
+        $form = $this->createForm(CategoryRegistryType::class, $registryEntity, [
+            'translator' => $this->getTranslator(),
+            'categorizableModules' => $this->getCategorizableModules(),
+            'entitySelectionBuilder' => new EntitySelectionBuilder($this->get('kernel'))
+        ]);
 
-            if (!$request->request->get('category_submit', null)) {
-                // got here through selector auto-submit
-                return $this->redirectToRoute('zikulacategoriesmodule_registry_edit', [
-                    'category_registry' => $request->request->get('category_registry', null)
-                ]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('save')->isClicked()) {
+                $manager = $this->get('doctrine')->getManager();
+                $manager->persist($registryEntity);
+                $manager->flush();
+                $this->addFlash('success', $this->__('Registry updated'));
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', $this->__('Operation cancelled.'));
             }
-
-            // get data from post
-            $data = $request->request->get('category_registry', null);
-
-            // do some validation
-            $valid = true;
-            if (empty($data['modname'])) {
-                $this->addFlash('error', $this->__('Error! You did not select a module.'));
-                $valid = false;
-            }
-            if (empty($data['entityname'])) {
-                $this->addFlash('error', $this->__('Error! You did not select an entity.'));
-                $valid = false;
-            }
-            if (empty($data['property'])) {
-                $this->addFlash('error', $this->__('Error! You did not enter a property name.'));
-                $valid = false;
-            }
-            if ((int)$data['category_id'] == 0) {
-                $this->addFlash('error', $this->__('Error! You did not select a category.'));
-                $valid = false;
-            }
-            if (!$valid) {
-                return $this->redirectToRoute('zikulacategoriesmodule_registry_edit');
-            }
-
-            $entityManager = $this->get('doctrine')->getManager();
-            if (isset($data['id']) && (int)$data['id'] > 0) {
-                // update existing registry
-                $registry = $entityManager->find('ZikulaCategoriesModule:CategoryRegistryEntity', $data['id']);
-                if (null === $registry) {
-                    throw new NotFoundHttpException($this->__('Registry entry not found.'));
-                }
-            } else {
-                // create new registry
-                $registry = new CategoryRegistryEntity();
-            }
-            $registry->merge($data);
-            $entityManager->persist($registry);
-            $entityManager->flush();
-            $this->addFlash('status', $this->__('Done! Saved the category registry entry.'));
 
             return $this->redirectToRoute('zikulacategoriesmodule_registry_edit');
-        } else {
-            $rootId = $request->query->get('dr', 1);
-            $id = $request->query->get('id', 0);
-
-            $newRegistry = new CategoryRegistryEntity();
-
-            $category_registry = $request->query->get('category_registry', null);
-            if ($category_registry) {
-                $newRegistry->merge($category_registry);
-                $newRegistry = $newRegistry->toArray();
-            }
-
-            $entityManager = $this->get('doctrine')->getManager();
-
-            $registries = $entityManager->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')
-                ->findBy([], ['modname' => 'ASC', 'property' => 'ASC']);
-            $modules = $entityManager->getRepository('ZikulaExtensionsModule:ExtensionEntity')
-                ->findBy(['state' => 3], ['displayname' => 'ASC']);
-
-            $moduleOptions = [];
-            foreach ($modules as $module) {
-                $bundle = \ModUtil::getModule($module['name']);
-                if (null !== $bundle && !class_exists($bundle->getVersionClass())) {
-                    // this check just confirming a Core-2.0 spec bundle - remove in 2.0.0
-                    // then instead of getting MetaData, could just do $capabilityApi->getCapabilitiesOf($module['name'])
-                    $capabilities = $bundle->getMetaData()->getCapabilities();
-                    if (!isset($capabilities['categorizable'])) {
-                        continue; // skip this module if not categorizable
-                    }
-                }
-                $moduleOptions[$module['name']] = $module['displayname'];
-            }
-
-            return [
-                'registries' => $registries,
-                'moduleOptions' => $moduleOptions,
-                'newRegistry' => $newRegistry,
-                'root_id' => $rootId,
-                'id' => $id,
-                'csrfToken' => $this->get('zikula_core.common.csrf_token_handler')->generate()
-            ];
         }
+
+        return [
+            'form' => $form->createView(),
+            'registries' => $this->get('zikula_categories_module.category_registry_repository')->findAll()
+        ];
+    }
+
+    private function getCategorizableModules()
+    {
+        $modules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf(CapabilityApi::CATEGORIZABLE);
+        $moduleOptions = [];
+        foreach ($modules as $module) {
+            $moduleOptions[$module->getName()] = $module->getName();
+        }
+
+        return $moduleOptions;
     }
 
     /**
-     * @Route("/delete")
+     * @Route("/delete/{id}", requirements={"id" = "^[1-9]\d*$"})
      * @Template
      * @Theme("admin")
      *
      * Deletes a category registry.
      *
      * @param Request $request
-     *
-     * @return Response symfony response object
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have permission to administrate the module
+     * @param CategoryRegistryEntity $registry
+     * @return array|RedirectResponse
      */
-    public function deleteAction(Request $request)
+    public function deleteAction(Request $request, CategoryRegistryEntity $registry)
     {
         if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-
-        $id = $request->query->get('id', 0);
-
-        $entityManager = $this->get('doctrine')->getManager();
-        $registry = $entityManager->find('ZikulaCategoriesModule:CategoryRegistryEntity', $id);
-        if (null === $registry) {
-            throw new NotFoundHttpException($this->__('Registry entry not found.'));
-        }
-
-        $form = $this->createForm('Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType');
+        $form = $this->createForm(DeletionType::class);
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('delete')->isClicked()) {
+                $entityManager = $this->get('doctrine')->getManager();
                 $entityManager->remove($registry);
                 $entityManager->flush();
-                $this->addFlash('status', $this->__('Done! Registry entry deleted.'));
+                $this->addFlash('success', $this->__('Done! Registry entry deleted.'));
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }

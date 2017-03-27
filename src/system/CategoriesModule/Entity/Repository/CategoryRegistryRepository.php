@@ -11,11 +11,10 @@
 
 namespace Zikula\CategoriesModule\Entity\Repository;
 
-use Doctrine\Common\Collections\Selectable;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityRepository;
+use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRegistryRepositoryInterface;
 
-class CategoryRegistryRepository extends EntityRepository implements ObjectRepository, Selectable
+class CategoryRegistryRepository extends EntityRepository implements CategoryRegistryRepositoryInterface
 {
     // @todo
 }

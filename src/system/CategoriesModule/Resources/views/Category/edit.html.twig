@@ -1,0 +1,71 @@
+{{ pageAddAsset('javascript', zasset('@ZikulaCategoriesModule:js/ZikulaCategoriesModule.Category.Edit.js')) }}
+{% form_theme form with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ form_start(form) }}
+{{ form_errors(form) }}
+<fieldset>
+    <legend>{{ __("Basic properties") }}</legend>
+    {{ form_row(form.name) }}
+    {{ form_row(form.parent) }}
+    {{ form_row(form.is_locked) }}
+    {{ form_row(form.is_leaf) }}
+    {{ form_row(form.value) }}
+    {{ form_row(form.status) }}
+</fieldset>
+<fieldset>
+    <legend>{{ __('Localized output') }}</legend>
+    <div class="zikula-bootstrap-tab-container">
+        <ul class="nav nav-tabs" role="tablist">
+            {% for name, code in locales %}
+                <li role="presentation"{% if code == app.request.locale %} class="active"{% endif %}><a href="#{{ code }}" aria-controls="{{ code }}" role="tab" data-toggle="tab">{{ name }}</a></li>
+            {% endfor %}
+        </ul>
+        <div class="tab-content">
+            {% for name, code in locales %}
+                <div role="tabpanel" class="tab-pane{% if code == app.request.locale %} active{% endif %}" id="{{ code }}">
+                    {{ form_row(form.display_name[code], {'label': form.display_name.vars.label ~ ' (' ~ code ~ ')' }) }}
+                    {{ form_row(form.display_desc[code], {'label': form.display_desc.vars.label ~ ' (' ~ code ~ ')' }) }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</fieldset>
+<fieldset>
+    <legend><a href="#category-attributes" data-toggle="collapse">{{ __('Attributes') }} <i class="fa fa-expand"></i></a></legend>
+    <div class="collapse" id="category-attributes">
+        <p><button id="add-another-attribute" class="btn btn-success btn-sm"><i class="fa fa-plus"></i> {{ __('Add attribute') }}</button></p>
+        <table class="table table-bordered table-striped">
+            <colgroup>
+                <col id="cName" />
+                <col id="cValue" />
+                <col id="cActions" />
+            </colgroup>
+            <thead>
+            <tr>
+                <th id="hName" scope="col">{{ __('Name') }}</th>
+                <th id="hValue" scope="col">{{ __('Value') }}</th>
+                <th id="hActions" scope="col">&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody id="attribute-table" data-prototype="&lt;td headers=&quot;hName&quot;&gt;{{ form_widget(form.attributes.vars.prototype.name)|e }}&lt;/td&gt;&lt;td headers=&quot;hValue&quot;&gt;{{ form_widget(form.attributes.vars.prototype.value)|e }}&lt;/td&gt&lt;td headers=&quot;hActions&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;category_attributes_remove&quot; title=&quot;Delete&quot;&gt;&lt;i class=&quot;fa fa-minus-square fa-lg text-danger&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/td&gt;">
+            {% for attribute in form.attributes %}
+                <tr>
+                    <td headers="hName">{{ form_widget(attribute.name) }}</td>
+                    <td headers="hValue">{{ form_widget(attribute.value) }}</td>
+                    <td headers="hActions"><a href="#" class="category_attributes_remove" title="{{ __('Delete') }}"><i class="fa fa-minus-square fa-lg text-danger"></i></a></td>
+                </tr>
+            {% endfor %}
+            <div class="hidden">{# hack to hide 'leftover' label #}{{ form_row(form.attributes) }}</div>
+            </tbody>
+        </table>
+    </div>
+</fieldset>
+
+{{ form_row(form.attributes) }}
+{{ form_end(form) }}
+<script type="text/javascript">
+    // used in @ZikulaCategoriesModule:js/ZikulaCategoriesModule.Category.Edit.js
+    var attributeCount = '{{ form.attributes|length }}';
+</script>

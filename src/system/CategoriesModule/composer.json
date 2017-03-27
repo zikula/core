@@ -1,6 +1,6 @@
 {
     "name": "zikula/categories-module",
-    "version": "1.3.0",
+    "version": "1.3.1",
     "description": "Categories administration",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
@@ -23,7 +23,7 @@
             "displayname": "Categories",
             "url": "categories",
             "capabilities": {
-                "admin": {"route": "zikulacategoriesmodule_admin_view"}
+                "admin": {"route": "zikulacategoriesmodule_category_list"}
             },
             "securityschema": {
                 "ZikulaCategoriesModule::": "::",

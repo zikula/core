@@ -16,14 +16,13 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Helper\CategoryProcessingHelper;
-use Zikula\CategoriesModule\Helper\CategorySortingHelper;
-use Zikula\CategoriesModule\Helper\RelativeCategoryPathBuilderHelper;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\SettingsModule\Api\LocaleApi;
 
 /**
  * CategoryApi
+ * @deprecated
  */
 class CategoryApi
 {
@@ -53,16 +52,6 @@ class CategoryApi
     private $processingHelper;
 
     /**
-     * @var CategorySortingHelper
-     */
-    private $sortingHelper;
-
-    /**
-     * @var RelativeCategoryPathBuilderHelper
-     */
-    private $pathBuilder;
-
-    /**
      * @var LocaleApi
      */
     private $localeApi;
@@ -75,8 +64,6 @@ class CategoryApi
      * @param RequestStack $requestStack RequestStack service instance
      * @param PermissionApi $permissionApi PermissionApi service instance
      * @param CategoryProcessingHelper $processingHelper CategoryProcessingHelper service instance
-     * @param CategorySortingHelper $sortingHelper CategorySortingHelper service instance
-     * @param RelativeCategoryPathBuilderHelper $pathBuilder RelativeCategoryPathBuilderHelper service instance
      * @param LocaleApi $localeApi
      */
     public function __construct(
@@ -85,8 +72,6 @@ class CategoryApi
         RequestStack $requestStack,
         PermissionApi $permissionApi,
         CategoryProcessingHelper $processingHelper,
-        CategorySortingHelper $sortingHelper,
-        RelativeCategoryPathBuilderHelper $pathBuilder,
         LocaleApi $localeApi
     ) {
         $this->translator = $translator;
@@ -94,13 +79,12 @@ class CategoryApi
         $this->requestStack = $requestStack;
         $this->permissionApi = $permissionApi;
         $this->processingHelper = $processingHelper;
-        $this->sortingHelper = $sortingHelper;
-        $this->pathBuilder = $pathBuilder;
         $this->localeApi = $localeApi;
     }
 
     /**
      * Return a category object by ID
+     * @deprecated
      *
      * @param string $rootPath    The path of the parent category
      * @param string $name        The name of the category
@@ -115,6 +99,8 @@ class CategoryApi
      */
     public function createCategory($rootPath, $name, $value = null, $displayname = null, $description = null, $attributes = null)
     {
+        @trigger_error('CategoriesApi is deprecated. Please use the CategoryRepository instead.', E_USER_DEPRECATED);
+
         if (!isset($rootPath) || !$rootPath) {
             throw new \InvalidArgumentException($this->translator->__f("Error! Received invalid parameter '%s'", ['%s' => 'rootPath']));
         }
@@ -150,17 +136,12 @@ class CategoryApi
         $locale = $this->requestStack->getMasterRequest()->getLocale();
         $data['display_name'] = [$locale => $displayname];
         $data['display_desc'] = [$locale => $description];
-        if ($value) {
-            $data['value'] = $value;
-        }
-
-        $data['path'] = "$rootPath/$name";
+        $data['value'] = $value ? $value : '';
 
         $cat->merge($data);
         $this->entityManager->persist($cat);
         $this->entityManager->flush();
 
-        $cat['ipath'] = "$rootCat[ipath]/$cat[id]";
         if ($attributes && is_array($attributes)) {
             foreach ($attributes as $key => $value) {
                 $cat->setAttribute($key, $value);
@@ -174,6 +155,7 @@ class CategoryApi
 
     /**
      * Return a category object by ID.
+     * @deprecated
      *
      * @param integer $categoryId The category-ID to retrieve
      *
@@ -181,6 +163,8 @@ class CategoryApi
      */
     public function getCategoryById($categoryId)
     {
+        @trigger_error('CategoriesApi is deprecated. Please use the CategoryRepository instead.', E_USER_DEPRECATED);
+
         if (!$categoryId) {
             return [];
         }
@@ -220,34 +204,72 @@ class CategoryApi
 
     /**
      * Return a category object by it's path
+     * @deprecated
      *
-     * @param string $apath     The path to retrieve by (simple path or array of paths)
-     * @param string $pathField The (path) field we search for (either path or ipath) (optional) (default='path')
+     * @param string  $apath       The path to retrieve by (simple path or array of paths)
+     * @param string  $pathField   The (path) field we search for (either path or ipath) (optional) (default='path')
+     * @param string  $sort        The sort field (optional) (default='')
+     * @param boolean $includeLeaf Whether or not to also return leaf nodes (optional) (default=true)
+     * @param boolean $all         Whether or not to return all (or only active) categories (optional) (default=false)
      *
-     * @return array resulting category object
+     * @return array|CategoryEntity resulting category object
      */
-    public function getCategoryByPath($apath, $pathField = 'path')
+    public function getCategoryByPath($apath, $pathField = 'path', $sort = '', $includeLeaf = true, $all = false)
     {
+        @trigger_error('CategoriesApi is deprecated. Please use the CategoryRepository instead.', E_USER_DEPRECATED);
+
+        $repo = $this->entityManager->getRepository('ZikulaCategoriesModule:CategoryEntity');
+        $fieldMap = ['path' => 'name', 'ipath' => 'id'];
         if (!is_array($apath)) {
-            $where = "c.$pathField = '" . DataUtil::formatForStore($apath) . "'";
+            $apath = [$apath];
+        }
+        $values = [];
+        foreach ($apath as $path) {
+            $parts = explode('/', $path);
+            $values[] = array_pop($parts);
+        }
+        if (count($values) > 1) {
+            $method = 'findBy';
         } else {
-            $where = [];
-            foreach ($apath as $path) {
-                $where[] = "c.$pathField = '" . DataUtil::formatForStore($path) . "'";
+            $method = 'findOneBy';
+            $values = array_pop($values);
+        }
+        $criteria = [$fieldMap[$pathField] => $values];
+        if (!$includeLeaf) {
+            $criteria['is_leaf'] = false;
+        }
+        if (!$all) {
+            $criteria['status'] = 'A';
+        }
+        if (!empty($sort)) {
+            $sort = [$sort => 'ASC'];
+        } else {
+            $sort = null;
+        }
+        $categories = $repo->$method($criteria, $sort);
+        if (!$categories) {
+            return $categories;
+        }
+        if ('ipath' == $pathField) {
+            return $categories;
+        }
+        $result = [];
+        if (!is_array($categories)) {
+            $categories = [$categories];
+        }
+        foreach ($categories as $category) {
+            $path = $category->getPath();
+            if (in_array($path, $apath)) {
+                $result[] = $category;
             }
-            $where = implode(' OR ', $where);
-        }
-        $cats = $this->getCategories($where);
-
-        if (isset($cats[0]) && is_array($cats[0])) {
-            return $cats[0];
         }
 
-        return $cats;
+        return count($result) > 1 ? $result : array_pop($result);
     }
 
     /**
      * Return an array of categories objects according the specified where-clause and sort criteria.
+     * @deprecated
      *
      * @param string  $where       The where clause to use in the select (optional) (default='')
      * @param string  $sort        The order-by clause to use in the select (optional) (default='')
@@ -258,10 +280,13 @@ class CategoryApi
      */
     public function getCategories($where = '', $sort = '', $assocKey = '', $columnArray = null)
     {
+        @trigger_error('CategoriesApi is deprecated. Please use the CategoryRepository instead.', E_USER_DEPRECATED);
+
         $categories = $this->entityManager->getRepository('ZikulaCategoriesModule:CategoryEntity')->freeSelect($where, $sort, $columnArray);
 
         $cats = [];
         $languages = $this->localeApi->getSupportedLocales();
+        /** @var CategoryEntity[] $categories */
         foreach ($categories as $category) {
             $cat = $category->toArray();
 
@@ -278,7 +303,7 @@ class CategoryApi
             // this makes the rotocat's parent 0 as it's stored as null in the database
             $cat['parent_id'] = (null === $cat['parent']) ? null : $category['parent']->getId();
 
-            $instance = $category['id'] . ':' . $category['path'] . ':' . $category['ipath'];
+            $instance = $category->getId() . ':' . $category->getPath() . ':' . $category->getIPath();
             $cat['accessible'] = $this->permissionApi->hasPermission('ZikulaCategoriesModule::Category', $instance, ACCESS_OVERVIEW);
 
             if (!empty($assocKey)) {
@@ -293,6 +318,7 @@ class CategoryApi
 
     /**
      * Return an array of categories by the registry info.
+     * @deprecated
      *
      * @param array $registry The category registry info for which categories should be retrieved
      *
@@ -300,6 +326,8 @@ class CategoryApi
      */
     public function getCategoriesByRegistry($registry)
     {
+        @trigger_error('CategoriesApi is deprecated. Please use the CategoryRegistryRepository instead.', E_USER_DEPRECATED);
+
         if (!$registry || !is_array($registry)) {
             return false;
         }
@@ -325,6 +353,7 @@ class CategoryApi
 
     /**
      * Return the direct subcategories of the specified category
+     * @deprecated
      *
      * @param integer $id         The folder id to retrieve
      * @param string  $sort       The order-by clause (optional) (default='')
@@ -337,6 +366,8 @@ class CategoryApi
      */
     public function getCategoriesByParentId($id, $sort = '', $relative = false, $all = false, $assocKey = '', $attributes = null)
     {
+        @trigger_error('CategoriesApi is deprecated. Please use the CategoryRepository instead.', E_USER_DEPRECATED);
+
         if (!$id) {
             return false;
         }
@@ -351,11 +382,7 @@ class CategoryApi
         $cats = $this->getCategories($where, $sort, $assocKey);
 
         if ($cats && $relative) {
-            $category = $this->getCategoryById($id);
-            $arraykeys = array_keys($cats);
-            foreach ($arraykeys as $key) {
-                $this->pathBuilder->buildRelativePathsForCategory($category, $cats[$key], isset($includeRoot) ? $includeRoot : false);
-            }
+            @trigger_error('CategoriesApi::getCategoriesByParentId cannot return relative paths any longer.', E_USER_DEPRECATED);
         }
 
         return $cats;
@@ -363,6 +390,7 @@ class CategoryApi
 
     /**
      * Return all parent categories starting from id.
+     * @deprecated
      *
      * @param integer        $id       The (leaf) folder id to retrieve
      * @param string|boolean $assocKey Whether or not to return an associative array (optional) (default='id')
@@ -371,6 +399,8 @@ class CategoryApi
      */
     public function getParentCategories($id, $assocKey = 'id')
     {
+        @trigger_error('CategoriesApi is deprecated. Please use the CategoryRepository instead.', E_USER_DEPRECATED);
+
         if (!$id) {
             return false;
         }
@@ -391,6 +421,7 @@ class CategoryApi
 
     /**
      * Return an array of category objects by path without the root category
+     * @deprecated
      *
      * @param string  $apath       The path to retrieve categories by
      * @param string  $sort        The sort field (optional) (default='')
@@ -406,33 +437,17 @@ class CategoryApi
      */
     public function getCategoriesByPath($apath, $sort = '', $pathField = 'ipath', $includeLeaf = true, $all = false, $exclPath = '', $assocKey = '', $attributes = null, $columnArray = null)
     {
-        $where = "(c.$pathField = '" . DataUtil::formatForStore($apath) . "' OR c.$pathField LIKE '" . DataUtil::formatForStore($apath) . "/%')";
-
-        if ($exclPath) {
-            $where .= " AND c.$pathField NOT LIKE '" . DataUtil::formatForStore($exclPath) . "%'";
+        @trigger_error('CategoriesApi is deprecated. Please use the CategoryRepository instead.', E_USER_DEPRECATED);
+        if (!empty($exclPath) || !empty($assocKey) || !empty($attributes) || !empty($columnArray)) {
+            @trigger_error('The arguments "exclPath", "assocKey", "attributes" and "columnArray" no longer affect the query.', E_USER_DEPRECATED);
         }
 
-        if (!$includeLeaf) {
-            $where .= " AND c.is_leaf = 0";
-        }
-
-        if (!$all) {
-            $where .= " AND c.status = 'A'";
-        }
-
-        if (!$sort) {
-            $sort = "ORDER BY c.sort_value, c.path";
-        } else {
-            $sort = "ORDER BY c." . $sort;
-        }
-
-        $cats = $this->getCategories($where, $sort, $assocKey, $columnArray);
-
-        return $cats;
+        return $this->getCategoryByPath($apath, $pathField, $sort, $includeLeaf, $all);
     }
 
     /**
      * Return an array of Subcategories for the specified folder
+     * @deprecated
      *
      * @param integer $categoryId  The root-category category-id
      * @param boolean $recurse     Whether or not to generate a recursive subcategory result set (optional) (default=true)
@@ -450,6 +465,8 @@ class CategoryApi
      */
     public function getSubCategories($categoryId, $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCid = '', $assocKey = '', $attributes = null, $sortField = 'sort_value', $columnArray = null)
     {
+        @trigger_error('CategoriesApi is deprecated. Please use the CategoryRepository instead.', E_USER_DEPRECATED);
+
         if (!$categoryId) {
             return false;
         }
@@ -471,6 +488,7 @@ class CategoryApi
 
     /**
      * Return an array of Subcategories for the specified folder
+     * @deprecated
      *
      * @param string  $apath       The path to get categories by
      * @param string  $pathField   The (path) field we match by (either path or ipath) (optional) (default='ipath')
@@ -488,6 +506,8 @@ class CategoryApi
      */
     public function getSubCategoriesByPath($apath, $pathField = 'ipath', $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCid = '', $assocKey = '', $attributes = null, $sortField = 'sort_value')
     {
+        @trigger_error('CategoriesApi is deprecated. Please use the CategoryRepository instead.', E_USER_DEPRECATED);
+
         if (!$apath) {
             return false;
         }
@@ -509,6 +529,7 @@ class CategoryApi
 
     /**
      * Return an array of Subcategories by for the given category
+     * @deprecated
      *
      * @param array   $category    The root category to retrieve
      * @param boolean $recurse     Whether or not to recurse (if false, only direct subfolders are retrieved) (optional) (default=true)
@@ -526,6 +547,8 @@ class CategoryApi
      */
     public function getSubCategoriesForCategory($category, $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCat = null, $assocKey = '', $attributes = null, $sortField = 'sort_value', $columnArray = null)
     {
+        @trigger_error('CategoriesApi is deprecated. Please use the CategoryRepository instead.', E_USER_DEPRECATED);
+
         if (!$category) {
             return false;
         }
@@ -550,14 +573,11 @@ class CategoryApi
         }
 
         if ($cats && $relative) {
-            $arraykeys = array_keys($cats);
-            foreach ($arraykeys as $key) {
-                $this->pathBuilder->buildRelativePathsForCategory($category, $cats[$key], $includeRoot);
-            }
+            @trigger_error('CategoriesApi::getSubCategoriesForCategory cannot return relative paths any longer.', E_USER_DEPRECATED);
         }
 
         if ($sortField) {
-            $cats = $this->sortingHelper->sortCategories($cats, $sortField, $assocKey);
+            @trigger_error('CategoriesApi::getSubCategoriesForCategory cannot sort fields any longer.', E_USER_DEPRECATED);
         }
 
         return $cats;
@@ -565,6 +585,7 @@ class CategoryApi
 
     /**
      * Delete a category by it's ID
+     * @deprecated
      *
      * @param integer $categoryId The categoryID to delete
      *
@@ -572,6 +593,8 @@ class CategoryApi
      */
     public function deleteCategoryById($categoryId)
     {
+        @trigger_error('CategoriesApi is deprecated. Please use the CategoryRepository instead.', E_USER_DEPRECATED);
+
         $category = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $categoryId);
         if (!isset($category)) {
             return;
@@ -589,14 +612,17 @@ class CategoryApi
 
     /**
      * Delete categories by path
+     * @deprecated
      *
-     * @param string $path      The path we wish to delete
+     * @param string $apath      The path we wish to delete
      * @param string $pathField The (path) field we delete from (either path or ipath) (optional) (default='ipath')
      *
      * @return boolean|void
      */
-    public function deleteCategoriesByPath($path, $pathField = 'ipath')
+    public function deleteCategoriesByPath($apath, $pathField = 'ipath')
     {
+        @trigger_error('CategoriesApi is deprecated. Please use the CategoryRepository instead.', E_USER_DEPRECATED);
+
         if (!$apath) {
             return false;
         }

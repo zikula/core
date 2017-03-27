@@ -14,7 +14,7 @@ namespace Zikula\CategoriesModule\Tests\Fixtures;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\CategoriesModule\Api\CategoryApi;
+use Zikula\CategoriesModule\Form\Type\CategoriesType;
 
 class CategorizableType extends AbstractType
 {
@@ -24,14 +24,17 @@ class CategorizableType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('categoryAssignments', 'Zikula\CategoriesModule\Form\Type\CategoriesType', [
+            ->add('categoryAssignments', CategoriesType::class, [
                 'em' => $options['em'],
                 'required' => $options['required'],
                 'multiple' => $options['multiple'],
                 'attr' => $options['attr'],
+                'expanded' => $options['expanded'],
+                'includeGrandChildren' => $options['includeGrandChildren'],
+                'direct' => $options['direct'],
                 'module' => 'AcmeFooModule',
                 'entity' => 'CategorizableEntity',
-                'entityCategoryClass' => 'Zikula\CategoriesModule\Tests\Fixtures\CategoryAssignmentEntity',
+                'entityCategoryClass' => CategoryAssignmentEntity::class,
             ])
         ;
     }
@@ -53,8 +56,11 @@ class CategorizableType extends AbstractType
             'em' => null,
             'required' => true,
             'multiple' => false,
+            'expanded' => false,
             'attr' => [],
-            'data_class' => 'Zikula\CategoriesModule\Tests\Fixtures\CategorizableEntity'
+            'includeGrandChildren' => false,
+            'direct' => true,
+            'data_class' => CategorizableEntity::class
         ]);
     }
 }
