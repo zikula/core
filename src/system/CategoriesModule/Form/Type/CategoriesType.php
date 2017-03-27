@@ -11,13 +11,14 @@
 
 namespace Zikula\CategoriesModule\Form\Type;
 
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRegistryRepositoryInterface;
+use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 use Zikula\CategoriesModule\Form\DataTransformer\CategoriesCollectionTransformer;
 use Zikula\CategoriesModule\Form\EventListener\CategoriesMergeCollectionListener;
 
@@ -53,42 +54,14 @@ class CategoriesType extends AbstractType
 
         /** @var CategoryRegistryEntity[] $registries */
         foreach ($registries as $registry) {
-            $categoryId = $registry->getCategory()->getId();
-            // default behaviour
-            $queryBuilderClosure = function (EntityRepository $repo) use ($categoryId) {
-                //TODO: (move to)/use own entity repository
-                return $repo->createQueryBuilder('e')
-                            ->where('e.parent = :parentId')
-                            ->setParameter('parentId', (int) $categoryId);
+            $queryBuilderClosure = function (CategoryRepositoryInterface $repo) use ($registry, $options) {
+                return $repo->getChildrenQueryBuilder($registry->getCategory(), $options['direct']);
             };
-            $choiceLabelClosure = function (CategoryEntity $category) {
-                return $category->getName();
+            $choiceLabelClosure = function (CategoryEntity $category) use ($registry) {
+                $indent = str_repeat('--', $category->getLvl() - $registry->getCategory()->getLvl());
+
+                return (!empty($indent) ? '|' : '') . $category->getName();
             };
-            if (true === $options['includeGrandChildren']) {
-                // perform one recursive iteration
-                $queryBuilderClosure = function (EntityRepository $repo) use ($categoryId) {
-                    //TODO: (move to)/use own entity repository
-                    $categoryIds = $repo->createQueryBuilder('e')
-                        ->select('e.id')
-                        ->where('e.parent = :parentId')
-                        ->setParameter('parentId', (int) $categoryId)
-                        ->getQuery()
-                        ->getResult();
-                    $categoryIds[] = $categoryId;
-
-                    return $repo->createQueryBuilder('e')
-                                ->where('e.parent IN (:parentIds)')
-                                ->setParameter('parentIds', $categoryIds);
-                };
-                $choiceLabelClosure = function (CategoryEntity $category) use ($categoryId) {
-                    $isMainLevel = $category->getParent()->getId() == $categoryId;
-
-                    $indent = $isMainLevel ? '' : '|--';
-
-                    return $indent . ' ' . $category->getName();
-                };
-            }
-
             $builder->add(
                 'registry_' . $registry->getId(),
                 'Symfony\Bridge\Doctrine\Form\Type\EntityType',
@@ -123,12 +96,14 @@ class CategoriesType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['entityCategoryClass', 'module', 'entity', 'em']);
+        $resolver->setDefined(['csrf_protection', 'attr', 'multiple', 'expanded', 'includeGrandChildren', 'direct', 'required']);
         $resolver->setDefaults([
             'csrf_protection' => false,
             'attr' => [],
             'multiple' => false,
             'expanded' => false,
-            'includeGrandChildren' => false,
+            'includeGrandChildren' => false, // @deprecated use 'direct'
+            'direct' => true,
             'module' => '',
             'entity' => '',
             'entityCategoryClass' => '',
@@ -140,11 +115,17 @@ class CategoriesType extends AbstractType
         $resolver->setAllowedTypes('multiple', 'bool');
         $resolver->setAllowedTypes('expanded', 'bool');
         $resolver->setAllowedTypes('required', 'bool');
-        $resolver->setAllowedTypes('includeGrandChildren', 'bool');
+        $resolver->setAllowedTypes('includeGrandChildren', 'bool'); // @deprecated use 'direct'
+        $resolver->setAllowedTypes('direct', 'bool');
         $resolver->setAllowedTypes('module', 'string');
         $resolver->setAllowedTypes('entity', 'string');
         $resolver->setAllowedTypes('entityCategoryClass', 'string');
         $resolver->setAllowedTypes('em', 'Doctrine\Common\Persistence\ObjectManager');
+
+        // remove this normalizer when the 'includeGrandChildren' option is removed
+        $resolver->setNormalizer('direct', function (Options $options, $value) {
+            return !($options['includeGrandChildren'] || !$value);
+        });
 
         $resolver->addAllowedValues('entityCategoryClass', function ($value) {
             return is_subclass_of($value, 'Zikula\CategoriesModule\Entity\AbstractCategoryAssignment');

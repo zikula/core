@@ -29,6 +29,9 @@ class CategorizableType extends AbstractType
                 'required' => $options['required'],
                 'multiple' => $options['multiple'],
                 'attr' => $options['attr'],
+                'expanded' => $options['expanded'],
+                'includeGrandChildren' => $options['includeGrandChildren'],
+                'direct' => $options['direct'],
                 'module' => 'AcmeFooModule',
                 'entity' => 'CategorizableEntity',
                 'entityCategoryClass' => 'Zikula\CategoriesModule\Tests\Fixtures\CategoryAssignmentEntity',
@@ -53,7 +56,10 @@ class CategorizableType extends AbstractType
             'em' => null,
             'required' => true,
             'multiple' => false,
+            'expanded' => false,
             'attr' => [],
+            'includeGrandChildren' => false,
+            'direct' => true,
             'data_class' => 'Zikula\CategoriesModule\Tests\Fixtures\CategorizableEntity'
         ]);
     }
