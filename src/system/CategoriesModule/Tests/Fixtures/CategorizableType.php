@@ -30,7 +30,6 @@ class CategorizableType extends AbstractType
                 'multiple' => $options['multiple'],
                 'attr' => $options['attr'],
                 'expanded' => $options['expanded'],
-                'includeGrandChildren' => $options['includeGrandChildren'],
                 'direct' => $options['direct'],
                 'module' => 'AcmeFooModule',
                 'entity' => 'CategorizableEntity',
@@ -58,7 +57,6 @@ class CategorizableType extends AbstractType
             'multiple' => false,
             'expanded' => false,
             'attr' => [],
-            'includeGrandChildren' => false,
             'direct' => true,
             'data_class' => CategorizableEntity::class
         ]);
