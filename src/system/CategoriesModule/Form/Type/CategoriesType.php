@@ -15,7 +15,9 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\CategoriesModule\Api\CategoryRegistryApi;
+use Zikula\CategoriesModule\Entity\CategoryEntity;
+use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
+use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRegistryRepositoryInterface;
 use Zikula\CategoriesModule\Form\DataTransformer\CategoriesCollectionTransformer;
 use Zikula\CategoriesModule\Form\EventListener\CategoriesMergeCollectionListener;
 
@@ -25,18 +27,18 @@ use Zikula\CategoriesModule\Form\EventListener\CategoriesMergeCollectionListener
 class CategoriesType extends AbstractType
 {
     /**
-     * @var CategoryRegistryApi
+     * @var CategoryRegistryRepositoryInterface
      */
-    private $categoryRegistryApi;
+    private $categoryRegistryRepository;
 
     /**
      * CategoriesType constructor.
      *
-     * @param CategoryRegistryApi $categoryRegistryApi CategoryRegistryApi service instance
+     * @param CategoryRegistryRepositoryInterface $categoryRegistryRepository
      */
-    public function __construct(CategoryRegistryApi $categoryRegistryApi)
+    public function __construct(CategoryRegistryRepositoryInterface $categoryRegistryRepository)
     {
-        $this->categoryRegistryApi = $categoryRegistryApi;
+        $this->categoryRegistryRepository = $categoryRegistryRepository;
     }
 
     /**
@@ -44,9 +46,14 @@ class CategoriesType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $registries = $this->categoryRegistryApi->getModuleCategoryIds($options['module'], $options['entity'], 'id');
+        $registries = $this->categoryRegistryRepository->findBy([
+            'modname' => $options['module'],
+            'entityname' => $options['entity']
+        ]);
 
-        foreach ($registries as $registryId => $categoryId) {
+        /** @var CategoryRegistryEntity[] $registries */
+        foreach ($registries as $registry) {
+            $categoryId = $registry->getCategory()->getId();
             // default behaviour
             $queryBuilderClosure = function (EntityRepository $repo) use ($categoryId) {
                 //TODO: (move to)/use own entity repository
@@ -54,7 +61,7 @@ class CategoriesType extends AbstractType
                             ->where('e.parent = :parentId')
                             ->setParameter('parentId', (int) $categoryId);
             };
-            $choiceLabelClosure = function ($category) {
+            $choiceLabelClosure = function (CategoryEntity $category) {
                 return $category->getName();
             };
             if (true === $options['includeGrandChildren']) {
@@ -71,10 +78,9 @@ class CategoriesType extends AbstractType
 
                     return $repo->createQueryBuilder('e')
                                 ->where('e.parent IN (:parentIds)')
-                                ->setParameter('parentIds', $categoryIds)
-                                ->orderBy('e.sort_value');
+                                ->setParameter('parentIds', $categoryIds);
                 };
-                $choiceLabelClosure = function ($category) use ($categoryId) {
+                $choiceLabelClosure = function (CategoryEntity $category) use ($categoryId) {
                     $isMainLevel = $category->getParent()->getId() == $categoryId;
 
                     $indent = $isMainLevel ? '' : '|--';
@@ -84,7 +90,7 @@ class CategoriesType extends AbstractType
             }
 
             $builder->add(
-                'registry_' . $registryId,
+                'registry_' . $registry->getId(),
                 'Symfony\Bridge\Doctrine\Form\Type\EntityType',
                 [
                     'em' => $options['em'],
@@ -126,12 +132,14 @@ class CategoriesType extends AbstractType
             'module' => '',
             'entity' => '',
             'entityCategoryClass' => '',
-            'em' => null
+            'em' => null,
+            'required' => false
         ]);
         $resolver->setAllowedTypes('csrf_protection', 'bool');
         $resolver->setAllowedTypes('attr', 'array');
         $resolver->setAllowedTypes('multiple', 'bool');
         $resolver->setAllowedTypes('expanded', 'bool');
+        $resolver->setAllowedTypes('required', 'bool');
         $resolver->setAllowedTypes('includeGrandChildren', 'bool');
         $resolver->setAllowedTypes('module', 'string');
         $resolver->setAllowedTypes('entity', 'string');

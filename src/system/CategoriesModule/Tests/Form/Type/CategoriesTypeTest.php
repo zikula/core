@@ -22,6 +22,8 @@ use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Zikula\CategoriesModule\Api\CategoryRegistryApi;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
+use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
+use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRegistryRepositoryInterface;
 use Zikula\CategoriesModule\Form\Type\CategoriesType;
 use Zikula\CategoriesModule\Tests\Fixtures\CategorizableEntity;
 use Zikula\CategoriesModule\Tests\Fixtures\CategoryAssignmentEntity;
@@ -33,6 +35,7 @@ use Zikula\CategoriesModule\Tests\Fixtures\CategoryAssignmentEntity;
 class CategoriesTypeTest extends TypeTestCase
 {
     const CATEGORY_ENTITY = 'Zikula\CategoriesModule\Entity\CategoryEntity';
+    const CATEGORY_REGISTRY_ENTITY = 'Zikula\CategoriesModule\Entity\CategoryRegistryEntity';
     const CATEGORIZABLE_ENTITY = 'Zikula\CategoriesModule\Tests\Fixtures\CategorizableEntity';
     const CATEGORY_ASSIGNMENT_ENTITY = 'Zikula\CategoriesModule\Tests\Fixtures\CategoryAssignmentEntity';
 
@@ -46,16 +49,10 @@ class CategoriesTypeTest extends TypeTestCase
      */
     private $emRegistry;
 
-    /**
-     * @var CategoryRegistryApi
-     */
-    private $categoryRegistryApi;
-
     protected function setUp()
     {
         $this->em = DoctrineTestHelper::createTestEntityManager();
         $this->emRegistry = $this->createRegistryMock('default', $this->em);
-        $this->categoryRegistryApi = $this->createCategoryRegistryApiMock();
         $this->em->getEventManager()->addEventSubscriber(new TreeListener());
 
         parent::setUp();
@@ -63,6 +60,7 @@ class CategoriesTypeTest extends TypeTestCase
         $schemaTool = new SchemaTool($this->em);
         $classes = [
             $this->em->getClassMetadata(self::CATEGORY_ENTITY),
+            $this->em->getClassMetadata(self::CATEGORY_REGISTRY_ENTITY),
             $this->em->getClassMetadata(self::CATEGORIZABLE_ENTITY),
             $this->em->getClassMetadata(self::CATEGORY_ASSIGNMENT_ENTITY),
         ];
@@ -76,7 +74,9 @@ class CategoriesTypeTest extends TypeTestCase
             $schemaTool->createSchema($classes);
         } catch (\Exception $e) {
         }
-        $this->generateCategories();
+        $now = new \DateTime();
+        $this->generateCategories($now);
+        $this->generateCategoryRegistry($now);
     }
 
     protected function tearDown()
@@ -89,7 +89,7 @@ class CategoriesTypeTest extends TypeTestCase
 
     protected function getExtensions()
     {
-        $type = new CategoriesType($this->categoryRegistryApi);
+        $type = new CategoriesType($this->em->getRepository('Zikula\CategoriesModule\Entity\CategoryRegistryEntity'));
 
         return [
             new PreloadedExtension([$type], []),
@@ -339,21 +339,23 @@ class CategoriesTypeTest extends TypeTestCase
         return $registry;
     }
 
-    protected function createCategoryRegistryApiMock()
+    protected function generateCategoryRegistry($now)
     {
-        $categoryRegistryApi = $this->getMockBuilder('Zikula\CategoriesModule\Api\CategoryRegistryApi')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $categoryRegistryApi->method('getModuleCategoryIds')
-            ->willReturn([1 => 1]); // $registryId => $categoryId
-
-        return $categoryRegistryApi;
+        $registry = new CategoryRegistryEntity();
+        $registry->setId(1);
+        $registry->setModname('AcmeFooModule');
+        $registry->setEntityname('CategorizableEntity');
+        $registry->setProperty('Main');
+        $registry->setCr_date($now);
+        $registry->setLu_date($now);
+        $rootCategory = $this->em->getRepository('Zikula\CategoriesModule\Entity\CategoryEntity')->find(1);
+        $registry->setCategory($rootCategory);
+        $this->em->persist($registry);
+        $this->em->flush();
     }
 
-    protected function generateCategories()
+    protected function generateCategories($now)
     {
-        $now = new \DateTime();
-
         $root = new CategoryEntity();
         $root->setId(1);
         $root->setName('root');
