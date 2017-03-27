@@ -15,7 +15,7 @@
     },
     "require": {
         "php": ">=5.5.9",
-        "justinrainbow/json-schema": "4.*",
+        "justinrainbow/json-schema": "4.*"
     },
     "extra": {
         "zikula": {
