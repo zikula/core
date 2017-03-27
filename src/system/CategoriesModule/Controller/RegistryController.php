@@ -16,8 +16,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\CategoriesModule\Builder\EntitySelectionBuilder;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
+use Zikula\CategoriesModule\Form\Type\CategoryRegistryType;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\CapabilityApi;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
@@ -49,7 +51,7 @@ class RegistryController extends AbstractController
             $registryEntity = new CategoryRegistryEntity();
         }
 
-        $form = $this->createForm('Zikula\CategoriesModule\Form\Type\CategoryRegistryType', $registryEntity, [
+        $form = $this->createForm(CategoryRegistryType::class, $registryEntity, [
             'translator' => $this->getTranslator(),
             'categorizableModules' => $this->getCategorizableModules(),
             'entitySelectionBuilder' => new EntitySelectionBuilder($this->get('kernel'))
@@ -102,7 +104,7 @@ class RegistryController extends AbstractController
         if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-        $form = $this->createForm('Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType');
+        $form = $this->createForm(DeletionType::class);
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('delete')->isClicked()) {

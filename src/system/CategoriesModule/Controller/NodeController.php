@@ -14,6 +14,7 @@ namespace Zikula\CategoriesModule\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
+use Zikula\CategoriesModule\Form\Type\CategoryType;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\Core\Response\Ajax\BadDataResponse;
@@ -75,7 +76,7 @@ class NodeController extends AbstractController
                         $category->setRoot($sibling->getRoot());
                     }
                 }
-                $form = $this->createForm('Zikula\CategoriesModule\Form\Type\CategoryType', $category, [
+                $form = $this->createForm(CategoryType::class, $category, [
                     'translator' => $this->get('translator.default'),
                     'locales' => $this->get('zikula_settings_module.locale_api')->getSupportedLocales(),
                 ]);

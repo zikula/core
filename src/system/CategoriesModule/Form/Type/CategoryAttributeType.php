@@ -12,8 +12,10 @@
 namespace Zikula\CategoriesModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\CategoriesModule\Entity\CategoryAttributeEntity;
 
 /**
  * CategoryAttributeType form type class.
@@ -28,10 +30,10 @@ class CategoryAttributeType extends AbstractType
         $translator = $options['translator'];
 
         $builder
-            ->add('name', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('name', TextType::class, [
                 'label' => $translator->__('Name'),
             ])
-            ->add('value', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('value', TextType::class, [
                 'label' => $translator->__('Value'),
                 'required' => false
             ])
@@ -52,7 +54,7 @@ class CategoryAttributeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Zikula\CategoriesModule\Entity\CategoryAttributeEntity',
+            'data_class' => CategoryAttributeEntity::class,
             'translator' => null,
         ]);
     }

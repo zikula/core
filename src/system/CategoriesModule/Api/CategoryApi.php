@@ -136,7 +136,7 @@ class CategoryApi
         $locale = $this->requestStack->getMasterRequest()->getLocale();
         $data['display_name'] = [$locale => $displayname];
         $data['display_desc'] = [$locale => $description];
-        $data['value'] = $value ? $value : null;
+        $data['value'] = $value ? $value : '';
 
         $cat->merge($data);
         $this->entityManager->persist($cat);
@@ -212,7 +212,7 @@ class CategoryApi
      * @param boolean $includeLeaf Whether or not to also return leaf nodes (optional) (default=true)
      * @param boolean $all         Whether or not to return all (or only active) categories (optional) (default=false)
      *
-     * @return array resulting category object
+     * @return array|CategoryEntity resulting category object
      */
     public function getCategoryByPath($apath, $pathField = 'path', $sort = '', $includeLeaf = true, $all = false)
     {
@@ -225,7 +225,8 @@ class CategoryApi
         }
         $values = [];
         foreach ($apath as $path) {
-            $values[] = array_pop(explode('/', $path));
+            $parts = explode('/', $path);
+            $values[] = array_pop($parts);
         }
         if (count($values) > 1) {
             $method = 'findBy';
@@ -246,17 +247,24 @@ class CategoryApi
             $sort = null;
         }
         $categories = $repo->$method($criteria, $sort);
+        if (!$categories) {
+            return $categories;
+        }
         if ('ipath' == $pathField) {
             return $categories;
         }
         $result = [];
+        if (!is_array($categories)) {
+            $categories = [$categories];
+        }
         foreach ($categories as $category) {
-            if ($category->getPath() == $apath) {
+            $path = $category->getPath();
+            if (in_array($path, $apath)) {
                 $result[] = $category;
             }
         }
 
-        return $result;
+        return count($result) > 1 ? $result : array_pop($result);
     }
 
     /**

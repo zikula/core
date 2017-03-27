@@ -505,7 +505,7 @@ class CategoryEntity extends EntityAccess
             $entity = $entity->getParent();
         } while (null !== $entity);
 
-        return implode('/', $path);
+        return '/' . implode('/', $path);
     }
 
     /**

@@ -12,6 +12,9 @@
 namespace Zikula\CategoriesModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -41,28 +44,28 @@ class CategoryRegistryType extends AbstractType
         $this->entitySelectionBuilder = $options['entitySelectionBuilder'];
 
         $builder
-            ->add('modname', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('modname', ChoiceType::class, [
                 'label' => $translator->__('Module'),
                 'choices_as_values' => true,
                 'choices' => $options['categorizableModules'],
                 'placeholder' => $translator->__('Select module')
             ])
-            ->add('property', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('property', TextType::class, [
                 'label' => $translator->__('Property name'),
                 'constraints' => [new NotBlank()]
             ])
-            ->add('category', 'Zikula\CategoriesModule\Form\Type\CategoryTreeType', [
+            ->add('category', CategoryTreeType::class, [
                 'label' => $translator->__('Category'),
                 'translator' => $translator,
             ])
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('save', SubmitType::class, [
                 'label' => $translator->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
@@ -73,7 +76,6 @@ class CategoryRegistryType extends AbstractType
 
         $formModifier = function (FormInterface $form, $modName = null) use ($options) {
             $entities = null === $modName ? [] : $this->entitySelectionBuilder->buildFor($modName);
-//            $entities = null === $modName ? [] : ['test' => 'testvalue', 'test2' => 'test2value'];
             $form->add('entityname', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $options['translator']->__('Entity'),
                 'choices' => $entities,
