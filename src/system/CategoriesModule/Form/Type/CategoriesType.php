@@ -65,7 +65,7 @@ class CategoriesType extends AbstractType
 
                 return (!empty($indent) ? '|' : '') . $indent . $category->getName();
             };
-            $builder->add('registry_' . $registry->getId(),EntityType::class,
+            $builder->add('registry_' . $registry->getId(), EntityType::class,
                 [
                     'em' => $options['em'],
                     'label_attr' => !$options['expanded'] ? ['class' => 'hidden'] : [],
