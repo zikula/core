@@ -97,9 +97,8 @@ class CategoriesType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['entityCategoryClass', 'module', 'entity']);
-        $resolver->setDefined(['csrf_protection', 'attr', 'multiple', 'expanded', 'includeGrandChildren', 'direct', 'required', 'em']);
+        $resolver->setDefined(['attr', 'multiple', 'expanded', 'includeGrandChildren', 'direct', 'required', 'em']);
         $resolver->setDefaults([
-            'csrf_protection' => false,
             'attr' => [],
             'multiple' => false,
             'expanded' => false,
@@ -111,7 +110,6 @@ class CategoriesType extends AbstractType
             'em' => null,
             'required' => false
         ]);
-        $resolver->setAllowedTypes('csrf_protection', 'bool');
         $resolver->setAllowedTypes('attr', 'array');
         $resolver->setAllowedTypes('multiple', 'bool');
         $resolver->setAllowedTypes('expanded', 'bool');
