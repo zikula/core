@@ -12,9 +12,10 @@
 namespace Zikula\CategoriesModule\Tests\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Zikula\CategoriesModule\Entity\AbstractCategoryAssignment;
+use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Form\DataTransformer\CategoriesCollectionTransformer;
 use Zikula\CategoriesModule\Tests\Fixtures\CategoryAssignmentEntity;
-use Zikula\CategoriesModule\Tests\Form\Type\CategoriesTypeTest;
 
 class CategoriesCollectionTransformerTest extends \PHPUnit_Framework_TestCase
 {
@@ -39,7 +40,7 @@ class CategoriesCollectionTransformerTest extends \PHPUnit_Framework_TestCase
     {
         $transformer = $this->getTransformer();
 
-        $category = $this->getMockBuilder(CategoriesTypeTest::CATEGORY_ENTITY)->getMock();
+        $category = $this->getMockBuilder(CategoryEntity::class)->getMock();
         $categoryAssignment = $this->generateCategoryAssignment($category, 1);
 
         $expected = ['registry_1' => $category];
@@ -51,7 +52,7 @@ class CategoriesCollectionTransformerTest extends \PHPUnit_Framework_TestCase
         $transformer = $this->getTransformer();
         $subCollection = new ArrayCollection();
 
-        $category = $this->getMockBuilder(CategoriesTypeTest::CATEGORY_ENTITY)->getMock();
+        $category = $this->getMockBuilder(CategoryEntity::class)->getMock();
         $subCollection->add(new CategoryAssignmentEntity(1, $category, null));
 
         $expected = new ArrayCollection();
@@ -63,9 +64,9 @@ class CategoriesCollectionTransformerTest extends \PHPUnit_Framework_TestCase
     {
         $transformer = $this->getTransformer(true);
 
-        $categoryA = $this->getMockBuilder(CategoriesTypeTest::CATEGORY_ENTITY)->getMock();
+        $categoryA = $this->getMockBuilder(CategoryEntity::class)->getMock();
         $categoryAssignmentA = $this->generateCategoryAssignment($categoryA, 1);
-        $categoryB = $this->getMockBuilder(CategoriesTypeTest::CATEGORY_ENTITY)->getMock();
+        $categoryB = $this->getMockBuilder(CategoryEntity::class)->getMock();
         $categoryAssignmentB = $this->generateCategoryAssignment($categoryB, 1);
 
         $expected = ['registry_1' => [$categoryA, $categoryB]];
@@ -77,10 +78,10 @@ class CategoriesCollectionTransformerTest extends \PHPUnit_Framework_TestCase
         $transformer = $this->getTransformer(true);
         $subCollection = new ArrayCollection();
 
-        $categoryA = $this->getMockBuilder(CategoriesTypeTest::CATEGORY_ENTITY)->getMock();
+        $categoryA = $this->getMockBuilder(CategoryEntity::class)->getMock();
         $subCollection->add(new CategoryAssignmentEntity(1, $categoryA, null));
 
-        $categoryB = $this->getMockBuilder(CategoriesTypeTest::CATEGORY_ENTITY)->getMock();
+        $categoryB = $this->getMockBuilder(CategoryEntity::class)->getMock();
         $subCollection->add(new CategoryAssignmentEntity(1, $categoryB, null));
 
         $expected = new ArrayCollection();
@@ -92,13 +93,13 @@ class CategoriesCollectionTransformerTest extends \PHPUnit_Framework_TestCase
     {
         $transformer = $this->getTransformer(true);
 
-        $categoryA = $this->getMockBuilder(CategoriesTypeTest::CATEGORY_ENTITY)->getMock();
+        $categoryA = $this->getMockBuilder(CategoryEntity::class)->getMock();
         $categoryAssignmentA = $this->generateCategoryAssignment($categoryA, 1);
-        $categoryB = $this->getMockBuilder(CategoriesTypeTest::CATEGORY_ENTITY)->getMock();
+        $categoryB = $this->getMockBuilder(CategoryEntity::class)->getMock();
         $categoryAssignmentB = $this->generateCategoryAssignment($categoryB, 1);
-        $categoryC = $this->getMockBuilder(CategoriesTypeTest::CATEGORY_ENTITY)->getMock();
+        $categoryC = $this->getMockBuilder(CategoryEntity::class)->getMock();
         $categoryAssignmentC = $this->generateCategoryAssignment($categoryC, 2);
-        $categoryD = $this->getMockBuilder(CategoriesTypeTest::CATEGORY_ENTITY)->getMock();
+        $categoryD = $this->getMockBuilder(CategoryEntity::class)->getMock();
         $categoryAssignmentD = $this->generateCategoryAssignment($categoryD, 2);
 
         $expected = [
@@ -114,16 +115,16 @@ class CategoriesCollectionTransformerTest extends \PHPUnit_Framework_TestCase
         $subCollectionA = new ArrayCollection();
         $subCollectionB = new ArrayCollection();
 
-        $categoryA = $this->getMockBuilder(CategoriesTypeTest::CATEGORY_ENTITY)->getMock();
+        $categoryA = $this->getMockBuilder(CategoryEntity::class)->getMock();
         $subCollectionA->add(new CategoryAssignmentEntity(1, $categoryA, null));
 
-        $categoryB = $this->getMockBuilder(CategoriesTypeTest::CATEGORY_ENTITY)->getMock();
+        $categoryB = $this->getMockBuilder(CategoryEntity::class)->getMock();
         $subCollectionA->add(new CategoryAssignmentEntity(1, $categoryB, null));
 
-        $categoryC = $this->getMockBuilder(CategoriesTypeTest::CATEGORY_ENTITY)->getMock();
+        $categoryC = $this->getMockBuilder(CategoryEntity::class)->getMock();
         $subCollectionB->add(new CategoryAssignmentEntity(2, $categoryC, null));
 
-        $categoryD = $this->getMockBuilder(CategoriesTypeTest::CATEGORY_ENTITY)->getMock();
+        $categoryD = $this->getMockBuilder(CategoryEntity::class)->getMock();
         $subCollectionB->add(new CategoryAssignmentEntity(2, $categoryD, null));
 
         $expected = new ArrayCollection();
@@ -138,7 +139,7 @@ class CategoriesCollectionTransformerTest extends \PHPUnit_Framework_TestCase
     protected function getTransformer($multiple = false)
     {
         $options = [
-            'entityCategoryClass' => CategoriesTypeTest::CATEGORY_ASSIGNMENT_ENTITY,
+            'entityCategoryClass' => CategoryAssignmentEntity::class,
             'multiple' => $multiple
         ];
 
@@ -147,7 +148,7 @@ class CategoriesCollectionTransformerTest extends \PHPUnit_Framework_TestCase
 
     protected function generateCategoryAssignment($category, $registryId)
     {
-        $categoryAssignment = $this->getMockBuilder('Zikula\CategoriesModule\Entity\AbstractCategoryAssignment')
+        $categoryAssignment = $this->getMockBuilder(AbstractCategoryAssignment::class)
             ->disableOriginalConstructor()
             ->getMock();
         $categoryAssignment->method('getCategory')->willReturn($category);

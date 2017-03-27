@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\RoutesModule\Form\Type\Field\MultiListType;
 use Zikula\RoutesModule\Helper\ListEntriesHelper;
 
 /**
@@ -134,7 +135,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
             $choices[$entry['text']] = $entry['value'];
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
-        $builder->add('schemes', 'Zikula\RoutesModule\Form\Type\Field\MultiListType', [
+        $builder->add('schemes', MultiListType::class, [
             'label' => $this->__('Schemes'),
             'attr' => [
                 'class' => 'input-sm'
@@ -153,7 +154,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
             $choices[$entry['text']] = $entry['value'];
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
-        $builder->add('methods', 'Zikula\RoutesModule\Form\Type\Field\MultiListType', [
+        $builder->add('methods', MultiListType::class, [
             'label' => $this->__('Methods'),
             'attr' => [
                 'class' => 'input-sm'

@@ -48,6 +48,7 @@ class ZikulaWorkflowExtension extends Extension implements PrependExtensionInter
         $rootDirectory = $container->getParameter('kernel.root_dir');
 
         // Modules can define their own workflows in: modules/Acme/MyBundle/Resources/workflows/
+        $this->workflowDirectories[] = $rootDirectory . '/../system/*/*/Resources/workflows';
         $this->workflowDirectories[] = $rootDirectory . '/../modules/*/*/Resources/workflows';
 
         // also it is possible to define custom workflows (or override existing ones) in: app/Resources/workflows/

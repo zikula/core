@@ -54,8 +54,13 @@ class LinkContainer implements LinkContainerInterface
      * @param VariableApi         $variableApi   VariableApi service instance
      * @param RequestStack        $requestStack  RequestStack service instance
      */
-    public function __construct(TranslatorInterface $translator, RouterInterface $router, PermissionApi $permissionApi, VariableApi $variableApi, RequestStack $requestStack)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        RouterInterface $router,
+        PermissionApi $permissionApi,
+        VariableApi $variableApi,
+        RequestStack $requestStack
+    ) {
         $this->translator = $translator;
         $this->router = $router;
         $this->permissionApi = $permissionApi;
@@ -91,16 +96,9 @@ class LinkContainer implements LinkContainerInterface
 
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
             $links[] = [
-                'url' => $this->router->generate('zikulacategoriesmodule_admin_view'),
-                'text' => $this->translator->__('Categories list'),
-                'icon' => 'list'
-            ];
-        }
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADD)) {
-            $links[] = [
-                'url' => $this->router->generate('zikulacategoriesmodule_admin_newcat'),
-                'text' => $this->translator->__('Create new category'),
-                'icon' => 'plus'
+                'url' => $this->router->generate('zikulacategoriesmodule_category_list'),
+                'text' => $this->translator->__('Category tree'),
+                'icon' => 'tree'
             ];
         }
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
@@ -108,16 +106,6 @@ class LinkContainer implements LinkContainerInterface
                 'url' => $this->router->generate('zikulacategoriesmodule_registry_edit'),
                 'text' => $this->translator->__('Category registry'),
                 'icon' => 'archive'
-            ];
-            $links[] = [
-                'url' => $this->router->generate('zikulacategoriesmodule_admin_rebuild'),
-                'text' => $this->translator->__('Rebuild paths'),
-                'icon' => 'refresh'
-            ];
-            $links[] = [
-                'url' => $this->router->generate('zikulacategoriesmodule_config_config'),
-                'text' => $this->translator->__('Settings'),
-                'icon' => 'wrench'
             ];
         }
 

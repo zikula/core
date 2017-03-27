@@ -20,4 +20,3 @@ With this you can add choice fields for selecting one or multiple categories fro
  - `includeRoot` - (boolean) whether to include the root node or not (default `false`).
  - `includeLeaf` - (boolean) whether to include leaf nodes or not (default `false`).
  - `all` - (boolean) whether or not to return all (or only active) categories (default `false`).
- - `valueField` - (string) name of the category field to use as choice value (default `id`), you can also use `path` for example.

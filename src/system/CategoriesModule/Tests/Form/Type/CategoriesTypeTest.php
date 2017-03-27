@@ -15,14 +15,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
+use Gedmo\Tree\TreeListener;
 use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;
 use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
-use Zikula\CategoriesModule\Api\CategoryRegistryApi;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
+use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 use Zikula\CategoriesModule\Form\Type\CategoriesType;
 use Zikula\CategoriesModule\Tests\Fixtures\CategorizableEntity;
+use Zikula\CategoriesModule\Tests\Fixtures\CategorizableType;
 use Zikula\CategoriesModule\Tests\Fixtures\CategoryAssignmentEntity;
 
 /**
@@ -31,10 +33,6 @@ use Zikula\CategoriesModule\Tests\Fixtures\CategoryAssignmentEntity;
  */
 class CategoriesTypeTest extends TypeTestCase
 {
-    const CATEGORY_ENTITY = 'Zikula\CategoriesModule\Entity\CategoryEntity';
-    const CATEGORIZABLE_ENTITY = 'Zikula\CategoriesModule\Tests\Fixtures\CategorizableEntity';
-    const CATEGORY_ASSIGNMENT_ENTITY = 'Zikula\CategoriesModule\Tests\Fixtures\CategoryAssignmentEntity';
-
     /**
      * @var EntityManager
      */
@@ -45,24 +43,20 @@ class CategoriesTypeTest extends TypeTestCase
      */
     private $emRegistry;
 
-    /**
-     * @var CategoryRegistryApi
-     */
-    private $categoryRegistryApi;
-
     protected function setUp()
     {
         $this->em = DoctrineTestHelper::createTestEntityManager();
         $this->emRegistry = $this->createRegistryMock('default', $this->em);
-        $this->categoryRegistryApi = $this->createCategoryRegistryApiMock();
+        $this->em->getEventManager()->addEventSubscriber(new TreeListener());
 
         parent::setUp();
 
         $schemaTool = new SchemaTool($this->em);
         $classes = [
-            $this->em->getClassMetadata(self::CATEGORY_ENTITY),
-            $this->em->getClassMetadata(self::CATEGORIZABLE_ENTITY),
-            $this->em->getClassMetadata(self::CATEGORY_ASSIGNMENT_ENTITY),
+            $this->em->getClassMetadata(CategoryEntity::class),
+            $this->em->getClassMetadata(CategoryRegistryEntity::class),
+            $this->em->getClassMetadata(CategorizableEntity::class),
+            $this->em->getClassMetadata(CategoryAssignmentEntity::class),
         ];
 
         try {
@@ -74,7 +68,9 @@ class CategoriesTypeTest extends TypeTestCase
             $schemaTool->createSchema($classes);
         } catch (\Exception $e) {
         }
-        $this->generateCategories();
+        $now = new \DateTime();
+        $this->generateCategories($now);
+        $this->generateCategoryRegistry($now);
     }
 
     protected function tearDown()
@@ -87,7 +83,7 @@ class CategoriesTypeTest extends TypeTestCase
 
     protected function getExtensions()
     {
-        $type = new CategoriesType($this->categoryRegistryApi);
+        $type = new CategoriesType($this->em->getRepository(CategoryRegistryEntity::class));
 
         return [
             new PreloadedExtension([$type], []),
@@ -96,11 +92,11 @@ class CategoriesTypeTest extends TypeTestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\OptionsResolver\Exception\MissingOptionsException
+     * @expectedException \Symfony\Component\OptionsResolver\Exception\InvalidOptionsException
      */
     public function testClassOptionIsRequired()
     {
-        $this->factory->createNamed('name', 'Zikula\CategoriesModule\Form\Type\CategoriesType');
+        $this->factory->createNamed('name', CategoriesType::class);
     }
 
     public function testSubmitValidData()
@@ -109,11 +105,11 @@ class CategoriesTypeTest extends TypeTestCase
             'categoryAssignments' => ['registry_1' => '2'],
         ];
 
-        $form = $this->factory->create('Zikula\CategoriesModule\Tests\Fixtures\CategorizableType', new CategorizableEntity(), ['em' => $this->em]);
+        $form = $this->factory->create(CategorizableType::class, new CategorizableEntity(), ['em' => $this->em]);
 
         $expectedObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();
-        $assignedCategory = $this->em->getReference('Zikula\CategoriesModule\Entity\CategoryEntity', 2);
+        $assignedCategory = $this->em->getReference(CategoryEntity::class, 2);
         $categoryAssignments->add(new CategoryAssignmentEntity(1, $assignedCategory, $expectedObject));
         $expectedObject->setCategoryAssignments($categoryAssignments);
 
@@ -137,7 +133,7 @@ class CategoriesTypeTest extends TypeTestCase
             'categoryAssignments' => ['registry_1' => ['2', '3']],
         ];
 
-        $form = $this->factory->create('Zikula\CategoriesModule\Tests\Fixtures\CategorizableType', new CategorizableEntity(), [
+        $form = $this->factory->create(CategorizableType::class, new CategorizableEntity(), [
             'em' => $this->em,
             'multiple' => true
         ]);
@@ -145,7 +141,7 @@ class CategoriesTypeTest extends TypeTestCase
         $expectedObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();
         foreach ([2, 3] as $id) {
-            $assignedCategory = $this->em->getReference('Zikula\CategoriesModule\Entity\CategoryEntity', $id);
+            $assignedCategory = $this->em->getReference(CategoryEntity::class, $id);
             $categoryAssignments->add(new CategoryAssignmentEntity(1, $assignedCategory, $expectedObject));
         }
         $expectedObject->setCategoryAssignments($categoryAssignments);
@@ -162,15 +158,15 @@ class CategoriesTypeTest extends TypeTestCase
         ];
         $existingObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();
-        $assignedCategory = $this->em->getReference('Zikula\CategoriesModule\Entity\CategoryEntity', 1);
+        $assignedCategory = $this->em->getReference(CategoryEntity::class, 1);
         $categoryAssignments->add(new CategoryAssignmentEntity(1, $assignedCategory, $existingObject));
         $existingObject->setCategoryAssignments($categoryAssignments);
 
-        $form = $this->factory->create('Zikula\CategoriesModule\Tests\Fixtures\CategorizableType', $existingObject, ['em' => $this->em]);
+        $form = $this->factory->create(CategorizableType::class, $existingObject, ['em' => $this->em]);
 
         $expectedObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();
-        $assignedCategory = $this->em->getReference('Zikula\CategoriesModule\Entity\CategoryEntity', 2);
+        $assignedCategory = $this->em->getReference(CategoryEntity::class, 2);
         $categoryAssignments->add(new CategoryAssignmentEntity(1, $assignedCategory, $expectedObject));
         $expectedObject->setCategoryAssignments($categoryAssignments);
 
@@ -195,11 +191,11 @@ class CategoriesTypeTest extends TypeTestCase
         ];
         $existingObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();
-        $assignedCategory = $this->em->getReference('Zikula\CategoriesModule\Entity\CategoryEntity', 1);
+        $assignedCategory = $this->em->getReference(CategoryEntity::class, 1);
         $categoryAssignments->add(new CategoryAssignmentEntity(1, $assignedCategory, $existingObject));
         $existingObject->setCategoryAssignments($categoryAssignments);
 
-        $form = $this->factory->create('Zikula\CategoriesModule\Tests\Fixtures\CategorizableType', new CategorizableEntity(), [
+        $form = $this->factory->create(CategorizableType::class, new CategorizableEntity(), [
             'em' => $this->em,
             'multiple' => true
         ]);
@@ -207,7 +203,7 @@ class CategoriesTypeTest extends TypeTestCase
         $expectedObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();
         foreach ([2, 3] as $id) {
-            $assignedCategory = $this->em->getReference('Zikula\CategoriesModule\Entity\CategoryEntity', $id);
+            $assignedCategory = $this->em->getReference(CategoryEntity::class, $id);
             $categoryAssignments->add(new CategoryAssignmentEntity(1, $assignedCategory, $expectedObject));
         }
         $expectedObject->setCategoryAssignments($categoryAssignments);
@@ -234,16 +230,16 @@ class CategoriesTypeTest extends TypeTestCase
         $existingObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();
         foreach ([2, 3] as $id) {
-            $assignedCategory = $this->em->getReference('Zikula\CategoriesModule\Entity\CategoryEntity', $id);
+            $assignedCategory = $this->em->getReference(CategoryEntity::class, $id);
             $categoryAssignments->add(new CategoryAssignmentEntity(1, $assignedCategory, $existingObject));
         }
         $existingObject->setCategoryAssignments($categoryAssignments);
 
-        $form = $this->factory->create('Zikula\CategoriesModule\Tests\Fixtures\CategorizableType', $existingObject, ['em' => $this->em]);
+        $form = $this->factory->create(CategorizableType::class, $existingObject, ['em' => $this->em]);
 
         $expectedObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();
-        $assignedCategory = $this->em->getReference('Zikula\CategoriesModule\Entity\CategoryEntity', 2);
+        $assignedCategory = $this->em->getReference(CategoryEntity::class, 2);
         $categoryAssignments->add(new CategoryAssignmentEntity(1, $assignedCategory, $expectedObject));
         $expectedObject->setCategoryAssignments($categoryAssignments);
 
@@ -268,11 +264,11 @@ class CategoriesTypeTest extends TypeTestCase
         ];
         $existingObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();
-        $assignedCategory = $this->em->getReference('Zikula\CategoriesModule\Entity\CategoryEntity', 1);
+        $assignedCategory = $this->em->getReference(CategoryEntity::class, 1);
         $categoryAssignments->add(new CategoryAssignmentEntity(1, $assignedCategory, $existingObject));
         $existingObject->setCategoryAssignments($categoryAssignments);
 
-        $form = $this->factory->create('Zikula\CategoriesModule\Tests\Fixtures\CategorizableType', $existingObject, ['em' => $this->em]);
+        $form = $this->factory->create(CategorizableType::class, $existingObject, ['em' => $this->em]);
 
         $expectedObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();
@@ -299,11 +295,11 @@ class CategoriesTypeTest extends TypeTestCase
         ];
         $existingObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();
-        $assignedCategory = $this->em->getReference('Zikula\CategoriesModule\Entity\CategoryEntity', 1);
+        $assignedCategory = $this->em->getReference(CategoryEntity::class, 1);
         $categoryAssignments->add(new CategoryAssignmentEntity(1, $assignedCategory, $existingObject));
         $existingObject->setCategoryAssignments($categoryAssignments);
 
-        $form = $this->factory->create('Zikula\CategoriesModule\Tests\Fixtures\CategorizableType', new CategorizableEntity(), [
+        $form = $this->factory->create(CategorizableType::class, new CategorizableEntity(), [
             'em' => $this->em,
             'multiple' => true
         ]);
@@ -326,9 +322,72 @@ class CategoriesTypeTest extends TypeTestCase
         }
     }
 
+    public function testSubmitValidDataWithAllChildren()
+    {
+        $formData = [
+            'categoryAssignments' => ['registry_1' => '4'],
+        ];
+
+        $form = $this->factory->create(CategorizableType::class, new CategorizableEntity(), [
+            'em' => $this->em,
+            'direct' => false
+        ]);
+
+        $expectedObject = new CategorizableEntity();
+        $categoryAssignments = new ArrayCollection();
+        $assignedCategory = $this->em->getReference(CategoryEntity::class, 4);
+        $categoryAssignments->add(new CategoryAssignmentEntity(1, $assignedCategory, $expectedObject));
+        $expectedObject->setCategoryAssignments($categoryAssignments);
+
+        // submit the data to the form directly
+        $form->submit($formData);
+
+        $this->assertTrue($form->isSynchronized());
+        $this->assertEquals($expectedObject, $form->getData());
+
+        $view = $form->createView();
+        $children = $view->children;
+
+        foreach (array_keys($formData) as $key) {
+            $this->assertArrayHasKey($key, $children);
+        }
+    }
+
+    /**
+     * submitting invalid selection results in NO assignments
+     * The child of child selection should not be available with direct = true (default)
+     */
+    public function testSubmitInvalidDataWithNoChildren()
+    {
+        $formData = [
+            'categoryAssignments' => ['registry_1' => '4'], // child of child
+        ];
+
+        $form = $this->factory->create(CategorizableType::class, new CategorizableEntity(), [
+            'em' => $this->em,
+        ]);
+
+        $expectedObject = new CategorizableEntity();
+        $categoryAssignments = new ArrayCollection();
+        $expectedObject->setCategoryAssignments($categoryAssignments);
+
+        // submit the data to the form directly
+        $form->submit($formData);
+
+        $this->assertTrue($form->isSynchronized());
+        $this->assertEquals($expectedObject, $form->getData());
+
+        $view = $form->createView();
+        $children = $view->children;
+
+        foreach (array_keys($formData) as $key) {
+            $this->assertArrayHasKey($key, $children);
+        }
+    }
+
     protected function createRegistryMock($name, $em)
     {
-        $registry = $this->getMockBuilder('Doctrine\Common\Persistence\ManagerRegistry')->getMock();
+        $registry = $this->getMockBuilder(ManagerRegistry::class)->getMock();
         $registry->expects($this->any())
             ->method('getManager')
             ->with($this->equalTo($name))
@@ -337,52 +396,61 @@ class CategoriesTypeTest extends TypeTestCase
         return $registry;
     }
 
-    protected function createCategoryRegistryApiMock()
+    protected function generateCategoryRegistry($now)
     {
-        $categoryRegistryApi = $this->getMockBuilder('Zikula\CategoriesModule\Api\CategoryRegistryApi')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $categoryRegistryApi->method('getModuleCategoryIds')
-            ->willReturn([1 => 1]); // $registryId => $categoryId
-
-        return $categoryRegistryApi;
+        $registry = new CategoryRegistryEntity();
+        $registry->setId(1);
+        $registry->setModname('AcmeFooModule');
+        $registry->setEntityname('CategorizableEntity');
+        $registry->setProperty('Main');
+        $registry->setCr_date($now);
+        $registry->setLu_date($now);
+        $rootCategory = $this->em->getRepository(CategoryEntity::class)->find(1);
+        $registry->setCategory($rootCategory);
+        $this->em->persist($registry);
+        $this->em->flush();
     }
 
-    protected function generateCategories()
+    protected function generateCategories($now)
     {
-        $now = new \DateTime();
-
+        // root
         $root = new CategoryEntity();
         $root->setId(1);
         $root->setName('root');
         $root->setDisplay_name(['en' => 'root']);
-        $root->setPath('/root');
-        $root->setIPath('/1');
         $root->setCr_date($now);
         $root->setLu_date($now);
-        $this->em->persist($root);
+        $this->em->getRepository(CategoryEntity::class)->persistAsFirstChild($root);
 
+        // first child
         $a = new CategoryEntity();
         $a->setId(2);
         $a->setParent($root);
         $a->setName('a');
         $a->setDisplay_name(['en' => 'a']);
-        $a->setPath('/root/a');
-        $a->setIPath('/1/2');
         $a->setCr_date($now);
         $a->setLu_date($now);
-        $this->em->persist($a);
+        $this->em->getRepository(CategoryEntity::class)->persistAsFirstChildOf($a, $root);
 
+        // second child
         $b = new CategoryEntity();
         $b->setId(3);
         $b->setParent($root);
         $b->setName('b');
         $b->setDisplay_name(['en' => 'b']);
-        $b->setPath('/root/b');
-        $b->setIPath('/1/3');
         $b->setCr_date($now);
         $b->setLu_date($now);
-        $this->em->persist($b);
+        $this->em->getRepository(CategoryEntity::class)->persistAsLastChildOf($b, $root);
+
+        // child of first child (grand child)
+        $aa = new CategoryEntity();
+        $aa->setId(4);
+        $aa->setParent($a);
+        $aa->setName('aa');
+        $aa->setDisplay_name(['en' => 'aa']);
+        $aa->setCr_date($now);
+        $aa->setLu_date($now);
+        $this->em->getRepository(CategoryEntity::class)->persistAsFirstChildOf($aa, $a);
 
         $this->em->flush();
     }

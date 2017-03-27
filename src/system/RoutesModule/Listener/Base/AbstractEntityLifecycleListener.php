@@ -76,28 +76,6 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         if ($event->isPropagationStopped()) {
             return false;
         }
-
-        // delete workflow for this entity
-        $workflowHelper = $this->container->get('zikula_routes_module.workflow_helper');
-        $workflowHelper->normaliseWorkflowData($entity);
-        $workflow = $entity['__WORKFLOW__'];
-        if ($workflow['id'] > 0) {
-            $entityManager = $this->container->get('doctrine.orm.default_entity_manager'); // @todo maybe $args->getObjectManager()
-            $result = true;
-            try {
-                $workflow = $entityManager->find('Zikula\Core\Doctrine\Entity\WorkflowEntity', $workflow['id']);
-                $entityManager->remove($workflow);
-                $entityManager->flush();
-            } catch (\Exception $e) {
-                $result = false;
-            }
-            if (false === $result) {
-                $flashBag = $this->container->get('session')->getFlashBag();
-                $flashBag->add('error', $this->container->get('translator.default')->__('Error! Could not remove stored workflow. Deletion has been aborted.'));
-
-                return false;
-            }
-        }
     }
 
     /**
@@ -189,7 +167,7 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
      *
      * @see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/events.html#preupdate
      *
-     * @param LifecycleEventArgs $args Event arguments
+     * @param PreUpdateEventArgs $args Event arguments
      */
     public function preUpdate(PreUpdateEventArgs $args)
     {
@@ -201,7 +179,7 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
 
         // create the filter event and dispatch it
         $filterEventClass = '\\Zikula\\RoutesModule\\Event\\Filter' . ucfirst($entity->get_objectType()) . 'Event';
-        $event = new $filterEventClass($entity);
+        $event = new $filterEventClass($entity, $args->getEntityChangeSet());
         $this->container->get('event_dispatcher')->dispatch(constant('\\Zikula\\RoutesModule\\RoutesEvents::' . strtoupper($entity->get_objectType()) . '_PRE_UPDATE'), $event);
         if ($event->isPropagationStopped()) {
             return false;

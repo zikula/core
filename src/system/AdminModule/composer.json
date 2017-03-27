@@ -15,7 +15,14 @@
     },
     "require": {
         "php": ">=5.5.9"
+        "jquery.mmenu": "6.*"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/FrDH/jQuery.mmenu"
+        }
+    ],
     "extra": {
         "zikula": {
             "class": "Zikula\\AdminModule\\ZikulaAdminModule",

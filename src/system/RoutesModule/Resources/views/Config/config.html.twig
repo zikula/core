@@ -18,6 +18,17 @@
         
             {{ form_row(form.routeEntriesPerPage) }}
         </fieldset>
+        <div role="tabpanel" class="tab-pane fade" id="tabWorkflows" aria-labelledby="workflowsTab">
+            {% set tabTitle = __('Workflows') %}
+            <fieldset>
+                <legend>{{ tabTitle }}</legend>
+        
+                <p class="alert alert-info">{{ __('Here you can inspect and amend the existing workflows.') }}</p>
+        
+                <h4>{{ __('Routes') }}</h4>
+                <p><a href="{{ path('zikula_workflow_editor_index', { 'workflow': 'zikularoutesmodule_none' }) }}" title="{{ __('Edit workflow for routes') }}" target="_blank"><i class="fa fa-cubes"></i> {{ __('Edit routes workflow') }}</a>
+            </fieldset>
+        </div>
 
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-9">

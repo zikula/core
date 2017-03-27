@@ -18,7 +18,7 @@ use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionVarRepositoryInt
 /**
  * Class VariableApi
  *
- * This class manages the storage and retrieval of extension variables.
+ * This class manages the storage and retrieval of extension variables
  */
 class VariableApi
 {

@@ -36,8 +36,8 @@ For translations in Twig Zikula uses CoreGettext extensions apart from native Sy
 http://symfony.com/doc/current/book/translation.html#translations-in-templates
 
     //Symfony native notation
-    {% trans from "zikula" %}Error! Cannot determine valid 'cid' for edit mode in 'ZikulaCategoriesModule_admin_edit'.{% endtrans %}
-    {% trans %}Error! Cannot determine valid 'cid' for edit mode in 'ZikulaCategoriesModule_admin_edit'.{% endtrans %}
+    {% trans from "zikula" %}Error! That cannot be done.{% endtrans %}
+    {% trans %}Error! That cannot be done'.{% endtrans %}
 
     //Zikula gettext notation
     {{ __('Done!') }}

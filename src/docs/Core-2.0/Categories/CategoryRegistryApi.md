@@ -1,6 +1,8 @@
 CategoryRegistryApi
 ===================
 
+NOTE: This Api has been deprecated and will be removed at Core-2.0. Use CategoryRegistryRepository instead.
+
 classname: \Zikula\CategoriesModule\Api\CategoryRegistryApi
 
 service id = "zikula_categories_module.api.category_registry"

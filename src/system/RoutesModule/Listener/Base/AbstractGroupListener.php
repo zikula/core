@@ -27,13 +27,13 @@ abstract class AbstractGroupListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            GroupEvents::GROUP_CREATE      => ['create', 5],
-            GroupEvents::GROUP_UPDATE      => ['update', 5],
-            GroupEvents::GROUP_DELETE      => ['delete', 5],
-            GroupEvents::GROUP_ADD_USER    => ['addUser', 5],
-            GroupEvents::GROUP_REMOVE_USER => ['removeUser', 5],
+            GroupEvents::GROUP_CREATE                => ['create', 5],
+            GroupEvents::GROUP_UPDATE                => ['update', 5],
+            GroupEvents::GROUP_DELETE                => ['delete', 5],
+            GroupEvents::GROUP_ADD_USER              => ['addUser', 5],
+            GroupEvents::GROUP_REMOVE_USER           => ['removeUser', 5],
             GroupEvents::GROUP_APPLICATION_PROCESSED => ['applicationProcessed', 5],
-            GroupEvents::GROUP_NEW_APPLICATION => ['newApplication', 5]
+            GroupEvents::GROUP_NEW_APPLICATION       => ['newApplication', 5]
         ];
     }
     

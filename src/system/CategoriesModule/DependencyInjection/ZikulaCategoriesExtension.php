@@ -26,5 +26,10 @@ class ZikulaCategoriesExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(realpath(__DIR__.'/../Resources/config')));
 
         $loader->load('services.yml');
+        $loader->load('helpers.yml');
+        $loader->load('form_types.yml');
+        $loader->load('apis.yml');
+        $loader->load('doctrine.yml');
+        $loader->load('validators.yml');
     }
 }

@@ -71,7 +71,7 @@ abstract class AbstractRouteController extends AbstractController
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
         $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_OVERVIEW;
-        if (!$this->hasPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
+        if (!$this->hasPermission('ZikulaRoutesModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
         $templateParameters = [
@@ -131,7 +131,7 @@ abstract class AbstractRouteController extends AbstractController
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
         $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_READ;
-        if (!$this->hasPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
+        if (!$this->hasPermission('ZikulaRoutesModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
         $templateParameters = [
@@ -171,11 +171,8 @@ abstract class AbstractRouteController extends AbstractController
         ]);
 
         $templateParameters = $controllerHelper->processViewActionParameters($objectType, $sortableColumns, $templateParameters);
-
-        foreach ($templateParameters['items'] as $k => $entity) {
-            $entity->initWorkflow();
-        }
-
+        
+        
         // fetch and return the appropriate template
         return $viewHelper->processTemplate($objectType, 'view', $templateParameters);
     }
@@ -225,16 +222,15 @@ abstract class AbstractRouteController extends AbstractController
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
         $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_READ;
-        if (!$this->hasPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
+        if (!$this->hasPermission('ZikulaRoutesModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
         // create identifier for permission check
         $instanceId = $route->createCompositeIdentifier();
-        if (!$this->hasPermission($this->name . ':' . ucfirst($objectType) . ':', $instanceId . '::', $permLevel)) {
+        if (!$this->hasPermission('ZikulaRoutesModule:' . ucfirst($objectType) . ':', $instanceId . '::', $permLevel)) {
             throw new AccessDeniedException();
         }
-
-        $route->initWorkflow();
+        
         $templateParameters = [
             'routeArea' => $isAdmin ? 'admin' : '',
             $objectType => $route
@@ -298,7 +294,7 @@ abstract class AbstractRouteController extends AbstractController
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
         $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_EDIT;
-        if (!$this->hasPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
+        if (!$this->hasPermission('ZikulaRoutesModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
         $templateParameters = [
@@ -368,14 +364,12 @@ abstract class AbstractRouteController extends AbstractController
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
         $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_DELETE;
-        if (!$this->hasPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
+        if (!$this->hasPermission('ZikulaRoutesModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
         $logger = $this->get('logger');
         $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->get('zikula_users_module.current_user')->get('uname'), 'entity' => 'route', 'id' => $route->createCompositeIdentifier()];
-
-        $route->initWorkflow();
-
+        
         // determine available workflow actions
         $workflowHelper = $this->get('zikula_routes_module.workflow_helper');
         $actions = $workflowHelper->getActionsForObject($route);
@@ -499,8 +493,7 @@ abstract class AbstractRouteController extends AbstractController
             if (null === $entity) {
                 continue;
             }
-            $entity->initWorkflow();
-
+        
             // check if $action can be applied to this entity (may depend on it's current workflow state)
             $allowedActions = $workflowHelper->getActionsForObject($entity);
             $actionIds = array_keys($allowedActions);

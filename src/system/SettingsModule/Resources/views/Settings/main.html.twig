@@ -16,7 +16,7 @@
 
         <fieldset>
             <legend>{{ __('Main info') }}</legend>
-            <div class="zikulasettings-tab-container">
+            <div class="zikula-bootstrap-tab-container">
                 <ul class="nav nav-tabs" role="tablist">
                     {% for language, languageCode in languages %}
                     <li role="presentation"{% if languageCode == pagevars.lang %} class="active"{% endif %}><a href="#main-{{ languageCode|lower }}" aria-controls="main-{{ languageCode|lower }}" role="tab" data-toggle="tab">{{ language }}</a></li>
@@ -43,7 +43,7 @@
         </fieldset>
         <fieldset>
             <legend>{{ __('Meta tag settings') }}</legend>
-            <div class="zikulasettings-tab-container">
+            <div class="zikula-bootstrap-tab-container">
                 <ul class="nav nav-tabs" role="tablist">
                     {% for language, languageCode in languages %}
                     <li role="presentation"{% if languageCode == pagevars.lang %} class="active"{% endif %}><a href="#meta-{{ languageCode|lower }}" aria-controls="meta-{{ languageCode|lower }}" role="tab" data-toggle="tab">{{ language }}</a></li>

@@ -58,12 +58,13 @@ class CategoryRegistryEntity extends EntityAccess
     private $property;
 
     /**
-     * The category id to map this entity to
+     * The category to map this entity to
      *
-     * @ORM\Column(type="integer")
-     * @var integer
+     * @ORM\ManyToOne(targetEntity="CategoryEntity", inversedBy="attributes")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     * @var CategoryEntity
      */
-    private $category_id;
+    private $category;
 
     /**
      * The user id of the creator of this entity
@@ -188,23 +189,21 @@ class CategoryRegistryEntity extends EntityAccess
     }
 
     /**
-     * get the registry category id
-     *
-     * @return int the category id
+     * @return CategoryEntity
      */
-    public function getCategory_Id()
+    public function getCategory()
     {
-        return $this->category_id;
+        return $this->category;
     }
 
     /**
-     * set the registry category id
+     * set the category
      *
-     * @param int $category_id the category id
+     * @param CategoryEntity $category
      */
-    public function setCategory_Id($category_id)
+    public function setCategory(CategoryEntity $category)
     {
-        $this->category_id = $category_id;
+        $this->category = $category;
     }
 
     /**

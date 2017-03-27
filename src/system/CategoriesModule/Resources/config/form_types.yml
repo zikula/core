@@ -1,0 +1,14 @@
+services:
+    zikula_categories_module.form_type.categories_type:
+        class: Zikula\CategoriesModule\Form\Type\CategoriesType
+        arguments: ["@zikula_categories_module.category_registry_repository"]
+        tags:
+            - { name: form.type }
+
+    zikula_categories_module.form_type.category_tree_type:
+        class: Zikula\CategoriesModule\Form\Type\CategoryTreeType
+        arguments:
+          - "@zikula_categories_module.api.category"
+          - "@zikula_categories_module.category_repository"
+        tags:
+            - { name: form.type }

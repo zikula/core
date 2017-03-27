@@ -28,7 +28,7 @@ class CategoriesCollectionTransformer implements DataTransformerInterface
     public function __construct(array $options)
     {
         $classParents = class_parents($options['entityCategoryClass']);
-        if (!in_array('Zikula\CategoriesModule\Entity\AbstractCategoryAssignment', $classParents)) {
+        if (!in_array(AbstractCategoryAssignment::class, $classParents)) {
             throw new InvalidConfigurationException("Option 'entityCategoryClass' must extend Zikula\\CategoriesModule\\Entity\\AbstractCategoryAssignment");
         }
         $this->entityCategoryClass = $options['entityCategoryClass'];

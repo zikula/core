@@ -25,6 +25,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\RoutesModule\Entity\Factory\RoutesFactory;
+use Zikula\RoutesModule\Form\Type\Field\ArrayType;
+use Zikula\RoutesModule\Form\Type\Field\DateTimeType;
+use Zikula\RoutesModule\Form\Type\Field\MultiListType;
+use Zikula\RoutesModule\Form\Type\Field\UserType;
 use Zikula\RoutesModule\Helper\ListEntriesHelper;
 
 /**
@@ -109,6 +113,7 @@ abstract class AbstractRouteType extends AbstractType
             'multiple' => false,
             'expanded' => false
         ]);
+        
         $builder->add('replacedRouteName', TextType::class, [
             'label' => $this->__('Replaced route name') . ':',
             'empty_data' => '',
@@ -119,6 +124,7 @@ abstract class AbstractRouteType extends AbstractType
             ],
             'required' => false,
         ]);
+        
         $builder->add('bundle', TextType::class, [
             'label' => $this->__('Bundle') . ':',
             'empty_data' => '',
@@ -129,6 +135,7 @@ abstract class AbstractRouteType extends AbstractType
             ],
             'required' => true,
         ]);
+        
         $builder->add('controller', TextType::class, [
             'label' => $this->__('Controller') . ':',
             'empty_data' => '',
@@ -139,6 +146,7 @@ abstract class AbstractRouteType extends AbstractType
             ],
             'required' => true,
         ]);
+        
         $builder->add('action', TextType::class, [
             'label' => $this->__('Action') . ':',
             'empty_data' => '',
@@ -149,6 +157,7 @@ abstract class AbstractRouteType extends AbstractType
             ],
             'required' => true,
         ]);
+        
         $builder->add('path', TextType::class, [
             'label' => $this->__('Path') . ':',
             'empty_data' => '',
@@ -159,6 +168,7 @@ abstract class AbstractRouteType extends AbstractType
             ],
             'required' => true,
         ]);
+        
         $builder->add('host', TextType::class, [
             'label' => $this->__('Host') . ':',
             'empty_data' => '',
@@ -213,6 +223,7 @@ abstract class AbstractRouteType extends AbstractType
             'multiple' => true,
             'expanded' => false
         ]);
+        
         $builder->add('prependBundlePrefix', CheckboxType::class, [
             'label' => $this->__('Prepend bundle prefix') . ':',
             'attr' => [
@@ -221,6 +232,7 @@ abstract class AbstractRouteType extends AbstractType
             ],
             'required' => true,
         ]);
+        
         $builder->add('translatable', CheckboxType::class, [
             'label' => $this->__('Translatable') . ':',
             'attr' => [
@@ -229,6 +241,7 @@ abstract class AbstractRouteType extends AbstractType
             ],
             'required' => true,
         ]);
+        
         $builder->add('translationPrefix', TextType::class, [
             'label' => $this->__('Translation prefix') . ':',
             'empty_data' => '',
@@ -240,7 +253,7 @@ abstract class AbstractRouteType extends AbstractType
             'required' => false,
         ]);
         
-        $builder->add('defaults', 'Zikula\RoutesModule\Form\Type\Field\ArrayType', [
+        $builder->add('defaults', ArrayType::class, [
             'label' => $this->__('Defaults') . ':',
             'help' => $this->__('Enter one entry per line.'),
             'empty_data' => '',
@@ -251,7 +264,7 @@ abstract class AbstractRouteType extends AbstractType
             'required' => true,
         ]);
         
-        $builder->add('requirements', 'Zikula\RoutesModule\Form\Type\Field\ArrayType', [
+        $builder->add('requirements', ArrayType::class, [
             'label' => $this->__('Requirements') . ':',
             'help' => $this->__('Enter one entry per line.'),
             'empty_data' => '',
@@ -261,6 +274,7 @@ abstract class AbstractRouteType extends AbstractType
             ],
             'required' => false,
         ]);
+        
         $builder->add('condition', TextType::class, [
             'label' => $this->__('Condition') . ':',
             'empty_data' => '',
@@ -271,6 +285,7 @@ abstract class AbstractRouteType extends AbstractType
             ],
             'required' => false,
         ]);
+        
         $builder->add('description', TextType::class, [
             'label' => $this->__('Description') . ':',
             'empty_data' => '',
@@ -281,6 +296,7 @@ abstract class AbstractRouteType extends AbstractType
             ],
             'required' => false,
         ]);
+        
         $builder->add('sort', IntegerType::class, [
             'label' => $this->__('Sort') . ':',
             'empty_data' => '',
@@ -292,6 +308,7 @@ abstract class AbstractRouteType extends AbstractType
             'required' => false,
             'scale' => 0
         ]);
+        
         $builder->add('group', TextType::class, [
             'label' => $this->__('Group') . ':',
             'empty_data' => '',
@@ -316,7 +333,7 @@ abstract class AbstractRouteType extends AbstractType
             return;
         }
     
-        $builder->add('moderationSpecificCreator', 'Zikula\RoutesModule\Form\Type\Field\UserType', [
+        $builder->add('moderationSpecificCreator', UserType::class, [
             'mapped' => false,
             'label' => $this->__('Creator') . ':',
             'attr' => [
@@ -328,7 +345,7 @@ abstract class AbstractRouteType extends AbstractType
             'required' => false,
             'help' => $this->__('Here you can choose a user which will be set as creator')
         ]);
-        $builder->add('moderationSpecificCreationDate', 'Zikula\RoutesModule\Form\Type\Field\DateTimeType', [
+        $builder->add('moderationSpecificCreationDate', DateTimeType::class, [
             'mapped' => false,
             'label' => $this->__('Creation date') . ':',
             'attr' => [
@@ -370,11 +387,10 @@ abstract class AbstractRouteType extends AbstractType
     {
         foreach ($options['actions'] as $action) {
             $builder->add($action['id'], SubmitType::class, [
-                'label' => $this->__(/** @Ignore */$action['title']),
+                'label' => $action['title'],
                 'icon' => ($action['id'] == 'delete' ? 'fa-trash-o' : ''),
                 'attr' => [
-                    'class' => $action['buttonClass'],
-                    'title' => $this->__(/** @Ignore */$action['description'])
+                    'class' => $action['buttonClass']
                 ]
             ]);
         }
