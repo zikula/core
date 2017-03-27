@@ -1975,16 +1975,16 @@
         },
         {
             "name": "jQuery.mmenu",
-            "version": "6.0.0",
+            "version": "6.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FrDH/jQuery.mmenu.git",
-                "reference": "28cdf6d0724f6ce983423185de22acde654b70df"
+                "reference": "1188dfd64542d70239e0f6109a1723f96edd98db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FrDH/jQuery.mmenu/zipball/28cdf6d0724f6ce983423185de22acde654b70df",
-                "reference": "28cdf6d0724f6ce983423185de22acde654b70df",
+                "url": "https://api.github.com/repos/FrDH/jQuery.mmenu/zipball/1188dfd64542d70239e0f6109a1723f96edd98db",
+                "reference": "1188dfd64542d70239e0f6109a1723f96edd98db",
                 "shasum": ""
             },
             "type": "library",
@@ -2007,10 +2007,10 @@
                 "submenu"
             ],
             "support": {
-                "source": "https://github.com/FrDH/jQuery.mmenu/tree/v6.0.0",
+                "source": "https://github.com/FrDH/jQuery.mmenu/tree/v6.0.1",
                 "issues": "https://github.com/FrDH/jQuery.mmenu/issues"
             },
-            "time": "2017-03-20T21:43:15+00:00"
+            "time": "2017-03-24T21:10:28+00:00"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -5038,12 +5038,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "106d6a600ca80d7a8996521e5563507a3f824372"
+                "reference": "7d78bd3eaa61ce00a3cc9e0bbc4f801c1407078a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/106d6a600ca80d7a8996521e5563507a3f824372",
-                "reference": "106d6a600ca80d7a8996521e5563507a3f824372",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/7d78bd3eaa61ce00a3cc9e0bbc4f801c1407078a",
+                "reference": "7d78bd3eaa61ce00a3cc9e0bbc4f801c1407078a",
                 "shasum": ""
             },
             "require": {
@@ -5104,7 +5104,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2017-03-09 11:01:34"
+            "time": "2017-03-24 20:12:19"
         },
         {
             "name": "zikula/wizard",
