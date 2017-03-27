@@ -16,7 +16,6 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\CategoriesModule\Api\CategoryApi;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 use Zikula\CategoriesModule\Form\DataTransformer\CategoryTreeTransformer;
 
@@ -26,11 +25,6 @@ use Zikula\CategoriesModule\Form\DataTransformer\CategoryTreeTransformer;
 class CategoryTreeType extends AbstractType
 {
     /**
-     * @var CategoryApi
-     */
-    private $categoryApi;
-
-    /**
      * @var CategoryRepositoryInterface
      */
     private $categoryRepository;
@@ -38,12 +32,10 @@ class CategoryTreeType extends AbstractType
     /**
      * CategoryTreeType constructor.
      *
-     * @param CategoryApi $categoryApi CategoryApi service instance
      * @param CategoryRepositoryInterface $categoryRepository
      */
-    public function __construct(CategoryApi $categoryApi, CategoryRepositoryInterface $categoryRepository)
+    public function __construct(CategoryRepositoryInterface $categoryRepository)
     {
-        $this->categoryApi = $categoryApi;
         $this->categoryRepository = $categoryRepository;
     }
 
