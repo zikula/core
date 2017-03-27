@@ -1,6 +1,7 @@
 services:
     zikula_categories_module.api.category:
         class: Zikula\CategoriesModule\Api\CategoryApi
+        deprecated: 'The "%service_id%" service is deprecated. Use "zikula_categories_module.category_repository" instead'
         arguments:
           - "@translator.default"
           - "@doctrine.orm.entity_manager"
@@ -17,6 +18,7 @@ services:
 
     zikula_categories_module.api.category_registry:
         class: Zikula\CategoriesModule\Api\CategoryRegistryApi
+        deprecated: 'The "%service_id%" service is deprecated. Use "zikula_categories_module.category_registry_repository" instead'
         arguments:
           - "@translator.default"
           - "@doctrine.orm.entity_manager"
