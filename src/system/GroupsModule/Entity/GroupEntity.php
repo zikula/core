@@ -55,13 +55,6 @@ class GroupEntity extends EntityAccess
     private $description;
 
     /**
-     * group prefix
-     * @deprecated unused
-     * @ORM\Column(type="string", length=25)
-     */
-    private $prefix;
-
-    /**
      * state of the group
      *
      * @ORM\Column(type="smallint")
@@ -69,32 +62,11 @@ class GroupEntity extends EntityAccess
     private $state;
 
     /**
-     * number of members of the group
-     * @deprecated unused
-     * @ORM\Column(type="integer")
-     */
-    private $nbuser;
-
-    /**
      * maximum membership count
      *
      * @ORM\Column(type="integer")
      */
     private $nbumax;
-
-    /**
-     * link for the group
-     * @deprecated unused
-     * @ORM\Column(type="integer")
-     */
-    private $link;
-
-    /**
-     * master uid for the group
-     * @deprecated unused
-     * @ORM\Column(type="integer")
-     */
-    private $uidmaster;
 
     /**
      * @ORM\ManyToMany(targetEntity="Zikula\UsersModule\Entity\UserEntity", mappedBy="groups")
@@ -119,12 +91,8 @@ class GroupEntity extends EntityAccess
         $this->name = '';
         $this->gtype = 0;
         $this->description = '';
-        $this->prefix = '';
         $this->state = 0;
-        $this->nbuser = 0;
         $this->nbumax = 0;
-        $this->link = 0;
-        $this->uidmaster = 0;
         $this->users = new ArrayCollection();
         $this->applications = new ArrayCollection();
     }

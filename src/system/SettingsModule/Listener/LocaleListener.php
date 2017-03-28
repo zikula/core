@@ -37,14 +37,6 @@ class LocaleListener implements EventSubscriberInterface
 
     public function onKernelRequest(GetResponseEvent $event)
     {
-        // remove 'hl' cookie as set by our translator.
-        // @deprecated remove at Core-2.0
-        if (isset($_COOKIE['hl'])) {
-            unset($_COOKIE['hl']);
-            setcookie('hl', '', time() - 86400, '/');
-        }
-        // end deprecated code
-
         $request = $event->getRequest();
         if (!$request->hasPreviousSession()) {
             return;

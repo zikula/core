@@ -58,20 +58,6 @@ class UserEntity extends EntityAccess
     private $email;
 
     /**
-     * @deprecated at Core-1.4.3 and removed in 2.0
-     * Password: This will be blank for all new accounts and as each new user logs in, it will be removed.
-     *
-     * Old information:
-     * User's password for logging in.
-     * This value is salted and hashed. The salt is stored in this field, delimited from the hash with a dollar sign character ($).
-     * The hash algorithm is stored as a numeric code in the hash_method field. This field may be blank in instances
-     * where the user registered with an alternative authentication module (e.g., OpenID) and did not also establish a password for his web site account
-     *
-     * @ORM\Column(type="string", length=138)
-     */
-    private $pass;
-
-    /**
      * Account State: The user's current state, see \Zikula\UsersModule\Constant::ACTIVATED_* for defined constants.
      * A state represented by a negative integer means that the user's account is in a pending state, and should not yet be considered a "real" user account.
      * For example, user accounts pending the completion of the registration process (because either moderation, e-mail verification, or both are in use)
@@ -181,7 +167,6 @@ class UserEntity extends EntityAccess
     {
         $this->uname = '';
         $this->email = '';
-        $this->pass = '';
         $this->activated = 0;
         $this->approved_date = new \DateTime("1970-01-01 00:00:00");
         $this->approved_by = 0;
@@ -262,26 +247,6 @@ class UserEntity extends EntityAccess
     public function setEmail($email)
     {
         $this->email = $email;
-    }
-
-    /**
-     * get the password of the user
-     *
-     * @return string the user's password
-     */
-    public function getPass()
-    {
-        return $this->pass;
-    }
-
-    /**
-     * set the password for the user
-     *
-     * @param string $pass the user's password
-     */
-    public function setPass($pass)
-    {
-        $this->pass = $pass;
     }
 
     /**

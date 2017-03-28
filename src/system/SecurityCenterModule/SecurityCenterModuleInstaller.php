@@ -56,7 +56,6 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('sessionsavepath', '');
         $this->setSystemVar('gc_probability', 100);
         $this->setSystemVar('sessioncsrftokenonetime', 1);  // 1 means use same token for entire session
-        $this->setSystemVar('anonymoussessions', 1); // @deprecated
         $this->setSystemVar('sessionrandregenerate', 1);
         $this->setSystemVar('sessionregenerate', 1);
         $this->setSystemVar('sessionregeneratefreq', 10);

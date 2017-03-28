@@ -127,24 +127,6 @@ class Engine
     }
 
     /**
-     * BC method to wrap a block in the theme's block template if theme is twig-based.
-     * @deprecated
-     * @param array $blockInfo
-     * @return string
-     */
-    public function wrapBcBlockInTheme(array $blockInfo)
-    {
-        $activeTheme = $this->getTheme();
-        if (!isset($activeTheme)) {
-            return false;
-        }
-        $position = !empty($blockInfo['position']) ? $blockInfo['position'] : 'none';
-        $content = $activeTheme->generateThemedBlockContent($this->getRealm(), $position, $blockInfo['content'], $blockInfo['title']);
-
-        return $content;
-    }
-
-    /**
      * Wrap the block content in the theme block template and wrap that with a unique div if required.
      * @api Core-2.0
      * @param string $content
@@ -160,16 +142,6 @@ class Engine
         $wrap = isset($themeConfig['blockWrapping']) ? $themeConfig['blockWrapping'] : true;
 
         return $wrap ? $this->getTheme()->wrapBlockContentWithUniqueDiv($content, $positionName, $blockType, $bid) : $content;
-    }
-
-    /**
-     * @deprecated This will not be needed >=2.0 (when Smarty is removed)
-     * may consider leaving this present and public in 2.0 (unsure)
-     * @return string
-     */
-    public function getThemeName()
-    {
-        return $this->getTheme()->getName();
     }
 
     /**
@@ -332,8 +304,7 @@ class Engine
     /**
      * Set the theme based on:
      *  1) manual setting
-     *  2) the request attributes (e.g. `_theme`) @deprecated
-     *  3) the default system theme
+     *  2) the default system theme
      * @param string|null $newThemeName
      * @return mixed
      * kernel::getTheme() @throws \InvalidArgumentException if theme is invalid
@@ -341,15 +312,6 @@ class Engine
     private function setActiveTheme($newThemeName = null)
     {
         $activeTheme = !empty($newThemeName) ? $newThemeName : $this->variableApi->getSystemVar('Default_Theme');
-        $request = $this->requestStack->getMasterRequest();
-        if (isset($request)) {
-            // This allows for setting the theme via the old method in \UserUtil::getTheme and check permissions
-            // This method is @deprecated and will be removed in Core-2.0
-            $themeByRequest = $request->attributes->get('_theme');
-            if (!empty($themeByRequest)) {
-                $activeTheme = $themeByRequest;
-            }
-        }
         try {
             $this->activeThemeBundle = $this->kernel->getTheme($activeTheme);
             $this->activeThemeBundle->loadThemeVars();

@@ -89,8 +89,6 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
         }
 
         // set some defaults
-        $this->pageVars->set('lang', $event->getRequest()->getLocale()); // @deprecated use app.request.locale in the template
-        $this->pageVars->set('langdirection', 'auto'); // @deprecated remove at Core-2.0
         $this->pageVars->set('title', $this->variableApi->getSystemVar('defaultpagetitle'));
         $this->pageVars->set('meta.charset', $this->kernel->getCharset());
         $this->pageVars->set('meta.description', $this->variableApi->getSystemVar('defaultmetadescription'));

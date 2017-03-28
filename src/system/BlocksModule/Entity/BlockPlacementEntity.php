@@ -132,22 +132,4 @@ class BlockPlacementEntity extends EntityAccess
         $this->setPosition(null);
         $this->setBlock(null);
     }
-
-    /**
-     * @deprecated
-     * @return mixed
-     */
-    public function getPid()
-    {
-        return $this->position->getPid();
-    }
-
-    /**
-     * @deprecated
-     * @return int
-     */
-    public function getBid()
-    {
-        return $this->block->getBid();
-    }
 }
