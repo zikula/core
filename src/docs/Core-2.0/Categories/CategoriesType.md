@@ -156,4 +156,3 @@ PageType
  - `includeGrandChildren` - @deprecated - use 'direct'.
  - `direct` - (boolean) use only direct children or include all descendant generations (default `true`).
  - `attr` - (array) attributes array for each select box (default `[]`).
- - `csrf_protection` - (boolean) this overrides the default symfony behavior to default to `false`.
