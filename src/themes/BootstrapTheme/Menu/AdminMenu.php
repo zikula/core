@@ -44,7 +44,7 @@ class AdminMenu implements ContainerAwareInterface
             $menu->addChild($this->__('Groups'), ['route' => 'zikulagroupsmodule_group_adminlist']);
         }
         if ($permApi->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            $menu->addChild($this->__('Permissions'), ['route' => 'zikulapermissionsmodule_admin_index']);
+            $menu->addChild($this->__('Permissions'), ['route' => 'zikulapermissionsmodule_permission_list']);
         }
         if ($permApi->hasPermission('ZikulaThemeModule::', '::', ACCESS_EDIT)) {
             $menu->addChild($this->__('Themes'), ['route' => 'zikulathememodule_theme_view']);
