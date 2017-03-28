@@ -55,6 +55,14 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '1.0.0':
+                $menuItems = $this->entityManager->getRepository(MenuItemEntity::class)->findAll();
+                foreach ($menuItems as $menuItem) {
+                    if ($menuItem->getOption('route') == 'zikulasearchmodule_user_form') {
+                        $menuItem->setOption('route', 'zikulasearchmodule_search_execute');
+                    }
+                }
+                $this->entityManager->flush();
+            case '1.0.1':
                 // current version
         }
 
@@ -98,7 +106,7 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
         $search->setParent($root);
         $search->setTitle($this->__('Site search'));
         $search->setOptions([
-            'route' => 'zikulasearchmodule_user_form',
+            'route' => 'zikulasearchmodule_search_execute',
             'attributes' => [
                 'icon' => 'fa fa-search'
             ]
