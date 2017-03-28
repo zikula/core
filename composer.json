@@ -6,11 +6,8 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {
-        "psr-0": {
-            "Zikula\\": "src/lib"
-        },
         "psr-4": {
-            "Zikula\\": ["src/system", "src/themes"]
+            "Zikula\\": ["src/system", "src/themes", "src/lib/Zikula"]
         }
     },
     "authors": [
