@@ -10,6 +10,9 @@ engines:
   eslint:
     enabled: true
     channel: "eslint-3"
+    checks:
+      no-alert:
+        enabled: false
   fixme:
     enabled: true
     config:
