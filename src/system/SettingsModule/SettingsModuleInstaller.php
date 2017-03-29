@@ -89,13 +89,6 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
 
         $this->setSystemVar('idnnames', 1);
 
-        // create schema
-        try {
-            $this->schemaTool->create(['Zikula\Core\Doctrine\Entity\WorkflowEntity']);
-        } catch (\Exception $e) {
-            return false;
-        }
-
         // Initialisation successful
         return true;
     }
