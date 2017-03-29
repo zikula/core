@@ -11,7 +11,6 @@
 
 namespace Zikula\SecurityCenterModule\Listener;
 
-use CacheUtil;
 use Doctrine\ORM\EntityManagerInterface;
 use IDS\Init as IdsInit;
 use IDS\Monitor as IdsMonitor;
