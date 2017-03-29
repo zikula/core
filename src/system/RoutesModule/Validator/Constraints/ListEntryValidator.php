@@ -12,7 +12,7 @@
 
 namespace Zikula\RoutesModule\Validator\Constraints;
 
-use Zikula\RoutesModule\Validator\Constraints\AbstractListEntryValidator;
+use Zikula\RoutesModule\Validator\Constraints\Base\AbstractListEntryValidator;
 
 /**
  * List entry validator.
