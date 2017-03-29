@@ -53,6 +53,7 @@ application "Routes" {
             Resources/config/forms.yml,
             Resources/config/helpers.yml,
             Resources/config/services.yml,
+            Resources/config/twig.yml,
             Resources/views/Route/display.html.twig,
             Resources/views/Route/edit.html.twig,
             Resources/views/Route/view.html.twig

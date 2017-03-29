@@ -15,11 +15,8 @@ namespace Zikula\RoutesModule\Entity\Base;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Zikula\RoutesModule\Validator\Constraints as RoutesAssert;
 use Zikula\RoutesModule\Traits\StandardFieldsTrait;
-
-use RuntimeException;
-use ServiceUtil;
 use Zikula\Core\Doctrine\EntityAccess;
 
 /**
@@ -46,12 +43,6 @@ abstract class AbstractRouteEntity extends EntityAccess
     protected $_objectType = 'route';
     
     /**
-     * @Assert\Type(type="bool")
-     * @var boolean Option to bypass validation if needed
-     */
-    protected $_bypassValidation = false;
-    
-    /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", unique=true)
@@ -66,7 +57,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * the current workflow state
      * @ORM\Column(length=20)
      * @Assert\NotBlank()
-     * @Assert\Choice(callback="getWorkflowStateAllowedValues", multiple=false)
+     * @RoutesAssert\ListEntry(entityName="route", propertyName="workflowState", multiple=false)
      * @var string $workflowState
      */
     protected $workflowState = 'initial';
@@ -74,7 +65,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     /**
      * @ORM\Column(length=255)
      * @Assert\NotBlank()
-     * @Assert\Choice(callback="getRouteTypeAllowedValues", multiple=false)
+     * @RoutesAssert\ListEntry(entityName="route", propertyName="routeType", multiple=false)
      * @var string $routeType
      */
     protected $routeType = 'additional';
@@ -128,6 +119,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     /**
      * @ORM\Column(length=255)
      * @Assert\NotBlank()
+     * @RoutesAssert\ListEntry(entityName="route", propertyName="schemes", multiple=true)
      * @var string $schemes
      */
     protected $schemes = 'http';
@@ -135,6 +127,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     /**
      * @ORM\Column(length=255)
      * @Assert\NotBlank()
+     * @RoutesAssert\ListEntry(entityName="route", propertyName="methods", multiple=true)
      * @var string $methods
      */
     protected $methods = 'GET';
@@ -247,29 +240,6 @@ abstract class AbstractRouteEntity extends EntityAccess
     {
         $this->_objectType = $_objectType;
     }
-    
-    /**
-     * Returns the _bypass validation.
-     *
-     * @return boolean
-     */
-    public function get_bypassValidation()
-    {
-        return $this->_bypassValidation;
-    }
-    
-    /**
-     * Sets the _bypass validation.
-     *
-     * @param boolean $_bypassValidation
-     *
-     * @return void
-     */
-    public function set_bypassValidation($_bypassValidation)
-    {
-        $this->_bypassValidation = $_bypassValidation;
-    }
-    
     
     /**
      * Returns the id.
@@ -715,9 +685,6 @@ abstract class AbstractRouteEntity extends EntityAccess
         $this->group = isset($group) ? $group : '';
     }
     
-    
-    
-    
     /**
      * Returns the formatted title conforming to the display pattern
      * specified for this entity.
@@ -726,8 +693,6 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function getTitleFromDisplayPattern()
     {
-        $listHelper = ServiceUtil::get('zikula_routes_module.listentries_helper');
-    
         $formattedTitle = ''
                 . $this->getPath()
                 . ' ('
@@ -736,128 +701,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     
         return $formattedTitle;
     }
-    
-    
-    /**
-     * Returns a list of possible choices for the workflowState list field.
-     * This method is used for validation.
-     *
-     * @return array List of allowed choices
-     */
-    public static function getWorkflowStateAllowedValues()
-    {
-        $container = ServiceUtil::get('service_container');
-        $helper = $container->get('zikula_routes_module.listentries_helper');
-        $listEntries = $helper->getWorkflowStateEntriesForRoute();
-    
-        $allowedValues = ['initial'];
-        foreach ($listEntries as $entry) {
-            $allowedValues[] = $entry['value'];
-        }
-    
-        return $allowedValues;
-    }
-    
-    /**
-     * Returns a list of possible choices for the routeType list field.
-     * This method is used for validation.
-     *
-     * @return array List of allowed choices
-     */
-    public static function getRouteTypeAllowedValues()
-    {
-        $container = ServiceUtil::get('service_container');
-        $helper = $container->get('zikula_routes_module.listentries_helper');
-        $listEntries = $helper->getRouteTypeEntriesForRoute();
-    
-        $allowedValues = [];
-        foreach ($listEntries as $entry) {
-            $allowedValues[] = $entry['value'];
-        }
-    
-        return $allowedValues;
-    }
-    
-    /**
-     * @Assert\Callback()
-     */
-    public function isSchemesValueAllowed(ExecutionContextInterface $context)
-    {
-        $container = ServiceUtil::get('service_container');
-        $helper = $container->get('zikula_routes_module.listentries_helper');
-        $listEntries = $helper->getSchemesEntriesForRoute();
-    
-        $allowedValues = [];
-        foreach ($listEntries as $entry) {
-            $allowedValues[] = $entry['value'];
-        }
-    
-        $selected = explode('###', $this->schemes);
-        foreach ($selected as $value) {
-            if ($value == '') {
-                continue;
-            }
-            if (!in_array($value, $allowedValues, true)) {
-                $context->buildViolation($container->get('translator.default')->__('Invalid value provided'))
-                    ->atPath('schemes')
-                    ->addViolation();
-            }
-        }
-    }
-    
-    /**
-     * @Assert\Callback()
-     */
-    public function isMethodsValueAllowed(ExecutionContextInterface $context)
-    {
-        $container = ServiceUtil::get('service_container');
-        $helper = $container->get('zikula_routes_module.listentries_helper');
-        $listEntries = $helper->getMethodsEntriesForRoute();
-    
-        $allowedValues = [];
-        foreach ($listEntries as $entry) {
-            $allowedValues[] = $entry['value'];
-        }
-    
-        $selected = explode('###', $this->methods);
-        foreach ($selected as $value) {
-            if ($value == '') {
-                continue;
-            }
-            if (!in_array($value, $allowedValues, true)) {
-                $context->buildViolation($container->get('translator.default')->__('Invalid value provided'))
-                    ->atPath('methods')
-                    ->addViolation();
-            }
-        }
-    }
-    
-    /**
-     * Start validation and raise exception if invalid data is found.
-     *
-     * @return boolean Whether everything is valid or not
-     */
-    public function validate()
-    {
-        if (true === $this->_bypassValidation) {
-            return true;
-        }
-    
-        $validator = ServiceUtil::get('validator');
-        $errors = $validator->validate($this);
-    
-        if (count($errors) > 0) {
-            $flashBag = ServiceUtil::get('session')->getFlashBag();
-            foreach ($errors as $error) {
-                $flashBag->add('error', $error->getMessage());
-            }
-    
-            return false;
-        }
-    
-        return true;
-    }
-    
+
     /**
      * Return entity data in JSON format.
      *
@@ -952,9 +796,6 @@ abstract class AbstractRouteEntity extends EntityAccess
     
         // unset identifiers
         $this->setId(0);
-    
-        // reset workflow
-        $this->resetWorkflow();
     
         $this->setCreatedBy(null);
         $this->setCreatedDate(null);

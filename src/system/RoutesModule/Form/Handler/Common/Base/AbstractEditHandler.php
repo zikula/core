@@ -241,8 +241,8 @@ abstract class AbstractEditHandler
         ControllerHelper $controllerHelper,
         ModelHelper $modelHelper,
         SelectionHelper $selectionHelper,
-        WorkflowHelper $workflowHelper)
-    {
+        WorkflowHelper $workflowHelper
+    ) {
         $this->kernel = $kernel;
         $this->setTranslator($translator);
         $this->formFactory = $formFactory;

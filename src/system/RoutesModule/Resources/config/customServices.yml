@@ -4,7 +4,10 @@ parameters:
     jms_i18n_routing.route_translation_extractor.class: Zikula\RoutesModule\Translation\ZikulaRouteTranslationExtractor
 
 services:
-    zikula_routes_module.routing_finder:
+    zikula_routes_module.sanitize_helper:
+        class: Zikula\RoutesModule\Helper\SanitizeHelper
+
+    zikula_routes_module.route_finder:
         class: Zikula\RoutesModule\Routing\RouteFinder
 
     zikula_routes_module.route_dumper_helper:
@@ -20,17 +23,17 @@ services:
     zikula_routes_module.routing_loader:
         class: Zikula\RoutesModule\Routing\RouteLoader
         arguments:
-            - "@doctrine.orm.entity_manager"
-            - "@service_container"
+            - "@doctrine.orm.default_entity_manager"
+            - "@translator"
             - "@kernel"
+            - "@zikula_routes_module.sanitize_helper"
+            - "%locale%"
         tags:
             - { name: routing.loader }
 
     zikula_routes_module.installer_listener:
         class: Zikula\RoutesModule\Listener\InstallerListener
         arguments:
-            - "@doctrine.orm.entity_manager"
-            - "@zikula_routes_module.routing_finder"
             - "@zikula.cache_clearer"
             - "@zikula_routes_module.route_dumper_helper"
             - "@zikula_routes_module.multilingual_routing_helper"

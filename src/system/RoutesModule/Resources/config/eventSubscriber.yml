@@ -12,10 +12,10 @@ services:
 #        tags:
 #            - { name: kernel.event_subscriber }
     
-    zikula_routes_module.installer_listener:
-        class: Zikula\RoutesModule\Listener\InstallerListener
-        tags:
-            - { name: kernel.event_subscriber }
+#    zikula_routes_module.installer_listener:
+#        class: Zikula\RoutesModule\Listener\InstallerListener
+#        tags:
+#            - { name: kernel.event_subscriber }
     
 #    zikula_routes_module.moduledispatch_listener:
 #        class: Zikula\RoutesModule\Listener\ModuleDispatchListener

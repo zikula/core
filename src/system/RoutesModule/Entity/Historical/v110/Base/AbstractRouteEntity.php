@@ -16,14 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
-
-use DataUtil;
-use FormUtil;
-use RuntimeException;
-use ServiceUtil;
-use UserUtil;
-use Zikula_Workflow_Util;
+use Zikula\RoutesModule\Validator\Constraints as RoutesAssert;
 use Zikula\Core\Doctrine\EntityAccess;
 
 /**
@@ -45,17 +38,6 @@ abstract class AbstractRouteEntity extends EntityAccess
     protected $_objectType = 'route';
 
     /**
-     * @Assert\Type(type="bool")
-     * @var boolean Option to bypass validation if needed
-     */
-    protected $_bypassValidation = false;
-
-    /**
-     * @var array The current workflow data of this object
-     */
-    protected $__WORKFLOW__ = [];
-
-    /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", unique=true)
@@ -70,7 +52,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * the current workflow state
      * @ORM\Column(length=20)
      * @Assert\NotBlank()
-     * @Assert\Choice(callback="getWorkflowStateAllowedValues", multiple=false)
+     * @RoutesAssert\ListEntry(entityName="route", propertyName="workflowState", multiple=false)
      * @var string $workflowState
      */
     protected $workflowState = 'initial';
@@ -78,7 +60,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     /**
      * @ORM\Column(length=255)
      * @Assert\NotBlank()
-     * @Assert\Choice(callback="getRouteTypeAllowedValues", multiple=false)
+     * @RoutesAssert\ListEntry(entityName="route", propertyName="routeType", multiple=false)
      * @var string $routeType
      */
     protected $routeType = 'additional';
@@ -132,6 +114,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     /**
      * @ORM\Column(length=255)
      * @Assert\NotBlank()
+     * @RoutesAssert\ListEntry(entityName="route", propertyName="schemes", multiple=true)
      * @var string $schemes
      */
     protected $schemes = 'http';
@@ -139,6 +122,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     /**
      * @ORM\Column(length=255)
      * @Assert\NotBlank()
+     * @RoutesAssert\ListEntry(entityName="route", propertyName="methods", multiple=true)
      * @var string $methods
      */
     protected $methods = 'GET';
@@ -259,8 +243,6 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function __construct()
     {
-        $this->workflowState = 'initial';
-        $this->initWorkflow();
     }
 
     /**
@@ -284,51 +266,6 @@ abstract class AbstractRouteEntity extends EntityAccess
     {
         $this->_objectType = $_objectType;
     }
-
-    /**
-     * Gets the _bypass validation.
-     *
-     * @return boolean
-     */
-    public function get_bypassValidation()
-    {
-        return $this->_bypassValidation;
-    }
-
-    /**
-     * Sets the _bypass validation.
-     *
-     * @param boolean $_bypassValidation
-     *
-     * @return void
-     */
-    public function set_bypassValidation($_bypassValidation)
-    {
-        $this->_bypassValidation = $_bypassValidation;
-    }
-
-    /**
-     * Gets the __ w o r k f l o w__.
-     *
-     * @return array
-     */
-    public function get__WORKFLOW__()
-    {
-        return $this->__WORKFLOW__;
-    }
-
-    /**
-     * Sets the __ w o r k f l o w__.
-     *
-     * @param array $__WORKFLOW__
-     *
-     * @return void
-     */
-    public function set__WORKFLOW__(array $__WORKFLOW__ = [])
-    {
-        $this->__WORKFLOW__ = $__WORKFLOW__;
-    }
-
 
     /**
      * Gets the id.
@@ -862,9 +799,6 @@ abstract class AbstractRouteEntity extends EntityAccess
         $this->updatedDate = $updatedDate;
     }
 
-
-
-
     /**
      * Returns the formatted title conforming to the display pattern
      * specified for this entity.
@@ -873,9 +807,6 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function getTitleFromDisplayPattern()
     {
-        $serviceManager = ServiceUtil::getManager();
-        $listHelper = $serviceManager->get('zikula_routes_module.listentries_helper');
-
         $formattedTitle = ''
                 . $this->getPath()
                 . ' ('
@@ -883,197 +814,6 @@ abstract class AbstractRouteEntity extends EntityAccess
                 . ')';
 
         return $formattedTitle;
-    }
-
-
-    /**
-     * Returns a list of possible choices for the workflowState list field.
-     * This method is used for validation.
-     *
-     * @return array List of allowed choices
-     */
-    public static function getWorkflowStateAllowedValues()
-    {
-        $serviceManager = ServiceUtil::getManager();
-        $helper = $serviceManager->get('zikula_routes_module.listentries_helper');
-        $listEntries = $helper->getWorkflowStateEntriesForRoute();
-
-        $allowedValues = [];
-        foreach ($listEntries as $entry) {
-            $allowedValues[] = $entry['value'];
-        }
-
-        return $allowedValues;
-    }
-
-    /**
-     * Returns a list of possible choices for the routeType list field.
-     * This method is used for validation.
-     *
-     * @return array List of allowed choices
-     */
-    public static function getRouteTypeAllowedValues()
-    {
-        $serviceManager = ServiceUtil::getManager();
-        $helper = $serviceManager->get('zikula_routes_module.listentries_helper');
-        $listEntries = $helper->getRouteTypeEntriesForRoute();
-
-        $allowedValues = [];
-        foreach ($listEntries as $entry) {
-            $allowedValues[] = $entry['value'];
-        }
-
-        return $allowedValues;
-    }
-
-    /**
-     * @Assert\Callback()
-     */
-    public function isSchemesValueAllowed(ExecutionContextInterface $context)
-    {
-        $serviceManager = ServiceUtil::getManager();
-        $helper = $serviceManager->get('zikula_routes_module.listentries_helper');
-        $listEntries = $helper->getSchemesEntriesForRoute();
-        $dom = ZLanguage::getModuleDomain('ZikulaRoutesModule');
-
-        $allowedValues = [];
-        foreach ($listEntries as $entry) {
-            $allowedValues[] = $entry['value'];
-        }
-
-        $selected = explode('###', $this->schemes);
-        foreach ($selected as $value) {
-            if ($value == '') {
-                continue;
-            }
-            if (!in_array($value, $allowedValues, true)) {
-                $context->buildViolation(__('Invalid value provided', $dom))
-                    ->atPath('schemes')
-                    ->addViolation();
-            }
-        }
-    }
-
-    /**
-     * @Assert\Callback()
-     */
-    public function isMethodsValueAllowed(ExecutionContextInterface $context)
-    {
-        $serviceManager = ServiceUtil::getManager();
-        $helper = $serviceManager->get('zikula_routes_module.listentries_helper');
-        $listEntries = $helper->getMethodsEntriesForRoute();
-        $dom = ZLanguage::getModuleDomain('ZikulaRoutesModule');
-
-        $allowedValues = [];
-        foreach ($listEntries as $entry) {
-            $allowedValues[] = $entry['value'];
-        }
-
-        $selected = explode('###', $this->methods);
-        foreach ($selected as $value) {
-            if ($value == '') {
-                continue;
-            }
-            if (!in_array($value, $allowedValues, true)) {
-                $context->buildViolation(__('Invalid value provided', $dom))
-                    ->atPath('methods')
-                    ->addViolation();
-            }
-        }
-    }
-
-    /**
-     * Sets/retrieves the workflow details.
-     *
-     * @param boolean $forceLoading load the workflow record
-     *
-     * @throws RuntimeException Thrown if retrieving the workflow object fails
-     */
-    public function initWorkflow($forceLoading = false)
-    {
-        $currentFunc = FormUtil::getPassedValue('func', 'index', 'GETPOST', FILTER_SANITIZE_STRING);
-        $isReuse = FormUtil::getPassedValue('astemplate', '', 'GETPOST', FILTER_SANITIZE_STRING);
-
-        // apply workflow with most important information
-        $idColumn = 'id';
-
-        $serviceManager = ServiceUtil::getManager();
-        $workflowHelper = $serviceManager->get('zikula_routes_module.workflow_helper');
-
-        $schemaName = $workflowHelper->getWorkflowName($this['_objectType']);
-        $this['__WORKFLOW__'] = [
-            'module' => 'ZikulaRoutesModule',
-            'state' => $this['workflowState'],
-            'obj_table' => $this['_objectType'],
-            'obj_idcolumn' => $idColumn,
-            'obj_id' => $this[$idColumn],
-            'schemaname' => $schemaName
-        ];
-
-        // load the real workflow only when required (e. g. when func is edit or delete)
-        if ((!in_array($currentFunc, ['index', 'view', 'display']) && empty($isReuse)) || $forceLoading) {
-            $result = Zikula_Workflow_Util::getWorkflowForObject($this, $this['_objectType'], $idColumn, 'ZikulaRoutesModule');
-            if (!$result) {
-                $flashBag = $serviceManager->get('session')->getFlashBag();
-                $flashBag->add('error', $serviceManager->get('translator.default')->__('Error! Could not load the associated workflow.'));
-            }
-        }
-
-        if (!is_object($this['__WORKFLOW__']) && !isset($this['__WORKFLOW__']['schemaname'])) {
-            $workflow = $this['__WORKFLOW__'];
-            $workflow['schemaname'] = $schemaName;
-            $this['__WORKFLOW__'] = $workflow;
-        }
-    }
-
-    /**
-     * Resets workflow data back to initial state.
-     * To be used after cloning an entity object.
-     */
-    public function resetWorkflow()
-    {
-        $this->setWorkflowState('initial');
-
-        $serviceManager = ServiceUtil::getManager();
-        $workflowHelper = $serviceManager->get('zikula_routes_module.workflow_helper');
-
-        $schemaName = $workflowHelper->getWorkflowName($this['_objectType']);
-        $this['__WORKFLOW__'] = [
-            'module' => 'ZikulaRoutesModule',
-            'state' => $this['workflowState'],
-            'obj_table' => $this['_objectType'],
-            'obj_idcolumn' => 'id',
-            'obj_id' => 0,
-            'schemaname' => $schemaName
-        ];
-    }
-
-    /**
-     * Start validation and raise exception if invalid data is found.
-     *
-     * @return boolean Whether everything is valid or not
-     */
-    public function validate()
-    {
-        if ($this->_bypassValidation === true) {
-            return true;
-        }
-
-        $serviceManager = ServiceUtil::getManager();
-
-        $validator = $serviceManager->get('validator');
-        $errors = $validator->validate($this);
-
-        if (count($errors) > 0) {
-            $flashBag = $serviceManager->get('session')->getFlashBag();
-            foreach ($errors as $error) {
-                $flashBag->add('error', $error->getMessage());
-            }
-
-            return false;
-        }
-
-        return true;
     }
 
     /**
@@ -1165,9 +905,6 @@ abstract class AbstractRouteEntity extends EntityAccess
         if ($this->id) {
             // unset identifiers
             $this->setId(0);
-
-            // reset Workflow
-            $this->resetWorkflow();
 
             $this->setCreatedDate(null);
             $this->setCreatedUserId(null);

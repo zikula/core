@@ -2,6 +2,7 @@ imports:
   - { resource: 'linkContainer.yml' }
   - { resource: 'entityFactory.yml' }
   - { resource: 'eventSubscriber.yml' }
+  - { resource: 'validators.yml' }
   - { resource: 'formFields.yml' }
   - { resource: 'forms.yml' }
   - { resource: 'helpers.yml' }
