@@ -314,16 +314,7 @@ class RouteLoader extends Loader
 
         // get url from MetaData first. May be empty.
         $untranslatedPrefix = $bundle->getMetaData()->getUrl(false);
-        if (empty($untranslatedPrefix)) {
-            // @todo remove in 2.0
-            try {
-                // MetaData will be empty for extensions not Spec-2.0. Try to get from modinfo.
-                // this calls the DB which is not available during install.
-                $modinfo = \ModUtil::getInfoFromName($bundle->getName());
-                $prefix = $modinfo['url'];
-            } catch (\Exception $e) {
-            }
-        } else {
+        if (!empty($untranslatedPrefix)) {
             if ($this->translator->getCatalogue($this->locale)->has($untranslatedPrefix, strtolower($bundle->getName()))) {
                 $prefix = $this->translator->trans(/** @Ignore */$untranslatedPrefix, [], strtolower($bundle->getName()), $this->locale);
             } else {

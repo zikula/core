@@ -139,16 +139,6 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
             $module = $kernel->getModule($moduleName);
             // First get untranslated url from metaData.
             $url = $module->getMetaData()->getUrl(false);
-            if (empty($url)) {
-                // @todo remove in 2.0
-                try {
-                    // MetaData will be empty for extensions not Spec-2.0. Try to get from modinfo.
-                    // this calls the DB which is not available during install.
-                    $modInfo = \ModUtil::getInfoFromName($moduleName);
-                    $url = $modInfo['url'];
-                } catch (\Exception $e) {
-                }
-            }
             $this->modUrlMap[$moduleName] = $url;
         }
 
