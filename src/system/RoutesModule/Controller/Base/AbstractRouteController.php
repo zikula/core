@@ -493,9 +493,6 @@ abstract class AbstractRouteController extends AbstractController
         
             $success = false;
             try {
-                if ($action != 'delete' && !$entity->validate()) {
-                    continue;
-                }
                 // execute the workflow action
                 $success = $workflowHelper->executeAction($entity, $action);
             } catch(\Exception $e) {

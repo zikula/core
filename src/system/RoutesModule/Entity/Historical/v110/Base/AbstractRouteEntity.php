@@ -17,9 +17,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\RoutesModule\Validator\Constraints as RoutesAssert;
-
-use RuntimeException;
-use ServiceUtil;
 use Zikula\Core\Doctrine\EntityAccess;
 
 /**
@@ -39,12 +36,6 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @var string The tablename this object maps to
      */
     protected $_objectType = 'route';
-
-    /**
-     * @Assert\Type(type="bool")
-     * @var boolean Option to bypass validation if needed
-     */
-    protected $_bypassValidation = false;
 
     /**
      * @ORM\Id
@@ -275,29 +266,6 @@ abstract class AbstractRouteEntity extends EntityAccess
     {
         $this->_objectType = $_objectType;
     }
-
-    /**
-     * Gets the _bypass validation.
-     *
-     * @return boolean
-     */
-    public function get_bypassValidation()
-    {
-        return $this->_bypassValidation;
-    }
-
-    /**
-     * Sets the _bypass validation.
-     *
-     * @param boolean $_bypassValidation
-     *
-     * @return void
-     */
-    public function set_bypassValidation($_bypassValidation)
-    {
-        $this->_bypassValidation = $_bypassValidation;
-    }
-
 
     /**
      * Gets the id.
@@ -839,9 +807,6 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function getTitleFromDisplayPattern()
     {
-        $serviceManager = ServiceUtil::getManager();
-        $listHelper = $serviceManager->get('zikula_routes_module.listentries_helper');
-
         $formattedTitle = ''
                 . $this->getPath()
                 . ' ('
@@ -849,34 +814,6 @@ abstract class AbstractRouteEntity extends EntityAccess
                 . ')';
 
         return $formattedTitle;
-    }
-
-    /**
-     * Start validation and raise exception if invalid data is found.
-     *
-     * @return boolean Whether everything is valid or not
-     */
-    public function validate()
-    {
-        if ($this->_bypassValidation === true) {
-            return true;
-        }
-
-        $serviceManager = ServiceUtil::getManager();
-
-        $validator = $serviceManager->get('validator');
-        $errors = $validator->validate($this);
-
-        if (count($errors) > 0) {
-            $flashBag = $serviceManager->get('session')->getFlashBag();
-            foreach ($errors as $error) {
-                $flashBag->add('error', $error->getMessage());
-            }
-
-            return false;
-        }
-
-        return true;
     }
 
     /**
