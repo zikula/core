@@ -2,7 +2,7 @@ var plumbInstance;
 var currentZoom;
 
 function updateZoomLevel(factor) {
-    if (factor == 0) {
+    if (factor === 0) {
         currentZoom = 1;
     } else {
         currentZoom += factor;
@@ -15,7 +15,7 @@ function updateZoomLevel(factor) {
         'transform': 'scale(' + currentZoom + ')'
     });
     jsPlumb.setZoom(currentZoom);
-};
+}
 
 function initZoomTools() {
     jQuery('#decreaseZoomLevel').click(function (event) {
@@ -98,7 +98,7 @@ var regenerateOutput = function () {
             if (connections.length > 1) {
                 var sourceStates = '';
                 connections.each(function (connection) {
-                    if (sourceStates != '') {
+                    if (sourceStates !== '') {
                         sourceStates += ', ';
                     }
                     sourceStates += jQuery('#' + connection.sourceId).text();
@@ -162,7 +162,7 @@ function initDiagramEventListeners() {
                 return false;
             }
 
-            var existingOutgoingConnections = plumbInstance.select({ source: sourceNode });
+            existingOutgoingConnections = plumbInstance.select({ source: sourceNode });
             if (existingOutgoingConnections.length > 0) {
                 alert(Translator.trans('Transitions may only lead to one single state.'));
 
@@ -199,7 +199,7 @@ var addNode = function () {
 
         nodeType = jQuery('#nodeTypeSelection input:checked').val();
         name = jQuery('#nodeName').val();
-        if (nodeType !== null && nodeType != '' && name !== null && name != '') {
+        if (nodeType !== null && nodeType !== '' && name !== null && name !== '') {
             name = cleanName(name);
             uniqueName = name;
             nameSuffix = 0;
@@ -234,7 +234,7 @@ var editNode = function (event) {
         var name, uniqueName, nameSuffix, newId;
 
         name = jQuery('#nodeName').val();
-        if (name !== null && name != '') {
+        if (name !== null && name !== '') {
             name = cleanName(name);
             uniqueName = name;
             nameSuffix = 0;
@@ -388,24 +388,24 @@ jsPlumb.ready(function () {
         regenerateOutput();
     });
     jQuery('#workflowType').change(function (event) {
-        if (jQuery(this).val() == 'workflow') {
+        if (jQuery(this).val() === 'workflow') {
             jQuery('#markingStoreType').prop('disabled', false);
-        } else if (jQuery(this).val() == 'state_machine') {
+        } else if (jQuery(this).val() === 'state_machine') {
             jQuery('#markingStoreType').val('single_state').prop('disabled', true);
         }
         regenerateOutput();
     });
     jQuery('#markingStoreType').change(function (event) {
-        if (jQuery(this).val() == 'multiple_state') {
+        if (jQuery(this).val() === 'multiple_state') {
             jQuery('#markingStoreFieldType').text(Translator.trans('array'));
-        } else if (jQuery(this).val() == 'single_state') {
+        } else if (jQuery(this).val() === 'single_state') {
             jQuery('#markingStoreFieldType').text(Translator.trans('string'));
         }
         regenerateOutput();
     });
     jQuery('#markingStoreType').trigger('change');
     jQuery('#markingStoreField').on('change keypress', function (event) {
-        if (jQuery(this).val() == '') {
+        if (jQuery(this).val() === '') {
             jQuery(this).val('state');
         }
         jQuery(this).val(cleanName(jQuery(this).val()));
