@@ -11,8 +11,6 @@
 
 namespace Zikula\Core;
 
-use Symfony\Component\Routing\RouterInterface;
-
 /**
  * RouteUrl class.
  */
