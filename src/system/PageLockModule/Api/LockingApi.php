@@ -289,8 +289,7 @@ class LockingApi
         }
 
         if (self::$pageLockAccessCount == 0) {
-            $ostemp = \DataUtil::formatForOS($this->tempDirectory);
-            self::$pageLockFile = fopen($ostemp . '/pagelock.lock', 'w+');
+            self::$pageLockFile = fopen($this->tempDirectory . '/pagelock.lock', 'w+');
             flock(self::$pageLockFile, LOCK_EX);
             fwrite(self::$pageLockFile, 'This is a locking file for synchronizing access to the PageLock module. Please do not delete.');
             fflush(self::$pageLockFile);

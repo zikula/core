@@ -33,6 +33,7 @@ services:
           - "@doctrine.orm.entity_manager"
           - "@zikula_mailer_module.api.mailer"
           - "@translator.default"
+          - "%kernel.cache_dir%"
         tags:
             - { name: kernel.event_subscriber }
 

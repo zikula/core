@@ -72,7 +72,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 $blocks = $this->entityManager->getConnection()->fetchAll($sql);
                 foreach ($blocks as $block) {
                     $content = $block['content'];
-                    if (\DataUtil::is_serialized($content)) {
+                    if ($this->isSerialized($content)) {
                         $content = unserialize($content);
                         foreach ($content as $k => $item) {
                             if (is_string($item)) {
@@ -93,8 +93,6 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 $templateWarning = $this->__('Warning: Block template locations modified, you may need to fix your template overrides if you have any.');
                 if (is_object($this->container->get('request')) && method_exists($this->container->get('request'), 'getSession') && is_object($this->container->get('request')->getSession())) {
                     $this->addFlash('warning', $templateWarning);
-                } else {
-                    \LogUtil::registerWarning($templateWarning);
                 }
             case '3.9.1':
                 // make all content fields of blocks serialized.
@@ -103,7 +101,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 $oldContent = [];
                 foreach ($blocks as $block) {
                     $block['content'] = !empty($block['content']) ? $block['content'] : '';
-                    $oldContent[$block['bid']] = \DataUtil::is_serialized($block['content']) ? unserialize($block['content']) : ['content' => $block['content']];
+                    $oldContent[$block['bid']] = $this->isSerialized($block['content']) ? unserialize($block['content']) : ['content' => $block['content']];
                 }
                 $this->schemaTool->update($this->entities);
                 $this->entityManager->getConnection()->executeQuery("UPDATE blocks SET properties='a:0:{}'");
@@ -282,5 +280,10 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         $this->entityManager->flush();
 
         return;
+    }
+
+    private function isSerialized($string)
+    {
+        return ($string === 'b:0;' || @unserialize($string) !== false);
     }
 }

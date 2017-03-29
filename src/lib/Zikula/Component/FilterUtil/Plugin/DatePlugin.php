@@ -63,18 +63,11 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
      */
     protected function dateConvert($date)
     {
-        if (strptime($date, "%d.%m.%Y %H:%M:%S") !== false) {
-            $arr = strptime($date, "%d.%m.%Y %H:%M:%S");
-            $time = \DateUtil::buildDatetime(
-                $arr['tm_year'],
-                $arr['tm_mon'],
-                $arr['tm_monday'],
-                $arr['tm_hour'],
-                $arr['tm_min'],
-                $arr['tm_sec']
-            );
+        if (strptime($date, '%d.%m.%Y %H:%M:%S') !== false) {
+            $date = \DateTime::createFromFormat('%d.%m.%Y %H:%M:%S', $date);
+            $time = $date->format('%Y-%m-%d %H:%M:%S');
         } elseif (is_numeric($date)) {
-            $time = \DateUtil::getDatetime($date);
+            $time = strftime('%Y-%m-%d %H:%M:%S', $date);
         } else {
             $time = str_replace('_', ' ', $date);
         }

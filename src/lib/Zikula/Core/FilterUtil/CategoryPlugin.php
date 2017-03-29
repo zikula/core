@@ -133,22 +133,29 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
         $expr = $config->getQueryBuilder()->expr();
         if ($op == 'sub' || is_numeric($value)) {
             $column = $alias.'_cat_plugin_category.id';
+            $prop = 'id';
         } else {
             $column = $alias.'_cat_plugin_category.name';
+            $prop = 'name';
         }
         $con = null;
         switch ($op) {
             case 'eq':
                 $con = $expr->eq($column, $config->toParam($value, 'category', $field));
+                break;
             case 'ne':
                 $con = $expr->neq($column, $config->toParam($value, 'category', $field));
+                break;
             case 'sub':
-                $items = [$value];
-                $cats = ServiceUtil::get('zikula_categories_module.api.category')->getSubCategories($value);
-                foreach ($cats as $item) {
-                    $items[] = $item['id'];
+                $items = [];
+                $repo = $this->config->getEntityManager()->getRepository('ZikulaCategoriesModule:CategoryEntity');
+                $parent = $repo->findOneBy([$prop => $value]);
+                $categories = $repo->getChildren($parent, false, null, 'ASC', true);
+                foreach ($categories as $category) {
+                    $items[] = $category->getId();
                 }
                 $con = $expr->in($column, $config->toParam($items, 'category', $field));
+                break;
         }
         if (null !== $this->modname && null !== $this->property) {
             $propertyCon = $expr->in(

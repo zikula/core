@@ -18,6 +18,7 @@ use HTMLPurifier_Config;
 use HTMLPurifier_VarParser;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -198,9 +199,10 @@ class ConfigController extends AbstractController
 
                 // create tmp directory for PHPIDS
                 if ($useIds == 1) {
-                    $idsTmpDir = CacheUtil::getLocalDir() . '/idsTmp';
-                    if (!file_exists($idsTmpDir)) {
-                        CacheUtil::clearLocalDir('idsTmp');
+                    $idsTmpDir = $this->getParameter('kernel.cache_dir') . '/idsTmp';
+                    $fs = new Filesystem();
+                    if (!$fs->exists($idsTmpDir)) {
+                        $fs->mkdir($idsTmpDir);
                     }
                 }
 
@@ -216,7 +218,6 @@ class ConfigController extends AbstractController
                 $validates = true;
 
                 $idsRulePath = isset($formData['idsrulepath']) ? $formData['idsrulepath'] : 'system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml';
-                $idsRulePath = DataUtil::formatForOS($idsRulePath);
                 if (is_readable($idsRulePath)) {
                     $this->setSystemVar('idsrulepath', $idsRulePath);
                 } else {
