@@ -15,6 +15,7 @@ namespace Zikula\RoutesModule\Form\Type\Base;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -26,7 +27,6 @@ use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\RoutesModule\Entity\Factory\RoutesFactory;
 use Zikula\RoutesModule\Form\Type\Field\ArrayType;
-use Zikula\RoutesModule\Form\Type\Field\DateTimeType;
 use Zikula\RoutesModule\Form\Type\Field\MultiListType;
 use Zikula\RoutesModule\Form\Type\Field\UserType;
 use Zikula\RoutesModule\Helper\ListEntriesHelper;
@@ -354,7 +354,9 @@ abstract class AbstractRouteType extends AbstractType
             ],
             'empty_data' => '',
             'required' => false,
-            'widget' => 'single_text',
+            'with_seconds' => true,
+            'date_widget' => 'single_text',
+            'time_widget' => 'single_text',
             'help' => $this->__('Here you can choose a custom creation date')
         ]);
     }

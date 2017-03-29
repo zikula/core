@@ -6,11 +6,6 @@ services:
         tags:
             - { name: form.type }
     
-    zikula_routes_module.form.type.field.datetime:
-        class: Zikula\RoutesModule\Form\Type\Field\DateTimeType
-        tags:
-            - { name: form.type }
-    
     zikula_routes_module.form.type.field.multilist:
         class: Zikula\RoutesModule\Form\Type\Field\MultiListType
         arguments:
