@@ -128,7 +128,7 @@ class TwigExtension extends \Twig_Extension
     {
         if ($url instanceof ModUrl) { // @deprecated
             return $url->getUrl();
-        } else if ($url instanceof RouteUrl) {
+        } elseif ($url instanceof RouteUrl) {
             return $this->router->generate($url->getRoute(), $url->getArgs()) . $url->getFragment();
         }
 
