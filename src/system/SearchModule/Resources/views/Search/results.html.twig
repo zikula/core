@@ -23,7 +23,6 @@
         {% if result.url|default %}
             </a>
         {% endif %}
-        &nbsp;&nbsp;<span class="sub">(<a href="{{ zikulasearchmodule_modUrlLegacy(result.module) }}">{{ result.displayname }}</a>)</span>
     </dt>
     <dd>
         {{ result.text|truncate(limitSummary, true)|zikulasearchmodule_highlightWords(q) }}
