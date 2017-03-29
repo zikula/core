@@ -81,8 +81,8 @@ abstract class AbstractWorkflowHelper
         PermissionApiInterface $permissionApi,
         CurrentUserApi $currentUserApi,
         RoutesFactory $entityFactory,
-        ListEntriesHelper $listEntriesHelper)
-    {
+        ListEntriesHelper $listEntriesHelper
+    ) {
         $this->translator = $translator;
         $this->workflowRegistry = $registry;
         $this->logger = $logger;

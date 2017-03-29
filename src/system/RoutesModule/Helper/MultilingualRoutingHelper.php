@@ -74,8 +74,8 @@ class MultilingualRoutingHelper
         LocaleApi $localeApi,
         ZikulaHttpKernelInterface $kernel,
         $locale,
-        $installed)
-    {
+        $installed
+    ) {
         $this->variableApi = $variableApi;
         $this->configDumper = $configDumper;
         $this->cacheClearer = $cacheClearer;

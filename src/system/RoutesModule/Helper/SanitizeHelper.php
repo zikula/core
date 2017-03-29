@@ -20,41 +20,41 @@ class SanitizeHelper
     /**
      * Sanitizes the controller / type parameter.
      *
-     * @param string $controller
+     * @param string $controllerName
      *
-     * @return array [$controller, $type]
+     * @return array [$controllerName, $type]
      */
-    public function sanitizeController($controller)
+    public function sanitizeController($controllerName)
     {
-        if (substr($controller, -10) !== 'Controller') {
-            $type = $controller;
-            $controller .= 'Controller';
+        if (substr($controllerName, -10) !== 'Controller') {
+            $type = $controllerName;
+            $controllerName .= 'Controller';
         } else {
-            $type = substr($controller, 0, -10);
+            $type = substr($controllerName, 0, -10);
         }
 
         $type = strtolower($type);
-        $controller = ucfirst($controller);
+        $controllerName = ucfirst($controllerName);
 
-        return [$controller, $type];
+        return [$controllerName, $type];
     }
 
     /**
      * Sanitizes the action / func parameter.
      *
-     * @param string $action
+     * @param string $methodName
      *
-     * @return array [$action, $func]
+     * @return array [$methodName, $func]
      */
-    public function sanitizeAction($action)
+    public function sanitizeAction($methodName)
     {
-        if (substr($action, -6) !== 'Action') {
-            $action .= 'Action';
+        if (substr($methodName, -6) !== 'Action') {
+            $methodName .= 'Action';
         }
 
-        $action = ucfirst($action);
-        $func = lcfirst(substr($action, 0, -6));
+        $methodName = ucfirst($methodName);
+        $func = lcfirst(substr($methodName, 0, -6));
 
-        return [$action, $func];
+        return [$methodName, $func];
     }
 }

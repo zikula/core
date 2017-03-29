@@ -72,8 +72,8 @@ abstract class AbstractControllerHelper
         VariableApi $variableApi,
         RoutesFactory $entityFactory,
         ModelHelper $modelHelper,
-        SelectionHelper $selectionHelper)
-    {
+        SelectionHelper $selectionHelper
+    ) {
         $this->request = $requestStack->getCurrentRequest();
         $this->formFactory = $formFactory;
         $this->variableApi = $variableApi;
