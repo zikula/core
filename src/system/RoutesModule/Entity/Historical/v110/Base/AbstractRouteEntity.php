@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Zikula\RoutesModule\Validator\Constraints as RoutesAssert;
 
 use RuntimeException;
 use ServiceUtil;
@@ -61,7 +61,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * the current workflow state
      * @ORM\Column(length=20)
      * @Assert\NotBlank()
-     * @Assert\Choice(callback="getWorkflowStateAllowedValues", multiple=false)
+     * @RoutesAssert\ListEntry(entityName="route", propertyName="workflowState", multiple=false)
      * @var string $workflowState
      */
     protected $workflowState = 'initial';
@@ -69,7 +69,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     /**
      * @ORM\Column(length=255)
      * @Assert\NotBlank()
-     * @Assert\Choice(callback="getRouteTypeAllowedValues", multiple=false)
+     * @RoutesAssert\ListEntry(entityName="route", propertyName="routeType", multiple=false)
      * @var string $routeType
      */
     protected $routeType = 'additional';
@@ -123,6 +123,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     /**
      * @ORM\Column(length=255)
      * @Assert\NotBlank()
+     * @RoutesAssert\ListEntry(entityName="route", propertyName="schemes", multiple=true)
      * @var string $schemes
      */
     protected $schemes = 'http';
@@ -130,6 +131,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     /**
      * @ORM\Column(length=255)
      * @Assert\NotBlank()
+     * @RoutesAssert\ListEntry(entityName="route", propertyName="methods", multiple=true)
      * @var string $methods
      */
     protected $methods = 'GET';
@@ -829,9 +831,6 @@ abstract class AbstractRouteEntity extends EntityAccess
         $this->updatedDate = $updatedDate;
     }
 
-
-
-
     /**
      * Returns the formatted title conforming to the display pattern
      * specified for this entity.
@@ -850,103 +849,6 @@ abstract class AbstractRouteEntity extends EntityAccess
                 . ')';
 
         return $formattedTitle;
-    }
-
-
-    /**
-     * Returns a list of possible choices for the workflowState list field.
-     * This method is used for validation.
-     *
-     * @return array List of allowed choices
-     */
-    public static function getWorkflowStateAllowedValues()
-    {
-        $serviceManager = ServiceUtil::getManager();
-        $helper = $serviceManager->get('zikula_routes_module.listentries_helper');
-        $listEntries = $helper->getWorkflowStateEntriesForRoute();
-
-        $allowedValues = [];
-        foreach ($listEntries as $entry) {
-            $allowedValues[] = $entry['value'];
-        }
-
-        return $allowedValues;
-    }
-
-    /**
-     * Returns a list of possible choices for the routeType list field.
-     * This method is used for validation.
-     *
-     * @return array List of allowed choices
-     */
-    public static function getRouteTypeAllowedValues()
-    {
-        $serviceManager = ServiceUtil::getManager();
-        $helper = $serviceManager->get('zikula_routes_module.listentries_helper');
-        $listEntries = $helper->getRouteTypeEntriesForRoute();
-
-        $allowedValues = [];
-        foreach ($listEntries as $entry) {
-            $allowedValues[] = $entry['value'];
-        }
-
-        return $allowedValues;
-    }
-
-    /**
-     * @Assert\Callback()
-     */
-    public function isSchemesValueAllowed(ExecutionContextInterface $context)
-    {
-        $serviceManager = ServiceUtil::getManager();
-        $helper = $serviceManager->get('zikula_routes_module.listentries_helper');
-        $listEntries = $helper->getSchemesEntriesForRoute();
-        $dom = ZLanguage::getModuleDomain('ZikulaRoutesModule');
-
-        $allowedValues = [];
-        foreach ($listEntries as $entry) {
-            $allowedValues[] = $entry['value'];
-        }
-
-        $selected = explode('###', $this->schemes);
-        foreach ($selected as $value) {
-            if ($value == '') {
-                continue;
-            }
-            if (!in_array($value, $allowedValues, true)) {
-                $context->buildViolation(__('Invalid value provided', $dom))
-                    ->atPath('schemes')
-                    ->addViolation();
-            }
-        }
-    }
-
-    /**
-     * @Assert\Callback()
-     */
-    public function isMethodsValueAllowed(ExecutionContextInterface $context)
-    {
-        $serviceManager = ServiceUtil::getManager();
-        $helper = $serviceManager->get('zikula_routes_module.listentries_helper');
-        $listEntries = $helper->getMethodsEntriesForRoute();
-        $dom = ZLanguage::getModuleDomain('ZikulaRoutesModule');
-
-        $allowedValues = [];
-        foreach ($listEntries as $entry) {
-            $allowedValues[] = $entry['value'];
-        }
-
-        $selected = explode('###', $this->methods);
-        foreach ($selected as $value) {
-            if ($value == '') {
-                continue;
-            }
-            if (!in_array($value, $allowedValues, true)) {
-                $context->buildViolation(__('Invalid value provided', $dom))
-                    ->atPath('methods')
-                    ->addViolation();
-            }
-        }
     }
 
     /**
