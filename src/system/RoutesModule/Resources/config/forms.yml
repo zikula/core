@@ -27,6 +27,7 @@ services:
             - "@zikula_routes_module.workflow_helper"
         calls:
             - [setLockingApi, ["@?zikula_pagelock_module.api.locking"]]
+            - [setSanitizeHelper, ["@zikula_routes_module.sanitize_helper"]]
         tags:
             - { name: form.type }
     

@@ -11,18 +11,12 @@ services:
 #        class: Zikula\RoutesModule\Listener\KernelListener
 #        tags:
 #            - { name: kernel.event_subscriber }
-
-    zikula_routes_module.installer_listener:
-        class: Zikula\RoutesModule\Listener\InstallerListener
-        arguments:
-          - "@doctrine.orm.default_entity_manager"
-          - "@zikula_routes_module.routing_finder"
-          - "@zikula.cache_clearer"
-          - "@zikula_routes_module.route_dumper_helper"
-          - "@zikula_routes_module.multilingual_routing_helper"
-        tags:
-            - { name: kernel.event_subscriber }
-
+    
+#    zikula_routes_module.installer_listener:
+#        class: Zikula\RoutesModule\Listener\InstallerListener
+#        tags:
+#            - { name: kernel.event_subscriber }
+    
 #    zikula_routes_module.moduledispatch_listener:
 #        class: Zikula\RoutesModule\Listener\ModuleDispatchListener
 #        tags:

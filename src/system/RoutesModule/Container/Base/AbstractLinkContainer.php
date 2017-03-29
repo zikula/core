@@ -62,8 +62,8 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
         RouterInterface $router,
         PermissionApiInterface $permissionApi,
         CurrentUserApi $currentUserApi,
-        ControllerHelper $controllerHelper)
-    {
+        ControllerHelper $controllerHelper
+    ) {
         $this->setTranslator($translator);
         $this->router = $router;
         $this->permissionApi = $permissionApi;

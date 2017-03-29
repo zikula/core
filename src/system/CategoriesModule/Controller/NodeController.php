@@ -125,18 +125,14 @@ class NodeController extends AbstractController
                 // intentionally no break here
             case 'delete':
                 $categoryId = $category->getId();
-                foreach ($category->getChildren() as $child) {
-                    if ($this->get('zikula_categories_module.category_processing_helper')->mayCategoryBeDeletedOrMoved($child)) {
-                        $entityManager->remove($child);
-                    }
-                }
+                $this->removeRecursive($category);
                 $categoryRemoved = false;
                 if ($category->getChildren()->count() == 0
                     && $this->get('zikula_categories_module.category_processing_helper')->mayCategoryBeDeletedOrMoved($category)) {
                     $entityManager->remove($category);
-                    $entityManager->flush();
                     $categoryRemoved = true;
                 }
+                $entityManager->flush();
                 $response = [
                     'result' => $categoryRemoved,
                     'id' => $categoryId,
@@ -162,6 +158,23 @@ class NodeController extends AbstractController
         }
 
         return new AjaxResponse($response);
+    }
+
+    /**
+     * Recursive method to remove all generations below parent
+     * @param CategoryEntity $parent
+     */
+    private function removeRecursive(CategoryEntity $parent)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        foreach ($parent->getChildren() as $child) {
+            if ($child->getChildren()->count() > 0) {
+                $this->removeRecursive($child);
+            }
+            if ($this->get('zikula_categories_module.category_processing_helper')->mayCategoryBeDeletedOrMoved($child)) {
+                $entityManager->remove($child);
+            }
+        }
     }
 
     /**

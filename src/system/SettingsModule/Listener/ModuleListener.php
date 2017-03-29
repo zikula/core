@@ -12,10 +12,10 @@
 namespace Zikula\SettingsModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zikula\Core\CoreEvents;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
 class ModuleListener implements EventSubscriberInterface
@@ -59,22 +59,22 @@ class ModuleListener implements EventSubscriberInterface
      * Handle module deactivated event "installer.module.deactivated".
      * Receives $modinfo as $args
      *
-     * @param GenericEvent $event
+     * @param ModuleStateEvent $event
      *
      * @return void
      */
-    public function moduleDeactivated(GenericEvent $event)
+    public function moduleDeactivated(ModuleStateEvent $event)
     {
-        $modname = $event['name'];
+        $moduleName = $event->getModule()->getName();
         $startModule = $this->variableApi->getSystemVar('startpage');
 
-        if ($modname == $startModule) {
+        if ($moduleName == $startModule) {
             // since the start module has been removed, set all related variables to ''
             $this->variableApi->set(VariableApi::CONFIG, 'startpage', '');
             $this->variableApi->set(VariableApi::CONFIG, 'starttype', '');
             $this->variableApi->set(VariableApi::CONFIG, 'startfunc', '');
             $this->variableApi->set(VariableApi::CONFIG, 'startargs', '');
-            $this->session->getFlashBag()->add('info', __('The start module was reset to a static frontpage.'));
+            $this->session->getFlashBag()->add('info', $this->translator->__('The start module was reset to a static frontpage.'));
         }
     }
 }

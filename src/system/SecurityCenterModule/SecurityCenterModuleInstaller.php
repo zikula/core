@@ -67,7 +67,7 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('filtercookievars', 1);
 
         // HTML Purifier cache dir
-        $this->container->get('cache_clearer')->clear('purifier');
+        $this->container->get('zikula.cache_clearer')->clear('purifier');
 
         // HTML Purifier default settings
         $purifierDefaultConfig = $this->container->get('zikula_security_center_module.helper.purifier_helper')->getPurifierConfig(['forcedefault' => true]);

@@ -5,8 +5,13 @@ services:
         arguments:
             - "@translator.default"
             - "@zikula_extensions_module.api.variable"
+            - "@zikula_users_module.user_repository"
             - "@zikula_routes_module.workflow_helper"
             - "@zikula_routes_module.listentries_helper"
         public: false
+        calls:
+            - method: setContainer
+              arguments:
+                - "@service_container"
         tags:
             - { name: twig.extension }

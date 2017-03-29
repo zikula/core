@@ -1,0 +1,9 @@
+services:
+    # Custom validators
+    zikula_routes_module.validator.list_entry.validator:
+        class: Zikula\RoutesModule\Validator\Constraints\ListEntryValidator
+        arguments:
+            - "@translator.default"
+            - "@zikula_routes_module.listentries_helper"
+        tags:
+            - { name: validator.constraint_validator, alias: zikula.routes.listentry.validator }

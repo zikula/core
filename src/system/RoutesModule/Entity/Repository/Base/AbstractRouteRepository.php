@@ -19,12 +19,11 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use InvalidArgumentException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Component\FilterUtil\FilterUtil;
 use Zikula\Component\FilterUtil\Config as FilterConfig;
 use Zikula\Component\FilterUtil\PluginManager as FilterPluginManager;
-use Psr\Log\LoggerInterface;
-use ServiceUtil;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\UsersModule\Api\CurrentUserApi;
 use Zikula\RoutesModule\Entity\RouteEntity;
@@ -281,7 +280,7 @@ abstract class AbstractRouteRepository extends SortableRepository
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->update('Zikula\RoutesModule\Entity\RouteEntity', 'tbl')
            ->set('tbl.createdBy', $newUserId)
-           ->where('tbl.createdBy= :creator')
+           ->where('tbl.createdBy = :creator')
            ->setParameter('creator', $userId);
         $query = $qb->getQuery();
         $query->execute();
@@ -457,7 +456,7 @@ abstract class AbstractRouteRepository extends SortableRepository
     
         $results = $query->getResult();
     
-        return (count($results) > 0) ? $results : null;
+        return count($results) > 0 ? $results : null;
     }
 
     /**
@@ -473,32 +472,6 @@ abstract class AbstractRouteRepository extends SortableRepository
         if ($excludeId > 0) {
             $qb->andWhere('tbl.id != :excludeId')
                ->setParameter('excludeId', $excludeId);
-        }
-    
-        return $qb;
-    }
-
-    /**
-     * Adds a filter for the createdBy field.
-     *
-     * @param QueryBuilder $qb Query builder to be enhanced
-     * @param integer      $userId The user identifier used for filtering (optional)
-     *
-     * @return QueryBuilder Enriched query builder instance
-     */
-    public function addCreatorFilter(QueryBuilder $qb, $userId = null)
-    {
-        if (null === $userId) {
-            $currentUserApi = ServiceUtil::get('zikula_users_module.current_user');
-            $userId = $currentUserApi->isLoggedIn() ? $currentUserApi->get('uid') : 1;
-        }
-    
-        if (is_array($userId)) {
-            $qb->andWhere('tbl.createdBy IN (:userIds)')
-               ->setParameter('userIds', $userId);
-        } else {
-            $qb->andWhere('tbl.createdBy = :userId')
-               ->setParameter('userId', $userId);
         }
     
         return $qb;
@@ -697,70 +670,40 @@ abstract class AbstractRouteRepository extends SortableRepository
             return $qb;
         }
     
-        $fragment = str_replace('\'', '', \DataUtil::formatForStore($fragment));
-        $fragmentIsNumeric = is_numeric($fragment);
+        $filters = [];
+        $parameters = [];
     
-        $where = '';
-        if (!$fragmentIsNumeric) {
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.routeType = \'' . $fragment . '\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.replacedRouteName LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.bundle LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.controller LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.action LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.path LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.host LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.schemes = \'' . $fragment . '\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.methods = \'' . $fragment . '\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.translationPrefix LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.condition LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.description LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.group LIKE \'%' . $fragment . '%\'';
-        } else {
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.routeType = \'' . $fragment . '\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.replacedRouteName LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.bundle LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.controller LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.action LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.path LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.host LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.schemes = \'' . $fragment . '\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.methods = \'' . $fragment . '\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.translationPrefix LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.condition LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.description LIKE \'%' . $fragment . '%\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.sort = \'' . $fragment . '\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.group LIKE \'%' . $fragment . '%\'';
-        }
-        $where = '(' . $where . ')';
+        $filters[] = 'tbl.routeType = :searchRouteType';
+        $parameters['searchRouteType'] = $fragment;
+        $filters[] = 'tbl.replacedRouteName LIKE :searchReplacedRouteName';
+        $parameters['searchReplacedRouteName'] = '%' . $fragment . '%';
+        $filters[] = 'tbl.bundle LIKE :searchBundle';
+        $parameters['searchBundle'] = '%' . $fragment . '%';
+        $filters[] = 'tbl.controller LIKE :searchController';
+        $parameters['searchController'] = '%' . $fragment . '%';
+        $filters[] = 'tbl.action LIKE :searchAction';
+        $parameters['searchAction'] = '%' . $fragment . '%';
+        $filters[] = 'tbl.path LIKE :searchPath';
+        $parameters['searchPath'] = '%' . $fragment . '%';
+        $filters[] = 'tbl.host LIKE :searchHost';
+        $parameters['searchHost'] = '%' . $fragment . '%';
+        $filters[] = 'tbl.schemes = :searchSchemes';
+        $parameters['searchSchemes'] = $fragment;
+        $filters[] = 'tbl.methods = :searchMethods';
+        $parameters['searchMethods'] = $fragment;
+        $filters[] = 'tbl.translationPrefix LIKE :searchTranslationPrefix';
+        $parameters['searchTranslationPrefix'] = '%' . $fragment . '%';
+        $filters[] = 'tbl.condition LIKE :searchCondition';
+        $parameters['searchCondition'] = '%' . $fragment . '%';
+        $filters[] = 'tbl.description LIKE :searchDescription';
+        $parameters['searchDescription'] = '%' . $fragment . '%';
+        $filters[] = 'tbl.sort = :searchSort';
+        $parameters['searchSort'] = $fragment;
+        $filters[] = 'tbl.group LIKE :searchGroup';
+        $parameters['searchGroup'] = '%' . $fragment . '%';
     
-        $qb->andWhere($where);
+        $qb->andWhere('(' . implode(' OR ', $filters) . ')')
+           ->setParameters($parameters);
     
         return $qb;
     }
@@ -926,9 +869,8 @@ abstract class AbstractRouteRepository extends SortableRepository
      */
     protected function genericBaseQueryAddWhere(QueryBuilder $qb, $where = '')
     {
-        if (!empty($where)) {
+        if (!empty($where) || null !== $this->getRequest()) {
             // Use FilterUtil to support generic filtering.
-            //$qb->where($where);
     
             // Create filter configuration.
             $filterConfig = new FilterConfig($qb);
@@ -949,19 +891,16 @@ abstract class AbstractRouteRepository extends SortableRepository
                 []
             );
     
-            // Request object to obtain the filter string (only needed if the filter is set via GET or it reads values from GET).
-            // We do this not per default (for now) to prevent problems with explicite filters set by blocks or content types.
-            // TODO readd automatic request processing (basically replacing applyDefaultFilters() and addCommonViewFilters()).
-            $request = null;
-    
             // Name of filter variable(s) (filterX).
             $filterKey = 'filter';
     
             // initialise FilterUtil and assign both query builder and configuration
-            $filterUtil = new FilterUtil($filterPluginManager, $request, $filterKey);
+            $filterUtil = new FilterUtil($filterPluginManager, $this->getRequest(), $filterKey);
     
             // set our given filter
-            $filterUtil->setFilter($where);
+            if (!empty($where)) {
+                $filterUtil->setFilter($where);
+            }
     
             // you could add explicit filters at this point, something like
             // $filterUtil->addFilter('foo:eq:something,bar:gt:100');

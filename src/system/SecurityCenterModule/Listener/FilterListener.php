@@ -11,7 +11,6 @@
 
 namespace Zikula\SecurityCenterModule\Listener;
 
-use CacheUtil;
 use Doctrine\ORM\EntityManagerInterface;
 use IDS\Init as IdsInit;
 use IDS\Monitor as IdsMonitor;
@@ -67,6 +66,11 @@ class FilterListener implements EventSubscriberInterface
     private $translator;
 
     /**
+     * @var string
+     */
+    private $cacheDir;
+
+    /**
      * FilterListener constructor.
      *
      * @param bool $isInstalled Installed flag
@@ -75,6 +79,7 @@ class FilterListener implements EventSubscriberInterface
      * @param EntityManagerInterface $em Doctrine entity manager
      * @param MailerApi $mailer MailerApi service instance
      * @param TranslatorInterface $translator
+     * @param $cacheDir
      */
     public function __construct(
         $isInstalled,
@@ -82,7 +87,8 @@ class FilterListener implements EventSubscriberInterface
         VariableApi $variableApi,
         EntityManagerInterface $em,
         MailerApi $mailer,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        $cacheDir
     ) {
         $this->isInstalled = $isInstalled;
         $this->isUpgrading = $isUpgrading;
@@ -90,6 +96,7 @@ class FilterListener implements EventSubscriberInterface
         $this->em = $em;
         $this->mailer = $mailer;
         $this->translator = $translator;
+        $this->cacheDir = $cacheDir;
     }
 
     public static function getSubscribedEvents()
@@ -212,14 +219,14 @@ class FilterListener implements EventSubscriberInterface
         // path to the filters used
         $config['General']['filter_path'] = $this->getSystemVar('idsrulepath', 'system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml');
         // path to (writable) tmp directory
-        $config['General']['tmp_path'] = CacheUtil::getLocalDir() . '/idsTmp';
+        $config['General']['tmp_path'] = $this->cacheDir . '/idsTmp';
         $config['General']['scan_keys'] = false;
 
         // we use a different HTML Purifier source
         // by default PHPIDS does also contain those files
         // we do this more efficiently in boostrap (drak).
         $config['General']['HTML_Purifier_Path'] = ''; // this must be set or IdsMonitor will never fill in the HTML_Purifier_Cache property (drak).
-        $config['General']['HTML_Purifier_Cache'] = CacheUtil::getLocalDir() . '/purifierCache';
+        $config['General']['HTML_Purifier_Cache'] = $this->cacheDir . '/purifier';
 
         // define which fields contain html and need preparation before hitting the PHPIDS rules
         $config['General']['html'] = $this->getSystemVar('idshtmlfields', []);
