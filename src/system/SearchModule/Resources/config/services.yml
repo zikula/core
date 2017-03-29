@@ -19,7 +19,7 @@ services:
     twig.extension.zikula_search_module:
         class: Zikula\SearchModule\Twig\TwigExtension
         public: false
-        arguments: ["@zikula_extensions_module.api.variable"]
+        arguments: ["@zikula_extensions_module.api.variable", "@router"]
         tags:
             - { name: twig.extension }
 

@@ -41,24 +41,6 @@ class RouteUrl implements UrlInterface
         $this->args['_locale'] = $lang;
     }
 
-    public function getUrl($ssl = null, $fqUrl = null)
-    {
-        $router = \ServiceUtil::get('router');
-        $fqUrl = (is_bool($fqUrl) && $fqUrl) ? RouterInterface::ABSOLUTE_URL : RouterInterface::ABSOLUTE_PATH;
-        $fragment =  (!empty($this->fragment)) ? '#' . $this->fragment : '';
-
-        $oldScheme = $router->getContext()->getScheme();
-        if ($ssl) {
-            $router->getContext()->setScheme('https');
-        }
-        $url = $router->generate($this->route, $this->args, $fqUrl) . $fragment;
-        if ($ssl) {
-            $router->getContext()->setScheme($oldScheme);
-        }
-
-        return $url;
-    }
-
     public function getRoute()
     {
         return $this->route;

@@ -20,8 +20,6 @@ interface UrlInterface
 
     public function getFragment();
 
-    public function getUrl();
-
     public function getArgs();
 
     public function serialize();

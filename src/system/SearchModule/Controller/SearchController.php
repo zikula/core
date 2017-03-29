@@ -98,6 +98,7 @@ class SearchController extends AbstractController
                 $templateParameters = array_merge($formData, [
                     'resultCount' => $result['resultCount'],
                     'results' => $result['sqlResult'],
+                    'router' => $this->get('router'),
                     'limitSummary' => $this->getVar('limitsummary', 200),
                     'errors' => isset($searchApiErrors) ? $searchApiErrors : []
                 ]);
