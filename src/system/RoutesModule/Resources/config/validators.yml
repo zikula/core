@@ -1,4 +1,5 @@
 services:
+    # Custom validators
     zikula_routes_module.validator.list_entry.validator:
         class: Zikula\RoutesModule\Validator\Constraints\ListEntryValidator
         arguments:

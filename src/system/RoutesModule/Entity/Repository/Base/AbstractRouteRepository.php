@@ -19,11 +19,11 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use InvalidArgumentException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Component\FilterUtil\FilterUtil;
 use Zikula\Component\FilterUtil\Config as FilterConfig;
 use Zikula\Component\FilterUtil\PluginManager as FilterPluginManager;
-use Psr\Log\LoggerInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\UsersModule\Api\CurrentUserApi;
 use Zikula\RoutesModule\Entity\RouteEntity;
@@ -456,7 +456,7 @@ abstract class AbstractRouteRepository extends SortableRepository
     
         $results = $query->getResult();
     
-        return (count($results) > 0) ? $results : null;
+        return count($results) > 0 ? $results : null;
     }
 
     /**
@@ -675,31 +675,31 @@ abstract class AbstractRouteRepository extends SortableRepository
     
         $filters[] = 'tbl.routeType = :searchRouteType';
         $parameters['searchRouteType'] = $fragment;
-        $filters[] = 'tbl.replacedRouteName = :searchReplacedRouteName';
+        $filters[] = 'tbl.replacedRouteName LIKE :searchReplacedRouteName';
         $parameters['searchReplacedRouteName'] = '%' . $fragment . '%';
-        $filters[] = 'tbl.bundle = :searchBundle';
+        $filters[] = 'tbl.bundle LIKE :searchBundle';
         $parameters['searchBundle'] = '%' . $fragment . '%';
-        $filters[] = 'tbl.controller = :searchController';
+        $filters[] = 'tbl.controller LIKE :searchController';
         $parameters['searchController'] = '%' . $fragment . '%';
-        $filters[] = 'tbl.action = :searchAction';
+        $filters[] = 'tbl.action LIKE :searchAction';
         $parameters['searchAction'] = '%' . $fragment . '%';
-        $filters[] = 'tbl.path = :searchPath';
+        $filters[] = 'tbl.path LIKE :searchPath';
         $parameters['searchPath'] = '%' . $fragment . '%';
-        $filters[] = 'tbl.host = :searchHost';
+        $filters[] = 'tbl.host LIKE :searchHost';
         $parameters['searchHost'] = '%' . $fragment . '%';
         $filters[] = 'tbl.schemes = :searchSchemes';
         $parameters['searchSchemes'] = $fragment;
         $filters[] = 'tbl.methods = :searchMethods';
         $parameters['searchMethods'] = $fragment;
-        $filters[] = 'tbl.translationPrefix = :searchTranslationPrefix';
+        $filters[] = 'tbl.translationPrefix LIKE :searchTranslationPrefix';
         $parameters['searchTranslationPrefix'] = '%' . $fragment . '%';
-        $filters[] = 'tbl.condition = :searchCondition';
+        $filters[] = 'tbl.condition LIKE :searchCondition';
         $parameters['searchCondition'] = '%' . $fragment . '%';
-        $filters[] = 'tbl.description = :searchDescription';
+        $filters[] = 'tbl.description LIKE :searchDescription';
         $parameters['searchDescription'] = '%' . $fragment . '%';
         $filters[] = 'tbl.sort = :searchSort';
         $parameters['searchSort'] = $fragment;
-        $filters[] = 'tbl.group = :searchGroup';
+        $filters[] = 'tbl.group LIKE :searchGroup';
         $parameters['searchGroup'] = '%' . $fragment . '%';
     
         $qb->andWhere('(' . implode(' OR ', $filters) . ')')
@@ -869,9 +869,8 @@ abstract class AbstractRouteRepository extends SortableRepository
      */
     protected function genericBaseQueryAddWhere(QueryBuilder $qb, $where = '')
     {
-        if (!empty($where)) {
+        if (!empty($where) || null !== $this->getRequest()) {
             // Use FilterUtil to support generic filtering.
-            //$qb->where($where);
     
             // Create filter configuration.
             $filterConfig = new FilterConfig($qb);
@@ -892,19 +891,16 @@ abstract class AbstractRouteRepository extends SortableRepository
                 []
             );
     
-            // Request object to obtain the filter string (only needed if the filter is set via GET or it reads values from GET).
-            // We do this not per default (for now) to prevent problems with explicite filters set by blocks or content types.
-            // TODO readd automatic request processing (basically replacing applyDefaultFilters() and addCommonViewFilters()).
-            $request = null;
-    
             // Name of filter variable(s) (filterX).
             $filterKey = 'filter';
     
             // initialise FilterUtil and assign both query builder and configuration
-            $filterUtil = new FilterUtil($filterPluginManager, $request, $filterKey);
+            $filterUtil = new FilterUtil($filterPluginManager, $this->getRequest(), $filterKey);
     
             // set our given filter
-            $filterUtil->setFilter($where);
+            if (!empty($where)) {
+                $filterUtil->setFilter($where);
+            }
     
             // you could add explicit filters at this point, something like
             // $filterUtil->addFilter('foo:eq:something,bar:gt:100');
