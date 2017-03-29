@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Zikula\BlocksModule\Block\FincludeBlock;
 use Zikula\Common\Translator\IdentityTranslator;
 
 /**
@@ -41,9 +42,9 @@ class FincludeBlockType extends AbstractType
             ])
             ->add('typo', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'choices' => [
-                    'HTML' => 0,
-                    'Text' => 1,
-                    'PHP' => 2
+                    'HTML' => FincludeBlock::FILETYPE_HTML,
+                    'Text' => FincludeBlock::FILETYPE_TEXT,
+                    'PHP' => FincludeBlock::FILETYPE_PHP
                 ],
                 'choices_as_values' => true, // defaults to true in Sy3.0
                 'label' => $translator->__('File type')

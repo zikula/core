@@ -18,6 +18,10 @@ use Zikula\BlocksModule\AbstractBlockHandler;
  */
 class FincludeBlock extends AbstractBlockHandler
 {
+    const FILETYPE_HTML = 0;
+    const FILETYPE_TEXT = 1;
+    const FILETYPE_PHP = 2;
+
     public function display(array $properties)
     {
         if (!$this->hasPermission('fincludeblock::', "$properties[title]::", ACCESS_READ)) {
@@ -25,15 +29,15 @@ class FincludeBlock extends AbstractBlockHandler
         }
 
         switch ($properties['typo']) {
-            case 0: // Html
+            case self::FILETYPE_HTML:
                 return file_get_contents($properties['filo']);
                 break;
-            case 1: // Text
+            case self::FILETYPE_TEXT:
                 return htmlspecialchars(file_get_contents($properties['filo']));
                 break;
-            case 2: // PHP
+            case self::FILETYPE_PHP:
                 ob_start();
-                include \DataUtil::formatForOS($properties['filo']);
+                include $properties['filo'];
 
                 return ob_get_clean();
                 break;
