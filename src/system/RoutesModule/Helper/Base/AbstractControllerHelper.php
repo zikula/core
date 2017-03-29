@@ -238,6 +238,7 @@ abstract class AbstractControllerHelper
         $repository->setRequest($request);
     
         // parameter for used sorting field
+        $sort = $request->query->get('sort', '');
         if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields())) {
             $sort = $repository->getDefaultSortingField();
             $request->query->set('sort', $sort);

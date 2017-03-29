@@ -15,8 +15,8 @@ namespace Zikula\RoutesModule\Entity\Base;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
-use Zikula\RoutesModule\Validator\Constraints as RoutesAssert;
 use Zikula\RoutesModule\Traits\StandardFieldsTrait;
+use Zikula\RoutesModule\Validator\Constraints as RoutesAssert;
 use Zikula\Core\Doctrine\EntityAccess;
 
 /**
@@ -240,6 +240,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     {
         $this->_objectType = $_objectType;
     }
+    
     
     /**
      * Returns the id.
@@ -685,6 +686,8 @@ abstract class AbstractRouteEntity extends EntityAccess
         $this->group = isset($group) ? $group : '';
     }
     
+    
+    
     /**
      * Returns the formatted title conforming to the display pattern
      * specified for this entity.
@@ -701,7 +704,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     
         return $formattedTitle;
     }
-
+    
     /**
      * Return entity data in JSON format.
      *

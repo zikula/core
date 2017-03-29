@@ -219,7 +219,7 @@ abstract class AbstractTwigExtension extends Twig_Extension
             if (!count($results)) {
                 return '';
             }
-
+    
             $uid = $results->getIterator()->getArrayCopy()[0]->getUname();
         }
         $params = ['uid' => $uid];
