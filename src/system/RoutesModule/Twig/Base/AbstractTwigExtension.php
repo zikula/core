@@ -213,14 +213,14 @@ abstract class AbstractTwigExtension extends Twig_Extension
         if (!is_numeric($uid)) {
             $limit = 1;
             $filter = [
-                'uname' => ['operator' => 'eq', 'operand' => $uid]
+                'uname' => ['operator' => '=', 'operand' => $uid]
             ];
             $results = $this->userRepository->query($filter, [], $limit);
             if (!count($results)) {
                 return '';
             }
 
-            $uid = $results[0]->getUname();
+            $uid = $results->getIterator()->getArrayCopy()[0]->getUname();
         }
         $params = ['uid' => $uid];
         if ($width > 0) {
