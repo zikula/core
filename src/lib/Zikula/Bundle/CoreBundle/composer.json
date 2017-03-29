@@ -41,7 +41,6 @@
         "zikula/filesystem": "dev-master",
 
         "ramsey/array_column": "1.1.*",
-        "beberlei/DoctrineExtensions": "v0.3",
 
         "oyejorge/less.php": "dev-master",
         "liip/imagine-bundle": "1.*"
