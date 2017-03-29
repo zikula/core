@@ -11,8 +11,6 @@
 
 namespace Zikula\SecurityCenterModule\Controller;
 
-use CacheUtil;
-use DataUtil;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use HTMLPurifier_VarParser;

@@ -284,6 +284,6 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
 
     private function isSerialized($string)
     {
-        return ($string === 'b:0;' || @unserialize($string) !== false);
+        return $string === 'b:0;' || @unserialize($string) !== false;
     }
 }
