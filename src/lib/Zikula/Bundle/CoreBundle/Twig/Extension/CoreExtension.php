@@ -347,19 +347,6 @@ class CoreExtension extends \Twig_Extension
     }
 
     /**
-     * @deprecated remove at Core-2.0
-     * @param string $modname
-     * @param bool $force
-     * @return bool
-     */
-    public function modAvailable($modname, $force = false)
-    {
-        $result = \ModUtil::available($modname, $force);
-
-        return (bool)$result;
-    }
-
-    /**
      * Call a php callable with parameters.
      * @param callable $callable
      * @param array $params

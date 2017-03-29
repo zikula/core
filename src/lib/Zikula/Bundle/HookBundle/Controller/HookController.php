@@ -289,8 +289,7 @@ class HookController extends Controller
         if (empty($subscriber)) {
             throw new \InvalidArgumentException($this->get('translator.default')->__f('Module "%s" is not a valid subscriber.', $subscriber));
         }
-        // @todo @deprecated in Core-2.0 use `$this->get('kernel')->isBundle($subscriber)`
-        if (!\ModUtil::available($subscriber)) {
+        if (!$this->get('kernel')->isBundle($subscriber)) {
             throw new \RuntimeException($this->get('translator.default')->__f('Subscriber module "%s" is not available.', $subscriber));
         }
         if (!$this->get('zikula_permissions_module.api.permission')->hasPermission($subscriber.'::', '::', ACCESS_ADMIN)) {
@@ -308,8 +307,7 @@ class HookController extends Controller
         if (empty($provider)) {
             throw new \InvalidArgumentException($this->get('translator.default')->__f('Module "%s" is not a valid provider.', $provider));
         }
-        // @todo @deprecated in Core-2.0 use `$this->get('kernel')->isBundle($provider)`
-        if (!\ModUtil::available($provider)) {
+        if (!$this->get('kernel')->isBundle($provider)) {
             throw new \RuntimeException($this->get('translator.default')->__f('Provider module "%s" is not available.', $provider));
         }
         if (!$this->get('zikula_permissions_module.api.permission')->hasPermission($provider.'::', '::', ACCESS_ADMIN)) {
@@ -371,8 +369,7 @@ class HookController extends Controller
         if (empty($subscriber)) {
             throw new \InvalidArgumentException($this->get('translator.default')->__f('Module "%s" is not a valid subscriber.', $subscriber));
         }
-        // @todo @deprecated in Core-2.0 use `$this->get('kernel')->isBundle($subscriber)`
-        if (!\ModUtil::available($subscriber)) {
+        if (!$this->get('kernel')->isBundle($subscriber)) {
             throw new \RuntimeException($this->get('translator.default')->__f('Subscriber module "%s" is not available.', $subscriber));
         }
         if (!$this->get('zikula_permissions_module.api.permission')->hasPermission($subscriber.'::', '::', ACCESS_ADMIN)) {
