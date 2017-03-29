@@ -11,6 +11,7 @@
 
 namespace Zikula\SearchModule\Twig;
 
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Core\ModUrl;
 use Zikula\Core\RouteUrl;
@@ -129,7 +130,11 @@ class TwigExtension extends \Twig_Extension
         if ($url instanceof ModUrl) { // @deprecated
             return $url->getUrl();
         } elseif ($url instanceof RouteUrl) {
-            return $this->router->generate($url->getRoute(), $url->getArgs()) . $url->getFragment();
+            try {
+                return $this->router->generate($url->getRoute(), $url->getArgs()) . $url->getFragment();
+            } catch (RouteNotFoundException $exception) {
+                // do nothing
+            }
         }
 
         return '';
