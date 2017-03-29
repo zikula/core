@@ -43,7 +43,15 @@ class RouteUrl extends ModUrl implements UrlInterface
         $this->args['_locale'] = $lang;
     }
 
-    public function getUrl($ssl = null, $fqUrl = null)
+    /**
+     * @deprecated remove at Core-2.0 and generate url from properties
+     * @param null $ssl
+     * @param null $fqUrl
+     * @param bool $forcelongurl
+     * @param bool $forcelang
+     * @return string
+     */
+    public function getUrl($ssl = null, $fqUrl = null, $forcelongurl = false, $forcelang = false)
     {
         $router = \ServiceUtil::get('router');
         $fqUrl = (is_bool($fqUrl) && $fqUrl) ? RouterInterface::ABSOLUTE_URL : RouterInterface::ABSOLUTE_PATH;
@@ -53,7 +61,11 @@ class RouteUrl extends ModUrl implements UrlInterface
         if ($ssl) {
             $router->getContext()->setScheme('https');
         }
-        $url = $router->generate($this->route, $this->args, $fqUrl) . $fragment;
+        try {
+            $url = $router->generate($this->route, $this->args, $fqUrl) . $fragment;
+        } catch (\Exception $e) {
+            return '';
+        }
         if ($ssl) {
             $router->getContext()->setScheme($oldScheme);
         }

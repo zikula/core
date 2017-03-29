@@ -105,8 +105,8 @@ class SearchApi implements SearchApiInterface
         $results = $this->searchResultRepository->getResults(['sesid' => $this->session->getId()], $this->computeSort($searchOrder), $limit, $offset);
 
         $result = [
-            'count' => $resultCount,
-            'results' => $results,
+            'resultCount' => $resultCount,
+            'sqlResult' => $results,
         ];
         if (isset($searchableInstance)) {
             $result['errors'] = $searchableInstance->getErrors();
