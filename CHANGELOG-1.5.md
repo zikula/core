@@ -15,6 +15,7 @@ CHANGELOG - ZIKULA 1.5.x
     - AbstractSearchable is deprecated. Use SearchableInterface instead.
     - CategoryApi deprecated. Use CategoryRepository instead.
     - CategoryRegistryApi deprecated. User CategoryRegistryRepository instead.
+    - System vars 'timezone_server' and 'timezone_offset' are deprecated.
 
  - Fixes:
     - Corrected path to legacy module's admin icons.
@@ -31,6 +32,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Added support for Symfony workflow component (#2423).
     - Added WorkflowBundle providing an UI for workflow management (#2423).
     - Automatically initialise basic JavaScript polyfills for forms (#3348, #3486).
+    - Added system var 'timezone' for setting the timezone for guest users (replaces 'timezone_offset').
 
  - Vendor updates:
     - doctrine/cache updated from 1.5.4 to 1.6.1
