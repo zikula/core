@@ -11,7 +11,6 @@
 
 namespace Zikula\SettingsModule\Form\Type;
 
-use DateUtil;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\FormBuilderInterface;
