@@ -15,10 +15,6 @@ namespace Zikula\RoutesModule\Entity\Historical\v110;
 use Zikula\RoutesModule\Entity\Historical\v110\Base\AbstractRouteEntity as BaseEntity;
 
 use Doctrine\ORM\Mapping as ORM;
-use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Entity class that defines the entity structure and behaviours.
