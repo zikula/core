@@ -19,7 +19,6 @@ use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\RoutesModule\Entity\Factory\RoutesFactory;
 use Zikula\RoutesModule\Helper\ModelHelper;
-use Zikula\RoutesModule\Helper\SelectionHelper;
 
 /**
  * Helper base class for controller layer methods.
@@ -52,11 +51,6 @@ abstract class AbstractControllerHelper
     protected $modelHelper;
 
     /**
-     * @var SelectionHelper
-     */
-    protected $selectionHelper;
-
-    /**
      * ControllerHelper constructor.
      *
      * @param RequestStack        $requestStack    RequestStack service instance
@@ -64,22 +58,19 @@ abstract class AbstractControllerHelper
      * @param VariableApi         $variableApi     VariableApi service instance
      * @param RoutesFactory $entityFactory RoutesFactory service instance
      * @param ModelHelper         $modelHelper     ModelHelper service instance
-     * @param SelectionHelper     $selectionHelper SelectionHelper service instance
      */
     public function __construct(
         RequestStack $requestStack,
         FormFactoryInterface $formFactory,
         VariableApi $variableApi,
         RoutesFactory $entityFactory,
-        ModelHelper $modelHelper,
-        SelectionHelper $selectionHelper
+        ModelHelper $modelHelper
     ) {
         $this->request = $requestStack->getCurrentRequest();
         $this->formFactory = $formFactory;
         $this->variableApi = $variableApi;
         $this->entityFactory = $entityFactory;
         $this->modelHelper = $modelHelper;
-        $this->selectionHelper = $selectionHelper;
     }
 
     /**
@@ -137,7 +128,7 @@ abstract class AbstractControllerHelper
         $routeParams = $request->get('_route_params', []);
         foreach ($idFields as $idField) {
             $defaultValue = isset($args[$idField]) && is_numeric($args[$idField]) ? $args[$idField] : 0;
-            if ($this->selectionHelper->hasCompositeKeys($objectType)) {
+            if ($this->entityFactory->hasCompositeKeys($objectType)) {
                 // composite key may be alphanumeric
                 if (array_key_exists($idField, $routeParams)) {
                     $id = !empty($routeParams[$idField]) ? $routeParams[$idField] : $defaultValue;
@@ -310,13 +301,13 @@ abstract class AbstractControllerHelper
         $where = '';
         if ($showAllEntries == 1) {
             // retrieve item list without pagination
-            $entities = $this->selectionHelper->getEntities($objectType, [], $where, $sort . ' ' . $sortdir);
+            $entities = $repository->selectWhere($where, $sort . ' ' . $sortdir);
         } else {
             // the current offset which is used to calculate the pagination
             $currentPage = $request->query->getInt('pos', 1);
     
             // retrieve item list with pagination
-            list($entities, $objectCount) = $this->selectionHelper->getEntitiesPaginated($objectType, $where, $sort . ' ' . $sortdir, $currentPage, $resultsPerPage);
+            list($entities, $objectCount) = $repository->selectWherePaginated($where, $sort . ' ' . $sortdir, $currentPage, $resultsPerPage);
     
             $templateParameters['currentPage'] = $currentPage;
             $templateParameters['pager'] = [

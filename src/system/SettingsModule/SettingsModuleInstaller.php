@@ -40,8 +40,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('startdate', date('m/Y', time()));
         $this->setSystemVar('adminmail', 'example@example.com');
         $this->setSystemVar('Default_Theme', 'ZikulaBootstrapTheme');
-        $this->setSystemVar('timezone_offset', '0');
-        $this->setSystemVar('timezone_server', '0');
+        $this->setSystemVar('timezone', date_default_timezone_get());
         $this->setSystemVar('funtext', '1');
         $this->setSystemVar('reportlevel', '0');
         $this->setSystemVar('startpage', '');
@@ -122,7 +121,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
 
             case '2.9.9':
                 // update certain System vars to multilingual. provide default values for all locales using current value.
-                // must directly manipulate System vars at DB level because using $this->getSystemVar() returns empty values due to ModUtil::setupMultilingual()
+                // must directly manipulate System vars at DB level because using $this->getSystemVar() returns empty values
                 $varsToChange = ['sitename', 'slogan', 'metakeywords', 'defaultpagetitle', 'defaultmetadescription'];
                 $SystemVars = $this->entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionVarEntity')->findBy(['modname' => VariableApi::CONFIG]);
                 /** @var \Zikula\ExtensionsModule\Entity\ExtensionVarEntity $modVar */
@@ -147,6 +146,9 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                 $this->setSystemVar('shorturlsstripentrypoint', (bool) $this->getSystemVar('shorturlsstripentrypoint'));
                 $this->setSystemVar('useCompression', (bool) $this->getSystemVar('useCompression'));
             case '2.9.12': // ship with Core-1.4.4
+                // reconfigure TZ settings
+                $this->setGuestTimeZone();
+            case '2.9.13': // ship with Core-1.5.0
                 // current version
         }
 
@@ -173,5 +175,25 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
     private function getSystemVar($name)
     {
         return $this->container->get('zikula_extensions_module.api.variable')->getSystemVar($name);
+    }
+
+    /**
+     * upgrade helper method
+     */
+    private function setGuestTimeZone()
+    {
+        $existingOffset = $this->getSystemVar('timezone_offset');
+        $actualOffset = floatval($existingOffset) * 60; // express in minutes
+        $timezoneAbbreviations = \DateTimeZone::listAbbreviations();
+        $timeZone = date_default_timezone_get();
+        foreach ($timezoneAbbreviations as $abbreviation => $zones) {
+            foreach ($zones as $zone) {
+                if ($zone['offset'] == $actualOffset) {
+                    $timeZone = $zone['timezone_id'];
+                    break 2;
+                }
+            }
+        }
+        $this->setSystemVar('timezone', $timeZone);
     }
 }

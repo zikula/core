@@ -41,13 +41,7 @@ abstract class AbstractAjaxController extends AbstractController
             return true;
         }
         
-        $fragment = '';
-        if ($request->isMethod('POST') && $request->request->has('fragment')) {
-            $fragment = $request->request->get('fragment', '');
-        } elseif ($request->isMethod('GET') && $request->query->has('fragment')) {
-            $fragment = $request->query->get('fragment', '');
-        }
-        
+        $fragment = $request->query->get('fragment', '');
         $userRepository = $this->get('zikula_users_module.user_repository');
         $limit = 50;
         $filter = [

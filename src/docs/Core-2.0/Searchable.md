@@ -9,7 +9,7 @@ fully functional) in favor of a dedicated class that is identified as a Dependen
         class: Acme\FooModule\Helper\SearchHelper
         arguments:
           - '@zikula_permissions_module.api.permission'
-          - '@templating.engine.twig'
+          - '@twig'
           - '@session'
           - '@acme_foo_module.fooentity_repository'
         tags:

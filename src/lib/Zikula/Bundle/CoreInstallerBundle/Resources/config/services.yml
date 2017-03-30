@@ -27,4 +27,9 @@ services:
 
     zikula_core_installer.controller.doc:
         class: Zikula\Bundle\CoreInstallerBundle\Controller\DocController
-        arguments: ["@kernel", "@router", "@templating", "@zikula_core.common.markdown_extra_parser", "@translator.default"]
+        arguments:
+          - "@kernel"
+          - "@router"
+          - "@twig"
+          - "@zikula_core.common.markdown_extra_parser"
+          - "@translator.default"

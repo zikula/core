@@ -11,13 +11,14 @@
 
 namespace Zikula\SettingsModule\Form\Type;
 
-use DateUtil;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\IdentityTranslator;
 
 /**
  * Locale settings form type.
@@ -53,10 +54,9 @@ class LocaleSettingsType extends AbstractType
                 'label' => $translator->__('Default language to use for this site'),
                 'choices' => $options['languages'],
             ])
-            ->add('timezone_offset', ChoiceType::class, [ // @todo convert to TimezoneType
-                'choices' => $options['timezones'],
+            ->add('timezone', TimezoneType::class, [
                 'label' => $translator->__('Time zone for anonymous guests'),
-                'help' => $translator->__('Server time zone') . ': ' . DateUtil::getTimezoneAbbr()
+                'help' => $translator->__f('Server time zone is %tz', ['%tz' => date_default_timezone_get() . ' (' . date('T') . ')'])
             ])
             ->add('idnnames', CheckboxType::class, [
                 'label' => $translator->__('Allow IDN domain names'),
@@ -96,7 +96,7 @@ class LocaleSettingsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => null,
+            'translator' => new IdentityTranslator(),
             'languages' => ['English' => 'en'],
             'timezones' => [0 => 'GMT']
         ]);

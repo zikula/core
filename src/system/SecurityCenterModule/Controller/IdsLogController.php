@@ -11,12 +11,12 @@
 
 namespace Zikula\SecurityCenterModule\Controller;
 
-use FileUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Component\SortableColumns\Column;
@@ -24,6 +24,7 @@ use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\SecurityCenterModule\Form\Type\IdsLogExportType;
 use Zikula\SecurityCenterModule\Form\Type\IdsLogFilterType;
+use Zikula\Core\Response\PlainResponse;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -190,63 +191,52 @@ class IdsLogController extends AbstractController
                         $delimiter = chr(9);
                 }
 
-                // titles
-                $titles = [];
-                if ($exportTitles === true) {
-                    $titles = [
-                        $this->__('Name'),
-                        $this->__('Tag'),
-                        $this->__('Value'),
-                        $this->__('Page'),
-                        $this->__('User Name'),
-                        $this->__('IP'),
-                        $this->__('Impact'),
-                        $this->__('PHPIDS filters used'),
-                        $this->__('Date')
-                    ];
-                }
+                $titles = [
+                    $this->__('Name'),
+                    $this->__('Tag'),
+                    $this->__('Value'),
+                    $this->__('Page'),
+                    $this->__('User Name'),
+                    $this->__('IP'),
+                    $this->__('Impact'),
+                    $this->__('PHPIDS filters used'),
+                    $this->__('Date')
+                ];
 
                 // get data
                 $repository = $this->get('zikula_securitycenter_module.intrusion_repository');
                 $items = $repository->getIntrusions([], ['date' => 'DESC']);
 
-                $objData = [];
+                $string = $exportTitles ? implode($delimiter, $titles) . PHP_EOL : '';
                 foreach ($items as $item) {
                     $dta = $item->toArray();
-                    $dta['username'] = $dta['user']['uname'];
                     $dta['filters'] = unserialize($dta['filters']);
-                    $dta['date'] = $dta['date']->format('Y-m-d H:i:s');
-                    unset($dta['user']);
-                    $objData[] = $dta;
-                }
-
-                $data = [];
-                $find = ["\r\n", "\n"];
-                $replace = ['', ''];
-
-                foreach ($objData as $key => $idsdata) {
                     $filtersUsed = '';
-                    foreach ($objData[$key]['filters'] as $filter) {
+                    foreach ($dta['filters'] as $filter) {
                         $filtersUsed .= $filter['id'] . ' ';
                     }
-
-                    $dataRow = [
-                        $objData[$key]['name'],
-                        $objData[$key]['tag'],
-                        htmlspecialchars(str_replace($find, $replace, $objData[$key]['value']), ENT_COMPAT, 'UTF-8', false),
-                        htmlspecialchars($objData[$key]['page'], ENT_COMPAT, 'UTF-8', false),
-                        $objData[$key]['username'],
-                        $objData[$key]['ip'],
-                        $objData[$key]['impact'],
-                        $filtersUsed,
-                        $objData[$key]['date']
-                    ];
-
-                    array_push($data, $dataRow);
+                    $string .=
+                        $dta['name'] . $delimiter .
+                        $dta['tag'] . $delimiter .
+                        htmlspecialchars(str_replace(["\r\n", "\n"], ['', ''], $dta['value']), ENT_COMPAT, 'UTF-8', false) . $delimiter .
+                        htmlspecialchars($dta['page'], ENT_COMPAT, 'UTF-8', false) . $delimiter .
+                        $dta['user']['uname'] . $delimiter .
+                        $dta['ip'] . $delimiter .
+                        $dta['impact'] . $delimiter .
+                        $filtersUsed . $delimiter .
+                        $dta['date']->format('Y-m-d H:i:s') . PHP_EOL;
                 }
 
-                // export the csv file
-                FileUtil::exportCSV($data, $titles, $delimiter, '"', $exportFile);
+                // create and export the csv file
+                $response = new PlainResponse($string);
+                $disposition = $response->headers->makeDisposition(
+                    ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                    $exportFile
+                );
+                $response->headers->set('Content-Disposition', $disposition);
+                $response->headers->set('Content-Type', 'text/csv');
+
+                return $response;
             }
             if ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));

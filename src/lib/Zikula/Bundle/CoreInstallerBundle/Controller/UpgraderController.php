@@ -18,7 +18,6 @@ use Zikula\Component\Wizard\FormHandlerInterface;
 use Zikula\Component\Wizard\Wizard;
 use Zikula\Component\Wizard\WizardCompleteInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\Core\Response\PlainResponse;
 
 /**
  * Class UpgraderController
@@ -63,7 +62,7 @@ class UpgraderController extends AbstractController
         if ($wizard->isHalted()) {
             $request->getSession()->getFlashBag()->add('danger', $wizard->getWarning());
 
-            return $this->templatingService->renderResponse('ZikulaCoreInstallerBundle::error.html.twig', $templateParams, new PlainResponse());
+            return $this->renderResponse('ZikulaCoreInstallerBundle::error.html.twig', $templateParams);
         }
 
         // handle the form
@@ -80,6 +79,6 @@ class UpgraderController extends AbstractController
             $templateParams['form'] = $form->createView();
         }
 
-        return $this->templatingService->renderResponse($currentStage->getTemplateName(), $templateParams, new PlainResponse());
+        return $this->renderResponse($currentStage->getTemplateName(), $templateParams);
     }
 }

@@ -31,7 +31,6 @@ use Zikula\UsersModule\Api\CurrentUserApi;
 use Zikula\RoutesModule\Entity\Factory\RoutesFactory;
 use Zikula\RoutesModule\Helper\ControllerHelper;
 use Zikula\RoutesModule\Helper\ModelHelper;
-use Zikula\RoutesModule\Helper\SelectionHelper;
 use Zikula\RoutesModule\Helper\WorkflowHelper;
 
 /**
@@ -181,11 +180,6 @@ abstract class AbstractEditHandler
     protected $modelHelper;
 
     /**
-     * @var SelectionHelper
-     */
-    protected $selectionHelper;
-
-    /**
      * @var WorkflowHelper
      */
     protected $workflowHelper;
@@ -225,7 +219,6 @@ abstract class AbstractEditHandler
      * @param RoutesFactory $entityFactory RoutesFactory service instance
      * @param ControllerHelper          $controllerHelper ControllerHelper service instance
      * @param ModelHelper               $modelHelper      ModelHelper service instance
-     * @param SelectionHelper           $selectionHelper  SelectionHelper service instance
      * @param WorkflowHelper            $workflowHelper   WorkflowHelper service instance
      */
     public function __construct(
@@ -240,7 +233,6 @@ abstract class AbstractEditHandler
         RoutesFactory $entityFactory,
         ControllerHelper $controllerHelper,
         ModelHelper $modelHelper,
-        SelectionHelper $selectionHelper,
         WorkflowHelper $workflowHelper
     ) {
         $this->kernel = $kernel;
@@ -254,7 +246,6 @@ abstract class AbstractEditHandler
         $this->entityFactory = $entityFactory;
         $this->controllerHelper = $controllerHelper;
         $this->modelHelper = $modelHelper;
-        $this->selectionHelper = $selectionHelper;
         $this->workflowHelper = $workflowHelper;
     }
 
@@ -302,7 +293,7 @@ abstract class AbstractEditHandler
     
         $this->permissionComponent = 'ZikulaRoutesModule:' . $this->objectTypeCapital . ':';
     
-        $this->idFields = $this->selectionHelper->getIdFields($this->objectType);
+        $this->idFields = $this->entityFactory->getIdFields($this->objectType);
     
         // retrieve identifier of the object we wish to view
         $this->idValues = $this->controllerHelper->retrieveIdentifier($this->request, [], $this->objectType, $this->idFields);
@@ -435,7 +426,7 @@ abstract class AbstractEditHandler
      */
     protected function initEntityForEditing()
     {
-        return $this->selectionHelper->getEntity($this->objectType, $this->idValues);
+        return $this->entityFactory->getRepository($this->objectType)->selectById($this->idValues);
     }
     
     /**
@@ -461,7 +452,7 @@ abstract class AbstractEditHandler
                     $i++;
                 }
                 // reuse existing entity
-                $entityT = $this->selectionHelper->getEntity($this->objectType, $templateIdValues);
+                $entityT = $this->entityFactory->getRepository($this->objectType)->selectById($templateIdValues);
                 if (null === $entityT) {
                     return null;
                 }
