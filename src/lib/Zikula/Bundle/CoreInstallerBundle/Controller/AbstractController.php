@@ -15,12 +15,14 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ConfigHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Core\Response\PlainResponse;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
@@ -40,9 +42,9 @@ abstract class AbstractController
     protected $router;
 
     /**
-     * @var EngineInterface
+     * @var \Twig_Environment
      */
-    protected $templatingService;
+    protected $twig;
 
     /**
      * @var ControllerHelper
@@ -73,7 +75,7 @@ abstract class AbstractController
     {
         $this->container = $container;
         $this->router = $this->container->get('router');
-        $this->templatingService = $this->container->get('templating');
+        $this->twig = $this->container->get('twig');
         $this->form = $this->container->get('form.factory');
         $this->controllerHelper = $this->container->get('zikula_core_installer.controller.helper');
         $this->configHelper = $this->container->get('zikula_core_installer.config.helper');
@@ -182,5 +184,22 @@ abstract class AbstractController
         }
 
         return $params;
+    }
+
+    /**
+     * @param string $view
+     * @param array $parameters
+     * @param Response|null $response
+     * @return Response
+     */
+    protected function renderResponse($view, array $parameters = [], Response $response = null)
+    {
+        if (null === $response) {
+            $response = new PlainResponse();
+        }
+
+        $response->setContent($this->twig->render($view, $parameters));
+
+        return $response;
     }
 }
