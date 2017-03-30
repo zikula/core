@@ -14,7 +14,6 @@ namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Michelf\MarkdownExtra;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -36,9 +35,9 @@ class DocController
     private $router;
 
     /**
-     * @var EngineInterface
+     * @var \Twig_Environment
      */
-    private $templatingService;
+    private $twig;
 
     /**
      * @var MarkdownExtra
@@ -60,20 +59,20 @@ class DocController
      *
      * @param ZikulaHttpKernelInterface $kernel
      * @param RouterInterface $router The route generator
-     * @param EngineInterface $templatingService
+     * @param \Twig_Environment $twig
      * @param MarkdownExtra $parser
      * @param TranslatorInterface $translator
      */
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
         RouterInterface $router,
-        EngineInterface $templatingService,
+        \Twig_Environment $twig,
         MarkdownExtra $parser,
         TranslatorInterface $translator
     ) {
         $this->kernel = $kernel;
         $this->router = $router;
-        $this->templatingService = $templatingService;
+        $this->twig = $twig;
         $this->parser = $parser;
         $this->translator = $translator;
     }
@@ -102,8 +101,10 @@ class DocController
             'charset' => $this->kernel->getCharset(),
             'content' => $content,
         ];
+        $response = new PlainResponse();
+        $response->setContent($this->twig->render('ZikulaCoreInstallerBundle::doc.html.twig', $templateParams));
 
-        return $this->templatingService->renderResponse('ZikulaCoreInstallerBundle::doc.html.twig', $templateParams, new PlainResponse());
+        return $response;
     }
 
     /**

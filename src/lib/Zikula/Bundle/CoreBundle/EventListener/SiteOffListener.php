@@ -11,7 +11,6 @@
 
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -32,7 +31,7 @@ class SiteOffListener implements EventSubscriberInterface
 
     private $currentUserApi;
 
-    private $templating;
+    private $twig;
 
     private $formFactory;
 
@@ -45,14 +44,14 @@ class SiteOffListener implements EventSubscriberInterface
      * @param VariableApi $variableApi
      * @param PermissionApi $permissionApi
      * @param CurrentUserApi $currentUserApi
-     * @param EngineInterface $templating
+     * @param \Twig_Environment $twig
      * @param FormFactory $formFactory
      */
     public function __construct(
         VariableApi $variableApi,
         PermissionApi $permissionApi,
         CurrentUserApi $currentUserApi,
-        EngineInterface $templating,
+        \Twig_Environment $twig,
         FormFactory $formFactory,
         RouterInterface $router,
         $installed
@@ -60,7 +59,7 @@ class SiteOffListener implements EventSubscriberInterface
         $this->variableApi = $variableApi;
         $this->permissionApi = $permissionApi;
         $this->currentUserApi = $currentUserApi;
-        $this->templating = $templating;
+        $this->twig = $twig;
         $this->formFactory = $formFactory;
         $this->router = $router;
         $this->installed = $installed;
@@ -105,7 +104,7 @@ class SiteOffListener implements EventSubscriberInterface
             $response = new PlainResponse();
             $response->headers->add(['HTTP/1.1 503 Service Unavailable']);
             $response->setStatusCode(503);
-            $content = $this->templating->render('CoreBundle:System:siteoff.html.twig', [
+            $content = $this->twig->render('CoreBundle:System:siteoff.html.twig', [
                 'versionsEqual' => $versionsEqual,
                 'form' => $form->createView()
             ]);

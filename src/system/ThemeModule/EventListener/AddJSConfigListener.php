@@ -11,7 +11,6 @@
 
 namespace Zikula\ThemeModule\EventListener;
 
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -36,9 +35,9 @@ class AddJSConfigListener implements EventSubscriberInterface
     private $currentUserApi;
 
     /**
-     * @var EngineInterface
+     * @var \Twig_Environment
      */
-    private $templating;
+    private $twig;
 
     /**
      * @var ParameterBag
@@ -60,13 +59,16 @@ class AddJSConfigListener implements EventSubscriberInterface
      */
     private $compat;
 
+    /**
+     * @var bool
+     */
     private $installed;
 
     /**
      * JSConfig constructor.
      * @param VariableApi $variableApi
      * @param CurrentUserApi $currentUserApi
-     * @param EngineInterface $templating
+     * @param \Twig_Environment $twig
      * @param ParameterBag $pageVars
      * @param AssetBag $headers
      * @param string $defaultSessionName
@@ -76,7 +78,7 @@ class AddJSConfigListener implements EventSubscriberInterface
         $installed,
         VariableApi $variableApi,
         CurrentUserApi $currentUserApi,
-        EngineInterface $templating,
+        \Twig_Environment $twig,
         ParameterBag $pageVars,
         AssetBag $headers,
         $defaultSessionName = '_zsid',
@@ -85,7 +87,7 @@ class AddJSConfigListener implements EventSubscriberInterface
         $this->installed = $installed;
         $this->variableApi = $variableApi;
         $this->currentUserApi = $currentUserApi;
-        $this->templating = $templating;
+        $this->twig = $twig;
         $this->pageVars = $pageVars;
         $this->headers = $headers;
         $this->defaultSessionName = $defaultSessionName;
@@ -124,7 +126,7 @@ class AddJSConfigListener implements EventSubscriberInterface
             $config['polyfillFeatures'] = implode(' ', $polyfill_features);
         }
         $config = array_map('htmlspecialchars', $config);
-        $content = $this->templating->render('@ZikulaThemeModule/Engine/JSConfig.html.twig', [
+        $content = $this->twig->render('@ZikulaThemeModule/Engine/JSConfig.html.twig', [
             'compat' => $this->compat,
             'config' => $config
         ]);
