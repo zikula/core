@@ -12,6 +12,7 @@
 namespace Zikula\AdminModule\Helper;
 
 use Symfony\Component\HttpFoundation\RequestStack;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
 class UpdateCheckHelper
@@ -78,7 +79,7 @@ class UpdateCheckHelper
         $this->requestStack = $requestStack;
 
         $this->enabled = (bool)$variableApi->getSystemVar('updatecheck');
-        $this->currentVersion = $variableApi->getSystemVar('Version_Num');
+        $this->currentVersion = ZikulaKernel::VERSION;
         $this->lastChecked = (int)$variableApi->getSystemVar('updatelastchecked');
         $this->checkInterval = (int)$variableApi->getSystemVar('updatefrequency');
         $this->updateversion = $variableApi->getSystemVar('updateversion');
