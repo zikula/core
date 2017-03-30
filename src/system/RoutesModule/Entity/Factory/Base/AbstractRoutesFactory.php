@@ -64,6 +64,43 @@ abstract class AbstractRoutesFactory
     }
 
     /**
+     * Gets the list of identifier fields for a given object type.
+     *
+     * @param string $objectType The object type to be treated
+     *
+     * @return array List of identifier field names
+     */
+    public function getIdFields($objectType = '')
+    {
+        if (empty($objectType)) {
+            throw new InvalidArgumentException('Invalid object type received.');
+        }
+        $entityClass = 'ZikulaRoutesModule:' . ucfirst($objectType) . 'Entity';
+    
+        $meta = $this->entityFactory->getObjectManager()->getClassMetadata($entityClass);
+    
+        if ($this->hasCompositeKeys($objectType)) {
+            $idFields = $meta->getIdentifierFieldNames();
+        } else {
+            $idFields = [$meta->getSingleIdentifierFieldName()];
+        }
+    
+        return $idFields;
+    }
+
+    /**
+     * Checks whether a certain entity type uses composite keys or not.
+     *
+     * @param string $objectType The object type to retrieve
+     *
+     * @return Boolean Whether composite keys are used or not
+     */
+    public function hasCompositeKeys($objectType)
+    {
+        return false;
+    }
+
+    /**
      * Returns the object manager.
      *
      * @return ObjectManager

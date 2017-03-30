@@ -15,9 +15,9 @@ namespace Zikula\RoutesModule\Entity\Base;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\RoutesModule\Traits\StandardFieldsTrait;
 use Zikula\RoutesModule\Validator\Constraints as RoutesAssert;
-use Zikula\Core\Doctrine\EntityAccess;
 
 /**
  * Entity class that defines the entity structure and behaviours.
@@ -212,8 +212,6 @@ abstract class AbstractRouteEntity extends EntityAccess
      * Will not be called by Doctrine and can therefore be used
      * for own implementation purposes. It is also possible to add
      * arbitrary arguments as with every other class method.
-     *
-     * @param TODO
      */
     public function __construct()
     {
