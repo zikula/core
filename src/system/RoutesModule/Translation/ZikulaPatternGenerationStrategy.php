@@ -137,9 +137,8 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
             /** @var \ZikulaKernel $kernel */
             $kernel = $GLOBALS['kernel'];
             $module = $kernel->getModule($moduleName);
-            // First get untranslated url from metaData.
-            $url = $module->getMetaData()->getUrl(false);
-            $this->modUrlMap[$moduleName] = $url;
+            // get untranslated url from metaData.
+            $this->modUrlMap[$moduleName] = $module->getMetaData()->getUrl(false);
         }
 
         return $this->modUrlMap[$moduleName];
