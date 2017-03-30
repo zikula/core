@@ -14,7 +14,6 @@ namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Michelf\MarkdownExtra;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
