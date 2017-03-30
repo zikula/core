@@ -102,13 +102,12 @@ class SettingsController extends AbstractController
                 'languageurl' => $this->getSystemVar('languageurl'),
                 'language_detect' => (bool)$this->getSystemVar('language_detect'),
                 'language_i18n' => $this->getSystemVar('language_i18n'),
-                'timezone_offset' => $this->getSystemVar('timezone_offset'),
+                'timezone' => $this->getSystemVar('timezone'),
                 'idnnames' => (bool)$this->getSystemVar('idnnames'),
             ],
             [
                 'translator' => $this->get('translator.default'),
                 'languages' => $this->container->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(),
-                'timezones' => DateUtil::getTimezones()
             ]
         );
         $form->handleRequest($request);

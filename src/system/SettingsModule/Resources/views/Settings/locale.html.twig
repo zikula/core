@@ -23,15 +23,12 @@
             <legend>{{ __('Language system') }}</legend>
             {{ form_row(form.multilingual) }}
             {{ form_row(form.languageurl) }}
+            {{ form_row(form.language_i18n) }}
         </fieldset>
         <fieldset>
             <legend>{{ __('Browser') }}</legend>
             {{ form_row(form.language_detect) }}
-        </fieldset>
-        <fieldset>
-            <legend>{{ __('Server') }}</legend>
-            {{ form_row(form.language_i18n) }}
-            {{ form_row(form.timezone_offset) }}
+            {{ form_row(form.timezone) }}
         </fieldset>
         <fieldset>
             <legend>{{ __('Variable validation') }}</legend>
