@@ -49,7 +49,6 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
         // create the default data
         $this->createDefaultData();
     
-        
     
         // initialisation successful
         return true;
@@ -111,10 +110,6 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
     
             return false;
         }
-    
-        // uninstall subscriber hooks
-        $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
-        
     
         // remove all module vars
         $this->delVars();

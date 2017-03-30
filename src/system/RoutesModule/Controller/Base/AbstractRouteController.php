@@ -470,15 +470,15 @@ abstract class AbstractRouteController extends AbstractController
         
         $action = strtolower($action);
         
-        $selectionHelper = $this->get('zikula_routes_module.selection_helper');
+        $repository = $this->get('zikula_routes_module.entity_factory')->getRepository($objectType);
         $workflowHelper = $this->get('zikula_routes_module.workflow_helper');
         $logger = $this->get('logger');
         $userName = $this->get('zikula_users_module.current_user')->get('uname');
         
         // process each item
-        foreach ($items as $itemid) {
+        foreach ($items as $itemId) {
             // check if item exists, and get record instance
-            $entity = $selectionHelper->getEntity($objectType, $itemid, false);
+            $entity = $repository->selectById($itemId, false);
             if (null === $entity) {
                 continue;
             }
@@ -497,7 +497,7 @@ abstract class AbstractRouteController extends AbstractController
                 $success = $workflowHelper->executeAction($entity, $action);
             } catch(\Exception $e) {
                 $this->addFlash('error', $this->__f('Sorry, but an error occured during the %action% action.', ['%action%' => $action]) . '  ' . $e->getMessage());
-                $logger->error('{app}: User {user} tried to execute the {action} workflow action for the {entity} with id {id}, but failed. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'user' => $userName, 'action' => $action, 'entity' => 'route', 'id' => $itemid, 'errorMessage' => $e->getMessage()]);
+                $logger->error('{app}: User {user} tried to execute the {action} workflow action for the {entity} with id {id}, but failed. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'user' => $userName, 'action' => $action, 'entity' => 'route', 'id' => $itemId, 'errorMessage' => $e->getMessage()]);
             }
         
             if (!$success) {
@@ -506,10 +506,10 @@ abstract class AbstractRouteController extends AbstractController
         
             if ($action == 'delete') {
                 $this->addFlash('status', $this->__('Done! Item deleted.'));
-                $logger->notice('{app}: User {user} deleted the {entity} with id {id}.', ['app' => 'ZikulaRoutesModule', 'user' => $userName, 'entity' => 'route', 'id' => $itemid]);
+                $logger->notice('{app}: User {user} deleted the {entity} with id {id}.', ['app' => 'ZikulaRoutesModule', 'user' => $userName, 'entity' => 'route', 'id' => $itemId]);
             } else {
                 $this->addFlash('status', $this->__('Done! Item updated.'));
-                $logger->notice('{app}: User {user} executed the {action} workflow action for the {entity} with id {id}.', ['app' => 'ZikulaRoutesModule', 'user' => $userName, 'action' => $action, 'entity' => 'route', 'id' => $itemid]);
+                $logger->notice('{app}: User {user} executed the {action} workflow action for the {entity} with id {id}.', ['app' => 'ZikulaRoutesModule', 'user' => $userName, 'action' => $action, 'entity' => 'route', 'id' => $itemId]);
             }
         }
         

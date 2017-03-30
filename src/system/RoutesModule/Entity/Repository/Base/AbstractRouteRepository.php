@@ -555,7 +555,6 @@ abstract class AbstractRouteRepository extends SortableRepository
         $qb = $this->genericBaseQuery($where, $orderBy, $useJoins, $slimMode);
     
         $page = $currentPage;
-        
         $query = $this->getSelectWherePaginatedQuery($qb, $page, $resultsPerPage);
     
         return $this->retrieveCollectionResult($query, $orderBy, true);
@@ -743,11 +742,10 @@ abstract class AbstractRouteRepository extends SortableRepository
      * @param boolean $useJoins Whether to include joining related objects (optional) (default=true)
      *
      * @return QueryBuilder Created query builder instance
-     * @TODO fix usage of joins; please remove the first line and test
      */
     protected function getCountQuery($where = '', $useJoins = true)
     {
-        $useJoins = false;
+        $useJoins = false; // joins usage needs to be fixed; please remove the first line and test
     
         $selection = 'COUNT(tbl.id) AS numRoutes';
         if (true === $useJoins) {
