@@ -23,7 +23,6 @@ services:
             - "@zikula_routes_module.entity_factory"
             - "@zikula_routes_module.controller_helper"
             - "@zikula_routes_module.model_helper"
-            - "@zikula_routes_module.selection_helper"
             - "@zikula_routes_module.workflow_helper"
         calls:
             - [setLockingApi, ["@?zikula_pagelock_module.api.locking"]]
