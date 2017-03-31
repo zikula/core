@@ -14,6 +14,7 @@ namespace Zikula\RoutesModule\Entity\Factory\Base;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
+use InvalidArgumentException;
 
 /**
  * Factory class used to create entities and receive entity repositories.
@@ -77,7 +78,7 @@ abstract class AbstractRoutesFactory
         }
         $entityClass = 'ZikulaRoutesModule:' . ucfirst($objectType) . 'Entity';
     
-        $meta = $this->entityFactory->getObjectManager()->getClassMetadata($entityClass);
+        $meta = $this->getObjectManager()->getClassMetadata($entityClass);
     
         if ($this->hasCompositeKeys($objectType)) {
             $idFields = $meta->getIdentifierFieldNames();
