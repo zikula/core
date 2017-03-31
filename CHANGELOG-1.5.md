@@ -20,6 +20,7 @@ CHANGELOG - ZIKULA 1.5.x
     - System vars 'timezone_server' and 'timezone_offset' are deprecated.
     - All contents of `src/javascript`, `src/style`, and `src/images` are deprecated.
         - Core Assets that will be maintained are copied to `CoreBundle/Resources/public/*`.
+    - zikula/jquery-minicolors-bundle (which includes https://github.com/claviska/jquery-minicolors) is deprecated.
 
  - Fixes:
     - Corrected path to legacy module's admin icons.
