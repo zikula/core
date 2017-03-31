@@ -27,7 +27,7 @@ class LessGenerator
         $writeTo = is_string($writeTo) ? $writeTo : 'src/web/bootstrap-font-awesome.css';
         $parser = new \Less_Parser();
         $parser->setOptions(['relativeUrls' => false, 'compress' => true]);
-        $parser->parseFile('src/style/bootstrap-font-awesome.less');
+        $parser->parseFile('src/web/bundles/core/css/bootstrap-font-awesome.less');
 
         file_put_contents($writeTo, $parser->getCss());
     }
