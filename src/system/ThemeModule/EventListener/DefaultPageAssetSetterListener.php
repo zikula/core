@@ -152,7 +152,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
     {
         $jquery = $this->params['env'] != 'dev' ? 'jquery.min.js' : 'jquery.js';
         $this->jsAssetBag->add([$basePath . "/web/jquery/$jquery" => AssetBag::WEIGHT_JQUERY]);
-        $this->jsAssetBag->add([$basePath . '/web/bundles/core/js/jquery_config.js' => AssetBag::WEIGHT_JQUERY]);
+        $this->jsAssetBag->add([$basePath . '/web/bundles/core/js/jquery_config.js' => AssetBag::WEIGHT_JQUERY + 1]);
     }
 
     private function addFosJsRouting($basePath)
