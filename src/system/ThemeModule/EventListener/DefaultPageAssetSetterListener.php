@@ -107,7 +107,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         $this->jsAssetBag->add(
             [
                 $basePath . '/' . $this->params['zikula.javascript.bootstrap.min.path'] => AssetBag::WEIGHT_BOOTSTRAP_JS,
-                $basePath . '/javascript/helpers/bootstrap-zikula.js' => AssetBag::WEIGHT_BOOTSTRAP_ZIKULA,
+                $basePath . '/web/bundles/core/js/bootstrap-zikula.js' => AssetBag::WEIGHT_BOOTSTRAP_ZIKULA,
                 $basePath . '/web/html5shiv/dist/html5shiv.js' => AssetBag::WEIGHT_HTML5SHIV,
             ]
         );
@@ -118,7 +118,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         $this->addBootstrapCss($basePath);
         $this->cssAssetBag->add(
             [
-                $basePath . '/style/core.css' => 1,
+                $basePath . '/web/bundles/core/css/core.css' => 1,
             ]
         );
     }
@@ -136,6 +136,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
     {
         $jquery = $this->params['env'] != 'dev' ? 'jquery.min.js' : 'jquery.js';
         $this->jsAssetBag->add([$basePath . "/web/jquery/$jquery" => AssetBag::WEIGHT_JQUERY]);
+        $this->jsAssetBag->add([$basePath . '/web/bundles/core/js/jquery_config.js' => AssetBag::WEIGHT_JQUERY]);
     }
 
     private function addFosJsRouting($basePath)
@@ -160,8 +161,8 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         // @todo add bundle translations? need domain name e.g. zikulapagesmodule
         $jsScript = $this->router->generate('bazinga_jstranslation_js', ['domain' => 'zikula_javascript'], RouterInterface::ABSOLUTE_URL);
         $this->jsAssetBag->add([
-            $basePath . "/web/bundles/bazingajstranslation/js/translator.min.js" => AssetBag::WEIGHT_JS_TRANSLATOR,
-            $basePath . "/web/bundles/core/js/Zikula.Translator.js" => AssetBag::WEIGHT_ZIKULA_JS_TRANSLATOR,
+            $basePath . '/web/bundles/bazingajstranslation/js/translator.min.js' => AssetBag::WEIGHT_JS_TRANSLATOR,
+            $basePath . '/web/bundles/core/js/Zikula.Translator.js' => AssetBag::WEIGHT_ZIKULA_JS_TRANSLATOR,
             $jsScript => AssetBag::WEIGHT_JS_TRANSLATIONS,
         ]);
     }

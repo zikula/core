@@ -107,7 +107,6 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
                 $stmt->execute();
             case '2.2.5':
                 $modvarsToConvertToBool = [
-                    UsersConstant::MODVAR_GRAVATARS_ENABLED,
                     UsersConstant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS,
                     UsersConstant::MODVAR_REGISTRATION_ENABLED,
                     UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED,
@@ -182,9 +181,6 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             UsersConstant::MODVAR_ACCOUNT_ITEMS_PER_ROW                 => UsersConstant::DEFAULT_ACCOUNT_ITEMS_PER_ROW,
             UsersConstant::MODVAR_ACCOUNT_PAGE_IMAGE_PATH               => UsersConstant::DEFAULT_ACCOUNT_PAGE_IMAGE_PATH,
             UsersConstant::MODVAR_ANONYMOUS_DISPLAY_NAME                => $this->__(/* Anonymous (guest) account display name */'Guest'),
-            UsersConstant::MODVAR_AVATAR_IMAGE_PATH                     => UsersConstant::DEFAULT_AVATAR_IMAGE_PATH,
-            UsersConstant::MODVAR_GRAVATARS_ENABLED                     => UsersConstant::DEFAULT_GRAVATARS_ENABLED,
-            UsersConstant::MODVAR_GRAVATAR_IMAGE                        => UsersConstant::DEFAULT_GRAVATAR_IMAGE,
             UsersConstant::MODVAR_ITEMS_PER_PAGE                        => UsersConstant::DEFAULT_ITEMS_PER_PAGE,
             UsersConstant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS         => UsersConstant::DEFAULT_LOGIN_DISPLAY_APPROVAL_STATUS,
             UsersConstant::MODVAR_LOGIN_DISPLAY_DELETE_STATUS           => UsersConstant::DEFAULT_LOGIN_DISPLAY_DELETE_STATUS,

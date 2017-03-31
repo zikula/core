@@ -1,7 +1,7 @@
 <fieldset>
     <legend>{{ __f('Connect %sub% to other modules', {"%sub%": currentmodule}) }}</legend>
     {% set amountOfProviderAreas = providerAreas|length %}
-    <div{% if amountOfProviderAreas > 5 %} id="registeredProviderAreas"{% endif %} class="z-form registered_provider_areas">
+    <div{% if amountOfProviderAreas > 5 %} id="registeredProviderAreas"{% endif %} class="registered_provider_areas">
         <fieldset>
             <legend>
                 {% if amountOfProviderAreas > 5 %}<a href="#" onclick="return false">{% endif %}

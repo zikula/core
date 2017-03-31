@@ -6,231 +6,198 @@ to control how the module handles various aspects of its functions and features.
 
 General settings
 ----------------
-These settings affect the overall behavior of the Users module, or functions of 
+These settings affect the overall behavior of the Users module, or functions of
 the module that do not fall into a specific category.
 
 ### _Name displayed for anonymous user_
 Default: Guest
 
 An 'anonymous' user is a web site visitor that has not logged in. This setting
-establishes the display name used when a user name is requested for an 
+establishes the display name used when a user name is requested for an
 anonymous user.
 
 ### _Number of items displayed per page_
 Default: 25
 
-This setting controls the maximum number of records or items in a list displayed 
-on a page. If more than this number of records or items are available to be 
+This setting controls the maximum number of records or items in a list displayed
+on a page. If more than this number of records or items are available to be
 displayed, then a "pager" will appear at the bottom of the list allowing the
 user to navigate through the list.
-
-### _Path to user's avatar images_
-Default: images/avatar
-
-The path where user avatar images are stored, and from where they are retrieved 
-when accessed. If a relative path is given, then the path is relative to the 
-Zikula base directory (not the Users module directory).
-
-**_Note:_** It appears that this module setting should more properly be set in 
-the Profile module, not in the Users module. This setting may be removed from 
-the Users module prior to the final release of Zikula version 1.3.0.
-
-### _Allow globally recognized avatars_
-Default: Yes
-
-If set to yes, then users are permitted to indicate that their avatar should be 
-retrieved from the [Gravatar][gravatar] service.
-
-**_Note:_** It appears that this module setting should more properly be set in 
-the Profile module, not in the Users module. This setting may be removed from 
-the Users module prior to the final release of Zikula version 1.3.0.
-
-### _Default gravatar image_
-Default: gravatar.jpg
-
-When the '_Allow globally recognized avatars_' setting is set to 'yes', this 
-setting provides the name of the image file to display if the user's gravatar is 
-not available or retrievable. The file should be stored in the location 
-indicated in the '_Path to user's avatar images_' setting.
-
-**_Note:_** It appears that this module setting should more properly be set in 
-the Profile module, not in the Users module. This setting may be removed from 
-the Users module prior to the final release of Zikula version 1.3.0.
 
 
 Account page settings
 ---------------------
-When a user who is logged in clicks on the "My Account" menu option, the "user 
-account page" is displayed. This page contains links (typically represented by 
-a series of icons) to user-specific functions made available by modules installed 
+When a user who is logged in clicks on the "My Account" menu option, the "user
+account page" is displayed. This page contains links (typically represented by
+a series of icons) to user-specific functions made available by modules installed
 in the system. These settings control the behavior of that page.
 
 ### _Display graphics on user's account page_
 Default: Yes
 
-The user account page can consist of a series of icons with text linking to 
-user-specific functions, or of a series of text-only links to those functions. 
+The user account page can consist of a series of icons with text linking to
+user-specific functions, or of a series of text-only links to those functions.
 This setting controls which of those options is in effect.
 
 ### _Path to account page images_
 Default: images/menu
 
-The path to the images used on the user account page. If a relative path is given, 
+The path to the images used on the user account page. If a relative path is given,
 it is relative to the Zikula base directory.
 
 ### _Number of links per page_
 Default: 25
 
-The maximum number of user account page links to display on one page. If there 
-are more than this number of links to be displayed, a "pager" is displayed to 
+The maximum number of user account page links to display on one page. If there
+are more than this number of links to be displayed, a "pager" is displayed to
 the user, allowing him to navigate through the list of links.
 
 ### _Number of links per row_
 Default: 5
 
-The number of links on a single row of the user account page, before a new row 
+The number of links on a single row of the user account page, before a new row
 is started.
 
 ### _Users module handles e-mail address maintenance_
 Default: Yes
 
-During the process of registering a new user, an e-mail address is collected from 
-and stored by the Users module. Typically, this e-mail address is maintained by 
-the Users module, ensuring that a valid, verified e-mail address is available 
-for the user. Some third-party modules, usually "profile" modules, also manage 
-the user's e-mail address. If such a module is installed, then this option can 
-be set to 'No', allowing the third-party module to manage the address. If this 
-option is set to 'Yes', then an "E-mail address manager" link is displayed on 
-the user account page, allowing the user to change his e-mail address using the 
-Users module function, which performs a verification of the address if the 
+During the process of registering a new user, an e-mail address is collected from
+and stored by the Users module. Typically, this e-mail address is maintained by
+the Users module, ensuring that a valid, verified e-mail address is available
+for the user. Some third-party modules, usually "profile" modules, also manage
+the user's e-mail address. If such a module is installed, then this option can
+be set to 'No', allowing the third-party module to manage the address. If this
+option is set to 'Yes', then an "E-mail address manager" link is displayed on
+the user account page, allowing the user to change his e-mail address using the
+Users module function, which performs a verification of the address if the
 '_Verify e-mail address during registration_' option is set to 'Yes.'
 
 
 User credential settings
 ------------------------
-These options control various aspects of how the user logs into the system and 
+These options control various aspects of how the user logs into the system and
 how his account credentials are managed.
 
 ### _Credential required for user log-in_
 Default: User name
 
-This option controls the information a user must enter in order to log into the 
+This option controls the information a user must enter in order to log into the
 web site. The options are:
 
  * _User name_: The user must enter his user name and password in order to log
    into the site.
- * _E-mail address_: The user must enter his e-mail address and password in order 
+ * _E-mail address_: The user must enter his e-mail address and password in order
    to log into the site.
- * _Either user name or e-mail address_: The user is presented with the choice 
-   of either entering his user name and password, or his e-mail address and 
+ * _Either user name or e-mail address_: The user is presented with the choice
+   of either entering his user name and password, or his e-mail address and
    password.
 
-If this option is set to '_E-mail address_' or to '_Either user name or e-mail 
-address_', then the '_New e-mail addresses must be unique_' option (see below) 
-must be set to 'Yes'. This is to prevent two separate user accounts from 
-registering the same e-mail address, thus making the e-mail address point to two 
-different accounts. If this option is changed after the system has been operating 
-for some time with the '_New e-mail addresses must be unique_' option set to 'No' 
-then it is possible that an e-mail address may have been used for more than one 
-account. If that is the case, then the users associated with those accounts will 
+If this option is set to '_E-mail address_' or to '_Either user name or e-mail
+address_', then the '_New e-mail addresses must be unique_' option (see below)
+must be set to 'Yes'. This is to prevent two separate user accounts from
+registering the same e-mail address, thus making the e-mail address point to two
+different accounts. If this option is changed after the system has been operating
+for some time with the '_New e-mail addresses must be unique_' option set to 'No'
+then it is possible that an e-mail address may have been used for more than one
+account. If that is the case, then the users associated with those accounts will
 not be able to log into the site with their e-mail address.
 
-This option controls only the two log-in methods (or "authentication methods") 
-defined by the Users module. If additional authentication modules (third-party 
-modules that follow the authentication API, and are used to log users into the 
-system) are installed, then the log-in methods that they provide will be displayed 
+This option controls only the two log-in methods (or "authentication methods")
+defined by the Users module. If additional authentication modules (third-party
+modules that follow the authentication API, and are used to log users into the
+system) are installed, then the log-in methods that they provide will be displayed
 to the user along with the method(s) controlled by this option.
 
 ### _New e-mail addresses must be unique_
 Default: Yes
 
-Setting this option to 'Yes' forces an e-mail address associated with a user 
-account to be unique. That is, no user account can be created with an e-mail 
-address already in use by another user account, and likewise no existing user 
-account can change its e-mail address to that of one already in use by another 
+Setting this option to 'Yes' forces an e-mail address associated with a user
+account to be unique. That is, no user account can be created with an e-mail
+address already in use by another user account, and likewise no existing user
+account can change its e-mail address to that of one already in use by another
 user account.
 
-Setting this option to 'Yes' can discourage a person from registering more than 
-one user account (but cannot prevent it, if the person has access to more than 
+Setting this option to 'Yes' can discourage a person from registering more than
+one user account (but cannot prevent it, if the person has access to more than
 one e-mail address).
 
-This option must be set to 'Yes' if using an e-mail address to log into the site 
-is an option for your users. If a particular e-mail address is associated with 
-more than one user account record, then those users would not be able to log 
+This option must be set to 'Yes' if using an e-mail address to log into the site
+is an option for your users. If a particular e-mail address is associated with
+more than one user account record, then those users would not be able to log
 into the site using that address.
 
 This affects both new user registrations, and existing users who change the
-e-mail address associated with their account (assuming that the Users module 
-is set to manage e-mail addresses). If a third-party module, such as a "profile" 
-module, is installed and is used to manage a user's e-mail address, then the 
-site administrator should ensure that the third-party module honors this setting 
-or otherwise prevents the same e-mail address from being associated with two 
+e-mail address associated with their account (assuming that the Users module
+is set to manage e-mail addresses). If a third-party module, such as a "profile"
+module, is installed and is used to manage a user's e-mail address, then the
+site administrator should ensure that the third-party module honors this setting
+or otherwise prevents the same e-mail address from being associated with two
 user accounts.
 
 ### _Minimum length for user passwords_
 Default: 5
 
-Passwords for user accounts set during new account registration or set during 
-a password change request must be at least this number of characters long to 
+Passwords for user accounts set during new account registration or set during
+a password change request must be at least this number of characters long to
 be accepted.
 
 ### _Password hashing method_
 Default: SHA256
 
 Passwords are not stored directly by the Users module, but instead are (salted
-and) hashed, and this hashed value is stored. When a user attempts to log into 
+and) hashed, and this hashed value is stored. When a user attempts to log into
 the site, the password entered is hashed and then compared to the stored hash
-value to determine if an acceptable value was entered. This setting controls the 
-algorithm used to create the hash value. The possible values are 'SHA256' and 
-'SHA1'. 'SHA256' is the more secure choice, and should be used unless there is 
+value to determine if an acceptable value was entered. This setting controls the
+algorithm used to create the hash value. The possible values are 'SHA256' and
+'SHA1'. 'SHA256' is the more secure choice, and should be used unless there is
 a compelling reason to use 'SHA1.'
 
-If this option is changed after one or more users have created passwords, then 
+If this option is changed after one or more users have created passwords, then
 the hash values are updated to the new algorithm silently when the user next
 logs into the system.
 
 ### _Show password strength meter_
 Default: No
 
-On pages where a user has the opportunity to create or change his account 
-password, this option controls whether the strength of the user's new password 
-is shown in the form of a password strength meter. The password strength meter 
-is JavaScript-based, therefore if the user's browser has JavaScript disabled, 
+On pages where a user has the opportunity to create or change his account
+password, this option controls whether the strength of the user's new password
+is shown in the form of a password strength meter. The password strength meter
+is JavaScript-based, therefore if the user's browser has JavaScript disabled,
 then the meter will not be displayed, despite this option's setting.
 
 ### _E-mail address verifications expire in_
 Default: 0 (e-mail verification requests do not expire)
 
-When a user changes his e-mail address, the user is asked to verify the new 
-e-mail address. This option controls how long the e-mail verification code sent 
-via e-mail to the user is valid. A value of zero (0) means that the verification 
-code never expires. A positive integer indicates that the verification code is 
-valid for that number of days. For example, a value of 180 indicates that the 
+When a user changes his e-mail address, the user is asked to verify the new
+e-mail address. This option controls how long the e-mail verification code sent
+via e-mail to the user is valid. A value of zero (0) means that the verification
+code never expires. A positive integer indicates that the verification code is
+valid for that number of days. For example, a value of 180 indicates that the
 verification code is valid for 180 days, or approximately 6 months.
 
-When an e-mail address verification code expires the record of the e-mail 
-address change request is deleted, and the e-mail address associated with the 
-user's account is not changed. (If the user verifies his e-mail address prior to 
-the expiration of the code, then the e-mail address is changed and the request 
+When an e-mail address verification code expires the record of the e-mail
+address change request is deleted, and the e-mail address associated with the
+user's account is not changed. (If the user verifies his e-mail address prior to
+the expiration of the code, then the e-mail address is changed and the request
 record is removed.)
 
 ### _Password reset requests expire in_
 Default: 0 (password reset requests do not expire)
 
-When a user requests to change the password on his account (assuming he has a 
-password, and has not registered with a non-User module authentication method), 
-he is sent a verification code via e-mail. This verification code must be used 
-in order to change the password on the account. This option controls how long 
-the code is valid before the request to change the account password expires.  A 
-value of zero (0) means that the verification code never expires. A positive 
-integer indicates that the verification code is valid for that number of days. 
-For example, a value of 180 indicates that the verification code is valid for 
+When a user requests to change the password on his account (assuming he has a
+password, and has not registered with a non-User module authentication method),
+he is sent a verification code via e-mail. This verification code must be used
+in order to change the password on the account. This option controls how long
+the code is valid before the request to change the account password expires.  A
+value of zero (0) means that the verification code never expires. A positive
+integer indicates that the verification code is valid for that number of days.
+For example, a value of 180 indicates that the verification code is valid for
 180 days, or approximately 6 months.
 
-When a passowrd change request verification code expires the record of the 
-password change request is deleted, and the password associated with the user's 
+When a passowrd change request verification code expires the record of the
+password change request is deleted, and the password associated with the user's
 account is not changed. (If the user enters the verification code prior to its
-expiration, then user is permitted to change the account password, and the request 
+expiration, then user is permitted to change the account password, and the request
 record is removed.)
 
 
@@ -243,200 +210,200 @@ Default: Yes
 
 Controls whether new users can request new user accounts at all on the system.
 
-For a private or semi-private web site, this option can be set to 'No,' and the 
-site administrator(s) can create new user accounts through the Users module 
+For a private or semi-private web site, this option can be set to 'No,' and the
+site administrator(s) can create new user accounts through the Users module
 administration page.
 
-This option can also be set to 'No' to temporarily disable new user registration 
+This option can also be set to 'No' to temporarily disable new user registration
 for any reason the site's administrator or owner determines.
 
 ### _Statement displayed if registration disabled_
-_**Note:** If JavaScript is enabled on your browser, then this option is only 
+_**Note:** If JavaScript is enabled on your browser, then this option is only
 displayed if the 'Allow new user account registrations' option is set to 'No.'
 This option is ignored if 'Allow new user account registrations' is set to 'Yes.'_
 
 Default: Sorry! New user registration is currently disabled.
 
-When new user registration is disabled, a message is displayed to any user who 
+When new user registration is disabled, a message is displayed to any user who
 attempts to access the registration process. The text of this option is the
 message that is displayed.
 
 ### _E-mail address to notify of registrations_
 Default: (_blank, no notification e-mail is sent_)
 
-If the administrator wishes to be notified of each new request for a new user 
-account, then an e-mail address can be entered here. Every time a new user 
+If the administrator wishes to be notified of each new request for a new user
+account, then an e-mail address can be entered here. Every time a new user
 registration request is made an e-mail is sent to the address.
 
-_Tip_: To send an e-mail message to more than one person, set the address in this 
+_Tip_: To send an e-mail message to more than one person, set the address in this
 option to a group alias or mailing list managed by the e-mail server.
 
 ### _User registration is moderated_
 Default: No
 
-Controls whether new user accounts must be approved by a site administrator prior 
+Controls whether new user accounts must be approved by a site administrator prior
 to becoming full user account records.
 
-If this option is set to 'Yes,' then registration requests will appear on the 
+If this option is set to 'Yes,' then registration requests will appear on the
 "Pending registrations" list available on the Users module administration page.
-Site administrators may approve (or deny) pending registration requests from 
+Site administrators may approve (or deny) pending registration requests from
 that list.
 
-If e-mail addresses must be verified during registration, and the user has not 
-yet verified his e-mail address, then the registration request will remain on 
-the pending list. If the user has verified his e-mail address, or e-mail 
-verification is not required at all, then the user registration request is 
+If e-mail addresses must be verified during registration, and the user has not
+yet verified his e-mail address, then the registration request will remain on
+the pending list. If the user has verified his e-mail address, or e-mail
+verification is not required at all, then the user registration request is
 converted to a full user account record immediately upon approval.
 
 ### _Verify e-mail address during registration_
 Default: Yes. User chooses password, then activates account via e-mail
 
-Controls whether a user requesting a new user account through the registration 
-process must verify his e-mail address. If set to 'Yes,' then following the 
-submission of a registration request the user is sent an e-mail with a 
-verification code. The user must enter this code on the page whose link is 
+Controls whether a user requesting a new user account through the registration
+process must verify his e-mail address. If set to 'Yes,' then following the
+submission of a registration request the user is sent an e-mail with a
+verification code. The user must enter this code on the page whose link is
 provided in the e-mail message in order to verify his address.
 
-If the '_Order that approval and verification occur_' option is set to 
-'Registration applications must be approved before users verify their e-mail 
-address,' then the verification e-mail is not sent immediately, but is instead 
+If the '_Order that approval and verification occur_' option is set to
+'Registration applications must be approved before users verify their e-mail
+address,' then the verification e-mail is not sent immediately, but is instead
 sent after the registration request is approved.
 
 ### _Order that approval and verification occur_
-_**Note:** If JavaScript is enabled on your browser, then this option is only 
-displayed if both the 'User registration is moderated' option  and the 'Verify 
-e-mail address during registration' option are set to 'Yes.' This option is 
-ignored if either the the 'User registration is moderated' option or the 'Verify 
+_**Note:** If JavaScript is enabled on your browser, then this option is only
+displayed if both the 'User registration is moderated' option  and the 'Verify
+e-mail address during registration' option are set to 'Yes.' This option is
+ignored if either the the 'User registration is moderated' option or the 'Verify
 e-mail address during registration' option are set to 'No.'_
 
-Default: Registration applications must be approved before users verify their 
+Default: Registration applications must be approved before users verify their
 e-mail address.
 
-Controls the order in which registration moderation (approval) and e-mail 
+Controls the order in which registration moderation (approval) and e-mail
 verification occur.
 
-If the option is set to '_Registration applications must be approved before 
-users verify their e-mail address_,' then a site administrator must first 
-approve the registration request. Once approved, then an e-mail verification 
-message is sent to the user containing a code that must be entered on the page 
+If the option is set to '_Registration applications must be approved before
+users verify their e-mail address_,' then a site administrator must first
+approve the registration request. Once approved, then an e-mail verification
+message is sent to the user containing a code that must be entered on the page
 whose address is supplied in the message.
 
-If the option is set to '_Users must verify their e-mail address before their 
-application is approved_,' then an e-mail verification message is immediately 
-sent to the user containing a code that must be entered on the page whose 
-address is supplied in the message. A site administrator cannot approve the 
+If the option is set to '_Users must verify their e-mail address before their
+application is approved_,' then an e-mail verification message is immediately
+sent to the user containing a code that must be entered on the page whose
+address is supplied in the message. A site administrator cannot approve the
 registration request (without overriding this option, which is also possible)
 until the verification process is complete.
 
-If the option is set to '_Application approval and e-mail address verification 
-can occur in any order_,' then the verification message is sent to the user 
-immediately, and the registration request can also be approved immediately. The 
-registration request is only converted to a full user record when both the 
+If the option is set to '_Application approval and e-mail address verification
+can occur in any order_,' then the verification message is sent to the user
+immediately, and the registration request can also be approved immediately. The
+registration request is only converted to a full user record when both the
 verification process and the approval process are completed.
 
 ### _Log in new registrations automatically?_
-_**Note:** If JavaScript is enabled on your browser, then this option is only 
-displayed if both the 'User registration is moderated' option  and the 'Verify 
-e-mail address during registration' option are set to 'No.' This option is 
-ignored if either the the 'User registration is moderated' option or the 'Verify 
+_**Note:** If JavaScript is enabled on your browser, then this option is only
+displayed if both the 'User registration is moderated' option  and the 'Verify
+e-mail address during registration' option are set to 'No.' This option is
+ignored if either the the 'User registration is moderated' option or the 'Verify
 e-mail address during registration' option are set to 'Yes.'_
 
 Default: Newly registered users are not logged in automatically.
 
-If neither e-mail address verification nor moderation are required for 
-registration, then a registration request results in a full user account. 
-Because the user has a full user account and has just created a password (or 
-has authenticated through some third-party authentication module), then asking 
-the user to log into the site at the end of the registration process might seem 
+If neither e-mail address verification nor moderation are required for
+registration, then a registration request results in a full user account.
+Because the user has a full user account and has just created a password (or
+has authenticated through some third-party authentication module), then asking
+the user to log into the site at the end of the registration process might seem
 redundant.
 
-If set to 'Newly registered users are logged in automatically,' then the user 
-is automatically sent into the log-in process at the completion of the 
-registration process. The credentials supplied during the registration process 
-are passed to the log-in process as if the user had typed them into the normal 
-log-in page, and the user proceeds through the full log-in process complete with 
+If set to 'Newly registered users are logged in automatically,' then the user
+is automatically sent into the log-in process at the completion of the
+registration process. The credentials supplied during the registration process
+are passed to the log-in process as if the user had typed them into the normal
+log-in page, and the user proceeds through the full log-in process complete with
 all events that might be generated by that process.
 
 ### _Registrations pending verification expire in_
-_**Note:** This option is ignored if 'Verify e-mail address during registration' 
+_**Note:** This option is ignored if 'Verify e-mail address during registration'
 is set to 'No.'_
 
 Default: 0 (registration requests do not expire)
 
-This option controls how long a registration request awaiting e-mail address 
-verification will remain valid. If the verification process is not complete 
-before the expiration, then the entire registration request record is removed 
+This option controls how long a registration request awaiting e-mail address
+verification will remain valid. If the verification process is not complete
+before the expiration, then the entire registration request record is removed
 from the system.
 
-A value of zero (0) indicates that registration requests awaiting e-mail 
-verification never expire. A positive integer indicates that the registration 
-request is valid for that number of days. For example, a value of 180 indicates 
+A value of zero (0) indicates that registration requests awaiting e-mail
+verification never expire. A positive integer indicates that the registration
+request is valid for that number of days. For example, a value of 180 indicates
 that the registration request is valid for 180 days, or approximately 6 months.
 
-The expiration period does not commence until an e-mail address verification 
-message is actually sent to the user. If the '_Order that approval and 
-verification occur_' option is set to 'Registration applications must be 
+The expiration period does not commence until an e-mail address verification
+message is actually sent to the user. If the '_Order that approval and
+verification occur_' option is set to 'Registration applications must be
 approved before users verify their e-mail address,' then the expiration period
-will begin only _after_ the registration request is approved and an e-mail 
+will begin only _after_ the registration request is approved and an e-mail
 verification message is sent.
 
 ### _Spam protection question_
 Default: (_blank, no spam protection question is asked_)
 
 To protect a site, especially one not requiring approval or e-mail verification,
-from "bots" or other non-human sources of spam, a question can be asked as part 
-of the registration process. The question asked should have a simple and 
-well-known answer that is unambiguous and easy for a human to answer, but 
+from "bots" or other non-human sources of spam, a question can be asked as part
+of the registration process. The question asked should have a simple and
+well-known answer that is unambiguous and easy for a human to answer, but
 extremely difficult or impossible for a computer to answer.
 
-If this option is blank, then no spam protection question is asked of the user 
+If this option is blank, then no spam protection question is asked of the user
 during registration.
 
-Multi-language features are not enabled for this option, so if your site supports 
-more than one language, the question should be easy enough for all of your 
+Multi-language features are not enabled for this option, so if your site supports
+more than one language, the question should be easy enough for all of your
 visitors to answer.
 
 ### _Reserved user names_
 Default: root, webmaster, admin, administrator, nobody, anonymous, username
 
-This option contains a comma-separated list of user names that cannot be chosen 
+This option contains a comma-separated list of user names that cannot be chosen
 by new users at the time of registration.
 
 ### _Banned user agents_
 Default: (_blank, no banned agents_)
 
-To provide additional protection against registration by automated sources of 
-spam, "user agents" or browser identification strings can be banned from the 
-registration process. Each browser identifies itself to the web server it is 
+To provide additional protection against registration by automated sources of
+spam, "user agents" or browser identification strings can be banned from the
+registration process. Each browser identifies itself to the web server it is
 visiting with a user agent identification string.
 
-To ban a particular user agent enter enough of the identification string to be 
-unique, starting from the beginning of the string. To ban more than one agent, 
-separate each string fragment with a comma. The strings entered in this option 
-are matched to the beginning part of the user agent identification string 
-reported by the visiting browser. If the beginning part of the identification 
-string matches one in this list then it is prevented from entering the 
+To ban a particular user agent enter enough of the identification string to be
+unique, starting from the beginning of the string. To ban more than one agent,
+separate each string fragment with a comma. The strings entered in this option
+are matched to the beginning part of the user agent identification string
+reported by the visiting browser. If the beginning part of the identification
+string matches one in this list then it is prevented from entering the
 registration process.
 
-_**Note:**_ It is very easy to spoof (report a fake) user agent string, making 
-a bot or other undesirable browser seem to the server as if it were one that was 
-desirable. This option is less effective in preventing undesirable registrants 
+_**Note:**_ It is very easy to spoof (report a fake) user agent string, making
+a bot or other undesirable browser seem to the server as if it were one that was
+desirable. This option is less effective in preventing undesirable registrants
 than it has been in the past.
 
 ### _Banned e-mail address domains_
 Default: (_blank, no banned domains_)
 
-Some site administrators or owners might want to prevent users from registering 
-with e-mail addresses from specific domains. The domain portion of an e-mail 
-address is that which follows (and does not include) the '@' symbol. Enter banned 
+Some site administrators or owners might want to prevent users from registering
+with e-mail addresses from specific domains. The domain portion of an e-mail
+address is that which follows (and does not include) the '@' symbol. Enter banned
 e-mail address domains in this option, separating each one by a comma.
 
-_**Note:**_ In the past it was common to attempt to prevent spam by banning users 
-with so-called "free" e-mail accounts from registering with web sites. More 
-recently, these e-mail address domains are in common use by many users that sites 
-would consider legitimate and desirable users. Banning these types of "free" 
-e-mail accounts from the registration process is no longer as effective in 
-preventing spam as it had been in the past. Moreover, some potential users of 
+_**Note:**_ In the past it was common to attempt to prevent spam by banning users
+with so-called "free" e-mail accounts from registering with web sites. More
+recently, these e-mail address domains are in common use by many users that sites
+would consider legitimate and desirable users. Banning these types of "free"
+e-mail accounts from the registration process is no longer as effective in
+preventing spam as it had been in the past. Moreover, some potential users of
 your site may have one of these e-mail addresses as their only e-mail account.
 
 
@@ -447,36 +414,36 @@ These options control aspects of the log-in process.
 ### _WCAG-compliant log-in and log-out_
 Default: Yes
 
-The [Web Content Accessibility Guidelines][wcag] (WCAG) dictate that the use of a meta tag in 
-the head section of a web page with an http-equiv value of "refresh" and a value 
-representing seconds greater than zero (0) fails to meet accessibility standards. 
-In Zikula's predecessor, PostNuke, it was common to have a "landing page" appear 
-briefly after a successful log-in attempt, telling the user that he had 
-successfully logged into the system and then redirecting him through the use of 
-this meta refresh function to the site's home page (or some other appropriate 
-page). A similar landing page with a meta refresh was displayed after a 
+The [Web Content Accessibility Guidelines][wcag] (WCAG) dictate that the use of a meta tag in
+the head section of a web page with an http-equiv value of "refresh" and a value
+representing seconds greater than zero (0) fails to meet accessibility standards.
+In Zikula's predecessor, PostNuke, it was common to have a "landing page" appear
+briefly after a successful log-in attempt, telling the user that he had
+successfully logged into the system and then redirecting him through the use of
+this meta refresh function to the site's home page (or some other appropriate
+page). A similar landing page with a meta refresh was displayed after a
 successful log-out.
 
-Because this does not meet accessibility guidelines, Zikula defaults to a 
-WCAG-compliant process of simply redirecting the user to the appropriate page 
+Because this does not meet accessibility guidelines, Zikula defaults to a
+WCAG-compliant process of simply redirecting the user to the appropriate page
 without an intermediate landing page.
 
-Site's wishing to disregard accessibility guidelines and restore this behavior 
+Site's wishing to disregard accessibility guidelines and restore this behavior
 can do so by setting this option to 'No.'
 
 ### _Failed login displays inactive status_
 Default: No. A generic error message is displayed.
 
-After a failed attempt at logging into a site it is common to provide a generic 
-error message suggesting that the credentials supplied were not valid or not 
+After a failed attempt at logging into a site it is common to provide a generic
+error message suggesting that the credentials supplied were not valid or not
 found in the system.
 
-If a user with a valid set of credentials (e.g., a user name and a password) 
-cannot log in because a site administrator has marked his account as inactive, 
-then with this option set to 'No,' the user will receive the generic error 
-message when his attempt to log in fails. 
+If a user with a valid set of credentials (e.g., a user name and a password)
+cannot log in because a site administrator has marked his account as inactive,
+then with this option set to 'No,' the user will receive the generic error
+message when his attempt to log in fails.
 
-If a site wishes to indicate that the reason for the failed log-in attempt is 
+If a site wishes to indicate that the reason for the failed log-in attempt is
 because the user's account is marked inactive, then set this option to 'Yes,' and
 this more specific message will be displayed to the user instead of the generic
 message.
@@ -484,39 +451,38 @@ message.
 ### _Failed login displays verification status_
 Default: No. A generic error message is displayed.
 
-After a failed attempt at logging into a site it is common to provide a generic 
-error message suggesting that the credentials supplied were not valid or not 
+After a failed attempt at logging into a site it is common to provide a generic
+error message suggesting that the credentials supplied were not valid or not
 found in the system.
 
-If a user who recently registered with the site but who has not completed the 
-e-mail address verification process attempts to log into the site with an 
-otherwise valid set of credentials (e.g., a user name and a password), 
-then with this option set to 'No,' the user will receive the generic error 
-message when his attempt to log in fails. 
+If a user who recently registered with the site but who has not completed the
+e-mail address verification process attempts to log into the site with an
+otherwise valid set of credentials (e.g., a user name and a password),
+then with this option set to 'No,' the user will receive the generic error
+message when his attempt to log in fails.
 
-If a site wishes to indicate that the reason for the failed log-in attempt is 
-because the user's registration request is still waiting for the verification 
-process to be completed, then set this option to 'Yes,' and this more specific 
+If a site wishes to indicate that the reason for the failed log-in attempt is
+because the user's registration request is still waiting for the verification
+process to be completed, then set this option to 'Yes,' and this more specific
 message will be displayed to the user instead of the generic message.
 
 ### _Failed login displays approval status_
 Default: No. A generic error message is displayed.
 
-After a failed attempt at logging into a site it is common to provide a generic 
-error message suggesting that the credentials supplied were not valid or not 
+After a failed attempt at logging into a site it is common to provide a generic
+error message suggesting that the credentials supplied were not valid or not
 found in the system.
 
-If a user who recently registered with the site but whose registration request 
-has not yet been approved by a site administrator attempts to log into the site 
-with an otherwise valid set of credentials (e.g., a user name and a password), 
-then with this option set to 'No,' the user will receive the generic error 
-message when his attempt to log in fails. 
+If a user who recently registered with the site but whose registration request
+has not yet been approved by a site administrator attempts to log into the site
+with an otherwise valid set of credentials (e.g., a user name and a password),
+then with this option set to 'No,' the user will receive the generic error
+message when his attempt to log in fails.
 
-If a site wishes to indicate that the reason for the failed log-in attempt is 
-because the user's registration request is still waiting for administrator 
-approval, then set this option to 'Yes,' and this more specific message will be 
+If a site wishes to indicate that the reason for the failed log-in attempt is
+because the user's registration request is still waiting for administrator
+approval, then set this option to 'Yes,' and this more specific message will be
 displayed to the user instead of the generic message.
 
 
-[gravatar]: http://gravatar.com/ "Globally Recognized Avatar service"
 [wcag]: http://www.w3.org/WAI/intro/wcag.php "Web Content Accessibility Guidelines (WCAG) Overview"
