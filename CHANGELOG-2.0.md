@@ -17,7 +17,5 @@ CHANGELOG - ZIKULA 2.0.x
  - Core-2.0 Features:
 
  - Vendor updates:
-    - doctrine cache updated from 1.5.4 to 1.6.1
-    - doctrine common updated from 2.5.3 to 2.6.2
     - matthiasnoback/symfony-console-form updated from 1.2.0 to 2.0.2
-    - symfony updated from 2.8.16 to 3.2.2 (#3027, #2099, #2639).
+    - symfony updated from 2.8.x to 3.x (#3027, #2099, #2639).
