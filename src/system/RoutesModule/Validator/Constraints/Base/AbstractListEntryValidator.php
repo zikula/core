@@ -73,7 +73,7 @@ abstract class AbstractListEntryValidator extends ConstraintValidator
                 $this->context->buildViolation(
                     $this->__f('The value "%value%" is not allowed for the "%property%" property.', [
                         '%value%' => $value,
-                        '%property%' => $contraint->propertyName
+                        '%property%' => $constraint->propertyName
                     ])
                 )->addViolation();
             }
@@ -91,7 +91,7 @@ abstract class AbstractListEntryValidator extends ConstraintValidator
                 $this->context->buildViolation(
                     $this->__f('The value "%value%" is not allowed for the "%property%" property.', [
                         '%value%' => $singleValue,
-                        '%property%' => $contraint->propertyName
+                        '%property%' => $constraint->propertyName
                     ])
                 )->addViolation();
             }
