@@ -11,11 +11,10 @@
 
 namespace Zikula\ExtensionsModule\Helper;
 
+use Composer\Semver\Semver;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use vierbergenlars\SemVer\expression;
-use vierbergenlars\SemVer\version;
 use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
@@ -337,9 +336,8 @@ class BundleSyncHelper
             $coreCompatibility = isset($extensionFromFile['corecompatibility'])
                 ? $extensionFromFile['corecompatibility']
                 : $this->formatCoreCompatibilityString($extensionFromFile['core_min'], $extensionFromFile['core_max']);
-            $isCompatible = $this->isCoreCompatible($coreCompatibility);
             if (isset($extensionsFromDB[$name])) {
-                if (!$isCompatible) {
+                if (!Semver::satisfies(ZikulaKernel::VERSION, $coreCompatibility)) {
                     // extension is incompatible with current core
                     $extensionsFromDB[$name]['state'] = $extensionsFromDB[$name]['state'] + ExtensionApi::INCOMPATIBLE_CORE_SHIFT;
                     $this->extensionStateHelper->updateState($extensionsFromDB[$name]['id'], $extensionsFromDB[$name]['state']);
@@ -413,7 +411,7 @@ class BundleSyncHelper
                         ? $extensionFromFile['corecompatibility']
                         : $this->formatCoreCompatibilityString($extensionFromFile['core_min'], $extensionFromFile['core_max']);
                     // shift state if module is incompatible with core version
-                    $extensionFromFile['state'] = $this->isCoreCompatible($coreCompatibility)
+                    $extensionFromFile['state'] = Semver::satisfies(ZikulaKernel::VERSION, $coreCompatibility)
                         ? $extensionFromFile['state']
                         : $extensionFromFile['state'] + ExtensionApi::INCOMPATIBLE_CORE_SHIFT;
                 }
@@ -446,8 +444,7 @@ class BundleSyncHelper
                     $coreCompatibility = isset($extensionFromFile['corecompatibility'])
                         ? $extensionFromFile['corecompatibility']
                         : $this->formatCoreCompatibilityString($extensionFromFile['core_min'], $extensionFromFile['core_max']);
-                    $isCompatible = $this->isCoreCompatible($coreCompatibility);
-                    if ($isCompatible) {
+                    if (Semver::satisfies(ZikulaKernel::VERSION, $coreCompatibility)) {
                         // extension was invalid, now it is valid
                         $this->extensionStateHelper->updateState($extensionsFromDB[$name]['id'], ExtensionApi::STATE_UNINITIALISED);
                     }
@@ -464,20 +461,6 @@ class BundleSyncHelper
         }
 
         return $upgradedExtensions;
-    }
-
-    /**
-     * Determine if $min and $max values are compatible with Current Core version
-     *
-     * @param string $compatibilityString Semver
-     * @return bool
-     */
-    private function isCoreCompatible($compatibilityString)
-    {
-        $coreVersion = new version(ZikulaKernel::VERSION);
-        $requiredVersionExpression = new expression($compatibilityString);
-
-        return $requiredVersionExpression->satisfiedBy($coreVersion);
     }
 
     /**

@@ -8,6 +8,7 @@ CHANGELOG - ZIKULA 1.5.x
     - User Categories feature removed.
     - All categories configuration removed.
     - Many methods from CategoryUtil are no longer functional.
+    - vierbergenlars/php-semver vendor removed, use composer/semver.
 
  - Deprecated:
     - Search block templates have been modified. This will break existing overrides for
@@ -35,6 +36,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Added system var 'timezone' for setting the timezone for guest users (replaces 'timezone_offset').
 
  - Vendor updates:
+    - composer/semver installed at 1.4.2
     - doctrine/cache updated from 1.5.4 to 1.6.1
     - doctrine/common updated from 2.5.3 to 2.6.2
     - doctrine/doctrine-bundle updated from 1.5.2 to 1.6.7
@@ -49,12 +51,13 @@ CHANGELOG - ZIKULA 1.5.x
     - phpdocumentor/reflection-docblock updated from 2.0.4 to 3.1.1
     - sensio/framework-extra-bundle updated from 3.0.21 to 3.0.25
     - sensio/generator-bundle updated from 3.1.2 to 3.1.4
-    - sensiolabs/security-checker updated from 4.0.0 to 4.0.2
+    - sensiolabs/security-checker updated from 4.0.0 to 4.0.3
     - swiftmailer/swiftmailer updated from v5.4.5 to v5.4.6
     - symfony updated from 2.8.17 to 2.8.18
     - symfony/security-acl update from 2.8.0 to 3.0.0
     - symfony/workflow installed as 3.2.4 and updated to 3.2.5
     - twig updated from 1.31.0 to 1.33.0
+    - vierbergenlars/php-semver removed
     - webmozart/assert installed at 1.2.0
     - willdurand/js-translation-bundle updated from 2.6.3 to 2.6.4
     - wikimedia/composer-merge-plugin installed as dev-master 

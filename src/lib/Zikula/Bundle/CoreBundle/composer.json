@@ -37,7 +37,6 @@
 
         "michelf/php-markdown": "1.7.*",
         "twig/extensions": "1.4.*",
-        "vierbergenlars/php-semver": "~3.0",
         "zikula/filesystem": "dev-master",
 
         "ramsey/array_column": "1.1.*",
