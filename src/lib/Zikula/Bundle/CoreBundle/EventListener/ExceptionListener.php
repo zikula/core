@@ -98,9 +98,6 @@ class ExceptionListener implements EventSubscriberInterface
                 }
                 // list and handle additional exceptions here
             } while (null !== $exception = $exception->getPrevious());
-
-            // force all exception to render in BC theme (remove in 2.0.0)
-            $event->getRequest()->attributes->set('_legacy', true);
         }
     }
 
