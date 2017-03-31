@@ -56,7 +56,7 @@
     </style>
 {% endset %}
 {{ pageAddAsset('header', customScriptAndStyles) }}
-<img src="images/ajax/zktimer_48px_white_rounded.gif" width="48" height="48" alt="{{ __('Indicator') }}" id="indicator" class="hidden" />
+<img src="{{ asset('bundles/core/images/ajax/zktimer_48px_white_rounded.gif') }}" width="48" height="48" alt="{{ __('Indicator') }}" id="indicator" class="hidden" />
 {% endif %}
 <div class="zikularoutesmodule-route zikularoutesmodule-view">
 
@@ -136,7 +136,7 @@
             </tr>
             </thead>
             <tbody>
-        
+
         {% set groupOld = null %}
         {% for route in items %}
             {% if route.group != groupOld %}
@@ -206,11 +206,11 @@
               </td>
             </tr>
         {% endfor %}
-        
+
             </tbody>
         </table>
         </div>
-        
+
         {% if showAllEntries != 1 and pager|default %}
             {{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'zikularoutesmodule_route_' ~ routeArea ~ 'view'}) }}
         {% endif %}

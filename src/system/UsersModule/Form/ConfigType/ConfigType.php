@@ -48,24 +48,6 @@ class ConfigType extends AbstractType
                     new GreaterThanOrEqual(['value' => 1])
                 ]
             ])
-            ->add(UsersConstant::MODVAR_AVATAR_IMAGE_PATH, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $options['translator']->__('Path to user\'s avatar images'),
-                'constraints' => [
-                    new NotBlank(),
-                    new Type('string')
-                ]
-            ])
-            ->add(UsersConstant::MODVAR_GRAVATARS_ENABLED, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
-                'label' => $options['translator']->__('Allow globally recognized avatars'),
-                'required' => false,
-            ])
-            ->add(UsersConstant::MODVAR_GRAVATAR_IMAGE, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $options['translator']->__('Default gravatar image'),
-                'constraints' => [
-                    new NotBlank(),
-                    new Type('string')
-                ]
-            ])
             /**
              * Account Page Settings
              */

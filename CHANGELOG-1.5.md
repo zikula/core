@@ -9,6 +9,7 @@ CHANGELOG - ZIKULA 1.5.x
     - All categories configuration removed.
     - Many methods from CategoryUtil are no longer functional.
     - vierbergenlars/php-semver vendor removed, use composer/semver.
+    - Global avatar management is moved to the Profile module.
 
  - Deprecated:
     - Search block templates have been modified. This will break existing overrides for
@@ -17,6 +18,8 @@ CHANGELOG - ZIKULA 1.5.x
     - CategoryApi deprecated. Use CategoryRepository instead.
     - CategoryRegistryApi deprecated. User CategoryRegistryRepository instead.
     - System vars 'timezone_server' and 'timezone_offset' are deprecated.
+    - All contents of `src/javascript`, `src/style`, and `src/images` are deprecated.
+        - Core Assets that will be maintained are copied to `CoreBundle/Resources/public/*`.
 
  - Fixes:
     - Corrected path to legacy module's admin icons.
