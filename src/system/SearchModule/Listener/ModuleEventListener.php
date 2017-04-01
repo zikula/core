@@ -119,7 +119,6 @@ class ModuleEventListener implements EventSubscriberInterface
 
     private function getModuleName(ModuleStateEvent $event)
     {
-        // at Core-2.0, remove the capability check and only use the searchableModuleCollector
         $moduleName = $event->getModule()->getName();
         if ((null == $this->searchableModuleCollector->get($moduleName))) {
             return null;

@@ -48,7 +48,7 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
         $routeInfo = $this->container->get('router')->match($request->getPathInfo());
         $containsInstall = $routeInfo['_route'] == 'install';
         $containsUpgrade = $routeInfo['_route'] == 'upgrade';
-        $containsLogin = $routeInfo['_controller'] == 'Zikula\\UsersModule\\Controller\\AccessController::loginAction' || $routeInfo['_controller'] == 'Zikula\\UsersModule\\Controller\\AccessController::upgradeAdminLoginAction'; // @todo @deprecated at Core-2.0 remove later half
+        $containsLogin = $routeInfo['_controller'] == 'Zikula\\UsersModule\\Controller\\AccessController::loginAction';
         $containsDoc = $routeInfo['_route'] == 'doc';
         $containsWdt =  $routeInfo['_route'] == '_wdt';
         $containsProfiler = strpos($routeInfo['_route'], '_profiler') !== false;

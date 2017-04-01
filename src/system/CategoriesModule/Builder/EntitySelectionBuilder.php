@@ -36,24 +36,21 @@ class EntitySelectionBuilder
      */
     public function buildFor($moduleName)
     {
+        $data = [];
         if ($this->kernel->isBundle($moduleName)) {
             $module = $this->kernel->getModule($moduleName);
-            if (!class_exists($module->getVersionClass())) {
-                // this check just confirming a Core-2.0 spec bundle - remove in 2.0.0
-                $capabilities = $module->getMetaData()->getCapabilities();
-                if (isset($capabilities['categorizable'])) {
-                    $data = [];
-                    $keys = array_keys($capabilities['categorizable']);
-                    $entityList = is_int($keys[0]) ? $capabilities['categorizable'] : $capabilities['categorizable'][$keys[0]];
-                    foreach ($entityList as $fullyQualifiedEntityName) {
-                        $nameParts = explode('\\', $fullyQualifiedEntityName);
-                        $entityName = array_pop($nameParts);
-                        $data[$entityName] = $entityName;
-                    }
-
-                    return $data;
+            $capabilities = $module->getMetaData()->getCapabilities();
+            if (isset($capabilities['categorizable'])) {
+                $keys = array_keys($capabilities['categorizable']);
+                $entityList = is_int($keys[0]) ? $capabilities['categorizable'] : $capabilities['categorizable'][$keys[0]];
+                foreach ($entityList as $fullyQualifiedEntityName) {
+                    $nameParts = explode('\\', $fullyQualifiedEntityName);
+                    $entityName = array_pop($nameParts);
+                    $data[$entityName] = $entityName;
                 }
             }
         }
+
+        return $data;
     }
 }
