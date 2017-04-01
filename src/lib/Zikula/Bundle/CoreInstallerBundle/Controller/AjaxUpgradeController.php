@@ -96,20 +96,8 @@ class AjaxUpgradeController extends AbstractController
                 return true;
             case "regenthemes":
                 return $this->regenerateThemes();
-            case "from140to141":
-                return $this->from140to141();
-            case "from141to142":
-                return $this->from141to142();
-            case "from142to143":
-                return $this->from142to143();
-            case "from143to144":
-                return $this->from143to144();
-            case "from144to145":
-                return $this->from144to145();
-            case "from145to146":
-                return $this->from145to146();
-            case "from146to147":
-                return $this->from146to147();
+            case "versionupgrade":
+                return $this->versionUpgrade();
             case "finalizeparameters":
                 return $this->finalizeParameters();
             case "clearcaches":
@@ -169,103 +157,59 @@ class AjaxUpgradeController extends AbstractController
         return true;
     }
 
-    private function from140to141()
+    private function versionUpgrade()
     {
-        if (version_compare($this->currentVersion, '1.4.1', '>=')) {
-            return true;
-        }
-        // perform the following SQL
-//ALTER TABLE categories_category ADD CONSTRAINT FK_D0B2B0F88304AF18 FOREIGN KEY (cr_uid) REFERENCES users (uid);
-//ALTER TABLE categories_category ADD CONSTRAINT FK_D0B2B0F8C072C1DD FOREIGN KEY (lu_uid) REFERENCES users (uid);
-//ALTER TABLE categories_registry ADD CONSTRAINT FK_1B56B4338304AF18 FOREIGN KEY (cr_uid) REFERENCES users (uid);
-//ALTER TABLE categories_registry ADD CONSTRAINT FK_1B56B433C072C1DD FOREIGN KEY (lu_uid) REFERENCES users (uid);
-//ALTER TABLE sc_intrusion ADD CONSTRAINT FK_8595CE46539B0606 FOREIGN KEY (uid) REFERENCES users (uid);
-//DROP INDEX gid_uid ON group_membership;
-//ALTER TABLE group_membership DROP PRIMARY KEY;
-//ALTER TABLE group_membership ADD CONSTRAINT FK_5132B337539B0606 FOREIGN KEY (uid) REFERENCES users (uid);
-//ALTER TABLE group_membership ADD CONSTRAINT FK_5132B3374C397118 FOREIGN KEY (gid) REFERENCES groups (gid);
-//CREATE INDEX IDX_5132B337539B0606 ON group_membership (uid);
-//CREATE INDEX IDX_5132B3374C397118 ON group_membership (gid);
-//ALTER TABLE group_membership ADD PRIMARY KEY (uid, gid);
-
-        // take whatever additional actions necessary to upgrade from 140 to 141
-        return true;
-    }
-
-    private function from141to142()
-    {
-        if (version_compare($this->currentVersion, '1.4.2', '>=')) {
-            return true;
-        }
-        // do some clean up
-        $request = $this->container->get('request_stack')->getCurrentRequest();
-        if (isset($request) && $request->hasSession()) {
-            $request->getSession()->remove('interactive_init');
-            $request->getSession()->remove('interactive_remove');
-            $request->getSession()->remove('interactive_upgrade');
-        }
-
-        return true;
-    }
-
-    private function from142to143()
-    {
-        if (version_compare($this->currentVersion, '1.4.3', '>=')) {
-            return true;
-        }
-        $this->installModule('ZikulaZAuthModule');
-        $this->reSyncAndActivateModules();
-        $this->setModuleCategory('ZikulaZAuthModule', $this->translator->__('Users'));
-
-        return true;
-    }
-
-    private function from143to144()
-    {
-        if (version_compare($this->currentVersion, '1.4.4', '>=')) {
-            return true;
-        }
-        $this->installModule('ZikulaMenuModule');
-        $this->reSyncAndActivateModules();
-        $this->setModuleCategory('ZikulaMenuModule', $this->translator->__('Content'));
-
-        return true;
-    }
-
-    private function from144to145()
-    {
-        if (version_compare($this->currentVersion, '1.4.5', '>=')) {
-            return true;
-        }
-        $this->reSyncAndActivateModules();
-
-        return true;
-    }
-
-    private function from145to146()
-    {
-        if (version_compare($this->currentVersion, '1.4.6', '>=')) {
-            return true;
-        }
-        // Menu module was introduced in 144 but not installed on upgrade
-        // this does NOT need to be repeated in upgrade from 146->147
-        $schemaManager = $this->container->get('doctrine')->getConnection()->getSchemaManager();
-        if (!$schemaManager->tablesExist(['menu_items'])) {
-            $this->installModule('ZikulaMenuModule');
-            $this->reSyncAndActivateModules();
-            $this->setModuleCategory('ZikulaMenuModule', $this->translator->__('Content'));
-        } else {
-            $this->reSyncAndActivateModules(); // do this at each version upgrade
+        /**
+         * NOTE: There are *intentionally* no `break` statements within each case here so that the process continues
+         * through each case until the end.
+         */
+        switch ($this->currentVersion) {
+            case '1.4.0':
+                // perform the following SQL
+                //ALTER TABLE categories_category ADD CONSTRAINT FK_D0B2B0F88304AF18 FOREIGN KEY (cr_uid) REFERENCES users (uid);
+                //ALTER TABLE categories_category ADD CONSTRAINT FK_D0B2B0F8C072C1DD FOREIGN KEY (lu_uid) REFERENCES users (uid);
+                //ALTER TABLE categories_registry ADD CONSTRAINT FK_1B56B4338304AF18 FOREIGN KEY (cr_uid) REFERENCES users (uid);
+                //ALTER TABLE categories_registry ADD CONSTRAINT FK_1B56B433C072C1DD FOREIGN KEY (lu_uid) REFERENCES users (uid);
+                //ALTER TABLE sc_intrusion ADD CONSTRAINT FK_8595CE46539B0606 FOREIGN KEY (uid) REFERENCES users (uid);
+                //DROP INDEX gid_uid ON group_membership;
+                //ALTER TABLE group_membership DROP PRIMARY KEY;
+                //ALTER TABLE group_membership ADD CONSTRAINT FK_5132B337539B0606 FOREIGN KEY (uid) REFERENCES users (uid);
+                //ALTER TABLE group_membership ADD CONSTRAINT FK_5132B3374C397118 FOREIGN KEY (gid) REFERENCES groups (gid);
+                //CREATE INDEX IDX_5132B337539B0606 ON group_membership (uid);
+                //CREATE INDEX IDX_5132B3374C397118 ON group_membership (gid);
+                //ALTER TABLE group_membership ADD PRIMARY KEY (uid, gid);
+            case '1.4.1':
+                $request = $this->container->get('request_stack')->getCurrentRequest();
+                if (isset($request) && $request->hasSession()) {
+                    $request->getSession()->remove('interactive_init');
+                    $request->getSession()->remove('interactive_remove');
+                    $request->getSession()->remove('interactive_upgrade');
+                }
+            case '1.4.2':
+                $this->installModule('ZikulaZAuthModule');
+                $this->reSyncAndActivateModules();
+                $this->setModuleCategory('ZikulaZAuthModule', $this->translator->__('Users'));
+            case '1.4.3':
+                $this->installModule('ZikulaMenuModule');
+                $this->reSyncAndActivateModules();
+                $this->setModuleCategory('ZikulaMenuModule', $this->translator->__('Content'));
+            case '1.4.4':
+                // nothing
+            case '1.4.5':
+                // Menu module was introduced in 1.4.4 but not installed on upgrade
+                $schemaManager = $this->container->get('doctrine')->getConnection()->getSchemaManager();
+                if (!$schemaManager->tablesExist(['menu_items'])) {
+                    $this->installModule('ZikulaMenuModule');
+                    $this->reSyncAndActivateModules();
+                    $this->setModuleCategory('ZikulaMenuModule', $this->translator->__('Content'));
+                }
+            case '1.4.6':
+                // nothing needed
+            case '1.4.7':
+                // nothing needed
         }
 
-        return true;
-    }
-
-    private function from146to147()
-    {
-        if (version_compare($this->currentVersion, '1.4.7', '>=')) {
-            return true;
-        }
+        // always do this
         $this->reSyncAndActivateModules();
 
         return true;

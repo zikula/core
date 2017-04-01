@@ -1,6 +1,23 @@
 CHANGELOG - ZIKULA 1.4.x
 ------------------------
 
+* 1.4.7 (?)
+
+ - BC Breaks:
+    - ?
+
+ - Deprecated:
+    - ?
+
+ - Fixes:
+    - ?
+
+ - Features:
+    - Improved Core upgrader to be more flexible (#2833)
+
+ - Vendor updates:
+    - ?
+
 * 1.4.6 (2017-02-12)
 
  - BC Breaks:
