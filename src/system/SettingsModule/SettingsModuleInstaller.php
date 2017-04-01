@@ -60,7 +60,6 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         foreach ($this->container->get('zikula_settings_module.locale_api')->getSupportedLocales() as $lang) {
             $this->setSystemVar('sitename_' . $lang, $this->__('Site name'));
             $this->setSystemVar('slogan_' . $lang, $this->__('Site description'));
-            $this->setSystemVar('metakeywords_' . $lang, $this->__('zikula, portal, open source, web site, website, weblog, blog, content management system, cms, application framework'));
             $this->setSystemVar('defaultpagetitle_' . $lang, $this->__('Site name'));
             $this->setSystemVar('defaultmetadescription_' . $lang, $this->__('Site description'));
         }
@@ -122,7 +121,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
             case '2.9.9':
                 // update certain System vars to multilingual. provide default values for all locales using current value.
                 // must directly manipulate System vars at DB level because using $this->getSystemVar() returns empty values
-                $varsToChange = ['sitename', 'slogan', 'metakeywords', 'defaultpagetitle', 'defaultmetadescription'];
+                $varsToChange = ['sitename', 'slogan', 'defaultpagetitle', 'defaultmetadescription'];
                 $SystemVars = $this->entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionVarEntity')->findBy(['modname' => VariableApi::CONFIG]);
                 /** @var \Zikula\ExtensionsModule\Entity\ExtensionVarEntity $modVar */
                 foreach ($SystemVars as $modVar) {

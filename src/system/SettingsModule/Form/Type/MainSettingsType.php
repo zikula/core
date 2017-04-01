@@ -184,9 +184,6 @@ class MainSettingsType extends AbstractType
                 ->add('defaultmetadescription_' . $languageCode, TextType::class, [
                     'label' => $translator->__('Default meta description')
                 ])
-                ->add('metakeywords_' . $languageCode, TextareaType::class, [
-                    'label' => $translator->__('Default meta keywords')
-                ])
             ;
         }
     }

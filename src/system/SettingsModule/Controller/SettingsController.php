@@ -46,7 +46,6 @@ class SettingsController extends AbstractController
 
         $installedLanguageNames = $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames();
 
-        $capabilityApi = $this->get('zikula_extensions_module.api.capability');
         $profileModules = $this->get('zikula_users_module.internal.profile_module_collector')->getKeys();
         $messageModules = $this->get('zikula_users_module.internal.message_module_collector')->getKeys();
 

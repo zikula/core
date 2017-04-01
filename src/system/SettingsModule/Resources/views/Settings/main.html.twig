@@ -55,7 +55,6 @@
                     <div role="tabpanel" class="tab-pane fade{% if languageCode == pagevars.lang %} in active{% endif %}" id="meta-{{ languageCode|lower }}">
                         {{ form_row(form['defaultpagetitle_' ~ languageCode]) }}
                         {{ form_row(form['defaultmetadescription_' ~ languageCode]) }}
-                        {{ form_row(form['metakeywords_' ~ languageCode]) }}
                     </div>
                     {% endfor %}
                 </div>
