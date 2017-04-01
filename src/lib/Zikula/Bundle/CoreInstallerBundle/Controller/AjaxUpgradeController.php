@@ -205,7 +205,6 @@ class AjaxUpgradeController extends AbstractController
                 }
             case '1.4.6':
                 // nothing needed
-
         }
 
         // always do this
