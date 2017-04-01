@@ -25,7 +25,7 @@ class ModuleStateEvent extends Event
      *
      * @var null|array
      */
-    private $modinfo;
+    private $modInfo;
 
     /**
      * @var null|AbstractModule The module instance. Null for non-Symfony styled modules
@@ -35,12 +35,12 @@ class ModuleStateEvent extends Event
 
     /**
      * @param null|AbstractModule $module The module instance
-     * @param null|array $modinfo
+     * @param null|array $modInfo
      */
-    public function __construct(AbstractModule $module = null, $modinfo = null)
+    public function __construct(AbstractModule $module = null, $modInfo = null)
     {
         $this->module = $module;
-        $this->modinfo = $modinfo;
+        $this->modInfo = $modInfo;
     }
 
     /**
@@ -58,6 +58,6 @@ class ModuleStateEvent extends Event
      */
     public function getModInfo()
     {
-        return $this->modinfo;
+        return $this->modInfo;
     }
 }

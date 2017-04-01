@@ -113,8 +113,8 @@ class ExtensionStateHelper
         $this->cacheClearer->clear('symfony');
 
         if (isset($eventName)) {
-            $moduleBundle = $this->kernel->getModule($extension->getName());
-            $event = new ModuleStateEvent($moduleBundle, ($moduleBundle === null) ? $extension->toArray() : null);
+            $moduleBundle = $this->extensionApi->getModuleInstanceOrNull($extension->getName());
+            $event = new ModuleStateEvent($moduleBundle, $extension->toArray());
             $this->dispatcher->dispatch($eventName, $event);
         }
 

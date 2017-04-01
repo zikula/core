@@ -1,9 +1,0 @@
-services:
-    zikula_pagelock_module.page_lock_repository:
-        class: Zikula\PageLockModule\Entity\Repository\PageLockRepository
-        factory: ["@doctrine.orm.default_entity_manager", getRepository]
-        arguments: ["ZikulaPageLockModule:PageLockEntity"]
-
-    zikula_pagelock_module.api.locking:
-        class: Zikula\PageLockModule\Api\LockingApi
-        arguments: ["@twig", "@request_stack", "@doctrine.orm.entity_manager", "@zikula_pagelock_module.page_lock_repository", "@zikula_users_module.current_user", "@zikula_core.common.theme.assets_js", "@zikula_core.common.theme.assets_css", "@zikula_core.common.theme.assets_footer", "@zikula_core.common.theme.asset_helper", "%temp_dir%"]
