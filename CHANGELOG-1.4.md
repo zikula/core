@@ -13,7 +13,7 @@ CHANGELOG - ZIKULA 1.4.x
     - ?
 
  - Features:
-    - ?
+    - Improved Core upgrader to be more flexible (#2833)
 
  - Vendor updates:
     - ?
