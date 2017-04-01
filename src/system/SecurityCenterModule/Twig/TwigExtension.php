@@ -11,8 +11,7 @@
 
 namespace Zikula\SecurityCenterModule\Twig;
 
-use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\SecurityCenterModule\Helper\PurifierHelper;
+use Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface;
 
 /**
  * Twig extension class.
@@ -20,39 +19,18 @@ use Zikula\SecurityCenterModule\Helper\PurifierHelper;
 class TwigExtension extends \Twig_Extension
 {
     /**
-     * @var bool
+     * @var HtmlFilterApiInterface
      */
-    private $isInstalled;
-
-    /**
-     * @var bool
-     */
-    private $upgrading;
-
-    /**
-     * @var VariableApi
-     */
-    private $variableApi;
-
-    /**
-     * @var PurifierHelper
-     */
-    private $purifierHelper;
+    private $htmlFilterApi;
 
     /**
      * TwigExtension constructor.
      *
-     * @param bool $isInstalled Installed flag
-     * @param $upgrading
-     * @param VariableApi $variableApi VariableApi service instance
-     * @param PurifierHelper $purifierHelper
+     * @param HtmlFilterApiInterface $htmlFilterApi
      */
-    public function __construct($isInstalled, $upgrading, VariableApi $variableApi, PurifierHelper $purifierHelper)
+    public function __construct(HtmlFilterApiInterface $htmlFilterApi)
     {
-        $this->isInstalled = $isInstalled;
-        $this->upgrading = $upgrading;
-        $this->variableApi = $variableApi;
-        $this->purifierHelper = $purifierHelper;
+        $this->htmlFilterApi = $htmlFilterApi;
     }
 
     public function getFilters()
@@ -68,48 +46,6 @@ class TwigExtension extends \Twig_Extension
      */
     public function safeHtml($string)
     {
-        $string = \DataUtil::formatForDisplayHTML($string);
-
-        if (!$this->isInstalled || $this->upgrading) {
-            return $string;
-        }
-
-        if ($this->variableApi->getSystemVar('outputfilter') < 1) {
-            return $string;
-        }
-
-        /*if (!$event->isMasterRequest()) {
-            return $string;
-        }
-        if ($request->isXmlHttpRequest()) {
-            return $string;
-        }*/
-
-        // recursive call for arrays
-        // [removed as it's duplicated in datautil]
-
-        // prepare htmlpurifier class
-        static $safeCache;
-        $purifier = $this->purifierHelper->getPurifier();
-
-        $md5 = md5($string);
-        // check if the value is in the safecache
-        if (isset($safeCache[$md5])) {
-            $string = $safeCache[$md5];
-        } else {
-            // save renderer delimiters
-            $string = str_replace('{', '%VIEW_LEFT_DELIMITER%', $string);
-            $string = str_replace('}', '%VIEW_RIGHT_DELIMITER%', $string);
-            $string = $purifier->purify($string);
-
-            // restore renderer delimiters
-            $string = str_replace('%VIEW_LEFT_DELIMITER%', '{', $string);
-            $string = str_replace('%VIEW_RIGHT_DELIMITER%', '}', $string);
-
-            // cache the value
-            $safeCache[$md5] = $string;
-        }
-
-        return $string;
+        return $this->htmlFilterApi->filter($string);
     }
 }
