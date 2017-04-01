@@ -72,6 +72,7 @@ class SiteOffListener implements EventSubscriberInterface
         }
         $response = $event->getResponse();
         $request = $event->getRequest();
+        $this->router->getContext()->setBaseUrl($request->getBaseUrl());
         if ($request->isMethod('POST') && $request->request->has('zikulazauthmodule_authentication_uname')) {
             return;
         }
