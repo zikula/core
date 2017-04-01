@@ -25,6 +25,7 @@ class CoreBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
+
         $container->addCompilerPass(new DoctrinePass(), PassConfig::TYPE_OPTIMIZE);
 
         $container->addCompilerPass(new RegisterCoreListenersPass(), PassConfig::TYPE_AFTER_REMOVING);

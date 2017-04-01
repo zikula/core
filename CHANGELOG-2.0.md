@@ -7,6 +7,8 @@ CHANGELOG - ZIKULA 2.0.x
     - Removed all @deprecated items from Core-1.x.
     - Removed all legacy plugins. Use Symfony Bundles instead.
     - The parameter `framework.session.cookie_httponly` is now set to `true` (#2716).
+    - Removed old custom Doctrine extensions listener. Use listeners from stof bundle instead.
+    - Removed custom service aliases for Doctrine classes. Retrieve them directory using the entity manager.
 
  - Deprecated:
 
