@@ -17,6 +17,7 @@
 
         "zikula/legal-module": "dev-master",
         "zikula/profile-module": "dev-master",
+        "zikula/pagelock-module": "1.2.*",
 
         "symfony/symfony": "2.8.*",
         "symfony/monolog-bundle": "~2.4",
@@ -58,6 +59,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/zikula-modules/Profile"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/zikula-modules/PageLock"
         }
     ],
     "autoload": {
