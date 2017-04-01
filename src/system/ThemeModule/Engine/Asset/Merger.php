@@ -119,7 +119,7 @@ class Merger implements MergerInterface
         }
         $route = $this->router->generate('zikulathememodule_combinedasset_asset', ['type' => $type, 'key' => $key]);
         array_unshift($outputFiles, $route);
-        array_unshift($outputFiles, $preCachedFiles);
+        array_merge($preCachedFiles, $outputFiles);
 
         return $outputFiles;
     }
