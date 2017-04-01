@@ -41,6 +41,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Added WorkflowBundle providing an UI for workflow management (#2423).
     - Automatically initialise basic JavaScript polyfills for forms (#3348, #3486).
     - Added system var 'timezone' for setting the timezone for guest users (replaces 'timezone_offset').
+    - Added HtmlFilterApi to filter html strings.
 
  - Vendor updates:
     - composer/semver installed at 1.4.2
