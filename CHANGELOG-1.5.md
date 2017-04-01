@@ -57,7 +57,7 @@ CHANGELOG - ZIKULA 1.5.x
     - phpdocumentor/reflection-docblock updated from 2.0.4 to 3.1.1
     - sensio/framework-extra-bundle updated from 3.0.21 to 3.0.25
     - sensio/generator-bundle updated from 3.1.2 to 3.1.4
-    - sensiolabs/security-checker updated from 4.0.0 to 4.0.3
+    - sensiolabs/security-checker updated from 4.0.0 to 4.0.4
     - swiftmailer/swiftmailer updated from v5.4.5 to v5.4.6
     - symfony updated from 2.8.17 to 2.8.18
     - symfony/security-acl update from 2.8.0 to 3.0.0
@@ -67,3 +67,4 @@ CHANGELOG - ZIKULA 1.5.x
     - webmozart/assert installed at 1.2.0
     - willdurand/js-translation-bundle updated from 2.6.3 to 2.6.4
     - wikimedia/composer-merge-plugin installed as dev-master 
+    - zikula/pagelock-module installed as 1.2.0
