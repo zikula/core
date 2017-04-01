@@ -47,7 +47,8 @@ class AjaxUpgradeController extends AbstractController
         $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
         // load and set new default values from the original parameters.yml file into the custom_parameters.yml file.
         $this->yamlManager->setParameters(array_merge($originalParameters['parameters'], $this->yamlManager->getParameters()));
-        $this->currentVersion = $this->container->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
+        $currentVersion = $this->container->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
+        $this->currentVersion = (version_compare($currentVersion, '1.4.0', '<')) ? '1.4.0' : $currentVersion;
     }
 
     public function ajaxAction(Request $request)

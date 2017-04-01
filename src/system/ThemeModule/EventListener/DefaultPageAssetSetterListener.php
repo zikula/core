@@ -195,7 +195,8 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
                 $overrideBootstrapPath = $this->themeEngine->getTheme()->getConfig()['bootstrapPath'];
             } else {
                 // Core-1.4 method @deprecated
-                if (!$this->themeEngine->getTheme()->isTwigBased()) {
+                $theme = $this->themeEngine->getTheme();
+                if (isset($theme) && !$theme->isTwigBased()) {
                     $overrideBootstrapPath = \ThemeUtil::getVar('bootstrapPath', '');
                 }
             }
