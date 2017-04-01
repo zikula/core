@@ -367,7 +367,7 @@ class ModuleController extends AbstractController
                 $extensionEntity = $this->get('zikula_extensions_module.extension_repository')->find($extensionId);
                 $bundle = $this->get('zikula_extensions_module.api.extension')->getModuleInstanceOrNull($extensionEntity->getName());
                 if (!empty($bundle)) {
-                    $event = new ModuleStateEvent($bundle);
+                    $event = new ModuleStateEvent($bundle, $extensionEntity->toArray());
                     $this->get('event_dispatcher')->dispatch(CoreEvents::MODULE_POSTINSTALL, $event);
                 }
             }

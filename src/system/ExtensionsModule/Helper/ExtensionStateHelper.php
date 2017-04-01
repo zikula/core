@@ -113,7 +113,7 @@ class ExtensionStateHelper
 
         if (isset($eventName)) {
             $moduleBundle = $this->extensionApi->getModuleInstanceOrNull($extension->getName());
-            $event = new ModuleStateEvent($moduleBundle, ($moduleBundle === null) ? $extension->toArray() : null);
+            $event = new ModuleStateEvent($moduleBundle, $extension->toArray());
             $this->dispatcher->dispatch($eventName, $event);
         }
 
