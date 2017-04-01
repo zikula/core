@@ -23,6 +23,7 @@ CHANGELOG - ZIKULA 1.5.x
     - zikula/jquery-minicolors-bundle (which includes https://github.com/claviska/jquery-minicolors) is deprecated.
     - metakeywords are deprecated as they are no longer considered 'good practice' for SEO (#3187).
     - Gedmo Doctrine extensions should be used by the stof listeners. The old listener names are deprecated.
+    - Modernizr javascript library is deprecated and will not be included in Core-2.0.
 
  - Fixes:
     - Corrected path to legacy module's admin icons.
