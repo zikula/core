@@ -199,9 +199,23 @@ abstract class AbstractListEntriesHelper
     {
         $states = [];
         $states[] = [
+            'value'   => 'initial',
+            'text'    => $this->__('Initial'),
+            'title'   => $this->__('Pseudo-state for content which is just created and not persisted yet.'),
+            'image'   => '',
+            'default' => true
+        ];
+        $states[] = [
             'value'   => 'approved',
             'text'    => $this->__('Approved'),
             'title'   => $this->__('Content has been approved and is available online.'),
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => '!initial',
+            'text'    => $this->__('All except initial'),
+            'title'   => $this->__('Shows all items except these which are initial'),
             'image'   => '',
             'default' => false
         ];
