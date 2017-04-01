@@ -22,6 +22,7 @@ CHANGELOG - ZIKULA 1.5.x
         - Core Assets that will be maintained are copied to `CoreBundle/Resources/public/*`.
     - zikula/jquery-minicolors-bundle (which includes https://github.com/claviska/jquery-minicolors) is deprecated.
     - metakeywords are deprecated as they are no longer considered 'good practice' for SEO (#3187).
+    - Gedmo Doctrine extensions should be used by the stof listeners. The old listener names are deprecated.
 
  - Fixes:
     - Corrected path to legacy module's admin icons.
