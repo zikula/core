@@ -659,13 +659,15 @@ class ZLanguage
             $localeArray[] = $locale->getBasename();
         }
 
-        $translations = $finder->files()->name('zikula.*.po')->in(['app/Resources/translations']);
-        foreach ($translations as $translationFile) {
-            $fileNameParts = explode('.', $translationFile->getFilename());
-            if (count($fileNameParts) == 3) {
-                $localeCode = $fileNameParts[1];
-                if ($localeCode != 'template' && !in_array($localeCode, $localeArray)) {
-                    $localeArray[] = $localeCode;
+        if (is_dir('app/Resources/translations')) {
+            $translations = $finder->files()->name('zikula.*.po')->in(['app/Resources/translations']);
+            foreach ($translations as $translationFile) {
+                $fileNameParts = explode('.', $translationFile->getFilename());
+                if (count($fileNameParts) == 3) {
+                    $localeCode = $fileNameParts[1];
+                    if ($localeCode != 'template' && !in_array($localeCode, $localeArray)) {
+                        $localeArray[] = $localeCode;
+                    }
                 }
             }
         }
