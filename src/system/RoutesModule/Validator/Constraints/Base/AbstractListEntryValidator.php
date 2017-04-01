@@ -61,6 +61,10 @@ abstract class AbstractListEntryValidator extends ConstraintValidator
             return;
         }
 
+        if ($constraint->propertyName == 'workflowState' && in_array($value, ['initial', 'deleted'])) {
+            return;
+    	}
+
         $listEntries = $this->listEntriesHelper->getEntries($constraint->entityName, $constraint->propertyName);
         $allowedValues = [];
         foreach ($listEntries as $entry) {
