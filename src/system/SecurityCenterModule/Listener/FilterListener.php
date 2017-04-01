@@ -17,6 +17,7 @@ use IDS\Monitor as IdsMonitor;
 use IDS\Report as IdsReport;
 use Swift_Message;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -185,7 +186,7 @@ class FilterListener implements EventSubscriberInterface
             if (!$result->isEmpty()) {
                 // process the IdsReport object
                 $session = $event->getRequest()->hasSession() ? $event->getRequest()->getSession() : null;
-                $this->processIdsResult($init, $result, $session);
+                $this->processIdsResult($init, $result, $session, $event->getRequest());
             } else {
                 // no attack detected
             }
@@ -272,8 +273,9 @@ class FilterListener implements EventSubscriberInterface
      * @param IdsInit $init PHPIDS init object reference
      * @param IdsReport $result The result object from PHPIDS
      * @param SessionInterface $session
+     * @param Request $request
      */
-    private function processIdsResult(IdsInit $init, IdsReport $result, SessionInterface $session)
+    private function processIdsResult(IdsInit $init, IdsReport $result, SessionInterface $session, Request $request)
     {
         // $result contains any suspicious fields enriched with additional info
 
@@ -318,11 +320,11 @@ class FilterListener implements EventSubscriberInterface
             // db logging
 
             // determine IP address of current user
-            $_REMOTE_ADDR = System::serverGetVar('REMOTE_ADDR');
-            $_HTTP_X_FORWARDED_FOR = System::serverGetVar('HTTP_X_FORWARDED_FOR');
+            $_REMOTE_ADDR = $request->server->get('REMOTE_ADDR');
+            $_HTTP_X_FORWARDED_FOR = $request->server->get('HTTP_X_FORWARDED_FOR');
             $ipAddress = ($_HTTP_X_FORWARDED_FOR) ? $_HTTP_X_FORWARDED_FOR : $_REMOTE_ADDR;
 
-            $currentPage = System::getCurrentUri();
+            $currentPage = $request->getRequestUri();
             $currentUid = !empty($session) ? $session->get('uid', PermissionApi::UNREGISTERED_USER) : PermissionApi::UNREGISTERED_USER;
             $currentUser = $this->em->getReference('ZikulaUsersModule:UserEntity', $currentUid);
 
