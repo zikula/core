@@ -65,7 +65,7 @@ class PurifierListener implements EventSubscriberInterface
         ];
     }
 
-    protected function purify(GenericEvent $event)
+    public function purify(GenericEvent $event)
     {
         if (!$this->installed || $this->upgrading) {
             return;
