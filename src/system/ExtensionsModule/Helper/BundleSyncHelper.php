@@ -142,7 +142,7 @@ class BundleSyncHelper
         $bundles = [];
 
         $scanner = new Scanner();
-        $scanner->scan($directories, 5);
+        $scanner->scan($directories);
         $newModules = $scanner->getModulesMetaData();
 
         // scan for all bundle-type bundles (psr-4) in either /system or /bundles

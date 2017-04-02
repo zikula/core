@@ -39,7 +39,7 @@ class BootstrapHelper
     public function load()
     {
         $scanner = new Scanner();
-        $scanner->scan(['modules', 'themes'], 5);
+        $scanner->scan(['modules', 'themes']);
         $array = array_merge($scanner->getModulesMetaData(), $scanner->getThemesMetaData());
         $this->sync($array);
     }

@@ -96,7 +96,7 @@ class BundleSyncHelper
         $bundleThemes = [];
 
         $scanner = new Scanner();
-        $scanner->scan(['themes'], 4);
+        $scanner->scan(['themes']);
         $newThemes = $scanner->getThemesMetaData();
 
         /** @var \Zikula\Bundle\CoreBundle\Bundle\MetaData $themeMetaData */
