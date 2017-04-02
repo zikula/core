@@ -56,7 +56,7 @@ class ModuleListener implements EventSubscriberInterface
     }
 
     /**
-     * Handle module deactivated event "installer.module.deactivated".
+     * Handle module deactivated event CoreEvents::MODULE_DISABLE.
      * Receives $modinfo as $args
      *
      * @param ModuleStateEvent $event
