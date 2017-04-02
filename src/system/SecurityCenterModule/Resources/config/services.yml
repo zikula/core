@@ -17,10 +17,7 @@ services:
     twig.extension.zikula_securitycenter_module:
         class: Zikula\SecurityCenterModule\Twig\TwigExtension
         arguments:
-          - "%installed%"
-          - "@=container.hasParameter('upgrading') ? parameter('upgrading') : false"
-          - "@zikula_extensions_module.api.variable"
-          - "@zikula_security_center_module.helper.purifier_helper"
+          - "@zikula_security_center_module.api.html_filter_api"
         tags:
             - { name: twig.extension }
 
@@ -37,6 +34,16 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    zikula_security_center_module.purifier_listener:
+        class: Zikula\SecurityCenterModule\Listener\PurifierListener
+        arguments:
+          - '%installed%'
+          - "@=container.hasParameter('upgrading') ? parameter('upgrading') : false"
+          - '@zikula_extensions_module.api.variable'
+          - '@zikula_security_center_module.helper.purifier_helper'
+        tags:
+            - { name: kernel.event_subscriber }
+
     zikula_security_center_module.helper.purifier_helper:
         class: Zikula\SecurityCenterModule\Helper\PurifierHelper
         arguments:
@@ -44,3 +51,10 @@ services:
           - "@session"
           - "@translator.default"
           - "@zikula_extensions_module.api.variable"
+
+    zikula_security_center_module.api.html_filter_api:
+        class: Zikula\SecurityCenterModule\Api\HtmlFilterApi
+        arguments:
+          - '@zikula_extensions_module.api.variable'
+          - '%installed%'
+          - '@event_dispatcher'
