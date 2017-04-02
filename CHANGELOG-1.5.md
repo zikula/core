@@ -21,9 +21,11 @@ CHANGELOG - ZIKULA 1.5.x
     - All contents of `src/javascript`, `src/style`, and `src/images` are deprecated.
         - Core Assets that will be maintained are copied to `CoreBundle/Resources/public/*`.
     - zikula/jquery-minicolors-bundle (which includes https://github.com/claviska/jquery-minicolors) is deprecated.
-    - metakeywords are deprecated as they are no longer considered 'good practice' for SEO (#3187).
+    - Metakeywords are deprecated as they are no longer considered 'good practice' for SEO (#3187).
     - Gedmo Doctrine extensions should be used by the stof listeners. The old listener names are deprecated.
     - Modernizr javascript library is deprecated and will not be included in Core-2.0.
+    - Deprecate full path for footstrap overrides and use zasset-style notation (#3357).
+        - e.g. @AcmeFooModule:css/mybootstrap.css
 
  - Fixes:
     - Corrected path to legacy module's admin icons.
