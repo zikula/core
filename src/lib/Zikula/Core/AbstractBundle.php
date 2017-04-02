@@ -100,6 +100,15 @@ abstract class AbstractBundle extends Bundle
     }
 
     /**
+     * Get the assetpath relative to /web e.g. /modules/acmefoo
+     * @return string
+     */
+    public function getRelativeAssetPath()
+    {
+        return strtolower($this->getNameType() . 's/' . substr($this->getName(), 0, -strlen($this->getNameType())));
+    }
+
+    /**
      * @return string
      *
      * @todo remove (drak)
