@@ -12,7 +12,7 @@
 namespace Zikula\ExtensionsModule\Helper;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Core\CoreEvents;
@@ -46,7 +46,7 @@ class ExtensionStateHelper
     private $translator;
 
     /**
-     * @var KernelInterface
+     * @var ZikulaHttpKernelInterface
      */
     private $kernel;
 
@@ -57,14 +57,14 @@ class ExtensionStateHelper
      * @param CacheClearer $cacheClearer
      * @param ExtensionRepository $extensionRepository
      * @param TranslatorInterface $translator
-     * @param KernelInterface $kernel
+     * @param ZikulaHttpKernelInterface $kernel
      */
     public function __construct(
         EventDispatcherInterface $dispatcher,
         CacheClearer $cacheClearer,
         ExtensionRepository $extensionRepository,
         TranslatorInterface $translator,
-        KernelInterface $kernel
+        ZikulaHttpKernelInterface $kernel
     ) {
         $this->dispatcher = $dispatcher;
         $this->cacheClearer = $cacheClearer;
@@ -113,7 +113,7 @@ class ExtensionStateHelper
         $this->cacheClearer->clear('symfony');
 
         if (isset($eventName)) {
-            $moduleBundle = $this->extensionApi->getModuleInstanceOrNull($extension->getName());
+            $moduleBundle = $this->kernel->getModule($extension->getName());
             $event = new ModuleStateEvent($moduleBundle, $extension->toArray());
             $this->dispatcher->dispatch($eventName, $event);
         }
