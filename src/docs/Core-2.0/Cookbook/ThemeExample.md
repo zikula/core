@@ -64,7 +64,7 @@ to `@CompanyPaulaTheme`. They are located in `theme/Company/Paula/Resources/view
 * There is a file named `AdminMenu` in the `/Menu` directory. Inside this file you will find the namespace. You have to adjust
   this accordingly: `namespace Company\PaulaTheme\Menu;`
 * at the end you have to adjust the bootstrap css file. It is located inside `config/theme.yml`. Normally it looks 
-like `bootstrapPath: themes/BootstrapTheme/Resources/public/css/cerulean.min.css`. It should get the right path:
-`bootstrapPath: themes/Company/PaulaTheme/Resources/public/css/cerulean.min.css`
+like `bootstrapPath: "@ZikulaBootstrapTheme:css/cerulean.min.css"`. It should get the right path:
+`bootstrapPath: "@CompanyPaulaTheme:css/cerulean.min.css`
 
 Now you should be able to activate your theme.

@@ -13,8 +13,8 @@ namespace Zikula\SettingsModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Zikula\Core\CoreEvents;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
@@ -57,7 +57,6 @@ class ModuleListener implements EventSubscriberInterface
 
     /**
      * Handle module deactivated event CoreEvents::MODULE_DISABLE.
-     * Receives $modinfo as $args
      *
      * @param ModuleStateEvent $event
      *
