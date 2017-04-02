@@ -166,8 +166,9 @@ bazinga_js_translation:
     active_locales: "%jms_i18n_routing.locales%"
 
 parameters:
+    # all paths below are resolved as assets (in /web)
     # zikula core stylesheet and javascript component locations
-    zikula.stylesheet.bootstrap-font-awesome.path: web/bootstrap-font-awesome.css
-    zikula.javascript.bootstrap.min.path: web/bootstrap/js/bootstrap.min.js
+    zikula.stylesheet.bootstrap-font-awesome.path: "/bootstrap-font-awesome.css"
+    zikula.javascript.bootstrap.min.path: "/bootstrap/js/bootstrap.min.js"
     # this is needed if an external bootstrap path is used
-    zikula.stylesheet.fontawesome.min.path: web/font-awesome/css/font-awesome.min.css
+    zikula.stylesheet.fontawesome.min.path: "/font-awesome/css/font-awesome.min.css"

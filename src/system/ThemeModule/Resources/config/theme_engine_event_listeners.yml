@@ -12,11 +12,16 @@ services:
           - "@zikula_core.common.theme.assets_js"
           - "@zikula_core.common.theme.assets_css"
           - "@router"
+          - "@zikula_core.common.theme.asset_helper"
           - "@zikula_core.common.theme_engine"
           - "%kernel.root_dir%"
           - "%compat_layer%"
-        calls:
-            - [setParameters, ["@service_container"]]
+          - "%env%"
+          - "%installed%"
+          - "%zikula.javascript.bootstrap.min.path%"
+          - "%zikula.stylesheet.bootstrap-font-awesome.path%"
+          - "%zikula.stylesheet.fontawesome.min.path%"
+          - "@=container.hasParameter('zikula.stylesheet.bootstrap.min.path') ? parameter('zikula.stylesheet.bootstrap.min.path') : ''"
         tags:
             - { name: kernel.event_subscriber }
             - { name: monolog.logger, channel: request }
