@@ -79,10 +79,17 @@ class Asset
         // @AcmeBundle:css/foo.css
         // @AcmeBundle:jss/foo.js
         // @AcmeBundle:images/foo.png
-        $bundleName = null;
         $parts = explode(':', $path);
         if (count($parts) !== 2) {
             throw new \InvalidArgumentException('No bundle name resolved, must be like "@AcmeBundle:css/foo.css"');
+        }
+
+        // if file exists in /web, then use it first
+        $relativeAssetPath = $this->kernel->getBundle(substr($parts[0], 1))->getRelativeAssetPath() . '/' .$parts[1];
+        $webPath = $this->assetPackages->getUrl($relativeAssetPath);
+        $filePath = realpath($this->kernel->getRootDir() . '/../../../' . $webPath);
+        if (is_file($filePath)) {
+            return $webPath;
         }
 
         $fullPath = $this->kernel->locateResource($parts[0] . '/Resources/public/' . $parts[1], 'app/Resources', true);
