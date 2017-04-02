@@ -24,8 +24,9 @@ Optional Values
 ---------------
 
  - bootstrapPath
-    set a full path from the site root to override the core bootstrap.css
-    - e.g.: `bootstrapPath: themes/BootstrapTheme/Resources/public/css/cerulean.min.css`
+    set a zasset-type path to override the core bootstrap.css - the file is then stored in your Theme's
+    `Resources/public/css/` directory
+    - e.g.: `bootstrapPath: "@ZikulaBootstrapTheme:css/cerulean.min.css"`
  - blockWrapping
     set a boolean value to indicate whether ALL blocks will be wrapped with a unique container `<div>`
      - e.g. `blockWrapping: false`
