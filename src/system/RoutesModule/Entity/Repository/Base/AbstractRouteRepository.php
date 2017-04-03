@@ -527,8 +527,6 @@ abstract class AbstractRouteRepository extends SortableRepository
      */
     public function getSelectWherePaginatedQuery(QueryBuilder $qb, $currentPage = 1, $resultsPerPage = 25)
     {
-        $qb = $this->addCommonViewFilters($qb);
-    
         $query = $this->getQueryFromBuilder($qb);
         $offset = ($currentPage-1) * $resultsPerPage;
     
@@ -552,7 +550,7 @@ abstract class AbstractRouteRepository extends SortableRepository
      */
     public function selectWherePaginated($where = '', $orderBy = '', $currentPage = 1, $resultsPerPage = 25, $useJoins = true, $slimMode = false)
     {
-        $qb = $this->genericBaseQuery($where, $orderBy, $useJoins, $slimMode);
+        $qb = $this->getListQueryBuilder($where, $orderBy, $useJoins, $slimMode);
     
         $page = $currentPage;
         $query = $this->getSelectWherePaginatedQuery($qb, $page, $resultsPerPage);
@@ -643,7 +641,7 @@ abstract class AbstractRouteRepository extends SortableRepository
      */
     public function selectSearch($fragment = '', $exclude = [], $orderBy = '', $currentPage = 1, $resultsPerPage = 25, $useJoins = true)
     {
-        $qb = $this->genericBaseQuery('', $orderBy, $useJoins);
+        $qb = $this->getListQueryBuilder('', $orderBy, $useJoins);
         if (count($exclude) > 0) {
             $qb = $this->addExclusion($qb, $exclude);
         }

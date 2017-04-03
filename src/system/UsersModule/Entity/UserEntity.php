@@ -83,7 +83,7 @@ class UserEntity extends EntityAccess
      * or that the function and its relationship to time zone settings is completely understood.
      *
      * @Assert\DateTime()
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="utcdatetime")
      */
     private $approved_date;
 
@@ -109,7 +109,7 @@ class UserEntity extends EntityAccess
      * NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NEITHER server local time nor user local time. SEE WARNING under approved_date, above.
      *
      * @Assert\DateTime()
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="utcdatetime")
      */
     private $user_regdate;
 
@@ -118,7 +118,7 @@ class UserEntity extends EntityAccess
      * NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NEITHER server local time nor user local time. SEE WARNING under approved_date, above.
      *
      * @Assert\DateTime()
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="utcdatetime")
      */
     private $lastlogin;
 
