@@ -33,6 +33,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Added a general purpose deletion form type (#3333).
     - Fixed initialisation of JavaScript polyfills (#3348, #3486).
     - Fixed wrong link to HTML information pages in security center configuration (#3489).
+    - Fixed storage of lastlogin in user object (#3383).
 
  - Features:
     - Added Permission-based controls for MenuModule menu items (#3314).
@@ -44,6 +45,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Automatically initialise basic JavaScript polyfills for forms (#3348, #3486).
     - Added system var 'timezone' for setting the timezone for guest users (replaces 'timezone_offset').
     - Added HtmlFilterApi to filter html strings.
+    - Added 'utcdatetime' doctrine column type for storage of utc datetimes (#3383).
 
  - Vendor updates:
     - composer/semver installed at 1.4.2

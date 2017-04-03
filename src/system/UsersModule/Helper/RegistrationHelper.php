@@ -90,10 +90,9 @@ class RegistrationHelper
      */
     public function registerNewUser(UserEntity $userEntity)
     {
-        $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
         $adminApprovalRequired = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED, UsersConstant::DEFAULT_REGISTRATION_APPROVAL_REQUIRED);
         if (null == $userEntity->getUid()) {
-            $userEntity->setUser_Regdate($nowUTC);
+            $userEntity->setUser_Regdate(new \DateTime());
         }
         $userCreateEvent = new GenericEvent($userEntity);
         $this->eventDispatcher->dispatch(RegistrationEvents::FULL_USER_CREATE_VETO, $userCreateEvent);
@@ -132,7 +131,7 @@ class RegistrationHelper
         }
         if (!$adminApprovalRequired) {
             $approvedBy = $this->currentUserApi->isLoggedIn() ? $this->currentUserApi->get('uid') : $userEntity->getUid();
-            $this->userRepository->setApproved($userEntity, $nowUTC, $approvedBy); // flushes EM
+            $this->userRepository->setApproved($userEntity, new \DateTime(), $approvedBy); // flushes EM
         }
         $this->eventDispatcher->dispatch($eventName, new GenericEvent($userEntity));
     }
@@ -146,8 +145,7 @@ class RegistrationHelper
     public function approve(UserEntity $user)
     {
         $user->setApproved_By($this->currentUserApi->get('uid'));
-        $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
-        $user->setApproved_Date($nowUTC);
+        $user->setApproved_Date(new \DateTime());
 
         $user->setActivated(UsersConstant::ACTIVATED_ACTIVE);
         $this->userRepository->persistAndFlush($user);

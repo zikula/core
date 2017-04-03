@@ -103,8 +103,7 @@ class AccessHelper
      */
     public function login(UserEntity $user, $rememberMe = false)
     {
-        $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
-        $user->setLastlogin($nowUTC);
+        $user->setLastlogin(new \DateTime());
         $this->userRepository->persistAndFlush($user);
         $lifetime = 0;
         if ($rememberMe && $this->variableApi->getSystemVar('seclevel', ZikulaSessionStorage::SECURITY_LEVEL_MEDIUM) != ZikulaSessionStorage::SECURITY_LEVEL_HIGH) {

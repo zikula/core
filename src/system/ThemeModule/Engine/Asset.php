@@ -13,6 +13,7 @@ namespace Zikula\ThemeModule\Engine;
 
 use Symfony\Component\Asset\Packages;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\Core\AbstractBundle;
 
 /**
  * Class Asset
@@ -85,11 +86,14 @@ class Asset
         }
 
         // if file exists in /web, then use it first
-        $relativeAssetPath = $this->kernel->getBundle(substr($parts[0], 1))->getRelativeAssetPath() . '/' .$parts[1];
-        $webPath = $this->assetPackages->getUrl($relativeAssetPath);
-        $filePath = realpath($this->kernel->getRootDir() . '/../../../' . $webPath);
-        if (is_file($filePath)) {
-            return $webPath;
+        $bundle = $this->kernel->getBundle(substr($parts[0], 1));
+        if ($bundle instanceof AbstractBundle) {
+            $relativeAssetPath = $bundle->getRelativeAssetPath() . '/' . $parts[1];
+            $webPath = $this->assetPackages->getUrl($relativeAssetPath);
+            $filePath = realpath($this->kernel->getRootDir() . '/../../../' . $webPath);
+            if (is_file($filePath)) {
+                return $webPath;
+            }
         }
 
         $fullPath = $this->kernel->locateResource($parts[0] . '/Resources/public/' . $parts[1], 'app/Resources', true);
