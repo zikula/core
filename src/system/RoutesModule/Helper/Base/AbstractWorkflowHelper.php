@@ -76,7 +76,7 @@ abstract class AbstractWorkflowHelper
      */
     public function __construct(
         TranslatorInterface $translator,
-        /*Registry */$registry,
+        Registry $registry,
         LoggerInterface $logger,
         PermissionApiInterface $permissionApi,
         CurrentUserApi $currentUserApi,
