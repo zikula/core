@@ -221,14 +221,15 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
                 }
             }
         }
-        if ($overrideBootstrapPath[0] == '@') {
-            $overrideBootstrapPath = $this->assetHelper->resolve($overrideBootstrapPath); // throws exception if asset not found
-        } else {
-            // @deprecated method - remove at Core-2.0
-            $path = realpath($this->rootdir . '/../') . "/$overrideBootstrapPath";
-            $overrideBootstrapPath = !empty($overrideBootstrapPath) && is_readable($path) ? "$basePath/$overrideBootstrapPath" : '';
+        if (!empty($overrideBootstrapPath)) {
+            if ($overrideBootstrapPath[0] == '@') {
+                $overrideBootstrapPath = $this->assetHelper->resolve($overrideBootstrapPath); // throws exception if asset not found
+            } else {
+                // @deprecated method - remove at Core-2.0
+                $path = realpath($this->rootdir . '/../') . "/$overrideBootstrapPath";
+                $overrideBootstrapPath = !empty($overrideBootstrapPath) && is_readable($path) ? "$basePath/$overrideBootstrapPath" : '';
+            }
         }
-
         if (empty($overrideBootstrapPath)) {
             $this->cssAssetBag->add([$this->assetHelper->resolve($this->params['zikula.stylesheet.bootstrap-font-awesome.path']) => 0]);
         } else {
