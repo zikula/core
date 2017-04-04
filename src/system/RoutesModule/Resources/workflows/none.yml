@@ -1,4 +1,4 @@
-workflow:
+framework:
     workflows:
         zikularoutesmodule_none:
             type: state_machine
