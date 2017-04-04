@@ -185,13 +185,11 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
                 $overrideBootstrapPath = $this->themeEngine->getTheme()->getConfig()['bootstrapPath'];
             }
         }
-        $overrideBootstrapPath = $this->assetHelper->resolve($overrideBootstrapPath); // throws exception if asset not found
-
         if (empty($overrideBootstrapPath)) {
             $this->cssAssetBag->add([$this->assetHelper->resolve($this->params['zikula.stylesheet.bootstrap-font-awesome.path']) => 0]);
         } else {
             $this->cssAssetBag->add([
-                $overrideBootstrapPath => 0,
+                $this->assetHelper->resolve($overrideBootstrapPath) => 0, // throws exception if asset not found
                 $this->assetHelper->resolve($this->params['zikula.stylesheet.fontawesome.min.path']) => 1,
             ]);
         }
