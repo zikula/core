@@ -1,4 +1,4 @@
-framework:   for master branch
+framework:
    workflows:
       blog_publishing:
          type: 'state_machine'
