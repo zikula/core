@@ -24,6 +24,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\SecurityCenterModule\Constant;
+use Zikula\SecurityCenterModule\Form\Type\ConfigType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -68,7 +70,6 @@ class ConfigController extends AbstractController
             if ($form->get('save')->isClicked()) {
                 $formData = $form->getData();
 
-                // Update module variables.
                 $updateCheck = isset($formData['updatecheck']) ? $formData['updatecheck'] : 1;
                 $this->setSystemVar('updatecheck', $updateCheck);
 
@@ -128,12 +129,13 @@ class ConfigController extends AbstractController
 
                     // check if sessionsavepath is a dir and if it is writable
                     // if yes, we need to logout
-                    $causeLogout = is_dir($sessionSavePath) ? is_writable($sessionSavePath) : false;
-                    $storeTypeCanBeWritten = $causeLogout;
+                    $storeTypeCanBeWritten = is_dir($sessionSavePath) ? is_writable($sessionSavePath) : false;
+                    $causeLogout = $storeTypeCanBeWritten;
 
-                    if ($causeLogout == false) {
+                    if ($storeTypeCanBeWritten == false) {
                         // an error occured - we do not change the way of storing session data
                         $this->addFlash('error', $this->__('Error! Session path not writeable!'));
+                        $sessionSavePath = '';
                     }
                 }
                 if ($storeTypeCanBeWritten == true) {
@@ -180,9 +182,15 @@ class ConfigController extends AbstractController
                     $causeLogout = true;
                 }
 
-                // set the session name in custom_parameters.yml
+                // set the session information in /src/app/config/dynamic/generated.yml
                 $configDumper = $this->get('zikula.dynamic_config_dumper');
                 $configDumper->setParameter('zikula.session.name', $newSessionName);
+                $sessionHandlerId = $sessionStoreToFile == Constant::SESSION_STORAGE_FILE ? 'session.handler.native_file' : 'zikula_core.bridge.http_foundation.doctrine_session_handler';
+                $configDumper->setParameter('zikula.session.handler_id', $sessionHandlerId);
+                $sessionStorageId = $sessionStoreToFile == Constant::SESSION_STORAGE_FILE ? 'zikula_core.bridge.http_foundation.zikula_session_storage_file' : 'zikula_core.bridge.http_foundation.zikula_session_storage_doctrine';
+                $configDumper->setParameter('zikula.session.storage_id', $sessionStorageId); // Symfony default is 'session.storage.native'
+                $zikulaSessionSavePath = empty($sessionSavePath) ? '%kernel.cache_dir%/sessions' : $sessionSavePath;
+                $configDumper->setParameter('zikula.session.save_path', $zikulaSessionSavePath);
 
                 // set the session name in the current container
                 $this->get('service_container')->setParameter('zikula.session.name', $newSessionName);

@@ -178,19 +178,13 @@ class AjaxInstallController extends AbstractController
     {
         $entityManager = $this->container->get('doctrine')->getManager();
         $params = $this->decodeParameters($this->yamlManager->getParameters());
-
-        // prepare the data
-        $username = mb_strtolower($params['username']);
-
-        $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
-
         /** @var \Zikula\UsersModule\Entity\UserEntity $userEntity */
         $userEntity = $entityManager->find('ZikulaUsersModule:UserEntity', 2);
         $userEntity->setUname($params['username']);
         $userEntity->setEmail($params['email']);
         $userEntity->setActivated(1);
-        $userEntity->setUser_Regdate($nowUTC);
-        $userEntity->setLastlogin($nowUTC);
+        $userEntity->setUser_Regdate(new \DateTime());
+        $userEntity->setLastlogin(new \DateTime());
         $entityManager->persist($userEntity);
 
         $mapping = new AuthenticationMappingEntity();
