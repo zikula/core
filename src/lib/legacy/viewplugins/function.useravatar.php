@@ -43,11 +43,11 @@ function smarty_function_useravatar($params, Zikula_View $view)
     }
 
     $email           = UserUtil::getVar('email', $params['uid']);
-    $gravatarimage   = ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_GRAVATAR_IMAGE, UsersConstant::DEFAULT_GRAVATAR_IMAGE);
+    $gravatarimage   = ModUtil::getVar(UsersConstant::MODNAME, 'gravatarimage', 'gravatar.jpg');
     $avatar          = UserUtil::getVar('avatar', $params['uid'], $gravatarimage);
     $uname           = UserUtil::getVar('uname', $params['uid']);
-    $avatarpath      = ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_AVATAR_IMAGE_PATH, UsersConstant::DEFAULT_AVATAR_IMAGE_PATH);
-    $allowgravatars  = ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_GRAVATARS_ENABLED, UsersConstant::DEFAULT_GRAVATARS_ENABLED);
+    $avatarpath      = ModUtil::getVar(UsersConstant::MODNAME, 'avatarpath', 'images/avatar');
+    $allowgravatars  = ModUtil::getVar(UsersConstant::MODNAME, 'allowgravatars', true);
 
     if (isset($avatar) && !empty($avatar) && $avatar != $gravatarimage && $avatar != 'blank.gif') {
         $avatarURL = System::getBaseUrl() . $avatarpath . '/' . $avatar;
