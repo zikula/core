@@ -456,7 +456,7 @@ class JCSSUtil
                 'require' => ['jquery', 'polyfill.init']
             ],
             'polyfill.init' => [
-                'path' => 'javascript/polyfiller.init.js'
+                'path' => 'web/bundles/core/js/polyfiller.init.js'
             ]
         ];
         if (System::isDevelopmentMode()) {
@@ -558,7 +558,7 @@ class JCSSUtil
                     'require' => ['jquery', 'polyfill.init']
                 ],
                 'polyfill.init' => [
-                    'path' => 'javascript/polyfiller.init.js'
+                    'path' => 'web/bundles/core/js/polyfiller.init.js'
                 ]
             ];
 
