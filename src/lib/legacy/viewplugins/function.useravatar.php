@@ -57,9 +57,9 @@ function smarty_function_useravatar($params, Zikula_View $view)
         }
         if (!isset($params['size'])) {
             if (isset($params['width']) || isset($params['height'])) {
-                if ((isset($params['width']) && !isset($params['height'])) || (isset($params['width']) && isset($params['height']) && $params['width'] < $params['size'])) {
+                if ((isset($params['width']) && !isset($params['height'])) || (isset($params['width']) && isset($params['height']) && $params['width'] < $params['height'])) {
                     $params['size'] = $params['width'];
-                } elseif ((!isset($params['width']) && isset($params['height'])) || (isset($params['width']) && isset($params['height']) && $params['width'] > $params['size'])) {
+                } elseif ((!isset($params['width']) && isset($params['height'])) || (isset($params['width']) && isset($params['height']) && $params['width'] > $params['height'])) {
                     $params['size'] = $params['height'];
                 } else {
                     $params['size'] = 80;
