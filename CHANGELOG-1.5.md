@@ -34,6 +34,8 @@ CHANGELOG - ZIKULA 1.5.x
     - Fixed initialisation of JavaScript polyfills (#3348, #3486).
     - Fixed wrong link to HTML information pages in security center configuration (#3489).
     - Fixed storage of lastlogin in user object (#3383).
+    - Fixed inability to store sessions in files (#2001).
+    - Re-enabled CSRF token protection in forms in installer (#2186).
 
  - Features:
     - Added Permission-based controls for MenuModule menu items (#3314).

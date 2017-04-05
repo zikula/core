@@ -60,7 +60,7 @@ class ConfigController extends AbstractController
         $modVars['idsjsonfields'] = implode(PHP_EOL, $modVars['idsjsonfields']);
         $modVars['idsexceptions'] = implode(PHP_EOL, $modVars['idsexceptions']);
 
-        $form = $this->createForm('Zikula\SecurityCenterModule\Form\Type\ConfigType',
+        $form = $this->createForm(ConfigType::class,
             $modVars, [
                 'translator' => $this->get('translator.default')
             ]
