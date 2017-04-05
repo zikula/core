@@ -18,6 +18,8 @@
         "zikula/legal-module": "dev-master",
         "zikula/profile-module": "dev-master",
         "zikula/pagelock-module": "1.2.*",
+        "zikula/andreas08-theme": "2.*",
+        "zikula/seabreeze-theme": "4.*",
 
         "symfony/symfony": "2.8.*",
         "symfony/monolog-bundle": "~2.4",
@@ -63,6 +65,14 @@
         {
             "type": "vcs",
             "url": "https://github.com/zikula-modules/PageLock"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/zikula/ZikulaAndreas08Theme"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/zikula/ZikulaSeaBreezeTheme"
         }
     ],
     "autoload": {
