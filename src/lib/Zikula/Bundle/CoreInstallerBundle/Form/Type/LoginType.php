@@ -54,6 +54,7 @@ class LoginType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'csrf_protection' => php_sapi_name() != "cli",
             'constraints' => new AuthenticateAdminLogin(),
             'translator' => new IdentityTranslator()
         ]);

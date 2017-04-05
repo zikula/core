@@ -42,6 +42,7 @@ class LocaleType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'csrf_protection' => php_sapi_name() != "cli",
             'choices' => ['English' => 'en'],
             'choice' => 'en',
             'translator' => new IdentityTranslator()
