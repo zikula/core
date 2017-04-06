@@ -14,7 +14,7 @@
         "psr-4": { "Zikula\\ThemeModule\\": "" }
     },
     "require": {
-        "php": ">=5.5.9"
+        "php": ">=5.5.9",
         "robloach/component-installer": "*",
         "zikula/jquery-bundle": "dev-master",
         "zikula/jquery-ui-bundle": "dev-master",
