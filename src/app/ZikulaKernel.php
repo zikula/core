@@ -77,4 +77,28 @@ class ZikulaKernel extends Kernel
             $loader->load($this->rootDir . '/config/' . DynamicConfigDumper::CONFIG_GENERATED);
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRootDir()
+    {
+        return __DIR__;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCacheDir()
+    {
+        return dirname(__DIR__).'/var/cache/'.$this->environment;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLogDir()
+    {
+        return dirname(__DIR__).'/var/logs';
+    }
 }
