@@ -79,7 +79,7 @@ class ZikulaKernel extends Kernel
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getRootDir()
     {
@@ -87,7 +87,7 @@ class ZikulaKernel extends Kernel
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getCacheDir()
     {
@@ -95,7 +95,7 @@ class ZikulaKernel extends Kernel
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getLogDir()
     {
