@@ -63,6 +63,7 @@ services:
           - "@form.factory"
           - "@router"
           - "%installed%"
+          - "@=container.hasParameter('core_installed_version') ? parameter('core_installed_version') : ''"
         tags:
             - { name: kernel.event_subscriber }
 

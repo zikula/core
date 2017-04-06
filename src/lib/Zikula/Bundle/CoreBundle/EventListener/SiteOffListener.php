@@ -25,27 +25,56 @@ use Zikula\UsersModule\Api\CurrentUserApi;
 
 class SiteOffListener implements EventSubscriberInterface
 {
+    /**
+     * @var VariableApi
+     */
     private $variableApi;
 
+    /**
+     * @var PermissionApi
+     */
     private $permissionApi;
 
+    /**
+     * @var CurrentUserApi
+     */
     private $currentUserApi;
 
+    /**
+     * @var \Twig_Environment
+     */
     private $twig;
 
+    /**
+     * @var FormFactory
+     */
     private $formFactory;
 
+    /**
+     * @var RouterInterface
+     */
     private $router;
 
+    /**
+     * @var boolean
+     */
     private $installed;
 
     /**
-     * OutputCompressionListener constructor.
+     * @var string
+     */
+    private $currentInstalledVersion;
+
+    /**
+     * SiteOffListener constructor.
      * @param VariableApi $variableApi
      * @param PermissionApi $permissionApi
      * @param CurrentUserApi $currentUserApi
      * @param \Twig_Environment $twig
      * @param FormFactory $formFactory
+     * @param RouterInterface $router
+     * @param $installed
+     * @param $currentInstalledVersion
      */
     public function __construct(
         VariableApi $variableApi,
@@ -54,7 +83,8 @@ class SiteOffListener implements EventSubscriberInterface
         \Twig_Environment $twig,
         FormFactory $formFactory,
         RouterInterface $router,
-        $installed
+        $installed,
+        $currentInstalledVersion
     ) {
         $this->variableApi = $variableApi;
         $this->permissionApi = $permissionApi;
@@ -63,6 +93,7 @@ class SiteOffListener implements EventSubscriberInterface
         $this->formFactory = $formFactory;
         $this->router = $router;
         $this->installed = $installed;
+        $this->currentInstalledVersion = $currentInstalledVersion;
     }
 
     public function onKernelRequestSiteOff(GetResponseEvent $event)
@@ -88,7 +119,9 @@ class SiteOffListener implements EventSubscriberInterface
         // Get variables
         $siteOff = (bool)$this->variableApi->getSystemVar('siteoff');
         $hasAdminPerms = $this->permissionApi->hasPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN);
-        $currentInstalledVersion = $this->variableApi->getSystemVar('Version_Num');
+        $currentInstalledVersion = !empty($this->currentInstalledVersion)
+            ? $this->currentInstalledVersion
+            : $this->variableApi->getSystemVar('Version_Num');
         $versionsEqual = (ZikulaKernel::VERSION == $currentInstalledVersion);
 
         // Check for site closed
