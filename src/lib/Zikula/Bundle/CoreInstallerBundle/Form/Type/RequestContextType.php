@@ -61,7 +61,6 @@ class RequestContextType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'csrf_protection' => php_sapi_name() != "cli",
             'translator' => new IdentityTranslator()
         ]);
     }
