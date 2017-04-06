@@ -4717,16 +4717,16 @@
         },
         {
             "name": "zikula/seabreeze-theme",
-            "version": "4.0.0",
+            "version": "4.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/ZikulaSeaBreezeTheme.git",
-                "reference": "405d613aa86795b0538681b928d143148196a926"
+                "reference": "2dc2e9558f9ace415566815c292d1645cf86b092"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/ZikulaSeaBreezeTheme/zipball/405d613aa86795b0538681b928d143148196a926",
-                "reference": "405d613aa86795b0538681b928d143148196a926",
+                "url": "https://api.github.com/repos/zikula/ZikulaSeaBreezeTheme/zipball/2dc2e9558f9ace415566815c292d1645cf86b092",
+                "reference": "2dc2e9558f9ace415566815c292d1645cf86b092",
                 "shasum": ""
             },
             "require": {
@@ -4760,10 +4760,10 @@
             ],
             "description": "The SeaBreeze theme is a browser-oriented theme.",
             "support": {
-                "source": "https://github.com/zikula/ZikulaSeaBreezeTheme/tree/4.0.0",
+                "source": "https://github.com/zikula/ZikulaSeaBreezeTheme/tree/4.0.1",
                 "issues": "https://github.com/zikula/ZikulaSeaBreezeTheme/issues"
             },
-            "time": "2017-04-05T15:20:18+00:00"
+            "time": "2017-04-06T11:44:56+00:00"
         },
         {
             "name": "zikula/wizard",
