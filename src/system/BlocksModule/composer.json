@@ -14,7 +14,7 @@
         "psr-4": { "Zikula\\BlocksModule\\": "" }
     },
     "require": {
-        "php": ">5.4.1"
+        "php": ">=5.5.9"
     },
     "suggest": {
         "Scribite:>=5.0.0": "To allow WYSIWYG HTML block editing."

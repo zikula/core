@@ -16,7 +16,7 @@
         }
     },
     "require": {
-        "php": ">=5.4.1",
+        "php": ">=5.5.9",
         "doctrine/orm": ">=2.3"
     },
     "require-dev": {
