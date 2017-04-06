@@ -54,7 +54,7 @@ CHANGELOG - ZIKULA 1.5.x
     - doctrine/cache updated from 1.5.4 to 1.6.1
     - doctrine/common updated from 2.5.3 to 2.6.2
     - doctrine/doctrine-bundle updated from 1.5.2 to 1.6.7
-    - fduch/workflow-bundle installed as 2.0.2
+    - fduch/workflow-bundle installed at 2.0.2
     - gedmo/doctrine-extensions updated from 2.4.26 to 2.4.27
     - jquery.mmenu updated from 5.7.8 to 6.0.2
     - liip/imagine-bundle updated from 1.7.2 to 1.7.4
@@ -70,12 +70,12 @@ CHANGELOG - ZIKULA 1.5.x
     - swiftmailer/swiftmailer updated from v5.4.5 to v5.4.6
     - symfony updated from 2.8.17 to 2.8.19
     - symfony/security-acl update from 2.8.0 to 3.0.0
-    - symfony/workflow installed as 3.2.7
+    - symfony/workflow installed at 3.2.7
     - twig updated from 1.31.0 to 1.33.0
     - vierbergenlars/php-semver removed
     - webmozart/assert installed at 1.2.0
     - willdurand/js-translation-bundle updated from 2.6.3 to 2.6.4
-    - wikimedia/composer-merge-plugin installed as dev-master 
-    - zikula/andreas08-theme installed as 2.0.0
-    - zikula/pagelock-module installed as 1.2.0
-    - zikula/seabreeze-theme installed as 4.0.0
+    - wikimedia/composer-merge-plugin installed at dev-master 
+    - zikula/andreas08-theme installed at 2.0.0
+    - zikula/pagelock-module installed at 1.2.0
+    - zikula/seabreeze-theme installed at 4.0.1
