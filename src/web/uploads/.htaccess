@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 # Purpose of file: block any web access to unallowed files
-#                  stored under the /userdata directory
+#                  stored under the /uploads directory
 # ------------------------------------------------------------------
 
 # Apache 2.2
