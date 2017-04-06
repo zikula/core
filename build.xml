@@ -88,13 +88,13 @@
         <exec command="php -dmemory_limit=2G ${packagepath}/bin/console translation:extract template --output-format=po --output-dir=${packagepath}/app/Resources/translations --enable-extractor=jms_i18n_routing --dir=${packagepath}/system --dir=${packagepath}/lib/Zikula/Bundle" checkreturn="true" passthru="true" />
         <!-- Clear cache and log directories filled by the console command above -->
         <delete includeEmptyDirs="true">
-            <fileset dir="${packagepath}/app/cache" defaultexcludes="false">
+            <fileset dir="${packagepath}/var/cache" defaultexcludes="false">
                 <exclude name=".htaccess" />
                 <include name="**/*" />
             </fileset>
         </delete>
         <delete includeEmptyDirs="true">
-            <fileset dir="${packagepath}/app/logs" defaultexcludes="false">
+            <fileset dir="${packagepath}/var/logs" defaultexcludes="false">
                 <exclude name=".htaccess" />
                 <include name="**/*" />
             </fileset>
@@ -103,9 +103,8 @@
         <echo msg="Prepare permissions..."/>
         <chmod file="${packagepath}/app/config" mode="0777"/>
         <chmod file="${packagepath}/app/config/dynamic" mode="0777"/>
-        <chmod file="${packagepath}/app/cache" mode="0777"/>
-        <chmod file="${packagepath}/app/logs" mode="0777"/>
-        <chmod file="${packagepath}/userdata" mode="0777"/>
+        <chmod file="${packagepath}/var/cache" mode="0777"/>
+        <chmod file="${packagepath}/var/logs" mode="0777"/>
 
         <echo msg="Creating archive..."/>
         <!-- zip's don't play nicely in Phing - using direct command -->
