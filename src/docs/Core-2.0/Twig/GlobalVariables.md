@@ -8,8 +8,6 @@ pagevars
 The `pagevars` variable makes registered variables available in the template.
 
     {{ pagevars.homepath }}
-    {{ pagevars.lang }}
-    {{ pagevars.langdirection }}
     {{ pagevars.title }}
     {{ pagevars.meta.description }}
     {{ pagevars.meta.keywords }}
