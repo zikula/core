@@ -34,7 +34,6 @@ class GenerateVendorDocCommand extends Command
         $typeOrder = [
             'zikula-module' => 'Zikula Modules',
             'zikula-theme' => 'Zikula Themes',
-            'zikula-plugin' => 'Zikula Plugins',
             'symfony-bundle' => 'Symfony Bundles',
             'component' => 'Web Components',
             'library' => 'Other PHP libraries',
@@ -254,20 +253,11 @@ class BuildPackageCommand extends Command
         FixAutoloaderCommand::fix("$buildDir/$name/vendor", $progress);
 
         $writableArray = [
-            "$buildDir/$name/app/cache",
-            "$buildDir/$name/app/logs",
-            "$buildDir/$name/userdata",
-            "$buildDir/$name/ztemp",
-            "$buildDir/$name/ztemp/error_logs",
-            "$buildDir/$name/ztemp/view_cache",
-            "$buildDir/$name/ztemp/view_compiled",
-            "$buildDir/$name/ztemp/Theme_cache",
-            "$buildDir/$name/ztemp/Theme_compiled",
-            "$buildDir/$name/ztemp/idsTmp",
-            "$buildDir/$name/ztemp/purifierCache",
+            "$buildDir/$name/var/cache",
+            "$buildDir/$name/var/logs",
+            "$buildDir/$name/web/uploads",
         ];
         $filesystem->chmod($writableArray, 0777);
-        $filesystem->chmod("$buildDir/$name/config/config.php", 0666);
         $progress->advance();
 
         chdir($buildDir);
