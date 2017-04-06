@@ -12,7 +12,7 @@
         }
     ],
     "require": {
-        "php": ">=5.4.1",
+        "php": ">=5.5.9",
         "composer/installers": "1.*",
 
         "zikula/legal-module": "dev-master",
