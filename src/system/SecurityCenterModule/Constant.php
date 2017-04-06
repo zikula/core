@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Andreas08Theme;
+namespace Zikula\SecurityCenterModule;
 
-use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreTheme;
-
-class ZikulaAndreas08Theme extends AbstractCoreTheme
+class Constant
 {
+    const SESSION_STORAGE_DATABASE = 0;
+    const SESSION_STORAGE_FILE = 1;
 }

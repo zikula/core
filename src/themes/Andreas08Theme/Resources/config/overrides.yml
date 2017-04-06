@@ -1,4 +1,0 @@
-## YAML Override template
-## original/file.tpl: override/file.tpl
----
-system/BlocksModule/Resources/views/Block/Extmenu/topnav.tpl: themes/Andreas08Theme/Resources/views/modules/ZikulaBlocksModule/Block/Extmenu/topnav.tpl

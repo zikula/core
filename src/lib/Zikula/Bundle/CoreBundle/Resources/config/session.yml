@@ -7,10 +7,9 @@ services:
             - "@zikula_extensions_module.api.variable"
             - "%installed%"
         calls:
-            - [setStorage, ["@zikula_core.bridge.http_foundation.zikula_session_storage"]]
+            - [setStorage, ["@zikula_core.bridge.http_foundation.zikula_session_storage_doctrine"]]
 
-
-    zikula_core.bridge.http_foundation.zikula_session_storage:
+    zikula_core.bridge.http_foundation.zikula_session_storage_doctrine:
         class: Zikula\Bridge\HttpFoundation\ZikulaSessionStorage
         arguments:
             - "@zikula_extensions_module.api.variable"
@@ -19,3 +18,13 @@ services:
             - "@=null"
         calls:
             - [setSaveHandler, ["@zikula_core.bridge.http_foundation.doctrine_session_handler"]]
+
+    zikula_core.bridge.http_foundation.zikula_session_storage_file:
+        class: Zikula\Bridge\HttpFoundation\ZikulaSessionStorage
+        arguments:
+            - "@zikula_extensions_module.api.variable"
+            - "%session.storage.options%"
+            - "@=null"
+            - "@=null"
+        calls:
+            - [setSaveHandler, ["@session.handler.native_file"]]

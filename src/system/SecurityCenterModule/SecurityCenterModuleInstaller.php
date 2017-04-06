@@ -52,7 +52,7 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('seclevel', 'Medium');
         $this->setSystemVar('secmeddays', 7);
         $this->setSystemVar('secinactivemins', 20);
-        $this->setSystemVar('sessionstoretofile', 0);
+        $this->setSystemVar('sessionstoretofile', Constant::SESSION_STORAGE_FILE);
         $this->setSystemVar('sessionsavepath', '');
         $this->setSystemVar('gc_probability', 100);
         $this->setSystemVar('sessioncsrftokenonetime', 1);  // 1 means use same token for entire session
@@ -241,6 +241,17 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
                     $this->setSystemVar('idsrulepath', 'system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml');
                 }
             case '1.5.1':
+                // set the session information in /src/app/config/dynamic/generated.yml
+                $configDumper = $this->container->get('zikula.dynamic_config_dumper');
+                $sessionStoreToFile = $this->container->get('zikula_extensions_module.api.variable')->getSystemVar('sessionstoretofile', Constant::SESSION_STORAGE_DATABASE);
+                $sessionHandlerId = $sessionStoreToFile == Constant::SESSION_STORAGE_FILE ? 'session.handler.native_file' : 'zikula_core.bridge.http_foundation.doctrine_session_handler';
+                $configDumper->setParameter('zikula.session.handler_id', $sessionHandlerId);
+                $sessionStorageId = $sessionStoreToFile == Constant::SESSION_STORAGE_FILE ? 'zikula_core.bridge.http_foundation.zikula_session_storage_file' : 'zikula_core.bridge.http_foundation.zikula_session_storage_doctrine';
+                $configDumper->setParameter('zikula.session.storage_id', $sessionStorageId); // Symfony default is 'session.storage.native'
+                $sessionSavePath = $this->container->get('zikula_extensions_module.api.variable')->getSystemVar('sessionsavepath', '');
+                $zikulaSessionSavePath = empty($sessionSavePath) ? '%kernel.cache_dir%/sessions' : $sessionSavePath;
+                $configDumper->setParameter('zikula.session.save_path', $zikulaSessionSavePath);
+            case '1.5.2':
                 // current version
         }
 

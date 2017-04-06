@@ -101,25 +101,29 @@
         },
         {
             "name": "behat/transliterator",
-            "version": "v1.1.0",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Transliterator.git",
-                "reference": "868e05be3a9f25ba6424c2dd4849567f50715003"
+                "reference": "826ce7e9c2a6664c0d1f381cbb38b1fb80a7ee2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Transliterator/zipball/868e05be3a9f25ba6424c2dd4849567f50715003",
-                "reference": "868e05be3a9f25ba6424c2dd4849567f50715003",
+                "url": "https://api.github.com/repos/Behat/Transliterator/zipball/826ce7e9c2a6664c0d1f381cbb38b1fb80a7ee2c",
+                "reference": "826ce7e9c2a6664c0d1f381cbb38b1fb80a7ee2c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
+            "require-dev": {
+                "chuyskywalker/rolling-curl": "^3.1",
+                "php-yaoi/php-yaoi": "^1.0"
+            },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1-dev"
+                    "dev-master": "1.2-dev"
                 }
             },
             "autoload": {
@@ -137,7 +141,7 @@
                 "slug",
                 "transliterator"
             ],
-            "time": "2015-09-28T16:26:35+00:00"
+            "time": "2017-04-04T11:38:05+00:00"
         },
         {
             "name": "bootstrap-plus/bootstrap-jqueryui",
@@ -3745,16 +3749,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v3.2.6",
+            "version": "v3.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "b0f8a7fa4b8baadf9db299cb6ac87c96a8977dbe"
+                "reference": "1631040ea8fc5e0e405c00d35cbf2c0b7b555f64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/b0f8a7fa4b8baadf9db299cb6ac87c96a8977dbe",
-                "reference": "b0f8a7fa4b8baadf9db299cb6ac87c96a8977dbe",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/1631040ea8fc5e0e405c00d35cbf2c0b7b555f64",
+                "reference": "1631040ea8fc5e0e405c00d35cbf2c0b7b555f64",
                 "shasum": ""
             },
             "require": {
@@ -3885,7 +3889,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-03-10T18:35:48+00:00"
+            "time": "2017-04-05T12:52:29+00:00"
         },
         {
             "name": "twig/extensions",
@@ -4245,6 +4249,56 @@
             ],
             "description": "JSONP callback validator.",
             "time": "2014-01-20T22:35:06+00:00"
+        },
+        {
+            "name": "zikula/andreas08-theme",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zikula/ZikulaAndreas08Theme.git",
+                "reference": "60b9452ea1c49896e4ac988e51190d54fe19ec6a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zikula/ZikulaAndreas08Theme/zipball/60b9452ea1c49896e4ac988e51190d54fe19ec6a",
+                "reference": "60b9452ea1c49896e4ac988e51190d54fe19ec6a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.1"
+            },
+            "type": "zikula-theme",
+            "extra": {
+                "zikula": {
+                    "core-compatibility": ">=1.4.1",
+                    "class": "Zikula\\Andreas08Theme\\ZikulaAndreas08Theme",
+                    "displayname": "Andreas08",
+                    "capabilities": {
+                        "user": true,
+                        "admin": true
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zikula\\Andreas08Theme\\": ""
+                }
+            },
+            "license": [
+                "LGPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Zikula",
+                    "homepage": "http://zikula.org/"
+                }
+            ],
+            "description": "Based on the theme Andreas08 by Andreas Viklund",
+            "support": {
+                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/2.0.0",
+                "issues": "https://github.com/zikula/ZikulaAndreas08Theme/issues"
+            },
+            "time": "2017-04-05T15:20:06+00:00"
         },
         {
             "name": "zikula/bootstrap-bundle",
@@ -4660,6 +4714,56 @@
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
             "time": "2017-03-24 20:12:19"
+        },
+        {
+            "name": "zikula/seabreeze-theme",
+            "version": "4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zikula/ZikulaSeaBreezeTheme.git",
+                "reference": "405d613aa86795b0538681b928d143148196a926"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zikula/ZikulaSeaBreezeTheme/zipball/405d613aa86795b0538681b928d143148196a926",
+                "reference": "405d613aa86795b0538681b928d143148196a926",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.1"
+            },
+            "type": "zikula-theme",
+            "extra": {
+                "zikula": {
+                    "core-compatibility": ">=1.4.1",
+                    "class": "Zikula\\SeaBreezeTheme\\ZikulaSeaBreezeTheme",
+                    "displayname": "SeaBreeze",
+                    "capabilities": {
+                        "user": true,
+                        "admin": true
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zikula\\SeaBreezeTheme\\": ""
+                }
+            },
+            "license": [
+                "LGPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Zikula",
+                    "homepage": "http://zikula.org/"
+                }
+            ],
+            "description": "The SeaBreeze theme is a browser-oriented theme.",
+            "support": {
+                "source": "https://github.com/zikula/ZikulaSeaBreezeTheme/tree/4.0.0",
+                "issues": "https://github.com/zikula/ZikulaSeaBreezeTheme/issues"
+            },
+            "time": "2017-04-05T15:20:18+00:00"
         },
         {
             "name": "zikula/wizard",
@@ -5766,7 +5870,7 @@
                 }
             ],
             "description": "This module generates code for you",
-            "time": "2016-12-28 08:22:40"
+            "time": "2016-12-28T08:22:40+00:00"
         }
     ],
     "aliases": [],
