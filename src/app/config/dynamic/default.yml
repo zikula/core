@@ -18,6 +18,9 @@ swiftmailer:
     disable_delivery: false
 parameters:
     zikula.session.name: _zsid
+    zikula.session.handler_id: 'session.handler.native_file' #default symfony value
+    zikula.session.storage_id: 'zikula_core.bridge.http_foundation.zikula_session_storage_file' #'session.storage.native' default symfony value
+    zikula.session.save_path: '%kernel.cache_dir%/sessions' #default symfony value
     # multisites configuration does nothing unless the Multisites module is installed and configured properly.
     multisites:
         enabled: false

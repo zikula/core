@@ -14,6 +14,7 @@ namespace Zikula\SecurityCenterModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\SecurityCenterModule\Constant;
 
 /**
  * Configuration form type class.
@@ -134,8 +135,8 @@ class ConfigType extends AbstractType
                 'label' => $translator->__('Store sessions'),
                 'empty_data' => 0,
                 'choices' => [
-                    $translator->__('File') => 1,
-                    $translator->__('Database (recommended)') => 0
+                    $translator->__('File') => Constant::SESSION_STORAGE_FILE,
+                    $translator->__('Database (recommended)') => Constant::SESSION_STORAGE_DATABASE
                 ],
                 'choices_as_values' => true,
                 'expanded' => true,
@@ -146,7 +147,7 @@ class ConfigType extends AbstractType
                 'label' => $translator->__('Path for saving session files'),
                 'empty_data' => '',
                 'required' => false,
-                'alert' => [$translator->__("Notice: If you change 'Where to save sessions' to 'File' then you must enter a path in the 'Path for saving session files' box above. The path must be writeable.") => 'info'],
+                'alert' => [$translator->__("Notice: If you change 'Where to save sessions' to 'File' then you must enter a path in the 'Path for saving session files' box above. The path must be writeable. Leave value empty for default location '%kernel.cache_dir%/sessions'") => 'info'],
                 'help' => $translator->__('More information: http://www.php.net/manual/en/session.configuration.php#ini.session.save-path')
             ])
             ->add('gc_probability', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [

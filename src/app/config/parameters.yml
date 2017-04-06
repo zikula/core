@@ -31,7 +31,6 @@ parameters:
     secret:            ThisTokenIsNotSoSecretChangeIt
     url_secret:        ~
 
-    zikula.session.name: _zsid
     assets_version: ~ #e.g. 'v1'
     zikula_asset_manager.combine: true
     zikula_asset_manager.lifetime: "1 day"

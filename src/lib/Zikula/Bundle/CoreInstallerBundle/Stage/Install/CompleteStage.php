@@ -60,14 +60,19 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
 
     public function getResponse(Request $request)
     {
+        $router = $this->container->get('router');
         if ($this->sendEmailToAdmin($request)) {
             $request->getSession()->getFlashBag()->add('success', $this->__('Congratulations! Zikula has been successfully installed.'));
+            $request->getSession()->getFlashBag()->add('info', $this->__f(
+                'Session are currently configured to use the filesystem. It is recommended that you change this to use the database. Click %here% to configure.',
+                ['%here%' => '<a href="' . $router->generate('zikulasecuritycentermodule_config_config') . '">' . $this->__('Security Center') . '</a>']
+            ));
 
-            return new RedirectResponse($this->container->get('router')->generate('zikulaadminmodule_admin_adminpanel', [], RouterInterface::ABSOLUTE_URL));
+            return new RedirectResponse($router->generate('zikulaadminmodule_admin_adminpanel', [], RouterInterface::ABSOLUTE_URL));
         } else {
             $request->getSession()->getFlashBag()->add('warning', $this->__('Email settings are not yet configured. Please configure them below.'));
 
-            return new RedirectResponse($this->container->get('router')->generate('zikulamailermodule_config_config', [], RouterInterface::ABSOLUTE_URL));
+            return new RedirectResponse($router->generate('zikulamailermodule_config_config', [], RouterInterface::ABSOLUTE_URL));
         }
     }
 

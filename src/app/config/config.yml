@@ -26,8 +26,9 @@ framework:
     trusted_proxies: ~
     session:
         name: "%zikula.session.name%"
-        handler_id: zikula_core.bridge.http_foundation.doctrine_session_handler
-        storage_id: zikula_core.bridge.http_foundation.zikula_session_storage
+        handler_id: "%zikula.session.handler_id%"
+        storage_id: "%zikula.session.storage_id%"
+        save_path: "%zikula.session.save_path%"
         cookie_httponly: false # must be false for ajax tokens to work but increases chance of XSS attack
     fragments:       ~
 

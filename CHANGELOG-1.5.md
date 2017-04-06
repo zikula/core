@@ -34,6 +34,8 @@ CHANGELOG - ZIKULA 1.5.x
     - Fixed initialisation of JavaScript polyfills (#3348, #3486).
     - Fixed wrong link to HTML information pages in security center configuration (#3489).
     - Fixed storage of lastlogin in user object (#3383).
+    - Fixed inability to store sessions in files (#2001).
+    - Re-enabled CSRF token protection in forms in installer (#2186).
 
  - Features:
     - Added Permission-based controls for MenuModule menu items (#3314).
@@ -56,6 +58,7 @@ CHANGELOG - ZIKULA 1.5.x
     - gedmo/doctrine-extensions updated from 2.4.26 to 2.4.27
     - jquery.mmenu updated from 5.7.8 to 6.0.2
     - liip/imagine-bundle updated from 1.7.2 to 1.7.4
+    - matthiasnoback/symfony-console-form updated from 1.2.0 to 2.3.0
     - monolog/monolog updated from 1.22.0 to 1.22.1
     - paragonie/random_compat updated from 2.0.9 to 2.0.10
     - phpdocumentor/reflection-common installed at 1.0
