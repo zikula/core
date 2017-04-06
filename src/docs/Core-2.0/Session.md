@@ -2,7 +2,7 @@ Session Information
 ===================
 
 Sessions can be stored in the Database or in the Filesystem. This choice as well as a few configuration options
-can be set in the ZikulaSecurityModule:
+can be set in the ZikulaSecurityCenterModule:
 
 The following configuration options are converted to a dynamic config and stored in `/src/app/config/dynamic/generated.yml`
  - zikula.session.name: _zsid
