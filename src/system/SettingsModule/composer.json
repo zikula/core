@@ -14,7 +14,7 @@
         "psr-4": { "Zikula\\SettingsModule\\": "" }
     },
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=5.5.9"
     },
     "extra": {
         "zikula": {
