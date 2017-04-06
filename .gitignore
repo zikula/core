@@ -1,13 +1,9 @@
 /composer
 /composer.phar
 /bin/
-/src/app/bootstrap.php.cache
-/src/app/SymfonyRequirements.php
-/src/app/cache/
 /src/app/config/custom_*.yml
 /src/app/config/dynamic/*
 !/src/app/config/dynamic/default.yml
-/src/app/logs/
 /src/modules/*
 /src/themes/*
 !/src/themes/AtomTheme
@@ -25,3 +21,5 @@
 
 #for working between master and 1.4 branches
 /src/var/
+!/src/var/cache/.htaccess
+!/src/var/logs/.htaccess
