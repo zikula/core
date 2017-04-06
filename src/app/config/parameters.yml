@@ -6,7 +6,7 @@ parameters:
     # script_position defines the location where javascripts will be placed in the page
     # choices are `head` or `foot`
     temp_dir:         "%kernel.cache_dir%/ztemp"
-    datadir:          userdata
+    datadir:          web/uploads
     system.chmod_dir: 0777
 
     database_driver:   pdo_mysql

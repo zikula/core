@@ -214,7 +214,7 @@ class AjaxInstallController extends AbstractController
 
         // add remaining parameters and remove unneeded ones
         unset($params['username'], $params['password'], $params['email'], $params['dbtabletype']);
-        $params['datadir'] = !empty($params['datadir']) ? $params['datadir'] : 'userdir';
+        $params['datadir'] = !empty($params['datadir']) ? $params['datadir'] : 'web/uploads';
         $RandomLibFactory = new Factory();
         $generator = $RandomLibFactory->getMediumStrengthGenerator();
         $params['secret'] = $generator->generateString(50);
