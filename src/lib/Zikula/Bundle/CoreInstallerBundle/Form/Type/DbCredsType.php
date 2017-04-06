@@ -118,7 +118,7 @@ class DbCredsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'csrf_protection' => php_sapi_name() != "cli",
+//            'csrf_protection' => php_sapi_name() != "cli",
             'constraints' => new ValidPdoConnection(),
             'translator' => new IdentityTranslator()
         ]);

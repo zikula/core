@@ -2684,33 +2684,33 @@
         },
         {
             "name": "matthiasnoback/symfony-console-form",
-            "version": "v1.2.0",
+            "version": "v2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/matthiasnoback/symfony-console-form.git",
-                "reference": "2d2337827202eade7330a211b4665919f2887575"
+                "reference": "56433b5bf9e58e7f37228955e56a290cdc53eb69"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthiasnoback/symfony-console-form/zipball/2d2337827202eade7330a211b4665919f2887575",
-                "reference": "2d2337827202eade7330a211b4665919f2887575",
+                "url": "https://api.github.com/repos/matthiasnoback/symfony-console-form/zipball/56433b5bf9e58e7f37228955e56a290cdc53eb69",
+                "reference": "56433b5bf9e58e7f37228955e56a290cdc53eb69",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4",
-                "symfony/console": "~2.5",
-                "symfony/form": "~2.5"
+                "php": ">=5.5",
+                "symfony/console": "~2.8|~3.0",
+                "symfony/form": "~2.8|~3.0"
             },
             "require-dev": {
                 "beberlei/assert": "~2.1",
                 "behat/behat": "~3.0",
-                "fabpot/php-cs-fixer": "^1.10",
-                "symfony/console": "~2.5",
-                "symfony/finder": "~2.5",
-                "symfony/form": "~2.5",
-                "symfony/framework-bundle": "~2.5",
-                "symfony/validator": "~2.5",
-                "symfony/yaml": "~2.5"
+                "friendsofphp/php-cs-fixer": "^1.10",
+                "phpunit/phpunit": "^4.8",
+                "symfony/finder": "~2.8|~3.0",
+                "symfony/framework-bundle": "~2.8|~3.0",
+                "symfony/security": "~2.8|~3.0",
+                "symfony/validator": "~2.8|~3.0",
+                "symfony/yaml": "~2.8|~3.0"
             },
             "type": "library",
             "autoload": {
@@ -2736,7 +2736,7 @@
                 "form",
                 "symfony"
             ],
-            "time": "2015-11-27T19:49:00+00:00"
+            "time": "2017-02-09T16:06:51+00:00"
         },
         {
             "name": "matthiasnoback/symfony-service-definition-validator",
@@ -4816,7 +4816,7 @@
             ],
             "description": "Based on the theme Andreas08 by Andreas Viklund",
             "support": {
-                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/master",
+                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/2.0.0",
                 "issues": "https://github.com/zikula/ZikulaAndreas08Theme/issues"
             },
             "time": "2017-04-05T15:20:06+00:00"
@@ -5324,7 +5324,7 @@
             ],
             "description": "The SeaBreeze theme is a browser-oriented theme.",
             "support": {
-                "source": "https://github.com/zikula/ZikulaSeaBreezeTheme/tree/master",
+                "source": "https://github.com/zikula/ZikulaSeaBreezeTheme/tree/4.0.0",
                 "issues": "https://github.com/zikula/ZikulaSeaBreezeTheme/issues"
             },
             "time": "2017-04-05T15:20:18+00:00"
