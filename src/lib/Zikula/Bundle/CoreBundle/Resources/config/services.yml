@@ -16,7 +16,12 @@ services:
 
     zikula.cache_clearer:
         class: Zikula\Bundle\CoreBundle\CacheClearer
-        arguments: ["%kernel.cache_dir%", "%router.cache_class_prefix%", "%kernel.container_class%", "@fos_js_routing.extractor", "%jms_i18n_routing.locales%"]
+        arguments:
+          - "%kernel.cache_dir%"
+          - "%router.cache_class_prefix%"
+          - "%kernel.container_class%"
+          - "@fos_js_routing.extractor"
+          - "%jms_i18n_routing.locales%"
 
     zikula.link_container_collector:
         class: Zikula\Core\LinkContainer\LinkContainerCollector

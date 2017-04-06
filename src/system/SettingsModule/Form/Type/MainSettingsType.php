@@ -25,6 +25,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Zikula\Common\Translator\TranslatorInterface;
 
 /**
  * Main settings form type.
@@ -32,11 +33,16 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 class MainSettingsType extends AbstractType
 {
     /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $translator = $options['translator'];
+        $this->translator = $options['translator'];
 
         $spaceReplaceCallbackTransformer = new CallbackTransformer(
             function ($originalDescription) {
@@ -47,18 +53,18 @@ class MainSettingsType extends AbstractType
             }
         );
         $pageTitleLocalizationTransformer = new CallbackTransformer(
-            function ($originalPageTitle) use ($translator) {
+            function ($originalPageTitle) {
                 $originalPageTitle = empty($originalPageTitle) ? '%pagetitle%' : $originalPageTitle;
-                $originalPageTitle = str_replace('%pagetitle%', $translator->__('%pagetitle%'), $originalPageTitle);
-                $originalPageTitle = str_replace('%sitename%', $translator->__('%sitename%'), $originalPageTitle);
-                $originalPageTitle = str_replace('%modulename%', $translator->__('%modulename%'), $originalPageTitle);
+                $originalPageTitle = str_replace('%pagetitle%', $this->translator->__('%pagetitle%'), $originalPageTitle);
+                $originalPageTitle = str_replace('%sitename%', $this->translator->__('%sitename%'), $originalPageTitle);
+                $originalPageTitle = str_replace('%modulename%', $this->translator->__('%modulename%'), $originalPageTitle);
 
                 return $originalPageTitle;
             },
-            function ($submittedPageTitle) use ($translator) {
-                $submittedPageTitle = str_replace($translator->__('%pagetitle%'), '%pagetitle%', $submittedPageTitle);
-                $submittedPageTitle = str_replace($translator->__('%sitename%'), '%sitename%', $submittedPageTitle);
-                $submittedPageTitle = str_replace($translator->__('%modulename%'), '%modulename%', $submittedPageTitle);
+            function ($submittedPageTitle) {
+                $submittedPageTitle = str_replace($this->translator->__('%pagetitle%'), '%pagetitle%', $submittedPageTitle);
+                $submittedPageTitle = str_replace($this->translator->__('%sitename%'), '%sitename%', $submittedPageTitle);
+                $submittedPageTitle = str_replace($this->translator->__('%modulename%'), '%modulename%', $submittedPageTitle);
 
                 return $submittedPageTitle;
             }
@@ -67,82 +73,82 @@ class MainSettingsType extends AbstractType
         $builder
             ->add(
                 $builder->create('pagetitle', TextType::class, [
-                    'label' => $translator->__('Page title structure'),
+                    'label' => $this->translator->__('Page title structure'),
                     'required' => false,
-                    'help' => $translator->__('Possible tags: %pagetitle%, %sitename%, %modulename%')
+                    'help' => $this->translator->__('Possible tags: %pagetitle%, %sitename%, %modulename%')
                 ])
                 ->addModelTransformer($pageTitleLocalizationTransformer)
             )
             ->add('adminmail', EmailType::class, [
-                'label' => $translator->__('Admin\'s e-mail address'),
+                'label' => $this->translator->__('Admin\'s e-mail address'),
                 'constraints' => new Email()
             ])
             ->add('siteoff', ChoiceType::class, [
-                'label' => $translator->__('Disable site'),
+                'label' => $this->translator->__('Disable site'),
                 'expanded' => true,
                 'choices' => [
-                    $translator->__('Yes') => 1,
-                    $translator->__('No') => 0,
-                ]
+                    $this->translator->__('Yes') => 1,
+                    $this->translator->__('No') => 0,
+                ],
             ])
             ->add('siteoffreason', TextareaType::class, [
-                'label' => $translator->__('Reason for disabling site'),
+                'label' => $this->translator->__('Reason for disabling site'),
                 'required' => false
             ])
             ->add('startController', TextType::class, [
-                'label' => $translator->__('Start Controller'),
+                'label' => $this->translator->__('Start Controller'),
                 'required' => false
             ])
             ->add('startargs', TextType::class, [
-                'label' => $translator->__('Start function arguments'),
+                'label' => $this->translator->__('Start function arguments'),
                 'required' => false,
-                'help' => $translator->__('Separate with & for example:') . ' <code>foo=2&bar=5</code>'
+                'help' => $this->translator->__('Separate with & for example:') . ' <code>foo=2&bar=5</code>'
             ])
             ->add('entrypoint', TextType::class, [
-                'label' => $translator->__('Site entry point (front controller)'),
+                'label' => $this->translator->__('Site entry point (front controller)'),
                 'constraints' => new Callback([
-                    'callback' => function ($data, ExecutionContextInterface $context) use ($translator) {
+                    'callback' => function ($data, ExecutionContextInterface $context) {
                         $falseEntryPoints = ['admin.php', 'ajax.php', 'user.php', 'mo2json.php', 'jcss.php'];
                         $entryPointExt = pathinfo($data, PATHINFO_EXTENSION);
                         if (in_array($data, $falseEntryPoints) || strtolower($entryPointExt) != 'php') {
-                            $context->addViolation($options['translator']->__('Error! You entered an invalid entry point.'));
+                            $context->addViolation($this->translator->__('Error! You entered an invalid entry point.'));
                         }
                         if (!file_exists($data)) {
-                            $context->addViolation($options['translator']->__('Error! The file was not found in the Zikula root directory.'));
+                            $context->addViolation($this->translator->__('Error! The file was not found in the Zikula root directory.'));
                         }
                     }
                 ])
             ])
             ->add('shorturlsstripentrypoint', CheckboxType::class, [
-                'label' => $translator->__('Strip entry point (front controller) from URLs'),
+                'label' => $this->translator->__('Strip entry point (front controller) from URLs'),
                 'required' => false
             ])
             ->add('useCompression', CheckboxType::class, [
-                'label' => $translator->__('Activate compression'),
+                'label' => $this->translator->__('Activate compression'),
                 'required' => false
             ])
             ->add('profilemodule', ChoiceType::class, [
-                'label' => $translator->__('Module used for managing user profiles'),
+                'label' => $this->translator->__('Module used for managing user profiles'),
                 'choices' => $options['profileModules'],
-                'placeholder' => $translator->__('No profile module'),
+                'placeholder' => $this->translator->__('No profile module'),
                 'required' => false
             ])
             ->add('messagemodule', ChoiceType::class, [
-                'label' => $translator->__('Module used for private messaging'),
+                'label' => $this->translator->__('Module used for private messaging'),
                 'choices' => $options['messageModules'],
-                'placeholder' => $translator->__('No message module'),
+                'placeholder' => $this->translator->__('No message module'),
                 'required' => false
             ])
             ->add('ajaxtimeout', IntegerType::class, [
-                'label' => $translator->__('Time-out for Ajax connections')
+                'label' => $this->translator->__('Time-out for Ajax connections')
             ])
             ->add(
                 $builder->create('permasearch', TextType::class, [
-                    'label' => $translator->__('List to search for'),
+                    'label' => $this->translator->__('List to search for'),
                     'constraints' => new Callback([
-                        'callback' => function ($data, ExecutionContextInterface $context) use ($translator) {
+                        'callback' => function ($data, ExecutionContextInterface $context) {
                             if (mb_ereg(',$', $data)) {
-                                $context->addViolation($options['translator']->__('Error! In your permalink settings, strings cannot be terminated with a comma.'));
+                                $context->addViolation($this->translator->__('Error! In your permalink settings, strings cannot be terminated with a comma.'));
                             }
                         }
                     ])
@@ -151,19 +157,19 @@ class MainSettingsType extends AbstractType
             )
             ->add(
                 $builder->create('permareplace', TextType::class, [
-                    'label' => $translator->__('List to replace with')
+                    'label' => $this->translator->__('List to replace with')
                 ])
                 ->addModelTransformer($spaceReplaceCallbackTransformer)
             )
             ->add('save', SubmitType::class, [
-                'label' => $translator->__('Save'),
+                'label' => $this->translator->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $translator->__('Cancel'),
+                'label' => $this->translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'
@@ -173,16 +179,16 @@ class MainSettingsType extends AbstractType
         foreach ($options['languages'] as $language => $languageCode) {
             $builder
                 ->add('sitename_' . $languageCode, TextType::class, [
-                    'label' => $translator->__('Site name')
+                    'label' => $this->translator->__('Site name')
                 ])
                 ->add('slogan_' . $languageCode, TextType::class, [
-                    'label' => $translator->__('Description line')
+                    'label' => $this->translator->__('Description line')
                 ])
                 ->add('defaultpagetitle_' . $languageCode, TextType::class, [
-                    'label' => $translator->__('Default page title')
+                    'label' => $this->translator->__('Default page title')
                 ])
                 ->add('defaultmetadescription_' . $languageCode, TextType::class, [
-                    'label' => $translator->__('Default meta description')
+                    'label' => $this->translator->__('Default meta description')
                 ])
             ;
         }
@@ -234,7 +240,7 @@ class MainSettingsType extends AbstractType
         }
 
         if ($permareplaceCount !== $permasearchCount) {
-            $context->addViolation(__('Error! In your permalink settings, the search list and the replacement list for permalink cleansing have a different number of comma-separated elements. If you have 3 elements in the search list then there must be 3 elements in the replacement list.'));
+            $context->addViolation($this->translator->__('Error! In your permalink settings, the search list and the replacement list for permalink cleansing have a different number of comma-separated elements. If you have 3 elements in the search list then there must be 3 elements in the replacement list.'));
         }
     }
 
@@ -248,7 +254,7 @@ class MainSettingsType extends AbstractType
     {
         if (!empty($data['startpage'])) {
             if (empty($data['starttype']) || empty($data['startfunc'])) {
-                $context->addViolation(__('Error! When setting a startpage, starttype and startfunc are required fields.'));
+                $context->addViolation($this->translator->__('Error! When setting a startpage, starttype and startfunc are required fields.'));
             }
         }
     }

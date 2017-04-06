@@ -1,7 +1,11 @@
 services:
     translator.default:
         class: Zikula\Common\Translator\Translator
-        arguments: ["@service_container", "@translator.selector", {}, { cache_dir: "%kernel.cache_dir%/translations", debug: "%kernel.debug%" }]
+        arguments:
+          - "@service_container"
+          - "@translator.selector"
+          - {}
+          - { cache_dir: "%kernel.cache_dir%/translations", debug: "%kernel.debug%" }
 
     zikula_core.internal.translation_extractor.file.php_extractor:
         class: Zikula\Bundle\CoreBundle\Translation\ZikulaPhpFileExtractor

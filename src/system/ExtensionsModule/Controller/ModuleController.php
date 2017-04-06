@@ -291,7 +291,7 @@ class ModuleController extends AbstractController
                     }
                     $dependencyExtensionEntity = $this->get('zikula_extensions_module.extension_repository')->get($unsatisfiedDependencies[$dependencyId]->getModname());
                     if (isset($dependencyExtensionEntity)) {
-                        if (!$this->get('zikula_extensions_module.extension_helper')->enableExtension($dependencyExtensionEntity)) {
+                        if (!$this->get('zikula_extensions_module.extension_helper')->install($dependencyExtensionEntity)) {
                             $this->addFlash('error', $this->__f('Failed to install dependency %s!', ['%s' => $dependencyExtensionEntity->getName()]));
 
                             return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');
