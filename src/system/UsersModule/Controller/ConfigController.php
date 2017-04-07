@@ -91,8 +91,8 @@ class ConfigController extends AbstractController
         }
         $this->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'authenticationMethodsStatus', $authenticationMethodsStatus);
 
-        $form = $this->createForm(AuthenticationMethodsType::class, ['
-            authenticationMethodsStatus' => $authenticationMethodsStatus
+        $form = $this->createForm(AuthenticationMethodsType::class, [
+            'authenticationMethodsStatus' => $authenticationMethodsStatus
         ], [
             'translator' => $this->getTranslator()
         ]);
