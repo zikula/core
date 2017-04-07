@@ -9,12 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersModule\Doctrine\DBAL\Type;
+namespace Zikula\Core\Doctrine\DBAL\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\DateTimeType;
 
+/**
+ * Custom Doctrine type for storing datetime values in UTC.
+ *
+ * @see http://stackoverflow.com/questions/42388239/how-to-set-the-datetime-timezone-programatically-on-user-login-in-symfony2
+ */
 class UTCDateTimeType extends DateTimeType
 {
     private static $utc;

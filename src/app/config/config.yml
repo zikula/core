@@ -46,9 +46,9 @@ twig:
 doctrine:
     dbal:
         default_connection: default
-        types:
-            utcdatetime:
-                class:     "Zikula\\UsersModule\\Doctrine\\DBAL\\Type\\UTCDateTimeType"
+        #types:
+        #    datetime:
+        #        class:     "Zikula\\Core\\Doctrine\\DBAL\\Type\\UTCDateTimeType"
         connections:
             default:
                 driver:   "%database_driver%"
