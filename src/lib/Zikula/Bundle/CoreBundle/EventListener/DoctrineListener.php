@@ -11,6 +11,7 @@
 
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -20,7 +21,7 @@ use Zikula\Core\Doctrine\Logger\ZikulaSqlLogger;
 use Zikula\Core\Event\GenericEvent;
 
 /**
- * Event handler to boot Doctrine 2
+ * Event handler to boot Doctrine 2.
  */
 class DoctrineListener implements EventSubscriberInterface
 {
@@ -33,14 +34,17 @@ class DoctrineListener implements EventSubscriberInterface
 
     public function initDoctrine(GenericEvent $event)
     {
+        // override datetime type for persisting in UTC
+        Type::overrideType('datetime', 'Zikula\Core\Doctrine\DBAL\Type\UTCDateTimeType');
+
         /** @var $em EntityManager */
         $em = $this->container->get('doctrine.orm.entity_manager');
         /** @var $ORMConfig Configuration */
         $ORMConfig = $em->getConfiguration();
 
-        $chain = $ORMConfig->getMetadataDriverImpl(); // driver chain
+        $driverChain = $ORMConfig->getMetadataDriverImpl();
         $defaultAnnotationDriver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($this->container->get('annotation_reader'));
-        $chain->setDefaultDriver($defaultAnnotationDriver);
+        $driverChain->setDefaultDriver($defaultAnnotationDriver);
 
         if (isset($serviceManager['log.enabled']) && $serviceManager['log.enabled']) {
             $ORMConfig->setSQLLogger(new ZikulaSqlLogger());
