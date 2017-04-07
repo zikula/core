@@ -48,7 +48,7 @@ doctrine:
         default_connection: default
         types:
             utcdatetime:
-                class:     "Zikula\\UsersModule\\Doctrine\\DBAL\\Type\\UTCDateTimeType"
+                class:     "Zikula\\Core\\Doctrine\\DBAL\\Type\\UTCDateTimeType"
         connections:
             default:
                 driver:   "%database_driver%"
