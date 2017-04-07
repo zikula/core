@@ -12,12 +12,16 @@
 namespace Zikula\ZAuthModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\IdentityTranslator;
 use Zikula\Common\Translator\TranslatorInterface;
 
-class EmailLoginType extends AbstractType
+class EitherLoginType extends AbstractType
 {
     /**
      * @var TranslatorInterface
@@ -25,7 +29,7 @@ class EmailLoginType extends AbstractType
     private $translator;
 
     /**
-     * EmailLoginType constructor.
+     * UnameLoginType constructor.
      *
      * @param $translator
      */
@@ -40,19 +44,19 @@ class EmailLoginType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\EmailType', [
-                'label' => $this->translator->__('Email address'),
-                'input_group' => ['left' => '<i class="fa fa-at fa-fw"></i>']
+            ->add('either', TextType::class, [
+                'label' => $this->translator->__('User name or Email'),
+                'input_group' => ['left' => '<i class="fa fa-sign-in fa-fw"></i>']
             ])
-            ->add('pass', 'Symfony\Component\Form\Extension\Core\Type\PasswordType', [
+            ->add('pass', PasswordType::class, [
                 'label' => $this->translator->__('Password'),
                 'input_group' => ['left' => '<i class="fa fa-key fa-fw"></i>']
             ])
-            ->add('rememberme', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('rememberme', CheckboxType::class, [
                 'required' => false,
                 'label' => $this->translator->__('Remember me'),
             ])
-            ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('submit', SubmitType::class, [
                 'label' => $this->translator->__('Login'),
                 'icon' => 'fa-angle-double-right',
                 'attr' => ['class' => 'btn btn-success']
@@ -65,7 +69,7 @@ class EmailLoginType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'zikulazauthmodule_authentication_email';
+        return 'zikulazauthmodule_authentication_either';
     }
 
     /**

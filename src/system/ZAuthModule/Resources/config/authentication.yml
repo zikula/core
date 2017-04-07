@@ -29,6 +29,19 @@ services:
         tags:
             - { name: zikula.authentication_method, alias: "%zikula_zauth_module.authentication_method.alias.native_email.value%" }
 
+    zikula_zauth_module.authentication_method.native_either:
+        class: Zikula\ZAuthModule\AuthenticationMethod\NativeEitherAuthenticationMethod
+        arguments:
+            - "@zikula_users_module.user_repository"
+            - "@zikula_zauth_module.authentication_mapping_repository"
+            - "@session"
+            - "@translator.default"
+            - "@zikula_extensions_module.api.variable"
+            - "@validator"
+            - "@zikula_zauth_module.api.password"
+        tags:
+            - { name: zikula.authentication_method, alias: 'native_either' }
+
     zikula_zauth_module.form.authentication_method_type.uname_type:
         class: Zikula\ZAuthModule\Form\Type\UnameLoginType
         arguments: ["@translator.default"]
@@ -40,6 +53,12 @@ services:
         arguments: ["@translator.default"]
         tags:
             - { name: form.type, alias: "Zikula\\ZAuthModule\\Form\\Type\\EmailLoginType" }
+
+    zikula_zauth_module.form.authentication_method_type.either_type:
+        class: Zikula\ZAuthModule\Form\Type\EitherLoginType
+        arguments: ["@translator.default"]
+        tags:
+            - { name: form.type, alias: "Zikula\\ZAuthModule\\Form\\Type\\EitherLoginType" }
 
     zikula_zauth_module.form.registration_type:
         class: Zikula\ZAuthModule\Form\Type\RegistrationType
