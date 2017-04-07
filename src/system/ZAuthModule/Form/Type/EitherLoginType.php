@@ -13,15 +13,15 @@ namespace Zikula\ZAuthModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\IdentityTranslator;
 use Zikula\Common\Translator\TranslatorInterface;
 
-class EmailLoginType extends AbstractType
+class EitherLoginType extends AbstractType
 {
     /**
      * @var TranslatorInterface
@@ -29,7 +29,7 @@ class EmailLoginType extends AbstractType
     private $translator;
 
     /**
-     * EmailLoginType constructor.
+     * UnameLoginType constructor.
      *
      * @param $translator
      */
@@ -44,9 +44,9 @@ class EmailLoginType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class, [
-                'label' => $this->translator->__('Email address'),
-                'input_group' => ['left' => '<i class="fa fa-at fa-fw"></i>']
+            ->add('either', TextType::class, [
+                'label' => $this->translator->__('User name or Email'),
+                'input_group' => ['left' => '<i class="fa fa-sign-in fa-fw"></i>']
             ])
             ->add('pass', PasswordType::class, [
                 'label' => $this->translator->__('Password'),
@@ -69,7 +69,7 @@ class EmailLoginType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'zikulazauthmodule_authentication_email';
+        return 'zikulazauthmodule_authentication_either';
     }
 
     /**

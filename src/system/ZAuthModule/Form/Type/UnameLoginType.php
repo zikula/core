@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\IdentityTranslator;
 use Zikula\Common\Translator\TranslatorInterface;
 
 class UnameLoginType extends AbstractType
@@ -76,9 +77,8 @@ class UnameLoginType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        // @todo can be removed?
         $resolver->setDefaults([
-            'translator' => null
+            'translator' => new IdentityTranslator()
         ]);
     }
 }
