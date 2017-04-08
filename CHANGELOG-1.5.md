@@ -24,8 +24,10 @@ CHANGELOG - ZIKULA 1.5.x
     - Metakeywords are deprecated as they are no longer considered 'good practice' for SEO (#3187).
     - Gedmo Doctrine extensions should be used by the stof listeners. The old listener names are deprecated.
     - Modernizr javascript library is deprecated and will not be included in Core-2.0.
-    - Deprecate full path for footstrap overrides and use zasset-style notation (#3357).
+    - Deprecate full path for bootstrap overrides and use zasset-style notation (#3357).
         - e.g. @AcmeFooModule:css/mybootstrap.css
+    - Zikula\Core\Doctrine\Entity\AbstractEntityMetadata is deprecated.
+    - Old Workflow feature with all related classes is deprecated.
 
  - Fixes:
     - Corrected path to legacy module's admin icons.
