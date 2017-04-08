@@ -111,12 +111,12 @@
 
         <echo msg="Creating archive..."/>
         <!-- zip's don't play nicely in Phing - using direct command -->
-        <!-- exec escape="false" command="cd ${exportdir}; zip -D -r ${archivedir}/${package}.zip ." / -->
-        <zip destfile="${archivedir}/${package}.zip">
+        <exec escape="false" command="cd ${exportdir}; zip -D -r ${archivedir}/${package}.zip ." />
+        <!--zip destfile="${archivedir}/${package}.zip">
             <fileset dir="${exportdir}">
                 <include name="**/**"/>
             </fileset>
-        </zip>
+        </zip-->
 
         <!-- Use tar at commandline because phing tarballs don't support file chmod -->
         <exec escape="false"
