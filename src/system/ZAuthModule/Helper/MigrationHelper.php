@@ -87,6 +87,7 @@ class MigrationHelper
             foreach ($errors as $error) {
                 $this->logger->addError('Unable to migrate user (' . $userEntity->getUname() . '/' . $userEntity->getEmail() . ') because: ' . $error->getMessage());
             }
+
             return null;
         }
 
