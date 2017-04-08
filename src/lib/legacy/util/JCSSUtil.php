@@ -199,7 +199,7 @@ class JCSSUtil
 
         $sm = ServiceUtil::getManager();
         $javascripts = is_array($javascripts) ? $javascripts : [];
-        array_unshift($javascripts, 'jquery', $sm->getParameter('zikula.javascript.bootstrap.min.path'), 'web/bundles/core/js/bootstrap-zikula.js');
+        array_unshift($javascripts, 'jquery', 'web' . $sm->getParameter('zikula.javascript.bootstrap.min.path'), 'web/bundles/core/js/bootstrap-zikula.js');
         if ($sm->getParameter('env') == 'prod' && file_exists(realpath('web/js/fos_js_routes.js'))) {
             array_unshift($javascripts, 'web/bundles/fosjsrouting/js/router.js', 'web/js/fos_js_routes.js');
         } else {
@@ -456,7 +456,7 @@ class JCSSUtil
                 'require' => ['jquery', 'polyfill.init']
             ],
             'polyfill.init' => [
-                'path' => 'javascript/polyfiller.init.js'
+                'path' => 'web/bundles/core/js/polyfiller.init.js'
             ]
         ];
         if (System::isDevelopmentMode()) {
@@ -558,7 +558,7 @@ class JCSSUtil
                     'require' => ['jquery', 'polyfill.init']
                 ],
                 'polyfill.init' => [
-                    'path' => 'javascript/polyfiller.init.js'
+                    'path' => 'web/bundles/core/js/polyfiller.init.js'
                 ]
             ];
 
