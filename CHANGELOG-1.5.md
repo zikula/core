@@ -48,7 +48,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Added system var 'timezone' for setting the timezone for guest users (replaces 'timezone_offset').
     - Added HtmlFilterApi to filter html strings.
     - Added 'utcdatetime' doctrine column type for storage of utc datetimes (#3383).
-    - Added 'Either' authentication type - allows users to entier either uname or email (#2951).
+    - Added 'Either' authentication type - allows users to enter either uname or email (#2951).
 
  - Vendor updates:
     - composer/semver installed at 1.4.2
