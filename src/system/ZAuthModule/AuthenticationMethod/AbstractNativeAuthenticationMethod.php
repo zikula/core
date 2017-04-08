@@ -16,19 +16,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
-use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\ZAuthModule\Api\PasswordApi;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
+use Zikula\ZAuthModule\Helper\MigrationHelper;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthenticationMethodInterface
 {
     /**
-     * @var UserRepositoryInterface
+     * @deprecated
+     * @var MigrationHelper
      */
-    private $userRepository;
+    private $migrationHelper;
 
     /**
      * @var AuthenticationMappingRepositoryInterface
@@ -61,8 +61,8 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
     private $passwordApi;
 
     /**
-     * NativeUnameAuthenticationMethod constructor.
-     * @param UserRepositoryInterface $userRepository
+     * AbstractNativeAuthenticationMethod constructor.
+     * @param MigrationHelper $migrationHelper @deprecated
      * @param AuthenticationMappingRepositoryInterface $mappingRepository
      * @param Session $session
      * @param TranslatorInterface $translator
@@ -71,7 +71,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
      * @param PasswordApi $passwordApi
      */
     public function __construct(
-        UserRepositoryInterface $userRepository,
+        MigrationHelper $migrationHelper, // @deprecated
         AuthenticationMappingRepositoryInterface $mappingRepository,
         Session $session,
         TranslatorInterface $translator,
@@ -79,7 +79,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         ValidatorInterface $validator,
         PasswordApi $passwordApi
     ) {
-        $this->userRepository = $userRepository;
+        $this->migrationHelper = $migrationHelper; // @deprecated
         $this->mappingRepository = $mappingRepository;
         $this->session = $session;
         $this->translator = $translator;
@@ -139,29 +139,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
     {
         $mapping = $this->mappingRepository->findOneBy([$field => $value]);
         if (!isset($mapping)) {
-            $userEntity = $this->userRepository->findOneBy([$field => $value]);
-            if ($userEntity) {
-                // This is a migration from existing UserEntity. Create new mapping.
-                $mapping = new AuthenticationMappingEntity();
-                $mapping->setUid($userEntity->getUid());
-                $mapping->setUname($userEntity->getUname());
-                $mapping->setEmail($userEntity->getEmail());
-                $mapping->setVerifiedEmail(true);
-                $mapping->setPass($userEntity->getPass()); // previously salted and hashed
-                $mapping->setMethod($this->getAlias());
-                $errors = $this->validator->validate($mapping);
-                if (count($errors) > 0) {
-                    $error = implode(',', $errors);
-                    throw new \Exception($error);
-                }
-                $this->mappingRepository->persistAndFlush($mapping);
-                // remove data from UserEntity
-                $userEntity->setPass('');
-                $userEntity->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $mapping->getMethod());
-                $this->userRepository->persistAndFlush($userEntity);
-
-                return $mapping;
-            }
+            return $this->migrationHelper->createMappingFromUserCriteria([$field => $value]); // @deprecated
         } elseif (($field == 'email' && ZAuthConstant::AUTHENTICATION_METHOD_UNAME == $mapping->getMethod())
             || ($field == 'uname' && ZAuthConstant::AUTHENTICATION_METHOD_EMAIL == $mapping->getMethod())) {
             // mapping exists but method is set to opposite. allow either if possible.

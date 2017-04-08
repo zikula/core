@@ -19,6 +19,7 @@ use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\SettingsModule\Api\LocaleApi;
 use Zikula\UsersModule\Api\CurrentUserApi;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Helper\RegistrationHelper;
 
 class LinkContainer implements LinkContainerInterface
@@ -59,6 +60,12 @@ class LinkContainer implements LinkContainerInterface
     private $localeApi;
 
     /**
+     * @deprecated
+     * @var UserRepositoryInterface
+     */
+    private $userRepository;
+
+    /**
      * constructor.
      *
      * @param TranslatorInterface $translator
@@ -68,6 +75,7 @@ class LinkContainer implements LinkContainerInterface
      * @param RegistrationHelper $registrationHelper
      * @param CurrentUserApi $currentUserApi
      * @param LocaleApi $localeApi
+     * @param UserRepositoryInterface $userRepository
      */
     public function __construct(
         TranslatorInterface $translator,
@@ -76,7 +84,8 @@ class LinkContainer implements LinkContainerInterface
         VariableApi $variableApi,
         RegistrationHelper $registrationHelper,
         CurrentUserApi $currentUserApi,
-        LocaleApi $localeApi
+        LocaleApi $localeApi,
+        UserRepositoryInterface $userRepository // @deprecated
     ) {
         $this->translator = $translator;
         $this->router = $router;
@@ -85,6 +94,7 @@ class LinkContainer implements LinkContainerInterface
         $this->registrationHelper = $registrationHelper;
         $this->currentUser = $currentUserApi;
         $this->localeApi = $localeApi;
+        $this->userRepository = $userRepository; // @deprecated
     }
 
     /**
@@ -153,6 +163,17 @@ class LinkContainer implements LinkContainerInterface
                 'text' => $this->translator->__('Find/Mail/Delete users'),
                 'icon' => 'search'
             ];
+        }
+        // @deprecated remove this link at Core-2.0
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
+            $unMigratedUserCount = $this->userRepository->count(['pass' => ['operator' => '!=', 'operand' => '']]);
+            if ($unMigratedUserCount > 0) {
+                $links[] = [
+                    'url' => $this->router->generate('zikulausersmodule_migration_migrate'),
+                    'text' => $this->translator->__('Migrate to ZAuth'),
+                    'icon' => 'cog'
+                ];
+            }
         }
 
         return $links;

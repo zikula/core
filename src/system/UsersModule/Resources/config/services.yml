@@ -44,6 +44,7 @@ services:
           - "@zikula_users_module.helper.registration_helper"
           - "@zikula_users_module.current_user"
           - "@zikula_settings_module.locale_api"
+          - "@zikula_users_module.user_repository"
         tags:
             - { name: zikula.link_container }
 
