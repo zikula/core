@@ -1,6 +1,9 @@
 Filters
 =======
 
+NOTICE: This is a Core-1.x-era document that is still basically correct, but has some
+errors. It will be updated as soon as possible.
+
 A filter is simply a something that alters data in some way.  A filter
 might be used to sanitize HTML content, format text in some way, or
 otherwise transform content.

@@ -1,6 +1,7 @@
-================================
- Attributes Doctrine extension
-================================
+AbstractEntityAttribute
+=======================
+
+class: `Zikula\Core\Doctrine\Entity\AbstractEntityAttribute`
 
 Getting started
 ===============
@@ -11,13 +12,16 @@ Preconditions
 You need a existing doctrine2 entity to which you would like add attributes support to.
 In this guide we will use a *User* entity::
 
+    namespace Acme\YourModule\Entity;
+
     use Doctrine\ORM\Mapping as ORM;
+    use Zikula\Core\Doctrine\EntityAccess;
 
     /**
      * @ORM\Entity
      * @ORM\Table(name="yourmodule_user")
      */
-    class YourModule_Entity_User extends Zikula_EntityAccess
+    class UserEntity extends EntityAccess
     {
         /**
          * @ORM\Id
@@ -42,24 +46,29 @@ In this guide we will use a *User* entity::
 
 Entities
 --------
-The attributes extension provides a new abstract class: *Zikula_Doctrine2_Entity_EntityAttribute*.
+The attributes extension provides a new abstract class: `Zikula\Core\Doctrine\Entity\AbstractEntityAttribute`.
 You need to create a subclass of that class specific to the entity you would like
-to add attributes support to. In this guide we create a *UserAttribute* class.
-**User** is the name of the entity and **Attribute** is our attribues specific suffix::
+to add attributes support to. In this guide we create a `UserAttributeEntity` class.
+**UserEntity** is the name of the entity and **Attribute** is our attributes specific suffix::
 
+    namespace Acme\YourModule\Entity;
+
+    use Acme\YourModule\Entity\UserEntity;
     use Doctrine\ORM\Mapping as ORM;
+    use Zikula\Core\Doctrine\EntityAccess;
+    use Zikula\Core\Doctrine\Entity\AbstractEntityAttribute;
 
     /**
      * @ORM\Entity
      * @ORM\Table(name="yourmodule_user_attribute",
      *            uniqueConstraints={@ORM\UniqueConstraint(name="cat_unq",columns={"name", "entityId"})})
      */
-    class YourModule_Entity_UserAttribute extends Zikula_Doctrine2_Entity_EntityAttribute
+    class UserAttributeEntity extends AbstractEntityAttribute
     {
         /**
-         * @ORM\ManyToOne(targetEntity="YourModule_Entity_User", inversedBy="attributes")
+         * @ORM\ManyToOne(targetEntity="Acme\YourModule\Entity\UserEntity", inversedBy="attributes")
          * @ORM\JoinColumn(name="entityId", referencedColumnName="id")
-         * @var YourModule_Entity_User
+         * @var UserEntity
          */
         private $entity;
 
@@ -75,14 +84,19 @@ to add attributes support to. In this guide we create a *UserAttribute* class.
     }
 
 The abstract class forces you to implement the **getEntity** & **setEntity** methods.
-These methods forece you to create an new class attribute. 
-This attribute becomes a ManyToOne assocation to the original (*User*) entity. 
-The column name "entityId" in @JoinColumn and @UniqueConstraint must match.
+These methods force you to create an new class attribute. 
+This attribute becomes a ManyToOne association to the original `UserEntity`. 
+The column name "entityId" in `@JoinColumn` and `@UniqueConstraint` must match.
 
-We need to add a inverse side of the assocation to the original (*User*) entity::
-  
+We need to add a inverse side of the association to the original `UserEntity`
+
+    use Acme\YourModule\Entity\UserAttributeEntity;
+    use Doctrine\Common\Collections\ArrayCollection;
+
+    // ...
+
     /**
-     * @ORM\OneToMany(targetEntity="YourModule_Entity_UserAttribute", 
+     * @ORM\OneToMany(targetEntity="Acme\YourModule\Entity\UserAttributeEntity", 
      *                mappedBy="entity", cascade={"all"}, 
      *                orphanRemoval=true, indexBy="name")
      */
@@ -90,7 +104,7 @@ We need to add a inverse side of the assocation to the original (*User*) entity:
 
     public function __construct()
     {
-        $this->attributes = new Doctrine\Common\Collections\ArrayCollection();
+        $this->attributes = new ArrayCollection();
     }
 
     public function getAttributes()
@@ -107,18 +121,18 @@ We need to add a inverse side of the assocation to the original (*User*) entity:
                 $this->attributes[$name]->setValue($value);
             }
         } else {
-            $this->attributes[$name] = new YourModule_Entity_UserAttribute($name, $value, $this);
+            $this->attributes[$name] = new UserAttributeEntity($name, $value, $this);
         }
     }
 
-The inversedBy attribute of the @ManyToOne annotation must match with this new class attribute name.
-The mappedBy attribute of the @OneToMany annotation must match with the the class attribute in 
-the *EntityAttribute* subclass.
+The `inversedBy` attribute of the `@ManyToOne` annotation must match with this new class attribute name.
+The `mappedBy` attribute of the `@OneToMany` annotation must match with the class attribute in 
+the `AbstractEntityAttribute` subclass.
 
 
 Install code
 ------------
-List you *EntityAttribute* subclass in the DoctrineHelper::createSchema() method call.
+List your `AbstractEntityAttribute` subclass in the `$this->schemaTool->create()` method call.
 
 
 Working with the entities
@@ -131,7 +145,6 @@ Set/change an attribute
 
     $entityManager->persist($user);
 
-
 remove an attribute
 
     $user = // ...
@@ -143,24 +156,3 @@ Access all attributes
 
     $user = // ...
     $urlValue = $user->getAttributes()->get('url)->getValue();
-
-Database Tables
-===============
-
-DBUtil based attributes uses a single table to store every attribute of every row of every table.
-
-In Doctrine2 based attributes every entity gets its own table.
-
-
-Upgrade of old DBUtil based attributes
-======================================
-Use an SQL like this to move the data to the new table::
-
-    INSERT INTO mymodule_user_yourmodule (entityId, name, value) SELECT o.object_id, o.attribute_name, o.value FROM objectdata_attributes o WHERE o.object_type = 'yourmodule_oldtable' 
-
-Do not forgot to delete old data in the objectdata_attributes table!
-
-Example
-=======
-The ExampleDoctrine module located in /src/docs/examples/modules/ExampleDoctrine/ 
-uses this doctrine extension in one of his entities.

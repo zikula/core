@@ -1,6 +1,9 @@
 Zikula Hooks
 ============
 
+NOTICE: This is a Core-1.x-era document that is still basically correct, but has some
+errors. It will be updated as soon as possible.
+
 This document describes how HookManager is implemented in Zikula.  It outlines
 the conventions and expected implementation patterns with code examples.
 

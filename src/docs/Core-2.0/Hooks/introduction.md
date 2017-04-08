@@ -1,6 +1,9 @@
 INTRODUCTION
 ============
 
+NOTICE: This is a Core-1.x-era document that is still basically correct, but has some
+errors. It will be updated as soon as possible.
+
 In this introduction we're going to look at the concept and rationale behind
 HookManager.
 

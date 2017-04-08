@@ -10,8 +10,3 @@ Click on the wrench icon in the module's row and change the value of the **Modul
 there are restrictions on this value; you cannot select a value that is the same as any subdirectory within your
 Zikula installation. So, at least the following names are not allowed: `app`, `config`, `docs`, `images`, `javascript`,
 `lib`, `modules`, `plugins`, `style`, `system`, `themes`, `userdata`, `vendor`, `web`.
-
-The remaining part of the route (`/admin/config`) is configurable from within the Routes module. From here, the route
-can be deleted, copied and reused or new routes can be manually created. Beware however routes must be unique!
-Currently, as of Core 1.4.0, these routes are not checked for conflicts with existing routes and therefore it is
-possible to corrupt your route table rendering your site inoperable. Proceed with caution and use at your own risk!

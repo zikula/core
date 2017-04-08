@@ -1,5 +1,5 @@
-Doctrine
-========
+UTC DateTime Column Type
+========================
 
 `utcdatetime` Column Type.
 
