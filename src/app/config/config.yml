@@ -74,13 +74,6 @@ doctrine:
                 query_cache_driver: array
                 result_cache_driver: array
                 mappings:
-                    zikula_core:
-                        type: annotation
-                        prefix: Zikula\Core\Doctrine\Entity
-                        dir: "%kernel.root_dir%/../lib/Zikula/Core/Doctrine/Entity"
-                        alias: ZikulaCore # this one is optional and will default to the name set for the mapping
-                        is_bundle: false
-                    # hookstorage required in upgrade.php
                     zikula_hookstorage:
                         type: annotation
                         prefix: Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity
