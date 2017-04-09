@@ -1,7 +1,6 @@
 .mm-menu.mm-hiddenpanel-customwidth {
   width: 80%;
-  min-width: 325px;
-  max-width: 325px; }
+  min-width: 325px; }
 
 html.mm-opening.mm-hiddenpanel-customwidth .mm-slideout {
   -webkit-transform: translate(80%, 0);
@@ -10,14 +9,14 @@ html.mm-opening.mm-hiddenpanel-customwidth .mm-slideout {
   -o-transform: translate(80%, 0);
   transform: translate(80%, 0); }
 
-@media all and (max-width: 406.25px) {
+@media all and (max-width: 325px) {
   html.mm-opening.mm-hiddenpanel-customwidth .mm-slideout {
-    -webkit-transform: translate(325px, 0);
+    -webkit-transform: translate(325px, -50px);
     -moz-transform: translate(325px, 0);
     -ms-transform: translate(325px, 0);
     -o-transform: translate(325px, 0);
     transform: translate(325px, 0); } }
-@media all and (min-width: 406.25px) {
+@media all and (min-width: 325px) {
   html.mm-opening.mm-hiddenpanel-customwidth .mm-slideout {
     -webkit-transform: translate(325px, 0);
     -moz-transform: translate(325px, 0);
