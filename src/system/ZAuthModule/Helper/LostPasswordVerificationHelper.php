@@ -11,9 +11,7 @@
 
 namespace Zikula\ZAuthModule\Helper;
 
-use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\ZAuthModule\Api\PasswordApi;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
@@ -64,25 +62,21 @@ class LostPasswordVerificationHelper
      * Creates an identifier for the lost password link.
      * This link carries the user's id, name and email address as well as the actual confirmation code.
      *
-     * @param EntityAccess $record instance of UserEntity or AuthenticationMappingEntity
+     * @param AuthenticationMappingEntity $mapping
      * @return string The created identifier
      */
-    public function createLostPasswordId(EntityAccess $record)
+    public function createLostPasswordId(AuthenticationMappingEntity $mapping)
     {
-        if (!($record instanceof UserEntity) && !($record instanceof AuthenticationMappingEntity)) {
-            throw new \Exception('Record must be an instance of UserEntity or AuthenticationMappingEntity.');
-        }
-
         $confirmationCode = $this->delimiter;
         while (false !== strpos($confirmationCode, $this->delimiter)) {
             $confirmationCode = $this->passwordApi->generatePassword();
         }
-        $this->userVerificationRepository->setVerificationCode($record->getUid(), ZAuthConstant::VERIFYCHGTYPE_PWD, $this->passwordApi->getHashedPassword($confirmationCode));
+        $this->userVerificationRepository->setVerificationCode($mapping->getUid(), ZAuthConstant::VERIFYCHGTYPE_PWD, $this->passwordApi->getHashedPassword($confirmationCode));
 
         $params = [
-            $record->getUid(),
-            $record->getUname(),
-            $record->getEmail(),
+            $mapping->getUid(),
+            $mapping->getUname(),
+            $mapping->getEmail(),
             $confirmationCode
         ];
 
@@ -100,6 +94,7 @@ class LostPasswordVerificationHelper
      *
      * @param string $identifier
      * @return array The extracted values
+     * @throws \Exception
      */
     public function decodeLostPasswordId($identifier = '')
     {
