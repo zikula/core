@@ -183,6 +183,7 @@ class AjaxInstallController extends AbstractController
         $userEntity->setActivated(1);
         $userEntity->setUser_Regdate(new \DateTime());
         $userEntity->setLastlogin(new \DateTime());
+        $userEntity->setPass(''); // @deprecated
         $entityManager->persist($userEntity);
 
         $mapping = new AuthenticationMappingEntity();

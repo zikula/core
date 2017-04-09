@@ -1,4 +1,4 @@
 Documentation
 =============
 
-Please see the Core-2.0 directory for developer documentation.
+Please see the various documents in this directory for more information.

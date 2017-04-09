@@ -67,7 +67,7 @@ class FormExtension extends \Twig_Extension
     {
         $basePath = $this->requestStack->getCurrentRequest()->getBasePath();
         $this->jsAssetBag->add([$basePath . '/web/webshim/js-webshim/minified/polyfiller.js' => AssetBag::WEIGHT_JQUERY + 1]);
-        $this->jsAssetBag->add([$basePath . '/javascript/polyfiller.init.js' => AssetBag::WEIGHT_JQUERY + 2]);
+        $this->jsAssetBag->add([$basePath . '/web/bundles/core/js/polyfiller.init.js' => AssetBag::WEIGHT_JQUERY + 2]);
 
         $existingFeatures = $this->pageVars->get('polyfill_features', []);
         $features = array_unique(array_merge($existingFeatures, $features));

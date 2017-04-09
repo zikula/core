@@ -6,7 +6,6 @@ services:
     zikula_zauth_module.authentication_method.native_uname:
         class: Zikula\ZAuthModule\AuthenticationMethod\NativeUnameAuthenticationMethod
         arguments:
-            - "@zikula_users_module.user_repository"
             - "@zikula_zauth_module.authentication_mapping_repository"
             - "@session"
             - "@translator.default"
@@ -19,7 +18,6 @@ services:
     zikula_zauth_module.authentication_method.native_email:
         class: Zikula\ZAuthModule\AuthenticationMethod\NativeEmailAuthenticationMethod
         arguments:
-            - "@zikula_users_module.user_repository"
             - "@zikula_zauth_module.authentication_mapping_repository"
             - "@session"
             - "@translator.default"
@@ -32,7 +30,6 @@ services:
     zikula_zauth_module.authentication_method.native_either:
         class: Zikula\ZAuthModule\AuthenticationMethod\NativeEitherAuthenticationMethod
         arguments:
-            - "@zikula_users_module.user_repository"
             - "@zikula_zauth_module.authentication_mapping_repository"
             - "@session"
             - "@translator.default"

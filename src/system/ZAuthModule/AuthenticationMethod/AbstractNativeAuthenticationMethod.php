@@ -16,7 +16,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\ZAuthModule\Api\PasswordApi;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
@@ -24,11 +23,6 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthenticationMethodInterface
 {
-    /**
-     * @var UserRepositoryInterface
-     */
-    private $userRepository;
-
     /**
      * @var AuthenticationMappingRepositoryInterface
      */
@@ -60,8 +54,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
     private $passwordApi;
 
     /**
-     * NativeUnameAuthenticationMethod constructor.
-     * @param UserRepositoryInterface $userRepository
+     * AbstractNativeAuthenticationMethod constructor.
      * @param AuthenticationMappingRepositoryInterface $mappingRepository
      * @param Session $session
      * @param TranslatorInterface $translator
@@ -70,7 +63,6 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
      * @param PasswordApi $passwordApi
      */
     public function __construct(
-        UserRepositoryInterface $userRepository,
         AuthenticationMappingRepositoryInterface $mappingRepository,
         Session $session,
         TranslatorInterface $translator,
@@ -78,7 +70,6 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         ValidatorInterface $validator,
         PasswordApi $passwordApi
     ) {
-        $this->userRepository = $userRepository;
         $this->mappingRepository = $mappingRepository;
         $this->session = $session;
         $this->translator = $translator;

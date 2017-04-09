@@ -1,0 +1,61 @@
+{{ adminHeader() }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-cogs"></span>
+            {{ __('Migrate Users to ZAuth') }}
+            {{ pageSetVar('title', __('Migrate Users to ZAuth')) }}
+        </h3>
+        <div class="alert alert-info">
+            {{ __('This will migrate all VALID users from the old Users table to the new ZAuth table. Users are automatically migrated when they login, but this will migrate all users at one time.') }}
+            {{ __('This could potentially take a long time if there are many users that must be migrated. They will be migrated in batches of 25 to reduce the risk of timeouts.') }}
+            <p><strong>{{ __('This action MUST be complete before upgrading to Core-2.0.') }}</strong></p>
+            <em>{{ __('Invalid users cannot be migrated unless their data is manually corrected. The errors are posted to the logfile.') }}</em>
+        </div>
+        <div class="alert alert-danger">
+            <i class="fa fa-exclamation-triangle fa-2x"></i> {{ __('This action cannot be undone.') }}
+        </div>
+        <div class="progress" id="progress-bar">
+            <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                <span class="sr-only">{{  __("Progress bar") }}</span>
+            </div>
+        </div>
+        <div class="alert alert-info">{{ __f('There are %f users to try to migrate.', {'%f': count}) }}</div>
+        <div class="text-center"><i id='spinner' class="fa fa-cog fa-2x fa-spin fa-fw" style="display: none"></i> <button id="migrate" class="btn btn-lg btn-success">{{ __('Begin Migration') }}</button></div>
+
+    </div>
+
+</div>
+{{ adminFooter() }}
+<script type="text/javascript">
+    (function($) {
+        $(document).ready(function() {
+            $("#migrate").on("click", function() {
+                $('#spinner').show();
+                $(this).addClass('disabled');
+                $(this).bind('click', false);
+                migrate()
+            });
+            function migrate() {
+                $.ajax({
+                    data: {},
+                    url: window.location.pathname,
+                    success: function(data, textStatus, jqXHR) {
+                        $('.progress-bar').css('width', data.data.percentcomplete + '%');
+                        if (data.data.percentcomplete === 100) {
+                            $('.progress-bar').removeClass('progress-bar-striped active');
+                            var redirect = setTimeout(function() {
+                                window.location = '{{ path('zikulausersmodule_useradministration_list') }}';
+                            }, 800);
+                        } else {
+                            migrate();
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        alert(jqXHR.responseText);
+                    }
+                });
+            }
+        });
+    })(jQuery);
+</script>

@@ -19,6 +19,7 @@ use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\SettingsModule\Api\LocaleApi;
 use Zikula\UsersModule\Api\CurrentUserApi;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Helper\RegistrationHelper;
 
 class LinkContainer implements LinkContainerInterface
