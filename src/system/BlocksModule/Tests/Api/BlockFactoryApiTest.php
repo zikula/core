@@ -73,15 +73,6 @@ class BlockFactoryApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * NOTE: This test will need to be adapted in Core-2.0 as the constructor will fail without the moduleBundle
-     * @expectedException \LogicException
-     */
-    public function testUnsetModuleException()
-    {
-        $this->api->getInstance(BarBlock::class, new AcmeFooModule());
-    }
-
-    /**
      * @covers BlockFactoryApiInterface::getInstance()
      */
     public function testGetInstanceOfAbstractExtensionBlock()
