@@ -53,7 +53,7 @@ class BlockFactoryApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetBlockDefinedAsService()
     {
-        $this->assertEquals($this->container->get('foo.block'), $this->api->getInstance('foo.block'));
+        $this->assertEquals($this->container->get('foo.block'), $this->api->getInstance('foo.block', new AcmeFooModule()));
     }
 
     /**
@@ -61,7 +61,7 @@ class BlockFactoryApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testDoesNotExistException()
     {
-        $this->api->getInstance('BarModule\ZedBlock');
+        $this->api->getInstance('BarModule\ZedBlock', new AcmeFooModule());
     }
 
     /**
@@ -69,7 +69,7 @@ class BlockFactoryApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testWrongInterfaceException()
     {
-        $this->api->getInstance(WrongInterfaceBlock::class);
+        $this->api->getInstance(WrongInterfaceBlock::class, new AcmeFooModule());
     }
 
     /**
@@ -78,7 +78,7 @@ class BlockFactoryApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnsetModuleException()
     {
-        $this->api->getInstance(BarBlock::class);
+        $this->api->getInstance(BarBlock::class, new AcmeFooModule());
     }
 
     /**
@@ -102,7 +102,7 @@ class BlockFactoryApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetInstanceOfInterfaceExtensionBlock()
     {
-        $blockInstance = $this->api->getInstance(FooBlock::class);
+        $blockInstance = $this->api->getInstance(FooBlock::class, new AcmeFooModule());
         $this->assertNotEmpty($blockInstance);
         $this->assertInstanceOf(BlockHandlerInterface::class, $blockInstance);
         $this->assertEquals('FooType', $blockInstance->getType());
