@@ -43,7 +43,7 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface, ContainerA
      * boot the handler
      * @param AbstractBundle $bundle
      */
-    public function boot(AbstractBundle $bundle)
+    protected function boot(AbstractBundle $bundle)
     {
         // load optional bootstrap
         $bootstrap = $bundle->getPath() . "/bootstrap.php";
@@ -158,7 +158,7 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface, ContainerA
      * @param null $user
      * @return bool
      */
-    public function hasPermission($component = null, $instance = null, $level = null, $user = null)
+    protected function hasPermission($component = null, $instance = null, $level = null, $user = null)
     {
         return $this->container->get('zikula_permissions_module.api.permission')->hasPermission($component, $instance, $level, $user);
     }
@@ -168,7 +168,7 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface, ContainerA
      * @param $serviceName
      * @return object
      */
-    public function get($serviceName)
+    protected function get($serviceName)
     {
         return $this->container->get($serviceName);
     }

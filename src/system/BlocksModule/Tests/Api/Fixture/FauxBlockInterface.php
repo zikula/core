@@ -11,7 +11,7 @@
 
 namespace Zikula\BlocksModule\Tests\Api\Fixture;
 
-class WrongInterfaceBlock implements FauxBlockInterface
+interface FauxBlockInterface
 {
     // nothing
 }

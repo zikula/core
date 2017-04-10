@@ -11,10 +11,13 @@
 
 namespace Zikula\BlocksModule\Tests\Api;
 
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface;
 use Zikula\BlocksModule\Api\BlockFactoryApi;
 use Zikula\BlocksModule\BlockHandlerInterface;
+use Zikula\BlocksModule\Helper\ServiceNameHelper;
 use Zikula\BlocksModule\Tests\Api\Fixture\AcmeFooModule;
 use Zikula\BlocksModule\Tests\Api\Fixture\BarBlock;
 use Zikula\BlocksModule\Tests\Api\Fixture\FooBlock;
@@ -29,40 +32,20 @@ class BlockFactoryApiTest extends \PHPUnit_Framework_TestCase
     private $api;
 
     /**
-     * @var FooBlock
+     * @var ContainerInterface
      */
-    private $fooBlock;
+    private $container;
 
     /**
      * BlockApiTest setup.
      */
     public function setUp()
     {
-        $this->fooBlock = new FooBlock();
-        $container = $this
-            ->getMockBuilder(ContainerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $container
-            ->method('has')
-            ->willReturnCallback(function ($string) {
-                return $string == 'foo.block';
-            });
-//        $container
-//            ->method('set')
-//            ->willReturn(true);
-        $container
-            ->method('get')
-            ->willReturnCallback(function ($string) {
-                $a = [
-                    'translator.default' => new IdentityTranslator(),
-                    'foo.block' => $this->fooBlock,
-                    'zikula_extensions_module.api.variable' => new \stdClass()
-                ];
-
-                return $a[$string];
-            });
-        $this->api = new BlockFactoryApi($container);
+        $this->container = new Container();
+        $this->container->set('translator.default', new IdentityTranslator());
+        $this->container->set('foo.block', new FooBlock());
+        $this->container->set('zikula_extensions_module.api.variable', new \stdClass());
+        $this->api = new BlockFactoryApi($this->container);
     }
 
     /**
@@ -70,7 +53,7 @@ class BlockFactoryApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetBlockDefinedAsService()
     {
-        $this->assertEquals($this->fooBlock, $this->api->getInstance('foo.block'));
+        $this->assertEquals($this->container->get('foo.block'), $this->api->getInstance('foo.block'));
     }
 
     /**
@@ -98,19 +81,35 @@ class BlockFactoryApiTest extends \PHPUnit_Framework_TestCase
         $this->api->getInstance(BarBlock::class);
     }
 
+    /**
+     * @covers BlockFactoryApiInterface::getInstance()
+     */
     public function testGetInstanceOfAbstractExtensionBlock()
     {
         $blockInstance = $this->api->getInstance(BarBlock::class, new AcmeFooModule());
         $this->assertNotEmpty($blockInstance);
-        $this->assertInstanceOf(BlockHandlerInterface::class, $blockInstance);
+        $this->assertInstanceOf(AbstractBlockHandler::class, $blockInstance);
         $this->assertEquals('Bar', $blockInstance->getType());
+        $serviceNameHelper = new ServiceNameHelper();
+        $blockServiceName = $serviceNameHelper->generateServiceNameFromClassName(BarBlock::class);
+        $this->assertTrue($this->container->has($blockServiceName));
+        $retrievedBlockService = $this->container->get($blockServiceName);
+        $this->assertInstanceOf(BlockHandlerInterface::class, $retrievedBlockService);
     }
 
+    /**
+     * @covers BlockFactoryApiInterface::getInstance()
+     */
     public function testGetInstanceOfInterfaceExtensionBlock()
     {
         $blockInstance = $this->api->getInstance(FooBlock::class);
         $this->assertNotEmpty($blockInstance);
         $this->assertInstanceOf(BlockHandlerInterface::class, $blockInstance);
         $this->assertEquals('FooType', $blockInstance->getType());
+        $serviceNameHelper = new ServiceNameHelper();
+        $blockServiceName = $serviceNameHelper->generateServiceNameFromClassName(FooBlock::class);
+        $this->assertTrue($this->container->has($blockServiceName));
+        $retrievedBlockService = $this->container->get($blockServiceName);
+        $this->assertInstanceOf(BlockHandlerInterface::class, $retrievedBlockService);
     }
 }
