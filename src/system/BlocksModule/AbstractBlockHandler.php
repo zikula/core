@@ -103,7 +103,7 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface, ContainerA
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
-        $this->setTranslator($container->get('translator')); // for TranslatorTrait
+        $this->setTranslator($container->get('translator.default')); // for TranslatorTrait
         $this->variableApi = $container->get('zikula_extensions_module.api.variable'); // for ExtensionVariablesTrait
     }
 

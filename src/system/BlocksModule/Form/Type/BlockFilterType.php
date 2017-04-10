@@ -13,21 +13,21 @@ namespace Zikula\BlocksModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Zikula\BlocksModule\Api\BlockFilterApi;
+use Zikula\BlocksModule\Api\ApiInterface\BlockFilterApiInterface;
 
 class BlockFilterType extends AbstractType
 {
     /**
-     * @var BlockFilterApi
+     * @var BlockFilterApiInterface
      */
     private $blockFilterApi;
 
     /**
      * BlockFilterType constructor.
      *
-     * @param $blockFilterApi
+     * @param BlockFilterApiInterface $blockFilterApi
      */
-    public function __construct(BlockFilterApi $blockFilterApi)
+    public function __construct(BlockFilterApiInterface $blockFilterApi)
     {
         $this->blockFilterApi = $blockFilterApi;
     }

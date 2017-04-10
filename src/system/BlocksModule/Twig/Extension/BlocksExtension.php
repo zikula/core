@@ -11,8 +11,8 @@
 
 namespace Zikula\BlocksModule\Twig\Extension;
 
-use Zikula\BlocksModule\Api\BlockApi;
-use Zikula\BlocksModule\Api\BlockFilterApi;
+use Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface;
+use Zikula\BlocksModule\Api\ApiInterface\BlockFilterApiInterface;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\BlockHandlerInterface;
 use Zikula\ThemeModule\Engine\Engine;
@@ -21,12 +21,12 @@ use Zikula\ExtensionsModule\Api\ExtensionApi;
 class BlocksExtension extends \Twig_Extension
 {
     /**
-     * @var BlockApi
+     * @var BlockApiInterface
      */
     private $blockApi;
 
     /**
-     * @var BlockFilterApi
+     * @var BlockFilterApiInterface
      */
     private $blockFilter;
 
@@ -47,15 +47,15 @@ class BlocksExtension extends \Twig_Extension
 
     /**
      * BlocksExtension constructor.
-     * @param BlockApi $blockApi
-     * @param BlockFilterApi $blockFilterApi
+     * @param BlockApiInterface $blockApi
+     * @param BlockFilterApiInterface $blockFilterApi
      * @param Engine $themeEngine
      * @param ExtensionApi $extensionApi
      * @param \Twig_Loader_Filesystem $loader
      */
     public function __construct(
-        BlockApi $blockApi,
-        BlockFilterApi $blockFilterApi,
+        BlockApiInterface $blockApi,
+        BlockFilterApiInterface $blockFilterApi,
         Engine $themeEngine,
         ExtensionApi $extensionApi,
         \Twig_Loader_Filesystem $loader
