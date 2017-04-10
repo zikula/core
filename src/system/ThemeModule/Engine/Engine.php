@@ -14,7 +14,7 @@ namespace Zikula\ThemeModule\Engine;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Annotations\Reader;
-use Zikula\BlocksModule\Api\BlockApi;
+use Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
@@ -82,7 +82,7 @@ class Engine
     private $filterService;
 
     /**
-     * @var BlockApi
+     * @var BlockApiInterface
      */
     private $blockApi;
 
@@ -97,11 +97,17 @@ class Engine
      * @param Reader $annotationReader
      * @param ZikulaKernel $kernel
      * @param AssetFilter $filter
-     * @param BlockApi $blockApi
+     * @param BlockApiInterface $blockApi
      * @param VariableApi $variableApi
      */
-    public function __construct(RequestStack $requestStack, Reader $annotationReader, ZikulaKernel $kernel, AssetFilter $filter, BlockApi $blockApi, VariableApi $variableApi)
-    {
+    public function __construct(
+        RequestStack $requestStack,
+        Reader $annotationReader,
+        ZikulaKernel $kernel,
+        AssetFilter $filter,
+        BlockApiInterface $blockApi,
+        VariableApi $variableApi
+    ) {
         $this->requestStack = $requestStack;
         $this->annotationReader = $annotationReader;
         $this->kernel = $kernel;

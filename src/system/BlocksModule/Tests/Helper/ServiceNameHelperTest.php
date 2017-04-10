@@ -44,8 +44,6 @@ class ServiceNameHelperTest extends \PHPUnit_Framework_TestCase
             ['Acme\FooBundle\Bar\FooBar', 'acme.foo_bundle.bar.foo_bar'],
             ['\Acme\FooBundle\Bar\FooBar', 'acme.foo_bundle.bar.foo_bar'],
             ['AcmeFooBundle\Bar\FooBarBaz', 'acme_foo_bundle.bar.foo_bar_baz'],
-            ['Acme_Bar_FooBar', 'acme.bar.foo_bar'],
-            ['\Acme_Bar_FooBar', 'acme.bar.foo_bar'],
         ];
     }
 }

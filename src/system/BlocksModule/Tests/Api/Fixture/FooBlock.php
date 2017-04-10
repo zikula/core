@@ -22,21 +22,21 @@ class FooBlock implements BlockHandlerInterface
 
     public function display(array $properties)
     {
-        // TODO: Implement display() method.
+        // display() method.
     }
 
     public function getFormClassName()
     {
-        // TODO: Implement getFormClassName() method.
+        // getFormClassName() method.
     }
 
     public function getFormOptions()
     {
-        // TODO: Implement getFormOptions() method.
+        // getFormOptions() method.
     }
 
     public function getFormTemplate()
     {
-        // TODO: Implement getFormTemplate() method.
+        // getFormTemplate() method.
     }
 }

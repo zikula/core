@@ -12,12 +12,13 @@
 namespace Zikula\BlocksModule\Api;
 
 use Symfony\Component\HttpFoundation\RequestStack;
+use Zikula\BlocksModule\Api\ApiInterface\BlockFilterApiInterface;
 use Zikula\BlocksModule\Entity\BlockEntity;
 
 /**
  * Class BlockFilterApi
  */
-class BlockFilterApi
+class BlockFilterApi implements BlockFilterApiInterface
 {
     /**
      * @var RequestStack
@@ -34,10 +35,7 @@ class BlockFilterApi
     }
 
     /**
-     * Determine if the block is displayable based on the filter criteria.
-     *
-     * @param BlockEntity $blockEntity
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isDisplayable(BlockEntity $blockEntity)
     {
@@ -109,9 +107,7 @@ class BlockFilterApi
     }
 
     /**
-     * Get all the attributes of the request + 'query param'.
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getFilterAttributeChoices()
     {

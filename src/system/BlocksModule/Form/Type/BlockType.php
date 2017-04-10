@@ -20,8 +20,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\BlocksModule\Api\BlockApi;
-use Zikula\BlocksModule\Api\BlockFilterApi;
+use Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface;
+use Zikula\BlocksModule\Api\ApiInterface\BlockFilterApiInterface;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\SettingsModule\Api\LocaleApi;
@@ -29,12 +29,12 @@ use Zikula\SettingsModule\Api\LocaleApi;
 class BlockType extends AbstractType
 {
     /**
-     * @var BlockApi
+     * @var BlockApiInterface
      */
     private $blockApi;
 
     /**
-     * @var BlockFilterApi
+     * @var BlockFilterApiInterface
      */
     private $blockFilterApi;
 
@@ -50,13 +50,17 @@ class BlockType extends AbstractType
 
     /**
      * BlockType constructor.
-     * @param BlockApi $blockApi
-     * @param BlockFilterApi $blockFilterApi
+     * @param BlockApiInterface $blockApi
+     * @param BlockFilterApiInterface $blockFilterApi
      * @param TranslatorInterface $translator
      * @param LocaleApi $localeApi
      */
-    public function __construct(BlockApi $blockApi, BlockFilterApi $blockFilterApi, TranslatorInterface $translator, LocaleApi $localeApi)
-    {
+    public function __construct(
+        BlockApiInterface $blockApi,
+        BlockFilterApiInterface $blockFilterApi,
+        TranslatorInterface $translator,
+        LocaleApi $localeApi
+    ) {
         $this->blockApi = $blockApi;
         $this->blockFilterApi = $blockFilterApi;
         $this->translator = $translator;
