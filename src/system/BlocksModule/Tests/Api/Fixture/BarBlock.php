@@ -15,5 +15,5 @@ use Zikula\BlocksModule\AbstractBlockHandler;
 
 class BarBlock extends AbstractBlockHandler
 {
-
+    // there is nothing
 }

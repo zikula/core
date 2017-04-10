@@ -59,6 +59,7 @@ class BlockFactoryApiTest extends \PHPUnit_Framework_TestCase
                     'foo.block' => $this->fooBlock,
                     'zikula_extensions_module.api.variable' => new \stdClass()
                 ];
+
                 return $a[$string];
             });
         $this->api = new BlockFactoryApi($container);
