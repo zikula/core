@@ -198,8 +198,6 @@ class AdminInterfaceController extends AbstractController
 
         return $this->render('@ZikulaAdminModule/AdminInterface/securityAnalyzer.html.twig', [
             'security' => [
-                'config_php' => is_writable('config/config.php'),
-                'magic_quotes_gpc' => (bool) get_magic_quotes_gpc(), // should be off anyway...
                 'app_htaccess' => $app_htaccess,
                 'updatecheck' => $variableApi->getSystemVar('updatecheck'),
                 'scactive' => $hasSecurityCenter,

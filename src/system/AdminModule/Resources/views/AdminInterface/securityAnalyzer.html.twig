@@ -13,16 +13,6 @@
                 <div class="collapse" id="securitysettings_full">
                     <div class="legacy col-sm-6">
                         <h4>{{ __('Security warnings') }}</h4>
-                        {% if security.config_php %}
-                            <p>
-                                <a href="{{ adminHelpUrl }}#admin_configphpwarning">{{ __("Configuration file 'config/config.php' is writeable, but should be read-only (please set to chmod 400, or 440 or last resort 444).") }}</a>
-                            </p>
-                        {% endif %}
-                        {% if security.magic_quotes_gpc %}
-                            <p>
-                                <a href="{{ adminHelpUrl }}#admin_magic_quotes_warning">{{ __("PHP 'magic_quotes_gpc' setting is ON, but should be OFF.") }}</a>
-                            </p>
-                        {% endif %}
                         {% if not security.app_htaccess %}
                             <p>
                                 <a href="{{ adminHelpUrl }}#admin_app_htaccess_warning">{{ __("There is no '.htaccess' file in the application directory '/app', but one should be present.") }}</a>
@@ -30,7 +20,7 @@
                         {% endif %}
                         {% if not security.updatecheck %}
                             <p>
-                                {{ __('The update check is not enabled, but preferably should be.') }}</a>
+                                {{ __('The update check is not enabled, but preferably should be.') }}
                             </p>
                         {% endif %}
                         {% if not security.scactive %}
