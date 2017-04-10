@@ -12,11 +12,15 @@
 namespace Zikula\BlocksModule\Tests\Api;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface;
 use Zikula\BlocksModule\Api\BlockApi;
 use Zikula\BlocksModule\Collector\BlockCollector;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
+use Zikula\BlocksModule\Entity\BlockPositionEntity;
+use Zikula\BlocksModule\Entity\RepositoryInterface\BlockPositionRepositoryInterface;
 use Zikula\BlocksModule\Tests\Api\Fixture\FooBlock;
+use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 
 class BlockApiTest extends \PHPUnit_Framework_TestCase
 {
@@ -44,10 +48,10 @@ class BlockApiTest extends \PHPUnit_Framework_TestCase
         $this->fooBlock = new FooBlock();
 
         $blockPosRepo = $this
-            ->getMockBuilder('Zikula\BlocksModule\Entity\RepositoryInterface\BlockPositionRepositoryInterface')
+            ->getMockBuilder(BlockPositionRepositoryInterface::class)
             ->getMock();
         $position = $this
-            ->getMockBuilder('Zikula\BlocksModule\Entity\BlockPositionEntity')
+            ->getMockBuilder(BlockPositionEntity::class)
             ->getMock();
         $position
             ->method('getPlacements')
@@ -56,7 +60,7 @@ class BlockApiTest extends \PHPUnit_Framework_TestCase
             ->method('findByName')
             ->willReturn($position);
         $blockFactory = $this
-            ->getMockBuilder('Zikula\BlocksModule\Api\BlockFactoryApi')
+            ->getMockBuilder(BlockFactoryApiInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $blockFactory
@@ -67,7 +71,7 @@ class BlockApiTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $extensionRepo = $this
-            ->getMockBuilder('Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface')
+            ->getMockBuilder(ExtensionRepositoryInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $blockCollector = new BlockCollector();

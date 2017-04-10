@@ -12,7 +12,9 @@
 namespace Zikula\BlocksModule\Tests\Api;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\BlocksModule\Api\BlockFilterApi;
+use Zikula\BlocksModule\Entity\BlockEntity;
 
 class BlockFilterApiTest extends \PHPUnit_Framework_TestCase
 {
@@ -38,7 +40,7 @@ class BlockFilterApiTest extends \PHPUnit_Framework_TestCase
             ]
         ]);
         $request->setLocale('en');
-        $requestStack = $this->getMockBuilder('Symfony\Component\HttpFoundation\RequestStack')
+        $requestStack = $this->getMockBuilder(RequestStack::class)
             ->disableOriginalConstructor()
             ->getMock();
         $requestStack
@@ -71,7 +73,7 @@ class BlockFilterApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsDisplayable($filter, $expected)
     {
-        $blockEntity = $this->getMockBuilder('Zikula\BlocksModule\Entity\BlockEntity')
+        $blockEntity = $this->getMockBuilder(BlockEntity::class)
             ->getMock();
         $blockEntity
             ->method('getLanguage')

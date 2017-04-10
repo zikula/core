@@ -12,10 +12,11 @@
 namespace Zikula\BlocksModule\Api;
 
 use Symfony\Component\Finder\Finder;
+use Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface;
+use Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface;
 use Zikula\BlocksModule\Collector\BlockCollector;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockPositionRepositoryInterface;
 use Zikula\Core\AbstractModule;
-use Zikula\BlocksModule\BlockHandlerInterface;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
@@ -26,7 +27,7 @@ use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterf
  * This class provides an API for interaction with and management of blocks. The class is mainly used internally
  * by Twig-based theme tags in order to 'decorate' a page with the requested blocks.
  */
-class BlockApi
+class BlockApi implements BlockApiInterface
 {
     const BLOCK_ACTIVE = 1;
 
@@ -38,7 +39,7 @@ class BlockApi
     private $blockPositionRepository;
 
     /**
-     * @var BlockFactoryApi
+     * @var BlockFactoryApiInterface
      */
     private $blockFactory;
 
@@ -66,7 +67,7 @@ class BlockApi
     /**
      * BlockApi constructor.
      * @param BlockPositionRepositoryInterface $blockPositionRepository
-     * @param BlockFactoryApi $blockFactoryApi
+     * @param BlockFactoryApiInterface $blockFactoryApi
      * @param ExtensionApi $extensionApi
      * @param ExtensionRepositoryInterface $extensionRepository
      * @param BlockCollector $blockCollector
@@ -74,7 +75,7 @@ class BlockApi
      */
     public function __construct(
         BlockPositionRepositoryInterface $blockPositionRepository,
-        BlockFactoryApi $blockFactoryApi,
+        BlockFactoryApiInterface $blockFactoryApi,
         ExtensionApi $extensionApi,
         ExtensionRepositoryInterface $extensionRepository,
         BlockCollector $blockCollector,
@@ -89,9 +90,7 @@ class BlockApi
     }
 
     /**
-     * Get an unfiltered array of block entities that have been assigned to a block position.
-     * @param $positionName
-     * @return array
+     * {@inheritdoc}
      */
     public function getBlocksByPosition($positionName)
     {
@@ -113,10 +112,7 @@ class BlockApi
     }
 
     /**
-     * Create an instance of a the block Object given a 'bKey' string like AcmeFooModule:Acme\FooModule\Block\FooBlock
-     *   which is the Common ModuleName and the FullyQualifiedClassName of the block.
-     * @param string $bKey
-     * @return \Zikula_Controller_AbstractBlock|BlockHandlerInterface
+     * {@inheritdoc}
      */
     public function createInstanceFromBKey($bKey)
     {
@@ -127,11 +123,7 @@ class BlockApi
     }
 
     /**
-     * Get an array of BlockTypes that are available by scanning the filesystem.
-     * Optionally only retrieve the blocks of one module.
-     *
-     * @param ExtensionEntity $moduleEntity
-     * @return array [[ModuleName:FqBlockClassName => ModuleDisplayName/BlockDisplayName]]
+     * {@inheritdoc}
      */
     public function getAvailableBlockTypes(ExtensionEntity $moduleEntity = null)
     {
@@ -176,9 +168,7 @@ class BlockApi
     }
 
     /**
-     * Get an alphabetically sorted array of module names indexed by id that provide blocks.
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getModulesContainingBlocks()
     {
@@ -196,12 +186,7 @@ class BlockApi
     }
 
     /**
-     * Get the block directory for a module given an instance of the module or (for BC purposes), the module name.
-     *  The $moduleName parameter is deprecated and will be removed at Core-2.0
-     *
-     * @param AbstractModule|null $moduleInstance
-     * @param null $moduleName (parameter is @deprecated)
-     * @return array
+     * {@inheritdoc}
      */
     public function getModuleBlockPath(AbstractModule $moduleInstance = null, $moduleName = null)
     {
