@@ -14,8 +14,9 @@ namespace Zikula\SettingsModule\Api;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Intl\Intl;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
-class LocaleApi
+class LocaleApi implements LocaleApiInterface
 {
     /**
      * Locales with translations present

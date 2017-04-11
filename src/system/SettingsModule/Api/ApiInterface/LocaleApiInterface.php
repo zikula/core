@@ -1,14 +1,18 @@
-LocaleApi
-=========
+<?php
 
-classname: \Zikula\SettingsModule\Api\LocaleApi
+/*
+ * This file is part of the Zikula package.
+ *
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-service id="zikula_settings_module.locale_api"
+namespace Zikula\SettingsModule\Api\ApiInterface;
 
-This class defines the locales that are supported based on the translations available in `app/Resources/translations`.
-
-The class makes the following methods available:
-
+interface LocaleApiInterface
+{
     /**
      * Get array of supported locales
      *
@@ -33,3 +37,4 @@ The class makes the following methods available:
      * @return string
      */
     public function getBrowserLocale($default = 'en');
+}

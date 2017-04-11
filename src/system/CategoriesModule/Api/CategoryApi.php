@@ -18,7 +18,7 @@ use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Helper\CategoryProcessingHelper;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
-use Zikula\SettingsModule\Api\LocaleApi;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 /**
  * CategoryApi
@@ -52,7 +52,7 @@ class CategoryApi
     private $processingHelper;
 
     /**
-     * @var LocaleApi
+     * @var LocaleApiInterface
      */
     private $localeApi;
 
@@ -64,7 +64,7 @@ class CategoryApi
      * @param RequestStack $requestStack RequestStack service instance
      * @param PermissionApiInterface $permissionApi PermissionApi service instance
      * @param CategoryProcessingHelper $processingHelper CategoryProcessingHelper service instance
-     * @param LocaleApi $localeApi
+     * @param LocaleApiInterface $localeApi
      */
     public function __construct(
         TranslatorInterface $translator,
@@ -72,7 +72,7 @@ class CategoryApi
         RequestStack $requestStack,
         PermissionApiInterface $permissionApi,
         CategoryProcessingHelper $processingHelper,
-        LocaleApi $localeApi
+        LocaleApiInterface $localeApi
     ) {
         $this->translator = $translator;
         $this->entityManager = $entityManager;

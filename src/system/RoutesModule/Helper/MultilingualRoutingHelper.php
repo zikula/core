@@ -18,7 +18,7 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\SettingsModule\Api\LocaleApi;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class MultilingualRoutingHelper
 {
@@ -38,7 +38,7 @@ class MultilingualRoutingHelper
     private $cacheClearer;
 
     /**
-     * @var LocaleApi
+     * @var LocaleApiInterface
      */
     private $localeApi;
 
@@ -63,7 +63,7 @@ class MultilingualRoutingHelper
      * @param VariableApiInterface      $variableApi
      * @param DynamicConfigDumper       $configDumper
      * @param CacheClearer              $cacheClearer
-     * @param LocaleApi                 $localeApi
+     * @param LocaleApiInterface        $localeApi
      * @param ZikulaHttpKernelInterface $kernel
      * @param string                    $locale
      * @param bool                      $installed
@@ -72,7 +72,7 @@ class MultilingualRoutingHelper
         VariableApiInterface $variableApi,
         DynamicConfigDumper $configDumper,
         CacheClearer $cacheClearer,
-        LocaleApi $localeApi,
+        LocaleApiInterface $localeApi,
         ZikulaHttpKernelInterface $kernel,
         $locale,
         $installed
