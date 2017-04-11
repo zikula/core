@@ -15,7 +15,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ThemeModule\Engine\Engine;
 use Zikula_View_Theme;
 
@@ -27,13 +27,22 @@ use Zikula_View_Theme;
  */
 class CreateThemedResponseListener implements EventSubscriberInterface
 {
+    /**
+     * @var Engine
+     */
     private $themeEngine;
 
+    /**
+     * @var VariableApiInterface
+     */
     private $variableApi;
 
+    /**
+     * @var bool
+     */
     private $installed;
 
-    public function __construct($installed, Engine $themeEngine, VariableApi $variableApi)
+    public function __construct($installed, Engine $themeEngine, VariableApiInterface $variableApi)
     {
         $this->installed = $installed;
         $this->themeEngine = $themeEngine;

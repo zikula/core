@@ -14,19 +14,25 @@ namespace Zikula\Bundle\CoreBundle\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 class OutputCompressionListener implements EventSubscriberInterface
 {
+    /**
+     * @var VariableApiInterface
+     */
     private $variableApi;
 
+    /**
+     * @var bool
+     */
     private $installed;
 
     /**
      * OutputCompressionListener constructor.
      * @param $variableApi
      */
-    public function __construct(VariableApi $variableApi, $installed)
+    public function __construct(VariableApiInterface $variableApi, $installed)
     {
         $this->variableApi = $variableApi;
         $this->installed = $installed;

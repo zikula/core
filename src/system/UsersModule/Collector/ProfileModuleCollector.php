@@ -11,6 +11,7 @@
 
 namespace Zikula\UsersModule\Collector;
 
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\SettingsModule\SettingsConstant;
 use Zikula\UsersModule\Api\CurrentUserApi;
@@ -47,12 +48,12 @@ class ProfileModuleCollector
      * ProfileModuleCollector constructor.
      * @param UserRepositoryInterface $userRepository
      * @param CurrentUserApi $currentUserApi
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      */
     public function __construct(
         UserRepositoryInterface $userRepository,
         CurrentUserApi $currentUserApi,
-        VariableApi $variableApi
+        VariableApiInterface $variableApi
     ) {
         $this->userRepository = $userRepository;
         $this->currentUserApi = $currentUserApi;

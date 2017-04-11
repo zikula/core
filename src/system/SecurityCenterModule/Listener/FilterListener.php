@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MailerModule\Api\MailerApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
@@ -46,7 +46,7 @@ class FilterListener implements EventSubscriberInterface
     private $isUpgrading;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -75,7 +75,7 @@ class FilterListener implements EventSubscriberInterface
      *
      * @param bool $isInstalled Installed flag
      * @param $isUpgrading
-     * @param VariableApi $variableApi VariableApi service instance
+     * @param VariableApiInterface $variableApi VariableApi service instance
      * @param EntityManagerInterface $em Doctrine entity manager
      * @param MailerApi $mailer MailerApi service instance
      * @param TranslatorInterface $translator
@@ -84,7 +84,7 @@ class FilterListener implements EventSubscriberInterface
     public function __construct(
         $isInstalled,
         $isUpgrading,
-        VariableApi $variableApi,
+        VariableApiInterface $variableApi,
         EntityManagerInterface $em,
         MailerApi $mailer,
         TranslatorInterface $translator,

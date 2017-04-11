@@ -14,7 +14,7 @@ namespace Zikula\ZAuthModule\Container;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Api\CurrentUserApi;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -38,7 +38,7 @@ class LinkContainer implements LinkContainerInterface
     private $permissionApi;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -58,7 +58,7 @@ class LinkContainer implements LinkContainerInterface
      * @param TranslatorInterface $translator
      * @param RouterInterface $router
      * @param PermissionApi $permissionApi
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      * @param CurrentUserApi $currentUserApi
      * @param AuthenticationMappingRepositoryInterface $mappingRepository
      */
@@ -66,7 +66,7 @@ class LinkContainer implements LinkContainerInterface
         TranslatorInterface $translator,
         RouterInterface $router,
         PermissionApi $permissionApi,
-        VariableApi $variableApi,
+        VariableApiInterface $variableApi,
         CurrentUserApi $currentUserApi,
         AuthenticationMappingRepositoryInterface $mappingRepository
     ) {

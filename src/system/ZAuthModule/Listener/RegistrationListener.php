@@ -13,7 +13,7 @@ namespace Zikula\ZAuthModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Core\Event\GenericEvent;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Api\CurrentUserApi;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -35,7 +35,7 @@ class RegistrationListener implements EventSubscriberInterface
     private $permissionApi;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -68,14 +68,14 @@ class RegistrationListener implements EventSubscriberInterface
      * RegistrationListener constructor.
      * @param CurrentUserApi $currentUserApi
      * @param PermissionApi $permissionApi
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      * @param AuthenticationMappingRepositoryInterface $mappingRepository
      * @param RegistrationVerificationHelper $registrationVerificationHelper
      */
     public function __construct(
         CurrentUserApi $currentUserApi,
         PermissionApi $permissionApi,
-        VariableApi $variableApi,
+        VariableApiInterface $variableApi,
         AuthenticationMappingRepositoryInterface $mappingRepository,
         RegistrationVerificationHelper $registrationVerificationHelper
     ) {

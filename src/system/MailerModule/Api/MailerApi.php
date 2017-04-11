@@ -23,7 +23,7 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Event\GenericEvent;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MailerModule\MailerEvents;
 
 /**
@@ -74,7 +74,7 @@ class MailerApi
      * @param TranslatorInterface $translator Translator service instance
      * @param EventDispatcherInterface $eventDispatcher EventDispatcher service instance
      * @param DynamicConfigDumper $configDumper Configuration dumper for retrieving SwiftMailer configuration parameters
-     * @param VariableApi $variableApi VariableApi service instance
+     * @param VariableApiInterface $variableApi VariableApi service instance
      * @param Swift_Mailer $mailer
      */
     public function __construct(
@@ -83,7 +83,7 @@ class MailerApi
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         DynamicConfigDumper $configDumper,
-        VariableApi $variableApi,
+        VariableApiInterface $variableApi,
         Swift_Mailer $mailer
     ) {
         $this->isInstalled = $isInstalled;

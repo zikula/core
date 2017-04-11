@@ -12,7 +12,7 @@
 namespace Zikula\Bridge\HttpFoundation;
 
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserSessionRepositoryInterface;
 use Zikula\UsersModule\Entity\UserSessionEntity;
 
@@ -32,7 +32,7 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
     private $userSessionRepository;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -43,10 +43,10 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
 
     /**
      * @param UserSessionRepositoryInterface $userSessionRepository
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      * @param $installed
      */
-    public function __construct(UserSessionRepositoryInterface $userSessionRepository, VariableApi $variableApi, $installed)
+    public function __construct(UserSessionRepositoryInterface $userSessionRepository, VariableApiInterface $variableApi, $installed)
     {
         $this->userSessionRepository = $userSessionRepository;
         $this->variableApi = $variableApi;

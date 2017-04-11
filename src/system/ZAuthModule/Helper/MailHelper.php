@@ -12,7 +12,7 @@
 namespace Zikula\ZAuthModule\Helper;
 
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MailerModule\Api\MailerApi;
 
 class MailHelper
@@ -28,7 +28,7 @@ class MailHelper
     private $twig;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -41,10 +41,10 @@ class MailHelper
      * MailHelper constructor.
      * @param TranslatorInterface $translator
      * @param \Twig_Environment $twig
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      * @param MailerApi $mailerApi
      */
-    public function __construct(TranslatorInterface $translator, \Twig_Environment $twig, VariableApi $variableApi, MailerApi $mailerApi)
+    public function __construct(TranslatorInterface $translator, \Twig_Environment $twig, VariableApiInterface $variableApi, MailerApi $mailerApi)
     {
         $this->translator = $translator;
         $this->twig = $twig;

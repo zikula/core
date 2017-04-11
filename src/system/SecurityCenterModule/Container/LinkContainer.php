@@ -14,23 +14,24 @@ namespace Zikula\SecurityCenterModule\Container;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 class LinkContainer implements LinkContainerInterface
 {
     /**
-     * @var Translator
+     * @var TranslatorInterface
      */
     private $translator;
 
     /**
-     * @var RouterInterface
+     * @var VariableApiInterface
      */
     private $router;
 
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
@@ -44,10 +45,10 @@ class LinkContainer implements LinkContainerInterface
      *
      * @param TranslatorInterface $translator    TranslatorInterface service instance
      * @param RouterInterface     $router        RouterInterface service instance
-     * @param PermissionApi       $permissionApi PermissionApi service instance
-     * @param VariableApi         $variableApi   VariableApi service instance
+     * @param PermissionApiInterface $permissionApi PermissionApi service instance
+     * @param VariableApiInterface $variableApi   VariableApi service instance
      */
-    public function __construct(TranslatorInterface $translator, RouterInterface $router, PermissionApi $permissionApi, VariableApi $variableApi)
+    public function __construct(TranslatorInterface $translator, RouterInterface $router, PermissionApiInterface $permissionApi, VariableApiInterface $variableApi)
     {
         $this->translator = $translator;
         $this->router = $router;

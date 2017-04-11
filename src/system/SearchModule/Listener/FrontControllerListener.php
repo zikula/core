@@ -15,8 +15,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ThemeModule\Engine\AssetBag;
 
 class FrontControllerListener implements EventSubscriberInterface
@@ -27,12 +27,12 @@ class FrontControllerListener implements EventSubscriberInterface
     private $router;
 
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -41,8 +41,14 @@ class FrontControllerListener implements EventSubscriberInterface
      */
     private $headerAssetBag;
 
+    /**
+     * @var bool
+     */
     private $installed;
 
+    /**
+     * @var bool
+     */
     private $isUpgrading;
 
     public static function getSubscribedEvents()
@@ -58,13 +64,21 @@ class FrontControllerListener implements EventSubscriberInterface
     /**
      * FrontControllerListener constructor.
      *
-     * @param RouterInterface $router         RouterInterface service instance
-     * @param PermissionApi   $permissionApi  PermissionApi service instance
-     * @param VariableApi     $variableApi    VariableApi service instance
-     * @param AssetBag        $headerAssetBag AssetBag service instance for header code
+     * @param RouterInterface $router RouterInterface service instance
+     * @param PermissionApiInterface $permissionApi PermissionApi service instance
+     * @param VariableApiInterface $variableApi VariableApi service instance
+     * @param AssetBag $headerAssetBag AssetBag service instance for header code
+     * @param bool $installed
+     * @param bool $isUpgrading
      */
-    public function __construct(RouterInterface $router, PermissionApi $permissionApi, VariableApi $variableApi, AssetBag $headerAssetBag, $installed, $isUpgrading = false)
-    {
+    public function __construct(
+        RouterInterface $router,
+        PermissionApiInterface $permissionApi,
+        VariableApiInterface $variableApi,
+        AssetBag $headerAssetBag,
+        $installed,
+        $isUpgrading = false
+    ) {
         $this->router = $router;
         $this->permissionApi = $permissionApi;
         $this->variableApi = $variableApi;

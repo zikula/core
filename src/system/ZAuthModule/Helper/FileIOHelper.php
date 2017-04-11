@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Event\GenericEvent;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Api\CurrentUserApi;
@@ -38,7 +38,7 @@ class FileIOHelper
     use TranslatorTrait;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -79,7 +79,7 @@ class FileIOHelper
 
     /**
      * RegistrationHelper constructor.
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      * @param PermissionApi $permissionApi
      * @param TranslatorInterface $translator
      * @param ValidatorInterface $validator
@@ -89,7 +89,7 @@ class FileIOHelper
      * @param CurrentUserApi $currentUserApi
      */
     public function __construct(
-        VariableApi $variableApi,
+        VariableApiInterface $variableApi,
         PermissionApi $permissionApi,
         TranslatorInterface $translator,
         ValidatorInterface $validator,

@@ -12,7 +12,7 @@
 namespace Zikula\ZAuthModule\Helper;
 
 use Zikula\Core\Doctrine\EntityAccess;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\ZAuthModule\Api\PasswordApi;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
@@ -28,7 +28,7 @@ class LostPasswordVerificationHelper
     private $userVerificationRepository;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -41,9 +41,10 @@ class LostPasswordVerificationHelper
      * LostPasswordVerificationHelper constructor.
      *
      * @param UserVerificationRepositoryInterface $userVerificationRepository
-     * @param VariableApi                         $variableApi
+     * @param VariableApiInterface $variableApi
+     * @param PasswordApi $passwordApi
      */
-    public function __construct(UserVerificationRepositoryInterface $userVerificationRepository, VariableApi $variableApi, PasswordApi $passwordApi)
+    public function __construct(UserVerificationRepositoryInterface $userVerificationRepository, VariableApiInterface $variableApi, PasswordApi $passwordApi)
     {
         $this->userVerificationRepository = $userVerificationRepository;
         $this->variableApi = $variableApi;

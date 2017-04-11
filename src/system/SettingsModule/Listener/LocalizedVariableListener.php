@@ -14,20 +14,20 @@ namespace Zikula\SettingsModule\Listener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 class LocalizedVariableListener implements EventSubscriberInterface
 {
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
     /**
      * LocaleListener constructor.
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      */
-    public function __construct(VariableApi $variableApi)
+    public function __construct(VariableApiInterface $variableApi)
     {
         $this->variableApi = $variableApi;
     }

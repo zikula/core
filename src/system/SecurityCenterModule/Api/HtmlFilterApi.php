@@ -13,13 +13,13 @@ namespace Zikula\SecurityCenterModule\Api;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula\Core\Event\GenericEvent;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface;
 
 class HtmlFilterApi implements HtmlFilterApiInterface
 {
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -35,12 +35,12 @@ class HtmlFilterApi implements HtmlFilterApiInterface
 
     /**
      * HtmlFilterApi constructor.
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      * @param bool $installed
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
-        VariableApi $variableApi,
+        VariableApiInterface $variableApi,
         $installed,
         EventDispatcherInterface $eventDispatcher
     ) {

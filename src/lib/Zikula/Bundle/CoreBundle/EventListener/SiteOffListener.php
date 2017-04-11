@@ -19,14 +19,14 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\Response\PlainResponse;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Api\CurrentUserApi;
 
 class SiteOffListener implements EventSubscriberInterface
 {
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -67,7 +67,7 @@ class SiteOffListener implements EventSubscriberInterface
 
     /**
      * SiteOffListener constructor.
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      * @param PermissionApi $permissionApi
      * @param CurrentUserApi $currentUserApi
      * @param \Twig_Environment $twig
@@ -77,7 +77,7 @@ class SiteOffListener implements EventSubscriberInterface
      * @param $currentInstalledVersion
      */
     public function __construct(
-        VariableApi $variableApi,
+        VariableApiInterface $variableApi,
         PermissionApi $permissionApi,
         CurrentUserApi $currentUserApi,
         \Twig_Environment $twig,

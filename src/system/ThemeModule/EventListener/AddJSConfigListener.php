@@ -14,7 +14,7 @@ namespace Zikula\ThemeModule\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ThemeModule\Engine\AssetBag;
 use Zikula\ThemeModule\Engine\ParameterBag;
 use Zikula\UsersModule\Api\CurrentUserApi;
@@ -25,7 +25,7 @@ use Zikula\UsersModule\Api\CurrentUserApi;
 class AddJSConfigListener implements EventSubscriberInterface
 {
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -66,7 +66,7 @@ class AddJSConfigListener implements EventSubscriberInterface
 
     /**
      * JSConfig constructor.
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      * @param CurrentUserApi $currentUserApi
      * @param \Twig_Environment $twig
      * @param ParameterBag $pageVars
@@ -76,7 +76,7 @@ class AddJSConfigListener implements EventSubscriberInterface
      */
     public function __construct(
         $installed,
-        VariableApi $variableApi,
+        VariableApiInterface $variableApi,
         CurrentUserApi $currentUserApi,
         \Twig_Environment $twig,
         ParameterBag $pageVars,

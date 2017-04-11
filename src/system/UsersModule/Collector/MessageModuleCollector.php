@@ -11,7 +11,7 @@
 
 namespace Zikula\UsersModule\Collector;
 
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\SettingsModule\SettingsConstant;
 use Zikula\UsersModule\MessageModule\IdentityMessageModule;
 use Zikula\UsersModule\MessageModule\MessageModuleInterface;
@@ -33,9 +33,9 @@ class MessageModuleCollector
 
     /**
      * MessageModuleCollector constructor.
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      */
-    public function __construct(VariableApi $variableApi)
+    public function __construct(VariableApiInterface $variableApi)
     {
         $this->currentMessageModuleName = $variableApi->getSystemVar(SettingsConstant::SYSTEM_VAR_MESSAGE_MODULE, '');
     }

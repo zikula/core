@@ -14,7 +14,7 @@ namespace Zikula\ZAuthModule\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\ZAuthModule\Api\PasswordApi;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
@@ -23,7 +23,7 @@ use Zikula\ZAuthModule\ZAuthConstant;
 class ValidRegistrationVerificationValidator extends ConstraintValidator
 {
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -48,14 +48,14 @@ class ValidRegistrationVerificationValidator extends ConstraintValidator
     private $passwordApi;
 
     /**
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      * @param TranslatorInterface $translator
      * @param UserRepositoryInterface $userRepository
      * @param UserVerificationRepositoryInterface $userVerificationRepository
      * @param PasswordApi $passwordApi
      */
     public function __construct(
-        VariableApi $variableApi,
+        VariableApiInterface $variableApi,
         TranslatorInterface $translator,
         UserRepositoryInterface $userRepository,
         UserVerificationRepositoryInterface $userVerificationRepository,

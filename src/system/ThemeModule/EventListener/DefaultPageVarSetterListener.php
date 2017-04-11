@@ -17,8 +17,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ThemeModule\Engine\ParameterBag;
-use Zikula\ExtensionsModule\Api\VariableApi;
 
 /**
  * Class DefaultPageVarSetterListener
@@ -38,7 +38,7 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
     private $router;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -56,14 +56,14 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
      * DefaultPageVarSetterListener constructor.
      * @param ParameterBag $pageVars
      * @param RouterInterface $routerInterface
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      * @param ZikulaHttpKernelInterface $kernel
      * @param bool $isInstalled
      */
     public function __construct(
         ParameterBag $pageVars,
         RouterInterface $routerInterface,
-        VariableApi $variableApi,
+        VariableApiInterface $variableApi,
         ZikulaHttpKernelInterface $kernel,
         $isInstalled
     ) {

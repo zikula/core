@@ -15,7 +15,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Event\GenericEvent;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\UsersModule\Api\CurrentUserApi;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -29,7 +29,7 @@ class RegistrationHelper
     use TranslatorTrait;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -55,7 +55,7 @@ class RegistrationHelper
 
     /**
      * RegistrationHelper constructor.
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      * @param CurrentUserApi $currentUserApi
      * @param UserRepositoryInterface $userRepository
      * @param GroupRepositoryInterface $groupRepository
@@ -63,7 +63,7 @@ class RegistrationHelper
      * @param TranslatorInterface $translator
      */
     public function __construct(
-        VariableApi $variableApi,
+        VariableApiInterface $variableApi,
         CurrentUserApi $currentUserApi,
         UserRepositoryInterface $userRepository,
         GroupRepositoryInterface $groupRepository,

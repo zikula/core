@@ -16,7 +16,7 @@ use Zikula\AdminModule\Entity\AdminModuleEntity;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\ModuleStateEvent;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 
 class ModuleEventListener implements EventSubscriberInterface
@@ -32,7 +32,7 @@ class ModuleEventListener implements EventSubscriberInterface
     protected $extensionRepository;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     protected $variableApi;
 
@@ -53,13 +53,13 @@ class ModuleEventListener implements EventSubscriberInterface
      *
      * @param AdminModuleRepositoryInterface $adminModuleRepository
      * @param ExtensionRepositoryInterface $extensionRepository
-     * @param VariableApi $variableApi VariableApi service instance
+     * @param VariableApiInterface $variableApi VariableApi service instance
      * @param bool $installed
      */
     public function __construct(
         AdminModuleRepositoryInterface $adminModuleRepository,
         ExtensionRepositoryInterface $extensionRepository,
-        VariableApi $variableApi,
+        VariableApiInterface $variableApi,
         $installed
     ) {
         $this->adminModuleRepository = $adminModuleRepository;
