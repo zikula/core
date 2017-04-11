@@ -1,14 +1,23 @@
-CategoryPermissionApi
-=====================
+<?php
 
-classname: \Zikula\CategoriesModule\Api\CategoryPermissionApi
+/*
+ * This file is part of the Zikula package.
+ *
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-service id = "zikula_categories_module.api.category_permission"
+namespace Zikula\CategoriesModule\Api\ApiInterface;
 
-The CategoryPermissionApi helps with implementing permission checks based on categories.
+use Zikula\CategoriesModule\Entity\AbstractCategoryAssignment;
 
-The class makes the following methods available:
-
+/**
+ * CategoryPermissionApiInterface
+ */
+interface CategoryPermissionApiInterface
+{
     /**
      * Check for access to a certain set of categories.
      *
@@ -21,9 +30,4 @@ The class makes the following methods available:
      * @return bool True if access is allowed to at least one of the categories
      */
     public function hasCategoryAccess(array $categoryAssignments, $permLevel = ACCESS_OVERVIEW, $requireAccessForAll = false);
-
-`$categoryAssignments` must be an array of \Zikula\CategoriesModule\Entity\AbstractCategoryAssignment
-
-use:
-
-    $hasAccess = $this->categoryPermissionApi->hasCategoryAccess($page->getCategoryAssignments());
+}
