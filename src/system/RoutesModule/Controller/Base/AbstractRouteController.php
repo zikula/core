@@ -79,9 +79,6 @@ abstract class AbstractRouteController extends AbstractController
         ];
 
         return $this->redirectToRoute('zikularoutesmodule_route_' . $templateParameters['routeArea'] . 'view');
-
-        // return index template
-        return $this->render('@ZikulaRoutesModule/Route/index.html.twig', $templateParameters);
     }
     /**
      * This action provides an item list overview in the admin area.

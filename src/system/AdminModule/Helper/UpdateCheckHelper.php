@@ -131,7 +131,7 @@ class UpdateCheckHelper
     {
         $now = time();
 
-        if ($this->force == false && (($now - $this->lastChecked) < ($this->checkInterval * 86400))) {
+        if (false === $this->force && (($now - $this->lastChecked) < ($this->checkInterval * 86400))) {
             // dont get an update because TTL not expired yet
         } else {
             $newVersionInfo = json_decode(trim($this->zcurl('https://api.github.com/repos/zikula/core/releases')), true);

@@ -58,7 +58,7 @@ class ModuleEventListener implements EventSubscriberInterface
     public function moduleEnable(ModuleStateEvent $event)
     {
         $moduleName = $this->getModuleName($event);
-        if (null == $moduleName) {
+        if (null === $moduleName) {
             return;
         }
 
@@ -79,7 +79,7 @@ class ModuleEventListener implements EventSubscriberInterface
     public function moduleDisable(ModuleStateEvent $event)
     {
         $moduleName = $this->getModuleName($event);
-        if (null == $moduleName) {
+        if (null === $moduleName) {
             return;
         }
 
@@ -100,7 +100,7 @@ class ModuleEventListener implements EventSubscriberInterface
     public function moduleRemove(ModuleStateEvent $event)
     {
         $moduleName = $this->getModuleName($event);
-        if (null == $moduleName) {
+        if (null === $moduleName) {
             return;
         }
 
@@ -120,7 +120,7 @@ class ModuleEventListener implements EventSubscriberInterface
     private function getModuleName(ModuleStateEvent $event)
     {
         $moduleName = $event->getModule()->getName();
-        if ((null == $this->searchableModuleCollector->get($moduleName))) {
+        if (null === $this->searchableModuleCollector->get($moduleName)) {
             return null;
         }
 

@@ -104,7 +104,7 @@ class FilterUtil
      */
     public function getFiltersFromInput()
     {
-        if ($this->request === null) {
+        if (null === $this->request) {
             throw new \LogicException('Request object not set.');
         }
 
@@ -273,7 +273,7 @@ class FilterUtil
         if (isset($parts) && is_array($parts) && count($parts) > 2) {
             $con['field'] = $parts[0];
             $con['op'] = $parts[1];
-            if ($this->request !== null && substr($parts[2], 0, 1) == '$') {
+            if (null !== $this->request && substr($parts[2], 0, 1) == '$') {
                 $value = $this->request->filter(substr($parts[2], 1));
                 // !is_numeric because empty(0) == false
                 if (empty($value) && !is_numeric($value)) {
@@ -340,8 +340,8 @@ class FilterUtil
             switch ($c) {
                 case '*': // Operator: OR
                     $con = $this->makeCondition($string);
-                    if ($con === null) {
-                        if ($subexpr !== null) {
+                    if (null === $con) {
+                        if (null !== $subexpr) {
                             $con = $subexpr;
                             $subexpr = null;
                         } else {
@@ -349,13 +349,13 @@ class FilterUtil
                             break;
                         }
                     }
-                    if ($or === null) { // make new or Object
+                    if (null === $or) { // make new or Object
                         $or = new Orx();
-                        if ($and !== null) { // add existing and
+                        if (null !== $and) { // add existing and
                             $this->addBtoA($or, $and);
                         }
                     }
-                    if ($op === null) {
+                    if (null === $op) {
                         $op = $or;
                     }
                     $this->addBtoA($op, $con); // add condition to last operator object
@@ -365,8 +365,8 @@ class FilterUtil
                     break;
                 case ',': // Operator: AND
                     $con = $this->makeCondition($string);
-                    if ($con === null) {
-                        if ($subexpr !== null) {
+                    if (null === $con) {
+                        if (null !== $subexpr) {
                             $con = $subexpr;
                             $subexpr = null;
                         } else {
@@ -374,9 +374,9 @@ class FilterUtil
                             break;
                         }
                     }
-                    if ($and == null) {
+                    if (null === $and) {
                         $and = new Andx();
-                        if ($or !== null) {
+                        if (null !== $or) {
                             $this->addBtoA($or, $and);
                         }
                         $op = $and;
@@ -413,28 +413,28 @@ class FilterUtil
             }
         }
         $con = $this->makeCondition($string);
-        if ($con === null) {
-            if ($subexpr !== null) {
+        if (null === $con) {
+            if (null !== $subexpr) {
                 $con = $subexpr;
                 $subexpr = null;
             }
         }
-        if ($op !== null) {
+        if (null !== $op) {
             $this->addBtoA($op, $con);
         } else {
-            if ($subexpr !== null) {
+            if (null !== $subexpr) {
                 throw new \InvalidArgumentException('Malformed filter string');
             }
 
             return $con;
         }
-        if ($or !== null) {
+        if (null !== $or) {
             return $or;
         }
-        if ($and !== null) {
+        if (null !== $and) {
             return $and;
         }
-        if ($subexpr !== null) {
+        if (null !== $subexpr) {
             return $subexpr;
         }
 
@@ -461,7 +461,7 @@ class FilterUtil
     {
         $qb = $this->pluginManager->getConfig()->getQueryBuilder();
         $filterExpr = $this->genFilterExpr();
-        if ($filterExpr !== null) {
+        if (null !== $filterExpr) {
             $qb->where($filterExpr);
         }
     }

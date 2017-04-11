@@ -37,8 +37,8 @@ class UpgraderController extends AbstractController
         if (version_compare($currentVersion, ZikulaKernel::VERSION, '=')) {
             $stage = 'complete';
         }
-        // notinstalled?
-        if (($this->container->getParameter('installed') == false)) {
+        // not installed?
+        if (false === $this->container->getParameter('installed')) {
             return new RedirectResponse($this->router->generate('install'));
         }
 

@@ -20,7 +20,7 @@ if (is_readable($file = __DIR__.'/../app/config/custom_parameters.yml')) {
     $kernelConfig = array_merge($kernelConfig, Yaml::parse(file_get_contents($file)));
 }
 $kernelConfig = $kernelConfig['parameters'];
-if ($kernelConfig['debug'] == true) {
+if (true === $kernelConfig['debug']) {
     Debug::enable();
 }
 if ($kernelConfig['env'] == 'prod') {

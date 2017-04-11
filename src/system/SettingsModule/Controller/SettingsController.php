@@ -111,7 +111,7 @@ class SettingsController extends AbstractController
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $data = $form->getData();
-                if (false == $data['multilingual']) {
+                if (false === $data['multilingual']) {
                     $data['language_detect'] = false;
                     $this->get('zikula_extensions_module.api.variable')->del(VariableApi::CONFIG, 'language');
                 }

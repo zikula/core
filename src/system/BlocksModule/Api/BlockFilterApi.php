@@ -112,9 +112,10 @@ class BlockFilterApi implements BlockFilterApiInterface
     public function getFilterAttributeChoices()
     {
         $request = $this->requestStack->getCurrentRequest();
-        if (null == $request) {
+        if (null === $request) {
             return [];
         }
+
         $attributes = [];
         foreach ($request->attributes->keys() as $attribute) {
             $attributes[$attribute] = $attribute;

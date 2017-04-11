@@ -40,11 +40,11 @@ class ExtensionsInterfaceController extends AbstractController
             'caller' => $caller,
             'title' => ('' != $currentRequest->attributes->get('title')) ? $currentRequest->attributes->get('title') : $caller['info']['displayname'],
             'titlelink' => ('' != $currentRequest->attributes->get('titlelink')) ? $currentRequest->attributes->get('titlelink') : false,
-            'setpagetitle' => (true == $currentRequest->attributes->get('setpagetitle')) ? $currentRequest->attributes->get('setpagetitle') : false,
-            'insertflashes' => (true == $currentRequest->attributes->get('insertflashes')) ? $currentRequest->attributes->get('insertflashes') : false,
-            'menufirst' => (true == $currentRequest->attributes->get('menufirst')) ? $currentRequest->attributes->get('menufirst') : false,
+            'setpagetitle' => (true === $currentRequest->attributes->get('setpagetitle')) ? $currentRequest->attributes->get('setpagetitle') : false,
+            'insertflashes' => (true === $currentRequest->attributes->get('insertflashes')) ? $currentRequest->attributes->get('insertflashes') : false,
+            'menufirst' => (true === $currentRequest->attributes->get('menufirst')) ? $currentRequest->attributes->get('menufirst') : false,
             'type' => ('admin' == $currentRequest->attributes->get('type')) ? $currentRequest->attributes->get('type') : 'user',
-            'image' => (true == $currentRequest->attributes->get('image')) ? $adminImagePath : false,
+            'image' => (true === $currentRequest->attributes->get('image')) ? $adminImagePath : false,
         ]);
     }
 

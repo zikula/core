@@ -74,7 +74,7 @@ class RegistrationController extends AbstractController
         if ($userEntity) {
             $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->getByZikulaId($userEntity->getUid());
             if ($mapping) {
-                $setPass = null == $mapping->getPass() || '' == $mapping->getPass();
+                $setPass = null === $mapping->getPass() || '' == $mapping->getPass();
             }
         }
         $form = $this->createForm(VerifyRegistrationType::class,
