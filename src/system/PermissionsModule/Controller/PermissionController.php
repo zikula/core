@@ -94,7 +94,7 @@ class PermissionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $permissionEntity = $form->getData();
             $pid = $permissionEntity->getPid();
-            if (null == $pid) {
+            if (null === $pid) {
                 if ($permissionEntity->getSequence() == -1) {
                     $permissionEntity->setSequence($this->get('zikula_permissions_module.permission_repository')->getMaxSequence() + 1); // last
                 } else {
@@ -102,7 +102,7 @@ class PermissionController extends AbstractController
                 }
             }
             $this->get('doctrine')->getRepository('ZikulaPermissionsModule:PermissionEntity')->persistAndFlush($permissionEntity);
-            $row = (null == $pid) ? $this->renderView("@ZikulaPermissionsModule/Permission/permissionTableRow.html.twig", [
+            $row = (null === $pid) ? $this->renderView('@ZikulaPermissionsModule/Permission/permissionTableRow.html.twig', [
                 'permission' => $permissionEntity,
                 'groups' => $this->get('zikula_groups_module.group_repository')->getGroupNamesById(),
                 'permissionLevels' => $this->get('zikula_permissions_module.api.permission')->accessLevelNames(),
@@ -118,7 +118,7 @@ class PermissionController extends AbstractController
         $templateParameters = [
             'form' => $form->createView(),
         ];
-        $view = $this->renderView("@ZikulaPermissionsModule/Permission/permission.html.twig", $templateParameters);
+        $view = $this->renderView('@ZikulaPermissionsModule/Permission/permission.html.twig', $templateParameters);
 
         return new AjaxResponse(['view' => $view]);
     }

@@ -249,7 +249,7 @@ class AdminController extends AbstractController
             // check if the Zikula Recovery Console exists
             $zrcExists = file_exists('zrc.php');
             // check if upgrade scripts exist
-            if (true == $zrcExists) {
+            if (true === $zrcExists) {
                 return $this->render('@ZikulaAdminModule/Admin/warning.html.twig', [
                     'zrcExists' => $zrcExists
                 ]);
@@ -324,7 +324,7 @@ class AdminController extends AbstractController
                 break;
             }
 
-            if ($catid == $acid || (false == $catid && $acid == $this->getVar('defaultcategory'))) {
+            if ($catid == $acid || (false === $catid && $acid == $this->getVar('defaultcategory'))) {
                 $menuText = '';
                 if ($displayNameType == 1) {
                     $menuText = $adminModule['displayname'];
@@ -486,7 +486,7 @@ class AdminController extends AbstractController
 
         // if permission is false we are not allowed to see this category because its
         // empty and we are not admin
-        if (false == $permission) {
+        if (false === $permission) {
             // show the first category
             $acid = !empty($possibleCategoryIds) ? (int)$possibleCategoryIds[0] : null;
         }

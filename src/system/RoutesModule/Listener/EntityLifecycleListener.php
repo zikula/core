@@ -13,7 +13,6 @@
 namespace Zikula\RoutesModule\Listener;
 
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use ServiceUtil;
 use Zikula\RoutesModule\Listener\Base\AbstractEntityLifecycleListener;
 
 /**

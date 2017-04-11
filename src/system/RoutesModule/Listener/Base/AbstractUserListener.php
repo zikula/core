@@ -14,7 +14,6 @@ namespace Zikula\RoutesModule\Listener\Base;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Api\CurrentUserApi;

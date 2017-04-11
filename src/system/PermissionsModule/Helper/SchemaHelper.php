@@ -44,7 +44,7 @@ class SchemaHelper
         $extensions = $this->extensionRepository->findBy($criteria);
         $schema = [];
         foreach ($extensions as $extension) {
-            if (null != $extension->getSecurityschema()) {
+            if (null !== $extension->getSecurityschema()) {
                 $schema = array_merge($schema, $extension->getSecurityschema());
             }
         }

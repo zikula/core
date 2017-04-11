@@ -125,7 +125,7 @@ class MenuController extends AbstractController
         if ($form->isSubmitted() && $form->isValid() && $form->get('save')->isClicked()) {
             $menuItemEntity = $form->getData();
             $repo->persistAsFirstChild($menuItemEntity);
-            if (null == $menuItemEntity->getId()) {
+            if (null === $menuItemEntity->getId()) {
                 // create dummy child
                 $dummy = new MenuItemEntity();
                 $dummy->setTitle('dummy child');

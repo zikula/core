@@ -168,7 +168,7 @@ class MailerApi
         if (isset($subject)) {
             $this->message->setSubject($subject);
         } else {
-            if ('' == $message->getSubject() || null == $message->getSubject()) {
+            if ('' == $message->getSubject() || null === $message->getSubject()) {
                 throw new \RuntimeException('There is no subject set.');
             }
         }
@@ -181,7 +181,7 @@ class MailerApi
         if (isset($body)) {
             $this->message->setBody($body);
         } else {
-            if ('' == $message->getBody() || null == $message->getBody()) {
+            if ('' == $message->getBody() || null === $message->getBody()) {
                 throw new \RuntimeException('There is no message body set.');
             }
         }

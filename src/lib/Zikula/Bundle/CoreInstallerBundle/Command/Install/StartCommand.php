@@ -54,7 +54,7 @@ class StartCommand extends AbstractCoreInstallerCommand
 
         $this->bootstrap();
 
-        if ($this->getContainer()->getParameter('installed') == true) {
+        if (true === $this->getContainer()->getParameter('installed')) {
             $io->error($this->translator->__('Zikula already appears to be installed.'));
 
             return;

@@ -92,7 +92,7 @@ class CategoryTreeType extends AbstractType
         });
         $resolver->setNormalizer('placeholder', function (Options $options, $placeholder) {
             if (!$options['required']) {
-                if (null == $placeholder || empty($placeholder)) {
+                if (null === $placeholder || empty($placeholder)) {
                     $isMultiple = $options['multiple'];
                     $translator = $options['translator'];
 
