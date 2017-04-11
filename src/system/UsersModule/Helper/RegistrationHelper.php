@@ -17,7 +17,7 @@ use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
@@ -34,7 +34,7 @@ class RegistrationHelper
     private $variableApi;
 
     /**
-     * @var CurrentUserApi
+     * @var CurrentUserApiInterface
      */
     private $currentUserApi;
 
@@ -56,7 +56,7 @@ class RegistrationHelper
     /**
      * RegistrationHelper constructor.
      * @param VariableApiInterface $variableApi
-     * @param CurrentUserApi $currentUserApi
+     * @param CurrentUserApiInterface $currentUserApi
      * @param UserRepositoryInterface $userRepository
      * @param GroupRepositoryInterface $groupRepository
      * @param EventDispatcherInterface $eventDispatcher
@@ -64,7 +64,7 @@ class RegistrationHelper
      */
     public function __construct(
         VariableApiInterface $variableApi,
-        CurrentUserApi $currentUserApi,
+        CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository,
         GroupRepositoryInterface $groupRepository,
         EventDispatcherInterface $eventDispatcher,

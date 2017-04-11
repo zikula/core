@@ -39,9 +39,7 @@ class LocaleApi implements LocaleApiInterface
     }
 
     /**
-     * Get array of supported locales
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getSupportedLocales()
     {
@@ -70,9 +68,7 @@ class LocaleApi implements LocaleApiInterface
     }
 
     /**
-     * Get array of supported locales with their translated name
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getSupportedLocaleNames()
     {
@@ -86,13 +82,7 @@ class LocaleApi implements LocaleApiInterface
     }
 
     /**
-     * Detect languages preferred by browser and make best match to available provided languages.
-     *
-     * Adapted from StackOverflow response by Noel Whitemore
-     * @see http://stackoverflow.com/a/26169603/2600812
-     *
-     * @param string $default
-     * @return string
+     * {@inheritdoc}
      */
     public function getBrowserLocale($default = 'en')
     {

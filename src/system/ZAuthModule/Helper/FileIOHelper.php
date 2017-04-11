@@ -23,7 +23,7 @@ use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\RegistrationEvents;
@@ -68,7 +68,7 @@ class FileIOHelper
     private $eventDispatcher;
 
     /**
-     * @var CurrentUserApi
+     * @var CurrentUserApiInterface
      */
     private $currentUser;
 
@@ -86,7 +86,8 @@ class FileIOHelper
      * @param EntityManager $entityManager
      * @param MailHelper $mailHelper
      * @param EventDispatcherInterface $eventDispatcher
-     * @param CurrentUserApi $currentUserApi
+     * @param CurrentUserApiInterface $currentUserApi
+     * @param PasswordApi $passwordApi
      */
     public function __construct(
         VariableApiInterface $variableApi,
@@ -96,7 +97,7 @@ class FileIOHelper
         EntityManager $entityManager,
         MailHelper $mailHelper,
         EventDispatcherInterface $eventDispatcher,
-        CurrentUserApi $currentUserApi,
+        CurrentUserApiInterface $currentUserApi,
         PasswordApi $passwordApi
     ) {
         $this->variableApi = $variableApi;

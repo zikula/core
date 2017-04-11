@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Core\Exception\ExtensionNotAvailableException;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 /**
  * ExceptionListener catches exceptions and converts them to Response instances.
@@ -45,7 +45,7 @@ class ExceptionListener implements EventSubscriberInterface
     private $cacheClearer;
 
     /**
-     * @var CurrentUserApi
+     * @var CurrentUserApiInterface
      */
     private $currentUserApi;
 
@@ -64,7 +64,7 @@ class ExceptionListener implements EventSubscriberInterface
      * @param RouterInterface $router
      * @param EventDispatcherInterface $dispatcher
      * @param CacheClearer $cacheClearer
-     * @param CurrentUserApi $currentUserApi
+     * @param CurrentUserApiInterface $currentUserApi
      * @param PermissionApiInterface $permissionApi
      * @param bool $installed
      */
@@ -72,7 +72,7 @@ class ExceptionListener implements EventSubscriberInterface
         RouterInterface $router,
         EventDispatcherInterface $dispatcher,
         CacheClearer $cacheClearer,
-        CurrentUserApi $currentUserApi,
+        CurrentUserApiInterface $currentUserApi,
         PermissionApiInterface $permissionApi,
         $installed
     ) {

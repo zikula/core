@@ -17,7 +17,7 @@ use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Helper\RegistrationHelper;
@@ -50,7 +50,7 @@ class LinkContainer implements LinkContainerInterface
     private $registrationHelper;
 
     /**
-     * @var CurrentUserApi
+     * @var CurrentUserApiInterface
      */
     private $currentUser;
 
@@ -73,7 +73,7 @@ class LinkContainer implements LinkContainerInterface
      * @param PermissionApiInterface $permissionApi
      * @param VariableApiInterface $variableApi
      * @param RegistrationHelper $registrationHelper
-     * @param CurrentUserApi $currentUserApi
+     * @param CurrentUserApiInterface $currentUserApi
      * @param LocaleApiInterface $localeApi
      * @param UserRepositoryInterface $userRepository
      */
@@ -83,7 +83,7 @@ class LinkContainer implements LinkContainerInterface
         PermissionApiInterface $permissionApi,
         VariableApiInterface $variableApi,
         RegistrationHelper $registrationHelper,
-        CurrentUserApi $currentUserApi,
+        CurrentUserApiInterface $currentUserApi,
         LocaleApiInterface $localeApi,
         UserRepositoryInterface $userRepository // @deprecated
     ) {

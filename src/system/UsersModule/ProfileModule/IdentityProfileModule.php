@@ -11,7 +11,7 @@
 
 namespace Zikula\UsersModule\ProfileModule;
 
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 
 class IdentityProfileModule implements ProfileModuleInterface
@@ -22,16 +22,16 @@ class IdentityProfileModule implements ProfileModuleInterface
     private $userRepository;
 
     /**
-     * @var CurrentUserApi
+     * @var CurrentUserApiInterface
      */
     private $currentUserApi;
 
     /**
      * IdentityProfileModule constructor.
      * @param UserRepositoryInterface $userRepository
-     * @param CurrentUserApi $currentUserApi
+     * @param CurrentUserApiInterface $currentUserApi
      */
-    public function __construct(UserRepositoryInterface $userRepository, CurrentUserApi $currentUserApi)
+    public function __construct(UserRepositoryInterface $userRepository, CurrentUserApiInterface $currentUserApi)
     {
         $this->userRepository = $userRepository;
         $this->currentUserApi = $currentUserApi;

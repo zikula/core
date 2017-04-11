@@ -16,7 +16,7 @@ use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\SearchModule\Entity\RepositoryInterface\SearchStatRepositoryInterface;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 class LinkContainer implements LinkContainerInterface
 {
@@ -36,7 +36,7 @@ class LinkContainer implements LinkContainerInterface
     private $permissionApi;
 
     /**
-     * @var CurrentUserApi
+     * @var CurrentUserApiInterface
      */
     private $currentUserApi;
 
@@ -51,14 +51,14 @@ class LinkContainer implements LinkContainerInterface
      * @param TranslatorInterface $translator TranslatorInterface service instance
      * @param RouterInterface $router RouterInterface service instance
      * @param PermissionApiInterface $permissionApi PermissionApi service instance
-     * @param CurrentUserApi $currentUserApi CurrentUserApi service instance
+     * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
      * @param SearchStatRepositoryInterface $searchStatRepository
      */
     public function __construct(
         TranslatorInterface $translator,
         RouterInterface $router,
         PermissionApiInterface $permissionApi,
-        CurrentUserApi $currentUserApi,
+        CurrentUserApiInterface $currentUserApi,
         SearchStatRepositoryInterface $searchStatRepository
     ) {
         $this->translator = $translator;

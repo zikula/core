@@ -16,7 +16,7 @@ use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 
@@ -43,7 +43,7 @@ class LinkContainer implements LinkContainerInterface
     private $variableApi;
 
     /**
-     * @var CurrentUserApi
+     * @var CurrentUserApiInterface
      */
     private $currentUser;
 
@@ -59,7 +59,7 @@ class LinkContainer implements LinkContainerInterface
      * @param RouterInterface $router
      * @param PermissionApiInterface $permissionApi
      * @param VariableApiInterface $variableApi
-     * @param CurrentUserApi $currentUserApi
+     * @param CurrentUserApiInterface $currentUserApi
      * @param AuthenticationMappingRepositoryInterface $mappingRepository
      */
     public function __construct(
@@ -67,7 +67,7 @@ class LinkContainer implements LinkContainerInterface
         RouterInterface $router,
         PermissionApiInterface $permissionApi,
         VariableApiInterface $variableApi,
-        CurrentUserApi $currentUserApi,
+        CurrentUserApiInterface $currentUserApi,
         AuthenticationMappingRepositoryInterface $mappingRepository
     ) {
         $this->translator = $translator;

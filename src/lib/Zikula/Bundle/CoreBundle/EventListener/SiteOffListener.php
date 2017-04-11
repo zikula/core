@@ -21,7 +21,7 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 class SiteOffListener implements EventSubscriberInterface
 {
@@ -36,7 +36,7 @@ class SiteOffListener implements EventSubscriberInterface
     private $permissionApi;
 
     /**
-     * @var CurrentUserApi
+     * @var CurrentUserApiInterface
      */
     private $currentUserApi;
 
@@ -69,7 +69,7 @@ class SiteOffListener implements EventSubscriberInterface
      * SiteOffListener constructor.
      * @param VariableApiInterface $variableApi
      * @param PermissionApiInterface $permissionApi
-     * @param CurrentUserApi $currentUserApi
+     * @param CurrentUserApiInterface $currentUserApi
      * @param \Twig_Environment $twig
      * @param FormFactory $formFactory
      * @param RouterInterface $router
@@ -79,7 +79,7 @@ class SiteOffListener implements EventSubscriberInterface
     public function __construct(
         VariableApiInterface $variableApi,
         PermissionApiInterface $permissionApi,
-        CurrentUserApi $currentUserApi,
+        CurrentUserApiInterface $currentUserApi,
         \Twig_Environment $twig,
         FormFactory $formFactory,
         RouterInterface $router,
