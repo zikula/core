@@ -21,7 +21,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 
 class ValidUnameValidator extends ConstraintValidator
@@ -42,7 +42,7 @@ class ValidUnameValidator extends ConstraintValidator
     private $validator;
 
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
@@ -50,8 +50,9 @@ class ValidUnameValidator extends ConstraintValidator
      * @param VariableApiInterface $variableApi
      * @param TranslatorInterface $translator
      * @param ValidatorInterface $validator
+     * @param PermissionApiInterface $permissionApi
      */
-    public function __construct(VariableApiInterface $variableApi, TranslatorInterface $translator, ValidatorInterface $validator, PermissionApi $permissionApi)
+    public function __construct(VariableApiInterface $variableApi, TranslatorInterface $translator, ValidatorInterface $validator, PermissionApiInterface $permissionApi)
     {
         $this->variableApi = $variableApi;
         $this->translator = $translator;

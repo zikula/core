@@ -21,7 +21,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Core\Exception\ExtensionNotAvailableException;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Api\CurrentUserApi;
 
 /**
@@ -50,7 +50,7 @@ class ExceptionListener implements EventSubscriberInterface
     private $currentUserApi;
 
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
@@ -65,7 +65,7 @@ class ExceptionListener implements EventSubscriberInterface
      * @param EventDispatcherInterface $dispatcher
      * @param CacheClearer $cacheClearer
      * @param CurrentUserApi $currentUserApi
-     * @param PermissionApi $permissionApi
+     * @param PermissionApiInterface $permissionApi
      * @param bool $installed
      */
     public function __construct(
@@ -73,7 +73,7 @@ class ExceptionListener implements EventSubscriberInterface
         EventDispatcherInterface $dispatcher,
         CacheClearer $cacheClearer,
         CurrentUserApi $currentUserApi,
-        PermissionApi $permissionApi,
+        PermissionApiInterface $permissionApi,
         $installed
     ) {
         $this->router = $router;

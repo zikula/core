@@ -22,7 +22,7 @@ use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Entity\GroupEntity;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Api\CurrentUserApi;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
@@ -43,7 +43,7 @@ class FileIOHelper
     private $variableApi;
 
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
@@ -80,7 +80,7 @@ class FileIOHelper
     /**
      * RegistrationHelper constructor.
      * @param VariableApiInterface $variableApi
-     * @param PermissionApi $permissionApi
+     * @param PermissionApiInterface $permissionApi
      * @param TranslatorInterface $translator
      * @param ValidatorInterface $validator
      * @param EntityManager $entityManager
@@ -90,7 +90,7 @@ class FileIOHelper
      */
     public function __construct(
         VariableApiInterface $variableApi,
-        PermissionApi $permissionApi,
+        PermissionApiInterface $permissionApi,
         TranslatorInterface $translator,
         ValidatorInterface $validator,
         EntityManager $entityManager,

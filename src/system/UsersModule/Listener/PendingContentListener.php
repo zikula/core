@@ -16,14 +16,14 @@ use Zikula\Common\Collection\Collectible\PendingContentCollectible;
 use Zikula\Common\Collection\Container;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 
 class PendingContentListener implements EventSubscriberInterface
 {
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
@@ -39,11 +39,11 @@ class PendingContentListener implements EventSubscriberInterface
 
     /**
      * PendingContentListener constructor.
-     * @param PermissionApi $permissionApi
+     * @param PermissionApiInterface $permissionApi
      * @param UserRepositoryInterface $userRepository
      * @param TranslatorInterface $translator
      */
-    public function __construct(PermissionApi $permissionApi, UserRepositoryInterface $userRepository, TranslatorInterface $translator)
+    public function __construct(PermissionApiInterface $permissionApi, UserRepositoryInterface $userRepository, TranslatorInterface $translator)
     {
         $this->permissionApi = $permissionApi;
         $this->userRepository = $userRepository;

@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Helper\CategoryProcessingHelper;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\SettingsModule\Api\LocaleApi;
 
 /**
@@ -42,7 +42,7 @@ class CategoryApi
     private $requestStack;
 
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
@@ -62,7 +62,7 @@ class CategoryApi
      * @param TranslatorInterface $translator TranslatorInterface service instance
      * @param EntityManager $entityManager EntityManager service instance
      * @param RequestStack $requestStack RequestStack service instance
-     * @param PermissionApi $permissionApi PermissionApi service instance
+     * @param PermissionApiInterface $permissionApi PermissionApi service instance
      * @param CategoryProcessingHelper $processingHelper CategoryProcessingHelper service instance
      * @param LocaleApi $localeApi
      */
@@ -70,7 +70,7 @@ class CategoryApi
         TranslatorInterface $translator,
         EntityManager $entityManager,
         RequestStack $requestStack,
-        PermissionApi $permissionApi,
+        PermissionApiInterface $permissionApi,
         CategoryProcessingHelper $processingHelper,
         LocaleApi $localeApi
     ) {

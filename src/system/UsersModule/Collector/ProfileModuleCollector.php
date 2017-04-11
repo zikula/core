@@ -12,7 +12,6 @@
 namespace Zikula\UsersModule\Collector;
 
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\SettingsModule\SettingsConstant;
 use Zikula\UsersModule\Api\CurrentUserApi;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;

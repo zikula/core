@@ -12,7 +12,7 @@
 namespace Zikula\ZAuthModule\Helper;
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Api\CurrentUserApi;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\ZAuthModule\Api\PasswordApi;
@@ -23,7 +23,7 @@ use Zikula\ZAuthModule\ZAuthConstant;
 class RegistrationVerificationHelper
 {
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
@@ -54,7 +54,7 @@ class RegistrationVerificationHelper
 
     /**
      * RegistrationVerificationHelper constructor.
-     * @param PermissionApi $permissionApi
+     * @param PermissionApiInterface $permissionApi
      * @param UserVerificationRepositoryInterface $userVerificationRepository
      * @param MailHelper $mailHelper
      * @param CurrentUserApi $currentUserApi
@@ -62,7 +62,7 @@ class RegistrationVerificationHelper
      * @param PasswordApi $passwordApi
      */
     public function __construct(
-        PermissionApi $permissionApi,
+        PermissionApiInterface $permissionApi,
         UserVerificationRepositoryInterface $userVerificationRepository,
         MailHelper $mailHelper,
         CurrentUserApi $currentUserApi,

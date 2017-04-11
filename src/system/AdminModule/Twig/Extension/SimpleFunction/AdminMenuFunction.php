@@ -13,7 +13,7 @@ namespace Zikula\AdminModule\Twig\Extension\SimpleFunction;
 
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
 use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 class AdminMenuFunction
 {
@@ -23,15 +23,16 @@ class AdminMenuFunction
     private $handler;
 
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
     /**
      * AdminMenuFunction constructor.
      * @param FragmentHandler $handler
+     * @param PermissionApiInterface $permissionApi
      */
-    public function __construct(FragmentHandler $handler, PermissionApi $permissionApi)
+    public function __construct(FragmentHandler $handler, PermissionApiInterface $permissionApi)
     {
         $this->handler = $handler;
         $this->permissionApi = $permissionApi;

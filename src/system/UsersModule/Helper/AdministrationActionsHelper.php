@@ -13,7 +13,7 @@ namespace Zikula\UsersModule\Helper;
 
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Api\CurrentUserApi;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
@@ -21,7 +21,7 @@ use Zikula\UsersModule\Entity\UserEntity;
 class AdministrationActionsHelper
 {
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionsApi;
 
@@ -42,13 +42,13 @@ class AdministrationActionsHelper
 
     /**
      * UserAdministrationActionsFunction constructor.
-     * @param PermissionApi $permissionsApi
+     * @param PermissionApiInterface $permissionsApi
      * @param RouterInterface $router
      * @param TranslatorInterface $translator
      * @param CurrentUserApi $currentUserApi
      */
     public function __construct(
-        PermissionApi $permissionsApi,
+        PermissionApiInterface $permissionsApi,
         RouterInterface $router,
         TranslatorInterface $translator,
         CurrentUserApi $currentUserApi

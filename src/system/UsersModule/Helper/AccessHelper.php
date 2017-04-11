@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Zikula\Bridge\HttpFoundation\ZikulaSessionStorage;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
@@ -33,7 +33,7 @@ class AccessHelper
     private $userRepository;
 
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
@@ -51,14 +51,14 @@ class AccessHelper
      * AccessHelper constructor.
      * @param Session $session
      * @param UserRepositoryInterface $userRepository
-     * @param PermissionApi $permissionApi
+     * @param PermissionApiInterface $permissionApi
      * @param VariableApiInterface $variableApi
      * @param TranslatorInterface $translator
      */
     public function __construct(
         Session $session,
         UserRepositoryInterface $userRepository,
-        PermissionApi $permissionApi,
+        PermissionApiInterface $permissionApi,
         VariableApiInterface $variableApi,
         TranslatorInterface $translator
     ) {
