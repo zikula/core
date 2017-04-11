@@ -91,7 +91,7 @@ class RegistrationHelper
     public function registerNewUser(UserEntity $userEntity)
     {
         $adminApprovalRequired = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED, UsersConstant::DEFAULT_REGISTRATION_APPROVAL_REQUIRED);
-        if (null == $userEntity->getUid()) {
+        if (null === $userEntity->getUid()) {
             $userEntity->setUser_Regdate(new \DateTime());
         }
         $userCreateEvent = new GenericEvent($userEntity);

@@ -88,7 +88,7 @@ class AdministrationActionsHelper
         // send verification email requires no further perm check
         if (!$mapping->isVerifiedEmail()) {
             if (!empty($userVerification)) {
-                $title = (null == $userVerification->getVerifycode())
+                $title = (null === $userVerification->getVerifycode())
                     ? $this->translator->__f('Send an e-mail verification code for %sub%', ["%sub%" => $mapping->getUname()])
                     : $this->translator->__f('Send a new e-mail verification code for %sub%', ["%sub%" => $mapping->getUname()]);
                 $actions['verify'] = [

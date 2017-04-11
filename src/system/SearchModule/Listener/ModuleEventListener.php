@@ -59,7 +59,7 @@ class ModuleEventListener implements EventSubscriberInterface
     public function moduleEnable(ModuleStateEvent $event)
     {
         $moduleName = $this->getModuleName($event);
-        if (null == $moduleName) {
+        if (null === $moduleName) {
             return;
         }
 
@@ -80,7 +80,7 @@ class ModuleEventListener implements EventSubscriberInterface
     public function moduleDisable(ModuleStateEvent $event)
     {
         $moduleName = $this->getModuleName($event);
-        if (null == $moduleName) {
+        if (null === $moduleName) {
             return;
         }
 
@@ -101,7 +101,7 @@ class ModuleEventListener implements EventSubscriberInterface
     public function moduleRemove(ModuleStateEvent $event)
     {
         $moduleName = $this->getModuleName($event);
-        if (null == $moduleName) {
+        if (null === $moduleName) {
             return;
         }
 
@@ -130,7 +130,7 @@ class ModuleEventListener implements EventSubscriberInterface
             // at Core-2.0, remove the capability check and only use the searchableModuleCollector
             $moduleName = $event->getModule()->getName();
             $capabilities = $event->getModule()->getMetaData()->getCapabilities();
-            if ((null == $this->searchableModuleCollector->get($moduleName))
+            if (null === $this->searchableModuleCollector->get($moduleName)
                 && !in_array(CapabilityApi::SEARCHABLE, $capabilities)) {
                 return null;
             }

@@ -76,7 +76,7 @@ class ConfigController extends AbstractController
         if ($form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $this->setVars($form->getData());
-                if ($form->get('hardreset')->getData() == true) {
+                if (true === $form->get('hardreset')->getData()) {
                     $extensionsInFileSystem = $this->get('zikula_extensions_module.bundle_sync_helper')->scanForBundles();
                     $this->get('zikula_extensions_module.bundle_sync_helper')->syncExtensions($extensionsInFileSystem, true);
                     $this->get('zikula.cache_clearer')->clear('symfony.routing');

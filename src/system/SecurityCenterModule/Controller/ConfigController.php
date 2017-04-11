@@ -132,13 +132,13 @@ class ConfigController extends AbstractController
                     $storeTypeCanBeWritten = is_dir($sessionSavePath) ? is_writable($sessionSavePath) : false;
                     $causeLogout = $storeTypeCanBeWritten;
 
-                    if ($storeTypeCanBeWritten == false) {
+                    if (false === $storeTypeCanBeWritten) {
                         // an error occured - we do not change the way of storing session data
                         $this->addFlash('error', $this->__('Error! Session path not writeable!'));
                         $sessionSavePath = '';
                     }
                 }
-                if ($storeTypeCanBeWritten == true) {
+                if (true === $storeTypeCanBeWritten) {
                     $this->setSystemVar('sessionstoretofile', $sessionStoreToFile);
                     $this->setSystemVar('sessionsavepath', $sessionSavePath);
                 }
@@ -288,8 +288,8 @@ class ConfigController extends AbstractController
                     $this->addFlash('status', $this->__('Done! Module configuration updated.'));
                 }
 
-                // we need to auto logout the user if they changed from DB to FILE
-                if ($causeLogout == true) {
+                // we need to auto logout the user if essential session settings have been changed
+                if (true === $causeLogout) {
                     $this->get('zikula_users_module.helper.access_helper')->logout();
                     $this->addFlash('status', $this->__('Session handling variables have changed. You must log in again.'));
                     $returnPage = urlencode($this->get('router')->generate('zikulasecuritycentermodule_config_config'));

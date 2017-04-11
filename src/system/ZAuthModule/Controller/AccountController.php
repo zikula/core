@@ -237,7 +237,7 @@ class AccountController extends AbstractController
             // use authentication method to create zauth mapping if not already created
             $authenticationMethods = $this->get('zikula_users_module.internal.authentication_method_collector')->getActive();
             $authenticationMethod = array_shift($authenticationMethods);
-            if (null == $authenticationMethod) {
+            if (null === $authenticationMethod) {
                 throw new RuntimeException($this->__('There is no authentication method activated.'));
             }
             $authenticationMethod->authenticate([

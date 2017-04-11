@@ -43,7 +43,7 @@ class SwitchNode extends \Twig_Node
                     ->indent()
                     ->subcompile($case->getNode('body'));
             }
-            if ($case->hasAttribute('break') && $case->getAttribute('break') == true) {
+            if ($case->hasAttribute('break') && true === $case->getAttribute('break')) {
                 $compiler
                     ->write("break;\n");
             }

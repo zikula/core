@@ -44,7 +44,7 @@ class MenuItemEntityTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
-        if (null == $value) {
+        if (null === $value) {
             return null;
         }
 
@@ -61,7 +61,7 @@ class MenuItemEntityTransformer implements DataTransformerInterface
      */
     public function transform($value)
     {
-        if (null == $value) {
+        if (null === $value) {
             return null;
         }
 
