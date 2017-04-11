@@ -13,7 +13,6 @@
 namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\MailerModule\MailerEvents;
 use Zikula\Core\Event\GenericEvent;
 

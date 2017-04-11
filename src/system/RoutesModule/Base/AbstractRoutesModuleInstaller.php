@@ -12,7 +12,6 @@
 
 namespace Zikula\RoutesModule\Base;
 
-use Doctrine\DBAL\Connection;
 use RuntimeException;
 use Zikula\Core\AbstractExtensionInstaller;
 
