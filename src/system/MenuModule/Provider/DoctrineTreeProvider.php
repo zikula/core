@@ -16,7 +16,6 @@ use Knp\Menu\Provider\MenuProviderInterface;
 use Zikula\MenuModule\Entity\RepositoryInterface\MenuItemRepositoryInterface;
 use Zikula\MenuModule\Loader\PermissionAwareNodeLoader;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
-use Zikula\PermissionsModule\Api\PermissionApi;
 
 class DoctrineTreeProvider implements MenuProviderInterface
 {
