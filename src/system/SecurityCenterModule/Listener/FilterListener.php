@@ -24,7 +24,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\MailerModule\Api\MailerApi;
+use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
 
@@ -56,7 +56,7 @@ class FilterListener implements EventSubscriberInterface
     private $em;
 
     /**
-     * @var MailerApi
+     * @var MailerApiInterface
      */
     private $mailer;
 
@@ -77,7 +77,7 @@ class FilterListener implements EventSubscriberInterface
      * @param $isUpgrading
      * @param VariableApiInterface $variableApi VariableApi service instance
      * @param EntityManagerInterface $em Doctrine entity manager
-     * @param MailerApi $mailer MailerApi service instance
+     * @param MailerApiInterface $mailer MailerApi service instance
      * @param TranslatorInterface $translator
      * @param $cacheDir
      */
@@ -86,7 +86,7 @@ class FilterListener implements EventSubscriberInterface
         $isUpgrading,
         VariableApiInterface $variableApi,
         EntityManagerInterface $em,
-        MailerApi $mailer,
+        MailerApiInterface $mailer,
         TranslatorInterface $translator,
         $cacheDir
     ) {

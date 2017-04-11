@@ -1,14 +1,20 @@
-MailerApi
-=========
+<?php
 
-classname: \Zikula\MailerModule\Api\MailerApi
+/*
+ * This file is part of the Zikula package.
+ *
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-service id="zikula_mailer_module.api.mailer"
+namespace Zikula\MailerModule\Api\ApiInterface;
 
-This class is used to send a mail using SwiftMailer configured with settings from the Mailer module configuration.
+use Swift_Message;
 
-The class makes the following methods available:
-
+interface MailerApiInterface
+{
     /**
      * API function to send e-mail message.
      * It is assumed that basic parameters for sender and recipient(s) have already been set.
@@ -35,19 +41,4 @@ The class makes the following methods available:
      * @return bool true if successful
      */
     public function sendMessage(Swift_Message $message, $subject = null, $body = null, $altBody = '', $html = false, array $headers = [], array $attachments = [], array $stringAttachments = [], array $embeddedImages = []);
-
-It is assumed that basic parameters for sender and recipient(s) have already been set.
-
-One example for using this service can be found in the `Zikula\MailerModule\Controller\ConfigController#testAction(Request $request)` method:
-
-```
-    // create new message instance
-    /** @var Swift_Message */
-    $message = Swift_Message::newInstance();
-
-    $message->setFrom([$adminMail => $siteName]);
-    $message->setTo([$formData['toAddress'] => $formData['toName']]);
-
-    $mailer = $this->get('zikula_mailer_module.api.mailer');
-    $result = $mailer->sendMessage($message, $formData['subject'], $msgBody, $altBody, $html);
-```
+}

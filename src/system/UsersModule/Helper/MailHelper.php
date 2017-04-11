@@ -14,7 +14,7 @@ namespace Zikula\UsersModule\Helper;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\MailerModule\Api\MailerApi;
+use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
@@ -38,7 +38,7 @@ class MailHelper
     private $variableApi;
 
     /**
-     * @var MailerApi
+     * @var MailerApiInterface
      */
     private $mailerApi;
 
@@ -57,7 +57,7 @@ class MailHelper
      * @param TranslatorInterface $translator
      * @param \Twig_Environment $twig
      * @param VariableApiInterface $variableApi
-     * @param MailerApi $mailerApi
+     * @param MailerApiInterface $mailerApi
      * @param PermissionApiInterface $permissionApi
      * @param AuthenticationMappingRepositoryInterface $authenticationMappingRepository
      */
@@ -65,7 +65,7 @@ class MailHelper
         TranslatorInterface $translator,
         \Twig_Environment $twig,
         VariableApiInterface $variableApi,
-        MailerApi $mailerApi,
+        MailerApiInterface $mailerApi,
         PermissionApiInterface $permissionApi,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository
     ) {
