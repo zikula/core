@@ -13,12 +13,13 @@ namespace Zikula\AdminModule\Helper;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
 class UpdateCheckHelper
 {
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     protected $variableApi;
 
@@ -70,10 +71,10 @@ class UpdateCheckHelper
     /**
      * UpdateCheckHelper constructor.
      *
-     * @param VariableApi  $variableApi  VariableApi service instance
+     * @param VariableApiInterface $variableApi
      * @param RequestStack $requestStack RequestStack service instance
      */
-    public function __construct(VariableApi $variableApi, RequestStack $requestStack)
+    public function __construct(VariableApiInterface $variableApi, RequestStack $requestStack)
     {
         $this->variableApi = $variableApi;
         $this->requestStack = $requestStack;

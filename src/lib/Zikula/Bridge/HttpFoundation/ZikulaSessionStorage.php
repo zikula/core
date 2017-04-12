@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeSessionHandle
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\MetadataBag;
 use Symfony\Component\HttpFoundation\Session\Storage\Proxy\AbstractProxy;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 /**
  * Class DoctrineSessionStorage
@@ -62,12 +62,12 @@ class ZikulaSessionStorage extends NativeSessionStorage
     private $cookieLifeTime = 604800;
 
     /**
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      * @param array $options
      * @param AbstractProxy|NativeSessionHandler|\SessionHandlerInterface|null $handler
      * @param MetadataBag $metaBag
      */
-    public function __construct(VariableApi $variableApi, array $options = [], $handler = null, MetadataBag $metaBag = null)
+    public function __construct(VariableApiInterface $variableApi, array $options = [], $handler = null, MetadataBag $metaBag = null)
     {
         $this->securityLevel = $variableApi->getSystemVar('seclevel', self::SECURITY_LEVEL_MEDIUM);
         $this->inactiveSeconds = $variableApi->getSystemVar('secinactivemins', 20) * 60;

@@ -20,17 +20,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Event\GenericEvent;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Entity\GroupEntity;
-use Zikula\PermissionsModule\Api\PermissionApi;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
 use Zikula\UsersModule\Validator\Constraints\ValidEmail;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
-use Zikula\ZAuthModule\Api\PasswordApi;
+use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 
 class FileIOHelper
@@ -38,12 +38,12 @@ class FileIOHelper
     use TranslatorTrait;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
@@ -68,36 +68,37 @@ class FileIOHelper
     private $eventDispatcher;
 
     /**
-     * @var CurrentUserApi
+     * @var CurrentUserApiInterface
      */
     private $currentUser;
 
     /**
-     * @var PasswordApi
+     * @var PasswordApiInterface
      */
     private $passwordApi;
 
     /**
      * RegistrationHelper constructor.
-     * @param VariableApi $variableApi
-     * @param PermissionApi $permissionApi
+     * @param VariableApiInterface $variableApi
+     * @param PermissionApiInterface $permissionApi
      * @param TranslatorInterface $translator
      * @param ValidatorInterface $validator
      * @param EntityManager $entityManager
      * @param MailHelper $mailHelper
      * @param EventDispatcherInterface $eventDispatcher
-     * @param CurrentUserApi $currentUserApi
+     * @param CurrentUserApiInterface $currentUserApi
+     * @param PasswordApiInterface $passwordApi
      */
     public function __construct(
-        VariableApi $variableApi,
-        PermissionApi $permissionApi,
+        VariableApiInterface $variableApi,
+        PermissionApiInterface $permissionApi,
         TranslatorInterface $translator,
         ValidatorInterface $validator,
         EntityManager $entityManager,
         MailHelper $mailHelper,
         EventDispatcherInterface $eventDispatcher,
-        CurrentUserApi $currentUserApi,
-        PasswordApi $passwordApi
+        CurrentUserApiInterface $currentUserApi,
+        PasswordApiInterface $passwordApi
     ) {
         $this->variableApi = $variableApi;
         $this->permissionApi = $permissionApi;

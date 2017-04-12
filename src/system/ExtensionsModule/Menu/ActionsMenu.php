@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Common\Translator\TranslatorTrait;
-use Zikula\ExtensionsModule\Api\ExtensionApi;
+use Zikula\ExtensionsModule\Constant;
 
 class ActionsMenu implements ContainerAwareInterface
 {
@@ -43,7 +43,7 @@ class ActionsMenu implements ContainerAwareInterface
         $csrfToken = $this->container->get('zikula_core.common.csrf_token_handler')->generate(true);
 
         switch ($extension->getState()) {
-            case ExtensionApi::STATE_ACTIVE:
+            case Constant::STATE_ACTIVE:
                 if (!ZikulaKernel::isCoreModule($extension->getName())) {
                     $menu->addChild($this->__f('Deactivate %s', ['%s' => $extension->getDisplayname()]), [
                         'route' => 'zikulaextensionsmodule_module_deactivate',
@@ -53,7 +53,7 @@ class ActionsMenu implements ContainerAwareInterface
                     // or set style text-color #0c00
                 }
                 break;
-            case ExtensionApi::STATE_INACTIVE:
+            case Constant::STATE_INACTIVE:
                 $menu->addChild($this->__f('Activate %s', ['%s' => $extension->getDisplayname()]), [
                     'route' => 'zikulaextensionsmodule_module_activate',
                     'routeParameters' => ['id' => $extension->getId(), 'csrftoken' => $csrfToken],
@@ -65,28 +65,28 @@ class ActionsMenu implements ContainerAwareInterface
                 ])->setAttribute('icon', 'fa fa-trash-o')
                     ->setLinkAttribute('style', 'color:#c00');
                 break;
-            case ExtensionApi::STATE_MISSING:
+            case Constant::STATE_MISSING:
                 // Nothing to do.
                 break;
-            case ExtensionApi::STATE_UPGRADED:
+            case Constant::STATE_UPGRADED:
                 $menu->addChild($this->__f('Upgrade %s', ['%s' => $extension->getDisplayname()]), [
                     'route' => 'zikulaextensionsmodule_module_upgrade',
                     'routeParameters' => ['id' => $extension->getId(), 'csrftoken' => $csrfToken],
                 ])->setAttribute('icon', 'fa fa-refresh')
                     ->setLinkAttribute('style', 'color:#00c');
                 break;
-            case ExtensionApi::STATE_INVALID:
+            case Constant::STATE_INVALID:
                 // nothing to do.
                 // do not allow deletion of invalid modules if previously installed (#1278)
                 break;
-            case ExtensionApi::STATE_NOTALLOWED:
+            case Constant::STATE_NOTALLOWED:
                 $menu->addChild($this->__f('Remove %s', ['%s' => $extension->getDisplayname()]), [
                     'route' => 'zikulaextensionsmodule_module_uninstall',
                     'routeParameters' => ['id' => $extension->getId()],
                 ])->setAttribute('icon', 'fa fa-trash-o')
                     ->setLinkAttribute('style', 'color:#c00');
                 break;
-            case ExtensionApi::STATE_UNINITIALISED:
+            case Constant::STATE_UNINITIALISED:
             default:
                 if ($extension->getState() < 10) {
                     $menu->addChild($this->__f('Install %s', ['%s' => $extension->getDisplayname()]), [
@@ -104,7 +104,7 @@ class ActionsMenu implements ContainerAwareInterface
                 break;
         }
 
-        if ($extension->getState() != ExtensionApi::STATE_INVALID) {
+        if ($extension->getState() != Constant::STATE_INVALID) {
             $menu->addChild($this->__f('Edit %s', ['%s' => $extension->getDisplayname()]), [
                 'route' => 'zikulaextensionsmodule_module_modify',
                 'routeParameters' => ['id' => $extension->getId()],

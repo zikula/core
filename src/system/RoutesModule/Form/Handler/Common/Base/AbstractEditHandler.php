@@ -25,9 +25,9 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Doctrine\EntityAccess;
-use Zikula\PageLockModule\Api\LockingApi;
+use Zikula\PageLockModule\Api\ApiInterface\LockingApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\RoutesModule\Entity\Factory\RoutesFactory;
 use Zikula\RoutesModule\Helper\ControllerHelper;
 use Zikula\RoutesModule\Helper\ModelHelper;
@@ -160,7 +160,7 @@ abstract class AbstractEditHandler
     protected $permissionApi;
 
     /**
-     * @var CurrentUserApi
+     * @var CurrentUserApiInterface
      */
     protected $currentUserApi;
 
@@ -187,7 +187,7 @@ abstract class AbstractEditHandler
     /**
      * Reference to optional locking api.
      *
-     * @var LockingApi
+     * @var LockingApiInterface
      */
     protected $lockingApi = null;
 
@@ -215,7 +215,7 @@ abstract class AbstractEditHandler
      * @param RouterInterface           $router           Router service instance
      * @param LoggerInterface           $logger           Logger service instance
      * @param PermissionApiInterface             $permissionApi    PermissionApi service instance
-     * @param CurrentUserApi            $currentUserApi   CurrentUserApi service instance
+     * @param CurrentUserApiInterface   $currentUserApi   CurrentUserApi service instance
      * @param RoutesFactory $entityFactory RoutesFactory service instance
      * @param ControllerHelper          $controllerHelper ControllerHelper service instance
      * @param ModelHelper               $modelHelper      ModelHelper service instance
@@ -229,7 +229,7 @@ abstract class AbstractEditHandler
         RouterInterface $router,
         LoggerInterface $logger,
         PermissionApiInterface $permissionApi,
-        CurrentUserApi $currentUserApi,
+        CurrentUserApiInterface $currentUserApi,
         RoutesFactory $entityFactory,
         ControllerHelper $controllerHelper,
         ModelHelper $modelHelper,
@@ -295,8 +295,8 @@ abstract class AbstractEditHandler
     
         $this->idFields = $this->entityFactory->getIdFields($this->objectType);
     
-        // retrieve identifier of the object we wish to view
-        $this->idValues = $this->controllerHelper->retrieveIdentifier($this->request, [], $this->objectType, $this->idFields);
+        // retrieve identifier of the object we wish to edit
+        $this->idValues = $this->controllerHelper->retrieveIdentifier($this->request, [], $this->objectType);
         $hasIdentifier = $this->controllerHelper->isValidIdentifier($this->idValues);
     
         $entity = null;
@@ -409,6 +409,10 @@ abstract class AbstractEditHandler
     protected function createCompositeIdentifier()
     {
         $itemId = '';
+        if ($this->templateParameters['mode'] == 'create') {
+            return $itemId;
+        }
+    
         foreach ($this->idFields as $idField) {
             if (!empty($itemId)) {
                 $itemId .= '_';
@@ -637,9 +641,9 @@ abstract class AbstractEditHandler
     /**
      * Sets optional locking api reference.
      *
-     * @param LockingApi $lockingApi
+     * @param LockingApiInterface $lockingApi
      */
-    public function setLockingApi(LockingApi $lockingApi)
+    public function setLockingApi(LockingApiInterface $lockingApi)
     {
         $this->lockingApi = $lockingApi;
     }

@@ -14,9 +14,9 @@ namespace Zikula\ZAuthModule\Container;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\PermissionsModule\Api\PermissionApi;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 
@@ -33,17 +33,17 @@ class LinkContainer implements LinkContainerInterface
     private $router;
 
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
     /**
-     * @var CurrentUserApi
+     * @var CurrentUserApiInterface
      */
     private $currentUser;
 
@@ -57,17 +57,17 @@ class LinkContainer implements LinkContainerInterface
      *
      * @param TranslatorInterface $translator
      * @param RouterInterface $router
-     * @param PermissionApi $permissionApi
-     * @param VariableApi $variableApi
-     * @param CurrentUserApi $currentUserApi
+     * @param PermissionApiInterface $permissionApi
+     * @param VariableApiInterface $variableApi
+     * @param CurrentUserApiInterface $currentUserApi
      * @param AuthenticationMappingRepositoryInterface $mappingRepository
      */
     public function __construct(
         TranslatorInterface $translator,
         RouterInterface $router,
-        PermissionApi $permissionApi,
-        VariableApi $variableApi,
-        CurrentUserApi $currentUserApi,
+        PermissionApiInterface $permissionApi,
+        VariableApiInterface $variableApi,
+        CurrentUserApiInterface $currentUserApi,
         AuthenticationMappingRepositoryInterface $mappingRepository
     ) {
         $this->translator = $translator;

@@ -19,7 +19,7 @@ use Zikula\AdminModule\Twig\Extension\SimpleFunction\AdminHeaderFunction;
 use Zikula\AdminModule\Twig\Extension\SimpleFunction\AdminMenuFunction;
 use Zikula\AdminModule\Twig\Extension\SimpleFunction\AdminSecurityAnalyzerFunction;
 use Zikula\AdminModule\Twig\Extension\SimpleFunction\AdminUpdateCheckFunction;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 class AdminExtension extends \Twig_Extension
 {
@@ -29,7 +29,7 @@ class AdminExtension extends \Twig_Extension
     private $handler;
 
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
@@ -37,9 +37,9 @@ class AdminExtension extends \Twig_Extension
      * Constructor.
      *
      * @param FragmentHandler $handler       FragmentHandler service instance
-     * @param PermissionApi   $permissionApi PermissionApi service instance
+     * @param PermissionApiInterface $permissionApi PermissionApi service instance
      */
-    public function __construct(FragmentHandler $handler, PermissionApi $permissionApi)
+    public function __construct(FragmentHandler $handler, PermissionApiInterface $permissionApi)
     {
         $this->handler = $handler;
         $this->permissionApi = $permissionApi;

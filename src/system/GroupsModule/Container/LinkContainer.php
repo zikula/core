@@ -16,7 +16,7 @@ use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\GroupsModule\Entity\Repository\GroupApplicationRepository;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 class LinkContainer implements LinkContainerInterface
 {
@@ -31,7 +31,7 @@ class LinkContainer implements LinkContainerInterface
     private $router;
 
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
@@ -50,14 +50,14 @@ class LinkContainer implements LinkContainerInterface
      *
      * @param TranslatorInterface $translator TranslatorInterface service instance
      * @param RouterInterface $router RouterInterface service instance
-     * @param PermissionApi $permissionApi PermissionApi service instance
+     * @param PermissionApiInterface $permissionApi PermissionApi service instance
      * @param GroupRepositoryInterface $groupRepository
      * @param GroupApplicationRepository $groupApplicationRepository
      */
     public function __construct(
         TranslatorInterface $translator,
         RouterInterface $router,
-        PermissionApi $permissionApi,
+        PermissionApiInterface $permissionApi,
         GroupRepositoryInterface $groupRepository,
         GroupApplicationRepository $groupApplicationRepository
     ) {

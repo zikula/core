@@ -11,71 +11,57 @@
 
 namespace Zikula\CategoriesModule\Api;
 
-use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\CategoriesModule\Api\ApiInterface\CategoryPermissionApiInterface;
+use Zikula\CategoriesModule\Entity\AbstractCategoryAssignment;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 /**
  * CategoryPermissionApi
  */
-class CategoryPermissionApi
+class CategoryPermissionApi implements CategoryPermissionApiInterface
 {
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
     /**
-     * @var VariableApi
-     */
-    protected $variableApi;
-
-    /**
      * CategoryPermissionApi constructor.
      *
-     * @param PermissionApi $permissionApi PermissionApi service instance
-     * @param VariableApi   $variableApi   VariableApi service instance
+     * @param PermissionApiInterface $permissionApi
      */
-    public function __construct(PermissionApi $permissionApi, VariableApi $variableApi)
+    public function __construct(PermissionApiInterface $permissionApi)
     {
         $this->permissionApi = $permissionApi;
-        $this->variableApi = $variableApi;
     }
 
     /**
-     * Check for access to a certain set of categories.
-     *
-     * For each category property in the list, check if we have access to that category in that property.
-     * Check is done as "ZikulaCategoriesModule:Property:$propertyName", "$cat[id]::"
-     *
-     * @param array   $categories Array of category data
-     * @param integer $permLevel  Required permision level
-     *
-     * @return bool True if access is allowed to at least one of the categories
+     * {@inheritdoc}
      */
-    public function hasCategoryAccess($categories, $permLevel = ACCESS_OVERVIEW)
+    public function hasCategoryAccess(array $categoryAssignments, $permLevel = ACCESS_OVERVIEW, $requireAccessForAll = false)
     {
         // Always allow access to content with no categories associated
-        if (count($categories) == 0) {
+        if (count($categoryAssignments) == 0) {
             return true;
         }
 
-        // Check if access is required for all categories or for at least one category
-        $requireAccessForAll = $this->variableApi->get('ZikulaCategoriesModule', 'permissionsall', 0);
-
         $accessGranted = true;
-        foreach ($categories as $propertyName => $cats) {
-            $categoriesForProperty = is_array($cats) ? $cats : [$cats];
-            foreach ($categoriesForProperty as $cat) {
-                $hasAccess = $this->permissionApi->hasPermission("ZikulaCategoriesModule:$propertyName:Category", "$cat[id]:$cat[path]:$cat[ipath]", $permLevel);
-                if ($requireAccessForAll && !$hasAccess) {
-                    return false;
+        /** @var AbstractCategoryAssignment[] $categoryAssignments */
+        foreach ($categoryAssignments as $categoryAssignment) {
+            if (!($categoryAssignment instanceof AbstractCategoryAssignment)) {
+                throw new \InvalidArgumentException('$categoryAssignments must be an array of AbstractCategoryAssignment');
+            }
+            $regId = $categoryAssignment->getCategoryRegistryId();
+            $catId = $categoryAssignment->getCategory()->getId();
+            $hasAccess = $this->permissionApi->hasPermission("ZikulaCategoriesModule:PropertyId:CategoryId", "$regId::$catId", $permLevel);
+            if ($requireAccessForAll && !$hasAccess) {
+                return false;
+            }
+            if (!$requireAccessForAll) {
+                if ($hasAccess) {
+                    return true;
                 }
-                if (!$requireAccessForAll) {
-                    if ($hasAccess) {
-                        return true;
-                    }
-                    $accessGranted = false;
-                }
+                $accessGranted = false;
             }
         }
 

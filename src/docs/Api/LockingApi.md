@@ -1,6 +1,8 @@
 LockingApi
 ==========
 
+This class is no longer a core module.
+
 classname: \Zikula\PageLockModule\Api\LockingApi
 
 service id="zikula_pagelock_module.api.locking"

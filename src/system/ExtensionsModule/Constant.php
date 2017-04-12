@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\ExtensionsModule\Api;
+namespace Zikula\ExtensionsModule;
 
-class ExtensionApi
+class Constant
 {
     const STATE_UNINITIALISED = 1;
     const STATE_INACTIVE = 2;

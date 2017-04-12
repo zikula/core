@@ -14,7 +14,7 @@ namespace Zikula\SettingsModule\Listener;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 class LocaleListener implements EventSubscriberInterface
 {
@@ -26,9 +26,9 @@ class LocaleListener implements EventSubscriberInterface
     /**
      * LocaleListener constructor.
      * @param string $defaultLocale
-     * @param CurrentUserApi $currentUserApi
+     * @param CurrentUserApiInterface $currentUserApi
      */
-    public function __construct($defaultLocale = 'en', CurrentUserApi $currentUserApi)
+    public function __construct($defaultLocale = 'en', CurrentUserApiInterface $currentUserApi)
     {
         // compute default locale considering user preference
         $userSelectedLocale = $currentUserApi->get('locale');

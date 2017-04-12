@@ -15,8 +15,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 class LinkContainer implements LinkContainerInterface
 {
@@ -31,12 +31,12 @@ class LinkContainer implements LinkContainerInterface
     private $router;
 
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     protected $variableApi;
 
@@ -50,15 +50,15 @@ class LinkContainer implements LinkContainerInterface
      *
      * @param TranslatorInterface $translator    TranslatorInterface service instance
      * @param RouterInterface     $router        RouterInterface service instance
-     * @param PermissionApi       $permissionApi PermissionApi service instance
-     * @param VariableApi         $variableApi   VariableApi service instance
+     * @param PermissionApiInterface $permissionApi PermissionApi service instance
+     * @param VariableApiInterface $variableApi   VariableApi service instance
      * @param RequestStack        $requestStack  RequestStack service instance
      */
     public function __construct(
         TranslatorInterface $translator,
         RouterInterface $router,
-        PermissionApi $permissionApi,
-        VariableApi $variableApi,
+        PermissionApiInterface $permissionApi,
+        VariableApiInterface $variableApi,
         RequestStack $requestStack
     ) {
         $this->translator = $translator;

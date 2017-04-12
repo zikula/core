@@ -11,7 +11,7 @@
 
 namespace Zikula\PermissionsModule\Helper;
 
-use Zikula\ExtensionsModule\Api\ExtensionApi;
+use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 
@@ -39,7 +39,7 @@ class SchemaHelper
      */
     public function getAllSchema($activeOnly = false)
     {
-        $criteria = $activeOnly ? ['state' => ExtensionApi::STATE_ACTIVE] : [];
+        $criteria = $activeOnly ? ['state' => Constant::STATE_ACTIVE] : [];
         /** @var ExtensionEntity[] $extensions */
         $extensions = $this->extensionRepository->findBy($criteria);
         $schema = [];

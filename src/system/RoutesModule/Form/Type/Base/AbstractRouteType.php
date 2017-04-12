@@ -55,8 +55,11 @@ abstract class AbstractRouteType extends AbstractType
      * @param RoutesFactory        $entityFactory Entity factory service instance
      * @param ListEntriesHelper   $listHelper    ListEntriesHelper service instance
      */
-    public function __construct(TranslatorInterface $translator, RoutesFactory $entityFactory, ListEntriesHelper $listHelper)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        RoutesFactory $entityFactory,
+        ListEntriesHelper $listHelper
+    ) {
         $this->setTranslator($translator);
         $this->entityFactory = $entityFactory;
         $this->listHelper = $listHelper;

@@ -18,7 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 /**
  * Configuration form type base class.
@@ -28,7 +28,7 @@ abstract class AbstractAppSettingsType extends AbstractType
     use TranslatorTrait;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     protected $variableApi;
 
@@ -40,11 +40,13 @@ abstract class AbstractAppSettingsType extends AbstractType
     /**
      * AppSettingsType constructor.
      *
-     * @param TranslatorInterface $translator  Translator service instance
-     * @param VariableApi         $variableApi VariableApi service instance
+     * @param TranslatorInterface  $translator  Translator service instance
+     * @param VariableApiInterface $variableApi VariableApi service instance
      */
-    public function __construct(TranslatorInterface $translator, VariableApi $variableApi)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        VariableApiInterface $variableApi
+    ) {
         $this->setTranslator($translator);
         $this->variableApi = $variableApi;
         $this->modVars = $this->variableApi->getAll('ZikulaRoutesModule');

@@ -19,6 +19,7 @@ use Zikula\BlocksModule\Collector\BlockCollector;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockPositionRepositoryInterface;
 use Zikula\Core\AbstractModule;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
+use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 
@@ -120,7 +121,7 @@ class BlockApi implements BlockApiInterface
     public function getAvailableBlockTypes(ExtensionEntity $moduleEntity = null)
     {
         $foundBlocks = [];
-        $modules = isset($moduleEntity) ? [$moduleEntity] : $this->extensionRespository->findBy(['state' => ExtensionApi::STATE_ACTIVE]);
+        $modules = isset($moduleEntity) ? [$moduleEntity] : $this->extensionRespository->findBy(['state' => Constant::STATE_ACTIVE]);
         /** @var \Zikula\ExtensionsModule\Entity\ExtensionEntity $module */
         foreach ($modules as $module) {
             $moduleInstance = $this->kernel->getModule($module->getName());
@@ -164,7 +165,7 @@ class BlockApi implements BlockApiInterface
      */
     public function getModulesContainingBlocks()
     {
-        $modules = $this->extensionRespository->findBy(['state' => ExtensionApi::STATE_ACTIVE]);
+        $modules = $this->extensionRespository->findBy(['state' => Constant::STATE_ACTIVE]);
         $modulesContainingBlocks = [];
         foreach ($modules as $module) {
             $blocks = $this->getAvailableBlockTypes($module);

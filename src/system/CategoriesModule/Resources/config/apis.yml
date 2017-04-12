@@ -3,4 +3,3 @@ services:
         class: Zikula\CategoriesModule\Api\CategoryPermissionApi
         arguments:
           - "@zikula_permissions_module.api.permission"
-          - "@zikula_extensions_module.api.variable"

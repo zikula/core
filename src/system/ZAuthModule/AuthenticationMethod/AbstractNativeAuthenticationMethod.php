@@ -14,9 +14,9 @@ namespace Zikula\ZAuthModule\AuthenticationMethod;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
-use Zikula\ZAuthModule\Api\PasswordApi;
+use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthModule\ZAuthConstant;
@@ -39,7 +39,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
     protected $translator;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -49,7 +49,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
     private $validator;
 
     /**
-     * @var PasswordApi
+     * @var PasswordApiInterface
      */
     private $passwordApi;
 
@@ -58,17 +58,17 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
      * @param AuthenticationMappingRepositoryInterface $mappingRepository
      * @param Session $session
      * @param TranslatorInterface $translator
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      * @param ValidatorInterface $validator
-     * @param PasswordApi $passwordApi
+     * @param PasswordApiInterface $passwordApi
      */
     public function __construct(
         AuthenticationMappingRepositoryInterface $mappingRepository,
         Session $session,
         TranslatorInterface $translator,
-        VariableApi $variableApi,
+        VariableApiInterface $variableApi,
         ValidatorInterface $validator,
-        PasswordApi $passwordApi
+        PasswordApiInterface $passwordApi
     ) {
         $this->mappingRepository = $mappingRepository;
         $this->session = $session;

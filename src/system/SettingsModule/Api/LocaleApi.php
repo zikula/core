@@ -14,8 +14,9 @@ namespace Zikula\SettingsModule\Api;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Intl\Intl;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
-class LocaleApi
+class LocaleApi implements LocaleApiInterface
 {
     /**
      * Locales with translations present
@@ -38,9 +39,7 @@ class LocaleApi
     }
 
     /**
-     * Get array of supported locales
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getSupportedLocales()
     {
@@ -68,9 +67,7 @@ class LocaleApi
     }
 
     /**
-     * Get array of supported locales with their translated name
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getSupportedLocaleNames()
     {
@@ -84,13 +81,7 @@ class LocaleApi
     }
 
     /**
-     * Detect languages preferred by browser and make best match to available provided languages.
-     *
-     * Adapted from StackOverflow response by Noel Whitemore
-     * @see http://stackoverflow.com/a/26169603/2600812
-     *
-     * @param string $default
-     * @return string
+     * {@inheritdoc}
      */
     public function getBrowserLocale($default = 'en')
     {

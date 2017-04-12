@@ -27,7 +27,7 @@
             },
             "securityschema": {
                 "ZikulaCategoriesModule::": "::",
-                "ZikulaCategoriesModule::Category": "Category ID:Category Path:Category IPath"
+                "ZikulaCategoriesModule:PropertyId:CategoryId": "$propId::$catId"
             }
         }
     }

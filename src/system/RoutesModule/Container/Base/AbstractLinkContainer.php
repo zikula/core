@@ -18,7 +18,7 @@ use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\RoutesModule\Helper\ControllerHelper;
 
 /**
@@ -39,7 +39,7 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
     protected $permissionApi;
 
     /**
-     * @var CurrentUserApi
+     * @var CurrentUserApiInterface
      */
     private $currentUserApi;
 
@@ -54,14 +54,14 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
      * @param TranslatorInterface $translator       Translator service instance
      * @param Routerinterface     $router           Router service instance
      * @param PermissionApiInterface       $permissionApi    PermissionApi service instance
-     * @param CurrentUserApi      $currentUserApi   CurrentUserApi service instance
+     * @param CurrentUserApiInterface $currentUserApi   CurrentUserApi service instance
      * @param ControllerHelper    $controllerHelper ControllerHelper service instance
      */
     public function __construct(
         TranslatorInterface $translator,
         RouterInterface $router,
         PermissionApiInterface $permissionApi,
-        CurrentUserApi $currentUserApi,
+        CurrentUserApiInterface $currentUserApi,
         ControllerHelper $controllerHelper
     ) {
         $this->setTranslator($translator);

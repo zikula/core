@@ -14,7 +14,7 @@ namespace Zikula\ZAuthModule\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\ZAuthModule\Api\PasswordApi;
+use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 
 class ValidPasswordChangeValidator extends ConstraintValidator
@@ -30,7 +30,7 @@ class ValidPasswordChangeValidator extends ConstraintValidator
     private $translator;
 
     /**
-     * @var PasswordApi
+     * @var PasswordApiInterface
      */
     private $passwordApi;
 
@@ -38,9 +38,9 @@ class ValidPasswordChangeValidator extends ConstraintValidator
      * ValidPasswordChangeValidator constructor.
      * @param AuthenticationMappingRepositoryInterface $repository
      * @param TranslatorInterface $translator
-     * @param PasswordApi $passwordApi
+     * @param PasswordApiInterface $passwordApi
      */
-    public function __construct(AuthenticationMappingRepositoryInterface $repository, TranslatorInterface $translator, PasswordApi $passwordApi)
+    public function __construct(AuthenticationMappingRepositoryInterface $repository, TranslatorInterface $translator, PasswordApiInterface $passwordApi)
     {
         $this->repository = $repository;
         $this->translator = $translator;

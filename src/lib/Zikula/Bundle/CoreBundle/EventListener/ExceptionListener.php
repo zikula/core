@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\CacheClearer;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 /**
  * ExceptionListener catches exceptions and converts them to Response instances.
@@ -42,7 +42,7 @@ class ExceptionListener implements EventSubscriberInterface
     private $cacheClearer;
 
     /**
-     * @var CurrentUserApi
+     * @var CurrentUserApiInterface
      */
     private $currentUserApi;
 
@@ -56,14 +56,14 @@ class ExceptionListener implements EventSubscriberInterface
      * @param RouterInterface $router
      * @param EventDispatcherInterface $dispatcher
      * @param CacheClearer $cacheClearer
-     * @param CurrentUserApi $currentUserApi
+     * @param CurrentUserApiInterface $currentUserApi
      * @param bool $installed
      */
     public function __construct(
         RouterInterface $router,
         EventDispatcherInterface $dispatcher,
         CacheClearer $cacheClearer,
-        CurrentUserApi $currentUserApi,
+        CurrentUserApiInterface $currentUserApi,
         $installed
     ) {
         $this->router = $router;

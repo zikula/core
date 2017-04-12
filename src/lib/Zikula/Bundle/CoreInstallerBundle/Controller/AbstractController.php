@@ -21,7 +21,7 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Response\PlainResponse;
-use Zikula\ExtensionsModule\Api\ExtensionApi;
+use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 /**
@@ -109,7 +109,7 @@ abstract class AbstractController
         /** @var ExtensionEntity[] $extensions */
         $extensions = $this->container->get('zikula_extensions_module.extension_repository')->findBy(['name' => array_keys(ZikulaKernel::$coreModules)]);
         foreach ($extensions as $extension) {
-            $extension->setState(ExtensionApi::STATE_ACTIVE);
+            $extension->setState(Constant::STATE_ACTIVE);
         }
         $this->container->get('doctrine')->getManager()->flush();
 

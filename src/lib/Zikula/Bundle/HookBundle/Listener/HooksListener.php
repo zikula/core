@@ -16,7 +16,7 @@ use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 /**
  * Class HooksListener
@@ -24,7 +24,7 @@ use Zikula\PermissionsModule\Api\PermissionApi;
 class HooksListener implements EventSubscriberInterface
 {
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionsApi;
 
@@ -45,13 +45,13 @@ class HooksListener implements EventSubscriberInterface
 
     /**
      * ExtensionServicesListener constructor.
-     * @param PermissionApi $permissionApi
+     * @param PermissionApiInterface $permissionApi
      * @param CapabilityApiInterface $capabilityApi
      * @param RouterInterface $router
      * @param TranslatorInterface $translator
      */
     public function __construct(
-        PermissionApi $permissionApi,
+        PermissionApiInterface $permissionApi,
         CapabilityApiInterface $capabilityApi,
         RouterInterface $router,
         TranslatorInterface $translator

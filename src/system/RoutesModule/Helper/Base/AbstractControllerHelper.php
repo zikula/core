@@ -16,7 +16,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Component\SortableColumns\SortableColumns;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\RoutesModule\Entity\Factory\RoutesFactory;
 use Zikula\RoutesModule\Helper\ModelHelper;
 
@@ -36,7 +36,7 @@ abstract class AbstractControllerHelper
     protected $formFactory;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     protected $variableApi;
 
@@ -55,14 +55,14 @@ abstract class AbstractControllerHelper
      *
      * @param RequestStack        $requestStack    RequestStack service instance
      * @param FormFactoryInterface $formFactory    FormFactory service instance
-     * @param VariableApi         $variableApi     VariableApi service instance
+     * @param VariableApiInterface $variableApi     VariableApi service instance
      * @param RoutesFactory $entityFactory RoutesFactory service instance
      * @param ModelHelper         $modelHelper     ModelHelper service instance
      */
     public function __construct(
         RequestStack $requestStack,
         FormFactoryInterface $formFactory,
-        VariableApi $variableApi,
+        VariableApiInterface $variableApi,
         RoutesFactory $entityFactory,
         ModelHelper $modelHelper
     ) {
@@ -118,12 +118,12 @@ abstract class AbstractControllerHelper
      * @param Request $request    The current request
      * @param array   $args       List of arguments used as fallback if request does not contain a field
      * @param string  $objectType Name of treated entity type
-     * @param array   $idFields   List of identifier field names
      *
      * @return array List of fetched identifiers
      */
-    public function retrieveIdentifier(Request $request, array $args, $objectType = '', array $idFields)
+    public function retrieveIdentifier(Request $request, array $args, $objectType = '')
     {
+        $idFields = $this->entityFactory->getIdFields($objectType);
         $idValues = [];
         $routeParams = $request->get('_route_params', []);
         foreach ($idFields as $idField) {

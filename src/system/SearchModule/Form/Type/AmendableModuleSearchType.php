@@ -15,7 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\IdentityTranslator;
-use Zikula\PermissionsModule\Api\PermissionAlwaysApi;
+use Zikula\PermissionsModule\PermissionAlways;
 
 /**
  * Class AmendableModuleSearchType
@@ -57,7 +57,7 @@ class AmendableModuleSearchType extends AbstractType
         $resolver->setDefaults([
             'translator' => new IdentityTranslator(),
             'active' => true,
-            'permissionApi' => new PermissionAlwaysApi()
+            'permissionApi' => new PermissionAlways()
         ]);
     }
 }

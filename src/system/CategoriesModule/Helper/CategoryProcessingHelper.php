@@ -14,6 +14,7 @@ namespace Zikula\CategoriesModule\Helper;
 use Doctrine\ORM\EntityManager;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
+use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Api\CapabilityApi;
 
 /**
@@ -32,7 +33,7 @@ class CategoryProcessingHelper
     private $kernel;
 
     /**
-     * @var CapabilityApi
+     * @var CapabilityApiInterface
      */
     private $capabilityApi;
 
@@ -41,11 +42,12 @@ class CategoryProcessingHelper
      *
      * @param EntityManager $entityManager EntityManager service instance
      * @param ZikulaHttpKernelInterface $kernel KernelInterface service instance
+     * @param CapabilityApiInterface $capabilityApi
      */
     public function __construct(
         EntityManager $entityManager,
         ZikulaHttpKernelInterface $kernel,
-        CapabilityApi $capabilityApi
+        CapabilityApiInterface $capabilityApi
     ) {
         $this->entityManager = $entityManager;
         $this->kernel = $kernel;

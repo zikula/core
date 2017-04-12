@@ -16,12 +16,13 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\ModuleStateEvent;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
 class ModuleListener implements EventSubscriberInterface
 {
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -37,11 +38,11 @@ class ModuleListener implements EventSubscriberInterface
 
     /**
      * ModuleListener constructor.
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      * @param SessionInterface $session
      * @param TranslatorInterface $translator
      */
-    public function __construct(VariableApi $variableApi, SessionInterface $session, TranslatorInterface $translator)
+    public function __construct(VariableApiInterface $variableApi, SessionInterface $session, TranslatorInterface $translator)
     {
         $this->variableApi = $variableApi;
         $this->session = $session;

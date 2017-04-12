@@ -23,7 +23,8 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Event\GenericEvent;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
 use Zikula\MailerModule\MailerEvents;
 
 /**
@@ -32,7 +33,7 @@ use Zikula\MailerModule\MailerEvents;
  * This class manages the sending of mails using SwiftMailer.
  * It should be used instead of the old sendmessage() method in user api.
  */
-class MailerApi
+class MailerApi implements MailerApiInterface
 {
     use TranslatorTrait;
 
@@ -74,7 +75,7 @@ class MailerApi
      * @param TranslatorInterface $translator Translator service instance
      * @param EventDispatcherInterface $eventDispatcher EventDispatcher service instance
      * @param DynamicConfigDumper $configDumper Configuration dumper for retrieving SwiftMailer configuration parameters
-     * @param VariableApi $variableApi VariableApi service instance
+     * @param VariableApiInterface $variableApi VariableApi service instance
      * @param Swift_Mailer $mailer
      */
     public function __construct(
@@ -83,7 +84,7 @@ class MailerApi
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         DynamicConfigDumper $configDumper,
-        VariableApi $variableApi,
+        VariableApiInterface $variableApi,
         Swift_Mailer $mailer
     ) {
         $this->isInstalled = $isInstalled;
@@ -112,29 +113,7 @@ class MailerApi
     }
 
     /**
-     * API function to send e-mail message.
-     * It is assumed that basic parameters for sender and recipient(s) have already been set.
-     *
-     * @param Swift_Message $message The message object
-     * @param string        $subject message subject
-     * @param string        $body message body, if altbody is provided then
-     *                            this is the HTML version of the body
-     * @param string        $altBody alternative plain-text message body, if specified the
-     *                               e-mail will be sent as multipart/alternative
-     * @param bool          $html HTML flag, if altbody is not specified then this
-     *                            indicates whether body contains HTML or not; if altbody is
-     *                            specified, then this value is ignored, the body is assumed
-     *                            to be HTML, and the altbody is assumed to be plain text
-     * @param array         $headers custom headers to add
-     * @param array         $attachments array of either absolute filenames to attach
-     *                                   to the mail or array of arrays in format
-     *                                   [$path, $filename, $encoding, $type]
-     * @param array         $stringAttachments array of arrays to treat as attachments, format [$string, $filename, $encoding, $type]
-     * @param array         $embeddedImages array of absolute filenames to image files to embed in the mail
-     *
-     * @throws \RuntimeException Thrown if there's an error sending the e-mail message
-     *
-     * @return bool true if successful
+     * {@inheritdoc}
      */
     public function sendMessage(Swift_Message $message, $subject = null, $body = null, $altBody = '', $html = false, array $headers = [], array $attachments = [], array $stringAttachments = [], array $embeddedImages = [])
     {

@@ -14,9 +14,9 @@ namespace Zikula\SearchModule\Container;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\SearchModule\Entity\RepositoryInterface\SearchStatRepositoryInterface;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 class LinkContainer implements LinkContainerInterface
 {
@@ -31,12 +31,12 @@ class LinkContainer implements LinkContainerInterface
     private $router;
 
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
     /**
-     * @var CurrentUserApi
+     * @var CurrentUserApiInterface
      */
     private $currentUserApi;
 
@@ -50,15 +50,15 @@ class LinkContainer implements LinkContainerInterface
      *
      * @param TranslatorInterface $translator TranslatorInterface service instance
      * @param RouterInterface $router RouterInterface service instance
-     * @param PermissionApi $permissionApi PermissionApi service instance
-     * @param CurrentUserApi $currentUserApi CurrentUserApi service instance
+     * @param PermissionApiInterface $permissionApi PermissionApi service instance
+     * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
      * @param SearchStatRepositoryInterface $searchStatRepository
      */
     public function __construct(
         TranslatorInterface $translator,
         RouterInterface $router,
-        PermissionApi $permissionApi,
-        CurrentUserApi $currentUserApi,
+        PermissionApiInterface $permissionApi,
+        CurrentUserApiInterface $currentUserApi,
         SearchStatRepositoryInterface $searchStatRepository
     ) {
         $this->translator = $translator;

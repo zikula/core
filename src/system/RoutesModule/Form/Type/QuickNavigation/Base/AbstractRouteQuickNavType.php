@@ -41,8 +41,10 @@ abstract class AbstractRouteQuickNavType extends AbstractType
      * @param TranslatorInterface $translator   Translator service instance
      * @param ListEntriesHelper   $listHelper   ListEntriesHelper service instance
      */
-    public function __construct(TranslatorInterface $translator, ListEntriesHelper $listHelper)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        ListEntriesHelper $listHelper
+    ) {
         $this->setTranslator($translator);
         $this->listHelper = $listHelper;
     }
