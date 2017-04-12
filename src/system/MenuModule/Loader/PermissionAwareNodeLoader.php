@@ -15,7 +15,7 @@ use Knp\Menu\FactoryInterface;
 use Knp\Menu\Loader\LoaderInterface;
 use Knp\Menu\NodeInterface;
 use Zikula\MenuModule\Entity\MenuItemEntity;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 class PermissionAwareNodeLoader implements LoaderInterface
 {
@@ -24,9 +24,17 @@ class PermissionAwareNodeLoader implements LoaderInterface
      */
     private $factory;
 
+    /**
+     * @var PermissionApiInterface
+     */
     private $permissionApi;
 
-    public function __construct(FactoryInterface $factory, PermissionApi $permissionApi)
+    /**
+     * PermissionAwareNodeLoader constructor.
+     * @param FactoryInterface $factory
+     * @param PermissionApiInterface $permissionApi
+     */
+    public function __construct(FactoryInterface $factory, PermissionApiInterface $permissionApi)
     {
         $this->factory = $factory;
         $this->permissionApi = $permissionApi;

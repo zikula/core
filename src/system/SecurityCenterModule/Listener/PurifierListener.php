@@ -13,7 +13,7 @@ namespace Zikula\SecurityCenterModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Core\Event\GenericEvent;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface;
 use Zikula\SecurityCenterModule\Helper\PurifierHelper;
 
@@ -30,7 +30,7 @@ class PurifierListener implements EventSubscriberInterface
     private $upgrading;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -43,13 +43,13 @@ class PurifierListener implements EventSubscriberInterface
      * PurifierListener constructor.
      * @param bool $installed
      * @param $upgrading
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      * @param PurifierHelper $purifierHelper
      */
     public function __construct(
         $installed,
         $upgrading,
-        VariableApi $variableApi,
+        VariableApiInterface $variableApi,
         PurifierHelper $purifierHelper
     ) {
         $this->installed = $installed;

@@ -14,7 +14,7 @@ namespace Zikula\ZAuthModule\Helper;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
@@ -24,7 +24,7 @@ use Zikula\ZAuthModule\ZAuthConstant;
 class AdministrationActionsHelper
 {
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionsApi;
 
@@ -50,14 +50,14 @@ class AdministrationActionsHelper
 
     /**
      * UserAdministrationActionsFunction constructor.
-     * @param PermissionApi $permissionsApi
+     * @param PermissionApiInterface $permissionsApi
      * @param RouterInterface $router
      * @param TranslatorInterface $translator
      * @param UserVerificationRepositoryInterface $userVerificationRepository
      * @param UserRepositoryInterface $userRepository
      */
     public function __construct(
-        PermissionApi $permissionsApi,
+        PermissionApiInterface $permissionsApi,
         RouterInterface $router,
         TranslatorInterface $translator,
         UserVerificationRepositoryInterface $userVerificationRepository,

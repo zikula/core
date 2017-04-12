@@ -13,9 +13,9 @@ namespace Zikula\UsersModule\Helper;
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\MailerModule\Api\MailerApi;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
@@ -33,17 +33,17 @@ class MailHelper
     private $twig;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
     /**
-     * @var MailerApi
+     * @var MailerApiInterface
      */
     private $mailerApi;
 
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
@@ -56,17 +56,17 @@ class MailHelper
      * MailHelper constructor.
      * @param TranslatorInterface $translator
      * @param \Twig_Environment $twig
-     * @param VariableApi $variableApi
-     * @param MailerApi $mailerApi
-     * @param PermissionApi $permissionApi
+     * @param VariableApiInterface $variableApi
+     * @param MailerApiInterface $mailerApi
+     * @param PermissionApiInterface $permissionApi
      * @param AuthenticationMappingRepositoryInterface $authenticationMappingRepository
      */
     public function __construct(
         TranslatorInterface $translator,
         \Twig_Environment $twig,
-        VariableApi $variableApi,
-        MailerApi $mailerApi,
-        PermissionApi $permissionApi,
+        VariableApiInterface $variableApi,
+        MailerApiInterface $mailerApi,
+        PermissionApiInterface $permissionApi,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository
     ) {
         $this->translator = $translator;

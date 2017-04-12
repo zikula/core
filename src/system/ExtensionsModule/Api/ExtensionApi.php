@@ -13,17 +13,53 @@ namespace Zikula\ExtensionsModule\Api;
 
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\ExtensionsModule\Constant;
 
+/**
+ * @deprecated remove at Core-2.0
+ * Class ExtensionApi
+ */
 class ExtensionApi
 {
-    const STATE_UNINITIALISED = 1;
-    const STATE_INACTIVE = 2;
-    const STATE_ACTIVE = 3;
-    const STATE_MISSING = 4;
-    const STATE_UPGRADED = 5;
-    const STATE_NOTALLOWED = 6;
-    const STATE_INVALID = -1;
-    const INCOMPATIBLE_CORE_SHIFT = 20;
+    /**
+     * @deprecated
+     */
+    const STATE_UNINITIALISED = Constant::STATE_UNINITIALISED;
+
+    /**
+     * @deprecated
+     */
+    const STATE_INACTIVE = Constant::STATE_INACTIVE;
+
+    /**
+     * @deprecated
+     */
+    const STATE_ACTIVE = Constant::STATE_ACTIVE;
+
+    /**
+     * @deprecated
+     */
+    const STATE_MISSING = Constant::STATE_MISSING;
+
+    /**
+     * @deprecated
+     */
+    const STATE_UPGRADED = Constant::STATE_UPGRADED;
+
+    /**
+     * @deprecated
+     */
+    const STATE_NOTALLOWED = Constant::STATE_NOTALLOWED;
+
+    /**
+     * @deprecated
+     */
+    const STATE_INVALID = Constant::STATE_INVALID;
+
+    /**
+     * @deprecated
+     */
+    const INCOMPATIBLE_CORE_SHIFT = Constant::INCOMPATIBLE_CORE_SHIFT;
 
     /**
      * @var ZikulaHttpKernelInterface

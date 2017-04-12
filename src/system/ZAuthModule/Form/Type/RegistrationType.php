@@ -16,7 +16,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
 use Zikula\ZAuthModule\Validator\Constraints\ValidAntiSpamAnswer;
 use Zikula\ZAuthModule\Validator\Constraints\ValidEmail;
@@ -39,9 +39,9 @@ class RegistrationType extends AbstractType
      * RegistrationType constructor.
      *
      * @param TranslatorInterface $translator
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      */
-    public function __construct(TranslatorInterface $translator, VariableApi $variableApi)
+    public function __construct(TranslatorInterface $translator, VariableApiInterface $variableApi)
     {
         $this->translator = $translator;
         $this->zAuthModVars = $variableApi->getAll('ZikulaZAuthModule');

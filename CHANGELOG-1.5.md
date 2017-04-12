@@ -28,6 +28,8 @@ CHANGELOG - ZIKULA 1.5.x
         - e.g. @AcmeFooModule:css/mybootstrap.css
     - Zikula\Core\Doctrine\Entity\AbstractEntityMetadata is deprecated.
     - Old Workflow feature with all related classes is deprecated.
+    - Deprecate \Zikula\ExtensionsModule\Api\ExtensionApi and all constants within. 
+        Use \Zikula\ExtensionsModule\Constant for constant values.
 
  - Fixes:
     - Corrected path to legacy module's admin icons.
@@ -38,6 +40,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Fixed storage of lastlogin in user object (#3383).
     - Fixed inability to store sessions in files (#2001).
     - Re-enabled CSRF token protection in forms in installer (#2186).
+    - CategoryPermissionApi now works but implementation has changed since Core-1.3. Read the docs.
 
  - Features:
     - Added Permission-based controls for MenuModule menu items (#3314).

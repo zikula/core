@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\PermissionsModule\Api;
+namespace Zikula\PermissionsModule;
 
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
@@ -21,7 +21,7 @@ use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
  * Access level names are returned untranslated.
  * Permissions cannot be reset for a user.
  */
-class PermissionAlwaysApi implements PermissionApiInterface
+class PermissionAlways implements PermissionApiInterface
 {
     /**
      * {@inheritdoc}

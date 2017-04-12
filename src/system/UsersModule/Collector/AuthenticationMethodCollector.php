@@ -11,7 +11,7 @@
 
 namespace Zikula\UsersModule\Collector;
 
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\AuthenticationMethodInterface;
 
 /**
@@ -36,9 +36,9 @@ class AuthenticationMethodCollector
 
     /**
      * AuthenticationMethodCollector constructor.
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      */
-    public function __construct(VariableApi $variableApi)
+    public function __construct(VariableApiInterface $variableApi)
     {
         $this->authenticationMethodsStatus = $variableApi->getSystemVar('authenticationMethodsStatus', []);
     }

@@ -15,22 +15,29 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 /**
  * Strips the front controller (index.php) from the URI.
  */
 class StripFrontControllerListener implements EventSubscriberInterface
 {
+    /**
+     * @var VariableApiInterface
+     */
     private $variableApi;
 
+    /**
+     * @var bool
+     */
     private $installed;
 
     /**
      * OutputCompressionListener constructor.
-     * @param $variableApi
+     * @param VariableApiInterface $variableApi
+     * @param bool $installed
      */
-    public function __construct(VariableApi $variableApi, $installed)
+    public function __construct(VariableApiInterface $variableApi, $installed)
     {
         $this->variableApi = $variableApi;
         $this->installed = $installed;

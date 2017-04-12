@@ -16,7 +16,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 class PurifierHelper
 {
@@ -36,7 +36,7 @@ class PurifierHelper
     private $translator;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -46,9 +46,9 @@ class PurifierHelper
      * @param ZikulaHttpKernelInterface $kernel Kernel service instance
      * @param SessionInterface $session Session service instance
      * @param TranslatorInterface $translator Translator service instance
-     * @param VariableApi $variableApi VariableApi service instance
+     * @param VariableApiInterface $variableApi VariableApi service instance
      */
-    public function __construct(ZikulaHttpKernelInterface $kernel, SessionInterface $session, TranslatorInterface $translator, VariableApi $variableApi)
+    public function __construct(ZikulaHttpKernelInterface $kernel, SessionInterface $session, TranslatorInterface $translator, VariableApiInterface $variableApi)
     {
         $this->kernel = $kernel;
         $this->session = $session;

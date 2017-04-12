@@ -18,9 +18,9 @@ use Zikula\Core\Exception\ExtensionNotAvailableException;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\Core\Response\Ajax\UnavailableResponse;
 use Zikula\Core\Response\PlainResponse;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 /**
  * Class LegacyController
@@ -39,12 +39,12 @@ use Zikula\PermissionsModule\Api\PermissionApi;
 class LegacyController
 {
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
@@ -55,11 +55,11 @@ class LegacyController
 
     /**
      * MainController constructor.
-     * @param VariableApi $variableApi
-     * @param PermissionApi $permissionApi
+     * @param VariableApiInterface $variableApi
+     * @param PermissionApiInterface $permissionApi
      * @param ExtensionRepositoryInterface $extensionRepository
      */
-    public function __construct(VariableApi $variableApi, PermissionApi $permissionApi, ExtensionRepositoryInterface $extensionRepository)
+    public function __construct(VariableApiInterface $variableApi, PermissionApiInterface $permissionApi, ExtensionRepositoryInterface $extensionRepository)
     {
         $this->variableApi = $variableApi;
         $this->permissionApi = $permissionApi;

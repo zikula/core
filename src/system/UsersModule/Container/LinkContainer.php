@@ -14,10 +14,10 @@ namespace Zikula\UsersModule\Container;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\PermissionsModule\Api\PermissionApi;
-use Zikula\SettingsModule\Api\LocaleApi;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Helper\RegistrationHelper;
@@ -35,12 +35,12 @@ class LinkContainer implements LinkContainerInterface
     private $router;
 
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -50,12 +50,12 @@ class LinkContainer implements LinkContainerInterface
     private $registrationHelper;
 
     /**
-     * @var CurrentUserApi
+     * @var CurrentUserApiInterface
      */
     private $currentUser;
 
     /**
-     * @var LocaleApi
+     * @var LocaleApiInterface
      */
     private $localeApi;
 
@@ -70,21 +70,21 @@ class LinkContainer implements LinkContainerInterface
      *
      * @param TranslatorInterface $translator
      * @param RouterInterface $router
-     * @param PermissionApi $permissionApi
-     * @param VariableApi $variableApi
+     * @param PermissionApiInterface $permissionApi
+     * @param VariableApiInterface $variableApi
      * @param RegistrationHelper $registrationHelper
-     * @param CurrentUserApi $currentUserApi
-     * @param LocaleApi $localeApi
+     * @param CurrentUserApiInterface $currentUserApi
+     * @param LocaleApiInterface $localeApi
      * @param UserRepositoryInterface $userRepository
      */
     public function __construct(
         TranslatorInterface $translator,
         RouterInterface $router,
-        PermissionApi $permissionApi,
-        VariableApi $variableApi,
+        PermissionApiInterface $permissionApi,
+        VariableApiInterface $variableApi,
         RegistrationHelper $registrationHelper,
-        CurrentUserApi $currentUserApi,
-        LocaleApi $localeApi,
+        CurrentUserApiInterface $currentUserApi,
+        LocaleApiInterface $localeApi,
         UserRepositoryInterface $userRepository // @deprecated
     ) {
         $this->translator = $translator;

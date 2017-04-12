@@ -12,6 +12,7 @@
 namespace Zikula\ExtensionsModule\Api;
 
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
+use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
@@ -50,7 +51,7 @@ class CapabilityApi implements CapabilityApiInterface
      */
     private function load()
     {
-        $extensions = $this->extensionRepository->findBy(['state' => ExtensionApi::STATE_ACTIVE]);
+        $extensions = $this->extensionRepository->findBy(['state' => Constant::STATE_ACTIVE]);
         /** @var ExtensionEntity $extension */
         foreach ($extensions as $extension) {
             foreach ($extension->getCapabilities() as $capability => $definition) {

@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Annotations\Reader;
 use Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 /**
  * Class Engine
@@ -87,7 +87,7 @@ class Engine
     private $blockApi;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -98,7 +98,7 @@ class Engine
      * @param ZikulaKernel $kernel
      * @param AssetFilter $filter
      * @param BlockApiInterface $blockApi
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      */
     public function __construct(
         RequestStack $requestStack,
@@ -106,7 +106,7 @@ class Engine
         ZikulaKernel $kernel,
         AssetFilter $filter,
         BlockApiInterface $blockApi,
-        VariableApi $variableApi
+        VariableApiInterface $variableApi
     ) {
         $this->requestStack = $requestStack;
         $this->annotationReader = $annotationReader;

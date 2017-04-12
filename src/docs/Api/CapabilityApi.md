@@ -10,9 +10,28 @@ from ModUtil::* methods.
 
 The class makes the following methods available:
 
-    - getExtensionsCapableOf($capability)
-    - isCapable($extensionName, $requestedCapability)
-    - getCapabilitiesOf($extensionName)
+    /**
+     * Get all the Extensions with a requested capability.
+     * @param string $capability
+     * @return ExtensionEntity[]
+     */
+    public function getExtensionsCapableOf($capability);
+
+    /**
+     * Determine if extension is capable of requested capability.
+     * Returns capability array if capability is true.
+     * @param string $extensionName
+     * @param string $requestedCapability
+     * @return array|bool capability definition or false
+     */
+    public function isCapable($extensionName, $requestedCapability);
+
+    /**
+     * Get the capabilities array of an extension.
+     * @param string $extensionName
+     * @return array capablities of extension
+     */
+    public function getCapabilitiesOf($extensionName);
 
 The class is fully tested.
 

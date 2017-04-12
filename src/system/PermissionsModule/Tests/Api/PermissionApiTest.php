@@ -11,6 +11,8 @@
 
 namespace Zikula\PermissionsModule\Tests\Api;
 
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Zikula\Common\Translator\IdentityTranslator;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\PermissionsModule\Tests\Api\Fixtures\StubPermissionRepository;
 
@@ -24,6 +26,9 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
 
     private $session;
 
+    /**
+     * @var IdentityTranslator
+     */
     private $translator;
 
     /**
@@ -57,16 +62,10 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
                 return [$this->user]; // must return an array of users.
             }));
         $this->session = $this
-            ->getMockBuilder('Zikula_Session')
+            ->getMockBuilder(SessionInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->translator = $this
-            ->getMockBuilder('Zikula\Common\Translator\Translator')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->translator
-            ->method('__')
-            ->willReturnArgument(0);
+        $this->translator = new IdentityTranslator();
     }
 
     /**
