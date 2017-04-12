@@ -18,7 +18,6 @@ use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
-use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository;
