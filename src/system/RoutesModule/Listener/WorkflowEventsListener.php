@@ -61,10 +61,10 @@ class WorkflowEventsListener extends AbstractWorkflowEventsListener
         // $entity = $event->getSubject();
         
         // access the marking
-        // $entity = $event->getMarking();
+        // $marking = $event->getMarking();
         
         // access the transition
-        // $entity = $event->getTransition();
+        // $transition = $event->getTransition();
         
         // starting from Symfony 3.3.0 you can also access the workflow name
         // $workflowName = $event->getWorkflowName();
@@ -105,10 +105,10 @@ class WorkflowEventsListener extends AbstractWorkflowEventsListener
         // $entity = $event->getSubject();
         
         // access the marking
-        // $entity = $event->getMarking();
+        // $marking = $event->getMarking();
         
         // access the transition
-        // $entity = $event->getTransition();
+        // $transition = $event->getTransition();
         
         // starting from Symfony 3.3.0 you can also access the workflow name
         // $workflowName = $event->getWorkflowName();
@@ -144,10 +144,10 @@ class WorkflowEventsListener extends AbstractWorkflowEventsListener
         // $entity = $event->getSubject();
         
         // access the marking
-        // $entity = $event->getMarking();
+        // $marking = $event->getMarking();
         
         // access the transition
-        // $entity = $event->getTransition();
+        // $transition = $event->getTransition();
         
         // starting from Symfony 3.3.0 you can also access the workflow name
         // $workflowName = $event->getWorkflowName();
@@ -183,10 +183,10 @@ class WorkflowEventsListener extends AbstractWorkflowEventsListener
         // $entity = $event->getSubject();
         
         // access the marking
-        // $entity = $event->getMarking();
+        // $marking = $event->getMarking();
         
         // access the transition
-        // $entity = $event->getTransition();
+        // $transition = $event->getTransition();
         
         // starting from Symfony 3.3.0 you can also access the workflow name
         // $workflowName = $event->getWorkflowName();

@@ -86,10 +86,10 @@ abstract class AbstractControllerHelper
         if (!in_array($context, ['controllerAction', 'api', 'helper', 'actionHandler', 'block', 'contentType', 'util'])) {
             $context = 'controllerAction';
         }
-
+    
         $allowedObjectTypes = [];
         $allowedObjectTypes[] = 'route';
-
+    
         return $allowedObjectTypes;
     }
 
@@ -106,9 +106,9 @@ abstract class AbstractControllerHelper
         if (!in_array($context, ['controllerAction', 'api', 'helper', 'actionHandler', 'block', 'contentType', 'util'])) {
             $context = 'controllerAction';
         }
-
+    
         $defaultObjectType = 'route';
-
+    
         return $defaultObjectType;
     }
 
@@ -118,12 +118,12 @@ abstract class AbstractControllerHelper
      * @param Request $request    The current request
      * @param array   $args       List of arguments used as fallback if request does not contain a field
      * @param string  $objectType Name of treated entity type
-     * @param array   $idFields   List of identifier field names
      *
      * @return array List of fetched identifiers
      */
-    public function retrieveIdentifier(Request $request, array $args, $objectType = '', array $idFields)
+    public function retrieveIdentifier(Request $request, array $args, $objectType = '')
     {
+        $idFields = $this->entityFactory->getIdFields($objectType);
         $idValues = [];
         $routeParams = $request->get('_route_params', []);
         foreach ($idFields as $idField) {
@@ -147,7 +147,7 @@ abstract class AbstractControllerHelper
                     $id = $defaultValue;
                 }
             }
-
+    
             // fallback if id has not been found yet
             if (!$id && $idField != 'id' && count($idFields) == 1) {
                 $defaultValue = isset($args['id']) && is_numeric($args['id']) ? $args['id'] : 0;
@@ -161,7 +161,7 @@ abstract class AbstractControllerHelper
             }
             $idValues[$idField] = $id;
         }
-
+    
         return $idValues;
     }
 
@@ -177,13 +177,13 @@ abstract class AbstractControllerHelper
         if (!count($idValues)) {
             return false;
         }
-
+    
         foreach ($idValues as $idField => $idValue) {
             if (!$idValue) {
                 return false;
             }
         }
-
+    
         return true;
     }
 
@@ -203,7 +203,7 @@ abstract class AbstractControllerHelper
             $name
         );
         $name = preg_replace("#(\s*\/\s*|\s*\+\s*|\s+)#", '-', strtolower($name));
-
+    
         return $name;
     }
 
@@ -223,11 +223,11 @@ abstract class AbstractControllerHelper
         if (!in_array($objectType, $this->getObjectTypes('controllerAction', $contextArgs))) {
             throw new Exception($this->__('Error! Invalid object type received.'));
         }
-
+    
         $request = $this->request;
         $repository = $this->entityFactory->getRepository($objectType);
         $repository->setRequest($request);
-
+    
         // parameter for used sorting field
         $sort = $request->query->get('sort', '');
         if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields())) {
@@ -238,12 +238,12 @@ abstract class AbstractControllerHelper
             $routeParams['sort'] = $sort;
             $request->attributes->set('_route_params', $routeParams);
         }
-
-
+    
+    
         $showOwnEntries = $request->query->getInt('own', $this->variableApi->get('ZikulaRoutesModule', 'showOnlyOwnEntries', 0));
         $showAllEntries = $request->query->getInt('all', 0);
-
-
+    
+    
         $resultsPerPage = 0;
         if ($showAllEntries != 1) {
             // the number of items displayed on a page for pagination
@@ -252,9 +252,9 @@ abstract class AbstractControllerHelper
                 $resultsPerPage = $this->variableApi->get('ZikulaRoutesModule', $objectType . 'EntriesPerPage', 10);
             }
         }
-
+    
         $additionalParameters = $repository->getAdditionalTemplateParameters('controllerAction', $contextArgs);
-
+    
         $additionalUrlParameters = [
             'all' => $showAllEntries,
             'own' => $showOwnEntries,
@@ -266,12 +266,12 @@ abstract class AbstractControllerHelper
             }
             $additionalUrlParameters[$parameterName] = $parameterValue;
         }
-
+    
         $templateParameters['all'] = $showAllEntries;
         $templateParameters['own'] = $showOwnEntries;
         $templateParameters['num'] = $resultsPerPage;
         $templateParameters['tpl'] = $request->query->getAlnum('tpl', '');
-
+    
         $quickNavForm = $this->formFactory->create('Zikula\RoutesModule\Form\Type\QuickNavigation\\' . ucfirst($objectType) . 'QuickNavType', $templateParameters);
         if ($quickNavForm->handleRequest($request) && $quickNavForm->isSubmitted()) {
             $quickNavData = $quickNavForm->getData();
@@ -297,7 +297,7 @@ abstract class AbstractControllerHelper
         $sortableColumns->setAdditionalUrlParameters($additionalUrlParameters);
         $templateParameters['sort'] = $sort;
         $templateParameters['sortdir'] = $sortdir;
-
+    
         $where = '';
         if ($showAllEntries == 1) {
             // retrieve item list without pagination
@@ -305,31 +305,31 @@ abstract class AbstractControllerHelper
         } else {
             // the current offset which is used to calculate the pagination
             $currentPage = $request->query->getInt('pos', 1);
-
+    
             // retrieve item list with pagination
             list($entities, $objectCount) = $repository->selectWherePaginated($where, $sort . ' ' . $sortdir, $currentPage, $resultsPerPage);
-
+    
             $templateParameters['currentPage'] = $currentPage;
             $templateParameters['pager'] = [
                 'amountOfItems' => $objectCount,
                 'itemsPerPage' => $resultsPerPage
             ];
         }
-
+    
         $templateParameters['items'] = $entities;
         $templateParameters['sort'] = $sort;
         $templateParameters['sortdir'] = $sortdir;
         $templateParameters['num'] = $resultsPerPage;
         $templateParameters = array_merge($templateParameters, $additionalParameters);
-
+    
         $templateParameters['sort'] = $sortableColumns->generateSortableColumns();
         $templateParameters['quickNavForm'] = $quickNavForm->createView();
-
+    
         $templateParameters['showAllEntries'] = $templateParameters['all'];
         $templateParameters['showOwnEntries'] = $templateParameters['own'];
-
+    
         $templateParameters['canBeCreated'] = $this->modelHelper->canBeCreated($objectType);
-
+    
         return $templateParameters;
     }
 
@@ -347,14 +347,14 @@ abstract class AbstractControllerHelper
         if (!in_array($objectType, $this->getObjectTypes('controllerAction', $contextArgs))) {
             throw new Exception($this->__('Error! Invalid object type received.'));
         }
-
+    
         $repository = $this->entityFactory->getRepository($objectType);
         $repository->setRequest($this->request);
         $entity = $templateParameters[$objectType];
-
+    
         $additionalParameters = $repository->getAdditionalTemplateParameters('controllerAction', $contextArgs);
         $templateParameters = array_merge($templateParameters, $additionalParameters);
-
+    
         return $templateParameters;
     }
 
@@ -372,13 +372,13 @@ abstract class AbstractControllerHelper
         if (!in_array($objectType, $this->getObjectTypes('controllerAction', $contextArgs))) {
             throw new Exception($this->__('Error! Invalid object type received.'));
         }
-
+    
         $repository = $this->entityFactory->getRepository($objectType);
         $repository->setRequest($this->request);
-
+    
         $additionalParameters = $repository->getAdditionalTemplateParameters('controllerAction', $contextArgs);
         $templateParameters = array_merge($templateParameters, $additionalParameters);
-
+    
         return $templateParameters;
     }
 
@@ -396,13 +396,13 @@ abstract class AbstractControllerHelper
         if (!in_array($objectType, $this->getObjectTypes('controllerAction', $contextArgs))) {
             throw new Exception($this->__('Error! Invalid object type received.'));
         }
-
+    
         $repository = $this->entityFactory->getRepository($objectType);
         $repository->setRequest($this->request);
-
+    
         $additionalParameters = $repository->getAdditionalTemplateParameters('controllerAction', $contextArgs);
         $templateParameters = array_merge($templateParameters, $additionalParameters);
-
+    
         return $templateParameters;
     }
 }
