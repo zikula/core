@@ -34,10 +34,6 @@ services:
           - "@kernel"
           - "%multisites%"
 
-    zikula_extensions_module.api.extension:
-        class: Zikula\ExtensionsModule\Api\ExtensionApi
-        arguments: ["@kernel"]
-
     zikula_extensions_module.api.capability:
         class: Zikula\ExtensionsModule\Api\CapabilityApi
         arguments: ["@zikula_extensions_module.extension_repository"]
