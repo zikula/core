@@ -17,7 +17,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
-use Zikula\ZAuthModule\Api\PasswordApi;
+use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 
 class AuthenticateAdminLoginValidator extends ConstraintValidator
 {
@@ -34,7 +34,7 @@ class AuthenticateAdminLoginValidator extends ConstraintValidator
     private $databaseConnection;
 
     /**
-     * @var PasswordApi
+     * @var PasswordApiInterface
      */
     private $passwordApi;
 
@@ -43,9 +43,9 @@ class AuthenticateAdminLoginValidator extends ConstraintValidator
      * @param PermissionApiInterface $permissionApi
      * @param Connection $connection
      * @param TranslatorInterface $translator
-     * @param PasswordApi $passwordApi
+     * @param PasswordApiInterface $passwordApi
      */
-    public function __construct(PermissionApiInterface $permissionApi, Connection $connection, TranslatorInterface $translator, PasswordApi $passwordApi)
+    public function __construct(PermissionApiInterface $permissionApi, Connection $connection, TranslatorInterface $translator, PasswordApiInterface $passwordApi)
     {
         $this->permissionApi = $permissionApi;
         $this->databaseConnection = $connection;

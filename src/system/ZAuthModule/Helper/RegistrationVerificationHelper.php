@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
-use Zikula\ZAuthModule\Api\PasswordApi;
+use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\ZAuthConstant;
@@ -48,7 +48,7 @@ class RegistrationVerificationHelper
     private $userRepository;
 
     /**
-     * @var PasswordApi
+     * @var PasswordApiInterface
      */
     private $passwordApi;
 
@@ -59,7 +59,7 @@ class RegistrationVerificationHelper
      * @param MailHelper $mailHelper
      * @param CurrentUserApiInterface $currentUserApi
      * @param UserRepositoryInterface $userRepository
-     * @param PasswordApi $passwordApi
+     * @param PasswordApiInterface $passwordApi
      */
     public function __construct(
         PermissionApiInterface $permissionApi,
@@ -67,7 +67,7 @@ class RegistrationVerificationHelper
         MailHelper $mailHelper,
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository,
-        PasswordApi $passwordApi
+        PasswordApiInterface $passwordApi
     ) {
         $this->permissionApi = $permissionApi;
         $this->userVerificationRepository = $userVerificationRepository;

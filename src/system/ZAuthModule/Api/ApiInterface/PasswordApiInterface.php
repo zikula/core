@@ -1,13 +1,27 @@
-PasswordApi
-===========
+<?php
 
-classname: \Zikula\ZAuthModule\Api\PasswordApi
+/*
+ * This file is part of the Zikula package.
+ *
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-service id="zikula_zauth_module.api.password"
+namespace Zikula\ZAuthModule\Api\ApiInterface;
 
-This class is used to manage passwords. 
+interface PasswordApiInterface
+{
+    const SALT_DELIM = '$';
 
-The class makes the following methods available:
+    const SALT_LENGTH = 5;
+
+    const DEFAULT_HASH_METHOD_CODE = 8;
+
+    const MIN_LENGTH = 5;
+
+    const MAX_LENGTH = 25;
 
     /**
      * Given a string return it's hash.
@@ -40,5 +54,4 @@ The class makes the following methods available:
      * @throws \InvalidArgumentException
      */
     public function passwordsMatch($unhashedPassword, $hashedPassword);
-
-The class is fully tested.
+}

@@ -30,7 +30,7 @@ use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
 use Zikula\UsersModule\Validator\Constraints\ValidEmail;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
-use Zikula\ZAuthModule\Api\PasswordApi;
+use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 
 class FileIOHelper
@@ -73,7 +73,7 @@ class FileIOHelper
     private $currentUser;
 
     /**
-     * @var PasswordApi
+     * @var PasswordApiInterface
      */
     private $passwordApi;
 
@@ -87,7 +87,7 @@ class FileIOHelper
      * @param MailHelper $mailHelper
      * @param EventDispatcherInterface $eventDispatcher
      * @param CurrentUserApiInterface $currentUserApi
-     * @param PasswordApi $passwordApi
+     * @param PasswordApiInterface $passwordApi
      */
     public function __construct(
         VariableApiInterface $variableApi,
@@ -98,7 +98,7 @@ class FileIOHelper
         MailHelper $mailHelper,
         EventDispatcherInterface $eventDispatcher,
         CurrentUserApiInterface $currentUserApi,
-        PasswordApi $passwordApi
+        PasswordApiInterface $passwordApi
     ) {
         $this->variableApi = $variableApi;
         $this->permissionApi = $permissionApi;

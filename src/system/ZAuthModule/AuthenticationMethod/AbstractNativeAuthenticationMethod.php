@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
-use Zikula\ZAuthModule\Api\PasswordApi;
+use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthModule\Helper\MigrationHelper;
@@ -56,7 +56,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
     private $validator;
 
     /**
-     * @var PasswordApi
+     * @var PasswordApiInterface
      */
     private $passwordApi;
 
@@ -68,7 +68,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
      * @param TranslatorInterface $translator
      * @param VariableApiInterface $variableApi
      * @param ValidatorInterface $validator
-     * @param PasswordApi $passwordApi
+     * @param PasswordApiInterface $passwordApi
      */
     public function __construct(
         MigrationHelper $migrationHelper, // @deprecated
@@ -77,7 +77,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         TranslatorInterface $translator,
         VariableApiInterface $variableApi,
         ValidatorInterface $validator,
-        PasswordApi $passwordApi
+        PasswordApiInterface $passwordApi
     ) {
         $this->migrationHelper = $migrationHelper; // @deprecated
         $this->mappingRepository = $mappingRepository;
