@@ -25,7 +25,7 @@ use Zikula\Component\FilterUtil\FilterUtil;
 use Zikula\Component\FilterUtil\Config as FilterConfig;
 use Zikula\Component\FilterUtil\PluginManager as FilterPluginManager;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\RoutesModule\Entity\RouteEntity;
 
 /**
@@ -130,9 +130,7 @@ abstract class AbstractRouteRepository extends SortableRepository
      */
     public function getTitleFieldName()
     {
-        $fieldName = 'replacedRouteName';
-    
-        return $fieldName;
+        return 'replacedRouteName';
     }
     
     /**
@@ -142,9 +140,7 @@ abstract class AbstractRouteRepository extends SortableRepository
      */
     public function getDescriptionFieldName()
     {
-        $fieldName = 'bundle';
-    
-        return $fieldName;
+        return 'bundle';
     }
     
     /**
@@ -154,9 +150,7 @@ abstract class AbstractRouteRepository extends SortableRepository
      */
     public function getPreviewFieldName()
     {
-        $fieldName = '';
-    
-        return $fieldName;
+        return '';
     }
     
     /**
@@ -263,13 +257,13 @@ abstract class AbstractRouteRepository extends SortableRepository
      * @param integer             $newUserId      The new userid of the creator as replacement
      * @param TranslatorInterface $translator     Translator service instance
      * @param LoggerInterface     $logger         Logger service instance
-     * @param CurrentUserApi      $currentUserApi CurrentUserApi service instance
+     * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
      *
      * @return void
      *
      * @throws InvalidArgumentException Thrown if invalid parameters are received
      */
-    public function updateCreator($userId, $newUserId, TranslatorInterface $translator, LoggerInterface $logger, CurrentUserApi $currentUserApi)
+    public function updateCreator($userId, $newUserId, TranslatorInterface $translator, LoggerInterface $logger, CurrentUserApiInterface $currentUserApi)
     {
         // check id parameter
         if ($userId == 0 || !is_numeric($userId)
@@ -296,13 +290,13 @@ abstract class AbstractRouteRepository extends SortableRepository
      * @param integer             $newUserId      The new userid of the last editor as replacement
      * @param TranslatorInterface $translator     Translator service instance
      * @param LoggerInterface     $logger         Logger service instance
-     * @param CurrentUserApi      $currentUserApi CurrentUserApi service instance
+     * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
      *
      * @return void
      *
      * @throws InvalidArgumentException Thrown if invalid parameters are received
      */
-    public function updateLastEditor($userId, $newUserId, TranslatorInterface $translator, LoggerInterface $logger, CurrentUserApi $currentUserApi)
+    public function updateLastEditor($userId, $newUserId, TranslatorInterface $translator, LoggerInterface $logger, CurrentUserApiInterface $currentUserApi)
     {
         // check id parameter
         if ($userId == 0 || !is_numeric($userId)
@@ -328,13 +322,13 @@ abstract class AbstractRouteRepository extends SortableRepository
      * @param integer             $userId         The userid of the creator to be removed
      * @param TranslatorInterface $translator     Translator service instance
      * @param LoggerInterface     $logger         Logger service instance
-     * @param CurrentUserApi      $currentUserApi CurrentUserApi service instance
+     * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
      *
      * @return void
      *
      * @throws InvalidArgumentException Thrown if invalid parameters are received
      */
-    public function deleteByCreator($userId, TranslatorInterface $translator, LoggerInterface $logger, CurrentUserApi $currentUserApi)
+    public function deleteByCreator($userId, TranslatorInterface $translator, LoggerInterface $logger, CurrentUserApiInterface $currentUserApi)
     {
         // check id parameter
         if ($userId == 0 || !is_numeric($userId)) {
@@ -359,13 +353,13 @@ abstract class AbstractRouteRepository extends SortableRepository
      * @param integer             $userId         The userid of the last editor to be removed
      * @param TranslatorInterface $translator     Translator service instance
      * @param LoggerInterface     $logger         Logger service instance
-     * @param CurrentUserApi      $currentUserApi CurrentUserApi service instance
+     * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
      *
      * @return void
      *
      * @throws InvalidArgumentException Thrown if invalid parameters are received
      */
-    public function deleteByLastEditor($userId, TranslatorInterface $translator, LoggerInterface $logger, CurrentUserApi $currentUserApi)
+    public function deleteByLastEditor($userId, TranslatorInterface $translator, LoggerInterface $logger, CurrentUserApiInterface $currentUserApi)
     {
         // check id parameter
         if ($userId == 0 || !is_numeric($userId)) {
@@ -551,9 +545,7 @@ abstract class AbstractRouteRepository extends SortableRepository
     public function selectWherePaginated($where = '', $orderBy = '', $currentPage = 1, $resultsPerPage = 25, $useJoins = true, $slimMode = false)
     {
         $qb = $this->getListQueryBuilder($where, $orderBy, $useJoins, $slimMode);
-    
-        $page = $currentPage;
-        $query = $this->getSelectWherePaginatedQuery($qb, $page, $resultsPerPage);
+        $query = $this->getSelectWherePaginatedQuery($qb, $currentPage, $resultsPerPage);
     
         return $this->retrieveCollectionResult($query, $orderBy, true);
     }
@@ -737,14 +729,12 @@ abstract class AbstractRouteRepository extends SortableRepository
      * Returns query builder instance for a count query.
      *
      * @param string  $where    The where clause to use when retrieving the object count (optional) (default='')
-     * @param boolean $useJoins Whether to include joining related objects (optional) (default=true)
+     * @param boolean $useJoins Whether to include joining related objects (optional) (default=false)
      *
      * @return QueryBuilder Created query builder instance
      */
-    protected function getCountQuery($where = '', $useJoins = true)
+    protected function getCountQuery($where = '', $useJoins = false)
     {
-        $useJoins = false; // joins usage needs to be fixed; please remove the first line and test
-    
         $selection = 'COUNT(tbl.id) AS numRoutes';
         if (true === $useJoins) {
             $selection .= $this->addJoinsToSelection();
@@ -767,12 +757,12 @@ abstract class AbstractRouteRepository extends SortableRepository
      * Selects entity count with a given where clause.
      *
      * @param string  $where      The where clause to use when retrieving the object count (optional) (default='')
-     * @param boolean $useJoins   Whether to include joining related objects (optional) (default=true)
+     * @param boolean $useJoins   Whether to include joining related objects (optional) (default=false)
      * @param array   $parameters List of determined filter options
      *
      * @return integer amount of affected records
      */
-    public function selectCount($where = '', $useJoins = true, $parameters = [])
+    public function selectCount($where = '', $useJoins = false, $parameters = [])
     {
         $qb = $this->getCountQuery($where, $useJoins);
     

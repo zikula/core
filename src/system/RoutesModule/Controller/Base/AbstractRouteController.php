@@ -136,6 +136,7 @@ abstract class AbstractRouteController extends AbstractController
         $sortdir = strtolower($sortdir);
         $request->query->set('sort', $sort);
         $request->query->set('sortdir', $sortdir);
+        $request->query->set('pos', $pos);
         
         $sortableColumns = new SortableColumns($this->get('router'), 'zikularoutesmodule_route_' . ($isAdmin ? 'admin' : '') . 'view', 'sort', 'sortdir');
         

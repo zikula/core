@@ -134,8 +134,7 @@ abstract class AbstractEditHandler extends EditHandler
         $routePrefix = 'zikularoutesmodule_' . $this->objectTypeLower . '_' . $routeArea;
     
         // redirect to the list of routes
-        $viewArgs = [];
-        $url = $this->router->generate($routePrefix . 'view', $viewArgs);
+        $url = $this->router->generate($routePrefix . 'view');
     
         return $url;
     }

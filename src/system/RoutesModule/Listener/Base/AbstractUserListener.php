@@ -16,7 +16,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\UserEvents;
 use Zikula\RoutesModule\Entity\Factory\RoutesFactory;
 
@@ -36,7 +36,7 @@ abstract class AbstractUserListener implements EventSubscriberInterface
     protected $entityFactory;
     
     /**
-     * @var CurrentUserApi
+     * @var CurrentUserApiInterface
      */
     protected $currentUserApi;
     
@@ -50,13 +50,17 @@ abstract class AbstractUserListener implements EventSubscriberInterface
      *
      * @param TranslatorInterface $translator     Translator service instance
      * @param RoutesFactory $entityFactory RoutesFactory service instance
-     * @param CurrentUserApi      $currentUserApi CurrentUserApi service instance
+     * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
      * @param LoggerInterface     $logger         Logger service instance
      *
      * @return void
      */
-    public function __construct(TranslatorInterface $translator, RoutesFactory $entityFactory, CurrentUserApi $currentUserApi, LoggerInterface $logger)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        RoutesFactory $entityFactory,
+        CurrentUserApiInterface $currentUserApi,
+        LoggerInterface $logger
+    ) {
         $this->translator = $translator;
         $this->entityFactory = $entityFactory;
         $this->currentUserApi = $currentUserApi;

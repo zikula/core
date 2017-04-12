@@ -40,11 +40,13 @@ abstract class AbstractAppSettingsType extends AbstractType
     /**
      * AppSettingsType constructor.
      *
-     * @param TranslatorInterface $translator  Translator service instance
+     * @param TranslatorInterface  $translator  Translator service instance
      * @param VariableApiInterface $variableApi VariableApi service instance
      */
-    public function __construct(TranslatorInterface $translator, VariableApiInterface $variableApi)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        VariableApiInterface $variableApi
+    ) {
         $this->setTranslator($translator);
         $this->variableApi = $variableApi;
         $this->modVars = $this->variableApi->getAll('ZikulaRoutesModule');

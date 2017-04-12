@@ -69,10 +69,12 @@ abstract class AbstractViewHelper
      * @param Twig_Environment $twig             Twig service instance
      * @param FilesystemLoader $twigLoader       Twig loader service instance
      * @param RequestStack     $requestStack     RequestStack service instance
-     * @param PermissionApiInterface $permissionApi    PermissionApi service instance
+     * @param PermissionApiInterface    $permissionApi    PermissionApi service instance
      * @param VariableApiInterface $variableApi      VariableApi service instance
      * @param ParameterBag     $pageVars         ParameterBag for theme page variables
      * @param ControllerHelper $controllerHelper ControllerHelper service instance
+     *
+     * @return void
      */
     public function __construct(
         Twig_Environment $twig,
@@ -104,10 +106,10 @@ abstract class AbstractViewHelper
     {
         // create the base template name
         $template = '@ZikulaRoutesModule/' . ucfirst($type) . '/' . $func;
-
+    
         // check for template extension
         $templateExtension = '.' . $this->determineExtension($type, $func);
-
+    
         // check whether a special template is used
         $tpl = $this->request->query->getAlnum('tpl', '');
         if (!empty($tpl)) {
@@ -117,9 +119,9 @@ abstract class AbstractViewHelper
                 $template = $customTemplate;
             }
         }
-
+    
         $template .= $templateExtension;
-
+    
         return $template;
     }
 
@@ -139,19 +141,19 @@ abstract class AbstractViewHelper
         if (empty($template)) {
             $template = $this->getViewTemplate($type, $func);
         }
-
+    
         if ($templateExtension == 'pdf.twig') {
             $template = str_replace('.pdf', '.html', $template);
-
+    
             return $this->processPdf($templateParameters, $template);
         }
-
+    
         // look whether we need output with or without the theme
         $raw = $this->request->query->getBoolean('raw', false);
         if (!$raw && $templateExtension != 'html.twig') {
             $raw = true;
         }
-
+    
         $output = $this->twig->render($template, $templateParameters);
         $response = null;
         if (true === $raw) {
@@ -161,7 +163,7 @@ abstract class AbstractViewHelper
             // normal output
             $response = new Response($output);
         }
-
+    
         // check if we need to set any custom headers
         switch ($templateExtension) {
             case 'ics.twig':
@@ -171,7 +173,7 @@ abstract class AbstractViewHelper
                 $response->headers->set('Content-Type', 'application/vnd.google-earth.kml+xml');
                 break;
         }
-
+    
         return $response;
     }
 
@@ -189,13 +191,13 @@ abstract class AbstractViewHelper
         if (!in_array($func, ['view', 'display'])) {
             return $templateExtension;
         }
-
+    
         $extensions = $this->availableExtensions($type, $func);
         $format = $this->request->getRequestFormat();
         if ($format != 'html' && in_array($format, $extensions)) {
             $templateExtension = $format . '.twig';
         }
-
+    
         return $templateExtension;
     }
 
@@ -224,7 +226,7 @@ abstract class AbstractViewHelper
                 $extensions = ['ics'];
             }
         }
-
+    
         return $extensions;
     }
 
@@ -240,16 +242,16 @@ abstract class AbstractViewHelper
     {
         // first the content, to set page vars
         $output = $this->twig->render($template, $templateParameters);
-
+    
         // make local images absolute
         $output = str_replace('img src="/', 'img src="' . $this->request->server->get('DOCUMENT_ROOT') . '/', $output);
-
+    
         // see http://codeigniter.com/forums/viewthread/69388/P15/#561214
         //$output = utf8_decode($output);
-
+    
         // then the surrounding
         $output = $this->twig->render('@ZikulaRoutesModule/includePdfHeader.html.twig') . $output . '</body></html>';
-
+    
         // create name of the pdf output file
         $siteName = $this->variableApi->getSystemVar('sitename');
         $pageTitle = $this->controllerHelper->formatPermalink($this->themePageVars->get('title', ''));
@@ -257,13 +259,13 @@ abstract class AbstractViewHelper
                    . '-'
                    . ($pageTitle != '' ? $pageTitle . '-' : '')
                    . date('Ymd') . '.pdf';
-
+    
         /*
         if (true === $this->request->query->getBoolean('dbg', false)) {
             die($output);
         }
         */
-
+    
         // instantiate pdf object
         $pdf = new \DOMPDF();
         // define page properties
@@ -274,7 +276,7 @@ abstract class AbstractViewHelper
         $pdf->render();
         // stream output to browser
         $pdf->stream($fileTitle);
-
+    
         return new Response();
     }
 }
