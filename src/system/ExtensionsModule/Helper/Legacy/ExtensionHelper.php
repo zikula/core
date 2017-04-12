@@ -14,7 +14,7 @@ namespace Zikula\ExtensionsModule\Helper\Legacy;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\ModuleStateEvent;
-use Zikula\ExtensionsModule\Api\ExtensionApi;
+use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Util as ExtensionsUtil;
 
@@ -134,11 +134,11 @@ class ExtensionHelper
 
     public static function uninstall(ExtensionEntity $extension)
     {
-        if ($extension->getState() == ExtensionApi::STATE_NOTALLOWED
+        if ($extension->getState() == Constant::STATE_NOTALLOWED
             || (ZikulaKernel::isCoreModule($extension->getName()))) {
             throw new \RuntimeException(__f('Error! No permission to upgrade %s.', ['%s' => $extension->getDisplayname()]));
         }
-        if ($extension->getState() == ExtensionApi::STATE_UNINITIALISED) {
+        if ($extension->getState() == Constant::STATE_UNINITIALISED) {
             throw new \RuntimeException(__f('Error! %s is not yet installed, therefore it cannot be uninstalled.', ['%s' => $extension->getDisplayname()]));
         }
 

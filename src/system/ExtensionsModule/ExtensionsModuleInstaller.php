@@ -14,7 +14,6 @@ namespace Zikula\ExtensionsModule;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\Core\AbstractExtensionInstaller;
-use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 /**
@@ -119,7 +118,7 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
             $metaData->setTranslator($this->container->get('translator'));
         }
         $meta = $metaData->getFilteredVersionInfoArray();
-        $meta['state'] = ExtensionApi::STATE_ACTIVE;
+        $meta['state'] = Constant::STATE_ACTIVE;
         unset($meta['dependencies']);
         unset($meta['oldnames']);
 

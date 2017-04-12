@@ -14,7 +14,7 @@ namespace Zikula\ExtensionsModule\Helper;
 use Composer\Semver\Semver;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\ExtensionsModule\Api\ExtensionApi;
+use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionDependencyRepository;
@@ -77,7 +77,7 @@ class ExtensionDependencyHelper
         foreach ($dependents as $dependent) {
             $foundExtension = $this->extensionEntityRepo->findOneBy([
                 'id' => $dependent->getModid(),
-                'state' => ExtensionApi::STATE_ACTIVE
+                'state' => Constant::STATE_ACTIVE
             ]);
             if (!is_null($foundExtension)) {
                 $requiredDependents[] = $foundExtension;
@@ -104,7 +104,7 @@ class ExtensionDependencyHelper
             }
             $foundExtension = $this->extensionEntityRepo->get($dependency->getModname());
             if (!is_null($foundExtension)
-                && ExtensionApi::STATE_ACTIVE == $foundExtension->getState()
+                && Constant::STATE_ACTIVE == $foundExtension->getState()
                 && $this->meetsVersionRequirements($dependency->getMinversion(), $dependency->getMaxversion(), $foundExtension->getVersion())) {
                 continue;
             }
@@ -140,8 +140,8 @@ class ExtensionDependencyHelper
         $foundExtension = $this->extensionEntityRepo->get($dependency->getModname());
         if ($dependency->getStatus() == MetaData::DEPENDENCY_REQUIRED
             && (is_null($foundExtension) // never in the filesystem
-                || $foundExtension->getState() == ExtensionApi::STATE_MISSING
-                || $foundExtension->getState() == ExtensionApi::STATE_INVALID
+                || $foundExtension->getState() == Constant::STATE_MISSING
+                || $foundExtension->getState() == Constant::STATE_INVALID
                 || $foundExtension->getState() > 10 // not compatible with current core
             )) {
             throw new ExtensionDependencyException(sprintf('Could not find a core-compatible, required dependency: %s.', $dependency->getModname()));

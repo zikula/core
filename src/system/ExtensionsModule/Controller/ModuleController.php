@@ -28,7 +28,7 @@ use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
-use Zikula\ExtensionsModule\Api\ExtensionApi;
+use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\ExtensionEvents;
@@ -84,7 +84,7 @@ class ModuleController extends AbstractController
         $adminRoutes = [];
 
         foreach ($pagedResult as $module) {
-            if (!isset($module['capabilities']['admin']) || empty($module['capabilities']['admin']) || $module['state'] != ExtensionApi::STATE_ACTIVE) {
+            if (!isset($module['capabilities']['admin']) || empty($module['capabilities']['admin']) || $module['state'] != Constant::STATE_ACTIVE) {
                 continue;
             }
 
@@ -136,11 +136,11 @@ class ModuleController extends AbstractController
         $this->get('zikula_core.common.csrf_token_handler')->validate($csrftoken);
 
         $extension = $this->getDoctrine()->getManager()->find('ZikulaExtensionsModule:ExtensionEntity', $id);
-        if ($extension->getState() == ExtensionApi::STATE_NOTALLOWED) {
+        if ($extension->getState() == Constant::STATE_NOTALLOWED) {
             $this->addFlash('error', $this->__f('Error! Activation of module %s not allowed.', ['%s' => $extension->getName()]));
         } else {
             // Update state
-            $this->get('zikula_extensions_module.extension_state_helper')->updateState($id, ExtensionApi::STATE_ACTIVE);
+            $this->get('zikula_extensions_module.extension_state_helper')->updateState($id, Constant::STATE_ACTIVE);
             $this->get('zikula.cache_clearer')->clear('symfony.routing');
             $this->addFlash('status', $this->__f('Done! Activated %s module.', ['%s' => $extension->getName()]));
         }
@@ -171,7 +171,7 @@ class ModuleController extends AbstractController
             $this->addFlash('error', $this->__f('Error! You cannot deactivate this extension [%s]. It is a mandatory core extension, and is required by the system.', ['%s' => $extension->getName()]));
         } else {
             // Update state
-            $this->get('zikula_extensions_module.extension_state_helper')->updateState($id, ExtensionApi::STATE_INACTIVE);
+            $this->get('zikula_extensions_module.extension_state_helper')->updateState($id, Constant::STATE_INACTIVE);
             $this->get('zikula.cache_clearer')->clear('symfony.routing');
             $this->addFlash('status', $this->__('Done! Deactivated module.'));
         }
@@ -440,7 +440,7 @@ class ModuleController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        if ($extension->getState() == ExtensionApi::STATE_MISSING) {
+        if ($extension->getState() == Constant::STATE_MISSING) {
             throw new \RuntimeException($this->__("Error! The requested extension cannot be uninstalled because its files are missing!"));
         }
         $requiredDependents = $this->get('zikula_extensions_module.extension_dependency_helper')->getDependentExtensions($extension);

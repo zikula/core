@@ -28,6 +28,8 @@ CHANGELOG - ZIKULA 1.5.x
         - e.g. @AcmeFooModule:css/mybootstrap.css
     - Zikula\Core\Doctrine\Entity\AbstractEntityMetadata is deprecated.
     - Old Workflow feature with all related classes is deprecated.
+    - Deprecate \Zikula\ExtensionsModule\Api\ExtensionApi and all constants within. 
+        Use \Zikula\ExtensionsModule\Constant for constant values.
 
  - Fixes:
     - Corrected path to legacy module's admin icons.

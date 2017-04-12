@@ -12,7 +12,7 @@
 namespace Zikula\ExtensionsModule\Twig\Extension;
 
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\ExtensionsModule\Api\ExtensionApi;
+use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 class ExtensionsExtension extends \Twig_Extension
@@ -53,31 +53,31 @@ class ExtensionsExtension extends \Twig_Extension
     public function stateLabel(ExtensionEntity $extensionEntity, array $upgradedExtensions = null)
     {
         switch ($extensionEntity->getState()) {
-            case ExtensionApi::STATE_INACTIVE:
+            case Constant::STATE_INACTIVE:
                 $status = $this->translator->__('Inactive');
                 $statusclass = "warning";
                 break;
-            case ExtensionApi::STATE_ACTIVE:
+            case Constant::STATE_ACTIVE:
                 $status = $this->translator->__('Active');
                 $statusclass = "success";
                 break;
-            case ExtensionApi::STATE_MISSING:
+            case Constant::STATE_MISSING:
                 $status = $this->translator->__('Files missing');
                 $statusclass = "danger";
                 break;
-            case ExtensionApi::STATE_UPGRADED:
+            case Constant::STATE_UPGRADED:
                 $status = $this->translator->__('New version');
                 $statusclass = "danger";
                 break;
-            case ExtensionApi::STATE_INVALID:
+            case Constant::STATE_INVALID:
                 $status = $this->translator->__('Invalid structure');
                 $statusclass = "danger";
                 break;
-            case ExtensionApi::STATE_NOTALLOWED:
+            case Constant::STATE_NOTALLOWED:
                 $status = $this->translator->__('Not allowed');
                 $statusclass = "danger";
                 break;
-            case ExtensionApi::STATE_UNINITIALISED:
+            case Constant::STATE_UNINITIALISED:
             default:
                 if ($extensionEntity->getState() > 10) {
                     $status = $this->translator->__('Incompatible');
@@ -89,7 +89,7 @@ class ExtensionsExtension extends \Twig_Extension
                 break;
         }
 
-        $newVersionString = ($extensionEntity->getState() == ExtensionApi::STATE_UPGRADED) ? '&nbsp;<span class="label label-warning">' . $upgradedExtensions[$extensionEntity->getName()] . '</span>' : null;
+        $newVersionString = ($extensionEntity->getState() == Constant::STATE_UPGRADED) ? '&nbsp;<span class="label label-warning">' . $upgradedExtensions[$extensionEntity->getName()] . '</span>' : null;
 
         return '<span class="label label-' . $statusclass . '">' . $status . '</span>' . $newVersionString;
     }
