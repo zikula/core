@@ -85,9 +85,3 @@ Functions
 
  * atomFeedLastUpdated()
  * atomId()
-
-### Unimplemented
-
- * button()
- * icon()
- * img()

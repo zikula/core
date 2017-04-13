@@ -60,9 +60,6 @@ class CoreExtension extends \Twig_Extension
     public function getFunctions()
     {
         $functions = [
-            new \Twig_SimpleFunction('button', [$this, 'button']),
-            new \Twig_SimpleFunction('img', [$this, 'img']),
-            new \Twig_SimpleFunction('icon', [$this, 'icon']),
             new \Twig_SimpleFunction('lang', [$this, 'lang']),
             new \Twig_SimpleFunction('langdirection', [$this, 'langDirection']),
             new \Twig_SimpleFunction('zasset', [$this, 'getAssetPath']),
@@ -125,18 +122,6 @@ class CoreExtension extends \Twig_Extension
     public function langDirection()
     {
         return \ZLanguage::getDirection();
-    }
-
-    public function button()
-    {
-    }
-
-    public function img()
-    {
-    }
-
-    public function icon()
-    {
     }
 
     /**
