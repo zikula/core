@@ -25,7 +25,6 @@ use JMS\TranslationBundle\Twig\RemovingNodeVisitor;
 use JMS\TranslationBundle\Twig\DefaultApplyingNodeVisitor;
 use JMS\TranslationBundle\Exception\RuntimeException;
 use Symfony\Component\Translation\MessageSelector;
-use Symfony\Component\Translation\IdentityTranslator;
 use Symfony\Bridge\Twig\Extension\TranslationExtension as SymfonyTranslationExtension;
 use JMS\TranslationBundle\Model\Message;
 use JMS\TranslationBundle\Model\MessageCatalogue;
