@@ -12,6 +12,7 @@
 namespace Zikula\Bundle\CoreBundle\Tests\Translation;
 
 use JMS\TranslationBundle\Translation\FileSourceFactory;
+use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Form\TwigRendererEngine;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -33,6 +34,10 @@ use Symfony\Bridge\Twig\Extension\FormExtension;
 use Zikula\Bundle\CoreBundle\Translation\ZikulaTwigFileExtractor;
 use Zikula\Bundle\CoreBundle\Twig\Extension\CoreExtension;
 use Zikula\Bundle\CoreBundle\Twig\Extension\GettextExtension;
+use Zikula\Common\Translator\IdentityTranslator as ZikulaIdentityTranslator;
+use Zikula\ThemeModule\Engine\ParameterBag;
+use Zikula\ThemeModule\Twig\Extension\AssetExtension;
+use Zikula\ThemeModule\Twig\Extension\PageVarExtension;
 
 class TwigFileExtractorTest extends KernelTestCase
 {
@@ -132,15 +137,20 @@ class TwigFileExtractorTest extends KernelTestCase
 
                 return $bundle;
             }));
+        $logger = $this->getMockBuilder(LoggerInterface::class)->getMock();
+        $assetExtension = $this->getMockBuilder(AssetExtension::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $env = new \Twig_Environment();
         $env->addExtension(new SymfonyTranslationExtension($translator = new IdentityTranslator(new MessageSelector())));
         $env->addExtension(new TranslationExtension($translator, true));
         $env->addExtension(new RoutingExtension(new UrlGenerator(new RouteCollection(), new RequestContext())));
         $env->addExtension(new FormExtension(new TwigRenderer(new TwigRendererEngine())));
-        $env->addExtension(new GettextExtension(new \Zikula\Common\Translator\IdentityTranslator(new MessageSelector()), $kernel));
+        $env->addExtension(new GettextExtension($zikulaTranslator = new ZikulaIdentityTranslator(new MessageSelector()), $kernel));
+        $env->addExtension(new PageVarExtension($zikulaTranslator, new ParameterBag(), $logger, $assetExtension));
         self::bootKernel();
-        $env->addExtension(new CoreExtension(self::$kernel->getContainer()));
+        $env->addExtension(new CoreExtension($zikulaTranslator));
 
         foreach ($env->getNodeVisitors() as $visitor) {
             if ($visitor instanceof DefaultApplyingNodeVisitor) {
