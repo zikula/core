@@ -143,11 +143,12 @@ class TwigFileExtractorTest extends KernelTestCase
             ->getMock();
 
         $env = new \Twig_Environment();
-        $env->addExtension(new SymfonyTranslationExtension($translator = new IdentityTranslator(new MessageSelector())));
-        $env->addExtension(new TranslationExtension($translator, true));
+        $zikulaTranslator = new ZikulaIdentityTranslator(new MessageSelector());
+        $env->addExtension(new SymfonyTranslationExtension($zikulaTranslator));
+        $env->addExtension(new TranslationExtension($zikulaTranslator, true));
         $env->addExtension(new RoutingExtension(new UrlGenerator(new RouteCollection(), new RequestContext())));
         $env->addExtension(new FormExtension(new TwigRenderer(new TwigRendererEngine())));
-        $env->addExtension(new GettextExtension($zikulaTranslator = new ZikulaIdentityTranslator(new MessageSelector()), $kernel));
+        $env->addExtension(new GettextExtension($zikulaTranslator, $kernel));
         $env->addExtension(new PageVarExtension($zikulaTranslator, new ParameterBag(), $logger, $assetExtension));
         self::bootKernel();
         $env->addExtension(new CoreExtension($zikulaTranslator));
