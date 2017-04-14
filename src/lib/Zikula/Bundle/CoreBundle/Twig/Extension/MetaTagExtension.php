@@ -12,7 +12,6 @@
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Zikula\Bundle\CoreBundle\Twig;
 use Zikula\Common\Translator\TranslatorInterface;
 
 class MetaTagExtension extends \Twig_Extension

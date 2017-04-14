@@ -12,7 +12,6 @@
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Zikula\Bundle\CoreBundle\Twig;
 use Zikula\Core\Event\GenericEvent;
 
 class EventDispatcherExtension extends \Twig_Extension

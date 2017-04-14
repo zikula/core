@@ -58,7 +58,6 @@ class PageVarExtension extends \Twig_Extension
         $this->assetExtension = $assetExtension;
     }
 
-
     /**
      * Returns a list of functions to add to the existing list.
      *
