@@ -77,7 +77,7 @@ class BlockType extends AbstractType
                 'required' => false
             ])->addModelTransformer(new NullToEmptyTransformer()))
             ->add($builder->create('language', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'choices' => $this->localeApi->getSupportedLocaleNames(),
+                'choices' => $this->localeApi->getSupportedLocaleNames(null, $options['locale']),
                 'choices_as_values' => true,
                 'required' => false,
                 'placeholder' => $this->translator->__('All')
@@ -126,7 +126,8 @@ class BlockType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Zikula\BlocksModule\Entity\BlockEntity'
+            'data_class' => 'Zikula\BlocksModule\Entity\BlockEntity',
+            'locale' => 'en'
         ]);
     }
 }

@@ -99,7 +99,7 @@ class NodeController extends AbstractController
                 }
                 $response = [
                     'result' => $this->renderView('@ZikulaCategoriesModule/Category/edit.html.twig', [
-                        'locales' => $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(),
+                        'locales' => $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(null, $request->getLocale()),
                         'form' => $form->createView()
                     ]),
                     'action' => $action,
