@@ -11,40 +11,29 @@
 
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Intl\Intl;
 use Zikula\Bundle\CoreBundle\Twig;
-use Zikula\Bundle\CoreBundle\Twig\Extension\SimpleFunction\DefaultPathSimpleFunction;
-use Zikula\Bundle\CoreBundle\Twig\Extension\SimpleFunction\DispatchEventSimpleFunction;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\ThemeModule\Engine\AssetBag;
 
 class CoreExtension extends \Twig_Extension
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
     /**
      * @var TranslatorInterface
      */
     private $translator;
 
-    public function __construct(ContainerInterface $container = null)
+    /**
+     * CoreExtension constructor.
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
     {
-        $this->container = $container;
-        $this->translator = $container->get('translator.default');
+        $this->translator = $translator;
     }
 
     /**
-     * @return ContainerInterface
+     * {@inheritdoc}
      */
-    public function getContainer()
-    {
-        return $this->container;
-    }
-
     public function getTokenParsers()
     {
         return [
@@ -53,38 +42,21 @@ class CoreExtension extends \Twig_Extension
     }
 
     /**
-     * Returns a list of functions to add to the existing list.
-     *
-     * @return array An array of functions
+     * {@inheritdoc}
      */
     public function getFunctions()
     {
         $functions = [
-            new \Twig_SimpleFunction('button', [$this, 'button']),
-            new \Twig_SimpleFunction('img', [$this, 'img']),
-            new \Twig_SimpleFunction('icon', [$this, 'icon']),
-            new \Twig_SimpleFunction('lang', [$this, 'lang']),
-            new \Twig_SimpleFunction('langdirection', [$this, 'langDirection']),
-            new \Twig_SimpleFunction('zasset', [$this, 'getAssetPath']),
-            new \Twig_SimpleFunction('showflashes', [$this, 'showFlashes'], ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('array_unset', [$this, 'arrayUnset']),
-            new \Twig_SimpleFunction('pageSetVar', [$this, 'pageSetVar']),
-            new \Twig_SimpleFunction('pageAddAsset', [$this, 'pageAddAsset']),
-            new \Twig_SimpleFunction('pageGetVar', [$this, 'pageGetVar']),
-            new \Twig_SimpleFunction('getModVar', [$this, 'getModVar']),
-            new \Twig_SimpleFunction('getSystemVar', [$this, 'getSystemVar']),
-            new \Twig_SimpleFunction('setMetaTag', [$this, 'setMetaTag']),
-            new \Twig_SimpleFunction('defaultPath', [new DefaultPathSimpleFunction($this), 'getDefaultPath']),
-            new \Twig_SimpleFunction('modAvailable', [$this, 'modAvailable']),
             new \Twig_SimpleFunction('callFunc', [$this, 'callFunc']),
         ];
-        if (is_object($this->container)) {
-            $functions[] = new \Twig_SimpleFunction('dispatchEvent', [new DispatchEventSimpleFunction($this->container->get('event_dispatcher')), 'dispatchEvent']);
-        }
 
         return $functions;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getFilters()
     {
         return [
@@ -93,76 +65,6 @@ class CoreExtension extends \Twig_Extension
             new \Twig_SimpleFilter('php', [$this, 'applyPhp']),
             new \Twig_SimpleFilter('protectMail', [$this, 'protectMailAddress'], ['is_safe' => ['html']]),
         ];
-    }
-
-    public function getAssetPath($path)
-    {
-        return $this->container->get('zikula_core.common.theme.asset_helper')->resolve($path);
-    }
-
-    public function button()
-    {
-    }
-
-    public function img()
-    {
-    }
-
-    public function icon()
-    {
-    }
-
-    /**
-     * Display flash messages in twig template. Defaults to bootstrap alert classes.
-     *
-     * <pre>
-     *  {{ showflashes() }}
-     *  {{ showflashes({'class': 'custom-class', 'tag': 'span'}) }}
-     * </pre>
-     *
-     * @param array $params
-     * @return string
-     */
-    public function showFlashes(array $params = [])
-    {
-        $result = '';
-        $total_messages = [];
-        $messageTypeMap = [
-            'error' => 'danger',
-            'warning' => 'warning',
-            'status' => 'success',
-            'danger' => 'danger',
-            'success' => 'success',
-            'info' => 'info'
-            // @todo provide some class constants to use instead of direct strings
-        ];
-
-        foreach ($messageTypeMap as $messageType => $bootstrapClass) {
-            $session = $this->container->get('session');
-            $messages = $session->isStarted() ? $session->getFlashBag()->get($messageType) : [];
-            if (count($messages) > 0) {
-                // Set class for the messages.
-                $class = (!empty($params['class'])) ? $params['class'] : "alert alert-$bootstrapClass";
-                $total_messages = $total_messages + $messages;
-                // Build output of the messages.
-                if (empty($params['tag']) || ($params['tag'] != 'span')) {
-                    $params['tag'] = 'div';
-                }
-                $result .= '<' . $params['tag'] . ' class="' . $class . '"';
-                if (!empty($params['style'])) {
-                    $result .= ' style="' . $params['style'] . '"';
-                }
-                $result .= '>';
-                $result .= implode('<hr />', $messages);
-                $result .= '</' . $params['tag'] . '>';
-            }
-        }
-
-        if (empty($total_messages)) {
-            return "";
-        }
-
-        return $result;
     }
 
     /**
@@ -189,6 +91,10 @@ class CoreExtension extends \Twig_Extension
         return Intl::getLanguageBundle()->getLanguageName($code);
     }
 
+    /**
+     * @param $string
+     * @return string
+     */
     public function yesNo($string)
     {
         if ($string != '0' && $string != '1') {
@@ -235,118 +141,6 @@ class CoreExtension extends \Twig_Extension
     }
 
     /**
-     * Zikula imposes no restriction on page variable names.
-     * Typical usage is to set `title` `meta.charset` `lang` etc.
-     * array values are set using `.` in the `$name` string (e.g. `meta.charset`)
-     * @param string $name
-     * @param string $value
-     */
-    public function pageSetVar($name, $value)
-    {
-        if (empty($name) || empty($value)) {
-            throw new \InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
-        }
-
-        $this->container->get('zikula_core.common.theme.pagevars')->set($name, $value);
-    }
-
-    /**
-     * Zikula allows only the following asset types
-     * <ul>
-     *  <li>stylesheet</li>
-     *  <li>javascript</li>
-     *  <li>header</li>
-     *  <li>footer</li>
-     * </ul>
-     *
-     * @param string $type
-     * @param string $value
-     * @param int $weight
-     */
-    public function pageAddAsset($type, $value, $weight = AssetBag::WEIGHT_DEFAULT)
-    {
-        if (empty($type) || empty($value)) {
-            throw new \InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
-        }
-        if (!in_array($type, ['stylesheet', 'javascript', 'header', 'footer']) || !is_numeric($weight)) {
-            throw new \InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
-        }
-
-        // ensure proper variable types
-        $value = (string) $value;
-        $type = (string) $type;
-        $weight = (int) $weight;
-
-        if ('stylesheet' == $type) {
-            $this->container->get('zikula_core.common.theme.assets_css')->add([$value => $weight]);
-        } elseif ('javascript' == $type) {
-            $this->container->get('zikula_core.common.theme.assets_js')->add([$value => $weight]);
-        } elseif ('header' == $type) {
-            $this->container->get('zikula_core.common.theme.assets_header')->add([$value => $weight]);
-        } elseif ('footer' == $type) {
-            $this->container->get('zikula_core.common.theme.assets_footer')->add([$value => $weight]);
-        }
-    }
-
-    /**
-     * @param $name
-     * @param null $default
-     * @return mixed
-     */
-    public function pageGetVar($name, $default = null)
-    {
-        if (empty($name)) {
-            throw new \InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
-        }
-
-        return $this->container->get('zikula_core.common.theme.pagevars')->get($name, $default);
-    }
-
-    /**
-     * @param $module
-     * @param $name
-     * @param null $default
-     * @return mixed
-     */
-    public function getModVar($module, $name, $default = null)
-    {
-        if (empty($module) || empty($name)) {
-            throw new \InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
-        }
-
-        return $this->container->get('zikula_extensions_module.api.variable')->get($module, $name, $default);
-    }
-
-    /**
-     * @param $name
-     * @param null $default
-     * @return mixed
-     */
-    public function getSystemVar($name, $default = null)
-    {
-        if (empty($name)) {
-            throw new \InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
-        }
-
-        return $this->container->get('zikula_extensions_module.api.variable')->getSystemVar($name, $default);
-    }
-
-    /**
-     * @param string $name
-     * @param string $value
-     */
-    public function setMetaTag($name, $value)
-    {
-        if (empty($name) || empty($value)) {
-            throw new \InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
-        }
-
-        $metaTags = $this->container->hasParameter('zikula_view.metatags') ? $this->container->getParameter('zikula_view.metatags') : [];
-        $metaTags[$name] = htmlspecialchars($value, ENT_QUOTES);
-        $this->container->setParameter('zikula_view.metatags', $metaTags);
-    }
-
-    /**
      * Call a php callable with parameters.
      * @param callable $callable
      * @param array $params
@@ -357,6 +151,6 @@ class CoreExtension extends \Twig_Extension
         if (function_exists($callable)) {
             return call_user_func_array($callable, $params);
         }
-        throw new \InvalidArgumentException($this->translator->__('Function does not exist or is not callable.') . ':' . __FILE__ . '::' . __LINE__);
+        throw new \InvalidArgumentException($this->translator->__('Function does not exist or is not callable.'));
     }
 }

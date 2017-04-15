@@ -26,8 +26,10 @@ class PotDumperTest extends \PHPUnit_Framework_TestCase
 
         $dumper = $this->getDumper();
         $dumper->setPrettyPrint(false);
+        $expected = preg_split('/\r\n|\r|\n/', $this->getOutput('messages'));
+        $dump = preg_split('/\r\n|\r|\n/', $dumper->dump($catalogue, 'messages'));
 
-        $this->assertEquals($this->getOutput('messages'), $dumper->dump($catalogue, 'messages'));
+        $this->assertEquals($expected, $dump);
     }
 
     protected function getDumper()

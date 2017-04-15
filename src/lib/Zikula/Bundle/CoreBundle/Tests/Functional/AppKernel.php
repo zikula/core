@@ -54,11 +54,6 @@ class AppKernel extends ZikulaKernel
         $loader->load($this->config);
     }
 
-//    public function getCacheDir()
-//    {
-//        return sys_get_temp_dir().'/ZikulaCoreBundle';
-//    }
-
     public function serialize()
     {
         return $this->config;
@@ -67,6 +62,23 @@ class AppKernel extends ZikulaKernel
     public function unserialize($config)
     {
         $this->__construct($config);
+    }
+
+    /**
+     * This needs to be set to the 'normal' kernel cache dir
+     * @return string
+     */
+    public function getCacheDir()
+    {
+        return __DIR__ . '/../../../../../../app/cache/test';
+    }
+
+    /*
+     * This needs to be set to the 'normal' kernel logs dir
+     */
+    public function getLogDir()
+    {
+        return __DIR__ . '/../../../../../../app/logs';
     }
 
     /**

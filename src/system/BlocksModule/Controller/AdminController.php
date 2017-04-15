@@ -59,7 +59,7 @@ class AdminController extends AbstractController
             'translator' => $this->get('translator'),
             'moduleChoices' => $this->get('zikula_blocks_module.api.block')->getModulesContainingBlocks(),
             'positionChoices' => $this->getDoctrine()->getRepository('ZikulaBlocksModule:BlockPositionEntity')->getPositionChoiceArray(),
-            'localeChoices' => $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames()
+            'localeChoices' => $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(null, $request->getLocale())
         ]);
         $filterFormClone = clone $filterForm;
 

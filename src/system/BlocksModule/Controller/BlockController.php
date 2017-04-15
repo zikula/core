@@ -101,7 +101,7 @@ class BlockController extends AbstractController
             $blockEntity->setBlocktype($blockInstance->getType());
         }
 
-        $form = $this->createForm(BlockType::class, $blockEntity);
+        $form = $this->createForm(BlockType::class, $blockEntity, ['locale' => $request->getLocale()]);
         if (($blockInstance instanceof BlockHandlerInterface) && (null !== $blockInstance->getFormClassName())) {
             $form->add('properties', $blockInstance->getFormClassName(), $blockInstance->getFormOptions());
         }

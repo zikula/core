@@ -1,0 +1,15 @@
+services:
+    zikula_extensions_module.extension_var_repository:
+        class: Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["ZikulaExtensionsModule:ExtensionVarEntity"]
+
+    zikula_extensions_module.extension_repository:
+        class: Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["ZikulaExtensionsModule:ExtensionEntity"]
+
+    zikula_extensions_module.extension_dependency_repository:
+        class: Zikula\ExtensionsModule\Entity\Repository\ExtensionDependencyRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ["ZikulaExtensionsModule:ExtensionDependencyEntity"]

@@ -69,12 +69,12 @@ class LocaleApi implements LocaleApiInterface
     /**
      * {@inheritdoc}
      */
-    public function getSupportedLocaleNames()
+    public function getSupportedLocaleNames($region = null, $displayLocale = null)
     {
         $locales = $this->getSupportedLocales();
         $namedLocales = [];
         foreach ($locales as $locale) {
-            $namedLocales[Intl::getLanguageBundle()->getLanguageName($locale)] = $locale;
+            $namedLocales[Intl::getLanguageBundle()->getLanguageName($locale, $region, $displayLocale)] = $locale;
         }
 
         return $namedLocales;
@@ -85,6 +85,7 @@ class LocaleApi implements LocaleApiInterface
      */
     public function getBrowserLocale($default = 'en')
     {
+        // @todo consider http://php.net/manual/en/locale.acceptfromhttp.php and http://php.net/manual/en/locale.lookup.php
         if (!isset($_SERVER["HTTP_ACCEPT_LANGUAGE"]) || php_sapi_name() == "cli") {
             return $default;
         }

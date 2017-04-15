@@ -57,7 +57,7 @@ class AccountController extends AbstractController
         if (!$this->get('zikula_users_module.current_user')->isLoggedIn()) {
             throw new AccessDeniedException();
         }
-        $installedLanguages = $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames();
+        $installedLanguages = $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(null, $request->getLocale());
         $form = $this->createFormBuilder()
             ->add('locale', ChoiceType::class, [
                 'label' => $this->__('Choose language'),

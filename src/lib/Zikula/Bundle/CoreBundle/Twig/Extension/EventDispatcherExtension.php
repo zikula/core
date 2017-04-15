@@ -9,22 +9,38 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\CoreBundle\Twig\Extension\SimpleFunction;
+namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula\Core\Event\GenericEvent;
 
-class DispatchEventSimpleFunction
+class EventDispatcherExtension extends \Twig_Extension
 {
+    /**
+     * @var EventDispatcherInterface
+     */
     private $dispatcher;
 
     /**
-     * DispatchEventSimpleFunction constructor.
+     * EventDispatcherExtension constructor.
      * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->dispatcher = $eventDispatcher;
+    }
+
+    /**
+     * Returns a list of functions to add to the existing list.
+     *
+     * @return array An array of functions
+     */
+    public function getFunctions()
+    {
+        return [
+            new \Twig_SimpleFunction('dispatchEvent', [$this, 'dispatchEvent']),
+        ];
     }
 
     /**
