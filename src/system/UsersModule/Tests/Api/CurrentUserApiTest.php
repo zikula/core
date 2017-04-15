@@ -36,7 +36,7 @@ class CurrentUserApiTest extends \PHPUnit_Framework_TestCase
     private $userRepo;
 
     /**
-     * VariableApiTest setUp.
+     * CurrentUserApiTest setUp.
      */
     public function setUp()
     {

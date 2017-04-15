@@ -20,6 +20,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\BlocksModule\Api\BlockApi;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\BlockHandlerInterface;
+use Zikula\BlocksModule\Form\Type\BlockType;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\Ajax\FatalResponse;
 use Zikula\Core\Response\Ajax\ForbiddenResponse;
@@ -97,7 +98,7 @@ class BlockController extends AbstractController
             $blockEntity->setBlocktype($blockInstance->getType());
         }
 
-        $form = $this->createForm('Zikula\BlocksModule\Form\Type\BlockType', $blockEntity);
+        $form = $this->createForm(BlockType::class, $blockEntity, ['locale' => $request->getLocale()]);
         if (($blockInstance instanceof BlockHandlerInterface) && (null !== $blockInstance->getFormClassName())) {
             $form->add('properties', $blockInstance->getFormClassName(), $blockInstance->getFormOptions());
         }
