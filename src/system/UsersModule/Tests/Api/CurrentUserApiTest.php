@@ -98,6 +98,7 @@ class CurrentUserApiTest extends \PHPUnit_Framework_TestCase
     private function getApi($uid = null)
     {
         $this->session->method('get')->with('uid')->willReturn($uid);
+
         return new CurrentUserApi($this->session, $this->userRepo);
     }
 }
