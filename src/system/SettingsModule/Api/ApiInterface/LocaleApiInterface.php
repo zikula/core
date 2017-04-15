@@ -16,20 +16,18 @@ interface LocaleApiInterface
     /**
      * Get array of supported locales
      *
-     * @param bool $enableLegacy @deprecated
      * @return array
      */
-    public function getSupportedLocales($enableLegacy = true);
+    public function getSupportedLocales();
 
     /**
      * Get array of supported locales with their translated name
      *
      * @param null $region
      * @param null $displayLocale
-     * @param bool $enableLegacy @deprecated
      * @return array
      */
-    public function getSupportedLocaleNames($region = null, $displayLocale = null, $enableLegacy = true);
+    public function getSupportedLocaleNames($region = null, $displayLocale = null);
 
     /**
      * Detect languages preferred by browser and make best match to available provided languages.
