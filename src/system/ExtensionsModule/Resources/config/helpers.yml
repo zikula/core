@@ -22,7 +22,7 @@ services:
           - "@zikula.cache_clearer"
           - "@zikula_extensions_module.extension_repository"
           - "@translator.default"
-          - "@zikula_extensions_module.api.extension"
+          - "@kernel"
 
     zikula_extensions_module.extension_helper:
         class: Zikula\ExtensionsModule\Helper\ExtensionHelper
