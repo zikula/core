@@ -90,5 +90,4 @@ class MockSearchStatRepository implements SearchStatRepositoryInterface
     {
         // TODO: Implement matching() method.
     }
-
 }

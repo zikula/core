@@ -120,5 +120,4 @@ class MockSearchResultRepository implements SearchResultRepositoryInterface
     {
         // TODO: Implement matching() method.
     }
-
 }
