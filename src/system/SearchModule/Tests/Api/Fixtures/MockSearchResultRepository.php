@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Zikula\SearchModule\Tests\Api\Fixtures;
 
 use Doctrine\Common\Collections\Criteria;
@@ -24,7 +23,7 @@ class MockSearchResultRepository implements SearchResultRepositoryInterface
     private $results = [];
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function countResults($sessionId = '')
     {
@@ -39,7 +38,7 @@ class MockSearchResultRepository implements SearchResultRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getResults($filters = [], $sorting = [], $limit = 0, $offset = 0)
     {
@@ -47,7 +46,7 @@ class MockSearchResultRepository implements SearchResultRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function clearOldResults($sessionId = '')
     {
@@ -59,7 +58,7 @@ class MockSearchResultRepository implements SearchResultRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function persist(SearchResultEntity $entity)
     {
@@ -67,7 +66,7 @@ class MockSearchResultRepository implements SearchResultRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function flush(SearchResultEntity $entity = null)
     {
@@ -75,7 +74,7 @@ class MockSearchResultRepository implements SearchResultRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function find($id)
     {
@@ -83,7 +82,7 @@ class MockSearchResultRepository implements SearchResultRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findAll()
     {
@@ -91,7 +90,7 @@ class MockSearchResultRepository implements SearchResultRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
@@ -99,7 +98,7 @@ class MockSearchResultRepository implements SearchResultRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findOneBy(array $criteria)
     {
@@ -107,7 +106,7 @@ class MockSearchResultRepository implements SearchResultRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getClassName()
     {
@@ -115,7 +114,7 @@ class MockSearchResultRepository implements SearchResultRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function matching(Criteria $criteria)
     {

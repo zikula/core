@@ -1,9 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: craig
- * Date: 4/16/17
- * Time: 4:45 PM
+
+/*
+ * This file is part of the Zikula package.
+ *
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\SearchModule\Tests\Api\Fixtures;
@@ -17,7 +20,7 @@ class MockSearchStatRepository implements SearchStatRepositoryInterface
     private $results = [];
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function find($id)
     {
@@ -25,7 +28,7 @@ class MockSearchStatRepository implements SearchStatRepositoryInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function findAll()
     {
@@ -33,7 +36,7 @@ class MockSearchStatRepository implements SearchStatRepositoryInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
@@ -41,7 +44,7 @@ class MockSearchStatRepository implements SearchStatRepositoryInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function findOneBy(array $criteria)
     {
@@ -49,7 +52,7 @@ class MockSearchStatRepository implements SearchStatRepositoryInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getClassName()
     {
@@ -57,7 +60,7 @@ class MockSearchStatRepository implements SearchStatRepositoryInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function countStats()
     {
@@ -65,7 +68,7 @@ class MockSearchStatRepository implements SearchStatRepositoryInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getStats($filters = [], $sorting = [], $limit = 0, $offset = 0)
     {
@@ -73,7 +76,7 @@ class MockSearchStatRepository implements SearchStatRepositoryInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function persistAndFlush(SearchStatEntity $entity)
     {
@@ -81,7 +84,7 @@ class MockSearchStatRepository implements SearchStatRepositoryInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function matching(Criteria $criteria)
     {

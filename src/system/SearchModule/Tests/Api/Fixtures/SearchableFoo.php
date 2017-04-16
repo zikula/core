@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Zikula package.
  *
  * Copyright Zikula Foundation - http://zikula.org/
@@ -19,7 +19,7 @@ use Zikula\SearchModule\SearchableInterface;
 class SearchableFoo implements SearchableInterface
 {
     /**
-     * * {@inheritDoc}
+     * * {@inheritdoc}
      */
     public function amendForm(FormBuilderInterface $form)
     {
@@ -27,7 +27,7 @@ class SearchableFoo implements SearchableInterface
     }
 
     /**
-     * * {@inheritDoc}
+     * * {@inheritdoc}
      */
     public function getResults(array $words, $searchType = 'AND', $modVars = null)
     {
@@ -42,7 +42,7 @@ class SearchableFoo implements SearchableInterface
     }
 
     /**
-     * * {@inheritDoc}
+     * * {@inheritdoc}
      */
     public function getErrors()
     {
