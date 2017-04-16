@@ -40,6 +40,7 @@ function smarty_function_route($params, Zikula_View $view)
     unset($params['name']);
     $absolute = isset($params['absolute']) ? $params['absolute'] : false;
     unset($params['absolute']);
+    $params['_locale'] = isset($params['_locale']) ? $params['_locale'] : $view->language;
 
     /** @var $router \JMS\I18nRoutingBundle\Router\I18nRouter */
     $router = $view->getContainer()->get('router');
