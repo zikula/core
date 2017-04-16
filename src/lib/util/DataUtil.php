@@ -409,7 +409,7 @@ class DataUtil
 
             // Split the path at possible path delimiters.
             // Setting PREG_SPLIT_NOEMPTY eliminates double delimiters on the fly.
-            $dirty_array = preg_split('#[/\\\\]#', $var, -1, PREG_SPLIT_NO_EMPTY);
+            $dirty_array = preg_split('#[:/\\\\]#', $var, -1, PREG_SPLIT_NO_EMPTY);
 
             // now walk the path and do the relevant things
             foreach ($dirty_array as $current) {
