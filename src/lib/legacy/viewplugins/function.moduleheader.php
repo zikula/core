@@ -29,7 +29,7 @@
  *
  * @return string A formatted string containing navigation for the module admin panel
  */
-function smarty_function_moduleheader($params, $view)
+function smarty_function_moduleheader($params, Zikula_View $view)
 {
     if (!isset($params['modname']) || !ModUtil::available($params['modname'])) {
         $params['modname'] = ModUtil::getName();
@@ -43,7 +43,7 @@ function smarty_function_moduleheader($params, $view)
     $putimage = isset($params['putimage']) ? $params['putimage'] : false;
     $setpagetitle = isset($params['setpagetitle']) ? $params['setpagetitle'] : false;
     $insertstatusmsg = isset($params['insertstatusmsg']) ? $params['insertstatusmsg'] : false;
-    $cutlenght = isset($params['cutlenght']) ? $params['cutlenght'] : 20;
+    $cutlength = isset($params['cutlength']) ? $params['cutlength'] : 20;
     if ($putimage) {
         $image = isset($params['image']) ? $params['image'] : ModUtil::getModuleImagePath($params['modname']);
     } else {
@@ -59,7 +59,7 @@ function smarty_function_moduleheader($params, $view)
     }
     $titlelink = isset($params['titlelink']) ? $params['titlelink'] : false;
 
-    $renderer = Zikula_View::getInstance('Theme');
+    $renderer = Zikula_View::getInstance('ZikulaThemeModule');
     $renderer->setCaching(Zikula_View::CACHE_DISABLED);
 
     $renderer->assign('userthemename', UserUtil::getTheme());
@@ -67,8 +67,8 @@ function smarty_function_moduleheader($params, $view)
     $renderer->assign('type', $params['type']);
     $renderer->assign('title', $params['title']);
     $renderer->assign('titlelink', $titlelink);
-    $renderer->assign('truncated', mb_strlen($params['title']) > $cutlenght);
-    $renderer->assign('titletruncated', mb_substr($params['title'], 0, $cutlenght) . '...');
+    $renderer->assign('truncated', mb_strlen($params['title']) > $cutlength);
+    $renderer->assign('titletruncated', mb_substr($params['title'], 0, $cutlength) . '...');
     $renderer->assign('setpagetitle', $setpagetitle);
     $renderer->assign('insertstatusmsg', $insertstatusmsg);
     $renderer->assign('menufirst', $menufirst);
